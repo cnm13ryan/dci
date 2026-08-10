@@ -1,0 +1,26 @@
+# Byte-compiled artefacts and tool caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments. uv already writes .venv/.gitignore containing "*", and
+# pytest writes .pytest_cache/.gitignore; these entries make the intent explicit
+# rather than dependent on those tools continuing to do so.
+.venv/
+venv/
+
+# Local run output. Every shipped profile defaults data_root to "artifacts", and
+# the runner writes stop.json at the run root. Scientific artefacts are
+# reproduced from the frozen manifest and hashes, never version controlled; the
+# only committed run output is the deliberate regression baseline under
+# tests/regression/fixture_dev_fast/.
+artifacts/
+stop.json
+
+# Editor and OS noise
+.DS_Store
+*.sw[op]
+*.un~
