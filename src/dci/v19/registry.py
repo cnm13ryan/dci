@@ -523,7 +523,11 @@ def _fixed_commitments() -> SlotTable:
               note="no scalar severity coordinate is constructed to make "
                    "heterogeneous parameter quantities commensurable"),
         fixed("design.field_roles", "section 11.8",
-              tuple(sorted(field_roles.FIELD_ROLES))),
+              {role: list(fields)
+               for role, fields in sorted(field_roles.FIELD_ROLES.items())},
+              note="the field-to-role ASSIGNMENT, not just the role names: "
+                   "moving a field between roles changes what primary analysis "
+                   "may consume, so it must change the fingerprint"),
         fixed("design.material_splits", "section 11.1", pools.MATERIAL_SPLITS),
         fixed("design.background_strata", "section 8.2", pools.STRATA),
         fixed("design.candidate_methods", "D28 / section 12.4", CANDIDATE_METHODS),
@@ -531,7 +535,13 @@ def _fixed_commitments() -> SlotTable:
         fixed("design.checkpoint_eligibility", "section 9.3",
               specs.CHECKPOINT_ELIGIBILITY),
         fixed("design.hardware_selection_rule", "section 9.4",
-              HARDWARE_RULE_SUMMARY),
+              {"summary": HARDWARE_RULE_SUMMARY, **specs.HARDWARE_SELECTION},
+              note="the structured rule, so the measured quantities, the "
+                   "tie-break chain and the forbidden inputs are all covered"),
+        fixed("design.pair_definitions", "D2 / section 5.1",
+              pairs.rule_definitions(),
+              note="the complete fixed rule semantics, verifier bindings and "
+                   "parameter names for all three pairs"),
         fixed("design.candidate_pool_rule", "D8 / section 7.2",
               "24 authored candidates plus at most one blind tranche of 12; at "
               "least 12 hard-eligible survivors required before matching"),
