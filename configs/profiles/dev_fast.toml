@@ -1,0 +1,6 @@
+# The notebook's shipped defaults: free, synthetic, cannot produce evidence.
+model_profile = "dev_fast"
+run_mode = "smoke"
+dry_run_mode = true
+use_google_drive = true
+data_root = "artifacts"
