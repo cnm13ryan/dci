@@ -83,6 +83,34 @@ def cmd_doctor(a):
     return 0 if ok else 1
 
 
+def _write_state(path: str, payload: dict) -> None:
+    """Record the launch state, tolerating a path with no directory component.
+
+    os.makedirs(os.path.dirname("instance.json")) is os.makedirs(""), which
+    raises FileNotFoundError. That mattered more than a usual argument-handling
+    slip: it fired AFTER the billable launch request succeeded, so the instance
+    was running and the only record of its id had just been thrown away.
+
+    The write is also atomic. A half-written state file naming no instance is
+    the same problem in a different form.
+    """
+    tmp = f"{path}.partial"
+    try:
+        # Inside the guard: creating the parent can fail too, and that failure
+        # arrives with an instance already running.
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        with open(tmp, "w") as fh:
+            json.dump(payload, fh, indent=2)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, path)
+    except OSError as exc:
+        # Never let a bookkeeping failure hide a launched instance.
+        print(f"WARNING: could not write state file {path!r}: {exc}")
+        print(json.dumps(payload, indent=2))
+        raise
+
+
 def cmd_launch(a):
     body = _launch_body(a)
     print(json.dumps(body, indent=2))
@@ -92,9 +120,7 @@ def cmd_launch(a):
     resp = call("POST", "/instance-operations/launch", body)
     print(json.dumps(resp, indent=2))
     if a.state_file:
-        os.makedirs(os.path.dirname(a.state_file), exist_ok=True)
-        with open(a.state_file, "w") as fh:
-            json.dump({"request": body, "response": resp}, fh, indent=2)
+        _write_state(a.state_file, {"request": body, "response": resp})
     return 0
 
 
