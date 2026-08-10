@@ -1,0 +1,28 @@
+{
+  "gate": "4_falsification",
+  "status": "FINAL_FALSIFICATION_FAILED",
+  "reason": "references ['C_L3', 'C_W3', 'S_COMMA', 'S_MINWORDS12', 'S_MINWORDS15', 'S_SEMICOLON'] exceeded the equivalence tolerance on U_test",
+  "quantities": {
+    "run": true,
+    "u_test": [
+      "U_FMT_QUOTE1",
+      "U_LEX_REQUIRE3",
+      "U_NUM_TWOINT"
+    ],
+    "g1_individual_passed": false,
+    "worst_individual_bound": 1.0096231019863795,
+    "worst_individual_point": 0.38888888888888895,
+    "panel_residual_bound": 0.7343339125770922,
+    "panel_passed": false,
+    "g2_weighted_passed": null,
+    "bridge_target_in_u_test": false
+  },
+  "thresholds": {
+    "individual": 0.1
+  },
+  "more_data_could_resolve": false,
+  "new_protocol_version_required": true,
+  "dry_run_bypassed": true,
+  "recorded_utc": "2026-08-09T10:02:27.658589+00:00",
+  "passed": false
+}

@@ -1,0 +1,54 @@
+field,category,kind,value,description
+protocol_version,identity,value,v15,protocol version
+model_profile,model,value,dev_fast,"dev_fast, pilot or study"
+model_id,model,value,Qwen/Qwen2.5-0.5B-Instruct,Hugging Face model id
+model_revision,model,value,7ae557604adf67be50417f59c2c2f167def9a775,immutable commit; never 'main'
+tokenizer_sha256,model,hash,dry-run,"vocabulary, special tokens and class"
+chat_template_sha256,model,hash,dry-run,rendered chat template
+transformers_version,software,value,,inference library version
+engine,software,value,hf_transformers,inference engine
+inference_dtype,software,value,float16,numerical condition
+attn_implementation,software,value,sdpa,attention kernel
+do_sample,decoding,value,True,sampling on or off
+temperature,decoding,value,0.7,sampling temperature
+top_p,decoding,value,0.9,nucleus sampling
+max_new_tokens,decoding,value,180,generation length
+max_input_tokens,decoding,value,1024,truncation
+initial_batch_size,decoding,value,4,batch membership affects the sample
+adaptive_batching,decoding,value,off,off in a confirmatory run
+base_seed,seeds,value,20260901,root seed
+screening_seeds,seeds,value,"[11, 29]",stage seeds
+calibration_seeds,seeds,value,"[11, 29]",stage seeds
+confirmatory_seeds,seeds,value,[11],stage seeds
+wording_seeds,seeds,value,[11],stage seeds
+task_bank_sha256,tasks,hash,2d6a72fb617fc22d5eb9e5f1f8a774a29478d242ffdfc427e1ef8cf1dcdb80f3,every task id and its text
+calibration_tasks,tasks,value,"['CAL01', 'CAL02', 'CAL03', 'CAL04', 'CAL05', 'CAL06', 'CAL07', 'CAL08', 'CAL09', 'CAL10', 'CAL11', 'CAL12']",calibration split
+confirmatory_tasks,tasks,value,"['CNF01', 'CNF02', 'CNF03', 'CNF04', 'CNF05', 'CNF06']",confirmatory split
+wording_tasks,tasks,value,"['WRD01', 'WRD02', 'WRD03', 'WRD04']",Gate 3b split
+instructions_sha256,paraphrases,hash,55bc1e7603298425c512a8e26e662c6f2addb9112a9bf73ca77849473da07ad7,every rendered wording
+paraphrases_primary,paraphrases,value,"[0, 1, 2, 3, 4, 5]",wordings in the primary estimand
+paraphrases_held_out,paraphrases,value,"[6, 7]",Gate 3b only
+paraphrase_audit_sha256,audits,hash,,signed semantic audit
+verifier_audit_sha256,audits,hash,,signed reliability audit
+verifier_source_sha256,verifiers,hash,3b7262fac48d4b5de12135ed0cd14dc2caf6cc1a0620982c0b8dd8a58efb249d,verifier implementation
+coupling_response_bank_sha256,verifiers,hash,b0f6759b9af5f88b4db16a56159077aa65f478d182e712b7b6bf635d91854370,bank kappa is measured on
+coupling_mutation_sha256,verifiers,hash,745a7d78f86f23329c9989cab010eba6b94320307c81feaa0d2c4d02a5ce6c60,mutation specification
+coupling_edit_sha256,verifiers,hash,20007f9dadcc7327adb1530f27cdce7c54e67522f9b49afa5000113aa937be9a,coupling edit specification
+u_split_sha256,unrelated_targets,hash,3bf87f6ef7a7820e69c4b5f7f8295536f3a7cd48563898d53b6886e86b22bc3f,"build, validation and test assignment"
+u_build,unrelated_targets,value,"['U_FMT_COLON1', 'U_LEX_ALLIT_P', 'U_NUM_SUM100']",feature targets
+u_val,unrelated_targets,value,"['U_FMT_SEMI2', 'U_LEX_FORBID3', 'U_NUM_ONEPCT']",validation targets
+u_test,unrelated_targets,value,"['U_FMT_QUOTE1', 'U_LEX_REQUIRE3', 'U_NUM_TWOINT']",falsification targets
+candidate_pool,pool,value,"['C_L3', 'C_W3', 'C_O2', 'S_LONGWORD', 'S_ENDLONG', 'S_COMMA', 'S_MINWORDS12', 'S_MINWORDS15', 'S_MINWORDS20', 'S_MINWORDS25', 'S_MINWORDS30', 'S_TWOLONG', 'S_THREELONG', 'S_BAND1525', 'S_TWOCOMMA', 'S_SEMICOLON', 'S_COMMA12']",declared pool
+prescreen_retained,pool,value,"['C_L3', 'C_O2', 'C_W3', 'S_BAND1525', 'S_COMMA', 'S_COMMA12', 'S_ENDLONG', 'S_LONGWORD', 'S_MINWORDS12', 'S_MINWORDS15', 'S_MINWORDS20', 'S_MINWORDS25', 'S_SEMICOLON', 'S_THREELONG', 'S_TWOCOMMA', 'S_TWOLONG']",narrowed pool
+hard_eligible_universe,pool,value,[],B-independent universe
+feature_roles_sha256,features,hash,beada52cc8602f39cae888b8ba61848be89cfce20c5bd7be22060c5f5c2e1996,frozen causal role of every feature
+calipers,calipers,value,"{'d': 0.17042965579970729, 'g|U_FMT_COLON1|target_first': 0.09810497244112953, 'g|U_FMT_COLON1|added_first': 0.09810497244112953, 'g|U_LEX_ALLIT_P|target_first': 0.09810497244112953, 'g|U_LEX_ALLIT_P|added_first': 0.09810497244112953, 'g|U_NUM_SUM100|target_first': 0.09810497244112953, 'g|U_NUM_SUM100|added_first': 0.09810497244112953, 'r|U_FMT_COLON1|target_first': 0.25, 'r|U_FMT_COLON1|added_first': 0.25, 'r|U_LEX_ALLIT_P|target_first': 0.25, 'r|U_LEX_ALLIT_P|added_first': 0.25, 'r|U_NUM_SUM100|target_first': 0.25, 'r|U_NUM_SUM100|added_first': 0.25, 's_d': 0.13310054001595986, 's_g': 0.13310054001595986, 's_r': 0.13310054001595986}",SESOI divided by conservative upper sensitivity
+caliper_rule_sha256,calipers,hash,4519508fe2032e96705626a6448eb9aeb99fe02f08344a0c42a236c97ec3c944,selection and caliper implementation
+sesoi,calipers,value,0.1,smallest effect of interest
+selected_references,selection,value,"['S_SEMICOLON', 'C_W3', 'S_COMMA', 'S_MINWORDS15', 'C_L3', 'S_MINWORDS12']",the primary panel
+pseudo_focal_cohort,validation,value,"['C_L3', 'C_O2', 'C_W3']","Gate 3 cohort, frozen before U_val"
+stochastic_weights,selection,value,"{'S_SEMICOLON': 0.30000000000000454, 'C_W3': 0.30000000000000454, 'S_COMMA': 0.019241858662200843, 'S_MINWORDS15': 0.30000000000000454, 'C_L3': 0.08075814133778561, 'S_MINWORDS12': 0.0}",secondary estimand weights
+analysis_sha256,analysis,hash,ab3e0cf732b8754af97ad607d4c743346fa8f302b23be0cc80c8a52562c5b437,estimator and inference implementation
+confidence_level,analysis,value,0.95,interval level
+bootstrap_reps,analysis,value,400,resamples
+cluster_level,analysis,value,task_id,resampling unit

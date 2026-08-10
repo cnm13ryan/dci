@@ -1,0 +1,110 @@
+{
+  "gate": "3b_wording",
+  "status": "WORDING_VALIDATION_FAILED",
+  "reason": "comparability does not transport for [('C_L3', 6), ('C_L3', 7), ('C_W3', 6), ('C_W3', 7), ('S_COMMA', 6), ('S_COMMA', 7), ('S_MINWORDS12', 6), ('S_MINWORDS12', 7), ('S_MINWORDS15', 6), ('S_MINWORDS15', 7), ('S_SEMICOLON', 6), ('S_SEMICOLON', 7)]",
+  "quantities": {
+    "rule": "every (reference, held-out wording, component, order) cell",
+    "n_cells": 156,
+    "worst_cell_bound": 1.5132425871511854,
+    "worst_averaged_bound_diagnostic": 1.0243970466361803,
+    "held_out_wordings": [
+      6,
+      7
+    ],
+    "tasks": [
+      "WRD01",
+      "WRD02",
+      "WRD03",
+      "WRD04"
+    ],
+    "components": [
+      "d",
+      "g|U_FMT_SEMI2|target_first",
+      "g|U_FMT_SEMI2|added_first",
+      "g|U_LEX_FORBID3|target_first",
+      "g|U_LEX_FORBID3|added_first",
+      "g|U_NUM_ONEPCT|target_first",
+      "g|U_NUM_ONEPCT|added_first",
+      "r|U_FMT_SEMI2|target_first",
+      "r|U_FMT_SEMI2|added_first",
+      "r|U_LEX_FORBID3|target_first",
+      "r|U_LEX_FORBID3|added_first",
+      "r|U_NUM_ONEPCT|target_first",
+      "r|U_NUM_ONEPCT|added_first"
+    ],
+    "caliper_multiple": 1.5,
+    "worst_bound": 1.5132425871511854,
+    "n_failing_cells": 156,
+    "per_reference_wording": {
+      "C_L3|p6": {
+        "worst_bound": 1.1619621744185298,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "C_L3|p7": {
+        "worst_bound": 1.1758317839897652,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "C_W3|p6": {
+        "worst_bound": 1.294635516562403,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "C_W3|p7": {
+        "worst_bound": 1.25,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_COMMA|p6": {
+        "worst_bound": 1.1570418553531596,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_COMMA|p7": {
+        "worst_bound": 1.2632667660555439,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_MINWORDS12|p6": {
+        "worst_bound": 1.5132425871511854,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_MINWORDS12|p7": {
+        "worst_bound": 1.0217995939619262,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_MINWORDS15|p6": {
+        "worst_bound": 1.4560603205248925,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_MINWORDS15|p7": {
+        "worst_bound": 1.3451390065958047,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_SEMICOLON|p6": {
+        "worst_bound": 1.286759617562659,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      },
+      "S_SEMICOLON|p7": {
+        "worst_bound": 0.9366470811311146,
+        "worst_tolerance": 0.1471574586616943,
+        "n_failing": 13
+      }
+    },
+    "passed": false
+  },
+  "thresholds": {
+    "caliper_multiple": 1.5
+  },
+  "more_data_could_resolve": false,
+  "new_protocol_version_required": true,
+  "dry_run_bypassed": true,
+  "recorded_utc": "2026-08-09T10:02:21.919886+00:00",
+  "passed": false
+}
