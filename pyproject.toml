@@ -16,6 +16,12 @@ dependencies = [
     "matplotlib>=3.8",
     "tqdm>=4.66",
     "psutil>=5.9",
+    # Section 8.6 requires the whole-composition conjunction to be encoded "in Z3
+    # or an equivalently frozen solver", and fails closed on missing solver output
+    # rather than permitting the solver step to be skipped. A core dependency, not
+    # an extra: a checkout that cannot decide a conjunction cannot certify Stage 2.
+    # CPU-only, so it does not disturb the no-GPU-stack rule above.
+    "z3-solver>=4.13",
 ]
 
 [project.scripts]
