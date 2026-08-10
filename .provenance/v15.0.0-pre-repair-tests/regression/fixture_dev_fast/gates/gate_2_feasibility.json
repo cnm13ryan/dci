@@ -1,0 +1,48 @@
+{
+  "gate": "2_feasibility",
+  "status": "PASS",
+  "reason": "exactly 6 individually admissible references in both orders",
+  "quantities": {
+    "n_eligible": 0,
+    "eligible": [],
+    "unsupported_components": [
+      "g|U_FMT_COLON1|target_first",
+      "g|U_FMT_COLON1|added_first",
+      "g|U_LEX_ALLIT_P|added_first",
+      "g|U_NUM_SUM100|target_first",
+      "g|U_NUM_SUM100|added_first"
+    ],
+    "paraphrases_used": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "top_blocking": {
+      "g|U_FMT_COLON1|target_first": 16,
+      "g|U_FMT_COLON1|added_first": 16,
+      "g|U_NUM_SUM100|target_first": 16,
+      "g|U_LEX_ALLIT_P|added_first": 16,
+      "g|U_NUM_SUM100|added_first": 16
+    },
+    "dry_run_bypass": true,
+    "selected": [
+      "S_SEMICOLON",
+      "C_W3",
+      "S_COMMA",
+      "S_MINWORDS15",
+      "C_L3",
+      "S_MINWORDS12"
+    ]
+  },
+  "thresholds": {
+    "required": 6
+  },
+  "more_data_could_resolve": false,
+  "new_protocol_version_required": false,
+  "dry_run_bypassed": false,
+  "recorded_utc": "2026-08-09T10:02:00.063040+00:00",
+  "passed": true
+}

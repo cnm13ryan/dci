@@ -1,0 +1,25 @@
+{
+  "frozen": true,
+  "plan_sha256": "e92c6d01aee4ab500efa15e0703a3ba74606648d6b49b1c7cb1af68e99568497",
+  "execution_sha256": "71a951d44c2d3cab42c79f1f2adf3b28b17bec7c4ec719e9f8cb2e9f533c18cf",
+  "hardware_class": {
+    "gpu_name": null,
+    "compute_capability": null,
+    "cuda_runtime": null,
+    "torch_cuda_build": null,
+    "attn_implementation": "sdpa",
+    "device_count": 0,
+    "class": "cpu_or_dry_run"
+  },
+  "hardware_class_sha256": "6c7a55326e7914c531e66fb769752c3d619d385bd751e16a9ab79439981f2104",
+  "frozen_utc": "2026-08-09T10:02:21.942482+00:00",
+  "references": [
+    "S_SEMICOLON",
+    "C_W3",
+    "S_COMMA",
+    "S_MINWORDS15",
+    "C_L3",
+    "S_MINWORDS12"
+  ],
+  "primary_estimand": "primary_total"
+}

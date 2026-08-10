@@ -1,0 +1,56 @@
+{
+  "u_build": [
+    "U_FMT_COLON1",
+    "U_LEX_ALLIT_P",
+    "U_NUM_SUM100"
+  ],
+  "u_val": [
+    "U_FMT_SEMI2",
+    "U_LEX_FORBID3",
+    "U_NUM_ONEPCT"
+  ],
+  "u_test": [
+    "U_FMT_QUOTE1",
+    "U_LEX_REQUIRE3",
+    "U_NUM_TWOINT"
+  ],
+  "u_reserve": [
+    "U_FMT_NOCOMMA",
+    "U_FMT_PAREN1",
+    "U_LEX_CAPWORD",
+    "U_LEX_NOLY",
+    "U_NUM_FOURDISTINCT",
+    "U_NUM_MAXINT",
+    "U_NUM_MININT",
+    "U_NUM_NODIGIT"
+  ],
+  "u_reserve_pending_precision": [
+    "U_BRG_NOTHE",
+    "U_BRG_QMARK",
+    "U_BRG_VOWEL3",
+    "U_FMT_COLON1",
+    "U_FMT_NOCOMMA",
+    "U_FMT_PAREN1",
+    "U_FMT_QUOTE1",
+    "U_FMT_SEMI2",
+    "U_LEX_ALLIT_P",
+    "U_LEX_NOLY",
+    "U_LEX_REQUIRE3",
+    "U_NUM_FOURDISTINCT",
+    "U_NUM_MAXINT",
+    "U_NUM_MININT",
+    "U_NUM_NODIGIT",
+    "U_NUM_ONEPCT",
+    "U_NUM_SUM100",
+    "U_NUM_TWOINT"
+  ],
+  "architecture": "3/4/4 (3 build, 3+1 bridge val, 3+1 bridge test)",
+  "evidential_splits_resolved_only": true,
+  "bridge_available": false,
+  "rule": "frozen stratified randomisation, one eligible candidate per build family per split, plus one bridge target in validation and test",
+  "roles": {
+    "u_build": "designs features and calipers",
+    "u_val": "one-shot validation at Gate 3; may veto the design",
+    "u_test": "falsification after the freeze; may alter nothing"
+  }
+}
