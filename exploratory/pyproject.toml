@@ -1,0 +1,50 @@
+# ============================================================================
+# EXPLORATORY environment for the cheapest-informative DCI study on ROCm.
+#
+# This is a SEPARATE uv project from environments/rocm, and environments/rocm is
+# deliberately left untouched: it is the frozen execution condition for the
+# confirmatory study, and editing it to make an exploratory run convenient would
+# silently change what "the ROCm environment" means for the frozen protocol.
+#
+# It differs from environments/rocm in exactly one respect: `amdsmi` is NOT a
+# dependency. amdsmi>=26 ships with the ROCm SYSTEM installation
+# (/opt/rocm/share/amd_smi) rather than PyPI, so `uv sync` on this machine
+# cannot resolve it from an index (verified: "only amdsmi<=7.0.2 is available").
+# environments/rocm needs it for later vLLM-on-ROCm work and for telemetry; this
+# exploratory study needs neither — GPU telemetry here comes from `rocm-smi` and
+# from torch's own allocator counters.
+#
+# The torch/triton wheel URLs are copied verbatim from environments/rocm so the
+# exploratory run executes on the SAME GPU stack the confirmatory environment
+# pins. If those pins ever move, move them here too or the two stop comparing.
+# ============================================================================
+[project]
+name = "dci-exploratory-rocm"
+version = "0.1.0"
+description = "Minimal DCI directional-interference probe on local ROCm hardware"
+requires-python = "==3.12.*"
+dependencies = [
+    "dci",
+    # GPU stack, matched to environments/rocm's verified ROCm 7.2 wheel set.
+    "torch==2.9.1",
+    "torchvision==0.24.1",
+    "triton==3.5.1",
+    "transformers>=4.49.0",
+    "tokenizers>=0.21",
+    "accelerate>=1.4.0",
+    "huggingface-hub>=0.29.2",
+    "pytest>=8.0",
+]
+
+[tool.uv]
+required-version = ">=0.5.3"
+# ROCm wheels by explicit URL: resolution cannot drift to PyPI CUDA builds.
+override-dependencies = [
+    "torch @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torch-2.9.1%2Brocm7.2.0.lw.git7e1940d4-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "torchaudio @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torchaudio-2.9.0%2Brocm7.2.0.gite3c6ee2b-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "torchvision @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torchvision-0.24.0%2Brocm7.2.0.gitb919bd0c-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "triton @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/triton-3.5.1%2Brocm7.2.0.gita272dfa8-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+]
+
+[tool.uv.sources]
+dci = { path = "..", editable = true }
