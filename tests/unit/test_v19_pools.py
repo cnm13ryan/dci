@@ -535,3 +535,131 @@ def test_one_stratum_uses_the_declared_id_not_the_content_hash():
                                verifier_hash="sha256:edited"),))
     with pytest.raises(PoolViolation, match="enter a superblock twice"):
         assert_one_stratum_per_constraint([a, b])
+
+
+# ------------------------- the readiness gate ENFORCES, it does not merely check
+#
+# Before this, four correct helper assertions existed with unit tests and no
+# production caller at all. Signing each pool individually proves nothing about
+# the partition: section 11.1's firewall is a property of the SET, so two
+# separately valid signed pools can share an item and both signatures stay valid.
+
+def signed(pool_id, split, items, **kw):
+    return populated(pool_id=pool_id, split=split, items=items, **kw).sign(
+        by="investigator")
+
+
+def test_the_gate_rejects_individually_signed_but_overlapping_splits():
+    """The reported defect: this used to pass."""
+    dev = signed("p1.tasks.development", "development", ("shared_task", "d2"))
+    conf = signed("p1.tasks.confirmation", "confirmation", ("shared_task", "c2"))
+    with pytest.raises(PoolViolation, match="more than one material split"):
+        pools.assert_ready_for_confirmation([dev, conf])
+
+
+def test_the_gate_accepts_disjoint_signed_splits():
+    dev = signed("p1.tasks.development", "development", ("d1", "d2"))
+    conf = signed("p1.tasks.confirmation", "confirmation", ("c1", "c2"))
+    pools.assert_ready_for_confirmation([dev, conf])
+
+
+def test_the_gate_rejects_a_renamed_duplicate_across_splits():
+    original = entry("bg1")
+    renamed = dataclasses.replace(original, constraint_id="bg1_copy")
+    dev = signed("a", "development", (original,), kind="background",
+                 stratum="lexical_content")
+    conf = signed("b", "confirmation", (renamed,), kind="background",
+                  stratum="lexical_content")
+    with pytest.raises(PoolViolation, match="more than one material split"):
+        pools.assert_ready_for_confirmation([dev, conf])
+
+
+def test_the_gate_rejects_one_constraint_in_two_strata():
+    a = signed("a", "confirmation", (entry("bg1", "lexical_content"),),
+               kind="background", stratum="lexical_content")
+    b = signed("b", "confirmation", (entry("bg1", "relational_order"),),
+               kind="background", stratum="relational_order")
+    with pytest.raises(PoolViolation, match="enter a superblock twice"):
+        pools.assert_ready_for_confirmation([a, b])
+
+
+def test_the_gate_rejects_a_pairs_own_focal_constraint():
+    """Section 8.2: neither pool may contain the pair's target or focal."""
+    conf = signed("p1.tasks.confirmation", "confirmation",
+                  ("c1", "v19:p1.focal.transitive_order"))
+    with pytest.raises(PoolViolation, match="own focal constraint"):
+        pools.assert_ready_for_confirmation([conf])
+
+
+def test_the_gate_rejects_a_pairs_own_target_constraint():
+    conf = signed("p3.tasks.confirmation", "confirmation",
+                  ("c1", "v19:p3.target.exact_sentence_count"), pair="p3")
+    with pytest.raises(PoolViolation, match="own target constraint"):
+        pools.assert_ready_for_confirmation([conf])
+
+
+def test_the_gate_rejects_declared_incompatible_background_entries():
+    a = signed("a", "confirmation", (entry("bg1", incompatible_with=("bg2",)),),
+               kind="background", stratum="lexical_content")
+    b = signed("b", "confirmation", (entry("bg2", "structural_format"),),
+               kind="background", stratum="structural_format")
+    with pytest.raises(PoolViolation, match="declared incompatible"):
+        pools.assert_ready_for_confirmation([a, b])
+
+
+def test_the_gate_still_rejects_unsigned_and_unpopulated_pools_first():
+    with pytest.raises(UnresolvedDependency, match="has no authored content"):
+        pools.assert_ready_for_confirmation(list(pools.declared_pools()))
+    with pytest.raises(UnresolvedDependency, match="populated but unsigned"):
+        pools.assert_ready_for_confirmation([populated()])
+
+
+def test_the_exclusion_map_comes_from_the_pair_registry():
+    """Not a hand-maintained list: it is derived, so it cannot drift."""
+    got = pools.forbidden_items("p2")
+    assert got["id:v19:p2.target.mandatory_words"] == \
+        "the pair's own target constraint"
+    assert got["id:v19:p2.focal.all_words_unique"] == \
+        "the pair's own focal constraint"
+
+
+def test_the_exclusion_map_omits_references_until_stage_eight_admits_them():
+    """It cannot exclude identities that do not exist yet."""
+    got = pools.forbidden_items("p1")
+    assert not any("admitted reference" in why for why in got.values())
+    assert len(got) == 2
+
+
+def test_an_explicit_exclusion_map_overrides_the_derived_one():
+    conf = signed("p1.tasks.confirmation", "confirmation", ("banned_item",))
+    pools.assert_ready_for_confirmation([conf], exclusions={})
+    with pytest.raises(PoolViolation, match="excluded item"):
+        pools.assert_ready_for_confirmation(
+            [conf], exclusions={"id:banned_item": "a Stage 8 reference"})
+
+
+def test_semantic_duplicate_review_is_a_pending_human_decision():
+    """Section 8.7 assigns semantic equivalence to review, not to code."""
+    slot = pools.semantic_duplicate_review("p1")
+    assert slot.status == "BLOCKED_BY_PROSPECTIVE_DECISION"
+    assert "two independent human reviews" in slot.rule
+    assert "third reviewer" in slot.rule
+    assert "not semantic equivalence" in slot.note
+    with pytest.raises(UnresolvedDependency):
+        slot.get()
+
+
+def test_the_gate_does_not_claim_to_settle_semantic_equivalence():
+    """A near-duplicate with different wording passes the deterministic gate.
+
+    That is correct behaviour, not a hole: the protocol assigns this judgement to
+    human review, and asserting it automatically would fabricate a certification.
+    """
+    dev = signed("a", "development", (entry("bg1"),), kind="background",
+                 stratum="lexical_content")
+    near = dataclasses.replace(entry("bg2", "lexical_content"),
+                               canonical_wording_hash="sha256:paraphrase")
+    conf = signed("b", "confirmation", (near,), kind="background",
+                  stratum="lexical_content")
+    pools.assert_ready_for_confirmation([dev, conf])
+    assert pools.semantic_duplicate_review("p1").pending
