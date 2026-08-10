@@ -35,6 +35,12 @@ class ActiveConfig:
     data_root: Optional[str] = None        # maps to drive_root/local_root
     backend: Optional[str] = None          # None -> CFG.engine / dry-run oracle
     device_index: Optional[int] = None     # overrides CFG.single_gpu_index
+    # Planning/inspection mode. When set, the inference seam refuses to hand out
+    # a backend that can generate, so a command advertised as planning-only
+    # cannot spend inference budget however far through the stage graph it
+    # travels. This is an execution-environment fact (class B), never a
+    # scientific one: it does not appear in the protocol hash.
+    planning_only: bool = False
     shard_index: Optional[int] = None      # deterministic batch sharding
     shard_total: Optional[int] = None
     # --- protocol-field overrides (the successor of the V14_*/V15_* envs) ----
