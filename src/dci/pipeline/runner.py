@@ -90,6 +90,13 @@ def run_pipeline(until: Optional[str] = None) -> int:
         outcome = stop.outcome
         print(f"\nSTUDY STOPPED at a scientific gate: {outcome.gate} -> "
               f"{outcome.status}\n{outcome.reason}")
+        # The operator-facing explanation - which field differs, which value was
+        # frozen, what to do next - lives in the exception message. It was
+        # written into stop.json and never shown, so the console said only that
+        # something did not match.
+        detail = str(stop).strip()
+        if detail and detail != outcome.reason.strip():
+            print(detail)
         _write_stop(S, {"kind": "scientific_stop", "stage": _next(ran, order),
                         "outcome": asdict(outcome)})
         return EXIT_SCIENTIFIC
