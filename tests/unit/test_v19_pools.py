@@ -15,6 +15,8 @@ The tests use synthetic content throughout. No real scientific material is
 authored here: a pair that cannot populate its pools is a pre-freeze feasibility
 failure to be discovered by authoring, not asserted by a registry.
 """
+import dataclasses
+
 import pytest
 
 from dci.v19 import pools
@@ -222,12 +224,17 @@ def test_an_unpopulated_pool_has_no_fingerprint():
         declare_pool("x", "p1", "task", "confirmation", rule="r").fingerprint
 
 
-def test_the_fingerprint_uses_background_entry_identities():
+def test_a_full_entry_and_a_bare_id_do_not_share_a_fingerprint():
+    """This used to be asserted the other way round, which WAS the defect.
+
+    A pool holding the complete section 8.2 entry is not the same signed material
+    as a pool holding only its label, so the two must not hash alike.
+    """
     a = populated(pool_id="p1.backgrounds.lexical_content", kind="background",
                   stratum="lexical_content", items=(entry("bg1"),))
     b = populated(pool_id="p1.backgrounds.lexical_content", kind="background",
                   stratum="lexical_content", items=("bg1",))
-    assert a.fingerprint == b.fingerprint
+    assert a.fingerprint != b.fingerprint
 
 
 # -------------------------------------------------------------- disjoint splits
@@ -402,3 +409,129 @@ def test_a_populated_but_unsigned_pool_is_not_ready():
 
 def test_a_signed_populated_pool_is_ready():
     pools.assert_ready_for_confirmation([populated().sign(by="investigator")])
+
+
+# ---------------------------------------- content identity versus overlap identity
+#
+# A pool item has two identities answering different questions, and collapsing
+# them breaks whichever one it was not designed for. Content identity answers
+# "has this material changed?" and is what section 11.2's signature must cover.
+# Overlap identity answers "is this the same scientific item?" and must stay
+# id-sensitive, because the same constraint in two splits is leakage even when one
+# copy's metadata was edited.
+
+MATERIAL_FIELDS = [
+    ("verifier_hash", "sha256:CHANGED"),
+    ("canonical_wording_hash", "sha256:CHANGED"),
+    ("output_schema", "json_object"),
+    ("parameter_distribution", "Uniform{3,4,5}"),
+    ("incompatible_with", ("bg9",)),
+    ("entails", ("bg7",)),
+    ("provenance", "authored later under content procedure v2"),
+    ("generative_scope", "sentence"),
+]
+
+
+def bg_pool(*entries, split="confirmation"):
+    return populated(pool_id="p1.backgrounds.lexical_content", kind="background",
+                     stratum="lexical_content", items=entries, split=split)
+
+
+@pytest.mark.parametrize("field,value", MATERIAL_FIELDS)
+def test_changing_any_scientifically_material_field_changes_the_fingerprint(
+        field, value):
+    """Section 8.2 lists these as the fields that determine interpretation.
+
+    Before the repair every one of them left the signed fingerprint identical, so
+    the signature certified nothing it claimed to.
+    """
+    base = bg_pool(entry("bg1")).fingerprint
+    assert bg_pool(entry("bg1", **{field: value})).fingerprint != base, field
+
+
+def test_changing_the_stratum_changes_the_fingerprint():
+    base = bg_pool(entry("bg1", "lexical_content")).fingerprint
+    other = populated(pool_id="p1.backgrounds.structural_format",
+                      kind="background", stratum="structural_format",
+                      items=(entry("bg1", "structural_format"),)).fingerprint
+    assert other != base
+
+
+def test_changing_the_constraint_id_changes_the_fingerprint():
+    assert bg_pool(entry("bg1")).fingerprint != bg_pool(entry("bg2")).fingerprint
+
+
+def test_an_identical_entry_reproduces_the_same_fingerprint():
+    assert bg_pool(entry("bg1")).fingerprint == bg_pool(entry("bg1")).fingerprint
+
+
+def test_ordering_remains_canonical_for_full_entries():
+    a, b = entry("bg1"), entry("bg2", "lexical_content")
+    assert bg_pool(a, b).fingerprint == bg_pool(b, a).fingerprint
+
+
+def test_multiplicity_still_changes_the_fingerprint():
+    """A pool is a population: listing an item twice doubles its draw probability."""
+    e = entry("bg1")
+    assert bg_pool(e, e).fingerprint != bg_pool(e).fingerprint
+
+
+def test_two_entries_sharing_an_id_but_not_content_are_distinct_material():
+    a = bg_pool(entry("bg1", verifier_hash="sha256:V1")).fingerprint
+    b = bg_pool(entry("bg1", verifier_hash="sha256:V2")).fingerprint
+    assert a != b
+
+
+# ------------------------------------------------- overlap keeps both notions
+def test_the_same_id_with_modified_content_is_still_cross_split_leakage():
+    """The regression that a content-only key would have introduced."""
+    dev = bg_pool(entry("bg1", verifier_hash="sha256:V1"), split="development")
+    conf = bg_pool(entry("bg1", verifier_hash="sha256:V2"), split="confirmation")
+    with pytest.raises(PoolViolation, match="more than one material split"):
+        assert_splits_disjoint([dev, conf])
+
+
+def test_renamed_identical_content_is_caught_as_leakage():
+    """A copy under a new id is the same scientific material (section 8.2)."""
+    dev = bg_pool(entry("bg1"), split="development")
+    renamed = dataclasses.replace(entry("bg1"), constraint_id="bg1_copy")
+    conf = bg_pool(renamed, split="confirmation")
+    with pytest.raises(PoolViolation, match="more than one material split"):
+        assert_splits_disjoint([dev, conf])
+
+
+def test_distinct_id_and_distinct_content_are_not_treated_as_overlap():
+    dev = bg_pool(entry("bg1"), split="development")
+    conf = bg_pool(entry("bg2", verifier_hash="sha256:other"),
+                   split="confirmation")
+    assert_splits_disjoint([dev, conf])
+
+
+def test_a_renamed_forbidden_item_is_still_excluded():
+    from dci.v19.pools import _material_key
+    original = entry("bg1")
+    renamed = dataclasses.replace(original, constraint_id="innocuous")
+    with pytest.raises(PoolViolation, match="excluded item"):
+        assert_pool_excludes(bg_pool(renamed),
+                             {f"material:{_material_key(original)}":
+                              "the pair's own focal constraint, renamed"})
+
+
+def test_the_signing_key_includes_the_id_but_the_overlap_key_does_not():
+    """The two identities are deliberately different, and both are needed."""
+    from dci.v19.pools import _content_key, _material_key
+    original = entry("bg1")
+    renamed = dataclasses.replace(original, constraint_id="bg1_copy")
+    assert _content_key(original) != _content_key(renamed)     # signing sees it
+    assert _material_key(original) == _material_key(renamed)   # overlap sees through
+
+
+def test_one_stratum_uses_the_declared_id_not_the_content_hash():
+    """Two edited copies under one id are still one constraint in two strata."""
+    a = populated(pool_id="a", kind="background", stratum="lexical_content",
+                  items=(entry("bg1", "lexical_content"),))
+    b = populated(pool_id="b", kind="background", stratum="relational_order",
+                  items=(entry("bg1", "relational_order",
+                               verifier_hash="sha256:edited"),))
+    with pytest.raises(PoolViolation, match="enter a superblock twice"):
+        assert_one_stratum_per_constraint([a, b])
