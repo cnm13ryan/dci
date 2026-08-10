@@ -1,0 +1,44 @@
+case_id,human_sentence_count,human_failure_mode,note
+C3F4EC400,1,one_semicolon_chain,semicolons+colon throughout; single terminal period
+C3C9F7378,1,one_semicolon_chain,
+CE7437BDC,4,pass,
+CC501D050,1,one_semicolon_chain,ends with colon clause
+CF38931E2,4,pass,
+C26DEE8B8,4,pass,
+C4B35E677,1,one_semicolon_chain,
+C8D9E583E,4,pass,
+C34613AEF,4,pass,
+C8925B4C7,4,pass,
+C90B66977,4,pass,semicolons present but WITHIN sentences; 4 terminal periods
+CC094F3B7,1,one_semicolon_chain,mixes semicolon and colon as joiners
+C61ACC750,1,one_semicolon_chain,contains a.m. abbreviations; still one chain
+CE7923D48,4,pass,
+CD7E0E7E5,4,pass,
+C1039B375,4,pass,
+C1734C3FC,4,pass,semicolons within sentences; 4 terminal periods
+CB12F6864,1,one_semicolon_chain,
+CBB2928B5,1,one_semicolon_chain,
+C7AFF6469,1,one_semicolon_chain,
+C2D849F6D,4,pass,
+CE3381214,1,one_semicolon_chain,
+CB4125C20,1,one_semicolon_chain,
+CBD576E6E,3,three_sentences,three terminal periods; last joins two clauses by semicolon
+C05404EC4,1,one_semicolon_chain,
+C844A42CB,1,one_semicolon_chain,
+C79D079D0,4,pass,
+C0B23613F,4,pass,
+C4770C8EA,4,pass,
+C4D8451BE,1,one_semicolon_chain,
+C737E4558,4,pass,a.m. abbreviations are not sentence ends
+CD38DA966,4,pass,
+C766BF962,5,over_target,four sentences then a stray ': Baking requires...' full sentence
+C63323353,4,pass,
+C674722D8,4,pass,semicolons within sentences
+C8958EFEF,4,pass,
+CB2F4A021,4,pass,model wrote the word 'colon.' literally; count unaffected
+C6EE82119,1,one_semicolon_chain,
+CB01562C6,4,pass,
+C6BD4420D,1,one_long_sentence_no_chain,single sentence with one semicolon
+C081CC52A,1,one_semicolon_chain,
+C978918E1,4,pass,
+C2A232BB8,4,pass,
