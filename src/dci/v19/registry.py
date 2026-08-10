@@ -112,11 +112,27 @@ STAGE_GATES: tuple[StageGate, ...] = (
         key="stage_2_verifiers", ordinal="2",
         title="satisfiability and verifier infrastructure",
         citation="section 14.2",
-        requires=_req("section 14.2: Pair 1 support must be built and Pair 2/3 "
-                      "code reused only after a hash and semantic audit",
-                      "verifiers.boundary_mutations"),
-        produces=("verifiers.bundle_hash", "verifiers.tier1_reliability",
-                  "verifiers.binomial_interval_implementation")),
+        requires=(
+            _req("section 14.2: Pair 1 support must be built and Pair 2/3 "
+                 "code reused only after a hash and semantic audit",
+                 "verifiers.boundary_mutations")
+            + _req("sections 4.1 and 4.2 fix the two Pair 1 statements and name "
+                   "the shared-parser coupling risk but fix no list-parsing "
+                   "semantics, so the policy is a signed decision",
+                   "verifiers.p1.list_policy")
+            + _req("section 6.1 names ordering depth as a family-specific "
+                   "parameter without defining what it ranges over, and Stage 5 "
+                   "cannot calibrate a grid that does not exist",
+                   "verifiers.p1.ordering_depth")
+            + _req("section 14.2 permits Pair 2/3 reuse only after a hash and "
+                   "semantic audit, and section 10.6 requires a demonstrated "
+                   "verifier defect to be repaired and re-audited before freeze",
+                   "verifiers.inherited_reuse_decision")
+            + _req("section 10.4 freezes the two-sided binomial interval at "
+                   "Stage 2, before dependent reliability audits",
+                   "verifiers.binomial_interval_implementation")),
+        produces=("verifiers.specification_bundle", "verifiers.bundle_hash",
+                  "verifiers.tier1_reliability")),
     StageGate(
         key="stage_2a_qualification", ordinal="2A",
         title="early scientific-runtime and inference qualification",

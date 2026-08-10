@@ -30,33 +30,85 @@ from dci.v19.resolution import Resolution, Slot, SlotTable, pending
 # ------------------------------------------------- Stage 2: verifier infrastructure
 
 VERIFIER_SLOTS = SlotTable.of(
+    pending("verifiers.p1.list_policy", "sections 4.1, 4.2, 14.2",
+            Resolution.PENDING_DECISION,
+            "Stage 2: freeze the Pair 1 list-parsing semantics as one signed "
+            "ListPolicy. The preregistration fixes the two statements and the "
+            "coupling risk but no parsing rule: not the markers, not whether "
+            "numbered lists are bullet-list items, not nesting, not continuation "
+            "lines, not empty items, not Unicode normalisation, and not how an "
+            "observed item is matched to a declared entity",
+            note="dci.v19.parsing.UNDETERMINED_BY_PREREGISTRATION lists each open "
+                 "question; INHERITED_MARKER_POLICY reproduces the one recoverable "
+                 "candidate (rules.LIST_MARKER) and is a candidate, not the rule"),
+    pending("verifiers.p1.ordering_depth", "sections 4.1, 6.1, 14.5",
+            Resolution.PENDING_DECISION,
+            "Stage 2: define what the Pair 1 focal parameter `ordering_depth` "
+            "declared in pairs.PAIR_1 ranges over, so Stage 5 has a grid to "
+            "calibrate; section 6.1 names ordering depth as a family-specific "
+            "quantity but never defines it",
+            note="OrderingRelation.chain_depth is a diagnostic computed from a "
+                 "relation, not this parameter, and must not stand in for it"),
+    pending("verifiers.inherited_reuse_decision", "sections 4.3, 4.4, 10.6, 14.2",
+            Resolution.PENDING_DECISION,
+            "Stage 2: decide whether the audited Pair 2 and Pair 3 "
+            "implementations are reused unchanged, corrected, or reimplemented. "
+            "Section 14.2 permits reuse only after a hash and semantic audit; the "
+            "audit has been performed and demonstrated defects, and section 10.6 "
+            "requires that a demonstrated verifier defect be repaired and "
+            "re-audited before freeze",
+            note="the audit found that a zero-width space or homoglyph satisfies "
+                 "the Pair 2 uniqueness rule while repeating a word, that a "
+                 "non-ASCII mandatory word can never be matched, and that the "
+                 "frozen sentence segmentation scores a bullet list as N "
+                 "sentences; see docs/v19_stage2_gap_audit.md"),
+    pending("verifiers.specification_bundle", "section 14.2 / Appendix I",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2: the per-verifier table of declared-semantics and "
+            "implementation hashes for all six target and focal verifiers, which "
+            "dci.v19.verifiers.bundle_state computes once its inputs are frozen",
+            depends_on=("verifiers.p1.list_policy", "verifiers.p1.ordering_depth",
+                        "verifiers.inherited_reuse_decision"),
+            note="the Pair 1 spec hashes contain the list-policy hash, so this "
+                 "cannot be produced before that policy is a decision"),
     pending("verifiers.bundle_hash", "section 14.2 / Appendix I",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: implement and reconcile every deterministic verifier, then "
             "freeze the verifier bundle hash; Pair 1 bullet-count and "
             "transitive-order support must be built, and Pair 2/3 code may be "
             "reused only after a hash and semantic audit",
+            depends_on=("verifiers.specification_bundle",
+                        "verifiers.boundary_mutations"),
             note="Appendix I requires invariant verifier hashes across the run"),
     pending("verifiers.boundary_mutations", "section 8.7",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: at least 1,000 automated boundary mutations per constraint "
             "template covering off-by-one, duplication, omission, forbidden-item, "
             "ordering, formatting, Unicode and parser-edge cases",
+            depends_on=("verifiers.specification_bundle",),
             note="property-based testing is evidence about implementation "
                  "invariants, not a proof of natural-language semantics"),
-    pending("verifiers.binomial_interval_implementation", "D9 / section 10.4",
-            Resolution.PENDING_EMPIRICAL,
-            "Stage 2: recover the exact two-sided binomial interval "
-            "implementation used by the inherited reliability gate from the "
-            "authoritative code or specification and freeze it; if it is not "
-            "uniquely recoverable its choice is a pre-freeze output within D9, "
-            "never an implementer decision"),
+    pending("verifiers.binomial_interval_implementation", "section 10.4",
+            Resolution.PENDING_DECISION,
+            "Stage 2: recover the two-sided binomial interval implementation used "
+            "by the inherited reliability gate and freeze it; section 10.4 makes "
+            "the choice a pre-freeze decision rather than an implementer one if "
+            "it is not uniquely recoverable",
+            note="recovery succeeded and contradicts the request: the inherited "
+                 "gate uses the Wilson score interval, which is not exact, and "
+                 "only Wilson reproduces the 73-per-truth-class and 876-label "
+                 "counts section 10.4 preserves (Clopper-Pearson gives 72 and "
+                 "864). Both halves of that sentence cannot hold, so this is a "
+                 "decision; see dci.v19.reliability.recover_inherited_interval. "
+                 "Section 10.4 also cites register row D9, which is the "
+                 "construction bootstrap, so no register row covers this yet"),
     pending("verifiers.tier1_reliability", "section 10.4",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: certify each target and focal verifier against the 5% "
             "Tier-1 conditional error ceiling using 73 human-adjudicated true "
             "failures and 73 true passes per verifier unit",
-            depends_on=("verifiers.binomial_interval_implementation",),
+            depends_on=("verifiers.binomial_interval_implementation",
+                        "verifiers.bundle_hash"),
             note="a missing truth class is missing evidence, not zero error, so "
                  "the corresponding bound is unavailable and the unit fails"),
 )
