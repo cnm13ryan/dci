@@ -396,8 +396,10 @@ def verify_transitive_order(text: Any, *, relation: OrderingRelation,
             f"{len(identification['ambiguous'])} list item(s) match more than one "
             "declared item, so their identity is not determined")
     extra = identification["unmatched_ordinals"]
-    if extra:
-        structural.append(f"{len(extra)} list item(s) match no declared item")
+    if extra and not policy.extra_items_permitted:
+        structural.append(
+            f"{len(extra)} list item(s) match no declared item, and the frozen "
+            "policy does not permit undeclared items")
 
     position = {}
     for index, label in enumerate(identification["sequence"]):
@@ -421,7 +423,8 @@ def verify_transitive_order(text: Any, *, relation: OrderingRelation,
         spec_hash=spec.spec_hash,
         parameters={"relation_hash": relation.relation_hash,
                     "declared_items": list(relation.items),
-                    "declared_edges": [list(e) for e in relation.edges]},
+                    "declared_edges": [list(e) for e in relation.edges],
+                    "extra_items_permitted": policy.extra_items_permitted},
         scoring=Scoring.SCORED,
         verdict=Verdict.PASS if passed else Verdict.FAIL,
         generation_state=state,
