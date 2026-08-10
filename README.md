@@ -31,7 +31,8 @@ source audit, risk table, reproducibility report and open blockers;
       inference/             backend seam: oracle (dry run) + hf_transformers
       verifiers/ analysis/ … extracted pure libraries (84 defs, unit-tested)
     configs/profiles/        dev_fast, dev_fast_gpu, integration_pass, pilot, study
-    environments/rocm|cuda/  the two GPU stacks — separate projects, separate locks
+    environments/rocm|cuda/  the two GPU stacks — separate projects, pinned;
+                             locks are generated on the target machine
     scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
     notebook_source/         the archived v15 cells + build harness (read-only)
