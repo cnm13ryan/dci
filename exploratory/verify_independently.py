@@ -65,9 +65,9 @@ def main(argv: list[str]) -> int:
     check("matched rows share one topic",
           all(len({r["topic"] for r in g}) == 1 for g in by_key.values()))
     check("instruction count is identical across arms",
-          all(len({len(r["ordered_constraint_ids"]) for r in g}) == 1
+          all(len({len(r["ordered_ids"]) for r in g}) == 1
               for g in by_key.values()),
-          f"k={len(contrast[0]['ordered_constraint_ids'])}")
+          f"k={len(contrast[0]['ordered_ids'])}")
     check("every contrast row scores the target",
           all(r["measured"] == target for r in contrast))
     check("focal and reference prompts differ in exactly one line",
