@@ -19,6 +19,22 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# The notebook's shipped roots both live under Colab's ephemeral /content. A
+# root that is NOT under /content was configured deliberately and is therefore
+# the durable root; one that is under it is the unconfigured default.
+COLAB_EPHEMERAL_ROOT = Path("/content")
+
+
+def is_colab_default_root(path) -> bool:
+    """Whether `path` is inside Colab's ephemeral tree.
+
+    Decided with path semantics, not with a text prefix: "/content-data/dci" is
+    a perfectly good durable root on a workstation and startswith("/content")
+    misclassified it as the notebook default, silently diverting the run into
+    the local fallback.
+    """
+    return Path(path).is_relative_to(COLAB_EPHEMERAL_ROOT)
+
 
 def resolve_durable_base(cfg) -> tuple[bool, str, Path]:
     """Return (DRIVE_AVAILABLE, DRIVE_NOTE, DURABLE_BASE) — notebook contract."""
@@ -33,9 +49,10 @@ def resolve_durable_base(cfg) -> tuple[bool, str, Path]:
             # Off Colab the decision must be DETERMINISTIC: concurrent shard
             # workers probing "does the parent exist yet" raced each other into
             # different branches. An explicitly configured root (anything that
-            # is not the notebook's /content default) IS the durable root; the
-            # fallback branch remains only for the unconfigured default.
-            drive_available = not str(cfg.drive_root).startswith("/content")
+            # is not under the notebook's /content default) IS the durable
+            # root; the fallback branch remains only for the unconfigured
+            # default.
+            drive_available = not is_colab_default_root(cfg.drive_root)
             note = f"not mounted ({type(exc).__name__})"
     if cfg.use_google_drive and drive_available:
         base = Path(cfg.drive_root)
