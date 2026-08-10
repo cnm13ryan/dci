@@ -204,3 +204,100 @@ constraint on how the evidence may be *described*, not a rival mechanism.
 5. §6 anti-collapse intervention — small new run. **Discriminates H1 vs H2.**
 6. §7 semicolon variants — small new run. Explains the `S_SEMICOLON` anomaly.
 7. §8 coupling-bank coverage — existing data. Methodological.
+
+---
+
+# Round 5 hypotheses — what the mechanism actually is, and how far it reaches
+
+H1–H5 asked *whether* B's interference was pair-specific. That question is
+settled: it is not (H1 falsified by its own criterion at D2). M1–M5 ask what the
+shared mechanism **is** and where it stops. Confidence is subjective and revised
+in place, dated.
+
+## Facts every Round 5 hypothesis must explain
+
+| Fact | Value | Source |
+|---|---|---|
+| `S_SEMICOLON` failure at k=5 | 0.633 (`o_A`) / 0.567 (`o_Q`) | Stage B |
+| Its failures are one clause-chained sentence | 88/106 A-failures are collapses | Stage B forensics |
+| Its **passing** answers carry MORE semicolons than its failing ones | 3.45 vs 2.63 | Stage B |
+| but far more periods | 4.18 vs 1.42 | Stage B |
+| Whole-answer semicolon rule never collapses | `U_FMT_SEMI2` collapse 0.000, 93.8% carry ≥1 | D3 |
+| Per-sentence **comma** rule never collapses | `S_TWOCOMMA` collapse 0.000 | D3 |
+| A boundary scaffold removes B's excess and halves `S_SEMICOLON`'s | −0.225 / −0.350 | D2 |
+| Ordinary references barely fail at all under the corrected verifier | `C_L3`, `C_O2`: **zero** corrected failures | Round 4 rescore |
+
+---
+
+## M1 — Delimiter substitution
+*A per-sentence demand for a mark that can grammatically stand where a sentence
+boundary would stand is satisfiable by putting the mark **instead of** the
+boundary. The sentence count then collapses as a side effect of complying.*
+
+- **For.** Every D3 result: the mark matters (`,` does not collapse, `;` does),
+  the scope matters (whole-answer `;` does not collapse), and the quantity does
+  not (passes carry more semicolons than failures). Raw outputs read exactly like
+  this — one sentence, one full stop, several semicolons.
+- **Against.** Nothing yet, but D3's three arms differ in wording as well as in
+  mark and scope, so the comparison is not clean. E4 fixes that.
+- **Confidence 2026-08-11: 0.6.**
+- **Would be falsified by.** `X_COMMA_EACH` collapsing; or `X_SEMI_TOTAL4`
+  collapsing; or the effect vanishing when the wording is held fixed across marks.
+
+## M2 — Per-sentence scoping burden
+*Any per-sentence requirement makes many sentences expensive, so the model writes
+fewer. The mark is incidental.*
+
+- **For.** It is the simplest account of why scope mattered in D3.
+- **Against.** `S_TWOCOMMA` is a per-sentence requirement and collapses **never**;
+  so are `C_L3` and `C_W3`, and neither interferes.
+- **Confidence 2026-08-11: 0.1.**
+- **Decisive cell.** `X_COMMA_EACH` under a wording identical to the semicolon
+  arm's. M2 requires it to collapse; M1 requires it not to.
+
+## M3 — Mark quantity
+*Demanding many marks of any kind pushes the text toward clause chaining.*
+
+- **For.** Collapsed answers do contain several semicolons.
+- **Against.** `S_SEMICOLON`'s passes carry *more* semicolons than its failures.
+- **Confidence 2026-08-11: 0.05.**
+- **Decisive cell.** `X_SEMI_TOTAL4` — the same mark, the same quantity implied at
+  N = 4, no per-sentence scoping. M3 requires it to collapse.
+
+## M4 — Generic instruction burden / demand characteristic
+*Behaviour moves whenever the system message gains any clause; D2's recovery is
+about message length, not about boundaries.*
+
+- **For.** Nothing yet; it is unexcluded rather than supported. D2 had no sham.
+- **Against.** Nothing yet.
+- **Confidence 2026-08-11: 0.25 — the largest unaddressed threat to the causal
+  claim.**
+- **Decisive cell.** E1's `sham_plain_style`.
+
+## M5 — B is a separate route
+*B ("each sentence strictly longer than the last") loses the count while planning
+a growing structure, not by substituting a delimiter.*
+
+- **For.** B writes by far the longest answers (173–220 tokens vs 53–103); its
+  collapse is order-dependent (0.033 `o_A` → 0.300 `o_Q`) while
+  `S_SEMICOLON`'s is not; the two arms' failure sets overlap *less* than
+  independence predicts (D1).
+- **Against.** Both respond to the same boundary scaffold, which is what a single
+  shared mediator predicts.
+- **Confidence 2026-08-11: 0.5.**
+- **Decisive evidence.** Whether B's failures carry the substitution signature
+  (few periods, many boundary-capable marks) or a different one, and whether
+  B's excess scales with N while the mark arms' does not.
+
+---
+
+## Round 5 test order
+
+1. **E1** sham ladder — retires **M4**, the largest threat to the causal claim.
+2. **E2** fresh instances and fresh wording — retires "it is these 20 topics" and
+   "it is this phrasing".
+3. **E3** N ∈ {2,3,4,5,6} — separates *strategy* from *difficulty response*.
+4. **E4** mark factorial — separates **M1 / M2 / M3** under one matched wording.
+5. **E5** other structural unit, other constraint family — finds the boundary of
+   the claim. Conditional on the mechanism still being coherent.
+6. **E6** cross-model — tests whether any of it is a fact about Qwen3-4B.

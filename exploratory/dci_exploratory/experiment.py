@@ -50,6 +50,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--arms", default=None,
                         help="comma-separated reference ids replacing the admitted "
                              "panel; DIAGNOSTIC runs only, recorded in config.json")
+    parser.add_argument("--target", default=None,
+                        help="measured constraint, if not the v19 pair-3 target. "
+                             "Selects the HYPOTHESIS-DRIVEN design path, which "
+                             "makes no outcome-blind selection claim.")
+    parser.add_argument("--focal", default=None,
+                        help="focal constraint, if not the v19 pair-3 focal")
+    parser.add_argument("--background", default=None,
+                        help="comma-separated background ids; only with --target "
+                             "or --focal. Defaults to the same rule the admitted "
+                             "design uses.")
+    parser.add_argument("--task-split", default=TASK_SPLIT,
+                        help="task bank split to draw from. 'pilot' is the "
+                             "default; 'burned' holds topics already spent by "
+                             "development and therefore unusable by the "
+                             "confirmatory study, which makes it the right "
+                             "source of FRESH instances for a replication.")
+    parser.add_argument("--task-offset", type=int, default=0,
+                        help="skip this many tasks before taking --tasks, so a "
+                             "replication can draw instances the first run did "
+                             "not see")
+    parser.add_argument("--paraphrase", type=int, default=0,
+                        help="wording index; a replication under a different "
+                             "wording tests whether the effect is phrasing")
+    parser.add_argument("--extensions", action="store_true",
+                        help="register the constraints authored in "
+                             "dci_exploratory/extensions.py")
     parser.add_argument("--scaffolds", default="",
                         help="comma-separated system-message variants to cross, "
                              f"from {sorted(runner.SCAFFOLDS)}")
@@ -62,21 +88,49 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     S = harvest.load()
 
+    extensions_manifest = None
+    if args.extensions:
+        from dci_exploratory import extensions
+        extensions_manifest = extensions.register()
+
     arms_override = ([a.strip() for a in args.arms.split(",")] if args.arms else None)
-    selection = design.select(load=args.load, arms_override=arms_override)
+    if args.target or args.focal:
+        if not arms_override:
+            raise SystemExit("--target/--focal require an explicit --arms list; "
+                             "the admitted selection rule is defined for pair 3 "
+                             "only and cannot be reused for another target")
+        selection = design.custom_selection(
+            target=args.target or design.TARGET_ID,
+            focal=args.focal or design.FOCAL_ID,
+            references=arms_override, load=args.load,
+            background=([b.strip() for b in args.background.split(",")]
+                        if args.background else None))
+    else:
+        if args.background:
+            raise SystemExit("--background applies only to the hypothesis-driven "
+                             "design path (--target/--focal); the admitted design "
+                             "chooses its own background by a fixed rule")
+        selection = design.select(load=args.load, arms_override=arms_override)
+
     scaffolds = tuple(s.strip() for s in args.scaffolds.split(","))
-    tasks = [t for t in S.TASKS.to_dict("records") if t["split"] == TASK_SPLIT]
-    if args.tasks > len(tasks):
-        raise SystemExit(f"asked for {args.tasks} tasks; the {TASK_SPLIT} split "
-                         f"holds {len(tasks)}")
-    # A deterministic PREFIX, so stage B's tasks are stage A's tasks plus more.
+    tasks = [t for t in S.TASKS.to_dict("records") if t["split"] == args.task_split]
+    if not tasks:
+        raise SystemExit(f"no tasks in split {args.task_split!r}; known splits: "
+                         f"{sorted(S.TASKS['split'].unique())}")
+    if args.task_offset + args.tasks > len(tasks):
+        raise SystemExit(f"asked for tasks [{args.task_offset}:"
+                         f"{args.task_offset + args.tasks}]; the "
+                         f"{args.task_split} split holds {len(tasks)}")
+    # A deterministic SLICE, so stage B's tasks are stage A's tasks plus more and
+    # a replication with a non-zero offset draws instances no earlier run saw.
     # Extending the sample must not resample the instances already seen.
-    tasks = tasks[:args.tasks]
+    tasks = tasks[args.task_offset:args.task_offset + args.tasks]
 
     orders = design.ORDERS if args.orders == "both" else (args.orders,)
     rows = design.build_design(
         selection, tasks, replicates=args.replicates, base_seed=args.seed,
         stage=args.stage, orders=orders, scaffolds=scaffolds,
+        paraphrase_id=args.paraphrase,
         include_primitives=not args.no_primitives)
     # Refuses to spend a second of GPU time on a design that is not matched.
     design.assert_matched(rows, selection)
@@ -97,16 +151,22 @@ def main(argv: list[str] | None = None) -> int:
         "stage": args.stage,
         "created_utc": stamp,
         "argv": sys.argv[1:] if argv is None else argv,
-        "task_split": TASK_SPLIT,
+        "task_split": args.task_split,
+        "task_offset": args.task_offset,
         "n_tasks": len(tasks),
         "task_ids": [t["task_id"] for t in tasks],
         "replicates": args.replicates,
         "orders": list(orders),
         "scaffolds": list(scaffolds),
         "scaffold_text": {s: runner.SCAFFOLDS[s] for s in scaffolds},
+        "scaffold_compliance_definition": {
+            s: runner.SCAFFOLD_COMPLIANCE[s] for s in scaffolds},
         "arms_override": arms_override,
+        "design_path": ("hypothesis-driven (custom_selection)"
+                        if (args.target or args.focal) else "admitted v19 rule"),
+        "extensions_manifest": extensions_manifest,
         "load": selection.load,
-        "paraphrase_id": 0,
+        "paraphrase_id": args.paraphrase,
         "n_rows": len(rows),
         "model": asdict(config),
         "selection": {

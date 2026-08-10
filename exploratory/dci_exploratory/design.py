@@ -189,6 +189,92 @@ def select(load: int = 5, n_references: int = N_REFERENCES,
               "then by constraint id. No outcome is consulted."))
 
 
+def custom_selection(target: str, focal: str, references: Sequence[str],
+                     load: int = 5,
+                     background: Optional[Sequence[str]] = None) -> Selection:
+    """A matched design around an ARBITRARY target and arm set.
+
+    `select()` above answers one question — what does v19's own construction-time
+    rule admit for pair 3 — and it is deliberately not parameterised, because a
+    selection rule you can steer is not outcome-blind.
+
+    The Round 4 experiments ask a different question: given a mechanism proposed
+    by the pair-3 result, does it hold for other targets (N = 3, 5, 6; paragraphs
+    instead of sentences), other arms (colon, dash, comma, whole-answer marks)
+    and other constraint families? Those arms are chosen BY HYPOTHESIS, and this
+    function says so in its name and in the `rule` string it writes into every
+    run config. It is not, and must not be reported as, the admitted panel.
+
+    What it still enforces is the part that makes any contrast a contrast: the
+    background is identical across arms, every pair that shares a prompt is
+    jointly satisfiable, and no arm is the target.
+    """
+    S = harvest.load()
+    constraints = S.CONSTRAINTS
+
+    references = tuple(references)
+    unknown = [c for c in (target, focal, *references, *(background or ()))
+               if c not in constraints]
+    if unknown:
+        raise ValueError(f"unknown constraint ids: {unknown}")
+    if target in (focal, *references):
+        raise ValueError(f"the target {target!r} cannot also be an arm")
+    if focal in references:
+        raise ValueError(f"the focal {focal!r} is added automatically; "
+                         "listing it again would duplicate the arm")
+    if len(set(references)) != len(references):
+        raise ValueError(f"duplicate references: {references}")
+
+    if background is None:
+        chosen, background_audit = _select_background(
+            S, load=load, used=(target, focal, *references))
+    else:
+        chosen, background_audit = tuple(background), [
+            {"constraint_id": c, "name": constraints[c].name, "selected": True,
+             "rejection_reasons": "explicitly named on the command line"}
+            for c in background]
+        if len(chosen) != max(load - 2, 0):
+            raise ValueError(
+                f"load {load} needs {max(load - 2, 0)} background instructions "
+                f"(target + one added slot + background); {len(chosen)} were named")
+
+    everything = [target, focal, *references, *chosen]
+    sat_audit = []
+    for i, first in enumerate(everything):
+        for second in everything[i + 1:]:
+            ok, why = _satisfiable(first, second, constraints)
+            sat_audit.append({"a": first, "b": second, "satisfiable": ok, "verdict": why})
+    unsat = [r for r in sat_audit if not r["satisfiable"]]
+    if unsat:
+        raise ValueError(
+            "the requested slice contains a jointly unsatisfiable pair, which "
+            f"would measure impossibility rather than interference: {unsat}")
+
+    # The registry's screen is written pair by pair and misses the general form;
+    # see `extensions.punctuation_conflicts`. Any design that mixes punctuation
+    # arms with a punctuation background must be checked by the general rule as
+    # well, or it will silently measure logical impossibility.
+    from dci_exploratory import extensions
+    target_n = dict(constraints[target].params).get("n")
+    clashes = extensions.punctuation_conflicts(
+        everything, int(target_n) if target_n is not None else None)
+    if clashes:
+        raise ValueError(
+            "the requested slice mixes a whole-answer punctuation budget with a "
+            "per-sentence demand for the same mark, which no output can satisfy "
+            f"at this target count: {clashes}")
+
+    return Selection(
+        target=target, focal=focal, references=references, background=chosen,
+        load=load, candidate_audit=[], background_audit=background_audit,
+        satisfiability_audit=sat_audit,
+        rule=("HYPOTHESIS-DRIVEN, NOT the admitted v19 panel. Target, focal and "
+              "references were named explicitly to test a mechanism proposed by "
+              "an earlier exploratory run. Joint satisfiability and an identical "
+              "background across arms are still enforced; construction-time "
+              "eligibility and outcome-blind reference selection are NOT claimed."))
+
+
 # Background members excluded by hand, with the reason. Each exclusion is a
 # declared interaction with the dimension this pair is measured on, taken from
 # the registry's OWN written pathway audit — not a judgement invented here.

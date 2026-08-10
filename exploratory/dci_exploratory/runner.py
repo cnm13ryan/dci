@@ -33,9 +33,38 @@ EXPLORATORY_STAMP = "EXPLORATORY_NO_EVIDENCE"
 # that the list stays byte-identical and the instruction count stays at k=5 in
 # both conditions. Adding it as a sixth numbered constraint would have changed
 # the load and confounded the comparison the intervention exists to make.
+#
+# Round 4 adds the rest of the ladder. `one_sentence_per_line` keeps its name and
+# its exact bytes so the D2 run stays comparable; the two new members are a
+# WEAKER reminder and a SHAM.
+#
+# The sham is matched to `one_sentence_per_line` on form and length — the same
+# three opening words, the same imperative, 37 characters against 36 — and is
+# about style
+# rather than about sentence boundaries. Without it, "adding any extra clause to
+# the system message reduces failure" is not excluded, and the D2 recovery could
+# be a demand-characteristic of a longer system message rather than of its
+# content.
+#
+# The ladder ORDERING (none < weak < strong) is an assumption about instruction
+# strength, not a measurement. It is stated here so that a result which violates
+# it is visible as a violation rather than absorbed.
 SCAFFOLDS: dict[str, str] = {
     "": "",
+    "weak_reminder": " Remember that each sentence ends with a full stop.",
     "one_sentence_per_line": " Write each sentence on its own line.",
+    "sham_plain_style": " Write each sentence in a plain style.",
+}
+
+# What it would MEAN to obey each scaffold literally, where that is mechanically
+# checkable. `""` has nothing to obey; the sham deliberately asks for something
+# no rule can score, which is what makes it a sham and is recorded as such rather
+# than quietly scored against an invented proxy.
+SCAFFOLD_COMPLIANCE: dict[str, str] = {
+    "": "not applicable",
+    "weak_reminder": "every sentence ends in a terminal mark",
+    "one_sentence_per_line": "line count is at least the sentence count",
+    "sham_plain_style": "not mechanically checkable (deliberate)",
 }
 
 
@@ -90,6 +119,7 @@ class Backend:
         self.model = None
         self.device = f"cuda:{config.device_index}"
         self.load_seconds = 0.0
+        self.prompt_convention = "unknown"
 
     def load(self) -> None:
         import torch
@@ -147,11 +177,31 @@ class Backend:
         }
 
     def render(self, system_message: str, user_prompt: str) -> str:
-        """The exact string handed to the model, chat template applied."""
-        return self.tokenizer.apply_chat_template(
-            [{"role": "system", "content": system_message},
-             {"role": "user", "content": user_prompt}],
-            tokenize=False, add_generation_prompt=True)
+        """The exact string handed to the model, chat template applied.
+
+        Some instruction-tuned families — Gemma 2 among them — publish a chat
+        template with no `system` role. Dropping the system message there would
+        silently run a different experiment, and hand-writing a template would
+        run a different one again. The fallback prepends the system message to
+        the user turn, which is what those model cards themselves prescribe, and
+        the substitution is recorded on the backend so the run summary can say
+        which convention produced the prompts.
+        """
+        messages = [{"role": "system", "content": system_message},
+                    {"role": "user", "content": user_prompt}]
+        try:
+            rendered = self.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True)
+            self.prompt_convention = "system+user"
+            return rendered
+        except Exception:                              # noqa: BLE001 - see below
+            merged = (f"{system_message}\n\n{user_prompt}" if system_message
+                      else user_prompt)
+            rendered = self.tokenizer.apply_chat_template(
+                [{"role": "user", "content": merged}],
+                tokenize=False, add_generation_prompt=True)
+            self.prompt_convention = "system merged into first user turn"
+            return rendered
 
     def generate(self, prompts: list[str], batch_seed: int
                  ) -> tuple[list[str], list[dict[str, Any]], dict[str, Any]]:
@@ -257,6 +307,7 @@ def run(rows: list[Row], selection: Selection, config: ModelConfig,
         profiles.append(profile)
         for row, prompt, text, termination in zip(batch, rendered, texts, terminations):
             verification = None
+            arm_verification = None
             error = None
             if not text.strip():
                 # An empty generation cannot be scored for compliance. Calling it
@@ -271,9 +322,19 @@ def run(rows: list[Row], selection: Selection, config: ModelConfig,
                     error = f"verifier raised {type(exc).__name__}: {exc}"[:500]
                     technical_failures.append({"row_id": row.row_id,
                                                "kind": "verifier_error", "error": error})
+                # The arm's OWN constraint, scored on the same text. Without it
+                # "the model traded A away to satisfy the added instruction" and
+                # "the model failed both" are indistinguishable, and the first is
+                # the claim the substitution account actually makes.
+                if row.arm != row.measured:
+                    try:
+                        arm_verification = S.verify(text, row.arm)
+                    except Exception:                 # noqa: BLE001 - diagnostic only
+                        arm_verification = None
             records.append(_record(row, prompt, text, verification, termination,
                                    selection, batch_seed,
-                                   batch_index // config.batch_size, error=error))
+                                   batch_index // config.batch_size, error=error,
+                                   arm_verification=arm_verification))
 
     wall_seconds = time.perf_counter() - started
 
@@ -302,6 +363,7 @@ def run(rows: list[Row], selection: Selection, config: ModelConfig,
         "peak_reserved_bytes": max((p["peak_reserved_bytes"] for p in profiles), default=0),
         "model": asdict(config),
         "model_fingerprint": backend.fingerprint(),
+        "prompt_convention": backend.prompt_convention,
     }
     (out_dir / "run_summary.json").write_text(json.dumps(summary, indent=2),
                                               encoding="utf-8")
@@ -310,8 +372,8 @@ def run(rows: list[Row], selection: Selection, config: ModelConfig,
 
 def _record(row: Row, rendered_prompt: str, text: Optional[str], verification,
             termination: Optional[dict[str, Any]], selection: Selection,
-            batch_seed: int, batch_index: int, error: Optional[str] = None
-            ) -> dict[str, Any]:
+            batch_seed: int, batch_index: int, error: Optional[str] = None,
+            arm_verification=None) -> dict[str, Any]:
     """One scored row. `a_failure` is null whenever the row was not scorable."""
     S = harvest.load()
 
@@ -339,6 +401,14 @@ def _record(row: Row, rendered_prompt: str, text: Optional[str], verification,
         "verifier_detail": None if verification is None else _jsonable(verification.detail),
         "scorable": bool(scorable),
         "a_failure": a_failure,
+        "arm_status": getattr(arm_verification, "status", None),
+        "arm_binary_pass": (None if arm_verification is None
+                            or arm_verification.binary_pass is None
+                            else int(arm_verification.binary_pass)),
+        "arm_scorable": bool(arm_verification is not None
+                             and getattr(arm_verification, "status", None) != "unscorable"),
+        "arm_detail": (None if arm_verification is None
+                       else _jsonable(arm_verification.detail)),
         "technical_failure": error is not None,
         "error": error,
         "response_chars": None if text is None else len(text),

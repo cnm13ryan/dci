@@ -110,16 +110,24 @@ def provenance() -> dict[str, Any]:
     S = load()
     from dci.provenance.hashes import sha, sha_text
 
+    # Constraints authored in `extensions.py` are registered onto the same
+    # dictionaries at run time. They are excluded HERE so that this hash keeps
+    # describing the harvested registry and stays comparable across runs; what
+    # the extensions added is recorded separately, under its own manifest hash,
+    # in every run config.
+    registry = {cid: wordings for cid, wordings in S.INSTRUCTIONS.items()
+                if S.CONSTRAINTS[cid].origin != "exploratory"}
+
     return {
         "stages_imported": list(_STAGES),
-        "n_constraints": len(S.CONSTRAINTS),
+        "n_constraints": len(registry),
         "n_tasks": int(len(S.TASKS)),
         "response_bank_sha256": getattr(S, "RESPONSE_BANK_SHA256", None),
         "synthetic_corpus_size": len(getattr(S, "SYNTHETIC_CORPUS", [])),
         "system_message": S.SYSTEM_MESSAGE,
         "system_message_sha256": sha_text(S.SYSTEM_MESSAGE),
         "instructions_sha256": sha({
-            cid: list(wordings) for cid, wordings in sorted(S.INSTRUCTIONS.items())}),
+            cid: list(wordings) for cid, wordings in sorted(registry.items())}),
         "protocol_config_sha256": getattr(S, "PROTOCOL_SHA256", None),
         "exact_sentence_count": int(S.CFG.exact_sentence_count),
         "minimum_sentence_words": int(S.CFG.minimum_sentence_words),
