@@ -15,8 +15,11 @@ pytestmark = pytest.mark.cpu
 
 DOCS = [Path("README.md"), Path("docs/MIGRATION.md")]
 
-# Paths that look like references but are not repository paths.
-IGNORE = re.compile(r"^(src/dci/|stages/|cells/|https?:|~|/|\.{1,2}/|S\.)")
+# Paths that look like references but are not committed repository paths.
+# `build/` is generated output: tools/migrate_v15.py writes its reconstruction
+# there on demand, so its absence from a clean checkout is correct and a
+# document may name it as a destination.
+IGNORE = re.compile(r"^(src/dci/|stages/|cells/|build/|https?:|~|/|\.{1,2}/|S\.)")
 
 # A repository path in backticks or a fenced command: conservative on purpose,
 # since a false positive here would be a nuisance and a false negative only
@@ -24,6 +27,11 @@ IGNORE = re.compile(r"^(src/dci/|stages/|cells/|https?:|~|/|\.{1,2}/|S\.)")
 CANDIDATE = re.compile(
     r"(?<![\w/.])((?:configs|docs|environments|scripts|tests|tools|"
     r"notebook_source|build)/[\w./*|-]*)")
+
+# Prose that NAMES a path in order to say it is not here yet would trip the
+# scanner, so those sentences use plain words instead of path syntax. That keeps
+# this check strict rather than teaching it an exemption a future edit could
+# lean on.
 
 
 def _referenced(text: str) -> set[str]:
