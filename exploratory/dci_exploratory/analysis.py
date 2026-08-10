@@ -218,11 +218,13 @@ def aggregate_contrast(frame: pd.DataFrame, config: dict[str, Any],
 
 # -------------------------------------------------------------------- figures
 def _subtitle(config: dict[str, Any], frame: pd.DataFrame) -> str:
+    """Two short lines rather than one long one, which the figure width clips."""
     sel = config["selection"]
-    return (f"{config['model']['model_id']} @ {config['model']['revision'][:8]} | "
-            f"pair A={sel['target']} B={sel['focal']} | load k={config['load']} | "
-            f"{config['n_tasks']} tasks x {config['replicates']} reps x "
-            f"{len(config['orders'])} orders | n={len(frame)} generations")
+    return (f"{config['model']['model_id']} @ {config['model']['revision'][:8]}"
+            f"  |  A = \"{_a_text(config)}\"  vs  B = increasing sentence lengths\n"
+            f"load k={config['load']}  |  {config['n_tasks']} tasks x "
+            f"{config['replicates']} replicates x {len(config['orders'])} orders  |  "
+            f"n={len(frame)} generations  |  EXPLORATORY")
 
 
 def figures(frame: pd.DataFrame, config: dict[str, Any], out_dir: Path) -> list[Path]:
@@ -246,7 +248,7 @@ def figures(frame: pd.DataFrame, config: dict[str, Any], out_dir: Path) -> list[
     order = [focal_id, *references]
     pooled = pooled.set_index("arm").loc[order].reset_index()
 
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(10, 6))
     colours = ["#c2410c"] + ["#475569"] * len(references)
     bars = ax.bar(pooled["arm"], pooled["a_failure_rate"], color=colours)
     for bar, (_, row) in zip(bars, pooled.iterrows()):
@@ -268,7 +270,7 @@ def figures(frame: pd.DataFrame, config: dict[str, Any], out_dir: Path) -> list[
     # --- 2: paired focal-minus-reference contrasts with bootstrap CIs --------
     contrasts = contrast_table(frame, config)
     pooled_contrasts = contrasts[contrasts["order"] == "pooled"]
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(10, 6))
     y = np.arange(len(pooled_contrasts))
     ax.errorbar(pooled_contrasts["tau"], y,
                 xerr=[pooled_contrasts["tau"] - pooled_contrasts["tau_ci_low"],
@@ -318,7 +320,7 @@ def figures(frame: pd.DataFrame, config: dict[str, Any], out_dir: Path) -> list[
     paths.append(path)
 
     # --- 4: generated-length diagnostic -------------------------------------
-    fig, ax = plt.subplots(figsize=(9, 5))
+    fig, ax = plt.subplots(figsize=(10, 6))
     contrast_rows = frame[frame["condition"].isin(["focal", "reference"])]
     data = [contrast_rows[contrast_rows["arm"] == arm]["generated_token_count"].dropna()
             for arm in order]
