@@ -164,7 +164,9 @@ generic added load. It is nothing of the sort.
 4. On v19's conservative `min_j τ_j` headline, **B does not beat every reference
    in either order**, because `S_SEMICOLON` beats B.
 5. A single failure mode — sentence collapse — accounts for essentially all
-   between-arm variation (r = 0.998), and B has no excess residual over it.
+   between-arm variation, and B has no excess residual over it. *(The r = 0.998
+   figure originally cited here is **WITHDRAWN as partly definitional**; the
+   claim now rests on the mode decomposition and Round 2's intervention.)*
 6. The reference-construction procedure as run admitted a reference that is a
    stronger directional interferer than the focal, and its construction-time
    coupling audit scored that reference 0.00.
@@ -194,7 +196,9 @@ Stage C would add ~30 more task clusters of the identical design. Declined:
 - The remaining uncertainty is **mechanistic, not statistical**: is B special, or
   is it one member of a class of collapse-inducing instructions? Sampling the
   same five arms more finely cannot separate those — both predict the same
-  numbers, because the r = 0.998 relation is already the whole story.
+  numbers. *(This sentence originally justified the point by the r = 0.998
+  relation; that statistic is **WITHDRAWN**. The point stands on the mode
+  decomposition instead.)*
 - The experiment in §7 addresses that question directly for roughly a third of
   Stage C's compute.
 

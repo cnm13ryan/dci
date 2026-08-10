@@ -158,6 +158,25 @@ the "mechanism" claim is weaker than it looked.*
   sentences (8 of 11 failures), B and `S_SEMICOLON` by collapsing to one. A
   qualitative difference in direction cannot be manufactured by nesting.
 - **Confidence the framing is now sound: 0.90**
+- **REVISED after Round 3 (blinded audit + stress corpus): H5 is PARTLY TRUE, and
+  in a direction that does not help the rival hypotheses.**
+  - A real verifier defect exists: `E_A = 0.207` on a 31-item hand-labelled
+    stress corpus. **All six errors are over-splitting** — `a.m.`/`p.m.`, titles
+    (`Dr.`), `approx.`/`e.g.`, initials (`J. R.`) and ellipses.
+  - The verifier is **correct on every collapse-relevant structure**: semicolon
+    chains, comma chains, run-ons, merges, newline/bulleted/numbered layouts, and
+    the crucial "four sentences each containing a semicolon" case (`E_R = 0.000`).
+  - The defect therefore manufactures **false overshoot**, never false collapse.
+    Correcting it across all 1,480 contrast rows changes 2.8–3.5% of counts and
+    moves every headline slightly **in favour** of the main finding: τ(B−C_L3)
+    0.175 → 0.183, τ(B−C_O2) 0.142 → 0.183, the order gap 0.250 → 0.267, and the
+    scaffolded B excess stays ≈0 (0.000 → +0.025).
+  - **Correction to Round 2's §7 claim.** I said the coupling screen missed
+    `S_SEMICOLON` because its support omitted the mode. Measured on a support
+    that *does* contain the mode, κ(A,R) = **−0.13** [−0.37, +0.12] — still ≈0.
+    The screen was not blind; it measures **verifier-error coupling**, which is a
+    different quantity from behavioural interference and was never going to rank
+    it. That is the more precise and more damning finding about the method.
 
 ---
 
