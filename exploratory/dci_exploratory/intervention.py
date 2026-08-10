@@ -164,3 +164,53 @@ def main(argv: Optional[list[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def figure(run_dir: Path, control: str = "C_L3") -> Path:
+    """Excess over the control, before and after the scaffold."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    run_dir = Path(run_dir)
+    excess = excess_over_control(run_dir, control)
+    config = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
+    cells = [(a, o) for a in sorted(excess["arm"].unique())
+             for o in sorted(excess["order"].unique())]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    width = 0.36
+    for offset, (scaffold, label, colour) in enumerate([
+            ("none", "baseline", "#c2410c"),
+            ("one_sentence_per_line", "+ anti-collapse scaffold", "#0369a1")]):
+        values, lows, highs = [], [], []
+        for arm, order in cells:
+            row = excess[(excess["arm"] == arm) & (excess["order"] == order)
+                         & (excess["scaffold"] == scaffold)]
+            v = float(row["excess"].iloc[0]) if len(row) else np.nan
+            values.append(v)
+            lows.append(v - float(row["ci_low"].iloc[0]) if len(row) else 0)
+            highs.append(float(row["ci_high"].iloc[0]) - v if len(row) else 0)
+        x = np.arange(len(cells)) + (offset - 0.5) * width
+        ax.bar(x, values, width, label=label, color=colour)
+        ax.errorbar(x, values, yerr=[lows, highs], fmt="none",
+                    ecolor="#111827", capsize=4, linewidth=1)
+
+    ax.axhline(0, color="#111827", linewidth=1)
+    ax.set_xticks(np.arange(len(cells)))
+    ax.set_xticklabels([f"{a}\n{o}" for a, o in cells], fontsize=9)
+    ax.set_ylabel(f"Paired excess A-failure over {control}")
+    ax.set_xlabel("Arm and instruction order")
+    ax.set_title(
+        "Does blocking the collapse strategy remove the effect?\n"
+        f"{config['model']['model_id']} | A = exactly 4 sentences | "
+        f"{config['n_tasks']} tasks x {config['replicates']} reps | "
+        "95% cluster bootstrap | EXPLORATORY", fontsize=10)
+    ax.legend(fontsize=9)
+    ax.grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    out = run_dir / "analysis" / "fig_intervention_excess.png"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out, dpi=150)
+    plt.close(fig)
+    return out
