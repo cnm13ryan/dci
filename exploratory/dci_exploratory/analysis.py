@@ -216,6 +216,43 @@ def aggregate_contrast(frame: pd.DataFrame, config: dict[str, Any],
     return pd.DataFrame(rows)
 
 
+def mechanism_table(frame: pd.DataFrame) -> pd.DataFrame:
+    """Failure-mode decomposition: how much of A-failure is sentence COLLAPSE?
+
+    A is "exactly N sentences". It can fail by producing too many segments or too
+    few. The audit found one dominant mode — the answer arriving as a single
+    clause-chained sentence — and this table is what makes that claim checkable
+    rather than anecdotal.
+
+    It is a DESCRIPTIVE decomposition of the outcome, not an adjustment. Nothing
+    is conditioned on it and no contrast is recomputed net of it; collapse is a
+    downstream consequence of the treatment, so conditioning on it would be
+    conditioning on a post-treatment variable.
+    """
+    contrast = frame[frame["condition"].isin(["focal", "reference"])].copy()
+    observed = contrast["verifier_detail"].apply(
+        lambda d: d.get("observed") if isinstance(d, dict) else None)
+    # "Collapsed" = the answer arrived as one or two segments where N were asked.
+    contrast["collapsed"] = observed.notna() & (observed <= 2)
+    contrast["semicolons"] = contrast["response"].fillna("").str.count(";")
+
+    rows = []
+    for (order, arm), group in contrast.groupby(["order", "arm"]):
+        scorable = group[group["scorable"]]
+        a_fail = float(scorable["a_failure"].mean()) if len(scorable) else np.nan
+        collapse = float(group["collapsed"].mean())
+        rows.append({
+            "order": order, "arm": arm,
+            "a_failure_rate": a_fail,
+            "collapse_rate": collapse,
+            "residual_not_explained_by_collapse": a_fail - collapse,
+            "mean_semicolons": float(group["semicolons"].mean()),
+            "mean_generated_tokens": float(group["generated_token_count"].mean()),
+        })
+    table = pd.DataFrame(rows)
+    return table.sort_values(["order", "arm"])
+
+
 # -------------------------------------------------------------------- figures
 def _subtitle(config: dict[str, Any], frame: pd.DataFrame) -> str:
     """Two short lines rather than one long one, which the figure width clips."""
@@ -338,6 +375,34 @@ def figures(frame: pd.DataFrame, config: dict[str, Any], out_dir: Path) -> list[
     fig.savefig(path, dpi=150)
     plt.close(fig)
     paths.append(path)
+
+    # --- 5: does one failure MODE account for the differences between arms? --
+    mech = mechanism_table(frame)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for _, row in mech.iterrows():
+        is_focal = row["arm"] == focal_id
+        ax.scatter(row["collapse_rate"], row["a_failure_rate"], s=130,
+                   color="#c2410c" if is_focal else "#475569",
+                   marker="D" if is_focal else "o", zorder=3)
+        ax.annotate(f"{row['arm']} ({row['order']})",
+                    (row["collapse_rate"], row["a_failure_rate"]),
+                    textcoords="offset points", xytext=(8, -4), fontsize=8)
+    lim = max(mech["collapse_rate"].max(), mech["a_failure_rate"].max()) * 1.15 + 0.05
+    ax.plot([0, lim], [0, lim], color="#94a3b8", linestyle="--", linewidth=1,
+            label="A-failure entirely explained by collapse", zorder=1)
+    ax.set_xlim(-0.02, lim)
+    ax.set_ylim(-0.02, lim)
+    ax.set_xlabel("Rate at which the answer COLLAPSED to <= 2 segments")
+    ax.set_ylabel(f"Failure rate on A ({_a_text(config)})")
+    ax.set_title("Is the focal effect a distinct phenomenon, or one shared failure mode?\n"
+                 + subtitle, fontsize=10)
+    ax.legend(fontsize=8, loc="upper left")
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    path = out_dir / "fig5_collapse_mechanism.png"
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+    paths.append(path)
     return paths
 
 
@@ -362,6 +427,8 @@ def analyse(run_dir: Path, n_boot: int = 10000) -> dict[str, Any]:
     primitives.to_csv(out / "table_primitives.csv", index=False)
     contrasts.to_csv(out / "table_contrasts.csv", index=False)
     aggregate.to_csv(out / "table_aggregate.csv", index=False)
+    mechanism = mechanism_table(frame)
+    mechanism.to_csv(out / "table_mechanism.csv", index=False)
     figure_paths = figures(frame, config, out)
 
     headline = {
@@ -374,6 +441,7 @@ def analyse(run_dir: Path, n_boot: int = 10000) -> dict[str, Any]:
             primitives.set_index("constraint").at[config["selection"]["target"],
                                                   "failure_rate"]),
         "contrasts": contrasts.to_dict("records"),
+        "mechanism": mechanism.to_dict("records"),
         "aggregate": aggregate.to_dict("records"),
         "figures": [str(p) for p in figure_paths],
     }
@@ -398,6 +466,8 @@ def main(argv: list[str] | None = None) -> int:
     print(primitive_table(frame).to_string(index=False))
     print("\n=== PER-REFERENCE CONTRASTS ===")
     print(contrast_table(frame, config, n_boot=args.n_boot).to_string(index=False))
+    print("\n=== FAILURE-MODE DECOMPOSITION (descriptive, never conditioned on) ===")
+    print(mechanism_table(frame).round(4).to_string(index=False))
     print("\n=== AGGREGATE ===")
     print(aggregate_contrast(frame, config, n_boot=args.n_boot).to_string(index=False))
     print(f"\n{EXPLORATORY_NOTE}")
