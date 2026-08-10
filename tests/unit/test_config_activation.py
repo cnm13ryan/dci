@@ -76,3 +76,11 @@ def test_activate_copies_every_declared_field():
 ])
 def test_colab_root_detection_uses_path_semantics(root, expected):
     assert is_colab_default_root(root) is expected
+
+
+def test_planning_only_defaults_off_and_survives_activation(tmp_path):
+    assert loader.ACTIVE.planning_only is False
+    path = tmp_path / "p.toml"
+    path.write_text('model_profile = "study"\nplanning_only = true\n')
+    activate(load_profile(path))
+    assert loader.ACTIVE.planning_only is True
