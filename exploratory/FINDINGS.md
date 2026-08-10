@@ -446,3 +446,141 @@ against a mechanism we do not yet know is singular.
 | intervention D2 | `runs/stageD2_anticollapse_.../analysis/` — `intervention_{cells,excess,modes,scaffold_effect}.csv`, `fig_intervention_excess.png` |
 | intervention D3 | `runs/stageD3_semicolon_.../analysis/intervention_*.csv` |
 | living record | `HYPOTHESES.md`, `DECISIONS.md` |
+
+---
+---
+
+# Round 3 — verification, and a real verifier defect
+
+No new generation. Three checks on the existing 1,840 generations: an
+independent reanalysis, a blinded three-way sentence-count audit, and a
+hand-labelled verifier stress corpus.
+
+## R3.1 — Every headline reproduces (Step 1)
+
+`reanalysis_standalone.py` imports nothing from `dci` or `dci_exploratory` and
+re-implements segmentation from scratch. **70/70 checks pass**: primitive rates,
+all arm×order failure rates, every τ_j and its bootstrap CI, sentence-count
+distributions, the collapse taxonomy, order effects, D2 scaffold effects, D3
+variant excesses, plus hand-checked arithmetic (Stage B / B / `o_Q` = 19/60;
+D2 / B / `o_Q` / scaffold = 2/40).
+
+Byte-level counterfactual checks also pass: focal and reference prompts differ on
+exactly one line; `o_A` and `o_Q` differ only by swapping the first two
+instructions, with preamble and background byte-identical; D2's user prompts are
+**byte-identical** across scaffold conditions, with only the system message
+differing and instruction count fixed at k=5.
+
+*(One check initially failed — on my own arithmetic, not the data. The numbered
+list is renumbered when instructions swap, so the swapped lines are never
+byte-equal; the check now compares content with the positional numbering
+stripped.)*
+
+## R3.2 — The failures are genuine, but the verifier has a real defect (Steps 2–3)
+
+**Blinded audit.** 175 cases exported with arm, condition, order and all verdicts
+withheld; 43 counted against the blinded text before the key was opened.
+
+| comparison | agreement |
+|---|---|
+| production verifier vs independent counter, **all 1,480 contrast rows** | **1,480 / 1,480 (100%)** |
+| blinded manual count vs production | 34/43 (0.791) |
+| blinded manual count vs independent | 34/43 (0.791) |
+
+**All 9 disagreements have one cause**: both segmenters treat the full stop in
+`a.m.`/`p.m.` as a sentence end, so *"Sales spike at 6 a.m. when others sleep."*
+is counted as two sentences. The "independent" counter shares the bug because its
+abbreviation list omitted `m` — **so on this specific point it was not
+independent, and the 100% agreement above must be read with that caveat.**
+
+**Stress corpus.** 31 hand-labelled items covering four-sentence outputs,
+semicolon chains, comma chains, run-ons, merges, splits, newline/bulleted/
+numbered layouts, abbreviations, quotations, decimals, initials and unusual
+punctuation. All four (Y_A, Y_R) ground-truth combinations are covered.
+
+| quantity | value |
+|---|---|
+| **E_A** target-verifier error rate | **0.207** (6 / 29 scorable) |
+| **E_R** semicolon-verifier error rate | **0.000** (0 / 29) |
+| **U_A** unscorable share | 0.065 |
+| **U_R** unscorable share | 0.065 |
+| **κ(A, R)** on this support | **−0.132** |
+| **U_κ** 95% bootstrap | **[−0.375, +0.121]** |
+
+All six A-errors are **over-splitting**: `a.m.` / `p.m.`, `Dr.` / `Mrs.`,
+`approx.` / `e.g.`, initials `J. R.`, ellipses. The verifier is **correct on
+every collapse-relevant structure** — all three semicolon chains, both comma
+chains, the run-on, the merge, newline/bulleted/numbered layouts, and the crucial
+*"four sentences each containing a semicolon"* case.
+
+### Does the defect change anything? No — and it moves slightly the other way.
+
+Recounting all 1,480 contrast rows with abbreviations protected changes 2.8–3.5%
+of counts. The transitions are dominated by 5→4 and 6→4, i.e. the bug was
+inventing **overshoot** failures, never collapses.
+
+| quantity | as measured | abbreviation-corrected |
+|---|---|---|
+| τ(B − C_L3) pooled | +0.175 | **+0.183** |
+| τ(B − C_O2) pooled | +0.142 | **+0.183** |
+| τ(B − C_W3) pooled | +0.167 | +0.167 |
+| τ(B − S_SEMICOLON) pooled | −0.408 | −0.392 |
+| B order gap (`o_Q` − `o_A`) | +0.250 | **+0.267** |
+| D2 B `o_Q` excess, baseline | +0.275 | +0.250 |
+| D2 B `o_Q` excess, **scaffolded** | 0.000 | **+0.025** |
+| D2 `S_SEMICOLON` excess, scaffolded | +0.275 | +0.325 |
+
+**Every conclusion survives.** One refinement: the ~0.03 "non-collapse failure
+baseline" reported in Round 2 is **largely the abbreviation artefact**, not model
+behaviour — corrected, the ordinary references fail at ≈0.000.
+
+## R3.3 — Correction to Round 2's coupling claim
+
+Round 2 said the construction-time screen missed `S_SEMICOLON` **because its
+support omitted the one-sentence chain**. Measured on a support that *does*
+contain that mode, κ(A, R) = **−0.132 [−0.375, +0.121]** — still ≈ 0.
+
+So the screen was not blind. It measures **verifier-error coupling**, which is a
+different quantity from **behavioural interference** and could never rank it.
+`S_SEMICOLON` does not make the two verifiers agree; it makes the *model* produce
+a structure that fails A. The correct methodological finding is therefore
+sharper than Round 2's: **the reference-admission procedure has no screen for
+behavioural interference at all** — coupling is not a proxy for it, on any
+support.
+
+## R3.4 — Answers so far
+
+1. **Which results reproduced?** All of them — 70/70 independent checks.
+2. **Genuine behavioural failures?** **Yes.** Blinded manual counts agree with the
+   verifier on every collapse case; the stress corpus shows E_A = 0 on all
+   collapse-relevant structures. The verifier's only errors are over-splits that
+   create false *overshoot*.
+3. **Is the coupling audit valid on the relevant support?** It is *arithmetically*
+   valid (κ ≈ 0 there too) but **not fit for the purpose it was being read for**.
+   Verifier-error coupling ≠ behavioural interference.
+4. **Verifier defect to record:** `E_A = 0.207` on structurally diverse text,
+   entirely from abbreviation/initial/ellipsis over-splitting. Exploratory
+   finding; the confirmatory implementation is untouched.
+
+## R3.5 — Stopped here, per the stop conditions
+
+The plan says to stop and report if human counts materially disagree with the
+verifier. They **disagreed (9/43) but not materially** — every headline is
+unchanged or slightly strengthened, as tabulated above. Because the disagreement
+is nonetheless a real defect in a verifier the confirmatory pipeline also uses,
+Steps 4–8 (sham control, scaffold ladder, instruction screen, N sweep,
+cross-model) are **not started**: they would spend GPU time on a measurement
+whose known defect the operator should decide about first.
+
+Recommended handling before resuming: run the remaining steps with abbreviation
+protection applied as a **reported sensitivity analysis** alongside the frozen
+verifier, never as a silent substitution.
+
+## Artifacts (round 3)
+
+| | |
+|---|---|
+| independent reanalysis | `reanalysis_standalone.py` (70 checks) |
+| blinded audit | `verifier_audit/blinded_cases.{jsonl,md}`, `KEY_DO_NOT_OPEN_FIRST.jsonl`, `human_counts.csv`, `three_way_counts.json` |
+| stress corpus | `stress_corpus.py`, `verifier_audit/stress_corpus_results.json` |
+| defect impact | `abbrev_impact.py` |
