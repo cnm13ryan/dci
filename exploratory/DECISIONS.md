@@ -110,3 +110,69 @@ sit where a `.` would go. That asymmetry is what makes the pair informative.
 1.42). So the count of semicolons is not the driver; where they sit is. That
 favours explanation 2 before the run — which is why the run is worth doing, to
 avoid confirming a story from the data that suggested it.
+
+---
+
+## Outcomes
+
+### D2 — anti-collapse intervention · `runs/stageD2_anticollapse_20260810T192423Z`
+480 generations, 0 technical failures. Baseline arms replicate Stage B closely
+(B `o_Q` 0.275 vs 0.317; `S_SEMICOLON` `o_A` 0.675 vs 0.633), which is itself a
+successful independent replication on a fresh run.
+
+| | without scaffold | with scaffold | Δ [95% CI] |
+|---|---|---|---|
+| B `o_Q` | 0.275 | 0.050 | **−0.225 [−0.375, −0.100]** |
+| B `o_A` | 0.025 | 0.025 | 0.000 [−0.075, +0.075] |
+| `S_SEMICOLON` `o_A` | 0.675 | 0.325 | −0.350 [−0.500, −0.200] |
+| `S_SEMICOLON` `o_Q` | 0.575 | 0.325 | −0.250 [−0.400, −0.100] |
+| `C_L3` (control) `o_A` | 0.025 | 0.050 | +0.025 |
+| `C_L3` (control) `o_Q` | 0.000 | 0.050 | +0.050 |
+
+Paired **excess over `C_L3`** — the pre-registered readout:
+
+| arm / order | without | with |
+|---|---|---|
+| B `o_Q` | **+0.275** [0.150, 0.425] | **0.000** [−0.075, +0.075] |
+| B `o_A` | 0.000 | −0.025 |
+| `S_SEMICOLON` `o_A` | +0.650 | **+0.275** [0.150, 0.425] |
+| `S_SEMICOLON` `o_Q` | +0.575 | **+0.275** [0.100, 0.475] |
+
+**Row 1 of the pre-registered table fired:** failure fell sharply for both B and
+`S_SEMICOLON` and did not fall for the control → **H2 supported**. Row 3 did not
+fire: B retains **no** excess → **H1 falsified by its own criterion**. Row 5
+fired: B's order gap fell from +0.250 to +0.025 → **order acts through collapse**.
+
+The pre-registered caveat did **not** materialise — the scaffold is not a general
+A-helper. `C_L3` got slightly *worse*, so the recovery is specific to the arms
+that were using the collapse route.
+
+Unanticipated: the scaffold was only partly obeyed by the very arms it targets
+(mean newlines — `C_L3` 3.00, `S_SEMICOLON` 1.78, B 0.49), yet B recovered
+anyway, producing 4.09 periods without line breaks. The scaffold works by
+reasserting that discrete sentences are wanted, not purely as a formatting
+change. And `S_SEMICOLON` keeps a substantial residual: half its collapse
+survives an explicit instruction not to collapse.
+
+### D3 — semicolon minimal variants · `runs/stageD3_semicolon_20260810T192430Z`
+400 generations, 0 technical failures. B's order effect replicates again
+(`o_A` 0.050 → `o_Q` 0.300).
+
+| arm | mark | scope | excess `o_A` | excess `o_Q` | collapse rate | mean periods |
+|---|---|---|---|---|---|---|
+| `S_SEMICOLON` | `;` | per-sentence | **+0.650** | **+0.525** | 0.650 / 0.550 | **2.10 / 2.45** |
+| `U_FMT_SEMI2` | `;` | whole-text | +0.125 | +0.025 | **0.000** | 3.95 / 4.10 |
+| `S_TWOCOMMA` | `,` | per-sentence | +0.025 | 0.000 | **0.000** | 4.15 / 4.28 |
+
+**Explanation 2 selected, as pre-registered.** Requiring semicolons is not
+sufficient: `U_FMT_SEMI2` responses actually contain them (93.8% carry ≥1, mean
+1.02) yet keep 4.03 periods and collapse **never**. Generic per-sentence
+formatting burden is not sufficient either: `S_TWOCOMMA` demands two commas in
+*every* sentence and collapses **never**. Only the conjunction — a per-sentence
+requirement for a mark that can stand where a sentence boundary would — produces
+the effect.
+
+The mechanism is substitution, not accumulation. `S_SEMICOLON`'s *passes* carry
+**more** semicolons (3.45) than its *failures* (2.63) while differing sharply in
+periods (4.18 vs 1.42). It is not how many semicolons appear, it is whether they
+replace the full stops.

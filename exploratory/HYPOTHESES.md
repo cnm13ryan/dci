@@ -38,6 +38,11 @@ specific to the (B → A) direction.*
   if B's excess over the ordinary reference goes to ≈0 when collapse is blocked,
   H1 as an *independent* mechanism is falsified.
 - **Confidence (2026-08-10, pre-intervention): 0.25**
+- **REVISED after D2 (anti-collapse intervention): 0.05.** Falsified by its own
+  pre-registered criterion. With the scaffold, B's paired excess over `C_L3` is
+  **0.000** in `o_Q` (CI [−0.075, +0.075], down from +0.275) and −0.025 in `o_A`.
+  Every bit of B's advantage over an ordinary reference ran through the collapse
+  route. Nothing pair-specific survives its removal.
 
 ## H2 — Structural failure-mode mechanism
 *B and certain other instructions trigger a shared response strategy — merging
@@ -59,6 +64,17 @@ intended sentences into one clause chain — and that strategy is what breaks A.
   stays high while the collapse mode disappears (failures migrate to 3 or 5
   segments), the collapse strategy was a symptom, not the mechanism.
 - **Confidence (2026-08-10, pre-intervention): 0.45**
+- **REVISED after D2: 0.85.** The intervention moved exactly what H2 predicted
+  and nothing it did not. Blocking the strategy cut B's `o_Q` failure 0.275 →
+  0.050 (Δ −0.225, CI [−0.375, −0.100]) and `S_SEMICOLON` 0.675 → 0.325 and
+  0.575 → 0.325, while the control `C_L3` did **not** improve (0.025 → 0.050,
+  0.000 → 0.050). So the scaffold is not a general A-helper that lifts every arm;
+  it removes one specific route, and the arms that used that route are the ones
+  that recover. Collapse is causally upstream, not a redescription.
+- **Caveat.** `S_SEMICOLON` keeps a **+0.275** excess under the scaffold and its
+  collapse rate only halves (0.60 → 0.30), so the shared mechanism is not the
+  whole of *its* effect. H2 is sufficient for B; it is only partial for
+  `S_SEMICOLON`.
 
 ## H3 — Order / salience mechanism
 *The large `o_Q` effect is substantially caused by instruction position — recency,
@@ -77,6 +93,18 @@ primacy, or implied priority — rather than by the content relation between A a
   (§5) plus the order arm of the intervention. If flips are concentrated in a few
   tasks that also fail everywhere else, H4 is doing the work instead.
 - **Confidence (2026-08-10): 0.55 as a moderator; 0.10 as the primary cause**
+- **REVISED after D1 and D2: 0.90 as a moderator acting THROUGH collapse; <0.05
+  as an independent mechanism.**
+  - *Recency is ruled out by sign.* Under `o_Q`, A is the **more recent** of the
+    two swapped instructions and yet fails more. Recency predicts the opposite
+    sign; primacy predicts the observed one. Whichever instruction is read first
+    sets the structural plan.
+  - *The effect is mediated.* Under the scaffold, B's order gap falls from
+    +0.250 to **+0.025**. Order does not survive the removal of collapse, so it
+    is a trigger for the shared mechanism rather than a mechanism of its own.
+  - Within the 16 units that flip pass→fail on the order swap alone (same task,
+    same replicate), structure goes from 4.00 periods / 0.00 semicolons under
+    `o_A` to 1.19 / 1.94 under `o_Q`.
 
 ## H4 — Task susceptibility
 *Some underlying tasks are intrinsically prone to collapse, and instructions
@@ -92,8 +120,15 @@ differ mainly in how strongly they trigger that latent vulnerability.*
 - **Cheapest falsifying test.** Existing-data forensics (§3) — no new generation
   needed. If failures are spread near-uniformly across tasks and Jaccard overlap
   between B and `S_SEMICOLON` is near chance, H4 is weak.
-- **Confidence (2026-08-10): 0.35, and it is compatible with H2 rather than
-  rival to it — task susceptibility would be the moderator of a shared mechanism**
+- **Confidence (2026-08-10): 0.35** → **REVISED after D1: 0.15 as a driver.**
+  B's and `S_SEMICOLON`'s failure sets overlap **less** than independence
+  predicts (Jaccard 0.131 against 0.170 expected; P(`S_SEMICOLON` fails | B
+  fails) = 0.478 against its 0.600 base rate). They are not two triggers of one
+  vulnerable-task set. Failures are only mildly concentrated (B: 11/20 tasks
+  affected, top quarter carries 0.65 of failures against 0.25 uniform;
+  `S_SEMICOLON`: 18/20 tasks, 0.42). Within-task replicates are frequently
+  **mixed** (B `o_Q`: 40% of task cells split), so the outcome is a stochastic
+  strategy choice the instruction biases, not a fixed task property.
 
 ## H5 — Measurement / definition artefact
 *The near-perfect collapse↔failure association is substantially definitional, and
@@ -113,8 +148,16 @@ the "mechanism" claim is weaker than it looked.*
   total failure — and `P(F_A=1, ¬collapse)` is small and arm-independent.
 - **Cheapest falsifying test.** §2 audit on existing data. If arms differ mainly
   in non-collapse failures too, the collapse framing adds nothing.
-- **Confidence that the r=0.998 statistic was over-claimed: 0.85**
-- **Confidence that the underlying decomposition is still informative: 0.60**
+- **CONFIRMED. The r = 0.998 statistic is withdrawn.** Collapse is a strict
+  subset of A-failure (0 collapse-but-passing rows in 600), so the correlation
+  was partly guaranteed by nesting and was over-claimed in the first report.
+- **The decomposition survives and is stronger than the correlation was.**
+  Failure that is *not* collapse sits at 0.017–0.050 across all ten cells — a
+  range of 0.033 — while total failure ranges over 0.617. And the arms differ in
+  **which mode** they take: ordinary references fail by *overshooting* to 5–6
+  sentences (8 of 11 failures), B and `S_SEMICOLON` by collapsing to one. A
+  qualitative difference in direction cannot be manufactured by nesting.
+- **Confidence the framing is now sound: 0.90**
 
 ---
 
