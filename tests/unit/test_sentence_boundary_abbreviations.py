@@ -195,3 +195,77 @@ def test_convention_capital_after_a_title_is_a_name_not_a_new_sentence():
     set and always take a following name, so the trade is worth it.
     """
     assert count("Dr. Smith opened the clinic.") == 1
+
+
+# ============================================ non-ASCII letters (regression)
+#
+# The first repair used an ASCII-only character class for the trailing-token
+# match. On "... meringues or soufflés. 20 to 30 strokes ..." it could not match
+# across the accented letter, fell back to the bare trailing "s", read that as an
+# initial and swallowed a real boundary. Found by the independent scanner on
+# generation 07769620c3a7a4468d08, not by any test written at the time.
+UNICODE_CASES = [
+    ("The result is lighter, as in meringues or soufflés. "
+     "20 to 30 strokes improve the aeration.", 2, "accented_word_before_boundary"),
+    ("They served the crème brûlée. Everyone approved.", 2, "two_accents"),
+    ("The café opened at 6 a.m. every weekday. Trade was brisk.", 2,
+     "accent_and_abbreviation"),
+    ("The naïve estimate was 3.5 metres. It held.", 2, "diaeresis_and_decimal"),
+]
+
+
+@pytest.mark.parametrize("text,expected,label", UNICODE_CASES,
+                         ids=[c[2] for c in UNICODE_CASES])
+def test_non_ascii_letters_do_not_suppress_boundaries(text, expected, label):
+    assert count(text) == expected, split_sentences(text)
+
+
+def test_a_lowercase_letter_before_a_full_stop_is_not_an_initial():
+    """Only a CAPITAL is an initial; a lower-case tail must still end a sentence."""
+    assert count("It ends with s. Then more follows.") == 2
+    assert count("A. Turing proposed it.") == 1
+
+
+def test_known_limitation_non_latin_text_is_unscorable():
+    """Segments are kept only if they contain an ASCII alphanumeric character.
+
+    So a wholly non-Latin answer segments to nothing and `v_exact_sentence_count`
+    returns `unscorable` rather than a count. This is PRE-EXISTING behaviour, not
+    a consequence of the abbreviation repair, and it is shared with `word_tokens`
+    and every per-sentence verifier.
+
+    It is harmless for this study — every generation is English prose — and it
+    fails CLOSED, which is the safe direction: an unscorable row is carried as a
+    null outcome and never as an A-failure. It is recorded here so that the
+    behaviour is a documented decision rather than an accident, and so that any
+    future multilingual work trips this test first.
+    """
+    cyrillic = "Работа была закончена. Все ушли домой."
+    assert split_sentences(cyrillic) == []
+    assert v_exact_sentence_count(cyrillic, 4).status == "unscorable"
+    # Mixed content still segments, because the ASCII test is satisfied.
+    assert count("Работа была закончена. The work is done.") == 1
+
+
+# ==================================== closing marks after the terminator (latent)
+#
+# Found by the neighbouring-defect scan, not by any generation: the original
+# boundary pattern allowed exactly ONE closer from a three-character set, so a
+# terminator followed by markdown emphasis, an escaped quote or a closing bracket
+# did not end a sentence. Zero of the 1,840 generations contain these forms, so
+# no reported number depends on this; it is closed because the verifier is being
+# certified, not because it bit.
+CLOSER_CASES = [
+    ("**Rain falls.** Water runs.", 2, "markdown_bold"),
+    ('He said \\"stop.\\" She did.', 2, "escaped_quote"),
+    ("Rain falls. (Water runs.) Gutter drains.", 3, "closing_paren"),
+    ("Rain falls. [Water runs.] Gutter drains.", 3, "closing_bracket"),
+    ('She said "go now." He left.', 2, "plain_quote_still_works"),
+    ("Rain falls.” Water runs.", 2, "curly_quote_still_works"),
+]
+
+
+@pytest.mark.parametrize("text,expected,label", CLOSER_CASES,
+                         ids=[c[2] for c in CLOSER_CASES])
+def test_closing_marks_after_a_terminator(text, expected, label):
+    assert count(text) == expected, split_sentences(text)

@@ -34,7 +34,12 @@ DIGIT_PATTERN = re.compile(r"\d")
 PERCENT_PATTERN = re.compile(r"\d+(?:\.\d+)?\s?%")
 
 
-SENTENCE_BOUNDARY = re.compile(r'(?<=[.!?])["”’]?\s+')
+# Closing marks may follow the terminator and there may be MORE THAN ONE of
+# them. The original class allowed exactly one, from a three-character set, so
+# `**bold.** next`, `\"quoted.\" next` and `(aside.) next` all failed to split.
+# None of those forms occurs in the current corpus (verified: 0 of 1840
+# generations), so this closes a latent defect rather than changing any result.
+SENTENCE_BOUNDARY = re.compile(r'(?<=[.!?])[\"\'”’)\]*\\]*\s+')
 
 
 # --------------------------------------------------------------------------
@@ -79,7 +84,13 @@ MEDIAL_ABBREVIATIONS = frozenset({
 
 # The contiguous letter-and-dot run ending at the candidate full stop: "a.m"
 # from "... 6 a.m.", "Dr" from "Dr.", "weekday" from "... every weekday.".
-TRAILING_ABBREVIATION = re.compile(r"([A-Za-z](?:\.?[A-Za-z])*)\.$")
+#
+# UNICODE-aware on purpose. An ASCII-only class was the first repair's own bug:
+# on "... meringues or soufflés. 20 to 30 strokes ..." it could not match across
+# the accented letter, fell back to the bare trailing "s", read that as an
+# initial and swallowed a real sentence boundary. The independent scanner caught
+# it on generation `07769620c3a7a4468d08`. `[^\W\d_]` is "any Unicode letter".
+TRAILING_ABBREVIATION = re.compile(r"([^\W\d_](?:\.?[^\W\d_])*)\.$", re.UNICODE)
 
 
 def _ends_sentence(left: str, right: str) -> bool:
@@ -100,8 +111,11 @@ def _ends_sentence(left: str, right: str) -> bool:
     if match is None:
         return True
     token = match.group(1)
-    if len(token) == 1:                    # an initial, as in "J. R. Smith"
-        return False
+    if len(token) == 1:
+        # An initial, as in "J. R. Smith" — but only a CAPITAL is an initial.
+        # Without the case test a lower-case tail left behind by any character
+        # the pattern cannot cross would masquerade as one.
+        return not token.isupper()
     bare = token.replace(".", "").lower()
     if bare in TITLE_ABBREVIATIONS:
         return False
