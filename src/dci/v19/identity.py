@@ -40,6 +40,39 @@ LOADS = (2, 5)
 ORDERS = ("o_A", "o_Q")
 
 
+def strict_index(value: Any, what: str, minimum: int = 1,
+                 note: str = "") -> int:
+    """A scientific index must be a true integer, not merely integer-valued.
+
+    `2.0 in (2, 5)` is True in Python, so an accidental float reached the hashed
+    payload and produced a DIFFERENT cell_id for the same scientific cell -
+    canonical serialisation distinguishes 2 from 2.0, as it must. Two spellings
+    of one identity is the failure mode section 11.3 exists to prevent, so the
+    type is checked rather than only the value. bool is excluded explicitly
+    because it is an int subclass and True would otherwise pass as index 1.
+    """
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(
+            f"{what} must be an integer, got {value!r} "
+            f"({type(value).__name__}); an integer-valued float hashes "
+            "differently and would give one scientific unit two identities")
+    if value < minimum:
+        raise ValueError(f"{what} starts at {minimum}, got {value}"
+                         + (f"; {note}" if note else ""))
+    return value
+
+
+def strict_member(value: Any, allowed: Sequence[Any], what: str) -> Any:
+    """Membership of a frozen set, with the type checked as well as the value."""
+    if isinstance(value, bool) or not any(
+            type(value) is type(a) and value == a for a in allowed):
+        raise ValueError(
+            f"{what} {value!r} is not one of {tuple(allowed)}; the set is a "
+            "frozen scientific commitment and its members' types are part of "
+            "the hashed identity")
+    return value
+
+
 def _digest(domain: str, payload: Any) -> str:
     """SHA-256 over a domain tag and the canonical serialisation of `payload`.
 
@@ -66,34 +99,30 @@ def context_fingerprint(context: Mapping[str, Any]) -> str:
 def superblock_id(pair: str, draw_index: int, fingerprint: str,
                   protocol: str = PROTOCOL_VERSION) -> str:
     """hash(protocol, pair, i, context_fingerprint) - the statistical unit."""
-    if draw_index < 1:
-        raise ValueError("accepted draw indices start at 1 and are never reused")
+    strict_index(draw_index, "an accepted draw index",
+                 note="accepted draw indices are never reused or renumbered "
+                      "after the bank is frozen (section 8.6)")
     return _digest("v19/superblock", [protocol, pair, draw_index, fingerprint])
 
 
 def cell_id(superblock: str, budget: str, load: int, order: str,
             arm: str) -> str:
     """hash(superblock_id, b, k, o, q) - one causal condition."""
-    if load not in LOADS:
-        raise ValueError(f"load {load} is not one of the paired loads {LOADS}")
-    if order not in ORDERS:
-        raise ValueError(f"order {order!r} is not one of {ORDERS}")
-    if arm not in ARMS:
-        raise ValueError(f"arm {arm!r} is not one of {ARMS}")
+    strict_member(load, LOADS, "load")
+    strict_member(order, ORDERS, "presentation order")
+    strict_member(arm, ARMS, "arm")
     return _digest("v19/cell", [superblock, budget, load, order, arm])
 
 
 def generation_id(cell: str, replicate: int) -> str:
     """hash(cell_id, g) - one planned stochastic replicate."""
-    if replicate < 1:
-        raise ValueError("replicate indices start at 1")
+    strict_index(replicate, "a replicate index")
     return _digest("v19/generation", [cell, replicate])
 
 
 def attempt_id(generation: str, attempt: int) -> str:
     """hash(generation_id, a) - one execution attempt, never an observation."""
-    if attempt < 1:
-        raise ValueError("attempt indices start at 1")
+    strict_index(attempt, "an attempt index")
     return _digest("v19/attempt", [generation, attempt])
 
 
@@ -119,8 +148,8 @@ def proposal_seed(pair: str, draw_index: int, attempt: int, field: str,
     Proposal attempts DO index here: a rejected proposal must be followed by a
     fresh independent draw, which is the opposite requirement from a retry.
     """
-    if draw_index < 1 or attempt < 1:
-        raise ValueError("proposal indices and attempts start at 1")
+    strict_index(draw_index, "a proposal draw index")
+    strict_index(attempt, "a proposal attempt index")
     digest = _digest("v19/proposal",
                      [protocol, root_seed, pair, draw_index, attempt, field])
     return int(digest[:16], 16) % SEED_MODULUS
@@ -153,8 +182,7 @@ def expand_superblock(pair: str, draw_index: int, fingerprint: str,
     the focal arm and all four references, and G replicates: the 20|B_ret|G
     logical generations per superblock of Appendix F.
     """
-    if replicates < 1:
-        raise ValueError("G is a positive integer")
+    strict_index(replicates, "the replicate count G")
     unit = superblock_id(pair, draw_index, fingerprint, protocol)
     out: list[PlannedGeneration] = []
     for budget in budgets:
