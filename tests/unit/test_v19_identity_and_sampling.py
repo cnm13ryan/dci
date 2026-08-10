@@ -111,27 +111,33 @@ def test_expansion_is_independent_of_iteration_order():
 
 
 # ----------------------------------------------------- the completeness ledger
+#
+# The gate now ranges over the planned manifest; see
+# tests/unit/test_v19_completeness_manifest.py for the full invariant battery.
+DONE = {"attempt": 2, "terminal": True, "state": identity.TERMINAL_OBSERVED,
+        "output_hash": "sha256:" + "b" * 64, "output_path": "raw/g1.json"}
+
+
 def test_exactly_one_terminal_state_per_generation():
-    identity.assert_one_terminal_state({
-        "g1": [{"attempt": 1, "terminal": False}, {"attempt": 2, "terminal": True}]})
+    identity.assert_one_terminal_state(
+        {"g1": [{"attempt": 1, "terminal": False}, DONE]}, ["g1"])
     with pytest.raises(ValueError, match="0 terminal states"):
-        identity.assert_one_terminal_state({"g1": [{"attempt": 1}]})
+        identity.assert_one_terminal_state({"g1": [{"attempt": 1}]}, ["g1"])
     with pytest.raises(ValueError, match="2 terminal states"):
-        identity.assert_one_terminal_state({
-            "g1": [{"attempt": 1, "terminal": True},
-                   {"attempt": 2, "terminal": True}]})
+        identity.assert_one_terminal_state(
+            {"g1": [{**DONE, "attempt": 1}, DONE]}, ["g1"])
 
 
 def test_attempt_indices_must_be_dense_and_ordered():
     with pytest.raises(ValueError, match="non-monotonic"):
-        identity.assert_one_terminal_state({
-            "g1": [{"attempt": 1, "terminal": False},
-                   {"attempt": 3, "terminal": True}]})
+        identity.assert_one_terminal_state(
+            {"g1": [{"attempt": 1, "terminal": False},
+                    {**DONE, "attempt": 3}]}, ["g1"])
 
 
 def test_a_generation_with_no_lineage_is_refused():
     with pytest.raises(ValueError, match="no attempt lineage"):
-        identity.assert_one_terminal_state({"g1": []})
+        identity.assert_one_terminal_state({"g1": []}, ["g1"])
 
 
 # ------------------------------------------------------------ the sampling law

@@ -177,24 +177,171 @@ def generations_per_superblock(n_budgets: int, replicates: int) -> int:
     return len(LOADS) * len(ORDERS) * len(ARMS) * n_budgets * replicates
 
 
-def assert_one_terminal_state(ledger: Mapping[str, Sequence[Mapping[str, Any]]]
-                              ) -> None:
-    """Appendix I: one terminal state per planned generation, attempts indexed.
+# ------------------------------------------------- the completeness ledger
+#
+# Appendix I: "one terminal state per planned generation ID". The planned set is
+# the authority, not the ledger's own keys. Iterating the ledger cannot detect a
+# generation that was deleted outright, and deletion is exactly the shortcut
+# section 12.10 forbids: a permanently missing generation stays in the scientific
+# population as a terminal missing state feeding interval completion.
 
-    `ledger` maps generation_id to its attempt records, each carrying `attempt`
-    and `terminal` keys. The invariants are mechanical, so they are checked
-    mechanically rather than trusted.
-    """
-    for gen, attempts in ledger.items():
-        if not attempts:
-            raise ValueError(f"generation {gen} has no attempt lineage")
+TERMINAL_OBSERVED = "OBSERVED"
+TERMINAL_MISSING = "PERMANENTLY_MISSING"
+TERMINAL_STATES = (TERMINAL_OBSERVED, TERMINAL_MISSING)
+
+
+class LedgerViolation(ValueError):
+    """A completeness or lineage invariant failed. Fail closed, never repair."""
+
+
+@dataclass(frozen=True)
+class LedgerReport:
+    """What the completeness gate established, for the run's provenance record."""
+    n_planned: int
+    n_observed: int
+    n_permanently_missing: int
+    n_attempts: int
+
+    @property
+    def missingness_rate(self) -> float:
+        return self.n_permanently_missing / self.n_planned if self.n_planned else 0.0
+
+
+def _assert_lineage(gen: str, attempts: Sequence[Mapping[str, Any]]) -> str:
+    """Validate one generation's attempt lineage; return its terminal state."""
+    if not attempts:
+        raise LedgerViolation(f"generation {gen} has no attempt lineage")
+    try:
         indices = [int(a["attempt"]) for a in attempts]
-        if indices != list(range(1, len(indices) + 1)):
-            raise ValueError(
-                f"generation {gen} has non-monotonic attempt indices {indices}; "
-                "attempts are lineage and must be densely ordered")
-        terminal = [a for a in attempts if a.get("terminal")]
-        if len(terminal) != 1:
-            raise ValueError(
-                f"generation {gen} has {len(terminal)} terminal states; exactly "
-                "one is required, because a second one is a second observation")
+    except (KeyError, TypeError, ValueError) as exc:
+        raise LedgerViolation(
+            f"generation {gen} has an attempt record without a usable attempt "
+            f"index: {exc}") from exc
+    if indices != list(range(1, len(indices) + 1)):
+        raise LedgerViolation(
+            f"generation {gen} has non-monotonic attempt indices {indices}; "
+            "attempts are lineage and must be densely ordered from 1")
+
+    terminal = [(i, a) for i, a in zip(indices, attempts) if a.get("terminal")]
+    if len(terminal) != 1:
+        raise LedgerViolation(
+            f"generation {gen} has {len(terminal)} terminal states; exactly one "
+            "is required, because a second one is a second observation")
+    position, record = terminal[0]
+    if position != indices[-1]:
+        raise LedgerViolation(
+            f"generation {gen} records a terminal state at attempt {position} "
+            f"but continues to attempt {indices[-1]}; work after a terminal "
+            "state means the observation was reopened")
+
+    state = record.get("state")
+    if state not in TERMINAL_STATES:
+        raise LedgerViolation(
+            f"generation {gen} terminal attempt {position} carries state "
+            f"{state!r}, which is not a terminal scientific state; one of "
+            f"{TERMINAL_STATES} is required, and an absent state is missing "
+            "evidence rather than a default success")
+
+    if state == TERMINAL_OBSERVED:
+        # Appendix I: every successful generation is linked to durably stored
+        # output bytes. A success with no linkage cannot be verified or replayed.
+        if not (record.get("output_hash") and record.get("output_path")):
+            raise LedgerViolation(
+                f"generation {gen} is terminal {TERMINAL_OBSERVED} but has no "
+                "durable output linkage; both output_hash and output_path are "
+                "required, since a success that cannot be located is not one")
+    else:
+        if not record.get("retries_exhausted"):
+            raise LedgerViolation(
+                f"generation {gen} is terminal {TERMINAL_MISSING} without an "
+                "exhausted retry lineage; permanent technical missingness is "
+                "assigned only after the frozen retry policy is spent")
+        if record.get("output_hash") or record.get("output_path"):
+            raise LedgerViolation(
+                f"generation {gen} is terminal {TERMINAL_MISSING} yet claims a "
+                "durable output; if bytes were persisted the generation is "
+                "behaviourally observed, however malformed the answer")
+    return state
+
+
+def assert_one_terminal_state(
+        ledger: Mapping[str, Sequence[Mapping[str, Any]]],
+        planned_generation_ids: Sequence[str]) -> LedgerReport:
+    """Appendix I invariants, checked against the PLANNED generation manifest.
+
+    `planned_generation_ids` is the frozen expected scientific population, so a
+    generation missing from the ledger is a failure rather than a silence. Each
+    record carries `attempt`, `terminal`, `state`, and either durable-output
+    linkage or an exhausted-retry marker.
+    """
+    planned = list(planned_generation_ids)
+    if not planned:
+        raise LedgerViolation(
+            "the planned manifest is empty; completeness cannot be established "
+            "against an unknown expected population")
+    unique = set(planned)
+    if len(unique) != len(planned):
+        duplicated = sorted({g for g in planned if planned.count(g) > 1})
+        raise LedgerViolation(
+            f"the planned manifest contains duplicate generation ids "
+            f"{duplicated[:5]}; scientific identities are unique by construction")
+
+    absent = [g for g in planned if g not in ledger]
+    if absent:
+        raise LedgerViolation(
+            f"{len(absent)} planned generations are absent from the ledger, "
+            f"beginning with {absent[:5]}; a permanently missing generation is "
+            "represented by a terminal missing state and interval completion, "
+            "never by deletion")
+    unexpected = sorted(set(ledger) - unique)
+    if unexpected:
+        raise LedgerViolation(
+            f"{len(unexpected)} ledger entries are not in the planned manifest, "
+            f"beginning with {unexpected[:5]}; an unplanned generation cannot "
+            "enter confirmatory analysis")
+
+    observed = missing = attempts = 0
+    for gen in planned:
+        records = ledger[gen]
+        attempts += len(records)
+        if _assert_lineage(gen, records) == TERMINAL_OBSERVED:
+            observed += 1
+        else:
+            missing += 1
+    return LedgerReport(n_planned=len(planned), n_observed=observed,
+                        n_permanently_missing=missing, n_attempts=attempts)
+
+
+@dataclass(frozen=True)
+class GenerationManifest:
+    """The frozen scientific-draw manifest and its root hash (Stage 12, D42).
+
+    Holds the planned rows in frozen order, exposes the expected generation-ID
+    population the completeness gate needs, and computes the root manifest hash
+    over the immutable identity fields only - so a change to any planned identity
+    or seed changes the root hash, while incidental reordering cannot.
+    """
+    rows: tuple[PlannedGeneration, ...]
+    protocol: str = PROTOCOL_VERSION
+
+    @classmethod
+    def from_planned(cls, rows: Sequence[PlannedGeneration],
+                     protocol: str = PROTOCOL_VERSION) -> "GenerationManifest":
+        return cls(rows=tuple(rows), protocol=protocol)
+
+    @property
+    def generation_ids(self) -> tuple[str, ...]:
+        return tuple(row.generation for row in self.rows)
+
+    @property
+    def root_hash(self) -> str:
+        """SHA-256 over the sorted immutable identity of every planned row."""
+        material = sorted(
+            [row.pair, row.draw_index, row.superblock, row.cell, row.generation,
+             row.budget, row.load, row.order, row.arm, row.replicate, row.seed]
+            for row in self.rows)
+        return _digest("v19/manifest", [self.protocol, material])
+
+    def assert_complete(self, ledger: Mapping[str, Sequence[Mapping[str, Any]]]
+                        ) -> LedgerReport:
+        return assert_one_terminal_state(ledger, self.generation_ids)
