@@ -15,6 +15,34 @@ from dci.protocol.gate_types import GateOutcome  # noqa: F401
 from dci.provenance.hashes import sha, sha_text  # noqa: F401
 from dci.statuses import GateStatus  # noqa: F401
 
+
+def scientific_device_index() -> int:
+    """The GPU this run will actually execute on.
+
+    `CFG.single_gpu_index` (set by --device) decides model placement, so every
+    hardware question - identity, capability, provenance - must be asked of that
+    device. Asking device 0 instead is wrong in the direction that matters: on a
+    heterogeneous host two runs on two different GPUs would record the same
+    hardware class, and the resume guard whose whole purpose is to refuse a
+    dataset generated half on one device and half on another would see no
+    boundary to refuse.
+    """
+    index = int(S.CFG.single_gpu_index)
+    if torch.cuda.is_available():
+        visible = int(torch.cuda.device_count())
+        if not 0 <= index < visible:
+            raise EnvironmentError(
+                f"single_gpu_index={index} was selected but only {visible} CUDA "
+                f"device(s) are visible. Refusing to silently fall back to "
+                f"device 0: the selected device is part of the execution "
+                f"condition, and quietly using a different one would generate "
+                f"under an identity the manifest does not record.")
+    return index
+
+
+S.scientific_device_index = scientific_device_index
+
+
 def hardware_report() -> dict[str, Any]:
     report: dict[str, Any] = {
         "cuda_available": torch.cuda.is_available(),
@@ -25,7 +53,7 @@ def hardware_report() -> dict[str, Any]:
         "colab_release_tag": os.environ.get("COLAB_RELEASE_TAG"),
     }
     if torch.cuda.is_available():
-        props = torch.cuda.get_device_properties(0)
+        props = torch.cuda.get_device_properties(scientific_device_index())
         report.update(gpu_name=props.name,
                       gpu_memory_gb=round(props.total_memory / 2**30, 2),
                       compute_capability=f"{props.major}.{props.minor}")
@@ -34,7 +62,12 @@ def hardware_report() -> dict[str, Any]:
 
 S.HARDWARE = hardware_report()
 
-if not S.CFG.dry_run and not torch.cuda.is_available():
+from dci.config.loader import ACTIVE as _ACTIVE
+if not S.CFG.dry_run and not torch.cuda.is_available() and not _ACTIVE.planning_only:
+    # Planning is exempt because it cannot generate: inspecting the frozen
+    # configuration and the design for a study profile is exactly the work you
+    # want to do BEFORE provisioning an accelerator. The requirement is
+    # unchanged for every command that can generate.
     raise RuntimeError("No CUDA device. Runtime > Change runtime type > GPU.")
 
 S.PACKAGE_VERSIONS = {}
@@ -95,8 +128,10 @@ def hardware_class() -> dict[str, Any]:
         return {"gpu_name": None, "compute_capability": None,
                 "cuda_runtime": None, "torch_cuda_build": None,
                 "attn_implementation": S.CFG.attn_implementation,
-                "device_count": 0, "class": "cpu_or_dry_run"}
-    props = torch.cuda.get_device_properties(0)
+                "device_count": 0, "device_index": None,
+                "class": "cpu_or_dry_run"}
+    index = scientific_device_index()
+    props = torch.cuda.get_device_properties(index)
     fields = {
         "gpu_name": props.name,
         "compute_capability": f"{props.major}.{props.minor}",
@@ -104,6 +139,12 @@ def hardware_class() -> dict[str, Any]:
         "torch_cuda_build": f"{torch.__version__}+cu{getattr(torch.version, 'cuda', 'na')}",
         "attn_implementation": S.CFG.attn_implementation,
         "device_count": int(torch.cuda.device_count()),
+        # WHICH device executed, not merely how many were visible. On a
+        # heterogeneous host --device 1 used to be fingerprinted, capability
+        # checked and provenance recorded against device 0, so two runs on two
+        # different GPUs shared one hardware class and the resume guard could
+        # not see the boundary it exists to refuse.
+        "device_index": index,
     }
     fields["class"] = sha(fields)[:16]
     return fields
@@ -172,10 +213,83 @@ SUBDIRS = ("config", "audit", "designs", "gates", "responses", "scores",
            "figures", "manifests", "exports", "checkpoints", "quarantine")
 
 
+def _assert_run_identity(run_root: Path) -> bool:
+    """Refuse an existing run directory whose recorded identity is not ours.
+
+    The automatic branch below only ever selects a directory whose recorded
+    fingerprint matches, so it was safe. An EXPLICIT --run-id skipped the check
+    entirely and returned the directory unread: artifacts generated under one
+    execution condition then landed beside artifacts generated under another,
+    inside a directory whose run_meta.json claims a single identity. Nothing
+    downstream can separate them afterwards, and the frozen-manifest guards all
+    reason per batch, not per directory.
+
+    Returns whether the directory exists and may be resumed. Raises before any
+    artifact is written otherwise.
+    """
+    meta_path = run_root / "run_meta.json"
+    if not run_root.exists():
+        return False
+    if not meta_path.exists():
+        # An empty directory is a harmless leftover; one with artifacts and no
+        # manifest has an identity nobody can verify.
+        occupied = [p.name for p in run_root.iterdir() if any(p.rglob("*"))
+                    ] if run_root.is_dir() else []
+        if not occupied:
+            return True
+        raise StudyStop(
+            GateOutcome(gate="run_identity",
+                        status=GateStatus.RUN_INTEGRITY_FAILURE,
+                        reason="explicit run id names a directory holding "
+                               "artifacts with no run_meta.json",
+                        quantities={"run_root": str(run_root),
+                                    "non_empty": sorted(occupied)},
+                        new_protocol_version_required=False),
+            f"RUN_INTEGRITY_FAILURE: --run-id {run_root.name!r} already holds "
+            f"artifacts in {sorted(occupied)} but has no run_meta.json, so the "
+            "execution identity those artifacts were produced under cannot be "
+            "established. Choose a new run id.")
+    try:
+        meta = json.loads(meta_path.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        raise StudyStop(
+            GateOutcome(gate="run_identity",
+                        status=GateStatus.RUN_INTEGRITY_FAILURE,
+                        reason=f"run_meta.json is unreadable: {exc}",
+                        quantities={"run_root": str(run_root)},
+                        new_protocol_version_required=False),
+            f"RUN_INTEGRITY_FAILURE: {meta_path} cannot be read "
+            f"({type(exc).__name__}), so the recorded execution identity of "
+            "this run directory is unknown. Refusing to add artifacts to it.")
+    stored = meta.get("execution_sha256")
+    if stored == S.EXECUTION_SHA256:
+        return True
+    differing = sorted(k for k, v in S.EXECUTION_CONDITION.items()
+                       if meta.get("execution_condition", {}).get(k, v) != v)
+    raise StudyStop(
+        GateOutcome(gate="run_identity",
+                    status=GateStatus.RUN_INTEGRITY_FAILURE,
+                    reason="explicit run id was frozen under a different "
+                           "execution fingerprint",
+                    quantities={"run_root": str(run_root),
+                                "frozen_execution_sha256": stored,
+                                "current_execution_sha256": S.EXECUTION_SHA256,
+                                "differing_fields": differing},
+                    new_protocol_version_required=True),
+        f"RUN_INTEGRITY_FAILURE: --run-id {run_root.name!r} was created under "
+        f"execution fingerprint {str(stored)[:12]} and this process is "
+        f"{S.EXECUTION_SHA256[:12]}"
+        + (f", differing on {differing}" if differing else "")
+        + ". One run directory cannot hold two execution identities: the "
+        "batches already there were generated under a different condition and "
+        "nothing downstream could separate them from new ones. Omit --run-id to "
+        "let the resume rule find the matching run, or name a fresh id.")
+
+
 def _resolve_run_id() -> tuple[str, bool]:
     """Reuse a run only when its execution fingerprint matches exactly."""
     if S.RUN_ID:
-        return S.RUN_ID, (PROFILE_ROOT / S.RUN_ID).exists()
+        return S.RUN_ID, _assert_run_identity(PROFILE_ROOT / S.RUN_ID)
     candidates = []
     for meta_path in sorted(PROFILE_ROOT.glob("*/run_meta.json")):
         try:
@@ -250,7 +364,7 @@ torch.backends.cuda.matmul.allow_tf32 = False
 
 S.RESOLVED_DTYPE = S.CFG.inference_dtype
 if torch.cuda.is_available() and S.CFG.require_exact_dtype:
-    _props = torch.cuda.get_device_properties(0)
+    _props = torch.cuda.get_device_properties(scientific_device_index())
     if S.CFG.inference_dtype == "bfloat16" and _props.major < 8:
         raise RuntimeError(
             f"inference_dtype is bfloat16 but {_props.name} is compute "
