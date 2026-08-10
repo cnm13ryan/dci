@@ -19,16 +19,12 @@ import math
 import pytest
 
 from dci.v19 import ALPHA, PRIMITIVE_SUPPORT, SECONDARY_SUPPORT
-from dci.v19 import mpeb, wsr
+from dci.v19 import wsr
 from dci.v19.supports import Interval
 
 pytestmark = pytest.mark.cpu
 
 FAMILIES = (1, 3, 48, 144, 480)
-
-
-def _points(n, value=0.4):
-    return [value] * n
 
 
 def _mixed(n):
