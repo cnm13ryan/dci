@@ -54,6 +54,13 @@ class GateStatus:
     INCONCLUSIVE_PRECISION = "INCONCLUSIVE_PRECISION"
     # An anchor reference panel did not transport to a replicate model.
     TRANSPORT_FAILED = "TRANSPORT_FAILED"
+    # The authoritative run identity cannot be reconstructed or trusted: an
+    # existing run directory whose recorded execution fingerprint disagrees with
+    # the current one, a manifest that cannot be read, or artifacts produced
+    # under an identity other than the one the directory records. Refused before
+    # any new artifact is written, because one directory holding two execution
+    # identities is not a run that can be analysed under either.
+    RUN_INTEGRITY_FAILURE = "RUN_INTEGRITY_FAILURE"
 
     ALL = (PASS, PRECISION_INSUFFICIENT, NOT_IDENTIFIED_SUPPORT,
            U_PRECISION_INSUFFICIENT, U_BANK_NOT_IDENTIFIED,
@@ -64,7 +71,8 @@ class GateStatus:
            PARAPHRASE_SEMANTICS_FAILED, VERIFIER_RELIABILITY_FAILED,
            REFERENCE_BUDGET_EXCEEDED, SENSITIVITY_NOT_ESTIMABLE,
            INPUT_TRUNCATION, OUTPUT_CAP_DOMINATES, HARDWARE_CLASS_MISMATCH,
-           TASK_BANK_INSUFFICIENT, INCONCLUSIVE_PRECISION, TRANSPORT_FAILED)
+           TASK_BANK_INSUFFICIENT, INCONCLUSIVE_PRECISION, TRANSPORT_FAILED,
+           RUN_INTEGRITY_FAILURE)
 
     # Remedies that no amount of further data can supply. A semantic
     # contradiction and a demonstrated verifier defect are facts about the
@@ -74,4 +82,5 @@ class GateStatus:
         REFERENCE_VALIDATION_FAILED, WORDING_VALIDATION_FAILED,
         FINAL_FALSIFICATION_FAILED, PARAPHRASE_SEMANTICS_FAILED,
         VERIFIER_RELIABILITY_FAILED, REFERENCE_BUDGET_EXCEEDED,
-        INPUT_TRUNCATION, HARDWARE_CLASS_MISMATCH, TRANSPORT_FAILED)
+        INPUT_TRUNCATION, HARDWARE_CLASS_MISMATCH, TRANSPORT_FAILED,
+        RUN_INTEGRITY_FAILURE)
