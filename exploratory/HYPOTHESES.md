@@ -177,6 +177,13 @@ the "mechanism" claim is weaker than it looked.*
     The screen was not blind; it measures **verifier-error coupling**, which is a
     different quantity from behavioural interference and was never going to rank
     it. That is the more precise and more damning finding about the method.
+  * **Round 4 addendum.** Recomputed with the statistic the preregistration
+    actually defines — the mean fraction of coupling *edits* flipping BOTH
+    verdicts — κ = **0.400**, U_κ **[0.400, 0.400]** over 8 informative
+    responses, i.e. degenerate. Round 3's "κ = −0.132" was Cohen's kappa under
+    the wrong name and is **withdrawn**; the signed coefficient is now reported
+    separately as `agreement_phi` = +0.035. The conclusion is unchanged and
+    better supported: coupling does not track behavioural interference.
 
 ---
 
