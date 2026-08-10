@@ -30,8 +30,18 @@ injected library imports. Classification:
 Scientific invariants constraining the refactor: the 23 listed in the
 migration specification, all of which live in executable code the migration
 carried over unchanged — the migrator's guarantee is textual (cell bodies are
-byte-identical apart from the S-rewrite and eight ledgered patches), and the
-regression suite is the behavioral proof. **[impl]**
+byte-identical apart from the S-rewrite and the **eleven** ledgered patches
+`P0`-`P10`), and the regression suite is the behavioral proof. **[impl]**
+
+The byte-identity boundary is therefore exactly these eleven entries, and the
+count is not a judgement call: `docs/migration_ledger_patches.csv` holds all
+eleven, every one classified `execution-only` with `protocol_impact: none`.
+`docs/migration_ledger.csv` is the wider record - the same eleven plus thirteen
+`L-` entries describing the architectural moves (state module, stage modules,
+library extraction, prelude, compat shim, and so on), which are relocations
+rather than textual exceptions inside a cell body. An earlier draft said
+"eight", which matched neither file: `P0`, `P9` and `P10` were added after that
+sentence was written and the sentence was not updated.
 
 ## B. Target architecture
 
@@ -62,17 +72,18 @@ Why explicit shared state instead of full dataflow decomposition now: the
 notebook's semantics ARE one namespace with late binding; any Stage-A rewrite
 into parameter passing would have had to re-derive several hundred def-time vs
 call-time binding decisions by hand, each one a silent-divergence risk against
-110 assertions. `S` reproduces those semantics exactly, makes every shared
+the Gate 0 assertions. `S` reproduces those semantics exactly, makes every shared
 name auditable, and leaves incremental de-globalization as ordinary refactors
 that the regression suite can police one name at a time. **[rec]** The migrator
 itself (symtable-scoped rewriting, f-string-safe splicing, purity-checked
-extraction) is in `tools/migrate_v15.py` and re-runs reproducibly.
+extraction) re-runs reproducibly; it is committed with the notebook archive it
+reads, later in this stack, and documented there.
 
 ## C. Migration-risk table
 
 | risk | scientific consequence | prevention | test |
 |---|---|---|---|
-| accidental protocol change during extraction | wrong estimand/gates without notice | byte-preserving migrator; eight ledgered patches only | 38-artifact identity; gate-trace identity; Gate 0 110/110 |
+| accidental protocol change during extraction | wrong estimand/gates without notice | byte-preserving migrator; eleven ledgered patches (`P0`-`P10`) only | 38-artifact identity; gate-trace identity; every Gate 0 check passes (see `tests/regression/gate0_registry.py`) |
 | ROCm/CUDA contamination | evidence generated on an unintended stack | two separate uv projects, ROCm wheels pinned by URL, core has no GPU dep | env definitions; doctors report `torch.version.hip/cuda`; provenance records env identity |
 | incompatible cache reuse | mixed execution conditions in one dataset | execution fingerprint + tokenizer state on every commit; foreign batches quarantined | `test_foreign_fingerprint_batch_is_quarantined_not_read` |
 | multi-GPU nondeterminism | batch membership drifts with timing | assignment = `batch_index % N` from the frozen plan; barrier on the union; shared explicit `--run-id` | `test_two_workers_equal_one` (exact partition, both attempts present, no dup/gap) |
