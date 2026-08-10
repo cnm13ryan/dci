@@ -292,7 +292,7 @@ def test_mixed_point_and_interval_contributions():
 def test_the_reflected_upper_bound_brackets_the_lower_one():
     intervals = [observed(0.3)] * 40
     low = wsr.lower_bound_with_missingness(intervals, FAMILY).lower
-    high = wsr.upper_bound_with_missingness(intervals, FAMILY)
+    high = wsr.upper_bound_with_missingness(intervals, FAMILY).value
     assert low <= 0.3 <= high
 
 
