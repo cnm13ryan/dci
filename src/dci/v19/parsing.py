@@ -90,6 +90,7 @@ class ListPolicy:
     unicode_normalisation: str
     label_match: str
     label_case_sensitive: bool
+    extra_items_permitted: bool
 
     def __post_init__(self):
         if not self.policy_id or not self.provenance:
@@ -133,7 +134,8 @@ class ListPolicy:
                 "empty_items_count": self.empty_items_count,
                 "unicode_normalisation": self.unicode_normalisation,
                 "label_match": self.label_match,
-                "label_case_sensitive": self.label_case_sensitive}
+                "label_case_sensitive": self.label_case_sensitive,
+                "extra_items_permitted": self.extra_items_permitted}
 
     @property
     def policy_hash(self) -> str:
@@ -179,7 +181,11 @@ INHERITED_MARKER_POLICY = ListPolicy(
     empty_items_count=False,
     unicode_normalisation="none",
     label_match="normalised_containment",
-    label_case_sensitive=False)
+    label_case_sensitive=False,
+    # Nothing is recoverable here: the inherited module has no ordering verifier at
+    # all. False is the strict reading, under which every list item must be one of
+    # the declared items. See UNDETERMINED_BY_PREREGISTRATION.
+    extra_items_permitted=False)
 
 
 # Each entry: field -> the question the preregistration leaves open. The keys are
@@ -214,6 +220,13 @@ UNDETERMINED_BY_PREREGISTRATION: Mapping[str, str] = {
         "relation; the protocol names no matching rule",
     "label_case_sensitive":
         "whether entity matching is case sensitive",
+    "extra_items_permitted":
+        "whether \"place the items in the correct transitive order\" quantifies "
+        "over the declared items only, permitting a longer list that also contains "
+        "undeclared items, or over the list's items, so that an undeclared item is "
+        "a structural failure. It decides whether a composition requiring more "
+        "items than the relation declares is feasible at all, and the encoding and "
+        "the verifier disagree until it is answered",
 }
 
 

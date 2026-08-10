@@ -212,7 +212,8 @@ def test_the_relation_identity_is_in_the_parameters_not_the_evidence():
     """Parameters are the realisation; evidence is how the answer was read."""
     outcome = order(THREE)
     assert set(outcome.parameters) == {"relation_hash", "declared_items",
-                                       "declared_edges"}
+                                       "declared_edges", "extra_items_permitted"}
+    assert outcome.parameters["extra_items_permitted"] is P.extra_items_permitted
 
 
 @pytest.mark.parametrize("swap", [(0, 1), (1, 2), (0, 2)])
