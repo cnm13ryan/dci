@@ -12,6 +12,13 @@ def make_backend() -> "InferenceBackend":
 
     cfg = S.CFG
     choice = ACTIVE.backend
+    if ACTIVE.planning_only:
+        # Checked before every other branch, including the dry-run oracle: a
+        # planning command must not emit synthetic text either, because
+        # synthetic output written into a run directory is exactly what later
+        # gets mistaken for evidence.
+        from dci.inference.planning import PlanningBackend
+        return PlanningBackend()
     if cfg.dry_run:
         if choice not in (None, "oracle"):
             raise RuntimeError(
