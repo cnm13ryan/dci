@@ -18,9 +18,12 @@ its four matched references do — but **only when B is stated before A**
 A about twice as strongly as B does in both orders, so on v19's own conservative
 `min_j τ_j` headline B fails to beat every reference and the estimate is negative.
 All of this is accounted for by a single failure mode that is not specific to B:
-the answer collapsing into one clause-chained sentence. Across all ten arm×order
-cells, A-failure tracks the collapse rate at r = 0.998, and B sits *on* that curve
-rather than above it.
+the answer collapsing into one clause-chained sentence.
+
+> **Round 2 correction.** The r = 0.998 figure originally quoted here is
+> **withdrawn** — collapse is a strict subset of A-failure, so that correlation
+> was partly definitional. See Round 2 §0. The conclusion survives on stronger
+> evidence (a mode decomposition plus a causal intervention), not on that number.
 
 **So: directional interference of this kind is real and measurable, but this run
 gives no support for it being specific to the registered (A, B) pair.**
@@ -98,9 +101,15 @@ Aggregates (uniform weights, descriptive only):
 | o_Q | C_W3 | 0.017 | 0.000 | 0.017 | 0.00 |
 | o_Q | S_SEMICOLON | 0.567 | 0.517 | 0.050 | 2.92 |
 
-r(A-failure, collapse) = **0.998** across the ten cells. 88 of 106 A-failures
-(83%) are collapses. Residuals are 0.017–0.050 everywhere, and **B's residual is
-not larger than the references'** — C_O2's is the largest at 0.050.
+88 of 106 A-failures (83%) are collapses. Residuals are 0.017–0.050 everywhere,
+and **B's residual is not larger than the references'** — C_O2's is the largest
+at 0.050.
+
+> **Round 2 correction.** A correlation coefficient between these two columns was
+> originally quoted here and is **withdrawn as partly definitional** (collapse ⊂
+> A-failure). The informative content is the residual column: non-collapse
+> failure is flat at 0.017–0.050 across every cell while total failure spans
+> 0.617, so the between-arm signal lives in the collapse mode. See Round 2 §0.
 
 ---
 
@@ -135,7 +144,7 @@ generic added load. It is nothing of the sort.
 | **Output truncation** | B implies a geometrically growing answer; censoring drops final sentences and breaks the count | **Was the dominant artefact in Stage A**: B's isolated rows averaged exactly 180.0 tokens, 8/8 at the cap, and focal A-failure read 0.69. Raising the cap to 512 dropped it to 0.125. In Stage B, 0/600 contrast rows truncated; all ended with EOS. | **Confirmed real at 180; fully eliminated at 512.** Not an explanation for Stage B. |
 | **One anomalous reference drives the comparison** | A reference that is itself a strong interferer masks or reverses the aggregate | `S_SEMICOLON` fails at 0.60 pooled vs 0.017–0.050 for the other three. It alone turns τ_weighted from ≈ +0.17 into ≈ +0.02 and makes τ_min negative. | **Confirmed and decisive.** The single most important finding about the *method*. |
 | **Generic compositional load** | Any added instruction costs A-compliance | Three references cost essentially nothing (0.017–0.050) at the same instruction count. So load per se is not sufficient. | **Weakened.** Load alone does not do it. |
-| **Mechanism-class, not pair-specific** | Any clause-chaining-inducing instruction impairs a sentence-count target | r = 0.998 between collapse and A-failure; B on the curve, not above it; S_SEMICOLON further along the same curve | **Strongly supported.** The leading explanation. |
+| **Mechanism-class, not pair-specific** | Any clause-chaining-inducing instruction impairs a sentence-count target | Mode decomposition (non-collapse failure flat at 0.017–0.050 across cells); B and S_SEMICOLON fail by collapsing while ordinary references fail by overshooting. **Round 2 confirmed this causally**: blocking collapse takes B's excess to 0.000. | **Confirmed in Round 2.** |
 | **Prompt-order / salience** | Position of B relative to A drives the effect | +0.250 on the focal arm; ±0.00–0.07 on every reference | **Confirmed as a large moderator**, and itself pair-asymmetric |
 | **Response-length pressure** | Longer answers drift off the count | B is longest and fails moderately; S_SEMICOLON is short and fails most; C_W3 is mid-length and fails least | **Weakened.** Length does not order the outcomes. |
 | **Unmatched reference difficulty** | B is simply harder than the references | Isolated difficulty is nearly orthogonal to interference: C_O2 is hardest alone (0.65) but interferes least (0.05); S_SEMICOLON is trivial alone (0.00) but interferes most (0.60) | **Weakened for B**, but it exposes that construction-time matching does not match on what matters |
@@ -236,3 +245,200 @@ Stage C would add ~30 more task clusters of the identical design. Declined:
 | audit | `audit/audit_cases.md` (43 cases) · `audit/human_verdicts.md` · `audit/audit_sample.json` |
 | independent check | `python verify_independently.py runs/stageB_20260810T183206Z` |
 | selection trail | `selection_audit.json` |
+
+---
+---
+
+# Round 2 — deep dive: what phenomenon is this actually?
+
+Three runs: `stageB` (960, round 1), `stageD2_anticollapse` (480),
+`stageD3_semicolon` (400). 1,840 generations total, **0 technical failures**.
+Still `EXPLORATORY_NO_EVIDENCE`.
+
+## 0. A correction to Round 1
+
+Round 1 reported **r = 0.998** between A-failure and "sentence collapse" and read
+it as mechanistic. **That statistic is withdrawn.** A-failure is
+`observed ≠ 4` and collapse is `observed ≤ 2`, so collapse is a *strict subset*
+of failure — verified directly, 0 collapse-but-passing rows in 600. A high
+cell-level correlation was partly guaranteed by the nesting and could not, on its
+own, establish a mechanism.
+
+What replaces it is stronger, because it is a decomposition rather than a
+correlation, and because it was then tested by intervention.
+
+## 1. What behavioural phenomenon did we actually discover?
+
+**A specific, blockable output strategy: the model answers with one
+clause-chained sentence instead of the four it was asked for.** Instructions
+differ in how often they push it into that strategy, and A-failure follows.
+
+Three non-definitional facts establish this:
+
+**(a) Arms differ in *which* failure mode they take, not just how much they fail.**
+Ordinary references fail by *overshooting* — 8 of their 11 failures are 5
+sentences, 2 are 6. B and `S_SEMICOLON` fail by *collapsing* to one. Direction is
+not something nesting can manufacture.
+
+**(b) Failure that is not collapse is flat.** Across all ten arm×order cells,
+`P(failure ∧ ¬collapse)` sits in 0.017–0.050 — a range of **0.033** — while total
+failure ranges over **0.617**. Essentially all between-arm signal is in the one
+mode.
+
+**(c) Blocking the strategy removes the failure.** One clause added to the system
+message (`Write each sentence on its own line.`), identical across arms, with the
+numbered constraint list byte-identical and load unchanged at k=5:
+
+| | baseline | + scaffold | Δ [95% CI] |
+|---|---|---|---|
+| B `o_Q` | 0.275 | **0.050** | −0.225 [−0.375, −0.100] |
+| `S_SEMICOLON` `o_A` | 0.675 | 0.325 | −0.350 [−0.500, −0.200] |
+| `S_SEMICOLON` `o_Q` | 0.575 | 0.325 | −0.250 [−0.400, −0.100] |
+| `C_L3` (control) `o_A` | 0.025 | 0.050 | +0.025 |
+| `C_L3` (control) `o_Q` | 0.000 | 0.050 | +0.050 |
+
+The control did **not** improve, so this is not a scaffold that makes A easy for
+everyone — it removes one route, and only the arms using that route recover.
+
+## 2. Which explanation best accounts for it?
+
+**H2, the shared structural failure-mode mechanism.** For B it is sufficient:
+its entire excess over an ordinary reference is mediated by collapse.
+
+Paired excess over `C_L3` (figure: `fig_intervention_excess.png`):
+
+| arm / order | baseline | + scaffold |
+|---|---|---|
+| **B `o_Q`** | **+0.275** [0.150, 0.425] | **0.000** [−0.075, +0.075] |
+| B `o_A` | 0.000 | −0.025 |
+| `S_SEMICOLON` `o_A` | +0.650 | +0.275 [0.150, 0.425] |
+| `S_SEMICOLON` `o_Q` | +0.575 | +0.275 [0.100, 0.475] |
+
+And the order effect is mediated too: B's `o_Q` − `o_A` gap falls from **+0.250
+to +0.025** under the scaffold.
+
+## 3. Which alternatives are weakened or ruled out?
+
+| Hypothesis | Status | Decisive evidence |
+|---|---|---|
+| **H1 pair-specific interference** | **Falsified by its pre-registered criterion** | B's excess over `C_L3` → 0.000 once collapse is blocked. Nothing B-specific survives. |
+| **H3 order as an independent mechanism** | **Ruled out**; survives only as a trigger | *Recency ruled out by sign*: under `o_Q`, A is the **more recent** instruction and fails **more**. It is primacy — whichever instruction is read first sets the structural plan. And the gap vanishes under the scaffold. |
+| **H4 task susceptibility** | **Weakened** | B and `S_SEMICOLON` failure sets overlap **less** than independence predicts (Jaccard 0.131 vs 0.170 expected; P(`S_SEMICOLON` fails ǀ B fails) = 0.478 against a 0.600 base rate). Within-task replicates are 40% mixed for B `o_Q` — a stochastic strategy choice, not a task property. |
+| **H5 definitional artefact** | **Confirmed for the statistic, resolved for the claim** | r = 0.998 withdrawn; replaced by the mode decomposition and the intervention. |
+| Truncation | **Ruled out** | 0/600 truncated in Stage B; all EOS. (It *was* real at the protocol's 180-token cap — see Round 1.) |
+| Response length | **Ruled out as the driver** | B's `o_Q` failures are **shorter** (180 tokens) than its successes (238). `S_SEMICOLON` has the shortest answers and the highest failure. |
+| Verifier error | **Ruled out** | 0/600 re-derivation mismatches; human reading agrees; 4 sentences each containing a semicolon score `full`. |
+
+## 4. What is descriptive, correlational, and causal?
+
+- **Descriptive:** failure rates, mode taxonomy, sentence-count distributions,
+  punctuation profiles, overlap and concentration statistics.
+- **Correlational:** the association between collapse and A-failure (and it is
+  partly definitional — §0); the association between semicolon use and collapse.
+- **Causal, within this model/task/decoding setting:** the **scaffold**
+  manipulation (D2) and the **order** manipulation, because both are randomised-
+  by-design interventions on matched units with everything else held fixed. D3's
+  variant comparison is causal for the *instruction* contrast but the variants
+  are not otherwise matched on difficulty, so it identifies *which property
+  matters*, not an effect size.
+
+## 5. Does the pair-specific DCI hypothesis survive?
+
+**No, not for this pair in this setting.** B does impair A more than ordinary
+references — but only under `o_Q`, and that entire advantage is mediated by a
+strategy B does not own and does not induce most strongly. Once the strategy is
+blocked, B is indistinguishable from an ordinary added instruction (excess
+0.000). Under v19's conservative `min_j τ_j` headline B never beat its own
+reference panel in either order.
+
+The honest restatement: **what looks like pair-specific directional interference
+is, here, a shared output-strategy mechanism that several instructions can
+trigger and that instruction *position* modulates.**
+
+## 6. What does the `S_SEMICOLON` result imply?
+
+Two things, one scientific and one methodological.
+
+**Scientific (D3, pre-registered, explanation 2 selected):** the damage requires
+a *per-sentence* requirement for a mark that can *stand where a sentence boundary
+would*. Neither component alone suffices.
+
+| arm | mark | scope | excess `o_A` | excess `o_Q` | collapse | mean periods |
+|---|---|---|---|---|---|---|
+| `S_SEMICOLON` | `;` | per-sentence | **+0.650** | **+0.525** | 0.65 / 0.55 | **2.10 / 2.45** |
+| `U_FMT_SEMI2` | `;` | whole-text | +0.125 | +0.025 | **0.000** | 3.95 / 4.10 |
+| `S_TWOCOMMA` | `,` | per-sentence | +0.025 | 0.000 | **0.000** | 4.15 / 4.28 |
+
+`U_FMT_SEMI2` answers really do contain semicolons (93.8% carry ≥1) and keep 4.03
+periods. `S_TWOCOMMA` demands two commas in *every* sentence and never collapses.
+The mechanism is **substitution, not accumulation**: `S_SEMICOLON`'s *passes*
+carry **more** semicolons (3.45) than its *failures* (2.63), differing in periods
+(4.18 vs 1.42).
+
+**Methodological:** a constraint admitted blind as a *reference for generic load*
+was the strongest directional interferer in the panel, and it partially resists
+even an explicit anti-collapse instruction (+0.275 residual). Reference panels
+that are matched on construction can contain a stronger interferer than the
+focal, which inverts the conservative headline.
+
+## 7. Why did the construction-time coupling screen miss it?
+
+**Because the failure mode does not exist in the support the screen is computed
+over.** `S.COUPLING` is measured on an authored, model-free response bank.
+
+| response structure | in coupling bank (64) | in probe corpus (264) | in model generations (960) |
+|---|---|---|---|
+| four normal sentences | 58 | 13 | 497 |
+| n sentences containing semicolons | 6 | 37 | 64 |
+| **one-sentence semicolon chain** | **0** | **0** | **120** |
+| one-sentence run-on | 0 | 0 | 15 |
+| over target (5–6) | 0 | 87 | 255 |
+| 2–3 sentences | 0 | 125 | 8 |
+
+The bank contains semicolons (6 texts) — but only *inside* well-formed
+four-sentence answers, never replacing a boundary. 187 of the 264 probe-corpus
+texts contain a semicolon and **none** is a chain. The screen was not wrong
+arithmetically; its support omitted the one structure that couples the two
+verifiers. Construction-time coupling also fails to rank the observed effects at
+all: `S_SEMICOLON` scored **0.00** and interferes most; `C_O2` scored **0.40** and
+interferes least.
+
+*Exploratory methodological finding. The confirmatory procedure is not modified
+from this worktree.*
+
+## 8. The single most important unresolved question
+
+**Is "collapse" one mechanism or a family?** The scaffold removes ~100% of B's
+excess but only ~50% of `S_SEMICOLON`'s. Either the scaffold is a partial
+manipulation that `S_SEMICOLON` resists more (it *was* less obeyed — mean
+newlines 1.78 vs `C_L3`'s 3.00), or `S_SEMICOLON` has a second route to A-failure
+that the scaffold does not touch. The current design cannot separate a
+weak-manipulation explanation from a second-mechanism explanation.
+
+## 9. Highest-information next experiment
+
+**Strengthen the manipulation and see whether `S_SEMICOLON`'s residual survives.**
+Same three arms, same tasks, one factor changed: scaffold *strength*, at three
+levels — none / current soft clause / a hard structural scaffold (numbered
+output lines, which the segmenter treats as separate segments and which cannot be
+satisfied by a clause chain). Primary measurement: paired excess over `C_L3`;
+mediator: collapse rate; manipulation check: mean newlines per arm.
+
+- If `S_SEMICOLON`'s residual → 0 as compliance rises, collapse is **one**
+  mechanism and D2 was simply under-powered as a manipulation.
+- If the residual persists at full compliance, `S_SEMICOLON` has a **second**
+  route, and the reference-admission procedure needs a screen for it specifically.
+
+3 arms × 3 levels × 2 orders × 20 tasks × 2 reps = **720 generations, ≈13 min**.
+This dominates a broader 5–7 arm sweep, which would characterise more instructions
+against a mechanism we do not yet know is singular.
+
+## Artifacts (round 2)
+
+| | |
+|---|---|
+| forensics | `runs/stageB_.../forensics/` — `circularity_audit.json`, `failure_taxonomy.csv`, `failure_set_overlap.csv`, `order_transitions.csv`, `task_susceptibility.csv`, `replicate_repeatability.csv`, `concentration.json`, `coupling_bank_coverage.csv` |
+| forensic packet | `runs/stageB_.../forensics/packet.md` (40 cases, 8 strata, within-stratum random) |
+| intervention D2 | `runs/stageD2_anticollapse_.../analysis/` — `intervention_{cells,excess,modes,scaffold_effect}.csv`, `fig_intervention_excess.png` |
+| intervention D3 | `runs/stageD3_semicolon_.../analysis/intervention_*.csv` |
+| living record | `HYPOTHESES.md`, `DECISIONS.md` |
