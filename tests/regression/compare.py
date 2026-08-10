@@ -159,6 +159,18 @@ def compare_runs(fixture: Path, run: Path) -> tuple[list[str], list[str]]:
         if fa.exists() and fb.exists():
             compared.append(f"gates/{name}")
             problems += compare_json(fa, fb)
+        elif fa.exists() != fb.exists():
+            # One side has the gate record and the other does not. Skipping that
+            # silently is the worst possible reading: a run that stopped early,
+            # or lost a gate, compared clean against a fixture that has the
+            # record - and "0 problems" was reported for a comparison that never
+            # happened. Absent on BOTH sides stays acceptable, because GATE_JSONS
+            # spans gates a legitimately shorter profile never reaches.
+            side = "fixture" if fa.exists() else "run"
+            problems.append(
+                f"gates/{name} exists only in the {side}; a gate record present "
+                "on one side and missing on the other is a regression, not a "
+                "comparison to skip")
     fa = fixture / "config" / "protocol_fields.json"
     fb = run / "config" / "protocol_fields.json"
     if fa.exists() and fb.exists():
