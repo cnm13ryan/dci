@@ -1,0 +1,5 @@
+architecture,role,mae,q90,n_pseudo_focal
+g0_broad_eligible,benchmark only,,,
+g1_calipered_panel,"PRIMARY, must pass alone",,,
+g2_synthetic_weighted,"secondary, validated separately",,,
+random_eligible_sets,falsification comparator,,,0.0

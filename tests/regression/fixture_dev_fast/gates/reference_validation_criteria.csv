@@ -1,0 +1,7 @@
+criterion,value,threshold,passed,architecture
+evaluable,0.0,1.0,False,g1_calipered_panel
+worst individual reference bound on U_val,0.4098635227060048,0.1,False,g1_calipered_panel
+leave-one-reference-out shift bound,0.04229617120086557,0.05,True,g1_calipered_panel
+evaluable,0.0,1.0,False,g2_synthetic_weighted
+max single weight,0.30000000000000454,0.3,True,g2_synthetic_weighted
+effective panel size J_eff,3.6115147533390695,4.0,False,g2_synthetic_weighted

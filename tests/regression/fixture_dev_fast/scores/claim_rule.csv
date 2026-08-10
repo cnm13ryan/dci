@@ -1,0 +1,3 @@
+order,tau_min,least_favourable_reference,simultaneous_lower_bound_on_min,simultaneous_upper_bound_on_max,all_same_sign,robust_positive,robust_negative,reference_robust_claim_supported
+target_first,0.08333333333333331,S_MINWORDS15,-0.24077413931936426,0.518551917097142,True,False,False,False
+added_first,-0.02777777777777768,S_COMMA,-0.29009984190687355,0.5678776196846513,False,False,False,False

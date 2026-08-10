@@ -1,0 +1,40 @@
+{
+  "gate": "M_measurement",
+  "status": "AUDIT_MISSING",
+  "reason": "the paraphrase semantic audit has not been signed",
+  "quantities": {
+    "paraphrase_audit_signed": false,
+    "paraphrase_audit_approved": false,
+    "paraphrase_audit_sha256": null,
+    "verifier_audit_signed": false,
+    "verifier_audit_passed": false,
+    "verifier_audit_status": "AUDIT_MISSING",
+    "verifier_audit_sha256": null,
+    "cases_per_truth_class_tier1": 73,
+    "cases_per_truth_class_tier2": 16,
+    "error_ceiling": 0.05,
+    "stratum_error_ceiling": 0.2,
+    "tier1_units": [
+      "A",
+      "B"
+    ],
+    "tier2_strata": 31,
+    "human_labels_required": 1284,
+    "constraints_covered": 41,
+    "missing_units": [],
+    "class_short_units": [],
+    "reliability_failed_units": []
+  },
+  "thresholds": {
+    "kappa_floor": 0.8,
+    "error_ceiling": 0.05,
+    "stratum_error_ceiling": 0.2,
+    "cases_per_truth_class_tier1": 73,
+    "cases_per_truth_class_tier2": 16
+  },
+  "more_data_could_resolve": true,
+  "new_protocol_version_required": false,
+  "dry_run_bypassed": true,
+  "recorded_utc": "2026-08-09T10:01:09.306399+00:00",
+  "passed": false
+}

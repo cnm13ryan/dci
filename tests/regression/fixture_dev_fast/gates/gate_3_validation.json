@@ -1,0 +1,126 @@
+{
+  "gate": "3_validation",
+  "status": "REFERENCE_VALIDATION_FAILED",
+  "reason": "g1 failed on ['evaluable', 'worst individual reference bound on U_val']",
+  "quantities": {
+    "g1_passed": false,
+    "g2_passed": false,
+    "primary_authorized": false,
+    "stochastic_authorized": false,
+    "g0_role": "benchmark and falsification comparator; authorizes nothing",
+    "architectures": [
+      {
+        "architecture": "g0_broad_eligible",
+        "role": "benchmark only",
+        "mae": NaN,
+        "q90": NaN,
+        "n_pseudo_focal": NaN
+      },
+      {
+        "architecture": "g1_calipered_panel",
+        "role": "PRIMARY, must pass alone",
+        "mae": NaN,
+        "q90": NaN,
+        "n_pseudo_focal": NaN
+      },
+      {
+        "architecture": "g2_synthetic_weighted",
+        "role": "secondary, validated separately",
+        "mae": NaN,
+        "q90": NaN,
+        "n_pseudo_focal": NaN
+      },
+      {
+        "architecture": "random_eligible_sets",
+        "role": "falsification comparator",
+        "mae": NaN,
+        "q90": NaN,
+        "n_pseudo_focal": 0.0
+      }
+    ],
+    "criteria": [
+      {
+        "criterion": "evaluable",
+        "value": 0.0,
+        "threshold": 1.0,
+        "passed": false,
+        "architecture": "g1_calipered_panel"
+      },
+      {
+        "criterion": "worst individual reference bound on U_val",
+        "value": 0.4098635227060048,
+        "threshold": 0.1,
+        "passed": false,
+        "architecture": "g1_calipered_panel"
+      },
+      {
+        "criterion": "leave-one-reference-out shift bound",
+        "value": 0.04229617120086557,
+        "threshold": 0.05,
+        "passed": true,
+        "architecture": "g1_calipered_panel"
+      },
+      {
+        "criterion": "evaluable",
+        "value": 0.0,
+        "threshold": 1.0,
+        "passed": false,
+        "architecture": "g2_synthetic_weighted"
+      },
+      {
+        "criterion": "max single weight",
+        "value": 0.30000000000000454,
+        "threshold": 0.3,
+        "passed": true,
+        "architecture": "g2_synthetic_weighted"
+      },
+      {
+        "criterion": "effective panel size J_eff",
+        "value": 3.6115147533390695,
+        "threshold": 4.0,
+        "passed": false,
+        "architecture": "g2_synthetic_weighted"
+      }
+    ],
+    "pseudo_focal_cohort": [
+      "C_L3",
+      "C_O2",
+      "C_W3"
+    ],
+    "random_reference_mae_mean": null,
+    "u_build": [
+      "U_FMT_COLON1",
+      "U_LEX_ALLIT_P",
+      "U_NUM_SUM100"
+    ],
+    "u_val": [
+      "U_FMT_SEMI2",
+      "U_LEX_FORBID3",
+      "U_NUM_ONEPCT"
+    ],
+    "u_test": [
+      "U_FMT_QUOTE1",
+      "U_LEX_REQUIRE3",
+      "U_NUM_TWOINT"
+    ],
+    "selected_references": [
+      "S_SEMICOLON",
+      "C_W3",
+      "S_COMMA",
+      "S_MINWORDS15",
+      "C_L3",
+      "S_MINWORDS12"
+    ]
+  },
+  "thresholds": {
+    "mae": 0.05,
+    "q90": 0.1,
+    "individual": 0.1,
+    "loo": 0.05
+  },
+  "more_data_could_resolve": false,
+  "new_protocol_version_required": true,
+  "dry_run_bypassed": true,
+  "recorded_utc": "2026-08-09T10:02:16.444216+00:00",
+  "passed": false
+}

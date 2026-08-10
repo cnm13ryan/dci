@@ -1,0 +1,29 @@
+{
+  "universe": [],
+  "cohort": [
+    "C_L3",
+    "C_O2",
+    "C_W3"
+  ],
+  "donor_union": [
+    "C_L3",
+    "C_O2",
+    "C_W3"
+  ],
+  "u_val_measured_ids": [
+    "B",
+    "C_L3",
+    "C_O2",
+    "C_W3",
+    "S_COMMA",
+    "S_MINWORDS12",
+    "S_MINWORDS15",
+    "S_SEMICOLON"
+  ],
+  "independent_of_focal": true,
+  "pf_universe_lineage": [],
+  "primary_pool_lineage": [
+    "focal_relative"
+  ],
+  "frozen_before_u_val_generation": true
+}

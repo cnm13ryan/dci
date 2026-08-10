@@ -1,0 +1,16 @@
+{
+  "target_first": {
+    "wald_statistic": 28.950053608598452,
+    "p_bootstrap": 0.0,
+    "p_chi2_reference": 2.3716628299030873e-05,
+    "max_offdiag_correlation": 0.9664161372437822,
+    "homogeneous_at_0.10": false
+  },
+  "added_first": {
+    "wald_statistic": 304.54118964879626,
+    "p_bootstrap": 0.0,
+    "p_chi2_reference": 0.0,
+    "max_offdiag_correlation": 0.9350705368766424,
+    "homogeneous_at_0.10": false
+  }
+}
