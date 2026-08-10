@@ -67,3 +67,10 @@ def test_a_failure_still_prints_the_instance_record(cloud, tmp_path, capsys):
     printed = capsys.readouterr().out
     assert "could not write state file" in printed
     assert "instance_ids" in printed
+
+
+def test_the_standalone_doctor_delegates_to_the_package():
+    """No second implementation to drift out of step with `dci doctor`."""
+    text = Path("scripts/local_doctor.py").read_text()
+    assert "from dci.diagnostics import main" in text
+    assert len(text.splitlines()) < 25, "the logic belongs in the package"
