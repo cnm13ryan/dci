@@ -25,11 +25,12 @@ source audit, risk table, reproducibility report and open blockers;
       verifiers/ analysis/ … extracted pure libraries (84 defs, unit-tested)
     configs/profiles/        dev_fast, dev_fast_gpu, integration_pass, pilot, study
     environments/rocm|cuda/  the two GPU stacks — separate projects, separate locks
+    scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
 
-The operational `scripts/` tree and the read-only `notebook_source/` archive are
-added by the two changes that follow this one in the stack, and are documented
-there rather than here: a path is described in the snapshot that contains it.
+The read-only `notebook_source/` archive is added by the change that follows this
+one in the stack and is documented there: a path is described in the snapshot
+that contains it.
 
 ## Local runbook (clean checkout → tests → dev_fast)
 
@@ -56,10 +57,42 @@ Local profiles are non-evidence by construction (`DEVELOPMENT_ONLY`,
 `SYNTHETIC_NO_EVIDENCE`); the hardware class they freeze can never resume on
 Lambda, and the package refuses the attempt (`HARDWARE_CLASS_MISMATCH`).
 
-## Lambda runbook
+## Lambda runbook (preflight → run → collect → terminate)
 
-Documented alongside the tooling it invokes, which arrives with `scripts/` later
-in this stack.
+Two arguments have no default on purpose. `--data-root` and `--remote` must both
+name the SAME persistent filesystem path: the instance root disk is erased on
+termination, and a plausible-but-wrong default is how a run gets collected from
+the wrong tree, verified as empty, and then deleted.
+
+    export LAMBDA_API_KEY=...        # read -rsp; never in the repo
+    export LAMBDA_REGION=...  LAMBDA_SSH_KEY_NAME=...
+    export DCI_DATA_ROOT=/lambda/nfs/<fs>/dci        # the persistent root
+    python scripts/lambda_cloud.py doctor --instance-type gpu_1x_a10 \
+        --region "$LAMBDA_REGION" --ssh-key-name "$LAMBDA_SSH_KEY_NAME"
+    python scripts/lambda_cloud.py launch ...            # dry-run: prints JSON
+    python scripts/lambda_cloud.py launch ... --state-file .lambda/instance.json --execute
+    python scripts/lambda_cloud.py wait --instance-id $ID > .lambda/active.json
+    bash scripts/lambda_upload.sh --host $IP --key $SSH_KEY
+    ssh ubuntu@$IP  "cd dci && bash scripts/lambda_bootstrap.sh \
+        --data-root $DCI_DATA_ROOT"                      # doctor + tests
+    ssh ubuntu@$IP  "cd dci && tmux new -d -s dci \
+        'dci run --profile pilot --data-root $DCI_DATA_ROOT --execute'"
+    bash scripts/lambda_collect.sh --host $IP --key $SSH_KEY \
+        --remote $DCI_DATA_ROOT --destination lambda-results
+    python scripts/lambda_cloud.py terminate --instance-id $ID          # review
+    python scripts/lambda_cloud.py terminate --instance-id $ID --execute
+    python scripts/lambda_cloud.py instances                            # empty
+
+Rules the tooling enforces or the runbook requires: dry-run by default and
+`--execute` for anything billable or destructive; no GPU-SKU substitution
+(capacity gaps are reported); collection fails closed unless at least one
+manifest was found, at least one entry was checked, and every declared artifact
+matched its recorded hash — so nothing can report that termination is safe
+without having verified something; environment provenance written to the
+persistent root, not the root disk; terminate through the API, never
+`shutdown`/`poweroff` (Lambda documents billing can continue in Alert status); a
+cloud run starts from a clean state and never imports a generation cache from
+another hardware class.
 
 ## Failure taxonomy
 
