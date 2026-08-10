@@ -2,10 +2,11 @@
 
 This repository is the authoritative implementation of the DCI v15 protocol,
 extracted from the validated Colab notebook with **demonstrated behavioral
-equivalence** (Gate 0: 110/110; the frozen no-bypass `integration_pass`
+equivalence** (every Gate 0 self-test passes - the inventory lives in
+`tests/regression/gate0_registry.py`; the frozen no-bypass `integration_pass`
 baseline; 38 deterministic artifacts byte-identical to the notebook fixture
-after volatile-field stripping). The notebook cells are archived under
-`notebook_source/`; no second implementation of the pipeline exists.
+after volatile-field stripping). No second implementation of the pipeline
+exists.
 
 The scientific protocol is v15, unchanged: six individually defensible
 references valid in both orders, the full 6×2 τ matrix with both orders
@@ -24,9 +25,12 @@ source audit, risk table, reproducibility report and open blockers;
       verifiers/ analysis/ … extracted pure libraries (84 defs, unit-tested)
     configs/profiles/        dev_fast, dev_fast_gpu, integration_pass, pilot, study
     environments/rocm|cuda/  the two GPU stacks — separate projects, separate locks
-    scripts/                 doctors + Lambda tooling
+    scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
-    notebook_source/         the archived v15 cells + build harness (read-only)
+
+The read-only `notebook_source/` archive is added by the change that follows this
+one in the stack and is documented there: a path is described in the snapshot
+that contains it.
 
 ## Local runbook (clean checkout → tests → dev_fast)
 
@@ -39,7 +43,7 @@ source audit, risk table, reproducibility report and open blockers;
 
     # Workstation GPU tier (2x RX 7900 XTX, ROCm):
     cd environments/rocm && uv sync && cd ../..
-    uv run --project environments/rocm python scripts/local_doctor.py --gpu --expect-devices 2
+    uv run --project environments/rocm dci doctor --gpu --expect-devices 2
     uv run --project environments/rocm dci run --profile dev_fast_gpu --device 0 \
         --data-root ~/dci-artifacts          # real 0.5B smoke, DEVELOPMENT_ONLY
 
@@ -55,29 +59,40 @@ Lambda, and the package refuses the attempt (`HARDWARE_CLASS_MISMATCH`).
 
 ## Lambda runbook (preflight → run → collect → terminate)
 
+Two arguments have no default on purpose. `--data-root` and `--remote` must both
+name the SAME persistent filesystem path: the instance root disk is erased on
+termination, and a plausible-but-wrong default is how a run gets collected from
+the wrong tree, verified as empty, and then deleted.
+
     export LAMBDA_API_KEY=...        # read -rsp; never in the repo
     export LAMBDA_REGION=...  LAMBDA_SSH_KEY_NAME=...
+    export DCI_DATA_ROOT=/lambda/nfs/<fs>/dci        # the persistent root
     python scripts/lambda_cloud.py doctor --instance-type gpu_1x_a10 \
         --region "$LAMBDA_REGION" --ssh-key-name "$LAMBDA_SSH_KEY_NAME"
     python scripts/lambda_cloud.py launch ...            # dry-run: prints JSON
     python scripts/lambda_cloud.py launch ... --state-file .lambda/instance.json --execute
     python scripts/lambda_cloud.py wait --instance-id $ID > .lambda/active.json
     bash scripts/lambda_upload.sh --host $IP --key $SSH_KEY
-    ssh ubuntu@$IP  'cd dci && bash scripts/lambda_bootstrap.sh'   # doctor+tests
-    ssh ubuntu@$IP  'cd dci && tmux new -d -s dci \
-        "dci run --profile pilot --data-root /lambda/nfs/<fs>/dci --execute"'
-    bash scripts/lambda_collect.sh --host $IP --key $SSH_KEY --destination lambda-results
+    ssh ubuntu@$IP  "cd dci && bash scripts/lambda_bootstrap.sh \
+        --data-root $DCI_DATA_ROOT"                      # doctor + tests
+    ssh ubuntu@$IP  "cd dci && tmux new -d -s dci \
+        'dci run --profile pilot --data-root $DCI_DATA_ROOT --execute'"
+    bash scripts/lambda_collect.sh --host $IP --key $SSH_KEY \
+        --remote $DCI_DATA_ROOT --destination lambda-results
     python scripts/lambda_cloud.py terminate --instance-id $ID          # review
     python scripts/lambda_cloud.py terminate --instance-id $ID --execute
     python scripts/lambda_cloud.py instances                            # empty
 
 Rules the tooling enforces or the runbook requires: dry-run by default and
 `--execute` for anything billable or destructive; no GPU-SKU substitution
-(capacity gaps are reported); durable artifacts on a persistent filesystem or
-collected+hash-verified BEFORE termination (the root disk is erased); terminate
-through the API, never `shutdown`/`poweroff` (Lambda documents billing can
-continue in Alert status); a cloud run starts from a clean state and never
-imports a generation cache from another hardware class.
+(capacity gaps are reported); collection fails closed unless at least one
+manifest was found, at least one entry was checked, and every declared artifact
+matched its recorded hash — so nothing can report that termination is safe
+without having verified something; environment provenance written to the
+persistent root, not the root disk; terminate through the API, never
+`shutdown`/`poweroff` (Lambda documents billing can continue in Alert status); a
+cloud run starts from a clean state and never imports a generation cache from
+another hardware class.
 
 ## Failure taxonomy
 
