@@ -347,19 +347,49 @@ def v_no_char(text: str, char: str) -> VerificationResult:
                               {"char": char, "observed": observed})
 
 
+def matched_pairs(text: str, opener: str, closer: str) -> tuple[int, bool]:
+    """Pairs closed in order, and whether the running depth stayed non-negative.
+
+    Counting openers and closers separately cannot tell ")(" from "()": both
+    have one of each. A delimiter requirement is a requirement about structure,
+    so it is decided by a left-to-right scan in which a closer only pairs with
+    an opener that is still unmatched. `ordered` is False as soon as a closer
+    appears at depth zero; nesting itself is permitted.
+    """
+    depth = pairs = 0
+    ordered = True
+    for char in text:
+        if char == opener:
+            depth += 1
+        elif char == closer:
+            if depth == 0:
+                ordered = False
+            else:
+                depth -= 1
+                pairs += 1
+    return pairs, ordered
+
+
 def v_paren_pairs(text: str, n: int) -> VerificationResult:
     clean = normalize_text(text)
     if not clean:
         return _unscorable({"required": n})
     opens, closes = clean.count("("), clean.count(")")
     balanced = opens == closes
-    status, binary, score = count_status(min(opens, closes), n)
-    if not balanced:
+    pairs, ordered = matched_pairs(clean, "(", ")")
+    status, binary, score = count_status(pairs, n)
+    if not ordered:
+        # A negative running depth is not a near miss to be scored down; the
+        # sequence is malformed and cannot satisfy the requirement at all.
+        status, binary = "violation", 0
+        score = min(score, 0.5)
+    elif not balanced:
         status, binary = ("violation" if status == "violation" else "partial"), 0
         score = min(score, 0.5)
     return VerificationResult(status, binary, score,
                               {"open": opens, "close": closes, "required": n,
-                               "balanced": balanced})
+                               "balanced": balanced, "ordered": ordered,
+                               "pairs": pairs})
 
 
 def v_quote_pairs(text: str, n: int) -> VerificationResult:
@@ -368,17 +398,24 @@ def v_quote_pairs(text: str, n: int) -> VerificationResult:
         return _unscorable({"required": n})
     straight = clean.count(STRAIGHT_QUOTE)
     curly_open, curly_close = clean.count(CURLY_QUOTES[0]), clean.count(CURLY_QUOTES[1])
-    # A pair is two straight marks, or one curly-open with one curly-close.
-    pairs = straight // 2 + min(curly_open, curly_close)
+    # A pair is two straight marks, or one curly-open with a LATER curly-close.
+    # Straight marks are their own opener and closer so order cannot be wrong;
+    # directional marks can be, and reversed marks are not a pair.
+    curly_pairs, ordered = matched_pairs(clean, CURLY_QUOTES[0], CURLY_QUOTES[1])
+    pairs = straight // 2 + curly_pairs
     leftover = straight % 2 or (curly_open != curly_close)
     status, binary, score = count_status(pairs, n)
-    if leftover:
+    if not ordered:
+        status, binary = "violation", 0
+        score = min(score, 0.5)
+    elif leftover:
         status, binary = ("violation" if status == "violation" else "partial"), 0
         score = min(score, 0.5)
     return VerificationResult(status, binary, score,
                               {"straight": straight, "curly_open": curly_open,
                                "curly_close": curly_close, "pairs": pairs,
-                               "required": n, "unbalanced": bool(leftover)})
+                               "required": n, "unbalanced": bool(leftover),
+                               "ordered": ordered})
 
 
 def v_exact_integer_count(text: str, n: int) -> VerificationResult:
