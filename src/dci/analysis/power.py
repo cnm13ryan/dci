@@ -182,13 +182,55 @@ SCENARIOS: tuple[dict, ...] = (
 )
 
 
+# Effect multiples of the SESOI that every design simulation must contain
+# outright: the null, the SESOI itself, and twice the SESOI. These are the points
+# the acceptance rule is stated at, so they are simulated rather than interpolated.
+REQUIRED_SESOI_MULTIPLES: tuple[float, ...] = (0.0, 1.0, 2.0)
+
+
+def scenario_effects(effects: Iterable[float], sesoi: float,
+                     multiples: Iterable[float] = REQUIRED_SESOI_MULTIPLES
+                     ) -> list[float]:
+    """The simulated grid, guaranteed to contain the exact required effects.
+
+    The exact SESOI is inserted rather than approached. A planner that reports
+    the nearest grid point as `power_at_sesoi` answers a question nobody asked:
+    with a grid of 0.05 and 0.10 and a SESOI of 0.06, the reported number was
+    power at 0.05 - overstating it, because power rises with the effect.
+    """
+    grid = [float(e) for e in effects]
+    for multiple in multiples:
+        required = float(multiple) * float(sesoi)
+        if not any(g == required for g in grid):
+            grid.append(required)
+    return sorted(set(grid))
+
+
+def power_at_exact_effect(sim: pd.DataFrame, effect: float,
+                          column: str) -> float:
+    """Read one simulated effect by exact equality, or refuse.
+
+    The lookup cannot silently degrade into a nearest-neighbour search: the
+    grid is built to contain this value, so its absence is a configuration
+    error rather than something to approximate around.
+    """
+    hit = sim[sim["true_tau"] == float(effect)]
+    if len(hit) != 1:
+        raise ValueError(
+            f"the simulated effect grid does not contain exactly one row at "
+            f"{effect!r}; it holds {sorted(sim['true_tau'].unique())}. Insert "
+            "the required effect with scenario_effects() instead of reporting a "
+            "neighbouring grid point.")
+    return float(hit.iloc[0][column])
+
+
 def plan_primary_power(n_clusters: int, n_refs: int, n_orders: int,
                        effects: Iterable[float], reps: int, alpha: float,
                        power: float, sesoi: float,
                        scenarios: Iterable[dict] = SCENARIOS,
                        seed: int = 20260809) -> pd.DataFrame:
     """One row per sensitivity scenario, for the real primary family."""
-    effects = list(effects)
+    effects = scenario_effects(effects, sesoi)
     rows = []
     for i, sc in enumerate(scenarios):
         cov = primary_family_covariance(
@@ -197,7 +239,6 @@ def plan_primary_power(n_clusters: int, n_refs: int, n_orders: int,
             sc["rho_cross_order_diff_constraint"])
         sim = simulate_claim_power(cov, n_refs, n_orders, effects, reps, alpha,
                                    seed=seed + i)
-        at_sesoi = sim.iloc[int(np.argmin(np.abs(np.array(effects) - sesoi)))]
         rows.append({
             "scenario": sc["label"], "n_clusters": n_clusters,
             "n_family": int(n_refs * n_orders),
@@ -217,9 +258,18 @@ def plan_primary_power(n_clusters: int, n_refs: int, n_orders: int,
             "mde_simultaneous_per_order": mde(sim, "simultaneous_power_per_order", power),
             "mde_simultaneous_both_orders": mde(sim, "simultaneous_power_both_orders", power),
             "sesoi": sesoi,
-            "power_at_sesoi_marginal": float(at_sesoi["marginal_power"]),
-            "power_at_sesoi_per_order": float(at_sesoi["simultaneous_power_per_order"]),
-            "power_at_sesoi_both_orders": float(at_sesoi["simultaneous_power_both_orders"]),
+            "power_at_sesoi_marginal":
+                power_at_exact_effect(sim, sesoi, "marginal_power"),
+            "power_at_sesoi_per_order":
+                power_at_exact_effect(sim, sesoi, "simultaneous_power_per_order"),
+            "power_at_sesoi_both_orders":
+                power_at_exact_effect(sim, sesoi, "simultaneous_power_both_orders"),
+            # The other two points the acceptance rule is stated at, also exact.
+            "false_positive_at_zero":
+                power_at_exact_effect(sim, 0.0, "simultaneous_power_per_order"),
+            "power_at_two_sesoi_per_order":
+                power_at_exact_effect(sim, 2.0 * sesoi,
+                                      "simultaneous_power_per_order"),
         })
     out = pd.DataFrame(rows)
     out["powered_at_sesoi"] = out["power_at_sesoi_per_order"] >= power
