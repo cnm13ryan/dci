@@ -47,6 +47,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-new-tokens", type=int,
                         default=runner.ModelConfig.max_new_tokens)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--arms", default=None,
+                        help="comma-separated reference ids replacing the admitted "
+                             "panel; DIAGNOSTIC runs only, recorded in config.json")
+    parser.add_argument("--scaffolds", default="",
+                        help="comma-separated system-message variants to cross, "
+                             f"from {sorted(runner.SCAFFOLDS)}")
     parser.add_argument("--dry-run", action="store_true",
                         help="build and validate the design, write it, load no model")
     return parser.parse_args(argv)
@@ -56,7 +62,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     S = harvest.load()
 
-    selection = design.select(load=args.load)
+    arms_override = ([a.strip() for a in args.arms.split(",")] if args.arms else None)
+    selection = design.select(load=args.load, arms_override=arms_override)
+    scaffolds = tuple(s.strip() for s in args.scaffolds.split(","))
     tasks = [t for t in S.TASKS.to_dict("records") if t["split"] == TASK_SPLIT]
     if args.tasks > len(tasks):
         raise SystemExit(f"asked for {args.tasks} tasks; the {TASK_SPLIT} split "
@@ -68,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
     orders = design.ORDERS if args.orders == "both" else (args.orders,)
     rows = design.build_design(
         selection, tasks, replicates=args.replicates, base_seed=args.seed,
-        stage=args.stage, orders=orders,
+        stage=args.stage, orders=orders, scaffolds=scaffolds,
         include_primitives=not args.no_primitives)
     # Refuses to spend a second of GPU time on a design that is not matched.
     design.assert_matched(rows, selection)
@@ -94,6 +102,9 @@ def main(argv: list[str] | None = None) -> int:
         "task_ids": [t["task_id"] for t in tasks],
         "replicates": args.replicates,
         "orders": list(orders),
+        "scaffolds": list(scaffolds),
+        "scaffold_text": {s: runner.SCAFFOLDS[s] for s in scaffolds},
+        "arms_override": arms_override,
         "load": selection.load,
         "paraphrase_id": 0,
         "n_rows": len(rows),

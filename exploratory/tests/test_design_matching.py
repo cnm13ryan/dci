@@ -229,3 +229,52 @@ def test_unscorable_is_not_silently_a_failure():
     S = harvest.load()
     result = S.verify("", "A")
     assert result.status == "unscorable"
+
+
+# ------------------------------------------- diagnostic runs (scaffold / arms)
+def test_scaffold_is_part_of_the_matching_key(selection):
+    """A focal row must be compared with references under the SAME scaffold.
+
+    If the scaffold were not in `pair_key`, the intervention would pair scaffolded
+    focal rows against unscaffolded reference rows and measure the scaffold
+    instead of the arm.
+    """
+    rows = design.build_design(selection, TASKS, replicates=1, base_seed=7,
+                               stage="test", scaffolds=("", "one_sentence_per_line"))
+    design.assert_matched(rows, selection)
+    for pair_key in {r.pair_key for r in rows if r.condition == "focal"}:
+        group = [r for r in rows if r.pair_key == pair_key
+                 and r.condition in ("focal", "reference")]
+        assert len({r.scaffold for r in group}) == 1, pair_key
+
+
+def test_scaffold_crossing_doubles_the_contrast_rows(selection):
+    one = design.build_design(selection, TASKS, replicates=1, base_seed=7,
+                              stage="test", scaffolds=("",))
+    two = design.build_design(selection, TASKS, replicates=1, base_seed=7,
+                              stage="test", scaffolds=("", "one_sentence_per_line"))
+    contrast = lambda rs: [r for r in rs if r.condition in ("focal", "reference")]
+    assert len(contrast(two)) == 2 * len(contrast(one))
+    assert len({r.row_id for r in two}) == len(two)
+
+
+def test_arms_override_replaces_the_panel_and_keeps_the_focal():
+    chosen = ["S_SEMICOLON", "C_L3"]
+    sel = design.select(load=5, arms_override=chosen)
+    assert list(sel.references) == chosen
+    assert sel.arms == (design.FOCAL_ID, *chosen)
+    rows = design.build_design(sel, TASKS, replicates=1, base_seed=7, stage="test")
+    design.assert_matched(rows, sel)
+
+
+def test_arms_override_refuses_the_target_or_focal():
+    with pytest.raises(ValueError, match="target or the focal"):
+        design.select(load=5, arms_override=["B", "C_L3"])
+
+
+def test_scaffold_text_is_appended_to_the_protocol_system_message():
+    from dci_exploratory import runner
+    base = harvest.load().SYSTEM_MESSAGE
+    assert runner.system_message_for("") == base
+    scaffolded = runner.system_message_for("one_sentence_per_line")
+    assert scaffolded.startswith(base) and len(scaffolded) > len(base)
