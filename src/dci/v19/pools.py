@@ -32,6 +32,7 @@ material, not asserted by a registry.
 """
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
 from typing import Mapping, Sequence
 
@@ -179,7 +180,7 @@ class Pool:
         stable identifier for nothing, and comparing it later would appear to
         prove the material had not changed.
         """
-        item_keys = sorted(_item_key(i) for i in self.items)
+        item_keys = sorted(_content_key(i) for i in self.items)
         return sha([self.identity, item_keys])
 
     def sign(self, by: str) -> "Pool":
@@ -213,11 +214,71 @@ class Pool:
                     stratum=self.stratum, signed_by="")
 
 
-def _item_key(item) -> str:
-    """A pool item's identity, whether it is a bare id or a background entry."""
+# ------------------------------------------------------- two kinds of identity
+#
+# A pool item has two identities and they answer different questions. Collapsing
+# them into one - which is what a single _item_key did - breaks whichever question
+# it was not designed for.
+#
+#   CONTENT identity answers "has this material changed?". Section 11.2 says a
+#   pool is "signed and hashed", and section 8.2 lists the fields that determine
+#   how the material is interpreted: verifier and audit hashes, canonical
+#   wording, output schema, parameter distribution, incompatibility and
+#   entailment metadata, construction provenance. A signature over the
+#   constraint_id alone could not detect any of those changing, so it certified
+#   nothing it claimed to.
+#
+#   OVERLAP identity answers "is this the same scientific item as that one?".
+#   Here the id matters: the same constraint appearing in two splits is leakage
+#   even if one copy's metadata was edited, and a content-only key would stop
+#   detecting that. But content matters too, because a renamed copy of identical
+#   material is also leakage. So overlap uses the UNION of both.
+
+
+def _content_key(item) -> str:
+    """Canonical hash of an item's complete content, INCLUDING its declared id.
+
+    Used for signing. The id belongs in the signature because it is how every
+    other artifact references the constraint, so renaming an entry does change
+    the signed material. Routed through the provenance layer's canonicaliser,
+    which refuses values with no reproducible form rather than hashing them by
+    identity.
+    """
+    if isinstance(item, BackgroundEntry):
+        return sha(["v19/background-entry", dataclasses.asdict(item)])
+    return sha(["v19/pool-item", item])
+
+
+def _material_key(item) -> str:
+    """Canonical hash of the item's content EXCLUDING its declared id.
+
+    Used for overlap. Section 8.2 prohibits "semantic duplicates" as well as
+    exact reuse, so a copy of identical material under a new label is still the
+    same scientific item and still leakage. Keying overlap on the full content
+    hash would miss precisely that, because the rename changes the hash.
+    """
+    if isinstance(item, BackgroundEntry):
+        fields = dataclasses.asdict(item)
+        fields.pop("constraint_id")
+        return sha(["v19/background-material", fields])
+    return sha(["v19/pool-item-material", item])
+
+
+def _declared_id(item) -> str:
+    """The item's declared identifier: a label, not a content address."""
     if isinstance(item, BackgroundEntry):
         return item.constraint_id
     return str(item)
+
+
+def _overlap_keys(item) -> tuple[str, ...]:
+    """Every identity under which this item counts as "the same item".
+
+    The declared id and the id-free material hash, so leakage is caught whether
+    the duplicate kept its name and edited its fields, or kept its fields and
+    changed its name. Deliberately NOT the signing key, which includes the id.
+    """
+    return (f"id:{_declared_id(item)}", f"material:{_material_key(item)}")
 
 
 def declare_pool(pool_id: str, pair: str, kind: str, split: str,
@@ -242,12 +303,13 @@ def assert_splits_disjoint(pools: Sequence[Pool]) -> None:
         if not pool.populated:
             continue
         for item in pool.items:
-            where.setdefault(_item_key(item), set()).add(pool.split)
+            for key in _overlap_keys(item):
+                where.setdefault(key, set()).add(pool.split)
     shared = {item: sorted(splits) for item, splits in where.items()
               if len(splits) > 1}
     if shared:
         detail = "; ".join(f"{item} in {splits}"
-                           for item, splits in sorted(shared.items())[:5])
+                           for item, splits in sorted(shared.items())[:6])
         raise PoolViolation(
             f"{len(shared)} item(s) appear in more than one material split: "
             f"{detail}. Section 11.1 partitions all material that can affect a "
@@ -267,7 +329,7 @@ def assert_one_stratum_per_constraint(pools: Sequence[Pool]) -> None:
         if pool.kind != "background" or not pool.populated:
             continue
         for item in pool.items:
-            homes.setdefault(_item_key(item), set()).add(pool.stratum)
+            homes.setdefault(_declared_id(item), set()).add(pool.stratum)
         for item in pool.items:
             if isinstance(item, BackgroundEntry) and item.stratum != pool.stratum:
                 raise PoolViolation(
@@ -291,8 +353,12 @@ def assert_pool_excludes(pool: Pool, forbidden: Mapping[str, str]) -> None:
     """
     if not pool.populated:
         return
-    present = [(k, forbidden[k]) for k in
-               (_item_key(i) for i in pool.items) if k in forbidden]
+    present = []
+    for item in pool.items:
+        for key in (_declared_id(item),) + _overlap_keys(item):
+            if key in forbidden:
+                present.append((_declared_id(item), forbidden[key]))
+                break
     if present:
         detail = "; ".join(f"{item} ({why})" for item, why in present[:5])
         raise PoolViolation(
