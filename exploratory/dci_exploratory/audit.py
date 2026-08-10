@@ -53,13 +53,15 @@ def _rows_for(frame: pd.DataFrame, config: dict[str, Any], rng) -> dict[str, lis
         "random_focal": sample(focal, 6),
         "random_reference": sample(reference, 6),
         "focal_failed_A": sample(focal[focal["a_failure"] == 1], 6),
-        # Rows the verifier could not score, or that scored partial credit while
-        # still failing the binary test — the places a verifier artefact hides.
+        # Rows the verifier could not score, or that failed technically — the
+        # places a verifier artefact hides. Drawn from the WHOLE frame, not just
+        # the contrast: a primitive row that came back unscorable says something
+        # about the verifier whichever condition it sat in.
         "unusual_verifier_outcome": sample(
-            contrast[(~contrast["scorable"])
-                     | (contrast["verifier_status"] == "unscorable")
-                     | (contrast["technical_failure"])], 6),
-        "truncated": sample(contrast[contrast["output_truncated"].fillna(False)], 4),
+            frame[(~frame["scorable"])
+                  | (frame["verifier_status"] == "unscorable")
+                  | (frame["technical_failure"])], 6),
+        "truncated": sample(frame[frame["output_truncated"].fillna(False)], 4),
     }
 
     # Discordant matched pairs: the units that actually move tau.
