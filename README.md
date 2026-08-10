@@ -5,8 +5,15 @@ extracted from the validated Colab notebook with **demonstrated behavioral
 equivalence** (every Gate 0 self-test passes - the inventory lives in
 `tests/regression/gate0_registry.py`; the frozen no-bypass `integration_pass`
 baseline; 38 deterministic artifacts byte-identical to the notebook fixture
-after volatile-field stripping). No second implementation of the pipeline
-exists.
+after volatile-field stripping). The notebook cells are archived under
+`notebook_source/`; no second implementation of the pipeline exists.
+
+To audit any stage against the cell it came from, diff
+`src/dci/pipeline/stages/<stage>.py` against `notebook_source/cells/<n>.py`; the
+eleven ledgered exceptions are listed in `docs/migration_ledger_patches.csv`.
+`tools/migrate_v15.py` reconstructs the v15 package from the archive into
+`build/v15_reconstruction/` — it never writes over `src/`, which is the
+authoritative repaired implementation and is not what the archive contains.
 
 The scientific protocol is v15, unchanged: six individually defensible
 references valid in both orders, the full 6×2 τ matrix with both orders
@@ -27,10 +34,8 @@ source audit, risk table, reproducibility report and open blockers;
     environments/rocm|cuda/  the two GPU stacks — separate projects, separate locks
     scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
-
-The read-only `notebook_source/` archive is added by the change that follows this
-one in the stack and is documented there: a path is described in the snapshot
-that contains it.
+    notebook_source/         the archived v15 cells + build harness (read-only)
+    tools/migrate_v15.py     rebuilds the v15 package FROM that archive
 
 ## Local runbook (clean checkout → tests → dev_fast)
 
