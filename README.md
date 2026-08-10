@@ -27,9 +27,9 @@ source audit, risk table, reproducibility report and open blockers;
     environments/rocm|cuda/  the two GPU stacks — separate projects, separate locks
     tests/                   unit / integration / regression / hardware
 
-The operational `scripts/` tree and the read-only `notebook_source/` archive are
-added by the two changes that follow this one in the stack, and are documented
-there rather than here: a path is described in the snapshot that contains it.
+The operational tooling tree and the read-only notebook archive are added by the
+two changes that follow this one in the stack, and are documented there rather
+than here: a path is described in the snapshot that contains it.
 
 ## Local runbook (clean checkout → tests → dev_fast)
 
@@ -58,8 +58,7 @@ Lambda, and the package refuses the attempt (`HARDWARE_CLASS_MISMATCH`).
 
 ## Lambda runbook
 
-Documented alongside the tooling it invokes, which arrives with `scripts/` later
-in this stack.
+Documented alongside the tooling it invokes, which arrives later in this stack.
 
 ## Failure taxonomy
 
