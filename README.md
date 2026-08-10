@@ -28,15 +28,9 @@ source audit, risk table, reproducibility report and open blockers;
     scripts/                 environment doctors + Lambda provisioning tooling
     tests/                   unit / integration / regression / hardware
 
-<<<<<<< HEAD
-The read-only `notebook_source/` archive is added by the change that follows this
-one in the stack and is documented there: a path is described in the snapshot
-that contains it.
-=======
-The operational tooling tree and the read-only notebook archive are added by the
-two changes that follow this one in the stack, and are documented there rather
-than here: a path is described in the snapshot that contains it.
->>>>>>> docs/migration-report
+The read-only notebook archive is added by the change that follows this one in
+the stack and is documented there: a path is described in the snapshot that
+contains it.
 
 ## Local runbook (clean checkout → tests → dev_fast)
 
@@ -65,7 +59,6 @@ Lambda, and the package refuses the attempt (`HARDWARE_CLASS_MISMATCH`).
 
 ## Lambda runbook (preflight → run → collect → terminate)
 
-<<<<<<< HEAD
 Two arguments have no default on purpose. `--data-root` and `--remote` must both
 name the SAME persistent filesystem path: the instance root disk is erased on
 termination, and a plausible-but-wrong default is how a run gets collected from
@@ -100,9 +93,6 @@ persistent root, not the root disk; terminate through the API, never
 `shutdown`/`poweroff` (Lambda documents billing can continue in Alert status); a
 cloud run starts from a clean state and never imports a generation cache from
 another hardware class.
-=======
-Documented alongside the tooling it invokes, which arrives later in this stack.
->>>>>>> docs/migration-report
 
 ## Failure taxonomy
 
