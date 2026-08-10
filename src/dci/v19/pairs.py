@@ -200,19 +200,20 @@ def _reference_slots(pair_id: str) -> tuple[ReferenceSlot, ...]:
         ReferenceSlot(
             pair=pair_id, index=i, arm=f"R{i}",
             identity=pending(
-                f"{pair_id}.reference.R{i}", "D12 / section 14.8",
+                f"reference.{pair_id}.R{i}", "D12 / section 14.8",
                 Resolution.PENDING_EMPIRICAL,
                 "Stage 8 simultaneous admission: caliper-normalised ranking of "
                 "already-eligible candidates, joint reference-error certificate, "
                 "exactly four admitted, then independent validation",
-                depends_on=(f"{pair_id}.candidate_pool", "exact_epsilon",
-                            f"{pair_id}.matching_constants")))
+                depends_on=(f"pool.{pair_id}.candidate_references",
+                            "exact_epsilon",
+                            f"matching.{pair_id}.constants")))
         for i in range(1, N_REFERENCES + 1))
 
 
 def _candidate_pool(pair_id: str) -> Slot:
     return pending(
-        f"{pair_id}.candidate_pool", "D8 / section 7.2",
+        f"pool.{pair_id}.candidate_references", "D8 / section 7.2",
         Resolution.PENDING_CONTENT,
         "24 authored candidates under the frozen rubric, plus at most one blind "
         "tranche of 12 if fewer than 12 survive the hard gates",
@@ -222,7 +223,7 @@ def _candidate_pool(pair_id: str) -> Slot:
 
 def _reserve_pool(pair_id: str) -> Slot:
     return pending(
-        f"{pair_id}.reserve_items", "section 6.2",
+        f"pool.{pair_id}.reserve_items", "section 6.2",
         Resolution.PENDING_CONTENT,
         "prespecified reserve target/focal items, authored before freeze",
         note="a required target or focal item that fails boundary calibration is "

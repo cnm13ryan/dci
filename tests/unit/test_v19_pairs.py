@@ -163,7 +163,7 @@ def test_asking_for_reference_identities_refuses_with_the_full_blocker_set():
     message = str(caught.value)
     assert "4 unresolved pre-freeze outputs" in message
     for i in range(1, 5):
-        assert f"p2.reference.R{i}" in message
+        assert f"reference.p2.R{i}" in message
     assert "Stage 8 simultaneous admission" in message
 
 
