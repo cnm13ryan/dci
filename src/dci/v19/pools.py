@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import dataclasses
 from dataclasses import dataclass
-from typing import Mapping, Sequence
+from typing import Mapping, Optional, Sequence
 
 from dci.provenance.hashes import sha
 from dci.v19.pairs import GENERATIVE_SCOPES, PAIR_IDS
@@ -498,8 +498,67 @@ def sufficiency_report(pools: Sequence[Pool]) -> dict[str, dict[str, object]]:
     return out
 
 
-def assert_ready_for_confirmation(pools: Sequence[Pool]) -> None:
-    """Every pool required before confirmatory drawing is populated and signed."""
+def forbidden_items(pair_id: str) -> dict[str, str]:
+    """Section 8.2's exclusion map for one pair, from the pair registry.
+
+    "Neither pool may contain the pair's target, focal constraint, admitted
+    references, semantic duplicates, known incompatible rules, or content
+    allocated to another scientific split."
+
+    This assembles the mechanically identifiable part: the pair's own target and
+    focal constraint always, and its admitted references once Stage 8 has
+    produced them. Semantic duplicates are deliberately absent - section 8.7
+    assigns that determination to human review, and inventing an automatic
+    equivalence judgement here would claim a certification the protocol does not
+    grant. `semantic_duplicate_review` carries that obligation instead.
+    """
+    from dci.v19.pairs import pair as _pair
+
+    pair = _pair(pair_id)
+    out = {f"id:{pair.target.constraint_id}": "the pair's own target constraint",
+           f"id:{pair.focal.constraint_id}": "the pair's own focal constraint"}
+    for slot in pair.references:
+        if slot.admitted:
+            out[f"id:{slot.identity.get()}"] = (
+                f"an admitted reference of {pair_id} ({slot.arm})")
+    return out
+
+
+def semantic_duplicate_review(pair_id: str) -> Slot:
+    """The human-review artifact section 8.2's "semantic duplicates" needs.
+
+    Declared rather than automated. Section 8.7 requires "two independent
+    reviews, with a third reviewer adjudicating disagreement" for clauses whose
+    semantics deterministic machinery does not exhaustively cover, and semantic
+    equivalence between authored constraints is such a clause. Pretending code
+    settles it would be a fabricated certification.
+    """
+    return pending(
+        f"review.{pair_id}.semantic_duplicates", "sections 8.2, 8.7",
+        Resolution.PENDING_DECISION,
+        "two independent human reviews confirming that no pool contains a "
+        "semantic duplicate of the pair's target, focal constraint or admitted "
+        "references, with a third reviewer adjudicating disagreement",
+        depends_on=(f"pool.{pair_id}.candidate_references",),
+        note="unresolved disagreement fails certification; deterministic overlap "
+             "checks cover exact reuse and renamed identical content, not "
+             "semantic equivalence")
+
+
+def assert_ready_for_confirmation(
+        pools: Sequence[Pool],
+        exclusions: Optional[Mapping[str, str]] = None) -> None:
+    """The one gate before confirmatory drawing. Enforces, not just signatures.
+
+    Signing each pool individually proves nothing about the partition: two
+    separately valid signed pools can share an item, and section 11.1's firewall
+    is a property of the set. So this invokes every cross-pool invariant rather
+    than leaving them as helpers a caller might forget - which is exactly what
+    happened, since none of them had a production caller.
+
+    `exclusions` defaults to the union of every declared pair's forbidden map, so
+    the common case needs no argument and cannot be silently skipped.
+    """
     problems = []
     for pool in pools:
         if not pool.populated:
@@ -511,3 +570,20 @@ def assert_ready_for_confirmation(pools: Sequence[Pool]) -> None:
             "confirmatory superblock drawing needs every scientific pool signed "
             f"and hashed; {len(problems)} are not ready:\n  "
             + "\n  ".join(problems[:10]))
+
+    # Cross-pool invariants. Each raises PoolViolation, which is fail-closed and
+    # distinct from the "not authored yet" condition above.
+    assert_splits_disjoint(pools)
+    assert_one_stratum_per_constraint(pools)
+
+    if exclusions is None:
+        exclusions = {}
+        for pair_id in PAIR_IDS:
+            exclusions.update(forbidden_items(pair_id))
+    for pool in pools:
+        assert_pool_excludes(pool, exclusions)
+
+    entries = [item for pool in pools if pool.populated
+               for item in pool.items if isinstance(item, BackgroundEntry)]
+    if entries:
+        assert_no_declared_incompatibility(entries)
