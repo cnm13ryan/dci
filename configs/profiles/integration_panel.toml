@@ -1,0 +1,28 @@
+# The no-bypass FULL-TRAVERSAL self-test (v15.1).
+#
+# `integration_pass` runs with no bypass and stops at Gate 2 with
+# NOT_IDENTIFIED_SUPPORT. That stop is the correct scientific outcome for its
+# fixture -- but it means the downstream half of the pipeline (Gate 3, Gate 3b,
+# the freeze, confirmatory generation, the primary bootstrap, simultaneous
+# inference, the claim rule, Gate 4 and export) is never exercised on a real run.
+#
+# The reason is a property of the oracle, not of the protocol. `synthetic_beta`
+# adds SYN_FOCAL_EXCESS for the focal constraint ALONE, while
+# `oracle_planted_twins` plants twins only on _latent_difficulty. B's outgoing
+# burden on every unrelated target therefore sits a full +0.12 above every
+# candidate's, `focal_inside` is False on every g component, and no admissible
+# panel can exist however tight the twin jitter is.
+#
+# This profile plants twins that carry 75% of that excess, so the g gap is
+# 0.25 * 0.12 = 0.03 -- inside the g caliper -- while B keeps a designed positive
+# effect on the target. A six-reference panel genuinely EXISTS here, and every
+# gate must still find and validate it on its own terms: nothing is admitted by
+# declaration and no gate is bypassed.
+model_profile = "integration_pass"
+run_mode = "smoke"
+dry_run_mode = true
+use_google_drive = true
+data_root = "artifacts"
+
+[protocol_overrides]
+oracle_twin_focal_excess_share = 0.75

@@ -1,0 +1,9 @@
+# Real-model dev_fast smoke on local hardware: loads Qwen2.5-0.5B and runs the
+# engineering path (batching, tokenizer fingerprint, resume) with dry_run off.
+# DEVELOPMENT_ONLY stamp: cannot produce evidence, requires --execute? no —
+# dev_fast never produces evidence, so no execute gate; it still needs a GPU.
+model_profile = "dev_fast"
+run_mode = "smoke"
+dry_run_mode = false
+use_google_drive = true
+data_root = "artifacts"

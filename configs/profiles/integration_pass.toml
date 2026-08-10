@@ -1,0 +1,7 @@
+# The no-bypass self-test. Frozen baseline: Gate 0/M/1/2a PASS, then Gate 2
+# stops with NOT_IDENTIFIED_SUPPORT. That stop is the expected result.
+model_profile = "integration_pass"
+run_mode = "smoke"
+dry_run_mode = true
+use_google_drive = true
+data_root = "artifacts"
