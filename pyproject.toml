@@ -1,0 +1,43 @@
+# The scientific core. Installable everywhere — CPU CI, the ROCm workstation,
+# Lambda CUDA instances — because it deliberately depends on NO GPU stack:
+# torch/transformers arrive only through environments/rocm or environments/cuda
+# (see section 8 of the migration spec and docs/MIGRATION.md for why the two
+# hardware stacks are never resolved in one environment).
+[project]
+name = "dci"
+version = "15.0.0"
+description = "Directional Constraint Interference — v15 protocol, portable implementation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+    "tqdm>=4.66",
+    "psutil>=5.9",
+]
+
+[project.scripts]
+dci = "dci.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "cpu: runs with no GPU stack installed (default CI tier)",
+    "gpu: needs a real torch with an accelerator",
+    "rocm: needs the ROCm stack on the AMD workstation",
+    "cuda: needs the CUDA stack (Lambda)",
+    "slow: full-pipeline regression (minutes)",
+    "cloud: touches the Lambda API (never run in CI)",
+]
