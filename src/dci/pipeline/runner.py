@@ -24,6 +24,13 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Optional
 
+# Imported at module level, not inside run_pipeline: an `except` clause is only
+# evaluated when an exception occurs, so a name bound inside the guarded block
+# would raise NameError during handling if the import itself was what failed.
+from dci.exceptions import (CacheIntegrityError, FrozenPlanMismatch,
+                            LineageViolation, StudyStop, TaskBankInsufficient)
+from dci.pipeline.sharding import ShardConfigError, validate_sharding
+
 EXIT_OK, EXIT_CRASH = 0, 1
 EXIT_SCIENTIFIC, EXIT_INVARIANT, EXIT_ENVIRONMENT = 10, 20, 30
 
@@ -45,17 +52,28 @@ def _purge() -> None:
 
 
 def run_pipeline(until: Optional[str] = None) -> int:
-    import matplotlib
-    matplotlib.use("Agg")
-    from dci.exceptions import (CacheIntegrityError, FrozenPlanMismatch,
-                                LineageViolation, StudyStop,
-                                TaskBankInsufficient)
-    from dci.pipeline import state as S
+    """Run the stage graph, classifying EVERY failure under the exit taxonomy.
 
-    _purge()
-    order = stage_order()
+    Startup used to sit outside the handler: backend selection, state reset and
+    stage-package import all ran before the try. A failure there - a syntax
+    error or a missing dependency in any stage module, which is exactly what
+    stage_order()'s import surfaces - escaped as an uncaught traceback with
+    exit code 1 from the interpreter and no crash record, so an orchestrator
+    could not tell it from a genuine crash mid-run. Setup is now inside the
+    boundary and reports EXIT_CRASH with a stop record like any other fault.
+    """
+    S = None
     ran: list[str] = []
+    order: list[str] = []
     try:
+        import matplotlib
+        matplotlib.use("Agg")
+        from dci.pipeline import state as _state
+        S = _state
+        # Configuration refusals come first: they must never consume budget.
+        validate_sharding()
+        _purge()
+        order = stage_order()
         for name in order:
             print(f"\n{'=' * 72}\n[stage {name}]\n{'=' * 72}", flush=True)
             importlib.import_module(f"{STAGE_PACKAGE}.{name}")
@@ -72,6 +90,13 @@ def run_pipeline(until: Optional[str] = None) -> int:
         outcome = stop.outcome
         print(f"\nSTUDY STOPPED at a scientific gate: {outcome.gate} -> "
               f"{outcome.status}\n{outcome.reason}")
+        # The operator-facing explanation - which field differs, which value was
+        # frozen, what to do next - lives in the exception message. It was
+        # written into stop.json and never shown, so the console said only that
+        # something did not match.
+        detail = str(stop).strip()
+        if detail and detail != outcome.reason.strip():
+            print(detail)
         _write_stop(S, {"kind": "scientific_stop", "stage": _next(ran, order),
                         "outcome": asdict(outcome)})
         return EXIT_SCIENTIFIC
@@ -81,6 +106,11 @@ def run_pipeline(until: Optional[str] = None) -> int:
         _write_stop(S, {"kind": "invariant_failure", "stage": _next(ran, order),
                         "error": f"{type(exc).__name__}: {exc}"})
         return EXIT_INVARIANT
+    except ShardConfigError as exc:
+        traceback.print_exc()
+        _write_stop(S, {"kind": "configuration_refusal", "stage": "startup",
+                        "error": f"{type(exc).__name__}: {exc}"})
+        return EXIT_ENVIRONMENT
     except EnvironmentError as exc:
         traceback.print_exc()
         _write_stop(S, {"kind": "environment_failure",
@@ -94,10 +124,13 @@ def run_pipeline(until: Optional[str] = None) -> int:
 
 
 def _next(ran: list[str], order: list[str]) -> str:
+    if not order:
+        return "startup"          # the failure predates stage discovery
     return order[len(ran)] if len(ran) < len(order) else "complete"
 
 
 def _write_stop(S, payload: dict) -> None:
+    """Best-effort stop record. `S` is None when state itself failed to import."""
     root = getattr(S, "RUN_ROOT", None)
     if root is None:
         return
