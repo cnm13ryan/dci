@@ -27,3 +27,21 @@ def test_v14_formula_retained_only_as_the_documented_mistake():
 def test_stratum_ceiling():
     n = required_cases_for_ceiling(0.20, 0.95)
     assert wilson_interval(0, n, 0.95)[1] <= 0.20
+
+
+def test_size_between_the_last_probe_and_the_cap_is_found():
+    """73 lies between the 64 probe and a cap of 100, and must be reported.
+
+    Doubling from 8 reaches 128, which is past the cap; treating that as "no
+    attainable size" rejected a requirement the cap comfortably allows.
+    """
+    assert required_cases_for_ceiling(0.05, 0.95, cap=100) == 73
+
+
+def test_the_cap_itself_is_evaluated():
+    assert required_cases_for_ceiling(0.05, 0.95, cap=73) == 73
+
+
+def test_infeasible_cap_still_raises():
+    with pytest.raises(ValueError, match="no attainable sample size"):
+        required_cases_for_ceiling(0.05, 0.95, cap=50)
