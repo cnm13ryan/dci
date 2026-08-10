@@ -46,12 +46,19 @@ def required_cases_for_ceiling(ceiling: float, confidence: float,
     """
     if not 0 < ceiling < 1:
         return 0
-    lo, hi = 1, 8
-    while hi < cap and bound(0, hi, confidence)[1] > ceiling:
-        lo, hi = hi, hi * 2
-    if hi >= cap:
-        raise ValueError(f"no attainable sample size below {cap} for a "
+    if cap < 1:
+        raise ValueError(f"sample-size cap {cap} is not a usable search bound")
+    # Decide feasibility on the cap itself. Doubling from 8 overshoots the cap
+    # for most ceilings, and treating "the probe passed the cap" as "no size
+    # works" rejects every requirement that sits between the last power of two
+    # and the cap. The bound is monotone decreasing in n, so if the cap fails
+    # nothing below it can succeed.
+    if bound(0, cap, confidence)[1] > ceiling:
+        raise ValueError(f"no attainable sample size at or below {cap} for a "
                          f"{ceiling:.3f} ceiling at {confidence:.0%} confidence")
+    lo, hi = 1, min(8, cap)
+    while hi < cap and bound(0, hi, confidence)[1] > ceiling:
+        lo, hi = hi, min(hi * 2, cap)
     while lo < hi:
         mid = (lo + hi) // 2
         if bound(0, mid, confidence)[1] <= ceiling:

@@ -9,7 +9,9 @@ import pandas as pd
 import pytest
 
 from dci.analysis.reference_error import (FAMILY_AGGREGATION, aggregate_family,
-                                          certificate_terms, family_slopes,
+                                          assert_certificate_complete,
+                                          certificate_terms, component_support,
+                                          family_slopes,
                                           legacy_componentwise_total,
                                           reference_error_certificate)
 
@@ -168,3 +170,86 @@ def test_aggregation_rules_match_the_fitted_predictors():
     assert aggregate_family(np.array([0.1, 0.3]), "mean_abs") == pytest.approx(0.2)
     assert aggregate_family(np.array([0.1, -0.3]), "max_abs") == pytest.approx(0.3)
     assert np.isnan(aggregate_family(np.array([np.nan]), "mean_abs"))
+
+
+# ------------------------------------------------- fail-closed on the inputs
+def test_a_missing_coordinate_is_not_a_matched_coordinate():
+    """Dropping the column used to shrink the sum to fewer families."""
+    gaps = _gaps({c: 0.02 for c in G}).drop(columns=["d"])
+    cert = reference_error_certificate(gaps, _zero_se(), _calipers(), ["C1"],
+                                      uncertainty_q=1.0, epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "certificate_complete"]) is False
+    assert bool(cert.loc["C1", "budget_ok"]) is False
+    assert not np.isfinite(float(cert.loc["C1", "budget_total"]))
+    assert int(cert.loc["C1", "n_missing_components"]) == 1
+    assert "missing coordinates" in str(cert.loc["C1", "incomplete_reason"])
+
+
+def test_a_whole_family_absent_from_the_gap_table_is_reported():
+    gaps = _gaps({}).drop(columns=G)
+    cert = reference_error_certificate(gaps, _zero_se(), _calipers(), ["C1"],
+                                      uncertainty_q=1.0, epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "budget_ok"]) is False
+    assert int(cert.loc["C1", "n_missing_components"]) == len(G)
+    assert int(cert.loc["C1", "n_components_declared"]) == len(COMPONENTS)
+
+
+def test_a_missing_se_is_not_zero_uncertainty():
+    ses = _zero_se().drop(columns=[G[0]])
+    cert = reference_error_certificate(_gaps({c: 0.02 for c in G}), ses,
+                                      _calipers(), ["C1"], uncertainty_q=1.0,
+                                      epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "budget_ok"]) is False
+    assert int(cert.loc["C1", "n_missing_se"]) == 1
+    assert "missing SEs" in str(cert.loc["C1", "incomplete_reason"])
+
+
+@pytest.mark.parametrize("bad", [np.nan, np.inf, -np.inf])
+def test_a_nonfinite_se_cannot_certify(bad):
+    ses = _zero_se()
+    ses.loc["C1", G[0]] = bad
+    cert = reference_error_certificate(_gaps({c: 0.02 for c in G}), ses,
+                                      _calipers(), ["C1"], uncertainty_q=1.0,
+                                      epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "budget_ok"]) is False
+    assert int(cert.loc["C1", "n_nonfinite_se"]) == 1
+
+
+@pytest.mark.parametrize("bad", [np.nan, np.inf])
+def test_a_nonfinite_gap_cannot_certify(bad):
+    gaps = _gaps({c: 0.02 for c in G})
+    gaps.loc["C1", "d"] = bad
+    cert = reference_error_certificate(gaps, _zero_se(), _calipers(), ["C1"],
+                                      uncertainty_q=1.0, epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "budget_ok"]) is False
+    assert bool(cert.loc["C1", "certificate_complete"]) is False
+
+
+def test_a_complete_signature_still_certifies_exactly_as_before():
+    """The fail-closed guard must not disturb the admissible case."""
+    cert = reference_error_certificate(_gaps({c: 0.02 for c in G}), _zero_se(),
+                                      _calipers(), ["C1"], uncertainty_q=1.0,
+                                      epsilon_ref=0.05)
+    assert bool(cert.loc["C1", "certificate_complete"]) is True
+    assert bool(cert.loc["C1", "budget_ok"]) is True
+    assert float(cert.loc["C1", "budget_total"]) == pytest.approx(0.01)
+    assert str(cert.loc["C1", "incomplete_reason"]) == ""
+
+
+def test_component_support_answers_from_the_declared_set():
+    support = component_support(_gaps({}).drop(columns=["d"]), _zero_se(),
+                               _calipers(), "C1")
+    assert len(support) == len(COMPONENTS)
+    assert bool(support.loc["d", "gap_present"]) is False
+    assert bool(support.loc[G[0], "gap_present"]) is True
+
+
+def test_assert_certificate_complete_raises_on_missing_evidence():
+    cert = reference_error_certificate(_gaps({}).drop(columns=["d"]), _zero_se(),
+                                      _calipers(), ["C1"], uncertainty_q=1.0,
+                                      epsilon_ref=0.05)
+    with pytest.raises(ValueError, match="incomplete reference signature"):
+        assert_certificate_complete(cert)
+    good = reference_error_certificate(_gaps({}), _zero_se(), _calipers(), ["C1"],
+                                      uncertainty_q=1.0, epsilon_ref=0.05)
+    assert_certificate_complete(good)          # does not raise
