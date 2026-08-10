@@ -158,8 +158,16 @@ def cmd_test(args) -> int:
 
 
 def cmd_doctor(args) -> int:
-    return subprocess.call([sys.executable, "scripts/local_doctor.py"]
-                           + (["--gpu"] if args.gpu else []))
+    """In-process, from the installed package.
+
+    This used to shell out to scripts/local_doctor.py, which is not part of the
+    distribution: on any checkout that has the package but not the repository
+    working tree - a wheel install, or any snapshot of this stack before the
+    scripts land - the advertised command failed with a Python file-not-found.
+    """
+    from dci import diagnostics
+    return diagnostics.run(gpu=args.gpu,
+                           expect_devices=getattr(args, "expect_devices", None))
 
 
 def main(argv=None) -> int:
@@ -190,6 +198,8 @@ def main(argv=None) -> int:
     p = sub.add_parser("report"); p.add_argument("run_root"); p.set_defaults(fn=cmd_report)
     p = sub.add_parser("test"); p.set_defaults(fn=cmd_test)
     p = sub.add_parser("doctor"); p.add_argument("--gpu", action="store_true")
+    p.add_argument("--expect-devices", type=int, default=None,
+                   help="fail unless exactly this many GPUs are visible")
     p.set_defaults(fn=cmd_doctor)
 
     args = ap.parse_args(argv)
