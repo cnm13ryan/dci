@@ -158,6 +158,90 @@ def _mutation_finding(counts: Mapping[str, int] | None) -> Finding:
                    f"all {len(required)} templates at or above the floor")
 
 
+def certify_satisfiability(slots: SlotTable, *,
+                           mutation_summaries: Mapping[str, Mapping[str, Any]]
+                           | None = None) -> Certification:
+    """Every section 8.6 satisfiability requirement, against the registry.
+
+    `mutation_summaries` maps template id to a `dci.v19.mutation.summarise`
+    result. `None` means no battery evidence was offered, which is not the same as
+    a battery that found nothing.
+    """
+    findings = [
+        _slot_finding(
+            slots, "satisfiability.encoding_map",
+            "the canonical structured encoding and the abstract feature "
+            "projection are frozen", "sections 8.6, 14.2"),
+        _slot_finding(
+            slots, "satisfiability.solver_identity",
+            "the solver's name and exact version are recorded", "section 8.6"),
+        _slot_finding(
+            slots, "satisfiability.witness_constructor",
+            "the deterministic witness constructor is frozen", "section 8.6"),
+        _slot_finding(
+            slots, "satisfiability.semantic_reviews",
+            "human semantic review exists for every incompletely encoded clause",
+            "section 8.6"),
+        _solver_finding(),
+        _battery_finding(mutation_summaries),
+    ]
+    return Certification(findings=tuple(findings))
+
+
+def _solver_finding() -> Finding:
+    """A missing solver is missing required output, never a skipped step."""
+    requirement = "a frozen solver is available to decide the conjunction"
+    citation = "section 8.6"
+    from dci.v19 import solver
+    try:
+        name, version = solver.solver_identity()
+    except solver.SolverUnavailable as error:
+        return Finding(requirement, citation, False, str(error))
+    return Finding(requirement, citation, True, f"{name} {version}")
+
+
+def _battery_finding(summaries: Mapping[str, Mapping[str, Any]] | None) -> Finding:
+    from dci.v19.mutation import MUTATIONS_PER_TEMPLATE
+    requirement = (f"each constraint template has at least "
+                   f"{MUTATIONS_PER_TEMPLATE} distinct boundary mutations whose "
+                   "observed effects are recorded against their declarations")
+    citation = "section 8.7"
+    if summaries is None:
+        return Finding(requirement, citation, False,
+                       "no mutation battery evidence was offered; an absent "
+                       "battery is not a battery that found nothing")
+    if not summaries:
+        return Finding(requirement, citation, False,
+                       "the mutation evidence names no template")
+    problems = []
+    for template, summary in sorted(summaries.items()):
+        count = int(summary.get("n_mutations", 0))
+        distinct = int(summary.get("distinct_texts", 0))
+        if count < MUTATIONS_PER_TEMPLATE:
+            problems.append(f"{template}={count}")
+        elif distinct != count:
+            problems.append(f"{template} padded ({distinct} distinct of {count})")
+    if problems:
+        return Finding(requirement, citation, False,
+                       "template(s) short of the floor or padded: "
+                       + ", ".join(problems))
+    return Finding(requirement, citation, True,
+                   f"{len(summaries)} template(s) at or above the floor with no "
+                   "repeated mutated text")
+
+
+def certify_stage2(slots: SlotTable, *,
+                   mutation_counts: Mapping[str, int] | None = None,
+                   mutation_summaries: Mapping[str, Mapping[str, Any]] | None = None
+                   ) -> Certification:
+    """Both halves of Stage 2 as one report: verifiers and satisfiability."""
+    verifier_half = certify_verifiers(slots, mutation_counts=mutation_counts)
+    satisfiability_half = certify_satisfiability(
+        slots, mutation_summaries=mutation_summaries)
+    return Certification(
+        findings=verifier_half.findings + satisfiability_half.findings)
+
+
 def assert_verifiers_certified(slots: SlotTable, *,
                                mutation_counts: Mapping[str, int] | None = None
                                ) -> Certification:

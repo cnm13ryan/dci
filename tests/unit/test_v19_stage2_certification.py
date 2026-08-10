@@ -89,34 +89,37 @@ def test_the_dependency_edges_all_name_declared_slots():
 
 
 # --------------------------------------------------------------- the stage gate
-def test_the_stage_two_gate_requires_all_four_decisions_and_the_mutations():
+def test_the_stage_two_gate_requires_every_decision_and_the_mutations():
     gate = STAGE_GATE_BY_KEY[STAGE]
     assert set(gate.required_slots) == set(DECISIONS) | {
-        "verifiers.boundary_mutations"}
+        "verifiers.boundary_mutations", "satisfiability.semantic_reviews"}
     for slot in gate.required_slots:
         assert REGISTRY.citation_for(STAGE, slot)
 
 
-def test_the_stage_two_gate_produces_the_three_artifacts_it_owns():
+def test_the_stage_two_gate_produces_the_artifacts_it_owns():
     assert set(STAGE_GATE_BY_KEY[STAGE].produces) == {
         "verifiers.specification_bundle", "verifiers.bundle_hash",
-        "verifiers.tier1_reliability"}
+        "verifiers.tier1_reliability", "satisfiability.encoding_map",
+        "satisfiability.solver_identity", "satisfiability.witness_constructor",
+        "satisfiability.certified_compositions"}
 
 
 def test_stage_two_is_blocked_and_the_root_cause_is_a_decision():
     row = REGISTRY.stage_status(STAGE)
     assert row["status"] == "BLOCKED_BY_PROSPECTIVE_DECISION"
     assert row["root_blocker"] == "BLOCKED_BY_PROSPECTIVE_DECISION"
-    assert len(row["blockers"]) == row["n_required"] == 5
+    assert len(row["blockers"]) == row["n_required"] == 6
 
 
 def test_require_stage_lists_every_blocker_at_once():
     with pytest.raises(UnresolvedDependency) as caught:
         REGISTRY.require_stage(STAGE)
     message = str(caught.value)
-    for name in DECISIONS + ("verifiers.boundary_mutations",):
+    for name in DECISIONS + ("verifiers.boundary_mutations",
+                             "satisfiability.semantic_reviews"):
         assert name in message
-    assert "5 unresolved" in message
+    assert "6 unresolved" in message
 
 
 def test_stage_two_is_not_ready_merely_because_the_pair_one_code_exists():
@@ -285,7 +288,7 @@ def test_the_registry_still_reports_nothing_fabricated():
 def test_the_new_slots_did_not_disturb_the_other_stages():
     """Only Stage 2 gained requirements; every other gate is unchanged."""
     audit = {row["stage"]: row for row in REGISTRY.audit()}
-    assert audit[STAGE]["n_required"] == 5
+    assert audit[STAGE]["n_required"] == 6
     assert audit["stage_1_definitions"]["status"] == "READY"
     ready = [row["stage"] for row in REGISTRY.audit()
              if row["status"] == "READY"]

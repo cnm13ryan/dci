@@ -114,6 +114,56 @@ VERIFIER_SLOTS = SlotTable.of(
 )
 
 
+# --------------------------- Stage 2: whole-composition satisfiability certification
+
+SATISFIABILITY_SLOTS = SlotTable.of(
+    pending("satisfiability.encoding_map", "D13 / sections 8.6, 14.2",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2: freeze the canonical structured encoding of every constraint "
+            "family and the abstract feature projection a solver sat result covers",
+            depends_on=("verifiers.p1.list_policy",),
+            note="the Pair 1 clauses embed the list-policy hash, because what "
+                 "counts as a list item decides whether the encoding and the "
+                 "verifier agree"),
+    pending("satisfiability.solver_identity", "D13 / section 8.6",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2: record the frozen solver's name and exact version; section "
+            "8.6 permits Z3 or an equivalently frozen solver, and a solver whose "
+            "version is unrecorded is not frozen",
+            note="unsat, unknown, timeout and missing solver output all fail "
+                 "closed; only sat may support progression"),
+    pending("satisfiability.witness_constructor", "D13 / section 8.6",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2: freeze the deterministic witness constructor, whose output is "
+            "the stronger operational evidence a solver sat result cannot supply",
+            depends_on=("satisfiability.encoding_map",)),
+    pending("satisfiability.semantic_reviews", "D13 / section 8.6",
+            Resolution.PENDING_DECISION,
+            "Stage 2: two independent human reviews, with a third adjudicating "
+            "disagreement, for every clause whose intended semantics the frozen "
+            "encoding and deterministic verifier do not exhaust; unresolved "
+            "disagreement fails certification",
+            depends_on=("satisfiability.encoding_map",),
+            note="three of the six declared clauses currently declare incomplete "
+                 "coverage - Pair 1 item identification, Pair 2 uniqueness under "
+                 "the frozen tokenisation, and Pair 3 sentence segmentation - so "
+                 "review is required for every composition, and code must never "
+                 "stand in for the reviewer"),
+    pending("satisfiability.certified_compositions", "D13 / sections 8.6, 14.10",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2 onward: the SATCERT artifact per prospective A+B+S and "
+            "A+R_j+S composition - encoding, solver input and output, witness and "
+            "its construction procedure, the complete verifier vector, the semantic "
+            "review where applicable, and the hashes tying them together",
+            depends_on=("satisfiability.solver_identity",
+                        "satisfiability.witness_constructor",
+                        "satisfiability.semantic_reviews",
+                        "verifiers.bundle_hash"),
+            note="individual constraint validity and pairwise compatibility are "
+                 "insufficient; the unit of certification is the whole arm"),
+)
+
+
 # ------------------------------- Stage 2A: early runtime and inference qualification
 
 QUALIFICATION_SLOTS = SlotTable.of(
@@ -364,7 +414,7 @@ EXECUTION_SLOTS = SlotTable.of(
 def declared_slots() -> SlotTable:
     """Every artifact Stages 2 through 17 will produce, all pending."""
     table = VERIFIER_SLOTS
-    for other in (QUALIFICATION_SLOTS, CONSTRUCTION_SLOTS, SIMULATION_SLOTS,
+    for other in (SATISFIABILITY_SLOTS, QUALIFICATION_SLOTS, CONSTRUCTION_SLOTS, SIMULATION_SLOTS,
                   FREEZE_SLOTS, EXECUTION_SLOTS):
         table = table.merged(other)
     return table
