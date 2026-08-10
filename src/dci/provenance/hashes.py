@@ -7,12 +7,67 @@ from __future__ import annotations
 import dis
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Any
 
 
+class UnhashableProtocolValue(TypeError):
+    """A value reached the protocol hash with no canonical serialization.
+
+    Raised instead of guessing. `default=str` used to absorb these, which is
+    silently wrong for any object whose repr embeds its memory address: the
+    same logical protocol would then hash differently in two processes, and a
+    resume would be refused - or, worse, two genuinely different protocols
+    would collide onto the same "<object at 0x...>" text.
+    """
+
+
+def canonicalize(obj: Any, path: str = "$") -> Any:
+    """Reduce `obj` to JSON primitives, or refuse.
+
+    Supported beyond JSON's own types: tuples (as lists, which is what JSON
+    already does), `PurePath` (as its string form), sets and frozensets (as
+    lists sorted by their own canonical text, since set iteration order is not
+    a protocol fact), and numpy scalars (as the Python scalar they wrap).
+    Anything else raises, because a hash nobody can reproduce is worse than a
+    loud failure at freeze time.
+    """
+    if obj is None or isinstance(obj, (bool, int, float, str)):
+        # str/int subclasses include the str-valued enums used for statuses;
+        # json.dumps writes the underlying value, which is what we want.
+        return obj
+    if isinstance(obj, dict):
+        out = {}
+        for key, value in obj.items():
+            if isinstance(key, bool) or not isinstance(key, (str, int)):
+                raise UnhashableProtocolValue(
+                    f"{path}: dict key {key!r} of type {type(key).__name__} has "
+                    "no canonical form; use string keys")
+            out[str(key)] = canonicalize(value, f"{path}.{key}")
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [canonicalize(v, f"{path}[{i}]") for i, v in enumerate(obj)]
+    if isinstance(obj, PurePath):
+        return str(obj)
+    if isinstance(obj, (set, frozenset)):
+        items = [canonicalize(v, f"{path}{{}}") for v in obj]
+        return sorted(items, key=lambda v: json.dumps(v, sort_keys=True))
+    if hasattr(obj, "item") and hasattr(obj, "dtype") and getattr(obj, "ndim", 1) == 0:
+        return canonicalize(obj.item(), path)          # numpy scalar
+    raise UnhashableProtocolValue(
+        f"{path}: {type(obj).__name__} has no canonical serialization for the "
+        "protocol hash. Convert it at the call site, or extend canonicalize().")
+
+
 def sha(obj: Any) -> str:
-    return hashlib.sha256(json.dumps(obj, sort_keys=True, default=str).encode()).hexdigest()
+    """Content hash of a protocol object.
+
+    Deterministic across processes and PYTHONHASHSEED values: key order is
+    fixed by sort_keys, set order by canonicalize, and there is no fallback
+    that could serialize an object's identity instead of its value.
+    """
+    return hashlib.sha256(
+        json.dumps(canonicalize(obj), sort_keys=True).encode()).hexdigest()
 
 
 def sha_text(text: str) -> str:

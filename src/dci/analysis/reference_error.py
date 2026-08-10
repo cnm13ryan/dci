@@ -90,38 +90,88 @@ def family_slopes(calipers: pd.DataFrame) -> pd.Series:
     return grouped.first()
 
 
+def component_support(gaps: pd.DataFrame, gap_se: pd.DataFrame,
+                      calipers: pd.DataFrame, candidate: str) -> pd.DataFrame:
+    """For every DECLARED component: is its gap present and finite, and its SE?
+
+    The declared set is `calipers.index`. Asking the question this way round is
+    the whole point: iterating over the columns that happen to exist can only
+    ever find components that are there.
+    """
+    rows = []
+    for comp, block in calipers.iterrows():
+        has_gap = comp in gaps.columns and candidate in gaps.index
+        has_se = comp in gap_se.columns and candidate in gap_se.index
+        gap = float(gaps.at[candidate, comp]) if has_gap else float("nan")
+        se = float(gap_se.at[candidate, comp]) if has_se else float("nan")
+        rows.append({"component": comp, "family": str(block["family"]),
+                     "gap_present": bool(has_gap), "se_present": bool(has_se),
+                     "gap": gap, "se": se,
+                     "gap_finite": bool(np.isfinite(gap)),
+                     "se_finite": bool(np.isfinite(se))})
+    frame = pd.DataFrame(rows, columns=["component", "family", "gap_present",
+                                        "se_present", "gap", "se", "gap_finite",
+                                        "se_finite"])
+    return frame.set_index("component") if len(frame) else frame
+
+
 def certificate_terms(gaps: pd.DataFrame, gap_se: pd.DataFrame,
                       calipers: pd.DataFrame, candidate: str,
                       uncertainty_q: float,
                       aggregation: Optional[dict[str, str]] = None
                       ) -> pd.DataFrame:
-    """Per-family contributions for one candidate. One row per FAMILY, not component."""
+    """Per-family contributions for one candidate. One row per FAMILY, not component.
+
+    Fail-closed on inputs. A declared coordinate that is absent from `gaps`, or
+    whose SE is absent from `gap_se`, makes its family's contribution undefined.
+    Two silent substitutions used to live here and both moved admission in the
+    permissive direction:
+
+      * a family with no present component was skipped entirely, so the total
+        was a sum over FEWER families than the sensitivity model declares - an
+        unmeasured coordinate scored as a matched one;
+      * a missing or non-finite SE became 0.0, which is the assertion that the
+        coordinate was measured with perfect precision. Absent evidence is not
+        certainty, and this is the one substitution that can only ever help a
+        candidate pass.
+    """
     how = {**FAMILY_AGGREGATION, **(aggregation or {})}
     slopes = family_slopes(calipers)
+    support = component_support(gaps, gap_se, calipers, candidate)
     rows = []
-    for family, block in calipers.groupby("family"):
-        comps = [c for c in block.index if c in gaps.columns]
-        if not comps:
-            continue
-        magnitudes = np.array([float(gaps.at[candidate, c]) for c in comps])
-        ses = np.array([float(gap_se.at[candidate, c])
-                        if c in gap_se.columns else 0.0 for c in comps])
-        ses = np.where(np.isfinite(ses), ses, 0.0)
+    for family, block in support.groupby("family"):
+        comps = list(block.index)
+        magnitudes = block["gap"].to_numpy(dtype=float)
+        ses = block["se"].to_numpy(dtype=float)
         rule = how.get(str(family), "mean_abs")
+        n_missing = int((~block["gap_present"]).sum())
+        n_missing_se = int((~block["se_present"]).sum())
+        n_undefined = int((~block["gap_finite"]).sum())
+        n_nonfinite_se = int((~block["se_finite"]).sum())
         gap_term = aggregate_family(magnitudes, rule)
         # SE is aggregated the same way, which is conservative in both cases:
         # mean-of-SEs bounds the SE of a mean, and max-of-SEs bounds the SE of a
         # max. Uncertainty can therefore only make admission harder.
-        se_term = aggregate_family(ses, rule if rule != "single" else "single")
-        n_undefined = int(np.sum(~np.isfinite(magnitudes)))
-        contribution = float(slopes.get(family, np.nan)
-                             * (gap_term + uncertainty_q * se_term))
+        se_term = (aggregate_family(ses, rule if rule != "single" else "single")
+                   if not (n_missing_se or n_nonfinite_se) else float("nan"))
+        complete = not (n_missing or n_missing_se or n_undefined or n_nonfinite_se)
+        contribution = (float(slopes.get(family, np.nan)
+                              * (gap_term + uncertainty_q * se_term))
+                        if complete else float("nan"))
         rows.append({"family": str(family), "n_components": len(comps),
                      "n_undefined_components": n_undefined,
+                     "n_missing_components": n_missing,
+                     "n_missing_se": n_missing_se,
+                     "n_nonfinite_se": n_nonfinite_se,
+                     "complete": complete,
                      "aggregation": rule, "slope_used": float(slopes.get(family, np.nan)),
                      "aggregated_gap": gap_term, "aggregated_se": se_term,
                      "contribution": contribution})
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=[
+        "family", "n_components", "n_undefined_components",
+        "n_missing_components", "n_missing_se", "n_nonfinite_se", "complete",
+        "aggregation", "slope_used", "aggregated_gap", "aggregated_se",
+        "contribution"])
 
 
 def reference_error_certificate(gaps: pd.DataFrame, gap_se: pd.DataFrame,
@@ -145,7 +195,13 @@ def reference_error_certificate(gaps: pd.DataFrame, gap_se: pd.DataFrame,
                                   aggregation)
         contributions = terms["contribution"].to_numpy(dtype=float)
         finite = contributions[np.isfinite(contributions)]
+        declared_families = set(calipers["family"].astype(str))
+        # A family the calipers declare but the certificate never saw is the
+        # worst case of all: it cannot even appear as a NaN contribution.
+        unseen_families = sorted(declared_families - set(terms["family"]))
         incomplete = bool(len(finite) != len(contributions)
+                          or unseen_families
+                          or not bool(terms["complete"].all())
                           or terms["n_undefined_components"].sum() > 0)
         if aggregation_mode == "rss":
             total = float(np.sqrt(np.sum(np.square(finite)))) if finite.size else float("nan")
@@ -159,9 +215,16 @@ def reference_error_certificate(gaps: pd.DataFrame, gap_se: pd.DataFrame,
             "budget_threshold": epsilon_ref,
             "budget_ok": bool(np.isfinite(total) and not incomplete
                               and total <= epsilon_ref),
+            "certificate_complete": not incomplete,
+            "incomplete_reason": _incomplete_reason(terms, unseen_families),
             "n_families": int(len(terms)),
+            "n_families_declared": int(len(declared_families)),
             "n_components": int(terms["n_components"].sum()),
+            "n_components_declared": int(len(calipers.index)),
             "n_undefined_components": int(terms["n_undefined_components"].sum()),
+            "n_missing_components": int(terms["n_missing_components"].sum()),
+            "n_missing_se": int(terms["n_missing_se"].sum()),
+            "n_nonfinite_se": int(terms["n_nonfinite_se"].sum()),
             "largest_contribution": (float(np.max(finite)) if finite.size
                                      else float("nan")),
             "largest_family": str(largest),
@@ -169,12 +232,53 @@ def reference_error_certificate(gaps: pd.DataFrame, gap_se: pd.DataFrame,
             **{f"gap_{r.family}": r.aggregated_gap for r in terms.itertuples()},
         })
     columns = ["constraint_id", "budget_total", "budget_threshold", "budget_ok",
-               "n_families", "n_components", "n_undefined_components",
+               "certificate_complete", "incomplete_reason",
+               "n_families", "n_families_declared", "n_components",
+               "n_components_declared", "n_undefined_components",
+               "n_missing_components", "n_missing_se", "n_nonfinite_se",
                "largest_contribution", "largest_family"]
     if indexed_frame is not None:
         return indexed_frame(rows, "constraint_id", columns)
     frame = pd.DataFrame(rows)
     return frame.set_index("constraint_id") if len(frame) else frame
+
+
+def _incomplete_reason(terms: pd.DataFrame, unseen_families: list) -> str:
+    """Why a certificate is incomplete, in the order a reader should act on."""
+    reasons = []
+    if unseen_families:
+        reasons.append(f"declared families absent from the gap table: "
+                       f"{unseen_families}")
+    for label, column in (("missing coordinates", "n_missing_components"),
+                          ("non-finite coordinates", "n_undefined_components"),
+                          ("missing SEs", "n_missing_se"),
+                          ("non-finite SEs", "n_nonfinite_se")):
+        if column in terms and int(terms[column].sum()):
+            families = sorted(terms.loc[terms[column] > 0, "family"])
+            reasons.append(f"{label} in {families}")
+    return "; ".join(reasons)
+
+
+def assert_certificate_complete(certificate: pd.DataFrame,
+                                label: str = "reference certificate") -> None:
+    """Refuse to proceed on an incomplete signature.
+
+    `budget_ok` is already False for an incomplete certificate, so admission
+    cannot be granted on missing evidence. This raises instead, for the callers
+    that must not merely record a rejection: an incomplete signature means the
+    construction data is wrong, not that the candidate is unsuitable, and the
+    two must never be reported as the same outcome.
+    """
+    if "certificate_complete" not in certificate:
+        return
+    bad = certificate[~certificate["certificate_complete"].astype(bool)]
+    if len(bad):
+        detail = "\n".join(f"  {cid}: {reason}" for cid, reason
+                           in bad["incomplete_reason"].items())
+        raise ValueError(
+            f"{label}: {len(bad)} candidate(s) have an incomplete reference "
+            f"signature. A missing coordinate is not a matched coordinate and a "
+            f"missing SE is not zero uncertainty:\n{detail}")
 
 
 def legacy_componentwise_total(gaps: pd.DataFrame, gap_se: pd.DataFrame,
