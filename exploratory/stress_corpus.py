@@ -111,6 +111,35 @@ CORPUS: list[tuple[str, int, object, str]] = [
     ("Rain falls on the roof — the tiles are old — and water runs to the gutter. "
      "The gutter drains. The pipe empties. The river rises.", 4, False, "em_dashes"),
 
+    # --------------------------- extra (Y_A=1, Y_R=1) support for the coupling
+    #
+    # kappa is the mean fraction of coupling EDITS that flip BOTH verdicts, and
+    # it is defined only over responses where BOTH verifiers PASS at baseline.
+    # The corpus above contained exactly ONE such item, so kappa was estimated
+    # from n=1 and its bootstrap was degenerate. These add the support the
+    # statistic actually needs; they are ordinary compliant answers, not tuned.
+    ("The kettle heats the water; the element glows. Steam rises to the lid; "
+     "pressure builds. The switch trips; the current stops. The water stills; "
+     "the noise fades.", 4, True, "four_with_semicolon_each"),
+    ("Hikers read the map; the route is clear. Signs mark each turn; nobody "
+     "strays. The path climbs slowly; legs tire. The summit appears; spirits "
+     "lift.", 4, True, "four_with_semicolon_each"),
+    ("Bakers weigh the flour; accuracy matters. Dough rests in warmth; gluten "
+     "relaxes. Ovens reach full heat; loaves enter. Crusts darken evenly; the "
+     "batch is done.", 4, True, "four_with_semicolon_each"),
+    ("A hinge carries the door; the pin bears the load. Leaves rotate together; "
+     "friction stays low. The frame holds square; gaps stay even. The door "
+     "swings freely; nothing binds.", 4, True, "four_with_semicolon_each"),
+    ("Rain strikes the tiles; water gathers. Gutters channel the flow; debris "
+     "slows it. Pipes carry the water down; joints hold firm. The drain takes "
+     "it away; the yard stays dry.", 4, True, "four_with_semicolon_each"),
+    ("Whisks cut the mixture; air enters. Bubbles form quickly; the volume "
+     "grows. Tines lift the batter; texture lightens. The result holds shape; "
+     "cooks are satisfied.", 4, True, "four_with_semicolon_each"),
+    ("Cyclists check the pressure; tyres need care. Gauges read the value; "
+     "numbers guide them. Pumps restore the air; rims stay safe. The ride feels "
+     "smooth; punctures are rarer.", 4, True, "four_with_semicolon_each"),
+
     # ---------------------------------------------------------------- degenerate
     ("", 0, None, "empty"),
     ("...", 0, None, "punctuation_only"),

@@ -584,3 +584,113 @@ verifier, never as a silent substitution.
 | blinded audit | `verifier_audit/blinded_cases.{jsonl,md}`, `KEY_DO_NOT_OPEN_FIRST.jsonl`, `human_counts.csv`, `three_way_counts.json` |
 | stress corpus | `stress_corpus.py`, `verifier_audit/stress_corpus_results.json` |
 | defect impact | `abbrev_impact.py` |
+
+---
+---
+
+# Round 4 — measurement defect closed
+
+No new generation. The Pair 3 sentence verifier was repaired in production,
+certified, and every stored generation rescored.
+
+## R4.1 — Defects found and closed
+
+| # | Minimal reproducer | Root cause | Scientific consequence |
+|---|---|---|---|
+| 1 | `"Sales spike at 6 a.m. when others sleep."` → 2 | `SENTENCE_BOUNDARY` treats every `.` before whitespace as a sentence end | **F_A wrong.** Manufactured overshoot; compliant four-sentence answers recorded as violations |
+| 2 | `"... or soufflés. 20 to 30 strokes ..."` → 3 not 4 | the *repair's own* ASCII-only trailing-token class fell back to the bare `s` and read it as an initial | would have suppressed real boundaries after any accented word |
+| 3 | `"**Rain falls.** Water runs."` → 1 | boundary pattern allowed exactly **one** closer from `["”’]` | latent: 0 of 1,840 generations affected |
+
+Defect 2 was found by the independent scanner, not by any test I wrote — the
+instrument built to distrust the repair caught the repair.
+
+Recorded but **not** changed: segments are kept only if they contain an ASCII
+alphanumeric, so wholly non-Latin text is `unscorable`. Pre-existing, shared with
+`word_tokens`, fails closed, out of scope.
+
+## R4.2 — Repair and governance
+
+`src/dci/verifiers/rules.py`: two closed abbreviation tables (titles never end a
+sentence; medial abbreviations end one only before a capital), Unicode-aware
+token matching, capital-only initials, ellipsis handling, widened closer class.
+`docs/migration_ledger_patches.csv` gains `P13-sentence-abbreviations` recording
+the scientific impact.
+
+**Freeze state: pre-freeze, legitimately repairable.** No scientific freeze
+exists — the only committed `freeze.json` is a `cpu_or_dry_run` dev_fast test
+fixture. v19 is at Stage 1 with Stage 2 verifier certification pending, which is
+exactly where this belongs. `verifier_source_sha256` and `plan_sha256` change;
+`plan_sha256` is already in the regression comparator's allowlist.
+
+## R4.3 — Measurement validation
+
+| check | result |
+|---|---|
+| adversarial boundary fixtures | **63** cases, all pass |
+| property + mutation tests | **43** cases (7 invariants, 15 mutations, 300 randomised) |
+| gold corpus, production correct | **38/38** items (was 31/37 before repair) |
+| independent scanner vs production, all generations | **1,840 / 1,840 (100%)** |
+| **blinded human vs OLD verifier** | **12/22 (0.545)** |
+| **blinded human vs CORRECTED verifier** | **22/22 (1.000)** |
+| residual disagreements | **none** |
+
+The blinded set was enriched for old-vs-corrected disagreements (33 of the 45),
+so 22/22 is a hard test, not an easy one.
+
+## R4.4 — Reliability and coupling, correctly named
+
+| quantity | before repair | after repair |
+|---|---|---|
+| **E_A** | 0.207 (6/29) | **0.0000** (0/36) |
+| **E_R** | 0.000 | **0.0000** (0/36) |
+| **U_A / U_R** | 0.065 | 0.053 / 0.053 |
+
+The E_A denominator is 36 of 38, not 38: `empty` and `punctuation_only` have true
+count 0, are returned `unscorable`, and carry no verdict to be wrong about.
+
+**κ, as the preregistration defines it** — the mean fraction of coupling *edits*
+that flip **both** verdicts — is **0.400**, U_κ **[0.400, 0.400]** over 8
+informative responses. It is a rate in [0,1] and cannot be negative.
+
+> **Correction.** Round 3 reported "κ = −0.132 [−0.375, +0.121]". That was
+> **Cohen's kappa on ground-truth agreement — a different statistic under the
+> right name — and it is withdrawn.** The signed agreement coefficient is now
+> reported separately as `agreement_phi` = +0.035.
+
+U_κ is **degenerate**: every informative response flips on exactly 2 of 5 edits,
+so the bootstrap has zero spread. That is a property of the *edit set*, not of
+behaviour, and it is precisely what `dci.analysis.coupling_audit.kappa_is_degenerate`
+exists to detect. It reinforces R3.3: **coupling is not a proxy for behavioural
+interference on any support.**
+
+## R4.5 — Rescore: old vs corrected
+
+Counts changed on 45 of 1,480 contrast rows (3.0%); F_A flipped on 33.
+Historical scores are preserved; `generations_rescored.jsonl` carries both.
+
+| quantity | old | corrected |
+|---|---|---|
+| τ(B − C_L3) pooled | +0.175 | **+0.183** CI [+0.100, +0.275] |
+| τ(B − C_O2) pooled | +0.142 | **+0.183** CI [+0.100, +0.275] |
+| τ(B − C_W3) pooled | +0.167 | +0.167 CI [+0.092, +0.250] |
+| τ(B − S_SEMICOLON) pooled | −0.408 | −0.392 CI [−0.583, −0.192] |
+| B `o_A` / `o_Q` | 0.067 / 0.317 | **0.050 / 0.317** (gap +0.250 → **+0.267**) |
+| D2 B `o_Q` excess, baseline | +0.275 | **+0.250** CI [+0.125, +0.400] |
+| D2 B `o_Q` excess, scaffolded | 0.000 | **+0.025** CI [0.000, +0.075] |
+| D2 `S_SEMICOLON` excess, scaffolded | +0.275 | **+0.325** CI [+0.150, +0.500] |
+
+## R4.6 — Claim survival
+
+| claim | verdict |
+|---|---|
+| **A** — B and `S_SEMICOLON` disproportionately collapse | **unchanged.** collapse: B 0.167, `S_SEMICOLON` 0.567, `C_L3` 0.000, `C_O2` 0.000, `C_W3` 0.008 |
+| **B** — ordinary references fail by a *different mode* | **CHANGED, and the finding strengthens.** Under corrected scoring `C_L3` and `C_O2` have **zero** failures and `C_W3` has two. The "overshoot" failure mode reported in Round 2 was **the verifier defect**. Ordinary references do not fail by another mode; they essentially do not fail |
+| **C** — scaffold removes B's excess | **unchanged.** +0.250 → +0.025, CI [0.000, +0.075] |
+| **D** — order asymmetry | **unchanged, slightly larger.** +0.250 → +0.267 |
+| **E** — verifier correct on collapse structures | **confirmed.** 0 count errors on 38 gold items |
+
+Of B's 22 corrected failures, **20 are collapse and 0 are overshoot**; of
+`S_SEMICOLON`'s 69, **68 are collapse**.
+
+**Verdict: the clause-chain/collapse result survives the repair intact, and the
+contrast against ordinary references is cleaner than before.**
