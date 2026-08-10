@@ -16,6 +16,7 @@ running with no profile reproduces the notebook's first execution.
 """
 from __future__ import annotations
 
+import copy
 import dataclasses
 import tomllib
 from pathlib import Path
@@ -67,5 +68,22 @@ def load_profile(path: str | Path) -> ActiveConfig:
 
 
 def activate(cfg: ActiveConfig) -> None:
-    global ACTIVE
-    ACTIVE = cfg
+    """Adopt `cfg` by MUTATING the singleton, never by rebinding the name.
+
+    Consumers reach the profile through `from dci.config.loader import ACTIVE`,
+    and stage c112 does so at module import time to build ProtocolConfig.
+    Rebinding the module global left every such importer holding the previous
+    object, so whether `--profile study` took effect depended on import order:
+    anything that touched a stage module before activate() would go on reading
+    dev_fast defaults. Mutation keeps one object identity for the process, so
+    there is no stale reference to observe.
+    """
+    if cfg is ACTIVE:
+        return
+    for field in dataclasses.fields(ActiveConfig):
+        setattr(ACTIVE, field.name, copy.deepcopy(getattr(cfg, field.name)))
+
+
+def active() -> ActiveConfig:
+    """The live profile. Preferred over importing ACTIVE by name."""
+    return ACTIVE
