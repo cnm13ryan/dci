@@ -1,0 +1,51 @@
+# ============================================================================
+# LOCAL WORKSTATION ENVIRONMENT: 2x AMD Radeon RX 7900 XTX (gfx1100), ROCm.
+#
+# This is a SEPARATE uv project that depends on the scientific core by path.
+# Locks generated here (uv.lock) live here; nothing in the core pyproject can
+# pull a GPU wheel, and nothing here is consulted on Lambda. That separation —
+# two projects, two locks, no shared resolution — is what makes
+# "ROCm resolution -> accidental CUDA install" (and the converse) structurally
+# impossible: the CUDA environment never reads this file, this file's
+# override-dependencies are pinned to repo.radeon.com ROCm wheels by URL, and
+# a `sys_platform == 'linux'` marker alone can never select them because they
+# are not reachable from environments/cuda at all.
+#
+# Version basis (verified 2026-08-09 against AMD's Radeon compatibility matrix
+# and the ROCm system requirements: PyTorch 2.9.1 pairs with ROCm 7.2.x with
+# official production support, and the RX 7900 XTX / gfx1100 is a supported
+# GPU on Ubuntu 24.04.x / 22.04.5). The wheel URLs mirror the exemplar
+# project's rocm-rel-7.2 set. Re-verify the matrix before upgrading either
+# side; a ROCm point release is an execution-condition change for GPU runs.
+# ============================================================================
+[project]
+name = "dci-env-rocm"
+version = "15.0.0"
+requires-python = "==3.12.*"
+dependencies = [
+    "dci",
+    # GPU stack (versions matched to the verified ROCm 7.2 wheel set)
+    "torch==2.9.1",
+    "torchvision==0.24.1",
+    "triton==3.5.1",
+    "transformers>=4.49.0",
+    "tokenizers>=0.21",
+    "accelerate>=1.4.0",
+    "huggingface-hub>=0.29.2",
+    # amdsmi: GPU telemetry, and required for any later vLLM-on-ROCm work.
+    "amdsmi>=26.0.0",
+    "pytest>=8.0",
+]
+
+[tool.uv]
+required-version = ">=0.5.3"
+# ROCm wheels by explicit URL: resolution cannot drift to PyPI CUDA builds.
+override-dependencies = [
+    "torch @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torch-2.9.1%2Brocm7.2.0.lw.git7e1940d4-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "torchaudio @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torchaudio-2.9.0%2Brocm7.2.0.gite3c6ee2b-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "torchvision @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/torchvision-0.24.0%2Brocm7.2.0.gitb919bd0c-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+    "triton @ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/triton-3.5.1%2Brocm7.2.0.gita272dfa8-cp312-cp312-linux_x86_64.whl ; sys_platform == 'linux'",
+]
+
+[tool.uv.sources]
+dci = { path = "../..", editable = true }

@@ -1,0 +1,41 @@
+# ============================================================================
+# LAMBDA CUDA ENVIRONMENT.
+#
+# Independent uv project, independent lock, generated ON the Lambda instance
+# (or a CUDA machine). It never references repo.radeon.com and the ROCm
+# project never references this file, so neither stack can contaminate the
+# other's resolution. Two deliberate modes:
+#
+#   A (default, matches the Lambda runbook): venv --system-site-packages that
+#     KEEPS Lambda Stack's preinstalled CUDA torch, installs only the core +
+#     transformers pins. Reproducibility comes from recording the image tag +
+#     package freeze in provenance; scripts/lambda_bootstrap.sh implements it.
+#   B (hermetic): `uv sync` here with the torch CUDA index pin below, when a
+#     fully locked stack is preferred over the image's.
+# ============================================================================
+[project]
+name = "dci-env-cuda"
+version = "15.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "dci",
+    "torch==2.9.1",
+    "transformers>=4.49.0",
+    "tokenizers>=0.21",
+    "accelerate>=1.4.0",
+    "huggingface-hub>=0.29.2",
+    "nvidia-ml-py>=12.0",
+    "pytest>=8.0",
+]
+
+[tool.uv]
+required-version = ">=0.5.3"
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.sources]
+dci = { path = "../..", editable = true }
+torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'linux'" }]
