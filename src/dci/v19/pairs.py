@@ -370,6 +370,34 @@ def verifiers() -> tuple[VerifierBinding, tuple[str, ...]]:
     return tuple((bindings[v], tuple(seen[v])) for v in bindings)  # type: ignore
 
 
+def rule_definitions() -> dict[str, dict[str, object]]:
+    """The complete fixed rule semantics of all three pairs, for hashing.
+
+    Section 14.1 freezes the three rule definitions and D2 makes them a fixed
+    scientific commitment, but nothing hashed them: a changed statement, verifier
+    binding or parameter name altered no fingerprint anywhere in the registry.
+    Excludes the descriptive prose - `measurement_risk` and `note` - because those
+    are commentary rather than the frozen rule, and including them would make
+    editorial rewording look like a protocol change.
+    """
+    def described(rule: ConstraintRule) -> dict[str, object]:
+        return {"constraint_id": rule.constraint_id, "role": rule.role,
+                "statement": rule.statement, "family": rule.family,
+                "generative_scope": rule.generative_scope,
+                "parameters": list(rule.parameters),
+                "verifier_id": rule.verifier.verifier_id,
+                "verifier_callable": rule.verifier.callable_name,
+                "verifier_span": rule.verifier.span,
+                "v15_lineage": rule.v15_lineage}
+
+    return {p.pair_id: {"ordinal": p.ordinal,
+                        "family_combination": p.family_combination,
+                        "target": described(p.target),
+                        "focal": described(p.focal),
+                        "reference_arms": [r.arm for r in p.references]}
+            for p in PAIRS}
+
+
 def unimplemented_verifiers() -> tuple[VerifierBinding, ...]:
     """Declared verifiers with no implementation, in frozen pair order.
 
