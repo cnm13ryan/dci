@@ -38,7 +38,22 @@ class ModelConfig:
     dtype: str = "bfloat16"
     device_index: int = 0
     attn_implementation: str = "sdpa"
-    max_new_tokens: int = 180
+    # NOT the protocol's 180. `dci.analysis.output_budget` states the case
+    # against it in the repository's own words: "The generation ceiling is 180
+    # TOKENS, and it is a property of the apparatus, not of the science", and
+    # truncation "can invent or reverse a result".
+    #
+    # Stage A measured exactly that failure. B — "each sentence strictly longer
+    # than the last" — implies a geometrically growing answer, and its isolated
+    # runs averaged 180.0 generated tokens, i.e. 8 of 8 hit the cap, against
+    # 67-163 for every reference. A censored answer loses its final sentences, so
+    # the sentence COUNT that A is scored on is decided by the ceiling rather
+    # than by the model. At 180 this study would measure the cap.
+    #
+    # 512 clears the observed requirement with room to spare. Truncation is still
+    # recorded per row and reported per arm; it is never conditioned on, because
+    # it is post-treatment.
+    max_new_tokens: int = 512
     temperature: float = 0.7
     top_p: float = 0.9
     top_k: int = 0

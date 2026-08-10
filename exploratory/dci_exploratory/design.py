@@ -186,6 +186,26 @@ _BACKGROUND_EXCLUSIONS = {
 # push the answer in one direction the way three punctuation rules would.
 _BACKGROUND_FAMILIES = ("format", "lexical", "numerical")
 
+# Rule families that FORBID something rather than REQUIRE specific content.
+#
+# Stage A evidence (runs/stageA5_20260810T182442Z) forced this preference. The
+# first background drawn — "exactly 4 distinct integers", "4 words beginning with
+# P", "1 colon" — was outcome-blind and correctly matched across arms, but it
+# dictated the content of the answer rather than merely loading it: responses
+# degenerated into "1234: 1234 / 1234 / 1234 / 1234" and into dense P-alliteration
+# in every arm. Background that writes the answer leaves nothing for the focal
+# manipulation to act on and makes the raw outputs unreadable, which the manual
+# audit depends on.
+#
+# A prohibition adds a constraint to satisfy without deciding what the text says,
+# so it loads composition while leaving the generation free. This changes the
+# apparatus, not the contrast: S is identical in the focal and every reference
+# arm either way and so cannot move tau in any direction.
+_PROHIBITION_FAMILIES = frozenset({
+    "no_digits", "no_suffix", "no_char", "forbid_word_set",
+    "sentence_initial_forbidden_word", "max_integer_count",
+})
+
 
 def _select_background(S, load: int, used: Iterable[str]
                        ) -> tuple[tuple[str, ...], list[dict[str, Any]]]:
@@ -212,8 +232,14 @@ def _select_background(S, load: int, used: Iterable[str]
     quota = {family: 0 for family in _BACKGROUND_FAMILIES}
     per_family = -(-n_background // len(_BACKGROUND_FAMILIES))
 
+    # Prohibitions first, then the rest; within each tier, by constraint id. The
+    # order is total and fixed, so the background is still a deterministic
+    # function of the registry and not of anything observed.
+    ranked = sorted(S.U_CANDIDATE_IDS,
+                    key=lambda c: (S.CONSTRAINTS[c].rule_family not in _PROHIBITION_FAMILIES,
+                                   c))
     chosen: list[str] = []
-    for cid in sorted(S.U_CANDIDATE_IDS):
+    for cid in ranked:
         spec = S.CONSTRAINTS[cid]
         reasons = []
         if cid in used:
@@ -238,7 +264,9 @@ def _select_background(S, load: int, used: Iterable[str]
             chosen.append(cid)
             quota[spec.u_family] += 1
         audit.append({"constraint_id": cid, "name": spec.name,
-                      "u_family": spec.u_family, "pathway_audit": spec.pathway_audit,
+                      "u_family": spec.u_family, "rule_family": spec.rule_family,
+                      "prohibition": spec.rule_family in _PROHIBITION_FAMILIES,
+                      "pathway_audit": spec.pathway_audit,
                       "selected": selected,
                       "rejection_reasons": "; ".join(reasons)})
 
