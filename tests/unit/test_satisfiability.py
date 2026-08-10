@@ -61,10 +61,15 @@ def test_declared_incompatibility_is_read_symmetrically():
 
 # ------------------------------------------- the parameter-dependent case
 def test_semicolon_total_versus_per_sentence_is_restricted_not_hard():
-    """Satisfiable only when the sentence count equals the declared total."""
+    """Satisfiable only when the sentence count is AT MOST the declared total.
+
+    The bound is an upper bound, not an equality: two semicolons with one
+    required per sentence is satisfied by a one-sentence answer carrying both.
+    The equality reading rejected satisfiable compositions.
+    """
     kind, why = pair_verdict(SEMI2, SEMI_EACH)
     assert kind == "restricted"
-    assert "exactly 2" in why
+    assert "AT MOST 2 sentence(s)" in why
     assert "impossible" in why
 
 
@@ -75,7 +80,18 @@ def test_restricted_pairs_are_unusable_for_calibration():
 
 
 def test_min_words_versus_a_tight_character_budget():
-    assert pair_verdict(MINW15, CHARS40)[0] == "hard"
+    """Four characters per word is a prose average, not a bound on the text space.
+
+    15 words fit in 29 characters ("a b c ... o"), so a 40-character budget is
+    satisfiable and the heuristic may only flag it for review. The valid floor
+    is 2n-1 characters, and below THAT the contradiction is real.
+    """
+    kind, why = pair_verdict(MINW15, CHARS40)
+    assert kind == "review"
+    assert "review rather than exclude" in why
+    tighter = _spec("U_LEN20", "exact_char_total", P(n=20), scope="whole_text",
+                    role="unrelated")
+    assert pair_verdict(MINW15, tighter)[0] == "hard"
 
 
 def test_a_character_COUNT_is_not_a_length_budget():
