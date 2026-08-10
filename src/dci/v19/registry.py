@@ -130,9 +130,16 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "verifiers.inherited_reuse_decision")
             + _req("section 10.4 freezes the two-sided binomial interval at "
                    "Stage 2, before dependent reliability audits",
-                   "verifiers.binomial_interval_implementation")),
+                   "verifiers.binomial_interval_implementation")
+            + _req("section 8.6 requires human semantic review for every clause "
+                   "the frozen encoding and deterministic verifier do not "
+                   "exhaust, and unresolved disagreement fails certification",
+                   "satisfiability.semantic_reviews")),
         produces=("verifiers.specification_bundle", "verifiers.bundle_hash",
-                  "verifiers.tier1_reliability")),
+                  "verifiers.tier1_reliability", "satisfiability.encoding_map",
+                  "satisfiability.solver_identity",
+                  "satisfiability.witness_constructor",
+                  "satisfiability.certified_compositions")),
     StageGate(
         key="stage_2a_qualification", ordinal="2A",
         title="early scientific-runtime and inference qualification",
