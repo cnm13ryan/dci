@@ -52,8 +52,32 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 CELLS = REPO / "notebook_source" / "cells"
-STAGES = REPO / "src" / "dci" / "pipeline" / "stages"
-DOCS = REPO / "docs"
+
+# The migrator's SOURCE is the archived v15 notebook, which is provenance
+# material. Its OUTPUT is a reconstruction of the v15 package from that source.
+# Those are not the same artifact as the authoritative repaired package, and the
+# documented command used to write straight over it: `python tools/migrate_v15.py`
+# rewrote src/dci/pipeline/stages/, src/dci/pipeline/_prelude.py and the
+# extracted library modules with archived v15 code, silently producing a mixed
+# v15/current tree that still passed an import check. Reconstruction now lands in
+# an isolated directory unless a developer explicitly asks for the destructive
+# target.
+DEFAULT_OUT = REPO / "build" / "v15_reconstruction"
+
+# Rebound by configure_output(); every write in this module goes through them.
+OUT = DEFAULT_OUT
+STAGES = OUT / "src" / "dci" / "pipeline" / "stages"
+DOCS = OUT / "docs"
+
+
+def configure_output(root: Path) -> None:
+    """Point every generated artifact at `root`."""
+    global OUT, STAGES, DOCS
+    OUT = Path(root)
+    STAGES = OUT / "src" / "dci" / "pipeline" / "stages"
+    DOCS = OUT / "docs"
+    STAGES.mkdir(parents=True, exist_ok=True)
+    DOCS.mkdir(parents=True, exist_ok=True)
 
 SKIP_CELLS = {"104.py"}          # the %pip cell: environments/ replaces it
 
@@ -514,7 +538,9 @@ def extract_libraries(cells: dict[str, str], shared: set[str]):
                 f'the\nnotebook source; only the module home changed. See '
                 f'docs/migration_map.csv.\n"""\n'
                 + "\n".join(header) + "\n\n\n" + "\n\n".join(blocks))
-        (REPO / path).write_text(text, encoding="utf-8")
+        target = OUT / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(text, encoding="utf-8")
         if missing:
             print(f"  [extract] {mod}: NOT extracted (impure or absent): {missing}")
     return extracted, impure
@@ -750,8 +776,9 @@ print(f"Model loading is deferred and gated on Gate 0 and Gate M. Profile "
     a = src.index("def generate_batch(")
     b = src.index("def run_generation_stage(")
     original = src[a:b]
-    (REPO / "src/dci/inference/_moved_generate.py.txt").write_text(
-        original, encoding="utf-8")
+    _moved = OUT / "src/dci/inference/_moved_generate.py.txt"
+    _moved.parent.mkdir(parents=True, exist_ok=True)
+    _moved.write_text(original, encoding="utf-8")
     _i = _patch_slot("192.py", "P7-generate-seam")
     PATCHES["192.py"][_i] = (
         "P7-generate-seam", original,
@@ -835,11 +862,54 @@ def emit_prelude(cells: dict[str, str]) -> None:
             'transformers come\nthrough dci.compat so the scientific core runs '
             'without a GPU stack."""\n'
             + transform_imports("".join(imports)))
-    (REPO / "src/dci/pipeline/_prelude.py").write_text(text, encoding="utf-8")
+    _prelude = OUT / "src/dci/pipeline/_prelude.py"
+    _prelude.parent.mkdir(parents=True, exist_ok=True)
+    _prelude.write_text(text, encoding="utf-8")
 
 
-def main() -> None:
-    DOCS.mkdir(exist_ok=True)
+AUTHORITATIVE_CONSENT = "yes-overwrite-the-repaired-package"
+
+
+def parse_args(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(
+        prog="migrate_v15",
+        description="Reconstruct the v15 package from the archived notebook "
+                    "cells. Writes to an isolated directory by default.")
+    ap.add_argument("--out", type=Path, default=DEFAULT_OUT,
+                    help=f"output root (default: {DEFAULT_OUT.relative_to(REPO)})")
+    ap.add_argument("--overwrite-authoritative", default=None,
+                    metavar="CONSENT",
+                    help="developer-only: write into the live repository tree, "
+                         f"overwriting the repaired package. Requires the exact "
+                         f"value {AUTHORITATIVE_CONSENT!r}.")
+    return ap.parse_args(argv)
+
+
+def resolve_out(args) -> Path:
+    """The output root, refusing to clobber the live package by accident."""
+    if args.overwrite_authoritative is not None:
+        if args.overwrite_authoritative != AUTHORITATIVE_CONSENT:
+            raise SystemExit(
+                "--overwrite-authoritative requires the exact consent value "
+                f"{AUTHORITATIVE_CONSENT!r}. This target rewrites the repaired "
+                "package with archived v15 code and produces a mixed tree.")
+        print("WARNING: writing archived v15 code over the authoritative "
+              "package in", REPO)
+        return REPO
+    out = Path(args.out).resolve()
+    if out == REPO or (REPO / "src" / "dci").resolve() in out.parents:
+        raise SystemExit(
+            f"--out {out} points inside the authoritative package. Reconstruction "
+            "output must be isolated; use --overwrite-authoritative if you truly "
+            "mean to replace it.")
+    return out
+
+
+def main(argv=None) -> None:
+    args = parse_args(argv)
+    configure_output(resolve_out(args))
+    print(f"reconstructing the v15 package into {OUT}")
     cells = load_cells()
     emit_prelude(cells)
     build_dynamic_patches(cells)
@@ -885,7 +955,8 @@ def main() -> None:
         w.writerows(ledger)
     (DOCS / "shared_names.txt").write_text(
         "\n".join(sorted(shared)) + "\n", encoding="utf-8")
-    print(f"emitted {len(order)} stages; map + patch ledger written to docs/")
+    print(f"emitted {len(order)} stages into {STAGES}; map + patch ledger "
+          f"written to {DOCS}")
 
 
 if __name__ == "__main__":
