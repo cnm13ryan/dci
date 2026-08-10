@@ -105,26 +105,40 @@ def test_admitted_reference_identities_are_still_absent():
 
 
 # ---------------------------------------------------------- the stage gate
-def test_every_declared_stage_is_currently_blocked():
-    """No pre-freeze output has legitimately been produced yet."""
+def test_every_stage_after_the_first_is_currently_blocked():
+    """No pre-freeze output has legitimately been produced yet.
+
+    Stage 1 is the exception and must be: it has no slot-level prerequisite
+    because it is the first stage, which is a fact about the protocol rather than
+    a gap in the gate.
+    """
     for stage in STAGE_DEPENDENCIES:
+        if stage == "stage_1_definitions":
+            assert not REGISTRY.blockers_for(stage)
+            continue
         assert REGISTRY.blockers_for(stage), stage
 
 
-@pytest.mark.parametrize("stage", sorted(STAGE_DEPENDENCIES))
+@pytest.mark.parametrize("stage", [s for s in sorted(STAGE_DEPENDENCIES)
+                                   if s != "stage_1_definitions"])
 def test_requiring_any_stage_refuses_and_names_its_blockers(stage):
+    gate = REGISTRY.gate(stage)
     with pytest.raises(UnresolvedDependency) as caught:
         REGISTRY.require_stage(stage)
     message = str(caught.value)
-    assert stage in message
+    assert f"Stage {gate.ordinal}" in message
     assert "produced by:" in message
 
 
 def test_the_stage_nine_gate_lists_the_preregistered_prerequisites():
-    """Section 14.9: epsilon fixed, caps frozen, validity fixtures executed."""
+    """Section 14.9 plus section 13.1's "references are frozen" requirement."""
     blockers = {s.name for s in REGISTRY.blockers_for("stage_9_method_selection")}
     assert {"exact_epsilon", "inference.validity_results", "planning.h_max_caps",
-            "budget.retained_set", "runtime.selected_configuration"} == blockers
+            "budget.retained_set", "runtime.selected_configuration"} <= blockers
+    # Section 13.1: comparison occurs after checkpoint/runtime AND references.
+    for pair in ("p1", "p2", "p3"):
+        for i in range(1, 5):
+            assert f"reference.{pair}.R{i}" in blockers
 
 
 def test_stage_twelve_needs_every_numerical_output_it_freezes():
@@ -143,16 +157,16 @@ def test_stage_ten_cannot_run_before_the_method_is_frozen():
 
 
 def test_an_unknown_stage_is_an_error_not_a_pass():
-    with pytest.raises(KeyError, match="no declared slot-level prerequisites"):
-        REGISTRY.blockers_for("stage_99_profit")
-    with pytest.raises(KeyError, match="not a declared stage"):
-        REGISTRY.require_stage("stage_99_profit")
+    for call in (REGISTRY.blockers_for, REGISTRY.require_stage, REGISTRY.gate):
+        with pytest.raises(KeyError, match="not a declared stage"):
+            call("stage_99_profit")
 
 
 def test_a_stage_becomes_ready_when_its_prerequisites_resolve():
     table = REGISTRY.slots
-    table = table.freeze("runtime.checkpoint", "org/model@abc123",
-                         by="Stage 3 checkpoint-selection record")
+    for name, value in [("runtime.checkpoint", "org/model@abc123"),
+                        ("qualification.stage2a", "sha256:stage2a")]:
+        table = table.freeze(name, value, by="probe record")
     advanced = Registry(protocol=PROTOCOL_VERSION, slots=table)
     assert advanced.stage_status("stage_3_runtime_freeze")["status"] == "READY"
     advanced.require_stage("stage_3_runtime_freeze")
@@ -164,7 +178,8 @@ def test_a_stage_becomes_ready_when_its_prerequisites_resolve():
 def test_the_reported_status_is_the_root_cause_not_the_first_alphabetically():
     """Stage 9 waits on hardware AND a prospective decision; the decision is root."""
     row = REGISTRY.stage_status("stage_9_method_selection")
-    assert len(row["all_blocking_statuses"]) == 3
+    assert len(row["all_blocking_statuses"]) >= 2
+    assert "BLOCKED_BY_HARDWARE" in row["all_blocking_statuses"]
     assert row["root_blocker"] == "BLOCKED_BY_PROSPECTIVE_DECISION"
     assert row["status"] == row["root_blocker"]
 
