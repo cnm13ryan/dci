@@ -27,6 +27,25 @@ from dci_exploratory.design import Row, Selection
 
 EXPLORATORY_STAMP = "EXPLORATORY_NO_EVIDENCE"
 
+# System-message variants. "" is the protocol's own message, unchanged.
+#
+# The anti-collapse scaffold lives HERE, not in the numbered constraint list, so
+# that the list stays byte-identical and the instruction count stays at k=5 in
+# both conditions. Adding it as a sixth numbered constraint would have changed
+# the load and confounded the comparison the intervention exists to make.
+SCAFFOLDS: dict[str, str] = {
+    "": "",
+    "one_sentence_per_line": " Write each sentence on its own line.",
+}
+
+
+def system_message_for(scaffold: str) -> str:
+    """The protocol's system message, plus the named scaffold clause."""
+    from dci_exploratory import harvest
+    if scaffold not in SCAFFOLDS:
+        raise KeyError(f"unknown scaffold {scaffold!r}; known: {sorted(SCAFFOLDS)}")
+    return harvest.load().SYSTEM_MESSAGE + SCAFFOLDS[scaffold]
+
 
 @dataclass(frozen=True)
 class ModelConfig:
@@ -219,7 +238,8 @@ def run(rows: list[Row], selection: Selection, config: ModelConfig,
     for batch_index in range(0, len(ordered), config.batch_size):
         batch = ordered[batch_index:batch_index + config.batch_size]
         batch_seed = (config.base_seed + batch_index) % (2**31 - 1)
-        rendered = [backend.render(S.SYSTEM_MESSAGE, r.user_prompt) for r in batch]
+        rendered = [backend.render(system_message_for(getattr(r, "scaffold", "")),
+                                   r.user_prompt) for r in batch]
         try:
             texts, terminations, profile = backend.generate(rendered, batch_seed)
         except Exception as exc:                      # noqa: BLE001 - recorded, not raised
@@ -309,7 +329,7 @@ def _record(row: Row, rendered_prompt: str, text: Optional[str], verification,
         "batch_seed": batch_seed,
         "batch_index": batch_index,
         "instructions": [S.INSTRUCTIONS[c][row.paraphrase_id] for c in row.ordered_ids],
-        "system_message": S.SYSTEM_MESSAGE,
+        "system_message": system_message_for(getattr(row, "scaffold", "")),
         "rendered_prompt": rendered_prompt,
         "response": text,
         "verifier_status": status,

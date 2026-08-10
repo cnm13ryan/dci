@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
-from typing import Any, Iterable, Optional
+from typing import Any, Iterable, Optional, Sequence
 
 from dci_exploratory import harvest
 
@@ -78,8 +78,17 @@ def _satisfiable(a_id: str, b_id: str, constraints) -> tuple[bool, str]:
     return (str(status) != "unsatisfiable"), f"{status}: {reason}".strip(": ")
 
 
-def select(load: int = 5, n_references: int = N_REFERENCES) -> Selection:
-    """Apply the pre-stated selection rule and return the slice with its audit."""
+def select(load: int = 5, n_references: int = N_REFERENCES,
+           arms_override: Optional[Sequence[str]] = None) -> Selection:
+    """Apply the pre-stated selection rule and return the slice with its audit.
+
+    `arms_override` replaces the four selected references with an explicitly
+    named set. It exists for the follow-up DIAGNOSTICS (the anti-collapse
+    intervention and the semicolon-variant sweep), which deliberately compare a
+    named subset or a named variant family rather than the admitted panel. It is
+    never used for the primary contrast, and the override is recorded in the run
+    config so no run can silently claim to be the admitted design.
+    """
     S = harvest.load()
     constraints = S.CONSTRAINTS
 
@@ -142,6 +151,14 @@ def select(load: int = 5, n_references: int = N_REFERENCES) -> Selection:
             f"selection produced {len(chosen)} references, not {n_references}: "
             f"{chosen}. Exactly four references per pair is fixed by v19 (D3).")
     references = tuple(sorted(chosen))
+    if arms_override is not None:
+        unknown = [c for c in arms_override if c not in constraints]
+        if unknown:
+            raise ValueError(f"unknown constraint ids in arms_override: {unknown}")
+        if TARGET_ID in arms_override or FOCAL_ID in arms_override:
+            raise ValueError("arms_override lists the target or the focal; the "
+                             "focal arm is always added automatically")
+        references = tuple(arms_override)
 
     # --- step 4: background set S, only if the load calls for one -----------
     background, background_audit = _select_background(
@@ -294,6 +311,7 @@ class Row:
     paraphrase_id: int
     user_prompt: str
     pair_key: str             # (task, order, replicate) — matched across arms
+    scaffold: str = ""        # system-message variant; "" is the protocol default
 
     def as_dict(self) -> dict[str, Any]:
         out = self.__dict__.copy()
@@ -320,7 +338,8 @@ def build_design(selection: Selection, tasks: list[dict[str, str]],
                  replicates: int, base_seed: int, stage: str,
                  paraphrase_id: int = 0,
                  orders: Optional[tuple[str, ...]] = None,
-                 include_primitives: bool = True) -> list[Row]:
+                 include_primitives: bool = True,
+                 scaffolds: Sequence[str] = ("",)) -> list[Row]:
     """Matched focal/reference rows for every task, plus isolated primitives.
 
     For each task X_i, each order and each replicate there is exactly ONE focal
@@ -331,42 +350,57 @@ def build_design(selection: Selection, tasks: list[dict[str, str]],
     rows: list[Row] = []
 
     for task in tasks:
-        for order in orders:
+        for scaffold in scaffolds:
+            # The scaffold is part of the matching key: a focal row is compared
+            # with the reference rows generated under the SAME system message,
+            # never across the intervention.
+            tag = "" if not scaffold else f"|{scaffold}"
+            for order in orders:
+                for replicate in range(replicates):
+                    pair_key = f"{task['task_id']}|{order}|r{replicate}{tag}"
+                    for added in selection.arms:
+                        ordered_ids = _ordered(selection, added, order)
+                        condition = ("focal" if added == selection.focal
+                                     else "reference")
+                        row_id = _row_id(stage, task["task_id"], condition, added,
+                                         order, replicate, paraphrase_id,
+                                         base_seed, scaffold)
+                        rows.append(Row(
+                            row_id=row_id, stage=stage, task_id=task["task_id"],
+                            topic=task["topic"], condition=condition, arm=added,
+                            measured=selection.target, order=order,
+                            load=selection.load, replicate=replicate,
+                            ordered_ids=ordered_ids, paraphrase_id=paraphrase_id,
+                            user_prompt=harvest.compose_prompt(
+                                task["topic"], list(ordered_ids), paraphrase_id),
+                            pair_key=pair_key, scaffold=scaffold))
+
+            if not include_primitives:
+                continue
+            # Isolated single-instruction rows. A alone answers "can the model do
+            # A at all?"; each added constraint alone gives its own difficulty,
+            # which is the cheap probe of whether the references are matched to B
+            # on anything more than construction.
+            #
+            # Generated once PER SCAFFOLD, and carrying the scaffold, because a
+            # scaffold that changes primitive A-compliance is exactly what the
+            # intervention needs to know. Emitting them once with a fixed id
+            # collided as soon as two scaffolds were crossed.
             for replicate in range(replicates):
-                pair_key = f"{task['task_id']}|{order}|r{replicate}"
-                for added in selection.arms:
-                    ordered_ids = _ordered(selection, added, order)
-                    condition = "focal" if added == selection.focal else "reference"
-                    row_id = _row_id(stage, task["task_id"], condition, added,
-                                     order, replicate, paraphrase_id, base_seed)
+                for cid in (selection.target, *selection.arms):
+                    row_id = _row_id(stage, task["task_id"], "primitive", cid,
+                                     "isolated", replicate, paraphrase_id,
+                                     base_seed, scaffold)
                     rows.append(Row(
                         row_id=row_id, stage=stage, task_id=task["task_id"],
-                        topic=task["topic"], condition=condition, arm=added,
-                        measured=selection.target, order=order, load=selection.load,
+                        topic=task["topic"], condition="primitive", arm=cid,
+                        measured=cid, order="isolated", load=1,
                         replicate=replicate,
-                        ordered_ids=ordered_ids, paraphrase_id=paraphrase_id,
+                        ordered_ids=(cid,), paraphrase_id=paraphrase_id,
                         user_prompt=harvest.compose_prompt(
-                            task["topic"], list(ordered_ids), paraphrase_id),
-                        pair_key=pair_key))
-
-        if not include_primitives:
-            continue
-        # Isolated single-instruction rows. A alone answers "can the model do A
-        # at all?"; each added constraint alone gives its own difficulty, which
-        # is the cheap probe of whether the references are matched to B on
-        # anything more than construction.
-        for replicate in range(replicates):
-            for cid in (selection.target, *selection.arms):
-                row_id = _row_id(stage, task["task_id"], "primitive", cid,
-                                 "isolated", replicate, paraphrase_id, base_seed)
-                rows.append(Row(
-                    row_id=row_id, stage=stage, task_id=task["task_id"],
-                    topic=task["topic"], condition="primitive", arm=cid,
-                    measured=cid, order="isolated", load=1, replicate=replicate,
-                    ordered_ids=(cid,), paraphrase_id=paraphrase_id,
-                    user_prompt=harvest.compose_prompt(
-                        task["topic"], [cid], paraphrase_id),
-                    pair_key=f"{task['task_id']}|primitive|r{replicate}"))
+                            task["topic"], [cid], paraphrase_id),
+                        pair_key=f"{task['task_id']}|primitive|r{replicate}{tag}",
+                        scaffold=scaffold))
 
     ids = [r.row_id for r in rows]
     if len(set(ids)) != len(ids):
