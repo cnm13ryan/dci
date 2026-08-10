@@ -2,7 +2,9 @@
 
   dci doctor [--gpu]          environment report; exit 30 when unsupported
   dci test                    CPU test suite (pytest -m "not gpu and not slow")
-  dci plan     --profile P    build config through the budget stage, no generation
+  dci plan     --profile P    inspect config and designs; generates NOTHING
+  dci qualify  --profile P    pre-confirmatory gates and throughput benchmark,
+                              which do generate; needs --execute for evidence
   dci run      --profile P    execute the pipeline for the profile
   dci validate --profile integration_pass
                               run and ASSERT the frozen no-bypass baseline
@@ -10,8 +12,12 @@
 
 Evidence-producing safeguard: profiles whose model profile produces evidence
 (`study`, and `pilot` for real generation) refuse to run without --execute, and
-always refuse while the environment doctor fails. Scientific stops exit 10 and
-are not crashes; see dci/pipeline/runner.py for the taxonomy.
+always refuse while the environment doctor fails. `plan` needs no such guard
+because it cannot generate: it stops before the first generating stage AND runs
+with planning_only, so the inference seam refuses to hand it a usable backend.
+Stages that must generate before confirmation live behind `dci qualify`.
+Scientific stops exit 10 and are not crashes; see dci/pipeline/runner.py for
+the taxonomy.
 """
 from __future__ import annotations
 
@@ -63,14 +69,48 @@ def cmd_run(args) -> int:
     return run_pipeline(until=getattr(args, "until", None))
 
 
+# The last stage that generates nothing. c222 (Gate 0) runs a micro-generation
+# self-test and c242 runs the throughput benchmark, so a planning command that
+# reached either of those would generate for real under a non-dry-run profile.
+PLAN_LAST_STAGE = "c216"
+
+# The pre-confirmatory qualification boundary: Gate 0, Gate M and the throughput
+# benchmark. These DO generate, which v19 requires of them, so the command that
+# runs them is explicit and guarded rather than advertised as planning.
+QUALIFY_LAST_STAGE = "c242"
+
+
 def cmd_plan(args) -> int:
-    args.until = "c242"
-    from dci.config.loader import ACTIVE  # noqa: F401
+    """Inspect the frozen configuration and the design. Generates nothing.
+
+    Two independent guarantees, because one is an arrangement and the other is
+    structural: the traversal stops before the first stage that can generate,
+    AND planning_only makes the inference seam hand out a backend that refuses.
+    """
     _activate(args)
+    from dci.config import loader
+    loader.ACTIVE.planning_only = True
     from dci.pipeline.runner import run_pipeline
-    code = run_pipeline(until="c242")
-    print("\n[plan] stopped after the budget stage; review the projection and "
-          "budget snapshots above before `dci run`.")
+    code = run_pipeline(until=PLAN_LAST_STAGE)
+    print(f"\n[plan] stopped after {PLAN_LAST_STAGE} with no generation "
+          "attempted. The measured throughput and budget projection need the "
+          "benchmark, which generates: run `dci qualify` for those.")
+    return code
+
+
+def cmd_qualify(args) -> int:
+    """Run the pre-confirmatory qualification stages, which DO generate.
+
+    Gate 0's micro-generation, Gate M's measurement audit and the throughput
+    benchmark are executable pre-confirmatory work, not planning. The evidence
+    guard therefore applies exactly as it does to `run`.
+    """
+    _activate(args)
+    _guard_evidence(args)
+    from dci.pipeline.runner import run_pipeline
+    code = run_pipeline(until=QUALIFY_LAST_STAGE)
+    print(f"\n[qualify] stopped after {QUALIFY_LAST_STAGE}; review the gate "
+          "trace, projection and budget snapshots above before `dci run`.")
     return code
 
 
@@ -139,8 +179,12 @@ def main(argv=None) -> int:
     p = sub.add_parser("run", help="execute the pipeline"); common(p)
     p.add_argument("--until", default=None, help="stop after stage prefix, e.g. c222")
     p.set_defaults(fn=cmd_run)
-    p = sub.add_parser("plan", help="config + designs + budget, no generation")
+    p = sub.add_parser("plan", help="config + designs only; generates nothing")
     common(p); p.set_defaults(fn=cmd_plan)
+    p = sub.add_parser("qualify",
+                       help="pre-confirmatory gates and throughput benchmark; "
+                            "GENERATES")
+    common(p); p.set_defaults(fn=cmd_qualify)
     p = sub.add_parser("validate", help="assert the frozen no-bypass baseline")
     common(p); p.set_defaults(fn=cmd_validate)
     p = sub.add_parser("report"); p.add_argument("run_root"); p.set_defaults(fn=cmd_report)
