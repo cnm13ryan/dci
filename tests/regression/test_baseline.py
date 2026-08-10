@@ -104,17 +104,11 @@ def test_integration_pass_baseline(tmp_path):
         assert expected in got, f"missing {expected} in {got}"
 
 
-# Gate 0's self-test count is a provenance record, not a target. The migration
-# froze it at 110. The v15.1 repairs ADD invariants, so the count rises; every
-# check must still pass. Growth is expected, shrinkage never is.
-GATE0_CHECKS_V15_0 = 110
-GATE0_CHECKS_ADDED_V15_1 = {
-    "power_planner_covers_the_actual_primary_family",
-    "both_orders_is_never_easier_than_one_order",
-    "feature_roles_match_the_caliper_machinery",
-    "mechanism_and_post_treatment_features_are_never_matched",
-}
-GATE0_CHECKS_EXPECTED = GATE0_CHECKS_V15_0 + len(GATE0_CHECKS_ADDED_V15_1)
+# Gate 0's self-test inventory has ONE authoritative expectation, shared with
+# the sharded-worker traversal, which used to carry its own stale copy.
+from tests.regression.gate0_registry import (  # noqa: E402
+    GATE0_CHECKS_ADDED_V15_1, GATE0_CHECKS_EXPECTED, GATE0_CHECKS_V15_0,
+    assert_gate0_healthy)
 
 
 def test_gate0_all_checks_pass(tmp_path):
@@ -127,11 +121,4 @@ def test_gate0_all_checks_pass(tmp_path):
     assert run_pipeline(until="c222") == 0
     import pandas as pd
     table = pd.read_csv(Path(S.GATE_DIR) / "gate0_selftest.csv")
-    failed = table.loc[~table["passed"].astype(bool), "check"].tolist()
-    assert not failed, f"gate 0 checks failed: {failed}"
-    assert len(table) == GATE0_CHECKS_EXPECTED, (
-        f"gate 0 has {len(table)} checks, expected {GATE0_CHECKS_EXPECTED} "
-        f"({GATE0_CHECKS_V15_0} from v15.0 plus "
-        f"{sorted(GATE0_CHECKS_ADDED_V15_1)}). A DROP means an invariant was "
-        "removed and must be justified, not re-baselined.")
-    assert GATE0_CHECKS_ADDED_V15_1 <= set(table["check"])
+    assert_gate0_healthy(table)

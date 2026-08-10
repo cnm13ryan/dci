@@ -36,8 +36,11 @@ def test_two_workers_equal_one(tmp_path):
     run_root = runs[0].parent.parent
 
     import pandas as pd
-    g0 = pd.read_csv(runs[0])
-    assert len(g0) == 110 and int(g0["passed"].sum()) == 110
+    from tests.regression.gate0_registry import assert_gate0_healthy
+    # One authoritative expectation, not a copied total: this assertion used to
+    # pin the v15.0 count of 110, so every repair that ADDED an invariant broke
+    # an unrelated slow test.
+    assert_gate0_healthy(pd.read_csv(runs[0]))
 
     # journal: every planned batch committed exactly once, split across workers
     stage_dir = run_root / "responses" / "gate0_micro"
