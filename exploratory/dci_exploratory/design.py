@@ -1,0 +1,399 @@
+"""The exploratory slice: which A, which B, which C_j, which S — and the design.
+
+Two things matter scientifically in this module and nothing else does:
+
+1. **Reference selection never looks at an outcome.** The rule below is fixed in
+   advance and is a function of the registry alone (eligibility, satisfiability,
+   authored origin, constraint family, verifier coupling with A measured on the
+   model-free response bank). It cannot be tuned toward an effect because no
+   generation has happened when it runs.
+
+2. **Focal and reference rows differ in exactly one instruction.** Same task,
+   same background set, same instruction count, same position for the swapped
+   slot, same wording index, same decoding. If that ever stops being true the
+   contrast stops estimating interference and starts estimating whatever else
+   moved.
+"""
+from __future__ import annotations
+
+import hashlib
+from dataclasses import dataclass, field
+from typing import Any, Iterable, Optional
+
+from dci_exploratory import harvest
+
+# v19 fixes these; they are imported rather than restated so a registry change
+# cannot leave this module quietly disagreeing with the protocol.
+from dci.v19.families import N_REFERENCES
+from dci.v19.identity import LOADS, ORDERS
+from dci.v19.pairs import PAIR_3
+
+# The v19 pair this study measures. p1's verifiers are unimplemented and p2's
+# registered measurement risk is logical impossibility of the composition.
+TARGET_ID = "A"      # v15 id for v19:p3.target.exact_sentence_count
+FOCAL_ID = "B"       # v15 id for v19:p3.focal.increasing_lengths
+
+# o_A places the target before the added-slot occupant; o_Q reverses those two.
+ORDER_TARGET_FIRST, ORDER_ADDED_FIRST = ORDERS      # ("o_A", "o_Q")
+
+
+# ------------------------------------------------------------------ selection
+@dataclass(frozen=True)
+class Selection:
+    """The chosen slice, plus the full audit trail that produced it."""
+    target: str
+    focal: str
+    references: tuple[str, ...]
+    background: tuple[str, ...]
+    load: int
+    candidate_audit: list[dict[str, Any]] = field(default_factory=list)
+    background_audit: list[dict[str, Any]] = field(default_factory=list)
+    satisfiability_audit: list[dict[str, Any]] = field(default_factory=list)
+    rule: str = ""
+
+    @property
+    def arms(self) -> tuple[str, ...]:
+        """Focal first, then references in frozen order — v19's ARMS shape."""
+        return (self.focal, *self.references)
+
+    def reference_weights(self) -> dict[str, float]:
+        """UNIFORM, and deliberately so.
+
+        v19 keeps primitive effects reference-specific with no primary averaging
+        or weighting, and v15's stochastic weights are a Stage-3 output of a
+        calibration run this study does not perform. There is therefore no fitted
+        weight vector to reuse, and inventing one would fabricate precision. The
+        uniform average is reported as a descriptive summary only; the primary
+        quantities are the per-reference contrasts.
+        """
+        return {ref: 1.0 / len(self.references) for ref in self.references}
+
+
+def _satisfiable(a_id: str, b_id: str, constraints) -> tuple[bool, str]:
+    """The repository's own joint-satisfiability verdict for one pair."""
+    from dci.constraints.satisfiability import pair_verdict
+    verdict = pair_verdict(constraints[a_id], constraints[b_id])
+    status = getattr(verdict, "status", verdict)
+    reason = getattr(verdict, "reason", "")
+    return (str(status) != "unsatisfiable"), f"{status}: {reason}".strip(": ")
+
+
+def select(load: int = 5, n_references: int = N_REFERENCES) -> Selection:
+    """Apply the pre-stated selection rule and return the slice with its audit."""
+    S = harvest.load()
+    constraints = S.CONSTRAINTS
+
+    if load not in LOADS:
+        raise ValueError(f"load {load} is not one of the preregistered loads {LOADS}")
+
+    # --- step 1: the repository's construction-time eligibility -------------
+    eligible_table = S.hard_eligible_universe(S.CANDIDATE_IDS)
+    coupling = S.COUPLING
+
+    audit: list[dict[str, Any]] = []
+    for cid in S.CANDIDATE_IDS:
+        spec = constraints[cid]
+        row = eligible_table.loc[cid]
+        sat_a, why_a = _satisfiable(TARGET_ID, cid, constraints)
+        sat_b, why_b = _satisfiable(FOCAL_ID, cid, constraints)
+        audit.append({
+            "constraint_id": cid,
+            "name": spec.name,
+            "category": spec.category,
+            "mechanism": spec.mechanism,
+            "origin": spec.origin,
+            "generative_scope": spec.generative_scope,
+            "hard_eligible": bool(row["hard_eligible"]),
+            "rejection_reasons": str(row["rejection_reasons"]),
+            "agreement_with_A": float(row["agreement_with_A"]),
+            "agreement_with_B": float(row["agreement_with_B"]),
+            "coupling_with_A": float(coupling.get(cid, float("nan"))),
+            "satisfiable_with_A": sat_a, "satisfiability_A": why_a,
+            "satisfiable_with_B": sat_b, "satisfiability_B": why_b,
+            "instruction": S.INSTRUCTIONS[cid][0],
+        })
+
+    viable = [r for r in audit
+              if r["hard_eligible"] and r["satisfiable_with_A"] and r["satisfiable_with_B"]]
+
+    # --- step 2: the whole non-shadow authored pool -------------------------
+    chosen = sorted(r["constraint_id"] for r in viable if r["origin"] == "cse_pool")
+
+    # --- step 3: top up with shadows that add a MISSING constraint family,
+    #             tie-broken by lowest coupling with A, then by id ------------
+    covered = {constraints[c].category for c in chosen}
+    shadows = [r for r in viable if r["origin"] == "shadow"]
+    shadows.sort(key=lambda r: (r["coupling_with_A"], r["constraint_id"]))
+    for row in shadows:
+        if len(chosen) >= n_references:
+            break
+        if row["category"] not in covered:
+            chosen.append(row["constraint_id"])
+            covered.add(row["category"])
+    # Only if family coverage still cannot fill the slots do we relax it.
+    for row in shadows:
+        if len(chosen) >= n_references:
+            break
+        if row["constraint_id"] not in chosen:
+            chosen.append(row["constraint_id"])
+
+    if len(chosen) != n_references:
+        raise ValueError(
+            f"selection produced {len(chosen)} references, not {n_references}: "
+            f"{chosen}. Exactly four references per pair is fixed by v19 (D3).")
+    references = tuple(sorted(chosen))
+
+    # --- step 4: background set S, only if the load calls for one -----------
+    background, background_audit = _select_background(
+        S, load=load, used=(TARGET_ID, FOCAL_ID, *references))
+
+    # --- step 5: every pair that will actually share a prompt is satisfiable -
+    everything = [TARGET_ID, FOCAL_ID, *references, *background]
+    sat_audit = []
+    for i, first in enumerate(everything):
+        for second in everything[i + 1:]:
+            ok, why = _satisfiable(first, second, constraints)
+            sat_audit.append({"a": first, "b": second, "satisfiable": ok, "verdict": why})
+    unsat = [r for r in sat_audit if not r["satisfiable"]]
+    if unsat:
+        raise ValueError(
+            "the selected slice contains a jointly unsatisfiable pair, which "
+            f"would measure impossibility rather than interference: {unsat}")
+
+    return Selection(
+        target=TARGET_ID, focal=FOCAL_ID, references=references,
+        background=background, load=load,
+        candidate_audit=audit, background_audit=background_audit,
+        satisfiability_audit=sat_audit,
+        rule=("hard-eligible under S.hard_eligible_universe AND jointly satisfiable "
+              "with A and B; take the whole non-shadow (cse_pool) candidate pool; "
+              "top up to N_REFERENCES with shadow candidates adding a missing "
+              "constraint family, tie-broken by lowest verifier coupling with A "
+              "then by constraint id. No outcome is consulted."))
+
+
+# Background members excluded by hand, with the reason. Each exclusion is a
+# declared interaction with the dimension this pair is measured on, taken from
+# the registry's OWN written pathway audit — not a judgement invented here.
+_BACKGROUND_EXCLUSIONS = {
+    "U_FMT_NOCOMMA": ("its pathway audit declares a length side-effect ('comma "
+                      "avoidance can shorten clauses'). Sentence length is "
+                      "exactly what B orders, so this would sit in the "
+                      "background pushing on the focal mechanism in every arm."),
+}
+
+# One background instruction per authored family, so the background block cannot
+# push the answer in one direction the way three punctuation rules would.
+_BACKGROUND_FAMILIES = ("format", "lexical", "numerical")
+
+
+def _select_background(S, load: int, used: Iterable[str]
+                       ) -> tuple[tuple[str, ...], list[dict[str, Any]]]:
+    """The shared background set S, identical in focal and reference arms.
+
+    Drawn from the authored 'unrelated target' bank, whose members carry written
+    pathway audits establishing that they neither read the sentence COUNT (which
+    is A) nor compare one sentence with another (which is B). A background
+    instruction that did either would be a second copy of the treatment.
+
+    Because S is identical across arms it cannot bias `tau` by itself. It can
+    still destroy the experiment's sensitivity — a background that floors A in
+    every arm leaves nothing to interfere with — which is why it is spread across
+    families and why a declared length side-effect disqualifies a member.
+    """
+    used = set(used)
+    n_background = load - 2                     # A + one added slot + background
+    audit: list[dict[str, Any]] = []
+    if n_background <= 0:
+        return (), audit
+
+    # Round-robin over families so the quota is spread rather than taken
+    # alphabetically from whichever family sorts first.
+    quota = {family: 0 for family in _BACKGROUND_FAMILIES}
+    per_family = -(-n_background // len(_BACKGROUND_FAMILIES))
+
+    chosen: list[str] = []
+    for cid in sorted(S.U_CANDIDATE_IDS):
+        spec = S.CONSTRAINTS[cid]
+        reasons = []
+        if cid in used:
+            reasons.append("already used as target, focal or reference")
+        if spec.generative_scope != "whole_text":
+            # Sentence-scoped 'bridge' members share A's segmentation span.
+            reasons.append(f"generative scope {spec.generative_scope}, not whole_text")
+        if cid in _BACKGROUND_EXCLUSIONS:
+            reasons.append(_BACKGROUND_EXCLUSIONS[cid])
+        if spec.u_family not in quota:
+            reasons.append(f"family {spec.u_family!r} is not a background family")
+        elif quota[spec.u_family] >= per_family:
+            reasons.append(f"family {spec.u_family} quota ({per_family}) already filled")
+        if not reasons:
+            for other in [*used, *chosen]:
+                ok, why = _satisfiable(cid, other, S.CONSTRAINTS)
+                if not ok:
+                    reasons.append(f"not jointly satisfiable with {other} ({why})")
+                    break
+        selected = not reasons and len(chosen) < n_background
+        if selected:
+            chosen.append(cid)
+            quota[spec.u_family] += 1
+        audit.append({"constraint_id": cid, "name": spec.name,
+                      "u_family": spec.u_family, "pathway_audit": spec.pathway_audit,
+                      "selected": selected,
+                      "rejection_reasons": "; ".join(reasons)})
+
+    if len(chosen) != n_background:
+        raise ValueError(f"needed {n_background} background instructions, "
+                         f"found {len(chosen)}: {chosen}")
+    return tuple(chosen), audit
+
+
+# --------------------------------------------------------------------- design
+@dataclass(frozen=True)
+class Row:
+    """One generation request. `pair_key` is what links matched observations."""
+    row_id: str
+    stage: str
+    task_id: str
+    topic: str
+    condition: str            # "focal" | "reference" | "primitive"
+    arm: str                  # focal/reference: the added constraint id
+    measured: str             # the constraint whose compliance is scored
+    order: str
+    load: int
+    replicate: int
+    ordered_ids: tuple[str, ...]
+    paraphrase_id: int
+    user_prompt: str
+    pair_key: str             # (task, order, replicate) — matched across arms
+
+    def as_dict(self) -> dict[str, Any]:
+        out = self.__dict__.copy()
+        out["ordered_ids"] = list(self.ordered_ids)
+        return out
+
+
+def _row_id(*parts: Any) -> str:
+    return hashlib.sha256("|".join(str(p) for p in parts).encode()).hexdigest()[:20]
+
+
+def _ordered(selection: Selection, added: str, order: str) -> tuple[str, ...]:
+    """Target and added occupant swap the FIRST TWO slots; background is fixed.
+
+    Keeping the background block in one fixed position is what makes o_A and o_Q
+    differ in exactly the thing v19 says they differ in.
+    """
+    head = ((selection.target, added) if order == ORDER_TARGET_FIRST
+            else (added, selection.target))
+    return (*head, *selection.background)
+
+
+def build_design(selection: Selection, tasks: list[dict[str, str]],
+                 replicates: int, base_seed: int, stage: str,
+                 paraphrase_id: int = 0,
+                 orders: Optional[tuple[str, ...]] = None,
+                 include_primitives: bool = True) -> list[Row]:
+    """Matched focal/reference rows for every task, plus isolated primitives.
+
+    For each task X_i, each order and each replicate there is exactly ONE focal
+    row and one row per reference, all sharing a `pair_key`. That key is what the
+    analysis pairs on; nothing downstream is allowed to pair by position.
+    """
+    orders = orders or ORDERS
+    rows: list[Row] = []
+
+    for task in tasks:
+        for order in orders:
+            for replicate in range(replicates):
+                pair_key = f"{task['task_id']}|{order}|r{replicate}"
+                for added in selection.arms:
+                    ordered_ids = _ordered(selection, added, order)
+                    condition = "focal" if added == selection.focal else "reference"
+                    row_id = _row_id(stage, task["task_id"], condition, added,
+                                     order, replicate, paraphrase_id, base_seed)
+                    rows.append(Row(
+                        row_id=row_id, stage=stage, task_id=task["task_id"],
+                        topic=task["topic"], condition=condition, arm=added,
+                        measured=selection.target, order=order, load=selection.load,
+                        replicate=replicate,
+                        ordered_ids=ordered_ids, paraphrase_id=paraphrase_id,
+                        user_prompt=harvest.compose_prompt(
+                            task["topic"], list(ordered_ids), paraphrase_id),
+                        pair_key=pair_key))
+
+        if not include_primitives:
+            continue
+        # Isolated single-instruction rows. A alone answers "can the model do A
+        # at all?"; each added constraint alone gives its own difficulty, which
+        # is the cheap probe of whether the references are matched to B on
+        # anything more than construction.
+        for replicate in range(replicates):
+            for cid in (selection.target, *selection.arms):
+                row_id = _row_id(stage, task["task_id"], "primitive", cid,
+                                 "isolated", replicate, paraphrase_id, base_seed)
+                rows.append(Row(
+                    row_id=row_id, stage=stage, task_id=task["task_id"],
+                    topic=task["topic"], condition="primitive", arm=cid,
+                    measured=cid, order="isolated", load=1, replicate=replicate,
+                    ordered_ids=(cid,), paraphrase_id=paraphrase_id,
+                    user_prompt=harvest.compose_prompt(
+                        task["topic"], [cid], paraphrase_id),
+                    pair_key=f"{task['task_id']}|primitive|r{replicate}"))
+
+    ids = [r.row_id for r in rows]
+    if len(set(ids)) != len(ids):
+        raise ValueError("design rows are not uniquely identified")
+    return rows
+
+
+def assert_matched(rows: list[Row], selection: Selection) -> None:
+    """Every check that, if it failed, would silently invalidate the contrast.
+
+    Called by the runner before any generation and by the tests. It is cheaper to
+    refuse to run than to discover afterwards that focal and reference rows were
+    not comparable.
+    """
+    groups: dict[str, list[Row]] = {}
+    for row in rows:
+        if row.condition in ("focal", "reference"):
+            groups.setdefault(row.pair_key, []).append(row)
+
+    expected_arms = set(selection.arms)
+    for pair_key, group in groups.items():
+        arms = {r.arm for r in group}
+        if arms != expected_arms:
+            raise ValueError(f"{pair_key}: arms {sorted(arms)} != {sorted(expected_arms)}")
+        if len({r.task_id for r in group}) != 1:
+            raise ValueError(f"{pair_key}: matched rows span several tasks")
+        if len({r.topic for r in group}) != 1:
+            raise ValueError(f"{pair_key}: matched rows span several topics")
+        if len({r.order for r in group}) != 1:
+            raise ValueError(f"{pair_key}: matched rows span several orders")
+        if len({r.paraphrase_id for r in group}) != 1:
+            raise ValueError(f"{pair_key}: matched rows span several wordings")
+        if len({len(r.ordered_ids) for r in group}) != 1:
+            raise ValueError(f"{pair_key}: instruction COUNT differs across arms")
+        if len({r.measured for r in group}) != 1:
+            raise ValueError(f"{pair_key}: rows do not all measure the same constraint")
+        for row in group:
+            if row.measured != selection.target:
+                raise ValueError(f"{row.row_id}: measures {row.measured}, not the target")
+            if selection.target not in row.ordered_ids:
+                raise ValueError(f"{row.row_id}: the target instruction is not in the prompt")
+            if row.arm not in row.ordered_ids:
+                raise ValueError(f"{row.row_id}: the arm's instruction is not in the prompt")
+            # The one instruction that differs between arms must be the arm's.
+            others = tuple(c for c in row.ordered_ids if c != row.arm)
+            expected = (selection.target, *selection.background)
+            if tuple(sorted(others)) != tuple(sorted(expected)):
+                raise ValueError(
+                    f"{row.row_id}: non-arm instructions are {others}, expected "
+                    f"{expected}; focal and reference prompts differ in more than "
+                    "the swapped slot")
+            # Position of the swapped slot must match the declared order.
+            index = row.ordered_ids.index(row.arm)
+            target_index = row.ordered_ids.index(selection.target)
+            if row.order == ORDER_TARGET_FIRST and not target_index < index:
+                raise ValueError(f"{row.row_id}: order {row.order} but target is not first")
+            if row.order == ORDER_ADDED_FIRST and not index < target_index:
+                raise ValueError(f"{row.row_id}: order {row.order} but added is not first")
