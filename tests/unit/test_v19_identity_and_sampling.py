@@ -62,6 +62,55 @@ def test_a_cell_outside_the_frozen_grid_is_refused(load, order, arm):
         cell_id("unit", "b", load, order, arm)
 
 
+# ------------------------------------- one identity, one spelling of its inputs
+#
+# `2.0 in (2, 5)` is True in Python, but canonical serialisation distinguishes 2
+# from 2.0 - as it must, since a protocol hash that ignored numeric type would be
+# ambiguous. So an integer-valued float used to give one scientific cell two
+# different cell_ids, which is the collision the identity hierarchy exists to
+# prevent. The types are now checked as well as the values.
+@pytest.mark.parametrize("load", [2.0, 5.0])
+def test_an_integer_valued_float_load_cannot_reach_a_cell_id(load):
+    with pytest.raises(ValueError, match="types are part of the hashed identity"):
+        cell_id("unit", "b", load, "o_A", "B")
+
+
+def test_a_boolean_is_not_an_index_even_though_it_is_an_int():
+    """True == 1, so without the explicit check it would pass as replicate 1."""
+    with pytest.raises(ValueError, match="must be an integer"):
+        generation_id("cell", True)
+    with pytest.raises(ValueError, match="not one of"):
+        cell_id("unit", "b", True, "o_A", "B")
+
+
+@pytest.mark.parametrize("fn,args", [
+    (superblock_id, ("p1", 1.0, "fp")),
+    (generation_id, ("cell", 1.0)),
+    (attempt_id, ("gen", 2.0)),
+    (proposal_seed, ("p1", 1.0, 1, "task", 7)),
+    (expand_superblock, ("p1", 1, "fp", ["b"], 1.0, MODEL)),
+])
+def test_no_scientific_index_accepts_a_float(fn, args):
+    with pytest.raises(ValueError, match="must be an integer"):
+        fn(*args)
+
+
+@pytest.mark.parametrize("bad", ["1", None, [1]])
+def test_a_non_numeric_index_is_refused(bad):
+    with pytest.raises(ValueError, match="must be an integer"):
+        generation_id("cell", bad)
+
+
+def test_the_frozen_grid_members_keep_their_declared_types():
+    """A str load or an int order would also change the hashed payload."""
+    with pytest.raises(ValueError, match="not one of"):
+        cell_id("unit", "b", "2", "o_A", "B")
+    with pytest.raises(ValueError, match="not one of"):
+        cell_id("unit", "b", 2, 0, "B")
+    with pytest.raises(ValueError, match="not one of"):
+        cell_id("unit", "b", 2, "o_A", 1)
+
+
 def test_the_seed_is_a_function_of_planned_identity_only():
     gen = generation_id(cell_id("unit", "b", 2, "o_A", "B"), 1)
     assert scientific_seed(gen, MODEL) == scientific_seed(gen, MODEL)
