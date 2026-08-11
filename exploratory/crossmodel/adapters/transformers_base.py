@@ -126,10 +126,23 @@ class TransformersAdapter(ModelAdapter):
         try:
             info = HfApi().model_info(self.MODEL_ID, revision=self._revision)
         except Exception as error:                      # noqa: BLE001
+            cached = self._cached_revision()
+            if cached:
+                # The hub was unreachable — a connection reset while another
+                # checkpoint was downloading, in the observed case. The commit
+                # actually on disk is not a weaker answer than the hub's: it is
+                # the exact revision this process will load. It is used only
+                # when it is UNAMBIGUOUS, and the source is recorded.
+                self._revision = cached
+                self._load_metadata["revision_source"] = (
+                    "local HF cache snapshot (hub unreachable: "
+                    f"{type(error).__name__})")
+                return cached
             raise RuntimeError(
                 f"{self.MODEL_ID}: could not resolve an exact revision "
-                f"({type(error).__name__}: {error}). Proceeding on a mutable "
-                "alias would leave the run unable to say what it executed."
+                f"({type(error).__name__}: {error}) and no unambiguous cached "
+                "snapshot is on disk. Proceeding on a mutable alias would "
+                "leave the run unable to say what it executed."
             ) from error
         sha = getattr(info, "sha", None)
         if not sha or len(sha) != 40:
@@ -230,6 +243,23 @@ class TransformersAdapter(ModelAdapter):
         self._load_metadata["full_class_unexpected_keys"] = len(
             info.get("unexpected_keys") or [])
         return model, name, True
+
+    def _cached_revision(self) -> Optional[str]:
+        """The one commit sha in the local cache, or None if it is ambiguous.
+
+        Returns None when there are zero or several snapshots: "some revision
+        that happens to be on this disk" is exactly the mutable-alias problem
+        this method exists to avoid.
+        """
+        from huggingface_hub.constants import HF_HUB_CACHE
+
+        folder = Path(HF_HUB_CACHE) / (
+            "models--" + self.MODEL_ID.replace("/", "--")) / "snapshots"
+        if not folder.is_dir():
+            return None
+        snapshots = [p.name for p in folder.iterdir()
+                     if p.is_dir() and len(p.name) == 40]
+        return snapshots[0] if len(snapshots) == 1 else None
 
     # A cheaper pre-flight was tried here — read `model.safetensors.index.json`
     # and skip the text-only class when the checkpoint files its weights under a
