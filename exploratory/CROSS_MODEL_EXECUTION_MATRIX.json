@@ -1,5 +1,5 @@
 {
- "frozen_utc": "2026-08-11T23:01:37.422818+00:00",
+ "frozen_utc": "2026-08-11T23:08:18.380785+00:00",
  "contract": {
   "target": "A",
   "focal": "B",
@@ -180,16 +180,16 @@
   {
    "model_id": "moonshotai/Kimi-VL-A3B-Thinking-2506",
    "family": "kimi-vl",
-   "revision": "",
+   "revision": "aa1730989e7558695b44ee493623e03bd325a994",
    "weights_gib": 30.6,
    "dtype": "bfloat16",
    "quantization": "none",
    "backend": "transformers",
    "backend_version": "",
-   "gpu_layout": "",
+   "gpu_layout": "auto",
    "loaded_class": "",
    "bf16_load_valid": false,
-   "load_status": "NOT RUN",
+   "load_status": "BACKEND_BLOCKED",
    "generation_strategy": "single_phase",
    "reasoning_parser": "\u25c1think\u25b7 \u2026 \u25c1/think\u25b7",
    "no_thinking_supported": false,
@@ -212,7 +212,7 @@
    "admitted_natural": false,
    "admitted": false,
    "exclusion_no_thinking": "not natively supported by this checkpoint",
-   "exclusion_natural": "no Stage B/C record \u2014 never validated",
+   "exclusion_natural": "BACKEND_BLOCKED: ImportError: cannot import name 'is_torch_fx_available' from 'transformers.utils.import_utils' (/home/cnm13ryan/git/dci-cross-model/exploratory/.venv/lib/python3.12/site-packages/transformers/utils/im",
    "notes": "custom modeling code (trust_remote_code); `kimi_vl` is absent from transformers 5.15.0's registry"
   }
  ]
