@@ -77,6 +77,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--paraphrase", type=int, default=0,
                         help="wording index; a replication under a different "
                              "wording tests whether the effect is phrasing")
+    parser.add_argument("--no-thinking", action="store_true",
+                        help="render prompts with the model's own non-thinking "
+                             "mode (enable_thinking=False). Required for "
+                             "reasoning models, whose default template spends "
+                             "the whole token budget on a <think> trace.")
     parser.add_argument("--extensions", action="store_true",
                         help="register the constraints authored in "
                              "dci_exploratory/extensions.py")
@@ -154,7 +159,8 @@ def main(argv: list[str] | None = None) -> int:
     config = runner.ModelConfig(
         model_id=args.model, revision=args.revision, device_index=args.device,
         batch_size=args.batch_size, base_seed=args.seed,
-        max_new_tokens=args.max_new_tokens)
+        max_new_tokens=args.max_new_tokens,
+        disable_thinking=args.no_thinking)
 
     resolved: dict[str, Any] = {
         "stamp": runner.EXPLORATORY_STAMP,

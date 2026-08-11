@@ -1331,3 +1331,181 @@ reported separately:
 A model can have high D_m and no interference (gemma), high D_m and interference
 (Qwen3-4B), or low D_m — and the cross-tabulation says *which* instruction gave
 way, which a single excess figure cannot.
+
+---
+
+# Round 6 outcomes
+
+### R6-A — the q × N phase diagram · `runs/stageR6A_N{2,3,4,5,6}_*`
+
+3,560 generations, 0 technical failures. Targets `X_A2…X_A6`, arms
+`X_SEMICOLON_TOTAL{1..6}` plus two q = 0 controls, background
+`U_LEX_FORBID3 + U_NUM_MAXINT + U_FMT_PAREN1`, both orders, 20 pilot tasks, 2
+replicates. The N = 4 column reproduces E4b (q=2 → 0.306 vs 0.20; q=4 → 0.988 vs
+0.975; q=6 → 1.000 vs 0.99).
+
+**A-failure on the grid:**
+
+| q ↓ / N → | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| 1 | 0.812 | 0.362 | 0.113 | 0.163 | 0.050 |
+| 2 | 0.350 | 0.688 | 0.306 | 0.287 | 0.212 |
+| **3** | **0.775** | **0.938** | **0.988** | **0.975** | **0.887** |
+| 4 | 0.975 | 0.912 | 0.988 | 1.000 | 0.988 |
+| 5 | 0.988 | 0.912 | 1.000 | 1.000 | 1.000 |
+| 6 | 0.988 | 0.938 | 1.000 | 1.000 | 1.000 |
+
+**A1 (absolute dose) is selected; A2 (ratio) and A3 (q ≥ N) are refuted, and A4
+(q − N) with them.**
+
+* The **q = 3 row is 0.775–0.988 at every N**, and every row above it is ≥ 0.887.
+  Every row at q ≤ 2 is 0.05–0.81. The transition sits at q = 3 **independently
+  of the target count**.
+* **A3 dies at N = 6**, where q = 3, 4 and 5 are all strictly *below* the target
+  count and all collapse (0.887, 0.988, 1.000). The boundary account requires
+  them to be safe.
+* **A2 dies for the same cells**: a ratio threshold at q/N ≈ 1 puts the N = 6
+  boundary near q = 6; it is at q = 3.
+
+**The mediator crosses at the same place.** `chain_share` at q = 2 is 0.219–0.296
+across all five N; at q = 3 it is 0.360–0.510. The strategy variable — punctuation
+counts only, no reference to N — passes ≈ 1/3 exactly where the count gives way,
+at every target count. That is a better statement of the mechanism than any
+statement about q: **q sets the chain share, and the chain share has a threshold.**
+
+**Controls.** `C_L3` is 0.000–0.013 at every N — including N = 2, where E3 saw
+0.20–0.30 under a colon-carrying background. That difference is itself consistent
+with R6-B: the colon was hurting the control. `X_COMMA_TOTAL4` is 0.000–0.075,
+drifting slightly upward at N ≥ 5 but never material.
+
+**One anomaly, reported not smoothed.** At N = 2 the row is non-monotone:
+q = 1 → 0.812 but q = 2 → 0.350. The sentence counts show why the first number is
+high (1.19 sentences at q=1, N=2) but not why the second is lower. N = 2 is the
+column with the least headroom in every round; it is flagged, not explained.
+
+**Consequence for the claim matrix:** W7 stays withdrawn as originally stated,
+and is *replaced* by a stronger and differently-shaped claim — an absolute
+threshold at q ≈ 3, invariant in N over 2–6.
+
+### R6-B — the B × colon 2×2 · `runs/stageR6B_load{2,3}_*`
+
+920 generations, 0 technical failures. Manipulation check passes: colons produced
+0.00 in every load-2 arm without the colon instruction, 0.90–1.00 in every load-3
+arm with it.
+
+| cell | A-failure |
+|---|---|
+| F(A) — target alone, k=1 | 0.000 |
+| F(A+B) — k=2 | **0.000** |
+| F(A+`C_L3`) — k=2, inert filler | 0.000 |
+| F(A+C) — k=2 | 0.013 |
+| F(A+C+`C_L3`) — k=3, inert filler | 0.000 |
+| **F(A+B+C) — k=3** | **0.312** |
+| F(A+semicolon) — k=2, positive control | 0.287 |
+| F(A+C+semicolon) — k=3, positive control | 0.812 |
+
+**Interaction, count-matched: +0.312 [+0.188, +0.438]** (cluster bootstrap over
+20 tasks). Raw form, as specified: **+0.300**. The two agree, which also confirms
+`C_L3` is behaving as an inert filler.
+
+**Neither main effect exists.** B alone: 0.000. The colon alone: 0.013. Together:
+0.312. The apparent B → A effect is **entirely** a B × S interaction, and the
+load-3 control cell at 0.000 rules out compositional load as the explanation.
+
+**It is not B-specific.** The colon raises the semicolon arm from 0.287 to 0.812
+in the same design (+0.525). The colon instruction is a general amplifier of
+chaining-prone arms — and its own isolated primitive gives **1.150 sentences**,
+i.e. it carries the same disposition the semicolon does. What looked like a
+property of the focal instruction is a property of a background member that had
+never been examined as a treatment.
+
+### R6-C — cross-model arbitration, and a validity failure caught in the raw text
+
+**A validity failure, reported before any result.** The first `Qwen/Qwen3.5-4B`
+run is **invalid and is not interpreted**. Qwen3.5 is a *reasoning* model: its
+chat template opens a `<think>` block by default, so the 512-token budget was
+spent on a reasoning trace and the answer was never reached. The raw read is
+unambiguous — the response begins `Thinking Process:` and enumerates the
+constraints, scoring 36 "sentences", 268 words, 35 newlines and
+`output_truncated=True`. That run measures the trace, not the response.
+
+Two things follow, both applied:
+
+* The run directory is **kept** (`runs/stageR6C_qwen35_4b_*`) and marked invalid
+  rather than deleted, because deleting a run because its result was inconvenient
+  is the failure mode this programme has been guarding against all along. It is
+  cited only as evidence about the apparatus.
+* The runner gained `--no-thinking`, which passes the model's **own** documented
+  `enable_thinking=False` to its chat template. This is not a hand-written
+  template: it is the mode the model publishes for non-reasoning use, and it is
+  what makes the comparison with a non-reasoning instruct model like-for-like.
+  `prompt_convention` in the run summary records which was used.
+
+Had this not been read by hand, the Qwen3.5 cell would have been reported as
+"no interference" — a wrong conclusion caused entirely by decoding.
+
+**Arbitration decomposition, models validly run so far** (n = 80 contrast rows
+per cell; the 2×2 asks which of the two competing instructions was met):
+
+| model | arm | both met | **semicolon sacrificed** | **TARGET sacrificed** | neither |
+|---|---|---|---|---|---|
+| Qwen3-4B | `X_SEMICOLON_EACH` | 0.225 | 0.062 | **0.713** | 0.000 |
+| Qwen3-4B | `X_SEMICOLON_TOTAL4` | 0.000 | 0.000 | **0.338** | 0.662 |
+| Gemma-2-9B | `X_SEMICOLON_EACH` | 0.000 | **0.900** | 0.037 | 0.062 |
+| Gemma-2-9B | `X_SEMICOLON_TOTAL4` | 0.013 | **0.950** | 0.000 | 0.037 |
+
+**The disposition is not weaker in gemma — it is stronger.** The per-sentence
+semicolon instruction *alone* gives gemma **1.075** sentences against Qwen's
+**3.625**; the whole-answer floor gives both **1.150**. Identical trigger,
+identical-or-stronger habit, **mirror-image arbitration**: Qwen abandons the
+target in 71% of rows, gemma abandons the semicolon instruction in 90%.
+
+This is why the comparison was not reduced to "replicates / does not". A single
+excess figure would have said "gemma: 0.100, Qwen: 0.712" and hidden the fact
+that both models do the same thing to the text when the instruction stands alone.
+
+**R6-C final — four models, valid runs only** (`R6C_qwen3_4b`,
+`R6C_qwen35_4b_nothink`, `R6C_qwen35_9b_nothink`, `E6_gemma`; 2,080 generations,
+0 technical failures).
+
+*Isolated disposition* — the semicolon instruction alone, nothing to interfere with:
+
+| model | `≥4 semicolons` alone | `one per sentence` alone | chain_share alone |
+|---|---|---|---|
+| Qwen3-4B | **1.150** | 3.625 | 0.59–0.61 |
+| Qwen3.5-4B | **1.000** | **1.000** | 0.44–0.45 |
+| Qwen3.5-9B | **1.000** | 1.700 | 0.38 |
+| Gemma-2-9B | **1.150** | 1.075 | 0.47–0.48 |
+
+**The disposition is universal: 4 of 4 models write ~1 sentence when asked for
+four semicolons and given nothing else.** Target competence is also 0.000 in all
+four. The models differ only in what they do when the two compete.
+
+*Under conflict:*
+
+| model | target failure, `≥4` floor | target failure, per-sentence | both met | semicolon sacrificed | target sacrificed | neither |
+|---|---|---|---|---|---|---|
+| Qwen3-4B | **1.000** | 0.713 | 0.225 | 0.062 | **0.713** | 0.000 |
+| Qwen3.5-4B | **0.713** | 0.263 | 0.362 | 0.375 | 0.263 | 0.000 |
+| Qwen3.5-9B | **0.787** | **0.025** | 0.350 | **0.625** | 0.000 | 0.025 |
+| Gemma-2-9B | **0.037** | 0.100 | 0.000 | **0.900** | 0.037 | 0.062 |
+
+*(the four arbitration columns are for the per-sentence arm)*
+
+**This substantially corrects the Round 5 cross-model conclusion.** Round 5 tested
+one non-Qwen model on the per-sentence form and concluded the interference was
+Qwen-specific. With four models and both forms:
+
+* under a **whole-answer floor**, interference is large in **three of four**
+  models (0.713–1.000) and absent only in gemma (0.037);
+* under a **per-sentence rule** it varies enormously *within* the Qwen family —
+  0.713, 0.263, **0.025** — so "Qwen vs Gemma" was never the right axis;
+* Qwen3.5-9B is the sharpest case: it fails the per-sentence form only 0.025 of
+  the time while failing the whole-answer floor 0.787. Same model, same mark,
+  same dose, opposite outcome depending only on scoping — which is I5 (scoping is
+  protective) reproduced in a second model family generation.
+
+**Arbitration is a checkpoint property, not a family property.** Qwen3-4B and
+Qwen3.5-4B are the same developer and size class one generation apart, and they
+sit at opposite ends of the per-sentence arbitration (target sacrificed 0.713 vs
+0.263; semicolon sacrificed 0.062 vs 0.375). No family-level statement survives.
