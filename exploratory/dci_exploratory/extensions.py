@@ -154,7 +154,13 @@ CLAUSE_INITIAL = frozenset({
     "there", "then", "thus", "therefore", "however", "otherwise", "meanwhile",
     "instead", "consequently", "nevertheless", "afterwards", "subsequently",
 })
-_AFTER_MARK = re.compile(r"[;,]\s*([A-Za-z']+)")
+#: Every mark that could occupy a clause boundary, in one alternation. The first
+#: version listed only `[;,]`, which made `splice_count(text, "colon")` and
+#: `splice_count(text, "dash")` return 0 for every input — silently, because the
+#: character test downstream could then never match. Any conclusion drawn from a
+#: colon or dash splice count before this was fixed would have been an artefact
+#: of the regex rather than a fact about the text.
+_AFTER_MARK = re.compile(r"(--|[;,:—–])\s*([A-Za-z']+)")
 
 
 def splice_count(text: str, mark: str) -> int:
@@ -163,9 +169,9 @@ def splice_count(text: str, mark: str) -> int:
     A PROXY, and labelled one everywhere it is reported. It is exact about what
     it counts and silent about grammar.
     """
-    char = MARK_CHARS[mark][0]
+    chars = set(MARK_CHARS[mark])
     return sum(1 for m in _AFTER_MARK.finditer(str(text or ""))
-               if m.group(0)[0] == char and m.group(1).lower() in CLAUSE_INITIAL)
+               if m.group(1) in chars and m.group(2).lower() in CLAUSE_INITIAL)
 
 
 def v_no_splice(text: str, mark: str):
@@ -329,7 +335,8 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
     # quantity the candidate. The rest of this family exists to cross the two
     # things that could then be doing the work — how many marks are demanded, and
     # which mark — at one scope and under one wording.
-    for mark, n in (("semicolon", 2), ("semicolon", 4), ("semicolon", 6),
+    for mark, n in (("semicolon", 1), ("semicolon", 2), ("semicolon", 3),
+                    ("semicolon", 4), ("semicolon", 5), ("semicolon", 6),
                     ("colon", 4), ("dash", 4), ("comma", 4)):
         cid = f"X_{mark.upper()}_TOTAL{n}"
         out[cid] = (
@@ -491,7 +498,10 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_COMMA_EACH": ("Rain falls, and rivers rise. Wind blows, and leaves turn.",
                      "Rain falls. Rivers rise."),
     "X_SEMI_TOTAL4": ("a; b; c; d; e.", "a; b."),
+    "X_SEMICOLON_TOTAL1": ("a; b.", "a b."),
     "X_SEMICOLON_TOTAL2": ("a; b; c.", "a b."),
+    "X_SEMICOLON_TOTAL3": ("a; b; c; d.", "a; b."),
+    "X_SEMICOLON_TOTAL5": ("a; b; c; d; e; f.", "a; b."),
     "X_SEMICOLON_TOTAL4": ("a; b; c; d; e.", "a; b."),
     "X_SEMICOLON_TOTAL6": ("a; b; c; d; e; f; g.", "a; b."),
     "X_COLON_TOTAL4": ("a: b: c: d: e.", "a: b."),
@@ -558,7 +568,8 @@ _MARK_BUDGETS: dict[str, tuple[str, Optional[int]]] = {
     "U_FMT_COLON1": ("colon", 1),
     "U_FMT_NOCOMMA": ("comma", 0),
     **{f"X_{m.upper()}_TOTAL{k}": (m, None)
-       for m in ("semicolon", "colon", "dash", "comma") for k in (2, 4, 6)},
+       for m in ("semicolon", "colon", "dash", "comma")
+       for k in (1, 2, 3, 4, 5, 6)},
 }
 _PER_SENTENCE_MARKS: dict[str, tuple[str, int]] = {
     # constraint id -> (mark, occurrences demanded in EVERY sentence)

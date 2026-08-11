@@ -1169,3 +1169,165 @@ the target count, while the semicolon route does not use commas and is indiffere
 That is the closest thing to route-specific causal evidence this round produced,
 and it should be read for what it is — a post-hoc reading of a manipulation that
 was not the one specified, replicated across two independent backgrounds.
+
+---
+
+# Round 6 — consolidation, then the three experiments the matrices justify
+
+`CLAIM_EVIDENCE_MATRIX.md` and `EXPERIMENT_COVERAGE_MATRIX.md` were built first,
+the second of them programmatically from the run configs. Building them changed
+the plan in three ways before any new generation:
+
+1. **W7 — the q ≈ N threshold claim is withdrawn as unidentified.** The coverage
+   matrix shows free q was varied **only at N = 4**; every other N sits on the
+   diagonal q = N because per-sentence rules pin q to N. At N = 4, "q ≥ 4",
+   "q ≥ N" and "q/N ≥ 1" are the same hypothesis.
+2. **W9 — `severe_collapse` is retired as the mediator variable.** It counts
+   sentences, so it is a subset of the sentence-count outcome. Replaced by
+   `splice_share` and `chain_share`, computed from punctuation counts alone.
+3. **A measurement defect was found and fixed.** `splice_count` matched only
+   `[;,]`, so colon and dash splices silently returned 0 for every input.
+
+The replacement mediator was validated on **existing** data before any new run,
+by the only test that matters for non-circularity — that the measure and the
+outcome can come apart:
+
+| cell | chain/splice share | target failure |
+|---|---|---|
+| E5a `X_SEMICOLON_EACH`, paragraph target | **0.456** | **0.013** |
+| E4b `X_COLON_TOTAL4` `o_A` | 0.394 | 0.875 |
+| E4b `X_COLON_TOTAL4` `o_Q` | 0.134 | 0.175 |
+| E4b `X_DASH_TOTAL4` | 0.11–0.16 | 0.30–0.48 |
+| E4b `X_COMMA_TOTAL4`, `C_L3` | 0.000 | 0.000–0.025 |
+| E2b `B` | 0.087 | 0.637 |
+
+Both off-diagonal quadrants are populated: high share with no failure (E5a), and
+high failure with zero share (B, `C_O2`, `C_W3`). Pearson across 106 contrast
+cells is +0.794 — informative rather than arithmetic. `chain_share` additionally
+absorbs the colon's order asymmetry, which the sentence-count measures could not.
+
+---
+
+## R6-A — the q × N phase diagram
+
+**Hypothesis space.** Four accounts predict different surfaces over (q, N):
+
+| | account | prediction |
+|---|---|---|
+| **A1** | absolute dose | failure depends on **q** alone; the surface is flat in N |
+| **A2** | ratio | failure depends on **q/N**; iso-failure contours are rays from the origin |
+| **A3** | boundary at q = N | failure jumps where **q ≥ N**; contours follow the diagonal |
+| **A4** | difference | failure depends on **q − N** |
+
+At N = 4 all four coincide, which is why the existing data cannot separate them.
+
+**Design.** Targets `X_A2, X_A3, A, X_A5, X_A6` × arms `X_SEMICOLON_TOTAL{1..6}`,
+plus two q = 0 controls: `X_COMMA_TOTAL4` (wording- and dose-matched, no
+semicolons) and `C_L3` (the registry control used throughout). Background
+`U_LEX_FORBID3 + U_NUM_MAXINT + U_FMT_PAREN1`, chosen because it is E4b's, so the
+N = 4 column is a direct replication rather than a new measurement. Both orders,
+20 pilot tasks, 2 replicates, wording 0. 3,560 generations.
+
+**Primary readout.** Paired excess over `C_L3` at each (q, N), and `chain_share`
+at each (q, N) as the strategy surface. Fitting is descriptive: compare the
+deviance of failure ~ f(q), ~ f(q/N), ~ f(q−N) and ~ f(q, N).
+
+**Discriminating predictions.**
+
+| observation | reading |
+|---|---|
+| the q at which failure jumps is the **same for every N** | **A1** — absolute dose; the mechanism has nothing to do with the target |
+| the jump tracks **q/N ≈ 1** | **A2** — ratio |
+| the jump tracks **q = N** exactly, e.g. q=2 collapses at N=2 but not at N=6 | **A3** — the boundary account, and the withdrawn claim is restored |
+| `X_COMMA_TOTAL4` moves anywhere | the dose control is not inert and the whole dose reading is confounded |
+| `C_L3` failure rises with N | the target's own difficulty is moving and excesses must be read within N only |
+
+**Stop condition.** If `C_L3` fails above ~0.3 at any N, that column has no
+headroom and is reported as uninformative rather than interpreted (this happened
+at N = 2 in E3).
+
+---
+
+## R6-B — the B × colon 2×2 factorial
+
+**Why.** I7 rests entirely on across-run comparisons at fixed load. The clean
+2×2 has never been run.
+
+**Design.** Two runs, differing only in load, so that adding B moves k by exactly
+one in both differences:
+
+| run | load | target | arms | gives |
+|---|---|---|---|---|
+| `R6B_load2` | 2 | A | `B`, `U_FMT_COLON1`, `C_L3`, `S_SEMICOLON` | F(A+B), F(A+C), F(A+ctrl), F(A+semi); primitives give F(A) |
+| `R6B_load3` | 3 | A | `B`, `C_L3`, `S_SEMICOLON`, background `[U_FMT_COLON1]` | F(A+C+B), F(A+C+ctrl), F(A+C+semi) |
+
+**Two interaction estimates, both reported.**
+
+* **raw**, as specified: `[F(A+C+B) − F(A+C)] − [F(A+B) − F(A)]`
+* **count-matched**, using `C_L3` as an inert filler so instruction count is
+  constant within each difference:
+  `[F(A+C+B) − F(A+C+ctrl)] − [F(A+B) − F(A+ctrl)]`
+
+The count-matched form is the DCI-correct one; the raw form is reported because
+it is what was asked for and because a large gap between them would itself be
+informative about `C_L3`'s inertness.
+
+**Discriminating predictions.**
+
+| observation | reading |
+|---|---|
+| interaction ≫ 0, and F(A+B) ≈ F(A) | **B alone does nothing; B × colon is the whole effect.** I7 confirmed, and the v19 pair-3 headline is a higher-order interaction |
+| interaction ≈ 0, both differences > 0 | B is an ordinary main effect and the background-swap result was something else |
+| interaction ≈ 0, both differences ≈ 0 | B does not interfere at load 2–3 at all; the earlier effects need a full background |
+| `S_SEMICOLON` positive in both loads | the positive control holds and the run is interpretable |
+
+**Manipulation check.** Colon counts must actually rise when `U_FMT_COLON1` is
+present. If they do not, the factor was not delivered.
+
+---
+
+## R6-C — cross-model conflict arbitration
+
+**Why.** I10 rests on one gemma run at one cell. And "Qwen vs Gemma" confounds
+developer, size, generation and training recipe.
+
+**Models.** Verified against the Hub on 2026-08-11; exact ids and blockers in
+`EXPERIMENT_COVERAGE_MATRIX.md` §11.
+
+| model | id | params | status |
+|---|---|---|---|
+| Qwen3-4B-Instruct | `Qwen/Qwen3-4B-Instruct-2507` @ `cdbee75f` | 4.02 B | ✔ rerun under the identical battery |
+| Gemma-2-9B-it | `google/gemma-2-9b-it` @ `11c9b309` | 9.24 B | ✔ already run (E6) |
+| **Qwen3.5-4B** | `Qwen/Qwen3.5-4B` | 4.66 B | ✔ new — size-matched to Q4, one generation later |
+| **Qwen3.5-9B** | `Qwen/Qwen3.5-9B` | 9.65 B | ✔ new — size-matched to G9 |
+| **Qwen3.6-27B** | `Qwen/Qwen3.6-27B` | 27.78 B | ✘ **BLOCKED**: ≈55.6 GB bf16 against 48 GB total VRAM |
+| **Qwen3.6-35B-A3B** | `Qwen/Qwen3.6-35B-A3B` | 35.95 B | ✘ **BLOCKED**: ≈71.9 GB bf16 |
+
+The 3.6 line ships FP8 and GPTQ-Int4 variants that would fit. Neither is used:
+gfx1100 has no FP8 tensor support in this ROCm build, and an Int4 stand-in would
+change the numeric condition and answer a different question. **No substitution
+is made silently; Qwen 3.6 is recorded as untestable on this hardware.**
+
+The 3.5 line drops the `-Instruct` suffix — the plain id *is* the instruct model.
+`Qwen/Qwen3.5-4B-Instruct` returns HTTP 401 and does not exist.
+
+**Design.** Identical to E6 for every model: target A, focal
+`X_SEMICOLON_TOTAL4`, arms `X_SEMICOLON_EACH`, `X_COMMA_TOTAL4`, `C_L3`,
+background `U_LEX_FORBID3 + U_NUM_MAXINT + U_FMT_PAREN1`, both orders, 20 pilot
+tasks, 2 replicates, wording 0, bf16, T = 0.7, top_p = 0.9, 512 new tokens.
+
+**The comparison is NOT "does the effect replicate".** Five quantities per model,
+reported separately:
+
+| quantity | measured by |
+|---|---|
+| **D_m** isolated semicolon disposition | sentences and `chain_share` in the arm-alone primitive rows |
+| **target competence** | failure rate of the A-alone primitive rows |
+| **joint target compliance** | `a_failure` in the contrast rows |
+| **joint semicolon compliance** | `arm_binary_pass` in the contrast rows |
+| **which instruction is sacrificed** | the 2×2 cross-tabulation of the two above |
+| **resulting structure** | sentences, semicolons, `chain_share`, words |
+
+A model can have high D_m and no interference (gemma), high D_m and interference
+(Qwen3-4B), or low D_m — and the cross-tabulation says *which* instruction gave
+way, which a single excess figure cannot.
