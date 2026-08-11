@@ -330,3 +330,51 @@ New runs: `S0_smoke` (48), `S1_natural` (**invalid, 48 OOM, retained**),
 |---|---|
 | hard-budget reasoning factorial (Stages 2–13) | Qwen3.5-4B needs > 4096 reasoning tokens in ~87% of rows; 8192 × batch 8 exceeds 24 GB VRAM. Any affordable budget interrupts rather than limits. |
 | Qwen3.6 | 27 B ≈ 55.6 GB bf16 vs 48 GB total; 35B-A3B ≈ 71.9 GB. FP8 unsupported on gfx1100; Int4 would change the numeric condition. |
+
+---
+
+## 18. Cross-model transport (branch `exp/cross-model-transport`)
+
+Adds the first non-`Qwen3-4B` coverage of the **main DCI design** — §1 above
+recorded Qwen3.5-4B and Qwen3.5-9B at 0 runs.
+
+**Backend caveat.** Every run below is **Transformers 5.15.0**, not vLLM. vLLM
+is not installed on this machine and no ROCm build is present, so the five-way
+comparison is internally consistent but backend-confounded against everything in
+§§1–17.
+
+### Model × reasoning condition
+
+| checkpoint | revision | GPU layout | NO_THINKING | NATURAL_REASONING |
+|---|---|---|---|---|
+| `Qwen/Qwen3.5-4B` | `851bf6e806ef` | 1 card | ✔ 160 rows | ✘ pilot did not close — reproduces **I21** |
+| `Qwen/Qwen3.5-9B` | `c202236235762` | 1 card | ✔ 160 rows | ✘ not calibrated (pilot pre-empted) |
+| `google/gemma-4-E4B-it` | `ee0ef6023621` | 1 card | ✔ 160 rows | ✔ 160 rows |
+| `google/gemma-4-12B-it` | `707f0a3b8a3c` | 1 card | ✔ 160 rows | ◐ single-card OOM; dual-GPU capacity mode in progress |
+| `moonshotai/Kimi-VL-A3B-Thinking-2506` | `aa1730989e75` | — | ✘ **no such mode** — the non-thinking sibling is a different checkpoint | ✘ weights still downloading |
+
+**800 generations** admitted, all five files hashed CANONICAL in
+`CROSS_MODEL_RUN_MANIFEST.json`: 0 technical failures, 0 empty answers, 0
+truncated answers, 0 ceiling hits, replicate duplication 0/80 in every file.
+
+### Factors held fixed (not varied here)
+
+| factor | level |
+|---|---|
+| target N | 4 only |
+| q | 1 only (exactly one semicolon / one bracket pair) |
+| background | 2 only (`X_SEMICOLON_FREE`, `X_PAREN_FREE`) |
+| order | QAC only |
+| load | 3 only |
+| wording | paraphrase 0 only |
+| split | pilot only (20 tasks) |
+| replicates | 2 |
+
+### What blocked what
+
+| item | blocker |
+|---|---|
+| Qwen3.5 `NATURAL_REASONING` | traces do not terminate inside the 39,515-token envelope; a batched `generate()` holds the whole chunk at the cap. Same constraint as §17's, measured at the natural endpoint instead of a capped budget |
+| gemma-4-12B-it `NATURAL_REASONING` on one card | 22.28 GiB resident of 23.98 GiB; OOM with 80 MiB free. Needs dual-GPU capacity mode |
+| gemma-4-E4B-it text-only load | checkpoint stores `model.language_model.*` beside vision **and audio** towers; the causal-LM class leaves 667 parameters randomly initialised and emits noise |
+| Kimi-VL | 30.6 GiB download; `kimi_vl` absent from transformers 5.15.0, needs `trust_remote_code` + `tiktoken` |
