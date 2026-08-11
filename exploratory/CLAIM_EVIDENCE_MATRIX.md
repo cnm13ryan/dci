@@ -212,3 +212,28 @@ but the mark-agnostic `chain_share` in O15 would have been wrong. Fixed to
 | | I7 B's effect is a background interaction | 0.70 |
 | weakest | I2 chaining mediates the failure | 0.55 |
 | | I10 arbitration is model-specific | 0.50 / 0.25 |
+
+
+---
+
+## F. Round 6 revisions
+
+### New and revised claims
+
+| # | claim | evidence | causal status | confidence |
+|---|---|---|---|---|
+| **I3′** | The trigger has an **absolute threshold at q ≈ 3 semicolons, invariant in N over 2–6** | R6-A, full 6 × 5 grid: the q = 3 row is 0.775–0.988 at every N; every q ≤ 2 row is 0.05–0.81 | intervention-supported | **0.90** |
+| **I4′** | ~~q ≈ N~~ **refuted.** A ratio (q/N) and a difference (q − N) account are refuted with it | at N = 6, q = 3, 4, 5 are all < N and all collapse (0.887–1.000) | intervention-supported | **0.90** (as a refutation) |
+| **I2′** | The mediator threshold is in **`chain_share` ≈ 0.30–0.36**, and it is the same at every N | R6-A: chain_share 0.219–0.296 at q = 2 and 0.360–0.510 at q = 3, across all five N | suggestive mechanism (still no successful mediator block) | 0.70 |
+| **I7′** | The B → A effect is a **pure higher-order interaction** with no main effects | R6-B: F(A+B) = 0.000, F(A+C) = 0.013, F(A+B+C) = 0.312; interaction **+0.312 [+0.188, +0.438]** count-matched, +0.300 raw; load-3 control cell 0.000 | intervention-supported | **0.90** |
+| **I7″** | The amplifier is **not B-specific**: the colon raises the semicolon arm 0.287 → 0.812 in the same design, and the colon instruction alone gives 1.150 sentences | R6-B | intervention-supported | 0.85 |
+| **I10′** | The **disposition is universal** (4/4 models → ~1 sentence from a bare 4-semicolon demand); the **arbitration is a checkpoint property** | R6-C, four models | descriptive | 0.75 |
+| **I10″** | ~~"Qwen vs Gemma"~~ is the wrong axis: per-sentence failure varies 0.713 / 0.263 / **0.025** *within* the Qwen family | R6-C | descriptive | 0.80 |
+| **I5′** | Scoping-as-protection reproduces in a second model generation: Qwen3.5-9B fails the per-sentence form 0.025 and the whole-answer floor 0.787 | R6-C | intervention-supported | 0.85 |
+
+### Newly withdrawn
+
+| # | item | why |
+|---|---|---|
+| **W10** | "The interference is Qwen-specific / model-family-specific" (R5) | tested on one non-Qwen model with one arm form. With four models and two forms, the whole-answer floor interferes in 3 of 4, and the per-sentence form varies more *within* Qwen than between Qwen and Gemma. |
+| **W11** | The first `Qwen/Qwen3.5-4B` run | invalid: run under the model's default reasoning template, so it measured a `<think>` trace, not the answer. Run kept and marked; re-run under `enable_thinking=False`. |

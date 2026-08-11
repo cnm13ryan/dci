@@ -108,6 +108,14 @@ class ModelConfig:
     do_sample: bool = True
     batch_size: int = 16
     base_seed: int = 20260810
+    # Qwen3.5 is a REASONING model: its chat template opens a `<think>` block by
+    # default, so the first 512 generated tokens are a reasoning trace and the
+    # answer is never reached. A run under that default measures the trace, not
+    # the response, and is not comparable with a non-reasoning instruct model.
+    # `enable_thinking=False` is the model's OWN documented non-thinking mode and
+    # is what makes the comparison like-for-like; it is recorded per run rather
+    # than assumed.
+    disable_thinking: bool = False
 
 
 class Backend:
@@ -189,18 +197,21 @@ class Backend:
         """
         messages = [{"role": "system", "content": system_message},
                     {"role": "user", "content": user_prompt}]
+        extra = {"enable_thinking": False} if self.config.disable_thinking else {}
         try:
             rendered = self.tokenizer.apply_chat_template(
-                messages, tokenize=False, add_generation_prompt=True)
-            self.prompt_convention = "system+user"
+                messages, tokenize=False, add_generation_prompt=True, **extra)
+            self.prompt_convention = ("system+user, thinking disabled" if extra
+                                      else "system+user")
             return rendered
         except Exception:                              # noqa: BLE001 - see below
             merged = (f"{system_message}\n\n{user_prompt}" if system_message
                       else user_prompt)
             rendered = self.tokenizer.apply_chat_template(
                 [{"role": "user", "content": merged}],
-                tokenize=False, add_generation_prompt=True)
-            self.prompt_convention = "system merged into first user turn"
+                tokenize=False, add_generation_prompt=True, **extra)
+            self.prompt_convention = ("system merged into first user turn"
+                                      + (", thinking disabled" if extra else ""))
             return rendered
 
     def generate(self, prompts: list[str], batch_seed: int

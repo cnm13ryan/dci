@@ -248,3 +248,33 @@ scientific decision.
 | 7 | q ∈ {1,3,5} untested anywhere | the dose curve has three points | folded into gap 1 |
 | 8 | non-semicolon marks only at N=4 | mark-specificity is an N=4 statement | medium |
 | 9 | numerical-family target unusable | no cross-family evidence | low (needs a new target) |
+
+
+---
+
+## 13. Round 6 update — gaps 1, 2, 3 and 5 closed
+
+| gap | status after Round 6 |
+|---|---|
+| **1. q × N never crossed** | **CLOSED.** `R6A_N{2,3,4,5,6}` × `X_SEMICOLON_TOTAL{1..6}` — a full 6 × 5 grid with free q at every N, plus two q = 0 controls. 3,560 generations. |
+| **2. B × colon 2×2 never run** | **CLOSED.** `R6B_load2` / `R6B_load3` give all four cells with an inert filler for count-matching. 920 generations. |
+| **3. gemma at one cell only** | **PARTLY CLOSED.** Four models now run the identical battery. Still one cell of N, background, wording and split per non-Qwen model. |
+| **5. newer Qwen generations** | **CLOSED for 3.5** (`Qwen3.5-4B`, `Qwen3.5-9B`); **BLOCKED for 3.6** — see §11, unchanged. |
+| **4. decoding never varied** | **STILL OPEN**, and now the top remaining gap. |
+| 6. one base seed | still open |
+| 8. non-semicolon marks only at N = 4 | still open |
+| 9. numerical-family target unusable | still open |
+
+### A new coverage dimension Round 6 forced into existence: **reasoning mode**
+
+| model | template default | run under |
+|---|---|---|
+| Qwen3-4B-Instruct-2507 | no thinking block | default |
+| Gemma-2-9B-it | no thinking block, **no system role** | system merged into first user turn |
+| Qwen3.5-4B / 3.5-9B | **opens `<think>` by default** | `enable_thinking=False` (the model's own non-thinking mode) |
+
+The first Qwen3.5-4B run was made under the template default and is **invalid**:
+the 512-token budget went to a reasoning trace, giving 36 "sentences", 268 words
+and `output_truncated=True`. It is retained as `runs/stageR6C_qwen35_4b_*` and
+marked invalid. `prompt_convention` in every run summary now records which
+convention produced the prompts, so no future comparison can silently mix them.
