@@ -254,3 +254,58 @@ scored channel. This is the "forced-close artefact" that makes a reasoning
 condition invalid. It must never be read as a behavioural failure, so it is
 counted rather than silently cleaned. It is expected to be absent under the real
 engineering ceiling, where no trace is cut short.
+
+---
+
+## D15 — Chunk size is a scientific constraint under a 39,500-token ceiling
+
+**Decision.** Generation chunks are small (4 in calibration, 8 in the main run)
+and halve on OOM.
+
+**Why.** A batched `generate()` runs until EVERY sequence in the batch has
+finished or hit `max_new_tokens`. Under a ~39,500-token natural ceiling, one
+non-closing trace therefore drags its whole chunk to the cap — not just itself.
+Qwen3.5 reasons an order of magnitude longer than the checkpoint this study was
+built on (median 5,848 tokens against 511 on comparable prompts), and a chunk of
+ten stalled on the first attempt at its Stage D natural pass.
+
+**Consequence, recorded because it touches the seed regime.** An OOM split
+changes batch composition for the affected rows, and therefore their realised
+sample. The split is printed when it happens rather than being silent, so a run
+whose rows were re-batched can be identified.
+
+---
+
+## D16 — Stage E runs before Stage D where time is contended
+
+**Decision.** For Qwen3.5, the natural-reasoning pilot (Stage E) was run before
+the primitive gate (Stage D).
+
+**Why.** Stage E is the admission-critical measurement: a checkpoint whose
+natural reasoning cannot close reliably is not admitted at all, and there is no
+point measuring its primitives. Stage D constrains *interpretation* of a result
+that only exists if Stage E passes. Reordering two independent measurements
+changes neither, and both are complete before the main factorial runs.
+
+**Not a weakening.** Both stages are still required, and both are recorded in
+the frozen matrix before the scientific run.
+
+---
+
+## D17 — Qwen3.5-4B is FOCAL_FLOOR_LIMITED under no-thinking
+
+**Recorded 2026-08-11, from the Stage D gate, before the main slice was run or
+analysed.**
+
+Isolated compliance under `QWEN35_4B_NO_THINKING`: A = 1.00, **B = 0.12**,
+C_L3 = 0.88, semicolon background = 1.00, bracket background = 0.62.
+
+**Consequence for interpretation.** With the focal instruction at floor, the
+four-state table under this condition mostly distinguishes *neither* from
+*target only*, and does **not** identify arbitration between two live
+constraints. Any positive τ under this condition is compatible with the model
+simply failing B and the target degrading alongside it. This limit is stated now
+so it cannot be fitted to whatever the estimate turns out to be.
+
+The checkpoint is **not** excluded for it. Floor-limited constrains what may be
+concluded; it does not make the row set invalid.
