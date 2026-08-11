@@ -50,6 +50,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=runner.ModelConfig.base_seed)
     parser.add_argument("--max-new-tokens", type=int,
                         default=runner.ModelConfig.max_new_tokens)
+    parser.add_argument("--temperature", type=float,
+                        default=runner.ModelConfig.temperature,
+                        help="0.0 selects GREEDY decoding (do_sample off), which "
+                             "is the only way to ask whether a strategy is the "
+                             "model's preferred completion or an artefact of "
+                             "sampling.")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--arms", default=None,
                         help="comma-separated reference ids replacing the admitted "
@@ -77,6 +83,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--paraphrase", type=int, default=0,
                         help="wording index; a replication under a different "
                              "wording tests whether the effect is phrasing")
+    parser.add_argument("--fixed-tail", default="",
+                        help="background members held in a FIXED position after "
+                             "the three permuted roles, for transporting an "
+                             "ordering result to a higher load")
+    parser.add_argument("--permute", default=None,
+                        help="S3 ORDERING MODE. Comma-separated permutations of "
+                             "the roles A (target), Q (focal slot) and C "
+                             "(background slot), e.g. 'AQC,CQA'. Use 'all' for "
+                             "all six. Requires --target, --arms (the two focal "
+                             "occupants) and --background (the two variants).")
     parser.add_argument("--no-thinking", action="store_true",
                         help="render prompts with the model's own non-thinking "
                              "mode (enable_thinking=False). Required for "
@@ -141,14 +157,31 @@ def main(argv: list[str] | None = None) -> int:
     # Extending the sample must not resample the instances already seen.
     tasks = tasks[args.task_offset:args.task_offset + args.tasks]
 
-    orders = design.ORDERS if args.orders == "both" else (args.orders,)
-    rows = design.build_design(
-        selection, tasks, replicates=args.replicates, base_seed=args.seed,
-        stage=args.stage, orders=orders, scaffolds=scaffolds,
-        paraphrase_id=args.paraphrase,
-        include_primitives=not args.no_primitives)
-    # Refuses to spend a second of GPU time on a design that is not matched.
-    design.assert_matched(rows, selection)
+    if args.permute:
+        perms = (design.PERMUTATIONS if args.permute == "all"
+                 else tuple(p.strip() for p in args.permute.split(",")))
+        focals = [selection.focal, *selection.references]
+        variants = list(selection.background)
+        if len(focals) != 2 or len(variants) != 2:
+            raise SystemExit(
+                "the S3 ordering design needs exactly two focal-slot occupants "
+                f"(--focal plus one --arms entry; got {focals}) and exactly two "
+                f"background-slot variants (--background; got {variants})")
+        rows = design.build_permutation_design(
+            selection.target, focals, variants, tasks,
+            replicates=args.replicates, base_seed=args.seed, stage=args.stage,
+            paraphrase_id=args.paraphrase, permutations=perms,
+            fixed_tail=tuple(t for t in args.fixed_tail.split(",") if t))
+        orders = perms
+    else:
+        orders = design.ORDERS if args.orders == "both" else (args.orders,)
+        rows = design.build_design(
+            selection, tasks, replicates=args.replicates, base_seed=args.seed,
+            stage=args.stage, orders=orders, scaffolds=scaffolds,
+            paraphrase_id=args.paraphrase,
+            include_primitives=not args.no_primitives)
+        # Refuses to spend a second of GPU time on a design that is not matched.
+        design.assert_matched(rows, selection)
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_dir = Path(args.out) / f"stage{args.stage}_{stamp}"
@@ -160,7 +193,8 @@ def main(argv: list[str] | None = None) -> int:
         model_id=args.model, revision=args.revision, device_index=args.device,
         batch_size=args.batch_size, base_seed=args.seed,
         max_new_tokens=args.max_new_tokens,
-        disable_thinking=args.no_thinking)
+        disable_thinking=args.no_thinking,
+        temperature=args.temperature, do_sample=args.temperature > 0)
 
     resolved: dict[str, Any] = {
         "stamp": runner.EXPLORATORY_STAMP,
@@ -173,6 +207,7 @@ def main(argv: list[str] | None = None) -> int:
         "task_ids": [t["task_id"] for t in tasks],
         "replicates": args.replicates,
         "orders": list(orders),
+        "permutations": (list(orders) if args.permute else None),
         "scaffolds": list(scaffolds),
         "scaffold_text": {s: runner.SCAFFOLDS[s] for s in scaffolds},
         "scaffold_compliance_definition": {
