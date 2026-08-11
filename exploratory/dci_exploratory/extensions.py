@@ -434,6 +434,26 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
         _render(_LINEBREAK_TEMPLATES),
     )
 
+    # --- exactly-one marks, for the colon-property isolation --------------
+    # `U_FMT_COLON1` amplifies and `U_FMT_PAREN1` does not, yet both are
+    # exact-count, whole-answer, formatting constraints. What still differs is
+    # that a colon is a SINGLE FREE-FLOATING character while a bracket pair is a
+    # paired construct that must wrap content. These use the registry's own
+    # `exact_char_total` family, so their wording is the protocol's and is
+    # byte-matched to U_FMT_COLON1's ("Use exactly 1 X in the whole answer").
+    for cid, char in (("X_SEMI_EXACT1", ";"),):
+        out[cid] = (
+            spec(cid, "exploratory", f"Exactly one '{char}' in the answer",
+                 "format", "global_count", "whole_text", "character_stream",
+                 "unrelated", "exact_char_total", P(char=char, n=1),
+                 "exploratory", "authored for the colon-property isolation",
+                 u_family="format",
+                 pathway_audit="Whole-answer character count, matched to "
+                               "U_FMT_COLON1 in count, scope and wording."),
+            (lambda ch: (lambda t: _exact_char_total(t, ch, 1)))(char),
+            None,
+        )
+
     # --- route-closing prohibitions, for the double-dissociation intervention -
     # Three prohibitions of the same grammatical form and comparable length, one
     # on each suspected route and one on neither. Each is the others' control, so
@@ -473,6 +493,11 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
         _render(_WORDNUM_TEMPLATES),
     )
     return out
+
+
+def _exact_char_total(text: str, char: str, n: int):
+    from dci.verifiers.rules import v_exact_char_total
+    return v_exact_char_total(text, char, n)
 
 
 def _exact_sentence_count(text: str, n: int):
@@ -524,9 +549,12 @@ def register() -> dict[str, Any]:
             "params": dict(constraint.params),
             "generative_scope": constraint.generative_scope,
             "wordings": list(wordings),
-            "wording_origin": ("registry template (certified)"
-                               if constraint.rule_family == "exact_sentence_count"
-                               else "authored in exploratory/extensions.py"),
+            # A constraint that declared no wordings had them rendered from the
+            # registry's own certified templates just above; only the ones that
+            # shipped their own strings are authored here.
+            "wording_origin": ("authored in exploratory/extensions.py"
+                               if catalogue[cid][2] is not None
+                               else "registry template (certified)"),
         }
     manifest["manifest_sha256"] = sha(manifest["constraints"])
 
@@ -571,6 +599,7 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_NO_COMMA_SPLICE": ("Rain falls on the roof and soaks the ground.",
                           "Rain falls, it soaks the ground."),
     "X_NO_EXCLAM": ("Rain falls.", "Rain falls!"),
+    "X_SEMI_EXACT1": ("Rain falls; rivers rise.", "Rain falls; rivers rise; wind blows."),
 }
 
 
