@@ -27,7 +27,7 @@ from typing import Mapping
 
 from dci.v19 import (ALPHA, CANDIDATE_METHODS, PRIMITIVE_SUPPORT,
                      PROTOCOL_VERSION, SECONDARY_SUPPORT, SESOI_FLOOR)
-from dci.v19 import artifacts, field_roles, pairs, pools, specs
+from dci.v19 import artifacts, field_roles, frozen, pairs, pools, specs
 from dci.v19.identity import ARMS, LOADS, ORDERS
 from dci.v19.resolution import Slot, SlotTable
 
@@ -130,7 +130,12 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "verifiers.inherited_reuse_decision")
             + _req("section 10.4 freezes the two-sided binomial interval at "
                    "Stage 2, before dependent reliability audits",
-                   "verifiers.binomial_interval_implementation")),
+                   "verifiers.binomial_interval_implementation")
+            + _req("section 10.4 fixes the Tier-1 planning count prospectively, "
+                   "and the interval alone does not determine a decision rule: "
+                   "one error fails at 72 and passes at 110, so the sample size "
+                   "and error budget must be fixed before the audit runs",
+                   "verifiers.tier1_audit_design")),
         produces=("verifiers.specification_bundle", "verifiers.bundle_hash",
                   "verifiers.tier1_reliability")),
     StageGate(
@@ -573,19 +578,36 @@ HARDWARE_RULE_SUMMARY = (
     "DCI outcome as an input")
 
 
-def build() -> Registry:
-    """Assemble the Stage 1 registry from its declaring modules.
+def declared_table() -> SlotTable:
+    """Every slot the protocol declares, with all pre-freeze outputs still pending.
 
     Merging refuses overlapping slot names, so two modules cannot both claim to
     own the same pre-freeze output - the failure that would let one declaration
     silently win over another.
+
+    Kept separate from `build` so a test can ask what the protocol DECLARES
+    without the recorded outputs applied. That is also what the declaration
+    fingerprint is a hash of.
     """
     table = _fixed_commitments()
     for other in (pairs.declared_slots(), pools.declared_slots(),
                   pools.sufficiency_slots(), specs.declared_slots(),
                   artifacts.declared_slots()):
         table = table.merged(other)
-    return Registry(protocol=PROTOCOL_VERSION, slots=table)
+    return table
+
+
+def build() -> Registry:
+    """The declared registry with every recorded Stage 2 output applied.
+
+    `frozen.apply` refuses a record whose own prerequisites are still unresolved,
+    so a hand-edited file cannot bypass the ordering section 14 makes mandatory,
+    and every value passes through `Slot.freeze` and its typed domain on the way
+    in. A recorded output the code can no longer reproduce therefore fails at
+    IMPORT rather than at whatever later stage happens to read it.
+    """
+    return Registry(protocol=PROTOCOL_VERSION,
+                    slots=frozen.apply(declared_table()))
 
 
 REGISTRY = build()
