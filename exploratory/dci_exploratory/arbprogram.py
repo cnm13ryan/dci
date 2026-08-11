@@ -128,18 +128,39 @@ def per_task_rate(frame: pd.DataFrame, column: str, **where) -> pd.Series:
 
 
 def tau(frame: pd.DataFrame, *, background: str, order: str,
-        reasoning_budget: int) -> pd.Series:
+        reasoning_budget: int, **where) -> pd.Series:
     """P(A fails | B) - P(A fails | R), paired within task.
 
     Positive means the focal instruction damages the target more than the matched
     reference does -- interference attributable to B rather than to carrying a
     third instruction at all.
+
+    `**where` adds further equality selectors on any column, so a design that
+    holds the background fixed and varies something else -- the route-closing
+    instruction, say -- gets the same estimator rather than a second one written
+    beside it.
     """
     common = dict(background=background, order=order,
-                  reasoning_budget=reasoning_budget)
+                  reasoning_budget=reasoning_budget, **where)
     focal = per_task_rate(frame, "A_failure", arm=FOCAL_ARM, **common)
     reference = per_task_rate(frame, "A_failure", arm=REFERENCE_ARM, **common)
     return (focal - reference).dropna()
+
+
+def omega(frame: pd.DataFrame, *, order: str, reasoning_budget: int,
+          background: str = AMPLIFIER, column: str = "route",
+          closed: str = "anti_splice", control: str = "off_route") -> pd.Series:
+    """The route-closing contrast: tau with the route closed minus tau without.
+
+    Negative means closing the route REDUCED the interference, which is what the
+    splice mechanism predicts. The background is held fixed in both arms, and the
+    control arm carries a matched off-route instruction, so the contrast is not
+    confounded with the added instruction load.
+    """
+    common = dict(background=background, order=order,
+                  reasoning_budget=reasoning_budget)
+    return (tau(frame, **common, **{column: closed})
+            - tau(frame, **common, **{column: control})).dropna()
 
 
 def delta(frame: pd.DataFrame, *, order: str, reasoning_budget: int,
