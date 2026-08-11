@@ -1,4 +1,4 @@
-"""The Tier-1/Tier-2 reliability architecture, and the interval it cannot freeze.
+"""The Tier-1/Tier-2 reliability architecture, and the interval amendment A3 froze.
 
 Section 10.4 is \\FIXED on the architecture and explicit about one gap:
 
@@ -10,10 +10,15 @@ Section 10.4 is \\FIXED on the architecture and explicit about one gap:
     within register item D9 rather than an implementer decision."
 
 Recovery was performed and it succeeded. The result contradicts the sentence that
-asked for it, so this module implements the *evidence* and refuses to make the
-choice. `recover_inherited_interval()` returns the arithmetic; `WILSON` and
-`CLOPPER_PEARSON` are both implemented so the decision can be checked rather than
-recalled; nothing here selects one.
+asked for it, so the choice became an investigator decision, and amendment A3 made
+it: the exact two-sided 95% Clopper-Pearson interval, under a strict fixed audit
+design of 72 labels per truth class with zero errors permitted.
+
+Both intervals stay implemented. `recover_inherited_interval()` still returns the
+arithmetic, because a frozen decision whose evidence has been deleted cannot be
+re-checked by a reviewer - and `WILSON` is the counterfactual that evidence is
+about. Nothing here re-derives the choice; `AMENDED_TIER1_DESIGN` records it and
+the registry is where it is frozen.
 
 WHAT RECOVERY FOUND
 -------------------
@@ -35,7 +40,7 @@ at n = 72, not 73.
 
 The interval is therefore uniquely recoverable AND what it recovers to is not an
 "exact two-sided binomial interval". Both halves of section 10.4's sentence cannot
-hold, so the choice is an investigator decision:
+hold, so the choice was an investigator decision between:
 
   1. freeze Wilson - preserves the 73 the section says is preserved, and accepts
      a normal-approximation ceiling on the primary outcome's verifier while
@@ -43,19 +48,38 @@ hold, so the choice is an investigator decision:
   2. adopt Clopper-Pearson - satisfies "exact two-sided binomial" and section
      6.2's stated rationale, and changes the preserved count from 73 to 72.
 
-A second defect sits in the same sentence: it assigns the decision to "register
+WHAT A3 DECIDED
+---------------
+Option 2, with a strict fixed design: 72 adjudicated labels per truth class, zero
+observed errors required to pass, and no conditional extension of the sample. The
+Tier-1 planning total therefore moves from 876 to 864 labels.
+
+The error budget has to be part of the design rather than left to the interval,
+because the interval alone does not determine a decision rule. At n = 72 one error
+gives an exact upper bound of 0.0750 and fails; at n = 200 the same single error
+gives 0.0275 and would pass. Without a fixed n, "compute the bound" would let the
+verdict depend on a sample size chosen after the errors were seen.
+
+A failed unit is repaired and re-audited under a fresh prospectively specified
+audit. Section 10.6: "collecting more confirmatory data is not a remedy for invalid
+measurement."
+
+A second defect sat in the same sentence: it assigns the decision to "register
 item D9", but D9 in the section 17 register is the construction bootstrap
-("complete U_i clusters; exactly 10,000 replicates"). No register row covers this,
-so it needs one before Stage 14 can freeze it.
+("complete U_i clusters; exactly 10,000 replicates"). A3 adds `REGISTER_ROW_D45`,
+because Stage 14 cannot sign a decision register with a decision missing from it.
 """
 from __future__ import annotations
 
+import dataclasses
 import math
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Any
 
 from scipy import stats
+
+from dci.provenance.hashes import sha
 
 # ---------------------------------------------------------------- the ceilings
 #
@@ -66,7 +90,9 @@ TIER2_PER_STRATUM_CEILING = 0.20
 POOLED_SYSTEM_CEILING = 0.05
 CONFIDENCE = 0.95
 
-# "the inherited 73-per-truth-class Tier-1 planning count"
+# "the inherited 73-per-truth-class Tier-1 planning count". Preserved as a RECORD of
+# what the inherited gate implied, not as the count v19 uses: A3 adopts the exact
+# interval, and inverting that gives 72.
 INHERITED_TIER1_PER_TRUTH_CLASS = 73
 
 # "With three pairs and six target/focal verifier units, this alone implies 876
@@ -74,6 +100,116 @@ INHERITED_TIER1_PER_TRUTH_CLASS = 73
 TIER1_VERIFIER_UNITS = 6
 TIER1_TRUTH_CLASSES = ("true_failures", "true_passes")
 INHERITED_TIER1_TOTAL_LABELS = 876
+
+
+# ------------------------------------------------------- Stage 2 amendment A3
+#
+# Section 10.4 asked for "the exact two-sided binomial interval implementation used
+# by the inherited gate". Recovery found a normal-approximation one, so the two
+# halves of that sentence could not both hold. A3 keeps the adjective and drops the
+# preserved count, because section 6.2 already requires an exact Clopper-Pearson
+# interval for boundary calibration and using a looser interval for the primary
+# outcome's own verifier is the harder position to defend.
+
+AMENDED_INTERVAL = "clopper_pearson"
+
+# Inverting the exact interval at the 5% ceiling and 95% confidence.
+AMENDED_TIER1_PER_TRUTH_CLASS = 72
+AMENDED_TIER1_TOTAL_LABELS = 864          # 72 * 6 units * 2 truth classes
+
+
+class AuditDesignError(ValueError):
+    """A realised audit that the frozen design does not admit."""
+
+
+@dataclass(frozen=True)
+class AuditDesign:
+    """A prospectively fixed reliability audit: size, error budget, remedy.
+
+    The design is a separate object from the interval because the interval alone
+    does not determine a decision rule. At n = 72 the exact bound at one error is
+    0.0750, so one error already fails - but at n = 200 one error gives 0.0275 and
+    would pass. A design that only said "compute the bound" would therefore make
+    the verdict depend on a sample size chosen after the errors were seen, which is
+    the thing a fixed design exists to prevent.
+    """
+    design_id: str
+    interval: str
+    n_per_truth_class: int
+    errors_permitted: int
+    extension_permitted: bool
+    ceiling: float
+    confidence: float
+    remediation: str
+    citation: str
+
+    def __post_init__(self):
+        if self.n_per_truth_class < 1:
+            raise AuditDesignError("a design needs a positive per-class size")
+        if self.errors_permitted < 0:
+            raise AuditDesignError("a negative error budget is not a budget")
+
+    @property
+    def total_labels(self) -> int:
+        return (self.n_per_truth_class * TIER1_VERIFIER_UNITS
+                * len(TIER1_TRUTH_CLASSES))
+
+    def state(self) -> dict[str, Any]:
+        return {"design_id": self.design_id, "interval": self.interval,
+                "n_per_truth_class": self.n_per_truth_class,
+                "errors_permitted": self.errors_permitted,
+                "extension_permitted": self.extension_permitted,
+                "ceiling": self.ceiling, "confidence": self.confidence,
+                "truth_classes": list(TIER1_TRUTH_CLASSES),
+                "verifier_units": TIER1_VERIFIER_UNITS,
+                "total_labels": self.total_labels,
+                "remediation": self.remediation, "citation": self.citation}
+
+    @property
+    def design_hash(self) -> str:
+        return sha(["v19/audit-design", self.state()])
+
+
+AMENDED_TIER1_DESIGN = AuditDesign(
+    design_id="v19:tier1-audit-design.strict-fixed-v1",
+    interval=AMENDED_INTERVAL,
+    n_per_truth_class=AMENDED_TIER1_PER_TRUTH_CLASS,
+    errors_permitted=0,
+    extension_permitted=False,
+    ceiling=TIER1_CEILING,
+    confidence=CONFIDENCE,
+    remediation=(
+        "a unit that fails is repaired and re-audited under a fresh prospectively "
+        "specified audit, not by extending the original sample. Section 10.6: 'A "
+        "demonstrated semantic or verifier defect requires repair and re-audit "
+        "before freeze; collecting more confirmatory data is not a remedy for "
+        "invalid measurement.' Extending a sample after seeing an error makes the "
+        "realised size a function of the observed data, so the nominal 95% coverage "
+        "no longer describes the procedure that was run"),
+    citation="section 10.4 + Stage 2 amendment A3, register row D45")
+
+
+# Section 10.4 assigns this decision to "register item D9", but D9 is the
+# construction bootstrap. No register row covered it, so A3 adds one; Stage 14
+# cannot sign a decision register with a decision missing from it.
+REGISTER_ROW_D45: Mapping[str, Any] = {
+    "row": "D45",
+    "subject": ("the two-sided binomial interval implementation for the Tier-1 and "
+                "Tier-2 verifier reliability gates, and the fixed audit design "
+                "built on it"),
+    "decision": ("exact two-sided 95% Clopper-Pearson; 72 adjudicated labels per "
+                 "truth class; zero observed errors required to pass; no "
+                 "conditional sample extension"),
+    "consequences": {
+        "per_truth_class": [INHERITED_TIER1_PER_TRUTH_CLASS,
+                            AMENDED_TIER1_PER_TRUTH_CLASS],
+        "total_tier1_labels": [INHERITED_TIER1_TOTAL_LABELS,
+                               AMENDED_TIER1_TOTAL_LABELS]},
+    "supersedes_citation": ("section 10.4's citation of D9, which is the "
+                           "construction bootstrap - complete U_i clusters, exactly "
+                           "10,000 replicates - and does not cover this decision"),
+    "citation": "section 10.4; section 6.2; Brown, Cai and DasGupta (2001)",
+}
 
 
 class ReliabilityBlocked(RuntimeError):
@@ -283,16 +419,26 @@ class ClassBound:
     ceiling: float
     available: bool
     reason: str
+    design_violation: str = ""
 
     @property
     def passed(self) -> bool:
+        """The interval must hold AND the realised audit must be the planned one.
+
+        A design violation fails the class outright rather than being reported
+        alongside a passing bound: a bound computed over a sample the design does
+        not admit is a number about a different procedure.
+        """
+        if self.design_violation:
+            return False
         return self.available and self.upper is not None and self.upper <= self.ceiling
 
     def describe(self) -> dict[str, Any]:
         return {"truth_class": self.truth_class, "errors": self.errors,
                 "denominator": self.denominator, "upper": self.upper,
                 "ceiling": self.ceiling, "available": self.available,
-                "passed": self.passed, "reason": self.reason}
+                "passed": self.passed, "reason": self.reason,
+                "design_violation": self.design_violation}
 
 
 @dataclass(frozen=True)
@@ -375,6 +521,72 @@ def tier_certificate(unit: str, *, false_passes: int | None,
                              implementation, ceiling, confidence),
                 _class_bound("true_passes", false_fails, true_passes,
                              implementation, ceiling, confidence)))
+
+
+# ------------------------------------------------- the strict fixed design (A3)
+
+def design_violation(design: AuditDesign, truth_class: str, errors: int | None,
+                     denominator: int) -> str:
+    """Why this realised class is not the audit the design specified, or "".
+
+    Three separate refusals, each with its own sentence, because collapsing them
+    would hide which rule was broken.
+    """
+    if denominator > design.n_per_truth_class:
+        if not design.extension_permitted:
+            return (f"{denominator} adjudicated {truth_class} where the design fixes "
+                    f"{design.n_per_truth_class}. The design forbids conditional "
+                    "extension, and a sample enlarged after the errors were seen has "
+                    f"no {design.confidence:.0%} coverage guarantee. "
+                    f"{design.remediation}")
+        # A design may legitimately permit a larger sample; A3's does not, and the
+        # branch stays reachable so that fact is a declared property rather than an
+        # accident of the code.
+    elif denominator < design.n_per_truth_class:
+        return (f"{denominator} adjudicated {truth_class} where the design fixes "
+                f"{design.n_per_truth_class}; a short class is missing evidence, not "
+                "a smaller audit")
+    if errors is not None and errors > design.errors_permitted:
+        return (f"{errors} misclassified {truth_class} where the design permits "
+                f"{design.errors_permitted}. Under a fixed design the error budget "
+                "is part of the decision rule, not a quantity the interval "
+                f"renegotiates at a larger n. {design.remediation}")
+    return ""
+
+
+def tier1_certificate_under(design: AuditDesign, unit: str, *,
+                            false_passes: int | None, true_failures: int,
+                            false_fails: int | None, true_passes: int
+                            ) -> TierCertificate:
+    """Certify one verifier unit against a prospectively frozen audit design.
+
+    This is the A3 entry point. `tier_certificate` remains for the interval-only
+    computation the recovery evidence needs; it is not the gate.
+    """
+    if design.interval not in INTERVAL_IMPLEMENTATIONS:
+        raise ReliabilityBlocked(
+            f"{design.interval!r} is not an implemented interval; known: "
+            f"{sorted(INTERVAL_IMPLEMENTATIONS)}")
+    implementation = INTERVAL_IMPLEMENTATIONS[design.interval]
+    bounds = []
+    for truth_class, errors, denominator in (
+            ("true_failures", false_passes, true_failures),
+            ("true_passes", false_fails, true_passes)):
+        violation = design_violation(design, truth_class, errors, denominator)
+        bound = _class_bound(truth_class, errors, denominator, implementation,
+                             design.ceiling, design.confidence)
+        bounds.append(dataclasses.replace(bound, design_violation=violation))
+    return TierCertificate(
+        unit=unit, interval=implementation.name, ceiling=design.ceiling,
+        confidence=design.confidence, bounds=tuple(bounds))
+
+
+def assert_no_conditional_extension(design: AuditDesign, realised: int) -> None:
+    """Refuse a realised size the design did not fix, before any bound is computed."""
+    if realised != design.n_per_truth_class and not design.extension_permitted:
+        raise AuditDesignError(
+            f"the design fixes {design.n_per_truth_class} per truth class and "
+            f"{realised} were adjudicated. {design.remediation}")
 
 
 def tier1_planning_count(implementation: IntervalImplementation,
