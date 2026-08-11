@@ -92,6 +92,11 @@ class Generation:
     natural_reasoning_closed: bool
     reasoning_cap_hit: bool
     answer_truncated: bool
+    #: Did the model open a reasoning block at all? Distinct from "closed it".
+    #: A checkpoint whose template leaves thinking optional may simply decline to
+    #: think on an easy prompt, and that is a property of the checkpoint, not a
+    #: parser failure — but it is also not a closure, so the two are kept apart.
+    reasoning_emitted: bool = True
     seed_reasoning: Optional[int] = None
     seed_answer: Optional[int] = None
     batch_seed: Optional[int] = None

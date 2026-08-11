@@ -64,6 +64,18 @@ def batch_seed_for(seeds: Sequence[int]) -> int:
         hashlib.sha256(material.encode()).digest()[:4], "big")
 
 
+def _find(haystack: Sequence[int], needle: Sequence[int], start: int = 0
+          ) -> int:
+    """Index of the first occurrence of `needle` in `haystack`, or -1."""
+    if not needle:
+        return -1
+    limit = len(haystack) - len(needle)
+    for index in range(max(start, 0), limit + 1):
+        if list(haystack[index:index + len(needle)]) == list(needle):
+            return index
+    return -1
+
+
 class TransformersAdapter(ModelAdapter):
     """Everything family-independent about running the splice on Transformers."""
 
@@ -83,6 +95,24 @@ class TransformersAdapter(ModelAdapter):
     #: a composite of a special token and a channel name overrides this with the
     #: special tokens themselves.
     PRESERVE_TOKENS: tuple[str, ...] = ()
+
+    #: How reasoning and answer are separated for this family.
+    #:
+    #: ``"splice"`` — stop the generation at the think-close marker, then
+    #: re-prompt past it for the answer. Correct only where the chat template
+    #: PRE-OPENS the reasoning block, so the model is already inside the trace
+    #: when generation starts and cannot emit answer text before it. Qwen3.5
+    #: does exactly that; it is also the canonical run's mechanism, so Qwen keeps
+    #: the study's existing semantics including the separate answer allowance.
+    #:
+    #: ``"single_phase"`` — one unbroken generation, split afterwards by the
+    #: family's own documented parser. Correct where the template does NOT force
+    #: the model into a reasoning block first. Gemma 4 was observed emitting the
+    #: answer BEFORE its thought channel on easy prompts and after it on the DCI
+    #: prompts; a splice would have captured that leading answer text as
+    #: "reasoning" and then scored a second, regenerated answer. Splitting after
+    #: the fact is agnostic to the order the model chose.
+    GENERATION_STRATEGY: str = "splice"
 
     # ------------------------------------------------------------- identity
     def resolve_revision(self) -> str:
@@ -255,6 +285,9 @@ class TransformersAdapter(ModelAdapter):
         if generation_config.reasoning_mode == ReasoningMode.NO_THINKING:
             results = self._generate_no_thinking(prompts, seeds,
                                                  generation_config)
+        elif self.GENERATION_STRATEGY == "single_phase":
+            results = self._generate_single_phase(prompts, seeds,
+                                                  generation_config)
         else:
             results = self._generate_spliced(prompts, seeds, generation_config)
 
@@ -287,6 +320,7 @@ class TransformersAdapter(ModelAdapter):
                 reasoning_tokens=0,
                 final_answer_tokens=count,
                 finish_reason=reason,
+                reasoning_emitted=self.reasoning_opened(text),
                 natural_reasoning_closed=False,
                 reasoning_cap_hit=False,
                 answer_truncated=reason == "length",
@@ -329,12 +363,89 @@ class TransformersAdapter(ModelAdapter):
                 reasoning_tokens=reasoning_counts[i],
                 final_answer_tokens=answer_counts[i],
                 finish_reason=answer_finish[i],
+                # The template pre-opened the block, so a trace was always
+                # opened; the only question is whether the model closed it.
+                reasoning_emitted=True,
                 natural_reasoning_closed=closed_flags[i],
                 reasoning_cap_hit=not closed_flags[i],
                 answer_truncated=answer_finish[i] == "length",
                 seed_reasoning=seeds[i][0], seed_answer=seeds[i][1],
                 batch_seed=batch_seed_for([s[0] for s in seeds])))
         return results
+
+    def _generate_single_phase(self, prompts, seeds, config
+                               ) -> list[Generation]:
+        """One unbroken generation, split afterwards by the family's parser.
+
+        The budget is the engineering ceiling PLUS the answer allowance, so the
+        answer always has at least as much room as it gets under the splice. It
+        is not a separately enforced 512-token allowance, and that difference is
+        recorded per row rather than assumed away: under this strategy a
+        runaway trace can crowd the answer, which is why truncation and empty
+        answers are measured and gate admission.
+        """
+        budget = config.max_reasoning_tokens + config.max_answer_tokens
+        texts, finish, counts = self._raw_generate(
+            prompts, [s[0] for s in seeds], budget, config,
+            stop_on_think_close=False, return_ids=True)
+        raw_texts, raw_ids = texts
+
+        results = []
+        for i, prompt in enumerate(prompts):
+            reasoning, answer = self.parse_output(
+                raw_texts[i], config.reasoning_mode)
+            emitted = self.reasoning_opened(raw_texts[i])
+            closed = self.THINK_CLOSE in raw_texts[i]
+            reasoning_tokens, answer_tokens = self._split_token_counts(
+                raw_ids[i], counts[i], emitted, closed)
+            results.append(Generation(
+                prompt=prompt, raw_generation=raw_texts[i],
+                reasoning_text=reasoning, final_answer=answer,
+                reasoning_tokens=reasoning_tokens,
+                final_answer_tokens=answer_tokens,
+                finish_reason=finish[i],
+                reasoning_emitted=emitted,
+                natural_reasoning_closed=closed,
+                # The ceiling binds only when a trace was opened, never closed,
+                # and the whole budget was consumed. A model that simply chose
+                # not to think has not hit a ceiling.
+                reasoning_cap_hit=(emitted and not closed
+                                   and finish[i] == "length"),
+                answer_truncated=finish[i] == "length",
+                seed_reasoning=seeds[i][0], seed_answer=seeds[i][1],
+                batch_seed=batch_seed_for([s[0] for s in seeds])))
+        return results
+
+    def reasoning_opened(self, raw_output: str) -> bool:
+        """Did the model open a reasoning block at all?"""
+        return self.THINK_OPEN in raw_output or self.THINK_CLOSE in raw_output
+
+    def _split_token_counts(self, ids: list[int], total: int, emitted: bool,
+                            closed: bool) -> tuple[int, int]:
+        """Reasoning and answer token counts, measured in token space.
+
+        Counted from the emitted ids rather than by re-encoding the split
+        strings: re-encoding is only approximately inverse, and the
+        reasoning-length distribution is a reported quantity.
+        """
+        if not emitted:
+            # No reasoning block was opened, so every token is answer. Charging
+            # them to reasoning would invent a trace the model never wrote.
+            return 0, total
+        tokenizer = self._require_tokenizer()
+        close_ids = tokenizer.encode(self.THINK_CLOSE,
+                                     add_special_tokens=False)
+        open_ids = tokenizer.encode(self.THINK_OPEN, add_special_tokens=False)
+        start = _find(ids, open_ids)
+        first = start + len(open_ids) if start >= 0 else 0
+        if not closed:
+            # An unclosed trace: everything after the opener is scratch and
+            # there is no answer to attribute tokens to.
+            return max(total - first, 0), 0
+        end = _find(ids, close_ids, first)
+        if end < 0:
+            return max(total - first, 0), 0
+        return max(end - first, 0), max(total - (end + len(close_ids)), 0)
 
     def splice(self, prompt: str, trace: str) -> str:
         """Rebuild the continuation prompt for the answer phase."""
@@ -350,8 +461,8 @@ class TransformersAdapter(ModelAdapter):
 
     def _raw_generate(self, prompts: Sequence[str], seeds: Sequence[int],
                       max_new_tokens: int, config: GenerationConfig,
-                      stop_on_think_close: bool
-                      ) -> tuple[list[str], list[str], list[int]]:
+                      stop_on_think_close: bool, return_ids: bool = False
+                      ) -> tuple[Any, list[str], list[int]]:
         """Returns per-row `(text, finish_reason, generated_token_count)`.
 
         The token count comes from the ids the model actually emitted, not from
@@ -395,7 +506,7 @@ class TransformersAdapter(ModelAdapter):
         generated = output[:, prompt_length:]
         pad_id = tokenizer.pad_token_id
 
-        texts, finish, counts = [], [], []
+        texts, finish, counts, kept_ids = [], [], [], []
         for i in range(generated.shape[0]):
             ids = generated[i].tolist()
             # Rows that finished early are right-padded while the batch's
@@ -416,7 +527,10 @@ class TransformersAdapter(ModelAdapter):
             hit_length = len(real) >= max_new_tokens and not stopped
             texts.append(text)
             counts.append(len(real))
+            kept_ids.append(real)
             finish.append("length" if hit_length else "stop")
+        if return_ids:
+            return (texts, kept_ids), finish, counts
         return texts, finish, counts
 
     def _strip_tokens(self) -> list[str]:
@@ -483,10 +597,16 @@ class TransformersAdapter(ModelAdapter):
 
         if close in raw_output:
             head, _, tail = raw_output.partition(close)
-            reasoning = head
-            if open_marker in reasoning:
-                reasoning = reasoning.split(open_marker, 1)[1]
-            return reasoning.strip("\n"), self.clean_answer(tail)
+            if open_marker in head:
+                # Content can precede the reasoning block on families whose
+                # template does not force the model into it. That leading text
+                # is ANSWER, not reasoning, and joining it to the trailing text
+                # is what keeps the split agnostic to the order the model chose.
+                leading, _, reasoning = head.partition(open_marker)
+            else:
+                leading, reasoning = "", head
+            answer = f"{leading.strip()}\n{tail.strip()}".strip()
+            return reasoning.strip("\n"), self.clean_answer(answer)
 
         if reasoning_mode == ReasoningMode.NO_THINKING:
             # No reasoning block was expected and none was closed: the whole

@@ -67,6 +67,12 @@ class KimiVLThinkingAdapter(TransformersAdapter):
     #: PRACTICAL envelope; the architecture advertises 131,072.
     CONTEXT_LIMIT = 40960
 
+    #: The model card's reference parser reads ONE unbroken generation and
+    #: splits it. The template does not pre-open the reasoning block, so nothing
+    #: guarantees the trace comes first, and the documented path is the one this
+    #: adapter follows rather than a splice borrowed from another family.
+    GENERATION_STRATEGY = "single_phase"
+
     def template_kwargs(self, reasoning_mode: str) -> dict[str, Any]:
         # The template takes no reasoning argument. Passing one would be
         # silently ignored, which is worse than passing none.

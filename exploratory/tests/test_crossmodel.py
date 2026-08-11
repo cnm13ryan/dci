@@ -119,6 +119,54 @@ def test_non_thinking_output_is_all_answer(cls):
     assert answer == "Alpha runs. Beta walks."
 
 
+#: Gemma emitted the answer BEFORE opening its thought channel on easy prompts.
+#: A splice would have stored "Tokyo" as reasoning and scored a second sample.
+GEMMA_ANSWER_FIRST = (
+    "Alpha runs. Beta walks slowly. Gamma climbs; it rains. Delta sleeps."
+    "<|channel>thought\nI answered directly because the task was easy."
+    "<channel|>")
+
+KIMI_ANSWER_FIRST = (
+    "Alpha runs. Beta walks slowly. Gamma climbs; it rains. Delta sleeps."
+    "◁think▷That was straightforward.◁/think▷")
+
+
+@pytest.mark.parametrize("cls,raw", [
+    (Gemma4_E4B, GEMMA_ANSWER_FIRST),
+    (KimiVLThinkingAdapter, KIMI_ANSWER_FIRST),
+])
+def test_answer_before_the_trace_is_still_the_answer(cls, raw):
+    """Order-agnostic split: content is content wherever the model put it."""
+    adapter = cls()
+    reasoning, answer = adapter.parse_output(
+        raw, ReasoningMode.NATURAL_REASONING)
+    assert answer.startswith("Alpha runs.")
+    assert "Delta sleeps." in answer
+    assert "answered directly" in reasoning or "straightforward" in reasoning
+    assert "Alpha runs." not in reasoning
+    for marker in (cls.THINK_OPEN, cls.THINK_CLOSE):
+        assert marker not in answer
+
+
+def test_gemma_handles_several_channel_segments():
+    adapter = Gemma4_E4B()
+    raw = ("<|channel>thought\nfirst pass<channel|>Alpha runs."
+           "<|channel>thought\nsecond pass<channel|> Beta walks.")
+    reasoning, answer = adapter.parse_output(
+        raw, ReasoningMode.NATURAL_REASONING)
+    assert "first pass" in reasoning and "second pass" in reasoning
+    assert answer.replace("  ", " ").strip() == "Alpha runs. Beta walks."
+
+
+def test_generation_strategy_matches_the_template_guarantee():
+    """A splice is only sound where the template pre-opens the block."""
+    assert Qwen35_4B.GENERATION_STRATEGY == "splice"
+    assert Qwen35_9B.GENERATION_STRATEGY == "splice"
+    assert Gemma4_E4B.GENERATION_STRATEGY == "single_phase"
+    assert Gemma4_12B.GENERATION_STRATEGY == "single_phase"
+    assert KimiVLThinkingAdapter.GENERATION_STRATEGY == "single_phase"
+
+
 def test_qwen_normalises_a_preopened_think_block():
     """Qwen3.5 pre-opens `<think>`; Qwen3 did not. Both normalise the same."""
     adapter = Qwen35_4B()
