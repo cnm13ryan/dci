@@ -342,3 +342,51 @@ fine, it simply does not fit beside a KV cache on one card.
 **The single-card record is kept** (`runs/xm_validate_gemma12b_single/`) because
 "this checkpoint cannot do natural reasoning on one 24 GiB card" is a result
 about the hardware envelope, not a failed attempt to be tidied away.
+
+---
+
+## D19 — Qwen3.5 natural reasoning: this branch reproduces a finding the
+## repository already holds
+
+**Recorded 2026-08-11, during Stage E, before any Qwen natural-reasoning slice
+was run or analysed.**
+
+The Stage E pilot for `Qwen/Qwen3.5-4B` did not complete in a workable time
+under the frozen 39,515-token engineering ceiling. A 24-generation pilot in
+chunks of four ran for over an hour without finishing, because a batched
+`generate()` holds every member of a chunk until the slowest one stops, and
+Qwen3.5's traces do not stop.
+
+**This is not a new discovery and not a defect of this harness.** The repository
+already records it, from a different measurement:
+
+> **I21** — *Qwen3.5-4B does not terminate its reasoning within any budget this
+> hardware affords.* `S1_natural2`: mean realised M = 4063 at b = 4096, median
+> 4096, **2/16 closed naturally**; b = 8192 OOMs at batch 8.
+> (`CLAIM_EVIDENCE_MATRIX.md`, confidence 0.90)
+
+and `EXPERIMENT_COVERAGE_MATRIX.md` §17 lists the same constraint as a blocker:
+*"Qwen3.5-4B needs > 4096 reasoning tokens in ~87% of rows; 8192 × batch 8
+exceeds 24 GB VRAM. Any affordable budget interrupts rather than limits."*
+
+Two consequences.
+
+**The pilot was re-run at `--chunk 1`.** Per-sequence generation is the correct
+measurement for a closure distribution anyway: at chunk 4 the realised latency
+and the cap-hit count are properties of the chunk, not of the sequence.
+
+**`NATURAL_REASONING` is expected to be NOT VALIDATED for Qwen3.5 on this
+stack, and that is a result about the execution envelope rather than about the
+model's behaviour.** It must not be reported as "Qwen3.5 shows no DCI under
+natural reasoning". The condition was never established, so nothing about the
+behaviour under it was measured.
+
+**Related prior warning, now designed against.** The repository also withdrew an
+earlier Qwen3.5-4B run:
+
+> **W11** — *The first `Qwen/Qwen3.5-4B` run: invalid: run under the model's
+> default reasoning template, so it measured a `<think>` trace, not the answer.*
+
+That is precisely the failure the adapter layer exists to prevent, and the
+reason `NO_THINKING` is requested explicitly via `enable_thinking=False` for
+every Qwen generation in this branch rather than relying on any default.
