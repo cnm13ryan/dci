@@ -26,6 +26,21 @@ from __future__ import annotations
 
 from dci.v19.pairs import PAIR_IDS
 from dci.v19.resolution import Resolution, Slot, SlotTable, pending
+from dci.v19.text import INTENTIONAL_CORRECTIONS
+
+# The disposition amendment A2 records, DERIVED from the corrections the text layer
+# declares rather than retyped beside them. Retyping would let the registry and the
+# code drift: a correction added to one and not the other would still look complete
+# from either side.
+REUSE_DISPOSITION = {
+    "disposition": "corrected",
+    "rationale": ("section 14.2 permits reuse only after a hash and semantic audit; "
+                  "the audit demonstrated three defects and section 10.6 requires "
+                  "repair and re-audit before freeze, so the Pair 2 and Pair 3 "
+                  "verifiers were moved onto the frozen v19 text policy with new "
+                  "specification hashes"),
+    "corrections": [dict(row) for row in INTENTIONAL_CORRECTIONS]}
+
 
 # ------------------------------------------------- Stage 2: verifier infrastructure
 
@@ -38,17 +53,24 @@ VERIFIER_SLOTS = SlotTable.of(
             "numbered lists are bullet-list items, not nesting, not continuation "
             "lines, not empty items, not Unicode normalisation, and not how an "
             "observed item is matched to a declared entity",
-            note="dci.v19.parsing.UNDETERMINED_BY_PREREGISTRATION lists each open "
-                 "question; INHERITED_MARKER_POLICY reproduces the one recoverable "
-                 "candidate (rules.LIST_MARKER) and is a candidate, not the rule"),
+            note="amendment A1 answers every one of those questions and "
+                 "dci.v19.parsing.RESOLVED_BY_AMENDMENT records the reason for each. "
+                 "CANONICAL_LIST_POLICY is the IMPLEMENTED CANDIDATE; this slot "
+                 "stays a decision until an acceptance record names the investigator "
+                 "who accepted it, because implemented is not accepted",
+            domain="list_policy"),
     pending("verifiers.p1.ordering_depth", "sections 4.1, 6.1, 14.5",
             Resolution.PENDING_DECISION,
             "Stage 2: define what the Pair 1 focal parameter `ordering_depth` "
             "declared in pairs.PAIR_1 ranges over, so Stage 5 has a grid to "
             "calibrate; section 6.1 names ordering depth as a family-specific "
             "quantity but never defines it",
-            note="OrderingRelation.chain_depth is a diagnostic computed from a "
-                 "relation, not this parameter, and must not stand in for it"),
+            note="amendment A4 defines it as longest-chain cardinality and freezes "
+                 "the generator with it, because a statistic alone does not fix what "
+                 "the parameter manipulates. dci.v19.ordering.DECISION is the "
+                 "implemented candidate. OrderingRelation.chain_depth counts EDGES "
+                 "and is a diagnostic, not this parameter",
+            domain="ordering_depth"),
     pending("verifiers.inherited_reuse_decision", "sections 4.3, 4.4, 10.6, 14.2",
             Resolution.PENDING_DECISION,
             "Stage 2: decide whether the audited Pair 2 and Pair 3 "
@@ -61,7 +83,10 @@ VERIFIER_SLOTS = SlotTable.of(
                  "the Pair 2 uniqueness rule while repeating a word, that a "
                  "non-ASCII mandatory word can never be matched, and that the "
                  "frozen sentence segmentation scores a bullet list as N "
-                 "sentences; see docs/v19_stage2_gap_audit.md"),
+                 "sentences; see docs/v19_stage2_gap_audit.md. Amendment A2 "
+                 "dispositions this as 'corrected'; REUSE_DISPOSITION is the "
+                 "implemented candidate",
+            domain="reuse_disposition"),
     pending("verifiers.specification_bundle", "section 14.2 / Appendix I",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: the per-verifier table of declared-semantics and "
@@ -70,7 +95,8 @@ VERIFIER_SLOTS = SlotTable.of(
             depends_on=("verifiers.p1.list_policy", "verifiers.p1.ordering_depth",
                         "verifiers.inherited_reuse_decision"),
             note="the Pair 1 spec hashes contain the list-policy hash, so this "
-                 "cannot be produced before that policy is a decision"),
+                 "cannot be produced before that policy is a decision",
+            domain="specification_bundle"),
     pending("verifiers.bundle_hash", "section 14.2 / Appendix I",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: implement and reconcile every deterministic verifier, then "
@@ -79,7 +105,8 @@ VERIFIER_SLOTS = SlotTable.of(
             "reused only after a hash and semantic audit",
             depends_on=("verifiers.specification_bundle",
                         "verifiers.boundary_mutations"),
-            note="Appendix I requires invariant verifier hashes across the run"),
+            note="Appendix I requires invariant verifier hashes across the run",
+            domain="bundle_hash"),
     pending("verifiers.boundary_mutations", "section 8.7",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: at least 1,000 automated boundary mutations per constraint "
@@ -87,7 +114,10 @@ VERIFIER_SLOTS = SlotTable.of(
             "ordering, formatting, Unicode and parser-edge cases",
             depends_on=("verifiers.specification_bundle",),
             note="property-based testing is evidence about implementation "
-                 "invariants, not a proof of natural-language semantics"),
+                 "invariants, not a proof of natural-language semantics. The domain "
+                 "checks the record schema; whether the recorded hashes match a "
+                 "battery the harness regenerates is checked at certification",
+            domain="boundary_mutations"),
     pending("verifiers.binomial_interval_implementation", "section 10.4",
             Resolution.PENDING_DECISION,
             "Stage 2: recover the two-sided binomial interval implementation used "
@@ -100,17 +130,39 @@ VERIFIER_SLOTS = SlotTable.of(
                  "counts section 10.4 preserves (Clopper-Pearson gives 72 and "
                  "864). Both halves of that sentence cannot hold, so this is a "
                  "decision; see dci.v19.reliability.recover_inherited_interval. "
-                 "Section 10.4 also cites register row D9, which is the "
-                 "construction bootstrap, so no register row covers this yet"),
+                 "Amendment A3 adopts 'clopper_pearson' and adds the register row "
+                 "section 10.4 mis-cites as D9, which is the construction "
+                 "bootstrap; dci.v19.reliability.REGISTER_ROW_D45 is that row",
+            domain="binomial_interval"),
+    pending("verifiers.tier1_audit_design",
+            "section 10.4 + Stage 2 amendment A3, register row D45",
+            Resolution.PENDING_DECISION,
+            "Stage 2: fix the Tier-1 audit design prospectively - the per-truth-class "
+            "sample size, the error budget, and whether the sample may be extended - "
+            "because the interval alone does not determine a decision rule",
+            depends_on=("verifiers.binomial_interval_implementation",),
+            note="one error in 72 gives an exact upper bound of 0.0750 and fails; "
+                 "the same error in 110 gives 0.0496 and would pass. 110 is the "
+                 "SMALLEST sample at which one error clears the ceiling, so without "
+                 "a fixed size the verdict would depend on an n chosen after the "
+                 "errors were seen. dci.v19.reliability.AMENDED_TIER1_DESIGN is the "
+                 "implemented candidate",
+            domain="tier1_audit_design"),
     pending("verifiers.tier1_reliability", "section 10.4",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: certify each target and focal verifier against the 5% "
-            "Tier-1 conditional error ceiling using 73 human-adjudicated true "
-            "failures and 73 true passes per verifier unit",
+            "Tier-1 conditional error ceiling using 72 human-adjudicated true "
+            "failures and 72 true passes per verifier unit - 864 labels across the "
+            "six units - with zero observed errors permitted",
             depends_on=("verifiers.binomial_interval_implementation",
+                        "verifiers.tier1_audit_design",
                         "verifiers.bundle_hash"),
-            note="a missing truth class is missing evidence, not zero error, so "
-                 "the corresponding bound is unavailable and the unit fails"),
+            note="72 rather than the inherited 73 because amendment A3 adopts the "
+                 "exact interval, which reaches the 5% ceiling one label sooner. A "
+                 "missing truth class is missing evidence, not zero error, so the "
+                 "corresponding bound is unavailable and the unit fails. This is "
+                 "human adjudication and cannot be produced by code",
+            domain="tier1_certificates"),
 )
 
 

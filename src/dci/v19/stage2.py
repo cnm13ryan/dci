@@ -15,11 +15,10 @@ certification names what is missing instead of returning False.
 """
 from __future__ import annotations
 
-from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from dci.v19 import parsing, reliability, verifiers
+from dci.v19 import ordering, parsing, reliability, verifiers
 from dci.v19.resolution import SlotTable
 
 # Section 8.7: "Each constraint template also receives at least 1,000 automated
@@ -74,14 +73,13 @@ def _slot_finding(slots: SlotTable, name: str, requirement: str,
                    f"by: {slot.rule}")
 
 
-def certify_verifiers(slots: SlotTable, *,
-                      mutation_counts: Mapping[str, int] | None = None
-                      ) -> Certification:
+def certify_verifiers(slots: SlotTable) -> Certification:
     """Every section 14.2 verifier requirement, evaluated against the registry.
 
-    `mutation_counts` maps constraint template id to the number of boundary
-    mutations executed. Passing `None` is not the same as passing an empty
-    mapping: `None` means no mutation evidence was offered at all, and both fail.
+    Mutation evidence is no longer a parameter. The audit found the caller able to
+    assert it - `certify_verifiers(slots, mutation_counts={...})` passed with any
+    numbers the caller liked - so the evidence is read from the registry slot,
+    where its typed domain has already refused a malformed record.
     """
     findings = [
         _slot_finding(
@@ -100,6 +98,11 @@ def certify_verifiers(slots: SlotTable, *,
             slots, "verifiers.binomial_interval_implementation",
             "the two-sided binomial reliability interval is frozen",
             "section 10.4"),
+        _slot_finding(
+            slots, "verifiers.tier1_audit_design",
+            "the Tier-1 audit design - sample size, error budget, and whether the "
+            "sample may be extended - is fixed prospectively",
+            "section 10.4 + amendment A3, register row D45"),
     ]
 
     policy_slot = slots["verifiers.p1.list_policy"]
@@ -115,58 +118,80 @@ def certify_verifiers(slots: SlotTable, *,
             "frozen. The implementation exists and is tested; it is the "
             "measurement decision under it that is missing"))
 
-    findings.append(_mutation_finding(mutation_counts))
+    findings.append(_battery_finding(slots))
     return Certification(findings=tuple(findings))
 
 
-def _bundle_finding(policy: Any) -> Finding:
+def _bundle_finding(policy_state: Any) -> Finding:
+    """The bundle, built from the grammar the registry actually froze.
+
+    The frozen value is the grammar's canonical STATE, not a live object: a
+    registry value must have a reproducible serialisation, and `sha` refuses
+    anything with no canonical form rather than hashing object identity. So the
+    state is compared with the implemented grammar rather than used as one. A
+    state that does not match means the registry and the parser disagree, which is
+    the one case where a complete bundle would still be the wrong evidence.
+    """
     citation = "section 14.2 / Appendix I"
     requirement = ("every declared target and focal constraint has a v19 verifier "
                    "whose semantics are bound to a hash")
+    canonical = parsing.CANONICAL_LIST_POLICY
+    if policy_state != canonical.state():
+        return Finding(requirement, citation, False,
+                       "the frozen list grammar does not match the implemented one, "
+                       "so the bundle would be built under semantics the registry "
+                       "did not freeze")
     try:
-        resolved = policy if isinstance(policy, parsing.ListPolicy) else None
-        if resolved is None:
-            return Finding(requirement, citation, False,
-                           f"the frozen list policy is {type(policy).__name__}, "
-                           "not a ListPolicy, so no bundle can be built from it")
-        built = verifiers.assert_bundle_is_complete(resolved)
+        built = verifiers.assert_bundle_is_complete(canonical)
     except (verifiers.VerifierContractError, TypeError) as error:
         return Finding(requirement, citation, False, str(error))
     return Finding(requirement, citation, True,
                    f"{len(built)} verifiers, bundle hash "
-                   f"{verifiers.bundle_hash(resolved)}")
+                   f"{verifiers.bundle_hash(canonical)}")
 
 
-def _mutation_finding(counts: Mapping[str, int] | None) -> Finding:
-    requirement = (f"each constraint template has at least "
-                   f"{MUTATIONS_PER_TEMPLATE} automated boundary mutations")
-    citation = "section 8.7"
-    if counts is None:
-        return Finding(requirement, citation, False,
-                       "no mutation evidence was offered; section 8.7 requires it "
-                       "per template, and an absent count is not a zero-defect "
-                       "result")
+def _battery_finding(slots: SlotTable) -> Finding:
+    """Section 8.7 evidence, read from the registry rather than from the caller.
+
+    The domain on `verifiers.boundary_mutations` has already refused a record that
+    is not a per-constraint mapping carrying a sha-256 records_hash, a count at or
+    above the floor, and an equal number of distinct texts. What this adds is that
+    the record must EXIST and must cover every declared constraint: an unfrozen
+    battery is not part of the artifact trail Appendix J archives.
+
+    Whether the recorded hashes match a battery the harness regenerates is a
+    separate check, and it lives with the harness. Section 8.7's "each constraint
+    template" is read as each declared CONSTRAINT, the stricter of the two
+    readings the earlier code used inconsistently.
+    """
     from dci.v19 import pairs
     required = [rule.constraint_id for rule in pairs.rules()]
-    short = {cid: counts.get(cid, 0) for cid in required
-             if counts.get(cid, 0) < MUTATIONS_PER_TEMPLATE}
-    if short:
+    requirement = (f"each of the {len(required)} constraint templates has at least "
+                   f"{MUTATIONS_PER_TEMPLATE} distinct boundary mutations recorded")
+    citation = "section 8.7"
+    slot = slots["verifiers.boundary_mutations"]
+    if not slot.resolved:
+        return Finding(
+            requirement, citation, False,
+            f"{slot.name} is {slot.resolution.value}: an unfrozen battery is not "
+            "part of the artifact trail, and an absent count is not a zero-defect "
+            f"result. Produced by: {slot.rule}")
+    recorded = slot.get()
+    missing = sorted(set(required) - set(recorded))
+    if missing:
         return Finding(requirement, citation, False,
-                       f"{len(short)} template(s) below the floor: "
-                       + ", ".join(f"{cid}={n}" for cid, n in sorted(short.items())))
+                       f"no battery evidence for template(s) {missing}")
+    stray = sorted(set(recorded) - set(required))
+    if stray:
+        return Finding(requirement, citation, False,
+                       f"battery evidence for undeclared template(s) {stray}")
     return Finding(requirement, citation, True,
-                   f"all {len(required)} templates at or above the floor")
+                   f"{len(required)} template batteries recorded, each at or above "
+                   f"{MUTATIONS_PER_TEMPLATE} distinct mutations")
 
 
-def certify_satisfiability(slots: SlotTable, *,
-                           mutation_summaries: Mapping[str, Mapping[str, Any]]
-                           | None = None) -> Certification:
-    """Every section 8.6 satisfiability requirement, against the registry.
-
-    `mutation_summaries` maps template id to a `dci.v19.mutation.summarise`
-    result. `None` means no battery evidence was offered, which is not the same as
-    a battery that found nothing.
-    """
+def certify_satisfiability(slots: SlotTable) -> Certification:
+    """Every section 8.6 satisfiability requirement, against the registry."""
     findings = [
         _slot_finding(
             slots, "satisfiability.encoding_map",
@@ -183,7 +208,7 @@ def certify_satisfiability(slots: SlotTable, *,
             "human semantic review exists for every incompletely encoded clause",
             "section 8.6"),
         _solver_finding(),
-        _battery_finding(mutation_summaries),
+        _battery_finding(slots),
     ]
     return Certification(findings=tuple(findings))
 
@@ -200,61 +225,25 @@ def _solver_finding() -> Finding:
     return Finding(requirement, citation, True, f"{name} {version}")
 
 
-def _battery_finding(summaries: Mapping[str, Mapping[str, Any]] | None) -> Finding:
-    from dci.v19.mutation import MUTATIONS_PER_TEMPLATE
-    requirement = (f"each constraint template has at least "
-                   f"{MUTATIONS_PER_TEMPLATE} distinct boundary mutations whose "
-                   "observed effects are recorded against their declarations")
-    citation = "section 8.7"
-    if summaries is None:
-        return Finding(requirement, citation, False,
-                       "no mutation battery evidence was offered; an absent "
-                       "battery is not a battery that found nothing")
-    if not summaries:
-        return Finding(requirement, citation, False,
-                       "the mutation evidence names no template")
-    problems = []
-    for template, summary in sorted(summaries.items()):
-        count = int(summary.get("n_mutations", 0))
-        distinct = int(summary.get("distinct_texts", 0))
-        if count < MUTATIONS_PER_TEMPLATE:
-            problems.append(f"{template}={count}")
-        elif distinct != count:
-            problems.append(f"{template} padded ({distinct} distinct of {count})")
-    if problems:
-        return Finding(requirement, citation, False,
-                       "template(s) short of the floor or padded: "
-                       + ", ".join(problems))
-    return Finding(requirement, citation, True,
-                   f"{len(summaries)} template(s) at or above the floor with no "
-                   "repeated mutated text")
-
-
-def certify_stage2(slots: SlotTable, *,
-                   mutation_counts: Mapping[str, int] | None = None,
-                   mutation_summaries: Mapping[str, Mapping[str, Any]] | None = None
-                   ) -> Certification:
+def certify_stage2(slots: SlotTable) -> Certification:
     """Both halves of Stage 2 as one report: verifiers and satisfiability."""
-    verifier_half = certify_verifiers(slots, mutation_counts=mutation_counts)
-    satisfiability_half = certify_satisfiability(
-        slots, mutation_summaries=mutation_summaries)
+    verifier_half = certify_verifiers(slots)
+    satisfiability_half = certify_satisfiability(slots)
     return Certification(
         findings=verifier_half.findings + satisfiability_half.findings)
 
 
-def assert_verifiers_certified(slots: SlotTable, *,
-                               mutation_counts: Mapping[str, int] | None = None
-                               ) -> Certification:
-    """Fail closed unless Stage 2's verifier half is certified.
+def assert_stage2_certified(slots: SlotTable) -> Certification:
+    """Fail closed unless BOTH halves of Stage 2 are certified.
 
     This is what a dependent stage calls. It reports every outstanding
     requirement at once with its citation, because discovering them one exception
     at a time is how a dependency order stops being mandatory.
     """
-    report = certify_verifiers(slots, mutation_counts=mutation_counts)
+    report = certify_stage2(slots)
     if report.certified:
         return report
-    lines = [("Stage 2 verifier certification is incomplete: "
+    lines = [("Stage 2 certification is incomplete: "
               f"{len(report.outstanding)} of {len(report.findings)} "
               "requirements are unmet.")]
     for finding in report.outstanding:
@@ -280,21 +269,25 @@ def open_scientific_decisions() -> tuple[dict[str, Any], ...]:
                                  "load-bearing because split_sentences strips it; "
                                  "it settles the marker set and three other "
                                  "fields and none of the remaining five"),
-         "open_questions": dict(parsing.UNDETERMINED_BY_PREREGISTRATION),
+         "open_questions": {},
+         "resolved_by_amendment": dict(parsing.RESOLVED_BY_AMENDMENT),
          "minimum_decision": ("sign one ListPolicy; "
-                              "INHERITED_MARKER_POLICY is the candidate closest "
+                              "CANONICAL_LIST_POLICY is the candidate closest "
                               "to the inherited behaviour")},
         {"decision": "verifiers.p1.ordering_depth",
          "governing_text": ("section 6.1 lists ordering depth among the "
                             "family-specific parameter quantities; pairs.PAIR_1 "
                             "declares it as the focal parameter"),
          "what_is_recoverable": "nothing; the protocol never defines it",
-         "open_questions": {"domain": "what the parameter ranges over, and its "
-                                      "easier/harder direction for the section "
-                                      "6.2 ordered grid"},
-         "minimum_decision": ("state the domain and the monotone direction so "
-                              "Stage 5 has at most five admissible settings to "
-                              "calibrate")},
+         "open_questions": {},
+         "resolved_by_amendment": {
+             "construct": ordering.DEFINITION,
+             "generator": ordering.DECISION["generator_form"],
+             "harder_direction": ordering.DECISION["harder_direction"],
+             "grid": ordering.DECISION["grid_rule"]},
+         "minimum_decision": ("state the construct, its admissible range and the "
+                              "monotone direction; the ordered grid itself is the "
+                              "Stage 5 calibration output D6")},
         {"decision": "verifiers.inherited_reuse_decision",
          "governing_text": ("section 14.2 permits Pair 2/3 reuse only after a "
                             "hash and semantic audit; section 10.6 requires a "
@@ -333,3 +326,9 @@ def open_scientific_decisions() -> tuple[dict[str, Any], ...]:
                               "satisfying 'exact' and changing them to 72 and "
                               "864; and add the missing register row")},
     )
+
+
+# Kept as the name dependent stages already call. It now covers both halves, because
+# certifying the verifiers while the satisfiability evidence is absent was never a
+# meaningful state.
+assert_verifiers_certified = assert_stage2_certified
