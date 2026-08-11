@@ -304,3 +304,30 @@ narrow** · **Mechanistically suggestive** · **Falsified** · **Unidentified**.
 | W10.12 | The unattached/enclosing distinction predicts amplification | **Intervention-supported but narrow** | every complied unattached variant amplifies, every enclosing one does not, across two wordings | *why* it does is now unexplained: not placement, not atomicity, not mark production | Qwen3-4B-Instruct, QAC |
 | W10.13 | An unattached mark amplifies because it can **substitute for a sentence boundary** while a wrapping construct cannot | **Mechanistically suggestive** | consistent with the semicolon's chain_share 0.43 and 1.3 sentences | the ellipsis amplifies with chain_share 0.03 — so this cannot be the whole account | untested by intervention |
 | W10.14 | `chain_share` mediates amplification | **Unidentified** (unchanged) | — | semicolon and ellipsis dissociate on it | — |
+
+---
+
+# Round 11 — the arbitration programme (`runs/arbitration_program_20260811T185546Z`)
+
+6,282 generations, correct per-unit seeds, 4 replicates. Labels as in Round 10.
+Every claim here is estimated by a 10,000-draw cluster bootstrap over the 20
+tasks and was recomputed independently from the raw JSONL (282 quantities, no
+disagreements).
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W11.1 | The Round 9/10 phenomenon survives correct decoder seeds | **Established within tested conditions** | all six headlines reproduce; per-replicate Δ agrees in sign in all four replicates of all four Experiment 1 cells | per-replicate spread 0.15–0.35, so cell-level differences below ~0.2 stay unresolvable | Qwen3-4B, Pair 3, k = 3 |
+| W11.2 | Reasoning abolishes ordinary interference | **Established within tested conditions** | τ_control falls to −0.025…+0.087 at b = 4096 in **all six** orders and on **both** models | b = 0 → 4096 mixes mode activation with dose; the nine-budget dose curve is Round 10's | both models, six orders |
+| W11.3 | Semicolon-conditioned interference is not abolished | **Established within tested conditions** | τ_amp = +0.550 [+0.450, +0.650] at QAC, b = 4096; Δ positive in all six orders at b = 4096, five intervals excluding zero | **fails to transport** to SmolLM3-3B (Δ = −0.062) | Qwen3-4B |
+| W11.4 | The sign of the semicolon's effect is set by instruction **order**, not by the mark | **Established within tested conditions** | Δ at b = 0 spans −0.537 (ACQ) to +0.388 (CQA) across the six permutations of the same three strings | — | Qwen3-4B, b = 0 |
+| W11.5 | A simple positional rule explains the order effect | **FALSIFIED** | — | 14 partitions tested; 3 separate one quantity each, by 1.16–1.33× their own within-group spread; none separates all three | six orders, 20 tasks |
+| W11.6 | ACQ's protection is a positional special case of a gradient | **Unidentified** | — | the three orders sharing each of ACQ's features give Δ = +0.000, +0.013, +0.175 | — |
+| W11.7 | Reasoning raises joint satisfaction | **FALSIFIED** | — | P(both) ≤ 0.113 in Experiment 1's 8 cells and ≥ 0.15 in only 1 of the order map's 24; reasoning moves 0.2–0.6 of mass between "neither" and "target only" | all conditions, both models |
+| W11.8 | An explicit priority cue changes which instruction survives | **FALSIFIED** | — | Ψ = +0.037 / −0.013 / −0.087 / −0.113, every interval containing zero; the one contrast clearing zero is `B>A − equal` = **+0.163**, the wrong direction | Qwen3-4B, QAC, k = 3 |
+| W11.9 | The priority null is inattention to the cue | **FALSIFIED** | — | reasoning traces mention priority/preference/trade-off in 0.54–0.69 of directed rows vs 0.21–0.39 under equal priority | as above |
+| W11.10 | A stated priority produces general assistance instead | **FALSIFIED** | — | `both(A>B) − both(equal)` = −0.062 [−0.125, −0.013] at the semicolon, b = 4096; every other contrast contains zero | as above |
+| W11.11 | The reasoning effect transports to a second lineage | **Established within tested conditions** | SmolLM3-3B: Γ = +0.400 [+0.113, +0.688] (QAC), +0.300 [+0.075, +0.537] (ACQ); τ_control +0.263 → +0.025 | one second model | byte-identical prompts |
+| W11.12 | The semicolon amplification transports | **FALSIFIED (within this comparison)** | — | Δ at b = 4096 is −0.062 (QAC) and −0.013 (ACQ) on SmolLM3-3B; Δ at b = 0 is **negative in both orders** | weakened by SmolLM3 background compliance 0.194–0.575 and a reference arm reaching 0.675 A-failure |
+| W11.13 | The order interaction transports | **FALSIFIED (within this comparison)** | — | Γ_QAC ≈ Γ_ACQ on SmolLM3 (+0.400 vs +0.300, overlapping) where Qwen3-4B differs threefold | as above |
+| W11.14 | The amplifier acts through the **sentence boundary** | **Mechanistically suggestive** (unchanged from W10.13) | the semicolon shortens answers by 0.35–0.72 sentences on Qwen3-4B and 0.42–1.17 on SmolLM3-3B; two hand-found degenerate satisfactions place the mark where a boundary would go (`…itself.; The`, a free-standing `;`) | both are incidental observations, not manipulations | untested by intervention — this is the recommended next experiment |
+| W11.15 | The arbitration observed is target-versus-focal | **Unidentified** | — | B is satisfied in 0.000–0.138 of focal-arm rows and "focal only" occurs in 7 of 640; the contest measured is target-versus-nothing | limits every arbitration reading in Rounds 9–11 |
