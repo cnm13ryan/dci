@@ -46,6 +46,11 @@ CALIBRATION_SPLIT = "calibration"
 N_CALIBRATION_TASKS = 10
 CALIBRATION_REPLICATES = 1
 
+#: Generation chunk. Small on purpose: under natural reasoning the ceiling is
+#: ~39,500 tokens and a batch's peak KV footprint is set by whichever member
+#: reasons longest, which is not knowable before it runs.
+CHUNK = 4
+
 
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -89,12 +94,15 @@ def stage_d(adapter, state, mode: str, tasks: list[dict]) -> dict:
         temperature=contract.TEMPERATURE, top_p=contract.TOP_P,
         top_k=contract.TOP_K, max_reasoning_tokens=ceiling)
 
+    from crossmodel.runner import _generate_with_recovery
+
     generations = []
-    for start in range(0, len(prompts), 10):
-        chunk = prompts[start:start + 10]
+    for start in range(0, len(prompts), CHUNK):
+        chunk = prompts[start:start + CHUNK]
         seeds = [(90000 + start + i, 91000 + start + i)
                  for i in range(len(chunk))]
-        generations.extend(adapter.generate(chunk, seeds, config))
+        generations.extend(_generate_with_recovery(
+            adapter, chunk, seeds, config, start // CHUNK))
 
     scores: dict[str, list[float]] = {c: [] for c in PRIMITIVES}
     records = []
@@ -172,13 +180,16 @@ def stage_e(adapter, state, tasks: list[dict]) -> dict:
         top_k=contract.TOP_K,
         max_reasoning_tokens=envelope["derived_ceiling"])
 
+    from crossmodel.runner import _generate_with_recovery
+
     generations = []
     started = time.perf_counter()
-    for start in range(0, len(prompts), 8):
-        chunk = prompts[start:start + 8]
+    for start in range(0, len(prompts), CHUNK):
+        chunk = prompts[start:start + CHUNK]
         seeds = [(70000 + start + i, 71000 + start + i)
                  for i in range(len(chunk))]
-        generations.extend(adapter.generate(chunk, seeds, config))
+        generations.extend(_generate_with_recovery(
+            adapter, chunk, seeds, config, start // CHUNK))
     elapsed = time.perf_counter() - started
 
     lengths = sorted(g.reasoning_tokens for g in generations)
