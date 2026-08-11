@@ -78,6 +78,40 @@ def load_reasoning(path: Path) -> pd.DataFrame:
     return frame.drop(columns=["reasoning"])
 
 
+def load_all_reasoning(run_dir: Path) -> pd.DataFrame:
+    """Every reasoning condition in one frame, with the three kinds kept apart.
+
+    `condition` distinguishes what was actually done to the model, which the bare
+    budget number cannot:
+
+      NO_THINKING        the model's own non-thinking mode; there is no reasoning
+                         phase to cap, so "0 tokens" is a native setting rather
+                         than a truncation.
+      LIMITED_REASONING  the thinking phase was deliberately stopped at b tokens.
+      NATURAL_REASONING  the thinking phase was not stopped; the only limit is an
+                         engineering ceiling derived from the context window, and
+                         the condition is valid only if that ceiling never binds.
+
+    `setting` is the ordered label the figures use: the budget for the capped
+    conditions, the string "natural" for the uncapped one.
+    """
+    run_dir = Path(run_dir)
+    frame = load_reasoning(run_dir / "s18_reasoning.jsonl")
+    frame["condition"] = np.where(frame["reasoning_budget"] == 0,
+                                  "NO_THINKING", "LIMITED_REASONING")
+    frame["setting"] = frame["reasoning_budget"]
+    frame["engineering_ceiling"] = np.nan
+
+    natural_path = run_dir / "natural_reasoning.jsonl"
+    if natural_path.exists():
+        natural = load_reasoning(natural_path)
+        natural["condition"] = "NATURAL_REASONING"
+        natural["setting"] = "natural"
+        frame = pd.concat([frame, natural], ignore_index=True)
+    frame["setting"] = frame["setting"].astype(object)
+    return frame
+
+
 def reasoning_timing(log_path: Path, rows_per_budget: int) -> pd.DataFrame:
     """Per-budget wall clock, parsed from the preserved generation log.
 
