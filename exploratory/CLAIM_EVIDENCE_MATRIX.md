@@ -304,3 +304,54 @@ narrow** · **Mechanistically suggestive** · **Falsified** · **Unidentified**.
 | W10.12 | The unattached/enclosing distinction predicts amplification | **Intervention-supported but narrow** | every complied unattached variant amplifies, every enclosing one does not, across two wordings | *why* it does is now unexplained: not placement, not atomicity, not mark production | Qwen3-4B-Instruct, QAC |
 | W10.13 | An unattached mark amplifies because it can **substitute for a sentence boundary** while a wrapping construct cannot | **Mechanistically suggestive** | consistent with the semicolon's chain_share 0.43 and 1.3 sentences | the ellipsis amplifies with chain_share 0.03 — so this cannot be the whole account | untested by intervention |
 | W10.14 | `chain_share` mediates amplification | **Unidentified** (unchanged) | — | semicolon and ellipsis dissociate on it | — |
+
+---
+
+## H. Cross-model transport (branch `exp/cross-model-transport`)
+
+Five open-weight checkpoints, one frozen DCI slice (A = exact 4 sentences,
+B = increasing lengths, R = sentence-initial S, QAC, load 3, 20 pilot tasks ×
+2 replicates = 160 rows per checkpoint per condition). Full detail in
+`CROSS_MODEL_EXECUTION_MATRIX.md`, `CROSS_MODEL_DCI_RESULTS.md` and
+`CROSS_MODEL_DECISIONS.md`.
+
+**Execution caveat that applies to every row below.** These ran on
+**Transformers 5.15.0**, because vLLM is not installed on this machine and no
+ROCm build is present. The canonical τ = +0.400 was produced by vLLM on
+`Qwen/Qwen3-4B`. Nothing here may be placed beside that number as the same
+execution condition.
+
+### Observations
+
+| # | observation | evidence | status | confidence |
+|---|---|---|---|---|
+| **O-X1** | **The target instruction does not fail on any newer checkpoint tested.** A-compliance is 1.000 in every arm and background for Qwen3.5-4B, gemma-4-E4B-it and gemma-4-12B-it, and 0.875–0.950 for Qwen3.5-9B | 800 rows across 5 model×condition slices, all guards passed, independently recomputed | descriptive | **0.90** |
+| **O-X2** | **τ(B→A) is therefore not estimable on 4 of 5 slices.** Where the target never fails in either arm, τ = 0 by construction, not by absence of interference | `degeneracy = TARGET_CEILING` in 9 of 10 model×background cells | structural | **0.95** |
+| **O-X3** | The one estimable cell is **Qwen3.5-9B / no-thinking / semicolon: τ = −0.150 [−0.300, 0.000]** — the *opposite* sign from the canonical result, interval touching zero | focal A-failure 0.100 vs reference 0.250 | descriptive | 0.70 |
+| **O-X4** | **Arbitration has moved.** "Focal only" and "neither" are ~0 everywhere; the model always keeps the target and trades away the focal instruction | four-state table, all slices | descriptive | 0.90 |
+| **O-X5** | **Reasoning buys joint satisfaction on gemma-4-E4B-it**: P(both) 0.20 → 0.90 (control) and 0.175 → 0.875 (semicolon) from no-thinking to natural reasoning, with the target already at ceiling in both | 320 rows, same checkpoint, same slice | descriptive; mode manipulated | 0.85 |
+| **O-X6** | **gemma-4-12B-it satisfies both instructions without thinking at all**: P(both) = 1.000 control, 0.900 semicolon; B-compliance 0.950 | 160 rows | descriptive | 0.85 |
+| **O-X7** | The semicolon still costs something, but on **joint satisfaction rather than the target**: Δ_J = **−0.100 [−0.200, −0.025]** on gemma-4-12B-it | secondary contrast, not pre-registered | descriptive | 0.70 |
+| **O-X8** | **Qwen3.5's natural reasoning does not terminate within this hardware's envelope** — independently reproducing **I21** from a different measurement (natural endpoint rather than capped budget) | Stage E pilot did not close under a 39,515-token ceiling | observation | 0.85 |
+| **O-X9** | Confirmed reasoning leakage **0/800**. 3 detector hits, all inspected, all ordinary prose using *wait* | `runs/xm_audit/leakage_queue_*.jsonl`, manual classification recorded | descriptive | 0.95 |
+
+### Interpretations
+
+| # | interpretation | status | confidence |
+|---|---|---|---|
+| **I-X1** | **The established DCI contrast does not transport to these checkpoints — because the phenomenon's precondition is gone, not because the effect was measured and found absent.** The canonical result required the target to fail 40–60% of the time; here it essentially never fails | supported for these checkpoints, this instruction pair, this backend | **0.85** |
+| **I-X2** | What varies across these checkpoints is **joint satisfaction**, not target protection | supported | 0.75 |
+| **I-X3** | A cross-model "DCI score" would be **uninformative** here: four of five slices would report 0.000 for a structural reason and one for a behavioural one | supported | 0.85 |
+
+### Explicitly NOT claimed
+
+* Not "larger models have less DCI" — gemma-4-12B-it and gemma-4-E4B-it are
+  different architectures, and Qwen3.5-4B/9B differ in post-training as well as
+  scale.
+* Not "Qwen3.5 shows no DCI under natural reasoning" — that condition was never
+  validated, so nothing was measured under it.
+* Not "semicolons do not amplify" — the target-failure channel the amplifier
+  acted through is closed on these checkpoints; the manipulation was not shown
+  inert, only unmeasurable in that channel.
+* Not comparable with the canonical +0.400: different checkpoint, different
+  backend.

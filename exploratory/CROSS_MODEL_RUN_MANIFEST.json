@@ -1,9 +1,9 @@
 {
  "stamp": "EXPLORATORY_NO_EVIDENCE",
- "created_utc": "2026-08-11T22:42:57.672732+00:00",
- "git_commit": "8c0c811a36c4347738dad880f3ed63f8825cdb9b",
+ "created_utc": "2026-08-11T23:01:37.461244+00:00",
+ "git_commit": "7a4e01387dc1205c03adef33525d5ba7d4bfc662",
  "git_branch": "exp/cross-model-transport",
- "git_dirty": false,
+ "git_dirty": true,
  "contract": {
   "target": "A",
   "focal": "B",
@@ -100,6 +100,171 @@
    "quantization": "none",
    "device_configuration": "cuda:0",
    "chat_template_sha256": "0a2c8073c878ab1d",
+   "reasoning_mode": "NO_THINKING",
+   "reasoning_control": "chat_template(enable_thinking=False)",
+   "assigned_reasoning_budget": "0",
+   "engineering_ceiling": null,
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_final_answer_tokens": 512
+   },
+   "task_count": 20,
+   "replicate_count": 2,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "backgrounds": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "orders": [
+    "QAC"
+   ],
+   "unique_row_ids": 160,
+   "seed_scheme": "sha256(MASTER_SEED, task_id, replicate, arm, background, order, paraphrase, phase); MASTER_SEED=20260812",
+   "replicate_duplication": {
+    "replicate_pairs": 80,
+    "identical_pairs": 0,
+    "identical_rate": 0.0,
+    "alarm_threshold": 0.25,
+    "implausible": false
+   },
+   "technical_failures": 0,
+   "empty_answers": 0,
+   "truncated_answers": 0,
+   "ceiling_hits": 0,
+   "forced_close_artefacts": 0,
+   "traces_opened": 0,
+   "canonical_status": "CANONICAL"
+  },
+  {
+   "relative_path": "runs/xm_main_Qwen35-4B_nothink",
+   "file_name": "generations.jsonl",
+   "sha256": "da5e5ac4577165d7c44cadba627a0093b96a0795c9f02c1d04c2db7ecccf2e43",
+   "bytes": 488125,
+   "rows": 160,
+   "model_id": "Qwen/Qwen3.5-4B",
+   "model_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+   "model_family": "qwen3.5",
+   "backend": "transformers",
+   "backend_version": "5.15.0",
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "device_configuration": "cuda:0",
+   "chat_template_sha256": "a4aee8afcf2e0711",
+   "reasoning_mode": "NO_THINKING",
+   "reasoning_control": "chat_template(enable_thinking=False)",
+   "assigned_reasoning_budget": "0",
+   "engineering_ceiling": null,
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_final_answer_tokens": 512
+   },
+   "task_count": 20,
+   "replicate_count": 2,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "backgrounds": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "orders": [
+    "QAC"
+   ],
+   "unique_row_ids": 160,
+   "seed_scheme": "sha256(MASTER_SEED, task_id, replicate, arm, background, order, paraphrase, phase); MASTER_SEED=20260812",
+   "replicate_duplication": {
+    "replicate_pairs": 80,
+    "identical_pairs": 0,
+    "identical_rate": 0.0,
+    "alarm_threshold": 0.25,
+    "implausible": false
+   },
+   "technical_failures": 0,
+   "empty_answers": 0,
+   "truncated_answers": 0,
+   "ceiling_hits": 0,
+   "forced_close_artefacts": 0,
+   "traces_opened": 0,
+   "canonical_status": "CANONICAL"
+  },
+  {
+   "relative_path": "runs/xm_main_Qwen35-9B_nothink",
+   "file_name": "generations.jsonl",
+   "sha256": "5cd50db959280373a930ce0a819854ee9dece4b65fb2bf0a69f2e0c49a1e3471",
+   "bytes": 498523,
+   "rows": 160,
+   "model_id": "Qwen/Qwen3.5-9B",
+   "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "model_family": "qwen3.5",
+   "backend": "transformers",
+   "backend_version": "5.15.0",
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "device_configuration": "cuda:0",
+   "chat_template_sha256": "a4aee8afcf2e0711",
+   "reasoning_mode": "NO_THINKING",
+   "reasoning_control": "chat_template(enable_thinking=False)",
+   "assigned_reasoning_budget": "0",
+   "engineering_ceiling": null,
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_final_answer_tokens": 512
+   },
+   "task_count": 20,
+   "replicate_count": 2,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "backgrounds": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "orders": [
+    "QAC"
+   ],
+   "unique_row_ids": 160,
+   "seed_scheme": "sha256(MASTER_SEED, task_id, replicate, arm, background, order, paraphrase, phase); MASTER_SEED=20260812",
+   "replicate_duplication": {
+    "replicate_pairs": 80,
+    "identical_pairs": 0,
+    "identical_rate": 0.0,
+    "alarm_threshold": 0.25,
+    "implausible": false
+   },
+   "technical_failures": 0,
+   "empty_answers": 0,
+   "truncated_answers": 0,
+   "ceiling_hits": 0,
+   "forced_close_artefacts": 0,
+   "traces_opened": 0,
+   "canonical_status": "CANONICAL"
+  },
+  {
+   "relative_path": "runs/xm_main_gemma-4-12B-it_nothink",
+   "file_name": "generations.jsonl",
+   "sha256": "ba895e88c4bc42276b53409e6047fd858aeb77b9d3dfceb919ffc6d09d29c2a2",
+   "bytes": 441949,
+   "rows": 160,
+   "model_id": "google/gemma-4-12B-it",
+   "model_revision": "707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+   "model_family": "gemma4",
+   "backend": "transformers",
+   "backend_version": "5.15.0",
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "device_configuration": "cuda:0",
+   "chat_template_sha256": "ae53464bf3be2580",
    "reasoning_mode": "NO_THINKING",
    "reasoning_control": "chat_template(enable_thinking=False)",
    "assigned_reasoning_budget": "0",

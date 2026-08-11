@@ -75,6 +75,7 @@ def main() -> int:
     four = read_all(dirs, "four_state.csv")
     compliance = read_all(dirs, "compliance.csv")
     use = read_all(dirs, "reasoning_use.csv")
+    joint = read_all(dirs, "joint_contrast.csv")
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     models = sorted(tau["model"].unique()) if not tau.empty else []
@@ -144,6 +145,26 @@ def main() -> int:
     lines += ["", "## 2. Semicolon-minus-control contrast", ""]
     lines.append(table(delta, ["model", "reasoning", "tau_control",
                                "tau_semicolon", "delta_semicolon", "lo", "hi",
+                               "n_tasks"]))
+
+    lines += [
+        "",
+        "## 2b. Joint satisfaction — SECONDARY and exploratory",
+        "",
+        "Reported because the primary estimand degenerates on every checkpoint",
+        "tested: the target instruction is satisfied almost always, so a",
+        "contrast between two target-failure rates has no room to move. This",
+        "asks whether the semicolon context costs anything at all, of the",
+        "outcome that does move — both instructions satisfied in the focal arm:",
+        "",
+        "> Δ_J(m,r) = P(both | semicolon) − P(both | control), focal arm only",
+        "",
+        "It was **not pre-registered** and was chosen after seeing that τ",
+        "degenerated. Paired over tasks and bootstrapped identically.",
+        "",
+    ]
+    lines.append(table(joint, ["model", "reasoning", "joint_control",
+                               "joint_semicolon", "delta_joint", "lo", "hi",
                                "n_tasks"]))
 
     lines += [
