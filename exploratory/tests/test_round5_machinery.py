@@ -217,3 +217,34 @@ def test_the_scaffold_never_enters_the_numbered_instruction_list():
     assert by_scaffold[""] == by_scaffold["one_sentence_per_line"], (
         "the scaffold changed the user prompt; it must live in the system "
         "message only, or the load is no longer matched")
+
+
+def test_collapse_signature_separates_substitution_from_a_run_on():
+    """The two routes must be distinguishable by the columns, not by eye.
+
+    Built from synthetic rows so the test asserts the STATISTIC's behaviour
+    rather than re-asserting a result.
+    """
+    import pandas as pd
+    rows = []
+    for i in range(4):
+        rows.append({"condition": "reference", "arm": "SUBSTITUTE", "order": "o_Q",
+                     "severe_collapse": True, "n_semicolons": 3, "n_colons": 0,
+                     "n_dashes": 0, "n_commas": 1, "n_words": 45, "n_periods": 1,
+                     "arm_scorable": True, "arm_binary_pass": 1})
+        rows.append({"condition": "reference", "arm": "RUNON", "order": "o_Q",
+                     "severe_collapse": True, "n_semicolons": 0, "n_colons": 0,
+                     "n_dashes": 0, "n_commas": 9, "n_words": 150, "n_periods": 1,
+                     "arm_scorable": False, "arm_binary_pass": None})
+    frame = pd.DataFrame(rows)
+    frame.attrs["n_target"] = 4
+    table = mechanism.collapse_signature(frame).set_index("arm")
+    assert table.loc["SUBSTITUTE", "marks_per_lost_boundary"] == pytest.approx(1.0)
+    assert table.loc["RUNON", "marks_per_lost_boundary"] == pytest.approx(0.0)
+    assert table.loc["RUNON", "commas_per_lost_boundary"] > \
+        table.loc["SUBSTITUTE", "commas_per_lost_boundary"]
+    assert table.loc["SUBSTITUTE", "arm_compliance_when_collapsed"] == 1.0
+    # An arm whose own rule cannot be scored at one sentence must report that,
+    # not a compliance number invented from an empty set.
+    assert pd.isna(table.loc["RUNON", "arm_compliance_when_collapsed"])
+    assert table.loc["RUNON", "n_arm_unscorable"] == 4

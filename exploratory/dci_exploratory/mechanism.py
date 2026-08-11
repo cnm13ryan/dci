@@ -359,6 +359,9 @@ def report(run_dir: Path, control: str, n_boot: int = 10000,
              "", f"## paired excess over {control} (severe collapse)",
              _fmt(paired_excess(frame, control, "severe_collapse",
                                 by=[b for b in by if b != "arm"], n_boot=n_boot))]
+    lines += ["", "## collapse signature (severely collapsed rows only)",
+              _fmt(collapse_signature(frame, [b for b in by if b != "scaffold"]
+                                      if frame["scaffold"].nunique() == 1 else list(by)))]
     if frame["scaffold"].nunique() > 1:
         lines += ["", "## scaffold delta vs no scaffold (A-failure)",
                   _fmt(paired_delta(frame, "scaffold", "", "a_failure", n_boot=n_boot)),
@@ -375,6 +378,71 @@ def report(run_dir: Path, control: str, n_boot: int = 10000,
                       units=(unit, "mean")).reset_index())
         lines += ["", "## primitives (isolated, one instruction)", _fmt(table)]
     return "\n".join(lines)
+
+
+def collapse_signature(frame: pd.DataFrame,
+                       by: Iterable[str] = ("order", "arm")) -> pd.DataFrame:
+    """What a collapsed answer LOOKS like, per arm — not merely that it collapsed.
+
+    Two arms can both end at one sentence by different routes, and the
+    replication criterion is about the route, not the count. The columns that
+    separate them:
+
+      `arm_compliance_when_collapsed` — did the model *satisfy the instruction it
+          was given* while losing the target? That is what "traded the target
+          away" means. An arm that collapses while also failing its own rule is
+          not substituting; it is failing at both.
+      `marks_per_lost_boundary` — boundary-capable marks (`;` `:` `—`) divided by
+          the boundaries that went missing. Substitution predicts ≈1; a run-on
+          predicts ≈0.
+      `commas_per_lost_boundary` — the same for a mark that CANNOT stand at a
+          boundary. A comma-chained run-on shows up here and nowhere else.
+    """
+    by = list(by)
+    n_target = frame.attrs.get("n_target")
+    contrast = frame[frame["condition"].isin(["focal", "reference"])]
+    collapsed = contrast[contrast["severe_collapse"] == True]        # noqa: E712
+    rows = []
+    for key, group in collapsed.groupby(by, dropna=False):
+        lost = max((n_target or 1) - 1, 1)
+        boundary_marks = (group["n_semicolons"] + group["n_colons"]
+                          + group["n_dashes"])
+        scorable = group[group.get("arm_scorable", pd.Series(False, group.index))]
+        rows.append({
+            **dict(zip(by, key if isinstance(key, tuple) else (key,))),
+            "n_collapsed": len(group),
+            "arm_compliance_when_collapsed": _rate(scorable.get("arm_binary_pass")),
+            "n_arm_unscorable": len(group) - len(scorable),
+            "mean_boundary_marks": float(boundary_marks.mean()),
+            "marks_per_lost_boundary": float(boundary_marks.mean() / lost),
+            "commas_per_lost_boundary": float(group["n_commas"].mean() / lost),
+            "mean_words": float(group["n_words"].mean()),
+            "mean_periods": float(group["n_periods"].mean()),
+        })
+    return pd.DataFrame(rows)
+
+
+def compare(runs: dict[str, Path], control: str, outcomes: Iterable[str] =
+            ("a_failure", "severe_collapse"), n_boot: int = 10000) -> pd.DataFrame:
+    """The same quantities across several runs, stacked for direct reading.
+
+    A replication is a claim about two numbers being the same, and the way to
+    make that claim checkable is to put them on one line rather than in two
+    reports a reader has to hold in their head.
+    """
+    out = []
+    for label, run_dir in runs.items():
+        frame, config = load(run_dir)
+        for outcome in outcomes:
+            if outcome not in frame:
+                continue
+            table = paired_excess(frame, control, outcome, by=["order"], n_boot=n_boot)
+            table.insert(0, "run", label)
+            table["n_target"] = frame.attrs["n_target"]
+            table["wording"] = config.get("paraphrase_id")
+            table["split"] = config.get("task_split")
+            out.append(table)
+    return (pd.concat(out, ignore_index=True) if out else pd.DataFrame())
 
 
 def main(argv: Optional[list[str]] = None) -> int:

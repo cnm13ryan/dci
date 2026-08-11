@@ -273,6 +273,19 @@ about message length, not about boundaries.*
 - **Confidence 2026-08-11: 0.25 — the largest unaddressed threat to the causal
   claim.**
 - **Decisive cell.** E1's `sham_plain_style`.
+- **Confidence 2026-08-11 (after E1): 0.75.** The sham reproduced most of D2's
+  recovery. Against the sham rather than against no scaffold, boundary content
+  contributes 0.000 to −0.075 in `o_A` (intervals spanning zero) and −0.150 to
+  −0.200 in `o_Q` (one interval excluding zero). **D2 is withdrawn as
+  mechanistic evidence** and the causal leg of the mechanism claim is currently
+  unsupported.
+- **Complication that limits what E1 can conclude.** The sham is *not* inert: it
+  cut B's commas from 9.19 to 7.42 and raised `S_SEMICOLON`'s sentence count from
+  2.34 to 2.90. "Write each sentence in a plain style" is a style intervention
+  acting on clause chaining itself, so E1 does not cleanly separate "any clause"
+  from "a clause about how sentences are written". No further system-message
+  scaffold will be run; the causal leg needs an instrument that prohibits the
+  substitution without mentioning sentences.
 
 ## M5 — B is a separate route
 *B ("each sentence strictly longer than the last") loses the count while planning

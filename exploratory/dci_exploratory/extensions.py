@@ -137,6 +137,61 @@ def v_linebreak_per_paragraph(text: str):
                                "linebreak_ok": ok})
 
 
+# Clause-initial words, as a CLOSED list. Used only to measure whether a
+# prohibition was obeyed; never to score an experimental outcome. A mark followed
+# by one of these is being used where a sentence boundary could stand, which is
+# the structural fact the substitution account is about — the grammatical
+# question of whether both sides are independent clauses is not decidable here
+# and is not claimed to be.
+# Pronouns and connectives only. Determiners were in the first version and had
+# to come out: `The parts are a lever; a spring; a base.` is a list, not a clause
+# join, and `; a` cannot tell the two apart. With determiners removed the proxy
+# can only UNDER-count — `The lever moves; the spring returns.` is a real join it
+# will miss — which is the safe direction for a measure whose job is to check
+# that a prohibition was obeyed.
+CLAUSE_INITIAL = frozenset({
+    "this", "these", "those", "it", "they", "he", "she", "we", "you",
+    "there", "then", "thus", "therefore", "however", "otherwise", "meanwhile",
+    "instead", "consequently", "nevertheless", "afterwards", "subsequently",
+})
+_AFTER_MARK = re.compile(r"[;,]\s*([A-Za-z']+)")
+
+
+def splice_count(text: str, mark: str) -> int:
+    """Occurrences of `mark` immediately followed by a clause-initial word.
+
+    A PROXY, and labelled one everywhere it is reported. It is exact about what
+    it counts and silent about grammar.
+    """
+    char = MARK_CHARS[mark][0]
+    return sum(1 for m in _AFTER_MARK.finditer(str(text or ""))
+               if m.group(0)[0] == char and m.group(1).lower() in CLAUSE_INITIAL)
+
+
+def v_no_splice(text: str, mark: str):
+    """No occurrence of `mark` standing where a sentence boundary could stand."""
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"splices": 0})
+    splices = splice_count(body, mark)
+    binary = int(splices == 0)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), {"splices": splices, "mark": mark,
+                                              "measure": "closed-list proxy"})
+
+
+def v_no_exclamation(text: str):
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"exclamations": 0})
+    count = body.count("!")
+    binary = int(count == 0)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), {"exclamations": count})
+
+
 _NUMERAL = re.compile(r"\d")
 
 
@@ -200,6 +255,24 @@ _LINEBREAK_TEMPLATES = (
     "No paragraph may be written without a line break inside it.",
     "Place a line break within each paragraph.",
     "Each paragraph must carry one or more internal line breaks.",
+)
+
+_NO_SPLICE_TEMPLATES = (
+    "Do not use a {mark} to join two complete sentences.",
+    "A {mark} must never stand between two clauses that could each be a sentence.",
+    "Never place a {mark} where a full stop could go.",
+    "No {mark} may join one complete statement to another.",
+    "Avoid using a {mark} to link two independent clauses.",
+    "A {mark} must not take the place of a sentence break.",
+)
+
+_NO_EXCLAM_TEMPLATES = (
+    "Do not use any exclamation marks.",
+    "The answer must contain no exclamation marks at all.",
+    "Never place an exclamation mark anywhere in the answer.",
+    "No exclamation mark may appear in the response.",
+    "Avoid exclamation marks entirely.",
+    "The count of exclamation marks must be zero.",
 )
 
 _WORDNUM_TEMPLATES = (
@@ -286,6 +359,35 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
              "authored as the paragraph-level substitutable delimiter"),
         lambda t: v_linebreak_per_paragraph(t),
         _render(_LINEBREAK_TEMPLATES),
+    )
+
+    # --- route-closing prohibitions, for the double-dissociation intervention -
+    # Three prohibitions of the same grammatical form and comparable length, one
+    # on each suspected route and one on neither. Each is the others' control, so
+    # the design needs no clause to be inert — which E1 showed cannot be
+    # arranged for a system-message scaffold.
+    for cid, mark, phrase in (("X_NO_SEMI_SPLICE", "semicolon", "semicolon"),
+                              ("X_NO_COMMA_SPLICE", "comma", "comma")):
+        out[cid] = (
+            spec(cid, "exploratory", f"No {phrase} where a sentence could end",
+                 "format", "local_check", "whole_text", "character_stream",
+                 "unrelated", f"x_no_{mark}_splice", P(mark=mark), "exploratory",
+                 "authored as a route-closing prohibition",
+                 u_family="format",
+                 pathway_audit="Prohibits one punctuation USAGE. Does not read "
+                               "the sentence count and never compares one "
+                               "sentence with another."),
+            (lambda m: (lambda t: v_no_splice(t, m)))(mark),
+            _render(_NO_SPLICE_TEMPLATES, mark=phrase),
+        )
+    out["X_NO_EXCLAM"] = (
+        spec("X_NO_EXCLAM", "exploratory", "No exclamation marks", "format",
+             "local_check", "whole_text", "character_stream", "unrelated",
+             "x_no_exclamation", (), "exploratory",
+             "authored as the off-route prohibition", u_family="format",
+             pathway_audit="Character absence over the whole answer."),
+        lambda t: v_no_exclamation(t),
+        _render(_NO_EXCLAM_TEMPLATES),
     )
 
     # --- a different constraint family altogether ----------------------------
@@ -382,6 +484,11 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_PARA4": ("one\n\ntwo\n\nthree\n\nfour", "one\n\ntwo"),
     "X_LINEBREAK_EACH": ("one\nline\n\ntwo\nlines", "one\n\ntwo"),
     "X_WORDNUM": ("Three rivers rise.", "3 rivers rise."),
+    "X_NO_SEMI_SPLICE": ("The parts are a lever; a spring; a base.",
+                         "Rain falls; it soaks the ground."),
+    "X_NO_COMMA_SPLICE": ("Rain falls on the roof and soaks the ground.",
+                          "Rain falls, it soaks the ground."),
+    "X_NO_EXCLAM": ("Rain falls.", "Rain falls!"),
 }
 
 
