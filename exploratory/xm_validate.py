@@ -154,7 +154,8 @@ def stage_a_environment() -> dict:
 
 
 # ------------------------------------------------------------- Stages B & C
-def stage_bc_checkpoint(model_id: str, device_map, out_dir: Path) -> dict:
+def stage_bc_checkpoint(model_id: str, device_map, out_dir: Path,
+                        chunk: int = 4) -> dict:
     """Resolve, load, generate, parse, unload — and say what happened."""
     import torch
 
@@ -195,7 +196,8 @@ def stage_bc_checkpoint(model_id: str, device_map, out_dir: Path) -> dict:
     system = _system_message()
     record["modes"] = {}
     for mode in adapter.SUPPORTED_MODES:
-        record["modes"][mode] = _probe_mode(adapter, mode, system, out_dir)
+        record["modes"][mode] = _probe_mode(adapter, mode, system,
+                                            out_dir, chunk)
 
     try:
         adapter.unload()
@@ -209,7 +211,8 @@ def stage_bc_checkpoint(model_id: str, device_map, out_dir: Path) -> dict:
     return record
 
 
-def _probe_mode(adapter, mode: str, system: str, out_dir: Path) -> dict:
+def _probe_mode(adapter, mode: str, system: str, out_dir: Path,
+                chunk: int = 4) -> dict:
     """Generate the smoke set in one mode and check the channel separation."""
     verdict: dict = {"reasoning_mode": mode}
     texts = [text for text, _ in SMOKE_PROMPTS]
@@ -229,7 +232,14 @@ def _probe_mode(adapter, mode: str, system: str, out_dir: Path) -> dict:
                                   else SMOKE_REASONING_CEILING))
         seeds = [(1000 + i, 2000 + i) for i in range(len(prompts))]
         started = time.perf_counter()
-        generations = adapter.generate(prompts, seeds, config)
+        # Chunked: a 22 GiB checkpoint on a 24 GiB card cannot hold four
+        # concurrent reasoning caches, and the probe should measure the
+        # reasoning interface rather than the batch size.
+        generations = []
+        for start in range(0, len(prompts), chunk):
+            generations.extend(adapter.generate(
+                prompts[start:start + chunk], seeds[start:start + chunk],
+                config))
         verdict["seconds"] = round(time.perf_counter() - started, 1)
     except Exception as error:                          # noqa: BLE001
         verdict["status"] = "MODE_FAILED"
@@ -357,6 +367,7 @@ def main() -> int:
                         help="'cuda:0', 'cuda:1', 'auto' (both cards), or "
                              "'balanced'")
     parser.add_argument("--out", default=None)
+    parser.add_argument("--chunk", type=int, default=4)
     parser.add_argument("--skip-environment", action="store_true")
     args = parser.parse_args()
 
@@ -388,7 +399,8 @@ def main() -> int:
     records = []
     for model_id in args.models:
         print(f"\n=== {model_id} (device_map={device_map})")
-        record = stage_bc_checkpoint(model_id, device_map, out_dir)
+        record = stage_bc_checkpoint(model_id, device_map, out_dir,
+                                     args.chunk)
         records.append(record)
         print(f"  load: {record.get('load_status')}"
               f"{'  — ' + record.get('blocked_reason', '')[:200] if record.get('blocked_reason') else ''}")
