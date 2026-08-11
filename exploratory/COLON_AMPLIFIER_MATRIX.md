@@ -41,6 +41,12 @@ amplify" is separable from "was not followed".
 > modulates the size (semicolon ≫ colon) but is not what makes it an amplifier,
 > and the mark need not actually be produced.
 
+> **Superseded by Round 9.** Single-character atomicity is now REFUTED: a
+> three-character unpaired mark (`X_ELLIPSIS_FREE`) amplifies at 1.000
+> compliance. Ten positional wordings all failed their manipulation check, so
+> free placement remains untested rather than supported. See
+> `AMPLIFIER_MECHANISM_MATRIX.md`, which is now the current record.
+
 **Free placement and single-character-ness are not yet separated from each
 other.** Both amplifiers are single characters *and* freely placeable; both
 controls are paired *and* placement-constrained. A fixed-placement single-mark
