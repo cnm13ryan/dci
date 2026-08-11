@@ -282,3 +282,54 @@ are model failures on an achievable task.
 **P(both) never exceeds 0.150 anywhere.** Reasoning moves probability from
 "neither" to "target only", not to "both". Under the amplifier at ACQ it moves
 the wrong way: "neither" rises 0.100 → 0.350 as the budget grows.
+
+---
+
+## Part 3 — the NATURAL_REASONING condition (Round 11)
+
+`Qwen/Qwen3-4B` @ `1cfa9a72` · vLLM 0.15.1+rocm720 · TP=2 · bf16 · T=0.7 ·
+top-p 0.9 · answer allowance 512 · π = QAC, k = 3 · 20 tasks × 2 replicates ·
+**per-row seeds** `20260810 + 90000 + 7919·i`.
+
+| field | value |
+|---|---|
+| reasoning-control mechanism | **none** — the model emits its own `</think>` and then answers |
+| engineering ceiling | **39,550** tokens, derived from the context envelope (§R11.2) |
+| ceiling reached | **0 / 160** — the ceiling never binds |
+| natural closure | 160 / 160 |
+| realised reasoning | min 173 · p25 354 · median **511** · p75 745 · p90 1,445 · max **5,888** |
+| rows above 4,096 | 1 (the tail a 4,096 cap truncates) |
+| final-answer validity | 0 empty · 0 truncated · mean 119.0 tokens |
+| scratchpad leakage | 2/160 flagged, **0 genuine** on inspection (regex false positives on the ordinary word *wait*) |
+| replicate pairs identical | 0 / 80 |
+| latency | reasoning phase 161.2 s · answer phase 24.6 s for 160 rows, batched |
+| τ, bracket-pair background | **0.000** [0.000, 0.000] |
+| τ, semicolon background | **+0.400** [+0.225, +0.550] |
+| Δ amplification | **+0.400** |
+
+### The capped grid, regenerated under per-row seeding
+
+`s18_reseeded.jsonl` supersedes `s18_reasoning.jsonl` for every figure. The
+original is retained, not deleted, and the loader records which file it used.
+
+| b | cap-hit | realised mean | τ bracket | τ semicolon |
+|---|---|---|---|---|
+| 0 (native non-thinking) | — | 0.0 | +0.450 | +0.525 |
+| 256 | 0.900 | 253.4 | +0.025 | +0.325 |
+| 512 | 0.481 | 423.0 | **0.000** | +0.625 |
+| 1,024 | 0.181 | 580.4 | −0.025 | +0.550 |
+| 4,096 | 0.025 | 751.8 | −0.025 | +0.375 |
+| **natural** | **0.000** | 592.4 | **0.000** | **+0.400** |
+
+### Status of `b = 4096`
+
+**Retained in the deliberate reasoning-limit experiment. Never labelled
+unlimited, unconstrained, natural, or full reasoning.** Its cap-hit rate is 2.5%
+overall but **10.0% in the semicolon × reference cell**, and the natural run
+shows traces reaching 5,888 tokens.
+
+### Conditions recorded as invalid
+
+| condition | status | reason |
+|---|---|---|
+| first natural attempt (shared seed) | **invalid, not evidence** | written with the R10.2 seed defect; terminated at 157/160 and never completed. Superseded, not reported. |
