@@ -18,10 +18,10 @@ from typing import Any
 
 from dci.v19 import artifacts, ordering, pairs
 from dci.v19.encoding import encoding_map_state
-from dci.v19.witness import CONSTRUCTOR_ID
 from dci.v19.parsing import CANONICAL_LIST_POLICY
 from dci.v19.reliability import AMENDED_INTERVAL, AMENDED_TIER1_DESIGN
 from dci.v19.text import CANONICAL_TEXT_POLICY
+from dci.v19.witness import CONSTRUCTOR_ID
 
 # What a test freezes into a slot that declares no domain. Any value is admissible
 # there, and a recognisable one makes a failure message readable.
@@ -133,3 +133,29 @@ def resolve(table, *names: str):
 def resolve_all_except(table, *held_back: str, names=()):
     """Freeze every named slot but the ones held back."""
     return resolve(table, *[n for n in names if n not in held_back])
+
+
+def table_without(*withheld: str):
+    """The registry with every recorded output applied EXCEPT the named ones.
+
+    Needed because "withhold one requirement and the gate must stay blocked" can no
+    longer be tested against the live registry: every Stage 2 prerequisite is now
+    resolved there, and a frozen commitment cannot be unfrozen. Rebuilding from the
+    declaration with one record left out asks the same question honestly.
+
+    Records whose own prerequisites become unresolved as a consequence are skipped
+    too - `frozen.apply` would refuse them - so withholding an early decision
+    correctly cascades to everything downstream of it.
+    """
+    from dci.v19 import frozen
+    from dci.v19.registry import declared_table
+    table = declared_table()
+    held = set(withheld)
+    for record in frozen.records():
+        name = record["slot"]
+        if name in held:
+            continue
+        if any(not table[d].resolved for d in table[name].depends_on):
+            continue
+        table = table.freeze(name, record["value"], by=record["frozen_by"])
+    return table

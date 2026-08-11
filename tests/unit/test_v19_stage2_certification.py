@@ -223,15 +223,25 @@ def test_certification_passes_only_when_every_requirement_holds():
     assert stage2.assert_verifiers_certified(all_frozen()) is not None
 
 
-@pytest.mark.parametrize("withheld", GATE_BLOCKERS)
+@pytest.mark.parametrize("withheld", STAGE_GATE_BY_KEY[STAGE].required_slots)
 def test_withholding_any_one_requirement_blocks_certification(withheld):
-    """Each remaining requirement is individually load-bearing."""
-    slots = stand_in.resolve(REGISTRY.slots, *[
-        name for name in REGISTRY.gate(STAGE).required_slots if name != withheld])
-    report = stage2.certify_verifiers(slots)
+    """Every requirement is individually load-bearing - the gate is not decorative.
+
+    Rebuilt from the DECLARATION with one acceptance record left out, because the
+    live registry now resolves all seven and a frozen commitment cannot be
+    unfrozen. An earlier version of this test parametrised over the outstanding
+    blockers, which became the empty set once Stage 2's gate was satisfied - so it
+    silently stopped testing anything at all.
+    """
+    report = stage2.certify_stage2(stand_in.table_without(withheld))
     assert not report.certified
     assert any(withheld in f.detail or withheld in f.requirement
                for f in report.outstanding), [f.detail for f in report.outstanding]
+
+
+def test_the_withholding_test_is_not_vacuous():
+    """A guard on the guard: the parameter set must be non-empty."""
+    assert len(STAGE_GATE_BY_KEY[STAGE].required_slots) == 7
 
 
 def test_unfrozen_battery_evidence_does_not_satisfy_the_gate():
