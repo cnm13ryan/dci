@@ -34,8 +34,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="number of matched underlying instances X_i")
     parser.add_argument("--replicates", type=int, default=3,
                         help="generations per (task, arm, order)")
-    parser.add_argument("--load", type=int, default=5, choices=(2, 5),
-                        help="compositional load k (v19 LOADS)")
+    parser.add_argument("--load", type=int, default=5,
+                        help="compositional load k. 2 and 5 are the v19 LOADS; "
+                             "any other value is EXPLORATORY and is only "
+                             "accepted on the hypothesis-driven design path, "
+                             "where a presence/absence factorial has to move k "
+                             "by exactly one between its cells.")
     parser.add_argument("--orders", default="both", choices=("both", "o_A", "o_Q"))
     parser.add_argument("--no-primitives", action="store_true",
                         help="skip the isolated single-instruction rows")
@@ -106,6 +110,12 @@ def main(argv: list[str] | None = None) -> int:
             background=([b.strip() for b in args.background.split(",")]
                         if args.background else None))
     else:
+        from dci.v19.identity import LOADS
+        if args.load not in LOADS:
+            raise SystemExit(
+                f"load {args.load} is not a v19 load {LOADS}; a non-protocol "
+                "load is only available with --target/--focal, which marks the "
+                "run as hypothesis-driven rather than as the admitted design")
         if args.background:
             raise SystemExit("--background applies only to the hypothesis-driven "
                              "design path (--target/--focal); the admitted design "

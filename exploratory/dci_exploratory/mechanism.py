@@ -70,6 +70,50 @@ def _blank_line_blocks(text: str) -> int:
     return len(split_paragraphs(text))
 
 
+def clause_chain_features(text: str) -> dict[str, Any]:
+    """The clause-chain STRATEGY, defined without reference to the sentence count.
+
+    Round 2 withdrew a correlation because collapse (`n_sentences == 1`) is a
+    subset of A-failure (`n_sentences != N`) whenever N > 1, so the two were
+    partly the same variable. `severe_collapse` is still reported — it is the
+    right descriptive statistic for *what happened to the count* — but it cannot
+    serve as the mediator in any claim about the count.
+
+    `splice_share` can. It is the fraction of clause boundaries realised as a
+    semicolon rather than as a sentence terminator:
+
+        splice_share = semicolon_splices / (semicolon_splices + terminal_marks)
+
+    Both terms are punctuation counts on the raw text. Nothing in it references
+    N, the target, or any verdict. A text with four sentences and four
+    semicolon-joined clauses scores 0.5; a one-sentence chain of five clauses
+    scores 0.8; an ordinary four-sentence answer scores 0.0. High share and full
+    target compliance can coexist, which is what makes it independent — and
+    whether they DO coexist is then an empirical question rather than an
+    arithmetic one.
+    """
+    from dci_exploratory.extensions import splice_count
+    semi = splice_count(text, "semicolon")
+    comma = splice_count(text, "comma")
+    colon = splice_count(text, "colon")
+    dash = splice_count(text, "dash")
+    terminals = len(_TERMINAL.findall(text))
+    boundary = semi + colon + dash          # marks that took a boundary's place
+    return {
+        "n_semi_splices": semi,
+        "n_colon_splices": colon,
+        "n_dash_splices": dash,
+        "n_comma_splices": comma,
+        "n_terminal_marks": terminals,
+        # The semicolon-specific strategy.
+        "splice_share": (semi / (semi + terminals)) if (semi + terminals)
+                        else float("nan"),
+        # Mark-agnostic: ANY non-terminal mark standing where a boundary could.
+        "chain_share": (boundary / (boundary + terminals))
+                       if (boundary + terminals) else float("nan"),
+    }
+
+
 def row_features(text: Optional[str]) -> dict[str, Any]:
     """Everything the mechanism account talks about, measured on the text alone.
 
@@ -83,6 +127,7 @@ def row_features(text: Optional[str]) -> dict[str, Any]:
     clean = normalize_text(body)
     sentences = split_sentences(body)
     return {
+        **clause_chain_features(body),
         "n_sentences": len(sentences),
         "n_sentences_legacy": len(legacy_split_sentences(body)),
         "n_periods": clean.count("."),
@@ -164,7 +209,8 @@ def load(run_dir: Path) -> tuple[pd.DataFrame, dict[str, Any]]:
 # --------------------------------------------------------------- cell tables
 _MEANS = ("n_sentences", "n_sentences_legacy", "n_paragraphs", "n_periods",
           "n_terminals", "n_semicolons", "n_colons", "n_dashes", "n_commas",
-          "n_newlines", "n_words")
+          "n_newlines", "n_words", "n_semi_splices", "n_comma_splices",
+          "n_colon_splices", "n_dash_splices", "splice_share", "chain_share")
 
 
 def cell_table(frame: pd.DataFrame, by: Iterable[str] = ("scaffold", "order", "arm")
