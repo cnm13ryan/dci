@@ -5,7 +5,7 @@ from the Stage A–E artefacts (`runs/xm_validate_*`,
 `runs/xm_calibrate_*`); no generation from the scientific run is read
 here. Regenerate with `uv run python xm_matrix.py`.
 
-Recorded 2026-08-11 23:01 UTC. Machine-readable twin:
+Recorded 2026-08-11 23:08 UTC. Machine-readable twin:
 `CROSS_MODEL_EXECUTION_MATRIX.json`.
 
 The question this table answers is not whether a checkpoint shows DCI.
@@ -21,7 +21,7 @@ admissible.
 | `Qwen/Qwen3.5-9B` | qwen3.5 | `c20223623576` | 18.0 GiB | bfloat16 | none | transformers 5.15.0 | cuda:1 | yes |
 | `google/gemma-4-E4B-it` | gemma4 | `ee0ef6023621` | 14.9 GiB | bfloat16 | none | transformers 5.15.0 | cuda:0 | yes |
 | `google/gemma-4-12B-it` | gemma4 | `707f0a3b8a3c` | 22.3 GiB | bfloat16 | none | transformers 5.15.0 | cuda:0 | yes |
-| `moonshotai/Kimi-VL-A3B-Thinking-2506` | kimi-vl | `—` | 30.6 GiB | bfloat16 | none | transformers  | — | no |
+| `moonshotai/Kimi-VL-A3B-Thinking-2506` | kimi-vl | `aa1730989e75` | 30.6 GiB | bfloat16 | none | transformers  | auto | no |
 
 ## Reasoning interface
 
@@ -60,7 +60,7 @@ whatever its natural-reasoning calibration does, and the reverse.
 | `Qwen3.5-9B` | **yes** | — | **no** | no Stage E natural-reasoning calibration |
 | `gemma-4-E4B-it` | **yes** | — | **yes** | — |
 | `gemma-4-12B-it` | **yes** | — | **no** | NATURAL_REASONING failed: OutOfMemoryError: HIP out of memory. Tried to allocate 72.00 MiB. GPU 0 has a total capacity of 23.98 GiB of which 80.00 MiB is free. Of the allocated memory 23.18 GiB is allocated |
-| `Kimi-VL-A3B-Thinking-2506` | **no** | not natively supported by this checkpoint | **no** | no Stage B/C record — never validated |
+| `Kimi-VL-A3B-Thinking-2506` | **no** | not natively supported by this checkpoint | **no** | BACKEND_BLOCKED: ImportError: cannot import name 'is_torch_fx_available' from 'transformers.utils.import_utils' (/home/cnm13ryan/git/dci-cross-model/exploratory/.venv/lib/python3.12/site-packages/transformers/utils/im |
 
 ## Execution notes
 

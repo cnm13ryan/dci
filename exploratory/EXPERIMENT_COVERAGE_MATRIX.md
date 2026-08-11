@@ -351,7 +351,7 @@ comparison is internally consistent but backend-confounded against everything in
 | `Qwen/Qwen3.5-9B` | `c202236235762` | 1 card | ✔ 160 rows | ✘ not calibrated (pilot pre-empted) |
 | `google/gemma-4-E4B-it` | `ee0ef6023621` | 1 card | ✔ 160 rows | ✔ 160 rows |
 | `google/gemma-4-12B-it` | `707f0a3b8a3c` | 1 card | ✔ 160 rows | ◐ single-card OOM; dual-GPU capacity mode in progress |
-| `moonshotai/Kimi-VL-A3B-Thinking-2506` | `aa1730989e75` | — | ✘ **no such mode** — the non-thinking sibling is a different checkpoint | ✘ weights still downloading |
+| `moonshotai/Kimi-VL-A3B-Thinking-2506` | `aa1730989e75` | dual-GPU attempted | ✘ **no such mode** — the non-thinking sibling is a different checkpoint | ✘ **BACKEND_BLOCKED** — its remote code imports `is_torch_fx_available`, removed in transformers 5.x |
 
 **800 generations** admitted, all five files hashed CANONICAL in
 `CROSS_MODEL_RUN_MANIFEST.json`: 0 technical failures, 0 empty answers, 0
@@ -377,4 +377,4 @@ truncated answers, 0 ceiling hits, replicate duplication 0/80 in every file.
 | Qwen3.5 `NATURAL_REASONING` | traces do not terminate inside the 39,515-token envelope; a batched `generate()` holds the whole chunk at the cap. Same constraint as §17's, measured at the natural endpoint instead of a capped budget |
 | gemma-4-12B-it `NATURAL_REASONING` on one card | 22.28 GiB resident of 23.98 GiB; OOM with 80 MiB free. Needs dual-GPU capacity mode |
 | gemma-4-E4B-it text-only load | checkpoint stores `model.language_model.*` beside vision **and audio** towers; the causal-LM class leaves 667 parameters randomly initialised and emits noise |
-| Kimi-VL | 30.6 GiB download; `kimi_vl` absent from transformers 5.15.0, needs `trust_remote_code` + `tiktoken` |
+| Kimi-VL | weights downloaded and revision pinned, tokenizer works with `tiktoken`, but `modeling_kimi_vl.py` (written for transformers 4.48.2) imports `is_torch_fx_available`, which transformers 5.15.0 removed. Nothing generated: **uninterpretable, not null** |

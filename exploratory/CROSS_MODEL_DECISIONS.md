@@ -427,3 +427,42 @@ transformers 5.15.0, its tokenizer works once `tiktoken` is installed, and its
 documented parser is implemented and unit-tested against synthetic fixtures. Only
 the weights are missing. No behavioural claim about it is available at any
 confidence.
+
+---
+
+## D21 — Kimi-VL-A3B-Thinking-2506 is BACKEND_BLOCKED, and that is a backend
+## fact, not a behavioural one
+
+**Recorded 2026-08-12, from the Stage B/C gate.**
+
+Revision resolved and pinned: `aa1730989e7558695b44ee493623e03bd325a994`.
+All 30.6 GiB of weights downloaded. Loaded in dual-GPU capacity mode
+(`device_map="auto"`, 18 GiB cap per card), BF16, `trust_remote_code=True`,
+`attn_implementation="eager"`.
+
+    modeling_kimi_vl.py, line 75:
+        from transformers.utils.import_utils import is_torch_fx_available
+    ImportError: cannot import name 'is_torch_fx_available'
+                 from 'transformers.utils.import_utils'
+
+The checkpoint's own modeling code was published against transformers 4.48.2 and
+calls a helper that transformers 5.15.0 has removed. `LOAD_STATUS =
+BACKEND_BLOCKED`.
+
+**What IS established about this checkpoint.** Its config loads under 5.15.0
+(`KimiVLConfig`); its tokenizer loads and round-trips `◁think▷` / `◁/think▷`
+once `tiktoken` is installed; the adapter implements the model card's own
+`extract_thinking_and_summary` semantics and is unit-tested against synthetic
+fixtures, including the answer-before-trace ordering.
+
+**What is NOT established: anything behavioural.** No generation ran. Kimi-VL
+must not appear in any table as a null, a zero, or a checkpoint on which DCI
+"did not transport". It is uninterpretable, and that is a different thing.
+
+**Not fixed here, deliberately.** Pinning transformers back to 4.48.x for one
+checkpoint would put it on a different backend from the other four and make its
+comparison a backend comparison — the exact failure D2 exists to avoid. Patching
+vendored remote code would mean executing modelling code that is not the
+published checkpoint's. Either is a **separately labelled experiment**, and the
+right one to run is the first: all five checkpoints on one older transformers,
+if that version can carry Gemma 4 and Qwen3.5 at all.
