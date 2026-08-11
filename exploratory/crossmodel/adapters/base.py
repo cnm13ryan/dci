@@ -97,6 +97,12 @@ class Generation:
     #: think on an easy prompt, and that is a property of the checkpoint, not a
     #: parser failure — but it is also not a closure, so the two are kept apart.
     reasoning_emitted: bool = True
+    #: The splice force-closed a trace that had not finished, and the model then
+    #: continued thinking, closed AGAIN, and re-answered. The answer channel is
+    #: repaired by taking the text after the final close, but the row is marked:
+    #: this is the "forced-close artefact" that makes a reasoning condition
+    #: invalid, and it must never be read as a behavioural failure.
+    forced_close_artefact: bool = False
     seed_reasoning: Optional[int] = None
     seed_answer: Optional[int] = None
     batch_seed: Optional[int] = None

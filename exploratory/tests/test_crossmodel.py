@@ -158,6 +158,22 @@ def test_gemma_handles_several_channel_segments():
     assert answer.replace("  ", " ").strip() == "Alpha runs. Beta walks."
 
 
+def test_forced_close_artefact_never_reaches_the_verifier():
+    """When the ceiling force-closes a trace, Qwen thinks on, closes again,
+    and re-answers. The `</think>` and the duplicated first answer must not be
+    scored, and the repair must be visible on the row."""
+    adapter = Qwen35_4B()
+    phase_two = ("Bicycles are fun. They go far.\n</think>\n\n"
+                 "Bicycles are fun. They travel remarkably far.")
+    assert adapter.THINK_CLOSE in phase_two
+    repaired = adapter.clean_answer(phase_two.rsplit(adapter.THINK_CLOSE, 1)[1])
+    assert adapter.THINK_CLOSE not in repaired
+    assert repaired == "Bicycles are fun. They travel remarkably far."
+
+    generation = _generation(final_answer=repaired, forced_close_artefact=True)
+    assert generation.forced_close_artefact
+
+
 def test_generation_strategy_matches_the_template_guarantee():
     """A splice is only sound where the template pre-opens the block."""
     assert Qwen35_4B.GENERATION_STRATEGY == "splice"
