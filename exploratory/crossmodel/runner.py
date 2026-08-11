@@ -161,22 +161,8 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
         pairs = [(seeds.seed_for_row(row, master_seed, seeds.REASONING_PHASE),
                   seeds.seed_for_row(row, master_seed, seeds.ANSWER_PHASE))
                  for row in batch]
-        try:
-            generations = adapter.generate(prompts, pairs, config)
-        except Exception as error:                      # noqa: BLE001
-            # A failed batch is recorded as a technical failure per row, not
-            # dropped: a silently short output file is indistinguishable from a
-            # design that never had those cells.
-            detail = f"{type(error).__name__}: {error}"
-            print(f"  batch {index} FAILED — {detail[:200]}")
-            traceback.print_exc()
-            generations = [Generation(
-                prompt=prompt, raw_generation="", reasoning_text="",
-                final_answer="", reasoning_tokens=0, final_answer_tokens=0,
-                finish_reason="error", natural_reasoning_closed=False,
-                reasoning_cap_hit=False, answer_truncated=False,
-                technical_failure=True, technical_failure_reason=detail[:500])
-                for prompt in prompts]
+        generations = _generate_with_recovery(adapter, prompts, pairs, config,
+                                              index)
 
         for row, generation, (seed_r, _) in zip(batch, generations, pairs):
             records.append(build_row(
@@ -194,6 +180,61 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
         raise RuntimeError(
             f"wrote {len(records)} rows, expected {expected}")
     return records, plan
+
+
+def _is_oom(error: BaseException) -> bool:
+    text = f"{type(error).__name__}: {error}".lower()
+    return ("out of memory" in text or "outofmemory" in text
+            or "hip error" in text and "memory" in text)
+
+
+def _generate_with_recovery(adapter: ModelAdapter, prompts: Sequence[str],
+                            pairs: Sequence[tuple[int, int]],
+                            config: GenerationConfig, index: int
+                            ) -> list[Generation]:
+    """Generate a batch, halving it on OOM rather than losing the cells.
+
+    Reasoning length is chosen by the model, so a batch's peak KV footprint is
+    not knowable in advance — Qwen3.5's natural traces run an order of magnitude
+    longer than the checkpoint this study was built on. Splitting on OOM keeps
+    the row set complete. It does change batch composition for the affected
+    rows, and therefore their realised sample, so the split is announced rather
+    than silent.
+
+    A batch that fails for any OTHER reason is recorded as a technical failure
+    per row and never dropped: a silently short output file is indistinguishable
+    from a design that never had those cells.
+    """
+    try:
+        return adapter.generate(prompts, pairs, config)
+    except Exception as error:                          # noqa: BLE001
+        if _is_oom(error) and len(prompts) > 1:
+            import gc
+
+            import torch
+
+            half = len(prompts) // 2
+            print(f"  batch {index}: out of memory at size {len(prompts)}, "
+                  f"splitting into {half} + {len(prompts) - half} "
+                  "(batch composition changes for these rows)", flush=True)
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            return (_generate_with_recovery(adapter, prompts[:half],
+                                            pairs[:half], config, index)
+                    + _generate_with_recovery(adapter, prompts[half:],
+                                              pairs[half:], config, index))
+
+        detail = f"{type(error).__name__}: {error}"
+        print(f"  batch {index} FAILED — {detail[:200]}")
+        traceback.print_exc()
+        return [Generation(
+            prompt=prompt, raw_generation="", reasoning_text="",
+            final_answer="", reasoning_tokens=0, final_answer_tokens=0,
+            finish_reason="error", natural_reasoning_closed=False,
+            reasoning_cap_hit=False, answer_truncated=False,
+            technical_failure=True, technical_failure_reason=detail[:500])
+            for prompt in prompts]
 
 
 def write_rows(records: Sequence[dict], path: Path) -> None:
