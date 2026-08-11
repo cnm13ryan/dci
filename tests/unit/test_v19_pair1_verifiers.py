@@ -13,7 +13,7 @@ sequence would fail valid answers and the effect would look like interference.
 import pytest
 
 from dci.v19 import verifiers as V
-from dci.v19.parsing import INHERITED_MARKER_POLICY as P
+from dci.v19.parsing import CANONICAL_LIST_POLICY as P
 from dci.v19.parsing import OrderingRelation, parse_list
 from dci.v19.verifiers import (
     Compliance,
@@ -184,12 +184,26 @@ def test_structural_problems_are_a_violation_and_ordering_errors_are_partial():
     assert order("- alpha\n- gamma\n- beta").compliance is Compliance.PARTIAL
 
 
-def test_ambiguous_item_identity_is_reported_rather_than_guessed():
+def test_prefix_overlapping_labels_are_no_longer_ambiguous():
+    """S5/S7: token equality replaced substring containment.
+
+    "cat" is no longer found inside "cataract", so a relation whose labels share a
+    prefix is ordinary. The audit found this pair ambiguous under the old rule.
+    """
     overlap = OrderingRelation(items=("cat", "cataract"),
                                edges=(("cat", "cataract"),))
-    outcome = order("- cataract\n- cat", overlap)
+    good = order("- cat\n- cataract", overlap)
+    assert good.verdict is Verdict.PASS
+    assert not good.evidence["identification"]["ambiguous"]
+    assert order("- cataract\n- cat", overlap).verdict is Verdict.FAIL
+
+
+def test_ambiguous_item_identity_is_reported_rather_than_guessed():
+    """One item carrying two declared labels is genuinely undetermined."""
+    outcome = order("- alpha beta\n- gamma")
     assert outcome.verdict is Verdict.FAIL
-    assert outcome.evidence["identification"]["ambiguous"]
+    assert outcome.evidence["identification"]["ambiguous"] == [
+        {"ordinal": 1, "candidates": ["alpha", "beta"]}]
     assert "identity is not determined" in outcome.reason
 
 
@@ -212,7 +226,8 @@ def test_the_relation_identity_is_in_the_parameters_not_the_evidence():
     """Parameters are the realisation; evidence is how the answer was read."""
     outcome = order(THREE)
     assert set(outcome.parameters) == {"relation_hash", "declared_items",
-                                       "declared_edges"}
+                                       "declared_edges", "extra_items_permitted"}
+    assert outcome.parameters["extra_items_permitted"] is P.extra_items_permitted
 
 
 @pytest.mark.parametrize("swap", [(0, 1), (1, 2), (0, 2)])

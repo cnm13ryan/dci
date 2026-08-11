@@ -17,7 +17,7 @@ import dataclasses
 import pytest
 
 from dci.v19 import artifacts, pairs, reliability, stage2, verifiers
-from dci.v19.parsing import INHERITED_MARKER_POLICY as P
+from dci.v19.parsing import CANONICAL_LIST_POLICY as P
 from dci.v19.registry import REGISTRY, STAGE_GATE_BY_KEY
 from dci.v19.resolution import Resolution, UnresolvedDependency
 from dci.v19.verifiers import VerifierContractError
@@ -235,14 +235,18 @@ def test_the_open_decisions_are_reported_from_the_code_not_retyped():
     assert {row["decision"] for row in rows} == set(DECISIONS)
     for row in rows:
         assert row["governing_text"] and row["minimum_decision"]
-        assert row["open_questions"]
+        # A1 answered every list-policy question, so that row reports answers
+        # instead. Every other row still has something open.
+        assert row["open_questions"] or row.get("resolved_by_amendment")
 
 
-def test_the_list_policy_row_carries_all_eleven_open_questions():
-    from dci.v19.parsing import UNDETERMINED_BY_PREREGISTRATION
+def test_the_list_policy_row_reports_the_amendment_that_answered_it():
+    """A1 answers every grammar decision, so nothing is left open on this row."""
+    from dci.v19.parsing import RESOLVED_BY_AMENDMENT
     row = next(r for r in stage2.open_scientific_decisions()
                if r["decision"] == "verifiers.p1.list_policy")
-    assert row["open_questions"] == dict(UNDETERMINED_BY_PREREGISTRATION)
+    assert row["open_questions"] == {}
+    assert row["resolved_by_amendment"] == dict(RESOLVED_BY_AMENDMENT)
     assert "LIST_MARKER" in row["what_is_recoverable"]
 
 
