@@ -57,6 +57,44 @@ from dci.v19.reliability import (
 )
 
 MANIFEST_ID = "v19:tier1-audit-manifest.v1"
+PROTOCOL_ID = "v19:tier1-audit-protocol.frozen-v1"
+SELECTION_ID = "v19:tier1-selection.first-72-by-manifest-order"
+
+# The frozen protocol's authoring budget: exactly this many candidates per unit per
+# INTENDED class. 100 rather than 72 because a case's truth class is established by
+# the reviewers, not by its author: authoring exactly 72 reaches 72 adjudicated
+# cases with probability about 0.55 even when mis-adjudicated cases are credited to
+# the other class, and essentially never when they are discarded - which this
+# protocol does. 72 is the denominator; 100 is the budget.
+CANDIDATES_PER_CLASS = 100
+INDEPENDENT_REVIEWERS = 2
+PANEL_SIZE = 3
+
+# The accepted decision, recorded here so the registry value and the code cannot
+# drift. Every field is enforced somewhere in this module and tested.
+PROTOCOL: Mapping[str, Any] = {
+    "protocol_id": PROTOCOL_ID,
+    "candidates_per_class": CANDIDATES_PER_CLASS,
+    "candidates_per_unit": CANDIDATES_PER_CLASS * 2,
+    "independent_reviewers": INDEPENDENT_REVIEWERS,
+    "panel_size": PANEL_SIZE,
+    "adjudicator_resolves_disagreement": True,
+    "reviewers_communicate_before_submitting": False,
+    "blinded_to": ["intended_truth_class", "verifier_verdict", "arm",
+                   "constraint_role", "constraint_identity", "verifier_identity"],
+    "ground_truth_source": "human_adjudication",
+    "cross_crediting_permitted": False,
+    "unresolved_case": "excluded_unusable",
+    "oversampling_rule": "prospective_oversample",
+    "selection_rule": SELECTION_ID,
+    "selection_size": 72,
+    "top_up_permitted": False,
+    "conditional_extension_permitted": False,
+    "case_reuse_across_units_permitted": False,
+    "insufficient_pool_outcome": "AUDIT_POOL_INSUFFICIENT",
+    "citation": ("sections 10.4, 10.6, 11.1 + Stage 2 amendment A3; accepted as the "
+                 "Tier-1 audit protocol by the investigator"),
+}
 
 # Section 10.6's audit-material list, verbatim in substance. A manifest whose cases
 # do not span these is not the audit section 10.6 describes, so `coverage_report`
@@ -89,6 +127,26 @@ FORBIDDEN_IN_PACKET: Mapping[str, str] = {
 
 class Tier1AuditError(ValueError):
     """An audit manifest, packet or return that cannot be used as evidence."""
+
+
+class AuditPoolInsufficient(Tier1AuditError):
+    """A stratum has fewer than 72 usable cases after adjudication.
+
+    A terminal state, not a prompt to author more. The frozen protocol forbids a
+    post-review top-up, and section 10.6 forbids treating more data as a remedy:
+    "collecting more confirmatory data is not a remedy for invalid measurement."
+    The remedy is a fresh prospectively specified audit.
+    """
+
+    def __init__(self, report: Mapping[str, Any]):
+        self.report = dict(report)
+        short = ", ".join(f"{k}: {v['usable']} usable"
+                          for k, v in sorted(report.items()))
+        super().__init__(
+            f"AUDIT_POOL_INSUFFICIENT - {len(report)} stratum(s) below 72 after "
+            f"adjudication ({short}). The protocol permits no post-review top-up "
+            "and no conditional extension; the remedy is a fresh prospectively "
+            "specified audit")
 
 
 class TruthClass(str, enum.Enum):
@@ -257,27 +315,31 @@ class AuditManifest:
 
 
 def assert_manifest_is_complete(manifest: AuditManifest) -> AuditManifest:
-    """Refuse a manifest that cannot support the A3 design.
+    """Refuse a manifest the frozen protocol does not admit.
 
-    Checked BEFORE anything is sent to a reviewer, because discovering a short
-    stratum after 800 judgements have been made wastes the judgements: a fresh
-    prospectively specified audit is the only remedy A3 permits.
+    Checked BEFORE anything is sent to a reviewer. Discovering a defect after 1,200
+    candidates have been judged wastes every judgement: the protocol permits no
+    top-up, so a fresh prospectively specified audit is the only remedy.
+
+    Exactly `CANDIDATES_PER_CLASS`, not "at least". An under-authored stratum cannot
+    reach 72 usable cases once mis-adjudicated candidates are discarded; an
+    over-authored one would mean the authoring budget was not the frozen one, and
+    the surplus would sit outside the hash-bound pool.
     """
-    design = manifest.design
-    short: list[str] = []
+    wrong: list[str] = []
     for unit in units():
         for truth_class in TruthClass:
             have = len(manifest.for_unit(unit, truth_class))
-            if have < design.n_per_truth_class:
-                short.append(f"{unit}/{truth_class.value}: {have} of "
-                             f"{design.n_per_truth_class}")
-    if short:
+            if have != CANDIDATES_PER_CLASS:
+                wrong.append(f"{unit}/{truth_class.value}: {have} candidates, the "
+                             f"protocol fixes {CANDIDATES_PER_CLASS}")
+    if wrong:
         raise Tier1AuditError(
-            f"{len(short)} unit/class stratum(s) cannot reach the design size:\n  "
-            + "\n  ".join(short)
-            + f"\nSection 10.4 requires {design.n_per_truth_class} adjudicated "
-            "examples in each class per unit; a missing denominator is missing "
-            "evidence, not zero error")
+            f"{len(wrong)} unit/class stratum(s) are not the frozen authoring "
+            "budget:\n  " + "\n  ".join(wrong))
+
+    assert_no_case_serves_two_units(manifest)
+
     coverage = manifest.coverage_report()
     if not coverage["complete"]:
         raise Tier1AuditError(
@@ -285,6 +347,34 @@ def assert_manifest_is_complete(manifest: AuditManifest) -> AuditManifest:
             f"{coverage['missing']}. Section 10.6 states what audit material "
             "includes, and those categories are where verifiers actually break")
     return manifest
+
+
+def assert_no_case_serves_two_units(manifest: AuditManifest) -> None:
+    """A case may serve only one verifier unit.
+
+    Checked on the content rather than on `case_hash`, which includes the unit: the
+    same response at the same parameters registered under two units would hash
+    differently and slip through. Reuse would halve the authoring budget and
+    correlate two units' error estimates that section 10.4 certifies independently.
+    """
+    # Keyed on (unit, case_id) TUPLES, not on a joined string: a constraint id is
+    # itself colon-separated ("v19:p1.target.exact_bullet_count"), so splitting a
+    # joined key on the first colon collapsed every unit to "v19" and the check
+    # could never fire. The tests caught it.
+    seen: dict[str, list[tuple[str, str]]] = {}
+    for case in manifest.ordered:
+        content = sha(["v19/tier1-audit-content", case.text,
+                       dict(case.parameters)])
+        seen.setdefault(content, []).append((case.unit, case.case_id))
+    shared = {content: where for content, where in seen.items()
+              if len({unit for unit, _ in where}) > 1}
+    if shared:
+        examples = sorted(f"{unit}:{case_id}" for where in shared.values()
+                          for unit, case_id in where)[:6]
+        raise Tier1AuditError(
+            f"{len(shared)} case content(s) appear under more than one verifier "
+            f"unit, for example {examples}. A case may serve only one unit: reuse "
+            "correlates error estimates that section 10.4 certifies individually")
 
 
 # ------------------------------------------------------------ the review packets
@@ -422,20 +512,67 @@ class AdjudicatedCase:
     judgements: tuple[Judgement, ...]
     adjudication: Judgement | None
     unanimous: bool
+    usable: bool = True
+    unusable_because: str = ""
 
     @property
     def matched_intent(self) -> bool:
-        return self.adjudicated_class is self.intended_class
+        """Whether the humans put the case where its author intended.
+
+        Under the frozen protocol a case that did NOT is discarded rather than
+        credited to the other class, so this is the retention test.
+        """
+        return self.usable and self.adjudicated_class is self.intended_class
 
     def state(self) -> dict[str, Any]:
         return {"case_id": self.case_id, "unit": self.unit,
                 "adjudicated_class": self.adjudicated_class.value,
                 "intended_class": self.intended_class.value,
                 "matched_intent": self.matched_intent,
+                "usable": self.usable,
+                "unusable_because": self.unusable_because,
                 "unanimous": self.unanimous,
                 "reviewers": [j.reviewer_id for j in self.judgements],
                 "adjudicator": self.adjudication.reviewer_id
                 if self.adjudication else None}
+
+
+@dataclass(frozen=True)
+class ReviewerPanel:
+    """The three-person panel, frozen before review begins.
+
+    The PROTOCOL fixes that there is a panel of three with two independent
+    reviewers and one adjudicator; WHO they are is a fact about one audit run, so
+    it is recorded here and hashed alongside the manifest rather than baked into
+    the protocol decision.
+    """
+    reviewers: tuple[str, ...]
+    adjudicator: str
+
+    def __post_init__(self):
+        if len(self.reviewers) != INDEPENDENT_REVIEWERS:
+            raise Tier1AuditError(
+                f"the protocol fixes {INDEPENDENT_REVIEWERS} independent reviewers, "
+                f"the panel names {len(self.reviewers)}")
+        if len(set(self.reviewers)) != len(self.reviewers):
+            raise Tier1AuditError("a reviewer cannot occupy two seats")
+        if not self.adjudicator:
+            raise Tier1AuditError("the panel must name its adjudicator")
+        if self.adjudicator in self.reviewers:
+            raise Tier1AuditError(
+                f"{self.adjudicator} is both an independent reviewer and the "
+                "adjudicator; adjudicating one's own judgement is not adjudication")
+        if len(set(self.reviewers) | {self.adjudicator}) != PANEL_SIZE:
+            raise Tier1AuditError(       # pragma: no cover - implied by the above
+                f"the panel must have {PANEL_SIZE} distinct members")
+
+    @property
+    def panel_hash(self) -> str:
+        return sha(["v19/tier1-panel", sorted(self.reviewers), self.adjudicator])
+
+    def state(self) -> dict[str, Any]:
+        return {"reviewers": sorted(self.reviewers),
+                "adjudicator": self.adjudicator, "panel_hash": self.panel_hash}
 
 
 def _protocol_or_refuse(slots) -> Mapping[str, Any]:
@@ -461,8 +598,8 @@ def _protocol_or_refuse(slots) -> Mapping[str, Any]:
     return slot.get()
 
 
-def ingest(manifest: AuditManifest, returned: Sequence[Any], slots
-           ) -> tuple[AdjudicatedCase, ...]:
+def ingest(manifest: AuditManifest, returned: Sequence[Any], slots,
+           panel: ReviewerPanel) -> tuple[AdjudicatedCase, ...]:
     """Turn returned judgements into established ground truth, or refuse.
 
     Fail-closed at every step. A missing judgement is never read as agreement with
@@ -472,7 +609,6 @@ def ingest(manifest: AuditManifest, returned: Sequence[Any], slots
     """
     protocol = _protocol_or_refuse(slots)
     required_reviewers = int(protocol["independent_reviewers"])
-    adjudicator_required = bool(protocol["adjudicator_resolves_disagreement"])
 
     by_packet = {p["packet_id"]: case
                  for p, case in zip(packets(manifest), manifest.ordered,
@@ -503,37 +639,47 @@ def ingest(manifest: AuditManifest, returned: Sequence[Any], slots
             raise Tier1AuditError(
                 f"{case.case_id}: reviewer(s) judged it twice ({reviewers}). Two "
                 "answers from one reviewer are not two independent reviews")
-        independent = [j for j in judgements
-                       if j.reviewer_id != protocol.get("adjudicator_id")]
+        stray = sorted({j.reviewer_id for j in judgements}
+                       - set(panel.reviewers) - {panel.adjudicator})
+        if stray:
+            raise Tier1AuditError(
+                f"{case.case_id}: judgement(s) from {stray}, who are not on the "
+                f"frozen panel {panel.state()['reviewers']} + "
+                f"{panel.adjudicator}. A judgement from outside the panel is not "
+                "the evidence the protocol specifies")
+        independent = [j for j in judgements if j.reviewer_id in panel.reviewers]
         adjudication = next((j for j in judgements
-                             if j.reviewer_id == protocol.get("adjudicator_id")),
-                            None)
+                             if j.reviewer_id == panel.adjudicator), None)
         if len(independent) != required_reviewers:
             raise Tier1AuditError(
                 f"{case.case_id}: {len(independent)} independent judgement(s), the "
                 f"protocol requires {required_reviewers}")
         answers = {j.satisfied for j in independent}
         unanimous = len(answers) == 1
+        usable, unusable_because = True, ""
         if unanimous:
             satisfied = answers.pop()
-        else:
-            if not adjudicator_required:
-                raise Tier1AuditError(       # pragma: no cover - guarded by domain
-                    f"{case.case_id}: reviewers disagree and the protocol names no "
-                    "adjudicator")
-            if adjudication is None:
-                raise Tier1AuditError(
-                    f"{case.case_id}: reviewers disagree and no adjudication was "
-                    "returned. An unresolved disagreement is not evidence, and it "
-                    "is not resolved by preferring either answer")
+        elif adjudication is not None:
             satisfied = adjudication.satisfied
+        else:
+            # The protocol's answer to an unresolved case: mark it unusable and
+            # exclude it. NOT an exception, because a panel that could not agree is
+            # an expected outcome of judging hard material - and NOT resolved by
+            # preferring either reviewer, which would invent a ground truth.
+            satisfied = False
+            usable = False
+            unusable_because = (
+                "reviewers disagreed and no adjudication was returned, so no human "
+                "ground truth was established; the case is excluded rather than "
+                "resolved by preferring either answer")
         out.append(AdjudicatedCase(
             case_id=case.case_id, unit=case.unit,
             adjudicated_class=(TruthClass.TRULY_PASSES if satisfied
                                else TruthClass.TRULY_FAILS),
             intended_class=case.intended_class,
             judgements=tuple(independent), adjudication=adjudication,
-            unanimous=unanimous))
+            unanimous=unanimous, usable=usable,
+            unusable_because=unusable_because))
     return tuple(sorted(out, key=lambda a: a.case_id))
 
 
@@ -551,42 +697,131 @@ def _as_judgement(entry: Any) -> Judgement:
                      rationale=str(entry["rationale"]))
 
 
+# --------------------------------------------- deterministic post-hoc selection
+
+@dataclass(frozen=True)
+class Selection:
+    """The 72 cases one stratum contributes, and what was set aside to get them."""
+    unit: str
+    truth_class: TruthClass
+    selected: tuple[str, ...]
+    usable: int
+    discarded_cross_class: int
+    discarded_unusable: int
+    reserve_ignored: int
+
+    def state(self) -> dict[str, Any]:
+        return {"unit": self.unit, "truth_class": self.truth_class.value,
+                "selection_rule": SELECTION_ID,
+                "n_selected": len(self.selected),
+                "usable": self.usable,
+                "discarded_cross_class": self.discarded_cross_class,
+                "discarded_unusable": self.discarded_unusable,
+                "reserve_ignored": self.reserve_ignored,
+                "selected": list(self.selected)}
+
+
+def select(manifest: AuditManifest, adjudicated: Sequence[AdjudicatedCase],
+           size: int = 72) -> dict[tuple[str, str], Selection]:
+    """Take the first `size` retained cases per stratum, in frozen manifest order.
+
+    The order is `AuditManifest.ordered` - (unit, intended class, case hash, case
+    id) - fixed by the manifest hash before any reviewer saw anything, and a
+    function of case content only. It therefore cannot respond to a verifier
+    verdict, which is what makes this selection prospective rather than the
+    conditional selection amendment A3 forbids.
+
+    Retention is strict: a case is kept only if it is usable AND its adjudicated
+    class matches its intended class. There is no cross-crediting - a candidate
+    authored as truly-passing and adjudicated as failing is discarded, not moved.
+
+    Raises `AuditPoolInsufficient` if any stratum falls short. It does not report
+    how many more cases would be needed, because authoring them after seeing the
+    reviews is exactly what the protocol forbids.
+    """
+    by_case = {a.case_id: a for a in adjudicated}
+    out: dict[tuple[str, str], Selection] = {}
+    short: dict[str, Any] = {}
+    for unit in units():
+        for truth_class in TruthClass:
+            ordered = manifest.for_unit(unit, truth_class)
+            retained, unusable, cross = [], 0, 0
+            for case in ordered:                      # frozen manifest order
+                verdict = by_case.get(case.case_id)
+                if verdict is None:
+                    raise Tier1AuditError(
+                        f"{case.case_id} is in the manifest but was not "
+                        "adjudicated; a case with no human judgement is missing "
+                        "evidence, not a discard")
+                if not verdict.usable:
+                    unusable += 1
+                elif not verdict.matched_intent:
+                    cross += 1
+                else:
+                    retained.append(case.case_id)
+            key = (unit, truth_class.value)
+            if len(retained) < size:
+                short[f"{unit}/{truth_class.value}"] = {
+                    "usable": len(retained), "required": size,
+                    "discarded_cross_class": cross,
+                    "discarded_unusable": unusable}
+                continue
+            out[key] = Selection(
+                unit=unit, truth_class=truth_class,
+                selected=tuple(retained[:size]), usable=len(retained),
+                discarded_cross_class=cross, discarded_unusable=unusable,
+                reserve_ignored=len(retained) - size)
+    if short:
+        raise AuditPoolInsufficient(short)
+    return out
+
+
 # ------------------------------------------------ scoring against the A3 design
 
-def certify_unit(unit: str, adjudicated: Sequence[AdjudicatedCase],
+def certify_unit(unit: str, selection: Mapping[tuple[str, str], Selection],
+                 adjudicated: Sequence[AdjudicatedCase],
                  verifier_verdicts: Mapping[str, bool],
                  design: AuditDesign = AMENDED_TIER1_DESIGN) -> TierCertificate:
-    """One unit's Tier-1 certificate, scored through the frozen A3 design.
+    """One unit's Tier-1 certificate over exactly the selected cases.
 
     `verifier_verdicts` maps case id to what the verifier said (True = PASS). The
-    error counted in each class is the disagreement with established truth:
-    a false PASS among cases that truly fail, a false FAIL among cases that truly
+    error counted in each class is the disagreement with established human truth: a
+    false PASS among cases that truly fail, a false FAIL among cases that truly
     pass.
 
-    The realised sizes go to `tier1_certificate_under` unmodified, so a stratum
-    that over- or under-runs the design fails there rather than being trimmed here.
-    Trimming would be exactly the conditional selection A3 forbids.
+    Only selected cases contribute. Cases discarded for cross-class adjudication or
+    marked unusable are excluded before the bound is computed, and the reserve
+    beyond 72 is ignored - so the denominator is exactly 72 and A3's design check
+    has nothing to reject.
     """
-    mine = [a for a in adjudicated if a.unit == unit]
-    unknown = sorted({a.case_id for a in mine} - set(verifier_verdicts))
-    if unknown:
-        raise Tier1AuditError(
-            f"{unit}: no verifier verdict recorded for {unknown[:3]}; a case with "
-            "no machine verdict cannot contribute to a conditional error rate")
-    truly_fail = [a for a in mine if a.adjudicated_class is TruthClass.TRULY_FAILS]
-    truly_pass = [a for a in mine if a.adjudicated_class is TruthClass.TRULY_PASSES]
-    false_passes = sum(1 for a in truly_fail if verifier_verdicts[a.case_id])
-    false_fails = sum(1 for a in truly_pass if not verifier_verdicts[a.case_id])
+    by_case = {a.case_id: a for a in adjudicated}
+    counts: dict[TruthClass, tuple[int, int]] = {}
+    for truth_class in TruthClass:
+        chosen = selection[(unit, truth_class.value)].selected
+        missing = sorted(set(chosen) - set(verifier_verdicts))
+        if missing:
+            raise Tier1AuditError(
+                f"{unit}: no verifier verdict recorded for {missing[:3]}; a case "
+                "with no machine verdict cannot contribute to a conditional error "
+                "rate")
+        errors = sum(
+            1 for case_id in chosen
+            if verifier_verdicts[case_id]
+            is not (by_case[case_id].adjudicated_class is TruthClass.TRULY_PASSES))
+        counts[truth_class] = (errors, len(chosen))
+    false_passes, true_failures = counts[TruthClass.TRULY_FAILS]
+    false_fails, true_passes = counts[TruthClass.TRULY_PASSES]
     return tier1_certificate_under(
         design, unit,
-        false_passes=false_passes, true_failures=len(truly_fail),
-        false_fails=false_fails, true_passes=len(truly_pass))
+        false_passes=false_passes, true_failures=true_failures,
+        false_fails=false_fails, true_passes=true_passes)
 
 
-def certify_all(adjudicated: Sequence[AdjudicatedCase],
+def certify_all(manifest: AuditManifest, adjudicated: Sequence[AdjudicatedCase],
                 verifier_verdicts: Mapping[str, bool],
                 design: AuditDesign = AMENDED_TIER1_DESIGN) -> dict[str, Any]:
-    """The registry value `verifiers.tier1_reliability` expects, or the failures."""
-    return {unit: certify_unit(unit, adjudicated, verifier_verdicts,
+    """The record `verifiers.tier1_reliability` expects, over the selected cases."""
+    selection = select(manifest, adjudicated, size=design.n_per_truth_class)
+    return {unit: certify_unit(unit, selection, adjudicated, verifier_verdicts,
                                design).describe()
             for unit in units()}

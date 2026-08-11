@@ -86,6 +86,11 @@ def certified_compositions() -> dict[str, Any]:
                                   "certified": True}}
 
 
+def _frozen_protocol() -> dict[str, Any]:
+    from dci.v19.tier1_audit import PROTOCOL
+    return dict(PROTOCOL)
+
+
 def tier1_certificates() -> dict[str, Any]:
     return {rule.constraint_id: {"passed": True, "unavailable": []}
             for rule in pairs.rules()}
@@ -105,16 +110,9 @@ def for_domain(domain: str) -> Any:
         "specification_bundle": specification_bundle,
         "bundle_hash": bundle_hash_value,
         "boundary_mutations": battery_evidence,
-        # A COMPLETE protocol shape, not a decision: the real one is the
-        # investigator's, and this only exists so a gate test can proceed past a
-        # slot it is not testing.
-        "tier1_audit_protocol": lambda: {
-            "independent_reviewers": 2,
-            "adjudicator_resolves_disagreement": True,
-            "adjudicator_id": "an unassigned adjudicator",
-            "unresolved_disagreement": "fails",
-            "oversampling_rule": "exact_authoring",
-            "citation": "a domain-valid stand-in for a gate test"},
+        # The FROZEN protocol, read from the module so the stand-in cannot drift
+        # from the decision the registry carries.
+        "tier1_audit_protocol": lambda: dict(_frozen_protocol()),
         "tier1_certificates": tier1_certificates,
         "encoding_map": lambda: encoding_map_state(CANONICAL_LIST_POLICY),
         "solver_identity": solver_identity_value,

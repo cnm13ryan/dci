@@ -47,7 +47,7 @@ def a_case(unit, index, truth_class, material=("boundary_cases",)):
 
 def a_manifest(per_class=None, spanning=True):
     """A structurally complete manifest built entirely from fixtures."""
-    per_class = DESIGN.n_per_truth_class if per_class is None else per_class
+    per_class = T.CANDIDATES_PER_CLASS if per_class is None else per_class
     cases = []
     for unit in UNITS:
         for truth_class in T.TruthClass:
@@ -58,17 +58,19 @@ def a_manifest(per_class=None, spanning=True):
     return T.AuditManifest(cases=tuple(cases))
 
 
-def a_protocol_table(**overrides):
-    """The declared table with the audit protocol decided, for ingestion tests."""
-    value = {"independent_reviewers": 2,
-             "adjudicator_resolves_disagreement": True,
-             "adjudicator_id": "reviewer-c",
-             "unresolved_disagreement": "fails",
-             "oversampling_rule": "exact_authoring",
-             "citation": "a fixture protocol for an apparatus test"}
-    value.update(overrides)
-    return declared_table().freeze("verifiers.tier1_audit_protocol", value,
-                                   by="a fixture for an apparatus test")
+PANEL = None   # set below, after T is imported
+
+
+def a_panel():
+    return T.ReviewerPanel(reviewers=("reviewer-a", "reviewer-b"),
+                           adjudicator="reviewer-c")
+
+
+def a_protocol_table():
+    """The declared table with the FROZEN protocol applied, for ingestion tests."""
+    return declared_table().freeze("verifiers.tier1_audit_protocol",
+                                   dict(T.PROTOCOL),
+                                   by="the frozen protocol, for an apparatus test")
 
 
 # ------------------------------------------------------------ the audit shape
@@ -152,12 +154,35 @@ def test_the_case_hash_covers_what_is_judged_and_not_the_prose():
 
 
 # ------------------------------------------------------------ the manifest
-def test_a_complete_manifest_has_864_cases():
+def test_a_complete_manifest_has_1200_candidates_for_864_labels():
+    """100 authored per class; 72 per class enter the interval."""
     manifest = a_manifest()
-    assert len(manifest.cases) == 864 == DESIGN.total_labels
+    assert len(manifest.cases) == 1200 == T.CANDIDATES_PER_CLASS * 2 * 6
     for unit in UNITS:
         for truth_class in T.TruthClass:
-            assert len(manifest.for_unit(unit, truth_class)) == 72
+            assert len(manifest.for_unit(unit, truth_class)) == 100
+    assert DESIGN.total_labels == 864
+
+
+@pytest.mark.parametrize("per_class", [72, 99, 101, 150])
+def test_the_authoring_budget_is_exactly_one_hundred_per_class(per_class):
+    """Not "at least": under-authoring cannot reach 72 usable, over-authoring means
+    the surplus sits outside the hash-bound pool."""
+    with pytest.raises(T.Tier1AuditError, match="frozen authoring budget"):
+        T.assert_manifest_is_complete(a_manifest(per_class=per_class))
+
+
+def test_a_case_may_serve_only_one_verifier_unit():
+    """Reuse means the SAME response, at the same parameters, under two units."""
+    import dataclasses
+    manifest = a_manifest(per_class=2)
+    first = manifest.ordered[0]
+    reused = dataclasses.replace(first, case_id="fixture/reused", unit=UNITS[-1])
+    assert reused.text == first.text and reused.parameters == first.parameters
+    assert reused.case_hash != first.case_hash        # the unit is in the hash
+    with pytest.raises(T.Tier1AuditError, match="more than one verifier unit"):
+        T.assert_no_case_serves_two_units(
+            T.AuditManifest(cases=manifest.cases + (reused,)))
 
 
 def test_the_manifest_order_is_deterministic_and_not_insertion_order():
@@ -200,11 +225,6 @@ def test_a_stratum_cannot_be_padded_by_copying_one_case_under_many_ids():
                    for i in range(72))
     with pytest.raises(T.Tier1AuditError, match="pads a denominator"):
         T.AuditManifest(cases=copies)
-
-
-def test_a_short_stratum_is_refused_before_anything_is_sent_out():
-    with pytest.raises(T.Tier1AuditError, match="cannot reach the design size"):
-        T.assert_manifest_is_complete(a_manifest(per_class=71))
 
 
 def test_a_manifest_missing_a_material_category_is_refused():
@@ -291,12 +311,12 @@ def test_the_reviewer_bundle_is_serialisable():
 def test_ingestion_refuses_to_run_before_the_audit_protocol_is_decided():
     manifest = a_manifest(per_class=1)
     with pytest.raises(T.Tier1AuditError, match="not decided"):
-        T.ingest(manifest, [], declared_table())
+        T.ingest(manifest, [], declared_table(), a_panel())
 
 
 def test_the_refusal_explains_why_section_eight_six_does_not_settle_it():
     with pytest.raises(T.Tier1AuditError) as caught:
-        T.ingest(a_manifest(per_class=1), [], declared_table())
+        T.ingest(a_manifest(per_class=1), [], declared_table(), a_panel())
     message = str(caught.value)
     assert "8.6" in message and "semantic review" in message
     assert "how many reviewers" in message
@@ -319,7 +339,8 @@ def judgements_for(manifest, satisfied_by_class=None, reviewers=("a", "b")):
 
 def test_a_complete_unanimous_return_ingests():
     manifest = a_manifest(per_class=2)
-    got = T.ingest(manifest, judgements_for(manifest), a_protocol_table())
+    got = T.ingest(manifest, judgements_for(manifest), a_protocol_table(),
+                   a_panel())
     assert len(got) == 24
     assert all(a.unanimous and a.matched_intent for a in got)
 
@@ -328,7 +349,7 @@ def test_a_missing_judgement_is_never_read_as_the_intended_class():
     manifest = a_manifest(per_class=2)
     returned = judgements_for(manifest)[:-2]
     with pytest.raises(T.Tier1AuditError, match="no judgement"):
-        T.ingest(manifest, returned, a_protocol_table())
+        T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
 def test_a_judgement_about_an_unknown_packet_is_refused():
@@ -337,21 +358,21 @@ def test_a_judgement_about_an_unknown_packet_is_refused():
         {"packet_id": "0" * 32, "reviewer_id": "reviewer-a",
          "satisfied": True, "rationale": "about something else"}]
     with pytest.raises(T.Tier1AuditError, match="not a packet in this manifest"):
-        T.ingest(manifest, returned, a_protocol_table())
+        T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
 def test_one_reviewer_answering_twice_is_not_two_independent_reviews():
     manifest = a_manifest(per_class=1)
     returned = judgements_for(manifest, reviewers=("a", "a"))
     with pytest.raises(T.Tier1AuditError, match="judged it twice"):
-        T.ingest(manifest, returned, a_protocol_table())
+        T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
 def test_too_few_independent_judgements_are_refused():
     manifest = a_manifest(per_class=1)
     returned = judgements_for(manifest, reviewers=("a",))
     with pytest.raises(T.Tier1AuditError, match="independent judgement"):
-        T.ingest(manifest, returned, a_protocol_table())
+        T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
 @pytest.mark.parametrize("bad", ["yes", 1, 0, None, "true"])
@@ -372,13 +393,13 @@ def test_a_malformed_return_names_what_is_missing(drop):
     returned = judgements_for(manifest)
     del returned[0][drop]
     with pytest.raises(T.Tier1AuditError, match="missing"):
-        T.ingest(manifest, returned, a_protocol_table())
+        T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
 def test_a_return_that_is_not_a_record_at_all_is_refused():
     manifest = a_manifest(per_class=1)
     with pytest.raises(T.Tier1AuditError, match="expected a Judgement"):
-        T.ingest(manifest, ["not a judgement"], a_protocol_table())
+        T.ingest(manifest, ["not a judgement"], a_protocol_table(), a_panel())
 
 
 # ------------------------------------------------------------- adjudication
@@ -396,15 +417,20 @@ def split_return(manifest, with_adjudication):
     return out
 
 
-def test_an_unresolved_disagreement_is_not_evidence():
+def test_an_unresolved_disagreement_is_excluded_as_unusable():
+    """The protocol's answer: mark it unusable and exclude it - never resolve it by
+    preferring one reviewer, which would invent a ground truth."""
     manifest = a_manifest(per_class=1)
-    with pytest.raises(T.Tier1AuditError, match="no adjudication was returned"):
-        T.ingest(manifest, split_return(manifest, False), a_protocol_table())
+    got = T.ingest(manifest, split_return(manifest, False), a_protocol_table(), a_panel())
+    assert all(not a.usable for a in got)
+    assert all(not a.matched_intent for a in got)
+    assert all("no human ground truth was established" in a.unusable_because
+               for a in got)
 
 
 def test_an_adjudicated_disagreement_resolves_to_the_adjudicator():
     manifest = a_manifest(per_class=1)
-    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table())
+    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table(), a_panel())
     assert all(not a.unanimous for a in got)
     assert all(a.adjudicated_class is T.TruthClass.TRULY_PASSES for a in got)
     assert all(a.adjudication.reviewer_id == "reviewer-c" for a in got)
@@ -412,7 +438,7 @@ def test_an_adjudicated_disagreement_resolves_to_the_adjudicator():
 
 def test_the_adjudicator_is_not_counted_as_an_independent_reviewer():
     manifest = a_manifest(per_class=1)
-    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table())
+    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table(), a_panel())
     for adjudicated in got:
         assert {j.reviewer_id for j in adjudicated.judgements} == {
             "reviewer-a", "reviewer-b"}
@@ -420,7 +446,7 @@ def test_the_adjudicator_is_not_counted_as_an_independent_reviewer():
 
 def test_adjudication_provenance_survives_into_the_record():
     manifest = a_manifest(per_class=1)
-    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table())
+    got = T.ingest(manifest, split_return(manifest, True), a_protocol_table(), a_panel())
     state = got[0].state()
     assert state["reviewers"] == ["reviewer-a", "reviewer-b"]
     assert state["adjudicator"] == "reviewer-c"
@@ -433,95 +459,292 @@ def test_a_case_adjudicated_against_its_intended_class_is_recorded_as_such():
     manifest = a_manifest(per_class=1)
     returned = judgements_for(manifest, satisfied_by_class={
         T.TruthClass.TRULY_FAILS: True, T.TruthClass.TRULY_PASSES: True})
-    got = T.ingest(manifest, returned, a_protocol_table())
+    got = T.ingest(manifest, returned, a_protocol_table(), a_panel())
     missed = [a for a in got if not a.matched_intent]
     assert len(missed) == 6            # one per unit, the truly_fails fixtures
     assert all(a.adjudicated_class is T.TruthClass.TRULY_PASSES for a in missed)
 
 
-# --------------------------------------------- scoring through the A3 design
-def adjudicate_full(satisfied_by_class=None):
+# ------------------------------------------------ deterministic selection
+def full_audit(satisfied_by_class=None, unresolved=0, cross_class=0):
+    """Adjudicate a complete 1,200-candidate fixture manifest.
+
+    `unresolved` and `cross_class` spoil that many candidates PER STRATUM, so a
+    stratum retains 100 - unresolved - cross_class usable cases.
+    """
     manifest = a_manifest()
-    returned = judgements_for(manifest, satisfied_by_class)
-    return manifest, T.ingest(manifest, returned, a_protocol_table())
+    satisfied_by_class = satisfied_by_class or {
+        T.TruthClass.TRULY_FAILS: False, T.TruthClass.TRULY_PASSES: True}
+    seen: dict[tuple, int] = {}
+    returned = []
+    for built, case in zip(T.packets(manifest), manifest.ordered, strict=True):
+        key = (case.unit, case.intended_class)
+        n = seen.get(key, 0)
+        seen[key] = n + 1
+        intended = satisfied_by_class[case.intended_class]
+        if n < unresolved:                       # A and B disagree, no adjudicator
+            answers, adjudicate = (True, False), False
+        elif n < unresolved + cross_class:       # unanimous, but the other class
+            answers, adjudicate = (not intended, not intended), False
+        else:
+            answers, adjudicate = (intended, intended), False
+        for reviewer, answer in zip(("a", "b"), answers, strict=True):
+            returned.append({"packet_id": built["packet_id"],
+                             "reviewer_id": f"reviewer-{reviewer}",
+                             "satisfied": answer,
+                             "rationale": "a fixture rationale"})
+        if adjudicate:
+            returned.append({"packet_id": built["packet_id"],
+                             "reviewer_id": "reviewer-c", "satisfied": intended,
+                             "rationale": "a fixture adjudication"})
+    return manifest, T.ingest(manifest, returned, a_protocol_table(), a_panel())
 
 
-def test_a_clean_audit_certifies_every_unit():
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
-                for a in adjudicated}
+def clean_verdicts(adjudicated):
+    """A perfect verifier: it agrees with every established human truth."""
+    return {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
+            for a in adjudicated}
+
+
+def test_selection_takes_exactly_seventy_two_per_stratum():
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    assert len(selection) == 12
+    for chosen in selection.values():
+        assert len(chosen.selected) == 72
+        assert chosen.reserve_ignored == 28       # 100 authored, 72 taken
+
+
+def test_selection_is_the_first_seventy_two_in_frozen_manifest_order():
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
     for unit in UNITS:
-        certificate = T.certify_unit(unit, adjudicated, verdicts)
+        for truth_class in T.TruthClass:
+            expected = [c.case_id
+                        for c in manifest.for_unit(unit, truth_class)][:72]
+            assert list(selection[(unit, truth_class.value)].selected) == expected
+
+
+def test_selection_is_deterministic_across_runs():
+    manifest, adjudicated = full_audit()
+    first = T.select(manifest, adjudicated)
+    second = T.select(manifest, adjudicated)
+    assert {k: v.selected for k, v in first.items()} == \
+        {k: v.selected for k, v in second.items()}
+
+
+def test_a_cross_class_candidate_is_discarded_not_credited():
+    """No cross-crediting: it does not swell the other class."""
+    manifest, adjudicated = full_audit(cross_class=5)
+    selection = T.select(manifest, adjudicated)
+    for chosen in selection.values():
+        assert chosen.discarded_cross_class == 5
+        assert chosen.usable == 95                # 100 - 5, not 105
+        assert len(chosen.selected) == 72
+
+
+def test_an_unusable_candidate_is_excluded_from_selection():
+    manifest, adjudicated = full_audit(unresolved=7)
+    selection = T.select(manifest, adjudicated)
+    for chosen in selection.values():
+        assert chosen.discarded_unusable == 7
+        assert chosen.usable == 93
+    excluded = {a.case_id for a in adjudicated if not a.usable}
+    chosen_ids = {cid for c in selection.values() for cid in c.selected}
+    assert not (excluded & chosen_ids)
+
+
+def test_a_case_never_adjudicated_is_missing_evidence_not_a_discard():
+    manifest, adjudicated = full_audit()
+    with pytest.raises(T.Tier1AuditError, match="missing evidence"):
+        T.select(manifest, [a for a in adjudicated if a.case_id
+                            != adjudicated[0].case_id])
+
+
+# ----------------------------------------------- AUDIT_POOL_INSUFFICIENT
+@pytest.mark.parametrize("spoiled", [29, 40, 100])
+def test_fewer_than_seventy_two_usable_returns_audit_pool_insufficient(spoiled):
+    manifest, adjudicated = full_audit(cross_class=spoiled)
+    with pytest.raises(T.AuditPoolInsufficient) as caught:
+        T.select(manifest, adjudicated)
+    assert "AUDIT_POOL_INSUFFICIENT" in str(caught.value)
+    assert len(caught.value.report) == 12
+    for row in caught.value.report.values():
+        assert row["usable"] == 100 - spoiled
+        assert row["required"] == 72
+
+
+def test_the_insufficiency_report_does_not_say_how_many_more_to_author():
+    """Because authoring after seeing the reviews is what the protocol forbids."""
+    manifest, adjudicated = full_audit(unresolved=30)
+    with pytest.raises(T.AuditPoolInsufficient) as caught:
+        T.select(manifest, adjudicated)
+    message = str(caught.value)
+    assert "no post-review top-up" in message
+    assert "fresh prospectively specified audit" in message
+    for row in caught.value.report.values():
+        assert "author" not in " ".join(map(str, row))
+
+
+def test_a_stratum_one_case_short_still_fails_closed():
+    manifest, adjudicated = full_audit(unresolved=29)
+    with pytest.raises(T.AuditPoolInsufficient):
+        T.select(manifest, adjudicated)
+
+
+def test_exactly_seventy_two_usable_is_enough_and_ignores_nothing():
+    manifest, adjudicated = full_audit(unresolved=28)
+    selection = T.select(manifest, adjudicated)
+    for chosen in selection.values():
+        assert chosen.usable == 72 and chosen.reserve_ignored == 0
+
+
+# ---------------------------------------- scoring through the A3 design
+def test_a_clean_audit_certifies_every_unit():
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    verdicts = clean_verdicts(adjudicated)
+    for unit in UNITS:
+        certificate = T.certify_unit(unit, selection, adjudicated, verdicts)
         assert certificate.passed, certificate.describe()
 
 
-def test_one_verifier_error_fails_that_unit():
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
-                for a in adjudicated}
-    wrong = next(a for a in adjudicated
-                 if a.unit == UNITS[0]
-                 and a.adjudicated_class is T.TruthClass.TRULY_FAILS)
-    verdicts[wrong.case_id] = True                    # a false PASS
-    assert not T.certify_unit(UNITS[0], adjudicated, verdicts).passed
-    assert T.certify_unit(UNITS[1], adjudicated, verdicts).passed
+def test_one_verifier_error_inside_the_selection_fails_that_unit():
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    verdicts = clean_verdicts(adjudicated)
+    chosen = selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)].selected
+    verdicts[chosen[0]] = True                    # a false PASS
+    assert not T.certify_unit(UNITS[0], selection, adjudicated, verdicts).passed
+    assert T.certify_unit(UNITS[1], selection, adjudicated, verdicts).passed
+
+
+def test_an_error_on_an_ignored_reserve_case_does_not_enter_the_bound():
+    """Only the selected 72 contribute; the reserve is ignored, as frozen."""
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    verdicts = clean_verdicts(adjudicated)
+    chosen = set(selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)].selected)
+    reserve = [c.case_id for c in manifest.for_unit(UNITS[0],
+                                                   T.TruthClass.TRULY_FAILS)
+               if c.case_id not in chosen]
+    verdicts[reserve[0]] = True
+    assert T.certify_unit(UNITS[0], selection, adjudicated, verdicts).passed
 
 
 def test_a_failed_unit_cannot_be_rescued_by_adding_labels():
-    """A3's whole point, exercised end to end through the audit apparatus."""
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
-                for a in adjudicated}
-    wrong = next(a for a in adjudicated
-                 if a.unit == UNITS[0]
-                 and a.adjudicated_class is T.TruthClass.TRULY_FAILS)
-    verdicts[wrong.case_id] = True
-    assert not T.certify_unit(UNITS[0], adjudicated, verdicts).passed
+    """A3's point, and the protocol's: no top-up, no conditional extension."""
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    verdicts = clean_verdicts(adjudicated)
+    chosen = selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)].selected
+    verdicts[chosen[0]] = True
+    assert not T.certify_unit(UNITS[0], selection, adjudicated, verdicts).passed
 
-    # Now add 38 more truly-failing cases, taking the stratum to 110 - the size at
-    # which one error clears the interval. It must still fail, on the design.
-    extra = [T.AdjudicatedCase(
-        case_id=f"fixture/extra/{i}", unit=UNITS[0],
-        adjudicated_class=T.TruthClass.TRULY_FAILS,
-        intended_class=T.TruthClass.TRULY_FAILS,
-        judgements=(), adjudication=None, unanimous=True) for i in range(38)]
-    for case in extra:
-        verdicts[case.case_id] = False
-    certificate = T.certify_unit(UNITS[0], list(adjudicated) + extra, verdicts)
+    # Widening the stratum to 110 - the size at which one error clears the interval
+    # - is refused by the design rather than accepted.
+    import dataclasses
+    widened = dataclasses.replace(
+        selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)],
+        selected=tuple(list(chosen) + [
+            c.case_id for c in manifest.for_unit(UNITS[0],
+                                                 T.TruthClass.TRULY_FAILS)
+            if c.case_id not in set(chosen)][:38]))
+    spliced = dict(selection)
+    spliced[(UNITS[0], T.TruthClass.TRULY_FAILS.value)] = widened
+    certificate = T.certify_unit(UNITS[0], spliced, adjudicated, verdicts)
     assert not certificate.passed
     assert any("forbids conditional extension" in b.design_violation
                for b in certificate.bounds)
 
 
-def test_a_case_with_no_verifier_verdict_cannot_contribute():
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: True for a in adjudicated}
-    verdicts.pop(adjudicated[0].case_id)
+def test_a_selected_case_with_no_verifier_verdict_cannot_contribute():
+    manifest, adjudicated = full_audit()
+    selection = T.select(manifest, adjudicated)
+    verdicts = clean_verdicts(adjudicated)
+    verdicts.pop(selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)].selected[0])
     with pytest.raises(T.Tier1AuditError, match="no verifier verdict"):
-        T.certify_unit(adjudicated[0].unit, adjudicated, verdicts)
+        T.certify_unit(UNITS[0], selection, adjudicated, verdicts)
 
 
 def test_certify_all_returns_a_record_the_registry_domain_accepts():
     from dci.v19.schemas import validate
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
-                for a in adjudicated}
-    record = T.certify_all(adjudicated, verdicts)
+    manifest, adjudicated = full_audit()
+    record = T.certify_all(manifest, adjudicated, clean_verdicts(adjudicated))
     assert set(record) == set(UNITS)
     validate("tier1_certificates", record)
+    for row in record.values():
+        for bound in row["bounds"]:
+            assert bound["denominator"] == 72
 
 
 def test_a_failing_record_is_refused_by_the_registry_domain():
     from dci.v19.schemas import DomainError, validate
-    _manifest, adjudicated = adjudicate_full()
-    verdicts = {a.case_id: a.adjudicated_class is T.TruthClass.TRULY_PASSES
-                for a in adjudicated}
-    wrong = next(a for a in adjudicated
-                 if a.unit == UNITS[0]
-                 and a.adjudicated_class is T.TruthClass.TRULY_FAILS)
-    verdicts[wrong.case_id] = True
+    manifest, adjudicated = full_audit()
+    verdicts = clean_verdicts(adjudicated)
+    selection = T.select(manifest, adjudicated)
+    verdicts[selection[(UNITS[0], T.TruthClass.TRULY_FAILS.value)].selected[0]] = True
     with pytest.raises(DomainError):
-        validate("tier1_certificates", T.certify_all(adjudicated, verdicts))
+        validate("tier1_certificates",
+                 T.certify_all(manifest, adjudicated, verdicts))
+
+
+def test_certify_all_propagates_pool_insufficiency():
+    manifest, adjudicated = full_audit(cross_class=40)
+    with pytest.raises(T.AuditPoolInsufficient):
+        T.certify_all(manifest, adjudicated, clean_verdicts(adjudicated))
+
+
+# --------------------------------------------- the frozen protocol itself
+def test_the_protocol_is_frozen_in_the_registry():
+    from dci.v19.registry import REGISTRY
+    slot = REGISTRY.slots["verifiers.tier1_audit_protocol"]
+    assert slot.resolved and slot.frozen_by
+    assert slot.get() == dict(T.PROTOCOL)
+
+
+def test_the_frozen_protocol_records_every_decision_it_was_asked_to():
+    p = T.PROTOCOL
+    assert p["candidates_per_class"] == 100
+    assert p["candidates_per_unit"] == 200
+    assert p["independent_reviewers"] == 2
+    assert p["panel_size"] == 3
+    assert p["adjudicator_resolves_disagreement"] is True
+    assert p["reviewers_communicate_before_submitting"] is False
+    assert p["cross_crediting_permitted"] is False
+    assert p["unresolved_case"] == "excluded_unusable"
+    assert p["top_up_permitted"] is False
+    assert p["conditional_extension_permitted"] is False
+    assert p["case_reuse_across_units_permitted"] is False
+    assert p["selection_rule"] == T.SELECTION_ID
+    assert p["selection_size"] == 72
+    assert p["insufficient_pool_outcome"] == "AUDIT_POOL_INSUFFICIENT"
+    assert p["ground_truth_source"] == "human_adjudication"
+
+
+def test_every_blinded_field_the_protocol_names_is_enforced():
+    for name in ("intended_truth_class", "verifier_verdict", "arm"):
+        assert name in T.PROTOCOL["blinded_to"]
+    # and the packet checker refuses them
+    assert "intended_class" in T.FORBIDDEN_IN_PACKET
+    assert "verdict" in T.FORBIDDEN_IN_PACKET
+    assert "arm" in T.FORBIDDEN_IN_PACKET
+    assert "role" in T.FORBIDDEN_IN_PACKET
+
+
+@pytest.mark.parametrize("field,value", [
+    ("candidates_per_class", 72), ("cross_crediting_permitted", True),
+    ("top_up_permitted", True), ("independent_reviewers", 1),
+    ("case_reuse_across_units_permitted", True),
+    ("conditional_extension_permitted", True),
+    ("unresolved_case", "resolved_by_majority"),
+])
+def test_a_protocol_the_apparatus_does_not_enforce_is_refused(field, value):
+    from dci.v19.schemas import DomainError, validate
+    offered = dict(T.PROTOCOL)
+    offered[field] = value
+    with pytest.raises(DomainError, match="differs from the implemented one"):
+        validate("tier1_audit_protocol", offered)
 
 
 # --------------------------------------------------- nothing was fabricated
@@ -534,8 +757,14 @@ def test_the_audit_material_pools_are_still_unauthored():
         assert slot.status == "BLOCKED_BY_CONTENT", pair
 
 
-def test_the_reliability_slot_depends_on_the_audit_pools():
-    """The edge that was missing: a certificate with no material is not evidence."""
+def test_the_reliability_slot_is_still_unresolved():
+    from dci.v19 import frozen
+    from dci.v19.registry import REGISTRY
+    assert REGISTRY.slots["verifiers.tier1_reliability"].pending
+    assert "verifiers.tier1_reliability" not in {r["slot"] for r in frozen.audit()}
+
+
+def test_the_reliability_slot_depends_on_the_audit_pools_and_the_protocol():
     from dci.v19.registry import REGISTRY
     depends = set(REGISTRY.slots["verifiers.tier1_reliability"].depends_on)
     for pair in pairs.PAIR_IDS:
