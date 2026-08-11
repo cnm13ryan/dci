@@ -25,9 +25,20 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 
-from dci.v19 import (ALPHA, CANDIDATE_METHODS, PRIMITIVE_SUPPORT,
-                     PROTOCOL_VERSION, SECONDARY_SUPPORT, SESOI_FLOOR)
-from dci.v19 import artifacts, field_roles, frozen, pairs, pools, specs
+from dci.v19 import (
+    ALPHA,
+    CANDIDATE_METHODS,
+    PRIMITIVE_SUPPORT,
+    PROTOCOL_VERSION,
+    SECONDARY_SUPPORT,
+    SESOI_FLOOR,
+    artifacts,
+    field_roles,
+    frozen,
+    pairs,
+    pools,
+    specs,
+)
 from dci.v19.identity import ARMS, LOADS, ORDERS
 from dci.v19.resolution import Slot, SlotTable
 
@@ -135,9 +146,17 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "and the interval alone does not determine a decision rule: "
                    "one error fails at 72 and passes at 110, so the sample size "
                    "and error budget must be fixed before the audit runs",
-                   "verifiers.tier1_audit_design")),
+                   "verifiers.tier1_audit_design")
+            + _req("section 14.2 assigns Stage 2 the semantic-review TRIGGERS. "
+                   "The reviews themselves are per composition, and compositions "
+                   "are Stage 8 and Stage 10 outputs, so requiring them here "
+                   "would block Stage 2 on material later stages produce",
+                   "satisfiability.review_trigger")),
         produces=("verifiers.specification_bundle", "verifiers.bundle_hash",
-                  "verifiers.tier1_reliability")),
+                  "verifiers.tier1_reliability", "satisfiability.encoding_map",
+                  "satisfiability.solver_identity",
+                  "satisfiability.witness_constructor",
+                  "satisfiability.review_trigger")),
     StageGate(
         key="stage_2a_qualification", ordinal="2A",
         title="early scientific-runtime and inference qualification",
@@ -284,9 +303,17 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "and all four reference arms", *_all_references())
             + _req("section 8.7 requires whole-composition certification, which "
                    "needs the deterministic verifier conjunction",
-                   "verifiers.bundle_hash")),
+                   "verifiers.bundle_hash")
+            + _req("section 8.6 requires human semantic review for every clause "
+                   "the frozen encoding and deterministic verifier do not "
+                   "exhaust, and unresolved disagreement fails certification. "
+                   "Section 8.6 places SATCERT 'before entering a frozen "
+                   "confirmatory bank', and section 14.10 builds that bank here, "
+                   "so this is where the reviews are due",
+                   "satisfiability.semantic_reviews")),
         produces=_per_pair("bank.{pair}.attainable_count",
-                           "bank.{pair}.accepted_order")),
+                           "bank.{pair}.accepted_order")
+        + ("satisfiability.certified_compositions",)),
     StageGate(
         key="stage_11_design_simulation", ordinal="11",
         title="authoritative end-to-end (H, G) design simulation",

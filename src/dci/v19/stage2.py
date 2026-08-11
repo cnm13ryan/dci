@@ -119,6 +119,12 @@ def certify_verifiers(slots: SlotTable) -> Certification:
             "measurement decision under it that is missing"))
 
     findings.append(_battery_finding(slots))
+    findings.append(_slot_finding(
+        slots, "verifiers.tier1_reliability",
+        "each of the six target and focal verifier units is certified against the "
+        "5% Tier-1 conditional error ceiling on 72 human-adjudicated labels per "
+        "truth class, with zero observed errors",
+        "section 10.4 + amendment A3"))
     return Certification(findings=tuple(findings))
 
 
@@ -190,17 +196,162 @@ def _battery_finding(slots: SlotTable) -> Finding:
                    f"{MUTATIONS_PER_TEMPLATE} distinct mutations")
 
 
-def assert_verifiers_certified(slots: SlotTable) -> Certification:
-    """Fail closed unless Stage 2's verifier half is certified.
+def certify_satisfiability(slots: SlotTable) -> Certification:
+    """Every section 8.6 satisfiability requirement, against the registry."""
+    findings = [
+        _slot_finding(
+            slots, "satisfiability.encoding_map",
+            "the canonical structured encoding and the abstract feature "
+            "projection are frozen", "sections 8.6, 14.2"),
+        _slot_finding(
+            slots, "satisfiability.solver_identity",
+            "the solver's name and exact version are recorded", "section 8.6"),
+        _slot_finding(
+            slots, "satisfiability.witness_constructor",
+            "the deterministic witness constructor is frozen", "section 8.6"),
+        _slot_finding(
+            slots, "satisfiability.review_trigger",
+            "the semantic-review trigger is demonstrated: it fires on incomplete "
+            "coverage, stays silent on complete coverage, rejects a review of the "
+            "wrong witness, and requires adjudication of disagreement",
+            "section 14.2; section 8.6"),
+        _review_boundary_finding(),
+        _solver_finding(),
+        _domain_coverage_finding(slots),
+        _battery_regeneration_finding(slots),
+    ]
+    return Certification(findings=tuple(findings))
+
+
+def _battery_regeneration_finding(slots: SlotTable) -> Finding:
+    """Run the harness and compare it with what was recorded.
+
+    This is deliberately SEPARATE from the `boundary_mutations` domain and from
+    `_battery_finding`, and the separation is the point.
+
+    The domain states what a section 8.7 record must look like. Its meaning has to
+    stay stable, because the domain name is part of the slot's declaration
+    fingerprint - a domain that silently tightened between two commits would leave
+    the slot with a fingerprint that no longer described it. So the domain checks
+    the record schema and nothing else, in both halves of this stack.
+
+    Whether the recorded hashes match a battery the harness actually produces is a
+    different question, and it can only be asked where the harness exists. That is
+    here. A well-formed record with invented hashes passes the domain and fails
+    this check, which is exactly the split that keeps a stable schema from being a
+    weak one.
+    """
+    from dci.v19.mutation import (
+        MUTATIONS_PER_TEMPLATE as FLOOR,
+    )
+    from dci.v19.mutation import (
+        frozen_battery_evidence,
+    )
+    requirement = ("the recorded boundary-mutation evidence matches a battery the "
+                   "harness regenerates, so it was generated rather than asserted")
+    citation = "section 8.7"
+    slot = slots["verifiers.boundary_mutations"]
+    if not slot.resolved:
+        return Finding(requirement, citation, False,
+                       f"{slot.name} is {slot.resolution.value}: there is nothing "
+                       "to compare a regenerated battery against")
+    regenerated = frozen_battery_evidence()
+    short = sorted(name for name, row in regenerated.items()
+                   if row["n_mutations"] < FLOOR
+                   or row["distinct_texts"] != row["n_mutations"])
+    if short:
+        return Finding(requirement, citation, False,
+                       f"the harness itself produces insufficient evidence for "
+                       f"{short}")
+    recorded = slot.get()
+    mismatched = sorted(name for name, row in regenerated.items()
+                        if recorded.get(name, {}).get("records_hash")
+                        != row["records_hash"])
+    if mismatched:
+        return Finding(requirement, citation, False,
+                       f"the recorded battery for {mismatched} does not match the "
+                       "battery the harness regenerates, so the evidence was "
+                       "asserted rather than generated")
+    return Finding(requirement, citation, True,
+                   f"{len(regenerated)} template batteries regenerated and matched, "
+                   f"each at or above {FLOOR} distinct mutations")
+
+
+def _domain_coverage_finding(slots: SlotTable) -> Finding:
+    """Every slot a Stage 2 gate reads must declare a typed domain.
+
+    Without this the audit's worst finding returns silently: a slot with no domain
+    accepts any value, and the gate then reports it as decided.
+    """
+    from dci.v19.registry import STAGE_GATE_BY_KEY
+    requirement = ("every slot Stage 2 depends on declares a typed domain, so a "
+                   "frozen value is validated rather than merely recorded")
+    citation = "section 1.3"
+    watched = set(STAGE_GATE_BY_KEY["stage_2_verifiers"].required_slots)
+    watched |= {s.name for s in slots
+                if s.name.startswith(("verifiers.", "satisfiability."))}
+    undeclared = sorted(name for name in watched if not slots[name].domain)
+    if undeclared:
+        return Finding(requirement, citation, False,
+                       f"{len(undeclared)} slot(s) accept any value: {undeclared}")
+    return Finding(requirement, citation, True,
+                   f"{len(watched)} Stage 2 slot(s) all carry a domain")
+
+
+def _review_boundary_finding() -> Finding:
+    """Moving the reviews to Stage 10 must not let anything escape review.
+
+    The boundary correction is only sound if certification still refuses a
+    composition with an incompletely covered clause and no review. That is
+    demonstrated here rather than argued, because it is the single load-bearing
+    claim the correction rests on.
+    """
+    from dci.v19.parsing import CANONICAL_LIST_POLICY
+    from dci.v19.review_trigger import unreviewable_certification_is_impossible
+    requirement = ("a composition with an incompletely covered clause cannot be "
+                   "certified without a passing review, so deferring the reviews "
+                   "to Stage 10 defers WHEN they are checked and not WHETHER")
+    citation = "sections 8.6, 14.2, 14.10"
+    if not unreviewable_certification_is_impossible(CANONICAL_LIST_POLICY):
+        return Finding(requirement, citation, False,
+                       "a composition with an uncovered clause certified with no "
+                       "review, so the Stage 2 / Stage 10 division would let a "
+                       "composition through unreviewed")
+    return Finding(requirement, citation, True,
+                   "certification refuses with Outcome.REVIEW_REQUIRED")
+
+
+def _solver_finding() -> Finding:
+    """A missing solver is missing required output, never a skipped step."""
+    requirement = "a frozen solver is available to decide the conjunction"
+    citation = "section 8.6"
+    from dci.v19 import solver
+    try:
+        name, version = solver.solver_identity()
+    except solver.SolverUnavailable as error:
+        return Finding(requirement, citation, False, str(error))
+    return Finding(requirement, citation, True, f"{name} {version}")
+
+
+def certify_stage2(slots: SlotTable) -> Certification:
+    """Both halves of Stage 2 as one report: verifiers and satisfiability."""
+    verifier_half = certify_verifiers(slots)
+    satisfiability_half = certify_satisfiability(slots)
+    return Certification(
+        findings=verifier_half.findings + satisfiability_half.findings)
+
+
+def assert_stage2_certified(slots: SlotTable) -> Certification:
+    """Fail closed unless BOTH halves of Stage 2 are certified.
 
     This is what a dependent stage calls. It reports every outstanding
     requirement at once with its citation, because discovering them one exception
     at a time is how a dependency order stops being mandatory.
     """
-    report = certify_verifiers(slots)
+    report = certify_stage2(slots)
     if report.certified:
         return report
-    lines = [("Stage 2 verifier certification is incomplete: "
+    lines = [("Stage 2 certification is incomplete: "
               f"{len(report.outstanding)} of {len(report.findings)} "
               "requirements are unmet.")]
     for finding in report.outstanding:
@@ -283,3 +434,9 @@ def open_scientific_decisions() -> tuple[dict[str, Any], ...]:
                               "satisfying 'exact' and changing them to 72 and "
                               "864; and add the missing register row")},
     )
+
+
+# Kept as the name dependent stages already call. It now covers both halves, because
+# certifying the verifiers while the satisfiability evidence is absent was never a
+# meaningful state.
+assert_verifiers_certified = assert_stage2_certified
