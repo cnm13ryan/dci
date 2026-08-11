@@ -183,49 +183,26 @@ def _tier1_audit_design(value: Any) -> None:
 
 
 def _tier1_audit_protocol(value: Any) -> None:
-    """The human procedure for the Tier-1 audit, which section 10.4 leaves open.
+    """The frozen Tier-1 audit protocol, as the state the code implements.
 
-    Deliberately does NOT default to section 8.6's two-plus-adjudicator rule. That
-    rule governs semantic review of compositions; extending it here would be an
-    implementer deciding a protocol question, which is what a PFD exists to
-    prevent. What this domain requires is that whatever is decided is COMPLETE
-    enough to execute: a reviewer count, a disagreement rule, and an answer to the
-    over-sampling question that arises because a case's truth class is established
-    by the reviewers rather than by its author.
+    Section 10.4 requires "human-adjudicated" examples and never says by how many
+    reviewers, how disagreement resolves, or how exactly 72 per class is reached
+    when the class is established BY adjudication. Section 8.6's
+    two-plus-adjudicator rule governs semantic review of compositions and was
+    extended here by an explicit investigator decision rather than by inference.
+
+    The domain compares the recorded value with `dci.v19.tier1_audit.PROTOCOL`, so a
+    protocol frozen in the registry that the code does not enforce is refused - the
+    same rule the list grammar, the encoding map and the audit design follow.
     """
+    from dci.v19.tier1_audit import PROTOCOL
     _require(isinstance(value, Mapping), "expected a mapping")
-    reviewers = value.get("independent_reviewers")
-    _require(isinstance(reviewers, int) and not isinstance(reviewers, bool)
-             and reviewers >= 2,
-             "'independent_reviewers' must be an integer of at least 2: a single "
-             "judgement cannot disagree with anything, so nothing could be "
-             "adjudicated and 'human-adjudicated' would be a misnomer")
-    _require(value.get("adjudicator_resolves_disagreement") is True,
-             "'adjudicator_resolves_disagreement' must be true; an unresolved "
-             "disagreement resolved by preferring one reviewer is not adjudication")
-    _require(bool(str(value.get("adjudicator_id", "")).strip()),
-             "'adjudicator_id' must name the adjudicator, who must be "
-             "distinguishable from the independent reviewers")
-    _require(value.get("unresolved_disagreement") == "fails",
-             "'unresolved_disagreement' must be 'fails'")
-    rule = value.get("oversampling_rule")
-    _require(rule in ("exact_authoring", "prospective_oversample"),
-             "'oversampling_rule' must be 'exact_authoring' (every case is assumed "
-             "to land in its intended class, and any that does not fails the audit) "
-             "or 'prospective_oversample' (more cases are authored than needed and "
-             "a prospectively fixed rule selects which count)")
-    if rule == "prospective_oversample":
-        factor = value.get("oversample_factor")
-        _require(isinstance(factor, (int, float)) and not isinstance(factor, bool)
-                 and factor > 1,
-                 "'oversample_factor' must exceed 1 for a prospective over-sample")
-        _require(bool(str(value.get("selection_rule", "")).strip()),
-                 "'selection_rule' must state which adjudicated cases count, fixed "
-                 "BEFORE any judgement is seen; a rule chosen afterwards is the "
-                 "conditional selection amendment A3 forbids")
-    _require(bool(str(value.get("citation", "")).strip()),
-             "'citation' must record the governing text and the decision record")
-
+    differing = sorted(k for k in set(PROTOCOL) | set(value)
+                       if value.get(k) != PROTOCOL.get(k))
+    _require(not differing,
+             f"the frozen audit protocol differs from the implemented one at "
+             f"{differing}; a protocol the apparatus does not enforce is a decision "
+             "nothing applies")
 
 def _tier1_certificates(value: Any) -> None:
     """One passing Tier-1 certificate per target and focal verifier unit."""
