@@ -26,6 +26,21 @@ from __future__ import annotations
 
 from dci.v19.pairs import PAIR_IDS
 from dci.v19.resolution import Resolution, Slot, SlotTable, pending
+from dci.v19.text import INTENTIONAL_CORRECTIONS
+
+# The disposition amendment A2 records, DERIVED from the corrections the text layer
+# declares rather than retyped beside them. Retyping would let the registry and the
+# code drift: a correction added to one and not the other would still look complete
+# from either side.
+REUSE_DISPOSITION = {
+    "disposition": "corrected",
+    "rationale": ("section 14.2 permits reuse only after a hash and semantic audit; "
+                  "the audit demonstrated three defects and section 10.6 requires "
+                  "repair and re-audit before freeze, so the Pair 2 and Pair 3 "
+                  "verifiers were moved onto the frozen v19 text policy with new "
+                  "specification hashes"),
+    "corrections": [dict(row) for row in INTENTIONAL_CORRECTIONS]}
+
 
 # ------------------------------------------------- Stage 2: verifier infrastructure
 
