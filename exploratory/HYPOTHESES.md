@@ -243,6 +243,15 @@ boundary. The sentence count then collapses as a side effect of complying.*
 - **Confidence 2026-08-11: 0.6.**
 - **Would be falsified by.** `X_COMMA_EACH` collapsing; or `X_SEMI_TOTAL4`
   collapsing; or the effect vanishing when the wording is held fixed across marks.
+- **Confidence 2026-08-11 (after E4): 0.35, and the claim is rewritten.** The
+  second falsifier fired: `X_SEMI_TOTAL4` collapses 100%. And the linguistic
+  version of M1 is simply wrong — colon and dash are boundary-capable in English
+  and produce **zero** excess, because this model uses them *within* sentences.
+  What survives is a narrower, empirical statement: the **semicolon** is the mark
+  Qwen3-4B deploys as a full-stop replacement, and demanding several of them
+  produces one clause-chained sentence. Substitution is still the right picture
+  of the behaviour; "boundary-capable" was the wrong predictor of which marks do
+  it.
 
 ## M2 — Per-sentence scoping burden
 *Any per-sentence requirement makes many sentences expensive, so the model writes
@@ -254,6 +263,10 @@ fewer. The mark is incidental.*
 - **Confidence 2026-08-11: 0.1.**
 - **Decisive cell.** `X_COMMA_EACH` under a wording identical to the semicolon
   arm's. M2 requires it to collapse; M1 requires it not to.
+- **Confidence 2026-08-11 (after E4): 0.02 — dead.** Five per-sentence rules ran
+  in one design under matched wordings: comma, colon, dash, minimum words and
+  sentence-initial letter. **None** collapsed. And the strongest collapse in the
+  whole study came from a rule with no per-sentence scoping at all.
 
 ## M3 — Mark quantity
 *Demanding many marks of any kind pushes the text toward clause chaining.*
@@ -263,6 +276,17 @@ fewer. The mark is incidental.*
 - **Confidence 2026-08-11: 0.05.**
 - **Decisive cell.** `X_SEMI_TOTAL4` — the same mark, the same quantity implied at
   N = 4, no per-sentence scoping. M3 requires it to collapse.
+- **Confidence 2026-08-11 (after E4): 0.7 — the surviving account, once narrowed
+  to the semicolon.** `X_SEMI_TOTAL4` collapses 1.000/1.000 and, in isolation
+  with no target at all, produces 1.075 sentences. The earlier evidence against
+  M3 — that passing answers carry *more* semicolons than failing ones — is not a
+  contradiction: within a fixed demand, an answer that keeps four sentences has
+  room for more semicolons than one that collapses. It rules out "more semicolons
+  cause collapse" as a within-condition correlation, not "demanding more
+  semicolons causes collapse" as a between-condition effect.
+- **Open, and E4b decides it.** Is it the quantity of *any* mark, or of the
+  semicolon specifically? Colons at ≥4 and dashes at ≥4 are the discriminating
+  cells.
 
 ## M4 — Generic instruction burden / demand characteristic
 *Behaviour moves whenever the system message gains any clause; D2's recovery is
