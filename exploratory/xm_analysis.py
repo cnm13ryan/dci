@@ -184,8 +184,33 @@ def main_result(frame: pd.DataFrame) -> pd.DataFrame:
             "n_tasks": stats["n_tasks"], "n_rows": len(cell),
             "tasks_positive": int((per_task > 0).sum()),
             "tasks_zero": int((per_task == 0).sum()),
-            "tasks_negative": int((per_task < 0).sum())})
+            "tasks_negative": int((per_task < 0).sum()),
+            "degeneracy": degeneracy(focal["a_failure"].mean(),
+                                     reference["a_failure"].mean())})
     return pd.DataFrame(rows)
+
+
+#: Rates at or beyond these are treated as saturated for interpretation.
+CEILING, FLOOR = 0.02, 0.98
+
+
+def degeneracy(focal_failure: float, reference_failure: float) -> str:
+    """Is tau estimable here, or is the target saturated?
+
+    The brief warns about the FLOOR case — a focal instruction the model can
+    barely satisfy, where the four-state table reports "neither" versus "target
+    only" rather than arbitration. The mirror case is just as important and is
+    easier to misread: if the target never fails in EITHER arm, tau is zero by
+    construction, not by absence of interference. "No extra failures" and "no
+    failures to add to" are different findings and must not share a row.
+    """
+    if focal_failure <= CEILING and reference_failure <= CEILING:
+        return ("TARGET_CEILING — the target never fails in either arm, so tau "
+                "is 0 by construction and cannot detect interference")
+    if focal_failure >= FLOOR and reference_failure >= FLOOR:
+        return ("TARGET_FLOOR — the target always fails in either arm, so tau "
+                "is 0 by construction")
+    return "estimable"
 
 
 def background_contrast(frame: pd.DataFrame) -> pd.DataFrame:
@@ -298,6 +323,12 @@ def main() -> int:
     print("### Both raw components are shown beside every difference.\n")
     result = main_result(frame)
     print(result.to_string(index=False, float_format=lambda v: f"{v:+.3f}"))
+    degenerate = result[result["degeneracy"] != "estimable"]
+    if len(degenerate):
+        print("\n  !! tau is NOT estimable in some cells:")
+        for row in degenerate.itertuples():
+            print(f"     {row.model} / {row.reasoning} / {row.background}: "
+                  f"{row.degeneracy}")
 
     print("\n\n### 2. Semicolon-minus-control contrast\n")
     delta = background_contrast(frame)
