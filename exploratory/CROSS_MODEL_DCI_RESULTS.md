@@ -1,6 +1,6 @@
 # Cross-model DCI transport — results
 
-Generated 2026-08-11 22:48 UTC by `xm_results.py` from `analysis/*.csv`, which
+Generated 2026-08-11 23:01 UTC by `xm_results.py` from `analysis/*.csv`, which
 `xm_analysis.py` produced from the raw generation rows and
 `xm_verify_independently.py` reproduced with separate arithmetic.
 This document is a view; it is never an input.
@@ -40,6 +40,12 @@ backend-confounded and is not made.
 
 | model | reasoning | background | focal_A_failure | reference_A_failure | tau | lo | hi | n_tasks | n_rows |
 |---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | NO_THINKING | + one bracket pair (control) | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
+| Qwen3.5-4B | NO_THINKING | + one semicolon | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
+| Qwen3.5-9B | NO_THINKING | + one bracket pair (control) | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
+| Qwen3.5-9B | NO_THINKING | + one semicolon | +0.100 | +0.250 | -0.150 | -0.300 | +0.000 | 20 | 80 |
+| gemma-4-12B-it | NO_THINKING | + one bracket pair (control) | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
+| gemma-4-12B-it | NO_THINKING | + one semicolon | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
 | gemma-4-E4B-it | NATURAL_REASONING | + one bracket pair (control) | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
 | gemma-4-E4B-it | NATURAL_REASONING | + one semicolon | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
 | gemma-4-E4B-it | NO_THINKING | + one bracket pair (control) | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 | 80 |
@@ -51,6 +57,11 @@ backend-confounded and is not made.
 > and cannot detect interference — "no extra failures" and "no
 > failures to add to" are different findings. The affected cells:
 
+> * `Qwen3.5-4B` / NO_THINKING / + one bracket pair (control) — TARGET_CEILING
+> * `Qwen3.5-4B` / NO_THINKING / + one semicolon — TARGET_CEILING
+> * `Qwen3.5-9B` / NO_THINKING / + one bracket pair (control) — TARGET_CEILING
+> * `gemma-4-12B-it` / NO_THINKING / + one bracket pair (control) — TARGET_CEILING
+> * `gemma-4-12B-it` / NO_THINKING / + one semicolon — TARGET_CEILING
 > * `gemma-4-E4B-it` / NATURAL_REASONING / + one bracket pair (control) — TARGET_CEILING
 > * `gemma-4-E4B-it` / NATURAL_REASONING / + one semicolon — TARGET_CEILING
 > * `gemma-4-E4B-it` / NO_THINKING / + one bracket pair (control) — TARGET_CEILING
@@ -61,8 +72,33 @@ backend-confounded and is not made.
 
 | model | reasoning | tau_control | tau_semicolon | delta_semicolon | lo | hi | n_tasks |
 |---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | NO_THINKING | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 |
+| Qwen3.5-9B | NO_THINKING | +0.000 | -0.150 | -0.150 | -0.300 | +0.000 | 20 |
+| gemma-4-12B-it | NO_THINKING | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 |
 | gemma-4-E4B-it | NATURAL_REASONING | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 |
 | gemma-4-E4B-it | NO_THINKING | +0.000 | +0.000 | +0.000 | +0.000 | +0.000 | 20 |
+
+
+## 2b. Joint satisfaction — SECONDARY and exploratory
+
+Reported because the primary estimand degenerates on every checkpoint
+tested: the target instruction is satisfied almost always, so a
+contrast between two target-failure rates has no room to move. This
+asks whether the semicolon context costs anything at all, of the
+outcome that does move — both instructions satisfied in the focal arm:
+
+> Δ_J(m,r) = P(both | semicolon) − P(both | control), focal arm only
+
+It was **not pre-registered** and was chosen after seeing that τ
+degenerated. Paired over tasks and bootstrapped identically.
+
+| model | reasoning | joint_control | joint_semicolon | delta_joint | lo | hi | n_tasks |
+|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | NO_THINKING | +0.175 | +0.200 | +0.025 | -0.150 | +0.200 | 20 |
+| Qwen3.5-9B | NO_THINKING | +0.275 | +0.200 | -0.075 | -0.301 | +0.150 | 20 |
+| gemma-4-12B-it | NO_THINKING | +1.000 | +0.900 | -0.100 | -0.200 | -0.025 | 20 |
+| gemma-4-E4B-it | NATURAL_REASONING | +0.900 | +0.875 | -0.025 | -0.175 | +0.100 | 20 |
+| gemma-4-E4B-it | NO_THINKING | +0.200 | +0.175 | -0.025 | -0.175 | +0.125 | 20 |
 
 
 ## 3. Four-state outcomes in the focal arm
@@ -76,10 +112,16 @@ Stage D column before reading it as arbitration.
 
 | index | model | reasoning | background | both satisfied | target only | focal only | neither |
 |---|---|---|---|---|---|---|---|
-| 0 | gemma-4-E4B-it | NATURAL_REASONING | + one bracket pair (control) | 0.900 | 0.100 | 0.000 | 0.000 |
-| 1 | gemma-4-E4B-it | NATURAL_REASONING | + one semicolon | 0.875 | 0.125 | 0.000 | 0.000 |
-| 2 | gemma-4-E4B-it | NO_THINKING | + one bracket pair (control) | 0.200 | 0.800 | 0.000 | 0.000 |
-| 3 | gemma-4-E4B-it | NO_THINKING | + one semicolon | 0.175 | 0.825 | 0.000 | 0.000 |
+| 0 | Qwen3.5-4B | NO_THINKING | + one bracket pair (control) | 0.175 | 0.825 | 0.000 | 0.000 |
+| 1 | Qwen3.5-4B | NO_THINKING | + one semicolon | 0.200 | 0.800 | 0.000 | 0.000 |
+| 2 | Qwen3.5-9B | NO_THINKING | + one bracket pair (control) | 0.275 | 0.725 | 0.000 | 0.000 |
+| 3 | Qwen3.5-9B | NO_THINKING | + one semicolon | 0.200 | 0.700 | 0.075 | 0.025 |
+| 4 | gemma-4-12B-it | NO_THINKING | + one bracket pair (control) | 1.000 | 0.000 | 0.000 | 0.000 |
+| 5 | gemma-4-12B-it | NO_THINKING | + one semicolon | 0.900 | 0.100 | 0.000 | 0.000 |
+| 6 | gemma-4-E4B-it | NATURAL_REASONING | + one bracket pair (control) | 0.900 | 0.100 | 0.000 | 0.000 |
+| 7 | gemma-4-E4B-it | NATURAL_REASONING | + one semicolon | 0.875 | 0.125 | 0.000 | 0.000 |
+| 8 | gemma-4-E4B-it | NO_THINKING | + one bracket pair (control) | 0.200 | 0.800 | 0.000 | 0.000 |
+| 9 | gemma-4-E4B-it | NO_THINKING | + one semicolon | 0.175 | 0.825 | 0.000 | 0.000 |
 
 
 ## 4. In-context compliance with each instruction
@@ -89,6 +131,9 @@ scientific rows.
 
 | model | reasoning | A_in_focal_arm | A_in_reference_arm | B_compliance | R_compliance | background_compliance |
 |---|---|---|---|---|---|---|
+| Qwen3.5-4B | NO_THINKING | +1.000 | +1.000 | +0.188 | +0.988 | +0.544 |
+| Qwen3.5-9B | NO_THINKING | +0.950 | +0.875 | +0.275 | +1.000 | +0.887 |
+| gemma-4-12B-it | NO_THINKING | +1.000 | +1.000 | +0.950 | +1.000 | +1.000 |
 | gemma-4-E4B-it | NATURAL_REASONING | +1.000 | +1.000 | +0.887 | +1.000 | +0.994 |
 | gemma-4-E4B-it | NO_THINKING | +1.000 | +1.000 | +0.188 | +1.000 | +0.981 |
 
@@ -122,4 +167,4 @@ families. Realised length is post-treatment and no mediation is claimed.
 * Where a checkpoint's focal instruction sits near floor, no claim that
   it "has less DCI" — the contrast cannot be estimated there.
 
-Models covered: gemma-4-E4B-it.
+Models covered: Qwen3.5-4B, Qwen3.5-9B, gemma-4-12B-it, gemma-4-E4B-it.
