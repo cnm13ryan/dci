@@ -6,7 +6,7 @@
   "n_packets": 3,
   "packets": [
     {
-      "packet_id": "9ff97fb9ab4dc5b48e243a8fe56e97e4",
+      "packet_id": "2535f385991c8b9e5f559efd6e03c704",
       "protocol": "v19",
       "citation": "section 8.6; blinding per section 10.6",
       "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
@@ -46,15 +46,15 @@
       ]
     },
     {
-      "packet_id": "632d133121ca36e51e895d403ae8913d",
+      "packet_id": "297f0f5bf99ca8ceac216cd9a61c642b",
       "protocol": "v19",
       "citation": "section 8.6; blinding per section 10.6",
       "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
       "requirement": "Every word in the final answer must be unique under the frozen normalisation and tokenisation-for-verification rule.",
       "parameter_realisation": {},
       "not_covered_deterministically": "the abstraction equates distinctness with the token counts agreeing under the frozen tokenisation. Invisible characters no longer defeat it - they are removed before tokenising - but confusables remain outside any automated rule: a Cyrillic look-alike is a different string and NFKC does not merge it, so a projection satisfying this clause can still look to a reader like a repeated word. Section 10.6 assigns homoglyphs to human audit material, not to code",
-      "response": "Delta. Echo.",
-      "response_hash": "3883a1d854c7bcbf3321dcc16be05fde3d5dac701070c8f07bae5e0a37630214",
+      "response": "Alfa. Bravo.",
+      "response_hash": "dfc8385a941c9477c2517386e6d68837a3bd57da7d4daec4262ffbb808b17aaa",
       "answer_schema": {
         "reviewer_id": "your identifier, distinct from the other reviewer's",
         "satisfied": "true or false; a boolean, not a word",
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "packet_id": "ec31593dceca0715a0ad3b0731807558",
+      "packet_id": "9304e1eb32bb109c4ae8fca05ceb611e",
       "protocol": "v19",
       "citation": "section 8.6; blinding per section 10.6",
       "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
@@ -92,21 +92,21 @@
   ],
   "unblinding_index": [
     {
-      "packet_id": "9ff97fb9ab4dc5b48e243a8fe56e97e4",
-      "composition_id": "p1/1/B",
-      "encoding_hash": "a567fb24a67a34daccc2d1c5290101abacd753a48efbd761b750855218873736",
+      "packet_id": "2535f385991c8b9e5f559efd6e03c704",
+      "composition_id": "p1/review/B",
+      "encoding_hash": "e9b0135e2077c5a46bd16ee81ba80eb601a9b507c0d0f87e490a172adcc2a78f",
       "response_hash": "b04f7b34f311bab9f92aec0540653b643f37c52a3872e7f5a808e921822cef74"
     },
     {
-      "packet_id": "632d133121ca36e51e895d403ae8913d",
-      "composition_id": "p2/1/B",
-      "encoding_hash": "ba6a1628e3f8ad3da32f00ab3951b0e39c3ced72138c843b75eaff4bceec4d7a",
-      "response_hash": "3883a1d854c7bcbf3321dcc16be05fde3d5dac701070c8f07bae5e0a37630214"
+      "packet_id": "297f0f5bf99ca8ceac216cd9a61c642b",
+      "composition_id": "p2/review/B",
+      "encoding_hash": "d7f55d9f23c1bc512837289738d9d9f069192753a977fc71a3e63771b646a27c",
+      "response_hash": "dfc8385a941c9477c2517386e6d68837a3bd57da7d4daec4262ffbb808b17aaa"
     },
     {
-      "packet_id": "ec31593dceca0715a0ad3b0731807558",
-      "composition_id": "p3/1/B",
-      "encoding_hash": "3a2b6da261a5f932ce1087d7d954a5632c54e1fcd6e042898552210202923215",
+      "packet_id": "9304e1eb32bb109c4ae8fca05ceb611e",
+      "composition_id": "p3/review/B",
+      "encoding_hash": "239351a53b8cae11e0adb044aa2b0142e1238b7ddb35bac27f7f928f7b080b68",
       "response_hash": "c979d235016b2b5980b272fc2dcd50016a6be23c1e661fa3ff1ff40714f38fc9"
     }
   ],
