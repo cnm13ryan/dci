@@ -110,7 +110,9 @@ def test_the_reliability_certificate_waits_on_the_interval_and_the_bundle():
     slot = REGISTRY.slots["verifiers.tier1_reliability"]
     assert set(slot.depends_on) == {
         "verifiers.binomial_interval_implementation",
-        "verifiers.tier1_audit_design", "verifiers.bundle_hash"}
+        "verifiers.tier1_audit_design", "verifiers.tier1_audit_protocol",
+        "verifiers.bundle_hash",
+        "pool.p1.audit", "pool.p2.audit", "pool.p3.audit"}
 
 
 def test_every_stage_two_slot_names_a_production_rule_and_a_citation():
