@@ -358,6 +358,53 @@ def v_exact_bracket_pair(text: str, n: int = 1):
                                               "balanced": ok})
 
 
+def _anchor_hits(body: str, word: str) -> list[int]:
+    return [m.start() for m in
+            re.finditer(rf"\b{re.escape(word)}\b", body, flags=re.IGNORECASE)]
+
+
+def v_anchor_free(text: str, word: str):
+    """Exactly one semicolon anywhere, and the anchor word present.
+
+    The FREE arm of the placement contrast. It carries the anchor requirement so
+    that the anchored arm does not differ from it by two things at once.
+    """
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"semicolons": 0})
+    semicolons = body.count(";")
+    hits = _anchor_hits(body, word)
+    detail = {"semicolons": semicolons, "anchor": word, "anchor_hits": len(hits)}
+    binary = int(semicolons == 1 and len(hits) >= 1)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), detail)
+
+
+def v_anchor_before(text: str, word: str):
+    """Exactly one semicolon, sitting immediately before the anchor word.
+
+    "Immediately before" allows only whitespace between the mark and the word,
+    which is the one position ordinary punctuation would put it in.
+    """
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"semicolons": 0})
+    semicolons = body.count(";")
+    hits = _anchor_hits(body, word)
+    detail = {"semicolons": semicolons, "anchor": word, "anchor_hits": len(hits)}
+    if semicolons != 1 or not hits:
+        return VerificationResult("violation", 0, 0.0, detail)
+    position = body.index(";")
+    following = body[position + 1:]
+    stripped = following.lstrip()
+    detail["gap_chars"] = len(following) - len(stripped)
+    binary = int(bool(re.match(rf"{re.escape(word)}\b", stripped, re.IGNORECASE)))
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), detail)
+
+
 _NUMERAL = re.compile(r"\d")
 
 
@@ -441,6 +488,58 @@ _PLACEMENT_TEMPLATES = (
     "Exactly 1 {mark} may appear in the whole answer, and {clause}.",
     "Your answer must use exactly 1 {mark} in total, and {clause}.",
     "Write the whole answer with exactly 1 {mark}, and {clause}.",
+)
+
+#: Round 10 Stage 1. Every Round 9 fixed-placement wording asked the model to
+#: COUNT to a position ("after the fifth word") and was obeyed 0.000-0.338 of the
+#: time, which voided the placement contrast rather than answering it. A LEXICAL
+#: anchor removes placement freedom without requiring counting, and — placed
+#: immediately BEFORE a connective — asks for the mark exactly where ordinary
+#: written English already puts it, so the instruction is not fighting the
+#: model's prose.
+#:
+#: Both arms of the contrast demand the anchor word, so the only difference
+#: between them is whether the semicolon's position is chosen or given. Without
+#: that, "anchored" would also mean "one extra lexical requirement".
+_ANCHOR_TEMPLATES = (
+    "Use the word \"{word}\" in the answer, and use exactly 1 semicolon in the "
+    "whole answer, placed {clause}.",
+    "Your answer must contain the word \"{word}\", and exactly 1 semicolon in "
+    "the whole answer, placed {clause}.",
+    "Include the word \"{word}\" in the answer, and exactly 1 semicolon overall, "
+    "placed {clause}.",
+    "The answer must use the word \"{word}\", and exactly 1 semicolon in total, "
+    "placed {clause}.",
+    "Write the answer using the word \"{word}\", with exactly 1 semicolon in the "
+    "whole answer, placed {clause}.",
+    "Use the word \"{word}\" somewhere, and exactly 1 semicolon in the whole "
+    "answer, placed {clause}.",
+)
+
+#: Screening iteration 2. Iteration 1 showed the failure is PURELY positional:
+#: the anchor word appeared in 1.000 of answers and the exact count held in
+#: 0.95-1.000, while the semicolon landed immediately before the word only
+#: 0.30-0.80 of the time. So the instruction is understood and the count is
+#: obeyed; what is missing is that the model does not realise how literally the
+#: position is meant. A one-token worked example fixes exactly that, and shows
+#: no sentence structure — it cannot leak A's four-sentence solution.
+#:
+#: The free arm gains a parenthetical of its own so the two arms stay matched in
+#: clause count and roughly in length; its parenthetical carries no positional
+#: content, which is the whole manipulation.
+_ANCHOR2_TEMPLATES = (
+    "Use the word \"{word}\" in the answer, and use exactly 1 semicolon in the "
+    "whole answer, placed {clause}.",
+    "Your answer must contain the word \"{word}\", and exactly 1 semicolon in "
+    "the whole answer, placed {clause}.",
+    "Include the word \"{word}\" in the answer, and exactly 1 semicolon "
+    "overall, placed {clause}.",
+    "The answer must use the word \"{word}\", and exactly 1 semicolon in total, "
+    "placed {clause}.",
+    "Write the answer using the word \"{word}\", with exactly 1 semicolon in "
+    "the whole answer, placed {clause}.",
+    "Use the word \"{word}\" somewhere, and exactly 1 semicolon in the whole "
+    "answer, placed {clause}.",
 )
 
 _NO_SPLICE_TEMPLATES = (
@@ -626,6 +725,57 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
                                    "Never reads the sentence count."),
                 verifier,
                 _render(_PLACEMENT_TEMPLATES, mark=mark, clause=clause),
+            )
+
+    # --- lexically anchored placement, Round 10 ------------------------------
+    # Screened on compliance BEFORE any τ is looked at. Three anchors, chosen so
+    # that a semicolon immediately before the word is ordinary English rather
+    # than a typographic oddity, plus the matched free arm for each.
+    for word in ("however", "therefore", "then"):
+        for suffix, clause, verifier in (
+                ("FREE", "wherever you judge best", v_anchor_free),
+                ("BEFORE", "immediately before it", v_anchor_before)):
+            cid = f"X_ANCHOR_{word.upper()}_{suffix}"
+            out[cid] = (
+                spec(cid, "exploratory",
+                     f"One semicolon, anchor '{word}', placement "
+                     f"{'free' if suffix == 'FREE' else 'given'}",
+                     "format", "global_count", "whole_text", "character_stream",
+                     "unrelated",
+                     f"x_anchor_{'free' if suffix == 'FREE' else 'before'}",
+                     P(word=word), "exploratory",
+                     "authored for the lexically anchored placement contrast",
+                     u_family="format",
+                     pathway_audit="Whole-answer semicolon count plus a lexical "
+                                   "anchor test. Never reads the sentence count "
+                                   "and names no sentence."),
+                (lambda v, w: (lambda t: v(t, w)))(verifier, word),
+                _render(_ANCHOR_TEMPLATES, word=word, clause=clause),
+            )
+
+    # --- anchored placement, screening iteration 2 ---------------------------
+    for word in ("therefore", "however"):
+        for suffix, clause, verifier in (
+                ("FREE2", "wherever you judge best (anywhere at all)",
+                 v_anchor_free),
+                ("BEFORE2",
+                 f"directly in front of it (like this: ...; {word} ...)",
+                 v_anchor_before)):
+            cid = f"X_ANCHOR_{word.upper()}_{suffix}"
+            out[cid] = (
+                spec(cid, "exploratory",
+                     f"One semicolon, anchor '{word}', worked example, "
+                     f"{'free' if 'FREE' in suffix else 'given'} placement",
+                     "format", "global_count", "whole_text", "character_stream",
+                     "unrelated",
+                     f"x_anchor_{'free' if 'FREE' in suffix else 'before'}",
+                     P(word=word), "exploratory",
+                     "authored for anchored-placement screening iteration 2",
+                     u_family="format",
+                     pathway_audit="Whole-answer semicolon count plus a lexical "
+                                   "anchor test. Names no sentence."),
+                (lambda v, w: (lambda t: v(t, w)))(verifier, word),
+                _render(_ANCHOR2_TEMPLATES, word=word, clause=clause),
             )
 
     # --- atomicity at constant placement freedom -----------------------------
@@ -829,6 +979,26 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_COLON_AT_W10": (
         "One two three four five six seven eight nine ten: eleven twelve.",
         "One two three four five six seven eight nine: ten eleven twelve."),
+    "X_ANCHOR_HOWEVER_FREE": ("Rain falls; the ground however soaks it up.",
+                          "Rain falls; rivers rise; the ground however soaks."),
+    "X_ANCHOR_HOWEVER_BEFORE": ("Rain falls; however the ground soaks it up.",
+                            "Rain falls, and rivers rise; the ground however soaks."),
+    "X_ANCHOR_THEREFORE_FREE": ("Rain falls; the ground therefore soaks it up.",
+                          "Rain falls; rivers rise; the ground therefore soaks."),
+    "X_ANCHOR_THEREFORE_BEFORE": ("Rain falls; therefore the ground soaks it up.",
+                            "Rain falls, and rivers rise; the ground therefore soaks."),
+    "X_ANCHOR_THEN_FREE": ("Rain falls; the ground then soaks it up.",
+                          "Rain falls; rivers rise; the ground then soaks."),
+    "X_ANCHOR_THEN_BEFORE": ("Rain falls; then the ground soaks it up.",
+                            "Rain falls, and rivers rise; the ground then soaks."),
+    "X_ANCHOR_THEREFORE_FREE2": ("Rain falls; the ground therefore soaks it up.",
+                           "Rain falls; rivers rise; the ground therefore soaks."),
+    "X_ANCHOR_THEREFORE_BEFORE2": ("Rain falls; therefore the ground soaks it up.",
+                             "Rain falls, and rivers rise; the ground therefore soaks."),
+    "X_ANCHOR_HOWEVER_FREE2": ("Rain falls; the ground however soaks it up.",
+                           "Rain falls; rivers rise; the ground however soaks."),
+    "X_ANCHOR_HOWEVER_BEFORE2": ("Rain falls; however the ground soaks it up.",
+                             "Rain falls, and rivers rise; the ground however soaks."),
     "X_ELLIPSIS_FREE": ("Rain falls ... rivers rise.", "Rain ... falls ... rivers rise."),
     "X_DASHDASH_FREE": ("Rain falls -- rivers rise.", "Rain -- falls -- rivers rise."),
     "X_PAREN_FREE": ("Rain falls (steadily) and rivers rise.",

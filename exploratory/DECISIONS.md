@@ -2083,3 +2083,136 @@ smoothed: at 95% cap-hit both τ values collapse toward zero. It is the one budg
 where the manipulation is almost always binding, and I do not have an
 intervention that distinguishes "short reasoning helps" from "forced truncation
 changes strategy". It is flagged, not explained.
+
+---
+
+# Round 10 — closing the identification gaps
+
+## R10.1 Stage 1 — lexically anchored placement (pre-registered)
+
+**Unresolved claim.** Round 9 could not test whether amplification comes from
+having to choose *where* an unattached mark goes: all ten positional wordings
+demanded word COUNTING and were obeyed 0.000–0.338 of the time. Free placement is
+therefore **unidentified**, not supported.
+
+**The fix.** Remove placement freedom with a LEXICAL anchor instead of an index,
+and choose the anchor position that ordinary written English already uses — a
+semicolon immediately *before* a connective. The instruction then stops fighting
+the model's prose, which is what the counting wordings were doing.
+
+**Matching.** Both arms demand the anchor word. Without that, "anchored" would
+differ from "free" by two things — a fixed position *and* an extra lexical
+requirement — and the contrast would be uninterpretable.
+
+| arm | wording |
+|---|---|
+| free | `Use the word "W" in the answer, and use exactly 1 semicolon in the whole answer, placed wherever you judge best.` |
+| anchored | `Use the word "W" in the answer, and use exactly 1 semicolon in the whole answer, placed immediately before it.` |
+
+**Competing hypotheses.**
+
+| | claim | prediction if anchoring works |
+|---|---|---|
+| **P7** placement search / slot allocation | amplification comes from having to allocate a position for the mark | anchoring **sharply reduces** τ |
+| **P8** unattachedness per se | it is the free-standing mark itself, wherever it lands | anchoring leaves τ **essentially unchanged** |
+| **P9** anchor artefact | the connective itself changes sentence structure | the *free* arm's τ also moves relative to Round 9's `X_SEMICOLON_FREE` (+0.950) |
+
+P9 is why the Round 9 free arm stays in the comparison: it is the reference point
+that says whether adding the anchor word did anything on its own.
+
+**Screening rule, fixed before the screen is read.** Three anchors — `however`,
+`therefore`, `then`. Select the anchored variant with the **highest own
+compliance**, subject to compliance ≥ 0.70 and reference-arm A-failure ≤ 0.15.
+**τ is not computed or looked at until the formulation is frozen.** If no anchor
+clears 0.70, the placement question is recorded as **still unidentified** and
+Stages 2, 3 and 17 are dropped rather than run on a failed manipulation.
+
+**Analysis, frozen.** π = QAC, k = 3, arms B vs `C_L3`, 20 pilot tasks, 2
+replicates. Primary estimand Δ_placement = τ_free − τ_anchored, paired by task,
+cluster-bootstrapped over the 20 tasks.
+
+### R10.1a Screening outcome — a compliable anchored manipulation exists
+
+**Iteration 1** (no worked example) failed the gate: compliance 0.375–0.600. The
+decomposition showed why, and it was not that the instruction was misunderstood:
+
+| | anchor word present | exactly 1 semicolon | **position correct** |
+|---|---|---|---|
+| `HOWEVER_BEFORE` | 1.000 | 0.950–1.000 | **0.400–0.600** |
+| `THEREFORE_BEFORE` | 1.000 | 1.000 | **0.400–0.800** |
+| `THEN_BEFORE` | 1.000 | 0.950–1.000 | **0.300–0.450** |
+
+The word is always produced and the count is essentially always right; **only the
+position fails**. That is a wording problem, not an incapacity, so one further
+screening iteration was run with a worked example (`...; therefore ...`) and a
+length-matched parenthetical on the free arm. This iteration is recorded rather
+than silent, and **no τ was computed at any point during screening**.
+
+**Iteration 2 and the selection:**
+
+| variant | compliance | ref-arm A-failure | gate |
+|---|---|---|---|
+| `X_ANCHOR_THEREFORE_BEFORE2` | 0.875 | **0.250** | **fails** — the anchor itself damages the target |
+| `X_ANCHOR_HOWEVER_BEFORE2` | **0.700** | 0.100 | **passes both** |
+| `X_ANCHOR_HOWEVER_FREE2` | 1.000 | 0.050 | passes (free arm) |
+| `X_ANCHOR_THEREFORE_FREE2` | 1.000 | 0.000 | passes (free arm) |
+
+`THEREFORE` has the higher compliance and is **rejected anyway**, by the
+pre-registered artefact criterion: a background that raises reference-arm
+A-failure to 0.250 on its own is not a clean placement manipulation. The selected
+pair is therefore **`X_ANCHOR_HOWEVER_FREE2` vs `X_ANCHOR_HOWEVER_BEFORE2`**.
+
+**Recorded limitation, before the result is seen.** The two arms are not equally
+compliable — 1.000 against 0.700. On the 30% of anchored rows where the position
+is not obeyed, the model is doing whatever it would have done freely, so the
+anchored arm is a **diluted** version of the intended manipulation. This biases
+the contrast *towards* finding no placement effect. A clear reduction is
+therefore meaningful; a null is weak evidence and will be reported as such.
+
+### R10.1b Stage 1 result — anchoring does NOT reduce amplification
+
+τ does fall under anchoring (+1.000 → +0.525, Δ = +0.475 [+0.275, +0.675]). Read
+as a difference score alone, that looks like support for P7. **The components say
+otherwise**, which is exactly why the raw components are reported before the
+difference:
+
+| background | focal-arm A-failure | reference-arm A-failure | ref-arm sentences | τ |
+|---|---|---|---|---|
+| `X_SEMICOLON_FREE` (R9) | 0.975 | 0.000 | 4.000 | +0.975 |
+| `X_ANCHOR_HOWEVER_FREE2` | **1.000** | 0.000 | 4.000 | +1.000 |
+| `X_ANCHOR_HOWEVER_BEFORE2` | **0.975** | **0.450** | **3.550** | +0.525 |
+
+**Focal-arm failure is unchanged by anchoring** — 0.975 against 1.000. Every
+point of the τ reduction comes from the *reference* arm getting worse. So the
+anchored condition does not repair the amplified failure; it damages the control.
+
+**Why the reference arm breaks, mechanistically.** Reference-arm answers under
+anchoring produce **3.667 sentences** (pooled, n = 60) against 3.983 for the free
+arm, with the same single semicolon in both. Forcing that one semicolon to sit
+directly before a connective *performs a clause join at a sentence boundary* —
+it deletes exactly one sentence. The anchored instruction is therefore an
+independent A-interferer, and fails the pre-registered inertness criterion in the
+definitive run (0.450, pooled 0.333, against the gate of 0.15).
+
+**Status: placement remains UNIDENTIFIED** — but for a sharper reason than Round
+9's. It is no longer "the model cannot follow a positional instruction"
+(compliance here is 0.812). It is that **for a boundary-capable mark, fixing the
+position and leaving the sentence structure alone are in tension**: the natural
+anchor positions are clause boundaries, and occupying one costs a sentence.
+
+**P9 (anchor artefact) is cleared.** Adding the anchor word to the free arm moved
+τ by −0.025 [−0.075, 0.000] against Round 9's `X_SEMICOLON_FREE`, so the free
+arm is the same experiment it was.
+
+**The ceiling limitation, stated plainly.** Focal-arm A-failure is 0.975–1.000 in
+*every* arm of this design. A manipulation that repaired the amplifier could not
+show it here, because there is no room to fall. This contrast therefore cannot
+distinguish "anchoring does not help" from "anchoring cannot be seen to help".
+
+**Consequence for the plan.** Stage 2 (colon replication) and Stage 3
+(placement × order) are **dropped**: both are conditional on a clean placement
+effect at QAC, and there is none to cross. Stage 17 is **promoted**, because
+running the same contrast under a positive reasoning budget puts focal-arm
+failure at ~0.55 rather than ~1.00 and is therefore the ceiling-free version of
+this same test. The placement question and the reasoning question now share one
+experiment.
