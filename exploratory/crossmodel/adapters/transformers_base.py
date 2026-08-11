@@ -206,6 +206,7 @@ class TransformersAdapter(ModelAdapter):
 
         kwargs = dict(revision=revision, dtype=dtype,
                       device_map=self._device_map, **self.LOAD_KWARGS)
+        kwargs.update(self._capacity_kwargs())
 
         if self.TEXT_ONLY_CLASS:
             try:
@@ -243,6 +244,22 @@ class TransformersAdapter(ModelAdapter):
         self._load_metadata["full_class_unexpected_keys"] = len(
             info.get("unexpected_keys") or [])
         return model, name, True
+
+    #: In dual-GPU capacity mode, weights are capped BELOW the card's capacity.
+    #: `device_map="auto"` otherwise fills card 0 with weights and leaves the KV
+    #: cache nowhere to grow — which is precisely how gemma-4-12B-it failed on a
+    #: single card: 22.28 GiB resident, 80 MiB free, OOM on the first long
+    #: reasoning pass. Reserving ~5 GiB per card leaves room for the cache.
+    CAPACITY_MAX_MEMORY_PER_GPU = "18GiB"
+
+    def _capacity_kwargs(self) -> dict[str, Any]:
+        if self._device_map not in ("auto", "balanced"):
+            return {}
+        import torch
+
+        count = torch.cuda.device_count()
+        return {"max_memory": {i: self.CAPACITY_MAX_MEMORY_PER_GPU
+                               for i in range(count)}}
 
     def _cached_revision(self) -> Optional[str]:
         """The one commit sha in the local cache, or None if it is ambiguous.
