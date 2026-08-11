@@ -950,3 +950,187 @@ background**, and a τ reported without naming its background set is
 underspecified. This is a property of the estimand, not a defect in this
 implementation, and it was found only because the colon arm forced a background
 substitution for an unrelated reason.
+
+**E7 amendment, written after the first condition ran and before the rest.** The
+design assumed B would supply the second limb of the dissociation. It cannot: in
+the `X_NO_EXCLAM` baseline B's excess is **0.000** in both orders, because that
+background has no colon in it and E4c has since shown B's interference requires
+one. A prohibition cannot selectively rescue an arm that is not failing.
+
+Two consequences, both applied rather than noted:
+
+1. The dissociation across **prohibitions** still works and is what the first
+   block tests: the same arm under an off-route prohibition, an on-route one, and
+   an on-route-for-a-different-mark one. Each manipulation's own effect on its own
+   mark is measured, so "it did nothing" and "it was not obeyed" stay separable.
+2. A second block, `E7c`, restores the arm limb by keeping `U_FMT_COLON1` in the
+   background and spending the *other* slot on the prohibition. B interferes
+   there, so the comma-splice prohibition has something to act on. Load stays
+   k=5 and the three conditions differ in exactly one instruction, as before.
+
+### E5a — the structural twin: paragraphs · `runs/stageE5a_paragraphs_20260811T004553Z`
+
+520 generations, 13.5 min, 0 technical failures. Target `X_PARA4`, "exactly 4
+paragraphs, separated by a blank line". The pre-registered headroom worry did not
+materialise: the target **alone** is satisfied in 40/40 rows at exactly 4.000
+paragraphs.
+
+| arm | excess `o_A` | excess `o_Q` | paragraphs | **sentences** | semicolons |
+|---|---|---|---|---|---|
+| `X_SEMICOLON_EACH` | **−0.050** | **+0.025** | **4.000 / 3.975** | 4.7 / 7.5 | 13.3 / 10.0 |
+| `X_LINEBREAK_EACH` | 0.000 | 0.000 | 4.050 / 4.000 | 15.1 / 13.8 | 0.0 |
+| `B` | **+0.300** [+0.13, +0.48] | **+0.175** [+0.05, +0.33] | 4.35 / 4.18 | 5.1 / 4.4 | 0.5 / 0.2 |
+| `C_L3` (control) | — | — | 3.900 / 4.000 | 11.9 / 12.5 | 0.0 |
+
+**The mechanism does not transfer, and the demonstration is unusually direct.**
+In these very same responses the semicolon instruction is doing exactly what it
+does everywhere else — it cuts the sentence count from the control's 11.9 to 4.7
+while producing 13.3 semicolons. The **paragraph** count sits at 4.000. The
+behaviour is identical; the failure does not occur, because the target counts a
+unit the semicolon cannot stand in for.
+
+That is the boundary of the claim, established positively rather than by absence
+of evidence.
+
+**The paragraph-side substitution route was NOT tested, and that must be said
+plainly.** `X_LINEBREAK_EACH` was designed to be the blank line's substitutable
+delimiter, but the model **ignored it**: arm compliance 0.000 (`o_A`) and 0.025
+(`o_Q`). An instruction that is not followed cannot interfere, so this cell shows
+only that the instruction was unpersuasive, not that the route is absent. The
+isolated primitive shows the instruction does change behaviour when nothing
+competes (2.300 paragraphs against the target's 4.000), so a better-worded
+version might well test it. Left open.
+
+**B interferes on paragraphs, in the opposite direction.** Its excess is
++0.300/+0.175, and it is entirely **overshoot** (0.350/0.175 over, 0.000 under) —
+B writes 303–339 words and spills into a fifth paragraph. B damages counts in
+whichever direction its length pressure happens to push, which is a further
+reason not to treat it as one mechanism.
+
+### E5b — a different constraint family: counting integers · `runs/stageE5b_integers_20260811T005938Z`
+
+520 generations, 0 technical failures. Target `U_NUM_FOURDISTINCT`, "four
+distinct integers".
+
+**The target was a poor choice and the cell is underpowered. That is the first
+thing to report, not a footnote.** `U_NUM_FOURDISTINCT` **alone**, with no
+interference at all, fails **0.725** of the time. Under load the matched control
+`C_L3` fails 0.525 (`o_A`) / 0.325 (`o_Q`). With the floor that high and that
+noisy, only a very large effect could be detected.
+
+| arm | excess `o_A` | excess `o_Q` | sentences | semicolons |
+|---|---|---|---|---|
+| `X_SEMICOLON_EACH` | +0.150 [−0.08, +0.38] | +0.075 [−0.18, +0.33] | **1.03 / 1.00** | 3.75 / 3.58 |
+| `X_SEMICOLON_TOTAL4` | −0.150 [−0.40, +0.13] | +0.225 [−0.03, +0.45] | **1.25 / 1.03** | 4.73 / 5.83 |
+| `B` | +0.075 [−0.13, +0.28] | +0.325 [+0.13, +0.53] | 1.40 / 1.05 | 0.35 / 0.05 |
+| `C_L3` (control, own failure) | 0.525 | 0.325 | 3.68 / 3.00 | 0.18 / 0.23 |
+
+**No semicolon interval excludes zero.** The behaviour is unmistakably present —
+both semicolon arms collapse to ~1.0 sentences against the control's 3.0–3.7 —
+and the integer count does not follow. That is the same specificity as E5a, but
+here it is *consistent with* no transfer rather than *evidence of* it, because
+the design could not have detected a moderate effect.
+
+**Conclusion for this cell: inconclusive, and the reason is a design error I
+made.** A target that fails 72.5% of the time unaided is not a usable outcome. A
+proper numerical-family test needs a target the model can actually hit — "at
+least two integers" rather than "four distinct integers". Not run; recorded as
+the open item it is.
+
+B's `o_Q` excess of +0.325 is the one interval excluding zero here, and this run
+carries `U_FMT_COLON1` in its background, which E4c identified as the condition
+B needs. Consistent, not independent.
+
+### E7 (first block) — the prohibitions were not obeyed as written
+
+Three runs, 1200 generations, 0 technical failures, differing in exactly one
+background instruction.
+
+**Manipulation checks first, as pre-registered — and both fail.**
+
+| | semicolons produced | semicolon splices | commas produced | comma splices |
+|---|---|---|---|---|
+| `X_NO_EXCLAM` (off-route) | 4.400 | 2.375 | 6.58 (B) / 1.13 (`C_L3`) | 0.400 / 0.100 |
+| `X_NO_SEMI_SPLICE` | **4.175** | **2.150** | 6.63 / 1.25 | 0.350 / 0.125 |
+| `X_NO_COMMA_SPLICE` | 3.850 | 2.325 | **0.000 / 0.000** | **0.000 / 0.000** |
+
+* **The semicolon prohibition was ignored.** `Do not use a semicolon to join two
+  complete sentences.` left semicolon splices at 2.15 against the control's 2.38.
+  The model went on doing precisely the thing it had been told not to do, while
+  obeying the semicolon *requirement* in the same prompt.
+* **The comma prohibition was over-applied.** `Do not use a comma to join two
+  complete sentences.` was read as "use no commas", taking B's comma count from
+  6.58 to **exactly 0.000** in 80/80 rows. That is not the manipulation the design
+  specified; it is a different and much heavier constraint.
+
+**The pre-registered stop condition therefore applies: the outcomes are not
+interpreted as an intervention.** For the record they were `S_SEMICOLON` excess
+0.325/0.375 (off-route), 0.500/0.350 (semicolon prohibition), 0.275/0.200 (comma
+prohibition) — but with one instrument ignored and the other transformed into a
+comma ban, no causal reading is available from them.
+
+**One observation worth carrying forward anyway**, because it is a manipulation
+that demonstrably *did* something: banning commas outright pushed **B** from
+0.000 to **0.250** excess in `o_Q` and cut its sentence count to 3.30. B builds
+its long sentences with commas, and removing them made its target compliance
+worse rather than better.
+
+**Status of the causal leg after two failed instruments.** The system-message
+scaffold failed because no such clause can be made inert (E1). The numbered
+prohibition failed because the model does not follow this class of negative
+instruction as written. No mediator-blocking intervention has succeeded, and none
+is claimed. What the study has instead is two *manipulations of the trigger* with
+matched controls:
+
+* **dose–response** (E4b): demanded semicolons 2 → 4 → 6 moves collapse
+  0.01 → 0.95 → 0.94, while four commas at the same dose leave it at 0.000;
+* **target substitution** (E5a): the identical instruction, producing the
+  identical behaviour, causes no failure when the target counts paragraphs.
+
+Those are experimental, not correlational, and together they support the causal
+claim about the trigger. They do not establish that blocking the strategy would
+prevent the failure, and that is not asserted.
+
+### E6 — cross-model: `google/gemma-2-9b-it` · 520 generations, 7.9 min, 0 technical failures
+
+Verified to be the intended model: `Gemma2ForCausalLM`, 9,241,705,984 parameters,
+bfloat16, 18.1 GB peak, revision `11c9b309abf7`, and
+`prompt_convention = "system merged into first user turn"` because gemma's chat
+template rejects the `system` role.
+
+**Under load — the interference does not replicate.**
+
+| arm | Qwen3-4B excess | **gemma excess** | gemma sentences | semicolons produced |
+|---|---|---|---|---|
+| `X_SEMICOLON_TOTAL4` | 0.975 / 0.975 | **0.000 / 0.075** | 4.00 / 3.93 | 2.03 / 2.28 |
+| `X_SEMICOLON_EACH` | 0.750 / 0.675 | **0.125** [0.03, 0.25] / 0.075 | 3.83 / 3.93 | 2.65 / 2.55 |
+| `X_COMMA_TOTAL4` | −0.025 / 0.050 | 0.000 / 0.000 | 4.00 / 4.00 | — |
+
+Severe collapse maxes out at **0.025** across the whole run.
+
+**In isolation — the disposition replicates exactly.**
+
+| instruction alone | Qwen3-4B sentences | **gemma sentences** |
+|---|---|---|
+| `Use at least 4 semicolons in the whole answer.` | 1.125 | **1.150** |
+| `Use at least one semicolon in every sentence.` | 3.075 | **1.075** |
+| `Use at least 4 commas in the whole answer.` | 3.875 | **1.425** |
+| `Write exactly 4 sentences.` | 4.000 | 4.000 |
+
+**The finding is a dissociation between disposition and arbitration.** Both models
+realise a bare semicolon demand as a single clause-chained sentence — gemma if
+anything more strongly, and it extends the habit to commas, which Qwen does not.
+What differs is what happens when an explicit sentence count competes with that
+habit. Qwen keeps the semicolons and loses the count (3.2–3.8 semicolons, 1.0
+sentences). **Gemma keeps the count and drops the semicolons** — it produces 2.0–2.6
+where four are demanded, with arm compliance 0.000–0.050, and holds 4 sentences.
+
+So the *behavioural regularity* is not Qwen-specific, but the *interference* is:
+it requires a model that resolves the conflict in favour of the added instruction.
+
+**No third model family will be run.** The pre-registered rule was that a third
+family is worth the download only if gemma reproduces the effect. It did not, and
+one reproduction plus one failure already establishes that the interference is
+model-dependent; a third data point would refine the frequency of a property, not
+the existence of the dependency. The disposition's generality (2 of 2) is worth a
+follow-up, but that is a different question from the one this study asked.
