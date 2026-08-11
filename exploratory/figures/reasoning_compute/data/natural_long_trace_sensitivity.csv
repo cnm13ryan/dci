@@ -1,0 +1,9 @@
+exclusion,background,rows_kept,estimate,n_tasks
+all rows,+ one bracket pair,80,0.0,20
+all rows,+ one semicolon,80,0.4,20
+drop longest 1,+ one bracket pair,79,0.0,20
+drop longest 1,+ one semicolon,79,0.4,20
+drop longest 5%,+ one bracket pair,78,0.0,20
+drop longest 5%,+ one semicolon,78,0.4,20
+drop longest 10%,+ one bracket pair,76,0.0,20
+drop longest 10%,+ one semicolon,76,0.45,20
