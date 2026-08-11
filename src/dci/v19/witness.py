@@ -37,8 +37,9 @@ from dataclasses import dataclass
 from typing import Any
 
 from dci.provenance.hashes import sha
+from dci.v19 import text as textlib
 from dci.v19.encoding import ClauseKind, Composition
-from dci.v19.parsing import OrderingRelation
+from dci.v19.parsing import ListPolicy, OrderingRelation, require_policy
 
 # A deterministic vocabulary. Every entry is a single ASCII word token under the
 # frozen `WORD_PATTERN`, so a filler word never becomes two tokens or none.
@@ -51,7 +52,7 @@ VOCABULARY: tuple[str, ...] = (
 
 # The construction procedure's identity. Recorded with every witness so that a
 # changed constructor is visible in the artifact rather than only in the diff.
-CONSTRUCTOR_ID = "v19:witness-constructor.deterministic-v1"
+CONSTRUCTOR_ID = "v19:witness-constructor.deterministic-v2"
 
 
 class WitnessConstructionError(RuntimeError):
@@ -105,21 +106,39 @@ class WitnessRecord:
 
 
 def _requirements(composition: Composition) -> dict[str, Any]:
-    """What the clauses demand of the rendered text, gathered in one place."""
+    """What the clauses demand of the rendered text, gathered in one place.
+
+    ACCUMULATES. A composition can carry more than one clause of a kind - two
+    background constraints may each require mandatory words - and an earlier version
+    assigned instead of extending, so the first clause's words were silently dropped
+    and the witness failed a verifier it should have satisfied. Two clauses that fix
+    the SAME count to different values are a contradiction rather than a
+    last-one-wins, and are reported as one.
+    """
     wanted: dict[str, Any] = {
         "n_items": None, "n_sentences": None, "relation": None,
-        "mandatory_words": (), "all_distinct": False, "increasing": False}
+        "mandatory_words": (), "all_distinct": False, "increasing": False,
+        "conflicts": []}
+
+    def fix(key: str, value: Any) -> None:
+        current = wanted[key]
+        if current is not None and current != value:
+            wanted["conflicts"].append(
+                f"two clauses fix {key} to {current} and {value}")
+        wanted[key] = value
+
     for clause in composition.clauses:
         if clause.kind is ClauseKind.EXACT_ITEM_COUNT:
-            wanted["n_items"] = clause.parameters["n_items"]
+            fix("n_items", clause.parameters["n_items"])
         elif clause.kind is ClauseKind.ITEM_PRECEDENCE:
-            wanted["relation"] = clause.parameters["relation"]
+            fix("relation", clause.parameters["relation"])
         elif clause.kind is ClauseKind.EXACT_SENTENCE_COUNT:
-            wanted["n_sentences"] = clause.parameters["n_sentences"]
+            fix("n_sentences", clause.parameters["n_sentences"])
         elif clause.kind is ClauseKind.INCREASING_SENTENCE_LENGTHS:
             wanted["increasing"] = True
         elif clause.kind is ClauseKind.MANDATORY_TOKENS:
-            wanted["mandatory_words"] = tuple(clause.parameters["mandatory_words"])
+            wanted["mandatory_words"] = tuple(wanted["mandatory_words"]) + tuple(
+                clause.parameters["mandatory_words"])
         elif clause.kind is ClauseKind.ALL_TOKENS_DISTINCT:
             wanted["all_distinct"] = True
     return wanted
@@ -148,13 +167,25 @@ def _topological_order(relation: OrderingRelation) -> tuple[str, ...]:
 
 
 class _Words:
-    """A deterministic supply of never-repeated word tokens."""
+    """A deterministic supply of never-repeated word tokens.
 
-    def __init__(self, seed: int, forbidden: Sequence[str]):
+    Reservation is by FOLDED token, which is what the verifiers compare. Under the
+    old substring rule a filler merely had to avoid containing a label; now a filler
+    must not BE a label or a mandatory word, and a mandatory word that is itself a
+    label is not placed twice. That closes the collision the audit found, where a
+    mandatory word "alfaX" was identified as the item label "alfa".
+    """
+
+    def __init__(self, seed: int, policy: ListPolicy, reserved: Sequence[str]):
         self.index = seed % len(VOCABULARY)
         self.round = 0
+        self.policy = policy
         self.used: set[str] = set()
-        self.forbidden = tuple(forbidden)
+        for word in reserved:
+            self.reserve(word)
+
+    def _fold(self, word: str) -> str:
+        return textlib.fold(word, self.policy.text)
 
     def take(self) -> str:
         for _ in range(len(VOCABULARY) * 64):
@@ -163,30 +194,43 @@ class _Words:
             self.index += 1
             if self.index == len(VOCABULARY):
                 self.index, self.round = 0, self.round + 1
-            if candidate in self.used:
+            folded = self._fold(candidate)
+            if folded in self.used:
                 continue
-            # A filler must not contain a declared item label, or the ordering
-            # verifier's containment matching would identify it as that item.
-            if any(label and label in candidate for label in self.forbidden):
-                continue
-            self.used.add(candidate)
+            if textlib.word_tokens(candidate, self.policy.text) != [candidate]:
+                continue                     # a filler must be exactly one token
+            self.used.add(folded)
             return candidate
         raise WitnessConstructionError(          # pragma: no cover - vocabulary
             "the deterministic vocabulary is exhausted for this composition")
 
     def reserve(self, word: str) -> None:
-        self.used.add(word)
+        self.used.add(self._fold(word))
 
 
-def construct_witness(composition: Composition, *, seed: int = 0) -> WitnessRecord:
+def construct_witness(composition: Composition, policy: ListPolicy, *,
+                      seed: int = 0) -> WitnessRecord:
     """Build a concrete answer intended to satisfy every clause at once.
 
-    Deterministic in `(composition, seed)`. The seed varies the filler vocabulary
-    only; it never varies whether a constraint is satisfied, so a failure cannot be
-    retried away by reseeding.
+    Deterministic in `(composition, policy, seed)`. The seed varies the filler
+    vocabulary only; it never varies whether a constraint is satisfied, so a failure
+    cannot be retried away by reseeding.
+
+    The grammar is explicit and is checked against the clauses: a witness built under
+    one policy and verified under another would make the whole cross-check
+    meaningless, so a mismatch is refused rather than tolerated.
     """
+    policy = require_policy(policy)
     if not isinstance(seed, int) or isinstance(seed, bool) or seed < 0:
         raise WitnessConstructionError(f"seed {seed!r} is not a non-negative int")
+    declared = {c.parameters.get("list_policy_hash") for c in composition.clauses}
+    declared.discard(None)
+    if declared and declared != {policy.policy_hash}:
+        raise WitnessConstructionError(
+            f"{composition.composition_id}: the clauses were encoded under list "
+            f"policy {sorted(declared)} and the constructor was given "
+            f"{policy.policy_hash}. A witness built under one grammar and verified "
+            "under another is not a cross-check")
     wanted = _requirements(composition)
     relation: OrderingRelation | None = wanted["relation"]
     labels = _topological_order(relation) if relation is not None else ()
@@ -198,6 +242,16 @@ def construct_witness(composition: Composition, *, seed: int = 0) -> WitnessReco
             seed=seed, text=None, reason=reason,
             structure={"requested": _describe_requirements(wanted), **structure})
 
+    if wanted["conflicts"]:
+        return WitnessRecord(
+            composition_id=composition.composition_id,
+            encoding_hash=composition.encoding_hash, constructor=CONSTRUCTOR_ID,
+            seed=seed, text=None,
+            reason=("the composition contradicts itself: "
+                    + "; ".join(wanted["conflicts"])
+                    + ". No arrangement satisfies it, so it is infeasible rather "
+                      "than hard to construct"),
+            structure={"requested": _describe_requirements(wanted)})
     n_items = wanted["n_items"]
     n_sentences = wanted["n_sentences"]
     as_list = n_items is not None or relation is not None
@@ -233,12 +287,13 @@ def construct_witness(composition: Composition, *, seed: int = 0) -> WitnessReco
         # Each item must be able to carry its label as its first word.
         lengths = [max(length, 1) for length in lengths]
 
-    supply = _Words(seed, forbidden=labels)
-    for label in labels:
-        supply.reserve(label)
-    mandatory = list(dict.fromkeys(wanted["mandatory_words"]))
-    for word in mandatory:
-        supply.reserve(word)
+    folded_labels = {textlib.fold(label, policy.text) for label in labels}
+    # A mandatory word that IS a declared label is already carried by that label's
+    # own item; placing it again would put the label in two items and make the
+    # identification ambiguous.
+    mandatory = [word for word in dict.fromkeys(wanted["mandatory_words"])
+                 if textlib.fold(word, policy.text) not in folded_labels]
+    supply = _Words(seed, policy, reserved=tuple(labels) + tuple(mandatory))
 
     # Enough room for the labels plus every mandatory word.
     capacity = sum(lengths)
@@ -292,4 +347,5 @@ def _describe_requirements(wanted: Mapping[str, Any]) -> dict[str, Any]:
             "increasing": wanted["increasing"],
             "all_distinct": wanted["all_distinct"],
             "mandatory_words": list(wanted["mandatory_words"]),
+            "conflicts": list(wanted.get("conflicts", ())),
             "relation": relation.state() if relation is not None else None}
