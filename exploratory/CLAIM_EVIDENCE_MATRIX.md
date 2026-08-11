@@ -331,3 +331,23 @@ disagreements).
 | W11.13 | The order interaction transports | **FALSIFIED (within this comparison)** | — | Γ_QAC ≈ Γ_ACQ on SmolLM3 (+0.400 vs +0.300, overlapping) where Qwen3-4B differs threefold | as above |
 | W11.14 | The amplifier acts through the **sentence boundary** | **Mechanistically suggestive** (unchanged from W10.13) | the semicolon shortens answers by 0.35–0.72 sentences on Qwen3-4B and 0.42–1.17 on SmolLM3-3B; two hand-found degenerate satisfactions place the mark where a boundary would go (`…itself.; The`, a free-standing `;`) | both are incidental observations, not manipulations | untested by intervention — this is the recommended next experiment |
 | W11.15 | The arbitration observed is target-versus-focal | **Unidentified** | — | B is satisfied in 0.000–0.138 of focal-arm rows and "focal only" occurs in 7 of 640; the contest measured is target-versus-nothing | limits every arbitration reading in Rounds 9–11 |
+
+---
+
+# Round 12 — boundary mechanism and focal repair (`runs/mechanism_and_focal_repair_20260811T204943Z`)
+
+1,648 generations, Round 11 execution condition unchanged. Labels as before.
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W12.1 | A mark that can occupy a sentence boundary interferes with sentence-defined constraints more than a matched mark that cannot | **Intervention-supported** | Δ_boundary = **+0.512** [+0.375, +0.662] at b = 4096 and +0.588 [+0.438, +0.738] at b = 0; 17/20 and 19/20 tasks positive with **0 negative**; all 8 replicate cells positive | degree compliance is 0.167 below the semicolon's; the compliant-only split points the same way (+0.530, +0.566) but is post-treatment | Qwen3-4B, QAC, k = 3, 20 pilot tasks |
+| W12.2 | The mechanism variable separates the two conditions | **Established within tested conditions** | `splice_count > 0` in 0.887–0.939 of complied semicolon answers, **0.000** of complied degree answers, every cell | a proxy, and descriptive — a property of the produced text | as above |
+| W12.3 | The interference is about a mark being present and freely placed | **FALSIFIED** | — | τ(degree) = **−0.037** [−0.150, +0.062] at b = 4096 for one mark, exactly one, freely placed, identical wording | as above |
+| W12.4 | Reasoning erodes the semicolon's effect | **Not supported** | — | Γ = −0.075 [−0.212, +0.075]; the gap is as wide at b = 0 as at b = 4096 | as above |
+| W12.5 | The boundary account is causal on the mark's *use* | **Unidentified** | — | the intervention assigns the instruction; boundary behaviour follows. `X_NO_SEMI_SPLICE` was never crossed with this design | the recommended next experiment |
+| W12.6 | A shorter chain of sentence-length increases moves the focal off its floor | **Established within tested conditions** | focal compliance 0.033 → 0.258 → 0.467 across B3 → B2 → B1 | — | calibration tasks CAL13–CAL32, X_PAREN_FREE |
+| W12.7 | Moving the focal off its floor creates genuine A-versus-B competition | **FALSIFIED** | — | `P(focal only)` = 0.000, 0.000, **0.008** across the ladder; the probability moves into *both* (0.033 → 0.258 → 0.458) and the target climbs to 0.958 | as above |
+| W12.8 | Round 11's priority null was caused by the focal instruction's floor | **Weakened** | the floor was real and was repaired | the *focal only* state still did not appear, so the obstacle was not the focal being too hard | as above |
+| W12.9 | The focal-only state can be produced at all | **Established within tested conditions** | under `X_SEMICOLON_FREE`, `X_B_INC1` gives P(focal only) = 0.133 at b = 0 and 0.183 at b = 4096 | observed, not acted on: the calibration background is fixed at X_PAREN_FREE and switching would select the condition that gives the wanted result | secondary calibration only |
+| W12.10 | An explicit priority cue can change which instruction survives when both are viable | **Untested** | — | the priority re-test was **stopped** by the directive's stop condition after `NONDEGENERATE_FOCAL_NOT_IDENTIFIED` | — |
+| W12.11 | The asterisk is a usable non-boundary control | **FALSIFIED** | — | 79.2% of combined answers carry more than one asterisk; markup collision 0.188 | pre-registered hazard |
