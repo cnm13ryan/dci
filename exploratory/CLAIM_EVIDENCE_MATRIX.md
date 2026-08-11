@@ -237,3 +237,26 @@ but the mark-agnostic `chain_share` in O15 would have been wrong. Fixed to
 |---|---|---|
 | **W10** | "The interference is Qwen-specific / model-family-specific" (R5) | tested on one non-Qwen model with one arm form. With four models and two forms, the whole-answer floor interferes in 3 of 4, and the per-sentence form varies more *within* Qwen than between Qwen and Gemma. |
 | **W11** | The first `Qwen/Qwen3.5-4B` run | invalid: run under the model's default reasoning template, so it measured a `<think>` trace, not the answer. Run kept and marked; re-run under `enable_thinking=False`. |
+
+
+---
+
+## G. Round 7 revisions
+
+| # | claim | evidence for | evidence against | manipulation | causal status | conf. | updated this round |
+|---|---|---|---|---|---|---|---|
+| **I3″** | The q ≈ 3 transition **survives greedy decoding**; it is the model's preferred completion, not a sampling artefact | Stage 1: q=3 → 1.000 at T=0 vs 0.988 at T=0.7; **97.5%** of greedy rows at exactly 1 sentence; `chain_share` 0.706 vs 0.714 | none | decoding temperature manipulated, controls at 0.000 throughout | intervention-supported | **0.90** | **yes, new** |
+| **I12** | Temperature changes **mixture proportions**, not strategy identity | Stage 1: q=2 sits at n=4 in 0.70 / 0.54 / 0.64 of rows across T = 0 / 0.3 / 0.7, with identical strategies present at all three | — | same | intervention-supported | 0.75 | yes, new |
+| **I13** | Ordering matters: Δ spans **0.525** across the six permutations, organised by the **focal instruction's position** (+0.400 / +0.287 / +0.012) | Stage 2, all six orderings, matched within (task, π, variant, replicate) | the gradient does not survive to k=5 (I15) | ordering manipulated with both replacement controls | intervention-supported | 0.85 | yes, new |
+| **I13a** | **B-first architecture** supported (+0.350 vs +0.117); **colon priming refuted** with the opposite sign; **adjacency refuted**; **co-presence refuted** | Stage 2 | — | as above | intervention-supported | 0.80 | yes, new |
+| **I14** | The amplification is caused by the colon **instruction**, not by the colon **mark** | Stage 2: colon production ranges 0.150–0.950 across orderings and does not track Δ (`CQA` 0.225 colons → Δ +0.325; `ACQ` 0.950 colons → Δ −0.125). Within-condition, paired by task, rows containing a colon fail **−0.049 [−0.134, +0.033]** | — | observational within an intervened design | suggestive → **falsifies the mark-supply account** | 0.80 | yes, new |
+| **I15** | The ordering effect **attenuates under load** and its monotone structure is lost | Stage 3: `QAC` +0.400 → +0.250; `AQC` +0.250 → +0.075; `ACQ` −0.125 → **+0.125** | — | load manipulated, control at 0.004–0.006 both loads | intervention-supported | 0.75 | yes, new |
+| **I16** | B and the semicolon demand reach the **same endpoint by different routes** — option (2), not mechanism identity | Stage 6 on existing matched data: failing rows both at ~1.15 sentences and chain 0.71–0.77, but B at 149 words/sentence and 8.28 comma splices against 51 and 1.02; arbitration **opposite** (B sacrifices its own rule 0.600, semicolon sacrifices the target 0.750) | — | none (re-analysis) | observation | 0.80 | yes, new |
+
+### Newly withdrawn
+
+| # | item | why |
+|---|---|---|
+| **W12** | *"The colon-requiring background instruction was supplying B with a boundary-capable mark"* (Round 6, I7″) | **Falsified by Stage 2.** The mark need not appear: Δ is large where colons are rarely produced and negative where they almost always are, and within the colon condition producing one is if anything slightly protective. |
+| **W13** | `severe_collapse` and, retrospectively, the closed-list-only `splice_count` as *graded* measures | The Stage 0.3 audit found precision 18/18 but style-dependent recall — a six-join answer scoring 0.000. Magnitudes computed under that rule are not comparable across conditions; the shape-test revision replaces it. |
+| **W14** | Any claim that greedy decoding is bit-reproducible in this harness | 112/160 replicate pairs identical in text (96.2% in outcome). bf16 matmuls are not associative across batch padding widths. |

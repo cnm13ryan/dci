@@ -1701,3 +1701,65 @@ This changes what Stage 5 must ask. The question is no longer "which punctuation
 mark affords chaining" but **"what property of an instruction makes it amplify a
 chaining-prone neighbour"** — and the answer cannot be the mark it names, since
 the mark need not appear.
+
+### Stage 3 outcome · `runs/stageS3_load5_*` — the ordering effect does NOT fully transport
+
+480 generations, 0 technical failures. The smallest informative subset justified
+by Stage 2: the three levels of the Q-position gradient (`QAC`, `AQC`, `ACQ`),
+with `U_LEX_FORBID3` and `U_NUM_MAXINT` frozen in positions 4–5 so raising the
+load does not also permute instructions the design is not studying.
+
+| π | Q pos | Δ at k=3 | **Δ at k=5** |
+|---|---|---|---|
+| `QAC` | 1 | +0.400 [+0.275, +0.525] | **+0.250** [0.000, +0.475] |
+| `AQC` | 2 | +0.250 [+0.100, +0.425] | +0.075 [−0.025, +0.175] |
+| `ACQ` | 3 | **−0.125** [−0.250, −0.025] | **+0.125** [0.000, +0.275] |
+
+**Partial transport, and the structure is lost.** The largest cell reproduces at
+about 60% of its k=3 magnitude. The *monotone gradient does not survive*: at k=5
+the second- and third-position cells swap, and the negative Δ at `ACQ` reverses
+sign.
+
+**This is not generic load.** The pre-registered check applies: `C_L3`'s failure
+rate is **0.004 at k=5 and 0.006 at k=3** — the control is on the floor at both
+loads, so nothing here is the extra instructions making the target harder. What
+changes is B's behaviour: its `chain_share` falls from 0.346/0.379/0.258 to
+0.273/0.162/0.156, i.e. **B chains less when the prompt carries more**.
+
+**Reading.** The ordering result is real at minimal load and attenuates as the
+prompt fills. Claims about instruction position must therefore be stated at a
+load, and the k=3 gradient must not be quoted as a general property.
+
+### Stage 6 outcome — answered on EXISTING data, no new generation
+
+`runs/stageR6B_load3_*` already contains A + {B, `S_SEMICOLON`, `C_L3`} + colon
+in one matched design, which is exactly the comparison Stage 6 specifies.
+
+| among **failing** rows | n | sentences | `chain_share` | semi splices | **comma splices** | words | **words/sentence** |
+|---|---|---|---|---|---|---|---|
+| B | 25 | 1.160 | 0.713 | 2.04 | **8.28** | 157 | **149** |
+| `S_SEMICOLON` | 65 | 1.154 | 0.773 | 2.94 | 1.02 | 56 | 51 |
+
+**Same endpoint, different composition.** Both collapse to ~1.15 sentences at
+`chain_share` ≈ 0.71–0.77. But B's collapsed sentence is three times longer and
+carries eight times the comma splices; the semicolon arm's is short and
+semicolon-dense.
+
+**And the arbitration is opposite:**
+
+| arm | both met | own rule sacrificed | **target sacrificed** | neither |
+|---|---|---|---|---|
+| B | 0.087 | **0.600** | 0.013 | 0.300 |
+| `S_SEMICOLON` | 0.013 | 0.175 | **0.750** | 0.062 |
+
+B abandons its own growth rule and keeps the target; the semicolon demand
+abandons the target and keeps its own rule.
+
+**Verdict: option (2) — related but distinct strategies that share an endpoint.**
+Mechanism identity is *not* inferred from the shared binary outcome, which is
+what the stage was written to prevent.
+
+**Measurement caveat, recorded:** when a colon is mandated, every arm gains
+roughly one colon splice, so `chain_share` is inflated by a common amount in this
+design. `C_L3` shows chain 0.148 with **0.000** failure, which confirms that an
+inflated share by itself does not produce failure.

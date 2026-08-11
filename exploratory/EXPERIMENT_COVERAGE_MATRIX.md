@@ -278,3 +278,30 @@ the 512-token budget went to a reasoning trace, giving 36 "sentences", 268 words
 and `output_truncated=True`. It is retained as `runs/stageR6C_qwen35_4b_*` and
 marked invalid. `prompt_convention` in every run summary now records which
 convention produced the prompts, so no future comparison can silently mix them.
+
+
+---
+
+## 14. Round 7 update
+
+| dimension | before Round 7 | after |
+|---|---|---|
+| **decoding** | T=0.7 only — the top open gap | ✔ **T = 0.0 (greedy), 0.3, 0.7** at N=4, q ∈ {0,2,3,4} |
+| **order/permutation** | ✔ o_A/o_Q only — the target and one added instruction | ✔ **all six S₃ orderings** of (target, focal slot, background slot), × 2 focal occupants × 2 variants |
+| **load × ordering** | ✘ | ✔ k=3 vs k=5 for the three gradient levels, two background members frozen |
+| **reasoning mode** | ◐ recorded | ✔ recorded per run in `prompt_convention`; Qwen3.5 runs use the model's own `enable_thinking=False` |
+| **reasoning budget** | ✘ | ✘ **not run** — see §15 |
+| punctuation dose (colon) | ✘ | ✘ still open, and **reframed** by I14: the mark need not appear, so a dose grid over the mark may be the wrong probe |
+
+New runs: `S1_Tgreedy`, `S1_Tt03` (1,040), `S2_orderings` (960), `S3_load5` (480).
+Cumulative: **35 runs, ~17,600 generations, 0 technical failures.**
+
+## 15. Stages specified but not run, with reasons
+
+| stage | status | reason |
+|---|---|---|
+| **4 — reasoning budget as treatment** | **not run** | Needs a hard reasoning-budget control (`b`) and a separate reasoning/answer channel in the harness. The thinking/non-thinking *mode* distinction is implemented and recorded; a graded budget is not, and implementing it is a harness project rather than an experiment. Qwen3.5-4B/9B are available and validated for it. |
+| **5 — colon anatomy** | **not run, and reframed** | Stage 2's I14 removed its original premise. A dose/scope/wording grid over the *mark* now tests the wrong thing; the live question is what property of an *instruction* makes it amplify a neighbour when its own mark need not appear. |
+| **7 — structural-unit generalisation** | **not run** | Depends on a characterised mechanism; I14 reopened that. |
+| **8 — DCI Pairs 1 and 2** | **not run** | Pair 1's verifiers are unimplemented in the registry and Pair 2's registered measurement risk is logical impossibility of the composition — the reason this study selected Pair 3 in Round 1. Transferring the disposition/amplification/arbitration decomposition needs pair-specific diagnostics authored first. |
+| **Qwen 3.6** | **blocked, unchanged** | 27B ≈ 55.6 GB bf16 vs 48 GB total VRAM; 35B-A3B ≈ 71.9 GB. FP8 unsupported on gfx1100; Int4 would change the numeric condition. No substitution made. |
