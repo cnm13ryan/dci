@@ -309,3 +309,36 @@ so it cannot be fitted to whatever the estimate turns out to be.
 
 The checkpoint is **not** excluded for it. Floor-limited constrains what may be
 concluded; it does not make the row set invalid.
+
+---
+
+## D18 — gemma-4-12B-it needs dual-GPU capacity mode, and the measurement says so
+
+**Recorded 2026-08-11, from the Stage B/C gate, before any 12B scientific run.**
+
+The conservative configuration was tried first, exactly as planned in D12:
+BF16, one card, text-only preferred, batch small.
+
+Measured on `cuda:0` alone:
+
+| | |
+|---|---|
+| loaded class | `Gemma4UnifiedForConditionalGeneration` |
+| text-only class | **rejected** — 667 parameters absent from the checkpoint |
+| weights resident | **22.277 GiB** of a 23.98 GiB card |
+| `NO_THINKING` | **MODE_VALID** — answers fine in ~1.7 GiB of headroom |
+| `NATURAL_REASONING` | **MODE_FAILED** — `HIP out of memory`, 80 MiB free while trying to allocate 72 MiB |
+
+**Decision.** The 12B checkpoint runs in **dual-GPU capacity mode**
+(`device_map="auto"` across both RX 7900 XTX) for every reasoning condition,
+including the no-thinking one that happened to fit on a single card. Running one
+mode on one card and the other on two would make the reasoning contrast a device
+contrast.
+
+**Not** a numerical rescue: dtype stays BF16 and nothing is quantized. This is a
+capacity decision, and `BF16_EXECUTION_BLOCKED` is not claimed — BF16 executes
+fine, it simply does not fit beside a KV cache on one card.
+
+**The single-card record is kept** (`runs/xm_validate_gemma12b_single/`) because
+"this checkpoint cannot do natural reasoning on one 24 GiB card" is a result
+about the hardware envelope, not a failed attempt to be tidied away.
