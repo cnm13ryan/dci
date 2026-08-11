@@ -1,0 +1,144 @@
+{
+ "stamp": "EXPLORATORY_NO_EVIDENCE",
+ "created_utc": "2026-08-11T22:42:57.672732+00:00",
+ "git_commit": "8c0c811a36c4347738dad880f3ed63f8825cdb9b",
+ "git_branch": "exp/cross-model-transport",
+ "git_dirty": false,
+ "contract": {
+  "target": "A",
+  "focal": "B",
+  "reference": "C_L3",
+  "control_background": "X_PAREN_FREE",
+  "semicolon_background": "X_SEMICOLON_FREE",
+  "order": "QAC",
+  "load": 3,
+  "task_split": "pilot",
+  "task_offset": 0,
+  "n_tasks": 20,
+  "replicates": 2,
+  "paraphrase_id": 0,
+  "expected_rows": 160,
+  "answer_tokens": 512,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "top_k": 0,
+  "master_seed": 20260812,
+  "replicates_canonical_run": "stageS18_reasoning_design_20260811T144250Z",
+  "canonical_model": "Qwen/Qwen3-4B",
+  "canonical_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "canonical_backend": "vllm 0.15.1+rocm720, tensor_parallel_size=2"
+ },
+ "note": "runs/ is gitignored. These hashes and row counts are how a raw artefact is identified; filenames are not evidence.",
+ "files": [
+  {
+   "relative_path": "runs/xm_main_gemma_e4b_natural",
+   "file_name": "generations.jsonl",
+   "sha256": "78f8c72907898144367d1e5324391f46d1ea1ffbf97acaef6971379f588ec8e8",
+   "bytes": 856250,
+   "rows": 160,
+   "model_id": "google/gemma-4-E4B-it",
+   "model_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+   "model_family": "gemma4",
+   "backend": "transformers",
+   "backend_version": "5.15.0",
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "device_configuration": "cuda:0",
+   "chat_template_sha256": "0a2c8073c878ab1d",
+   "reasoning_mode": "NATURAL_REASONING",
+   "reasoning_control": "chat_template(enable_thinking=True)",
+   "assigned_reasoning_budget": "None",
+   "engineering_ceiling": 39517,
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_final_answer_tokens": 512
+   },
+   "task_count": 20,
+   "replicate_count": 2,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "backgrounds": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "orders": [
+    "QAC"
+   ],
+   "unique_row_ids": 160,
+   "seed_scheme": "sha256(MASTER_SEED, task_id, replicate, arm, background, order, paraphrase, phase); MASTER_SEED=20260812",
+   "replicate_duplication": {
+    "replicate_pairs": 80,
+    "identical_pairs": 0,
+    "identical_rate": 0.0,
+    "alarm_threshold": 0.25,
+    "implausible": false
+   },
+   "technical_failures": 0,
+   "empty_answers": 0,
+   "truncated_answers": 0,
+   "ceiling_hits": 0,
+   "forced_close_artefacts": 0,
+   "traces_opened": 155,
+   "canonical_status": "CANONICAL"
+  },
+  {
+   "relative_path": "runs/xm_main_gemma_e4b_nothink",
+   "file_name": "generations.jsonl",
+   "sha256": "fa4b3ef48a062da3c4cdb9d1316c388c8a836e09910588331feda32bb32025e2",
+   "bytes": 518637,
+   "rows": 160,
+   "model_id": "google/gemma-4-E4B-it",
+   "model_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+   "model_family": "gemma4",
+   "backend": "transformers",
+   "backend_version": "5.15.0",
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "device_configuration": "cuda:0",
+   "chat_template_sha256": "0a2c8073c878ab1d",
+   "reasoning_mode": "NO_THINKING",
+   "reasoning_control": "chat_template(enable_thinking=False)",
+   "assigned_reasoning_budget": "0",
+   "engineering_ceiling": null,
+   "decoding": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_final_answer_tokens": 512
+   },
+   "task_count": 20,
+   "replicate_count": 2,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "backgrounds": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "orders": [
+    "QAC"
+   ],
+   "unique_row_ids": 160,
+   "seed_scheme": "sha256(MASTER_SEED, task_id, replicate, arm, background, order, paraphrase, phase); MASTER_SEED=20260812",
+   "replicate_duplication": {
+    "replicate_pairs": 80,
+    "identical_pairs": 0,
+    "identical_rate": 0.0,
+    "alarm_threshold": 0.25,
+    "implausible": false
+   },
+   "technical_failures": 0,
+   "empty_answers": 0,
+   "truncated_answers": 0,
+   "ceiling_hits": 0,
+   "forced_close_artefacts": 0,
+   "traces_opened": 0,
+   "canonical_status": "CANONICAL"
+  }
+ ]
+}
