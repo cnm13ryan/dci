@@ -25,9 +25,20 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 
-from dci.v19 import (ALPHA, CANDIDATE_METHODS, PRIMITIVE_SUPPORT,
-                     PROTOCOL_VERSION, SECONDARY_SUPPORT, SESOI_FLOOR)
-from dci.v19 import artifacts, field_roles, pairs, pools, specs
+from dci.v19 import (
+    ALPHA,
+    CANDIDATE_METHODS,
+    PRIMITIVE_SUPPORT,
+    PROTOCOL_VERSION,
+    SECONDARY_SUPPORT,
+    SESOI_FLOOR,
+    artifacts,
+    field_roles,
+    frozen,
+    pairs,
+    pools,
+    specs,
+)
 from dci.v19.identity import ARMS, LOADS, ORDERS
 from dci.v19.resolution import Slot, SlotTable
 
@@ -112,11 +123,40 @@ STAGE_GATES: tuple[StageGate, ...] = (
         key="stage_2_verifiers", ordinal="2",
         title="satisfiability and verifier infrastructure",
         citation="section 14.2",
-        requires=_req("section 14.2: Pair 1 support must be built and Pair 2/3 "
-                      "code reused only after a hash and semantic audit",
-                      "verifiers.boundary_mutations"),
-        produces=("verifiers.bundle_hash", "verifiers.tier1_reliability",
-                  "verifiers.binomial_interval_implementation")),
+        requires=(
+            _req("section 14.2: Pair 1 support must be built and Pair 2/3 "
+                 "code reused only after a hash and semantic audit",
+                 "verifiers.boundary_mutations")
+            + _req("sections 4.1 and 4.2 fix the two Pair 1 statements and name "
+                   "the shared-parser coupling risk but fix no list-parsing "
+                   "semantics, so the policy is a signed decision",
+                   "verifiers.p1.list_policy")
+            + _req("section 6.1 names ordering depth as a family-specific "
+                   "parameter without defining what it ranges over, and Stage 5 "
+                   "cannot calibrate a grid that does not exist",
+                   "verifiers.p1.ordering_depth")
+            + _req("section 14.2 permits Pair 2/3 reuse only after a hash and "
+                   "semantic audit, and section 10.6 requires a demonstrated "
+                   "verifier defect to be repaired and re-audited before freeze",
+                   "verifiers.inherited_reuse_decision")
+            + _req("section 10.4 freezes the two-sided binomial interval at "
+                   "Stage 2, before dependent reliability audits",
+                   "verifiers.binomial_interval_implementation")
+            + _req("section 10.4 fixes the Tier-1 planning count prospectively, "
+                   "and the interval alone does not determine a decision rule: "
+                   "one error fails at 72 and passes at 110, so the sample size "
+                   "and error budget must be fixed before the audit runs",
+                   "verifiers.tier1_audit_design")
+            + _req("section 14.2 assigns Stage 2 the semantic-review TRIGGERS. "
+                   "The reviews themselves are per composition, and compositions "
+                   "are Stage 8 and Stage 10 outputs, so requiring them here "
+                   "would block Stage 2 on material later stages produce",
+                   "satisfiability.review_trigger")),
+        produces=("verifiers.specification_bundle", "verifiers.bundle_hash",
+                  "verifiers.tier1_reliability", "satisfiability.encoding_map",
+                  "satisfiability.solver_identity",
+                  "satisfiability.witness_constructor",
+                  "satisfiability.review_trigger")),
     StageGate(
         key="stage_2a_qualification", ordinal="2A",
         title="early scientific-runtime and inference qualification",
@@ -263,9 +303,17 @@ STAGE_GATES: tuple[StageGate, ...] = (
                    "and all four reference arms", *_all_references())
             + _req("section 8.7 requires whole-composition certification, which "
                    "needs the deterministic verifier conjunction",
-                   "verifiers.bundle_hash")),
+                   "verifiers.bundle_hash")
+            + _req("section 8.6 requires human semantic review for every clause "
+                   "the frozen encoding and deterministic verifier do not "
+                   "exhaust, and unresolved disagreement fails certification. "
+                   "Section 8.6 places SATCERT 'before entering a frozen "
+                   "confirmatory bank', and section 14.10 builds that bank here, "
+                   "so this is where the reviews are due",
+                   "satisfiability.semantic_reviews")),
         produces=_per_pair("bank.{pair}.attainable_count",
-                           "bank.{pair}.accepted_order")),
+                           "bank.{pair}.accepted_order")
+        + ("satisfiability.certified_compositions",)),
     StageGate(
         key="stage_11_design_simulation", ordinal="11",
         title="authoritative end-to-end (H, G) design simulation",
@@ -557,19 +605,36 @@ HARDWARE_RULE_SUMMARY = (
     "DCI outcome as an input")
 
 
-def build() -> Registry:
-    """Assemble the Stage 1 registry from its declaring modules.
+def declared_table() -> SlotTable:
+    """Every slot the protocol declares, with all pre-freeze outputs still pending.
 
     Merging refuses overlapping slot names, so two modules cannot both claim to
     own the same pre-freeze output - the failure that would let one declaration
     silently win over another.
+
+    Kept separate from `build` so a test can ask what the protocol DECLARES
+    without the recorded outputs applied. That is also what the declaration
+    fingerprint is a hash of.
     """
     table = _fixed_commitments()
     for other in (pairs.declared_slots(), pools.declared_slots(),
                   pools.sufficiency_slots(), specs.declared_slots(),
                   artifacts.declared_slots()):
         table = table.merged(other)
-    return Registry(protocol=PROTOCOL_VERSION, slots=table)
+    return table
+
+
+def build() -> Registry:
+    """The declared registry with every recorded Stage 2 output applied.
+
+    `frozen.apply` refuses a record whose own prerequisites are still unresolved,
+    so a hand-edited file cannot bypass the ordering section 14 makes mandatory,
+    and every value passes through `Slot.freeze` and its typed domain on the way
+    in. A recorded output the code can no longer reproduce therefore fails at
+    IMPORT rather than at whatever later stage happens to read it.
+    """
+    return Registry(protocol=PROTOCOL_VERSION,
+                    slots=frozen.apply(declared_table()))
 
 
 REGISTRY = build()
