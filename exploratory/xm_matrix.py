@@ -63,8 +63,18 @@ def load_records(paths: list[Path], filename: str) -> dict[str, dict]:
     return out
 
 
-def admission(validate: dict | None, calibrate: dict | None) -> dict:
-    """The admission decision and, when it is negative, the reason."""
+def admission(cls, mode: str, validate: dict | None, calibrate: dict | None
+              ) -> dict:
+    """Admission for ONE (checkpoint, reasoning condition) pair.
+
+    Admission is per condition, not per checkpoint. A checkpoint whose native
+    non-thinking mode is validated is admissible in that condition whatever
+    happens to its natural-reasoning calibration, and the reverse. Collapsing
+    the two would either exclude usable cells or admit unvalidated ones.
+    """
+    if mode not in cls.SUPPORTED_MODES:
+        return {"admitted": False,
+                "reason": "not natively supported by this checkpoint"}
     if not validate:
         return {"admitted": False,
                 "reason": "no Stage B/C record — never validated"}
@@ -73,26 +83,33 @@ def admission(validate: dict | None, calibrate: dict | None) -> dict:
         return {"admitted": False,
                 "reason": f"{status}: {validate.get('blocked_reason', '')[:200]}"}
 
-    modes = validate.get("modes") or {}
-    natural = modes.get("NATURAL_REASONING") or {}
-    if natural.get("status") == "MODE_FAILED":
+    verdict = (validate.get("modes") or {}).get(mode) or {}
+    if not verdict:
+        return {"admitted": False, "reason": f"{mode} was never probed"}
+    if verdict.get("status") == "MODE_FAILED":
         return {"admitted": False,
-                "reason": f"natural reasoning failed: {natural.get('error','')[:160]}"}
-    if natural.get("marker_leak_into_answer") or natural.get(
+                "reason": f"{mode} failed: {verdict.get('error','')[:180]}"}
+    if verdict.get("marker_leak_into_answer") or verdict.get(
             "control_token_residue"):
         return {"admitted": False,
                 "reason": "reasoning or control markup reached the final answer"}
 
+    if mode == "NO_THINKING":
+        # The gate for the non-thinking condition is Stage B/C plus the Stage D
+        # primitive record. Stage E measures a reasoning distribution that this
+        # condition does not have.
+        return {"admitted": True, "reason": ""}
+
     stage_e = (calibrate or {}).get("stage_e") or {}
-    if stage_e and not stage_e.get("validated", False):
+    if not stage_e:
+        return {"admitted": False,
+                "reason": "no Stage E natural-reasoning calibration"}
+    if not stage_e.get("validated", False):
         return {"admitted": False,
                 "reason": "NATURAL_REASONING_NOT_VALIDATED — "
                           f"{stage_e.get('reasoning_cap_hits', '?')} ceiling "
                           f"hit(s), {stage_e.get('empty_answers', '?')} empty "
                           "answer(s) in the pilot"}
-    if not stage_e:
-        return {"admitted": False,
-                "reason": "no Stage E natural-reasoning calibration"}
     return {"admitted": True, "reason": ""}
 
 
@@ -122,7 +139,9 @@ def row_for(model_id: str, validate: dict | None, calibrate: dict | None
     else:
         classification = ["NOT MEASURED"]
 
-    decision = admission(validate or None, calibrate or None)
+    decisions = {mode: admission(cls, mode, validate or None,
+                                 calibrate or None)
+                 for mode in ("NO_THINKING", "NATURAL_REASONING")}
     return {
         "model_id": model_id,
         "family": cls.FAMILY,
@@ -154,8 +173,11 @@ def row_for(model_id: str, validate: dict | None, calibrate: dict | None
         "background_semicolon": primitives.get(contract.SEMICOLON_BACKGROUND),
         "background_control": primitives.get(contract.CONTROL_BACKGROUND),
         "primitive_classification": classification,
-        "admitted": decision["admitted"],
-        "exclusion_reason": decision["reason"],
+        "admitted_no_thinking": decisions["NO_THINKING"]["admitted"],
+        "admitted_natural": decisions["NATURAL_REASONING"]["admitted"],
+        "admitted": any(d["admitted"] for d in decisions.values()),
+        "exclusion_no_thinking": decisions["NO_THINKING"]["reason"],
+        "exclusion_natural": decisions["NATURAL_REASONING"]["reason"],
         "notes": NOTES.get(model_id, ""),
     }
 
@@ -246,13 +268,20 @@ def render(rows: list[dict]) -> str:
         "",
         "## Admission",
         "",
-        "| model | admitted | reason if not |",
-        "|---|---|---|",
+        "Admission is per (checkpoint, reasoning condition). A checkpoint whose",
+        "native non-thinking mode is validated is admissible in that condition",
+        "whatever its natural-reasoning calibration does, and the reverse.",
+        "",
+        "| model | NO_THINKING | reason if not | NATURAL_REASONING | reason if not |",
+        "|---|---|---|---|---|",
     ]
     for row in rows:
         lines.append(
-            f"| `{row['model_id']}` | **{fmt(row['admitted'])}** | "
-            f"{row['exclusion_reason'] or '—'} |")
+            f"| `{row['model_id'].split('/')[-1]}` | "
+            f"**{fmt(row['admitted_no_thinking'])}** | "
+            f"{row['exclusion_no_thinking'] or '—'} | "
+            f"**{fmt(row['admitted_natural'])}** | "
+            f"{row['exclusion_natural'] or '—'} |")
 
     lines += ["", "## Execution notes", ""]
     for row in rows:
@@ -285,8 +314,10 @@ def main() -> int:
 
     print(render(rows))
     print(f"\nwrote {out} and {out.with_suffix('.json')}")
-    admitted = [r['model_id'] for r in rows if r['admitted']]
-    print(f"\nadmitted {len(admitted)}/{len(rows)}: {admitted}")
+    for mode, key in (("NO_THINKING", "admitted_no_thinking"),
+                      ("NATURAL_REASONING", "admitted_natural")):
+        names = [r['model_id'].split('/')[-1] for r in rows if r[key]]
+        print(f"\nadmitted to {mode}: {len(names)}/{len(rows)} — {names}")
     return 0
 
 
