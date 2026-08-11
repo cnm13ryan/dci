@@ -2547,3 +2547,64 @@ Direction matters and is stated wherever Δ_boundary is: the artefact depresses
 A_pass in the **degree** condition only, inflating τ_degree and deflating
 Δ_boundary. **+0.512 is a lower bound with respect to it.** The semicolon
 condition has zero disagreements.
+
+---
+
+# R13 — the anti-splice instrument does not work
+
+## R13.1 A failed manipulation, stopped at the gate
+
+`X_NO_SEMI_SPLICE` was the obvious next instrument: Round 12 showed boundary
+capability predicts the interference, and this instruction names exactly the
+behaviour the account is about. It does not close the route.
+
+At b = 4096, among answers that produced the required semicolon, the share
+containing a splice is **0.946** under the anti-splice instruction and **0.974**
+under the matched off-route control — an absolute reduction of **0.028** against
+a gate of 0.50. At b = 0 the rate is **1.000 in both**. The predeclared gate
+failed on items 2 and 3, and the main experiment was not run.
+
+The important structural point: this is **not** the "semicolon compliance
+collapses" failure mode. Compliance is 0.925 under anti-splice against 0.950
+under the control, so the instrument did not prevent the mark; it failed to
+constrain how the mark was used. The model follows a **count** constraint on the
+semicolon and does not follow a **usage** constraint on the same mark in the same
+prompt (0.050 compliance, against 1.000 for the off-route instruction at
+identical load).
+
+Round 7 had already seen this instruction fail in a much heavier per-sentence
+semicolon setting. The lighter exact-one requirement did not make it satisfiable.
+
+## R13.2 The null was audited before it was accepted
+
+The whole conclusion rests on `splice_count`, so the proxy was checked rather than
+trusted. 12 flagged anti-splice rows read by hand: 11 are unambiguous clause
+joins, 1 joins a fragment to a clause and is a plausible false positive. Both
+"clean" rows with a semicolon read: one genuinely clean, one a plausible false
+negative.
+
+Decisively, the proxy shows **no differential bias between route conditions**: its
+high-precision closed-list rule accounts for 0.610 of anti-splice flags and 0.486
+of off-route flags, so the anti-splice flags are if anything the more certain
+ones. No measurement artefact could manufacture this null.
+
+## R13.3 One wording was tested, and the other five were deliberately not
+
+The registry holds six paraphrases of `X_NO_SEMI_SPLICE`. Only paraphrase 0 was
+run. Trying the others *after* seeing that the first failed — and stopping at
+whichever one works — is exactly the search the manipulation gate exists to
+prevent, and §10 forbids it.
+
+A prospective wording screen scored **only** on the manipulation, on calibration
+tasks, in the reference arm, with no focal contrast computable, is a legitimate
+separate experiment and is the recommended next step. Substituting a stronger
+wording into this one is not.
+
+## R13.4 A descriptive observation kept out of the conclusion
+
+Realised reasoning is **978.7** tokens under anti-splice against **470.0** under
+the off-route control at b = 4096: the model thinks about twice as long when told
+not to splice, and splices anyway. This is post-treatment and is reported
+descriptively only. It is consistent with the instruction being read and
+attempted — which is also what the earlier priority-cue null looked like — but
+nothing here identifies why the attempt fails.

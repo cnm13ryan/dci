@@ -351,3 +351,19 @@ disagreements).
 | W12.9 | The focal-only state can be produced at all | **Established within tested conditions** | under `X_SEMICOLON_FREE`, `X_B_INC1` gives P(focal only) = 0.133 at b = 0 and 0.183 at b = 4096 | observed, not acted on: the calibration background is fixed at X_PAREN_FREE and switching would select the condition that gives the wanted result | secondary calibration only |
 | W12.10 | An explicit priority cue can change which instruction survives when both are viable | **Untested** | — | the priority re-test was **stopped** by the directive's stop condition after `NONDEGENERATE_FOCAL_NOT_IDENTIFIED` | — |
 | W12.11 | The asterisk is a usable non-boundary control | **FALSIFIED** | — | 79.2% of combined answers carry more than one asterisk; markup collision 0.188 | pre-registered hazard |
+
+---
+
+# Round 13 — anti-splice instrument (`runs/semicolon_splice_intervention_20260811T233021Z`)
+
+160 generations, manipulation preflight only; the main experiment was not run.
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W13.1 | `X_NO_SEMI_SPLICE` suppresses semicolon splicing when only one semicolon is required | **FALSIFIED** | — | P(splice>0 \| compliant) = 0.946 anti-splice vs 0.974 off-route at b = 4096, reduction **0.028**; **1.000 in both** at b = 0 | Qwen3-4B, QACD, k = 4, calibration tasks CAL33–CAL52 |
+| W13.2 | The anti-splice instruction works by suppressing the semicolon itself | **FALSIFIED** | — | semicolon compliance 0.925 under anti-splice vs 0.950 off-route — the mark survives | as above |
+| W13.3 | The failure is an instruction-load effect | **FALSIFIED** | — | the matched off-route instruction at identical load is obeyed **1.000**; the anti-splice one **0.050** | as above |
+| W13.4 | This model follows a count constraint on a mark but not a usage constraint on the same mark | **Established within tested conditions** | 0.925 semicolon-count compliance against 0.050 anti-splice compliance, same prompt, same answer | one mark, one usage constraint, one wording | as above |
+| W13.5 | The null is a `splice_count` artefact | **Ruled out** | — | 11/12 hand-read flags are unambiguous clause joins; the high-precision rule accounts for 0.610 of anti-splice flags vs 0.486 of off-route flags, so no differential bias | proxy tests only the following side of the mark |
+| W13.6 | Boundary-like semicolon USE causally contributes to the interference | **Unidentified — unchanged** | — | the intervention that would have tested it did not land; Ω was never computed and no outcome contrast was generated | the causal question remains open |
+| W13.7 | The splice route is closable by instruction in this model | **Unidentified** | — | one of six registry paraphrases tested; the others were deliberately not tried after seeing the failure | a prospective wording screen is the recommended next experiment |
