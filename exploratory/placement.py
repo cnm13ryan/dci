@@ -76,7 +76,9 @@ for variant in per_task.index.get_level_values("variant").unique():
 
 table = pd.DataFrame(rows).sort_values("tau", ascending=False)
 print(f"### {run.name}\n")
-print("τ(B→A) by placement condition, π = QAC, k = 3\n")
+order = "/".join(sorted(g["order"].astype(str).unique()))
+load = g["load"].iloc[0]
+print(f"τ(B→A) by placement condition, π = {order}, k = {load}\n")
 print(table.to_string(index=False, float_format=lambda v: f"{v:+.3f}"))
 
 print(f"\n\n### Paired contrast against the length-matched free arm ({free_variant})\n")
