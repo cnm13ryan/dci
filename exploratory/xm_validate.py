@@ -43,11 +43,18 @@ from crossmodel.contract import ReasoningMode
 #: multilingual noise. Nothing downstream would have noticed: the noise simply
 #: fails "write exactly 4 sentences" and reads as a behavioural result. A model
 #: that cannot name the capital of Japan has not loaded.
+#: The last two carry composed constraints on purpose. Gemma 4's template leaves
+#: thinking optional and the model DECLINES to open a thought channel on trivial
+#: questions — a property of the checkpoint, not a broken parser. A smoke set of
+#: only trivial questions cannot tell those two apart, so it cannot validate a
+#: reasoning interface. These are still disjoint from the DCI task bank.
 SMOKE_PROMPTS = [
     ("Name the capital city of Japan.", "tokyo"),
     ("What is 17 plus 25?", "42"),
-    ("Write one sentence about rain.", None),
-    ("List the first three prime numbers.", "5"),
+    ("Write exactly three sentences about bicycles, each one longer than "
+     "the last, and use exactly one comma in the whole answer.", None),
+    ("List the first three prime numbers, then explain in exactly two "
+     "sentences why the first of them is prime.", "5"),
 ]
 
 #: A reasoning ceiling for the smoke only. The scientific ceiling is derived per
@@ -265,6 +272,7 @@ def _probe_mode(adapter, mode: str, system: str, out_dir: Path) -> dict:
                              for a in answers if CONTROL_RESIDUE.search(a)][:3],
         "reasoning_present": sum(1 for g in generations
                                  if g.reasoning_text.strip()),
+        "reasoning_emitted": sum(1 for g in generations if g.reasoning_emitted),
         "closed_naturally": sum(1 for g in generations
                                 if g.natural_reasoning_closed),
         "cap_hits": sum(1 for g in generations if g.reasoning_cap_hit),
@@ -295,10 +303,19 @@ def _probe_mode(adapter, mode: str, system: str, out_dir: Path) -> dict:
         if verdict["reasoning_present"]:
             problems.append("a reasoning trace appeared in the non-thinking mode")
     else:
-        if verdict["closed_naturally"] != verdict["n"]:
-            problems.append("reasoning did not close on its own")
-        if verdict["reasoning_present"] != verdict["n"]:
-            problems.append("no reasoning trace in a thinking mode")
+        # Opening a block and failing to close it is a parser/ceiling problem.
+        # Never opening one is a choice the checkpoint made, and is reported
+        # rather than treated as a defect.
+        unclosed = verdict["reasoning_emitted"] - verdict["closed_naturally"]
+        if unclosed:
+            problems.append(f"{unclosed} trace(s) opened but never closed")
+        if verdict["reasoning_emitted"] == 0:
+            problems.append("the thinking mode never opened a reasoning block")
+        elif verdict["reasoning_emitted"] < verdict["n"]:
+            verdict["notes"] = (
+                f"{verdict['n'] - verdict['reasoning_emitted']} of "
+                f"{verdict['n']} prompts were answered without opening a "
+                "reasoning block — the checkpoint chose not to think")
     verdict["problems"] = problems
     verdict["status"] = "MODE_VALID" if not problems else "MODE_SUSPECT"
     return verdict

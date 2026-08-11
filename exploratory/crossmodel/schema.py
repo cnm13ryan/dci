@@ -43,8 +43,8 @@ REQUIRED_FIELDS = (
     "final_answer",
     # accounting
     "reasoning_tokens", "final_answer_tokens", "total_generated_tokens",
-    "finish_reason", "natural_reasoning_closed", "reasoning_cap_hit",
-    "answer_truncated", "answer_empty",
+    "finish_reason", "reasoning_emitted", "natural_reasoning_closed",
+    "reasoning_cap_hit", "answer_truncated", "answer_empty",
     "generation_ok", "technical_failure", "technical_failure_reason",
 )
 
@@ -114,6 +114,7 @@ def build_row(*, run_id: str, design_row: Any, generation: Generation,
         "final_answer_tokens": generation.final_answer_tokens,
         "total_generated_tokens": generation.total_generated_tokens,
         "finish_reason": generation.finish_reason,
+        "reasoning_emitted": generation.reasoning_emitted,
         "natural_reasoning_closed": generation.natural_reasoning_closed,
         "reasoning_cap_hit": generation.reasoning_cap_hit,
         "answer_truncated": generation.answer_truncated,

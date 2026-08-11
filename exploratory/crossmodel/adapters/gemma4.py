@@ -30,10 +30,16 @@ records whether that succeeded.
 """
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from crossmodel.adapters.transformers_base import TransformersAdapter
 from crossmodel.contract import ReasoningMode
+
+#: One channel segment, as the template's own `strip_thinking` macro delimits
+#: it: an opener, an optional channel name on the first line, a body, a closer.
+CHANNEL = re.compile(r"<\|channel>([A-Za-z_]*)\n?(.*?)(?:<channel\|>|$)",
+                     re.DOTALL)
 
 
 class Gemma4Adapter(TransformersAdapter):
@@ -62,6 +68,33 @@ class Gemma4Adapter(TransformersAdapter):
     def template_kwargs(self, reasoning_mode: str) -> dict[str, Any]:
         return {"enable_thinking":
                 reasoning_mode == ReasoningMode.NATURAL_REASONING}
+
+    #: Gemma's template does not force the model into a reasoning block, and the
+    #: model was observed putting the answer BEFORE its thought channel on easy
+    #: prompts and after it on the DCI prompts. Splitting after one unbroken
+    #: generation is agnostic to which order it chose; a splice is not.
+    GENERATION_STRATEGY = "single_phase"
+
+    def parse_output(self, raw_output: str, reasoning_mode: str
+                     ) -> tuple[str, str]:
+        """The template's own `strip_thinking` semantics, in both directions.
+
+        The macro splits the text on `<channel|>` and, within each part, keeps
+        whatever precedes `<|channel>`. So channel segments are non-content
+        wherever they sit and everything else is content, in the order written.
+        This mirrors that: channel bodies become the trace, the remainder becomes
+        the answer, and neither depends on which came first.
+        """
+        segments = CHANNEL.findall(raw_output)
+        if not segments:
+            if reasoning_mode == ReasoningMode.NO_THINKING:
+                return "", self.clean_answer(raw_output)
+            return "", self.clean_answer(raw_output)
+
+        reasoning = "\n".join(body.strip() for name, body in segments
+                              if body.strip())
+        answer = CHANNEL.sub("", raw_output)
+        return reasoning.strip("\n"), self.clean_answer(answer)
 
     def normalise_reasoning(self, trace: str) -> str:
         """Drop the channel opener and its channel name from the stored trace."""
