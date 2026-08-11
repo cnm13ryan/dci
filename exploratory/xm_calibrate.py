@@ -240,8 +240,11 @@ def main() -> int:
     parser.add_argument("--device-map", default="cuda:0")
     parser.add_argument("--stages", default="DE")
     parser.add_argument("--tasks", type=int, default=N_CALIBRATION_TASKS)
+    parser.add_argument("--chunk", type=int, default=4)
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
+
+    globals()['CHUNK'] = args.chunk
 
     from dci_exploratory import extensions, harvest
 
