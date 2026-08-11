@@ -175,11 +175,23 @@ def main(argv: list[str] | None = None) -> int:
                 "the S3 ordering design needs exactly two focal-slot occupants "
                 f"(--focal plus one --arms entry; got {focals}) and at least two "
                 f"background-slot variants (--background; got {variants})")
+        # The permutation design has exactly three permuted slots, so its load is
+        # 3 plus whatever `--fixed-tail` adds. `--load` cannot move it. Silently
+        # ignoring the flag once produced a run labelled k = 5 that was really
+        # k = 3, so it is refused rather than dropped.
+        tail = tuple(t for t in args.fixed_tail.split(",") if t)
+        if args.load != 3 + len(tail):
+            raise SystemExit(
+                f"--load {args.load} cannot be honoured on the permutation path: "
+                f"it permutes 3 slots and --fixed-tail adds {len(tail)}, so the "
+                f"load is {3 + len(tail)}. Raise the load with --fixed-tail "
+                "(as Round 7 Stage 3 did), or pass --load "
+                f"{3 + len(tail)} to say you meant it.")
         rows = design.build_permutation_design(
             selection.target, focals, variants, tasks,
             replicates=args.replicates, base_seed=args.seed, stage=args.stage,
             paraphrase_id=args.paraphrase, permutations=perms,
-            fixed_tail=tuple(t for t in args.fixed_tail.split(",") if t))
+            fixed_tail=tail)
         orders = perms
     else:
         orders = design.ORDERS if args.orders == "both" else (args.orders,)

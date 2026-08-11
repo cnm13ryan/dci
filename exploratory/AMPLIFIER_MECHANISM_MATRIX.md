@@ -98,3 +98,39 @@ Under the **amplifier** it does not: τ settles at +0.500 and Δ amplification
 *grows* with budget, from +0.200 [−0.150, +0.550] at b = 0 to +0.500 [+0.300,
 +0.700] at b = 4096. **Reasoning does not overcome the amplifier; it widens the
 gap.**
+
+---
+
+## Order dependence and transport under load
+
+Δ is against the wording-matched paired control `X_PAREN_FREE` in the same
+design, so every cell is an internal contrast.
+
+| condition | `X_SEMICOLON_FREE` τ | `X_ELLIPSIS_FREE` τ | `X_PAREN_FREE` τ | Δ semicolon | Δ ellipsis |
+|---|---|---|---|---|---|
+| **π = QAC, k = 3** | **+0.950** [+0.875, +1.000] | +0.400 [+0.250, +0.550] | +0.075 [0.000, +0.150] | **+0.875** [+0.775, +0.975] | **+0.325** [+0.175, +0.475] |
+| **π = ACQ, k = 3** | +0.100 [−0.100, +0.300] | +0.125 [+0.025, +0.250] | +0.225 [+0.099, +0.375] | **−0.125** [−0.400, +0.150] | −0.100 [−0.300, +0.100] |
+| **π = QAC, k = 5** | **+0.875** [+0.750, +0.975] | +0.350 [+0.175, +0.525] | +0.225 [+0.100, +0.375] | **+0.650** [+0.450, +0.825] | +0.125 [−0.075, +0.325] |
+
+Compliance is 0.825–1.000 in every cell above, so each of these is a real
+manipulation.
+
+**Order.** The entire single-mark amplification lives at QAC. At ACQ it is gone
+and the point estimate is faintly negative, reproducing on the semicolon and the
+ellipsis what Round 7 Stage 2 found for the colon (QAC +0.400, ACQ −0.125).
+Whatever the amplifier is, it is a property of **the background instruction
+arriving after the target**, not of the instruction alone.
+
+**Load.** The semicolon transports to k = 5 nearly intact (Δ = +0.650). The
+ellipsis does not survive: its Δ falls to +0.125 and stops being distinguishable
+from zero, partly because the paired control's own τ rises to +0.225 under load.
+So the *strongest* amplifier is robust to realistic compositional load while the
+*weaker* one is not.
+
+**k = 5 was rerun.** A first attempt passed `--load 5` on the permutation path,
+where it is not honoured, and produced a run that was really k = 3. The run is
+retained as `S20_atomicity_k5` with that status, `experiment.py` now refuses the
+flag instead of ignoring it, and the genuine k = 5 result above comes from
+`S21_atomicity_k5`, which raises the load with `--fixed-tail` as Round 7 Stage 3
+did. Round 7's own k = 5 claim was audited and is unaffected — it used
+`--fixed-tail` and its rows record load 5.
