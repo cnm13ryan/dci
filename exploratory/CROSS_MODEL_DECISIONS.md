@@ -343,6 +343,14 @@ fine, it simply does not fit beside a KV cache on one card.
 "this checkpoint cannot do natural reasoning on one 24 GiB card" is a result
 about the hardware envelope, not a failed attempt to be tidied away.
 
+**Confirmed at batch size 1** (`runs/xm_validate_gemma12b_b1/`, added
+2026-08-12). The first failure was at chunk 4, which leaves open the reading
+"the batch was too wide". It was not: with ONE sequence in flight the card has
+238 MiB free against a 204 MiB allocation and still OOMs. Single-card execution
+of this checkpoint's reasoning mode is blocked outright, not merely at width.
+The non-thinking mode continues to pass on one card, which is why the two modes
+must not be run on different layouts.
+
 ---
 
 ## D19 — Qwen3.5 natural reasoning: this branch reproduces a finding the
