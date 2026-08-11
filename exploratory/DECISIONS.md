@@ -1928,3 +1928,72 @@ generations.
 
 **Manipulation check:** each variant's own compliance is scored on every row, so
 "did not amplify" and "was not followed" stay separable.
+
+---
+
+# Round 9 — infrastructure reassessment and the placement contrast
+
+## Stage 0/1 — the two-GPU question, reopened
+
+Round 8 concluded the reasoning programme was blocked after a `b = 8192` run
+OOM'd. That conclusion was drawn from a **single-GPU, batch-8** configuration and
+was not entitled to speak about the hardware's capacity. Round 9 reopens it.
+
+**What the previous run's own numbers say.** `S1_natural2` recorded
+`peak_allocated_bytes = 12,899,124,224` at `b = 4096`, batch 4, with a 4.2 B
+parameter bf16 model (8.4 GB of weights). Non-weight memory was therefore ≈ 4.5
+GB for 4 sequences × 4096 tokens. Scaling that to batch 8 × 8192 predicts ≈ 26.4
+GB against a 24 GB card — the OOM is fully explained by **batch size**, and
+`batch = 1` predicts ≈ 10.7 GB. So the blocker Round 8 reported may never have
+been a capacity limit at all. This is recorded as a **defect in Round 8's
+inference**, not in its data.
+
+**The environment evidence.** This workstation already carries a purpose-built
+ROCm vLLM stack at `/home/cnm13ryan/git/inoculation-prompting/gcd_sycophancy`,
+whose README documents `VLLM_TP_SIZE=2` as its evaluation configuration. That is
+prior evidence of working two-GPU tensor parallelism on these cards, and it is
+tested here before any claim of infeasibility is repeated.
+
+**Decision rule, recorded before the tests run.** Capacity mode (one generation
+spanning both cards) and throughput mode (independent row shards, one card each)
+are reported separately, and data parallelism is never offered as evidence that
+the reasoning-horizon problem is solved.
+
+## Stage 10 — free versus fixed placement (pre-registered)
+
+**Unresolved claim.** Round 8's `COLON_AMPLIFIER_MATRIX.md` leaves free placement
+and single-character atomicity **confounded**: both amplifiers are single
+characters that may go anywhere; both controls are paired constructs that must
+wrap content.
+
+**Competing hypotheses.**
+
+| | claim | prediction for a FIXED-position single mark |
+|---|---|---|
+| **P4** free placement / slot search | amplification comes from having to *choose where* the mark goes | fixing the position **removes or sharply reduces** τ |
+| **P5** single-character atomicity | amplification comes from the mark being one unattached character | fixing the position leaves τ **essentially unchanged** |
+| **P6** placement cost, not search | any *additional* placement clause raises load and τ | both fixed and length-matched free arms exceed the bare Round 8 wording |
+
+**Design.** π = QAC, k = 3, arms B vs `C_L3`, 20 pilot tasks, 2 replicates. Four
+background variants per mark, sharing one base sentence and differing only in the
+trailing clause, so wording length and clause count are matched:
+
+| variant | placement | clause |
+|---|---|---|
+| `X_SEMICOLON_FREE` | free (length-matched control for P6) | `place it wherever you judge best` |
+| `X_SEMICOLON_AT_W5` | fixed, exact index | `place it immediately after the fifth word` |
+| `X_SEMICOLON_AT_W10` | fixed, exact index | `place it immediately after the tenth word` |
+| `X_SEMICOLON_FIRST12` | fixed, window | `place it within the first twelve words` |
+
+No clause names sentences, so none can hand the model A's four-sentence solution.
+`X_SEMI_EXACT1` (the bare Round 8 wording, τ = +0.950) is the link to S14.
+
+**Screening is folded into the same run.** Each variant's own compliance and its
+A-failure in the *reference* arm are measured on every row, so a variant with low
+primitive compliance is identified and excluded from the τ comparison rather than
+misread as a null placement effect. A fixed arm whose compliance collapses
+supports **no** conclusion about placement — that is a failed manipulation, and
+Round 6's rule against reading failed manipulation checks as causal evidence
+applies.
+
+The colon replication is a second, identical run with `X_COLON_*`.

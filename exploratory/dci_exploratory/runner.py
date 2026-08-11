@@ -116,10 +116,18 @@ class ModelConfig:
     # is what makes the comparison like-for-like; it is recorded per run rather
     # than assumed.
     disable_thinking: bool = False
+    # Placement. "single" pins every module to `device_index`, which is the
+    # condition every run before Round 9 used. "balanced" hands the model to
+    # accelerate to shard ACROSS the visible GPUs, so one sequence's weights and
+    # KV state span both cards and a single generation can use the combined
+    # memory. That is capacity mode; it is what a per-sequence memory bottleneck
+    # needs, and it is not the same thing as putting different rows on different
+    # cards (throughput mode, which is separate processes).
+    placement: str = "single"
 
 
 class Backend:
-    """One model on one GPU, loaded once."""
+    """One model on one GPU, loaded once — or sharded across the visible GPUs."""
 
     def __init__(self, config: ModelConfig):
         self.config = config
@@ -128,6 +136,7 @@ class Backend:
         self.device = f"cuda:{config.device_index}"
         self.load_seconds = 0.0
         self.prompt_convention = "unknown"
+        self.placement_map: dict[str, Any] = {}
 
     def load(self) -> None:
         import torch
@@ -149,17 +158,42 @@ class Backend:
         # from pad tokens and the generations would not correspond to the prompts.
         self.tokenizer.padding_side = "left"
 
+        if cfg.placement == "single":
+            device_map: Any = {"": cfg.device_index}
+        elif cfg.placement == "balanced":
+            if torch.cuda.device_count() < 2:
+                raise RuntimeError(
+                    "placement='balanced' needs at least two visible GPUs; "
+                    f"torch sees {torch.cuda.device_count()}")
+            device_map = "balanced"
+        else:
+            raise ValueError(f"unknown placement {cfg.placement!r}")
+
         self.model = AutoModelForCausalLM.from_pretrained(
             cfg.model_id, revision=cfg.revision, dtype=getattr(torch, cfg.dtype),
             attn_implementation=cfg.attn_implementation,
-            device_map={"": cfg.device_index}, low_cpu_mem_usage=True)
+            device_map=device_map, low_cpu_mem_usage=True)
         self.model.eval()
 
-        placements = set(getattr(self.model, "hf_device_map", {}).values())
-        if placements and placements != {cfg.device_index}:
+        self.placement_map = dict(getattr(self.model, "hf_device_map", {}) or {})
+        placements = set(self.placement_map.values())
+        offloaded = {p for p in placements if p in ("cpu", "disk")}
+        if offloaded:
             raise RuntimeError(
-                f"model modules were placed on {sorted(placements)}; automatic "
-                "offload is not the intended single-GPU condition")
+                f"modules were offloaded to {sorted(offloaded)}; CPU/disk offload "
+                "is not the intended execution condition")
+        if cfg.placement == "single":
+            if placements and placements != {cfg.device_index}:
+                raise RuntimeError(
+                    f"model modules were placed on {sorted(placements)}; automatic "
+                    "offload is not the intended single-GPU condition")
+        else:
+            if len(placements) < 2:
+                raise RuntimeError(
+                    "placement='balanced' was asked for but every module landed "
+                    f"on {sorted(placements)}; this is not capacity mode")
+            # Inputs must enter on the device that holds the embedding layer.
+            self.device = str(next(self.model.parameters()).device)
         self.load_seconds = time.perf_counter() - started
 
     def fingerprint(self) -> dict[str, Any]:
@@ -273,6 +307,36 @@ class Backend:
 
 
 # ----------------------------------------------------------------- execution
+def reset_peak_memory() -> None:
+    """Clear peak counters on EVERY visible GPU, not just the input device.
+
+    Under `placement="balanced"` the second card holds half the layers, so a
+    single-device peak reading would under-report the run by roughly half.
+    """
+    import torch
+    for index in range(torch.cuda.device_count()):
+        torch.cuda.reset_peak_memory_stats(index)
+
+
+def peak_memory_by_device() -> dict[str, int]:
+    import torch
+    return {f"cuda:{index}": int(torch.cuda.max_memory_allocated(index))
+            for index in range(torch.cuda.device_count())}
+
+
+def gpu_assignment() -> dict[str, Any]:
+    """What this process was actually allowed to use, recorded per run."""
+    import torch
+    return {
+        "CUDA_VISIBLE_DEVICES": os.environ.get("CUDA_VISIBLE_DEVICES"),
+        "HIP_VISIBLE_DEVICES": os.environ.get("HIP_VISIBLE_DEVICES"),
+        "torch_device_count": torch.cuda.device_count(),
+        "devices": [{"index": i, "name": torch.cuda.get_device_properties(i).name,
+                     "total_bytes": int(torch.cuda.get_device_properties(i).total_memory)}
+                    for i in range(torch.cuda.device_count())],
+    }
+
+
 def _git(*args: str) -> str:
     try:
         return subprocess.run(("git", *args), capture_output=True, text=True,

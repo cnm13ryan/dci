@@ -250,6 +250,114 @@ def v_no_exclamation(text: str):
                               float(binary), {"exclamations": count})
 
 
+_PLACEMENT_WORD = re.compile(r"[A-Za-z0-9][A-Za-z0-9'’-]*")
+
+
+def _mark_word_positions(body: str, char: str) -> list[tuple[int, bool]]:
+    """For each `char`, how many words precede it, and does it abut the last one.
+
+    "Immediately after the fifth word" is the placement these verifiers score, so
+    both facts are needed: the count fixes WHICH word, and the abutment rules out
+    a mark that floats in whitespace some distance away.
+    """
+    found: list[tuple[int, bool]] = []
+    for match in re.finditer(re.escape(char), body):
+        preceding = len(_PLACEMENT_WORD.findall(body[:match.start()]))
+        attached = match.start() > 0 and body[match.start() - 1].isalnum()
+        found.append((preceding, attached))
+    return found
+
+
+def v_one_mark_at_word(text: str, char: str, k: int):
+    """Exactly one `char`, and it sits immediately after word `k`."""
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"count": 0})
+    found = _mark_word_positions(body, char)
+    detail = {"count": len(found), "positions": [p for p, _ in found],
+              "required_word": k, "char": char}
+    if len(found) != 1:
+        return VerificationResult("violation", 0, 0.0, detail)
+    position, attached = found[0]
+    detail["attached"] = attached
+    binary = int(position == k and attached)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), detail)
+
+
+def v_one_mark_within_words(text: str, char: str, k: int):
+    """Exactly one `char`, and it falls within the first `k` words."""
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"count": 0})
+    found = _mark_word_positions(body, char)
+    detail = {"count": len(found), "positions": [p for p, _ in found],
+              "window_words": k, "char": char}
+    if len(found) != 1:
+        return VerificationResult("violation", 0, 0.0, detail)
+    binary = int(1 <= found[0][0] <= k)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), detail)
+
+
+_ELLIPSIS = re.compile(r"\.\.\.|…")
+_DASHDASH = re.compile(r"(?<!-)--(?!-)")
+
+
+def v_exact_ellipsis(text: str, n: int = 1):
+    """Exactly `n` ellipses — one mark, three characters, unpaired, free."""
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"observed": 0})
+    observed = len(_ELLIPSIS.findall(body))
+    binary = int(observed == n)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), {"observed": observed, "target": n})
+
+
+def v_exact_dashdash(text: str, n: int = 1):
+    """Exactly `n` double hyphens — one mark, two characters, unpaired, free."""
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"observed": 0})
+    observed = len(_DASHDASH.findall(body))
+    binary = int(observed == n)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), {"observed": observed, "target": n})
+
+
+def v_exact_bracket_pair(text: str, n: int = 1):
+    """Exactly `n` pairs of round brackets, properly nested and ordered.
+
+    Reimplemented here rather than reused from `U_FMT_PAREN1` because this
+    variant carries the wording-matched placement clause; the verifier must be
+    the same test, but the constraint is a different registry entry.
+    """
+    from dci.verifiers.rules import VerificationResult, normalize_text
+    body = normalize_text(text)
+    if not body:
+        return VerificationResult("unscorable", 0, 0.0, {"observed": 0})
+    opens, closes, depth, pairs, ok = body.count("("), body.count(")"), 0, 0, True
+    for char in body:
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            if depth == 0:
+                ok = False
+            else:
+                depth -= 1
+                pairs += 1
+    ok = ok and depth == 0 and opens == closes
+    binary = int(ok and pairs == n)
+    return VerificationResult("full" if binary else "violation", binary,
+                              float(binary), {"observed": pairs, "target": n,
+                                              "balanced": ok})
+
+
 _NUMERAL = re.compile(r"\d")
 
 
@@ -313,6 +421,26 @@ _LINEBREAK_TEMPLATES = (
     "No paragraph may be written without a line break inside it.",
     "Place a line break within each paragraph.",
     "Each paragraph must carry one or more internal line breaks.",
+)
+
+#: Round 9 Stage 10. The Round 8 factorial left FREE PLACEMENT and SINGLE
+#: CHARACTER confounded: both amplifiers (`X_SEMI_EXACT1`, `U_FMT_COLON1`) are
+#: single characters that may go anywhere, and both controls (`U_FMT_QUOTE1`,
+#: `U_FMT_PAREN1`) are paired constructs that must wrap content. Holding the mark
+#: fixed and varying ONLY whether its position is chosen or given separates them.
+#:
+#: Every variant shares one base sentence and differs only in the trailing
+#: clause, so wording length and clause count are matched across the contrast —
+#: the free arm is NOT the bare Round 8 wording, which would confound placement
+#: with having a second clause at all. No clause mentions sentences, so none can
+#: hand the model A's four-sentence solution.
+_PLACEMENT_TEMPLATES = (
+    "Use exactly 1 {mark} in the whole answer, and {clause}.",
+    "The whole answer must contain exactly 1 {mark}, and {clause}.",
+    "Include exactly 1 {mark} in the answer overall, and {clause}.",
+    "Exactly 1 {mark} may appear in the whole answer, and {clause}.",
+    "Your answer must use exactly 1 {mark} in total, and {clause}.",
+    "Write the whole answer with exactly 1 {mark}, and {clause}.",
 )
 
 _NO_SPLICE_TEMPLATES = (
@@ -452,6 +580,88 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
                                "U_FMT_COLON1 in count, scope and wording."),
             (lambda ch: (lambda t: _exact_char_total(t, ch, 1)))(char),
             None,
+        )
+
+    # --- placement: free versus fixed, one mark, matched wording -------------
+    # `kind` decides the verifier: "free" scores only the count, "at" pins the
+    # mark to a word index, "within" pins it to an opening window. The window
+    # variant exists because an exact index may prove uncompliable; screening
+    # picks between them BEFORE the contrast is run.
+    placement_variants = (
+        ("FREE", "free", 0, "place it wherever you judge best"),
+        ("AT_W5", "at", 5, "place it immediately after the fifth word"),
+        ("AT_W10", "at", 10, "place it immediately after the tenth word"),
+        ("FIRST12", "within", 12, "place it within the first twelve words"),
+        # Round 9 screening round 2. The first four found that an exact word
+        # index is essentially uncompliable at k = 3 (0.000-0.100), which voids
+        # the contrast rather than answering it. These ask for the SAME loss of
+        # placement freedom at indices the model can actually count to, plus
+        # wider windows, and are screened before any τ is read off them.
+        ("AT_W1", "at", 1, "place it immediately after the first word"),
+        ("AT_W2", "at", 2, "place it immediately after the second word"),
+        ("FIRST5", "within", 5, "place it within the first five words"),
+        ("FIRST25", "within", 25, "place it within the first twenty-five words"),
+    )
+    for mark, char in (("semicolon", ";"), ("colon", ":")):
+        for suffix, kind, k, clause in placement_variants:
+            cid = f"X_{mark.upper()}_{suffix}"
+            if kind == "free":
+                verifier = (lambda c: (lambda t: _exact_char_total(t, c, 1)))(char)
+                predicate, params = "exact_char_total", P(char=char, n=1)
+            elif kind == "at":
+                verifier = (lambda c, i: (lambda t: v_one_mark_at_word(t, c, i)))(char, k)
+                predicate, params = "x_one_mark_at_word", P(char=char, k=k)
+            else:
+                verifier = (lambda c, i: (lambda t: v_one_mark_within_words(t, c, i)))(char, k)
+                predicate, params = "x_one_mark_within_words", P(char=char, k=k)
+            out[cid] = (
+                spec(cid, "exploratory",
+                     f"Exactly one '{char}', placement {kind}", "format",
+                     "global_count", "whole_text", "character_stream",
+                     "unrelated", predicate, params, "exploratory",
+                     "authored for the free-versus-fixed placement contrast",
+                     u_family="format",
+                     pathway_audit="Whole-answer character count plus, in the "
+                                   "fixed arms, a word-index position test. "
+                                   "Never reads the sentence count."),
+                verifier,
+                _render(_PLACEMENT_TEMPLATES, mark=mark, clause=clause),
+            )
+
+    # --- atomicity at constant placement freedom -----------------------------
+    # Stage 10 could not vary placement: every positional wording tested was
+    # obeyed 0.000-0.338 of the time, so its τ values are uninterpretable. This
+    # attacks the same confound from the other side — hold placement FREE for
+    # every arm and vary how many characters the demanded mark spans, and
+    # whether it encloses content. All four carry the identical trailing clause,
+    # so the paired control is now wording-matched, which Round 8's
+    # `U_FMT_PAREN1` was not.
+    #
+    #   `X_SEMICOLON_FREE`  1 character, unpaired, free   (amplifies: τ ≈ +0.95)
+    #   `X_ELLIPSIS_FREE`   3 characters, unpaired, free
+    #   `X_DASHDASH_FREE`   2 characters, unpaired, free
+    #   `X_PAREN_FREE`      2 characters, ENCLOSING, must wrap content
+    #
+    # If a multi-character unpaired mark amplifies, single-character atomicity is
+    # refuted and "one thing to place, freely" survives.
+    atomicity_variants = (
+        ("X_ELLIPSIS_FREE", "ellipsis", v_exact_ellipsis, "x_exact_ellipsis"),
+        ("X_DASHDASH_FREE", "double hyphen", v_exact_dashdash, "x_exact_dashdash"),
+        ("X_PAREN_FREE", "pair of round brackets", v_exact_bracket_pair,
+         "x_exact_bracket_pair"),
+    )
+    for cid, mark, verifier, predicate in atomicity_variants:
+        out[cid] = (
+            spec(cid, "exploratory", f"Exactly one {mark}, placement free",
+                 "format", "global_count", "whole_text", "character_stream",
+                 "unrelated", predicate, P(n=1), "exploratory",
+                 "authored for the atomicity-at-constant-freedom contrast",
+                 u_family="format",
+                 pathway_audit="Whole-answer count of one mark. Never reads the "
+                               "sentence count."),
+            (lambda v: (lambda t: v(t, 1)))(verifier),
+            _render(_PLACEMENT_TEMPLATES, mark=mark,
+                    clause="place it wherever you judge best"),
         )
 
     # --- route-closing prohibitions, for the double-dissociation intervention -
@@ -600,6 +810,45 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
                           "Rain falls, it soaks the ground."),
     "X_NO_EXCLAM": ("Rain falls.", "Rain falls!"),
     "X_SEMI_EXACT1": ("Rain falls; rivers rise.", "Rain falls; rivers rise; wind blows."),
+    # placement family: the failing text is the one that puts the SAME single
+    # mark in the wrong place, so each check separates placement from count.
+    "X_SEMICOLON_FREE": ("Rain falls; rivers rise.",
+                         "Rain falls; rivers rise; wind blows."),
+    "X_SEMICOLON_AT_W5": ("Light from the warm sun; clouds drift by.",
+                          "Light from the sun; clouds drift by."),
+    "X_SEMICOLON_AT_W10": (
+        "One two three four five six seven eight nine ten; eleven twelve.",
+        "One two three four five six seven eight nine; ten eleven twelve."),
+    "X_SEMICOLON_FIRST12": (
+        "Light from the sun; clouds drift by.",
+        "One two three four five six seven eight nine ten eleven twelve "
+        "thirteen; fourteen fifteen."),
+    "X_COLON_FREE": ("Rain falls: rivers rise.", "Rain falls: rivers rise: wind blows."),
+    "X_COLON_AT_W5": ("Light from the warm sun: clouds drift by.",
+                      "Light from the sun: clouds drift by."),
+    "X_COLON_AT_W10": (
+        "One two three four five six seven eight nine ten: eleven twelve.",
+        "One two three four five six seven eight nine: ten eleven twelve."),
+    "X_ELLIPSIS_FREE": ("Rain falls ... rivers rise.", "Rain ... falls ... rivers rise."),
+    "X_DASHDASH_FREE": ("Rain falls -- rivers rise.", "Rain -- falls -- rivers rise."),
+    "X_PAREN_FREE": ("Rain falls (steadily) and rivers rise.",
+                     "Rain (falls) and rivers (rise)."),
+    "X_SEMICOLON_AT_W1": ("Water; the cycle moves on.", "Water flows; the cycle moves on."),
+    "X_SEMICOLON_AT_W2": ("Water flows; the cycle moves on.", "Water; the cycle moves on."),
+    "X_SEMICOLON_FIRST5": ("Light from the sun; clouds drift by.",
+                           "One two three four five six; seven eight."),
+    "X_SEMICOLON_FIRST25": ("Light from the sun; clouds drift by.",
+                            " ".join(str(i) for i in range(1, 27)) + "; end here."),
+    "X_COLON_AT_W1": ("Water: the cycle moves on.", "Water flows: the cycle moves on."),
+    "X_COLON_AT_W2": ("Water flows: the cycle moves on.", "Water: the cycle moves on."),
+    "X_COLON_FIRST5": ("Light from the sun: clouds drift by.",
+                       "One two three four five six: seven eight."),
+    "X_COLON_FIRST25": ("Light from the sun: clouds drift by.",
+                        " ".join(str(i) for i in range(1, 27)) + ": end here."),
+    "X_COLON_FIRST12": (
+        "Light from the sun: clouds drift by.",
+        "One two three four five six seven eight nine ten eleven twelve "
+        "thirteen: fourteen fifteen."),
 }
 
 
