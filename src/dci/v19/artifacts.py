@@ -148,6 +148,24 @@ VERIFIER_SLOTS = SlotTable.of(
                  "errors were seen. dci.v19.reliability.AMENDED_TIER1_DESIGN is the "
                  "implemented candidate",
             domain="tier1_audit_design"),
+    pending("verifiers.tier1_audit_protocol", "sections 10.4, 10.6",
+            Resolution.PENDING_DECISION,
+            "Stage 2: fix the Tier-1 audit's human procedure prospectively - how "
+            "many reviewers judge each case independently, who adjudicates "
+            "disagreement, and how exactly 72 adjudicated cases per truth class "
+            "are reached given that the class is only known AFTER adjudication",
+            depends_on=("verifiers.tier1_audit_design",),
+            note="section 10.4 requires 'human-adjudicated' examples and never "
+                 "says by how many reviewers or how disagreement resolves. Section "
+                 "8.6's two-plus-adjudicator rule is scoped to SEMANTIC REVIEW of "
+                 "compositions and does not extend here by itself, so reusing it "
+                 "would be an implementer inventing a protocol detail. The "
+                 "over-sampling question is real and unavoidable: a case's truth "
+                 "class is established by the reviewers, so a manifest of exactly "
+                 "72 per intended class reaches exactly 72 per ADJUDICATED class "
+                 "only if every case lands where its author intended. See "
+                 "docs/v19_tier1_audit_handoff.md",
+            domain="tier1_audit_protocol"),
     pending("verifiers.tier1_reliability", "section 10.4",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: certify each target and focal verifier against the 5% "
@@ -156,12 +174,18 @@ VERIFIER_SLOTS = SlotTable.of(
             "six units - with zero observed errors permitted",
             depends_on=("verifiers.binomial_interval_implementation",
                         "verifiers.tier1_audit_design",
-                        "verifiers.bundle_hash"),
+                        "verifiers.tier1_audit_protocol",
+                        "verifiers.bundle_hash")
+            + tuple(f"pool.{pair}.audit" for pair in PAIR_IDS),
             note="72 rather than the inherited 73 because amendment A3 adopts the "
                  "exact interval, which reaches the 5% ceiling one label sooner. A "
                  "missing truth class is missing evidence, not zero error, so the "
                  "corresponding bound is unavailable and the unit fails. This is "
-                 "human adjudication and cannot be produced by code",
+                 "human adjudication and cannot be produced by code. It depends "
+                 "on pool.{p}.audit for all three pairs, because the 864 cases are "
+                 "authored scientific content (section 11.1) and an audit with no "
+                 "material is not an audit - an edge that was missing, so the "
+                 "certificate could have been frozen with the pools still empty",
             domain="tier1_certificates"),
 )
 
