@@ -27,6 +27,26 @@ def read_all(dirs: list[Path], name: str) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True)
 
 
+def md(frame: pd.DataFrame, floats: int = 3, index: bool = False) -> str:
+    """Markdown for a frame, without depending on `tabulate`."""
+    if frame.empty:
+        return "_no rows_\n"
+    frame = frame.reset_index() if index else frame
+    columns = [str(c) for c in frame.columns]
+    rows = []
+    for record in frame.itertuples(index=False):
+        cells = []
+        for value in record:
+            if isinstance(value, float):
+                cells.append("—" if pd.isna(value) else f"{value:.{floats}f}")
+            else:
+                cells.append(str(value))
+        rows.append("| " + " | ".join(cells) + " |")
+    header = "| " + " | ".join(columns) + " |"
+    rule = "|" + "|".join("---" for _ in columns) + "|"
+    return "\n".join([header, rule, *rows]) + "\n"
+
+
 def table(frame: pd.DataFrame, columns: list[str], floats: int = 3) -> str:
     if frame.empty:
         return "_no rows_\n"
@@ -105,6 +125,22 @@ def main() -> int:
                              "focal_A_failure", "reference_A_failure",
                              "tau", "lo", "hi", "n_tasks", "n_rows"]))
 
+    degenerate = (tau[tau["degeneracy"] != "estimable"]
+                  if "degeneracy" in tau.columns else pd.DataFrame())
+    if len(degenerate):
+        lines += [
+            "",
+            "> **τ is not estimable in some cells above.** Where the target",
+            "> instruction never fails in EITHER arm, τ is zero by construction",
+            "> and cannot detect interference — \"no extra failures\" and \"no",
+            "> failures to add to\" are different findings. The affected cells:",
+            "",
+        ]
+        for row in degenerate.itertuples():
+            lines.append(f"> * `{row.model}` / {row.reasoning} / "
+                         f"{row.background} — {row.degeneracy.split(' — ')[0]}")
+        lines.append("")
+
     lines += ["", "## 2. Semicolon-minus-control contrast", ""]
     lines.append(table(delta, ["model", "reasoning", "tau_control",
                                "tau_semicolon", "delta_semicolon", "lo", "hi",
@@ -123,7 +159,7 @@ def main() -> int:
         "",
     ]
     if not four.empty:
-        lines.append(four.to_markdown(index=False, floatfmt=".3f") + "\n")
+        lines.append(md(four, floats=3, index=True))
 
     lines += [
         "",
@@ -149,7 +185,7 @@ def main() -> int:
         "",
     ]
     if not use.empty:
-        lines.append(use.to_markdown(index=False, floatfmt=".1f") + "\n")
+        lines.append(md(use, floats=1))
 
     lines += [
         "",
