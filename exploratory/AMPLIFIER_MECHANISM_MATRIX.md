@@ -22,7 +22,7 @@ conclusion about the property it was built to vary.
 | `X_SEMI_EXACT1` | — (bare, Round 8) | 1 | no | free | ✔ | named | 0.975 | **+0.950** [+0.875, +1.000] | amplifies |
 | `X_SEMICOLON_FREE` | `place it wherever you judge best` | 1 | no | free | ✔ | named | **1.000** | **+0.950** [+0.875, +1.000] | amplifies |
 | `U_FMT_COLON1` | — (bare, Round 8) | 1 | no | free | ✔ | named | 0.950 | **+0.450** [+0.275, +0.625] | amplifies |
-| `X_COLON_FREE` | `place it wherever you judge best` | 1 | no | free | ✔ | named | 0.938 | **+0.700** [+0.550, +0.850] | amplifies |
+| `X_COLON_FREE` | `place it wherever you judge best` | 1 | no | free | ✔ | named | 0.938 | **+0.700** [+0.525, +0.850] | amplifies |
 | `X_ELLIPSIS_FREE` | `place it wherever you judge best` | **3** | no | free | ✔ | named | **1.000** | **+0.400** [+0.250, +0.550] | **amplifies** |
 | `X_DASHDASH_FREE` | `place it wherever you judge best` | 2 | no | free | ✔ | named | **0.000** | (+0.275) | **manipulation failed** |
 | `X_PAREN_FREE` | `place it wherever you judge best` | 2 | **yes** | must wrap | ✔ | named | 0.988 | **+0.075** [0.000, +0.150] | does not amplify |
@@ -62,7 +62,7 @@ values are recorded for completeness and are **not** evidence about placement.
 | colon-specific identity | **REFUTED** (R8) | the semicolon amplifies more than twice as strongly |
 | the mark actually appearing in the output | **REFUTED** (R7 S2) | colon production varies 0.150–0.950 across orderings without tracking Δ |
 | wording length / having a second clause | **REFUTED** | the length-matched free arm reproduces the bare wording exactly (`X_SEMICOLON_FREE` +0.950 = `X_SEMI_EXACT1` +0.950), and the *paired* control stays null under the identical clause (+0.075) |
-| **single-character atomicity** | **REFUTED** | `X_ELLIPSIS_FREE` is **three characters** and amplifies (+0.400), against +0.075 for the wording-matched paired control — Δ = +0.325 [+0.175, +0.475], at 1.000 compliance |
+| **single-character atomicity** | **REFUTED** | `X_ELLIPSIS_FREE` is **three characters** and amplifies (+0.400), against +0.075 for the wording-matched paired control — Δ = +0.325 [+0.175, +0.450], at 1.000 compliance |
 | **paired construct that must wrap content** | **SUPPORTED as protective** | three paired variants, two wordings, compliance 0.988–1.000, τ ∈ [0.000, +0.075] |
 | free placement | **untested** — not "unsupported" | every attempt to remove placement freedom destroyed compliance |
 
@@ -108,7 +108,7 @@ design, so every cell is an internal contrast.
 
 | condition | `X_SEMICOLON_FREE` τ | `X_ELLIPSIS_FREE` τ | `X_PAREN_FREE` τ | Δ semicolon | Δ ellipsis |
 |---|---|---|---|---|---|
-| **π = QAC, k = 3** | **+0.950** [+0.875, +1.000] | +0.400 [+0.250, +0.550] | +0.075 [0.000, +0.150] | **+0.875** [+0.775, +0.975] | **+0.325** [+0.175, +0.475] |
+| **π = QAC, k = 3** | **+0.950** [+0.875, +1.000] | +0.400 [+0.250, +0.550] | +0.075 [0.000, +0.150] | **+0.875** [+0.775, +0.950] | **+0.325** [+0.175, +0.450] |
 | **π = ACQ, k = 3** | +0.100 [−0.100, +0.300] | +0.125 [+0.025, +0.250] | +0.225 [+0.099, +0.375] | **−0.125** [−0.400, +0.150] | −0.100 [−0.300, +0.100] |
 | **π = QAC, k = 5** | **+0.875** [+0.750, +0.975] | +0.350 [+0.175, +0.525] | +0.225 [+0.100, +0.375] | **+0.650** [+0.450, +0.825] | +0.125 [−0.075, +0.325] |
 
