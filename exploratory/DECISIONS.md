@@ -1134,3 +1134,38 @@ one reproduction plus one failure already establishes that the interference is
 model-dependent; a third data point would refine the frequency of a property, not
 the existence of the dependency. The disposition's generality (2 of 2) is worth a
 follow-up, but that is a different question from the one this study asked.
+
+### E7c (second block, colon background) — same compliance failures, one real result
+
+Three more runs, 1200 generations, 0 technical failures. Background
+`U_LEX_FORBID3 + U_FMT_COLON1 + <prohibition>`, so B interferes and the arm limb
+of the dissociation is available.
+
+**The semicolon prohibition is confirmed ineffective in a second background.**
+Semicolon splices 1.350 → **1.450** (`o_A`) and 1.875 → **1.725** (`o_Q`) against
+the off-route control; `S_SEMICOLON`'s excess 0.850 → 0.900 and 0.450 → 0.550. It
+does not reduce the behaviour and it does not reduce the failure. Two backgrounds,
+same answer.
+
+**The comma prohibition is confirmed to be a comma ban.** B's commas 6.550 →
+**0.050**; `C_L3`'s 1.350 → 0.300.
+
+**But the comma ban is itself a real manipulation, and it replicates a selective
+effect across both blocks:**
+
+| | B `o_Q` excess | `S_SEMICOLON` `o_A` / `o_Q` excess |
+|---|---|---|
+| **block 1**, off-route control | 0.000 | 0.325 / 0.375 |
+| **block 1**, comma ban | **+0.250** | 0.275 / 0.200 |
+| **block 2**, off-route control | 0.125 | 0.850 / 0.450 |
+| **block 2**, comma ban | **+0.300** | 0.875 / 0.475 |
+
+Removing commas makes **B** worse in both blocks and leaves `S_SEMICOLON`
+essentially untouched in both. It is a dissociation, though not the one that was
+pre-registered and in the opposite direction from a rescue: B builds its long
+sentences out of comma-joined clauses, so a comma ban damages its ability to reach
+the target count, while the semicolon route does not use commas and is indifferent.
+
+That is the closest thing to route-specific causal evidence this round produced,
+and it should be read for what it is — a post-hoc reading of a manipulation that
+was not the one specified, replicated across two independent backgrounds.
