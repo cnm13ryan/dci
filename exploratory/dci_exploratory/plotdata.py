@@ -96,7 +96,15 @@ def load_all_reasoning(run_dir: Path) -> pd.DataFrame:
     conditions, the string "natural" for the uncapped one.
     """
     run_dir = Path(run_dir)
-    frame = load_reasoning(run_dir / "s18_reasoning.jsonl")
+    # Prefer the re-seeded capped grid when it exists. The original S18 file was
+    # generated with ONE seed for all 160 requests, which made replicate pairs
+    # byte-identical — two draws counted once. Putting it on the same figure as
+    # the natural condition, which is seeded per row, would show two different
+    # sampling regimes as one curve. The original file is kept, not deleted.
+    reseeded = run_dir / "s18_reseeded.jsonl"
+    capped = reseeded if reseeded.exists() else run_dir / "s18_reasoning.jsonl"
+    frame = load_reasoning(capped)
+    frame["capped_source"] = capped.name
     frame["condition"] = np.where(frame["reasoning_budget"] == 0,
                                   "NO_THINKING", "LIMITED_REASONING")
     frame["setting"] = frame["reasoning_budget"]
