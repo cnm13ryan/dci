@@ -1,0 +1,143 @@
+{
+  "protocol": "v19",
+  "note": "Stage 2 outputs and decisions that have actually been produced or accepted. Every record names the procedure or person that produced it, when, and the evidence that makes it valid. A value here is indistinguishable from a legitimately produced one to everything downstream, which is why every record is applied through Slot.freeze and re-checked against its typed domain at import.",
+  "records": [
+    {
+      "slot": "verifiers.p1.list_policy",
+      "value": {
+        "policy_id": "v19:list-policy.canonical",
+        "text_policy": {
+          "policy_id": "v19:text-policy.canonical",
+          "unicode_normalisation": "NFKC",
+          "removed_categories": [
+            "Cf",
+            "Cc"
+          ],
+          "case_rule": "casefold",
+          "word_pattern": "[^\\W_]+(?:['’\\-][^\\W_]+)*",
+          "sentence_boundary": "(?<=[.!?])[\"”’]?\\s+",
+          "collapse_whitespace": true
+        },
+        "bullet_markers": [
+          "-",
+          "*",
+          "•",
+          "‣",
+          "▪"
+        ],
+        "numbered_forms": [
+          "N.",
+          "N)",
+          "(N)"
+        ],
+        "numbered_max_digits": 3,
+        "require_space_after_marker": true,
+        "numbered_items_count": true,
+        "nested_items_count": true,
+        "continuation_joins_previous": true,
+        "empty_items_count": false,
+        "label_match": "token_membership",
+        "extra_items_permitted": false
+      },
+      "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Amendment A1, accepted verbatim: 'Adopt the canonical list grammar, with these requirements'. The requirements attached to that acceptance are implemented and tested: the grammar is arm-blind (no verifier takes an arm, a role or a composition, and none of the functions in any verifier's declared implementation closure mentions one); the target bullet-count verifier's closure is exactly (verify_exact_bullet_count, parse_list, normalise), so the focal ordering relation has no channel into it; match_items_to_labels appears in exactly one verifier's closure, the focal one; sixteen predeclared equivalent surface forms parse to identical items at four lengths; and parse-form and UNPARSEABLE rates are reported per arm as section 11.8 diagnostics, with UNPARSEABLE remaining the orthogonal generation state of section 10.1 rather than a third primary outcome. dci.v19.parsing.RESOLVED_BY_AMENDMENT records the reason for each of the ten grammar decisions."
+    },
+    {
+      "slot": "verifiers.p1.ordering_depth",
+      "value": {
+        "definition": "ordering_depth(R) is the longest-chain cardinality of the required precedence relation R: the number of items in the longest chain of R, counted in items rather than edges",
+        "statistic": "v19:ordering-depth.longest-chain-cardinality",
+        "generator": "v19:ordering-depth.single-chain-v1",
+        "min_depth": 2,
+        "max_depth_rule": "n_items",
+        "harder_direction": "increasing",
+        "exposes": "cover_relations",
+        "generator_form": "for N items at depth d, expose exactly one chain containing d items as its d - 1 cover relations, and leave the remaining N - d items explicitly unconstrained; randomise chain membership, chain order and presentation order from separate domain-separated streams of the recorded seed",
+        "grid": null,
+        "grid_rule": "not decided at Stage 2. Section 6.2's ordered grid of at most five admissible settings is the Stage 5 boundary-calibration output recorded in parameters.p1.admissible_set (register item D6); anticipating it here would pre-empt the calibration that selects it",
+        "rejected_alternatives": {
+          "n_items": "item count is not a property of the ordering relation at all, so it would make the focal parameter a second copy of the target parameter n_items and confound the two constraints the pair is designed to separate",
+          "edge_count": "counts stated requirements rather than the depth of the order; under the canonical generator it is d - 1 and so carries the same information, but off it a wide shallow relation and a deep narrow one can share an edge count",
+          "linear_extension_count": "measures constrainedness, which is a defensible different construct; it is not a depth, is #P-hard in general, and is not monotone in any quantity the prompt states"
+        },
+        "citation": "sections 4.1, 6.1, 6.2, 14.5 + Stage 2 amendment A4"
+      },
+      "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Amendment A4, accepted verbatim: 'Freeze: ordering_depth(R) = longest-chain cardinality' and 'Also freeze the generator so the statistic uniquely determines the intended manipulation'. Both halves are implemented in dci.v19.ordering. The generator produces exactly one chain of d items with the remaining N - d explicitly unconstrained, exposes the chain's d - 1 cover relations rather than its closure, requires 2 <= d <= N, and randomises chain membership, chain order and presentation order from separate domain-separated streams of the recorded seed. Under that form edge count, constrained-item count and free-item count are functions of d alone, which a test asserts at every admissible depth; off the canonical form a single depth admits relations differing in all three. Larger d is recorded as the nominal harder direction. The retained depths are NOT decided here: section 6.2's ordered grid is the Stage 5 calibration output parameters.p1.admissible_set (register item D6), and the domain refuses a Stage 2 value that carries one."
+    },
+    {
+      "slot": "verifiers.inherited_reuse_decision",
+      "value": {
+        "disposition": "corrected",
+        "rationale": "section 14.2 permits reuse only after a hash and semantic audit; the audit demonstrated three defects and section 10.6 requires repair and re-audit before freeze, so the Pair 2 and Pair 3 verifiers were moved onto the frozen v19 text policy with new specification hashes",
+        "corrections": [
+          {
+            "id": "unicode-word-pattern",
+            "inherited": "WORD_PATTERN = [A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*",
+            "corrected": "a Unicode-aware word pattern",
+            "defect": "'café' tokenised as 'caf', so a mandatory word containing a non-ASCII letter could never be matched and that parameter realisation was an impossible composition (section 4.3)"
+          },
+          {
+            "id": "strip-format-characters",
+            "inherited": "whitespace collapse over \\s, which excludes U+200B and U+00AD",
+            "corrected": "remove Unicode categories Cf and Cc before tokenising",
+            "defect": "a zero-width space split a repeated word into distinct tokens, so the Pair 2 focal rule passed while a word repeated; section 10.6 names zero-width characters as required audit material"
+          },
+          {
+            "id": "single-case-rule",
+            "inherited": "str.lower in the verifiers, str.casefold in the encoding",
+            "corrected": "casefold everywhere",
+            "defect": "the encoding required one distinct mandatory token where the verifier looked for two, for example the set ('ß', 'SS')"
+          },
+          {
+            "id": "unicode-sentence-survival",
+            "inherited": "a segment survives only if it matches [A-Za-z0-9]",
+            "corrected": "a segment survives if it contains a word token",
+            "defect": "a list item written in a non-Latin script was an item and not a sentence, which made the solver's n_sentences >= n_items axiom unsound and produced unsat for compositions both verifiers accept"
+          },
+          {
+            "id": "shared-marker-definition",
+            "inherited": "LIST_MARKER hard-coded inside split_sentences",
+            "corrected": "the frozen list grammar supplies its markers to the segmenter",
+            "defect": "the sentence span and the list span carried two independent notions of a marker, so changing the list grammar silently changed Pair 3's sentence count"
+          }
+        ]
+      },
+      "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Amendment A2, accepted verbatim: 'Adopt the corrected verifier semantics.' The disposition is 'corrected', not 'reused_unchanged': section 14.2 permits reuse only after a hash and semantic audit, the audit demonstrated three defects, and section 10.6 requires repair and re-audit before freeze. All six verifiers now read one frozen normalisation and tokenisation contract (dci.v19.text.CANONICAL_TEXT_POLICY) across arms and pipeline layers. The corrections are DERIVED from dci.v19.text.INTENTIONAL_CORRECTIONS rather than retyped, so the registry and the code cannot drift. Each correction has regression tests in both directions - the inherited defect reproduced and the corrected behaviour asserted - and the differential audit against the inherited implementation is preserved and extended, with every changed verdict justified by this amendment."
+    },
+    {
+      "slot": "verifiers.binomial_interval_implementation",
+      "value": "clopper_pearson",
+      "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Amendment A3, accepted verbatim: 'Adopt exact two-sided 95% Clopper-Pearson intervals.' Recovery established that the inherited gate used the Wilson score interval, which is not exact, and that only Wilson reproduces the 73-per-truth-class and 876-label counts section 10.4 preserves; both halves of that sentence could not hold. The exact interval reaches the 5% ceiling at n = 72, so the Tier-1 planning total becomes 864 labels. Register row D45 is added, because section 10.4 cites D9, which is the construction bootstrap and does not cover this decision. dci.v19.reliability.recover_inherited_interval retains the arithmetic so a reviewer can re-check the choice."
+    },
+    {
+      "slot": "verifiers.tier1_audit_design",
+      "value": {
+        "design_id": "v19:tier1-audit-design.strict-fixed-v1",
+        "interval": "clopper_pearson",
+        "n_per_truth_class": 72,
+        "errors_permitted": 0,
+        "extension_permitted": false,
+        "ceiling": 0.05,
+        "confidence": 0.95,
+        "truth_classes": [
+          "true_failures",
+          "true_passes"
+        ],
+        "verifier_units": 6,
+        "total_labels": 864,
+        "remediation": "a unit that fails is repaired and re-audited under a fresh prospectively specified audit, not by extending the original sample. Section 10.6: 'A demonstrated semantic or verifier defect requires repair and re-audit before freeze; collecting more confirmatory data is not a remedy for invalid measurement.' Extending a sample after seeing an error makes the realised size a function of the observed data, so the nominal 95% coverage no longer describes the procedure that was run",
+        "citation": "section 10.4 + Stage 2 amendment A3, register row D45"
+      },
+      "frozen_by": "the investigator, in the Stage 2 decision instruction of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Amendment A3's design half, accepted verbatim: 'Use the strict fixed design: n = 72 per truth class; zero observed errors are required to pass; any observed error fails the audit; after failure, repair/re-audit the verifier using a fresh prospectively specified audit. Do not conditionally extend the original sample to 110.' The design is a separate artifact from the interval because the interval alone does not determine a decision rule: one error in 72 gives an exact upper bound of 0.0750 and fails, while the same error in 110 gives 0.0496 and would pass. 110 is the SMALLEST sample at which one error clears the 5% ceiling, which is why it is the extension named and forbidden. tier1_certificate_under refuses a realised audit the design does not admit before the bound is allowed to speak, and reports which rule was broken."
+    }
+  ]
+}
