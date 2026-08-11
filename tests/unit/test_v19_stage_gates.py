@@ -15,7 +15,7 @@ Every test here therefore asks the same question in a different place: can this
 stage become READY while something the preregistration requires is unresolved?
 """
 import pytest
-from v19_domain_values import for_domain
+from v19_domain_values import for_domain, table_without
 
 from dci.v19 import PROTOCOL_VERSION, artifacts, registry
 from dci.v19.pairs import PAIR_IDS
@@ -268,10 +268,16 @@ def test_no_stage_is_ready_with_any_single_prerequisite_removed(gate):
     # recorded amendment fixes cannot be withheld, and asking the test to withhold
     # one would be asking it to unfreeze a frozen commitment.
     pending = [name for name in required if not REGISTRY.slots[name].resolved]
-    if not pending:                                # pragma: no cover - all fixed
-        pytest.skip(f"every prerequisite of {gate} is already fixed")
-    held_back = pending[0]
-    table = REGISTRY.slots
+    if pending:
+        held_back = pending[0]
+        table = REGISTRY.slots
+    else:
+        # Every prerequisite is already recorded, so withhold one by rebuilding
+        # from the declaration without its record. Skipping here instead would let
+        # a fully satisfied gate stop being tested at the moment it starts to
+        # matter.
+        held_back = required[0]
+        table = table_without(held_back)
     for name in required:
         if name == held_back or table[name].resolved:
             continue
