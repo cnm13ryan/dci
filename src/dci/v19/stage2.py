@@ -217,6 +217,7 @@ def certify_satisfiability(slots: SlotTable) -> Certification:
             "section 14.2; section 8.6"),
         _review_boundary_finding(),
         _solver_finding(),
+        _domain_coverage_finding(slots),
         _battery_regeneration_finding(slots),
     ]
     return Certification(findings=tuple(findings))
@@ -274,6 +275,27 @@ def _battery_regeneration_finding(slots: SlotTable) -> Finding:
     return Finding(requirement, citation, True,
                    f"{len(regenerated)} template batteries regenerated and matched, "
                    f"each at or above {FLOOR} distinct mutations")
+
+
+def _domain_coverage_finding(slots: SlotTable) -> Finding:
+    """Every slot a Stage 2 gate reads must declare a typed domain.
+
+    Without this the audit's worst finding returns silently: a slot with no domain
+    accepts any value, and the gate then reports it as decided.
+    """
+    from dci.v19.registry import STAGE_GATE_BY_KEY
+    requirement = ("every slot Stage 2 depends on declares a typed domain, so a "
+                   "frozen value is validated rather than merely recorded")
+    citation = "section 1.3"
+    watched = set(STAGE_GATE_BY_KEY["stage_2_verifiers"].required_slots)
+    watched |= {s.name for s in slots
+                if s.name.startswith(("verifiers.", "satisfiability."))}
+    undeclared = sorted(name for name in watched if not slots[name].domain)
+    if undeclared:
+        return Finding(requirement, citation, False,
+                       f"{len(undeclared)} slot(s) accept any value: {undeclared}")
+    return Finding(requirement, citation, True,
+                   f"{len(watched)} Stage 2 slot(s) all carry a domain")
 
 
 def _review_boundary_finding() -> Finding:
