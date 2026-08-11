@@ -2371,3 +2371,83 @@ at this sample size** and is not interpreted. The claims that survive are the
 ones about the control reaching zero, the amplifier not reaching zero, and the
 sign of Δ at high budget. Anything finer is noise, and the b = 256 dip in
 particular should not be theorised over.
+
+---
+
+# R11 — the arbitration programme
+
+## R11.1 The in-tree seed repair was still not a scientific seed
+
+Round 10 found the original defect (one `SamplingParams` shared by a batch, ~98%
+of replicate pairs byte-identical) and repaired it by seeding from the row's
+index in the design file:
+
+```python
+return [20260810 + offset + 7919 * i for i in range(len(rows))]
+```
+
+That is distinct per row, so the defect it was written to fix is gone. It is
+still a property of the **file**, not of the **experimental unit**, with two
+consequences: the focal and reference rows of one (task, replicate) draw
+different decoder noise, so the paired τ is not a common-random-number
+difference; and reordering the design reseeds every unit, so a design change
+silently changes the noise.
+
+`vllm_backend/arbitration_vllm.py` seeds from the unit instead:
+
+```python
+seed = blake2b(f"{MASTER_SEED}|{task_id}|{replicate}|{phase}") mod (2**31 - 1)
+```
+
+`reasoning_vllm.py` was **not** modified, so S18/S25/S26/S27 stay reproducible as
+generated. The two harnesses coexist and the difference is recorded here rather
+than migrated.
+
+## R11.2 Three generation parameters differ from what the directive expected
+
+The directive named `top_p = 0.95`, a 350-token final-answer allowance and
+`num_beams = 1`. The artifacts say `top_p = 0.9`, **512** answer tokens, and that
+beam search is not a parameter of this engine. `config.json` records
+`answer_token_budget = 320`, which describes the Transformers design path and is
+contradicted by stored generations reaching 512.
+
+Resolved in favour of the artifacts, because changing either value would make
+this programme incomparable with the runs it exists to replicate. Recorded in
+`AUDIT.md` and `manifest.json` rather than absorbed.
+
+## R11.3 The ACQ priority follow-up was not run, and that is the result
+
+The directive gates the ACQ repeat on "a clear directional effect" from the main
+priority intervention. There is none: all four Ψ intervals contain zero and three
+point estimates carry the wrong sign. Running ACQ anyway would be searching for a
+condition in which the cue works. `followup/` is empty and the reason is in the
+report.
+
+## R11.4 The cross-model ceiling risk was recorded before it was resolved
+
+The 42-generation smoke test showed A satisfied 3/3 in three of four triple
+types on SmolLM3-3B. Three observations cannot separate 1.00 from 0.90, so the
+risk that τ would be ceiling-bound was written into
+`cross_model/smoke/DECISION.md` **before** the main run, together with the reason
+not to swap models on the strength of three rows. At n = 160 per cell A runs
+0.325–0.950 and the risk did not materialise. The record stands so the reading is
+visibly not retrofitted.
+
+## R11.5 Conditioning on background compliance is post-treatment and stays descriptive
+
+SmolLM3-3B complies with the background instruction in only 0.194–0.575 of rows,
+against 0.706–0.938 on Qwen3-4B, so its null Δ is confounded with a manipulation
+that frequently did not land. The obvious repair — restrict to compliant rows — is
+**conditioning on a post-treatment variable** and cannot support a causal claim.
+It was computed anyway, labelled as descriptive, and reported: it retains 41% of
+rows, thins one cell to 3 tasks, and leaves Δ near zero either way. It is not
+used to rescue or to strengthen any claim.
+
+## R11.6 What the corrected seeds did and did not change
+
+Nothing qualitative. Every Round 9/10 headline reproduced. What changed is that
+the numbers can now be quoted: per-replicate Δ agrees in sign across all four
+replicates in every Experiment 1 cell, with a spread of 0.15–0.35. Round 10's
+warning that the amplifier curve's fine shape is not interpretable still holds at
+this sample size — 0.15–0.35 of per-replicate spread is not compatible with
+reading differences of 0.1 between adjacent cells.
