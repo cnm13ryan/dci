@@ -17,9 +17,11 @@ from functools import lru_cache
 from typing import Any
 
 from dci.v19 import artifacts, ordering, pairs
+from dci.v19.encoding import encoding_map_state
 from dci.v19.parsing import CANONICAL_LIST_POLICY
 from dci.v19.reliability import AMENDED_INTERVAL, AMENDED_TIER1_DESIGN
 from dci.v19.text import CANONICAL_TEXT_POLICY
+from dci.v19.witness import CONSTRUCTOR_ID
 
 # What a test freezes into a slot that declares no domain. Any value is admissible
 # there, and a recognisable one makes a failure message readable.
@@ -53,6 +55,37 @@ def battery_evidence() -> dict[str, Any]:
             for index, rule in enumerate(pairs.rules(), start=1)}
 
 
+@lru_cache(maxsize=1)
+def solver_identity_value() -> dict[str, str]:
+    from dci.v19.solver import solver_identity
+    name, version = solver_identity()
+    return {"name": name, "version": version}
+
+
+@lru_cache(maxsize=1)
+def review_trigger_evidence() -> dict[str, Any]:
+    from dci.v19.review_trigger import frozen_trigger_evidence
+    return frozen_trigger_evidence()
+
+
+def passing_review_record(witness_hash: str = "0" * 64,
+                          clause_ids: tuple[str, ...] = (
+                              "v19:p2.focal.all_words_unique",)) -> dict[str, Any]:
+    return {"witness_hash": witness_hash, "clause_ids": list(clause_ids),
+            "reviews": [{"reviewer_id": "reviewer-a", "satisfied": True,
+                         "rationale": "a synthetic rationale for a gate test"},
+                        {"reviewer_id": "reviewer-b", "satisfied": True,
+                         "rationale": "a second synthetic rationale"}]}
+
+
+def certified_compositions() -> dict[str, Any]:
+    return {"probe/composition": {"semantic_id": "a" * 64,
+                                  "implementation_id": "b" * 64,
+                                  "evidence_id": "c" * 64,
+                                  "certificate_hash": "d" * 64,
+                                  "certified": True}}
+
+
 def _frozen_protocol() -> dict[str, Any]:
     from dci.v19.tier1_audit import PROTOCOL
     return dict(PROTOCOL)
@@ -81,6 +114,12 @@ def for_domain(domain: str) -> Any:
         # from the decision the registry carries.
         "tier1_audit_protocol": lambda: dict(_frozen_protocol()),
         "tier1_certificates": tier1_certificates,
+        "encoding_map": lambda: encoding_map_state(CANONICAL_LIST_POLICY),
+        "solver_identity": solver_identity_value,
+        "witness_constructor": lambda: CONSTRUCTOR_ID,
+        "review_trigger": review_trigger_evidence,
+        "semantic_reviews": lambda: {"probe/composition": passing_review_record()},
+        "certified_compositions": certified_compositions,
     }
     if domain not in table:
         raise KeyError(f"no stand-in value for domain {domain!r}; add one here "
@@ -102,3 +141,29 @@ def resolve(table, *names: str):
 def resolve_all_except(table, *held_back: str, names=()):
     """Freeze every named slot but the ones held back."""
     return resolve(table, *[n for n in names if n not in held_back])
+
+
+def table_without(*withheld: str):
+    """The registry with every recorded output applied EXCEPT the named ones.
+
+    Needed because "withhold one requirement and the gate must stay blocked" can no
+    longer be tested against the live registry: every Stage 2 prerequisite is now
+    resolved there, and a frozen commitment cannot be unfrozen. Rebuilding from the
+    declaration with one record left out asks the same question honestly.
+
+    Records whose own prerequisites become unresolved as a consequence are skipped
+    too - `frozen.apply` would refuse them - so withholding an early decision
+    correctly cascades to everything downstream of it.
+    """
+    from dci.v19 import frozen
+    from dci.v19.registry import declared_table
+    table = declared_table()
+    held = set(withheld)
+    for record in frozen.records():
+        name = record["slot"]
+        if name in held:
+            continue
+        if any(not table[d].resolved for d in table[name].depends_on):
+            continue
+        table = table.freeze(name, record["value"], by=record["frozen_by"])
+    return table
