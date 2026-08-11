@@ -36,8 +36,9 @@ runtime gate reads, not maintained separately by hand.
 from __future__ import annotations
 
 import enum
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, replace
-from typing import Any, Iterable, Mapping, Optional, Sequence
+from typing import Any
 
 from dci.provenance.hashes import sha
 
@@ -140,6 +141,7 @@ class Slot:
     depends_on: tuple[str, ...] = ()
     frozen_by: str = ""
     note: str = ""
+    domain: str = ""
 
     def __post_init__(self):
         if not self.name or not self.prereg:
@@ -163,10 +165,27 @@ class Slot:
                 raise ValueError(
                     f"{self.name} is pending with no stated production rule; "
                     "every PFD names the rule that produces it (section 1.3)")
+        if self.domain and not isinstance(self.value, _Missing):
+            self._validate(self.value)
         if self.resolution is Resolution.FROZEN and not self.frozen_by:
             raise ValueError(
                 f"{self.name} is FROZEN without naming the procedure or artifact "
                 "that froze it, so its provenance cannot be audited")
+
+    def _validate(self, value: Any) -> None:
+        """Check a value against this slot's declared domain.
+
+        Populated is not validated. The audit froze `None`, `""`, `12345` and an
+        unimplemented interval name into slots whose gate then reported them as
+        decided, so a slot that declares a domain refuses a value outside it.
+        """
+        from dci.v19.schemas import DomainError, validate
+        try:
+            validate(self.domain, value)
+        except DomainError as error:
+            raise ValueError(
+                f"{self.name}: {value!r} is not admissible for domain "
+                f"{self.domain!r} - {error}") from error
 
     @property
     def resolved(self) -> bool:
@@ -209,6 +228,8 @@ class Slot:
             raise ValueError(
                 f"{self.name}: freezing requires the producing procedure or "
                 "artifact, so the value's provenance is recorded with it")
+        if self.domain:
+            self._validate(value)
         return replace(self, resolution=Resolution.FROZEN, value=value,
                        frozen_by=by)
 
@@ -216,26 +237,27 @@ class Slot:
         """A serialisable audit row."""
         return {"name": self.name, "prereg": self.prereg,
                 "resolution": self.resolution.value, "status": self.status,
-                "rule": self.rule, "resolved": self.resolved,
+                "rule": self.rule, "resolved": self.resolved, "domain": self.domain,
                 "depends_on": list(self.depends_on),
                 "frozen_by": self.frozen_by, "note": self.note}
 
 
 def fixed(name: str, prereg: str, value: Any, *, rule: str = "",
-          note: str = "") -> Slot:
-    """A quantity the preregistration fixes directly."""
+          note: str = "", domain: str = "") -> Slot:
+    """A quantity the preregistration, or a recorded amendment to it, fixes."""
     return Slot(name=name, prereg=prereg, resolution=Resolution.FIXED,
                 rule=rule or "fixed by the preregistration text", value=value,
-                note=note)
+                note=note, domain=domain)
 
 
 def pending(name: str, prereg: str, resolution: Resolution, rule: str, *,
-            depends_on: Iterable[str] = (), note: str = "") -> Slot:
+            depends_on: Iterable[str] = (), note: str = "",
+            domain: str = "") -> Slot:
     """A pre-freeze deliverable whose frozen rule has not yet been executed."""
     if resolution not in PENDING:
         raise ValueError(f"{resolution} is not a pending resolution")
     return Slot(name=name, prereg=prereg, resolution=resolution, rule=rule,
-                depends_on=tuple(depends_on), note=note)
+                depends_on=tuple(depends_on), note=note, domain=domain)
 
 
 @dataclass(frozen=True)
@@ -343,7 +365,7 @@ class SlotTable:
         Order-independent, so declaration order carries no meaning.
         """
         return sha(sorted(
-            [s.name, s.prereg, s.rule, list(s.depends_on)]
+            [s.name, s.prereg, s.rule, list(s.depends_on), s.domain]
             for s in self.slots))
 
     @property
@@ -373,7 +395,7 @@ class SlotTable:
 
 
 def assert_no_fabricated_values(table: SlotTable,
-                               forbidden: Mapping[str, Optional[str]]) -> None:
+                               forbidden: Mapping[str, str | None]) -> None:
     """Check that named quantities the protocol reserves are still unresolved.
 
     Section 16 of the implementation directive lists quantities that must never
