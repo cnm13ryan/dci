@@ -135,7 +135,7 @@ def prototype_a(table, natural, name="prototype_A_full_progression", final=False
     # endpoint note goes there rather than under the axis, where it collided
     # with the blue line's own label.
     ax.annotate("model finished thinking on its own\n"
-                f"{natural['cap_reached']}/{natural['n']} hit the safety limit\n"
+                "no answer came near the safety limit\n"
                 f"median {natural['median']:,.0f} reasoning tokens",
                 (x[5] + 0.55, 0.175), ha="center", va="center", fontsize=8.5,
                 color="#6f6f6a", linespacing=1.5)
@@ -278,7 +278,7 @@ def natural_distribution(frame, name="fig15_natural_reasoning_length"):
 
 
 # ============================================== the selected headline figure
-def figure1(table, natural, meta, name="figure1_headline", figsize=(8.2, 5.6)):
+def figure1(table, natural, meta, name="figure1_headline", figsize=(9.0, 6.2)):
     """Prototype A, with every gap the cold-reader test exposed closed.
 
     The test found the shape read in 10-15 seconds but left the reader unable to
@@ -298,22 +298,25 @@ def figure1(table, natural, meta, name="figure1_headline", figsize=(8.2, 5.6)):
 
     ax.set_ylabel("Increase in failure rate on the main instruction\n"
                   "(\u201cwrite exactly 4 sentences\u201d)", fontsize=11.5)
-    ax.annotate("More thinking\nfixes this one", (x[3], -0.005),
-                xytext=(2.45, 0.20), fontsize=11, color=COLOR[BRACKET],
+    # The blue line does not improve gradually — it collapses between "no
+    # thinking" and the smallest budget tested, and nothing below 256 was run.
+    # The callout therefore points at that drop and says "any", not "more".
+    ax.set_ylim(-0.19, 0.95)
+    ax.annotate("Any thinking at all\nfixes this one", (0.55, 0.215),
+                xytext=(2.35, 0.15), fontsize=11, color=COLOR[BRACKET],
                 fontweight="bold", ha="center",
                 arrowprops=dict(arrowstyle="->", color=COLOR[BRACKET], lw=1.6))
-    ax.annotate("This one stays broken", (x[5] - 0.35, 0.44),
-                xytext=(2.1, 0.76), fontsize=11, color=COLOR[SEMICOLON],
-                fontweight="bold", ha="center",
-                arrowprops=dict(arrowstyle="->", color=COLOR[SEMICOLON], lw=1.6,
-                                connectionstyle="arc3,rad=-0.12"))
-    ax.annotate("0 = the extra instruction\ncost the model nothing",
-                (x[5] + 0.62, -0.062), fontsize=8.5, color="#6f6f6a",
+    # No arrow for the orange line. Any path drawn along it traces a rise or a
+    # fall that its own intervals do not resolve; the claim is about LEVEL.
+    ax.annotate("This one never returns to zero", (2.75, 0.88), fontsize=11.5,
+                color=COLOR[SEMICOLON], fontweight="bold", ha="center")
+    ax.annotate("0 = the competing instruction\ncaused no extra failures",
+                (x[5] + 0.62, -0.125), fontsize=8.5, color="#6f6f6a",
                 ha="center", va="center", linespacing=1.4)
     ax.annotate("model finished thinking on its own\n"
-                f"{natural['cap_reached']}/{natural['n']} hit the safety limit\n"
+                "no answer came near the safety limit\n"
                 f"median {natural['median']:,.0f} reasoning tokens",
-                (x[5] + 0.62, 0.185), ha="center", va="center", fontsize=8.5,
+                (x[5] + 0.62, 0.215), ha="center", va="center", fontsize=8.5,
                 color="#6f6f6a", linespacing=1.5)
 
     ax.set_title("Does letting the model think for longer remove the conflict\n"
@@ -323,15 +326,18 @@ def figure1(table, natural, meta, name="figure1_headline", figsize=(8.2, 5.6)):
     # two lines actually are. It is one sentence, so it goes on the figure.
     ax.text(0, 1.035,
             "Every prompt asks for exactly 4 sentences, plus a competing "
-            "instruction, plus one formatting instruction.\n"
-            "The two lines differ only in that formatting instruction \u2014 and "
-            "in nothing else.",
+            "instruction: make each sentence longer than the last.\n"
+            "The two lines differ only in one further formatting instruction.",
             transform=ax.transAxes, fontsize=9.5, va="bottom", color="#3a3a36",
             linespacing=1.5)
     fig.text(0.5, -0.055,
-             f"Qwen3-4B  \u00b7  {meta['n_tasks']} tasks \u00d7 "
-             f"{meta['replicates']} replicates behind every point  \u00b7  "
-             "error bars are 95% intervals from resampling the tasks",
+             f"Qwen3-4B, one instruction pair  \u00b7  every point is a paired "
+             f"difference across {meta['n_tasks']} tasks "
+             f"({meta['replicates']} answers per task per condition, "
+             f"{meta['n_tasks'] * meta['replicates'] * 2} answers per point)  "
+             "\u00b7  error bars are 95% intervals from resampling the tasks\n"
+             "Budgets actually run: 0, 256, 512, 1,024, 4,096 \u2014 2,048 was not "
+             "run, and the axis is ordered, not to scale",
              ha="center", fontsize=8.5, color="#6f6f6a")
     fig.tight_layout()
     plotstyle.save(fig, OUT, name)

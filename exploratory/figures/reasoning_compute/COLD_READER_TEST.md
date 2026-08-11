@@ -75,3 +75,60 @@ Deployment-size check at 7 inches (two-column paper width): every label, callout
 and footer remains legible without zooming, and the two series stay
 distinguishable in greyscale through line style (solid/dashed) and marker shape
 (circle/square) as well as colour.
+
+---
+
+# Round 2 — retest of the final `figure1_headline`
+
+Same protocol, same model-based proxy, one image and nothing else. The reader
+answered questions 1–7 substantially correctly, including the one-sentence
+conclusion:
+
+> "For Qwen3-4B, extra thinking time eliminates the cost of one added formatting
+> instruction (a bracket pair) but not another (a semicolon), so 'let it think
+> longer' is not a general fix for instruction interference."
+
+Time to the main point: **25–30 seconds** — slower than round 1's 10–15, because
+the figure now carries the setup the reader previously had to guess at.
+
+## What the retest changed
+
+The reader's sharpest objections were about **claims stronger than the data**, and
+all three were acted on rather than defended:
+
+| objection | verdict | action |
+|---|---|---|
+| "*More thinking fixes this one* is not what the blue line shows — it collapses between no-thinking and 256, the smallest budget tested, then is flat. The arrow points at 1024, which is arbitrary." | **Correct.** | Callout reworded to **"Any thinking at all fixes this one"** and re-aimed at the 0 → 256 drop. |
+| "The orange annotation arrow ends in empty space … it reads as if tracing a downward trend — exactly the opposite of the claim it is attached to." | **Correct.** | The arrow is **removed**. The text now sits above the line and makes a claim about level, not shape: **"This one never returns to zero"**. |
+| "*The conflict between its instructions* is not measured — the competing instruction is never named. The figure's headline concept is invisible in the data." | **Correct.** | The subtitle now names it: *make each sentence longer than the last*. |
+
+Three further fixes followed from the same report: the y-axis note now says what
+the increase is **over** ("0 = the competing instruction caused no extra
+failures"); the footer states that each point is a paired difference across 20
+tasks with 80 answers behind it, resolving a "160 vs 20 × 2" arithmetic the
+reader could not reconcile; and the footer records that **2,048 was never run**
+and that the axis is ordered rather than to scale.
+
+## Objections recorded but NOT fixed on the figure
+
+* **"The orange series bounces by 0.3 with error bars of ±0.2."** Right, and it is
+  why no shape is claimed anywhere. The figure asserts only that the line never
+  returns to zero, which its intervals do support.
+* **"At *No thinking* the two conditions are statistically indistinguishable."**
+  Right — +0.450 [+0.275, +0.625] against +0.525 [+0.350, +0.676]. The separation
+  appears from 256 onward. Recorded in `NATURAL_REASONING_RESULTS.md` rather than
+  crowding the figure.
+* **"Natural has a median of 511, essentially the 512 condition, yet gives 0.40
+  against 0.63."** The best catch in either round. It is now stated explicitly as
+  an unresolved tension in `NATURAL_REASONING_RESULTS.md`: the 512 setting cut
+  short 60% of its rows while natural's tail runs to 5,888, *and* the intervals
+  overlap, so part of the gap may be noise. The figure does not claim natural
+  beats 512.
+* **"How sentences are counted is not stated."** True; it is a frozen verifier
+  documented in `METRIC_SPEC.md`, not something Figure 1 can carry.
+
+## Standing limitation
+
+Both rounds used a **model-based proxy reader, not a human subject**. It is a real
+test of whether the figure is self-contained, because the reader genuinely had no
+project context. It is not a human study and is not described as one.
