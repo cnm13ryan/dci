@@ -1,0 +1,16 @@
+reasoning_budget,variant,quantity,estimate,lo,hi,n_tasks
+0,DELTA_amp,delta_amplification,0.2,-0.15,0.55,20
+0,X_PAREN_FREE,tau,0.4,0.2,0.6,20
+0,X_SEMICOLON_FREE,tau,0.6,0.4,0.8,20
+256,DELTA_amp,delta_amplification,-0.075,-0.37562499999999976,0.25,20
+256,X_PAREN_FREE,tau,0.15,0.0,0.3,20
+256,X_SEMICOLON_FREE,tau,0.075,-0.225,0.375,20
+512,DELTA_amp,delta_amplification,0.375,0.075,0.65,20
+512,X_PAREN_FREE,tau,0.0,0.0,0.0,20
+512,X_SEMICOLON_FREE,tau,0.375,0.1,0.65,20
+1024,DELTA_amp,delta_amplification,0.45,0.2,0.7,20
+1024,X_PAREN_FREE,tau,0.0,0.0,0.0,20
+1024,X_SEMICOLON_FREE,tau,0.45,0.2,0.7,20
+4096,DELTA_amp,delta_amplification,0.5,0.3,0.7,20
+4096,X_PAREN_FREE,tau,0.0,0.0,0.0,20
+4096,X_SEMICOLON_FREE,tau,0.5,0.3,0.7,20
