@@ -233,6 +233,45 @@ def background_contrast(frame: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def joint_contrast(frame: pd.DataFrame) -> pd.DataFrame:
+    """SECONDARY, and only because the primary estimand is degenerate here.
+
+    Every checkpoint in this study protects the target instruction almost
+    perfectly, so `tau` — a contrast between two target-failure rates — is zero
+    by construction and can carry no signal. That is a real finding, not a
+    measurement failure, but it leaves the question "does the semicolon context
+    cost anything at all?" unanswered by the pre-registered quantity.
+
+    This asks it of the outcome that still moves: joint satisfaction in the
+    focal arm, where the two instructions actually compete.
+
+        J(m,c,r) = P(A and B both satisfied | focal arm, m, c, r)
+        Delta_J  = J(semicolon) - J(control)
+
+    Paired over tasks and bootstrapped the same way. It is NOT the study's
+    estimand, it was not pre-registered, and it is reported as exploratory.
+    """
+    rows = []
+    focal_only = frame[frame["arm"] == FOCAL]
+    for (model, mode), cell in focal_only.groupby(["model_id",
+                                                   "reasoning_mode"]):
+        cell = cell.copy()
+        cell["both"] = (cell["outcome"] == "both satisfied").astype(float)
+        rates = cell.groupby(["background", "task_id"])["both"].mean()
+        if (SEMICOLON not in rates.index.get_level_values(0)
+                or CONTROL not in rates.index.get_level_values(0)):
+            continue
+        delta = (rates.loc[SEMICOLON] - rates.loc[CONTROL]).dropna()
+        stats = plotstyle.summarise(delta, f"{model}|{mode}|joint")
+        rows.append({
+            "model": model.split("/")[-1], "reasoning": mode,
+            "joint_control": rates.loc[CONTROL].mean(),
+            "joint_semicolon": rates.loc[SEMICOLON].mean(),
+            "delta_joint": stats["estimate"], "lo": stats["lo"],
+            "hi": stats["hi"], "n_tasks": stats["n_tasks"]})
+    return pd.DataFrame(rows)
+
+
 def four_state(frame: pd.DataFrame) -> pd.DataFrame:
     """What the model did in the FOCAL arm, where the two instructions compete."""
     focal = frame[frame["arm"] == FOCAL]
@@ -334,6 +373,11 @@ def main() -> int:
     delta = background_contrast(frame)
     print(delta.to_string(index=False, float_format=lambda v: f"{v:+.3f}"))
 
+    print("\n\n### 2b. SECONDARY, exploratory: joint satisfaction in the focal arm")
+    print("### Reported because the primary estimand is degenerate here.\n")
+    joint = joint_contrast(frame)
+    print(joint.to_string(index=False, float_format=lambda v: f"{v:+.3f}"))
+
     print("\n\n### 3. Four-state outcomes in the focal arm\n")
     print(four_state(frame).to_string(float_format=lambda v: f"{v:.3f}"))
 
@@ -358,6 +402,7 @@ def main() -> int:
     four_state(frame).to_csv(out / "four_state.csv")
     primitive_compliance(frame).to_csv(out / "compliance.csv", index=False)
     use.to_csv(out / "reasoning_use.csv", index=False)
+    joint.to_csv(out / "joint_contrast.csv", index=False)
     queue.to_csv(out / "leakage_queue.csv", index=False)
     frame.drop(columns=["raw_generation", "reasoning_text", "rendered_prompt"],
                errors="ignore").to_json(
