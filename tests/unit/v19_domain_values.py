@@ -17,6 +17,8 @@ from functools import lru_cache
 from typing import Any
 
 from dci.v19 import artifacts, ordering, pairs
+from dci.v19.encoding import encoding_map_state
+from dci.v19.witness import CONSTRUCTOR_ID
 from dci.v19.parsing import CANONICAL_LIST_POLICY
 from dci.v19.reliability import AMENDED_INTERVAL, AMENDED_TIER1_DESIGN
 from dci.v19.text import CANONICAL_TEXT_POLICY
@@ -53,6 +55,37 @@ def battery_evidence() -> dict[str, Any]:
             for index, rule in enumerate(pairs.rules(), start=1)}
 
 
+@lru_cache(maxsize=1)
+def solver_identity_value() -> dict[str, str]:
+    from dci.v19.solver import solver_identity
+    name, version = solver_identity()
+    return {"name": name, "version": version}
+
+
+@lru_cache(maxsize=1)
+def review_trigger_evidence() -> dict[str, Any]:
+    from dci.v19.review_trigger import frozen_trigger_evidence
+    return frozen_trigger_evidence()
+
+
+def passing_review_record(witness_hash: str = "0" * 64,
+                          clause_ids: tuple[str, ...] = (
+                              "v19:p2.focal.all_words_unique",)) -> dict[str, Any]:
+    return {"witness_hash": witness_hash, "clause_ids": list(clause_ids),
+            "reviews": [{"reviewer_id": "reviewer-a", "satisfied": True,
+                         "rationale": "a synthetic rationale for a gate test"},
+                        {"reviewer_id": "reviewer-b", "satisfied": True,
+                         "rationale": "a second synthetic rationale"}]}
+
+
+def certified_compositions() -> dict[str, Any]:
+    return {"probe/composition": {"semantic_id": "a" * 64,
+                                  "implementation_id": "b" * 64,
+                                  "evidence_id": "c" * 64,
+                                  "certificate_hash": "d" * 64,
+                                  "certified": True}}
+
+
 def tier1_certificates() -> dict[str, Any]:
     return {rule.constraint_id: {"passed": True, "unavailable": []}
             for rule in pairs.rules()}
@@ -73,6 +106,12 @@ def for_domain(domain: str) -> Any:
         "bundle_hash": bundle_hash_value,
         "boundary_mutations": battery_evidence,
         "tier1_certificates": tier1_certificates,
+        "encoding_map": lambda: encoding_map_state(CANONICAL_LIST_POLICY),
+        "solver_identity": solver_identity_value,
+        "witness_constructor": lambda: CONSTRUCTOR_ID,
+        "review_trigger": review_trigger_evidence,
+        "semantic_reviews": lambda: {"probe/composition": passing_review_record()},
+        "certified_compositions": certified_compositions,
     }
     if domain not in table:
         raise KeyError(f"no stand-in value for domain {domain!r}; add one here "

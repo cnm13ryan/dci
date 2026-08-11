@@ -284,9 +284,8 @@ def test_no_stage_is_ready_with_any_single_prerequisite_removed(gate):
 
 # ------------------------------------------------- the newly declared artifacts
 @pytest.mark.parametrize("name", [
-    "qualification.stage2a", "verifiers.bundle_hash",
-    "verifiers.tier1_reliability",
-    "verifiers.boundary_mutations", "matching.p1.constants",
+    "qualification.stage2a",
+    "verifiers.tier1_reliability", "matching.p1.constants",
     "parameters.p1.admissible_set", "parameters.p1.distribution",
     "eligibility.p1.hard_gates", "coupling.p1.audit", "wording.p1.instability",
     "validation.p1.independent", "bank.p1.attainable_count",
@@ -302,6 +301,20 @@ def test_every_new_artifact_is_declared_and_unresolved(name):
     slot = REGISTRY.slots[name]
     assert not slot.resolved, f"{name} must not ship with a value"
     assert slot.rule and slot.prereg
+
+
+@pytest.mark.parametrize("name", ["verifiers.bundle_hash",
+                                  "verifiers.boundary_mutations"])
+def test_a_stage_two_artifact_is_resolved_only_by_a_record(name):
+    """These two ARE produced now, and only because a record says so.
+
+    Their declaration still carries no value; what resolves them is an entry in
+    stage2_frozen.json whose value the slot's typed domain re-checks at import.
+    """
+    from dci.v19 import registry
+    assert not registry.declared_table()[name].resolved, name
+    slot = REGISTRY.slots[name]
+    assert slot.resolved and slot.frozen_by and slot.domain, name
 
 
 def test_the_new_artifacts_exist_for_every_pair():
@@ -386,4 +399,4 @@ def test_the_registry_now_reports_every_stage():
     assert len(audit) == 18
     assert [row["ordinal"] for row in audit] == list(MANDATORY_STAGE_ORDINALS)
     blocked = [row for row in audit if row["status"] != "READY"]
-    assert len(blocked) == 17            # only Stage 1 has no prerequisite
+    assert len(blocked) == 16            # Stages 1 and 2 are now ready

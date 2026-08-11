@@ -169,6 +169,21 @@ VERIFIER_SLOTS = SlotTable.of(
 # --------------------------- Stage 2: whole-composition satisfiability certification
 
 SATISFIABILITY_SLOTS = SlotTable.of(
+    pending("satisfiability.review_trigger", "section 14.2 / section 8.6",
+            Resolution.PENDING_EMPIRICAL,
+            "Stage 2: the hash-frozen adversarial fixtures demonstrating that the "
+            "semantic-review trigger fires when deterministic coverage is "
+            "incomplete, stays silent when it is complete, rejects a review of the "
+            "wrong witness, and requires adjudication of reviewer disagreement",
+            depends_on=("satisfiability.encoding_map",
+                        "satisfiability.witness_constructor"),
+            note="section 14.2 assigns Stage 2 the review TRIGGERS; the reviews "
+                 "themselves are per composition and are due at Stage 10, where "
+                 "section 8.6 places SATCERT 'before entering a frozen "
+                 "confirmatory bank'. Nothing escapes review: certify_composition "
+                 "refuses any composition with an incompletely covered clause and "
+                 "no passing review keyed to its own witness",
+            domain="review_trigger"),
     pending("satisfiability.encoding_map", "D13 / sections 8.6, 14.2",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: freeze the canonical structured encoding of every constraint "
@@ -176,34 +191,45 @@ SATISFIABILITY_SLOTS = SlotTable.of(
             depends_on=("verifiers.p1.list_policy",),
             note="the Pair 1 clauses embed the list-policy hash, because what "
                  "counts as a list item decides whether the encoding and the "
-                 "verifier agree"),
+                 "verifier agree",
+            domain="encoding_map"),
     pending("satisfiability.solver_identity", "D13 / section 8.6",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: record the frozen solver's name and exact version; section "
             "8.6 permits Z3 or an equivalently frozen solver, and a solver whose "
             "version is unrecorded is not frozen",
             note="unsat, unknown, timeout and missing solver output all fail "
-                 "closed; only sat may support progression"),
+                 "closed; only sat may support progression",
+            domain="solver_identity"),
     pending("satisfiability.witness_constructor", "D13 / section 8.6",
             Resolution.PENDING_EMPIRICAL,
             "Stage 2: freeze the deterministic witness constructor, whose output is "
             "the stronger operational evidence a solver sat result cannot supply",
-            depends_on=("satisfiability.encoding_map",)),
-    pending("satisfiability.semantic_reviews", "D13 / section 8.6",
-            Resolution.PENDING_DECISION,
-            "Stage 2: two independent human reviews, with a third adjudicating "
-            "disagreement, for every clause whose intended semantics the frozen "
-            "encoding and deterministic verifier do not exhaust; unresolved "
-            "disagreement fails certification",
             depends_on=("satisfiability.encoding_map",),
-            note="three of the six declared clauses currently declare incomplete "
-                 "coverage - Pair 1 item identification, Pair 2 uniqueness under "
-                 "the frozen tokenisation, and Pair 3 sentence segmentation - so "
-                 "review is required for every composition, and code must never "
-                 "stand in for the reviewer"),
+            domain="witness_constructor"),
+    pending("satisfiability.semantic_reviews", "D13 / sections 8.6, 14.10",
+            Resolution.PENDING_DECISION,
+            "Stage 10: two independent human reviews, with a third adjudicating "
+            "disagreement, for every clause whose intended semantics the frozen "
+            "encoding and deterministic verifier do not exhaust, for EVERY "
+            "composition the bank accepts; unresolved disagreement fails "
+            "certification",
+            depends_on=("satisfiability.encoding_map",
+                        "satisfiability.review_trigger"),
+            note="due at Stage 10, not Stage 2. Section 14.2 assigns Stage 2 the "
+                 "review TRIGGERS; section 8.6 places SATCERT 'before entering a "
+                 "frozen confirmatory bank' and section 14.10 builds that bank. "
+                 "Each pair has exactly one incompletely covered clause - Pair 1 "
+                 "item identification, Pair 2 uniqueness under the frozen "
+                 "tokenisation, Pair 3 sentence segmentation - so EVERY "
+                 "composition needs a review. Granularity is per composition and "
+                 "is not renegotiable against workload: two compositions differ "
+                 "in their witness, and a review is a judgement about one "
+                 "concrete text. Code must never stand in for the reviewer",
+            domain="semantic_reviews"),
     pending("satisfiability.certified_compositions", "D13 / sections 8.6, 14.10",
             Resolution.PENDING_EMPIRICAL,
-            "Stage 2 onward: the SATCERT artifact per prospective A+B+S and "
+            "Stage 10: the SATCERT artifact per prospective A+B+S and "
             "A+R_j+S composition - encoding, solver input and output, witness and "
             "its construction procedure, the complete verifier vector, the semantic "
             "review where applicable, and the hashes tying them together",
@@ -212,7 +238,8 @@ SATISFIABILITY_SLOTS = SlotTable.of(
                         "satisfiability.semantic_reviews",
                         "verifiers.bundle_hash"),
             note="individual constraint validity and pairwise compatibility are "
-                 "insufficient; the unit of certification is the whole arm"),
+                 "insufficient; the unit of certification is the whole arm",
+            domain="certified_compositions"),
 )
 
 
