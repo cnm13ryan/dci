@@ -27,6 +27,7 @@ kind, or a changed coverage declaration all move the composition's identity.
 """
 from __future__ import annotations
 
+import dataclasses
 import enum
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -34,7 +35,9 @@ from typing import Any
 
 from dci.provenance.hashes import sha
 from dci.v19 import pairs
-from dci.v19.parsing import OrderingRelation
+from dci.v19 import text as textlib
+from dci.v19.parsing import ListPolicy, OrderingRelation, require_policy
+from dci.v19.resolution import UnresolvedDependency
 
 # The abstract feature projection. Section 8.6's "encoded abstract feature
 # projection" is exactly this list and nothing more, which is why it is written
@@ -73,6 +76,12 @@ class DeterministicCoverage(str, enum.Enum):
     PARTIAL = "PARTIAL"
 
 
+# The roles a clause may occupy inside one composition. `reference` is the
+# added-slot occupant of an A+R_j+S arm; its identity is a Stage 8 output, so no
+# reference clause can be encoded yet and `encode_reference` says so.
+CLAUSE_ROLES = ("target", "focal", "reference", "background")
+
+
 class EncodingError(ValueError):
     """A constraint that cannot be encoded as declared."""
 
@@ -90,6 +99,11 @@ class Clause:
     citation: str = ""
 
     def __post_init__(self):
+        if self.role not in CLAUSE_ROLES:
+            raise EncodingError(
+                f"{self.constraint_id}: role {self.role!r} is not one of "
+                f"{CLAUSE_ROLES}; a clause with no declared role cannot be checked "
+                "against the composition's load")
         if not isinstance(self.kind, ClauseKind):
             raise EncodingError(f"{self.kind!r} is not a ClauseKind")
         if not isinstance(self.coverage, DeterministicCoverage):
@@ -162,6 +176,7 @@ class Composition:
             raise EncodingError("a composition needs an identifier")
         pairs.assert_arm(self.arm)
         pairs.assert_load(self.load)
+        pair = pairs.pair(self.pair_id)
         if not self.clauses:
             raise EncodingError(
                 f"{self.composition_id}: a composition with no clauses would be "
@@ -170,16 +185,66 @@ class Composition:
         duplicated = sorted({c for c in seen if seen.count(c) > 1})
         if duplicated:
             raise EncodingError(
-                f"{self.composition_id}: constraint(s) {duplicated} appear twice; "
-                "a composition is a set of distinct active constraints")
-        # Section 8.1: at k=2 the target and the added-slot occupant are active; at
-        # k=5 exactly three backgrounds join them. A composition whose clause count
-        # cannot correspond to its load is mis-declared rather than merely unusual.
-        if self.load == 2 and len(self.constraint_ids) > 2:
+                f"{self.composition_id}: constraint(s) {duplicated} appear twice; a "
+                "composition is a set of distinct active constraints")
+
+        # Section 2.1 and section 8.1: every certified composition is A+B+S or
+        # A+R_j+S. It therefore has exactly one target - the pair's own - exactly one
+        # added-slot occupant, and exactly the backgrounds its load admits.
+        targets = [c for c in self.clauses if c.role == "target"]
+        if len(targets) != 1:
             raise EncodingError(
-                f"{self.composition_id}: load 2 admits the target and the "
-                f"added-slot occupant only, but {len(self.constraint_ids)} "
-                "constraints are active (section 8.1)")
+                f"{self.composition_id}: {len(targets)} target clause(s). Every "
+                "A+B+S and A+R_j+S composition has exactly one target, which is the "
+                "primary outcome's own constraint (sections 2.1, 8.6)")
+        if targets[0].constraint_id != pair.target.constraint_id:
+            raise EncodingError(
+                f"{self.composition_id}: declared for {self.pair_id} but its target "
+                f"is {targets[0].constraint_id!r}, not "
+                f"{pair.target.constraint_id!r}. A composition labelled with one "
+                "pair and built from another's constraints is not the pair's "
+                "composition")
+        occupants = [c for c in self.clauses if c.role in ("focal", "reference")]
+        if len(occupants) != 1:
+            raise EncodingError(
+                f"{self.composition_id}: {len(occupants)} added-slot occupant(s). "
+                "The replacement contrast puts exactly one occupant in the added "
+                "slot - B in the focal arm, R_j in a reference arm (section 2.1)")
+        occupant = occupants[0]
+        if self.arm == "B":
+            if occupant.role != "focal" \
+                    or occupant.constraint_id != pair.focal.constraint_id:
+                raise EncodingError(
+                    f"{self.composition_id}: the focal arm's occupant must be "
+                    f"{pair.focal.constraint_id!r}, got {occupant.constraint_id!r} "
+                    f"with role {occupant.role!r}")
+        elif occupant.role != "reference":
+            raise EncodingError(
+                f"{self.composition_id}: arm {self.arm} replaces the focal with a "
+                f"reference, but its occupant {occupant.constraint_id!r} has role "
+                f"{occupant.role!r}. A+R_j+S is a replacement, not an addition "
+                "(section 2.1)")
+        backgrounds = [c for c in self.clauses if c.role == "background"]
+        expected = 0 if self.load == 2 else 3
+        if len(backgrounds) != expected:
+            raise EncodingError(
+                f"{self.composition_id}: load {self.load} admits exactly {expected} "
+                f"background constraint(s), got {len(backgrounds)}. Section 8.1: at "
+                "k=2 only the target and the added-slot occupant are active; at k=5 "
+                "the same two are accompanied by exactly three backgrounds")
+        if len(self.clauses) != self.load:
+            raise EncodingError(
+                f"{self.composition_id}: load {self.load} with "
+                f"{len(self.clauses)} active constraint(s). The compositional load "
+                "IS the number of simultaneously active constraints (section 8.1)")
+        for clause in backgrounds:
+            if clause.constraint_id in (pair.target.constraint_id,
+                                        pair.focal.constraint_id):
+                raise EncodingError(
+                    f"{self.composition_id}: {clause.constraint_id!r} occupies a "
+                    "background slot and is also the pair's own target or focal; "
+                    "section 8.2 excludes the pair's own constraints from its "
+                    "background pool")
 
     @property
     def constraint_ids(self) -> tuple[str, ...]:
@@ -218,27 +283,24 @@ class Composition:
 # than by family so that a renamed or added constraint fails to encode instead of
 # silently reusing another rule's semantics.
 
-def _list_policy(realisation: Mapping[str, Any]):
-    """The Pair 1 clauses are bound to the measurement semantics, not just the rule.
+def _policy(realisation: Mapping[str, Any]) -> ListPolicy:
+    """Every clause is bound to the frozen measurement semantics, not just the rule.
 
     Section 14's certification has to establish that the encoded logic and the
-    deterministic verifier agree. What a "list item" is comes from the list policy,
-    so an encoding that did not name the policy could agree with the verifier under
-    one policy and disagree under another while keeping the same hash. There is no
-    default, exactly as in `parse_list`.
+    deterministic verifier agree. What a "list item", a "word" and a "sentence" are
+    all come from the frozen grammar and the text policy it carries, so an encoding
+    that did not name them could agree with the verifier under one policy and
+    disagree under another while keeping the same hash. There is no default here,
+    exactly as in `parse_list`.
     """
-    from dci.v19.parsing import ListPolicy
-    policy = realisation.get("policy")
-    if not isinstance(policy, ListPolicy):
-        raise EncodingError(
-            "a Pair 1 clause must be encoded against an explicit ListPolicy: what "
-            "counts as a list item is a measurement decision the preregistration "
-            f"does not fix, and {type(policy).__name__} was supplied")
-    return policy
+    try:
+        return require_policy(realisation.get("policy"))
+    except TypeError as error:
+        raise EncodingError(str(error)) from error
 
 
 def _p1_target(realisation: Mapping[str, Any]) -> Clause:
-    policy = _list_policy(realisation)
+    policy = _policy(realisation)
     n_items = realisation.get("n_items")
     if isinstance(n_items, bool) or not isinstance(n_items, int) or n_items < 1:
         raise EncodingError(
@@ -253,12 +315,15 @@ def _p1_target(realisation: Mapping[str, Any]) -> Clause:
 
 
 def _p1_focal(realisation: Mapping[str, Any]) -> Clause:
-    policy = _list_policy(realisation)
+    policy = _policy(realisation)
     relation = realisation.get("relation")
     if not isinstance(relation, OrderingRelation):
         raise EncodingError(
             "the Pair 1 focal clause needs an OrderingRelation realisation, got "
             f"{type(relation).__name__}")
+    # Refuse a relation whose labels the frozen tokenisation cannot identify, rather
+    # than encode a clause no witness could ever satisfy.
+    relation.assert_labels_are_tokens(policy)
     return Clause(
         constraint_id=pairs.PAIR_1.focal.constraint_id, role="focal",
         kind=ClauseKind.ITEM_PRECEDENCE,
@@ -277,40 +342,56 @@ def _p1_focal(realisation: Mapping[str, Any]) -> Clause:
 
 
 def _p2_target(realisation: Mapping[str, Any]) -> Clause:
+    policy = _policy(realisation)
     words = realisation.get("mandatory_words")
     if not isinstance(words, (list, tuple)) or not words:
         raise EncodingError(
             "the Pair 2 target clause needs a non-empty mandatory word set")
-    if any(not isinstance(w, str) or not w for w in words):
+    if any(not isinstance(w, str) or not w.strip() for w in words):
         raise EncodingError(f"mandatory words must be non-empty strings: {words!r}")
-    folded = [w.casefold() for w in words]
+    # Folded through the frozen text policy, not with a locally chosen rule. The
+    # audit found the encoding using str.casefold where the verifier used str.lower,
+    # so the clause could require one distinct token where the verifier sought two.
+    folded = [textlib.fold(w, policy.text) for w in words]
+    split = {w: textlib.word_tokens(w, policy.text) for w in words
+             if len(textlib.word_tokens(w, policy.text)) != 1}
+    if split:
+        raise EncodingError(
+            f"mandatory word(s) are not single word tokens under "
+            f"{policy.text.policy_id}: {split}. Presence of a word the tokeniser "
+            "splits is not decidable as the rule states")
     return Clause(
         constraint_id=pairs.PAIR_2.target.constraint_id, role="target",
         kind=ClauseKind.MANDATORY_TOKENS,
-        parameters={"mandatory_words": list(words),
-                    "folded": folded,
-                    "distinct_required": len(set(folded))},
+        parameters={"mandatory_words": list(words), "folded": folded,
+                    "distinct_required": len(set(folded)),
+                    "text_policy_hash": policy.text.policy_hash},
         features=("token_multiplicity", "n_tokens", "n_distinct_tokens"),
         coverage=DeterministicCoverage.COMPLETE,
         citation="sections 4.1, 4.3")
 
 
 def _p2_focal(realisation: Mapping[str, Any]) -> Clause:
+    policy = _policy(realisation)
     return Clause(
         constraint_id=pairs.PAIR_2.focal.constraint_id, role="focal",
-        kind=ClauseKind.ALL_TOKENS_DISTINCT, parameters={},
+        kind=ClauseKind.ALL_TOKENS_DISTINCT,
+        parameters={"text_policy_hash": policy.text.policy_hash},
         features=("n_tokens", "n_distinct_tokens", "token_multiplicity"),
         coverage=DeterministicCoverage.PARTIAL,
         uncovered_semantics=(
             "the abstraction equates distinctness with the token counts agreeing "
-            "under the frozen tokenisation; the audit demonstrated that a "
-            "zero-width character or a homoglyph makes two identical words into "
-            "distinct tokens, so a projection satisfying this clause can still "
-            "repeat a word as a reader would count words"),
+            "under the frozen tokenisation. Invisible characters no longer defeat "
+            "it - they are removed before tokenising - but confusables remain "
+            "outside any automated rule: a Cyrillic look-alike is a different "
+            "string and NFKC does not merge it, so a projection satisfying this "
+            "clause can still look to a reader like a repeated word. Section 10.6 "
+            "assigns homoglyphs to human audit material, not to code"),
         citation="sections 4.1, 4.3, 10.6")
 
 
 def _p3_target(realisation: Mapping[str, Any]) -> Clause:
+    policy = _policy(realisation)
     n_sentences = realisation.get("n_sentences")
     if (isinstance(n_sentences, bool) or not isinstance(n_sentences, int)
             or n_sentences < 1):
@@ -320,21 +401,26 @@ def _p3_target(realisation: Mapping[str, Any]) -> Clause:
     return Clause(
         constraint_id=pairs.PAIR_3.target.constraint_id, role="target",
         kind=ClauseKind.EXACT_SENTENCE_COUNT,
-        parameters={"n_sentences": n_sentences}, features=("n_sentences",),
+        parameters={"n_sentences": n_sentences,
+                    "list_policy_hash": policy.policy_hash},
+        features=("n_sentences",),
         coverage=DeterministicCoverage.PARTIAL,
         uncovered_semantics=(
             "the abstraction counts sentences as the frozen segmentation does, and "
-            "the audit demonstrated that segmentation strips list markers and "
-            "treats each line as a sentence, so a projection satisfying this "
+            "that segmentation strips the list grammar\'s own markers and treats "
+            "each remaining line as a sentence, so a projection satisfying this "
             "clause need not contain that many sentences as a reader would count "
-            "them"),
+            "them. The coupling is now explicit - the marker patterns are inside "
+            "this clause\'s hash - but it is not removed"),
         citation="sections 4.1, 4.4")
 
 
 def _p3_focal(realisation: Mapping[str, Any]) -> Clause:
+    policy = _policy(realisation)
     return Clause(
         constraint_id=pairs.PAIR_3.focal.constraint_id, role="focal",
-        kind=ClauseKind.INCREASING_SENTENCE_LENGTHS, parameters={},
+        kind=ClauseKind.INCREASING_SENTENCE_LENGTHS,
+        parameters={"list_policy_hash": policy.policy_hash},
         features=("n_sentences", "sentence_length", "n_tokens"),
         coverage=DeterministicCoverage.COMPLETE,
         citation="sections 4.1, 4.4")
@@ -353,10 +439,10 @@ ENCODERS = {
 def encode_clause(constraint_id: str, realisation: Mapping[str, Any]) -> Clause:
     """The canonical clause for one instantiated constraint.
 
-    Refuses an unknown identifier rather than guessing from its family: section
-    5.1 says existing identifiers "are not treated as authoritative where they
-    collide or are unverified", and an unencodable constraint must fail closed
-    rather than be dropped from the conjunction.
+    Refuses an unknown identifier rather than guessing from its family: section 5.1
+    says existing identifiers "are not treated as authoritative where they collide
+    or are unverified", and an unencodable constraint must fail closed rather than be
+    dropped from the conjunction.
     """
     if constraint_id not in ENCODERS:
         raise EncodingError(
@@ -366,15 +452,66 @@ def encode_clause(constraint_id: str, realisation: Mapping[str, Any]) -> Clause:
     return ENCODERS[constraint_id](realisation)
 
 
-def encode_composition(composition_id: str, *, pair_id: str, arm: str, load: int,
-                       realisations: Mapping[str, Mapping[str, Any]]
-                       ) -> Composition:
-    """Encode every active constraint of one arm into one conjunction."""
+def encode_background(constraint_id: str, realisation: Mapping[str, Any], *,
+                      background_id: str) -> Clause:
+    """The same rule family, occupying a background slot under its own identity.
+
+    Section 8.2 gives every background entry "a unique constraint ID" and excludes
+    the pair's own target, focal and admitted references from the pool. The frozen
+    pools are a Stage 1/8 content output, so this is how a load-5 composition is
+    assembled from a rule family whose background identity already exists.
+    """
+    if not background_id.startswith("v19:background."):
+        raise EncodingError(
+            f"{background_id!r} is not a v19-native background identifier; section "
+            "8.2 requires a unique constraint ID per background entry")
+    base = encode_clause(constraint_id, realisation)
+    return dataclasses.replace(base, constraint_id=background_id, role="background")
+
+
+def encode_reference(pair_id: str, arm: str) -> Clause:
+    """The added-slot occupant of an A+R_j+S arm - which does not exist yet.
+
+    Section 14.8 admits the four references only after the hard gates, the coupling
+    and wording audits, the simultaneous calipers, the joint certificate,
+    deterministic ranking and independent validation. Encoding a reference clause
+    before that would invent the counterfactual class, so this refuses and names the
+    slot the caller is waiting on.
+    """
     pairs.pair(pair_id)
-    clauses = tuple(encode_clause(cid, realisations[cid])
-                    for cid in realisations)
+    pairs.assert_arm(arm)
+    if arm == "B":
+        raise EncodingError("arm B carries the focal constraint, not a reference")
+    raise UnresolvedDependency(
+        f"the occupant of {pair_id}/{arm} is an admitted reference identity, which "
+        f"is a Stage 8 output (reference.{pair_id}.{arm}). A reference arm cannot be "
+        "encoded until that slot is frozen; certifying one now would invent the "
+        "counterfactual class the whole design rests on")
+
+
+def encode_composition(composition_id: str, *, pair_id: str, arm: str, load: int,
+                       realisations: Mapping[str, Mapping[str, Any]],
+                       backgrounds: Mapping[str, Mapping[str, Any]] | None = None
+                       ) -> Composition:
+    """Encode every active constraint of one arm into one conjunction.
+
+    `backgrounds` maps a v19 background identity to `{"family": <constraint id>,
+    ...realisation}`, so a load-5 composition names its backgrounds explicitly
+    rather than inferring them from the order of a dict.
+    """
+    pairs.pair(pair_id)
+    clauses = [encode_clause(cid, realisations[cid]) for cid in realisations]
+    for background_id, spec in (backgrounds or {}).items():
+        family = spec.get("family")
+        if not isinstance(family, str):
+            raise EncodingError(
+                f"{background_id}: a background entry names the rule family it "
+                "instantiates")
+        clauses.append(encode_background(
+            family, {k: v for k, v in spec.items() if k != "family"},
+            background_id=background_id))
     return Composition(composition_id=composition_id, pair_id=pair_id, arm=arm,
-                       load=load, clauses=clauses)
+                       load=load, clauses=tuple(clauses))
 
 
 def assert_encoders_cover_every_declared_constraint() -> None:
@@ -394,14 +531,27 @@ def assert_encoders_cover_every_declared_constraint() -> None:
         raise EncodingError(f"encoders exist for undeclared constraint(s) {stray}")
 
 
-def coverage_report() -> tuple[dict[str, Any], ...]:
+def encoding_map_state(policy: ListPolicy) -> dict[str, Any]:
+    """The frozen encoding map, as the registry slot must carry it.
+
+    Naming the abstract projection, every clause family and its coverage
+    declaration, so freezing `satisfiability.encoding_map` freezes what a solver
+    `sat` result actually covers rather than a label for it.
+    """
+    return {"abstract_features": dict(ABSTRACT_FEATURES),
+            "clause_kinds": [kind.value for kind in ClauseKind],
+            "list_policy_hash": policy.policy_hash,
+            "text_policy_hash": policy.text.policy_hash,
+            "clauses": list(coverage_report(policy))}
+
+
+def coverage_report(policy: ListPolicy) -> tuple[dict[str, Any], ...]:
     """Per-constraint coverage, so the review trigger is auditable up front."""
     rows = []
-    from dci.v19.parsing import CANONICAL_LIST_POLICY
     example = {"n_items": 3, "n_sentences": 3, "mandatory_words": ("alpha",),
-               "policy": CANONICAL_LIST_POLICY,
-               "relation": OrderingRelation(items=("a", "b"),
-                                            edges=(("a", "b"),))}
+               "policy": policy,
+               "relation": OrderingRelation(items=("alfa", "bravo"),
+                                            edges=(("alfa", "bravo"),))}
     for constraint_id in sorted(ENCODERS):
         clause = encode_clause(constraint_id, example)
         rows.append({"constraint_id": constraint_id, "kind": clause.kind.value,

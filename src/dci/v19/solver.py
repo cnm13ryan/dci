@@ -65,8 +65,10 @@ class SolverRecord:
     """One solver invocation, archived as section 8.6 requires.
 
     "Archive the exact composition, structured encoding, solver input/output,
-    candidate/winning witness, verifier results, semantic reviews where
-    applicable, hashes, and construction commit." `smt2` is the exact input.
+    candidate/winning witness, verifier results, semantic reviews where applicable,
+    hashes, and construction commit." `assertions` is the exact input, in the
+    canonical sorted s-expression form that makes two invocations of the same
+    question produce the same record.
     """
     solver: str
     version: str
@@ -74,7 +76,7 @@ class SolverRecord:
     reason: str
     bounds: Mapping[str, int]
     encoding_hash: str
-    smt2: str
+    assertions: tuple[str, ...]
     model: Mapping[str, int]
 
     def __post_init__(self):
@@ -87,23 +89,40 @@ class SolverRecord:
                 f"status is {self.status} yet a model is recorded; only sat has one")
         if not self.reason:
             raise SolverError("a solver record states why it reached its status")
+        if not self.assertions:
+            raise SolverError(
+                "a solver record with no recorded assertions is not archivable "
+                "evidence; section 8.6 archives the solver input and output")
 
     @property
     def progressable(self) -> bool:
         return self.status in PROGRESSABLE_STATUSES
 
     def state(self) -> dict[str, Any]:
+        """What the record COMMITS to. Deliberately not the model.
+
+        The model is one arbitrary member of the satisfying set: `n_tokens >= 2` is
+        satisfied by 2 and by 70, and z3 may return either between invocations of the
+        same question. Hashing it made the certificate identity irreproducible, which
+        the audit demonstrated. What the solver step scientifically establishes is a
+        STATUS over a canonical question - the sorted assertions, the bounds, the
+        encoding hash and the solver build - and that is what is hashed. The concrete
+        witness, which section 8.6 ranks above the solver anyway, is hashed in full.
+
+        `model` is still archived by `describe()` under section 8.6's requirement to
+        keep the solver output; it is evidence to read, not an identity to rely on.
+        """
         return {"solver": self.solver, "version": self.version,
                 "status": self.status, "bounds": dict(self.bounds),
                 "encoding_hash": self.encoding_hash,
-                "smt2": self.smt2, "model": dict(self.model)}
+                "assertions": list(self.assertions)}
 
     @property
     def record_hash(self) -> str:
         return sha(["v19/solver-record", self.state()])
 
     def describe(self) -> dict[str, Any]:
-        return {**self.state(), "reason": self.reason,
+        return {**self.state(), "model": dict(self.model), "reason": self.reason,
                 "progressable": self.progressable,
                 "record_hash": self.record_hash}
 
@@ -127,6 +146,7 @@ def solver_identity() -> tuple[str, str]:
 
 def _conjunction(composition: Composition, bounds: Mapping[str, int]):
     """Build the Z3 assertions for one composition, plus the feature variables."""
+    solver_identity()          # raises SolverUnavailable before any bare ImportError
     import z3
 
     max_items = bounds["max_items"]
@@ -210,16 +230,18 @@ def _conjunction(composition: Composition, bounds: Mapping[str, int]):
         else:                                          # pragma: no cover - guarded
             raise SolverError(f"{clause.kind!r} has no Z3 encoding")
 
-    # Derived from the frozen segmentation rather than assumed: markers are
-    # stripped and each remaining line becomes a sentence, so every list item line
-    # is at least one sentence. Sound in the direction that matters -- it removes
-    # only genuinely infeasible models -- and asserted only when both feature
-    # families are actually constrained, so it cannot narrow an unrelated question.
-    kinds = {c.kind for c in composition.clauses}
-    if kinds & {ClauseKind.EXACT_ITEM_COUNT, ClauseKind.ITEM_PRECEDENCE} and \
-            kinds & {ClauseKind.EXACT_SENTENCE_COUNT,
-                     ClauseKind.INCREASING_SENTENCE_LENGTHS}:
-        assertions.append(n_sentences >= n_items)
+    # NO AXIOM RELATING n_sentences TO n_items. An earlier version asserted
+    # n_sentences >= n_items, reasoning that each item line is also a sentence. The
+    # adversarial audit falsified it: the inherited segmentation kept only segments
+    # containing an ASCII alphanumeric, so a Cyrillic item was an item and not a
+    # sentence, and the solver returned unsat for compositions both verifiers accept.
+    # The frozen text policy has since repaired that segmentation, which would make
+    # the axiom sound again - and it stays out anyway. Section 8.5 rejects the whole
+    # proposal on unsat, so a spurious unsat silently narrows the estimand's
+    # population, while a spurious sat is caught by the concrete all-verifier
+    # witness that section 8.6 ranks above the solver. The abstraction is a
+    # conservative relaxation, and every axiom above holds for every text the
+    # verifiers accept.
 
     # A distinctness clause may be asserted before the mandatory-token clause that
     # introduces the multiplicity variables, so tie them together once at the end
@@ -242,17 +264,35 @@ def solve(composition: Composition, *,
     section 8.5 requires "every proposal, rejection reason, solver record, witness,
     verifier output, and attempt seed" to be archived - the rejections especially.
     """
+    name, version = solver_identity()          # SolverUnavailable, never ImportError
     import z3
 
-    name, version = solver_identity()
     limits = {**DEFAULT_BOUNDS, **(dict(bounds) if bounds else {})}
     assertions, variables = _conjunction(composition, limits)
 
+    # A plain `Solver`, deliberately. An intermediate repair used `z3.Optimize` with
+    # a lexicographic minimisation to make the recorded model canonical, and that was
+    # the wrong trade: it changed the solver's behaviour to serve a hash. Minimising
+    # forty variables can time out where a satisfiability check would not, and a
+    # timeout is `unknown`, which section 8.5 turns into rejection of the whole
+    # proposal - so a composition could have been rejected for asking a harder
+    # question than the science needed. The identity problem is solved where it
+    # belongs, in what the record commits to: see `state`.
     solver = z3.Solver()
     solver.set("timeout", limits["timeout_ms"])
     solver.add(*assertions)
-    smt2 = solver.to_smt2()
-    outcome = solver.check()
+    # The exact input, in a form that is the SAME for two invocations of the same
+    # question. `Solver.to_smt2()` is not: the audit found it varying between calls,
+    # which made the certificate hash irreproducible. Sorted s-expressions are
+    # canonical, and the unsorted list is kept as a diagnostic outside the hash.
+    encoded = tuple(sorted(assertion.sexpr() for assertion in assertions))
+    try:
+        outcome = solver.check()
+    except Exception as error:
+        raise SolverError(
+            f"the solver raised {type(error).__name__} while deciding "
+            f"{composition.composition_id}: {error}. A solver error is missing "
+            "required solver output and fails closed (section 8.6)") from error
 
     if outcome == z3.sat:
         model = solver.model()
@@ -264,23 +304,23 @@ def solve(composition: Composition, *,
             solver=name, version=version, status="sat",
             reason=(f"the conjunction of {len(composition.clauses)} clause(s) is "
                     "satisfiable over the abstract feature projection"),
-            bounds=limits, encoding_hash=composition.encoding_hash, smt2=smt2,
-            model=assignment)
+            bounds=limits, encoding_hash=composition.encoding_hash,
+            assertions=encoded, model=assignment)
     if outcome == z3.unsat:
         return SolverRecord(
             solver=name, version=version, status="unsat",
             reason=(f"the conjunction of {len(composition.clauses)} clause(s) is "
                     "unsatisfiable, so no response satisfies the composition even "
                     "in the abstraction; the proposal is rejected (section 8.5)"),
-            bounds=limits, encoding_hash=composition.encoding_hash, smt2=smt2,
-            model={})
+            bounds=limits, encoding_hash=composition.encoding_hash,
+            assertions=encoded, model={})
     return SolverRecord(
         solver=name, version=version, status="unknown",
         reason=(f"the solver returned unknown ({solver.reason_unknown()}); section "
                 "8.6 fails closed on unknown exactly as on unsat, because an "
                 "undecided conjunction is not evidence of feasibility"),
-        bounds=limits, encoding_hash=composition.encoding_hash, smt2=smt2,
-        model={})
+        bounds=limits, encoding_hash=composition.encoding_hash,
+        assertions=encoded, model={})
 
 
 def assert_progressable(record: SolverRecord) -> SolverRecord:
