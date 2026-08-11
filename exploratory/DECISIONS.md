@@ -2371,3 +2371,113 @@ at this sample size** and is not interpreted. The claims that survive are the
 ones about the control reaching zero, the amplifier not reaching zero, and the
 sign of Δ at high budget. Anything finer is noise, and the b = 256 dip in
 particular should not be theorised over.
+
+---
+
+# Round 11 — a genuinely natural reasoning endpoint
+
+## R11.1 4096 tokens is a limit, not natural reasoning
+
+Audited from the raw generations before anything new was run. Overall the
+`b = 4096` condition hits its cap on 2.5% of rows, which is easy to dismiss —
+but the rate is **not uniform across cells**:
+
+| background | arm | cap-hit at b = 4096 |
+|---|---|---|
+| bracket pair | focal | 0.000 |
+| bracket pair | reference | 0.000 |
+| semicolon | focal | 0.000 |
+| **semicolon** | **reference** | **0.100** (4/40) |
+
+One in ten responses in that cell was still thinking when the experiment stopped
+it. **`b = 4096` therefore stays in the deliberate reasoning-limit experiment and
+is never described as unlimited, unconstrained, natural, or full reasoning.**
+
+The natural run settles it directly: the longest trace it produced is **5,888
+tokens**, and one row exceeded 4,096. A 4,096 cap would have truncated exactly
+that tail.
+
+## R11.2 The engineering ceiling is derived, not chosen
+
+    ceiling = 40,960 context limit
+              −     76 longest rendered prompt in this design
+              −    512 answer allowance (identical to every other condition)
+              −      2 control tokens for the `</think>` splice
+              −    820 safety margin (2% of the window)
+            = 39,550
+
+Not a round power of two, because a round number would be a guess about how much
+room is enough. The requirement is not "use a large number" but "make the limit
+large enough that the model almost never reaches it", and the result is
+**0/160 rows reached it**. The condition would have been marked invalid if any
+row had.
+
+"Natural" is used in exactly one sense throughout: *the experiment did not stop
+the model's reasoning before it finished*. It does not mean unlimited compute,
+unlimited context, or maximum capability.
+
+## R11.3 The shared-seed defect, reproduced in my own harness and fixed
+
+R10.2 found that `reasoning_vllm.py` passed one seed for all requests, making
+replicate pairs byte-identical. **The first natural-reasoning attempt was written
+with the same defect**, was terminated at 157/160 rather than completed, and is
+**not** treated as evidence.
+
+Measured directly, before and after:
+
+| file | replicate pairs | identical answers |
+|---|---|---|
+| `s18_reasoning.jsonl` (original) | 400 | **390 (97.5%)** |
+| `s18_reseeded.jsonl` (fixed) | 400 | **0 (0.0%)** |
+| `natural_reasoning.jsonl` (fixed) | 80 | **0 (0.0%)** |
+
+The whole capped grid was therefore **regenerated** under per-row seeding rather
+than left to sit on a headline figure beside a correctly seeded natural point.
+Both files are kept; `load_all_reasoning()` prefers the re-seeded one and records
+which it used.
+
+## R11.4 Validity of the natural condition
+
+| check | result |
+|---|---|
+| reached the engineering ceiling | **0 / 160** |
+| closed reasoning naturally | **160 / 160** |
+| empty answers | 0 |
+| truncated answers | 0 |
+| mean answer length | 119.0 tokens (115–118 in the capped conditions) |
+| realised reasoning | min 173 · p25 354 · **median 511** · p75 745 · p90 1,445 · **max 5,888** |
+| replicate pairs identical | 0 / 80 |
+
+**Scratchpad leakage: 2/160 flagged, 0 genuine.** Both flagged answers were read
+in full and both are ordinary prose using the word *wait* — "without having to
+wait for the store to open later", "those who cannot wait until the later hours".
+This is a **false-positive rate in the regex**, not leakage, and it is worth
+recording that the `\bwait\b` pattern over-flags: a leakage rate quoted from this
+gate without inspection will be too high.
+
+## R11.5 The result under correct seeding
+
+Extra failures on the main instruction caused by the competing instruction,
+paired within task, 20 tasks:
+
+| how much thinking was allowed | + one bracket pair | + one semicolon |
+|---|---|---|
+| none (native non-thinking) | +0.450 [+0.275, +0.625] | +0.525 [+0.350, +0.675] |
+| 256 | +0.025 [−0.075, +0.150] | +0.325 [+0.175, +0.475] |
+| 512 | **0.000** [−0.075, +0.075] | +0.625 [+0.475, +0.775] |
+| 1,024 | −0.025 [−0.075, 0.000] | +0.550 [+0.350, +0.750] |
+| 4,096 | −0.025 [−0.075, 0.000] | +0.375 [+0.175, +0.575] |
+| **natural** | **0.000 [0.000, 0.000]** | **+0.400 [+0.225, +0.550]** |
+
+The Round 9 finding **replicates and sharpens**: with the bracket-pair
+instruction the conflict is gone from 256 tokens onward and is *exactly* zero at
+natural reasoning; with the semicolon instruction it never resolves.
+
+Two wordings differing in one phrase — "pair of round brackets" against
+"semicolon" — decide whether extra thinking fixes the model's instruction
+conflict.
+
+**Still not claimed:** that more thinking makes the semicolon condition worse. Its
+own value at natural reasoning (+0.400) sits below its no-thinking value
+(+0.525). The gap widens because the bracket condition is repaired, not because
+the semicolon condition degrades.
