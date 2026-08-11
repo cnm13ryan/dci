@@ -49,7 +49,21 @@ MARK_CHARS: dict[str, tuple[str, ...]] = {
     "colon": (":",),
     "dash": ("—", "–", "--"),
     "comma": (",",),
+    # The non-boundary controls. Present so that `splice_count` — the repository's
+    # own audited proxy for "this mark is standing where a sentence boundary could
+    # stand" — can be computed for them too. Without an entry the proxy simply
+    # cannot be evaluated on the control, and the comparison the mechanism is
+    # about would have to be made with a weaker measure written for the occasion.
+    "degree": ("°",),
+    "asterisk": ("*",),
 }
+
+#: The marks the Round 4 per-sentence factorial is built from (the name
+#: `_PER_SENTENCE_MARKS` is already taken further down by the self-check table). Held separately
+#: from `MARK_CHARS` because that dict is also a plain character lookup, and a
+#: diagnostic that needs a new character must not thereby create a new
+#: per-sentence constraint.
+_FACTORIAL_MARKS = ("semicolon", "colon", "dash", "comma")
 
 #: Whether the mark can stand, in ordinary written English, exactly where a
 #: sentence boundary would stand. This is the PREDICTOR the mechanism account
@@ -59,6 +73,12 @@ MARK_IS_BOUNDARY_CAPABLE: dict[str, bool] = {
     "colon": True,         # joins clauses, though it also has a listing use
     "dash": True,          # joins clauses in informal register
     "comma": False,        # joining two independent clauses with one is an error
+    # Declared before the boundary experiment ran. Neither mark has any
+    # clause-joining use in written English: a degree symbol is a unit suffix and
+    # an asterisk is a reference marker. That is the whole reason they were
+    # chosen as controls.
+    "degree": False,
+    "asterisk": False,
 }
 
 
@@ -657,7 +677,12 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
     out: dict[str, tuple[Any, Callable[[str], Any], tuple[str, ...]]] = {}
 
     # --- the per-sentence mark family: mark varies, wording does not ---------
-    for mark in MARK_CHARS:
+    # Scoped to the four marks the Round 4 factorial was built from, explicitly,
+    # rather than to whatever `MARK_CHARS` happens to contain. The dict gained
+    # `degree` and `asterisk` so that `splice_count` could be evaluated on the
+    # boundary controls; that diagnostic must not silently mint two new
+    # per-sentence CONSTRAINTS as a side effect.
+    for mark in _FACTORIAL_MARKS:
         cid = f"X_{mark.upper()}_EACH"
         out[cid] = (
             _mark_spec(cid, mark, spec, P),
