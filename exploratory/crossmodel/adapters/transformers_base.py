@@ -49,7 +49,9 @@ runner refuses a file above the repository's 25% alarm threshold. Set
 from __future__ import annotations
 
 import hashlib
+import json
 import time
+from pathlib import Path
 from typing import Any, Optional, Sequence
 
 from crossmodel.adapters.base import (Generation, GenerationConfig,
@@ -228,6 +230,14 @@ class TransformersAdapter(ModelAdapter):
         self._load_metadata["full_class_unexpected_keys"] = len(
             info.get("unexpected_keys") or [])
         return model, name, True
+
+    # A cheaper pre-flight was tried here — read `model.safetensors.index.json`
+    # and skip the text-only class when the checkpoint files its weights under a
+    # submodule prefix — and it was WRONG in both directions: it predicted
+    # Qwen3.5 could not load text-only (it can; transformers remaps the prefix)
+    # and that Gemma 4 could (it cannot). The only reliable test is to load and
+    # read the missing-key report, so that is what runs, at the cost of one
+    # discarded load for the checkpoints that fail it.
 
     @staticmethod
     def _free() -> None:
