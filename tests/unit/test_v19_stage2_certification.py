@@ -34,8 +34,13 @@ ACCEPTED = ("verifiers.p1.list_policy", "verifiers.p1.ordering_depth",
             "verifiers.tier1_audit_design")
 # The verifier half is now blocked only on the section 8.7 battery, whose harness
 # lands with the satisfiability layer.
-STILL_OPEN = ("verifiers.boundary_mutations", "satisfiability.semantic_reviews")
+# Stage 2's gate is now fully satisfied: every decision is accepted and every
+# artifact it owns has been produced. What remains outstanding at CERTIFICATION is
+# the Tier-1 reliability audit, which is 864 human-adjudicated labels and cannot be
+# produced by code.
+STILL_OPEN = ()
 GATE_BLOCKERS = STILL_OPEN
+TRIGGER = "satisfiability.review_trigger"
 
 
 def all_frozen():
@@ -125,7 +130,8 @@ def test_the_dependency_edges_all_name_declared_slots():
 # --------------------------------------------------------------- the stage gate
 def test_the_stage_two_gate_requires_every_decision_and_the_mutations():
     gate = STAGE_GATE_BY_KEY[STAGE]
-    assert set(gate.required_slots) == set(ACCEPTED) | set(GATE_BLOCKERS)
+    assert set(gate.required_slots) == set(ACCEPTED) | {
+        "verifiers.boundary_mutations", TRIGGER}
     for slot in gate.required_slots:
         assert REGISTRY.citation_for(STAGE, slot)
 
@@ -135,46 +141,51 @@ def test_the_stage_two_gate_produces_the_artifacts_it_owns():
         "verifiers.specification_bundle", "verifiers.bundle_hash",
         "verifiers.tier1_reliability", "satisfiability.encoding_map",
         "satisfiability.solver_identity", "satisfiability.witness_constructor",
-        "satisfiability.certified_compositions"}
+        "satisfiability.review_trigger"}
+    # The per-composition certificates are a Stage 10 product, not a Stage 2 one.
+    assert "satisfiability.certified_compositions" in STAGE_GATE_BY_KEY[
+        "stage_10_attainable_bank"].produces
 
 
-def test_stage_two_is_blocked_on_an_upstream_output_not_on_a_decision():
-    """Every Stage 2 scientific decision is now accepted; evidence is what is left.
-
-    That is a meaningful change of state: before the amendments the root cause was
-    BLOCKED_BY_PROSPECTIVE_DECISION, because no amount of computation could
-    unblock it. It is now BLOCKED_BY_UPSTREAM_FREEZE, because the section 8.7
-    battery is a produced artifact waiting on the specification bundle.
-    """
+def test_the_stage_two_gate_is_now_satisfied():
+    """Every decision accepted, every artifact the gate requires produced."""
     row = REGISTRY.stage_status(STAGE)
-    assert row["status"] != "READY"
-    assert {b["name"] for b in row["blockers"]} == set(GATE_BLOCKERS)
+    assert row["status"] == "READY"
+    assert not row["blockers"]
 
 
-def test_require_stage_lists_every_blocker_at_once():
+def test_require_stage_no_longer_raises_for_stage_two():
+    REGISTRY.require_stage(STAGE)
+
+
+def test_require_stage_still_lists_every_blocker_at_once():
+    """The fail-closed path stays live, checked on a stage that is still blocked."""
     with pytest.raises(UnresolvedDependency) as caught:
-        REGISTRY.require_stage(STAGE)
+        REGISTRY.require_stage("stage_10_attainable_bank")
     message = str(caught.value)
-    for name in GATE_BLOCKERS:
-        assert name in message
-    assert f"{len(GATE_BLOCKERS)} unresolved" in message
+    assert "satisfiability.semantic_reviews" in message
+    assert "unresolved" in message
 
 
-def test_stage_two_is_not_ready_merely_because_the_pair_one_code_exists():
-    """The whole point of the layer: implementation is not certification."""
+def test_the_gate_being_ready_is_not_the_same_as_stage_two_being_certified():
+    """The distinction the whole layer exists for.
+
+    The GATE is ready: every prerequisite slot is resolved. Stage 2 is still not
+    CERTIFIED, because certification also requires the Tier-1 reliability audit -
+    864 human-adjudicated labels that no amount of code can produce.
+    """
     assert len(verifiers.assert_bundle_is_complete(P)) == 6
-    assert REGISTRY.stage_status(STAGE)["status"] != "READY"
+    assert REGISTRY.stage_status(STAGE)["status"] == "READY"
+    assert not stage2.certify_stage2(REGISTRY.slots).certified
 
 
 # ------------------------------------------------------------- certification
 def test_certification_still_fails_closed_after_the_amendments():
-    report = stage2.certify_verifiers(REGISTRY.slots)
+    report = stage2.certify_stage2(REGISTRY.slots)
     assert not report.certified
-    assert len(report.findings) == 7
-    # Every scientific decision is accepted; the section 8.7 battery is not
-    # produced, and its harness lands with the satisfiability layer.
+    # The single outstanding requirement is human adjudication.
     assert len(report.outstanding) == 1
-    assert "boundary mutations" in report.outstanding[0].requirement
+    assert "human-adjudicated" in report.outstanding[0].requirement
     for finding in report.findings:
         assert finding.citation and finding.detail
 
@@ -224,10 +235,17 @@ def test_withholding_any_one_requirement_blocks_certification(withheld):
 
 
 def test_unfrozen_battery_evidence_does_not_satisfy_the_gate():
-    """The harness produces enough; until it is frozen it is not in the trail."""
-    finding = next(f for f in stage2.certify_verifiers(REGISTRY.slots).findings
-                   if "boundary mutations" in f.requirement)
+    """The harness producing enough is not the same as the record existing.
+
+    Checked against the DECLARED table, where the battery is not yet recorded: on
+    the live registry it now is, which is what makes the finding satisfied there.
+    """
+    from dci.v19 import registry
+    finding = next(f for f in stage2.certify_verifiers(
+        registry.declared_table()).findings
+        if "boundary mutations" in f.requirement)
     assert not finding.satisfied
+    assert "not part of the artifact trail" in finding.detail
 
 
 def test_a_caller_can_no_longer_assert_the_battery():
@@ -281,9 +299,9 @@ def test_the_assertion_reports_every_outstanding_requirement_with_its_citation()
     with pytest.raises(VerifierContractError) as caught:
         stage2.assert_verifiers_certified(REGISTRY.slots)
     message = str(caught.value)
-    assert "1 of 7 requirements are unmet" in message
-    assert "section 8.7" in message   # the one outstanding requirement
-    assert "Stage 2 verifier certification is incomplete" in message
+    assert "1 of " in message and "requirements are unmet" in message
+    assert "section 10.4" in message   # the one outstanding requirement
+    assert "Stage 2 certification is incomplete" in message
 
 
 def test_the_certification_report_is_serialisable():
@@ -353,10 +371,18 @@ def test_the_registry_still_reports_nothing_fabricated():
 
 
 def test_the_new_slots_did_not_disturb_the_other_stages():
-    """Only Stage 2 gained requirements; every other gate is unchanged."""
+    """Stages 1 and 2 are ready; every later gate is still blocked."""
     audit = {row["stage"]: row for row in REGISTRY.audit()}
-    assert audit[STAGE]["n_required"] == 6
+    assert audit[STAGE]["n_required"] == 7
     assert audit["stage_1_definitions"]["status"] == "READY"
     ready = [row["stage"] for row in REGISTRY.audit()
              if row["status"] == "READY"]
-    assert ready == ["stage_1_definitions"]
+    assert ready == ["stage_1_definitions", "stage_2_verifiers"]
+
+
+def test_stage_ten_gained_the_review_requirement_stage_two_gave_up():
+    """The boundary correction, seen from the gate that received it."""
+    row = {r["stage"]: r for r in REGISTRY.audit()}["stage_10_attainable_bank"]
+    assert row["status"] != "READY"
+    assert "satisfiability.semantic_reviews" in {
+        b["name"] for b in row["blockers"]}

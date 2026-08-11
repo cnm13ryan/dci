@@ -173,6 +173,103 @@ def _boundary_mutations(value: Any) -> None:
                  f"{template}: {distinct!r} distinct texts for {count!r} mutations. "
                  "A numeric floor reached by repeating one edit is not coverage")
 
+def _encoding_map(value: Any) -> None:
+    """Only the encoding the code actually implements may be frozen."""
+    from dci.v19.encoding import encoding_map_state
+    from dci.v19.parsing import CANONICAL_LIST_POLICY
+    _require(isinstance(value, Mapping), "expected a mapping")
+    _require(value == encoding_map_state(CANONICAL_LIST_POLICY),
+             "the frozen encoding map does not match the implemented one; freezing "
+             "a map the code does not implement would certify an abstraction nobody "
+             "computes")
+
+
+def _solver_identity(value: Any) -> None:
+    """The frozen solver must be the installed solver."""
+    from dci.v19.solver import solver_identity
+    _require(isinstance(value, Mapping), "expected a mapping with name and version")
+    name, version = solver_identity()
+    _require(value.get("name") == name and value.get("version") == version,
+             f"the frozen solver is {value.get('name')!r} {value.get('version')!r} "
+             f"and the installed solver is {name!r} {version!r}; section 8.6 needs "
+             "the solver that produced the evidence, not a remembered one")
+
+
+def _witness_constructor(value: Any) -> None:
+    from dci.v19.witness import CONSTRUCTOR_ID
+    _require(value == CONSTRUCTOR_ID,
+             f"expected {CONSTRUCTOR_ID!r}, got {value!r}")
+
+
+def _review_trigger(value: Any) -> None:
+    """The section 14.2 review TRIGGER, demonstrated rather than asserted.
+
+    Every fixture must hold, and the record hash must match evidence the code
+    regenerates now - a frozen demonstration the code no longer reproduces is not
+    a demonstration.
+    """
+    from dci.v19.review_trigger import TRIGGER_ID, frozen_trigger_evidence
+    _require(isinstance(value, Mapping), "expected a mapping")
+    _require(value.get("trigger_id") == TRIGGER_ID,
+             f"'trigger_id' must be {TRIGGER_ID!r}, got {value.get('trigger_id')!r}")
+    regenerated = frozen_trigger_evidence()
+    _require(value.get("records_hash") == regenerated["records_hash"],
+             "the recorded trigger evidence does not match the evidence the code "
+             "regenerates, so it was asserted rather than demonstrated")
+    _require(value.get("all_hold") is True,
+             "a trigger fixture that does not hold is not evidence that the trigger "
+             "works")
+
+
+def _semantic_reviews(value: Any) -> None:
+    """Every recorded review must reconstruct, and must have PASSED.
+
+    Granularity is PER COMPOSITION. Two compositions differ in their witness, and a
+    review is a judgement about one concrete text, so a review record shared across
+    compositions is refused by the witness binding rather than by a policy note.
+    """
+    from dci.v19.certification import ReviewerVerdict, ReviewState, SemanticReview
+    _require(isinstance(value, Mapping) and bool(value),
+             "expected a non-empty mapping of composition id to review record")
+    for composition_id, record in value.items():
+        _require(isinstance(record, Mapping),
+                 f"{composition_id}: expected a review record mapping")
+        try:
+            review = SemanticReview(
+                composition_id=composition_id,
+                witness_hash=str(record["witness_hash"]),
+                clause_ids=tuple(record["clause_ids"]),
+                reviews=tuple(ReviewerVerdict(r["reviewer_id"], r["satisfied"],
+                                              r["rationale"])
+                              for r in record.get("reviews", ())),
+                adjudication=(ReviewerVerdict(record["adjudication"]["reviewer_id"],
+                                              record["adjudication"]["satisfied"],
+                                              record["adjudication"]["rationale"])
+                              if record.get("adjudication") else None))
+        except Exception as error:
+            raise DomainError(
+                f"{composition_id}: the review record does not reconstruct "
+                f"({type(error).__name__}: {error})") from error
+        _require(review.state is ReviewState.HUMAN_REVIEW_PASSED,
+                 f"{composition_id}: review state is {review.state.value}, not "
+                 "HUMAN_REVIEW_PASSED")
+
+
+def _certified_compositions(value: Any) -> None:
+    """Each entry must carry the three certificate identities and be certified."""
+    _require(isinstance(value, Mapping) and bool(value),
+             "expected a non-empty mapping of composition id to certificate record")
+    for composition_id, record in sorted(value.items()):
+        _require(isinstance(record, Mapping), f"{composition_id}: expected a mapping")
+        for field in ("semantic_id", "implementation_id", "evidence_id",
+                      "certificate_hash"):
+            _require(bool(record.get(field)),
+                     f"{composition_id}: {field} is missing, so the certificate "
+                     "cannot be re-derived")
+        _require(record.get("certified") is True,
+                 f"{composition_id}: the record is not a certification")
+
+
 def _tier1_audit_design(value: Any) -> None:
     """The A3 fixed audit design, as the state the code implements."""
     from dci.v19.reliability import AMENDED_TIER1_DESIGN
@@ -209,6 +306,12 @@ DOMAINS: Mapping[str, Callable[[Any], None]] = {
     "bundle_hash": _bundle_hash,
     "boundary_mutations": _boundary_mutations,
     "tier1_certificates": _tier1_certificates,
+    "encoding_map": _encoding_map,
+    "solver_identity": _solver_identity,
+    "witness_constructor": _witness_constructor,
+    "review_trigger": _review_trigger,
+    "semantic_reviews": _semantic_reviews,
+    "certified_compositions": _certified_compositions,
 }
 
 

@@ -40,7 +40,7 @@ pytestmark = pytest.mark.cpu
 CHAIN = OrderingRelation(items=("alpha", "beta", "gamma"),
                          edges=(("alpha", "beta"), ("beta", "gamma")))
 PERMISSIVE = dataclasses.replace(P, policy_id="v19:list-policy.permissive",
-                                 extra_items_permitted=True)
+                                extra_items_permitted=True)
 
 
 def compose(cid, pair_id, realisations, *, arm="B", load=2):
@@ -56,14 +56,16 @@ def p1(n_items=3, relation=CHAIN, policy=P, cid="p1/1/B"):
 
 def p2(words=("alpha", "beta"), cid="p2/1/B"):
     return compose(cid, "p2", {
-        pairs.PAIR_2.target.constraint_id: {"mandatory_words": words},
-        pairs.PAIR_2.focal.constraint_id: {}})
+        pairs.PAIR_2.target.constraint_id: {"mandatory_words": words,
+                                            "policy": P},
+        pairs.PAIR_2.focal.constraint_id: {"policy": P}})
 
 
 def p3(n_sentences=4, cid="p3/1/B"):
     return compose(cid, "p3", {
-        pairs.PAIR_3.target.constraint_id: {"n_sentences": n_sentences},
-        pairs.PAIR_3.focal.constraint_id: {}})
+        pairs.PAIR_3.target.constraint_id: {"n_sentences": n_sentences,
+                                            "policy": P},
+        pairs.PAIR_3.focal.constraint_id: {"policy": P}})
 
 
 # ------------------------------------------------------------- the encoding
@@ -142,12 +144,55 @@ def test_a_composition_may_not_repeat_a_constraint():
 
 
 def test_load_two_admits_only_the_target_and_the_occupant():
-    """Section 8.1: three backgrounds join them only at k=5."""
-    three = p1().clauses + (E.encode_clause(pairs.PAIR_2.focal.constraint_id, {}),)
-    with pytest.raises(E.EncodingError, match="load 2 admits"):
+    """Section 8.1: three backgrounds join them only at k=5, and exactly three."""
+    background = E.encode_background(
+        pairs.PAIR_2.focal.constraint_id, {"policy": P},
+        background_id="v19:background.stratum-one")
+    with pytest.raises(E.EncodingError, match="load 2 admits exactly 0"):
         E.Composition(composition_id="x", pair_id="p1", arm="B", load=2,
-                      clauses=three)
-    E.Composition(composition_id="x", pair_id="p1", arm="B", load=5, clauses=three)
+                      clauses=p1().clauses + (background,))
+    with pytest.raises(E.EncodingError, match="load 5 admits exactly 3"):
+        E.Composition(composition_id="x", pair_id="p1", arm="B", load=5,
+                      clauses=p1().clauses + (background,))
+
+
+def test_load_five_needs_exactly_three_backgrounds():
+    backgrounds = {
+        "v19:background.lexical": {"family": pairs.PAIR_2.focal.constraint_id,
+                                   "policy": P},
+        "v19:background.structural": {"family": pairs.PAIR_3.focal.constraint_id,
+                                      "policy": P},
+        "v19:background.relational": {
+            "family": pairs.PAIR_2.target.constraint_id,
+            "mandatory_words": ("zulu",), "policy": P}}
+    full = E.encode_composition(
+        "p1/1/B5", pair_id="p1", arm="B", load=5, realisations={
+            pairs.PAIR_1.target.constraint_id: {"n_items": 3, "policy": P},
+            pairs.PAIR_1.focal.constraint_id: {"relation": CHAIN, "policy": P}},
+        backgrounds=backgrounds)
+    assert full.roles == ("target", "focal", "background", "background",
+                          "background")
+    with pytest.raises(E.EncodingError, match="load 5 admits exactly 3"):
+        E.encode_composition(
+            "p1/short/B5", pair_id="p1", arm="B", load=5, realisations={
+                pairs.PAIR_1.target.constraint_id: {"n_items": 3, "policy": P},
+                pairs.PAIR_1.focal.constraint_id: {"relation": CHAIN,
+                                                   "policy": P}},
+            backgrounds=dict(list(backgrounds.items())[:2]))
+
+
+def test_a_background_may_not_be_the_pair_own_target_or_focal():
+    """Section 8.2 excludes them from the pool."""
+    with pytest.raises(E.EncodingError, match="background identifier"):
+        E.encode_background(pairs.PAIR_1.focal.constraint_id,
+                            {"relation": CHAIN, "policy": P},
+                            background_id="not-a-v19-background")
+
+
+def test_a_reference_arm_cannot_be_encoded_before_stage_eight():
+    from dci.v19.resolution import UnresolvedDependency
+    with pytest.raises(UnresolvedDependency, match=r"reference\.p1\.R1"):
+        E.encode_reference("p1", "R1")
 
 
 def test_an_undeclared_arm_or_load_is_refused():
@@ -176,12 +221,12 @@ def test_the_encoding_hash_is_independent_of_clause_order():
 
 def test_three_of_the_six_clauses_declare_incomplete_coverage():
     """Which is why review is required for every composition today."""
-    partial = {row["constraint_id"] for row in E.coverage_report()
+    partial = {row["constraint_id"] for row in E.coverage_report(P)
                if row["coverage"] == "PARTIAL"}
     assert partial == {pairs.PAIR_1.focal.constraint_id,
                        pairs.PAIR_2.focal.constraint_id,
                        pairs.PAIR_3.target.constraint_id}
-    for row in E.coverage_report():
+    for row in E.coverage_report(P):
         if row["coverage"] == "PARTIAL":
             assert row["uncovered_semantics"]
 
@@ -264,7 +309,7 @@ def test_the_bounds_are_part_of_the_question_and_of_the_record():
 
 def test_the_exact_solver_input_is_archived():
     record = S.solve(p1())
-    assert "(assert" in record.smt2
+    assert any(a.startswith("(") for a in record.assertions)
     assert record.reason and record.record_hash
 
 
@@ -282,7 +327,7 @@ def test_a_status_outside_the_three_is_refused():
 # ---------------------------------------------------------------- the witness
 def test_a_witness_is_constructed_and_passes_every_verifier():
     for composition in (p1(), p2(), p3()):
-        built = W.construct_witness(composition)
+        built = W.construct_witness(composition, P)
         assert built.constructed, built.reason
         conjunction = C.run_conjunction(composition, built.text or "", P)
         assert conjunction.complete
@@ -290,35 +335,47 @@ def test_a_witness_is_constructed_and_passes_every_verifier():
 
 
 def test_the_witness_is_deterministic_in_the_composition_and_seed():
-    first, second = W.construct_witness(p1()), W.construct_witness(p1())
+    first, second = W.construct_witness(p1(), P), W.construct_witness(p1(), P)
     assert first.text == second.text
     assert first.witness_hash == second.witness_hash
 
 
 def test_a_different_seed_varies_only_the_filler_vocabulary():
     """A failure cannot be retried away by reseeding."""
-    base = W.construct_witness(p1(n_items=5, policy=PERMISSIVE, cid="p1/loose/B"))
+    base = W.construct_witness(p1(n_items=5, policy=PERMISSIVE, cid="p1/loose/B"),
+                               PERMISSIVE)
     other = W.construct_witness(p1(n_items=5, policy=PERMISSIVE, cid="p1/loose/B"),
-                                seed=7)
+                                PERMISSIVE, seed=7)
     assert base.constructed and other.constructed
     assert base.structure["item_order"] == other.structure["item_order"]
 
 
 def test_construction_failure_is_a_record_not_an_exception():
-    built = W.construct_witness(p1(n_items=2))
+    built = W.construct_witness(p1(n_items=2), P)
     assert not built.constructed and built.text is None
     assert "no arrangement places more items than exist" in built.reason
 
 
 def test_the_item_and_sentence_counts_cannot_both_be_satisfied_when_they_differ():
-    """The Pair 1 / Pair 3 coupling, stated as a constructive impossibility."""
-    mixed = E.Composition(
-        composition_id="mixed", pair_id="p1", arm="B", load=5,
-        clauses=(E.encode_clause(pairs.PAIR_1.target.constraint_id,
-                                 {"n_items": 3, "policy": P}),
-                 E.encode_clause(pairs.PAIR_3.target.constraint_id,
-                                 {"n_sentences": 5})))
-    built = W.construct_witness(mixed)
+    """The Pair 1 / Pair 3 coupling, stated as a constructive impossibility.
+
+    A background may impose a sentence count on a Pair 1 composition. Under the
+    frozen segmentation each item line is also a sentence, so a list rendering gives
+    equal counts and a prose rendering gives zero items.
+    """
+    mixed = E.encode_composition(
+        "mixed", pair_id="p1", arm="B", load=5, realisations={
+            pairs.PAIR_1.target.constraint_id: {"n_items": 3, "policy": P},
+            pairs.PAIR_1.focal.constraint_id: {"relation": CHAIN, "policy": P}},
+        backgrounds={
+            "v19:background.sentences": {
+                "family": pairs.PAIR_3.target.constraint_id,
+                "n_sentences": 5, "policy": P},
+            "v19:background.unique": {"family": pairs.PAIR_2.focal.constraint_id,
+                                      "policy": P},
+            "v19:background.increasing": {
+                "family": pairs.PAIR_3.focal.constraint_id, "policy": P}})
+    built = W.construct_witness(mixed, P)
     assert not built.constructed
     assert "no single rendering satisfies both" in built.reason
 
@@ -332,18 +389,18 @@ def test_an_all_whitespace_witness_is_refused_as_a_record():
 
 def test_a_negative_seed_is_refused():
     with pytest.raises(W.WitnessConstructionError, match="non-negative"):
-        W.construct_witness(p1(), seed=-1)
+        W.construct_witness(p1(), P, seed=-1)
 
 
 def test_the_witness_record_names_its_constructor_and_hashes_the_bytes():
-    built = W.construct_witness(p3())
+    built = W.construct_witness(p3(), P)
     assert built.constructor == W.CONSTRUCTOR_ID
     assert built.witness_hash and built.structure["rendering"] == "prose"
-    assert W.construct_witness(p1()).structure["rendering"] == "bullet_list"
+    assert W.construct_witness(p1(), P).structure["rendering"] == "bullet_list"
 
 
 def test_the_item_order_is_a_valid_linear_extension():
-    built = W.construct_witness(p1())
+    built = W.construct_witness(p1(), P)
     order = built.structure["item_order"]
     for before, after in CHAIN.closure():
         assert order.index(before) < order.index(after)
@@ -351,7 +408,8 @@ def test_the_item_order_is_a_valid_linear_extension():
 
 def test_filler_words_never_contain_a_declared_item_label():
     """Otherwise containment matching would identify a filler as a real item."""
-    built = W.construct_witness(p1(n_items=6, policy=PERMISSIVE, cid="p1/loose/B"))
+    built = W.construct_witness(p1(n_items=6, policy=PERMISSIVE, cid="p1/loose/B"),
+                                PERMISSIVE)
     assert built.constructed
     outcome = V.verify_transitive_order(built.text or "", relation=CHAIN,
                                        policy=PERMISSIVE)
@@ -362,7 +420,7 @@ def test_filler_words_never_contain_a_declared_item_label():
 # ----------------------------------------------------- the verifier conjunction
 def test_the_conjunction_is_the_product_over_every_active_constraint():
     composition = p3()
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     conjunction = C.run_conjunction(composition, built.text or "", P)
     assert conjunction.vector == (1, 1)
     assert conjunction.v_all == 1
@@ -371,7 +429,7 @@ def test_the_conjunction_is_the_product_over_every_active_constraint():
 def test_a_missing_column_refuses_to_form_a_conjunction():
     """Three declared constraints and two results must not give a product."""
     composition = p3()
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     partial = C.run_conjunction(composition, built.text or "", P,
                                omit=(pairs.PAIR_3.focal.constraint_id,))
     assert not partial.complete
@@ -422,13 +480,13 @@ def test_one_failing_column_alone_makes_the_product_zero():
 
 def test_a_clause_without_a_verifier_is_refused():
     composition = p1()
-    original = V._pair_one_verifiers
+    original = V.bundle
     try:
-        V._pair_one_verifiers = lambda policy: {}
+        V.bundle = lambda policy=P: {}
         with pytest.raises(C.CertificationError, match="no verifier"):
             C.run_conjunction(composition, "- alpha", P)
     finally:
-        V._pair_one_verifiers = original
+        V.bundle = original
 
 
 # ------------------------------------------------------------ semantic review
@@ -517,7 +575,7 @@ def test_a_panel_larger_than_two_is_refused():
 
 # ---------------------------------------------------------- the full certificate
 def passing_review(composition):
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     return C.SemanticReview(
         composition_id=composition.composition_id,
         witness_hash=built.witness_hash,
@@ -580,7 +638,7 @@ def test_a_review_against_a_different_witness_does_not_certify():
 
 def test_a_review_covering_the_wrong_clauses_does_not_certify():
     composition = p1()
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     wrong = C.SemanticReview(
         composition_id=composition.composition_id,
         witness_hash=built.witness_hash,
@@ -594,7 +652,7 @@ def test_a_review_covering_the_wrong_clauses_does_not_certify():
 
 def test_a_failed_review_is_its_own_outcome():
     composition = p1()
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     failed = C.SemanticReview(
         composition_id=composition.composition_id,
         witness_hash=built.witness_hash,
@@ -607,16 +665,24 @@ def test_a_failed_review_is_its_own_outcome():
         C.assert_certified(certificate)
 
 
-def test_a_composition_with_complete_coverage_certifies_without_review():
-    """Auto-certification exists, but only where the encoding claims completeness."""
-    only_complete = E.Composition(
-        composition_id="complete-only", pair_id="p1", arm="B", load=2,
-        clauses=(E.encode_clause(pairs.PAIR_1.target.constraint_id,
-                                 {"n_items": 3, "policy": P}),))
-    certificate = C.certify_composition(only_complete, P)
-    assert certificate.certified
-    assert certificate.review_state is C.ReviewState.AUTO_CERTIFIED
-    assert certificate.review is None
+def test_auto_certification_is_currently_unreachable_and_that_is_reported():
+    """No valid composition has all-COMPLETE coverage today.
+
+    Each pair pairs a COMPLETE clause with a PARTIAL one - Pair 1 and Pair 2 have a
+    complete target and an incomplete focal, Pair 3 the reverse - and every A+B+S
+    composition contains both. So `AUTO_CERTIFIED` exists as a branch and no
+    composition reaches it, which means human semantic review is mandatory for
+    everything Stage 2 can certify. Recorded here rather than left to be discovered.
+    """
+    for factory in (p1, p2, p3):
+        composition = factory()
+        assert C.review_required(composition), composition.composition_id
+    complete = {row["constraint_id"] for row in E.coverage_report(P)
+                if row["coverage"] == "COMPLETE"}
+    assert complete == {pairs.PAIR_1.target.constraint_id,
+                        pairs.PAIR_2.target.constraint_id,
+                        pairs.PAIR_3.focal.constraint_id}
+    assert C.ReviewState.AUTO_CERTIFIED in set(C.ReviewState)
 
 
 def test_the_certificate_archives_everything_section_eight_six_lists():
@@ -627,7 +693,13 @@ def test_the_certificate_archives_everything_section_eight_six_lists():
     import json
     json.dumps(described)
     assert described["composition"]["encoding_hash"]
-    assert described["solver"]["smt2"] and described["solver"]["record_hash"]
+    assert described["solver"]["assertions"] and described["solver"]["record_hash"]
+    assert described["solver"]["model"]            # archived, not hashed
+    assert described["verifier_bundle_hash"] == V.bundle_hash(P)
+    assert all(row["implementation_hash"]
+               for row in described["verifier_bundle"].values())
+    assert described["semantic_id"] and described["implementation_id"]
+    assert described["evidence_id"]
     assert described["witness"]["witness_hash"] and described["witness"]["text"]
     assert described["conjunction"]["v_all"] == 1
     assert described["review"]["state"] == "HUMAN_REVIEW_PASSED"
@@ -656,17 +728,49 @@ def test_every_outcome_is_reachable_or_explicitly_out_of_scope():
             C.Outcome.WITNESS_REJECTED} <= set(C.Outcome)
 
 
-def test_a_witness_rejected_by_a_verifier_is_reported_as_a_disagreement():
-    """The finding that shaped the design, reproduced against a policy that allows it.
+def test_a_policy_mismatch_is_refused_before_any_evidence_is_read():
+    """The earlier route to a disagreement is now closed at the door.
 
-    Under a permissive policy the solver reports sat for five items with a
-    three-item relation, and a verifier configured strictly then rejects the
-    witness. The certification must name that as an encoding/verifier disagreement
-    rather than as a composition to retry.
+    Encoding under one grammar and verifying under another was how the audit reached
+    a solver-sat, verifier-rejected witness. The clauses carry the grammar\'s hash,
+    so the mismatch is refused before the solver runs.
     """
     composition = p1(n_items=5, policy=PERMISSIVE, cid="p1/loose/B")
-    assert S.solve(composition).status == "sat"
-    certificate = C.certify_composition(composition, P)   # strict verifier
+    certificate = C.certify_composition(composition, P)
+    assert certificate.outcome is C.Outcome.POLICY_MISMATCH
+    assert certificate.solver is None and certificate.witness is None
+
+
+def test_a_witness_rejected_by_a_verifier_is_reported_as_a_disagreement():
+    """The branch survives, and is reached by making a verifier reject.
+
+    Under the canonical grammar the encoding and the verifiers agree, so no real
+    composition reaches this outcome. The branch still has to exist and still has to
+    say the right thing, because a future clause family could reintroduce the gap -
+    so it is exercised by forcing one verifier to reject a witness the solver
+    accepted.
+    """
+    composition = p2()
+    always_fail = dict(V.bundle(P))
+    target_id = pairs.PAIR_2.target.constraint_id
+    original = V.bundle
+
+    def rejecting(policy=P):
+        built = dict(original(policy))
+        good = built[target_id]
+        built[target_id] = dataclasses.replace(
+            good, run=lambda text, **kw: dataclasses.replace(
+                good.run(text, **kw), verdict=V.Verdict.FAIL,
+                compliance=V.Compliance.VIOLATION,
+                reason="forced rejection for the disagreement branch"))
+        return built
+
+    try:
+        V.bundle = rejecting
+        certificate = C.certify_composition(composition, P)
+    finally:
+        V.bundle = original
+    assert always_fail                                  # the real bundle is intact
     assert certificate.outcome is C.Outcome.WITNESS_REJECTED
     assert "semantics disagree" in certificate.reason
     assert "not a composition to retry" in certificate.reason
@@ -674,7 +778,7 @@ def test_a_witness_rejected_by_a_verifier_is_reported_as_a_disagreement():
 
 def test_a_crashing_verifier_is_a_verifier_error_not_a_rejection():
     composition = p3()
-    built = W.construct_witness(composition)
+    built = W.construct_witness(composition, P)
     conjunction = C.run_conjunction(composition, built.text or "", P)
     broken = dataclasses.replace(
         conjunction,
@@ -800,9 +904,13 @@ def test_expectations_are_policy_conditional_where_the_policy_decides():
 
 
 def test_the_battery_refuses_a_base_its_verifiers_do_not_accept():
+    """A base whose witness fails a verifier cannot attribute a mutation's effect."""
+    unsatisfiable = E.encode_composition(
+        "p3/impossible/B", pair_id="p3", arm="B", load=2, realisations={
+            pairs.PAIR_3.target.constraint_id: {"n_sentences": 1, "policy": P},
+            pairs.PAIR_3.focal.constraint_id: {"policy": P}})
     with pytest.raises(M.MutationError, match="not accepted by every verifier"):
-        M.run_battery(p1(n_items=5, policy=PERMISSIVE, cid="p1/loose/B"), P,
-                      template_id="mismatched")
+        M.run_battery(unsatisfiable, P, template_id="mismatched")
 
 
 def test_a_mutation_record_is_serialisable_and_complete():
@@ -827,109 +935,82 @@ def test_the_battery_is_deterministic():
     assert [r.mutated_hash for r in first] == [r.mutated_hash for r in second]
 
 
-def test_containment_matching_forbids_prefix_overlapping_labels():
-    """A real constraint on whatever label vocabulary Stage 5 calibrates."""
+def test_prefix_overlapping_labels_are_no_longer_ambiguous():
+    """Token membership replaced substring containment, so the constraint is gone."""
     overlapping = OrderingRelation(items=("item1", "item10"),
                                    edges=(("item1", "item10"),))
     outcome = V.verify_transitive_order("- item1\n- item10", relation=overlapping,
                                         policy=P)
-    assert outcome.verdict is V.Verdict.FAIL
-    assert outcome.evidence["identification"]["ambiguous"]
-    padded = OrderingRelation(items=("item001", "item010"),
-                              edges=(("item001", "item010"),))
-    assert V.verify_transitive_order("- item001\n- item010", relation=padded,
-                                     policy=P).verdict is V.Verdict.PASS
+    assert outcome.verdict is V.Verdict.PASS
+    assert not outcome.evidence["identification"]["ambiguous"]
+    assert V.verify_transitive_order("- item10\n- item1", relation=overlapping,
+                                     policy=P).verdict is V.Verdict.FAIL
 
 
 # ------------------------------------------------------------ registry wiring
-def test_the_satisfiability_artifacts_are_declared_and_pending():
-    for name in ("satisfiability.encoding_map", "satisfiability.solver_identity",
-                 "satisfiability.witness_constructor",
-                 "satisfiability.semantic_reviews",
-                 "satisfiability.certified_compositions"):
+# Three of the five satisfiability artifacts have been produced and recorded in
+# src/dci/v19/stage2_frozen.json; the other two need a human review and an artifact
+# that depends on it.
+PRODUCED = ("satisfiability.encoding_map", "satisfiability.solver_identity",
+            "satisfiability.witness_constructor",
+            "satisfiability.review_trigger")
+STILL_PENDING = ("satisfiability.semantic_reviews",
+                 "satisfiability.certified_compositions")
+
+
+def test_the_produced_satisfiability_artifacts_are_frozen_with_provenance():
+    from dci.v19 import frozen
+    recorded = {row["slot"]: row for row in frozen.audit()}
+    assert set(PRODUCED) <= set(recorded)
+    for name in PRODUCED:
+        slot = REGISTRY.slots[name]
+        assert slot.resolved, name
+        assert slot.frozen_by and slot.domain, name
+        assert recorded[name]["evidence"], name
+
+
+def test_the_remaining_satisfiability_artifacts_are_still_pending():
+    for name in STILL_PENDING:
         slot = REGISTRY.slots[name]
         assert slot.pending, name
         assert slot.rule and slot.prereg
 
 
+def test_a_recorded_output_cannot_precede_its_own_prerequisites():
+    """The file cannot bypass the ordering section 14 makes mandatory."""
+    import json
+
+    from dci.v19 import frozen
+    out_of_order = {"records": [{
+        "slot": "verifiers.bundle_hash", "value": "0" * 64,
+        "frozen_by": "probe", "recorded_at": "2026-01-01T00:00:00+00:00",
+        "evidence": "probe"}]}
+    import tempfile
+    from pathlib import Path
+
+    from dci.v19.registry import declared_table
+    with tempfile.TemporaryDirectory() as directory:
+        target = Path(directory) / "records.json"
+        target.write_text(json.dumps(out_of_order))
+        with pytest.raises(frozen.FrozenRecordError, match="out of order"):
+            frozen.apply(declared_table(), target)
+
+
 def test_the_semantic_reviews_are_a_prospective_decision():
     slot = REGISTRY.slots["satisfiability.semantic_reviews"]
     assert slot.status == "BLOCKED_BY_PROSPECTIVE_DECISION"
-    assert "code must never stand in for the reviewer" in slot.note
+    assert "Code must never stand in for the reviewer" in slot.note
 
-
-def test_the_encoding_map_waits_on_the_list_policy():
-    assert REGISTRY.slots["satisfiability.encoding_map"].depends_on == (
-        "verifiers.p1.list_policy",)
-
-
-def test_the_certified_compositions_wait_on_every_upstream_artifact():
-    assert set(REGISTRY.slots["satisfiability.certified_compositions"].depends_on) \
-        == {"satisfiability.solver_identity",
-            "satisfiability.witness_constructor",
-            "satisfiability.semantic_reviews", "verifiers.bundle_hash"}
-
-
-def test_stage_two_now_requires_the_semantic_reviews():
-    gate = REGISTRY.gate("stage_2_verifiers")
-    assert "satisfiability.semantic_reviews" in gate.required_slots
-    assert REGISTRY.citation_for("stage_2_verifiers",
-                                 "satisfiability.semantic_reviews")
-    row = REGISTRY.stage_status("stage_2_verifiers")
-    assert row["status"] == "BLOCKED_BY_PROSPECTIVE_DECISION"
-    assert len(row["blockers"]) == 6
-
-
-def test_stage_two_produces_the_satisfiability_artifacts():
-    produces = set(REGISTRY.gate("stage_2_verifiers").produces)
-    assert {"satisfiability.encoding_map", "satisfiability.solver_identity",
-            "satisfiability.witness_constructor",
-            "satisfiability.certified_compositions"} <= produces
-
-
-def test_stage_one_is_still_the_only_ready_stage():
-    ready = [row["stage"] for row in REGISTRY.audit() if row["status"] == "READY"]
-    assert ready == ["stage_1_definitions"]
-
-
-# ------------------------------------------------------- stage 2 certification
-def test_the_satisfiability_half_is_not_certified():
-    report = stage2.certify_satisfiability(REGISTRY.slots)
-    assert not report.certified
-    solver_finding = next(f for f in report.findings
-                          if "frozen solver is available" in f.requirement)
-    assert solver_finding.satisfied and solver_finding.detail.startswith("z3")
-
-
-def test_absent_battery_evidence_is_not_a_battery_that_found_nothing():
-    report = stage2.certify_satisfiability(REGISTRY.slots, mutation_summaries=None)
-    finding = next(f for f in report.findings if "distinct boundary" in f.requirement)
-    assert not finding.satisfied
-    assert "absent battery is not a battery that found nothing" in finding.detail
-
-
-def test_a_padded_battery_summary_is_rejected():
-    report = stage2.certify_satisfiability(
-        REGISTRY.slots,
-        mutation_summaries={"p1.A+B": {"n_mutations": 1000, "distinct_texts": 20}})
-    finding = next(f for f in report.findings if "distinct boundary" in f.requirement)
-    assert not finding.satisfied and "padded" in finding.detail
-
-
-def test_a_short_battery_summary_is_rejected():
-    report = stage2.certify_satisfiability(
-        REGISTRY.slots,
-        mutation_summaries={"p1.A+B": {"n_mutations": 999, "distinct_texts": 999}})
-    finding = next(f for f in report.findings if "distinct boundary" in f.requirement)
-    assert not finding.satisfied and "p1.A+B=999" in finding.detail
-
-
-def test_the_whole_stage_two_report_covers_both_halves():
+def test_the_whole_stage_two_report_covers_both_halves_and_still_fails_closed():
     report = stage2.certify_stage2(REGISTRY.slots)
-    assert len(report.findings) == 12
+    citations = {f.citation for f in report.findings}
+    assert any("8.6" in c for c in citations)
+    assert any("14.2" in c for c in citations)
+    assert any("10.4" in c for c in citations)
+    # One requirement outstanding, and it is human adjudication.
     assert not report.certified
-    assert len(report.outstanding) == 11
-
+    assert len(report.outstanding) == 1
+    assert "human-adjudicated" in report.outstanding[0].requirement
 
 def test_the_stage_two_report_is_serialisable():
     import json

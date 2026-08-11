@@ -119,6 +119,12 @@ def certify_verifiers(slots: SlotTable) -> Certification:
             "measurement decision under it that is missing"))
 
     findings.append(_battery_finding(slots))
+    findings.append(_slot_finding(
+        slots, "verifiers.tier1_reliability",
+        "each of the six target and focal verifier units is certified against the "
+        "5% Tier-1 conditional error ceiling on 72 human-adjudicated labels per "
+        "truth class, with zero observed errors",
+        "section 10.4 + amendment A3"))
     return Certification(findings=tuple(findings))
 
 
@@ -204,9 +210,12 @@ def certify_satisfiability(slots: SlotTable) -> Certification:
             slots, "satisfiability.witness_constructor",
             "the deterministic witness constructor is frozen", "section 8.6"),
         _slot_finding(
-            slots, "satisfiability.semantic_reviews",
-            "human semantic review exists for every incompletely encoded clause",
-            "section 8.6"),
+            slots, "satisfiability.review_trigger",
+            "the semantic-review trigger is demonstrated: it fires on incomplete "
+            "coverage, stays silent on complete coverage, rejects a review of the "
+            "wrong witness, and requires adjudication of disagreement",
+            "section 14.2; section 8.6"),
+        _review_boundary_finding(),
         _solver_finding(),
         _battery_regeneration_finding(slots),
     ]
@@ -265,6 +274,29 @@ def _battery_regeneration_finding(slots: SlotTable) -> Finding:
     return Finding(requirement, citation, True,
                    f"{len(regenerated)} template batteries regenerated and matched, "
                    f"each at or above {FLOOR} distinct mutations")
+
+
+def _review_boundary_finding() -> Finding:
+    """Moving the reviews to Stage 10 must not let anything escape review.
+
+    The boundary correction is only sound if certification still refuses a
+    composition with an incompletely covered clause and no review. That is
+    demonstrated here rather than argued, because it is the single load-bearing
+    claim the correction rests on.
+    """
+    from dci.v19.parsing import CANONICAL_LIST_POLICY
+    from dci.v19.review_trigger import unreviewable_certification_is_impossible
+    requirement = ("a composition with an incompletely covered clause cannot be "
+                   "certified without a passing review, so deferring the reviews "
+                   "to Stage 10 defers WHEN they are checked and not WHETHER")
+    citation = "sections 8.6, 14.2, 14.10"
+    if not unreviewable_certification_is_impossible(CANONICAL_LIST_POLICY):
+        return Finding(requirement, citation, False,
+                       "a composition with an uncovered clause certified with no "
+                       "review, so the Stage 2 / Stage 10 division would let a "
+                       "composition through unreviewed")
+    return Finding(requirement, citation, True,
+                   "certification refuses with Outcome.REVIEW_REQUIRED")
 
 
 def _solver_finding() -> Finding:
