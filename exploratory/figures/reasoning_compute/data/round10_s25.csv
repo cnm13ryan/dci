@@ -1,0 +1,13 @@
+b,variant,tau,lo,hi,focal_A_fail,ref_A_fail,A_compliance_focal,C_compliance,joint_focal,cap_hit,realised_M,delta,d_lo,d_hi,experiment
+0,X_ANCHOR_HOWEVER_BEFORE2,0.45,0.2,0.7,0.7,0.25,0.3,0.75,0.0,0.0,0.0,,,,S25 placement × reasoning · QAC k=3
+0,X_ANCHOR_HOWEVER_FREE2,0.45,0.25,0.65,0.45,0.0,0.55,0.825,0.0,0.0,0.0,,,,S25 placement × reasoning · QAC k=3
+0,DELTA (amp − ctrl),,,,,,,,,,,0.0,-0.35,0.35,S25 placement × reasoning · QAC k=3
+256,X_ANCHOR_HOWEVER_BEFORE2,0.0,-0.3,0.3,0.3,0.3,0.7,0.875,0.0,0.95,254.225,,,,S25 placement × reasoning · QAC k=3
+256,X_ANCHOR_HOWEVER_FREE2,-0.05,-0.25,0.15,0.15,0.2,0.85,0.85,0.0,0.975,255.525,,,,S25 placement × reasoning · QAC k=3
+256,DELTA (amp − ctrl),,,,,,,,,,,-0.05,-0.45,0.4,S25 placement × reasoning · QAC k=3
+1024,X_ANCHOR_HOWEVER_BEFORE2,0.4,0.15,0.65,0.45,0.05,0.55,0.575,0.0,0.4,718.775,,,,S25 placement × reasoning · QAC k=3
+1024,X_ANCHOR_HOWEVER_FREE2,0.35,0.1,0.6,0.45,0.1,0.55,0.9,0.0,0.2,630.55,,,,S25 placement × reasoning · QAC k=3
+1024,DELTA (amp − ctrl),,,,,,,,,,,-0.05,-0.45,0.35,S25 placement × reasoning · QAC k=3
+4096,X_ANCHOR_HOWEVER_BEFORE2,0.35,0.15,0.55,0.35,0.0,0.65,0.575,0.0,0.0375,1275.6875,,,,S25 placement × reasoning · QAC k=3
+4096,X_ANCHOR_HOWEVER_FREE2,0.35,0.1,0.6,0.4,0.05,0.6,0.9,0.0,0.025,857.9,,,,S25 placement × reasoning · QAC k=3
+4096,DELTA (amp − ctrl),,,,,,,,,,,0.0,-0.35,0.35,S25 placement × reasoning · QAC k=3

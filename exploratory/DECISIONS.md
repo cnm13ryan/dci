@@ -2223,3 +2223,151 @@ running the same contrast under a positive reasoning budget puts focal-arm
 failure at ~0.55 rather than ~1.00 and is therefore the ceiling-free version of
 this same test. The placement question and the reasoning question now share one
 experiment.
+
+## R10.2 A harness defect found and fixed: replicates were not independent
+
+`reasoning_vllm.py` passed **one fixed seed for every request**, so two replicate
+rows with the same prompt produced byte-identical output. Measured: **390/400 and
+315/320 replicate pairs identical** in the two S18 files.
+
+**Scope.** Every vLLM reasoning run (S18 and all of Round 10). The Transformers
+amplifier runs are unaffected — they vary `batch_seed` per batch.
+
+**What it does and does not invalidate.** Point estimates are unaffected: the
+mean of two identical values is that value. The bootstrap resamples the 20 TASK
+clusters, and task is still the sampling unit, so the intervals remain valid for
+what they cover. What is wrong is the *description*: these runs are effectively
+**one draw per (budget, task, arm, background) cell**, not two, so they carry
+less within-task precision than "2 replicates" implies. Every Round 10 reasoning
+result is reported on that basis.
+
+**Fix.** Seeds are now derived per row (`20260810 + offset + 7919·i`) and passed
+as a per-prompt `SamplingParams` list, which keeps vLLM's continuous batching.
+A verification run at b ∈ {0, 512, 4096} under the fixed harness is reported
+below rather than assumed to agree.
+
+## R10.3 Scratchpad leakage is small but non-zero
+
+Round 9 reported 0/800 answers containing scratchpad language. The wider Round 10
+grid finds genuine leakage — inspected, not regex artefacts: answers containing
+`That's 37 words`, `Now the fourth sentence`, `Wait, that example has...`.
+
+| run | leaked rows | rate |
+|---|---|---|
+| S18 transition (320–640) | 6 / 640 | 0.009 |
+| S26 ACQ (b = 0, 256) | 4 / 640 | 0.006 |
+| S27 k=5 (b = 256) | 4 / 240 | 0.017 |
+
+The validity gate is therefore **not** "zero leakage" but "below 2% of rows", and
+the count is printed in the QA output so it cannot become invisible. Two answers
+were also truncated (S26 b=4096, S27 b=256). These rows are retained, not
+dropped, and the affected budgets are flagged.
+
+## R10.4 Results — the three reasoning experiments
+
+### Stage 8/9 — the transition, and a genuine positive-dose effect
+
+Ordinary (control) τ across the full grid:
+
+| b | 0 | 256 | 320 | 384 | 448 | 512 | 640 | 1024 | 4096 |
+|---|---|---|---|---|---|---|---|---|---|
+| τ control | +0.400 | +0.150 | +0.050 | +0.050 | +0.050 | **0.000** | 0.000 | 0.000 | 0.000 |
+| τ amplifier | +0.600 | +0.075 | +0.325 | +0.425 | +0.350 | +0.375 | +0.475 | +0.450 | +0.500 |
+
+**The decline is gradual, not a threshold.** Most of the fall happens between
+b = 0 and b = 320; τ then sits at +0.050 for three consecutive budgets before
+reaching exactly zero at 512.
+
+**Stage 9 is satisfied.** τ_control differs *among positive budgets alone*:
++0.150 at b = 256 against 0.000 at b ≥ 512. So this is a reasoning-dose effect,
+not merely thinking-on versus thinking-off.
+
+### Stage 17 — placement is FALSIFIED, without a ceiling
+
+Δ_placement = τ_free − τ_anchored, on the thinking model where focal A-failure is
+0.35–0.70 rather than the ~1.00 that made the Stage 1 test uninterpretable:
+
+| b | 0 | 256 | 1024 | 4096 |
+|---|---|---|---|---|
+| Δ placement | **+0.000** [−0.350, +0.350] | −0.050 [−0.450, +0.400] | −0.050 [−0.450, +0.350] | **+0.000** [−0.350, +0.350] |
+
+Zero at every budget, with the ceiling removed. Focal A-failure is the same in
+both arms (0.450 vs 0.450 at b = 1024; 0.400 vs 0.350 at b = 4096).
+
+**P7 (placement search / slot allocation) is falsified** for this model and task.
+Caveat: anchored compliance falls to 0.575 at the two high budgets, so the
+manipulation is diluted there; it is 0.750–0.875 at b = 0 and 256, where Δ is
+also zero.
+
+### Stage 10 — compute resistance is ORDER-DEPENDENT, and reverses
+
+At ACQ, Δ amplification changes sign with reasoning:
+
+| b | 0 | 256 | 1024 | 4096 |
+|---|---|---|---|---|
+| Δ at ACQ | **−0.450** [−0.650, −0.250] | −0.100 [−0.400, +0.200] | **+0.250** [0.000, +0.500] | **+0.250** [0.000, +0.500] |
+| Δ at QAC | +0.200 | −0.075 | +0.450 | +0.500 |
+
+Without reasoning the semicolon background is **protective** at ACQ (Δ = −0.450);
+with reasoning it becomes an amplifier (+0.250). This **revises the Round 9
+claim** that amplification simply "lives at QAC and is absent at ACQ" — that was
+measured on a non-thinking instruct model, which corresponds to the b = 0 column
+here and agrees with it. Once the model reasons, ACQ amplifies too, though only
+about half as strongly as QAC.
+
+### Stage 11 — it survives compositional load
+
+| k = 5, QAC | b = 256 | b = 4096 |
+|---|---|---|
+| τ control | 0.000 | +0.050 |
+| τ amplifier | +0.050 | **+0.625** |
+| Δ | +0.050 [−0.200, +0.300] | **+0.575** [+0.350, +0.775] |
+
+At b = 256 the reasoning phase was cut short on **99.2%** of rows, so that column
+is a censored condition rather than a low-reasoning one. At b = 4096 the
+compute-resistant amplification is fully present at k = 5.
+
+### Stage 12 — reasoning improves PRIORITISATION, not composition
+
+`A ∧ B ∧ C` is certified satisfiable by hand-authored witnesses
+(`satisfiability_certificate.py`), so a low P(both) is a model failure, not a
+property of the task. Across every condition run, **P(both) never exceeds 0.150**
+while P(target only) reaches 0.85–0.95. Under the control at ACQ, reasoning moves
+"neither" from 0.650 to 0.050 and "target only" from 0.350 to 0.850, with "both"
+reaching only 0.100.
+
+Under the amplifier at ACQ, additional reasoning moves probability the **wrong
+way**: "neither" rises 0.100 → 0.350 and "target only" falls 0.850 → 0.650.
+
+## R10.5 Verification under the fixed harness — what survives and what does not
+
+The S18 design was regenerated at b ∈ {0, 512, 4096} with per-row seeding.
+**0/240 replicate pairs identical**, so the fix works.
+
+| b | quantity | shared-seed run | per-row-seeded rerun |
+|---|---|---|---|
+| 0 | τ control | +0.400 | +0.450 [+0.275, +0.625] |
+| 0 | τ amplifier | +0.600 | +0.525 [+0.374, +0.675] |
+| 0 | Δ | +0.200 | +0.075 [−0.225, +0.350] |
+| 512 | τ control | 0.000 | **−0.025** [−0.100, +0.050] |
+| 512 | τ amplifier | +0.375 | **+0.700** [+0.575, +0.825] |
+| 512 | Δ | +0.375 | **+0.725** [+0.550, +0.900] |
+| 4096 | τ control | 0.000 | **−0.025** [−0.075, 0.000] |
+| 4096 | τ amplifier | +0.500 | +0.450 [+0.275, +0.625] |
+| 4096 | Δ | +0.500 | +0.475 [+0.275, +0.650] |
+
+**What replicates.** Ordinary interference goes to approximately zero at b ≥ 512
+and stays there (0.000 → −0.025). Amplified interference remains substantial at
+every budget. Δ is large and positive at b ≥ 512 in both runs. **The headline
+contrast is robust.**
+
+**What does not.** Individual amplifier cells move by up to 0.325 between runs
+(b = 512: +0.375 against +0.700). With 20 task clusters and one effective draw
+per cell, per-budget point estimates carry resampling noise of roughly ±0.2–0.35.
+
+**Consequence, applied throughout.** The *shape* of the amplifier curve — its
+apparent non-monotonicity, the ordering of adjacent budgets — is **not resolvable
+at this sample size** and is not interpreted. The claims that survive are the
+ones about the control reaching zero, the amplifier not reaching zero, and the
+sign of Δ at high budget. Anything finer is noise, and the b = 256 dip in
+particular should not be theorised over.

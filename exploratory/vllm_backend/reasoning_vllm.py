@@ -45,14 +45,25 @@ def main():
                                        add_generation_prompt=True,
                                        enable_thinking=thinking)
 
+    def seeds(offset: int) -> list[int]:
+        """One seed PER ROW, not one per batch.
+
+        A single shared seed makes two replicate rows of the same task
+        byte-identical, so "2 replicates" silently becomes one draw counted
+        twice. Deriving the seed from the row id keeps replicates distinct and
+        keeps every run reproducible.
+        """
+        return [20260810 + offset + 7919 * i for i in range(len(rows))]
+
     records = []
     for budget in BUDGETS:
         started = time.perf_counter()
         if budget == 0:
             # Native non-thinking mode: one generation, fixed answer budget.
             prompts = [render(row, False) for row in rows]
-            outs = llm.generate(prompts, SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=20260810))
+            outs = llm.generate(prompts, [SamplingParams(
+                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=s)
+                for s in seeds(0)])
             for row, out in zip(rows, outs):
                 completion = out.outputs[0]
                 records.append(dict(row, reasoning_budget=0, reasoning="",
@@ -64,18 +75,19 @@ def main():
                                     native_nonthinking=True))
         else:
             prompts = [render(row, True) for row in rows]
-            think = llm.generate(prompts, SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=budget, seed=20260810,
-                stop=[THINK_CLOSE], include_stop_str_in_output=False))
+            think = llm.generate(prompts, [SamplingParams(
+                temperature=0.7, top_p=0.9, max_tokens=budget, seed=s,
+                stop=[THINK_CLOSE], include_stop_str_in_output=False)
+                for s in seeds(0)])
             continued, meta = [], []
             for prompt, out in zip(prompts, think):
                 completion = out.outputs[0]
                 closed = completion.finish_reason == "stop"
                 continued.append(f"{prompt}{completion.text}{THINK_CLOSE}\n\n")
                 meta.append((completion.text, len(completion.token_ids), closed))
-            answers = llm.generate(continued, SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS,
-                seed=20260811))
+            answers = llm.generate(continued, [SamplingParams(
+                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=s)
+                for s in seeds(1)])
             for row, (reasoning, n_tokens, closed), out in zip(rows, meta, answers):
                 completion = out.outputs[0]
                 records.append(dict(row, reasoning_budget=budget,

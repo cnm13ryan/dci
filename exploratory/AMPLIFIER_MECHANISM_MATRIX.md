@@ -134,3 +134,74 @@ flag instead of ignoring it, and the genuine k = 5 result above comes from
 `S21_atomicity_k5`, which raises the load with `--fixed-tail` as Round 7 Stage 3
 did. Round 7's own k = 5 claim was audited and is unaffected — it used
 `--fixed-tail` and its rows record load 5.
+
+---
+
+## Round 10 — placement is falsified, not merely unidentified
+
+### The anchored manipulation
+
+Round 9's positional wordings all demanded word *counting* and were obeyed
+0.000–0.338 of the time. A **lexical** anchor removes placement freedom without
+counting, and asking for the mark immediately *before* a connective puts it where
+ordinary English already puts it.
+
+| variant | wording | compliance | inert? |
+|---|---|---|---|
+| `X_ANCHOR_HOWEVER_FREE2` | `…exactly 1 semicolon…, placed wherever you judge best (anywhere at all).` | **1.000** | yes (ref A-failure 0.017) |
+| `X_ANCHOR_HOWEVER_BEFORE2` | `…exactly 1 semicolon…, placed directly in front of it (like this: ...; however ...).` | **0.700** | **no** (ref A-failure 0.333 pooled) |
+| `X_ANCHOR_THEREFORE_BEFORE2` | as above with "therefore" | 0.875 | **no** (ref A-failure 0.250) — rejected at screening |
+
+### The two tests, and why the second one settles it
+
+| test | model | focal A-failure, free arm | Δ placement = τ_free − τ_anchored | reading |
+|---|---|---|---|---|
+| **S24**, Transformers, no thinking | Qwen3-4B-Instruct-2507 | **1.000 (ceiling)** | +0.475 [+0.275, +0.675] | uninterpretable — τ falls only because the *reference* arm rises to 0.450 |
+| **S25**, vLLM, b = 0 | Qwen3-4B | 0.450 | **+0.000** [−0.350, +0.350] | no effect |
+| **S25**, b = 256 | Qwen3-4B | 0.150 | −0.050 [−0.450, +0.400] | no effect |
+| **S25**, b = 1024 | Qwen3-4B | 0.450 | −0.050 [−0.450, +0.350] | no effect |
+| **S25**, b = 4096 | Qwen3-4B | 0.400 | **+0.000** [−0.350, +0.350] | no effect |
+
+In S24 focal-arm failure is at ceiling in every arm, so no repair could have been
+observed. S25 removes the ceiling — focal failure is 0.15–0.45 — and finds **zero
+placement effect at all four reasoning budgets**, with focal-arm failure
+essentially identical in the two arms (0.450 vs 0.450 at b = 1024).
+
+> **P7 (placement search / slot allocation) is FALSIFIED** for this model and
+> task. Amplification does not come from having to decide where the mark goes.
+
+**Caveat.** Anchored compliance is 0.750–0.875 at b ∈ {0, 256} and falls to 0.575
+at b ∈ {1024, 4096}, so the high-budget columns test a diluted manipulation. The
+zero is observed at the well-complied budgets too.
+
+### Consequence for the surviving account
+
+With single-character atomicity refuted (Round 9) and placement falsified (here),
+what remains of the unattached-mark account is narrower and more awkward:
+
+> A background amplifies B → A when it demands **one unattached mark**, and does
+> not when it demands a **paired construct that must wrap content** — and this is
+> *not* because the model must choose where the mark goes, *not* because the mark
+> is a single character, and *not* because the mark must appear in the output.
+
+Whatever distinguishes an unattached mark from an enclosing pair, it is not
+placement freedom. The most likely remaining candidate is that an unattached mark
+is one the model can *substitute for a sentence boundary*, whereas a wrapping
+construct cannot occupy that slot — but that has not been tested by intervention
+and is **mechanistically suggestive only**.
+
+### Order dependence, revised
+
+Round 9 concluded amplification "lives at QAC and is absent at ACQ". Round 10
+shows that was a **no-reasoning** result:
+
+| b | Δ at QAC | Δ at ACQ |
+|---|---|---|
+| 0 (native non-thinking) | +0.200 | **−0.450** [−0.650, −0.250] |
+| 256 | −0.075 | −0.100 |
+| 1024 | +0.450 | **+0.250** [0.000, +0.500] |
+| 4096 | +0.500 | **+0.250** [0.000, +0.500] |
+
+At ACQ without reasoning the semicolon background is **protective**. With
+reasoning it becomes an amplifier, at about half the QAC magnitude. The Round 9
+statement is therefore narrowed to the non-thinking condition, where it holds.
