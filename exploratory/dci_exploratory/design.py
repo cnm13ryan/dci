@@ -233,10 +233,16 @@ def custom_selection(target: str, focal: str, references: Sequence[str],
             {"constraint_id": c, "name": constraints[c].name, "selected": True,
              "rejection_reasons": "explicitly named on the command line"}
             for c in background]
-        if len(chosen) != max(load - 2, 0):
-            raise ValueError(
-                f"load {load} needs {max(load - 2, 0)} background instructions "
-                f"(target + one added slot + background); {len(chosen)} were named")
+        if len(chosen) != max(load - 2, 0) and load >= 0:
+            # The S3 ordering design names TWO background-slot variants at load
+            # 3, because the variant is a treatment there rather than a fixed
+            # context. `build_permutation_design` places exactly one of them in
+            # any given prompt, so the realised load is still 3.
+            if not (load == 3 and len(chosen) == 2):
+                raise ValueError(
+                    f"load {load} needs {max(load - 2, 0)} background "
+                    f"instructions (target + one added slot + background); "
+                    f"{len(chosen)} were named")
 
     everything = [target, focal, *references, *chosen]
     sat_audit = []
@@ -398,6 +404,7 @@ class Row:
     user_prompt: str
     pair_key: str             # (task, order, replicate) — matched across arms
     scaffold: str = ""        # system-message variant; "" is the protocol default
+    variant: str = ""         # background-slot occupant, for the S3 ordering design
 
     def as_dict(self) -> dict[str, Any]:
         out = self.__dict__.copy()
@@ -545,3 +552,89 @@ def assert_matched(rows: list[Row], selection: Selection) -> None:
                 raise ValueError(f"{row.row_id}: order {row.order} but target is not first")
             if row.order == ORDER_ADDED_FIRST and not index < target_index:
                 raise ValueError(f"{row.row_id}: order {row.order} but added is not first")
+
+
+# ------------------------------------------------------- S3 ordering designs
+#: The six orderings of three roles. `A` is the target, `Q` the focal-slot
+#: occupant (B or its matched reference), `C` the background-slot occupant (the
+#: colon instruction or its control).
+PERMUTATIONS = ("AQC", "ACQ", "QAC", "QCA", "CAQ", "CQA")
+
+
+def build_permutation_design(target: str, focals: Sequence[str],
+                             variants: Sequence[str], tasks: list[dict[str, str]],
+                             replicates: int, base_seed: int, stage: str,
+                             paraphrase_id: int = 0,
+                             permutations: Sequence[str] = PERMUTATIONS,
+                             fixed_tail: Sequence[str] = ()) -> list[Row]:
+    """Every ordering of (target, focal-slot, background-slot), crossed.
+
+    `design.build_design` can only swap the target with ONE added instruction,
+    because that is the contrast v19 defines. It cannot move a background member
+    through the prompt, and the question of whether the colon's position matters
+    is exactly a question about moving a background member.
+
+    Matching: rows sharing (task, permutation, variant, replicate) form a
+    `pair_key`, so the focal/reference contrast is taken **within** an ordering
+    and within a background variant. Nothing is ever paired across orderings.
+    """
+    S = harvest.load()
+    rows: list[Row] = []
+    for task in tasks:
+        for permutation in permutations:
+            for variant in variants:
+                for replicate in range(replicates):
+                    pair_key = (f"{task['task_id']}|{permutation}|{variant}"
+                                f"|r{replicate}")
+                    for focal in focals:
+                        roles = {"A": target, "Q": focal, "C": variant}
+                        # `fixed_tail` holds the remaining background members in
+                        # a FIXED position, so that raising the load does not
+                        # also permute instructions the design is not studying.
+                        ordered = (tuple(roles[r] for r in permutation)
+                                   + tuple(fixed_tail))
+                        rows.append(Row(
+                            row_id=_row_id(stage, task["task_id"], permutation,
+                                           variant, focal, replicate,
+                                           paraphrase_id, base_seed,
+                                           "+".join(fixed_tail)),
+                            stage=stage, task_id=task["task_id"],
+                            topic=task["topic"],
+                            condition="focal" if focal == focals[0] else "reference",
+                            arm=focal, measured=target, order=permutation,
+                            load=len(ordered), replicate=replicate,
+                            ordered_ids=ordered, paraphrase_id=paraphrase_id,
+                            user_prompt=harvest.compose_prompt(
+                                task["topic"], list(ordered), paraphrase_id),
+                            pair_key=pair_key, variant=variant))
+    ids = [r.row_id for r in rows]
+    if len(set(ids)) != len(ids):
+        raise ValueError("permutation design rows are not uniquely identified")
+    assert_permutation_matched(rows, target)
+    return rows
+
+
+def assert_permutation_matched(rows: list[Row], target: str) -> None:
+    """Within a pair_key, rows differ in the focal slot and in nothing else."""
+    groups: dict[str, list[Row]] = {}
+    for row in rows:
+        groups.setdefault(row.pair_key, []).append(row)
+    for pair_key, group in groups.items():
+        for field in ("task_id", "order", "variant", "paraphrase_id", "measured"):
+            values = {getattr(r, field) for r in group}
+            if len(values) != 1:
+                raise ValueError(f"{pair_key}: {field} varies across the group: "
+                                 f"{sorted(values)}")
+        if len({len(r.ordered_ids) for r in group}) != 1:
+            raise ValueError(f"{pair_key}: instruction COUNT differs across arms")
+        for row in group:
+            if row.measured != target or target not in row.ordered_ids:
+                raise ValueError(f"{row.row_id}: target missing or not measured")
+            if row.arm not in row.ordered_ids:
+                raise ValueError(f"{row.row_id}: the arm is not in the prompt")
+            # the position of each ROLE must match the declared permutation
+            roles = {"A": target, "Q": row.arm, "C": row.variant}
+            expected = tuple(roles[r] for r in row.order)
+            if row.ordered_ids[:3] != expected:
+                raise ValueError(f"{row.row_id}: ordered_ids {row.ordered_ids} "
+                                 f"!= permutation {row.order} -> {expected}")

@@ -1509,3 +1509,195 @@ Qwen-specific. With four models and both forms:
 Qwen3.5-4B are the same developer and size class one generation apart, and they
 sit at opposite ends of the per-sentence arbitration (target sacrificed 0.713 vs
 0.263; semicolon sacrificed 0.062 vs 0.375). No family-level statement survives.
+
+---
+
+# Round 7
+
+## Stage 0 — audit and freeze the measurement layer
+
+**0.1 Bug impact, measured not recalled.** `metric_bugdiff.py` rescores all
+**20,184** stored generations against a verbatim reconstruction of the buggy
+regex. **1,279 rows (6.34%)** change `chain_share`, max absolute change 0.923;
+**0** semicolon splice counts change, because the bug was structurally incapable
+of touching semicolons. No reported number was ever computed with the buggy
+version — the fix landed before any colon or dash splice figure was published.
+Raw generations untouched.
+
+**0.2** `METRIC_SPEC.md` freezes the definitions, formulas, supported marks,
+edge cases, the documented downward bias from abbreviation full stops, the comma
+exclusion, and the independence argument. `tests/test_metric_spec.py` pins it
+with 23 cases.
+
+**0.3 The human audit failed the metric, and the gate was applied.** 18
+outputs, stratified low/medium/high and sampled reproducibly (seed 20260811),
+read by hand.
+
+* **Precision 18/18.** Every non-zero `chain_share` was a genuine clause join.
+* **Recall was poor and systematically biased.** The worst case was a
+  one-sentence answer carrying six semicolon joins scoring **0.000**: its clauses
+  began `the`, `once` and `(this`, determiners being excluded by design and
+  `; (this` failing the mark-plus-letter anchor outright. Magnitude therefore
+  tracked the model's lexical style rather than the structure being measured —
+  fatal for a variable used to compare conditions.
+
+**Revision, before any Stage 1 generation.** `splice_count` now scans the marks
+themselves and accepts a following segment that either begins with a
+clause-initial word **or** runs to at least four words. That shape test
+separates `a spring` (2 words, a list item) from `the staple is pushed into the
+paper with force` (9 words, a clause) without a tagger or a grammatical claim.
+
+Re-audit of the same 18: both severe false negatives repaired (0.000 → 0.857 and
+0.000 → 0.167), every true negative still 0.000, 11 of 18 rise. **No conclusion
+moved** — arm ordering is preserved and separation widens.
+
+**Standing limitation, recorded rather than resolved:** `chain_share` remains
+*suggestive mechanism* evidence. Three mediator-blocking instruments have now
+failed, so it is never described as an identified mediator.
+
+## Stage 1 — decoding robustness · `runs/stageS1_T{greedy,t03}_*`
+
+1,040 generations, 0 technical failures. N = 4, q ∈ {0, 2, 3, 4}, background
+`U_LEX_FORBID3 + U_NUM_MAXINT + U_FMT_PAREN1`, both orders, everything else held
+to the R6-A cell so T = 0.7 is the existing run rather than a new one.
+
+| q | **T = 0 (greedy)** | T = 0.3 | T = 0.7 |
+|---|---|---|---|
+| 0 | 0.000 | 0.000 | 0.013 |
+| 2 | 0.300 | 0.463 | 0.362 |
+| **3** | **1.000** | **1.000** | **0.988** |
+| 4 | **1.000** | **1.000** | **0.988** |
+
+**The q ≈ 3 transition survives greedy decoding unchanged.** At T = 0, q = 3
+gives 1.025 sentences and `chain_share` 0.706 against 1.075 and 0.714 at T = 0.7.
+
+**Greedy decoding deterministically selects the clause chain**, and the
+distribution — not the mean — shows it: at q = 3 under greedy, **97.5%** of rows
+land at exactly one sentence. Of the four pre-registered readings, **(2) and (3)
+are supported**: greedy picks one of the previously observed strategies, and
+temperature mainly moves mixture proportions near the transition (q = 2 sits at
+n=4 in 0.70 / 0.54 / 0.64 of rows across T = 0 / 0.3 / 0.7). Reading (4) — the
+phenomenon disappearing at T = 0 — is **refuted**.
+
+**A manipulation check failed and is reported.** Greedy is not bit-reproducible
+here: of 160 replicate pairs, **112 (70.0%)** have identical text, but **154
+(96.2%)** have identical A-failure and 152 (95.0%) identical sentence counts. The
+cause is batching — the two replicates of a (task, order, arm) carry different
+row ids, land in different batches with different padding widths, and bf16
+matmuls are not associative across padded shapes. This is an apparatus property,
+not a decoding one; it does not affect the aggregate, and the conclusion rests on
+the aggregate.
+
+## Stage 2 — the full S₃ ordering experiment (pre-registration)
+
+**Unresolved claim.** Every ordering result so far comes from `o_A`/`o_Q`, which
+swap the target with the added instruction and hold the background fixed. The
+colon has never been moved. R6-B showed the whole B → A effect is a B × colon
+interaction; nothing yet says whether that interaction depends on **position**,
+**precedence**, **adjacency**, or mere **co-presence**.
+
+**Design.** Load k = 3, so the prompt is exactly the three instructions under
+study. Roles: **A** = target, **Q** ∈ {B, `C_L3`}, **C** ∈ {`U_FMT_COLON1`,
+`U_FMT_PAREN1`}. All six permutations × 2 focal occupants × 2 variants × 20 pilot
+tasks × 2 replicates = **960 generations**. Matching is on
+(task, permutation, variant, replicate), so the focal/reference contrast is taken
+strictly **within** an ordering and within a variant.
+
+`assert_permutation_matched` refuses to spend GPU time unless, inside every
+pair_key, the rows differ in the focal slot and in nothing else, and every row's
+`ordered_ids` equals its declared permutation applied to its declared roles.
+
+**Estimand, per permutation π:**
+
+    Δ(π) = [F_A(B, colon, π) − F_A(R, colon, π)]
+         − [F_A(B, paren, π) − F_A(R, paren, π)]
+
+This is **not** `ABC` against `CBA`; each Δ(π) is a within-ordering difference of
+differences, so a permutation effect cannot be confused with the interaction.
+
+**Competing hypotheses and what separates them.**
+
+| hypothesis | prediction over the six Δ(π) |
+|---|---|
+| **plan primacy** | Δ small whenever A is first (`AQC`, `ACQ`) |
+| **colon priming** | Δ larger whenever C ≺ Q (`ACQ`, `CAQ`, `CQA`) |
+| **B-first architecture** | Δ larger whenever Q ≺ C (`AQC`, `QAC`, `QCA`) |
+| **recency** | Δ depends on the last role only — three pairs should match |
+| **adjacency** | Δ larger when Q and C are adjacent (`AQC`, `ACQ`, `QCA`, `CQA`) than when A separates them (`QAC`, `CAQ`) |
+| **co-presence** | all six Δ(π) similar; ordering is irrelevant once both are present |
+
+The six-permutation surface is inspected **before** any of these summaries is
+computed, and no permutations are pooled until it is confirmed that they do not
+carry opposite signs or qualitatively different output strategies.
+
+**Also measured per cell:** target failure, focal compliance, colon/paren
+compliance, sentence count, punctuation counts, all four splice counts,
+`splice_share`, `chain_share`, words per sentence, arbitration category, and
+representative failure signatures — so that a change in failure *probability* can
+be distinguished from a change in failure *mechanism*.
+
+### Stage 2 outcome · `runs/stageS2_orderings_20260811T103144Z`
+
+960 generations, 11.1 min, 0 technical failures. Manipulation check passes:
+colons produced 0.642 under `U_FMT_COLON1`, **0.000** under `U_FMT_PAREN1`.
+
+**The six order-specific interactions, inspected before any pooling:**
+
+| π | Q pos | τ\|colon | τ\|paren | **Δ(π)** | 95% CI |
+|---|---|---|---|---|---|
+| `QAC` | 1 | +0.425 | +0.025 | **+0.400** | [+0.275, +0.525] |
+| `QCA` | 1 | +0.425 | +0.025 | **+0.400** | [+0.225, +0.575] |
+| `CQA` | 2 | +0.325 | 0.000 | **+0.325** | [+0.175, +0.475] |
+| `AQC` | 2 | +0.300 | +0.050 | **+0.250** | [+0.100, +0.425] |
+| `CAQ` | 3 | +0.125 | −0.025 | +0.150 | [+0.025, +0.300] |
+| `ACQ` | 3 | +0.025 | +0.150 | **−0.125** | [−0.250, 0.000] |
+
+Δ spans 0.525 across orderings, so **co-presence is refuted**: it matters a great
+deal where the instructions sit, not merely that both are present.
+
+**The organising variable is the position of the FOCAL instruction**, and it is
+monotone:
+
+| | Q first | Q second | Q third |
+|---|---|---|---|
+| mean Δ | **+0.400** | +0.287 | **+0.012** |
+
+Against the pre-registered hypotheses:
+
+| hypothesis | verdict |
+|---|---|
+| **B-first architecture** (Δ larger when Q ≺ C) | **SUPPORTED** — +0.350 against +0.117 |
+| **colon priming** (Δ larger when C ≺ Q) | **REFUTED** — the sign is the opposite |
+| **plan primacy** (A first protects) | **partly** — A-first averages +0.062 against +0.275 / +0.363, but this is confounded with Q's position, and `AQC` still shows +0.250 with an interval excluding zero |
+| **recency** | equivalent here to Q-position: Q-last averages +0.012 |
+| **adjacency** | **REFUTED** — adjacent +0.213, separated +0.275 |
+| **co-presence** | **REFUTED** — range 0.525 |
+
+**The mechanism moves with the probability, not only the rate.** In the B arm,
+`chain_share` under the colon variant falls with Q's position — 0.346/0.449
+(first), 0.379/0.326 (second), 0.258/0.174 (third) — against 0.000–0.025 under
+the parenthetical variant throughout. Answer length falls the same way (185–189,
+135–159, 124–126 words). B stated first writes a longer, more chained answer.
+
+### A negative result that falsifies the Round 6 interpretation
+
+Round 6 read the amplification mechanistically: *"the colon-requiring background
+instruction was supplying B with a boundary-capable mark."* Stage 2 refutes it.
+
+Colon **production** varies hugely with position — 0.150 to 0.950 across
+permutations — and **does not track Δ at all**. `CQA` yields 0.225 colons and
+Δ = +0.325; `ACQ` yields 0.950 colons and Δ = **−0.125**.
+
+Tested directly, within the colon condition and paired within task:
+
+> rows that actually contain a colon fail **−0.049 [−0.134, +0.033]**
+> *less* often than rows that do not (n = 20 task clusters, 240 rows)
+
+**The amplification is caused by the colon instruction being present in the
+prompt, not by a colon appearing in the output.** The mark-supply account is
+withdrawn. Whatever the colon instruction does, it does it as an instruction.
+
+This changes what Stage 5 must ask. The question is no longer "which punctuation
+mark affords chaining" but **"what property of an instruction makes it amplify a
+chaining-prone neighbour"** — and the answer cannot be the mark it names, since
+the mark need not appear.

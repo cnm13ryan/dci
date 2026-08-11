@@ -230,9 +230,11 @@ class Backend:
         torch.cuda.reset_peak_memory_stats(self.device)
         started = time.perf_counter()
         with torch.inference_mode():
+            sampling = (dict(temperature=cfg.temperature, top_p=cfg.top_p,
+                             top_k=cfg.top_k) if cfg.do_sample else {})
             out = model.generate(
-                **encoded, max_new_tokens=cfg.max_new_tokens, do_sample=cfg.do_sample,
-                temperature=cfg.temperature, top_p=cfg.top_p, top_k=cfg.top_k,
+                **encoded, max_new_tokens=cfg.max_new_tokens,
+                do_sample=cfg.do_sample, **sampling,
                 pad_token_id=tok.pad_token_id, eos_token_id=tok.eos_token_id,
                 use_cache=True)
         torch.cuda.synchronize(self.device)
