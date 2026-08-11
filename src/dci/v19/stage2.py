@@ -208,9 +208,63 @@ def certify_satisfiability(slots: SlotTable) -> Certification:
             "human semantic review exists for every incompletely encoded clause",
             "section 8.6"),
         _solver_finding(),
-        _battery_finding(slots),
+        _battery_regeneration_finding(slots),
     ]
     return Certification(findings=tuple(findings))
+
+
+def _battery_regeneration_finding(slots: SlotTable) -> Finding:
+    """Run the harness and compare it with what was recorded.
+
+    This is deliberately SEPARATE from the `boundary_mutations` domain and from
+    `_battery_finding`, and the separation is the point.
+
+    The domain states what a section 8.7 record must look like. Its meaning has to
+    stay stable, because the domain name is part of the slot's declaration
+    fingerprint - a domain that silently tightened between two commits would leave
+    the slot with a fingerprint that no longer described it. So the domain checks
+    the record schema and nothing else, in both halves of this stack.
+
+    Whether the recorded hashes match a battery the harness actually produces is a
+    different question, and it can only be asked where the harness exists. That is
+    here. A well-formed record with invented hashes passes the domain and fails
+    this check, which is exactly the split that keeps a stable schema from being a
+    weak one.
+    """
+    from dci.v19.mutation import (
+        MUTATIONS_PER_TEMPLATE as FLOOR,
+    )
+    from dci.v19.mutation import (
+        frozen_battery_evidence,
+    )
+    requirement = ("the recorded boundary-mutation evidence matches a battery the "
+                   "harness regenerates, so it was generated rather than asserted")
+    citation = "section 8.7"
+    slot = slots["verifiers.boundary_mutations"]
+    if not slot.resolved:
+        return Finding(requirement, citation, False,
+                       f"{slot.name} is {slot.resolution.value}: there is nothing "
+                       "to compare a regenerated battery against")
+    regenerated = frozen_battery_evidence()
+    short = sorted(name for name, row in regenerated.items()
+                   if row["n_mutations"] < FLOOR
+                   or row["distinct_texts"] != row["n_mutations"])
+    if short:
+        return Finding(requirement, citation, False,
+                       f"the harness itself produces insufficient evidence for "
+                       f"{short}")
+    recorded = slot.get()
+    mismatched = sorted(name for name, row in regenerated.items()
+                        if recorded.get(name, {}).get("records_hash")
+                        != row["records_hash"])
+    if mismatched:
+        return Finding(requirement, citation, False,
+                       f"the recorded battery for {mismatched} does not match the "
+                       "battery the harness regenerates, so the evidence was "
+                       "asserted rather than generated")
+    return Finding(requirement, citation, True,
+                   f"{len(regenerated)} template batteries regenerated and matched, "
+                   f"each at or above {FLOOR} distinct mutations")
 
 
 def _solver_finding() -> Finding:

@@ -34,7 +34,7 @@ from dci.provenance.hashes import sha
 from dci.v19 import pairs
 from dci.v19.certification import run_conjunction
 from dci.v19.encoding import ClauseKind, Composition
-from dci.v19.parsing import ListPolicy
+from dci.v19.parsing import CANONICAL_LIST_POLICY, ListPolicy
 from dci.v19.witness import construct_witness
 
 # Section 8.7's floor, per constraint template.
@@ -138,11 +138,12 @@ TRANSFORMS: tuple[Transform, ...] = (
               "asymmetry: the same character defeats presence and identification "
               "while leaving uniqueness satisfied"),
     Transform("homoglyph_substituted", Boundary.UNICODE, "token_multiplicity",
-              (ClauseKind.ITEM_PRECEDENCE, ClauseKind.MANDATORY_TOKENS,
-               ClauseKind.INCREASING_SENTENCE_LENGTHS),
-              "a Cyrillic look-alike, with the same asymmetries: invisible to "
-              "distinctness, visible to presence, to label matching, and to the "
-              "length unit, because a split word counts as two words"),
+              (ClauseKind.ITEM_PRECEDENCE, ClauseKind.MANDATORY_TOKENS),
+              "a Cyrillic look-alike. Amendment A2 stopped it SPLITTING a word, so "
+              "the token count and therefore the length unit are untouched, and "
+              "distinctness is untouched because a confusable is a different string. "
+              "It still changes which word is present and which label an item is, "
+              "because those compare the token itself"),
     Transform("case_flipped", Boundary.UNICODE, "token_multiplicity",
               (),
               "declared to affect nothing: the frozen tokenisation case-folds and "
@@ -339,9 +340,15 @@ def _expected(composition: Composition, transform: Transform,
     if transform.name == "segment_appended" and policy.extra_items_permitted:
         kinds.discard(ClauseKind.ITEM_PRECEDENCE)   # an undeclared item is legal
     if transform.name in ("zero_width_inserted", "homoglyph_substituted") \
-            and policy.label_match == "leading_label":
+            and policy.label_match == "leading_token":
         kinds.discard(ClauseKind.ITEM_PRECEDENCE)   # only a leading edit would tell
-    if transform.name == "case_flipped" and policy.label_case_sensitive:
+    if transform.name == "zero_width_inserted":
+        # The frozen text policy removes format characters before tokenising, so a
+        # zero-width space is now invisible to EVERY verifier rather than only to
+        # distinctness. The transform is kept because it is exactly the standing
+        # check that the removal still happens.
+        kinds.clear()
+    if transform.name == "case_flipped" and policy.text.case_rule == "none":
         kinds.add(ClauseKind.ITEM_PRECEDENCE)
     return tuple(clause.constraint_id for clause in composition.clauses
                  if clause.kind in kinds)
@@ -357,7 +364,7 @@ def run_battery(composition: Composition, policy: ListPolicy, *,
     floor on coverage, so reaching it by repeating an edit would be the failure the
     floor exists to prevent. `assert_battery_is_evidence` enforces the count.
     """
-    base = construct_witness(composition, seed=seed)
+    base = construct_witness(composition, policy, seed=seed)
     if not base.constructed or base.text is None:
         raise MutationError(
             f"{composition.composition_id}: no base witness to mutate "
@@ -437,13 +444,14 @@ def template_bases(pair_id: str, policy: ListPolicy, *,
         elif pair_id == "p2":
             realisations = {
                 pairs.PAIR_2.target.constraint_id: {
-                    "mandatory_words": tuple(f"token{i:03d}"
-                                             for i in range(size))},
-                pairs.PAIR_2.focal.constraint_id: {}}
+                    "mandatory_words": tuple(f"token{i:03d}" for i in range(size)),
+                    "policy": policy},
+                pairs.PAIR_2.focal.constraint_id: {"policy": policy}}
         else:
             realisations = {
-                pairs.PAIR_3.target.constraint_id: {"n_sentences": size},
-                pairs.PAIR_3.focal.constraint_id: {}}
+                pairs.PAIR_3.target.constraint_id: {"n_sentences": size,
+                                                   "policy": policy},
+                pairs.PAIR_3.focal.constraint_id: {"policy": policy}}
         out.append(encode_composition(
             f"{pair_id}/mutation-base-{index}", pair_id=pair_id, arm="B", load=2,
             realisations=realisations))
@@ -479,6 +487,42 @@ def _flipped(reference, observed, constraint: str) -> bool:
     if before.scored != after.scored:
         return True
     return before.verdict is not after.verdict
+
+
+# Section 8.7 says "each constraint template". The audit found the two halves of the
+# Stage 2 report disagreeing about what that means - one keyed evidence by constraint
+# id, the other by composition id - so it is settled here in the stricter direction:
+# a template is a declared CONSTRAINT, and a mutation counts toward every constraint
+# active in the composition it was applied to.
+def template_ids() -> tuple[str, ...]:
+    return tuple(rule.constraint_id for rule in pairs.rules())
+
+
+def frozen_battery_evidence(policy: ListPolicy = CANONICAL_LIST_POLICY
+                            ) -> dict[str, dict[str, Any]]:
+    """Regenerate the battery for every declared constraint template.
+
+    This is what `certify_satisfiability` and the `boundary_mutations` domain both
+    call, so the gate checks evidence the harness produced rather than a summary a
+    caller asserted. Deterministic, and roughly a second for all six templates.
+    """
+    per_pair = {pair: battery_for_template(f"{pair}.A+B",
+                                           template_bases(pair, policy), policy)
+                for pair in pairs.PAIR_IDS}
+    evidence: dict[str, dict[str, Any]] = {}
+    for pair, records in per_pair.items():
+        active = {rule.constraint_id for rule in
+                  (pairs.pair(pair).target, pairs.pair(pair).focal)}
+        summary = summarise(records)
+        for constraint_id in sorted(active):
+            evidence[constraint_id] = {
+                "n_mutations": summary["n_mutations"],
+                "distinct_texts": summary["distinct_texts"],
+                "n_collateral": summary["n_collateral"],
+                "boundaries": sorted(summary["by_boundary"]),
+                "records_hash": sha(["v19/mutation-battery",
+                                     [r.mutation_id for r in records]])}
+    return evidence
 
 
 def summarise(records: Sequence[MutationRecord]) -> dict[str, Any]:
