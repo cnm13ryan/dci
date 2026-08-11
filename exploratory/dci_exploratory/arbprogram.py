@@ -34,7 +34,11 @@ SCRATCH = re.compile(
 
 AMPLIFIER = "X_SEMICOLON_FREE"
 CONTROL = "X_PAREN_FREE"
-BACKGROUND_LABEL = {AMPLIFIER: "semicolon", CONTROL: "parentheses"}
+#: Every background this line of experiments has used. A missing entry makes
+#: `background_name` NaN, which silently drops the whole condition out of every
+#: groupby, so new backgrounds are registered here rather than discovered later.
+BACKGROUND_LABEL = {AMPLIFIER: "semicolon", CONTROL: "parentheses",
+                    "X_DEGREE_FREE": "degree", "X_ASTERISK_FREE": "asterisk"}
 FOCAL_ARM = "B"
 REFERENCE_ARM = "C_L3"
 DRAWS = 10_000
@@ -138,19 +142,28 @@ def tau(frame: pd.DataFrame, *, background: str, order: str,
     return (focal - reference).dropna()
 
 
-def delta(frame: pd.DataFrame, *, order: str, reasoning_budget: int) -> pd.Series:
-    """tau under the semicolon background minus tau under the parenthesis control."""
-    amp = tau(frame, background=AMPLIFIER, order=order,
+def delta(frame: pd.DataFrame, *, order: str, reasoning_budget: int,
+          amplifier: str = AMPLIFIER, control: str = CONTROL) -> pd.Series:
+    """tau under one background minus tau under its matched control, per task.
+
+    Defaults to the semicolon-versus-brackets contrast every earlier round used.
+    `control` is a parameter because the boundary experiment replaces the bracket
+    control with a matched non-boundary MARK, and that contrast has to be the
+    same estimator rather than a second one written beside it.
+    """
+    amp = tau(frame, background=amplifier, order=order,
               reasoning_budget=reasoning_budget)
-    ctl = tau(frame, background=CONTROL, order=order,
+    ctl = tau(frame, background=control, order=order,
               reasoning_budget=reasoning_budget)
     return (amp - ctl).dropna()
 
 
-def gamma(frame: pd.DataFrame, *, order: str, low: int, high: int) -> pd.Series:
-    """How much reasoning changes the semicolon effect, within an order."""
-    return (delta(frame, order=order, reasoning_budget=high)
-            - delta(frame, order=order, reasoning_budget=low)).dropna()
+def gamma(frame: pd.DataFrame, *, order: str, low: int, high: int,
+          amplifier: str = AMPLIFIER, control: str = CONTROL) -> pd.Series:
+    """How much reasoning changes the background contrast, within an order."""
+    common = dict(order=order, amplifier=amplifier, control=control)
+    return (delta(frame, reasoning_budget=high, **common)
+            - delta(frame, reasoning_budget=low, **common)).dropna()
 
 
 def arbitration(frame: pd.DataFrame, **where) -> dict[str, pd.Series]:

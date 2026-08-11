@@ -22,7 +22,11 @@ from pathlib import Path
 TOLERANCE = 1e-9
 SOURCE = Path(sys.argv[1])
 FOCAL, REFERENCE = "B", "C_L3"
-AMPLIFIER, CONTROL = "X_SEMICOLON_FREE", "X_PAREN_FREE"
+# The background pair may be overridden, because the boundary experiment
+# replaces the bracket control with a matched non-boundary MARK and its Delta
+# has to be verified by this script too, not by a second one written beside it.
+AMPLIFIER = sys.argv[2] if len(sys.argv) > 2 else "X_SEMICOLON_FREE"
+CONTROL = sys.argv[3] if len(sys.argv) > 3 else "X_PAREN_FREE"
 
 rows = [json.loads(line) for line in SOURCE.open()]
 print(f"independent recomputation of {len(rows)} scored rows from {SOURCE}\n")
@@ -159,7 +163,8 @@ for order in orders:
                      f"mine {mine:+.6f} vs pipeline {theirs.mean():+.6f}")
         if not has_priority:
             mine = my_delta(order, budget)
-            theirs = A.delta(frame, order=order, reasoning_budget=budget)
+            theirs = A.delta(frame, order=order, reasoning_budget=budget,
+                             amplifier=AMPLIFIER, control=CONTROL)
             if mine is not None and not theirs.empty:
                 checked += 1
                 note(abs(mine - theirs.mean()) < TOLERANCE,
@@ -187,7 +192,8 @@ for order in orders:
 if not has_priority:
     for order in orders:
         mine = my_delta(order, budgets[-1]) - my_delta(order, budgets[0])
-        theirs = A.gamma(frame, order=order, low=budgets[0], high=budgets[-1])
+        theirs = A.gamma(frame, order=order, low=budgets[0], high=budgets[-1],
+                         amplifier=AMPLIFIER, control=CONTROL)
         checked += 1
         note(abs(mine - theirs.mean()) < TOLERANCE,
              f"Gamma {order}: mine {mine:+.6f} vs pipeline {theirs.mean():+.6f}")
