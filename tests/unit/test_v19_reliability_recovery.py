@@ -24,6 +24,7 @@ import pytest
 
 from dci.measurement import audit_sizing
 from dci.v19 import reliability as R
+from dci.v19.registry import REGISTRY
 from dci.v19.reliability import (
     CLOPPER_PEARSON,
     WILSON,
@@ -186,41 +187,51 @@ def test_the_recovery_is_serialisable_for_the_artifact_trail():
 
 
 # ------------------------------------------------------- the slot stays pending
-def test_the_interval_slot_is_a_pending_decision_not_a_pending_output():
-    """It was PENDING_EMPIRICAL, which claims only that a procedure is unrun."""
-    from dci.v19.registry import REGISTRY
+def test_the_interval_slot_is_accepted_by_record_rather_than_declared():
+    """A3 is accepted, so the slot is FROZEN by a record naming who accepted it."""
+    from dci.v19 import registry
+    from dci.v19.resolution import Resolution
     slot = REGISTRY.slots["verifiers.binomial_interval_implementation"]
-    assert slot.status == "BLOCKED_BY_PROSPECTIVE_DECISION"
-    assert "Wilson" in slot.note and "72" in slot.note and "864" in slot.note
+    assert slot.resolution is Resolution.FROZEN
+    assert slot.get() == R.AMENDED_INTERVAL == "clopper_pearson"
+    assert slot.frozen_by
+    # The DECLARATION still leaves it open: implemented is not accepted.
+    declared = registry.declared_table()["verifiers.binomial_interval_implementation"]
+    assert declared.resolution is Resolution.PENDING_DECISION
+    assert declared.status == "BLOCKED_BY_PROSPECTIVE_DECISION"
+
+def test_the_frozen_interval_is_the_exact_one():
+    """A3 accepted, so frozen_interval returns Clopper-Pearson rather than raising."""
+    assert R.frozen_interval(REGISTRY.slots) is R.CLOPPER_PEARSON
+    assert R.frozen_interval(REGISTRY.slots).exact is True
 
 
-def test_asking_for_the_frozen_interval_fails_closed_with_the_decision():
-    from dci.v19.registry import REGISTRY
-    with pytest.raises(ReliabilityBlocked) as caught:
-        R.frozen_interval(REGISTRY.slots)
+def test_an_unfrozen_interval_still_fails_closed_with_the_decision():
+    """The fail-closed path is still live for a registry without the record."""
+    from dci.v19 import registry
+    with pytest.raises(R.ReliabilityBlocked) as caught:
+        R.frozen_interval(registry.declared_table())
     message = str(caught.value)
-    assert "Minimum decision required" in message
+    assert "not frozen" in message
     assert "wilson_score" in message and "clopper_pearson" in message
-    assert "D9" in message
 
 
 @pytest.mark.parametrize("choice", ["wilson_score", "clopper_pearson"])
-def test_either_decision_resolves_the_interval_once_recorded(choice):
-    from dci.v19.registry import REGISTRY
-    slots = REGISTRY.slots.freeze("verifiers.binomial_interval_implementation",
-                                  choice, by="a signed Stage 2 decision")
-    assert R.frozen_interval(slots).name == choice
+def test_either_choice_would_have_resolved_the_interval(choice):
+    """Applied to the DECLARED table: the accepted slot refuses to be re-frozen."""
+    from dci.v19 import registry
+    table = registry.declared_table().freeze(
+        "verifiers.binomial_interval_implementation", choice, by="a probe")
+    assert R.frozen_interval(table) is R.INTERVAL_IMPLEMENTATIONS[choice]
 
 
-def test_an_unimplemented_interval_name_is_refused():
-    from dci.v19.registry import REGISTRY
-    slots = REGISTRY.slots.freeze("verifiers.binomial_interval_implementation",
-                                  "agresti_coull", by="test")
-    with pytest.raises(ReliabilityBlocked, match="not an implemented interval"):
-        R.frozen_interval(slots)
+def test_an_unimplemented_interval_name_is_refused_by_the_slot_domain():
+    from dci.v19 import registry
+    with pytest.raises(ValueError, match="not admissible for domain"):
+        registry.declared_table().freeze(
+            "verifiers.binomial_interval_implementation", "bootstrap_t",
+            by="a probe")
 
-
-# ------------------------------------------------------------ the certificate
 def test_a_certificate_needs_an_explicit_interval():
     with pytest.raises(ReliabilityBlocked, match="no default"):
         tier_certificate("p1.target", false_passes=0, true_failures=73,

@@ -31,7 +31,7 @@ from dci.v19 import pairs, stage2
 from dci.v19 import solver as S
 from dci.v19 import verifiers as V
 from dci.v19 import witness as W
-from dci.v19.parsing import INHERITED_MARKER_POLICY as P
+from dci.v19.parsing import CANONICAL_LIST_POLICY as P
 from dci.v19.parsing import OrderingRelation
 from dci.v19.registry import REGISTRY
 

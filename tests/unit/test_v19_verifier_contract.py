@@ -21,7 +21,7 @@ import pytest
 
 from dci.v19 import field_roles, pairs
 from dci.v19 import verifiers as V
-from dci.v19.parsing import INHERITED_MARKER_POLICY as P
+from dci.v19.parsing import CANONICAL_LIST_POLICY as P
 from dci.v19.parsing import OrderingRelation
 from dci.v19.verifiers import (
     CALLER_SUPPLIED_STATES,
@@ -36,7 +36,7 @@ from dci.v19.verifiers import (
 
 pytestmark = pytest.mark.cpu
 
-SPEC = V.P3_TARGET_SPEC
+SPEC = V.bundle(P)[pairs.PAIR_3.target.constraint_id].spec
 
 
 def outcome(**changes) -> VerifierOutcome:
@@ -191,6 +191,8 @@ CALLS = {
     pairs.PAIR_3.target.constraint_id: {"n_sentences": 2},
     pairs.PAIR_3.focal.constraint_id: {},
 }
+# The bundle binds each verifier's policy, so a caller passes only the parameter
+# realisation. That is the S5 repair: no call site chooses its own text semantics.
 
 
 @pytest.mark.parametrize("constraint_id", sorted(CALLS))
@@ -240,10 +242,12 @@ def test_the_citation_and_the_audit_prose_are_not_part_of_the_hash():
 
 def test_the_segmentation_regexes_are_inside_the_spec_hash():
     """Section 14.2's hash audit is meaningless if it covers only a label."""
-    segmentation = V.inherited_segmentation()
-    assert segmentation["word_pattern"] == r"[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*"
+    segmentation = V.frozen_segmentation(P.text, P)
+    assert segmentation["text_policy"]["word_pattern"] == P.text.word_pattern
+    assert segmentation["text_policy_hash"] == P.text.policy_hash
+    assert segmentation["marker_patterns"] == list(P.marker_patterns())
     mutated = dataclasses.replace(
-        SPEC, segmentation={**segmentation, "word_pattern": r"\w+"})
+        SPEC, segmentation={**segmentation, "text_policy_hash": "0" * 64})
     assert mutated.spec_hash != SPEC.spec_hash
 
 
@@ -264,13 +268,23 @@ def test_changing_the_list_policy_changes_both_pair_one_spec_hashes():
                 != after[constraint_id].spec.spec_hash), constraint_id
 
 
-def test_changing_the_list_policy_leaves_the_pair_two_and_three_hashes_alone():
-    other = dataclasses.replace(P, numbered_items_count=False)
+def test_changing_the_list_policy_moves_pair_three_and_not_pair_two():
+    """Section 4.4's shared segmentation, now visible in a hash.
+
+    The sentence segmenter strips the list grammar\'s own markers, so a change to
+    the marker set changes what a sentence is. Before the repair each span carried
+    its own marker regex and the coupling was invisible; now Pair 3\'s specification
+    hash moves with the grammar and Pair 2\'s, which reads only words, does not.
+    """
+    other = dataclasses.replace(P, policy_id="v19:list-policy.probe",
+                                numbered_items_count=False)
     before, after = V.bundle(P), V.bundle(other)
-    for pair in (pairs.PAIR_2, pairs.PAIR_3):
-        for rule in (pair.target, pair.focal):
-            assert (before[rule.constraint_id].spec.spec_hash
-                    == after[rule.constraint_id].spec.spec_hash)
+    for rule in (pairs.PAIR_2.target, pairs.PAIR_2.focal):
+        assert (before[rule.constraint_id].spec.spec_hash
+                == after[rule.constraint_id].spec.spec_hash), rule.constraint_id
+    for rule in (pairs.PAIR_3.target, pairs.PAIR_3.focal):
+        assert (before[rule.constraint_id].spec.spec_hash
+                != after[rule.constraint_id].spec.spec_hash), rule.constraint_id
 
 
 # ------------------------------------------------------ the implementation hash
@@ -282,13 +296,22 @@ def test_the_implementation_hash_covers_the_source_actually_executed():
     assert V.implementation_hash(rules.v_unique_words) == one
 
 
-def test_every_inherited_verifier_hashes_its_inherited_helpers():
-    built = V.bundle(P)
+def test_every_corrected_verifier_hashes_the_text_layer_it_now_reads():
+    """The corrected verifiers execute `dci.v19.text`, so that is what is hashed.
+
+    The inherited helpers are deliberately absent: amendment A2 moved the Pair 2 and
+    Pair 3 verifiers off them, and an implementation hash still covering
+    `rules.word_tokens` would claim code that no longer runs.
+    """
+    from dci.v19 import text as textlib
     from dci.verifiers import rules
-    focal = built[pairs.PAIR_2.focal.constraint_id]
-    assert rules.v_unique_words in focal.implementation
-    assert rules.word_tokens in focal.implementation
-    assert rules.normalize_text in focal.implementation
+    focal = V.bundle(P)[pairs.PAIR_2.focal.constraint_id]
+    assert textlib.folded_tokens in focal.implementation
+    assert textlib.normalise in focal.implementation
+    assert rules.v_unique_words not in focal.implementation
+    assert focal.status == "inherited_corrected"
+    assert focal.spec.inherited_from.startswith("L_UNIQ")
+    assert focal.spec.correction
 
 
 def test_the_spec_hash_and_the_implementation_hash_are_different_things():
@@ -309,33 +332,34 @@ def test_the_bundle_reports_which_verifiers_are_new_and_which_inherited():
     new = {cid for cid, v in built.items() if v.status == "new"}
     assert new == {pairs.PAIR_1.target.constraint_id,
                    pairs.PAIR_1.focal.constraint_id}
-    assert all(built[cid].status == "inherited_audited"
+    assert all(built[cid].status == "inherited_corrected"
                for cid in set(built) - new)
 
 
 def test_a_bundle_missing_a_declared_constraint_is_refused():
-    original = V._pair_one_verifiers
+    original = V.bundle
     try:
-        V._pair_one_verifiers = lambda policy: {}
-        with pytest.raises(VerifierContractError,
-                           match="have no v19 verifier"):
+        V.bundle = lambda policy=P: {
+            cid: v for cid, v in original(policy).items()
+            if not cid.startswith("v19:p1")}
+        with pytest.raises(VerifierContractError, match="have no v19 verifier"):
             V.assert_bundle_is_complete(P)
     finally:
-        V._pair_one_verifiers = original
+        V.bundle = original
     V.assert_bundle_is_complete(P)
 
 
 def test_a_bundle_carrying_an_undeclared_constraint_is_refused():
-    original = V._pair_one_verifiers
+    original = V.bundle
     try:
-        V._pair_one_verifiers = lambda policy: {
+        V.bundle = lambda policy=P: {
             **original(policy),
             "v19:p9.target.invented": original(policy)[
                 pairs.PAIR_1.target.constraint_id]}
         with pytest.raises(VerifierContractError, match="undeclared constraint"):
             V.assert_bundle_is_complete(P)
     finally:
-        V._pair_one_verifiers = original
+        V.bundle = original
 
 
 def test_the_bundle_state_records_both_hashes_per_verifier():
@@ -344,14 +368,14 @@ def test_the_bundle_state_records_both_hashes_per_verifier():
     assert set(state["verifiers"]) == {r.constraint_id for r in pairs.rules()}
     for row in state["verifiers"].values():
         assert row["spec_hash"] and row["implementation_hash"]
-        assert row["status"] in ("new", "inherited_audited")
+        assert row["status"] in ("new", "inherited_corrected")
 
 
 def test_the_bundle_hash_is_deterministic_across_processes():
     """A verifier hash that drifts between runs cannot be an invariant."""
     import subprocess
     import sys
-    code = ("from dci.v19.parsing import INHERITED_MARKER_POLICY as P; "
+    code = ("from dci.v19.parsing import CANONICAL_LIST_POLICY as P; "
             "from dci.v19.verifiers import bundle_hash; print(bundle_hash(P))")
     seen = {subprocess.run([sys.executable, "-c", code], capture_output=True,
                            text=True, check=True).stdout.strip()

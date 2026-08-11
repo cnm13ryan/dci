@@ -397,9 +397,9 @@ def assert_encoders_cover_every_declared_constraint() -> None:
 def coverage_report() -> tuple[dict[str, Any], ...]:
     """Per-constraint coverage, so the review trigger is auditable up front."""
     rows = []
-    from dci.v19.parsing import INHERITED_MARKER_POLICY
+    from dci.v19.parsing import CANONICAL_LIST_POLICY
     example = {"n_items": 3, "n_sentences": 3, "mandatory_words": ("alpha",),
-               "policy": INHERITED_MARKER_POLICY,
+               "policy": CANONICAL_LIST_POLICY,
                "relation": OrderingRelation(items=("a", "b"),
                                             edges=(("a", "b"),))}
     for constraint_id in sorted(ENCODERS):
