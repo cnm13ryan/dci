@@ -2451,3 +2451,99 @@ replicates in every Experiment 1 cell, with a spread of 0.15–0.35. Round 10's
 warning that the amplifier curve's fine shape is not interpretable still holds at
 this sample size — 0.15–0.35 of per-replicate spread is not compatible with
 reading differences of 0.1 between adjacent cells.
+
+---
+
+# R12 — the boundary mechanism, and a focal repair that failed informatively
+
+## R12.1 A preflight gate I wrote was wrong, and the correction is on the record
+
+`mfr_preflight.py`'s first criterion 2 was "the answer contains markdown
+anywhere". It disqualified **both** boundary-control candidates and printed
+`BOUNDARY_CONTROL_NOT_IDENTIFIED`. The gate was wrong, not the candidates: it
+flagged degree-symbol answers whose prose contained `**temperature sensor**`,
+markup that cannot change a degree-symbol count.
+
+The hazard that matters is markup built **from the counted character**, and that
+definition was already pinned in `tests/test_boundary_and_ladder.py`, committed
+at `6f5f8bb` before any generation existed
+(`test_asterisk_markdown_hazard_is_real_and_is_measured_not_assumed`,
+`test_degree_symbol_has_no_such_hazard`). Measured that way it is 0.000 for `°`
+and 0.188 for `*`. The gate was corrected to the pre-registered definition and
+the original output retained at `report_gate_v1.txt`.
+
+The rule this follows: a gate may be corrected after seeing that it measures the
+wrong quantity, provided the replacement was specified before the data existed
+and the original is kept. It may not be corrected because of which candidate it
+rejected.
+
+## R12.2 Criteria 3 and 4 are read off the combined rows
+
+The preflight measures each mark alone and combined with A and `C_L3`. The main
+design always carries the background with A and an arm, so the combined rows are
+the ones whose compliance and length have to match. This cannot move the
+selection — criterion 2 settles it before 3 and 4 are consulted — and the pooled
+table is printed beside it.
+
+## R12.3 `MARK_CHARS` gained two entries, and one loop had to be scoped
+
+`splice_count` — the audited "is this mark standing where a sentence boundary
+could stand" proxy — keys on `MARK_CHARS`, so the degree and asterisk entries
+were added to make the mechanism variable computable on the control. That dict
+was also driving the Round 4 per-sentence factorial, which would silently have
+minted `X_DEGREE_EACH` and `X_ASTERISK_EACH`. The factorial now iterates an
+explicit `_FACTORIAL_MARKS` tuple; `test_the_mark_family_differs_only_in_the_mark`
+follows it. The assertion is unchanged — only the set it ranges over is now named
+rather than inferred from a character lookup.
+
+`MARK_IS_BOUNDARY_CAPABLE` gained `degree: False` and `asterisk: False`, declared
+before the experiment ran. That dict has been the predeclared predictor since
+Round 4, and this is the first time it was used as one.
+
+## R12.4 The focal repair is stopped after three rungs, and why that is not
+## premature
+
+All three prespecified rungs failed the construction gate, so §15 would technically
+permit a fourth. It was not built, because the direction of the failure makes a
+fourth futile: focal compliance rises 0.033 → 0.258 → 0.467 and the probability
+moves into **both** (0.033 → 0.258 → 0.458), never into *focal only*
+(0.000 → 0.000 → 0.008), while the target climbs to 0.958 and out of its own
+gate. An easier rung makes `P(focal only)` smaller, not larger.
+
+The finding is that under the parenthetical background **A and B do not compete**,
+which is a different problem from the one the ladder was built to solve.
+
+## R12.5 The focal-only state exists — under the semicolon — and that was not
+## acted on
+
+`X_B_INC1` under `X_SEMICOLON_FREE` shows `P(focal only)` = 0.133 at b = 0 and
+0.183 at b = 4096, above the gate. The calibration background is fixed at
+`X_PAREN_FREE` by the directive, and switching to the background that happens to
+pass would be selecting the condition that gives the wanted result. Recorded as
+an observation; the priority re-test stays stopped.
+
+## R12.6 Cross-run byte-identity is 0.781, not 1.000
+
+I expected an identical prompt with an identical seed to reproduce the answer
+exactly at b = 0 — the 160 semicolon cells shared with Round 11 have 0 prompt and
+0 seed mismatches. It reproduces 125/160 = **0.781**. vLLM's continuous batching
+makes the forward pass depend on batch composition and the two runs had different
+batch shapes (320 rows against 640).
+
+Consequences applied throughout: no claim of bitwise determinism is made; the
+seed is nonetheless demonstrably in force; and τ(semicolon, QAC, b = 0) reproduced
+at +0.688 in both runs to three decimals despite 22% of the underlying answers
+differing, which is the stability that matters for the estimator.
+
+## R12.7 A segmenter artefact that runs against the result, quantified
+
+All 12 registry-versus-independent segmenter disagreements in the boundary run
+are degree rows, and 100% of them contain a `°` unit ending a sentence
+(`…below 20°C. This practice…`), which the production segmenter does not split.
+Among the 23 degree rows carrying that pattern `A_pass` is 0.478 against 0.963
+elsewhere.
+
+Direction matters and is stated wherever Δ_boundary is: the artefact depresses
+A_pass in the **degree** condition only, inflating τ_degree and deflating
+Δ_boundary. **+0.512 is a lower bound with respect to it.** The semicolon
+condition has zero disagreements.
