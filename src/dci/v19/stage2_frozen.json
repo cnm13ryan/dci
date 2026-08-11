@@ -482,6 +482,40 @@
       "frozen_by": "dci.v19.verifiers.bundle_hash(CANONICAL_LIST_POLICY)",
       "recorded_at": "2026-08-11T00:00:00+00:00",
       "evidence": "Appendix I requires invariant verifier hashes across the run, so this is the identity every later stage compares against. Frozen only after the specification bundle and the section 8.7 boundary battery, which are its declared prerequisites: the bundle fixes what each verifier's semantics and implementation hash to, and the battery is the evidence that those implementations behave at their boundaries. Freezing this hash earlier would name a bundle whose boundary behaviour had not been demonstrated."
+    },
+    {
+      "slot": "verifiers.tier1_audit_protocol",
+      "value": {
+        "protocol_id": "v19:tier1-audit-protocol.frozen-v1",
+        "candidates_per_class": 100,
+        "candidates_per_unit": 200,
+        "independent_reviewers": 2,
+        "panel_size": 3,
+        "adjudicator_resolves_disagreement": true,
+        "reviewers_communicate_before_submitting": false,
+        "blinded_to": [
+          "intended_truth_class",
+          "verifier_verdict",
+          "arm",
+          "constraint_role",
+          "constraint_identity",
+          "verifier_identity"
+        ],
+        "ground_truth_source": "human_adjudication",
+        "cross_crediting_permitted": false,
+        "unresolved_case": "excluded_unusable",
+        "oversampling_rule": "prospective_oversample",
+        "selection_rule": "v19:tier1-selection.first-72-by-manifest-order",
+        "selection_size": 72,
+        "top_up_permitted": false,
+        "conditional_extension_permitted": false,
+        "case_reuse_across_units_permitted": false,
+        "insufficient_pool_outcome": "AUDIT_POOL_INSUFFICIENT",
+        "citation": "sections 10.4, 10.6, 11.1 + Stage 2 amendment A3; accepted as the Tier-1 audit protocol by the investigator"
+      },
+      "frozen_by": "the investigator, in the Tier-1 audit protocol decision of 2026-08-11",
+      "recorded_at": "2026-08-11T00:00:00+00:00",
+      "evidence": "Section 10.4 requires 'human-adjudicated' true-failure and true-pass examples and never states the human procedure. Section 8.6's two-independent-reviewers-plus-third-adjudicator rule governs semantic review of compositions; extending it to the Tier-1 reliability audit is this decision, made explicitly rather than by inference. The accepted protocol: 100 human-authored candidates per verifier unit per INTENDED truth class (1,200 total), authored and hash-bound in the frozen audit split before review begins; one frozen three-person panel, reviewers A and B judging every candidate independently and without communicating, reviewer C adjudicating only A/B disagreements; reviewers blinded to intended truth class, verifier verdict, arm, target/focal role and internal constraint or verifier identity; human adjudication alone establishes whether the natural-language requirement is satisfied, never the verifier implementation; NO cross-crediting - a candidate adjudicated into the other class is discarded, not moved; a case whose disagreement adjudication does not resolve is marked unusable and excluded; after adjudication the first 72 retained cases per unit per class are taken in the manifest order frozen before any review, and remaining usable reserve is ignored; no adaptive top-up and no conditional extension, with a stratum below 72 returning AUDIT_POOL_INSUFFICIENT rather than prompting further authoring; and a case may serve only one verifier unit. 100 rather than 72 because a case's truth class is established by the reviewers: authoring exactly 72 reaches 72 adjudicated cases with probability about 0.55 even when mis-adjudicated cases are credited to the other class, and essentially never under the no-cross-crediting rule this protocol adopts. 72 remains the denominator entering the exact two-sided 95% Clopper-Pearson interval, with zero verifier errors permitted, so amendment A3's design check sees exactly the sample it fixes. The selection order is a function of case content fixed by the manifest hash before any reviewer saw anything, so it cannot respond to verifier output."
     }
   ]
 }
