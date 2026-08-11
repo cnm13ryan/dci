@@ -319,17 +319,31 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
                     mark_plural=_PLURAL[mark]),
         )
 
-    # --- the scoping control: same mark, same quantity, no per-sentence rule --
-    # Four is the target sentence count, so at one mark per sentence the two
-    # rules demand the SAME number of semicolons. Only the scoping differs.
-    out["X_SEMI_TOTAL4"] = (
-        spec("X_SEMI_TOTAL4", "exploratory", "At least four semicolons in the answer",
-             "format", "global_count", "whole_text", "character_stream", "candidate",
-             "x_semicolon_total", P(mark="semicolon", n=4), "exploratory",
-             "authored as the per-sentence-scoping control"),
-        lambda t: v_mark_total_min(t, "semicolon", 4),
-        _render(_MARK_TOTAL_TEMPLATES, n=4, mark_plural="semicolons"),
-    )
+    # --- whole-answer mark floors: quantity crossed with mark ----------------
+    # `X_SEMI_TOTAL4` began as the SCOPING control: four is the target sentence
+    # count, so at one mark per sentence it demands the same number of semicolons
+    # as the per-sentence rule, with the per-sentence framing removed.
+    #
+    # E4 then found it collapses HARDER than the per-sentence rule (1.000 against
+    # 0.68-0.75), which rules scoping out as the operative variable and makes
+    # quantity the candidate. The rest of this family exists to cross the two
+    # things that could then be doing the work — how many marks are demanded, and
+    # which mark — at one scope and under one wording.
+    for mark, n in (("semicolon", 2), ("semicolon", 4), ("semicolon", 6),
+                    ("colon", 4), ("dash", 4), ("comma", 4)):
+        cid = f"X_{mark.upper()}_TOTAL{n}"
+        out[cid] = (
+            spec(cid, "exploratory", f"At least {n} {_PLURAL[mark]} in the answer",
+                 "format", "global_count", "whole_text", "character_stream",
+                 "candidate", f"x_{mark}_total{n}", P(mark=mark, n=n), "exploratory",
+                 "authored for the whole-answer quantity-by-mark crossing"),
+            (lambda m, k: (lambda t: v_mark_total_min(t, m, k)))(mark, n),
+            _render(_MARK_TOTAL_TEMPLATES, n=n, mark_plural=_PLURAL[mark]),
+        )
+
+    # The id E4 was run under, before the family was widened. Kept, with
+    # identical content, so that run's command still reproduces exactly.
+    out["X_SEMI_TOTAL4"] = out["X_SEMICOLON_TOTAL4"]
 
     # --- N-variant targets: the registry's own family and templates ----------
     for n in (2, 3, 5, 6):
@@ -477,6 +491,12 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_COMMA_EACH": ("Rain falls, and rivers rise. Wind blows, and leaves turn.",
                      "Rain falls. Rivers rise."),
     "X_SEMI_TOTAL4": ("a; b; c; d; e.", "a; b."),
+    "X_SEMICOLON_TOTAL2": ("a; b; c.", "a b."),
+    "X_SEMICOLON_TOTAL4": ("a; b; c; d; e.", "a; b."),
+    "X_SEMICOLON_TOTAL6": ("a; b; c; d; e; f; g.", "a; b."),
+    "X_COLON_TOTAL4": ("a: b: c: d: e.", "a: b."),
+    "X_DASH_TOTAL4": ("a — b — c — d — e.", "a — b."),
+    "X_COMMA_TOTAL4": ("a, b, c, d, e.", "a, b."),
     "X_A3": ("One. Two. Three.", "One. Two."),
     "X_A5": ("One. Two. Three. Four. Five.", "One. Two."),
     "X_A6": ("One. Two. Three. Four. Five. Six.", "One. Two."),
@@ -537,7 +557,8 @@ _MARK_BUDGETS: dict[str, tuple[str, Optional[int]]] = {
     "U_FMT_SEMI2": ("semicolon", 2),
     "U_FMT_COLON1": ("colon", 1),
     "U_FMT_NOCOMMA": ("comma", 0),
-    "X_SEMI_TOTAL4": ("semicolon", None),
+    **{f"X_{m.upper()}_TOTAL{k}": (m, None)
+       for m in ("semicolon", "colon", "dash", "comma") for k in (2, 4, 6)},
 }
 _PER_SENTENCE_MARKS: dict[str, tuple[str, int]] = {
     # constraint id -> (mark, occurrences demanded in EVERY sentence)

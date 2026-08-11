@@ -594,3 +594,125 @@ commas, periods and sentences are reported alongside it.
 
 **Stop condition.** If the splice proxy shows the prohibitions were not obeyed,
 report that and do not interpret the outcome at all.
+
+---
+
+## E5 — where does it stop? Another structural unit, then another family
+
+**Why.** Every positive result so far is about one target: a count of *sentences*,
+whose delimiter is a full stop, interfered with by a mark that can stand where a
+full stop stands. The claim is only worth stating at the width the evidence
+supports, so the next two runs are chosen to find the edge rather than to add
+another confirmation.
+
+### E5a — the structural twin: paragraphs
+
+Same shape, different unit. The target counts **paragraphs**, whose delimiter is
+a blank line; the substitutable delimiter is a **single newline**, which can
+stand where a blank line would without being one.
+
+| arm | rule | on the paragraph route? | prediction |
+|---|---|---|---|
+| `X_LINEBREAK_EACH` | a line break inside every paragraph | **yes** | large excess |
+| `X_SEMICOLON_EACH` | a semicolon in every sentence | no — it substitutes for a *sentence* boundary | **≈ 0** |
+| `B` | each sentence longer than the last | no | ≈ 0 |
+| `C_L3` | every sentence begins with S | no (control) | 0 |
+
+`X_SEMICOLON_EACH` is the specificity test: the same instruction that destroys the
+sentence count should leave the paragraph count alone, because a semicolon cannot
+stand where a blank line stands.
+
+**Stop condition, stated first.** In every run so far the model produced exactly
+**1.000** blank-line-separated block on average — it does not write paragraphs
+unprompted. If `X_PARA4` in isolation already fails often, there is no headroom
+and the cell measures the target's difficulty rather than any interference. The
+isolated primitive rows decide that, and the answer is reported either way.
+
+### E5b — a different constraint family: counting integers
+
+Target `U_NUM_FOURDISTINCT` ("four distinct integers"), a **numerical**
+whole-answer count with no delimiter at all. Arms `X_SEMICOLON_EACH` (focal),
+`B`, `C_L3`. Background named explicitly as `U_LEX_FORBID3, U_FMT_COLON1,
+U_LEX_NOLY` because the standard background's `U_NUM_MAXINT` ("at most two
+integers") is flatly incompatible with a four-integer target.
+
+| observation | reading |
+|---|---|
+| no arm impairs the integer count | the mechanism is **specific to delimited-unit targets**; this is the boundary of the claim |
+| `X_SEMICOLON_EACH` impairs it too | the mechanism is broader than delimiter substitution — most likely via answer length, since collapsed answers are shorter — and the account must be rewritten |
+| `B` impairs it | consistent with B being a general difficulty manipulation rather than a route (E2) |
+
+520 generations each, both orders, wording 0, 20 pilot tasks, 2 replicates.
+
+### E4 — the mark factorial · `runs/stageE4_marks_20260811T000148Z`
+
+1120 generations, 18.4 min, 0 technical failures, 0 truncations.
+
+**Paired excess over `C_L3` (A-failure), both orders:**
+
+| arm | mark | scope | `o_A` | `o_Q` | collapse `o_A`/`o_Q` |
+|---|---|---|---|---|---|
+| `X_SEMICOLON_TOTAL4` (as `X_SEMI_TOTAL4`) | `;` | **whole answer, ≥4** | **1.000** [1.000, 1.000] | **1.000** [1.000, 1.000] | 1.000 / 0.975 |
+| `X_SEMICOLON_EACH` | `;` | per sentence | 0.750 [0.625, 0.875] | 0.675 [0.475, 0.850] | 0.725 / 0.600 |
+| `S_SEMICOLON` | `;` | per sentence (registry wording) | 0.725 [0.550, 0.875] | 0.750 [0.625, 0.875] | 0.725 / 0.625 |
+| `X_COMMA_EACH` | `,` | per sentence | 0.050 | 0.025 | **0.000** |
+| **`X_COLON_EACH`** | `:` | per sentence | **0.000** | **0.000** | **0.000** |
+| **`X_DASH_EACH`** | `—` | per sentence | **0.000** | **0.000** | **0.000** |
+| `C_W3` | words | per sentence | 0.000 | 0.000 | 0.000 |
+| **`B`** | — | cross-sentence | **0.000** | **0.000** | **0.000** |
+
+**Two of my three pre-registered predictions were wrong, and the third was right
+for the wrong reason.**
+
+1. **The effect is specific to the semicolon, not to boundary-capable marks.**
+   I predicted collapse for `;`, `:` and `—` alike. Colon and dash produce
+   **zero** failures. The model writes four clean sentences carrying 3.65 colons
+   or 7.58 dashes — it uses them *inside* sentences:
+
+   > `Swimmers exhale underwater to reduce their lung pressure – allowing the body to move more efficiently through water.`
+   > `This helps maintain a neutral buoyancy – which is essential for smooth and steady swimming strokes.` …
+
+   `MARK_IS_BOUNDARY_CAPABLE` was a judgement about English. The operative
+   property is narrower and empirical: **which mark this model actually deploys
+   as a full-stop replacement.** For Qwen3-4B that is the semicolon and nothing
+   else tested.
+
+2. **Per-sentence scoping is not required, and is not even the strongest form.**
+   I predicted `X_SEMI_TOTAL4` — a whole-answer floor of four semicolons — would
+   *not* collapse, as the scoping control. It collapses **100%**, harder than
+   either per-sentence semicolon rule. **M2 is dead** (five per-sentence rules
+   in this run and only the semicolon ones collapse) and **M3 is the surviving
+   account**: what matters is how many semicolons are demanded.
+
+   > `A doorbell circuit completes a sound when the button is pressed; this closes the circuit and allows current to flow; the current activates an electromagnet; which causes a clapper to strike a bell; (this creates the audible ring).`
+
+   Four semicolons, one sentence, one full stop, and its own rule satisfied.
+
+   The isolated primitive settles it: `X_SEMI_TOTAL4` **alone**, with no target
+   and no load, produces **1.075 sentences**. Against `X_COLON_EACH` 8.175,
+   `X_DASH_EACH` 8.075, `C_L3` 6.300, `S_SEMICOLON` 4.025.
+
+3. **`X_SEMICOLON_EACH` ≈ `S_SEMICOLON`** (0.750/0.675 against 0.725/0.750). The
+   effect is wording-invariant, so the factorial's comparisons are clean.
+
+**An unplanned finding: B's interference vanished.** B's excess is 0.000 in both
+orders here, against 0.300–0.400 in Stage B, E1 and E3-N4 on the *same* 20 tasks,
+the *same* wording, the same load and the same orders. The single difference is
+one background member: `U_FMT_COLON1` ("exactly one colon in the answer") was
+replaced by `U_FMT_PAREN1` to make the colon arm satisfiable. B's colons fall
+from 0.28–0.30 to 0.000 and its failures with them. A dedicated matched pair
+(`E4c`) is running to confirm that one substitution is responsible.
+
+**Revised mechanism, stated at the width the evidence supports.**
+
+> When Qwen3-4B is asked for several semicolons in a short answer, it spends them
+> as clause joins inside a single sentence rather than distributing them across
+> sentences. Any target that counts sentences then fails by undershoot. The
+> trigger is the **semicolon in quantity**; per-sentence phrasing is one way to
+> demand quantity, not the mechanism.
+
+**Next, pre-registered before running:** `E4b` crosses quantity with mark at one
+scope and one wording — semicolons at ≥2, ≥4, ≥6, against colons, dashes and
+commas at ≥4. If the account is right, only the semicolon arms collapse and they
+do so monotonically in the count. If instead every mark at ≥4 collapses, the
+mechanism is about demanded punctuation volume and the semicolon is incidental.
