@@ -15,12 +15,18 @@ Every test here therefore asks the same question in a different place: can this
 stage become READY while something the preregistration requires is unresolved?
 """
 import pytest
+from v19_domain_values import for_domain, table_without
 
-from dci.v19 import PROTOCOL_VERSION, artifacts
+from dci.v19 import PROTOCOL_VERSION, artifacts, registry
 from dci.v19.pairs import PAIR_IDS
-from dci.v19.registry import (MANDATORY_STAGE_ORDINALS, REGISTRY, STAGE_GATES,
-                              Registry, Requirement)
-from dci.v19.resolution import UnresolvedDependency
+from dci.v19.registry import (
+    MANDATORY_STAGE_ORDINALS,
+    REGISTRY,
+    STAGE_GATES,
+    Registry,
+    Requirement,
+)
+from dci.v19.resolution import Resolution, UnresolvedDependency
 
 pytestmark = pytest.mark.cpu
 
@@ -46,7 +52,9 @@ def all_upstream_of(stage, table=None):
         slot = table[name]
         frontier.extend(slot.depends_on)
         if not slot.resolved:
-            table = table.freeze(name, f"probe:{name}", by="probe")
+            # A value its own domain admits. Slots are typed now, so "probe:<name>"
+            # would be refused - which is the S11 repair working, not an obstacle.
+            table = table.freeze(name, for_domain(slot.domain), by="probe")
     return Registry(protocol=PROTOCOL_VERSION, slots=table)
 
 
@@ -256,10 +264,24 @@ def test_each_audited_dependency_is_now_encoded(stage, slot, why):
 def test_no_stage_is_ready_with_any_single_prerequisite_removed(gate):
     """Freeze everything the stage needs except one, and it must stay blocked."""
     required = REGISTRY.gate(gate).required_slots
-    held_back = required[0]
-    table = REGISTRY.slots
-    for name in required[1:]:
-        table = table.freeze(name, "probe", by="probe")
+    # Hold back the first prerequisite that is not ALREADY resolved: a slot a
+    # recorded amendment fixes cannot be withheld, and asking the test to withhold
+    # one would be asking it to unfreeze a frozen commitment.
+    pending = [name for name in required if not REGISTRY.slots[name].resolved]
+    if pending:
+        held_back = pending[0]
+        table = REGISTRY.slots
+    else:
+        # Every prerequisite is already recorded, so withhold one by rebuilding
+        # from the declaration without its record. Skipping here instead would let
+        # a fully satisfied gate stop being tested at the moment it starts to
+        # matter.
+        held_back = required[0]
+        table = table_without(held_back)
+    for name in required:
+        if name == held_back or table[name].resolved:
+            continue
+        table = table.freeze(name, for_domain(table[name].domain), by="probe")
     got = Registry(protocol=PROTOCOL_VERSION, slots=table)
     assert got.stage_status(gate)["status"] != "READY"
     with pytest.raises(UnresolvedDependency, match=held_back.replace(".", r"\.")):
@@ -268,9 +290,8 @@ def test_no_stage_is_ready_with_any_single_prerequisite_removed(gate):
 
 # ------------------------------------------------- the newly declared artifacts
 @pytest.mark.parametrize("name", [
-    "qualification.stage2a", "verifiers.bundle_hash",
-    "verifiers.binomial_interval_implementation", "verifiers.tier1_reliability",
-    "verifiers.boundary_mutations", "matching.p1.constants",
+    "qualification.stage2a",
+    "verifiers.tier1_reliability", "matching.p1.constants",
     "parameters.p1.admissible_set", "parameters.p1.distribution",
     "eligibility.p1.hard_gates", "coupling.p1.audit", "wording.p1.instability",
     "validation.p1.independent", "bank.p1.attainable_count",
@@ -288,6 +309,20 @@ def test_every_new_artifact_is_declared_and_unresolved(name):
     assert slot.rule and slot.prereg
 
 
+@pytest.mark.parametrize("name", ["verifiers.bundle_hash",
+                                  "verifiers.boundary_mutations"])
+def test_a_stage_two_artifact_is_resolved_only_by_a_record(name):
+    """These two ARE produced now, and only because a record says so.
+
+    Their declaration still carries no value; what resolves them is an entry in
+    stage2_frozen.json whose value the slot's typed domain re-checks at import.
+    """
+    from dci.v19 import registry
+    assert not registry.declared_table()[name].resolved, name
+    slot = REGISTRY.slots[name]
+    assert slot.resolved and slot.frozen_by and slot.domain, name
+
+
 def test_the_new_artifacts_exist_for_every_pair():
     for pair in PAIR_IDS:
         for template in ("parameters.{p}.admissible_set",
@@ -299,9 +334,53 @@ def test_the_new_artifacts_exist_for_every_pair():
             assert template.format(p=pair) in {s.name for s in REGISTRY.slots}
 
 
-def test_the_artifact_module_declares_no_resolved_slot():
+def test_the_artifact_module_declares_nothing_resolved():
+    """Implemented is not accepted, and the declaration must not blur the two.
+
+    Amendments A1-A4 are implemented, domain-validated and exhaustively tested,
+    and the declaration still says PENDING_DECISION for every one of them. What
+    makes a decision accepted is an acceptance RECORD naming who accepted it and
+    when - never the presence of a candidate in the source, which would let the
+    implementation treat a scientific decision as made before the investigator
+    made it.
+    """
     assert not artifacts.declared_slots().resolved()
 
+
+def test_the_four_amendments_are_declared_as_decisions_with_domains():
+    amended = {"verifiers.p1.list_policy", "verifiers.p1.ordering_depth",
+               "verifiers.inherited_reuse_decision",
+               "verifiers.binomial_interval_implementation",
+               "verifiers.tier1_audit_design"}
+    table = artifacts.declared_slots()
+    for name in sorted(amended):
+        slot = table[name]
+        assert slot.resolution is Resolution.PENDING_DECISION, name
+        assert slot.domain, name
+        assert not slot.resolved, name
+
+
+def test_acceptance_arrives_only_through_a_signed_record():
+    """The same slots ARE resolved once the recorded acceptances are applied."""
+    from dci.v19 import frozen
+    accepted = {row["slot"] for row in frozen.audit()}
+    declared = artifacts.declared_slots()
+    for name in sorted(accepted):
+        assert not declared[name].resolved, f"{name} was resolved before its record"
+    applied = frozen.apply(registry.declared_table())
+    for name in sorted(accepted):
+        assert applied[name].resolved, name
+        assert applied[name].frozen_by, name
+
+
+def test_every_acceptance_record_names_who_accepted_it_and_on_what_evidence():
+    from dci.v19 import frozen
+    rows = frozen.audit()
+    assert rows, "no acceptance has been recorded"
+    for row in rows:
+        assert row["frozen_by"].strip(), row["slot"]
+        assert row["recorded_at"].strip(), row["slot"]
+        assert len(row["evidence"]) > 200, (row["slot"], "evidence is a stub")
 
 def test_the_counterfactual_diagnostic_is_disclosure_only():
     """Section 13.7: it cannot reopen Stage 9 or change the design."""
@@ -326,4 +405,4 @@ def test_the_registry_now_reports_every_stage():
     assert len(audit) == 18
     assert [row["ordinal"] for row in audit] == list(MANDATORY_STAGE_ORDINALS)
     blocked = [row for row in audit if row["status"] != "READY"]
-    assert len(blocked) == 17            # only Stage 1 has no prerequisite
+    assert len(blocked) == 16            # Stages 1 and 2 are now ready

@@ -21,6 +21,11 @@ pytestmark = pytest.mark.cpu
 
 
 # ------------------------------------------------------------ the assembly
+# Stage 2 became ready once its decisions were accepted and its artifacts
+# produced; every later stage still waits on content or hardware.
+READY_STAGES = ("stage_1_definitions", "stage_2_verifiers")
+
+
 def test_stage_one_declares_everything_section_fourteen_one_lists():
     registry.assert_stage_one_complete()
 
@@ -116,11 +121,13 @@ def test_every_stage_after_the_first_is_currently_blocked():
         if stage == "stage_1_definitions":
             assert not REGISTRY.blockers_for(stage)
             continue
+        if stage in READY_STAGES:
+            continue
         assert REGISTRY.blockers_for(stage), stage
 
 
 @pytest.mark.parametrize("stage", [s for s in sorted(STAGE_DEPENDENCIES)
-                                   if s != "stage_1_definitions"])
+                                   if s not in READY_STAGES])
 def test_requiring_any_stage_refuses_and_names_its_blockers(stage):
     gate = REGISTRY.gate(stage)
     with pytest.raises(UnresolvedDependency) as caught:
