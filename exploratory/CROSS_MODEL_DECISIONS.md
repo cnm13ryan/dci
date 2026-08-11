@@ -390,3 +390,40 @@ earlier Qwen3.5-4B run:
 That is precisely the failure the adapter layer exists to prevent, and the
 reason `NO_THINKING` is requested explicitly via `enable_thinking=False` for
 every Qwen generation in this branch rather than relying on any default.
+
+---
+
+## D20 — What was and was not completed, and why
+
+**Recorded 2026-08-12, after the analysis. Everything above this line predates
+the estimates.**
+
+Completed and admitted: **800 generations**, five model × condition slices, all
+hashed CANONICAL.
+
+| checkpoint | NO_THINKING | NATURAL_REASONING |
+|---|---|---|
+| Qwen3.5-4B | ✔ 160 | ✘ condition not established (D19) |
+| Qwen3.5-9B | ✔ 160 | ✘ pilot pre-empted for GPU time |
+| gemma-4-E4B-it | ✔ 160 | ✔ 160 |
+| gemma-4-12B-it | ✔ 160 | ◐ single-card OOM (D18); dual-GPU run not completed |
+| Kimi-VL-A3B-Thinking-2506 | n/a — no such mode (D10) | ✘ 30.6 GiB download unfinished |
+
+**Why the natural-reasoning coverage is thin, stated plainly.** It is not a
+sampling choice. Two independent execution limits bind:
+
+* Qwen3.5's traces do not terminate inside the engineering envelope (D19,
+  reproducing the repository's **I21**), and a batched `generate()` holds every
+  member of a chunk at the cap until the slowest one stops.
+* gemma-4-12B-it does not fit beside a reasoning cache on one 24 GiB card (D18).
+
+**The consequence for interpretation is a hard one and is stated in the results
+document.** For Qwen3.5 and for gemma-4-12B-it, *nothing was measured under
+natural reasoning*. "No DCI under natural reasoning" is not available as a
+finding for those checkpoints, and the absence of a row is not a null.
+
+**Kimi-VL is uninterpretable, not negative.** Its config loads under
+transformers 5.15.0, its tokenizer works once `tiktoken` is installed, and its
+documented parser is implemented and unit-tested against synthetic fixtures. Only
+the weights are missing. No behavioural claim about it is available at any
+confidence.
