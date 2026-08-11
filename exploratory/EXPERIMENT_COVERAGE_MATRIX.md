@@ -305,3 +305,28 @@ Cumulative: **35 runs, ~17,600 generations, 0 technical failures.**
 | **7 — structural-unit generalisation** | **not run** | Depends on a characterised mechanism; I14 reopened that. |
 | **8 — DCI Pairs 1 and 2** | **not run** | Pair 1's verifiers are unimplemented in the registry and Pair 2's registered measurement risk is logical impossibility of the composition — the reason this study selected Pair 3 in Round 1. Transferring the disposition/amplification/arbitration decomposition needs pair-specific diagnostics authored first. |
 | **Qwen 3.6** | **blocked, unchanged** | 27B ≈ 55.6 GB bf16 vs 48 GB total VRAM; 35B-A3B ≈ 71.9 GB. FP8 unsupported on gfx1100; Int4 would change the numeric condition. No substitution made. |
+
+
+---
+
+## 16. Round 8 update
+
+| dimension | status |
+|---|---|
+| **reasoning model** | ✔ `Qwen/Qwen3.5-4B` (hybrid, 4.66 B, bf16, no quantisation) |
+| **reasoning mode** | ✔ thinking / non-thinking, both native, recorded per run |
+| **assigned reasoning budget** | ◐ b ∈ {0, 64, 1024, 4096, 8192} attempted; **8192 OOMs**, and 4096 is still binding in 14/16 rows |
+| **realised reasoning usage** | ✔ recorded per row (`reasoning_tokens`), but **censored** — no arm/background/ordering comparison is identified |
+| **reasoning-cap hit** | ✔ recorded per row |
+| **colon-property variant** | ✔ four matched exactly-one variants at π = QAC, k = 3 |
+| **fixed vs free placement** | ✘ **not run** — the cheapest remaining test |
+
+New runs: `S0_smoke` (48), `S1_natural` (**invalid, 48 OOM, retained**),
+`S1_natural2` (16), `S14_markproperty` (320).
+
+## 17. Blocked, with the exact resource constraint
+
+| item | blocker |
+|---|---|
+| hard-budget reasoning factorial (Stages 2–13) | Qwen3.5-4B needs > 4096 reasoning tokens in ~87% of rows; 8192 × batch 8 exceeds 24 GB VRAM. Any affordable budget interrupts rather than limits. |
+| Qwen3.6 | 27 B ≈ 55.6 GB bf16 vs 48 GB total; 35B-A3B ≈ 71.9 GB. FP8 unsupported on gfx1100; Int4 would change the numeric condition. |

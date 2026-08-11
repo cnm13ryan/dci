@@ -234,11 +234,11 @@ def custom_selection(target: str, focal: str, references: Sequence[str],
              "rejection_reasons": "explicitly named on the command line"}
             for c in background]
         if len(chosen) != max(load - 2, 0) and load >= 0:
-            # The S3 ordering design names TWO background-slot variants at load
-            # 3, because the variant is a treatment there rather than a fixed
-            # context. `build_permutation_design` places exactly one of them in
-            # any given prompt, so the realised load is still 3.
-            if not (load == 3 and len(chosen) == 2):
+            # The S3 ordering design names SEVERAL background-slot variants at
+            # load 3, because the variant is a treatment there rather than a
+            # fixed context. `build_permutation_design` places exactly one of
+            # them in any given prompt, so the realised load is still 3.
+            if not (load == 3 and len(chosen) >= 2):
                 raise ValueError(
                     f"load {load} needs {max(load - 2, 0)} background "
                     f"instructions (target + one added slot + background); "

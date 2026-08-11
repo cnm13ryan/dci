@@ -260,3 +260,23 @@ but the mark-agnostic `chain_share` in O15 would have been wrong. Fixed to
 | **W12** | *"The colon-requiring background instruction was supplying B with a boundary-capable mark"* (Round 6, I7″) | **Falsified by Stage 2.** The mark need not appear: Δ is large where colons are rarely produced and negative where they almost always are, and within the colon condition producing one is if anything slightly protective. |
 | **W13** | `severe_collapse` and, retrospectively, the closed-list-only `splice_count` as *graded* measures | The Stage 0.3 audit found precision 18/18 but style-dependent recall — a six-join answer scoring 0.000. Magnitudes computed under that rule are not comparable across conditions; the shape-test revision replaces it. |
 | **W14** | Any claim that greedy decoding is bit-reproducible in this harness | 112/160 replicate pairs identical in text (96.2% in outcome). bf16 matmuls are not associative across batch padding widths. |
+
+
+---
+
+## H. Round 8 revisions
+
+| # | claim | evidence for | evidence against | manipulation | causal status | conf. | updated |
+|---|---|---|---|---|---|---|---|
+| **I17** | The amplifier property is **a single free-floating character**, not the colon | S14: `X_SEMI_EXACT1` τ = **+0.950** [+0.875,+1.000], `U_FMT_COLON1` +0.450 [+0.275,+0.625], `U_FMT_QUOTE1` +0.050, `U_FMT_PAREN1` 0.000; all four exactly-one, global, formatting; compliance 0.950–1.000 | free placement and single-character-ness are not yet separated | object type manipulated with count, scope, family and wording held | intervention-supported | **0.80** | new |
+| **I18** | **Exact-count bookkeeping, global scope and formatting identity are each insufficient** | all four S14 variants have all three properties; two amplify, two do not | — | as above | intervention-supported | 0.85 | new |
+| **I19** | **Colon-specific identity is refuted** | the semicolon amplifies >2× as strongly under a byte-matched wording | — | as above | intervention-supported | 0.85 | new |
+| **I20** | `chain_share` does not order the amplifier variants | semicolon 0.345 share / 0.950 failure against colon 0.414 / 0.450; sentence counts *do* order them (1.95 vs 2.90) | — | — | observation; a limit on the measure | 0.80 | new |
+| **I21** | **Qwen3.5-4B does not terminate its reasoning within any budget this hardware affords** | S1_natural2: mean realised M = 4063 at b = 4096, median 4096, **2/16 closed naturally**; b = 8192 OOMs at batch 8 | — | budget manipulated | observation | 0.90 | new |
+
+### Newly withdrawn / blocked
+
+| # | item | why |
+|---|---|---|
+| **W15** | Any hard-budget reasoning result for this checkpoint | Every affordable budget lands inside the reasoning phase, so a grid would measure **interruption**. Stages 2–13 not run; harness complete and validated on criteria 1 and 3, failing 2 and 4 for this model/hardware pair. |
+| **W16** | The first `S1_natural` run | Invalid: 48/48 OOM. Retained and marked. It also exposed a harness defect — a failed batch wrote no row at all — now fixed to record null rows as `runner.run` always has. |

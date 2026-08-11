@@ -1763,3 +1763,168 @@ what the stage was written to prevent.
 roughly one colon splice, so `chain_share` is inflated by a common amount in this
 design. `C_L3` shows chain 0.148 with **0.000** failure, which confirms that an
 inflated share by itself does not produce failure.
+
+---
+
+# Round 8 — reasoning compute, and the colon amplifier
+
+## Stage 0 — the reasoning-budget harness
+
+**0.1 Model.** `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`,
+4,659,865,088 parameters, bf16, **no quantisation**, HF Transformers 5.15.0 on
+ROCm 7.2 / RX 7900 XTX (gfx1100), tokenizer `Qwen2TokenizerFast`, chat template
+opens `<think>\n` by default and accepts `enable_thinking=False`. It is a
+**hybrid** reasoning model, which matters for Stage 13. Qwen3.6 remains blocked
+on VRAM (27 B ≈ 55.6 GB bf16 against 48 GB); no quantised substitute is used.
+
+**0.2 Channel separation — implemented and verified.** `dci_exploratory/reasoning.py`
+generates in two phases and stores `reasoning` and `response` separately. The
+verifier is handed the **answer only**. Leakage check on the smoke run: **no
+answer contains `<think>` or `</think>`** (48/48).
+
+**0.3 Hard budget — implemented, and its validation PARTLY FAILS.**
+
+`max_new_tokens` is not a reasoning budget, so the harness instead runs:
+phase 1 with `max_new_tokens = b` and `</think>` as a stop token; then phase 2
+from the reasoning text, closed explicitly if the model did not close it, with a
+**fixed** answer budget in every treatment.
+
+Against the four Stage 0.3 criteria, on the smoke run (`S0_smoke`, 48 rows,
+b ∈ {0, 64, 1024}):
+
+| criterion | verdict |
+|---|---|
+| 1. budgets genuinely change the reasoning resource | **PASS** — realised M is exactly 0 / 64 / 1024, cap-hit 0.00 / 1.00 / 1.00 |
+| 2. a final answer remains obtainable after exhaustion | **FAIL** — an answer is produced, but at b ≥ 64 it is a *continuation of the scratchpad*, e.g. `A (1) simple (2) hinge (3) …  -> 11 words. *S2: This (1) metal (2) …`, not a final answer |
+| 3. final-answer budget constant across treatments | **PASS** — 320 tokens in every cell |
+| 4. verifiers receive comparable final-answer surfaces | **FAIL** — answer truncation is 0.00 at b=0 but **0.75 / 0.81** at b=64 / 1024, so the surfaces are not comparable |
+
+**Diagnosis.** At b = 1024 the model has **never** closed `</think>` naturally
+(closed 0.00). Forcing the close mid-thought leaves it in an unnatural state and
+it simply carries on working out. Stage 11 anticipated exactly this failure mode
+and instructs: *"Do not run it if forcing a reasoning close produces an unnatural
+or invalid model state."* The same caution applies to the hard-budget design
+whenever the budget lands inside the reasoning phase.
+
+**Consequence, applied rather than noted.** The budget grid cannot be frozen
+until the *natural* reasoning-length distribution is known — which is Stage 1's
+job and is why it precedes Stage 2. A grid whose points all sit below the natural
+length would not compare "less reasoning" against "more reasoning"; it would
+compare degrees of **interruption**, and every cell would carry a different
+answer-surface artefact.
+
+`S1_natural` therefore runs first at b = 8192 — an allowance chosen to be
+generous rather than binding — over Q ∈ {B, `C_L3`} × C ∈ {colon, paren} ×
+π ∈ {QAC, ACQ}, 6 tasks, 1 replicate, 48 rows. Its questions are Stage 1's:
+how long does this model naturally think, does that differ by arm, by background,
+by ordering, and how often does it terminate on its own.
+
+**Pre-registered decision rule for Stage 2**, recorded before the pilot returns:
+
+* if the natural distribution has substantial mass **below** 2048 tokens and the
+  natural-termination rate is high, freeze a four-point grid inside the observed
+  range and proceed to Stage 3;
+* if the model essentially never terminates within a budget the hardware can
+  afford, **do not proceed** with the hard-budget factorial. Report the harness
+  as blocked for this checkpoint, keep the thinking/non-thinking contrast (which
+  *is* valid, since both are native modes), and say so rather than running a
+  grid that measures interruption.
+
+## Stage 1 outcome — the natural reasoning distribution, and the blocker it forces
+
+**First attempt `S1_natural` is INVALID and retained as such.** b = 8192 at batch
+8 gave `HIP out of memory` on **48/48** rows. It also exposed a defect in my own
+harness: on a failed batch it appended to `technical_failures` but wrote no
+generation row, so the run directory held **zero** generations — at a glance
+indistinguishable from a run with nothing to do. `runner.run` has always written
+null rows there. Fixed; the harness now records a null row per failed generation.
+
+**`S1_natural2`** — b = 4096, batch 4, 16 rows, 17.4 min, 0 technical failures.
+
+| | value |
+|---|---|
+| realised reasoning tokens | mean **4063**, median **4096**, min 3650 |
+| **closed `</think>` naturally** | **2 / 16** |
+| cap hit | 14 / 16 |
+| answer tokens | mean 85 |
+
+With the colon background M = 4085 and with the parenthetical M = 4040; for B
+M = 4096 and for `C_L3` M = 4029 — but with 14/16 at the ceiling these are
+censored and **no arm/background/ordering comparison of reasoning length is
+identified**. That is itself the finding: the measurement is censored, so
+Stage 1's questions 2–4 cannot be answered at any budget this hardware affords.
+
+**The pre-registered second branch fires.** Qwen3.5-4B does not terminate its
+reasoning within any budget this machine can run: 4096 is essentially always
+insufficient and 8192 does not fit in 24 GB at a usable batch size. Every
+affordable budget therefore lands *inside* the reasoning phase, so a grid over
+b would compare **degrees of interruption**, not quantities of reasoning. The
+answer channel confirms it — even at b = 4096 the "final answer" still contains
+working-out (`Wait, I need to check the word count of S3 vs S4 again.`).
+
+**Decision, per the rule recorded before the pilot ran: Stages 2–13 are BLOCKED
+for this checkpoint on this hardware and are not run.** Nothing is approximated,
+no grid is fitted to interrupted traces, and `max_new_tokens` is not relabelled a
+reasoning budget. The harness itself is complete, tested and validated on
+criteria 1 and 3; criteria 2 and 4 fail for this model/hardware pair, which is a
+property of the pair rather than of the code, and it will pass unchanged on a
+checkpoint that terminates its reasoning within ~2–3k tokens or on hardware that
+affords a non-binding budget.
+
+**What remains valid and is kept:** the thinking/non-thinking contrast, since
+both are native modes of this checkpoint and neither requires an interrupted
+trace. That contrast already exists in Round 6 (`R6C_qwen35_4b_nothink`).
+
+---
+
+# Part II — which property of the colon instruction amplifies?
+
+## Existing data already refutes three candidates
+
+The amplifier `U_FMT_COLON1` and the control `U_FMT_PAREN1` were compared
+property by property from the registry rather than from memory:
+
+| property | `U_FMT_COLON1` (Δ = +0.400 at QAC) | `U_FMT_PAREN1` (Δ ≈ 0) |
+|---|---|---|
+| exact count | ✔ "exactly 1" | ✔ "exactly 1" |
+| global scope, whole answer | ✔ | ✔ |
+| punctuation / formatting family | ✔ | ✔ |
+| verifier family | `exact_char_total` | `paren_pairs` |
+| **object** | **a single free-floating character** | **a paired construct that must wrap content** |
+
+Both instructions carry exact-count bookkeeping, global scope and formatting
+identity, and only one amplifies. **Stages 14 (exact-count), 19 (global scope)
+and the class-level part of 15 (punctuation identity) are therefore already
+answered as *insufficient*, from data in hand, with no new generation.** This is
+what the discipline's "check whether existing outputs already answer the
+question" step is for.
+
+## Stage 14/15 combined — the surviving distinction
+
+**Unresolved claim.** What distinguishes the colon from the parenthetical is that
+one is a single character placeable anywhere and the other is a paired construct.
+
+**Competing hypotheses.**
+
+| | claim | prediction |
+|---|---|---|
+| **P1** free-floating single mark | any exactly-one *single character* amplifies | colon **and** semicolon amplify; brackets and quotes do not |
+| **P2** colon-specific | the colon's own role in this model's formatting does it | only the colon amplifies |
+| **P3** paired-construct protection | wrapping content is what protects | brackets and quotes both ≈ 0, and any single mark amplifies (same as P1) |
+
+**Design.** π = QAC (the strongest amplification ordering), k = 3, arms B vs
+`C_L3`, 20 pilot tasks, 2 replicates, four background variants:
+
+| variant | object | wording |
+|---|---|---|
+| `U_FMT_COLON1` | single character | `Use exactly 1 colon in the whole answer.` |
+| `X_SEMI_EXACT1` | single character | `Use exactly 1 semicolon in the whole answer.` |
+| `U_FMT_QUOTE1` | paired construct | `Use exactly 1 pair of double quotation marks in the whole answer.` |
+| `U_FMT_PAREN1` | paired construct | `Use exactly 1 pair of round brackets in the whole answer.` |
+
+`X_SEMI_EXACT1` uses the registry's own `exact_char_total` family, so its wording
+is the protocol's and is byte-matched to the colon's but for the mark name. 320
+generations.
+
+**Manipulation check:** each variant's own compliance is scored on every row, so
+"did not amplify" and "was not followed" stay separable.

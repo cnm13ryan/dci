@@ -83,6 +83,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--paraphrase", type=int, default=0,
                         help="wording index; a replication under a different "
                              "wording tests whether the effect is phrasing")
+    parser.add_argument("--reasoning-budgets", default=None,
+                        help="comma-separated HARD reasoning budgets. Selects "
+                             "the two-phase harness: budgeted <think> phase, "
+                             "then a fixed-budget answer phase. Verifiers score "
+                             "the answer only.")
+    parser.add_argument("--answer-tokens", type=int, default=320,
+                        help="final-answer budget, held CONSTANT across every "
+                             "reasoning-budget treatment")
     parser.add_argument("--fixed-tail", default="",
                         help="background members held in a FIXED position after "
                              "the three permuted roles, for transporting an "
@@ -162,10 +170,10 @@ def main(argv: list[str] | None = None) -> int:
                  else tuple(p.strip() for p in args.permute.split(",")))
         focals = [selection.focal, *selection.references]
         variants = list(selection.background)
-        if len(focals) != 2 or len(variants) != 2:
+        if len(focals) != 2 or len(variants) < 2:
             raise SystemExit(
                 "the S3 ordering design needs exactly two focal-slot occupants "
-                f"(--focal plus one --arms entry; got {focals}) and exactly two "
+                f"(--focal plus one --arms entry; got {focals}) and at least two "
                 f"background-slot variants (--background; got {variants})")
         rows = design.build_permutation_design(
             selection.target, focals, variants, tasks,
@@ -218,6 +226,9 @@ def main(argv: list[str] | None = None) -> int:
         "extensions_manifest": extensions_manifest,
         "load": selection.load,
         "paraphrase_id": args.paraphrase,
+        "reasoning_budgets": ([int(b) for b in args.reasoning_budgets.split(",")]
+                              if args.reasoning_budgets else None),
+        "answer_token_budget": args.answer_tokens,
         "n_rows": len(rows),
         "model": asdict(config),
         "selection": {
@@ -249,7 +260,14 @@ def main(argv: list[str] | None = None) -> int:
         print("[dry-run] design written and validated; no model loaded")
         return 0
 
-    summary = runner.run(rows, selection, config, out_dir, stage=args.stage)
+    if args.reasoning_budgets:
+        from dci_exploratory import reasoning
+        budgets = [int(b) for b in args.reasoning_budgets.split(",")]
+        summary = reasoning.run(rows, selection, config, out_dir,
+                                stage=args.stage, budgets=budgets,
+                                answer_tokens=args.answer_tokens)
+    else:
+        summary = runner.run(rows, selection, config, out_dir, stage=args.stage)
     print(json.dumps({k: v for k, v in summary.items()
                       if k not in ("model", "model_fingerprint")}, indent=2))
     return 0
