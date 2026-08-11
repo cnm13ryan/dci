@@ -160,18 +160,70 @@ CLAUSE_INITIAL = frozenset({
 #: character test downstream could then never match. Any conclusion drawn from a
 #: colon or dash splice count before this was fixed would have been an artefact
 #: of the regex rather than a fact about the text.
-_AFTER_MARK = re.compile(r"(--|[;,:—–])\s*([A-Za-z']+)")
+_ANY_MARK = re.compile(r"--|[;,:—–]")
+
+#: Words in the segment following the mark, at or above which the segment is
+#: treated as a clause rather than a list item. Set from the Stage 0.3 audit:
+#: list items in this corpus run to 2-3 words (`a spring`, `a base`) and clause
+#: joins to 5-12 (`the staple is pushed into the paper with force`).
+MIN_CLAUSE_WORDS = 4
+
+_SEGMENT_END = re.compile(r"(--|[;,:—–.!?])")
+_LEADING_JUNK = "\"'“‘([{ \t"
+_WORD = re.compile(r"[A-Za-z0-9][A-Za-z0-9'’-]*")
+
+
+def _segment_after(text: str, start: int) -> str:
+    """The text from `start` up to the next mark or terminator."""
+    rest = text[start:]
+    end = _SEGMENT_END.search(rest)
+    return rest[:end.start()] if end else rest
 
 
 def splice_count(text: str, mark: str) -> int:
-    """Occurrences of `mark` immediately followed by a clause-initial word.
+    """Occurrences of `mark` standing where a sentence boundary could stand.
 
     A PROXY, and labelled one everywhere it is reported. It is exact about what
     it counts and silent about grammar.
+
+    **Round 7 revision, forced by the Stage 0.3 human audit.** The first rule
+    required the following word to be in a closed list of pronouns and
+    connectives. That gave perfect precision (18/18 in the audit) and badly
+    biased recall: a one-sentence answer carrying six semicolon joins scored
+    **0.000** because its clauses happened to begin `the`, `once` and `(this`.
+    Recall therefore depended on the model's lexical style rather than on the
+    structure being measured, which is exactly the wrong dependency for a
+    variable used to compare conditions.
+
+    The rule is now a SHAPE test on what follows the mark:
+
+      * a clause-initial pronoun or connective (the old rule), **or**
+      * a following segment of at least `MIN_CLAUSE_WORDS` words before the next
+        mark or terminator.
+
+    The second clause is what separates a clause join from a list item —
+    `a spring` is two words, `the staple is pushed into the paper with force` is
+    nine — without needing a part-of-speech tagger or any grammatical claim.
+    Leading brackets and quotes are skipped, so `; (this action …)` is no longer
+    missed on account of a parenthesis.
     """
+    body = str(text or "")
     chars = set(MARK_CHARS[mark])
-    return sum(1 for m in _AFTER_MARK.finditer(str(text or ""))
-               if m.group(1) in chars and m.group(2).lower() in CLAUSE_INITIAL)
+    total = 0
+    # Scan the MARKS themselves rather than a mark-plus-letter pattern. The
+    # earlier version anchored on `[;,:—–]\s*([A-Za-z']+)`, so a join written
+    # `; (this action …)` did not match at all and was invisible — one of the
+    # recall failures the audit found.
+    for match in _ANY_MARK.finditer(body):
+        if match.group(0) not in chars:
+            continue
+        segment = _segment_after(body, match.end()).lstrip(_LEADING_JUNK)
+        words = _WORD.findall(segment)
+        if not words:
+            continue
+        if words[0].lower() in CLAUSE_INITIAL or len(words) >= MIN_CLAUSE_WORDS:
+            total += 1
+    return total
 
 
 def v_no_splice(text: str, mark: str):
