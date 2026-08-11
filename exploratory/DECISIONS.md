@@ -1997,3 +1997,89 @@ Round 6's rule against reading failed manipulation checks as causal evidence
 applies.
 
 The colon replication is a second, identical run with `X_COLON_*`.
+
+---
+
+# Round 9 — results and revisions
+
+## R9.1 Round 8's reasoning blocker is WITHDRAWN
+
+Round 8 recorded the reasoning programme as blocked because `b = 8192` OOM'd.
+Three separate facts now contradict that inference:
+
+1. The OOM was **batch 8 on one card**. The sibling run's own
+   `peak_allocated_bytes` implies batch 1 would need ≈ 10.7 GB of 24 GB.
+2. One card affords **79,888 KV tokens**; two, with tensor parallelism, afford
+   **216,032**. Capacity was never the constraint.
+3. The censoring was a property of **`Qwen/Qwen3.5-4B`**, not of reasoning models
+   or of this hardware. On `Qwen/Qwen3-4B` the same prompts close naturally
+   39/40 with a median of 437 reasoning tokens.
+
+The **data** Round 8 collected stand; the **inference** from them does not. This
+is recorded as a defect in my own reasoning, and the retained invalid runs are
+kept with their status unchanged.
+
+## R9.2 Two-GPU tensor parallelism works, contrary to prior local documentation
+
+The default `tp=2` configuration hangs exactly as the previous project
+documented. `disable_custom_all_reduce=True` together with `NCCL_P2P_DISABLE=1`
+fixes it: both cards at 86% within one request, 2.7× the KV cache, and *faster*
+decode than TP=1. Full record in `REASONING_COMPUTE_MATRIX.md` §0.4–0.5.
+
+Capacity mode was, in the end, **not required** for the science. It is reported
+because it was asked for and because it is now available; the reasoning result
+below would have been obtainable on one card.
+
+## R9.3 Stage 10 could not be run — the manipulation is not executable
+
+Pre-registered above as the highest-priority amplifier experiment. Ten positional
+wordings across two marks were tried, exact indices and windows alike. **Every
+one failed its manipulation check** (compliance 0.000–0.338 against 0.938–1.000
+for free placement). Under the rule recorded before the run, and under Round 6's
+rule against reading failed manipulation checks as causal evidence, **none of
+their τ values is evidence about placement.**
+
+This is not a null result about placement. It is the finding that *this model
+cannot follow a positional constraint on a single mark under k = 3 load*, which
+makes the intended contrast unavailable rather than answered.
+
+**Revision to the plan.** Stage 11 (placement × order) is dropped: it is
+conditional on Stage 10 showing a placement effect, and Stage 10 produced no
+interpretable effect to cross with anything.
+
+## R9.4 Single-character atomicity is REFUTED
+
+The confound was attacked from the other side instead — hold placement free, vary
+atomicity. `X_ELLIPSIS_FREE` demands **three characters**, is unpaired and freely
+placed, is obeyed 1.000 of the time, and **amplifies** (τ = +0.400; Δ vs the
+wording-matched paired control = +0.325 [+0.175, +0.475]).
+
+So P5 (single-character atomicity) is refuted as a necessary property, and P6
+(any extra clause raises τ) is refuted too: the length-matched free wording
+reproduces Round 8's bare wording exactly (+0.950 both), while the paired control
+carrying the identical clause stays at +0.075.
+
+`X_DASHDASH_FREE` is recorded as a **failed manipulation** (compliance 0.000 —
+the model writes an em dash where `--` was demanded) and is not interpreted.
+
+## R9.5 The reasoning-compute result
+
+Pre-registered structure: `b` is the treatment, realised `M` is post-treatment
+and is never conditioned on, and no budget enters the curve unless it yields a
+valid comparable answer. The validity gate passed at every budget (0 empty, 0
+truncated, 0 scratch markers, answer length flat at 115–118 tokens).
+
+**More reasoning resolves ordinary directional interference and does not resolve
+amplified interference.** Under the control background τ falls +0.400 → 0.000 by
+b = 512 and stays there. Under the amplifier τ ends at +0.500, and Δ
+amplification *grows* with budget to +0.500 [+0.300, +0.700].
+
+**Absolute competence improves while DCI worsens**, which the directive asked to
+be reported separately: A-compliance in the control condition's focal arm reaches
+1.000 at b ≥ 512 while the amplification gap widens.
+
+**The b = 256 point is non-monotone** and is reported as observed rather than
+smoothed: at 95% cap-hit both τ values collapse toward zero. It is the one budget
+where the manipulation is almost always binding, and I do not have an
+intervention that distinguishes "short reasoning helps" from "forced truncation
+changes strategy". It is flagged, not explained.
