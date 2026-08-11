@@ -407,3 +407,190 @@ checkable against Stage B.
 | collapse graded `; > — > :` | consistent with M1 and with grammatical substitutability specifically, since a colon's listing use competes with its clause-joining use |
 | `X_SEMICOLON_EACH` ≠ `S_SEMICOLON` | phrasing matters; report the factorial at wording scope only |
 | an arm collapses while failing its **own** rule | not substitution — it is not even satisfying the instruction it was given |
+
+---
+
+# Round 5 outcomes
+
+### E1 — sham-controlled scaffold ladder · `runs/stageE1_ladder_20260810T231640Z`
+
+1600 generations, 38.1 min, 0 technical failures, 0 truncations. The
+no-scaffold cells replicate Stage B and D2 closely (`S_SEMICOLON` excess 0.625
+`o_A` / 0.500 `o_Q` against D2's 0.650 / 0.575; B 0.300 `o_Q` against 0.275).
+
+**Paired excess over `C_L3`, the pre-registered readout:**
+
+| arm / order | none | weak | strong | **sham** |
+|---|---|---|---|---|
+| `S_SEMICOLON` `o_A` | 0.625 | 0.350 | 0.275 | **0.350** |
+| `S_SEMICOLON` `o_Q` | 0.500 | 0.200 | 0.250 | **0.400** |
+| B `o_Q` | 0.300 | 0.075 | 0.100 | **0.150** |
+| B `o_A` | 0.025 | 0.050 | 0.000 | **0.000** |
+| `C_L3` (the control itself) | — | 0.000 | 0.000 | **0.000** |
+
+**The contrast that decides M4** — each boundary scaffold against the SHAM, not
+against no scaffold, so the number is boundary *content* with message length and
+imperative form already subtracted:
+
+| arm / order | strong − sham | weak − sham |
+|---|---|---|
+| `S_SEMICOLON` `o_A` | −0.075 [−0.275, +0.150] | 0.000 [−0.225, +0.225] |
+| `S_SEMICOLON` `o_Q` | −0.150 [−0.300, 0.000] | −0.200 [−0.400, −0.025] |
+| B `o_Q` | −0.050 [−0.150, +0.050] | −0.075 [−0.150, 0.000] |
+| B `o_A` | 0.000 | +0.050 |
+
+**Row 2 of the pre-registered table fired: M4 is largely supported.** A clause
+that says nothing whatever about sentence boundaries — `Write each sentence in a
+plain style.` — reproduces most of D2's recovery. In `o_A` no boundary-specific
+effect is detectable at all; in `o_Q` a residual of −0.15 to −0.20 survives, and
+only one of those two intervals excludes zero.
+
+**Consequence, applied rather than noted: the D2 intervention is withdrawn as
+mechanistic evidence.** D2 had no sham, so it could not distinguish "the boundary
+reminder blocks the substitution route" from "an extra system-message clause
+raises compliance attention". E1 shows the second explains most of it. Every
+claim that rested on D2's causal leg is downgraded to correlational.
+
+**The ladder ordering assumption failed.** `weak` and `strong` are
+indistinguishable, and in `o_Q` the weak reminder is *better*. Whatever the
+scaffolds do, it is not graded by how forcefully they specify the format.
+
+**The sham is not inert, and that is the deeper problem.** It changed the text
+in exactly the direction the boundary scaffolds do:
+
+| arm | metric | none | sham | strong |
+|---|---|---|---|---|
+| B | commas | 9.19 | **7.42** | 8.38 |
+| B | words | 171.6 | **160.0** | 167.0 |
+| `S_SEMICOLON` | sentences | 2.34 | **2.90** | 3.22 |
+| `S_SEMICOLON` | newlines | 0.75 | **1.16** | 2.01 |
+
+`Write each sentence in a plain style.` evidently pushes toward shorter, simpler,
+less chained sentences. So it is a **style** manipulation, not a pure length
+control, and it plausibly acts on the very behaviour under study. The design
+conclusion: for this outcome a system-message clause **cannot** be made inert,
+because almost any instruction about how to write sentences touches sentence
+structure. A system-message scaffold is therefore the wrong instrument for the
+causal leg, and no further version of it will be run.
+
+**What survives.** The correlational chain is untouched and was replicated in the
+same run: the trigger produces the strategy (23/23 and 20/20 collapsed
+`S_SEMICOLON` rows satisfy the semicolon rule while carrying ≈1.2 boundary-capable
+marks per lost boundary) and the strategy accompanies the failure. The scaffolds
+are not general A-helpers — `C_L3` is at exactly 0.000 failure under all four
+conditions — so whatever they do is specific to the arms using a chaining route.
+
+**Replacement plan for the causal leg.** The instrument must prohibit the
+*substitution* without mentioning sentences, against a sham that prohibits an
+equally arbitrary punctuation usage off the route. Pre-registered below as E6b,
+after the factorial identifies which mark is decisive.
+
+### E2 — replication on fresh instances and on a fresh wording
+
+`runs/stageE2a_freshtasks_20260810T232938Z` (20 `burned` topics, wording 0) and
+`runs/stageE2b_freshwording_20260810T234101Z` (the Stage B topics, wording 2).
+520 generations each, 0 technical failures, 0 truncations.
+
+**Paired excess over `C_L3`:**
+
+| arm / order | Stage B (pilot, w0) | **E2a** (fresh topics, w0) | **E2b** (pilot, w2) |
+|---|---|---|---|
+| `S_SEMICOLON` `o_A` | 0.617 | 0.375 | 0.600 |
+| `S_SEMICOLON` `o_Q` | 0.550 | 0.375 | 0.550 |
+| B `o_A` | 0.050 | 0.025 | **0.525** |
+| B `o_Q` | 0.300 | 0.550 | **0.750** |
+| `C_O2` (second control) | ~0 | 0.000 / 0.025 | 0.000 / 0.000 |
+
+Both controls sit at exactly 0.000 corrected failure in the fresh-wording run
+and within 0.025 of it in the fresh-topic run. The target is not getting harder;
+the arms are doing the damage.
+
+**`S_SEMICOLON` replicates completely — outcome AND strategy.**
+
+| | Stage B | E2a (fresh topics) | E2b (fresh wording) |
+|---|---|---|---|
+| collapse to exactly 1 sentence | 0.517–0.600 | 0.250–0.300 | 0.525–0.550 |
+| boundary marks per lost boundary | 1.16–1.24 | 1.19–1.20 | 1.09–1.19 |
+| commas per lost boundary | 0.21–0.29 | 0.33–0.42 | 0.37–0.44 |
+| **its own semicolon rule satisfied while collapsed** | (not recorded) | **100%** | **100%** |
+| words | 48–50 | 45–47 | 40–41 |
+
+The chain **trigger → strategy → target failure** reproduces on unseen topics and
+on a different phrasing, with the same numerical signature. This is the strongest
+evidence in the study.
+
+**B does NOT replicate as the same phenomenon.** Its *outcome* replicates and
+grows — the excess is larger under both changes — but its *strategy* is
+phrasing-dependent:
+
+| | wording 0 | wording 2 |
+|---|---|---|
+| wording of B | "Make each sentence strictly longer than the preceding sentence when measured by word count." | "Every sentence after the first must contain more words than the sentence before it." |
+| collapse to 1 sentence | 0.300 (`o_Q`) | **0.050** |
+| sentence count distribution | 1 or 4 | **2 or 3** |
+| B's own rule satisfied | 0.05–0.21 | **0.60** |
+| words | 148–192 | 108 |
+
+Under wording 0, B writes one enormous comma-chained run-on and fails its own
+growth rule. Under wording 2 it writes two or three sentences that *do* grow, and
+undershoots the count. Same direction, same target failure, **different route.**
+
+**Reading, against the pre-registered replication criterion.** The criterion is
+trigger → *the same interpretable failure strategy* → target failure.
+`S_SEMICOLON` meets it. **B meets only the outcome half**, so the two arms must
+not be reported as one phenomenon. B is an instruction that makes the target
+harder by several routes; `S_SEMICOLON` is a specific, reproducible strategy.
+
+**Instance and phrasing generality: both established for the mark route.** The
+E2a/E2b split was designed so that a failure would be attributable; neither
+failed.
+
+---
+
+## E7 — the replacement causal test: a double dissociation, no sham required
+
+**Why.** E1 killed the system-message scaffold as an instrument. The problem was
+not that the sham was badly chosen but that no clause about *how to write
+sentences* can be inert with respect to *how many sentences get written*. An
+instrument is needed whose control is not a supposedly-inert clause but **another
+active treatment aimed at a different route.** Then neither condition has to be
+inert; each is the other's control, and the prediction is a pattern rather than a
+single reduction.
+
+**The three prohibitions.** All added as a sixth numbered instruction, so the
+load is k=6 in *every* cell and nothing is compared across loads. All three have
+the same grammatical form and comparable length, and none mentions sentence
+counts, line breaks or the word "paragraph".
+
+| condition | instruction | route it closes |
+|---|---|---|
+| `X_NO_EXCLAM` | `Do not use any exclamation marks.` | **neither** — the off-route control |
+| `X_NO_SEMI_SPLICE` | `Do not use a semicolon to join two complete sentences.` | the `S_SEMICOLON` substitution route |
+| `X_NO_COMMA_SPLICE` | `Do not use a comma to join two complete sentences.` | B's comma-chained run-on route (E2a) |
+
+**Arms.** `S_SEMICOLON`, B, `C_L3`. Both orders, wording 0, the 20 pilot tasks,
+2 replicates. 3 prohibitions × 3 arms × 2 orders × 20 × 2 = 720 contrast rows.
+
+**The predicted pattern — a double dissociation.**
+
+| | `S_SEMICOLON` collapse | B collapse | `C_L3` |
+|---|---|---|---|
+| `X_NO_SEMI_SPLICE` − `X_NO_EXCLAM` | **↓ large** | ≈ 0 | ≈ 0 |
+| `X_NO_COMMA_SPLICE` − `X_NO_EXCLAM` | ≈ 0 | **↓ large** | ≈ 0 |
+
+| observation | reading |
+|---|---|
+| the double dissociation appears | **M1 and M5 both causally supported**, and M4 is excluded by construction: a generic-clause account cannot produce a crossed pattern |
+| both prohibitions reduce both arms equally | **M4**: it is the extra clause, not its content. The mechanism claim has no causal leg and must be reported as correlational only |
+| the semicolon prohibition reduces `S_SEMICOLON` and the comma one does nothing to B | M1 supported; B's route is not comma splicing and remains unexplained |
+| neither prohibition changes anything | the prohibitions were not obeyed — check the splice proxy before drawing any conclusion |
+
+**Compliance is measured, not assumed.** `extensions.splice_count` counts marks
+immediately followed by a clause-initial pronoun or connective. It is a **proxy**
+and is labelled one wherever it appears: determiners were removed from its word
+list because `The parts are a lever; a spring; a base.` is a list rather than a
+clause join, so the proxy can only **under**-count. Exact counts of semicolons,
+commas, periods and sentences are reported alongside it.
+
+**Stop condition.** If the splice proxy shows the prohibitions were not obeyed,
+report that and do not interpret the outcome at all.
