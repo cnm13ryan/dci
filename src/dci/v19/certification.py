@@ -37,11 +37,12 @@ from dataclasses import dataclass
 from typing import Any
 
 from dci.provenance.hashes import sha
+from dci.v19 import pairs
 from dci.v19 import verifiers as V
 from dci.v19.encoding import Clause, ClauseKind, Composition
 from dci.v19.parsing import ListPolicy
-from dci.v19.solver import SolverRecord, SolverUnavailable, solve
-from dci.v19.witness import WitnessRecord, construct_witness
+from dci.v19.solver import SolverError, SolverRecord, SolverUnavailable, solve
+from dci.v19.witness import CONSTRUCTOR_ID, WitnessRecord, construct_witness
 
 
 class ReviewState(str, enum.Enum):
@@ -58,6 +59,8 @@ class Outcome(str, enum.Enum):
 
     CERTIFIED = "CERTIFIED"
     SOLVER_UNAVAILABLE = "SOLVER_UNAVAILABLE"
+    SOLVER_ERROR = "SOLVER_ERROR"
+    POLICY_MISMATCH = "POLICY_MISMATCH"
     SOLVER_NOT_SAT = "SOLVER_NOT_SAT"
     WITNESS_NOT_CONSTRUCTED = "WITNESS_NOT_CONSTRUCTED"
     VERIFIER_INCOMPLETE = "VERIFIER_INCOMPLETE"
@@ -83,6 +86,12 @@ class ReviewerVerdict:
     def __post_init__(self):
         if not self.reviewer_id:
             raise CertificationError("a review needs an identified reviewer")
+        if self.satisfied is not True and self.satisfied is not False:
+            raise CertificationError(
+                f"{self.reviewer_id}: satisfied={self.satisfied!r} is not a bool. "
+                "The audit found the string \"no\" certifying a composition, because "
+                "a non-empty string is truthy; this field decides whether a "
+                "composition may enter a frozen bank and is not a truthiness test")
         if not self.rationale:
             raise CertificationError(
                 f"{self.reviewer_id}: a semantic review states its rationale, or it "
@@ -111,6 +120,11 @@ class SemanticReview:
             raise CertificationError(
                 f"{self.composition_id}: a semantic review with no clauses under "
                 "review would certify nothing while looking like evidence")
+        if len(set(self.clause_ids)) != len(self.clause_ids):
+            raise CertificationError(
+                f"{self.composition_id}: clause(s) appear twice in "
+                f"{list(self.clause_ids)}. The coverage check compares sets, so a "
+                "repeated clause would let one review cover two requirements")
         identities = [r.reviewer_id for r in self.reviews]
         if len(set(identities)) != len(identities):
             raise CertificationError(
@@ -191,6 +205,22 @@ class Conjunction:
     required: tuple[str, ...]
     outcomes: Mapping[str, V.VerifierOutcome]
 
+    def __post_init__(self):
+        if not self.required:
+            raise CertificationError(
+                f"{self.composition_id}: a conjunction over no constraints is "
+                "vacuously satisfied - the empty product is 1 - so it is refused "
+                "rather than reported as a pass")
+        if len(set(self.required)) != len(self.required):
+            raise CertificationError(
+                f"{self.composition_id}: {list(self.required)} repeats a constraint")
+        stray = sorted(set(self.outcomes) - set(self.required))
+        if stray:
+            raise CertificationError(
+                f"{self.composition_id}: outcome(s) {stray} are not among the "
+                "required constraints, so the vector and the product would describe "
+                "different sets")
+
     @property
     def missing(self) -> tuple[str, ...]:
         return tuple(c for c in self.required if c not in self.outcomes)
@@ -242,14 +272,28 @@ class Conjunction:
                 "outcomes": {c: o.describe() for c, o in self.outcomes.items()}}
 
 
+# Which clause kind is measured by which declared constraint's verifier. A
+# background clause carries its own identity, so its column is filled by the verifier
+# of the rule family it instantiates rather than by a verifier of its own id.
+_KIND_TO_FAMILY = {
+    ClauseKind.EXACT_ITEM_COUNT: pairs.PAIR_1.target.constraint_id,
+    ClauseKind.ITEM_PRECEDENCE: pairs.PAIR_1.focal.constraint_id,
+    ClauseKind.MANDATORY_TOKENS: pairs.PAIR_2.target.constraint_id,
+    ClauseKind.ALL_TOKENS_DISTINCT: pairs.PAIR_2.focal.constraint_id,
+    ClauseKind.EXACT_SENTENCE_COUNT: pairs.PAIR_3.target.constraint_id,
+    ClauseKind.INCREASING_SENTENCE_LENGTHS: pairs.PAIR_3.focal.constraint_id,
+}
+
+
 def _invoke(clause: Clause, text: str, policy: ListPolicy) -> V.VerifierOutcome:
     """Run the deterministic verifier for one clause on the witness."""
     built = V.bundle(policy)
-    verifier = built.get(clause.constraint_id)
+    verifier = built.get(clause.constraint_id) or built.get(
+        _KIND_TO_FAMILY.get(clause.kind, ""))
     if verifier is None:
         raise CertificationError(
-            f"{clause.constraint_id} has a clause but no verifier, so its column "
-            "of the conjunction cannot be filled")
+            f"{clause.constraint_id} has a clause but no verifier, so its column of "
+            "the conjunction cannot be filled")
     if clause.kind is ClauseKind.EXACT_ITEM_COUNT:
         return verifier.invoke(text, n_items=clause.parameters["n_items"])
     if clause.kind is ClauseKind.ITEM_PRECEDENCE:
@@ -292,6 +336,7 @@ class SatCertificate:
     together.
     """
     composition: Composition
+    policy: ListPolicy
     outcome: Outcome
     reason: str
     solver: SolverRecord | None
@@ -304,19 +349,75 @@ class SatCertificate:
     def certified(self) -> bool:
         return self.outcome is Outcome.CERTIFIED
 
+    @property
+    def semantic_id(self) -> str:
+        """WHAT was certified: the encoding and the declared verifier semantics.
+
+        Stable across runs and across implementations that agree on semantics, which
+        is what makes it usable as the artifact identity Appendix J archives.
+        """
+        return sha(["v19/sat-certificate/semantic",
+                    {"encoding": self.composition.state(),
+                     "list_policy_hash": self.policy.policy_hash,
+                     "text_policy_hash": self.policy.text.policy_hash,
+                     "verifier_specs": {cid: v.spec.spec_hash for cid, v
+                                        in sorted(self.bundle.items())}}])
+
+    @property
+    def implementation_id(self) -> str:
+        """WHAT PRODUCED it: the code, the constructor and the solver build.
+
+        The audit found the certificate carrying only `spec_hash`, so a code change
+        that left the declared semantics alone was invisible. It is visible here.
+        """
+        return sha(["v19/sat-certificate/implementation",
+                    {"bundle_hash": V.bundle_hash(self.policy),
+                     "implementation_hashes": {
+                         cid: v.implementation_hash
+                         for cid, v in sorted(self.bundle.items())},
+                     "witness_constructor": CONSTRUCTOR_ID,
+                     "solver": [self.solver.solver, self.solver.version]
+                     if self.solver else None}])
+
+    @property
+    def evidence_id(self) -> str:
+        """WHAT WAS OBSERVED: the solver record, the witness, the vector, the review."""
+        return sha(["v19/sat-certificate/evidence",
+                    {"solver": self.solver.state() if self.solver else None,
+                     "witness": self.witness.state() if self.witness else None,
+                     "conjunction": (self.conjunction.describe()
+                                     if self.conjunction else None),
+                     "review": self.review.describe() if self.review else None,
+                     "review_state": self.review_state.value,
+                     "outcome": self.outcome.value}])
+
     def state(self) -> dict[str, Any]:
         return {"composition": self.composition.describe(),
                 "outcome": self.outcome.value,
+                "list_policy_hash": self.policy.policy_hash,
+                "text_policy_hash": self.policy.text.policy_hash,
+                "verifier_bundle_hash": V.bundle_hash(self.policy),
+                "verifier_bundle": V.bundle_state(self.policy)["verifiers"],
+                "witness_constructor": CONSTRUCTOR_ID,
                 "solver": self.solver.describe() if self.solver else None,
                 "witness": self.witness.state() if self.witness else None,
                 "conjunction": (self.conjunction.describe()
                                 if self.conjunction else None),
                 "review": self.review.describe() if self.review else None,
-                "review_state": self.review_state.value}
+                "review_state": self.review_state.value,
+                "semantic_id": self.semantic_id,
+                "implementation_id": self.implementation_id,
+                "evidence_id": self.evidence_id}
+
+    @property
+    def bundle(self) -> Mapping[str, V.Verifier]:
+        return V.bundle(self.policy)
 
     @property
     def certificate_hash(self) -> str:
-        return sha(["v19/sat-certificate", self.state()])
+        """The three identities together, in a fixed order."""
+        return sha(["v19/sat-certificate",
+                    [self.semantic_id, self.implementation_id, self.evidence_id]])
 
     def describe(self) -> dict[str, Any]:
         return {**self.state(), "reason": self.reason,
@@ -338,7 +439,7 @@ def certify_composition(composition: Composition, policy: ListPolicy, *,
     """
     def refuse(outcome: Outcome, reason: str, **parts: Any) -> SatCertificate:
         return SatCertificate(
-            composition=composition, outcome=outcome, reason=reason,
+            composition=composition, policy=policy, outcome=outcome, reason=reason,
             solver=parts.get("solver"), witness=parts.get("witness"),
             conjunction=parts.get("conjunction"), review=parts.get("review"),
             review_state=parts.get("review_state",
@@ -346,17 +447,29 @@ def certify_composition(composition: Composition, policy: ListPolicy, *,
                                    if review_required(composition)
                                    else ReviewState.AUTO_CERTIFIED))
 
+    declared = {c.parameters.get("list_policy_hash") for c in composition.clauses}
+    declared.discard(None)
+    if declared and declared != {policy.policy_hash}:
+        return refuse(
+            Outcome.POLICY_MISMATCH,
+            f"the clauses were encoded under list policy {sorted(declared)} and "
+            f"certification was asked to use {policy.policy_hash}. The encoding, the "
+            "witness and the verifiers must read one grammar or the cross-check "
+            "establishes nothing")
     try:
         record = solve(composition, bounds=bounds)
     except SolverUnavailable as error:
         return refuse(Outcome.SOLVER_UNAVAILABLE,
                       f"required solver output is missing: {error}")
+    except SolverError as error:
+        return refuse(Outcome.SOLVER_ERROR,
+                      f"the solver could not decide the conjunction: {error}")
     if not record.progressable:
         return refuse(Outcome.SOLVER_NOT_SAT,
                       f"solver status {record.status!r}: {record.reason}",
                       solver=record)
 
-    built = construct_witness(composition, seed=seed)
+    built = construct_witness(composition, policy, seed=seed)
     if not built.constructed:
         return refuse(Outcome.WITNESS_NOT_CONSTRUCTED,
                       f"witness construction failed: {built.reason}",
@@ -388,7 +501,7 @@ def certify_composition(composition: Composition, policy: ListPolicy, *,
     triggered = review_required(composition)
     if not triggered:
         return SatCertificate(
-            composition=composition, outcome=Outcome.CERTIFIED,
+            composition=composition, policy=policy, outcome=Outcome.CERTIFIED,
             reason=("solver sat, a constructed witness, and every applicable "
                     "verifier passing; the encoding declares complete "
                     "deterministic coverage, so no human review is required"),
@@ -422,7 +535,7 @@ def certify_composition(composition: Composition, policy: ListPolicy, *,
             review_state=ReviewState.HUMAN_REVIEW_REQUIRED)
     if review.state is ReviewState.HUMAN_REVIEW_PASSED:
         return SatCertificate(
-            composition=composition, outcome=Outcome.CERTIFIED,
+            composition=composition, policy=policy, outcome=Outcome.CERTIFIED,
             reason=("solver sat, a constructed witness, every applicable verifier "
                     "passing, and human semantic review of the incompletely "
                     "encoded clauses"),
