@@ -38,7 +38,8 @@ RELATION = OrderingRelation(items=("alfa", "bravo", "charlie"),
 ACCEPTED = ("verifiers.p1.list_policy", "verifiers.p1.ordering_depth",
             "verifiers.inherited_reuse_decision",
             "verifiers.binomial_interval_implementation",
-            "verifiers.tier1_audit_design")
+            "verifiers.tier1_audit_design",
+            "verifiers.tier1_audit_protocol")
 PRODUCED = ("satisfiability.solver_identity", "satisfiability.encoding_map",
             "satisfiability.witness_constructor", "satisfiability.review_trigger",
             "verifiers.specification_bundle", "verifiers.boundary_mutations",
