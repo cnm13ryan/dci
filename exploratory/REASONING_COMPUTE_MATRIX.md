@@ -219,3 +219,66 @@ reference arm (701.5 against 409.1 at b = 1024).
 | `Qwen/Qwen3.5-4B` under vLLM | **blocked** | `Qwen3_5ForCausalLM` is not in vLLM 0.15.1's model registry. No substitution was made silently — the reasoning programme moved to `Qwen3-4B`, and the reason is recorded here. |
 | `Qwen3.6` | **blocked** (Round 6) | 27B ≈ 55.6 GB bf16 against 48 GB total; FP8 unsupported on gfx1100; Int4 would change the numerical condition. |
 | TP=2 with default all-reduce | **failed, documented** | indefinite collective stall; see §0.4. |
+
+---
+
+## Part 3 — Round 10 conditions
+
+All on `Qwen/Qwen3-4B` @ `1cfa9a72`, vLLM 0.15.1+rocm720, TP = 2 (mitigated),
+bf16, T = 0.7, top-p 0.9, fixed 512-token answer budget. **Effective one draw per
+cell** — see the seeding defect in `DECISIONS.md` R10.2.
+
+### The full QAC k=3 grid (S18 + Round 10 transition budgets)
+
+| b | mode | cap-hit | closure | realised M | answer tok | truncated | leaked | τ control | τ amplifier | Δ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | **native non-thinking** | — | — | 0.0 | 96.7 | 0.000 | 0.000 | +0.400 | +0.600 | +0.200 |
+| 256 | budget-forced | 0.950 | 0.050 | 255.1 | 114.9 | 0.000 | 0.000 | +0.150 | +0.075 | −0.075 |
+| 320 | budget-forced | 0.812 | 0.188 | 313.2 | 120.0 | 0.000 | 0.025 | +0.050 | +0.325 | +0.275 |
+| 384 | budget-forced | 0.750 | 0.250 | 364.9 | 116.4 | 0.000 | 0.013 | +0.050 | +0.425 | +0.375 |
+| 448 | budget-forced | 0.650 | 0.350 | 407.9 | 115.1 | 0.000 | 0.000 | +0.050 | +0.350 | +0.300 |
+| 512 | budget-forced | 0.556 | 0.444 | 446.5 | 118.0 | 0.000 | 0.000 | **0.000** | +0.375 | +0.375 |
+| 640 | budget-forced | 0.381 | 0.619 | 508.5 | 117.6 | 0.000 | 0.000 | 0.000 | +0.475 | +0.475 |
+| 1024 | budget-forced | 0.225 | 0.775 | 636.8 | 116.5 | 0.000 | 0.000 | 0.000 | +0.450 | +0.450 |
+| 4096 | near-unconstrained | 0.025 | 0.975 | 769.4 | 116.0 | 0.000 | 0.000 | 0.000 | +0.500 | +0.500 |
+
+### S25 — placement × reasoning (QAC, k = 3)
+
+Backgrounds are the free and anchored semicolon wordings; there is no
+non-amplifying control in this design, so it speaks to placement only.
+
+| b | cap-hit | closure | realised M | τ free | τ anchored | Δ placement | anchored compliance |
+|---|---|---|---|---|---|---|---|
+| 0 | — | — | 0.0 | +0.450 | +0.450 | **+0.000** | 0.750 |
+| 256 | 0.963 | 0.037 | 254.9 | −0.050 | 0.000 | −0.050 | 0.875 |
+| 1024 | 0.300 | 0.700 | 674.7 | +0.350 | +0.400 | −0.050 | 0.575 |
+| 4096 | 0.031 | 0.969 | 1066.8 | +0.350 | +0.350 | **+0.000** | 0.575 |
+
+### S26 — reasoning × ACQ order (k = 3)
+
+| b | cap-hit | closure | realised M | τ control | τ amplifier | Δ | truncated | leaked |
+|---|---|---|---|---|---|---|---|---|
+| 0 | — | — | 0.0 | +0.600 | +0.150 | **−0.450** | 0.000 | 0.013 |
+| 256 | 0.825 | 0.175 | 251.6 | +0.050 | −0.050 | −0.100 | 0.000 | 0.013 |
+| 1024 | 0.113 | 0.887 | 527.9 | +0.050 | +0.300 | **+0.250** | 0.000 | 0.000 |
+| 4096 | 0.025 | 0.975 | 644.4 | +0.050 | +0.300 | **+0.250** | 0.013 | 0.000 |
+
+### S27 — reasoning × load (QAC, k = 5)
+
+| b | cap-hit | closure | realised M | τ control | τ amplifier | Δ | truncated | leaked |
+|---|---|---|---|---|---|---|---|---|
+| 256 | **0.992** | 0.008 | 256.0 | 0.000 | +0.050 | +0.050 | 0.017 | 0.017 |
+| 4096 | 0.008 | 0.992 | 1043.3 | +0.050 | +0.625 | **+0.575** | 0.000 | 0.000 |
+
+The b = 256 column is censored on 99.2% of rows and is a *cut-short* condition
+rather than a low-reasoning one; it is reported, flagged, and not used to
+characterise a dose.
+
+### Arbitration across every Round 10 condition
+
+`A ∧ B ∧ C` is certified satisfiable (`satisfiability_certificate.py`), so these
+are model failures on an achievable task.
+
+**P(both) never exceeds 0.150 anywhere.** Reasoning moves probability from
+"neither" to "target only", not to "both". Under the amplifier at ACQ it moves
+the wrong way: "neither" rises 0.100 → 0.350 as the budget grows.

@@ -280,3 +280,27 @@ but the mark-agnostic `chain_share` in O15 would have been wrong. Fixed to
 |---|---|---|
 | **W15** | Any hard-budget reasoning result for this checkpoint | Every affordable budget lands inside the reasoning phase, so a grid would measure **interruption**. Stages 2–13 not run; harness complete and validated on criteria 1 and 3, failing 2 and 4 for this model/hardware pair. |
 | **W16** | The first `S1_natural` run | Invalid: 48/48 OOM. Retained and marked. It also exposed a harness defect — a failed batch wrote no row at all — now fixed to record null rows as `runner.run` always has. |
+
+---
+
+# Round 10 — claim register
+
+Labels: **Established within tested conditions** · **Intervention-supported but
+narrow** · **Mechanistically suggestive** · **Falsified** · **Unidentified**.
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W10.1 | Amplification arises because the model must decide **where to place** an unattached mark (P7) | **FALSIFIED** | — | S25: Δ_placement = +0.000 / −0.050 / −0.050 / +0.000 at b = 0/256/1024/4096, with focal A-failure off ceiling (0.15–0.45) and identical between arms | Qwen3-4B, Pair 3, QAC, k = 3; anchored compliance 0.575–0.875 |
+| W10.2 | A compliable fixed-placement manipulation can be built | **Established** | lexical anchor + worked example reaches 0.700–0.875 compliance, against 0.000–0.338 for all ten counting wordings | it is **not inert**: raises reference-arm A-failure to 0.333 pooled | as above |
+| W10.3 | Ordinary B→A interference falls to zero with reasoning | **Established within tested conditions** | τ_control +0.400 → 0.000 by b = 512, holding at 0 through 4096; nine budgets | one checkpoint, one order, k = 3 | Qwen3-4B, QAC |
+| W10.4 | That is a **reasoning-dose** effect, not just thinking-on/off | **Established within tested conditions** | τ_control = +0.150 at b = 256 vs 0.000 at b ≥ 512, both positive budgets | b = 0 → b > 0 additionally mixes in mode activation and is reported separately | as above |
+| W10.5 | The decline is gradual, not a sharp threshold | **Established within tested conditions** | +0.400 → +0.150 → +0.050 (×3 budgets) → 0.000 | b = 256 is 95% censored; the shape near zero is fine-grained | as above |
+| W10.6 | Amplified interference is more **compute-resistant** than ordinary interference | **Established within tested conditions** | Δ grows +0.200 → +0.500 at QAC; τ_amp stays 0.35–0.50 while τ_control reaches 0 | the amplifier's own τ *falls* from +0.600 to +0.500 — the gap widens because the control is repaired | Qwen3-4B, QAC, k = 3 |
+| W10.7 | Compute resistance is **order-dependent** | **Established within tested conditions** | Δ at ACQ: −0.450 (b=0) → +0.250 (b≥1024); at QAC: +0.200 → +0.500 | ACQ Δ intervals touch 0.000 at the high budgets | k = 3 |
+| W10.8 | Without reasoning, the semicolon background is **protective** at ACQ | **Established within tested conditions** | Δ = −0.450 [−0.650, −0.250] at b = 0 | single order pair; ACQ vs QAC varies the whole permutation | native non-thinking only |
+| W10.9 | Compute-resistant amplification survives k = 5 | **Established within tested conditions** | Δ = +0.575 [+0.350, +0.775] at b = 4096, k = 5 | the k = 5 low-budget column is 99.2% censored, so only the high budget is informative | QAC |
+| W10.10 | Reasoning improves **prioritisation**, not joint satisfaction | **Established within tested conditions** | P(both) ≤ 0.150 everywhere while P(target only) reaches 0.85–0.95; joint satisfiability independently certified | B compliance is near its floor throughout, which limits how much room "both" ever had | all Round 10 conditions |
+| W10.11 | Single-character atomicity is required | **FALSIFIED** (Round 9) | — | 3-character ellipsis amplifies at 1.000 compliance | — |
+| W10.12 | The unattached/enclosing distinction predicts amplification | **Intervention-supported but narrow** | every complied unattached variant amplifies, every enclosing one does not, across two wordings | *why* it does is now unexplained: not placement, not atomicity, not mark production | Qwen3-4B-Instruct, QAC |
+| W10.13 | An unattached mark amplifies because it can **substitute for a sentence boundary** while a wrapping construct cannot | **Mechanistically suggestive** | consistent with the semicolon's chain_share 0.43 and 1.3 sentences | the ellipsis amplifies with chain_share 0.03 — so this cannot be the whole account | untested by intervention |
+| W10.14 | `chain_share` mediates amplification | **Unidentified** (unchanged) | — | semicolon and ellipsis dissociate on it | — |
