@@ -59,7 +59,7 @@ SMOKE_PROMPTS = [
 
 #: A reasoning ceiling for the smoke only. The scientific ceiling is derived per
 #: checkpoint from its own context envelope at Stage E.
-SMOKE_REASONING_CEILING = 2048
+SMOKE_REASONING_CEILING = 8192
 
 #: Chat-control markup of the shapes the tested families use. Matching on the
 #: SHAPE rather than on a list of known tokens is what makes this a check on the

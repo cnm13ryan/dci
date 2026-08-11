@@ -353,11 +353,20 @@ class TransformersAdapter(ModelAdapter):
 
         results = []
         for i, prompt in enumerate(prompts):
-            answer = self.clean_answer(answer_raw[i])
+            # When the ceiling force-closed an unfinished trace, the model was
+            # observed continuing to think in the answer phase, emitting a
+            # SECOND close, and only then answering. Taking the text after the
+            # final close is the repair; the flag is so the repair is visible.
+            raw_answer = answer_raw[i]
+            artefact = close in raw_answer
+            if artefact:
+                raw_answer = raw_answer.rsplit(close, 1)[1]
+            answer = self.clean_answer(raw_answer)
             results.append(Generation(
                 prompt=prompt,
                 raw_generation=(f"{reasoning_texts[i]}{close}\n\n"
                                 f"{answer_raw[i]}"),
+                forced_close_artefact=artefact,
                 reasoning_text=reasoning_texts[i],
                 final_answer=answer,
                 reasoning_tokens=reasoning_counts[i],
