@@ -2194,6 +2194,13 @@ it deletes exactly one sentence. The anchored instruction is therefore an
 independent A-interferer, and fails the pre-registered inertness criterion in the
 definitive run (0.450, pooled 0.333, against the gate of 0.15).
 
+**Correction to the mechanism sentence above.** A hand-authored witness shows
+`A ∧ B ∧ anchored-C` *is* jointly satisfiable — 4 sentences, strictly increasing,
+one semicolon directly before "however" (`satisfiability_certificate.py`). So
+anchoring is **not logically incompatible** with the target. The tension is
+empirical: the model takes the clause-join option about a third of the time in
+the reference arm, not that it is forced to.
+
 **Status: placement remains UNIDENTIFIED** — but for a sharper reason than Round
 9's. It is no longer "the model cannot follow a positional instruction"
 (compliance here is 0.812). It is that **for a boundary-capable mark, fixing the
