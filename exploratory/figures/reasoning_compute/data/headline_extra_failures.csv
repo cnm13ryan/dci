@@ -1,0 +1,13 @@
+setting,variant,label,estimate,lo,hi,n_tasks,cap_hit,realised_median
+0,X_PAREN_FREE,+ one bracket pair,0.45,0.275,0.625,20,0.0,0.0
+0,X_SEMICOLON_FREE,+ one semicolon,0.525,0.35,0.675,20,0.0,0.0
+256,X_PAREN_FREE,+ one bracket pair,0.025,-0.075,0.15,20,0.8625,256.0
+256,X_SEMICOLON_FREE,+ one semicolon,0.325,0.175,0.475,20,0.9375,256.0
+512,X_PAREN_FREE,+ one bracket pair,0.0,-0.075,0.075,20,0.3625,451.0
+512,X_SEMICOLON_FREE,+ one semicolon,0.625,0.475,0.775,20,0.6,512.0
+1024,X_PAREN_FREE,+ one bracket pair,-0.025,-0.075,0.0,20,0.075,465.0
+1024,X_SEMICOLON_FREE,+ one semicolon,0.55,0.35,0.75,20,0.2875,575.0
+4096,X_PAREN_FREE,+ one bracket pair,-0.025,-0.075,0.0,20,0.0,451.0
+4096,X_SEMICOLON_FREE,+ one semicolon,0.375,0.175,0.575,20,0.05,577.0
+natural,X_PAREN_FREE,+ one bracket pair,0.0,0.0,0.0,20,0.0,450.0
+natural,X_SEMICOLON_FREE,+ one semicolon,0.4,0.225,0.55,20,0.0,622.0

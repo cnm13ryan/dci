@@ -82,8 +82,11 @@ def draw_lines(ax, table, x, linewidth=2.4, markersize=8, label_fontsize=11):
                     lw=linewidth, markersize=markersize, capsize=3, elinewidth=1.2,
                     markeredgecolor="white", markeredgewidth=0.9, zorder=3)
         last = sub.iloc[-1]
+        # A series that ends ON the zero line would have the zero line struck
+        # through its own label, so that label steps up out of the way.
+        dy = 13 if abs(last["estimate"]) < 0.05 else 0
         ax.annotate(LABEL[variant], (last["pos"], last["estimate"]),
-                    xytext=(12, 0), textcoords="offset points", va="center",
+                    xytext=(12, dy), textcoords="offset points", va="center",
                     fontsize=label_fontsize, fontweight="bold", color=COLOR[variant])
     return ax
 
@@ -93,8 +96,8 @@ def frame_axes(ax, x, labels, ylabel=True, tick_fontsize=10):
     ax.axvline((x[4] + x[5]) / 2, color="#c8c8c2", lw=1.0, ls=":", zorder=0)
     ax.set_xticks(x)
     ax.set_xticklabels(labels, fontsize=tick_fontsize)
-    ax.set_xlim(-0.45, x[-1] + 2.35)
-    ax.set_ylim(-0.12, 0.78)
+    ax.set_xlim(-0.45, x[-1] + 2.55)
+    ax.set_ylim(-0.14, 0.82)
     ax.set_yticks([0, 0.2, 0.4, 0.6])
     ax.set_yticklabels(["0", "0.2", "0.4", "0.6"], fontsize=tick_fontsize)
     if ylabel:
@@ -120,19 +123,22 @@ def prototype_a(table, natural, name="prototype_A_full_progression", final=False
                          & (table["setting"] == "natural")]["estimate"].iloc[0]
     semi_last = table[(table["variant"] == SEMICOLON)
                       & (table["setting"] == "natural")]["estimate"].iloc[0]
-    ax.annotate("More thinking\nfixes this one", (x[3], 0.02),
-                xytext=(x[2] - 0.35, 0.30), fontsize=11, color=COLOR[BRACKET],
+    ax.annotate("More thinking\nfixes this one", (x[3], -0.005),
+                xytext=(2.45, 0.20), fontsize=11, color=COLOR[BRACKET],
                 fontweight="bold", ha="center",
                 arrowprops=dict(arrowstyle="->", color=COLOR[BRACKET], lw=1.6))
-    ax.annotate("This one stays broken", (x[4], semi_last + 0.02),
-                xytext=(x[2] + 0.15, 0.70), fontsize=11, color=COLOR[SEMICOLON],
+    ax.annotate("This one stays broken", (x[4], semi_last + 0.03),
+                xytext=(1.95, 0.74), fontsize=11, color=COLOR[SEMICOLON],
                 fontweight="bold", ha="center",
                 arrowprops=dict(arrowstyle="->", color=COLOR[SEMICOLON], lw=1.6))
-    ax.annotate("model finished\nthinking on its own\n"
+    # The right-hand gap between the two lines is the only clear space; the
+    # endpoint note goes there rather than under the axis, where it collided
+    # with the blue line's own label.
+    ax.annotate("model finished thinking on its own\n"
                 f"{natural['cap_reached']}/{natural['n']} hit the safety limit\n"
-                f"median {natural['median']:,.0f} tokens",
-                (x[5], -0.115), ha="center", va="bottom", fontsize=8,
-                color="#6f6f6a")
+                f"median {natural['median']:,.0f} reasoning tokens",
+                (x[5] + 0.55, 0.175), ha="center", va="center", fontsize=8.5,
+                color="#6f6f6a", linespacing=1.5)
     ax.set_title("Does letting the model think for longer remove the conflict\n"
                  "between its instructions?", fontsize=13.5, fontweight="bold",
                  loc="left", pad=14)
@@ -169,7 +175,7 @@ def prototype_b(table, natural, name="prototype_B_endpoints"):
     ax.set_xticklabels(["No thinking", "Natural reasoning\n(finished on its own)"],
                        fontsize=11)
     ax.set_xlim(-0.55, 2.15)
-    ax.set_ylim(-0.12, 0.78)
+    ax.set_ylim(-0.14, 0.82)
     ax.set_yticks([0, 0.2, 0.4, 0.6])
     ax.set_ylabel("Increase in failure rate\non the main instruction", fontsize=11.5)
     for side in ("top", "right"):
@@ -271,6 +277,67 @@ def natural_distribution(frame, name="fig15_natural_reasoning_length"):
     plt.close(fig)
 
 
+# ============================================== the selected headline figure
+def figure1(table, natural, meta, name="figure1_headline", figsize=(8.2, 5.6)):
+    """Prototype A, with every gap the cold-reader test exposed closed.
+
+    The test found the shape read in 10-15 seconds but left the reader unable to
+    say what the two lines WERE, what the units were, what the error bars meant,
+    or how many items were behind each point. Each of those is now stated on the
+    figure in plain words rather than deferred to a caption, because the brief
+    requires the figure to stand alone.
+
+    The "stays broken" callout no longer points from 512 down to 4,096: the cold
+    reader correctly objected that an arrow along that path implies a decline the
+    error bars do not support.
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    x, labels = positions()
+    draw_lines(ax, table, x)
+    frame_axes(ax, x, labels)
+
+    ax.set_ylabel("Increase in failure rate on the main instruction\n"
+                  "(\u201cwrite exactly 4 sentences\u201d)", fontsize=11.5)
+    ax.annotate("More thinking\nfixes this one", (x[3], -0.005),
+                xytext=(2.45, 0.20), fontsize=11, color=COLOR[BRACKET],
+                fontweight="bold", ha="center",
+                arrowprops=dict(arrowstyle="->", color=COLOR[BRACKET], lw=1.6))
+    ax.annotate("This one stays broken", (x[5] - 0.35, 0.44),
+                xytext=(2.1, 0.76), fontsize=11, color=COLOR[SEMICOLON],
+                fontweight="bold", ha="center",
+                arrowprops=dict(arrowstyle="->", color=COLOR[SEMICOLON], lw=1.6,
+                                connectionstyle="arc3,rad=-0.12"))
+    ax.annotate("0 = the extra instruction\ncost the model nothing",
+                (x[5] + 0.62, -0.062), fontsize=8.5, color="#6f6f6a",
+                ha="center", va="center", linespacing=1.4)
+    ax.annotate("model finished thinking on its own\n"
+                f"{natural['cap_reached']}/{natural['n']} hit the safety limit\n"
+                f"median {natural['median']:,.0f} reasoning tokens",
+                (x[5] + 0.62, 0.185), ha="center", va="center", fontsize=8.5,
+                color="#6f6f6a", linespacing=1.5)
+
+    ax.set_title("Does letting the model think for longer remove the conflict\n"
+                 "between its instructions?", fontsize=14, fontweight="bold",
+                 loc="left", pad=54)
+    # The single thing the cold reader could not recover from the plot: what the
+    # two lines actually are. It is one sentence, so it goes on the figure.
+    ax.text(0, 1.035,
+            "Every prompt asks for exactly 4 sentences, plus a competing "
+            "instruction, plus one formatting instruction.\n"
+            "The two lines differ only in that formatting instruction \u2014 and "
+            "in nothing else.",
+            transform=ax.transAxes, fontsize=9.5, va="bottom", color="#3a3a36",
+            linespacing=1.5)
+    fig.text(0.5, -0.055,
+             f"Qwen3-4B  \u00b7  {meta['n_tasks']} tasks \u00d7 "
+             f"{meta['replicates']} replicates behind every point  \u00b7  "
+             "error bars are 95% intervals from resampling the tasks",
+             ha="center", fontsize=8.5, color="#6f6f6a")
+    fig.tight_layout()
+    plotstyle.save(fig, OUT, name)
+    plt.close(fig)
+
+
 def main() -> int:
     frame, meta = load()
     table = tau_table(frame)
@@ -286,6 +353,10 @@ def main() -> int:
     print("natural reasoning:", natural)
 
     prototype_a(table, natural)
+    figure1(table, natural, {'n_tasks': 20, 'replicates': 2})
+    # Deployment-size test: the width a two-column paper actually gives it.
+    figure1(table, natural, {'n_tasks': 20, 'replicates': 2},
+            name='figure1_headline_deployment_7in', figsize=(7.0, 4.9))
     prototype_b(table, natural)
     prototype_c(table, natural)
     natural_distribution(frame)
