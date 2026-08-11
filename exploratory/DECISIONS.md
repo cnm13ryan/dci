@@ -716,3 +716,237 @@ scope and one wording — semicolons at ≥2, ≥4, ≥6, against colons, dashes
 commas at ≥4. If the account is right, only the semicolon arms collapse and they
 do so monotonically in the count. If instead every mark at ≥4 collapses, the
 mechanism is about demanded punctuation volume and the semicolon is incidental.
+
+### E4b — quantity crossed with mark, at one scope and one wording
+
+`runs/stageE4b_totals_20260811T002409Z`. 880 generations, 5.5 min, 0 technical
+failures. All six arms use the identical template `Use at least {n} {marks} in
+the whole answer.`, so nothing varies but the number and the mark.
+
+**Paired excess over `C_L3` (A-failure):**
+
+| arm | demanded | `o_A` | `o_Q` | severe collapse `o_A`/`o_Q` | marks produced |
+|---|---|---|---|---|---|
+| `X_SEMICOLON_TOTAL2` | 2 `;` | 0.200 [0.075, 0.325] | 0.275 [0.150, 0.400] | 0.025 / 0.000 | 2.05 / 1.93 |
+| `X_SEMICOLON_TOTAL4` | 4 `;` | **0.975** [0.925, 1.000] | **0.975** [0.925, 1.000] | 1.000 / 0.900 | 3.75 / 3.23 |
+| `X_SEMICOLON_TOTAL6` | 6 `;` | **0.975** [0.925, 1.000] | **1.000** [1.000, 1.000] | 1.000 / 0.875 | 6.20 / 4.88 |
+| `X_COLON_TOTAL4` | 4 `:` | **0.850** [0.725, 0.950] | 0.175 [0.075, 0.275] | 0.550 / 0.100 | 4.00 / 1.60 |
+| `X_DASH_TOTAL4` | 4 `—` | 0.275 [0.150, 0.400] | 0.475 [0.300, 0.675] | **0.000 / 0.000** | 4.88 / 4.28 |
+| `X_COMMA_TOTAL4` | 4 `,` | **−0.025** | 0.050 | 0.000 / 0.000 | 4.25 / 3.28 |
+
+**A dose–response in semicolons, with a threshold at the target count.** Two
+semicolons cost 0.20–0.28; four cost 0.975. The step sits between 2 and 4 —
+i.e. at about the number of sentences the target asks for. Six adds nothing,
+because one sentence already absorbs any number.
+
+**The comma is inert at the same dose** (−0.025 / 0.050, four commas produced,
+four sentences kept). It is the negative control the design needed and it holds.
+
+**The isolated primitives are the cleanest statement in the study.** The arm
+alone — no target, no background, nothing to interfere with:
+
+| instruction alone | sentences produced |
+|---|---|
+| `Use at least 2 semicolons in the whole answer.` | **1.225** |
+| `Use at least 4 semicolons in the whole answer.` | **1.125** |
+| `Use at least 6 semicolons in the whole answer.` | **1.075** |
+| `Use at least 4 colons in the whole answer.` | 4.500 |
+| `Use at least 4 dashes in the whole answer.` | 4.575 |
+| `Use at least 4 commas in the whole answer.` | 3.875 |
+| `Write exactly 4 sentences.` | 4.000 |
+| (`C_L3`, every sentence begins with S) | 6.575 |
+
+Asking this model for **two semicolons and nothing else** makes it write one
+sentence. That is a disposition of the model, present before any target exists,
+and the interference is what happens when a sentence-count target has to fight it.
+
+**Per-sentence scoping turns out to be PROTECTIVE, which reverses the naive
+reading of D3.** The colon shows it directly, at the same dose:
+
+| colon rule | colons produced | sentences | excess |
+|---|---|---|---|
+| `at least one colon in every sentence` (E4) | 3.65 | **4.000** | **0.000** |
+| `at least 4 colons in the whole answer` (E4b, `o_A`) | 4.00 | **1.775** | **0.850** |
+
+Four colons either way. The per-sentence rule *requires them to be spread out*
+and the sentence count survives; the whole-answer floor permits concentration and
+the model concentrates. D3 read the scope difference as "per-sentence scoping
+causes substitution". It is the opposite: per-sentence scoping **forces
+distribution**, and the semicolon is simply the one mark whose chaining pull is
+strong enough to defeat that protection.
+
+**The colon's order asymmetry is a compliance difference, not a mechanism
+difference.** In `o_A` the model obeys (4.00 colons, arm compliance 0.575) and
+places them by writing ` : ` where a full stop would go:
+
+> `Bakeries open early … by 8:00 a.m. : This timing ensures … : Many families rely on the bakery …`
+
+In `o_Q` it largely ignores the rule (1.60 colons, arm compliance 0.050) and keeps
+four sentences. Where the colon is actually produced in quantity, it collapses.
+
+**The dash concentrates weakly and differently.** It costs 0.275–0.475 with
+**zero** severe collapse — the answers land at 3.5–3.7 sentences, an undershoot
+by one rather than a collapse to one. A different failure shape, and one that
+would have been invisible without the mode decomposition.
+
+**Unified account, which fits every cell in the study including D3's.**
+
+> The damage comes from **concentrating** demanded punctuation into few
+> sentences. A whole-answer floor permits concentration; a per-sentence rule
+> requires distribution and therefore partly protects. Marks differ in how
+> readily this model concentrates them into boundary positions:
+> semicolon ≫ colon > dash ≫ comma. `U_FMT_SEMI2` (exactly two semicolons) did
+> not collapse in D3 because two is below the threshold — exactly what
+> `X_SEMICOLON_TOTAL2` shows here at 0.20–0.28.
+
+---
+
+## E6 — cross-model replication: `google/gemma-2-9b-it`
+
+**Why.** Everything so far is a fact about `Qwen3-4B-Instruct-2507`. The
+disposition E4b isolated — realising "use semicolons" as a single clause-chained
+sentence — is a stylistic habit, and stylistic habits are exactly the kind of
+thing that differs between training pipelines.
+
+**Model.** `google/gemma-2-9b-it` @ `11c9b309abf73637e4b6f9a3fa1e92e615547819`,
+already resident, a different developer, a different tokenizer and a different
+size class. Its chat template **rejects the `system` role**, so the system
+message is merged into the first user turn, as its own model card prescribes;
+the run summary records `prompt_convention` so the two models' prompts are never
+silently assumed identical. Batch 8 rather than 16 for the 9B weights.
+
+**The smallest decisive battery.** Four arms, chosen because each one now has a
+sharp prediction rather than because it is available:
+
+| arm | Qwen3-4B result | what gemma tests |
+|---|---|---|
+| `X_SEMICOLON_TOTAL4` | excess 0.975 / 0.975 | is the disposition model-general? |
+| `X_SEMICOLON_EACH` | 0.750 / 0.675 | does per-sentence protection behave the same way? |
+| `X_COMMA_TOTAL4` | **−0.025 / 0.050** | is the negative control still negative? |
+| `C_L3` | 0 by definition | the paired control |
+
+Target A, background `U_LEX_FORBID3, U_NUM_MAXINT, U_FMT_PAREN1` — the same as
+E4b, so the comparison across models holds everything else fixed. Both orders,
+20 pilot tasks, 2 replicates, wording 0. 520 generations.
+
+**Outcomes and readings.**
+
+| observation | reading |
+|---|---|
+| semicolon floor collapses gemma too, comma floor does not | the disposition is **not Qwen-specific**; the claim can be stated about instruction-tuned models generally, pending a third family |
+| neither arm moves gemma | the whole effect is a fact about **one model**, and every earlier claim must be restated at that scope |
+| both semicolon and comma floors move gemma | gemma has a general punctuation-volume sensitivity that Qwen lacks; the marks are not doing the same work in the two models |
+| gemma's isolated primitive for the semicolon floor stays near 4 sentences | the disposition is absent even though interference may appear; report them separately |
+
+**A third family is contingent, not planned.** It is worth the download only if
+gemma reproduces — one replication and one failure would say the effect is
+model-specific without needing a third data point, whereas two replications make
+a third worth having.
+
+**Two checks on E4b that were not pre-registered but had to be made.**
+
+*Is the collapse just a hard instruction?* No — arm difficulty is uncorrelated
+with interference, and the sign is wrong:
+
+| arm | own-rule failure **in isolation** | A-failure under load | collapse |
+|---|---|---|---|
+| `X_SEMICOLON_TOTAL4` | **0.050** (easiest but one) | **0.988** | 0.950 |
+| `X_SEMICOLON_TOTAL6` | 0.075 | 1.000 | 0.938 |
+| `X_DASH_TOTAL4` | **0.000** (easiest) | 0.388 | 0.000 |
+| `X_COLON_TOTAL4` | **0.500** (hardest) | 0.525 | 0.325 |
+| `C_L3` | 0.225 | **0.013** | 0.000 |
+| `X_COMMA_TOTAL4` | 0.050 | 0.025 | 0.000 |
+
+The most damaging arm is among the easiest to satisfy on its own, and the hardest
+arm in the set is less damaging than it. Compositional difficulty is excluded.
+
+*Is it a clean trade — target given up to satisfy the arm?* Only partly, and the
+answer is order-dependent. Among collapsed `X_SEMICOLON_TOTAL4` rows, the arm's
+own rule is met in **55%** under `o_A` but **5.6%** under `o_Q`. The model moves
+toward the demand (3.1–3.8 semicolons against 0.000 for every control arm) and
+collapses on the way, but frequently stops short of the number asked for. The
+accurate phrasing is "collapses while **pursuing** the semicolon demand", not
+"collapses **in order to satisfy** it". The per-sentence semicolon rules are the
+clean-trade cases: there the arm is satisfied in 100% of collapsed rows.
+
+### E3 — target-count generalization, N ∈ {2, 3, 4, 5, 6}
+
+Five runs, 2000 generations, 0 technical failures. Only the target's `n` differs;
+the wordings are the registry's own `exact_sentence_count` templates.
+
+**Paired excess over `C_L3` (A-failure):**
+
+| N | `S_SEMICOLON` `o_A` | `S_SEMICOLON` `o_Q` | B `o_A` | B `o_Q` | `C_L3` own failure |
+|---|---|---|---|---|---|
+| 2 | 0.475 | **0.750** | **0.475** | **0.575** | 0.30 / 0.20 |
+| 3 | 0.600 | **0.925** | 0.050 | 0.475 | 0.000 |
+| 4 | **0.675** | 0.575 | 0.000 | 0.400 | 0.000 |
+| 5 | 0.475 | 0.500 | 0.075 | 0.225 | 0.025 / 0.000 |
+| 6 | 0.475 | 0.375 | 0.025 | 0.175 | 0.000 |
+
+**The pre-registered row for a *strategy* fired.** `S_SEMICOLON`'s excess is
+between 0.375 and 0.925 at every N and shows no monotone trend. It is **largest
+at N = 2**, where the instruction is easiest to satisfy alongside the target —
+two sentences, two semicolons, no strain at all. A difficulty response cannot
+produce that.
+
+**The distribution is binary, and the mean was hiding it.** At N = 6, mean
+sentence count under `S_SEMICOLON` is 3.6, which reads like a partial undershoot.
+It is not:
+
+| N = 6, `S_SEMICOLON` | 1 sentence | 5 | 6 (fully compliant) |
+|---|---|---|---|
+| `o_A` | **0.47** | 0.00 | **0.53** |
+| `o_Q` | **0.35** | 0.03 | **0.62** |
+
+Nothing between one and six. The model either writes one clause-chained sentence
+or complies exactly. That is a strategy being selected, not an ability degrading.
+`C_L3` is at 6.00 sentences in 100% of rows in the same cell.
+
+**B's excess falls monotonically with N** — 0.575, 0.475, 0.400, 0.225, 0.175 in
+`o_Q` — the opposite of the pre-registered capacity prediction. B pushes toward
+long sentences and few of them (its words rise 88 → 249 across the sweep), so a
+larger target gives it room and the interference dissipates. Another respect in
+which B is not the same phenomenon as the mark route.
+
+**Headroom, as pre-registered.** N = 2 is the only cell where the control itself
+fails (0.20–0.30); writing exactly two sentences under load is genuinely hard.
+Every excess at N = 2 is still measured against that control, but the cell is the
+weakest in the sweep and is reported as such. N = 3 to 6 all have a clean floor
+(`C_L3` at 0.000–0.025).
+
+### E4c — B's interference is an interaction with the background
+
+Two runs, 400 generations each, identical in every respect — same 20 pilot tasks,
+wording 0, load k=5, both orders, 2 replicates, same model and decoding —
+**except one member of the shared background set.**
+
+| arm / order | background = `U_FMT_COLON1` ("exactly one colon") | background = `U_FMT_PAREN1` ("exactly one parenthetical") |
+|---|---|---|
+| **B `o_Q`** | **0.325** [+0.17, +0.47] | **0.075** [0.00, +0.15] |
+| B `o_A` | 0.050 [0.00, +0.12] | 0.000 [0.00, 0.00] |
+| `S_SEMICOLON` `o_A` | 0.575 [+0.40, +0.75] | **0.725** [+0.60, +0.85] |
+| `S_SEMICOLON` `o_Q` | 0.475 [+0.33, +0.62] | **0.725** [+0.55, +0.88] |
+| `C_L3` (the control) | 0.000 | 0.000 |
+
+B's colon count falls from 0.325 to 0.025 and its interference falls with it, to
+an excess whose interval includes zero. `S_SEMICOLON` moves the *other* way and
+stays large under both. The control does not move at all, so this is not the run
+being easier.
+
+**Reading.** The colon-requiring background instruction was supplying B with a
+boundary-capable mark. B on its own does not reliably produce one; B alongside
+"use exactly one colon" does, and the sentence count suffers. Most of what was
+measured as **B's** directional interference in Stage B, E1 and E3-N4 is an
+interaction between B and a background member — not a property of B.
+
+**A methodological consequence for DCI generally, not just for this pair.** The
+background set is identical in the focal and every reference arm, and the study
+has been relying on that to argue it "cannot bias τ". That argument is correct
+and insufficient. A shared background cannot *bias* τ, but it can determine
+**whether τ exists at all**: here it moves B's estimate by a factor of four while
+leaving the matched control untouched. τ is therefore **conditional on the
+background**, and a τ reported without naming its background set is
+underspecified. This is a property of the estimand, not a defect in this
+implementation, and it was found only because the colon arm forced a background
+substitution for an unrelated reason.
