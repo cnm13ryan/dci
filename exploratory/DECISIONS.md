@@ -2481,3 +2481,34 @@ conflict.
 own value at natural reasoning (+0.400) sits below its no-thinking value
 (+0.525). The gap widens because the bracket condition is repaired, not because
 the semicolon condition degrades.
+
+---
+
+# Round 11 addendum — canonicalisation
+
+**R11.6 The shared-seed capped grid is deprecated, not merely superseded.**
+`reasoning_provenance.py` classifies every reasoning file by measuring its
+duplicate-replicate rate rather than trusting its name, and `natural_analysis.py`
+refuses to load the deprecated file. A file declared canonical that fails the
+test is re-labelled `CONTRADICTED` rather than used.
+
+**R11.7 A provenance gap in the vLLM runners, found by a guard.** Neither vLLM
+runner wrote the model identity into its rows, and the design `config.json`
+records the *Transformers* model the design was built for — so a naive revision
+check passes against the wrong model. The revision is now verified against the
+preserved vLLM engine banner, and both generation logs are stored beside the
+generations. Future runners should write model and revision per row.
+
+**R11.8 Claims removed from Figure 1 after a cold-reader retest.** Two
+annotations asserted more than the intervals support and were changed: a callout
+implying gradual improvement where the curve collapses at the smallest budget
+tested, and an arrow tracing a downward path along a line whose adjacent points
+are not resolved. Recorded because the corrections came from the critique, not
+from a fresh look at the data.
+
+**R11.9 Two things this branch does not resolve.** The two backgrounds are
+statistically indistinguishable at no-thinking (+0.450 [+0.275, +0.625] against
++0.525 [+0.350, +0.676]); and natural reasoning's median of 511 tokens is
+essentially the 512 setting yet yields +0.400 against +0.625, which this design
+cannot separate from noise because the 512 setting truncated 60% of its rows.
+Both are stated rather than smoothed.

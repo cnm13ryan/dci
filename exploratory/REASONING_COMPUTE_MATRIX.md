@@ -333,3 +333,28 @@ shows traces reaching 5,888 tokens.
 | condition | status | reason |
 |---|---|---|
 | first natural attempt (shared seed) | **invalid, not evidence** | written with the R10.2 seed defect; terminated at 157/160 and never completed. Superseded, not reported. |
+
+---
+
+## Part 4 — canonical status after Round 11 (this branch)
+
+The capped grid in Part 1 was generated with **one shared seed**, so its nominal
+replicate pairs are 97.5% duplicates. It is **deprecated**. Every figure and
+number on the `exp/natural-reasoning-headline` branch uses the re-seeded grid and
+the natural condition, both with per-row seeds and both measured at **0%**
+duplicate replicates.
+
+| file | status | why |
+|---|---|---|
+| `s18_reseeded.jsonl` | **CANONICAL** | capped grid, per-row seeds |
+| `natural_reasoning.jsonl` | **CANONICAL** | natural endpoint, per-row seeds, ceiling never binds |
+| `s18_reasoning.jsonl` | DEPRECATED | shared seed; retained, never loaded |
+| `s18_transition.jsonl` | FOREIGN | other branch; measured 98.4% duplicate replicates |
+| `s18_seedfix.jsonl` | FOREIGN | other branch's fixed verification run |
+
+Full classification, hashes and row counts: `REASONING_DATA_PROVENANCE.md` and
+`CANONICAL_RUN_MANIFEST.json`. Canonical results: `NATURAL_REASONING_RESULTS.md`.
+
+**The Part 1 and Part 2 tables above are superseded for the two backgrounds this
+branch covers.** They are kept as the record of what was run, not as the current
+estimates.
