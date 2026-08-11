@@ -196,9 +196,10 @@ def open_scientific_decisions() -> tuple[dict[str, Any], ...]:
                                  "load-bearing because split_sentences strips it; "
                                  "it settles the marker set and three other "
                                  "fields and none of the remaining five"),
-         "open_questions": dict(parsing.UNDETERMINED_BY_PREREGISTRATION),
+         "open_questions": {},
+         "resolved_by_amendment": dict(parsing.RESOLVED_BY_AMENDMENT),
          "minimum_decision": ("sign one ListPolicy; "
-                              "INHERITED_MARKER_POLICY is the candidate closest "
+                              "CANONICAL_LIST_POLICY is the candidate closest "
                               "to the inherited behaviour")},
         {"decision": "verifiers.p1.ordering_depth",
          "governing_text": ("section 6.1 lists ordering depth among the "
