@@ -98,9 +98,28 @@ all three were acted on rather than defended:
 
 | objection | verdict | action |
 |---|---|---|
-| "*More thinking fixes this one* is not what the blue line shows — it collapses between no-thinking and 256, the smallest budget tested, then is flat. The arrow points at 1024, which is arbitrary." | **Correct.** | Callout reworded to **"Any thinking at all fixes this one"** and re-aimed at the 0 → 256 drop. |
+| "*More thinking fixes this one* is not what the blue line shows — it collapses between no-thinking and 256, the smallest budget tested, then is flat. The arrow points at 1024, which is arbitrary." | **Correct.** | Callout re-aimed at the 0 → 256 drop. First reworded to "Any thinking at all fixes this one"; **that wording was itself withdrawn later** — see the note below — and is now **"Gone by the smallest budget tested"**. |
 | "The orange annotation arrow ends in empty space … it reads as if tracing a downward trend — exactly the opposite of the claim it is attached to." | **Correct.** | The arrow is **removed**. The text now sits above the line and makes a claim about level, not shape: **"This one never returns to zero"**. |
 | "*The conflict between its instructions* is not measured — the competing instruction is never named. The figure's headline concept is invisible in the data." | **Correct.** | The subtitle now names it: *make each sentence longer than the last*. |
+
+### Later correction to the first row
+
+"Any thinking at all" replaced one overclaim with another, and a subsequent
+review caught it. The wording asserted a result across the entire 1–255 range,
+in which no positive budget was ever run, so a transition or a reversal inside
+that range stays fully consistent with the plotted points.
+
+The second problem is larger and was not raised in review. 256 is not a clean
+small-budget condition: **86% of bracket rows and 94% of semicolon rows hit that
+cap**, so it is a truncation condition in which the cap forms part of the
+treatment rather than a budget the model finished inside. The same applies to
+the semicolon point at 512, whose 60% cap-hit rate sits underneath the highest
+estimate on the chart.
+
+The callout therefore now claims only the level at the smallest budget actually
+tested, and every materially cap-bound point is drawn with a hollow marker so a
+reader can see which conditions were cut off. The uncapped natural condition,
+with a 0% cap-hit rate, is what carries the bracket claim.
 
 Three further fixes followed from the same report: the y-axis note now says what
 the increase is **over** ("0 = the competing instruction caused no extra

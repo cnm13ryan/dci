@@ -71,6 +71,13 @@ def positions() -> tuple[list[float], list[str]]:
     return x, [label for _, label in SETTINGS]
 
 
+#: A reasoning budget this often reached is not a budget the model worked
+#: within — it is a truncation, and the cap becomes part of the treatment. Points
+#: at or above this cap-hit rate are drawn hollow so the reader can see that the
+#: condition differs in kind from the uncapped one, not merely in size.
+CAP_BOUND = 0.5
+
+
 def draw_lines(ax, table, x, linewidth=2.4, markersize=8, label_fontsize=11):
     for variant in (BRACKET, SEMICOLON):
         sub = table[table["variant"] == variant]
@@ -81,6 +88,11 @@ def draw_lines(ax, table, x, linewidth=2.4, markersize=8, label_fontsize=11):
                     color=COLOR[variant], ls=STYLE[variant], marker=MARKER[variant],
                     lw=linewidth, markersize=markersize, capsize=3, elinewidth=1.2,
                     markeredgecolor="white", markeredgewidth=0.9, zorder=3)
+        if "cap_hit" in sub.columns:
+            bound = sub[sub["cap_hit"] >= CAP_BOUND]
+            ax.scatter(bound["pos"], bound["estimate"], s=markersize ** 2 * 2.6,
+                       facecolors="none", edgecolors=COLOR[variant],
+                       linewidths=1.6, zorder=4)
         last = sub.iloc[-1]
         # A series that ends ON the zero line would have the zero line struck
         # through its own label, so that label steps up out of the way.
@@ -299,10 +311,20 @@ def figure1(table, natural, meta, name="figure1_headline", figsize=(9.0, 6.2)):
     ax.set_ylabel("Increase in failure rate on the main instruction\n"
                   "(\u201cwrite exactly 4 sentences\u201d)", fontsize=11.5)
     # The blue line does not improve gradually — it collapses between "no
-    # thinking" and the smallest budget tested, and nothing below 256 was run.
-    # The callout therefore points at that drop and says "any", not "more".
+    # thinking" and the smallest budget tested. The callout is bounded by what
+    # was actually run.
+    #
+    # "Any thinking at all fixes this one" was wrong twice over. There is no
+    # positive budget below 256, so it extrapolated across the entire untested
+    # 1-255 range, where a transition or a reversal would be perfectly
+    # consistent with the plotted points. And 256 is not a clean "small amount
+    # of thinking": 86% of bracket rows and 94% of semicolon rows hit that cap,
+    # so the condition is a truncation and the cap is part of the treatment
+    # rather than a budget the model finished inside. The claim that survives is
+    # about the LEVEL at the smallest tested budget, and it is carried by the
+    # uncapped natural condition at the right-hand end, whose cap-hit rate is 0.
     ax.set_ylim(-0.19, 0.95)
-    ax.annotate("Any thinking at all\nfixes this one", (0.55, 0.215),
+    ax.annotate("Gone by the smallest\nbudget tested", (0.55, 0.215),
                 xytext=(2.35, 0.15), fontsize=11, color=COLOR[BRACKET],
                 fontweight="bold", ha="center",
                 arrowprops=dict(arrowstyle="->", color=COLOR[BRACKET], lw=1.6))
@@ -312,6 +334,12 @@ def figure1(table, natural, meta, name="figure1_headline", figsize=(9.0, 6.2)):
                 color=COLOR[SEMICOLON], fontweight="bold", ha="center")
     ax.annotate("0 = the competing instruction\ncaused no extra failures",
                 (x[5] + 0.62, -0.125), fontsize=8.5, color="#6f6f6a",
+                ha="center", va="center", linespacing=1.4)
+    # Hollow markers are not decoration: they say the model was cut off rather
+    # than allowed to finish, so those points describe a truncation condition.
+    ax.annotate("hollow marker = the model was cut off\n"
+                "at this budget more than half the time",
+                (0.55, -0.152), fontsize=8.5, color="#6f6f6a",
                 ha="center", va="center", linespacing=1.4)
     ax.annotate("model finished thinking on its own\n"
                 "no answer came near the safety limit\n"
