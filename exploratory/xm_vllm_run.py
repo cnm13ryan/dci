@@ -31,61 +31,6 @@ def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-#: Every process pattern that can hold VRAM after its driver has gone.
-#: `VLLM::` alone is NOT enough: vLLM renames its engine and worker processes,
-#: but the BACKEND SCRIPT ITSELF keeps the name `python` and holds a GPU
-#: registration for as long as it lives. One such orphan from an abandoned
-#: calibration run survived fourteen hours and every reap in between, because
-#: every reap looked only for the renamed children.
-ORPHAN_PATTERNS = ("VLLM::", "crossmodel/vllm_tp2.py", "vllm_capacity_probe",
-                   "vllm_qwen_probe")
-
-
-def reap() -> None:
-    """Kill orphaned vLLM processes and their shared-memory segments.
-
-    Deliberately blunt, and safe because this driver owns the GPUs for the
-    duration of a run: anything matching these patterns that is still alive when
-    a new engine starts is by definition not wanted. The alternative — reading a
-    memory figure that some dead run is still holding — is how a technical
-    failure gets recorded as a capacity result.
-    """
-    import time
-
-    # This script's own command line is `xm_vllm_run.py`, which matches none of
-    # the patterns, so there is no self-kill risk. The child it launches has not
-    # started yet — reap always runs before the engine.
-    for pattern in ORPHAN_PATTERNS:
-        subprocess.run(["pkill", "-9", "-f", pattern], check=False)
-    for path in Path("/dev/shm").glob("psm_*"):
-        try:
-            path.unlink()
-        except OSError:
-            pass
-    time.sleep(5)
-
-
-def free_vram_gib() -> list[float]:
-    """Per-card free VRAM, so a capacity claim can prove it started clean."""
-    try:
-        out = subprocess.run(["rocm-smi", "--showmeminfo", "vram", "--json"],
-                             capture_output=True, text=True, timeout=60).stdout
-        data = json.loads(out)
-        free = []
-        for card in sorted(data):
-            total = float(data[card]["VRAM Total Memory (B)"])
-            used = float(data[card]["VRAM Total Used Memory (B)"])
-            # This host also exposes a small integrated GPU. It is not a
-            # tensor-parallel target and its 2 GiB would otherwise become the
-            # minimum in every cleanliness check.
-            if total / 2 ** 30 < 20.0:
-                continue
-            free.append(round((total - used) / 2 ** 30, 2))
-        return free
-    except Exception:                                   # noqa: BLE001
-        return []
-
-
 def run(command: list[str], log: Path) -> int:
     """Run a step, streaming to a log so a long generation is observable."""
     print("  $ " + " ".join(str(c) for c in command), flush=True)
@@ -111,6 +56,9 @@ def main() -> int:
     parser.add_argument("--deadline-seconds", type=float, default=None)
     parser.add_argument("--cpu-offload-gb", type=float, default=0.0)
     parser.add_argument("--out", default=None)
+    parser.add_argument("--resume", action="store_true",
+                        help="permit writing into a directory that already "
+                             "holds output")
     args = parser.parse_args()
 
     tag = args.model.split("/")[-1].replace(".", "")
@@ -118,6 +66,21 @@ def main() -> int:
     out_dir = Path(args.out or
                    f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}")
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    from crossmodel import runlock
+
+    # Exclusive ownership for the whole run — plan, generate and ingest. The
+    # engine is a CHILD of this process, so the lock's cleanup reaches it on
+    # SIGINT, SIGTERM and on any exception, which is what stops a killed run
+    # from leaving workers holding VRAM.
+    with runlock.RunLock(out_dir, args.model,
+                         run_kind=f"vllm_tp2_k{args.load}",
+                         gpus="tensor_parallel_size=2 (cuda:0+cuda:1)",
+                         allow_resume=args.resume) as lock:
+        return _drive(args, out_dir, lock)
+
+
+def _drive(args, out_dir: Path, lock) -> int:
     log = out_dir / "run.log"
 
     plan_command = [sys.executable, HERE / "xm_vllm_plan.py",
@@ -139,21 +102,25 @@ def main() -> int:
         print("  plan failed; see " + str(log))
         return 2
     plan = json.loads((out_dir / "plan.json").read_text())
+    lock.revision = plan["model_revision"]
+    lock._write_manifest(state="running")
     print(f"  {plan['model_id']} @ {plan['model_revision'][:12]} "
           f"k={plan['load']} rows={plan['expected_rows']} "
           f"{plan['reasoning_mode']} "
           f"budget={plan['generation_ceiling']}/request", flush=True)
 
-    # An engine killed mid-run leaves worker processes holding VRAM and shared
-    # memory segments behind. The next launch then fails to allocate and looks
-    # like a capacity limit of the model, which it is not. Reap before every
-    # launch so a memory result is a result about the model.
-    reap()
-    free = free_vram_gib()
-    print(f"  free VRAM after reap: {free} GiB", flush=True)
+    # The lock already reaped orphans and recorded free VRAM at acquisition.
+    # Re-read it here so the number sits beside the engine that used it, and so
+    # a capacity result can prove what the cards held when it was measured.
+    from crossmodel import runlock
+
+    free = runlock.free_vram_gib()
+    print(f"  free VRAM before engine: {free} GiB", flush=True)
     (out_dir / "free_vram_before_engine.json").write_text(json.dumps({
         "free_gib_per_card": free,
-        "reaped_patterns": list(ORPHAN_PATTERNS)}, indent=1))
+        "free_gib_at_lock_acquisition": lock.free_vram_at_start,
+        "orphans_reaped_at_start": lock.orphans_reaped,
+        "host_memory_gib": runlock.host_memory_gib()}, indent=1))
     if free and min(free) < 20.0:
         # Not fatal — the run proceeds and records it — but a memory result
         # obtained on a dirty card is not a fact about the checkpoint.

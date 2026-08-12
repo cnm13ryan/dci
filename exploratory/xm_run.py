@@ -29,7 +29,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from crossmodel import contract, runner, seeds
+from crossmodel import contract, runlock, runner, seeds
 from crossmodel.adapters import CHECKPOINTS, get_adapter
 from crossmodel.contract import ReasoningMode
 from crossmodel.schema import assert_provenance
@@ -64,6 +64,10 @@ def main() -> int:
     parser.add_argument("--out", default=None)
     parser.add_argument("--merge", nargs="*", default=None,
                         help="merge these shard files and exit")
+    parser.add_argument("--resume", action="store_true",
+                        help="permit writing into a directory that already "
+                             "holds output; off by default because appending "
+                             "to another run's file corrupts it")
     args = parser.parse_args()
 
     tag = args.model.split("/")[-1].replace(".", "")
@@ -79,6 +83,16 @@ def main() -> int:
         print(f"merged {len(merged)} rows -> {path}")
         return 0
 
+    # Exclusive ownership, taken BEFORE anything touches a GPU. Everything from
+    # here on runs inside it, so a second run cannot start, an orphan of a dead
+    # run cannot linger, and an interrupted run cannot leave children behind.
+    with runlock.RunLock(out_dir, args.model, run_kind=f"transformers_k{args.load}",
+                         gpus=args.device_map,
+                         allow_resume=args.resume) as lock:
+        return _generate(args, out_dir, lock)
+
+
+def _generate(args, out_dir: Path, lock) -> int:
     from dci_exploratory import extensions, harvest
 
     extensions.register()
@@ -104,6 +118,10 @@ def main() -> int:
 
     revision = adapter.resolve_revision()
     print(f"{args.model} @ {revision}")
+    # The lock manifest records WHICH checkpoint owns the GPUs, not just that
+    # someone does, so a concurrent attempt is refused with a useful message.
+    lock.revision = revision
+    lock._write_manifest(state="running")
 
     # -------- the prospective record, written BEFORE generation ------------
     # Written first on purpose. A plan recorded after the estimate is known is
@@ -144,6 +162,11 @@ def main() -> int:
 
     suffix = "" if args.of == 1 else f".shard{args.shard}of{args.of}"
     path = out_dir / f"generations{suffix}.jsonl"
+    # Refuse to publish a file whose rows are not exactly the design's rows.
+    # Duplicate ids are the fingerprint of two writers; that went undetected
+    # once and produced a plausible-looking but corrupt file.
+    integrity = runlock.assert_unique_rows(
+        records, expected=len(design_rows) if args.of == 1 else None)
     runner.write_rows(records, path)
 
     audit = seeds.replicate_duplication(records)
@@ -155,6 +178,9 @@ def main() -> int:
         "rows_written": len(records),
         "output": str(path),
         "replicate_duplication": audit,
+        "dataset_integrity": integrity,
+        "free_vram_gib_at_start": lock.free_vram_at_start,
+        "orphans_reaped_at_start": lock.orphans_reaped,
         "technical_failures": sum(1 for r in records if r["technical_failure"]),
         "empty_answers": sum(1 for r in records if r["answer_empty"]),
         "truncated_answers": sum(1 for r in records if r["answer_truncated"]),
