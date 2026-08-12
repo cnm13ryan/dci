@@ -105,6 +105,11 @@ def main() -> int:
 
     assert_provenance(records, expected_model=plan["model_id"],
                       expected_revision=plan["model_revision"])
+    # Duplicate row ids are the fingerprint of two writers on one file. The
+    # count alone can look right while the contents do not.
+    from crossmodel.runlock import assert_unique_rows
+
+    integrity = assert_unique_rows(records, expected=plan["expected_rows"])
     if len(records) != plan["expected_rows"]:
         raise SystemExit(
             f"ingested {len(records)} rows, plan expected "
@@ -129,6 +134,7 @@ def main() -> int:
             states.get(record["final_answer_status"], 0) + 1
     print("  final answer status " + ", ".join(
         f"{k} {v}" for k, v in sorted(states.items())))
+    print(f"  integrity {integrity}")
     print(f"  traces opened "
           f"{sum(1 for r in records if r['reasoning_emitted'])}/{len(records)} "
           f"· median reasoning "
