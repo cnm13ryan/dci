@@ -89,6 +89,27 @@ def admission(cls, mode: str, validate: dict | None, calibrate: dict | None
     if verdict.get("status") == "MODE_FAILED":
         return {"admitted": False,
                 "reason": f"{mode} failed: {verdict.get('error','')[:180]}"}
+    # Admission requires POSITIVE validity, not merely the absence of an outright
+    # failure. MODE_SUSPECT is not a soft warning: Stage B/C raises it for an
+    # empty final answer, a trace opened and never closed, a reasoning trace
+    # appearing in the native non-thinking mode, a thinking mode that never
+    # opened a block, and for WEIGHTS SUSPECT — not one trivial weight-integrity
+    # question answered correctly, which is what a partially initialised load
+    # looks like. A cell built on any of those describes the harness, not the
+    # checkpoint.
+    #
+    # It matters most on the NO_THINKING path, which returns admitted below with
+    # no further gate. NATURAL_REASONING still has to clear Stage E, and that is
+    # the only reason the one suspect cell in the frozen matrix (Qwen3.5-4B
+    # natural) was not admitted — luck, not design.
+    #
+    # Testing for MODE_VALID rather than enumerating bad statuses also fails
+    # closed on any verdict a future Stage B/C learns to emit.
+    if verdict.get("status") != "MODE_VALID":
+        problems = verdict.get("problems") or []
+        detail = "; ".join(problems)[:200] if problems else "no detail recorded"
+        return {"admitted": False,
+                "reason": f"{verdict.get('status')}: {detail}"}
     if verdict.get("marker_leak_into_answer") or verdict.get(
             "control_token_residue"):
         return {"admitted": False,
