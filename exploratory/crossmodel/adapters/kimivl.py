@@ -67,6 +67,11 @@ class KimiVLThinkingAdapter(TransformersAdapter):
     #: PRACTICAL envelope; the architecture advertises 131,072.
     CONTEXT_LIMIT = 40960
 
+    #: Set from the resolved revision before the shims run, so a shim that has
+    #: to re-resolve the dynamic module pins the SAME commit the load uses. A
+    #: shim applied to a different revision's code would be worse than no shim.
+    _pinned_revision: str = ""
+
     #: The model card's reference parser reads ONE unbroken generation and
     #: splits it. The template does not pre-open the reasoning block, so nothing
     #: guarantees the trace comes first, and the documented path is the one this
@@ -165,6 +170,59 @@ class KimiVLThinkingAdapter(TransformersAdapter):
                 f"read); rope_theta={theta} and max_position_embeddings="
                 f"{window} preserved")
 
+    @staticmethod
+    def _tolerate_tie_weights_kwargs(config) -> str:
+        """Let the checkpoint's `tie_weights()` survive a new caller signature.
+
+        transformers 5.15.0's `init_weights` calls
+        `self.tie_weights(recompute_mapping=False)`. The checkpoint's method,
+        written against 4.48.2, takes no arguments:
+
+            def tie_weights(self):
+                return self.language_model.tie_weights()
+
+        so construction dies with a TypeError before a single weight is read.
+
+        This is only safe because the checkpoint declares
+        `tie_word_embeddings: False` at both the top level and in `text_config`
+        — tying is a no-op for this model, so there is no behaviour to get
+        wrong, and the argument being dropped is `False`, the inert value. The
+        assertion below refuses to install the shim on a checkpoint that DOES
+        tie its embeddings, where silently ignoring a mapping instruction could
+        matter.
+        """
+        import inspect
+
+        from transformers.dynamic_module_utils import (
+            get_class_from_dynamic_module)
+
+        tied = bool(getattr(config, "tie_word_embeddings", False)) or bool(
+            getattr(getattr(config, "text_config", None),
+                    "tie_word_embeddings", False))
+        if tied:
+            raise ValueError(
+                "this checkpoint ties its word embeddings; refusing to install "
+                "a shim that discards tie_weights arguments")
+
+        # The same dynamic module transformers will instantiate, so the patch
+        # lands on the class actually used rather than on a fresh import.
+        cls = get_class_from_dynamic_module(
+            "modeling_kimi_vl.KimiVLForConditionalGeneration",
+            KimiVLThinkingAdapter.MODEL_ID,
+            revision=KimiVLThinkingAdapter._pinned_revision)
+        original = cls.tie_weights
+        if "recompute_mapping" in inspect.signature(original).parameters:
+            return "not needed: tie_weights already accepts the argument"
+
+        def tie_weights(self, *args, **kwargs):
+            return original(self)
+
+        cls.tie_weights = tie_weights
+        return ("KimiVLForConditionalGeneration.tie_weights now ignores "
+                "caller kwargs (transformers 5.x passes recompute_mapping="
+                "False); tie_word_embeddings is False in this checkpoint, so "
+                "tying is a no-op and nothing is discarded")
+
     def _load_weights(self, revision: str, dtype):
         """Load through the checkpoint's own remote code, eager attention.
 
@@ -183,6 +241,8 @@ class KimiVLThinkingAdapter(TransformersAdapter):
         config = transformers.AutoConfig.from_pretrained(
             self.MODEL_ID, revision=revision, **self.LOAD_KWARGS)
         shims.append(self._restore_declared_rope(config))
+        type(self)._pinned_revision = revision
+        shims.append(self._tolerate_tie_weights_kwargs(config))
         self.compatibility_shim = "; ".join(
             s for s in shims if not s.startswith("not needed"))
 
