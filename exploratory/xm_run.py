@@ -53,6 +53,11 @@ def main() -> int:
                         choices=[3, 5],
                         help="k=5 uses the repository's existing higher-load "
                              "construction, not a new one")
+    parser.add_argument("--max-memory-per-gpu", default=None,
+                        help="weight budget per card in dual-GPU capacity "
+                             "mode, e.g. 14GiB. Lower leaves more room for the "
+                             "KV cache, which is what a long reasoning trace "
+                             "actually consumes")
     parser.add_argument("--generation-ceiling", type=int, default=None,
                         help="total tokens per request; sets the recorded "
                              "condition to THINKING_ENABLED_BOUNDED")
@@ -90,6 +95,8 @@ def main() -> int:
           f"{len(contract.BACKGROUNDS)} backgrounds x {len(contract.ARMS)} arms)")
 
     adapter = get_adapter(args.model, device_map=args.device_map)
+    if args.max_memory_per_gpu:
+        adapter.CAPACITY_MAX_MEMORY_PER_GPU = args.max_memory_per_gpu
     if not adapter.supports(args.mode):
         print(f"{args.model} does not natively support {args.mode}; "
               "the cell is left missing rather than emulated")

@@ -31,17 +31,59 @@ def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
+#: Every process pattern that can hold VRAM after its driver has gone.
+#: `VLLM::` alone is NOT enough: vLLM renames its engine and worker processes,
+#: but the BACKEND SCRIPT ITSELF keeps the name `python` and holds a GPU
+#: registration for as long as it lives. One such orphan from an abandoned
+#: calibration run survived fourteen hours and every reap in between, because
+#: every reap looked only for the renamed children.
+ORPHAN_PATTERNS = ("VLLM::", "crossmodel/vllm_tp2.py", "vllm_capacity_probe",
+                   "vllm_qwen_probe")
+
+
 def reap() -> None:
-    """Kill orphaned vLLM workers and their shared-memory segments."""
+    """Kill orphaned vLLM processes and their shared-memory segments.
+
+    Deliberately blunt, and safe because this driver owns the GPUs for the
+    duration of a run: anything matching these patterns that is still alive when
+    a new engine starts is by definition not wanted. The alternative — reading a
+    memory figure that some dead run is still holding — is how a technical
+    failure gets recorded as a capacity result.
+    """
     import time
 
-    subprocess.run(["pkill", "-9", "-f", "VLLM::"], check=False)
+    # This script's own command line is `xm_vllm_run.py`, which matches none of
+    # the patterns, so there is no self-kill risk. The child it launches has not
+    # started yet — reap always runs before the engine.
+    for pattern in ORPHAN_PATTERNS:
+        subprocess.run(["pkill", "-9", "-f", pattern], check=False)
     for path in Path("/dev/shm").glob("psm_*"):
         try:
             path.unlink()
         except OSError:
             pass
     time.sleep(5)
+
+
+def free_vram_gib() -> list[float]:
+    """Per-card free VRAM, so a capacity claim can prove it started clean."""
+    try:
+        out = subprocess.run(["rocm-smi", "--showmeminfo", "vram", "--json"],
+                             capture_output=True, text=True, timeout=60).stdout
+        data = json.loads(out)
+        free = []
+        for card in sorted(data):
+            total = float(data[card]["VRAM Total Memory (B)"])
+            used = float(data[card]["VRAM Total Used Memory (B)"])
+            # This host also exposes a small integrated GPU. It is not a
+            # tensor-parallel target and its 2 GiB would otherwise become the
+            # minimum in every cleanliness check.
+            if total / 2 ** 30 < 20.0:
+                continue
+            free.append(round((total - used) / 2 ** 30, 2))
+        return free
+    except Exception:                                   # noqa: BLE001
+        return []
 
 
 def run(command: list[str], log: Path) -> int:
@@ -107,6 +149,17 @@ def main() -> int:
     # like a capacity limit of the model, which it is not. Reap before every
     # launch so a memory result is a result about the model.
     reap()
+    free = free_vram_gib()
+    print(f"  free VRAM after reap: {free} GiB", flush=True)
+    (out_dir / "free_vram_before_engine.json").write_text(json.dumps({
+        "free_gib_per_card": free,
+        "reaped_patterns": list(ORPHAN_PATTERNS)}, indent=1))
+    if free and min(free) < 20.0:
+        # Not fatal — the run proceeds and records it — but a memory result
+        # obtained on a dirty card is not a fact about the checkpoint.
+        print(f"  WARNING: a card has only {min(free):.2f} GiB free before the "
+              "engine starts; any capacity result here is NOT attributable to "
+              "the model", flush=True)
 
     print(f"STEP 2/3 — generate (vLLM TP={plan['tensor_parallel_size']})",
           flush=True)
