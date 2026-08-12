@@ -378,3 +378,47 @@ truncated answers, 0 ceiling hits, replicate duplication 0/80 in every file.
 | gemma-4-12B-it `NATURAL_REASONING` on one card | 22.28 GiB resident of 23.98 GiB; OOM with 80 MiB free. Needs dual-GPU capacity mode |
 | gemma-4-E4B-it text-only load | checkpoint stores `model.language_model.*` beside vision **and audio** towers; the causal-LM class leaves 667 parameters randomly initialised and emits noise |
 | Kimi-VL | weights downloaded and revision pinned, tokenizer works with `tiktoken`, but `modeling_kimi_vl.py` (written for transformers 4.48.2) imports `is_torch_fx_available`, which transformers 5.15.0 removed. Nothing generated: **uninterpretable, not null** |
+
+---
+
+## 19. vLLM TP=2 retry (`VLLM_TP2_CROSS_MODEL`)
+
+Backend-controlled retry of §18, intended to remove the Transformers confound by
+running all five checkpoints through one vLLM engine with
+`tensor_parallel_size=2` and native thinking enabled.
+
+**Coverage added to the main DCI design: none.** Zero of five checkpoints
+reached the k=3 slice. The infrastructure was qualified and works; the
+checkpoints did not.
+
+| checkpoint | Stage A (TP=2) | Stage B (natural reasoning) | k=3 rows |
+|---|---|---|---|
+| `Qwen/Qwen3.5-4B` | TP2 load valid, parser clean, weights 4/4 | traces do not close on composed prompts | 0 |
+| `Qwen/Qwen3.5-9B` | **TP2_LOAD_VALID**, 8/8 closed on simple prompts | 6/24 DCI-shaped rows closed; rest still generating when stopped | 0 |
+| `google/gemma-4-E4B-it` | **TP2_BACKEND_BLOCKED** — heterogeneous `head_dim` | — | 0 |
+| `google/gemma-4-12B-it` | **TP2_BACKEND_BLOCKED** — same | — | 0 |
+| `moonshotai/Kimi-VL-A3B-Thinking-2506` | **TP2_CAPACITY_BLOCKED** — 30.56 GiB, OOM at 40,960 / 0.85 | — | 0 |
+
+### Backend, qualified before generation
+
+`vllm 0.27.1+rocm723` (commit `6e448d0ea`), torch `2.11.0+gitd0c8b1f`,
+transformers 5.15.0, BF16, TP=2, `disable_custom_all_reduce=True`,
+`NCCL_P2P_DISABLE=1`, on 2 × RX 7900 XTX (gfx1100). Verified sharding: one
+`EngineCore` plus two `Worker_TP*` processes, both cards ~85–89 % VRAM at ~100 %
+utilisation.
+
+Version selection was forced: 0.15.1 (the canonical run's build) carries only
+Kimi-VL; the local v0.18.1rc0 checkout predates Gemma 4; 0.27.1 carries all five.
+
+### What this changes about §17 and §18's blockers
+
+| earlier blocker | under vLLM TP=2 |
+|---|---|
+| Kimi-VL `is_torch_fx_available` (transformers 5.x) | **removed** — vLLM has its own `kimi_vl` implementation; the blocker moves to memory |
+| gemma-4-12B-it single-card OOM | **not tested** — blocked earlier, at config conversion |
+| Qwen3.5 reasoning does not terminate (**I21**) | **reproduced** with TP=2 headroom and a ~39.3K ceiling, on the DCI prompt shape |
+
+**No single execution condition on this host covers all five checkpoints.**
+Transformers runs Gemma 4 and not Kimi-VL; vLLM recognises Kimi-VL's
+architecture and not Gemma 4's config; neither establishes Qwen3.5 natural
+reasoning.
