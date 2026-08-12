@@ -97,7 +97,9 @@ def check(frame: pd.DataFrame) -> None:
           not frame.duplicated(["model_id", "reasoning_mode",
                                 "row_id"]).any())
     guard("instruction order is QAC", set(frame["order"]) == {contract.ORDER})
-    guard("load is 3", set(frame["load"]) == {contract.LOAD})
+    guard("load is 3 or the repository's k=5 construction",
+          set(frame["load"]) <= {contract.LOAD, contract.LOAD + 2},
+          f"({sorted(set(frame['load']))})")
     guard("arms are focal and matched reference",
           set(frame["arm"]) == {FOCAL, REFERENCE})
     guard("backgrounds are the two intended ones",
@@ -167,8 +169,8 @@ def tau_per_task(cell: pd.DataFrame) -> pd.Series:
 def main_result(frame: pd.DataFrame) -> pd.DataFrame:
     """tau and its two raw components, per model, background and mode."""
     rows = []
-    for (model, mode, background), cell in frame.groupby(
-            ["model_id", "reasoning_mode", "background"]):
+    for (model, mode, load, background), cell in frame.groupby(
+            ["model_id", "reasoning_mode", "load", "background"]):
         per_task = tau_per_task(cell)
         stats = plotstyle.summarise(
             per_task, f"{model}|{mode}|tau|{background}")
@@ -176,7 +178,7 @@ def main_result(frame: pd.DataFrame) -> pd.DataFrame:
         reference = cell[cell["arm"] == REFERENCE]
         rows.append({
             "model": model.split("/")[-1], "model_id": model,
-            "reasoning": mode, "background": LABEL[background],
+            "reasoning": mode, "load": load, "background": LABEL[background],
             "variant": background,
             "focal_A_failure": focal["a_failure"].mean(),
             "reference_A_failure": reference["a_failure"].mean(),
@@ -216,7 +218,8 @@ def degeneracy(focal_failure: float, reference_failure: float) -> str:
 def background_contrast(frame: pd.DataFrame) -> pd.DataFrame:
     """Delta = tau(semicolon) - tau(control), paired within task."""
     rows = []
-    for (model, mode), cell in frame.groupby(["model_id", "reasoning_mode"]):
+    for (model, mode, load), cell in frame.groupby(
+            ["model_id", "reasoning_mode", "load"]):
         taus = {v: tau_per_task(sub)
                 for v, sub in cell.groupby("background")}
         if SEMICOLON not in taus or CONTROL not in taus:
@@ -224,7 +227,7 @@ def background_contrast(frame: pd.DataFrame) -> pd.DataFrame:
         delta = (taus[SEMICOLON] - taus[CONTROL]).dropna()
         stats = plotstyle.summarise(delta, f"{model}|{mode}|delta")
         rows.append({
-            "model": model.split("/")[-1], "reasoning": mode,
+            "model": model.split("/")[-1], "reasoning": mode, "load": load,
             "tau_control": taus[CONTROL].mean(),
             "tau_semicolon": taus[SEMICOLON].mean(),
             "delta_semicolon": stats["estimate"],
@@ -253,8 +256,8 @@ def joint_contrast(frame: pd.DataFrame) -> pd.DataFrame:
     """
     rows = []
     focal_only = frame[frame["arm"] == FOCAL]
-    for (model, mode), cell in focal_only.groupby(["model_id",
-                                                   "reasoning_mode"]):
+    for (model, mode, load), cell in focal_only.groupby(
+            ["model_id", "reasoning_mode", "load"]):
         cell = cell.copy()
         cell["both"] = (cell["outcome"] == "both satisfied").astype(float)
         rates = cell.groupby(["background", "task_id"])["both"].mean()
@@ -264,7 +267,7 @@ def joint_contrast(frame: pd.DataFrame) -> pd.DataFrame:
         delta = (rates.loc[SEMICOLON] - rates.loc[CONTROL]).dropna()
         stats = plotstyle.summarise(delta, f"{model}|{mode}|joint")
         rows.append({
-            "model": model.split("/")[-1], "reasoning": mode,
+            "model": model.split("/")[-1], "reasoning": mode, "load": load,
             "joint_control": rates.loc[CONTROL].mean(),
             "joint_semicolon": rates.loc[SEMICOLON].mean(),
             "delta_joint": stats["estimate"], "lo": stats["lo"],
@@ -277,10 +280,11 @@ def four_state(frame: pd.DataFrame) -> pd.DataFrame:
     focal = frame[frame["arm"] == FOCAL]
     table = (pd.crosstab(
         [focal["model_id"].str.split("/").str[-1], focal["reasoning_mode"],
-         focal["background"].map(LABEL)], focal["outcome"], normalize="index")
+         focal["load"], focal["background"].map(LABEL)],
+        focal["outcome"], normalize="index")
         .reindex(columns=["both satisfied", "target only", "focal only",
                           "neither"], fill_value=0.0))
-    table.index.names = ["model", "reasoning", "background"]
+    table.index.names = ["model", "reasoning", "load", "background"]
     return table
 
 
@@ -293,11 +297,12 @@ def primitive_compliance(frame: pd.DataFrame) -> pd.DataFrame:
     'neither' versus 'target only', not on arbitration.
     """
     rows = []
-    for (model, mode), cell in frame.groupby(["model_id", "reasoning_mode"]):
+    for (model, mode, load), cell in frame.groupby(
+            ["model_id", "reasoning_mode", "load"]):
         focal = cell[cell["arm"] == FOCAL]
         reference = cell[cell["arm"] == REFERENCE]
         rows.append({
-            "model": model.split("/")[-1], "reasoning": mode,
+            "model": model.split("/")[-1], "reasoning": mode, "load": load,
             "A_in_focal_arm": focal["a_pass"].mean(),
             "A_in_reference_arm": reference["a_pass"].mean(),
             "B_compliance": focal["arm_pass"].mean(),
