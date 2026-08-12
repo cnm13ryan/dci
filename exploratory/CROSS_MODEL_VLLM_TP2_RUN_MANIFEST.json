@@ -1,0 +1,50 @@
+{
+ "stamp": "EXPLORATORY_NO_EVIDENCE",
+ "created_utc": "2026-08-12T01:10:07.525184+00:00",
+ "git_commit": "84c8cb3dfcf3f628e4d43e81b175d26a27896663",
+ "git_branch": "exp/cross-model-transport",
+ "git_dirty": true,
+ "contract": {
+  "target": "A",
+  "focal": "B",
+  "reference": "C_L3",
+  "control_background": "X_PAREN_FREE",
+  "semicolon_background": "X_SEMICOLON_FREE",
+  "order": "QAC",
+  "load": 3,
+  "task_split": "pilot",
+  "task_offset": 0,
+  "n_tasks": 20,
+  "replicates": 2,
+  "paraphrase_id": 0,
+  "expected_rows": 160,
+  "answer_tokens": 512,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "top_k": 0,
+  "master_seed": 20260812,
+  "replicates_canonical_run": "stageS18_reasoning_design_20260811T144250Z",
+  "canonical_model": "Qwen/Qwen3-4B",
+  "canonical_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "canonical_backend": "vllm 0.15.1+rocm720, tensor_parallel_size=2"
+ },
+ "note": "runs/ is gitignored. These hashes and row counts are how a raw artefact is identified; filenames are not evidence.",
+ "files": [
+  {
+   "relative_path": "runs/xmv_smoke_qwen4b",
+   "file_name": "raw_generations.jsonl",
+   "sha256": "f0f7f872d3d640a0cef92f7c73fbf410bccc45cb55dc93d94bbffc428a1287b6",
+   "rows": 8,
+   "canonical_status": "QUALIFICATION ARTEFACT \u2014 not a scientific slice",
+   "note": "KeyError: 'task_id'"
+  },
+  {
+   "relative_path": "runs/xmv_smoke2_Qwen35-9B",
+   "file_name": "raw_generations.jsonl",
+   "sha256": "20219330fba6c4e6a74add030c2ddff304d3f63c72303b93f4aa963ff66db0a0",
+   "rows": 8,
+   "canonical_status": "QUALIFICATION ARTEFACT \u2014 not a scientific slice",
+   "note": "KeyError: 'task_id'"
+  }
+ ]
+}
