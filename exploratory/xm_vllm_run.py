@@ -1,0 +1,107 @@
+"""Drive one vLLM TP=2 slice end to end: plan, generate, ingest.
+
+Three steps in two interpreters. The plan and the ingest run here, in the
+scientific environment; the generation runs in `.venv-vllm`, which has the torch
+the vLLM wheel needs. Nothing scientific crosses that boundary except the design
+and the rows.
+
+    uv run python xm_vllm_run.py --model Qwen/Qwen3.5-4B --load 3
+    uv run python xm_vllm_run.py --model google/gemma-4-12B-it --load 5
+
+`--calibration N` runs the Stage B pilot instead: the same DCI-shaped prompts on
+N tasks drawn from a split the evaluation slice never touches.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
+BACKEND_SCRIPT = HERE / "crossmodel" / "vllm_tp2.py"
+
+
+def utc_stamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def run(command: list[str], log: Path) -> int:
+    """Run a step, streaming to a log so a long generation is observable."""
+    print("  $ " + " ".join(str(c) for c in command), flush=True)
+    with log.open("a") as handle:
+        completed = subprocess.run([str(c) for c in command], stdout=handle,
+                                   stderr=subprocess.STDOUT)
+    return completed.returncode
+
+
+def main() -> int:
+    from crossmodel import vllm_models
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model", required=True,
+                        choices=list(vllm_models.CHECKPOINTS))
+    parser.add_argument("--load", type=int, default=3, choices=[3, 5])
+    parser.add_argument("--calibration", type=int, default=None,
+                        help="Stage B pilot on N disjoint tasks")
+    parser.add_argument("--max-model-len", type=int, default=None)
+    parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
+    parser.add_argument("--out", default=None)
+    args = parser.parse_args()
+
+    tag = args.model.split("/")[-1].replace(".", "")
+    kind = "calib" if args.calibration else "main"
+    out_dir = Path(args.out or
+                   f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log = out_dir / "run.log"
+
+    plan_command = [sys.executable, HERE / "xm_vllm_plan.py",
+                    "--model", args.model, "--load", str(args.load),
+                    "--out", str(out_dir),
+                    "--gpu-memory-utilization",
+                    str(args.gpu_memory_utilization)]
+    if args.max_model_len:
+        plan_command += ["--max-model-len", str(args.max_model_len)]
+    if args.calibration:
+        plan_command += ["--tasks-override", str(args.calibration)]
+    print("STEP 1/3 — plan", flush=True)
+    if run(plan_command, log):
+        print("  plan failed; see " + str(log))
+        return 2
+    plan = json.loads((out_dir / "plan.json").read_text())
+    print(f"  {plan['model_id']} @ {plan['model_revision'][:12]} "
+          f"k={plan['load']} rows={plan['expected_rows']} "
+          f"ceiling={plan['engineering_ceiling']}", flush=True)
+
+    print(f"STEP 2/3 — generate (vLLM TP={plan['tensor_parallel_size']})",
+          flush=True)
+    generate_command = [BACKEND_PYTHON, BACKEND_SCRIPT,
+                        "--plan", out_dir / "plan.json",
+                        "--design", out_dir / "design.jsonl",
+                        "--out", out_dir / "raw_generations.jsonl"]
+    code = run(generate_command, log)
+    if not (out_dir / "raw_generations.jsonl").exists():
+        print(f"  GENERATION FAILED (exit {code}); see {log}")
+        return 3
+    if code:
+        print(f"  generation returned {code} (ceiling hits) — continuing")
+
+    print("STEP 3/3 — ingest", flush=True)
+    if run([sys.executable, HERE / "xm_vllm_ingest.py", str(out_dir)], log):
+        print("  ingest failed; see " + str(log))
+        return 4
+
+    tail = log.read_text().splitlines()[-12:]
+    print("\n".join("  " + line for line in tail))
+    print(f"\n  {out_dir}/generations.jsonl")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

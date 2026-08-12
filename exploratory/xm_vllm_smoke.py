@@ -138,9 +138,14 @@ def main() -> int:
                "--design", str(out_dir / "design.jsonl"),
                "--out", str(out_dir / "raw_generations.jsonl")]
     print(" ".join(command), flush=True)
-    completed = subprocess.run(command, capture_output=True, text=True)
-    (out_dir / "backend_stdout.log").write_text(completed.stdout)
-    (out_dir / "backend_stderr.log").write_text(completed.stderr)
+    # Streamed, not captured. vLLM writes its startup and progress to stderr,
+    # and a captured pipe only appears when the process exits — which makes a
+    # long generation indistinguishable from a hang while it runs.
+    log_path = out_dir / "backend.log"
+    with log_path.open("w") as handle:
+        completed = subprocess.run(command, stdout=handle,
+                                   stderr=subprocess.STDOUT)
+    blob_text = log_path.read_text(errors="ignore")
 
     record: dict = {"model_id": args.model, "model_revision": revision,
                     "tensor_parallel_size": args.tensor_parallel_size,
@@ -151,7 +156,7 @@ def main() -> int:
 
     raw_path = out_dir / "raw_generations.jsonl"
     if not raw_path.exists():
-        blob = (completed.stderr or "") + (completed.stdout or "")
+        blob = blob_text
         lowered = blob.lower()
         if "not supported" in lowered or "are not supported" in lowered:
             status = "TP2_MODEL_UNSUPPORTED"
