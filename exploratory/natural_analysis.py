@@ -296,6 +296,20 @@ def main() -> int:
     from dci_exploratory import plotdata
     run = plotdata.latest("runs/stageS18_reasoning_design_*/")
     natural, capped = load_canonical(run)
+
+    # Hard gate. Every guard has run by this point; nothing has been written yet.
+    # `guard()` only records, so this is the single place the verdict is
+    # enforced, and it is deliberately BEFORE OUT is created or any CSV is
+    # opened. Writing first and reporting afterwards left the figure scripts
+    # reading artifacts from a dataset the guards had already rejected — the
+    # nonzero exit status is seen by an operator, the corrupted CSV by every
+    # downstream consumer.
+    if _FAILURES:
+        print(f"\n{len(_FAILURES)} GUARD(S) FAILED: {_FAILURES}")
+        print("refusing to write any canonical output; "
+              "previous artifacts left untouched")
+        return 1
+
     OUT.mkdir(parents=True, exist_ok=True)
 
     q1, q2, q3 = question_one(natural), question_two(natural), question_three(natural)
@@ -344,8 +358,8 @@ def main() -> int:
     print(curve[["setting", "background", "estimate", "lo", "hi", "cap_hit",
                  "realised_median"]].to_string(index=False, float_format=fmt))
 
-    print(f"\n{'ALL GUARDS PASSED' if not _FAILURES else f'{len(_FAILURES)} GUARD(S) FAILED: {_FAILURES}'}")
-    return 1 if _FAILURES else 0
+    print("\nALL GUARDS PASSED")
+    return 0
 
 
 if __name__ == "__main__":
