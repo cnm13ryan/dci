@@ -49,29 +49,51 @@ def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def build_rows(state, load: int, stage: str):
+def calibration_tasks(state, n: int) -> list[dict]:
+    """DCI-SHAPED prompts on tasks the evaluation slice never touches.
+
+    Stage B must use the real structural form (A + B/R + background), because
+    the previous experiment showed trivial prompts misrepresent reasoning
+    behaviour: Gemma 4 declines to open a thought channel on easy questions and
+    opens one on composed-constraint questions.
+    """
+    bank = state.TASKS
+    split = bank[bank["split"] == "calibration"]
+    if len(split) < n:
+        used = {t["task_id"] for t in contract.resolve_tasks(state)}
+        split = bank[~bank["task_id"].isin(used)]
+    return [{"task_id": r.task_id, "topic": r.topic}
+            for r in split.head(n).itertuples()]
+
+
+def build_rows(state, load: int, stage: str, tasks_override: int | None = None):
     """The frozen slice at k=3, or the repository's k=5 construction."""
     from dci_exploratory import design as design_module
 
     slice_ = contract.resolve_slice(state)
     fixed_tail = () if load == contract.LOAD else K5_FIXED_TAIL
+    tasks = ([dict(t) for t in slice_.tasks] if not tasks_override
+             else calibration_tasks(state, tasks_override))
     rows = design_module.build_permutation_design(
         target=slice_.target,
         focals=[slice_.focal, slice_.reference],
         variants=list(slice_.backgrounds),
-        tasks=[dict(t) for t in slice_.tasks],
+        tasks=tasks,
         replicates=slice_.replicates,
         base_seed=contract.MASTER_SEED,
         stage=stage,
         paraphrase_id=slice_.paraphrase_id,
         permutations=(slice_.order,),
         fixed_tail=fixed_tail)
-    if len(rows) != contract.EXPECTED_ROWS:
+    expected = (contract.EXPECTED_ROWS if not tasks_override
+                else len(tasks) * slice_.replicates * 4)
+    if len(rows) != expected:
         raise ValueError(f"design produced {len(rows)} rows, expected "
-                         f"{contract.EXPECTED_ROWS}")
+                         f"{expected}")
     expected_load = contract.LOAD + len(fixed_tail)
-    if {r.load for r in rows} != {expected_load}:
-        raise ValueError(f"rows report load {{{r.load for r in rows}}}, "
+    observed_loads = {r.load for r in rows}
+    if observed_loads != {expected_load}:
+        raise ValueError(f"rows report load {sorted(observed_loads)}, "
                          f"expected {expected_load}")
     return sorted(rows, key=lambda r: r.row_id)
 
@@ -103,7 +125,7 @@ def main() -> int:
     out_dir = Path(args.out or f"runs/xmv_{tag}_k{args.load}_{utc_stamp()}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    rows = build_rows(state, args.load, stage)
+    rows = build_rows(state, args.load, stage, args.tasks_override)
     audit = seeds.assert_seed_regime(rows, contract.MASTER_SEED)
 
     # -- revision: pinned before anything is generated ----------------------
