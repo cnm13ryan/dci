@@ -192,6 +192,49 @@ def headline(cells: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
+def missingness(frame: pd.DataFrame) -> pd.DataFrame:
+    """Who is missing from the scored subsample, per arm and background.
+
+    Every rate in this report is conditional on the row having produced a final
+    answer. That is unavoidable — there is nothing to score otherwise — but it
+    is only harmless if the missing rows are missing at the same rate on both
+    sides of a contrast. When they are not, the contrast is partly a comparison
+    between two differently-selected subsamples, and no bootstrap interval
+    accounts for that. So the rates are tabulated and the worst gap is stated.
+    """
+    out = []
+    for (model, load, background, arm), cell in frame.groupby(
+            ["model_id", "load", "background", "arm"]):
+        out.append({
+            "model": model.split("/")[-1], "load": load,
+            "background": LABEL[background],
+            "arm": "focal B" if arm == FOCAL else "reference C_L3",
+            "requested": len(cell),
+            "answered": int(cell["scoreable"].sum()),
+            "answer_rate": float(cell["scoreable"].mean())})
+    return pd.DataFrame(out)
+
+
+def missingness_warnings(gaps: pd.DataFrame) -> list[str]:
+    """One line per model x load whose answer rate moves across the contrast."""
+    lines = []
+    for (model, load), part in gaps.groupby(["model", "load"]):
+        spread = part["answer_rate"].max() - part["answer_rate"].min()
+        if part["answer_rate"].min() >= 0.999:
+            continue
+        worst = part.loc[part["answer_rate"].idxmin()]
+        best = part.loc[part["answer_rate"].idxmax()]
+        severity = ("**differential**" if spread >= 0.10
+                    else "roughly balanced")
+        lines.append(
+            f"* **{model}** (k={load}) — answer rate ranges "
+            f"{worst['answer_rate']:.0%} ({worst['background']}, "
+            f"{worst['arm']}) to {best['answer_rate']:.0%} "
+            f"({best['background']}, {best['arm']}); spread "
+            f"{spread:.0%}, {severity}.")
+    return lines
+
+
 def background_contrast(frame: pd.DataFrame) -> pd.DataFrame:
     """Delta = tau(semicolon) - tau(control), paired within task."""
     out = []
@@ -286,6 +329,28 @@ def termination(frame: pd.DataFrame) -> pd.DataFrame:
             "hit_ceiling": int(cell["reasoning_cap_hit"].sum()),
             "answered": float(cell["scoreable"].mean()),
             "answer_tokens": cell["final_answer_tokens"].mean()})
+    return pd.DataFrame(out)
+
+
+def termination_by_cell(frame: pd.DataFrame) -> pd.DataFrame:
+    """Reasoning length and ceiling contact per arm and background.
+
+    The companion to the missingness table: where answer rates differ across a
+    contrast, this is where to look for why. Still per model — token counts are
+    not comparable across families.
+    """
+    out = []
+    for (model, load, background, arm), cell in frame.groupby(
+            ["model_id", "load", "background", "arm"]):
+        tokens = cell["reasoning_tokens"]
+        out.append({
+            "model": model.split("/")[-1], "load": load,
+            "background": LABEL[background],
+            "arm": "focal B" if arm == FOCAL else "reference C_L3",
+            "median_reasoning": tokens.median(),
+            "p90": tokens.quantile(.90), "max": int(tokens.max()),
+            "hit_ceiling": int(cell["reasoning_cap_hit"].sum()),
+            "of": len(cell)})
     return pd.DataFrame(out)
 
 
@@ -396,6 +461,23 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
         "by absence of interference. The number is reported, not withheld; it "
         "simply cannot carry the signal the design was built to detect.",
         "",
+        "### Who is missing from the scored subsample",
+        "",
+        "Every rate above is conditional on the row having produced a final "
+        "answer. That is only harmless if rows go missing at the same rate on "
+        "both sides of a contrast.",
+        "",
+        table(missingness(frame), floats="{:.3f}"),
+        "",
+        *(missingness_warnings(missingness(frame)) or
+          ["* No checkpoint lost a row; every contrast is between complete "
+           "cells."]),
+        "",
+        "Where the spread is marked **differential**, the τ and Δ below compare "
+        "two differently-selected subsamples and the bootstrap intervals do "
+        "not account for it. Treat those estimates as descriptive of the rows "
+        "that finished, not of the design as specified.",
+        "",
         "### Semicolon-minus-control contrast",
         "",
         table(background_contrast(frame[frame["load"] == contract.LOAD])),
@@ -422,6 +504,10 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
         "summed, averaged or ranked across families.",
         "",
         table(termination(frame), floats="{:.1f}"),
+        "",
+        "By arm and background — where an answer-rate gap comes from:",
+        "",
+        table(termination_by_cell(frame), floats="{:.1f}"),
         "",
     ]
 
