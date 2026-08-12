@@ -86,13 +86,48 @@ def split_reasoning(text: str) -> tuple[str, str]:
         return reasoning.strip("\n"), answer
     if THINK_OPEN in text:
         return text.split(THINK_OPEN, 1)[1].strip("\n"), ""
-    return "", text.strip()
+    # Markerless output from an ALWAYS-thinking checkpoint means the reasoning
+    # interface or the parser failed, so this text is a scratchpad. Returning it
+    # as the answer would hand a whole unsegmented generation to the behavioural
+    # verifiers and manufacture a datum out of a parser failure. The raw text is
+    # preserved by the caller under `raw_generation` for diagnosis; what is
+    # refused is its promotion to a final answer.
+    return "", ""
 
 
 def strip_control(text: str) -> str:
     for token in CONTROL_TOKENS:
         text = text.replace(token, "")
     return text.strip()
+
+
+def trim_generated(tail, tokenizer) -> list[int]:
+    """Cut a generated sequence at its real end, before anything decodes it.
+
+    `model.generate` returns a rectangular tensor: in a batch, whichever
+    sequence finishes first is RIGHT-padded out to the length of the longest
+    one. Slicing the generated span and decoding it with
+    `skip_special_tokens=False` therefore appends a run of `[PAD]` to the text —
+    and that run reaches the verifiers as answer content, inflates
+    `final_answer_tokens`, and makes `answer_truncated` true for a row that
+    never came near the ceiling.
+
+    The 24-row pilot caught exactly this: three rows carried 7113–7911 "answer"
+    tokens that were almost entirely padding. Trimming here, on token ids, fixes
+    all three symptoms at their source rather than papering over the text.
+
+    Everything from the first end-of-sequence token onward is padding or turn
+    scaffolding, so the sequence ends there; any trailing pad ids are dropped
+    for tokenizers whose eos and pad differ.
+    """
+    ids = [int(i) for i in tail.tolist()]
+    eos = tokenizer.eos_token_id
+    if eos is not None and eos in ids:
+        ids = ids[:ids.index(eos)]
+    pad = tokenizer.pad_token_id
+    while ids and pad is not None and ids[-1] == pad:
+        ids.pop()
+    return ids
 
 
 def main() -> int:
@@ -166,9 +201,18 @@ def main() -> int:
     chunk_size = int(plan.get("chunk_size", 16))
     deadline = plan.get("deadline_seconds")
 
+    pad_marker = tokenizer.pad_token or "[PAD]"
+
     def record(row, prompt, text, generated_tokens) -> dict:
         cleaned = strip_control(text)
         reasoning, answer = split_reasoning(cleaned)
+        if pad_marker and pad_marker in answer:
+            # Belt and braces behind trim_generated. A scored answer containing
+            # padding is a corrupt datum, not a behavioural one, so it is a
+            # technical failure rather than something to clean up and score.
+            return failure(row, prompt, ValueError(
+                f"{answer.count(pad_marker)} {pad_marker} token(s) survived "
+                "into the final answer; padding must never reach a verifier"))
         emitted = bool(reasoning.strip())
         closed = THINK_CLOSE in cleaned
         return {
@@ -240,9 +284,10 @@ def main() -> int:
             pad_token_id=tokenizer.pad_token_id or tokenizer.eos_token_id)
         produced = []
         for row, prompt, sequence in zip(window, prompts, output):
-            tail = sequence[encoded["input_ids"].shape[1]:]
+            tail = trim_generated(sequence[encoded["input_ids"].shape[1]:],
+                                  tokenizer)
             text = tokenizer.decode(tail, skip_special_tokens=False)
-            produced.append(record(row, prompt, text, int(tail.shape[0])))
+            produced.append(record(row, prompt, text, len(tail)))
         return produced
 
     records: list[dict] = []
