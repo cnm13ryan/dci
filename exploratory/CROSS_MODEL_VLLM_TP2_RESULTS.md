@@ -119,9 +119,24 @@ the run was stopped. This is the repository's existing finding **I21** —
 affords"* — reproduced under a different backend, with tensor-parallel headroom,
 and on the actual DCI prompt shape.
 
-The gap between the two tables above is exactly why calibration must use
-DCI-shaped prompts: a smoke set of trivial questions would have certified this
-checkpoint as closing naturally.
+**Qwen3.5-9B Stage B, on DCI-shaped prompts, shows the same split.** The pilot
+(3 disjoint calibration tasks x 2 arms x 2 backgrounds x 2 replicates = 24 rows,
+ceiling 39,321) was stopped after **6 of 24 rows had completed in 4m26s while
+the remaining 18 were still generating** at a measured ~76 tok/s aggregate.
+Finishing would have required roughly a further 2.5 hours for those 18 rows
+alone. So a minority of DCI rows close quickly and the majority run to the
+ceiling, and no complete pilot exists.
+
+That is a partial measurement and is reported as one: it is **not** a cap-hit
+rate, and the run directory holds no `generations.jsonl`. What it establishes is
+weaker and still decisive for admission — natural reasoning could not be
+established for this checkpoint within a feasible wall-clock envelope on this
+host.
+
+The gap between the simple-prompt table and this one is exactly why calibration
+must use DCI-shaped prompts: a smoke set of trivial questions certified
+Qwen3.5-9B as closing 8/8 naturally, and on the real prompt shape most rows do
+not close at all.
 
 ---
 
@@ -170,7 +185,14 @@ failures are not three nulls.
   `gpu_memory_utilization` are the measured next step, still BF16 and still
   TP=2. This is the cheapest remaining path to any vLLM TP=2 scientific data.
 * **Qwen3.5** — nothing about capacity. The checkpoint does not stop on these
-  prompts; a larger ceiling makes the run longer, not more natural. Either the
-  condition is redefined (a declared LIMITED_REASONING treatment, which is a
-  different experiment) or these checkpoints are reported as having no
-  establishable natural-reasoning condition on this hardware.
+  prompts; a larger ceiling makes the run longer, not more natural, and TP=2
+  headroom did not change that. Either the condition is redefined (a declared
+  LIMITED_REASONING treatment, which is a different experiment and would have to
+  be validated for answer legitimacy first) or these checkpoints are reported as
+  having no establishable natural-reasoning condition on this hardware.
+
+  A 160-row k=3 slice at the observed rate would need on the order of a day per
+  checkpoint, most of it spent generating reasoning that never terminates. That
+  is the practical reason the slice was not attempted, and it is downstream of
+  the scientific reason: a condition whose ceiling binds on most rows is not
+  natural reasoning.
