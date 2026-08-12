@@ -46,6 +46,37 @@ DRAWS = 10_000
 #: The four mutually exclusive outcomes of the focal arm.
 STATES = ("both", "target only", "focal only", "neither")
 
+# ---------------------------------------------------------- generation states
+# The provenance of a missing or invalid final answer decides whether it is
+# evidence about the model or evidence about the apparatus, and the two must
+# never be pooled. The state is assigned BEFORE any verifier runs, from the
+# harness's own record, so it cannot depend on what a verifier returned.
+#
+#: A final answer exists. The verifiers decide the behavioural outcome.
+VALID_ANSWER = "VALID_ANSWER"
+#: The run was valid but the model produced no acceptable final answer under the
+#: declared condition. This is MODEL behaviour, so it is scored rather than
+#: dropped -- an empty answer does not satisfy "exactly four sentences", and
+#: excluding it would condition on a treatment-affected outcome. It carries its
+#: own label so the sensitivity is computable and any future decision to exclude
+#: it is a visible change of estimand rather than a silent one.
+NO_FINAL_ANSWER = "NO_FINAL_ANSWER"
+#: Verified external apparatus failure: empty generation, decoding failure,
+#: backend exception. Never a behavioural outcome. Every pass column is NaN, so
+#: the row leaves each estimand through the existing nanmean and dropna paths.
+TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
+
+GENERATION_STATES = (VALID_ANSWER, NO_FINAL_ANSWER, TECHNICAL_FAILURE)
+
+
+def generation_state(answer: object, technical_failure: object) -> str:
+    """Classify one row's answer channel before it reaches a verifier."""
+    if bool(technical_failure):
+        return TECHNICAL_FAILURE
+    if not isinstance(answer, str) or not answer.strip():
+        return NO_FINAL_ANSWER
+    return VALID_ANSWER
+
 
 # ----------------------------------------------------------------- scoring
 def score(rows: Sequence[dict]) -> pd.DataFrame:
@@ -61,27 +92,51 @@ def score(rows: Sequence[dict]) -> pd.DataFrame:
     state = harvest.load()
 
     frame = pd.DataFrame(list(rows))
-    answers = frame["raw_final_answer"].fillna("")
     target_id = frame["measured"].iloc[0]
 
-    frame["A_pass"] = [int(state.verify(t, target_id).binary_pass) for t in answers]
-    frame["Q_pass"] = [int(state.verify(t, a).binary_pass)
-                       for t, a in zip(answers, frame["arm"])]
-    frame["background_pass"] = [int(state.verify(t, v).binary_pass)
-                                for t, v in zip(answers, frame["background"])]
-    frame["A_status"] = [state.verify(t, target_id).status for t in answers]
+    # The state is decided from the harness record, never from `fillna("")`.
+    # Substituting the empty string made every verifier return binary_pass=0, so
+    # a backend exception arrived in the estimands indistinguishable from a
+    # model that wrote a non-compliant answer.
+    technical = (frame["technical_failure"] if "technical_failure" in frame
+                 else pd.Series(False, index=frame.index))
+    frame["generation_state"] = [generation_state(a, t) for a, t
+                                 in zip(frame["raw_final_answer"], technical)]
+    scorable = frame["generation_state"] != TECHNICAL_FAILURE
+    # Apparatus failures are never shown to a verifier at all.
+    answers = frame["raw_final_answer"].where(scorable).fillna("")
 
-    features = pd.DataFrame([mechanism.row_features(t) for t in answers],
+    def verify(constraints, attribute="binary_pass"):
+        """Verify only the rows the apparatus actually produced."""
+        out = []
+        for ok, text, constraint in zip(scorable, answers, constraints):
+            if not ok:
+                out.append(np.nan)
+                continue
+            result = state.verify(text, constraint)
+            value = getattr(result, attribute)
+            out.append(value if attribute != "binary_pass" else float(value))
+        return out
+
+    frame["A_pass"] = verify([target_id] * len(frame))
+    frame["Q_pass"] = verify(frame["arm"])
+    frame["background_pass"] = verify(frame["background"])
+    frame["A_status"] = verify([target_id] * len(frame), attribute="status")
+
+    features = pd.DataFrame([mechanism.row_features(t) if ok else {}
+                             for ok, t in zip(scorable, answers)],
                             index=frame.index)
     frame["sentence_count"] = features.get("n_sentences", np.nan)
     frame["word_count"] = features.get("n_words", np.nan)
-    frame["scratchpad_leakage"] = answers.str.contains(SCRATCH, na=False)
+    frame["scratchpad_leakage"] = answers.where(scorable).str.contains(
+        SCRATCH, na=False)
 
     frame["arbitration_state"] = np.select(
-        [(frame["A_pass"] == 1) & (frame["Q_pass"] == 1),
+        [~scorable,
+         (frame["A_pass"] == 1) & (frame["Q_pass"] == 1),
          (frame["A_pass"] == 1) & (frame["Q_pass"] == 0),
          (frame["A_pass"] == 0) & (frame["Q_pass"] == 1)],
-        list(STATES[:3]), default=STATES[3])
+        [TECHNICAL_FAILURE, *STATES[:3]], default=STATES[3])
     frame["A_failure"] = 1.0 - frame["A_pass"]
     frame["background_name"] = frame["background"].map(BACKGROUND_LABEL)
     return frame
