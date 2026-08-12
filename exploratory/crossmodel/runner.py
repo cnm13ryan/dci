@@ -31,11 +31,19 @@ from crossmodel.contract import ReasoningMode
 from crossmodel.schema import build_row
 
 
-def build_design(state: Any, stage: str) -> list[Any]:
+#: The two background members that raise the load from 3 to 5, verbatim from the
+#: repository's own k=5 reasoning run (`stageS27_reasoning_k5_*/config.json`).
+#: Held in a fixed position so raising the load does not also permute the
+#: instructions the design is studying. No new difficulty is invented.
+K5_FIXED_TAIL = ("U_LEX_FORBID3", "U_NUM_MAXINT")
+
+
+def build_design(state: Any, stage: str, load: int = contract.LOAD) -> list[Any]:
     """The frozen 2 x 2 x 20 x 2 slice, from the repository's own builder."""
     from dci_exploratory import design as design_module
 
     slice_ = contract.resolve_slice(state)
+    fixed_tail = () if load == contract.LOAD else K5_FIXED_TAIL
     rows = design_module.build_permutation_design(
         target=slice_.target,
         focals=[slice_.focal, slice_.reference],
@@ -45,7 +53,12 @@ def build_design(state: Any, stage: str) -> list[Any]:
         base_seed=contract.MASTER_SEED,
         stage=stage,
         paraphrase_id=slice_.paraphrase_id,
-        permutations=(slice_.order,))
+        permutations=(slice_.order,),
+        fixed_tail=fixed_tail)
+    observed = {r.load for r in rows}
+    if observed != {contract.LOAD + len(fixed_tail)}:
+        raise ValueError(f"rows report load {sorted(observed)}, expected "
+                         f"{contract.LOAD + len(fixed_tail)}")
     if len(rows) != slice_.expected_rows:
         raise ValueError(
             f"design produced {len(rows)} rows, expected "

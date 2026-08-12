@@ -49,6 +49,10 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--of", type=int, default=1)
+    parser.add_argument("--load", type=int, default=contract.LOAD,
+                        choices=[3, 5],
+                        help="k=5 uses the repository's existing higher-load "
+                             "construction, not a new one")
     parser.add_argument("--generation-ceiling", type=int, default=None,
                         help="total tokens per request; sets the recorded "
                              "condition to THINKING_ENABLED_BOUNDED")
@@ -75,7 +79,12 @@ def main() -> int:
     extensions.register()
     state = harvest.load()
 
-    design_rows = runner.build_design(state, stage="XM_cross_model")
+    # The stage string feeds the row_id hash, so k=3 keeps the historical value
+    # and only the k=5 extension takes a new one. Scientific seeds do not depend
+    # on it either way — they are a function of design identity alone.
+    stage = ("XM_cross_model" if args.load == contract.LOAD
+             else f"XM_cross_model_k{args.load}")
+    design_rows = runner.build_design(state, stage=stage, load=args.load)
     print(f"design: {len(design_rows)} rows "
           f"({contract.N_TASKS} tasks x {contract.REPLICATES} replicates x "
           f"{len(contract.BACKGROUNDS)} backgrounds x {len(contract.ARMS)} arms)")

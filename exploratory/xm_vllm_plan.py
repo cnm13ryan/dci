@@ -34,11 +34,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from crossmodel import contract, seeds, vllm_models
 
-#: The two background members that raise the load from 3 to 5, verbatim from
-#: the repository's own k=5 reasoning run. Held in a fixed position by
-#: `build_permutation_design(fixed_tail=...)` so raising the load does not also
-#: permute instructions the design is not studying.
-K5_FIXED_TAIL = ("U_LEX_FORBID3", "U_NUM_MAXINT")
+#: One definition, shared with the Transformers path, so the two backends cannot
+#: drift into running different k=5 constructions.
+from crossmodel.runner import K5_FIXED_TAIL
 
 #: Safety margin on the context envelope, as a fraction, matching the canonical
 #: natural-reasoning envelope arithmetic.
