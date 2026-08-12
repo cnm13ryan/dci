@@ -123,9 +123,24 @@ def main() -> int:
     entries = []
     for directory in args.dirs:
         base = Path(directory)
-        for path in sorted(base.glob("**/generations*.jsonl")):
+        patterns = ("**/generations*.jsonl", "**/raw_generations*.jsonl")
+        seen = set()
+        for pattern in patterns:
+          for path in sorted(base.glob(pattern)):
+            if path in seen or path.name.endswith("_engine.json"):
+                continue
+            seen.add(path)
             print(f"hashing {path} ...", flush=True)
-            entries.append(describe(path))
+            try:
+                entries.append(describe(path))
+            except Exception as error:  # noqa: BLE001
+                entries.append({"relative_path": str(path.parent),
+                                "file_name": path.name,
+                                "sha256": sha256(path),
+                                "rows": sum(1 for _ in path.open()),
+                                "canonical_status": "QUALIFICATION ARTEFACT — "
+                                                    "not a scientific slice",
+                                "note": f"{type(error).__name__}: {error}"[:200]})
 
     manifest = {
         "stamp": "EXPLORATORY_NO_EVIDENCE",
