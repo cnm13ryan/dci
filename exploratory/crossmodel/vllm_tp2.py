@@ -18,8 +18,15 @@ Transformers attempt had to fight for:
 **One uninterrupted generation.** No stop string, no splice, no forced close.
 The earlier two-phase splice produced a documented artefact — the model kept
 thinking into the answer phase, emitted a second close marker, and re-answered.
-Natural reasoning means the model closes its own reasoning, so nothing here
-interrupts it.
+Thinking is bounded by a token ceiling, never interrupted mid-stream: a request
+that reaches the ceiling stops there and is recorded as NO_FINAL_WITHIN_BUDGET.
+Nothing here closes a trace on the model's behalf or invents an answer.
+
+**No single row can stall the run.** Requests are issued in chunks and each
+chunk is appended to the output as it completes, so a stopped run still leaves
+every finished row on disk. A whole-run wall-clock deadline is a backstop: rows
+past it are written as NOT_GENERATED, which is a missing datum, not a failure
+and not a behavioural result.
 
 **Per-request scientific seeds.** vLLM's scheduler batches and reorders freely.
 Each request therefore carries its own `SamplingParams.seed`, taken from the
@@ -141,6 +148,12 @@ def main() -> int:
     parser.add_argument("--plan", required=True)
     parser.add_argument("--design", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--chunk-size", type=int, default=None,
+                        help="requests per llm.generate call; each chunk is "
+                             "appended as it finishes")
+    parser.add_argument("--deadline-seconds", type=float, default=None,
+                        help="whole-run wall-clock backstop; rows past it are "
+                             "written NOT_GENERATED")
     args = parser.parse_args()
 
     plan = json.loads(Path(args.plan).read_text())
@@ -165,6 +178,11 @@ def main() -> int:
         enforce_eager=plan.get("enforce_eager", True),
         trust_remote_code=plan.get("trust_remote_code", False),
     )
+    if plan.get("cpu_offload_gb"):
+        # vLLM's own weight-offload knob: per GPU, weights above this stay in
+        # pinned host memory and stream in. BF16 throughout — this trades
+        # bandwidth for VRAM, it does not change the numbers the model holds.
+        engine_kwargs["cpu_offload_gb"] = float(plan["cpu_offload_gb"])
     if plan.get("limit_mm_per_prompt"):
         # Officially supported text-only knob for a multimodal checkpoint: it
         # stops vLLM reserving multimodal cache the DCI prompts never use.
@@ -196,6 +214,10 @@ def main() -> int:
 
     ceiling = int(plan["engineering_ceiling"])
     answer_allowance = int(plan["answer_tokens"])
+    # The bounded condition names ONE number: the total tokens a request may
+    # produce, reasoning and answer together. `generation_ceiling` states it
+    # directly; older plans state it as reasoning ceiling + answer allowance.
+    budget = int(plan.get("generation_ceiling") or ceiling + answer_allowance)
     sampling = [SamplingParams(
         temperature=plan["temperature"], top_p=plan["top_p"],
         # top_k <= 0 disables it in vLLM, matching the canonical run which
@@ -203,15 +225,10 @@ def main() -> int:
         top_k=plan.get("top_k", 0) or -1,
         # ONE uninterrupted generation: reasoning and answer share the budget
         # and the model closes its own reasoning. No stop string.
-        max_tokens=ceiling + answer_allowance,
+        max_tokens=budget,
         seed=seed) for seed in seeds]
 
-    generated = llm.generate(prompts, sampling)
-    elapsed = time.perf_counter() - started
-
-    records = []
-    for row, prompt, request_output, seed in zip(rows, prompts, generated,
-                                                 seeds):
+    def build_record(row, prompt, request_output, seed) -> dict:
         try:
             completion = request_output.outputs[0]
             text = completion.text
@@ -226,7 +243,7 @@ def main() -> int:
             answer_tokens = (
                 len(tokenizer.encode(answer, add_special_tokens=False))
                 if answer else 0)
-            records.append({
+            return {
                 "row_id": row["row_id"],
                 "rendered_prompt": prompt,
                 "raw_generation": text,
@@ -245,11 +262,12 @@ def main() -> int:
                                       and not closed),
                 "answer_truncated": completion.finish_reason == "length",
                 "seed_reasoning": seed,
+                "not_generated": False,
                 "technical_failure": False,
                 "technical_failure_reason": "",
-            })
+            }
         except Exception as error:                      # noqa: BLE001
-            records.append({
+            return {
                 "row_id": row["row_id"], "rendered_prompt": prompt,
                 "raw_generation": "", "reasoning_text": "", "final_answer": "",
                 "reasoning_tokens": 0, "final_answer_tokens": 0,
@@ -257,13 +275,57 @@ def main() -> int:
                 "stop_reason": "", "reasoning_emitted": False,
                 "natural_reasoning_closed": False, "reasoning_cap_hit": False,
                 "answer_truncated": False, "seed_reasoning": seed,
+                "not_generated": False,
                 "technical_failure": True,
                 "technical_failure_reason":
-                    f"{type(error).__name__}: {error}"[:500]})
+                    f"{type(error).__name__}: {error}"[:500]}
 
-    with out.open("w") as handle:
-        for record in records:
-            handle.write(json.dumps(record) + "\n")
+    def unattempted(row, prompt, seed, why: str) -> dict:
+        """A row the run never asked for. Missing, not failed, not zero."""
+        return {
+            "row_id": row["row_id"], "rendered_prompt": prompt,
+            "raw_generation": "", "reasoning_text": "", "final_answer": "",
+            "reasoning_tokens": 0, "final_answer_tokens": 0,
+            "total_generated_tokens": 0, "finish_reason": "not_generated",
+            "stop_reason": "", "reasoning_emitted": False,
+            "natural_reasoning_closed": False, "reasoning_cap_hit": False,
+            "answer_truncated": False, "seed_reasoning": seed,
+            "not_generated": True, "not_generated_reason": why,
+            "technical_failure": False, "technical_failure_reason": ""}
+
+    chunk_size = int(args.chunk_size or plan.get("chunk_size") or len(rows))
+    deadline = args.deadline_seconds or plan.get("deadline_seconds")
+    generation_started = time.perf_counter()
+
+    records = []
+    out.write_text("")                       # a resumed run starts clean
+    for start in range(0, len(rows), chunk_size):
+        stop_at = min(start + chunk_size, len(rows))
+        window = slice(start, stop_at)
+        spent = time.perf_counter() - generation_started
+        if deadline and spent > float(deadline):
+            why = (f"whole-run deadline {deadline}s exceeded after "
+                   f"{spent:.0f}s and {len(records)} rows")
+            chunk = [unattempted(r, p, s, why) for r, p, s
+                     in zip(rows[window], prompts[window], seeds[window])]
+            print(f"  DEADLINE — {stop_at - start} rows NOT_GENERATED",
+                  flush=True)
+        else:
+            generated = llm.generate(prompts[window], sampling[window])
+            chunk = [build_record(r, p, g, s) for r, p, g, s
+                     in zip(rows[window], prompts[window], generated,
+                            seeds[window])]
+        records += chunk
+        # Appended per chunk so a run stopped by hand, by the deadline or by
+        # the machine still leaves every completed row on disk.
+        with out.open("a") as handle:
+            for record in chunk:
+                handle.write(json.dumps(record) + "\n")
+        answered = sum(1 for r in chunk if r["final_answer"].strip())
+        print(f"  chunk {start}-{stop_at}: {answered}/{len(chunk)} answered, "
+              f"{time.perf_counter() - generation_started:.0f}s elapsed",
+              flush=True)
+    elapsed = time.perf_counter() - started
 
     engine = {
         "vllm_version": vllm.__version__,
@@ -271,6 +333,10 @@ def main() -> int:
         "engine_kwargs": {k: str(v) for k, v in engine_kwargs.items()},
         "reasoning_parser": parser_label,
         "chat_template_kwargs": template_kwargs,
+        "generation_ceiling": budget,
+        "chunk_size": chunk_size,
+        "deadline_seconds": deadline,
+        "rows_not_generated": sum(1 for r in records if r["not_generated"]),
         "rendered_prompt_example": prompts[0][-400:] if prompts else "",
         "load_seconds": round(load_seconds, 1),
         "generation_seconds": round(elapsed - load_seconds, 1),
@@ -288,7 +354,8 @@ def main() -> int:
     caps = sum(1 for r in records if r["reasoning_cap_hit"])
     print(f"\nvLLM TP={plan['tensor_parallel_size']} · {len(records)} rows "
           f"· parser {parser_label}")
-    print(f"  ceiling {ceiling} (+{answer_allowance} answer) · cap hits {caps}")
+    print(f"  budget {budget} tokens/request · cap hits {caps} · not generated "
+          f"{sum(1 for r in records if r['not_generated'])}")
     print(f"  reasoning emitted "
           f"{sum(1 for r in records if r['reasoning_emitted'])}/{len(records)}"
           f" · empty answers "

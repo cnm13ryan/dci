@@ -108,8 +108,17 @@ class ReasoningMode:
     NO_THINKING = "NO_THINKING"
     LIMITED_REASONING = "LIMITED_REASONING"
     NATURAL_REASONING = "NATURAL_REASONING"
+    #: Thinking on, no assigned budget, but a ceiling low enough that some
+    #: requests reach it. Distinct from NATURAL_REASONING, where the ceiling is
+    #: set far above observed reasoning length and never binds, and from
+    #: LIMITED_REASONING, where the number IS the treatment. Here the number is
+    #: an execution limit the analysis must report, never a dose.
+    THINKING_ENABLED_BOUNDED = "THINKING_ENABLED_BOUNDED"
 
-    ALL = (NO_THINKING, LIMITED_REASONING, NATURAL_REASONING)
+    ALL = (NO_THINKING, LIMITED_REASONING, NATURAL_REASONING,
+           THINKING_ENABLED_BOUNDED)
+    #: Modes in which the model reasons and closes its own reasoning.
+    THINKING = (NATURAL_REASONING, THINKING_ENABLED_BOUNDED)
 
 
 @dataclass(frozen=True)

@@ -24,7 +24,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Optional, Sequence
 
-from crossmodel import contract, seeds
+from crossmodel import contract, schema, seeds
 from crossmodel.adapters.base import (Generation, GenerationConfig,
                                       ModelAdapter)
 from crossmodel.contract import ReasoningMode
@@ -112,8 +112,19 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
               state: Any, reasoning_mode: str, run_id: str,
               batch_size: int = 8, shard: int = 0, of: int = 1,
               master_seed: int = contract.MASTER_SEED,
-              progress: bool = True) -> tuple[list[dict], RunPlan]:
-    """Generate the slice for one checkpoint in one reasoning mode."""
+              progress: bool = True,
+              generation_ceiling: Optional[int] = None
+              ) -> tuple[list[dict], RunPlan]:
+    """Generate the slice for one checkpoint in one reasoning mode.
+
+    `generation_ceiling` caps total tokens per request, reasoning and answer
+    together. Passing it changes the RECORDED condition to
+    THINKING_ENABLED_BOUNDED, because a ceiling a request can actually reach is
+    a different experimental condition from one that never binds, and a run must
+    not be able to quietly acquire a binding limit while still calling itself
+    natural reasoning. The MECHANISM is unchanged — the adapter is still asked
+    for `reasoning_mode` and still renders the same template.
+    """
     adapter.require_mode(reasoning_mode)
     metadata = adapter.execution_metadata()
     system_message = state.SYSTEM_MESSAGE
@@ -134,8 +145,27 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
             list(rendered.values()), contract.ANSWER_TOKENS)
         ceiling = envelope["derived_ceiling"]
 
+    recorded_mode = reasoning_mode
+    if generation_ceiling and reasoning_mode != ReasoningMode.NO_THINKING:
+        bounded = generation_ceiling - contract.ANSWER_TOKENS
+        if bounded <= 0:
+            raise ValueError(f"generation ceiling {generation_ceiling} leaves "
+                             "no room for reasoning")
+        envelope = dict(envelope or {}, envelope_ceiling=ceiling,
+                        generation_ceiling=generation_ceiling,
+                        derived_ceiling=bounded)
+        ceiling = bounded
+        recorded_mode = ReasoningMode.THINKING_ENABLED_BOUNDED
+
     config = GenerationConfig(
         reasoning_mode=reasoning_mode,
+        max_answer_tokens=contract.ANSWER_TOKENS,
+        temperature=contract.TEMPERATURE, top_p=contract.TOP_P,
+        top_k=contract.TOP_K, max_reasoning_tokens=ceiling)
+    # What the adapter is asked for vs. what the row says was run. They differ
+    # only in the label, and only when a binding ceiling was imposed.
+    record_config = GenerationConfig(
+        reasoning_mode=recorded_mode,
         max_answer_tokens=contract.ANSWER_TOKENS,
         temperature=contract.TEMPERATURE, top_p=contract.TOP_P,
         top_k=contract.TOP_K, max_reasoning_tokens=ceiling)
@@ -147,7 +177,7 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
     plan = RunPlan(
         run_id=run_id, model_id=metadata["model_id"],
         model_revision=metadata["model_revision"],
-        reasoning_mode=reasoning_mode,
+        reasoning_mode=recorded_mode,
         reasoning_control=reasoning_control_for(adapter, reasoning_mode),
         engineering_ceiling=config.engineering_ceiling, envelope=envelope,
         batch_size=batch_size, shard=shard, of=of, expected_rows=expected,
@@ -165,10 +195,16 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
                                               index)
 
         for row, generation, (seed_r, _) in zip(batch, generations, pairs):
-            records.append(build_row(
+            record = build_row(
                 run_id=run_id, design_row=row, generation=generation,
-                adapter_metadata=metadata, config=config,
-                reasoning_control=control, scientific_seed=seed_r))
+                adapter_metadata=metadata, config=record_config,
+                reasoning_control=control, scientific_seed=seed_r)
+            record["not_generated"] = False
+            record["not_generated_reason"] = ""
+            record["generation_ceiling"] = (generation_ceiling
+                                            or ceiling + contract.ANSWER_TOKENS)
+            record["final_answer_status"] = schema.final_answer_status(record)
+            records.append(record)
 
         if progress:
             done = len(records)

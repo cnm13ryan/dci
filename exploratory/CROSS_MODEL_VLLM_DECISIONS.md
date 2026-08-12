@@ -357,3 +357,93 @@ starts.
 This is the study's own rule turned on its author: a technical failure is never
 a behavioural result. It nearly became one because the failure path and the
 finding path returned the same number.
+
+---
+
+## V15. The tested condition is renamed, because the ceiling now binds
+
+**Recorded 2026-08-12, at the start of the generation pass.**
+
+The previous passes ran `NATURAL_REASONING`: a ceiling derived from the context
+envelope (39,517 tokens for Gemma, 39,321 for Qwen) and chosen so far above
+observed reasoning length that no request could reach it. That is what made it
+honest to call the number a safety bound rather than a treatment.
+
+This pass fixes a practical ceiling of **8,192 tokens per request**, total,
+reasoning and answer together. On Qwen3.5 that ceiling *will* bind — the whole
+reason the previous pass produced no Qwen rows is that its reasoning did not
+terminate. A bound a request can actually reach is a different experimental
+condition, so it gets a different name:
+
+    THINKING_ENABLED_BOUNDED
+
+It is not `LIMITED_REASONING`: no budget is assigned, nothing is spliced, and
+the model is never told how long to think. It is not `NATURAL_REASONING`
+either, because the ceiling is no longer decorative. `assigned_reasoning_budget`
+stays `None` — the number is an execution limit, never a dose — and the rate at
+which requests reach it is a reported outcome, not a footnote.
+
+The label is set by the runner, not by the caller: passing a generation ceiling
+is what changes the recorded mode. A run cannot acquire a binding limit while
+still calling itself natural reasoning.
+
+## V16. A row with no final answer is a state, not a failure
+
+**Recorded 2026-08-12.**
+
+`final_answer_status` is stored on every row, in one vocabulary across both
+backends:
+
+    FINAL_ANSWER            an answer exists and is scored
+    NO_FINAL_WITHIN_BUDGET  generation ended without one
+    TECHNICAL_FAILURE       the backend raised
+    NOT_GENERATED           the run never attempted this row
+
+Only `FINAL_ANSWER` rows reach a verifier; the rest score `NaN`, which
+propagates out of every rate rather than entering it as a zero. The alternative
+— treating "no answer" as "A failed" — would turn a token ceiling into evidence
+of behavioural interference, which is the most plausible way this dataset could
+be made to say something false.
+
+`NOT_GENERATED` exists so a run stopped by its own deadline still writes the
+complete 160-row set with the gap visible. It is a missing datum, and it is
+never counted as either a failure or a compliance.
+
+## V17. Chunked generation, so one pathological request cannot cost the run
+
+**Recorded 2026-08-12.**
+
+The backend previously issued all 160 requests in a single `llm.generate` call
+and wrote nothing until every one returned. With a checkpoint whose reasoning
+does not terminate, that is an all-or-nothing bet: the previous pass spent
+25 minutes on one request and ended with an empty file.
+
+Requests now go out in chunks of 32 and each chunk is appended as it completes,
+so a run stopped by hand, by its deadline or by the machine leaves every
+finished row on disk. A whole-run wall-clock deadline is a backstop only; rows
+past it are written `NOT_GENERATED` rather than silently omitted.
+
+## V18. Kimi-VL loads under Transformers after one removed symbol is restored
+
+**Recorded 2026-08-12.**
+
+`modeling_kimi_vl.py` was published against transformers 4.48.2 and imports
+`is_torch_fx_available`, which transformers 5.15.0 removed along with symbolic
+tracing. The import raises and the checkpoint cannot load at all.
+
+Every other name the remote code imports was checked individually — fourteen of
+them, including `_prepare_4d_causal_attention_mask`, `LlavaCausalLMOutputWithPast`
+and `is_flash_attn_2_available` — and all fourteen still exist in 5.15.0. The
+single missing symbol is the whole gap.
+
+The shim supplies it returning `False`, which is the truthful answer under
+transformers 5.x. The block it guards does one thing: mark a function as a leaf
+**for fx tracing**. Nothing in eager generation reads it. No weight, shape,
+attention path or forward pass changes, the checkpoint's files stay
+byte-identical to the pinned revision, and the shim is recorded in
+`execution_metadata` as `compatibility_shim` so it appears on every row it
+touched.
+
+This is deliberately narrower than the Gemma override refused in V12. That one
+would have let vLLM *construct a different architecture* from a config it could
+not interpret. This one restores a name whose only consumer is a tracing hook.
