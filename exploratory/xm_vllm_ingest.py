@@ -47,21 +47,30 @@ def main() -> int:
         top_k=plan["top_k"],
         max_reasoning_tokens=plan["engineering_ceiling"])
 
+    # Backend-agnostic: the plan says which backend produced these rows. It
+    # defaults to vLLM because that is what this script was written for, but
+    # Kimi-VL generates through Transformers 4.50.3 in its own environment and
+    # its rows must land in the SAME canonical schema, or the analysis would
+    # have to special-case one checkpoint.
+    backend = plan.get("backend", "vllm")
+    device_configuration = plan.get("device_configuration") or (
+        f"tensor_parallel_size={plan.get('tensor_parallel_size')}"
+        f" (cuda:0+cuda:1)")
     metadata = {
         "model_id": plan["model_id"],
         "model_revision": plan["model_revision"],
         "model_family": plan["model_family"],
-        "backend": "vllm",
-        "backend_version": engine.get("vllm_version", "unknown"),
+        "backend": backend,
+        "backend_version": (plan.get("backend_version")
+                            or engine.get("backend_version")
+                            or engine.get("vllm_version", "unknown")),
         "dtype": plan["dtype"],
         "quantization": plan["quantization"],
         # The device layout IS the point of this retry, so it is spelled out
         # in every row rather than left to a run-level file.
-        "device_configuration":
-            f"tensor_parallel_size={plan['tensor_parallel_size']}"
-            f" (cuda:0+cuda:1)",
+        "device_configuration": device_configuration,
         "chat_template_identifier":
-            f"vllm.apply_chat_template({plan['chat_template_kwargs']})",
+            f"{backend}.apply_chat_template({plan['chat_template_kwargs']})",
         "chat_template_sha256": "",
     }
     control = (f"chat_template({plan['chat_template_kwargs']}) · parser="
