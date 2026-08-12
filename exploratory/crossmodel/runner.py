@@ -126,7 +126,8 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
               batch_size: int = 8, shard: int = 0, of: int = 1,
               master_seed: int = contract.MASTER_SEED,
               progress: bool = True,
-              generation_ceiling: Optional[int] = None
+              generation_ceiling: Optional[int] = None,
+              incremental_path: Optional[Path] = None
               ) -> tuple[list[dict], RunPlan]:
     """Generate the slice for one checkpoint in one reasoning mode.
 
@@ -199,6 +200,13 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
     control = plan.reasoning_control
     records: list[dict] = []
     started = time.perf_counter()
+    # Append each batch as it lands. A Transformers run can be slow enough that
+    # it must be stopped before it finishes — that already cost this study 32
+    # completed Gemma 12B rows — and rows that exist should survive the decision
+    # to stop. Same reasoning as the chunked vLLM backend.
+    if incremental_path:
+        Path(incremental_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(incremental_path).write_text("")
     for index, batch in enumerate(mine):
         prompts = [rendered[row.row_id] for row in batch]
         pairs = [(seeds.seed_for_row(row, master_seed, seeds.REASONING_PHASE),
@@ -219,10 +227,18 @@ def run_slice(adapter: ModelAdapter, design_rows: Sequence[Any],
             record["final_answer_status"] = schema.final_answer_status(record)
             records.append(record)
 
+        if incremental_path:
+            with Path(incremental_path).open("a") as handle:
+                for record in records[-len(batch):]:
+                    handle.write(json.dumps(record) + "\n")
+
         if progress:
             done = len(records)
-            rate = done / max(time.perf_counter() - started, 1e-6)
-            print(f"  {done}/{expected} rows  ({rate * 60:.1f} rows/min)",
+            elapsed = time.perf_counter() - started
+            rate = done / max(elapsed, 1e-6)
+            eta = (expected - done) / rate / 60 if rate else float("inf")
+            print(f"  {done}/{expected} rows  ({rate * 60:.2f} rows/min, "
+                  f"{elapsed / 60:.1f} min elapsed, ~{eta:.0f} min left)",
                   flush=True)
 
     if len(records) != expected:

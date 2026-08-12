@@ -110,6 +110,61 @@ class KimiVLThinkingAdapter(TransformersAdapter):
                 "lambda: False (removed in transformers 5.x; the block it "
                 "guards only marks an fx tracing leaf)")
 
+    @staticmethod
+    def _restore_declared_rope(config) -> str:
+        """Undo transformers 5.x's rope normalisation, which this code misreads.
+
+        The checkpoint declares, verbatim in its own `config.json`:
+
+            "rope_scaling": null,
+            "rope_theta": 800000.0
+
+        i.e. **no rope scaling**. Transformers 5.15.0 no longer leaves that as
+        `None`; it synthesises `{"rope_theta": 800000.0, "rope_type":
+        "default"}`, where `"default"` is its way of spelling the same absence.
+
+        `DeepseekV3Attention._init_rope` was written against the old shape:
+
+            if self.config.rope_scaling is None:   -> plain rotary, base=rope_theta
+            else:                                  -> self.config.rope_scaling["type"]
+
+        A synthesised dict is not `None`, so the code takes the scaled branch
+        and dies on `KeyError: 'type'`. Restoring `None` puts it back on the
+        branch the checkpoint's own config selects.
+
+        This does not choose an architecture — it preserves the declared one.
+        `rope_theta` and `max_position_embeddings` are separate attributes and
+        are asserted intact afterwards, so the plain-rotary embedding is built
+        with exactly the base and window the checkpoint specifies. Contrast the
+        Gemma 4 override refused in V12: there the per-layer attributes genuinely
+        DIFFERED and collapsing them would have built a different model. Here
+        the two spellings denote the same thing and only one is readable by the
+        checkpoint's own code.
+        """
+        text = getattr(config, "text_config", None)
+        if text is None:
+            return "not needed: no text_config"
+        scaling = getattr(text, "rope_scaling", None)
+        if scaling is None:
+            return "not needed: rope_scaling already None"
+        rope_type = str(scaling.get("rope_type", "")).lower()
+        if rope_type not in ("default", ""):
+            # A checkpoint that really does scale rope must not be silently
+            # unscaled. Nothing is touched and the caller sees the real error.
+            raise ValueError(
+                f"{scaling!r} declares rope_type={rope_type!r}, which is real "
+                "scaling — refusing to null it; that would change the model")
+        theta, window = text.rope_theta, text.max_position_embeddings
+        text.rope_scaling = None
+        assert text.rope_theta == theta and \
+            text.max_position_embeddings == window, \
+            "nulling rope_scaling disturbed rope_theta or the context window"
+        return (f"text_config.rope_scaling {scaling} -> None (checkpoint "
+                f"declares null; transformers 5.x synthesises rope_type="
+                f"'default', which the checkpoint's own _init_rope cannot "
+                f"read); rope_theta={theta} and max_position_embeddings="
+                f"{window} preserved")
+
     def _load_weights(self, revision: str, dtype):
         """Load through the checkpoint's own remote code, eager attention.
 
@@ -120,9 +175,18 @@ class KimiVLThinkingAdapter(TransformersAdapter):
         """
         import transformers
 
-        self.compatibility_shim = self._shim_removed_import()
+        shims = [self._shim_removed_import()]
 
-        kwargs = dict(revision=revision, dtype=dtype,
+        # The config is loaded, repaired and passed in explicitly, rather than
+        # letting `from_pretrained` fetch it internally, so the rope repair is
+        # provably applied to the object the model is actually built from.
+        config = transformers.AutoConfig.from_pretrained(
+            self.MODEL_ID, revision=revision, **self.LOAD_KWARGS)
+        shims.append(self._restore_declared_rope(config))
+        self.compatibility_shim = "; ".join(
+            s for s in shims if not s.startswith("not needed"))
+
+        kwargs = dict(config=config, revision=revision, dtype=dtype,
                       device_map=self._device_map,
                       attn_implementation="eager", **self.LOAD_KWARGS)
         model = transformers.AutoModelForCausalLM.from_pretrained(

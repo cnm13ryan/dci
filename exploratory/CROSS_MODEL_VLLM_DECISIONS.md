@@ -447,3 +447,25 @@ touched.
 This is deliberately narrower than the Gemma override refused in V12. That one
 would have let vLLM *construct a different architecture* from a config it could
 not interpret. This one restores a name whose only consumer is a tracing hook.
+
+## V19. The bounded ceiling is inert for Gemma, and the pipeline is deterministic
+
+**Recorded 2026-08-12, from the k=3 generation pass.**
+
+`gemma-4-E4B-it` was re-run from scratch under `THINKING_ENABLED_BOUNDED` with
+the 8,192-token ceiling. Its 160 final answers are **byte-identical** to the
+earlier `NATURAL_REASONING` run at a 39,517-token ceiling, and every scientific
+seed matches.
+
+Two things follow. The ceiling genuinely does not bind on this checkpoint — its
+longest trace is 842 tokens, an order of magnitude below the bound — so the two
+conditions are the same condition for Gemma and the relabelling costs nothing.
+And the pipeline reproduces exactly across a full re-run, which is the strongest
+determinism check this study has: same seeds in, same text out, through a
+different code path with a different recorded ceiling.
+
+The contrast with Qwen3.5-4B in the same pass is the point. Same bound, same
+design, same backend family: Gemma's median trace is 310 tokens and it answers
+160/160; Qwen's median is 7,308 and it answers 95/160. The ceiling is decorative
+for one checkpoint and decisive for the other, which is exactly why the
+condition is named for the bound rather than for the intent.

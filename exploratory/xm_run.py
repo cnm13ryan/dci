@@ -132,7 +132,8 @@ def main() -> int:
         adapter, design_rows, state, args.mode,
         run_id=out_dir.name, batch_size=args.batch_size,
         shard=args.shard, of=args.of,
-        generation_ceiling=args.generation_ceiling)
+        generation_ceiling=args.generation_ceiling,
+        incremental_path=out_dir / "partial_generations.jsonl")
 
     suffix = "" if args.of == 1 else f".shard{args.shard}of{args.of}"
     path = out_dir / f"generations{suffix}.jsonl"
