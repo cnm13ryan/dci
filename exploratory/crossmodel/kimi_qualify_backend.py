@@ -168,8 +168,12 @@ def main() -> int:
         report["environment"]["rope_scaling_as_loaded"] = \
             getattr(config.text_config, "rope_scaling", None)
 
+        # `torch_dtype`, not `dtype`: transformers renamed this argument in 5.x
+        # and this environment is deliberately on 4.50.3, the version the
+        # checkpoint declares. Using the newer spelling here was a bug in the
+        # driver, not an incompatibility in the checkpoint.
         kwargs = dict(revision=plan["model_revision"],
-                      dtype=getattr(torch, plan.get("dtype", "bfloat16")),
+                      torch_dtype=getattr(torch, plan.get("dtype", "bfloat16")),
                       device_map=plan.get("device_map", "auto"),
                       attn_implementation="eager", trust_remote_code=True)
         if plan.get("max_memory_per_gpu"):
@@ -201,6 +205,25 @@ def main() -> int:
         key = str(parameter.device)
         placement[key] = placement.get(key, 0.0) + (
             parameter.numel() * parameter.element_size() / 2 ** 30)
+
+    # A weight budget too small for the checkpoint does not fail — accelerate
+    # silently pushes the remainder to the meta device and streams it from
+    # disk. That is a different execution condition (and unusably slow), so it
+    # is refused here rather than measured and reported as the model's speed.
+    offloaded = {k: round(v, 2) for k, v in placement.items()
+                 if k in ("meta", "cpu", "disk")}
+    if offloaded:
+        report["rungs"]["1_load"] = {
+            "passed": False, "vram_before": before,
+            "vram_after": free_vram_gib(),
+            "parameter_gib_per_device": {k: round(v, 2)
+                                         for k, v in sorted(placement.items())},
+            "error": f"{offloaded} GiB of weights were not placed on a GPU"}
+        return finish(
+            "BLOCKED_AT_LOAD",
+            f"{offloaded} GiB offloaded off-GPU at max_memory_per_gpu="
+            f"{plan.get('max_memory_per_gpu')}; raise the cap so every weight "
+            "is resident, or the run measures disk bandwidth, not the model")
     report["rungs"]["1_load"] = {
         "passed": True,
         "seconds": round(time.perf_counter() - started, 1),
