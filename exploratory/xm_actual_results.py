@@ -321,7 +321,16 @@ def termination(frame: pd.DataFrame) -> pd.DataFrame:
         out.append({
             "model": model.split("/")[-1], "load": load,
             "backend": cell["backend"].iloc[0],
-            "ceiling": int(cell["generation_ceiling"].iloc[0] or 0),
+            # `or 0` never worked here. A column that is None in every row
+            # arrives from pandas as float NaN, and NaN is TRUTHY, so `nan or 0`
+            # evaluates to nan and `int(nan)` raises. Every main run records a
+            # null ceiling, so regenerating this document from its own raw data
+            # crashed rather than reporting the gap.
+            #
+            # A missing ceiling is also not a ceiling of zero. It stays NaN, and
+            # the table renderer prints "—", so an unrecorded provenance field
+            # reads as unrecorded instead of as a real limit of 0.
+            "ceiling": _optional_float(cell["generation_ceiling"].iloc[0]),
             "n": len(cell),
             "median": tokens.median(), "p90": tokens.quantile(.90),
             "max": int(tokens.max()),
@@ -377,8 +386,11 @@ def manifest(frame: pd.DataFrame) -> list[dict]:
                 str(first["reasoning_control"]).split("parser=")[-1]
                 if "parser=" in str(first["reasoning_control"])
                 else "adapter delimiters"),
-            "generation_ceiling": int(first["generation_ceiling"] or 0),
-            "engineering_ceiling": int(first["engineering_ceiling"] or 0),
+            # Same NaN-is-truthy trap as in `termination`: an absent ceiling
+            # arrives as NaN, `nan or 0` is nan, and int(nan) raises. The
+            # manifest reports the gap rather than inventing a limit of 0.
+            "generation_ceiling": _optional_float(first["generation_ceiling"]),
+            "engineering_ceiling": _optional_float(first["engineering_ceiling"]),
             "max_final_answer_tokens": int(first["max_final_answer_tokens"]),
             "temperature": float(first["temperature"]),
             "top_p": float(first["top_p"]), "top_k": int(first["top_k"]),
@@ -399,6 +411,24 @@ def manifest(frame: pd.DataFrame) -> list[dict]:
 
 
 # ------------------------------------------------------------------ document
+def _ceiling_phrase(ceiling: float) -> str:
+    """Say "not recorded" rather than printing a NaN as if it were a limit."""
+    if ceiling is None or (isinstance(ceiling, float) and np.isnan(ceiling)):
+        return "generation ceiling NOT RECORDED for this run"
+    return f"ceiling {int(ceiling):,} tokens/request"
+
+
+def _optional_float(value) -> float:
+    """A provenance field that may be absent, as a float that renders as "—".
+
+    Guards the NaN-is-truthy trap: `value or 0` returns NaN for a NaN input, so
+    an absent field became an exception rather than a reported gap.
+    """
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return float("nan")
+    return float(value)
+
+
 def table(frame: pd.DataFrame, floats: str = "{:.3f}") -> str:
     if not len(frame):
         return "_(no rows)_\n"
@@ -560,8 +590,8 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
             f"`{entry['backend']} {entry['backend_version']}`, "
             f"{entry['dtype']}, {entry['quantization']}, "
             f"{entry['gpu_layout']}; thinking via "
-            f"`{entry['thinking_implementation']}`; ceiling "
-            f"{entry['generation_ceiling']} tokens/request; revision "
+            f"`{entry['thinking_implementation']}`; "
+            f"{_ceiling_phrase(entry['generation_ceiling'])}; revision "
             f"`{entry['model_revision'][:12]}`")
     parts.append("")
     if missing:
