@@ -249,3 +249,77 @@ than a surprise:
     Δ_J(m,k) = J(semicolon) − J(control)
 
 It is a secondary outcome and does not replace τ. Both are always reported.
+
+---
+
+## V12 — Gemma 4 is TP2_BACKEND_BLOCKED, and the override is refused on evidence
+
+**Recorded 2026-08-12, from the Stage A gate, before any Gemma 4 vLLM
+generation.**
+
+Both `google/gemma-4-E4B-it` and `google/gemma-4-12B-it` fail identically at
+engine construction under vLLM 0.27.1+rocm723:
+
+    vllm/transformers_utils/model_arch_config_convertor.py, get_head_size():
+        head_dim = getattr(self.hf_text_config, "head_dim", 0)
+    transformers.integrations.heterogeneity.configuration_utils
+        .AmbiguousGlobalPerLayerAttributeError:
+        'head_dim' is a per-layer attribute and may vary across layers.
+
+vLLM's config converter asks for one global `head_dim`; transformers 5.15
+refuses to answer for a heterogeneous config. This is an integration gap between
+those two versions for the Gemma 4 family. It is **not** capacity, **not**
+gfx1100, **not** tensor parallelism, and it is not the single-card OOM that
+blocked the 12B under Transformers.
+
+**The documented override was considered and refused.** The exception names an
+escape hatch — `allow_global_per_layer_attribute_access=True` — and warns it is
+safe only "if the caller can safely handle heterogeneous configs". So the
+configs were inspected directly:
+
+| checkpoint | layers | distinct `head_dim` | distinct `num_key_value_heads` |
+|---|---|---|---|
+| `gemma-4-E4B-it` | 42 | **256 and 512** | 2 |
+| `gemma-4-12B-it` | 48 | **256 and 512** | **1 and 8** |
+
+These checkpoints are genuinely heterogeneous. Forcing the global read would
+build roughly half the layers with the wrong head size — a model that loads,
+generates fluently, and is wrong. That is the same class of silent corruption
+the previous experiment caught when a mismatched Gemma class loaded with
+randomly initialised weights, and the weight-integrity gate would very likely
+not catch it, because attention with a wrong head_dim can still produce
+plausible text.
+
+The transformers error is protective and correct. Gemma 4 is recorded
+`TP2_BACKEND_BLOCKED` under this build.
+
+**Consequence for the retry's purpose.** The backend confound cannot be removed
+for Gemma 4 on this host: there is no build that runs Gemma 4 under vLLM here,
+and the Transformers condition is the only one in which these checkpoints have
+ever generated. Their Transformers results are not superseded — they are the
+only measurement that exists.
+
+---
+
+## V13 — Kimi-VL is capacity-blocked at the first envelope, and gets a measured retry
+
+**Recorded 2026-08-12, Stage A.**
+
+`moonshotai/Kimi-VL-A3B-Thinking-2506` loads under vLLM 0.27.1 — the
+Transformers blocker (`is_torch_fx_available`, decision D21) is **gone**, which
+answers the retry's Kimi question at the architecture level. It then fails on
+memory:
+
+    Checkpoint size: 30.56 GiB
+    Worker_TP1: CUDA out of memory. Tried to allocate 374.00 MiB.
+    GPU 1 has 23.98 GiB total, 146.00 MiB free;
+    15.44 GiB allocated by PyTorch.
+
+Weights shard to ~15.3 GiB per card, so the weights themselves fit; the failure
+is in what is left for activations and cache at
+`max_model_len=40960, gpu_memory_utilization=0.85`.
+
+Per the "measure first, do not inflate context" rule, the retry lowers the
+envelope rather than reaching for quantization: BF16 is unchanged and no
+quantized variant is substituted. If a modest envelope still cannot hold the
+model, the checkpoint is `TP2_CAPACITY_BLOCKED` and that is the result.
