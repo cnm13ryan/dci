@@ -163,14 +163,28 @@ def main() -> int:
 
     print(f"STEP 2/3 — generate (vLLM TP={plan['tensor_parallel_size']})",
           flush=True)
+    # A previous attempt in this directory may have left a raw file behind —
+    # possibly an EMPTY one, since the backend truncates it before the first
+    # chunk. Testing only for existence would let that stale file stand in for
+    # this run's output and send a failed generation on to the ingest, which
+    # then reports a confusing provenance error instead of the real failure.
+    raw_path = out_dir / "raw_generations.jsonl"
+    raw_path.unlink(missing_ok=True)
+
     generate_command = [BACKEND_PYTHON, BACKEND_SCRIPT,
                         "--plan", out_dir / "plan.json",
                         "--design", out_dir / "design.jsonl",
-                        "--out", out_dir / "raw_generations.jsonl"]
+                        "--out", raw_path]
     code = run(generate_command, log)
-    if not (out_dir / "raw_generations.jsonl").exists():
-        print(f"  GENERATION FAILED (exit {code}); see {log}")
+    rows_written = (sum(1 for _ in raw_path.open())
+                    if raw_path.exists() else 0)
+    if not rows_written:
+        print(f"  GENERATION FAILED (exit {code}, {rows_written} rows); "
+              f"see {log}")
         return 3
+    if rows_written < plan["expected_rows"]:
+        print(f"  PARTIAL GENERATION: {rows_written}/{plan['expected_rows']} "
+              "rows — ingesting what exists")
     if code:
         print(f"  generation returned {code} (ceiling hits) — continuing")
 
