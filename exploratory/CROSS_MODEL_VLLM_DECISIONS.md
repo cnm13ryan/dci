@@ -323,3 +323,37 @@ Per the "measure first, do not inflate context" rule, the retry lowers the
 envelope rather than reaching for quantization: BF16 is unchanged and no
 quantized variant is substituted. If a modest envelope still cannot hold the
 model, the checkpoint is `TP2_CAPACITY_BLOCKED` and that is the result.
+
+---
+
+## V14 — A missing result is not a censored result
+
+**Recorded 2026-08-12, after a near-miss that would have entered the record as a
+finding.**
+
+The Stage B gate computed a calibration cap-hit rate and skipped the main run
+when it exceeded 5%. Its helper returned `1.0` when the generations file was
+absent. An engine that failed to start therefore produced
+
+    Qwen/Qwen3.5-9B calibration cap-hit rate = 1.000
+    SKIP MAIN — NATURAL_REASONING_CENSORED at calibration (100.0% cap hits)
+
+which reads exactly like the measured claim "every trace hit the ceiling". It
+was not a measurement. There were no rows at all: the engine had died with
+
+    RuntimeError: Engine core initialization failed. Failed core proc(s): {}
+    resource_tracker: There appear to be 1 leaked shared_memory objects
+
+**Root cause.** A `pkill -f vllm_tp2.py` earlier had killed the parent while
+leaving `VLLM::EngineCore` and `VLLM::Worker_TP0/1` alive, holding ~20 GiB of
+VRAM each card and a `/dev/shm/psm_*` segment. Free memory was 3.77 GiB per card
+when the next engine tried to start.
+
+**Fixes, both of them.** `cap_hit_rate` now returns `None` for "no data" and the
+driver reports a technical failure instead of censoring; and the driver reaps
+orphaned `VLLM::` processes and stale shared-memory segments before each engine
+starts.
+
+This is the study's own rule turned on its author: a technical failure is never
+a behavioural result. It nearly became one because the failure path and the
+finding path returned the same number.
