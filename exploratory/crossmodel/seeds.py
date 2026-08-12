@@ -123,6 +123,14 @@ def replicate_duplication(records: Iterable[dict[str, Any]],
     Stochastic decoding CAN coincide, especially on short answers, so a nonzero
     count is not by itself a defect. A majority is the signature of a shared
     seed. The alarm threshold is the repository's existing one (25%).
+
+    Pairs in which either replicate produced NO final answer are excluded. Two
+    empty strings compare equal without either being a sample, so counting them
+    lets a checkpoint that often reaches its token ceiling manufacture an
+    apparent seed collapse out of nothing — and, worse, pads the denominator so
+    a real collapse among the answered rows is diluted out of sight.
+    `pairs_without_answer` records how many were set aside, so the exclusion is
+    visible rather than silent.
     """
     groups: dict[tuple, list[str]] = {}
     for record in records:
@@ -132,8 +140,13 @@ def replicate_duplication(records: Iterable[dict[str, Any]],
         groups.setdefault(key, []).append(record.get(answer_field) or "")
 
     complete = [answers for answers in groups.values() if len(answers) == 2]
-    identical = sum(1 for answers in complete if answers[0] == answers[1])
-    rate = identical / len(complete) if complete else float("nan")
-    return {"replicate_pairs": len(complete), "identical_pairs": identical,
+    answered = [answers for answers in complete
+                if answers[0].strip() and answers[1].strip()]
+    identical = sum(1 for answers in answered if answers[0] == answers[1])
+    rate = identical / len(answered) if answered else float("nan")
+    return {"replicate_pairs": len(answered),
+            "nominal_replicate_pairs": len(complete),
+            "pairs_without_answer": len(complete) - len(answered),
+            "identical_pairs": identical,
             "identical_rate": rate, "alarm_threshold": 0.25,
-            "implausible": bool(complete) and rate >= 0.25}
+            "implausible": bool(answered) and rate >= 0.25}
