@@ -39,6 +39,57 @@ def one(values: Counter, field: str):
     return {"DISAGREEMENT": dict(values), "field": field}
 
 
+def identity_audit(rows: list[dict]) -> dict:
+    """Whether the file holds EXACTLY the design it claims to hold.
+
+    A line count cannot establish this. A 160-line file with one design row
+    missing and some other row duplicated in its place has the right length, the
+    right task count and the right arm set, and is not the experiment: one cell
+    contributes two draws and another contributes none. Row identity is what
+    separates those cases, and `unique_row_ids` was computed and then never
+    consulted.
+
+    Identity is checked on the design COORDINATE rather than on `row_id`, which
+    is a content hash: the coordinate is what the design enumerates, so a
+    missing cell and a duplicated cell surface here as concrete lists rather
+    than as a count that happens to reconcile.
+    """
+    coordinates = Counter(
+        (r.get("task_id"), r.get("arm"), r.get("background"),
+         r.get("order"), r.get("replicate_id"))
+        for r in rows)
+    tasks = sorted({r.get("task_id") for r in rows})
+    orders = sorted({r.get("order") for r in rows})
+
+    expected = {
+        (task, arm, background, order, replicate)
+        for task in tasks
+        for arm in contract.ARMS
+        for background in contract.BACKGROUNDS
+        for order in orders
+        for replicate in range(contract.REPLICATES)}
+
+    observed = set(coordinates)
+    show = lambda key: "|".join(str(part) for part in key)
+    duplicated = {show(key): n for key, n in coordinates.items() if n > 1}
+    row_ids = Counter(r.get("row_id") for r in rows)
+
+    return {
+        "expected_cells": len(expected),
+        "observed_cells": len(observed),
+        "missing_cells": sorted(show(key) for key in expected - observed),
+        "unexpected_cells": sorted(show(key) for key in observed - expected),
+        "duplicated_cells": duplicated,
+        "duplicate_row_ids": {rid: n for rid, n in row_ids.items() if n > 1},
+        "unique_row_ids": len(row_ids),
+        "task_count_matches_contract": len(tasks) == contract.N_TASKS,
+        "complete": bool(
+            not (expected - observed) and not (observed - expected)
+            and not duplicated and len(row_ids) == len(rows)
+            and len(tasks) == contract.N_TASKS),
+    }
+
+
 def describe(path: Path) -> dict:
     rows = [json.loads(line) for line in path.open()]
     if not rows:
@@ -48,6 +99,7 @@ def describe(path: Path) -> dict:
         return one(Counter(str(r.get(name)) for r in rows), name)
 
     audit = seeds.replicate_duplication(rows)
+    identity = identity_audit(rows)
     ceiling = rows[0].get("engineering_ceiling")
     return {
         "relative_path": str(path.parent),
@@ -96,9 +148,33 @@ def describe(path: Path) -> dict:
             1 for r in rows if r.get("forced_close_artefact")),
         "traces_opened": sum(1 for r in rows if r.get("reasoning_emitted")),
 
+        "row_identity": identity,
+        "contract_identity": {
+            "expected_rows": contract.EXPECTED_ROWS,
+            "n_tasks": contract.N_TASKS,
+            "replicates": contract.REPLICATES,
+            "arms": list(contract.ARMS),
+            "backgrounds": list(contract.BACKGROUNDS),
+            "master_seed": contract.MASTER_SEED,
+        },
+
+        # Canonical status is a statement about IDENTITY, not about length.
+        # Requiring only `len(rows) == EXPECTED_ROWS` accepted a file with one
+        # design cell missing and another duplicated in its place: right length,
+        # right task count, wrong experiment. `identity["complete"]` requires the
+        # exact expected set of design coordinates, each exactly once, with
+        # unique row ids and the contract's task count — so a substitution
+        # cannot reconcile itself by arithmetic.
+        #
+        # `replicate_multiplicity_ok` is separate from the duplication alarm: the
+        # alarm looks at whether two replicates produced identical text, and it
+        # silently skipped groups whose size was not 2, which is exactly the
+        # malformed case.
         "canonical_status": (
             "CANONICAL"
             if (len(rows) == contract.EXPECTED_ROWS
+                and identity["complete"]
+                and audit["malformed_groups"] == 0
                 and not audit["implausible"]
                 and not any(r.get("technical_failure") for r in rows)
                 and not any(r.get("answer_empty") for r in rows)

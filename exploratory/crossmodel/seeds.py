@@ -140,6 +140,12 @@ def replicate_duplication(records: Iterable[dict[str, Any]],
         groups.setdefault(key, []).append(record.get(answer_field) or "")
 
     complete = [answers for answers in groups.values() if len(answers) == 2]
+    # Groups whose size is not 2 were silently dropped. That is exactly the
+    # malformed case — a cell contributing one draw, or three — so skipping it
+    # let a damaged file pass an audit named after replication. They are now
+    # counted and named, and the manifest refuses canonical status on them.
+    malformed = {"|".join(str(part) for part in key): len(answers)
+                 for key, answers in groups.items() if len(answers) != 2}
     answered = [answers for answers in complete
                 if answers[0].strip() and answers[1].strip()]
     identical = sum(1 for answers in answered if answers[0] == answers[1])
@@ -147,6 +153,8 @@ def replicate_duplication(records: Iterable[dict[str, Any]],
     return {"replicate_pairs": len(answered),
             "nominal_replicate_pairs": len(complete),
             "pairs_without_answer": len(complete) - len(answered),
+            "malformed_groups": len(malformed),
+            "malformed_group_sizes": malformed,
             "identical_pairs": identical,
             "identical_rate": rate, "alarm_threshold": 0.25,
             "implausible": bool(answered) and rate >= 0.25}
