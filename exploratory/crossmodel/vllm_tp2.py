@@ -117,7 +117,17 @@ class DelimiterParser:
             return reasoning.strip("\n"), answer
         if self.start in text:
             return text.split(self.start, 1)[1].strip("\n"), ""
-        return None, text.strip()
+        # Markerless output in a thinking condition. The class contract above
+        # says this yields an EMPTY answer, and it did not: returning the raw
+        # text handed the whole generation to the behavioural verifiers as if it
+        # were a final answer. In an always-thinking checkpoint whose parser or
+        # reasoning interface has failed, that text is a scratchpad, and scoring
+        # a scratchpad manufactures a behavioural datum out of a parser failure.
+        #
+        # The raw generation is preserved by the caller under `raw_generation`,
+        # so nothing is lost for diagnosis; what is refused is the promotion of
+        # unsegmented text to a final answer.
+        return None, ""
 
 
 def build_parser(name: str | None, tokenizer, start: str, end: str):
@@ -234,6 +244,11 @@ def main() -> int:
             text = completion.text
             reasoning, answer = split(reasoning_parser, text)
             emitted = bool(reasoning.strip())
+            # Text that carried no reasoning delimiter at all could not be
+            # segmented into the two channels the contract requires. It is
+            # recorded so the cell can be given CHANNEL_INVALID rather than
+            # being read as a model that simply answered badly.
+            channel_valid = bool(emitted or answer.strip())
             closed = emitted and bool(answer.strip() or
                                       plan.get("think_close", "") in text)
             n_tokens = len(completion.token_ids)
@@ -255,6 +270,7 @@ def main() -> int:
                 "finish_reason": completion.finish_reason,
                 "stop_reason": str(completion.stop_reason),
                 "reasoning_emitted": emitted,
+                "channel_valid": channel_valid,
                 "natural_reasoning_closed": closed,
                 # The ceiling binds only when the whole budget was consumed
                 # without the model ever closing its reasoning.
