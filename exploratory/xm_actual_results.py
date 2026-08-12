@@ -152,6 +152,12 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
             "background": LABEL[background], "variant": background,
             "requested": len(cell),
             "final_answers": int(cell["scoreable"].sum()),
+            # Each arm's OWN answered-row count. Pooling the two rates with the
+            # combined count silently assumes the arms answered at the same
+            # rate, and final-answer missingness is exactly what differs across
+            # arms when a checkpoint struggles.
+            "final_answers_focal": int(focal["scoreable"].sum()),
+            "final_answers_reference": int(reference["scoreable"].sum()),
             "no_final": int((cell["final_answer_status"]
                              == schema.NO_FINAL_WITHIN_BUDGET).sum()),
             "technical_failures": int((cell["final_answer_status"]
@@ -173,22 +179,38 @@ def headline(cells: pd.DataFrame) -> pd.DataFrame:
     for (model, backend, load), part in cells.groupby(
             ["model", "backend", "load"], sort=True):
         weight = part["final_answers"]
+
+        def pooled(values: pd.Series, weights: pd.Series) -> float:
+            """Answered-row weighted mean, using the arm's OWN denominator.
+
+            Weighting both arms by the background's combined answered count
+            assumed the two arms answered at the same rate. They need not: a
+            background with 40 focal answers and 1 reference answer received the
+            same weight as one with the reverse pattern whenever the totals
+            matched, so the published focal and reference rates stopped being
+            the rates over the corresponding rows — which is precisely what the
+            report says they are. Each rate is now pooled over the rows that
+            produced it, so it equals the direct row-level rate by construction.
+            """
+            keep = values.notna() & (weights > 0)
+            if not keep.any():
+                return float("nan")
+            return float(np.average(values[keep], weights=weights[keep]))
+
         out.append({
             "Model": model, "Backend": backend, "k": load,
             "Requested": int(part["requested"].sum()),
             "Final answers": int(part["final_answers"].sum()),
+            "Final answers focal": int(part["final_answers_focal"].sum()),
+            "Final answers ref": int(part["final_answers_reference"].sum()),
             "No-final": int(part["no_final"].sum()),
-            # Pooled over backgrounds and weighted by the rows that actually
-            # produced an answer, so a background with few answers cannot
-            # dominate the headline number.
-            "A-fail focal": float(np.average(
-                part["A_fail_focal"].fillna(0), weights=weight)
-                if weight.sum() else float("nan")),
-            "A-fail ref": float(np.average(
-                part["A_fail_reference"].fillna(0), weights=weight)
-                if weight.sum() else float("nan")),
-            "tau": float(np.average(part["tau"].fillna(0), weights=weight)
-                         if weight.sum() else float("nan"))})
+            "A-fail focal": pooled(part["A_fail_focal"],
+                                   part["final_answers_focal"]),
+            "A-fail ref": pooled(part["A_fail_reference"],
+                                 part["final_answers_reference"]),
+            # tau is a paired within-task contrast, so its natural weight is the
+            # cell's overall contribution rather than either arm's alone.
+            "tau": pooled(part["tau"], weight)})
     return pd.DataFrame(out)
 
 
