@@ -73,7 +73,7 @@ class GenerationConfig:
 
     @property
     def engineering_ceiling(self) -> Optional[int]:
-        if self.reasoning_mode == ReasoningMode.NATURAL_REASONING:
+        if self.reasoning_mode in ReasoningMode.THINKING:
             return self.max_reasoning_tokens
         return None
 
@@ -252,6 +252,10 @@ class ModelAdapter(abc.ABC):
             "supported_reasoning_modes": list(self.SUPPORTED_MODES),
             "adapter_class": type(self).__name__,
         }
+        # A shim applied to make a checkpoint load at all is part of the
+        # execution condition and is recorded, never left implicit.
+        if getattr(self, "compatibility_shim", ""):
+            meta["compatibility_shim"] = self.compatibility_shim
         meta.update(self._load_metadata)
         return meta
 

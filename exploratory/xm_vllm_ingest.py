@@ -22,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from crossmodel import contract, seeds
 from crossmodel.adapters.base import Generation, GenerationConfig
-from crossmodel.schema import assert_provenance, build_row
+from crossmodel.schema import assert_provenance, build_row, final_answer_status
 
 
 def main() -> int:
@@ -92,11 +92,16 @@ def main() -> int:
             / max(len(raw), 1),
             technical_failure=item["technical_failure"],
             technical_failure_reason=item["technical_failure_reason"])
-        records.append(build_row(
+        record = build_row(
             run_id=run_dir.name, design_row=row, generation=generation,
             adapter_metadata=metadata, config=config,
             reasoning_control=control,
-            scientific_seed=item["seed_reasoning"]))
+            scientific_seed=item["seed_reasoning"])
+        record["not_generated"] = bool(item.get("not_generated"))
+        record["not_generated_reason"] = item.get("not_generated_reason", "")
+        record["generation_ceiling"] = plan.get("generation_ceiling")
+        record["final_answer_status"] = final_answer_status(record)
+        records.append(record)
 
     assert_provenance(records, expected_model=plan["model_id"],
                       expected_revision=plan["model_revision"])
@@ -118,6 +123,12 @@ def main() -> int:
           f"empty {sum(1 for r in records if r['answer_empty'])} · "
           f"truncated {sum(1 for r in records if r['answer_truncated'])} · "
           f"failures {sum(1 for r in records if r['technical_failure'])}")
+    states = {}
+    for record in records:
+        states[record["final_answer_status"]] = \
+            states.get(record["final_answer_status"], 0) + 1
+    print("  final answer status " + ", ".join(
+        f"{k} {v}" for k, v in sorted(states.items())))
     print(f"  traces opened "
           f"{sum(1 for r in records if r['reasoning_emitted'])}/{len(records)} "
           f"· median reasoning "

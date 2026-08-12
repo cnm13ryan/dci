@@ -49,6 +49,9 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--of", type=int, default=1)
+    parser.add_argument("--generation-ceiling", type=int, default=None,
+                        help="total tokens per request; sets the recorded "
+                             "condition to THINKING_ENABLED_BOUNDED")
     parser.add_argument("--out", default=None)
     parser.add_argument("--merge", nargs="*", default=None,
                         help="merge these shard files and exit")
@@ -119,7 +122,8 @@ def main() -> int:
     records, plan = runner.run_slice(
         adapter, design_rows, state, args.mode,
         run_id=out_dir.name, batch_size=args.batch_size,
-        shard=args.shard, of=args.of)
+        shard=args.shard, of=args.of,
+        generation_ceiling=args.generation_ceiling)
 
     suffix = "" if args.of == 1 else f".shard{args.shard}of{args.of}"
     path = out_dir / f"generations{suffix}.jsonl"

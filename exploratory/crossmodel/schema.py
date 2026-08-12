@@ -136,6 +136,35 @@ def build_row(*, run_id: str, design_row: Any, generation: Generation,
     return row
 
 
+#: What happened to a row's FINAL ANSWER, which is the only thing scored.
+#: Kept separate from A/B pass-fail on purpose: a row that never produced an
+#: answer is not a row that produced a failing one, and folding the two together
+#: would silently convert an execution limit into a behavioural result.
+FINAL_ANSWER = "FINAL_ANSWER"
+NO_FINAL_WITHIN_BUDGET = "NO_FINAL_WITHIN_BUDGET"
+TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
+NOT_GENERATED = "NOT_GENERATED"
+
+FINAL_ANSWER_STATES = (FINAL_ANSWER, NO_FINAL_WITHIN_BUDGET, TECHNICAL_FAILURE,
+                       NOT_GENERATED)
+
+
+def final_answer_status(row: dict[str, Any]) -> str:
+    """One of `FINAL_ANSWER_STATES`, from a stored row of either backend.
+
+    `NOT_GENERATED` is reserved for a row the run never attempted — a deadline
+    backstop, not a model outcome. It exists so a stopped run still writes the
+    complete row set and a reader can tell an unattempted row from a failed one.
+    """
+    if row.get("not_generated"):
+        return NOT_GENERATED
+    if row.get("technical_failure"):
+        return TECHNICAL_FAILURE
+    if (row.get("final_answer") or "").strip():
+        return FINAL_ANSWER
+    return NO_FINAL_WITHIN_BUDGET
+
+
 def assert_provenance(rows: list[dict[str, Any]],
                       expected_model: Optional[str] = None,
                       expected_revision: Optional[str] = None) -> dict[str, Any]:

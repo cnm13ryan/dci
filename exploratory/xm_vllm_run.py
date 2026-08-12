@@ -31,6 +31,19 @@ def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
+def reap() -> None:
+    """Kill orphaned vLLM workers and their shared-memory segments."""
+    import time
+
+    subprocess.run(["pkill", "-9", "-f", "VLLM::"], check=False)
+    for path in Path("/dev/shm").glob("psm_*"):
+        try:
+            path.unlink()
+        except OSError:
+            pass
+    time.sleep(5)
+
+
 def run(command: list[str], log: Path) -> int:
     """Run a step, streaming to a log so a long generation is observable."""
     print("  $ " + " ".join(str(c) for c in command), flush=True)
@@ -51,6 +64,10 @@ def main() -> int:
                         help="Stage B pilot on N disjoint tasks")
     parser.add_argument("--max-model-len", type=int, default=None)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
+    parser.add_argument("--generation-ceiling", type=int, default=8192)
+    parser.add_argument("--chunk-size", type=int, default=32)
+    parser.add_argument("--deadline-seconds", type=float, default=None)
+    parser.add_argument("--cpu-offload-gb", type=float, default=0.0)
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
 
@@ -65,7 +82,12 @@ def main() -> int:
                     "--model", args.model, "--load", str(args.load),
                     "--out", str(out_dir),
                     "--gpu-memory-utilization",
-                    str(args.gpu_memory_utilization)]
+                    str(args.gpu_memory_utilization),
+                    "--generation-ceiling", str(args.generation_ceiling),
+                    "--chunk-size", str(args.chunk_size),
+                    "--cpu-offload-gb", str(args.cpu_offload_gb)]
+    if args.deadline_seconds:
+        plan_command += ["--deadline-seconds", str(args.deadline_seconds)]
     if args.max_model_len:
         plan_command += ["--max-model-len", str(args.max_model_len)]
     if args.calibration:
@@ -77,7 +99,14 @@ def main() -> int:
     plan = json.loads((out_dir / "plan.json").read_text())
     print(f"  {plan['model_id']} @ {plan['model_revision'][:12]} "
           f"k={plan['load']} rows={plan['expected_rows']} "
-          f"ceiling={plan['engineering_ceiling']}", flush=True)
+          f"{plan['reasoning_mode']} "
+          f"budget={plan['generation_ceiling']}/request", flush=True)
+
+    # An engine killed mid-run leaves worker processes holding VRAM and shared
+    # memory segments behind. The next launch then fails to allocate and looks
+    # like a capacity limit of the model, which it is not. Reap before every
+    # launch so a memory result is a result about the model.
+    reap()
 
     print(f"STEP 2/3 — generate (vLLM TP={plan['tensor_parallel_size']})",
           flush=True)

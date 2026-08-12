@@ -78,6 +78,38 @@ class KimiVLThinkingAdapter(TransformersAdapter):
         # silently ignored, which is worse than passing none.
         return {}
 
+    @staticmethod
+    def _shim_removed_import() -> str:
+        """Restore the ONE symbol transformers 5.x removed that this code needs.
+
+        `modeling_kimi_vl.py` was published against transformers 4.48.2 and does:
+
+            from transformers.utils.import_utils import is_torch_fx_available
+            if is_torch_fx_available():
+                _prepare_4d_causal_attention_mask = torch.fx.wrap(...)
+
+        Transformers 5.15.0 dropped `is_torch_fx_available` along with symbolic
+        tracing, so the import raises and the checkpoint cannot load at all. Every
+        other name the remote code imports — fourteen of them, checked
+        individually — still exists in 5.15.0, so this is the whole gap.
+
+        The shim returns False, which is the truthful answer under 5.x: fx
+        tracing is gone. The guarded block then does not run, and all it would
+        have done is mark a function as a leaf **for tracing**. Nothing in eager
+        generation reads it. So this restores loadability without altering a
+        weight, a shape, an attention path or a forward pass — and it is applied
+        to the interpreter's view of `transformers`, never to the checkpoint's
+        files, which stay byte-identical to the pinned revision.
+        """
+        from transformers.utils import import_utils
+
+        if hasattr(import_utils, "is_torch_fx_available"):
+            return "not needed"
+        import_utils.is_torch_fx_available = lambda: False
+        return ("transformers.utils.import_utils.is_torch_fx_available = "
+                "lambda: False (removed in transformers 5.x; the block it "
+                "guards only marks an fx tracing leaf)")
+
     def _load_weights(self, revision: str, dtype):
         """Load through the checkpoint's own remote code, eager attention.
 
@@ -87,6 +119,8 @@ class KimiVLThinkingAdapter(TransformersAdapter):
         changed execution condition.
         """
         import transformers
+
+        self.compatibility_shim = self._shim_removed_import()
 
         kwargs = dict(revision=revision, dtype=dtype,
                       device_map=self._device_map,

@@ -109,6 +109,13 @@ def main() -> int:
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
     parser.add_argument("--revision", default=None)
     parser.add_argument("--out", default=None)
+    parser.add_argument("--generation-ceiling", type=int, default=8192,
+                        help="total tokens per request, reasoning and answer "
+                             "together; 0 derives the non-binding envelope "
+                             "ceiling from max_model_len instead")
+    parser.add_argument("--chunk-size", type=int, default=32)
+    parser.add_argument("--deadline-seconds", type=float, default=None)
+    parser.add_argument("--cpu-offload-gb", type=float, default=0.0)
     parser.add_argument("--tasks-override", type=int, default=None,
                         help="calibration only: use N disjoint tasks instead "
                              "of the frozen evaluation set")
@@ -177,9 +184,28 @@ def main() -> int:
     max_model_len = args.max_model_len or spec.max_model_len
     longest_user = max(len(r.user_prompt) for r in rows) // 3 + 200
     safety = int(max_model_len * SAFETY_FRACTION)
-    ceiling = max_model_len - longest_user - contract.ANSWER_TOKENS - safety
-    if ceiling <= 0:
+    envelope_ceiling = (max_model_len - longest_user - contract.ANSWER_TOKENS
+                        - safety)
+    if envelope_ceiling <= 0:
         raise ValueError("context envelope leaves no room for reasoning")
+
+    # Two different numbers, deliberately kept apart. The ENVELOPE ceiling is
+    # what the context window allows and is chosen never to bind. The BOUNDED
+    # ceiling is a practical execution limit that WILL bind on some requests —
+    # so it is named as such, it is recorded on every row, and the rate at
+    # which requests reach it is a reported outcome rather than a footnote.
+    if args.generation_ceiling:
+        generation_ceiling = args.generation_ceiling
+        if generation_ceiling > envelope_ceiling + contract.ANSWER_TOKENS:
+            raise ValueError(
+                f"generation ceiling {generation_ceiling} exceeds what the "
+                f"{max_model_len}-token context leaves for generation")
+        ceiling = generation_ceiling - contract.ANSWER_TOKENS
+        reasoning_mode = contract.ReasoningMode.THINKING_ENABLED_BOUNDED
+    else:
+        ceiling = envelope_ceiling
+        generation_ceiling = ceiling + contract.ANSWER_TOKENS
+        reasoning_mode = contract.ReasoningMode.NATURAL_REASONING
 
     plan = {
         "stamp": "EXPLORATORY_NO_EVIDENCE",
@@ -199,12 +225,17 @@ def main() -> int:
         "limit_mm_per_prompt": spec.limit_mm_per_prompt,
         "max_model_len": max_model_len,
         "gpu_memory_utilization": args.gpu_memory_utilization,
+        "cpu_offload_gb": args.cpu_offload_gb,
         "engineering_ceiling": ceiling,
+        "envelope_ceiling": envelope_ceiling,
+        "generation_ceiling": generation_ceiling,
+        "chunk_size": args.chunk_size,
+        "deadline_seconds": args.deadline_seconds,
         "answer_tokens": contract.ANSWER_TOKENS,
         "temperature": contract.TEMPERATURE,
         "top_p": contract.TOP_P,
         "top_k": contract.TOP_K,
-        "reasoning_mode": "NATURAL_REASONING",
+        "reasoning_mode": reasoning_mode,
         "reasoning_parser": spec.reasoning_parser,
         "chat_template_kwargs": spec.chat_template_kwargs,
         "think_open": spec.think_open,
@@ -222,8 +253,10 @@ def main() -> int:
           f"unique seeds={audit['unique_scientific_seeds']}")
     print(f"  parser={spec.reasoning_parser or 'delimiters'}  "
           f"template_kwargs={spec.chat_template_kwargs}")
-    print(f"  max_model_len={max_model_len}  ceiling={ceiling}"
-          f"  answer={contract.ANSWER_TOKENS}")
+    print(f"  max_model_len={max_model_len}  mode={reasoning_mode}")
+    print(f"  generation ceiling={generation_ceiling} tokens/request "
+          f"(reasoning {ceiling} + answer {contract.ANSWER_TOKENS}); "
+          f"envelope would allow {envelope_ceiling}")
     print(f"  wrote {design_path} and {out_dir}/plan.json")
     return 0
 
