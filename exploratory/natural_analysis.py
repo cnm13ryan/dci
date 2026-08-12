@@ -224,6 +224,33 @@ def leave_one_out(natural: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def drop_longest_per_arm(cell: pd.DataFrame, count: int | None = None,
+                         share: float | None = None) -> pd.DataFrame:
+    """Remove the longest traces from EACH arm of one background cell.
+
+    Two things were wrong in the original. The share was taken over
+    `len(natural) / 4` — a constant 40 unrelated to the 80-row cell being
+    trimmed — so the rows labelled 5% and 10% removed 2.5% and 5%. And the drop
+    was applied to the pooled cell, which is the more damaging error: the
+    estimator is a paired focal-minus-reference contrast and focal traces run
+    systematically longer, so a pooled tail drop removes focal rows almost
+    exclusively. The two arms then no longer describe the same task set.
+
+    Removing the same share from each arm makes the advertised share the share
+    actually removed and keeps the two arms comparable. It does NOT guarantee
+    every task survives: if both replicates of one (task, arm) cell are in the
+    tail, that task drops out of the paired contrast. That is a real property of
+    a length-based exclusion, not something to be hidden, so `n_tasks` is
+    reported for every row and the caller can see it move.
+    """
+    kept = []
+    for _, arm_rows in cell.groupby("arm"):
+        n = count if count is not None else int(round(share * len(arm_rows)))
+        ordered = arm_rows.sort_values("reasoning_tokens")
+        kept.append(ordered.iloc[:len(ordered) - n] if n else ordered)
+    return pd.concat(kept)
+
+
 def long_trace_sensitivity(natural: pd.DataFrame) -> pd.DataFrame:
     """Does the headline depend on a handful of very long traces?
 
@@ -232,15 +259,18 @@ def long_trace_sensitivity(natural: pd.DataFrame) -> pd.DataFrame:
     question: would the result look different without the tail?
     """
     rows = []
-    for label, drop in (("all rows", 0), ("drop longest 1", 1),
-                        ("drop longest 5%", int(0.05 * len(natural) / 4)),
-                        ("drop longest 10%", int(0.10 * len(natural) / 4))):
+    for label, kwargs in (("all rows", {"count": 0}),
+                          ("drop longest 1 per arm", {"count": 1}),
+                          ("drop longest 5%", {"share": 0.05}),
+                          ("drop longest 10%", {"share": 0.10})):
         for variant, cell in natural.groupby("variant"):
-            kept = (cell.sort_values("reasoning_tokens").iloc[:len(cell) - drop]
-                    if drop else cell)
+            kept = drop_longest_per_arm(cell, **kwargs)
             per_task = tau_per_task(kept)
             rows.append({"exclusion": label, "background": LABEL[variant],
-                         "rows_kept": len(kept), "estimate": per_task.mean(),
+                         "rows_kept": len(kept),
+                         "rows_kept_focal": int((kept["arm"] == FOCAL).sum()),
+                         "rows_kept_reference": int((kept["arm"] == REFERENCE).sum()),
+                         "estimate": per_task.mean(),
                          "n_tasks": len(per_task)})
     return pd.DataFrame(rows)
 
