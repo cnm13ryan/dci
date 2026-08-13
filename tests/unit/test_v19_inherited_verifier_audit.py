@@ -16,6 +16,14 @@ disagreement outside the table fails.
 `EXPECTED_DISAGREEMENTS` is the whole set over the audit bank: 15 cases out of
 roughly two thousand comparisons. Every one lies in a class amendment A2 names, and
 Pair 3's focal rule disagrees nowhere at all.
+
+KNOWN FAILING, and deliberately left so. Six further `p3.target` disagreements are
+observed, all on abbreviations and initials, because the abbreviation repair reached
+the inherited verifier and not the frozen v19 policy. They are the defect, not a
+correction of it, so they do not belong in the table below; the repair needs a
+re-freeze and a re-audit that section 10.6 reserves to the review procedure. See
+`docs/v19_pair3_segmentation_defect.md`. This test is the instrument that caught it
+and it should stay red until the repair lands.
 """
 
 import pytest
