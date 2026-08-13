@@ -46,6 +46,42 @@ same fact. That is unusual and it is what makes the choice below dominate.
 
 ---
 
+## Update: the bounded-thinking run set strengthens this
+
+Since this document was written, the identification layer was wired into the
+reporting pass and a fourth checkpoint (Kimi-VL) completed. The evidence for the
+recommendation below is now stronger, not weaker.
+
+| checkpoint | condition | focal uptake (B, relational) | reference uptake (C_L3, local) |
+|---|---|---|---|
+| Kimi-VL | bounded thinking, semicolon | **0.088** | 0.571 |
+| Kimi-VL | bounded thinking, bracket | **0.405** | 0.531 |
+| Qwen3.5-4B | bounded thinking | 0.967–1.000 | 0.975–1.000 |
+| Qwen3.5-9B | bounded thinking | 0.972–1.000 | 1.000 |
+
+Kimi-VL is the sharpest case yet: it is the **only** checkpoint whose target is
+not saturated (target failure 0.559 focal against 0.286 reference, τ = +0.278
+[0.056, 0.500]), and it is `FOCAL_NONUPTAKE` because the relational focal
+instruction was satisfied in 8.8% of answered focal rows. The one checkpoint with
+real headroom is the one where the treatment was least delivered.
+
+The two Qwen checkpoints show the opposite pattern under bounded thinking —
+near-total uptake in both arms, with small estimates (+0.031 and +0.026,
+intervals touching zero). Those two were briefly reported as the programme's
+first IDENTIFIED cells; a self-audit withdrew that, because three identification
+preconditions had been asserted rather than measured. They are now
+`EVIDENCE_INCOMPLETE`, pending a Stage B/C admission record for the
+bounded-thinking condition and a verifier certification for these output
+classes. The uptake contrast below is a direct measurement and is unaffected. So
+uptake is not a fixed property of the focal instruction: it moves with the
+reasoning condition. That is itself a result Experiment 1 should absorb, and it
+means the local/relational contrast must be measured under a declared reasoning
+condition rather than pooled across conditions.
+
+Nothing here changes the ranking. Experiment 1 remains the recommendation.
+
+---
+
 ## Experiment 1 — Local-versus-relational, across multiple constraint families
 
 **Hypothesis.** Constraints reducible to a local surface operation obtain

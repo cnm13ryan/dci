@@ -25,6 +25,9 @@ from crossmodel.identification import CellEvidence, Thresholds, classify  # noqa
 
 def healthy(**overrides) -> CellEvidence:
     """A cell that should be IDENTIFIED unless an override breaks it."""
+    # The four evidence fields are stated explicitly: they no longer default
+    # to established, so a fixture that omitted them would test the
+    # EVIDENCE_INCOMPLETE path instead of the behavioural one it means to.
     base = dict(
         execution_validated=True, channel_valid_rate=1.0,
         technical_failure_rate=0.0, verifier_certified=True,
@@ -160,7 +163,12 @@ class TestPooling:
         assert len(ident.poolable(cells)) == 1
 
     def test_every_verdict_name_is_registered(self) -> None:
-        assert len(set(ident.ALL_VERDICTS)) == 13
+        # 13 from the original framework list, plus EVIDENCE_INCOMPLETE, which
+        # distinguishes "no evidence was recorded" from "a check was run and
+        # failed". Collapsing those two is the fail-open shape the self-audit
+        # of PR #19 found.
+        assert len(set(ident.ALL_VERDICTS)) == 14
+        assert ident.EVIDENCE_INCOMPLETE in ident.ALL_VERDICTS
 
 
 class TestThresholdsAreDeclarations:
