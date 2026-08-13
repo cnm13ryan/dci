@@ -433,3 +433,34 @@ indefensible are measured, not inferred.
 * `VERIFIER_UNCERTIFIED` and `UNSATISFIABLE` are implemented in the
   identification layer but wired to constants in the current reporting pass;
   neither has a live certification feed yet.
+
+## Closed since this document was written
+
+Two gaps recorded above have been closed, and one further defect was found by
+the provenance audit that recovered this history.
+
+**X5 is no longer a wiring gap.** The identification layer was implemented and
+tested in `d9c4e41` but imported by nothing, so every published cross-model
+result was still labelled by the narrow local `degeneracy()` helper — three
+labels against the layer's thirteen. `xm_actual_results.py` now calls the layer,
+the duplicate helper is deleted, and pooled tau covers IDENTIFIED cells only.
+Establishing the evidence mapping mattered more than the wiring: mapping
+`channel_valid_rate` to `scoreable` would have produced six false
+CHANNEL_INVALID verdicts, because a cap-truncated row separates its channels
+perfectly and simply carries no answer.
+
+**X6 now has a regression test.** `0f117f7` was the one recovered repair with
+none. The fixture had to be got right: a single run whose ceiling is null does
+NOT reproduce the bug, because pandas keeps an all-None column as `object` and
+`None or 0` is a harmless 0. The failure needs a MIXED frame — one checkpoint
+recording 8192 beside one recording null — which coerces the column to float64
+and makes the nulls NaN. A first version of the test used the single-run fixture
+and passed against a deliberately reinstated `int(x or 0)`, which would have made
+it worthless.
+
+**K2 — a second Kimi channel defect (`543bd2e`).** Distinct from X2 and not in
+the original review: batch padding reaching Kimi's scored answers on the
+Transformers backend (`crossmodel/kimi_hf_backend.py`), where X2 fixed the vLLM
+parser (`crossmodel/vllm_tp2.py`). Same concern — text that is not a final answer
+reaching a behavioural verifier — in a different execution path. 11 regression
+tests; the pre-fix revision cannot even collect them.
