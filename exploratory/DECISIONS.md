@@ -2374,6 +2374,254 @@ particular should not be theorised over.
 
 ---
 
+# R11 — the arbitration programme
+
+## R11.1 The in-tree seed repair was still not a scientific seed
+
+Round 10 found the original defect (one `SamplingParams` shared by a batch, ~98%
+of replicate pairs byte-identical) and repaired it by seeding from the row's
+index in the design file:
+
+```python
+return [20260810 + offset + 7919 * i for i in range(len(rows))]
+```
+
+That is distinct per row, so the defect it was written to fix is gone. It is
+still a property of the **file**, not of the **experimental unit**, with two
+consequences: the focal and reference rows of one (task, replicate) draw
+different decoder noise, so the paired τ is not a common-random-number
+difference; and reordering the design reseeds every unit, so a design change
+silently changes the noise.
+
+`vllm_backend/arbitration_vllm.py` seeds from the unit instead:
+
+```python
+seed = blake2b(f"{MASTER_SEED}|{task_id}|{replicate}|{phase}") mod (2**31 - 1)
+```
+
+`reasoning_vllm.py` was **not** modified, so S18/S25/S26/S27 stay reproducible as
+generated. The two harnesses coexist and the difference is recorded here rather
+than migrated.
+
+## R11.2 Three generation parameters differ from what the directive expected
+
+The directive named `top_p = 0.95`, a 350-token final-answer allowance and
+`num_beams = 1`. The artifacts say `top_p = 0.9`, **512** answer tokens, and that
+beam search is not a parameter of this engine. `config.json` records
+`answer_token_budget = 320`, which describes the Transformers design path and is
+contradicted by stored generations reaching 512.
+
+Resolved in favour of the artifacts, because changing either value would make
+this programme incomparable with the runs it exists to replicate. Recorded in
+`AUDIT.md` and `manifest.json` rather than absorbed.
+
+## R11.3 The ACQ priority follow-up was not run, and that is the result
+
+The directive gates the ACQ repeat on "a clear directional effect" from the main
+priority intervention. There is none: all four Ψ intervals contain zero and three
+point estimates carry the wrong sign. Running ACQ anyway would be searching for a
+condition in which the cue works. `followup/` is empty and the reason is in the
+report.
+
+## R11.4 The cross-model ceiling risk was recorded before it was resolved
+
+The 42-generation smoke test showed A satisfied 3/3 in three of four triple
+types on SmolLM3-3B. Three observations cannot separate 1.00 from 0.90, so the
+risk that τ would be ceiling-bound was written into
+`cross_model/smoke/DECISION.md` **before** the main run, together with the reason
+not to swap models on the strength of three rows. At n = 160 per cell A runs
+0.325–0.950 and the risk did not materialise. The record stands so the reading is
+visibly not retrofitted.
+
+## R11.5 Conditioning on background compliance is post-treatment and stays descriptive
+
+SmolLM3-3B complies with the background instruction in only 0.194–0.575 of rows,
+against 0.706–0.938 on Qwen3-4B, so its null Δ is confounded with a manipulation
+that frequently did not land. The obvious repair — restrict to compliant rows — is
+**conditioning on a post-treatment variable** and cannot support a causal claim.
+It was computed anyway, labelled as descriptive, and reported: it retains 41% of
+rows, thins one cell to 3 tasks, and leaves Δ near zero either way. It is not
+used to rescue or to strengthen any claim.
+
+## R11.6 What the corrected seeds did and did not change
+
+Nothing qualitative. Every Round 9/10 headline reproduced. What changed is that
+the numbers can now be quoted: per-replicate Δ agrees in sign across all four
+replicates in every Experiment 1 cell, with a spread of 0.15–0.35. Round 10's
+warning that the amplifier curve's fine shape is not interpretable still holds at
+this sample size — 0.15–0.35 of per-replicate spread is not compatible with
+reading differences of 0.1 between adjacent cells.
+
+---
+
+# R12 — the boundary mechanism, and a focal repair that failed informatively
+
+## R12.1 A preflight gate I wrote was wrong, and the correction is on the record
+
+`mfr_preflight.py`'s first criterion 2 was "the answer contains markdown
+anywhere". It disqualified **both** boundary-control candidates and printed
+`BOUNDARY_CONTROL_NOT_IDENTIFIED`. The gate was wrong, not the candidates: it
+flagged degree-symbol answers whose prose contained `**temperature sensor**`,
+markup that cannot change a degree-symbol count.
+
+The hazard that matters is markup built **from the counted character**, and that
+definition was already pinned in `tests/test_boundary_and_ladder.py`, committed
+at `6f5f8bb` before any generation existed
+(`test_asterisk_markdown_hazard_is_real_and_is_measured_not_assumed`,
+`test_degree_symbol_has_no_such_hazard`). Measured that way it is 0.000 for `°`
+and 0.188 for `*`. The gate was corrected to the pre-registered definition and
+the original output retained at `report_gate_v1.txt`.
+
+The rule this follows: a gate may be corrected after seeing that it measures the
+wrong quantity, provided the replacement was specified before the data existed
+and the original is kept. It may not be corrected because of which candidate it
+rejected.
+
+## R12.2 Criteria 3 and 4 are read off the combined rows
+
+The preflight measures each mark alone and combined with A and `C_L3`. The main
+design always carries the background with A and an arm, so the combined rows are
+the ones whose compliance and length have to match. This cannot move the
+selection — criterion 2 settles it before 3 and 4 are consulted — and the pooled
+table is printed beside it.
+
+## R12.3 `MARK_CHARS` gained two entries, and one loop had to be scoped
+
+`splice_count` — the audited "is this mark standing where a sentence boundary
+could stand" proxy — keys on `MARK_CHARS`, so the degree and asterisk entries
+were added to make the mechanism variable computable on the control. That dict
+was also driving the Round 4 per-sentence factorial, which would silently have
+minted `X_DEGREE_EACH` and `X_ASTERISK_EACH`. The factorial now iterates an
+explicit `_FACTORIAL_MARKS` tuple; `test_the_mark_family_differs_only_in_the_mark`
+follows it. The assertion is unchanged — only the set it ranges over is now named
+rather than inferred from a character lookup.
+
+`MARK_IS_BOUNDARY_CAPABLE` gained `degree: False` and `asterisk: False`, declared
+before the experiment ran. That dict has been the predeclared predictor since
+Round 4, and this is the first time it was used as one.
+
+## R12.4 The focal repair is stopped after three rungs, and why that is not
+## premature
+
+All three prespecified rungs failed the construction gate, so §15 would technically
+permit a fourth. It was not built, because the direction of the failure makes a
+fourth futile: focal compliance rises 0.033 → 0.258 → 0.467 and the probability
+moves into **both** (0.033 → 0.258 → 0.458), never into *focal only*
+(0.000 → 0.000 → 0.008), while the target climbs to 0.958 and out of its own
+gate. An easier rung makes `P(focal only)` smaller, not larger.
+
+The finding is that under the parenthetical background **A and B do not compete**,
+which is a different problem from the one the ladder was built to solve.
+
+## R12.5 The focal-only state exists — under the semicolon — and that was not
+## acted on
+
+`X_B_INC1` under `X_SEMICOLON_FREE` shows `P(focal only)` = 0.133 at b = 0 and
+0.183 at b = 4096, above the gate. The calibration background is fixed at
+`X_PAREN_FREE` by the directive, and switching to the background that happens to
+pass would be selecting the condition that gives the wanted result. Recorded as
+an observation; the priority re-test stays stopped.
+
+## R12.6 Cross-run byte-identity is 0.781, not 1.000
+
+I expected an identical prompt with an identical seed to reproduce the answer
+exactly at b = 0 — the 160 semicolon cells shared with Round 11 have 0 prompt and
+0 seed mismatches. It reproduces 125/160 = **0.781**. vLLM's continuous batching
+makes the forward pass depend on batch composition and the two runs had different
+batch shapes (320 rows against 640).
+
+Consequences applied throughout: no claim of bitwise determinism is made; the
+seed is nonetheless demonstrably in force; and τ(semicolon, QAC, b = 0) reproduced
+at +0.688 in both runs to three decimals despite 22% of the underlying answers
+differing, which is the stability that matters for the estimator.
+
+## R12.7 A segmenter artefact that runs against the result, quantified
+
+All 12 registry-versus-independent segmenter disagreements in the boundary run
+are degree rows, and 100% of them contain a `°` unit ending a sentence
+(`…below 20°C. This practice…`), which the production segmenter does not split.
+Among the 23 degree rows carrying that pattern `A_pass` is 0.478 against 0.963
+elsewhere.
+
+Direction matters and is stated wherever Δ_boundary is: the artefact depresses
+A_pass in the **degree** condition only, inflating τ_degree and deflating
+Δ_boundary. **+0.512 is a lower bound with respect to it.** The semicolon
+condition has zero disagreements.
+
+---
+
+# R13 — the anti-splice instrument does not work
+
+## R13.1 A failed manipulation, stopped at the gate
+
+`X_NO_SEMI_SPLICE` was the obvious next instrument: Round 12 showed boundary
+capability predicts the interference, and this instruction names exactly the
+behaviour the account is about. It does not close the route.
+
+At b = 4096, among answers that produced the required semicolon, the share
+containing a splice is **0.946** under the anti-splice instruction and **0.974**
+under the matched off-route control — an absolute reduction of **0.028** against
+a gate of 0.50. At b = 0 the rate is **1.000 in both**. The predeclared gate
+failed on items 2 and 3, and the main experiment was not run.
+
+The important structural point: this is **not** the "semicolon compliance
+collapses" failure mode. Compliance is 0.925 under anti-splice against 0.950
+under the control, so the instrument did not prevent the mark; it failed to
+constrain how the mark was used. The model follows a **count** constraint on the
+semicolon and does not follow a **usage** constraint on the same mark in the same
+prompt (0.050 compliance, against 1.000 for the off-route instruction at
+identical load).
+
+Round 7 had already seen this instruction fail in a much heavier per-sentence
+semicolon setting. The lighter exact-one requirement did not make it satisfiable.
+
+## R13.2 The null was audited before it was accepted
+
+The whole conclusion rests on `splice_count`, so the proxy was checked rather than
+trusted. 12 flagged anti-splice rows read by hand: 11 are unambiguous clause
+joins, 1 joins a fragment to a clause and is a plausible false positive. Both
+"clean" rows with a semicolon read: one genuinely clean, one a plausible false
+negative.
+
+Decisively, the proxy shows **no differential bias between route conditions**: its
+high-precision closed-list rule accounts for 0.610 of anti-splice flags and 0.486
+of off-route flags, so the anti-splice flags are if anything the more certain
+ones. No measurement artefact could manufacture this null.
+
+## R13.3 One wording was tested, and the other five were deliberately not
+
+The registry holds six paraphrases of `X_NO_SEMI_SPLICE`. Only paraphrase 0 was
+run. Trying the others *after* seeing that the first failed — and stopping at
+whichever one works — is exactly the search the manipulation gate exists to
+prevent, and §10 forbids it.
+
+A prospective wording screen scored **only** on the manipulation, on calibration
+tasks, in the reference arm, with no focal contrast computable, is a legitimate
+separate experiment and is the recommended next step. Substituting a stronger
+wording into this one is not.
+
+## R13.4 A descriptive observation kept out of the conclusion
+
+Realised reasoning is **978.7** tokens under anti-splice against **470.0** under
+the off-route control at b = 4096: the model thinks about twice as long when told
+not to splice, and splices anyway. This is post-treatment and is reported
+descriptively only. It is consistent with the instruction being read and
+attempted — which is also what the earlier priority-cue null looked like — but
+nothing here identifies why the attempt fails.
+
+---
+
+> **Two parallel Round 11s.** The exploratory programme ran on separate branches
+> that merged here, and both independently used the label "Round 11": the
+> arbitration programme above (`exp/dci-cheapest-rocm-study`) and the
+> natural-reasoning endpoint below (`exp/natural-reasoning-headline`). They are
+> different experiments on different run directories, not two accounts of one.
+> Both records are kept in full and neither renumbers the other, because the
+> round labels are referenced by the run manifests and decision records already
+> written against them.
+
+---
+
 # Round 11 — a genuinely natural reasoning endpoint
 
 ## R11.1 4096 tokens is a limit, not natural reasoning
