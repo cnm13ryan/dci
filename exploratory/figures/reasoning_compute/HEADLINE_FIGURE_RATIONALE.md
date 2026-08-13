@@ -99,8 +99,25 @@ Three low-fidelity candidates were rendered and put to a cold reader who was
 given the image and nothing else (see `COLD_READER_TEST.md`):
 
 * **A — full progression, two lines.** The whole ordered sequence from "no
-  thinking" to "natural reasoning".
+  thinking" to "natural reasoning". **SELECTED.** Understood in 10-15 seconds;
+  its six recoverable gaps (what the lines are, the units, the error bars, the
+  sample size, the model, a misleading trend arrow) were all closed in
+  `figure1_headline`.
 * **B — endpoint only.** A slope chart with just "no thinking" and "natural
-  reasoning", maximising contrast at the cost of the middle.
+  reasoning", maximising contrast at the cost of the middle. Not selected: the
+  intermediate settings are what show that the bracket condition is repaired
+  almost immediately and then stays repaired.
 * **C — plot plus schematic.** A, with a small panel spelling out what the
-  y-axis difference is made of.
+  y-axis difference is made of. Not selected. It took the cold reader 45-60
+  seconds, mostly fighting the layout, and it carries a real design flaw: the
+  schematic explains the axis as a difference over the COMPETING instruction
+  while the two lines vary the FORMATTING instruction, so it shows two
+  manipulations in one panel without saying how they relate. The selected figure
+  states that relationship in one sentence instead of drawing it.
+
+## Outcome
+
+The headline sentence survived the experiment and is now stated with the numbers
+in hand: at natural reasoning the bracket-pair condition sits at **exactly
+0.000** extra failures, the semicolon condition at **+0.400 [+0.225, +0.550]**.
+See `COLD_READER_TEST.md` for the test transcript and every change it forced.

@@ -17,11 +17,28 @@ generation config, library defaults and backend arguments have all resolved
 """
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
 from typing import Optional
 
 from dci.v19 import ALPHA, CANDIDATE_METHODS, SESOI_FLOOR
 from dci.v19.resolution import Resolution, SlotTable, fixed, pending
+
+
+def frozen_state(spec) -> dict:
+    """The complete scientifically relevant state of a specification object.
+
+    Hashing a hand-picked subset of a specification's fields is how a frozen
+    commitment quietly stops being covered: the decoder's forbidden-control list
+    is exactly what the runtime assertion checks, and the controller's
+    prohibitions are exactly what distinguishes the frozen generator from a
+    different one, yet neither was in its own hash. Serialising the whole
+    dataclass means a field added later is covered by construction rather than by
+    someone remembering to extend a literal.
+    """
+    if not dataclasses.is_dataclass(spec) or isinstance(spec, type):
+        raise TypeError(f"{spec!r} is not a specification instance")
+    return dataclasses.asdict(spec)
 
 # --------------------------------------------------------------- the decoder
 
@@ -73,7 +90,9 @@ DECODER = DecoderSpec()
 # the exact representation under the pinned version and validating that no top-k
 # logits processor is active, so it cannot be guessed here.
 DECODER_SLOTS = SlotTable.of(
-    fixed("decoder.specification", "D23 / section 9.6", DECODER.sampling_fields),
+    fixed("decoder.specification", "D23 / section 9.6", frozen_state(DECODER),
+          note="the complete specification, including the forbidden-control "
+               "list the resolved-configuration assertion will check"),
     pending("decoder.top_k_disabled_representation", "section 9.6",
             Resolution.PENDING_CERTIFICATION,
             "freeze the exact value that disables top-k under the pinned "
@@ -138,11 +157,9 @@ CONTROLLER = ControllerSpec()
 
 CONTROLLER_SLOTS = SlotTable.of(
     fixed("controller.specification", "D24 / section 9.7",
-          {"forced_transition_flag": CONTROLLER.forced_transition_flag,
-           "final_truncated_flag": CONTROLLER.final_truncated_flag,
-           "samples_token_beyond_allowance":
-               CONTROLLER.sample_token_beyond_allowance,
-           "cache_crosses_generations": CONTROLLER.cache_crosses_generations}),
+          frozen_state(CONTROLLER),
+          note="the complete specification, including the seven section 9.7 "
+               "prohibitions and the required per-generation instrumentation"),
     pending("controller.final_answer_allowance_v", "D24 / section 9.8",
             Resolution.PENDING_EMPIRICAL,
             "selected on disjoint pre-confirmatory material to give final-answer "
@@ -224,11 +241,9 @@ class ProposalLawSpec:
 PROPOSAL_LAW = ProposalLawSpec()
 
 PROPOSAL_SLOTS = SlotTable.of(
-    fixed("proposal.law", "D14 / section 8.3",
-          {"with_replacement": PROPOSAL_LAW.with_replacement,
-           "whole_proposal_rejection": PROPOSAL_LAW.whole_proposal_rejection,
-           "repairs_failed_proposal": PROPOSAL_LAW.repair_failed_proposal,
-           "default_within_stratum_pmf": PROPOSAL_LAW.default_within_stratum_pmf}),
+    fixed("proposal.law", "D14 / section 8.3", frozen_state(PROPOSAL_LAW),
+          note="the complete law, including the seed derivation and its "
+               "domain-separation key, and the background structure at both loads"),
     pending("proposal.root_construction_seed", "section 8.3",
             Resolution.PENDING_EMPIRICAL,
             "frozen with the canonical sampler implementation before the first "

@@ -1,0 +1,113 @@
+{
+ "experiment": "VLLM_TP2_CROSS_MODEL",
+ "recorded_utc": "2026-08-12T08:10:09.767731+00:00",
+ "condition": {
+  "backend": "vllm 0.27.1+rocm723",
+  "tensor_parallel_size": 2,
+  "dtype": "bfloat16",
+  "quantization": "none",
+  "disable_custom_all_reduce": true,
+  "NCCL_P2P_DISABLE": "1",
+  "gpus": "2 x AMD Radeon RX 7900 XTX (gfx1100)"
+ },
+ "rows": [
+  {
+   "model_id": "Qwen/Qwen3.5-4B",
+   "family": "qwen3.5",
+   "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+   "tensor_parallel_size": 2,
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "reasoning_parser": "qwen3",
+   "chat_template_kwargs": {
+    "enable_thinking": true
+   },
+   "loads_tp2": true,
+   "bf16": true,
+   "thinking_enabled": true,
+   "simple_smoke": "7/8 answers, 7/8 closed, weights 4/4",
+   "dci_shaped_closure": null,
+   "parser_valid": true,
+   "final_status": "TP2_REASONING_UNCLOSED",
+   "evidence": "loads and parses, but 1/8 composed-constraint smoke prompts ran to the ceiling without closing"
+  },
+  {
+   "model_id": "Qwen/Qwen3.5-9B",
+   "family": "qwen3.5",
+   "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "tensor_parallel_size": 2,
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "reasoning_parser": "qwen3",
+   "chat_template_kwargs": {
+    "enable_thinking": true
+   },
+   "loads_tp2": true,
+   "bf16": true,
+   "thinking_enabled": true,
+   "simple_smoke": "8/8 answers, 8/8 closed, weights 4/4",
+   "dci_shaped_closure": null,
+   "parser_valid": true,
+   "final_status": "TP2_DCI_SHAPED_NOT_MEASURED",
+   "evidence": "simple smoke passed; the DCI-shaped probe did not complete, so DCI-shaped closure is UNMEASURED \u2014 not a closure failure and not a pass"
+  },
+  {
+   "model_id": "google/gemma-4-E4B-it",
+   "family": "gemma4",
+   "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+   "tensor_parallel_size": 2,
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "reasoning_parser": "gemma4",
+   "chat_template_kwargs": {
+    "enable_thinking": true
+   },
+   "loads_tp2": false,
+   "bf16": true,
+   "thinking_enabled": false,
+   "simple_smoke": null,
+   "dci_shaped_closure": null,
+   "parser_valid": null,
+   "final_status": "TP2_BACKEND_BLOCKED",
+   "evidence": "engine cannot build the model; see execution matrix for the exception"
+  },
+  {
+   "model_id": "google/gemma-4-12B-it",
+   "family": "gemma4",
+   "revision": "707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+   "tensor_parallel_size": 2,
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "reasoning_parser": "gemma4",
+   "chat_template_kwargs": {
+    "enable_thinking": true
+   },
+   "loads_tp2": false,
+   "bf16": true,
+   "thinking_enabled": false,
+   "simple_smoke": null,
+   "dci_shaped_closure": null,
+   "parser_valid": null,
+   "final_status": "TP2_BACKEND_BLOCKED",
+   "evidence": "engine cannot build the model; see execution matrix for the exception"
+  },
+  {
+   "model_id": "moonshotai/Kimi-VL-A3B-Thinking-2506",
+   "family": "kimi-vl",
+   "revision": "aa1730989e7558695b44ee493623e03bd325a994",
+   "tensor_parallel_size": 2,
+   "dtype": "bfloat16",
+   "quantization": "none",
+   "reasoning_parser": "delimiters",
+   "chat_template_kwargs": {},
+   "loads_tp2": false,
+   "bf16": true,
+   "thinking_enabled": null,
+   "simple_smoke": null,
+   "dci_shaped_closure": null,
+   "parser_valid": null,
+   "final_status": "TP2_CAPACITY_BLOCKED",
+   "evidence": "BF16 weights did not load in 6 tested envelope(s); failure is at weight load, not KV"
+  }
+ ]
+}
