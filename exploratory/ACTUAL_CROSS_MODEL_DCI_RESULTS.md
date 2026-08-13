@@ -1,6 +1,6 @@
 # Cross-model DCI — the actual dataset
 
-Recorded 2026-08-13 10:39 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
+Recorded 2026-08-13 10:48 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
 
 `EXPLORATORY_NO_EVIDENCE`. One frozen design — target A, focal B, reference C_L3, order QAC, 20 pilot tasks, 2 replicates, two backgrounds — run against every checkpoint that could be made to execute it. **Backends differ per checkpoint** and that difference is recorded on every row; see §6 before comparing any two models.
 
