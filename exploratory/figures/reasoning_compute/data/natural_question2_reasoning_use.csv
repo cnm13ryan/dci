@@ -1,0 +1,5 @@
+background,arm,n,mean,median,p25,p75,p90,p95,max,natural_closure,ceiling_hits,answer_tokens
++ one bracket pair,competing instruction,40,583.8,549.0,380.75,656.25,842.7,1199.8999999999992,1570,1.0,0,172.025
++ one bracket pair,matched comparison,40,437.525,353.0,271.25,498.5,706.6,897.5,1985,1.0,0,57.4
++ one semicolon,competing instruction,40,1081.55,719.0,551.5,1197.0,1669.4000000000003,2442.349999999996,5888,1.0,0,182.675
++ one semicolon,matched comparison,40,689.35,424.5,345.25,789.25,1770.1000000000001,2152.9999999999995,2278,1.0,0,63.85
