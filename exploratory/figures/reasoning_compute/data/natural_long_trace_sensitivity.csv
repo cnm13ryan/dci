@@ -1,0 +1,9 @@
+exclusion,background,rows_kept,rows_kept_focal,rows_kept_reference,estimate,n_tasks
+all rows,+ one bracket pair,80,40,40,0.0,20
+all rows,+ one semicolon,80,40,40,0.4,20
+drop longest 1 per arm,+ one bracket pair,78,39,39,0.0,20
+drop longest 1 per arm,+ one semicolon,78,39,39,0.425,20
+drop longest 5%,+ one bracket pair,76,38,38,0.0,20
+drop longest 5%,+ one semicolon,76,38,38,0.4,20
+drop longest 10%,+ one bracket pair,72,36,36,0.0,19
+drop longest 10%,+ one semicolon,72,36,36,0.4722222222222222,18

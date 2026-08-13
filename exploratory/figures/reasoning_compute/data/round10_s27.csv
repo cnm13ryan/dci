@@ -1,0 +1,7 @@
+b,variant,tau,lo,hi,focal_A_fail,ref_A_fail,A_compliance_focal,C_compliance,joint_focal,cap_hit,realised_M,delta,d_lo,d_hi,experiment
+256,X_PAREN_FREE,0.0,0.0,0.0,0.0,0.0,1.0,0.825,0.0,0.975,255.95,,,,S27 reasoning × load k=5 · QAC
+256,X_SEMICOLON_FREE,0.05,-0.2,0.3,0.2,0.15,0.8,0.925,0.0,1.0,256.0,,,,S27 reasoning × load k=5 · QAC
+256,DELTA (amp − ctrl),,,,,,,,,,,0.05,-0.2,0.3,S27 reasoning × load k=5 · QAC
+4096,X_PAREN_FREE,0.05,0.0,0.15,0.05,0.0,0.95,0.825,0.1,0.0,931.525,,,,S27 reasoning × load k=5 · QAC
+4096,X_SEMICOLON_FREE,0.625,0.425,0.825,0.625,0.0,0.375,0.95,0.1,0.025,1187.875,,,,S27 reasoning × load k=5 · QAC
+4096,DELTA (amp − ctrl),,,,,,,,,,,0.575,0.35,0.775,S27 reasoning × load k=5 · QAC

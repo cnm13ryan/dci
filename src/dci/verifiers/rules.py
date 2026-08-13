@@ -34,7 +34,106 @@ DIGIT_PATTERN = re.compile(r"\d")
 PERCENT_PATTERN = re.compile(r"\d+(?:\.\d+)?\s?%")
 
 
-SENTENCE_BOUNDARY = re.compile(r'(?<=[.!?])["”’]?\s+')
+# Closing marks may follow the terminator and there may be MORE THAN ONE of
+# them. The original class allowed exactly one, from a three-character set, so
+# `**bold.** next`, `\"quoted.\" next` and `(aside.) next` all failed to split.
+# None of those forms occurs in the current corpus (verified: 0 of 1840
+# generations), so this closes a latent defect rather than changing any result.
+SENTENCE_BOUNDARY = re.compile(r'(?<=[.!?])[\"\'”’)\]*\\]*\s+')
+
+
+# --------------------------------------------------------------------------
+# Abbreviation handling for sentence segmentation.
+#
+# `SENTENCE_BOUNDARY` alone treats every full stop before whitespace as a
+# sentence end, so "Sales spike at 6 a.m. when others sleep." was two sentences.
+# Because `v_exact_sentence_count` decides the primary outcome F_A, that is a
+# scientific error and not a cosmetic one: it manufactured sentence-count
+# OVERSHOOT and turned compliant answers into violations.
+#
+# Two closed tables, because the two classes behave differently:
+#
+#   TITLE_ABBREVIATIONS  are always followed by a name, so a following capital
+#                        is NOT a new sentence. "Dr. Smith" is one sentence.
+#   MEDIAL_ABBREVIATIONS can legitimately end a sentence, so the following
+#                        capital is what decides. "at 6 a.m. when ..." continues;
+#                        "at 6 a.m. Customers ..." is a boundary.
+#
+# Both are matched case-insensitively against the token stripped of its internal
+# full stops, so "a.m", "A.M" and "am" resolve alike. The tables are deliberately
+# closed rather than a general heuristic: an open-ended rule is what would make
+# the semantics untestable.
+#
+# Documented costs of the convention, accepted and covered by tests:
+#   * a sentence that genuinely begins with a lower-case word after a medial
+#     abbreviation is under-counted;
+#   * a sentence that genuinely begins after a title-like token is under-counted;
+#   * a single letter before a full stop is read as an initial ("J. R. Smith"),
+#     so a sentence ending in a bare capital letter is under-counted.
+# --------------------------------------------------------------------------
+TITLE_ABBREVIATIONS = frozenset({
+    "mr", "mrs", "ms", "messrs", "dr", "prof", "rev", "hon", "st", "sr", "jr",
+    "capt", "sgt", "lt", "col", "gen", "fr", "mt",
+})
+
+MEDIAL_ABBREVIATIONS = frozenset({
+    "am", "pm", "eg", "ie", "etc", "vs", "approx", "no", "fig", "cf", "al",
+    "inc", "ltd", "co", "dept", "est", "vol", "pp", "ed", "eds", "min", "max",
+    "avg", "ca", "viz", "resp",
+})
+
+# The contiguous letter-and-dot run ending at the candidate full stop: "a.m"
+# from "... 6 a.m.", "Dr" from "Dr.", "weekday" from "... every weekday.".
+#
+# UNICODE-aware on purpose. An ASCII-only class was the first repair's own bug:
+# on "... meringues or soufflés. 20 to 30 strokes ..." it could not match across
+# the accented letter, fell back to the bare trailing "s", read that as an
+# initial and swallowed a real sentence boundary. The independent scanner caught
+# it on generation `07769620c3a7a4468d08`. `[^\W\d_]` is "any Unicode letter".
+TRAILING_ABBREVIATION = re.compile(r"([^\W\d_](?:\.?[^\W\d_])*)\.$", re.UNICODE)
+
+
+def _ends_sentence(left: str, right: str) -> bool:
+    """Whether the terminator ending `left` really closes a sentence.
+
+    `left` includes the terminator; `right` is what follows the whitespace.
+    """
+    terminator = left[-1:]
+    if terminator in "!?":
+        return True                       # never ambiguous
+    following = right.lstrip()
+    follows_capital = bool(following) and following[0].isupper()
+
+    if left.endswith(".."):                # an ellipsis, not a full stop
+        return follows_capital
+
+    match = TRAILING_ABBREVIATION.search(left)
+    if match is None:
+        return True
+    token = match.group(1)
+    if len(token) == 1:
+        # An initial, as in "J. R. Smith" — but only a CAPITAL is an initial.
+        # Without the case test a lower-case tail left behind by any character
+        # the pattern cannot cross would masquerade as one.
+        return not token.isupper()
+    bare = token.replace(".", "").lower()
+    if bare in TITLE_ABBREVIATIONS:
+        return False
+    if bare in MEDIAL_ABBREVIATIONS:
+        return follows_capital
+    return True
+
+
+def _split_line(line: str) -> list[str]:
+    """Split one line at the boundaries that survive `_ends_sentence`."""
+    parts: list[str] = []
+    start = 0
+    for match in SENTENCE_BOUNDARY.finditer(line):
+        if _ends_sentence(line[:match.start()], line[match.end():]):
+            parts.append(line[start:match.start()])
+            start = match.end()
+    parts.append(line[start:])
+    return parts
 
 
 LIST_MARKER = re.compile(r"^\s*(?:[-*•‣▪]|\(?\d{1,2}[.)])\s+")
@@ -66,7 +165,7 @@ def split_sentences(text: Any) -> list[str]:
             continue
         parts.extend(
             part.strip()
-            for part in SENTENCE_BOUNDARY.split(line)
+            for part in _split_line(line)
             if re.search(r"[A-Za-z0-9]", part))
     if parts:
         return parts
