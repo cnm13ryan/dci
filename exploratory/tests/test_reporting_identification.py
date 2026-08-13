@@ -37,7 +37,8 @@ SEMI = contract.SEMICOLON_BACKGROUND
 
 def row(task: int, arm: str, *, answered: bool = True, cap_hit: bool = False,
         technical: bool = False, answer: str = "Alpha. Beta. Gamma. Delta.",
-        replicate: int = 0) -> dict:
+        replicate: int = 0, reasoning_text: str | None = "thinking",
+        forced_close: bool = False) -> dict:
     status = (schema.TECHNICAL_FAILURE if technical
               else schema.FINAL_ANSWER if answered
               else schema.NO_FINAL_WITHIN_BUDGET)
@@ -50,6 +51,9 @@ def row(task: int, arm: str, *, answered: bool = True, cap_hit: bool = False,
         "final_answer": answer if answered else "",
         "final_answer_status": status,
         "reasoning_cap_hit": cap_hit, "technical_failure": technical,
+        "reasoning_text": reasoning_text or "",
+        "reasoning_emitted": bool(reasoning_text),
+        "forced_close_artefact": forced_close,
         "not_generated": False, "generation_ceiling": 8192,
         "engineering_ceiling": 8192, "answer_truncated": False,
     }
@@ -61,16 +65,46 @@ def scored(rows: list[dict]) -> pd.DataFrame:
 
 class TestEvidenceMapping:
     def test_a_cap_truncated_row_is_not_a_channel_failure(self) -> None:
-        """The mapping error that would produce a false CHANNEL_INVALID."""
+        """The mapping error that would produce a false CHANNEL_INVALID.
+
+        The channel fields are supplied here, because the rate is DERIVED from
+        them rather than defaulted — see the no-evidence case below.
+        """
         rows = []
         for task in range(10):
-            rows.append(row(task, FOCAL, answered=False, cap_hit=True))
-            rows.append(row(task, REFERENCE))
+            rows.append(row(task, FOCAL, answered=False, cap_hit=True,
+                            reasoning_text="thinking at length"))
+            rows.append(row(task, REFERENCE, reasoning_text="thinking"))
         frame = scored(rows)
         evidence = R.cell_evidence(frame, R.tau_per_task(frame))
         assert evidence.channel_valid_rate == 1.0, (
             "a cap-truncated run was reported as a channel failure")
         assert evidence.cap_hit_rate == pytest.approx(0.5)
+
+    def test_absent_channel_fields_yield_no_evidence_not_one(self) -> None:
+        """The fail-open shape the self-audit found: absence became 1.0."""
+        rows = [row(t, arm, reasoning_text=None)
+                for t in range(10) for arm in (FOCAL, REFERENCE)]
+        frame = scored(rows).drop(columns=["reasoning_text", "reasoning_emitted"])
+        evidence = R.cell_evidence(frame, R.tau_per_task(frame))
+        assert evidence.channel_valid_rate is None
+
+    def test_raw_text_in_both_channels_is_a_channel_failure(self) -> None:
+        """The X2 shape: the parser returned the generation as both channels."""
+        rows = []
+        for task in range(10):
+            for arm in (FOCAL, REFERENCE):
+                same = "Alpha. Beta. Gamma. Delta."
+                rows.append(row(task, arm, answer=same, reasoning_text=same))
+        frame = scored(rows)
+        evidence = R.cell_evidence(frame, R.tau_per_task(frame))
+        assert evidence.channel_valid_rate == 0.0
+
+    def test_a_forced_close_artefact_is_a_channel_failure(self) -> None:
+        rows = [row(t, arm, reasoning_text="x", forced_close=True)
+                for t in range(10) for arm in (FOCAL, REFERENCE)]
+        evidence = R.cell_evidence(scored(rows), R.tau_per_task(scored(rows)))
+        assert evidence.channel_valid_rate == 0.0
 
     def test_channel_valid_column_is_used_when_present(self) -> None:
         rows = [row(t, arm) for t in range(6) for arm in (FOCAL, REFERENCE)]
@@ -89,6 +123,7 @@ class TestEvidenceMapping:
 
 class TestReportAgreesWithTheLayer:
     def test_per_cell_verdict_equals_a_direct_classify_call(self) -> None:
+        # Whatever the verdict is, the report and the layer must agree on it.
         rows = [row(t, arm) for t in range(10) for arm in (FOCAL, REFERENCE)]
         frame = scored(rows)
         cells = R.per_cell(frame)
