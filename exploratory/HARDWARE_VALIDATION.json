@@ -1,0 +1,677 @@
+{
+ "recorded_utc": "2026-08-13T17:33:06Z",
+ "host": {
+  "node": "cnm13ryan-X870-AORUS-ELITE-WIFI7",
+  "kernel": "6.14.0-29-generic"
+ },
+ "versions": {
+  "python": "3.12.3",
+  "torch": "2.11.0+gitd0c8b1f",
+  "hip": "7.2.53211",
+  "devices": [
+   "Radeon RX 7900 XTX",
+   "Radeon RX 7900 XTX"
+  ],
+  "vllm": "0.27.1"
+ },
+ "revisions": {
+  "Qwen/Qwen3-4B": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "Qwen/Qwen3-4B-Thinking-2507": "",
+  "Qwen/Qwen2.5-0.5B-Instruct": "7ae557604adf67be50417f59c2c2f167def9a775"
+ },
+ "prompt": "Explain how a corkscrew removes a cork. Write exactly 4 sentences.",
+ "cases": [
+  {
+   "case": {
+    "name": "qwen3_no_thinking",
+    "model_id": "Qwen/Qwen3-4B",
+    "mode": "NO_THINKING",
+    "tensor_parallel_size": 1,
+    "strategy": "",
+    "max_tokens": 96,
+    "reasoning_budget": 0,
+    "expect_outcome": "OK",
+    "note": "the b=0 control arm; the condition the missing card destroyed"
+   },
+   "started": 1786642388.322422,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen3-4B",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "1",
+    "max_model_len": "40960",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 96,
+    "answer_tokens": 96,
+    "reasoning_budget": 0
+   },
+   "strategy": "single_phase",
+   "reasoning": {
+    "emitted": false,
+    "closed": false,
+    "cap_hit": false,
+    "tokens": 0,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew has a spiral blade that grips the cork when twisted into it. As the user turns the handle, the spiral blade pulls the cork toward the center of the corkscrew. The twisting motion creates e",
+   "answer_tokens": 69,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": [
+     [
+      "LIMITED_REASONING",
+      "NATURAL_REASONING"
+     ],
+     [
+      "LIMITED_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ],
+     [
+      "NATURAL_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ]
+    ]
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "63",
+     "GPU Memory Read/Write Activity (%)": "19",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 29.1
+  },
+  {
+   "case": {
+    "name": "qwen3_natural",
+    "model_id": "Qwen/Qwen3-4B",
+    "mode": "NATURAL_REASONING",
+    "tensor_parallel_size": 1,
+    "strategy": "",
+    "max_tokens": 512,
+    "reasoning_budget": 0,
+    "expect_outcome": "OK",
+    "note": "the natural endpoint"
+   },
+   "started": 1786642417.463216,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen3-4B",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "1",
+    "max_model_len": "40960",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 512,
+    "answer_tokens": 512,
+    "reasoning_budget": 0
+   },
+   "strategy": "single_phase",
+   "reasoning": {
+    "emitted": true,
+    "closed": true,
+    "cap_hit": false,
+    "tokens": 256,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew uses a spiral thread to grip the cork as it is inserted into the bottle. Turning the handle twists the spiral, driving the corkscrew deeper into the cork and creating a secure hold. The th",
+   "answer_tokens": 84,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": [
+     [
+      "LIMITED_REASONING",
+      "NATURAL_REASONING"
+     ],
+     [
+      "LIMITED_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ],
+     [
+      "NATURAL_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ]
+    ]
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "1",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "45",
+     "GPU Memory Read/Write Activity (%)": "15",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "64",
+     "GPU Memory Read/Write Activity (%)": "47",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 24.7
+  },
+  {
+   "case": {
+    "name": "qwen3_limited",
+    "model_id": "Qwen/Qwen3-4B",
+    "mode": "LIMITED_REASONING",
+    "tensor_parallel_size": 1,
+    "strategy": "two_phase_splice",
+    "max_tokens": 512,
+    "reasoning_budget": 256,
+    "expect_outcome": "OK",
+    "note": "capped ladder AND the two_phase_splice strategy"
+   },
+   "started": 1786642442.122411,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen3-4B",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "1",
+    "max_model_len": "40960",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 256,
+    "answer_tokens": 512,
+    "reasoning_budget": 256
+   },
+   "strategy": "two_phase_splice",
+   "reasoning": {
+    "emitted": true,
+    "closed": false,
+    "cap_hit": true,
+    "tokens": 256,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew uses its spiral threads to grip the cork as it is turned into the bottle. The handle is twisted, forcing the spiral to cut into the cork and create a secure hold. As the corkscrew is turne",
+   "answer_tokens": 76,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": [
+     [
+      "LIMITED_REASONING",
+      "NATURAL_REASONING"
+     ],
+     [
+      "LIMITED_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ],
+     [
+      "NATURAL_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ]
+    ]
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "45",
+     "GPU Memory Read/Write Activity (%)": "15",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "77",
+     "GPU Memory Read/Write Activity (%)": "46",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 24.4
+  },
+  {
+   "case": {
+    "name": "qwen3_thinking_preopen",
+    "model_id": "Qwen/Qwen3-4B-Thinking-2507",
+    "mode": "NATURAL_REASONING",
+    "tensor_parallel_size": 1,
+    "strategy": "",
+    "max_tokens": 512,
+    "reasoning_budget": 0,
+    "expect_outcome": "OK",
+    "note": "the checkpoint whose template pre-opens <think>; exercises the split repair on the exact case it exists for"
+   },
+   "started": 1786642466.4960225,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen3-4B-Thinking-2507",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "1",
+    "max_model_len": "40960",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 512,
+    "answer_tokens": 512,
+    "reasoning_budget": 0
+   },
+   "strategy": "single_phase",
+   "reasoning": {
+    "emitted": true,
+    "closed": true,
+    "cap_hit": false,
+    "tokens": 248,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew's threaded tip enters the cork's surface, gripping it securely through friction. As the user turns the screw clockwise, the threads lift the cork upward against the bottle's neck. The scre",
+   "answer_tokens": 75,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": [
+     [
+      "LIMITED_REASONING",
+      "NATURAL_REASONING"
+     ],
+     [
+      "LIMITED_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ],
+     [
+      "NATURAL_REASONING",
+      "THINKING_ENABLED_BOUNDED"
+     ]
+    ]
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "77",
+     "GPU Memory Read/Write Activity (%)": "15",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "64",
+     "GPU Memory Read/Write Activity (%)": "46",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 33.4
+  },
+  {
+   "case": {
+    "name": "qwen25_tp1",
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "mode": "NO_THINKING",
+    "tensor_parallel_size": 1,
+    "strategy": "",
+    "max_tokens": 96,
+    "reasoning_budget": 0,
+    "expect_outcome": "OK",
+    "note": "single card"
+   },
+   "started": 1786642499.902315,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "1",
+    "max_model_len": "32768",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 96,
+    "answer_tokens": 96,
+    "reasoning_budget": 0
+   },
+   "strategy": "single_phase",
+   "reasoning": {
+    "emitted": false,
+    "closed": false,
+    "cap_hit": false,
+    "tokens": 0,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew is a tool used to remove a cork from a bottle, canister, or other container. To remove a cork, simply twist the corkscrew counterclockwise around the cork until the cork separates from the",
+   "answer_tokens": 83,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": []
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "45",
+     "GPU Memory Read/Write Activity (%)": "15",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "66",
+     "GPU Memory Read/Write Activity (%)": "3",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 19.8
+  },
+  {
+   "case": {
+    "name": "qwen25_tp2",
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "mode": "NO_THINKING",
+    "tensor_parallel_size": 2,
+    "strategy": "",
+    "max_tokens": 96,
+    "reasoning_budget": 0,
+    "expect_outcome": "OK",
+    "note": "both cards must participate"
+   },
+   "started": 1786642519.6680207,
+   "outcome": "OK",
+   "detail": "",
+   "ok": true,
+   "engine_kwargs": {
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "dtype": "bfloat16",
+    "tensor_parallel_size": "2",
+    "max_model_len": "32768",
+    "gpu_memory_utilization": "0.85",
+    "disable_custom_all_reduce": "True",
+    "enforce_eager": "True",
+    "seed": "20260812",
+    "trust_remote_code": "False",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "max_tokens": 96,
+    "answer_tokens": 96,
+    "reasoning_budget": 0
+   },
+   "strategy": "single_phase",
+   "reasoning": {
+    "emitted": false,
+    "closed": false,
+    "cap_hit": true,
+    "tokens": 0,
+    "channel_valid": true,
+    "markers_in_answer": false
+   },
+   "answer_preview": "A corkscrew is a tool used to remove a cork from a bottle, can, or any other container that has a cork. The process of removing a cork typically involves twisting the handle of the corkscrew around th",
+   "answer_tokens": 96,
+   "template": {
+    "acquisition": "vllm.LLM.get_tokenizer",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "modes_render_distinctly": true,
+    "modes_sharing_a_prompt": []
+   },
+   "memory_before": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "47",
+     "GPU Memory Read/Write Activity (%)": "15",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "memory_after": [
+    {
+     "card": "card0",
+     "GPU Memory Allocated (VRAM%)": "4",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card1",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "GPU Memory Read/Write Activity (%)": "0",
+     "Memory Activity": "N/A",
+     "Avg. Memory Bandwidth": "0"
+    },
+    {
+     "card": "card2",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   ],
+   "elapsed_seconds": 1080.6
+  },
+  {
+   "case": {
+    "name": "unsupported_checkpoint",
+    "model_id": "not-a-real/checkpoint",
+    "mode": "NO_THINKING",
+    "tensor_parallel_size": 1,
+    "strategy": "",
+    "max_tokens": 96,
+    "reasoning_budget": 0,
+    "expect_outcome": "BACKEND_UNSUPPORTED",
+    "note": "the failure path: an unknown checkpoint must be REFUSED, and refused as a result rather than a crash"
+   },
+   "started": 1786643600.2506895,
+   "outcome": "REGISTRY_REFUSED",
+   "detail": "\"'not-a-real/checkpoint' is not a registered checkpoint. Known: Qwen/Qwen3-4B, Qwen/Qwen3-4B-Thinking-2507, Qwen/Qwen3-4B-Instruct-2507, Qwen/Qwen2.5-0.5B-Instruct, Qwen/Qwen3.5-4B, Qwen/Qwen3.5-9B, google/gemma-4-E4B-it, google/gemma-4-12B-it, moonshotai/Kimi-VL-A3B-Thinking-2506\"",
+   "ok": true
+  }
+ ],
+ "passed": 7,
+ "total": 7
+}

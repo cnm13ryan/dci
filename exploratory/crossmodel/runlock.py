@@ -43,7 +43,16 @@ from typing import Any, Iterable, Optional
 #: Every command line that can hold VRAM belonging to this study. `VLLM::` alone
 #: is not enough — see the module docstring.
 RUNNER_PATTERNS = (
+    # RETAINED although the file is gone. This is a DETECTOR, not a code path:
+    # a generation started before the drivers moved to `-m vllm_backend` still
+    # carries the old path on its command line, and can outlive the change --
+    # the incident this module exists for had one survive fourteen hours. A
+    # detector that forgets a form strands the card it cannot see.
     "crossmodel/vllm_tp2.py",
+    # The canonical entrypoint. A run started as `python -m vllm_backend`
+    # shows only this on its command line, and an orphan invisible to cleanup
+    # still holds VRAM.
+    "vllm_backend",
     "vllm_capacity_probe",
     "vllm_qwen_probe",
     "xm_vllm_run.py",
@@ -82,12 +91,71 @@ def free_vram_gib(minimum_capacity_gib: float = 20.0) -> list[float]:
     return free
 
 
-def running_runners(exclude_pid: Optional[int] = None) -> list[dict]:
-    """Live processes matching a runner pattern, excluding this one and its shell.
+#: This checkout. A matched process is only ours if it is working inside it.
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+#: Set into the environment when a lock is taken, so children — including vLLM's
+#: spawned workers, which inherit it — can be claimed even if they later chdir.
+RUN_ID_VAR = "DCI_RUN_ID"
+
+
+def _process_cwd(pid: int) -> Optional[Path]:
+    """Where a process is working, or None if that cannot be established."""
+    try:
+        return Path(os.readlink(f"/proc/{pid}/cwd")).resolve()
+    except (OSError, PermissionError):      # gone, or another user's process
+        return None
+
+
+def _process_run_id(pid: int) -> Optional[str]:
+    try:
+        raw = Path(f"/proc/{pid}/environ").read_bytes()
+    except (OSError, PermissionError):
+        return None
+    for entry in raw.split(b"\0"):
+        name, sep, value = entry.partition(b"=")
+        if sep and name.decode(errors="replace") == RUN_ID_VAR:
+            return value.decode(errors="replace")
+    return None
+
+
+def owned_by_this_checkout(pid: int) -> bool:
+    """Whether a matched process belongs to THIS repository.
+
+    The patterns are fed to `pgrep -af`, which searches every process on the
+    machine. `VLLM::` matches any project's vLLM workers, and `vllm_backend`
+    matches any checkout of this one — so a match alone licenses reporting a
+    process, never signalling it. Two independent claims are accepted:
+
+    * the process is working inside this checkout, which covers vLLM's spawned
+      workers because they inherit the parent's cwd; or
+    * it carries this checkout's run id in its environment, which survives a
+      later chdir.
+
+    Ownership that cannot be ESTABLISHED is refused. A process belonging to
+    another user, or one that exited between the scan and the check, reads as
+    not ours — the failure mode of leaving a foreign job alone is a run that
+    waits, and the failure mode of the opposite is killing someone else's work.
+    """
+    cwd = _process_cwd(pid)
+    if cwd is not None and (cwd == REPO_ROOT or REPO_ROOT in cwd.parents):
+        return True
+    run_id = _process_run_id(pid)
+    return bool(run_id) and run_id == os.environ.get(RUN_ID_VAR)
+
+
+def running_runners(exclude_pid: Optional[int] = None,
+                    foreign: bool = False) -> list[dict]:
+    """Live runner processes belonging to this checkout.
 
     `pgrep -af` matches the whole command line, which is why the caller's own
     invocation has to be excluded explicitly: a shell running a command that
     merely NAMES one of these scripts would otherwise look like a runner.
+
+    Matches outside this checkout are dropped, not returned, because everything
+    downstream of this function may signal what it is given. Pass `foreign=True`
+    to see them instead — useful for reporting "a card is busy and it is not us",
+    which is a different diagnosis from "a run of ours is already up".
     """
     exclude_pid = exclude_pid if exclude_pid is not None else os.getpid()
     found: dict[int, str] = {}
@@ -108,8 +176,11 @@ def running_runners(exclude_pid: Optional[int] = None) -> list[dict]:
             # A shell wrapper that happens to quote the pattern is not a runner.
             if command.startswith("/bin/bash -c") or " -c source " in command:
                 continue
+            # Machine-wide match, repository-scoped result.
+            if owned_by_this_checkout(pid) is foreign:
+                continue
             found[pid] = command
-    return [{"pid": pid, "command": command[:300]}
+    return [{"pid": pid, "command": command[:300], "foreign": foreign}
             for pid, command in sorted(found.items())]
 
 
@@ -130,8 +201,15 @@ def clean_shm() -> list[str]:
 
 
 def kill_runners(pids: Iterable[int], grace: float = 5.0) -> list[int]:
-    """SIGTERM then SIGKILL a set of pids. Returns those that were signalled."""
+    """SIGTERM then SIGKILL a set of pids. Returns those that were signalled.
+
+    Ownership is re-checked HERE rather than trusted from the caller. This is
+    the only function in the module that signals another process, so it is the
+    one place the guarantee has to hold; a pid list assembled elsewhere, or by a
+    future caller, must not be able to route a foreign process into a SIGKILL.
+    """
     pids = [int(p) for p in pids if int(p) not in (os.getpid(), os.getppid())]
+    pids = [p for p in pids if owned_by_this_checkout(p)]
     for pid in pids:
         try:
             os.kill(pid, signal.SIGTERM)
@@ -239,6 +317,13 @@ class RunLock:
 
     def __enter__(self) -> "RunLock":
         self.out_dir.mkdir(parents=True, exist_ok=True)
+        # Stamp the run id BEFORE anything is spawned, so every child inherits
+        # it. vLLM forces `spawn` on ROCm and its workers chdir in some
+        # configurations, which is why cwd alone is not relied on to recognise
+        # our own processes later.
+        self._stamped_run_id = RUN_ID_VAR not in os.environ
+        if self._stamped_run_id:
+            os.environ[RUN_ID_VAR] = f"{self.out_dir.name}:{os.getpid()}"
         # GPU lock first: taking it is what makes "any live runner is an orphan"
         # a sound inference rather than a race.
         self._flock(self.gpu_lock_path, "the GPU lock")
@@ -342,6 +427,12 @@ class RunLock:
 
     def __exit__(self, exc_type, exc, tb) -> bool:
         self.release(state="failed" if exc_type else "finished")
+        # Unstamp what this lock stamped. Leaving it set would mark every
+        # process this interpreter spawns afterwards -- including ones with
+        # nothing to do with the run -- as belonging to it.
+        if getattr(self, "_stamped_run_id", False):
+            os.environ.pop(RUN_ID_VAR, None)
+            self._stamped_run_id = False
         return False
 
 

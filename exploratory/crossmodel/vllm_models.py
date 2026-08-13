@@ -2,7 +2,7 @@
 
 Deliberately free of any vLLM import: this runs in the SCIENTIFIC environment,
 which has torch 2.9.1 and no vLLM. It only describes how each checkpoint should
-be driven; `crossmodel.vllm_tp2` consumes the description in the backend
+be driven; `vllm_backend` consumes the description in the backend
 environment.
 
 Everything here was read off the installed vLLM 0.27.1+rocm723 wheel, not

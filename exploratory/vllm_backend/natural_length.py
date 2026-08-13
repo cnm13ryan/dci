@@ -9,47 +9,67 @@ defined at all. The answer channel is kept separate from the first token.
 """
 import json
 import sys
+from dataclasses import replace as _replace
 from pathlib import Path
 
-MODEL = sys.argv[1]
-REVISION = sys.argv[2]
-MAX_TOKENS = int(sys.argv[3]) if len(sys.argv) > 3 else 32768
-OUT = Path(sys.argv[4]) if len(sys.argv) > 4 else Path("natural_length.json")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from vllm_backend import engine as _engine
+from vllm_backend.contract import GenerationRequest
+from vllm_backend.hardware import probe as _probe_host
+from vllm_backend.registry import get_or_default
+from vllm_backend.resolve import resolve_engine, resolve_sampling
+
 PROMPTS = Path("nl_prompts.json")
 
+#: Default only; the checkpoint's own delimiter is used at run time
+#: via the model card, so a Gemma/Kimi checkpoint is not mis-split.
 THINK_CLOSE = "</think>"
 
+#: The engine seed the whole reasoning line runs under. `EnginePlan.seed`
+#: defaults to something else, so every script states this explicitly.
+ENGINE_SEED = 20260810
 
-def main():
-    from vllm import LLM, SamplingParams
+
+def main(argv: list[str] | None = None) -> int:
+    # Parsed HERE, not at import. Reading sys.argv at module scope made this the
+    # one script in the package that could not be imported -- `int(sys.argv[3])`
+    # ran against pytest's own arguments and raised -- so it was also the one
+    # script no test could reach. Its siblings all take `argv`.
+    argv = list(argv if argv is not None else sys.argv[1:])
+    model_id, revision = argv[0], argv[1]
+    max_tokens = int(argv[2]) if len(argv) > 2 else 32768
+    out_path = Path(argv[3]) if len(argv) > 3 else Path("natural_length.json")
 
     records = json.loads(PROMPTS.read_text())
-    llm = LLM(model=MODEL, revision=REVISION, dtype="bfloat16",
-              tensor_parallel_size=2, gpu_memory_utilization=0.85,
-              max_model_len=MAX_TOKENS + 2048, enforce_eager=True,
-              disable_custom_all_reduce=True, seed=20260810)
-    tok = llm.get_tokenizer()
+    # Engine and decoding come from `vllm_backend`; the diagnostic JSON emitted
+    # below is an EXISTING output format and is deliberately unchanged.
+    card = _replace(get_or_default(model_id), model_id=model_id)
+    plan = resolve_engine(card, _probe_host(), {
+        "tensor_parallel_size": 2, "max_model_len": max_tokens + 2048,
+        "seed": ENGINE_SEED, "model_revision": revision})
+    llm, tok, _load_seconds = _engine.build_engine(plan)
 
-    prompts = []
-    for record in records:
-        messages = []
-        if record.get("system_message"):
-            messages.append({"role": "system", "content": record["system_message"]})
-        messages.append({"role": "user", "content": record["user_prompt"]})
-        prompts.append(tok.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True))
+    # This probe asks where the model closes its trace when nothing is
+    # steering it, so no chat-template reasoning kwargs are passed.
+    requests = [GenerationRequest(row_id=str(r.get("row_id", i)),
+                                  user_prompt=r["user_prompt"],
+                                  system_message=r.get("system_message", "") or "")
+                for i, r in enumerate(records)]
+    prompts = [_engine.render_prompt(tok, r, {}) for r in requests]
 
-    params = SamplingParams(temperature=0.7, top_p=0.9, max_tokens=MAX_TOKENS,
-                            seed=20260810)
+    params = _engine.build_sampling(
+        resolve_sampling(max_tokens=max_tokens), max_tokens, ENGINE_SEED)
     outputs = llm.generate(prompts, params)
 
     rows = []
     for record, out in zip(records, outputs):
         completion = out.outputs[0]
         text = completion.text
-        closed = THINK_CLOSE in text
+        close = card.think_close or THINK_CLOSE
+        closed = close in text
         if closed:
-            reasoning, answer = text.split(THINK_CLOSE, 1)
+            reasoning, answer = text.split(close, 1)
         else:
             reasoning, answer = text, ""
         # Token-accurate reasoning length, not a character proxy.
@@ -65,11 +85,11 @@ def main():
             "cap_hit": completion.finish_reason == "length",
             "answer_preview": answer.strip()[:300],
         })
-    OUT.write_text(json.dumps(rows, indent=1))
+    out_path.write_text(json.dumps(rows, indent=1))
 
     closed = [r for r in rows if r["closed_naturally"]]
     lengths = sorted(r["reasoning_tokens"] for r in closed)
-    print(f"\nmodel={MODEL} max_tokens={MAX_TOKENS} n={len(rows)}")
+    print(f"\nmodel={model_id} max_tokens={max_tokens} n={len(rows)}")
     print(f"natural closure: {len(closed)}/{len(rows)} = {len(closed)/len(rows):.3f}")
     if lengths:
         def pct(p):
@@ -78,7 +98,8 @@ def main():
               f"median={pct(.5)} p75={pct(.75)} p90={pct(.9)} max={lengths[-1]}")
     print("answers non-empty:", sum(1 for r in rows if r["answer_chars"] > 0),
           "/", len(rows))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

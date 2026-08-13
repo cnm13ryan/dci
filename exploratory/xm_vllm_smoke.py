@@ -35,9 +35,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from crossmodel import contract, vllm_models
 
+#: These rows are the BACKEND record, straight out of
+#: `raw_generations.jsonl` — not the scored row the ingest builds. The two
+#: schemas differ deliberately and this file reads the first: `reasoning_closed`
+#: here becomes `natural_reasoning_closed` only after `xm_vllm_ingest`.
+TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
+
 HERE = Path(__file__).resolve().parent
 BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
-BACKEND_SCRIPT = HERE / "crossmodel" / "vllm_tp2.py"
+#: The canonical backend, invoked as a MODULE. `-m` resolves the package from
+#: the working directory, so the subprocess below runs with cwd=HERE; that is
+#: what the deleted `crossmodel/vllm_tp2.py` shim used to arrange by inserting
+#: the path itself. Pinned by tests/test_backend_cli_contract.py.
+BACKEND_COMMAND = ("-m", "vllm_backend")
 
 #: Trivial prompts carry an expected substring: a weight-integrity check, not a
 #: capability benchmark. Composed prompts are what actually elicit reasoning —
@@ -86,7 +96,12 @@ def main() -> int:
     spec = vllm_models.get(args.model)
 
     tag = args.model.split("/")[-1].replace(".", "")
-    out_dir = Path(args.out or f"runs/xmv_smoke_{tag}_{utc_stamp()}")
+    # RESOLVED. The backend runs with cwd=exploratory so that `-m vllm_backend`
+    # can find the package, and the default here is RELATIVE ("runs/..."), so an
+    # unresolved path would be written by this driver relative to $PWD and read
+    # by the backend relative to exploratory/. Absolute paths make the working
+    # directory irrelevant to where generations land.
+    out_dir = Path(args.out or f"runs/xmv_smoke_{tag}_{utc_stamp()}").resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # -- revision -----------------------------------------------------------
@@ -133,7 +148,7 @@ def main() -> int:
     (out_dir / "plan.json").write_text(json.dumps(plan, indent=1))
 
     # -- run the backend ----------------------------------------------------
-    command = [str(BACKEND_PYTHON), str(BACKEND_SCRIPT),
+    command = [str(BACKEND_PYTHON), *BACKEND_COMMAND,
                "--plan", str(out_dir / "plan.json"),
                "--design", str(out_dir / "design.jsonl"),
                "--out", str(out_dir / "raw_generations.jsonl")]
@@ -144,7 +159,7 @@ def main() -> int:
     log_path = out_dir / "backend.log"
     with log_path.open("w") as handle:
         completed = subprocess.run(command, stdout=handle,
-                                   stderr=subprocess.STDOUT)
+                                   stderr=subprocess.STDOUT, cwd=str(HERE))
     blob_text = log_path.read_text(errors="ignore")
 
     record: dict = {"model_id": args.model, "model_revision": revision,
@@ -186,10 +201,11 @@ def main() -> int:
         "n": len(rows),
         "answers_non_empty": sum(1 for a in answers if a.strip()),
         "reasoning_emitted": sum(1 for r in rows if r["reasoning_emitted"]),
-        "closed": sum(1 for r in rows if r["natural_reasoning_closed"]),
+        "closed": sum(1 for r in rows if r["reasoning_closed"]),
         "cap_hits": sum(1 for r in rows if r["reasoning_cap_hit"]),
         "truncated": sum(1 for r in rows if r["answer_truncated"]),
-        "technical_failures": sum(1 for r in rows if r["technical_failure"]),
+        "technical_failures": sum(1 for r in rows
+                                if r["outcome"] == TECHNICAL_FAILURE),
         "marker_leak_into_answer": sum(
             1 for a in answers if any(m in a for m in markers)),
         "control_token_residue": sum(

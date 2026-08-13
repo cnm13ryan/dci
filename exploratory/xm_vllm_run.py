@@ -24,19 +24,34 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
-BACKEND_SCRIPT = HERE / "crossmodel" / "vllm_tp2.py"
+#: The canonical backend, invoked as a MODULE. `-m` resolves the package from
+#: the working directory, so the generation step runs with cwd=HERE; that is
+#: what the deleted `crossmodel/vllm_tp2.py` shim used to arrange by inserting
+#: the path itself. Pinned by tests/test_backend_cli_contract.py.
+BACKEND_COMMAND = ("-m", "vllm_backend")
+
+#: The backend's documented exit codes. 2 means it wrote blocked rows for
+#: every request rather than generating any of them.
+BACKEND_BLOCKED = 2
 
 
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def run(command: list[str], log: Path) -> int:
-    """Run a step, streaming to a log so a long generation is observable."""
+def run(command: list[str], log: Path, cwd: Path | None = None) -> int:
+    """Run a step, streaming to a log so a long generation is observable.
+
+    `cwd` is required by the generation step and only by it: the backend is
+    invoked as `-m vllm_backend`, which resolves from the working directory.
+    The plan and ingest steps name their scripts by absolute path and are
+    deliberately left running wherever the driver was started.
+    """
     print("  $ " + " ".join(str(c) for c in command), flush=True)
     with log.open("a") as handle:
         completed = subprocess.run([str(c) for c in command], stdout=handle,
-                                   stderr=subprocess.STDOUT)
+                                   stderr=subprocess.STDOUT,
+                                   cwd=str(cwd) if cwd else None)
     return completed.returncode
 
 
@@ -63,8 +78,13 @@ def main() -> int:
 
     tag = args.model.split("/")[-1].replace(".", "")
     kind = "calib" if args.calibration else "main"
+    # RESOLVED. The generation step runs with cwd=exploratory so `-m
+    # vllm_backend` resolves, and this default is RELATIVE. Unresolved, the
+    # backend would write to exploratory/runs/... while the row count below
+    # looked in $PWD/runs/... -- reporting "GENERATION FAILED (0 rows)" after a
+    # successful multi-hour run, and returning 3.
     out_dir = Path(args.out or
-                   f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}")
+                   f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}").resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     from crossmodel import runlock
@@ -138,11 +158,11 @@ def _drive(args, out_dir: Path, lock) -> int:
     raw_path = out_dir / "raw_generations.jsonl"
     raw_path.unlink(missing_ok=True)
 
-    generate_command = [BACKEND_PYTHON, BACKEND_SCRIPT,
+    generate_command = [BACKEND_PYTHON, *BACKEND_COMMAND,
                         "--plan", out_dir / "plan.json",
                         "--design", out_dir / "design.jsonl",
                         "--out", raw_path]
-    code = run(generate_command, log)
+    code = run(generate_command, log, cwd=HERE)
     rows_written = (sum(1 for _ in raw_path.open())
                     if raw_path.exists() else 0)
     if not rows_written:
@@ -152,6 +172,16 @@ def _drive(args, out_dir: Path, lock) -> int:
     if rows_written < plan["expected_rows"]:
         print(f"  PARTIAL GENERATION: {rows_written}/{plan['expected_rows']} "
               "rows — ingesting what exists")
+    # Exit 2 is BLOCKED: the backend could not serve the checkpoint or the
+    # engine failed to load, and it wrote a complete set of blocked rows. A
+    # blocked run therefore has rows_written == expected_rows and used to
+    # sail through the checks above, get ingested, and return 0 -- recording
+    # an entirely unexecuted condition as a successful run. Exit 1 is the
+    # ordinary reasoning-cap signal and is not a failure.
+    if code == BACKEND_BLOCKED:
+        print(f"  GENERATION BLOCKED (exit {code}): the backend served no "
+              f"row of this condition; NOT ingesting. See {log}")
+        return 4
     if code:
         print(f"  generation returned {code} (ceiling hits) — continuing")
 
