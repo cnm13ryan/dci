@@ -17,10 +17,20 @@ from __future__ import annotations
 import argparse
 import gc
 import json
-import subprocess
+import sys
 import time
 import traceback
+from dataclasses import replace as _replace
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from vllm_backend import engine as _engine
+from vllm_backend.contract import GenerationRequest
+from vllm_backend.hardware import probe as _probe_host
+from vllm_backend.reasoning import build_parser as _build_parser
+from vllm_backend.registry import get_or_default
+from vllm_backend.resolve import resolve_engine, resolve_sampling
 
 SYSTEM = ("Produce only the requested answer. Do not discuss, restate, "
           "enumerate, or explain the constraints or your planning process.")
@@ -49,37 +59,41 @@ def attempt(model: str, revision: str, max_len: int, util: float,
             trust: bool, mm_limit: dict, think_open: str, think_close: str,
             template_kwargs: dict, parser_name: str | None) -> dict:
     """One (max_model_len, gpu_memory_utilization) attempt, fully reported."""
-    from vllm import LLM, SamplingParams
-
     record: dict = {"max_model_len": max_len, "gpu_memory_utilization": util,
                     "free_vram_before": free_vram()}
-    started = time.perf_counter()
     llm = None
     try:
-        llm = LLM(model=model, revision=revision, dtype="bfloat16",
-                  tensor_parallel_size=2, max_model_len=max_len,
-                  gpu_memory_utilization=util,
-                  disable_custom_all_reduce=True, enforce_eager=True,
-                  trust_remote_code=trust, limit_mm_per_prompt=mm_limit,
-                  seed=20260812)
-        record["load_seconds"] = round(time.perf_counter() - started, 1)
+        # The envelope under test is the only thing that varies; dtype, TP size,
+        # eager mode and the rest come from `vllm_backend` so a probe result is
+        # comparable with a real run.
+        card = _replace(get_or_default(model), model_id=model,
+                        trust_remote_code=trust,
+                        limit_mm_per_prompt=mm_limit or None)
+        plan = resolve_engine(card, _probe_host(), {
+            "tensor_parallel_size": 2, "max_model_len": max_len,
+            "gpu_memory_utilization": util, "seed": 20260812,
+            "model_revision": revision})
+        llm, tokenizer, load_seconds = _engine.build_engine(plan)
+        record["engine_kwargs"] = {k: str(v)
+                                   for k, v in plan.engine_kwargs().items()}
+        record["load_seconds"] = round(load_seconds, 1)
         record["free_vram_after_load"] = free_vram()
         record["loaded"] = True
 
-        tokenizer = llm.get_tokenizer()
-        prompts = []
-        for text in (TRIVIAL, DCI_SHAPED):
-            prompts.append(tokenizer.apply_chat_template(
-                [{"role": "system", "content": SYSTEM},
-                 {"role": "user", "content": text}],
-                tokenize=False, add_generation_prompt=True, **template_kwargs))
+        prompts = [
+            _engine.render_prompt(
+                tokenizer,
+                GenerationRequest(row_id=label, user_prompt=text,
+                                  system_message=SYSTEM),
+                template_kwargs)
+            for label, text in (("trivial", TRIVIAL), ("dci_shaped", DCI_SHAPED))]
         record["prompt_tokens"] = [
             len(tokenizer.encode(p, add_special_tokens=False)) for p in prompts]
 
         # Leave the answer room the contract asks for; the rest is reasoning.
         budget = max_len - max(record["prompt_tokens"]) - 64
-        sampling = SamplingParams(temperature=0.7, top_p=0.9, top_k=-1,
-                                  max_tokens=budget, seed=11)
+        sampling = _engine.build_sampling(
+            resolve_sampling(max_tokens=budget), budget, 11)
         started = time.perf_counter()
         outputs = llm.generate(prompts, sampling)
         record["generate_seconds"] = round(time.perf_counter() - started, 1)
@@ -87,9 +101,8 @@ def attempt(model: str, revision: str, max_len: int, util: float,
 
         parser = None
         if parser_name:
-            from vllm.reasoning import ReasoningParserManager
-            parser = ReasoningParserManager.get_reasoning_parser(
-                parser_name)(tokenizer)
+            parser, _label = _build_parser(parser_name, tokenizer,
+                                           think_open, think_close)
 
         results = []
         for label, output in zip(("trivial", "dci_shaped"), outputs):
@@ -98,7 +111,7 @@ def attempt(model: str, revision: str, max_len: int, util: float,
             if parser is not None:
                 try:
                     reasoning, answer = parser.extract_reasoning(text, None)
-                except Exception:                       # noqa: BLE001
+                except Exception:
                     reasoning, answer = None, None
             else:
                 reasoning, answer = None, None
@@ -122,7 +135,7 @@ def attempt(model: str, revision: str, max_len: int, util: float,
             })
         record["generations"] = results
         record["ok"] = all(r["answer_chars"] > 0 for r in results)
-    except Exception as error:                          # noqa: BLE001
+    except Exception as error:
         record["loaded"] = record.get("loaded", False)
         record["ok"] = False
         record["error"] = f"{type(error).__name__}: {str(error)[:400]}"
@@ -133,7 +146,7 @@ def attempt(model: str, revision: str, max_len: int, util: float,
         try:
             import torch
             torch.cuda.empty_cache()
-        except Exception:                               # noqa: BLE001
+        except Exception:
             pass
     return record
 
