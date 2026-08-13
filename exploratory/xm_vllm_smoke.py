@@ -35,6 +35,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from crossmodel import contract, vllm_models
 
+#: These rows are the BACKEND record, straight out of
+#: `raw_generations.jsonl` — not the scored row the ingest builds. The two
+#: schemas differ deliberately and this file reads the first: `reasoning_closed`
+#: here becomes `natural_reasoning_closed` only after `xm_vllm_ingest`.
+TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
+
 HERE = Path(__file__).resolve().parent
 BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
 #: The canonical backend, invoked as a MODULE. `-m` resolves the package from
@@ -195,10 +201,11 @@ def main() -> int:
         "n": len(rows),
         "answers_non_empty": sum(1 for a in answers if a.strip()),
         "reasoning_emitted": sum(1 for r in rows if r["reasoning_emitted"]),
-        "closed": sum(1 for r in rows if r["natural_reasoning_closed"]),
+        "closed": sum(1 for r in rows if r["reasoning_closed"]),
         "cap_hits": sum(1 for r in rows if r["reasoning_cap_hit"]),
         "truncated": sum(1 for r in rows if r["answer_truncated"]),
-        "technical_failures": sum(1 for r in rows if r["technical_failure"]),
+        "technical_failures": sum(1 for r in rows
+                                if r["outcome"] == TECHNICAL_FAILURE),
         "marker_leak_into_answer": sum(
             1 for a in answers if any(m in a for m in markers)),
         "control_token_residue": sum(
