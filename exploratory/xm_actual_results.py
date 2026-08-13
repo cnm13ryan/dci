@@ -37,7 +37,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from crossmodel import contract, schema, seeds
+from crossmodel import contract, identification, schema, seeds
 from dci_exploratory import extensions, harvest, plotstyle
 
 extensions.register()
@@ -122,14 +122,54 @@ def tau_per_task(cell: pd.DataFrame) -> pd.Series:
     return (rates.loc[FOCAL] - rates.loc[REFERENCE]).dropna()
 
 
-def degeneracy(focal_failure: float, reference_failure: float) -> str:
-    if np.isnan(focal_failure) or np.isnan(reference_failure):
-        return "not estimated — no scoreable rows"
-    if focal_failure <= CEILING and reference_failure <= CEILING:
-        return "TARGET_CEILING"
-    if focal_failure >= FLOOR and reference_failure >= FLOOR:
-        return "TARGET_FLOOR"
-    return "estimable"
+def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.CellEvidence:
+    """The constituent quantities one primitive cell contributes to its verdict.
+
+    This is the only place the reporting pass decides what a column MEANS to the
+    identification layer, so a mis-mapping is one edit rather than many.
+
+    Two mappings are load-bearing and were established from the data rather than
+    assumed:
+
+    * `channel_valid_rate` is NOT `scoreable`. A row can separate its reasoning
+      and answer channels perfectly and still carry no final answer; conflating
+      the two reports a cap-truncated run as a parser failure. The backends that
+      record a per-row `channel_valid` are believed; where the column is absent
+      the channels did separate, so the rate is 1.0.
+
+    * `cap_hit_rate` carries the missing answers. On this dataset
+      NO_FINAL_WITHIN_BUDGET and `reasoning_cap_hit` are the SAME event — a
+      517/123 diagonal with no off-diagonal cell — because a model that spends
+      its whole budget reasoning emits no answer. So the cap rate already
+      accounts for the missingness and the two must not be counted twice.
+    """
+    focal = cell[cell["arm"] == FOCAL]
+    reference = cell[cell["arm"] == REFERENCE]
+    duplication = seeds.replicate_duplication(cell.to_dict("records"))
+    identical = duplication["identical_rate"]
+
+    channel = (float(cell["channel_valid"].mean())
+               if "channel_valid" in cell else 1.0)
+
+    return identification.CellEvidence(
+        execution_validated=True,
+        channel_valid_rate=channel,
+        technical_failure_rate=float(
+            (cell["final_answer_status"] == schema.TECHNICAL_FAILURE).mean()),
+        verifier_certified=True,
+        replicate_identical_rate=0.0 if np.isnan(identical) else float(identical),
+        n_tasks=len(per_task),
+        n_rows_focal=len(focal),
+        n_rows_reference=len(reference),
+        n_answered_focal=int(focal["scoreable"].sum()),
+        n_answered_reference=int(reference["scoreable"].sum()),
+        focal_uptake=float(focal["arm_pass"].mean()),
+        reference_uptake=float(reference["arm_pass"].mean()),
+        target_failure_focal=float(focal["a_failure"].mean()),
+        target_failure_reference=float(reference["a_failure"].mean()),
+        cap_hit_rate=float(cell["reasoning_cap_hit"].mean()),
+        satisfiable=True,
+        tau=float(per_task.mean()) if len(per_task) else float("nan"))
 
 
 def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
@@ -146,6 +186,8 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
                   "hi": float("nan"), "n_tasks": 0})
         focal_rate = focal["a_failure"].mean()
         reference_rate = reference["a_failure"].mean()
+        evidence = cell_evidence(cell, per_task)
+        verdict = identification.classify(evidence)
         out.append({
             "model": model.split("/")[-1], "model_id": model,
             "backend": cell["backend"].iloc[0], "load": load,
@@ -169,7 +211,18 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
             "n_tasks": stats["n_tasks"],
             "joint_focal": (focal["outcome"] == "both satisfied").sum()
             / max(int(focal["scoreable"].sum()), 1),
-            "degeneracy": degeneracy(focal_rate, reference_rate)})
+            # The verdict comes from the shared layer rather than a local
+            # ceiling/floor test. The previous `degeneracy()` helper emitted
+            # three labels and could only ever see two failure modes; the layer
+            # distinguishes thirteen, and the ones it adds are the ones this
+            # dataset actually hits — an undelivered focal instruction is not a
+            # ceiling, and neither is a cap-truncated run.
+            "identification": verdict.status,
+            "identification_reason": verdict.reason,
+            "focal_uptake": evidence.focal_uptake,
+            "reference_uptake": evidence.reference_uptake,
+            "cap_hit_rate": evidence.cap_hit_rate,
+            "estimable": verdict.poolable})
     return pd.DataFrame(out)
 
 
@@ -208,9 +261,23 @@ def headline(cells: pd.DataFrame) -> pd.DataFrame:
                                    part["final_answers_focal"]),
             "A-fail ref": pooled(part["A_fail_reference"],
                                  part["final_answers_reference"]),
+            # tau is pooled over IDENTIFIED cells only. Averaging an unidentified
+            # cell into a headline tau is the specific error the identification
+            # layer exists to prevent: a TARGET_CEILING cell contributes a
+            # structural zero, and a FOCAL_NONUPTAKE cell contributes an estimate
+            # of a treatment that was never delivered. Both drag a pooled mean
+            # toward zero while looking like evidence of no interference.
+            #
+            # The failure rates above are NOT restricted, because they are
+            # descriptions of what happened rather than estimates of an effect,
+            # and suppressing them would hide the very degeneracy being reported.
+            #
             # tau is a paired within-task contrast, so its natural weight is the
             # cell's overall contribution rather than either arm's alone.
-            "tau": pooled(part["tau"], weight)})
+            "Cells": len(part),
+            "Identified": int(part["estimable"].sum()),
+            "tau (identified only)": pooled(
+                part["tau"].where(part["estimable"]), weight)})
     return pd.DataFrame(out)
 
 
@@ -498,14 +565,17 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
         "",
         "τ = P(A fails | focal B) − P(A fails | reference C_L3), over rows that "
         "produced a final answer, pooled across backgrounds and weighted by "
-        "those rows. Per-background detail and the degeneracy label are in §1.",
+        "those rows. Per-background detail and the identification verdict are in "
+        "§1. The pooled τ column covers IDENTIFIED cells only; the count of "
+        "cells and of identified cells is printed beside it.",
         "",
         "## 1. k=3 results",
         "",
         table(cells[["model", "backend", "load", "background", "requested",
                      "final_answers", "no_final", "technical_failures",
-                     "A_fail_focal", "A_fail_reference", "tau", "lo", "hi",
-                     "n_tasks", "joint_focal", "degeneracy"]]
+                     "A_fail_focal", "A_fail_reference", "focal_uptake",
+                     "reference_uptake", "cap_hit_rate", "tau", "lo", "hi",
+                     "n_tasks", "joint_focal", "identification"]]
               [cells["load"] == contract.LOAD]),
         "",
         "A `TARGET_CEILING` label means the target instruction essentially "
@@ -575,7 +645,7 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
             table(k5[["model", "backend", "load", "background", "requested",
                       "final_answers", "no_final", "A_fail_focal",
                       "A_fail_reference", "tau", "lo", "hi", "n_tasks",
-                      "degeneracy"]]),
+                      "identification"]]),
             "",
             "### Semicolon-minus-control contrast at k=5",
             "",
