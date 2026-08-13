@@ -53,12 +53,30 @@ class TestTokenizerAcquisitionIsTheBackends:
         tokenizer = _tokenizer(CANONICAL)
         assert getattr(tokenizer, "_dci_acquisition", None)
 
-    def test_it_prefers_vllms_own_utility(self) -> None:
-        tokenizer = _tokenizer(CANONICAL)
-        acquisition = tokenizer._dci_acquisition
-        if "vllm" not in acquisition:
-            pytest.skip(f"no vLLM in this interpreter ({acquisition})")
-        assert "get_tokenizer" in acquisition
+    def test_it_prefers_vllms_own_utility_and_admits_when_it_cannot(self) -> None:
+        """Both branches asserted, against the constants rather than substrings.
+
+        The earlier form skipped unless "vllm" appeared in the acquisition
+        string -- which it does in the FALLBACK string "(vllm util absent)", so
+        the skip never fired and the assertion failed under vLLM 0.27, where the
+        utility has moved. Whichever branch this interpreter takes, the record
+        must name it exactly: a template certified through the fallback must
+        never be mistaken for one certified through the engine's own path.
+        """
+        acquisition = _tokenizer(CANONICAL)._dci_acquisition
+        if engine.vllm_tokenizer_utility_available():
+            assert acquisition == engine.ACQUIRED_BY_VLLM
+        else:
+            assert acquisition == engine.ACQUIRED_BY_FALLBACK
+
+    def test_the_two_acquisitions_are_not_confusable_by_substring(self) -> None:
+        """The regression: neither constant may contain the other."""
+        vllm_path, fallback = engine.ACQUIRED_BY_VLLM, engine.ACQUIRED_BY_FALLBACK
+        assert vllm_path != fallback
+        assert vllm_path not in fallback and fallback not in vllm_path
+        # And the discriminator a reader would reach for first must actually
+        # discriminate, which "vllm" does not.
+        assert ("vllm" in vllm_path) and ("vllm" in fallback)
 
 
 class TestTheCardIsValidatedAgainstTheRealTemplate:
