@@ -1,6 +1,6 @@
 # Cross-model DCI — the actual dataset
 
-Recorded 2026-08-13 10:19 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
+Recorded 2026-08-13 10:39 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
 
 `EXPLORATORY_NO_EVIDENCE`. One frozen design — target A, focal B, reference C_L3, order QAC, 20 pilot tasks, 2 replicates, two backgrounds — run against every checkpoint that could be made to execute it. **Backends differ per checkpoint** and that difference is recorded on every row; see §6 before comparing any two models.
 
@@ -9,8 +9,8 @@ Condition: `THINKING_ENABLED_BOUNDED`. Thinking is on, no budget is assigned, an
 | Model | Backend | k | Requested | Final answers | Final answers focal | Final answers ref | No-final | A-fail focal | A-fail ref | Cells | Identified | tau (identified only) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Kimi-VL-A3B-Thinking-2506 | transformers | 3 | 160 | 138 | 71 | 67 | 22 | 0.296 | 0.149 | 2 | 0 | — |
-| Qwen3.5-4B | vllm | 3 | 160 | 95 | 55 | 40 | 65 | 0.018 | 0.000 | 2 | 1 | 0.031 |
-| Qwen3.5-9B | vllm | 3 | 160 | 124 | 67 | 57 | 36 | 0.015 | 0.000 | 2 | 1 | 0.026 |
+| Qwen3.5-4B | vllm | 3 | 160 | 95 | 55 | 40 | 65 | 0.018 | 0.000 | 2 | 0 | — |
+| Qwen3.5-9B | vllm | 3 | 160 | 124 | 67 | 57 | 36 | 0.015 | 0.000 | 2 | 0 | — |
 | gemma-4-E4B-it | transformers | 3 | 160 | 160 | 80 | 80 | 0 | 0.000 | 0.000 | 2 | 0 | — |
 
 
@@ -20,14 +20,14 @@ Condition: `THINKING_ENABLED_BOUNDED`. Thinking is on, no budget is assigned, an
 
 | model | backend | load | background | requested | final_answers | no_final | technical_failures | A_fail_focal | A_fail_reference | focal_uptake | reference_uptake | cap_hit_rate | tau | lo | hi | n_tasks | joint_focal | identification |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-4B | vllm | 3 | control (+1 bracket pair) | 80 | 42 | 38 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | 0.000 | 0.000 | 0.000 | 9 | 1.000 | TARGET_CEILING |
-| Qwen3.5-4B | vllm | 3 | +1 semicolon | 80 | 53 | 27 | 0 | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | 0.031 | 0.000 | 0.094 | 16 | 0.933 | IDENTIFIED |
-| Qwen3.5-9B | vllm | 3 | control (+1 bracket pair) | 80 | 56 | 24 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | 0.000 | 0.000 | 0.000 | 16 | 1.000 | TARGET_CEILING |
-| Qwen3.5-9B | vllm | 3 | +1 semicolon | 80 | 68 | 12 | 0 | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | 0.026 | 0.000 | 0.079 | 19 | 0.972 | IDENTIFIED |
-| gemma-4-E4B-it | transformers | 3 | control (+1 bracket pair) | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.900 | TARGET_CEILING |
-| gemma-4-E4B-it | transformers | 3 | +1 semicolon | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.875 | TARGET_CEILING |
-| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | control (+1 bracket pair) | 80 | 69 | 11 | 0 | 0.054 | 0.000 | 0.405 | 0.531 | 0.138 | 0.050 | 0.000 | 0.125 | 20 | 0.351 | FOCAL_NONUPTAKE |
-| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | +1 semicolon | 80 | 69 | 11 | 0 | 0.559 | 0.286 | 0.088 | 0.571 | 0.138 | 0.278 | 0.056 | 0.500 | 18 | 0.029 | FOCAL_NONUPTAKE |
+| Qwen3.5-4B | vllm | 3 | control (+1 bracket pair) | 80 | 42 | 38 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | 0.000 | 0.000 | 0.000 | 9 | 1.000 | EVIDENCE_INCOMPLETE |
+| Qwen3.5-4B | vllm | 3 | +1 semicolon | 80 | 53 | 27 | 0 | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | 0.031 | 0.000 | 0.094 | 16 | 0.933 | EVIDENCE_INCOMPLETE |
+| Qwen3.5-9B | vllm | 3 | control (+1 bracket pair) | 80 | 56 | 24 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | 0.000 | 0.000 | 0.000 | 16 | 1.000 | EVIDENCE_INCOMPLETE |
+| Qwen3.5-9B | vllm | 3 | +1 semicolon | 80 | 68 | 12 | 0 | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | 0.026 | 0.000 | 0.079 | 19 | 0.972 | EVIDENCE_INCOMPLETE |
+| gemma-4-E4B-it | transformers | 3 | control (+1 bracket pair) | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.900 | EVIDENCE_INCOMPLETE |
+| gemma-4-E4B-it | transformers | 3 | +1 semicolon | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.875 | EVIDENCE_INCOMPLETE |
+| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | control (+1 bracket pair) | 80 | 69 | 11 | 0 | 0.054 | 0.000 | 0.405 | 0.531 | 0.138 | 0.050 | 0.000 | 0.125 | 20 | 0.351 | EVIDENCE_INCOMPLETE |
+| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | +1 semicolon | 80 | 69 | 11 | 0 | 0.559 | 0.286 | 0.088 | 0.571 | 0.138 | 0.278 | 0.056 | 0.500 | 18 | 0.029 | EVIDENCE_INCOMPLETE |
 
 
 A `TARGET_CEILING` label means the target instruction essentially never fails in either arm, so τ is 0 **by construction** rather than by absence of interference. The number is reported, not withheld; it simply cannot carry the signal the design was built to detect.
