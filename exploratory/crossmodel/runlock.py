@@ -43,10 +43,15 @@ from typing import Any, Iterable, Optional
 #: Every command line that can hold VRAM belonging to this study. `VLLM::` alone
 #: is not enough — see the module docstring.
 RUNNER_PATTERNS = (
+    # RETAINED although the file is gone. This is a DETECTOR, not a code path:
+    # a generation started before the drivers moved to `-m vllm_backend` still
+    # carries the old path on its command line, and can outlive the change --
+    # the incident this module exists for had one survive fourteen hours. A
+    # detector that forgets a form strands the card it cannot see.
     "crossmodel/vllm_tp2.py",
-    # The canonical backend entrypoint. `crossmodel/vllm_tp2.py` now delegates
-    # to it, but a run started as `python -m vllm_backend` shows only this on
-    # its command line, and an orphan invisible to cleanup still holds VRAM.
+    # The canonical entrypoint. A run started as `python -m vllm_backend`
+    # shows only this on its command line, and an orphan invisible to cleanup
+    # still holds VRAM.
     "vllm_backend",
     "vllm_capacity_probe",
     "vllm_qwen_probe",
