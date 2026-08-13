@@ -74,8 +74,13 @@ def main() -> int:
 
     tag = args.model.split("/")[-1].replace(".", "")
     kind = "calib" if args.calibration else "main"
+    # RESOLVED. The generation step runs with cwd=exploratory so `-m
+    # vllm_backend` resolves, and this default is RELATIVE. Unresolved, the
+    # backend would write to exploratory/runs/... while the row count below
+    # looked in $PWD/runs/... -- reporting "GENERATION FAILED (0 rows)" after a
+    # successful multi-hour run, and returning 3.
     out_dir = Path(args.out or
-                   f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}")
+                   f"runs/xmv_{kind}_{tag}_k{args.load}_{utc_stamp()}").resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     from crossmodel import runlock
