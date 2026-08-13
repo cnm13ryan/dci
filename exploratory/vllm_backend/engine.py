@@ -72,6 +72,31 @@ def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
     return SamplingParams(**kwargs)
 
 
+#: How `load_tokenizer` obtained the tokenizer, recorded on it and carried into
+#: the switch evidence. Named constants rather than literals repeated at the
+#: assertion site: a test that sniffed for the substring "vllm" matched the
+#: FALLBACK string too, because that string says "(vllm util absent)". The guard
+#: meant to skip then fired the assertion instead, and the suite failed in the
+#: one environment the test exists to cover.
+ACQUIRED_BY_VLLM = "vllm.transformers_utils.get_tokenizer"
+ACQUIRED_BY_FALLBACK = "transformers.AutoTokenizer (vllm util absent)"
+
+
+def vllm_tokenizer_utility_available() -> bool:
+    """Whether this interpreter has the utility `load_tokenizer` prefers.
+
+    The wheels move it: it is `vllm.transformers_utils.tokenizer.get_tokenizer`
+    on the 0.15 line the study pins, and absent under 0.27. Which branch runs is
+    a property of the environment, so a test asserts the branch it is actually
+    in rather than assuming either.
+    """
+    try:
+        from vllm.transformers_utils.tokenizer import get_tokenizer  # noqa: F401
+    except Exception:                                   # noqa: BLE001
+        return False
+    return True
+
+
 def load_tokenizer(card: ModelCard, revision: str = ""):
     """THE tokenizer, acquired the way inference acquires it.
 
@@ -104,12 +129,12 @@ def load_tokenizer(card: ModelCard, revision: str = ""):
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             card.model_id, revision=revision or None,
             trust_remote_code=card.trust_remote_code)
-        tokenizer._dci_acquisition = "transformers.AutoTokenizer (vllm util absent)"
+        tokenizer._dci_acquisition = ACQUIRED_BY_FALLBACK
         tokenizer._dci_revision = revision
         return tokenizer
     tokenizer = get_tokenizer(card.model_id, revision=revision or None,
                               trust_remote_code=card.trust_remote_code)
-    tokenizer._dci_acquisition = "vllm.transformers_utils.get_tokenizer"
+    tokenizer._dci_acquisition = ACQUIRED_BY_VLLM
     tokenizer._dci_revision = revision
     return tokenizer
 
