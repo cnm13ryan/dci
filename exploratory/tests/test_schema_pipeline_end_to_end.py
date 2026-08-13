@@ -17,6 +17,7 @@ produces.
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -249,11 +250,21 @@ def _ok_result_row() -> dict:
     return result.as_row()
 
 
+#: Sibling worktrees hold the gitignored `runs/` archives these tests read.
+#: DERIVED, not hardcoded: this file is <root>/dci/exploratory/tests/, so
+#: parents[3] is the directory the worktrees sit in. An absolute path under one
+#: developer's home made these tests skip silently on every other machine while
+#: looking as though they covered the archive boundary. `DCI_ARCHIVE_ROOT`
+#: overrides it for a layout that is not sibling-based.
+ARCHIVE_ROOT = Path(os.environ.get(
+    "DCI_ARCHIVE_ROOT", Path(__file__).resolve().parents[3]))
+
+
 class TestTheIngestActuallyRuns:
     """The ingest, executed over a run directory it did not help construct."""
 
-    ARCHIVE = Path("/home/cnm13ryan/git/dci-cross-model/exploratory/runs/"
-                   "xmA_Qwen35-4B_k3")
+    ARCHIVE = (ARCHIVE_ROOT / "dci-cross-model" / "exploratory" / "runs"
+               / "xmA_Qwen35-4B_k3")
 
     def test_an_archived_run_ingests_to_scored_rows(self, tmp_path) -> None:
         import shutil
@@ -284,10 +295,10 @@ class TestAgainstArchivedGenerations:
     """The boundary against real stored bytes, not a fixture of them."""
 
     ARCHIVES = [
-        Path("/home/cnm13ryan/git/dci-cross-model/exploratory/runs/"
-             "xmA_Qwen35-4B_k3/raw_generations.jsonl"),
-        Path("/home/cnm13ryan/git/dci-natural-reasoning-headline/exploratory/runs/"
-             "stageS18_reasoning_design_20260811T144250Z/natural_reasoning.jsonl"),
+        (ARCHIVE_ROOT / "dci-cross-model/exploratory/runs"
+         / "xmA_Qwen35-4B_k3/raw_generations.jsonl"),
+        (ARCHIVE_ROOT / "dci-natural-reasoning-headline/exploratory/runs"
+         / "stageS18_reasoning_design_20260811T144250Z/natural_reasoning.jsonl"),
     ]
 
     @pytest.mark.parametrize("archive", ARCHIVES, ids=["cross-model", "natural"])
