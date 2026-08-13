@@ -30,6 +30,10 @@ BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
 #: the path itself. Pinned by tests/test_backend_cli_contract.py.
 BACKEND_COMMAND = ("-m", "vllm_backend")
 
+#: The backend's documented exit codes. 2 means it wrote blocked rows for
+#: every request rather than generating any of them.
+BACKEND_BLOCKED = 2
+
 
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -168,6 +172,16 @@ def _drive(args, out_dir: Path, lock) -> int:
     if rows_written < plan["expected_rows"]:
         print(f"  PARTIAL GENERATION: {rows_written}/{plan['expected_rows']} "
               "rows — ingesting what exists")
+    # Exit 2 is BLOCKED: the backend could not serve the checkpoint or the
+    # engine failed to load, and it wrote a complete set of blocked rows. A
+    # blocked run therefore has rows_written == expected_rows and used to
+    # sail through the checks above, get ingested, and return 0 -- recording
+    # an entirely unexecuted condition as a successful run. Exit 1 is the
+    # ordinary reasoning-cap signal and is not a failure.
+    if code == BACKEND_BLOCKED:
+        print(f"  GENERATION BLOCKED (exit {code}): the backend served no "
+              f"row of this condition; NOT ingesting. See {log}")
+        return 4
     if code:
         print(f"  generation returned {code} (ceiling hits) — continuing")
 
