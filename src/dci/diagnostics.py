@@ -28,6 +28,25 @@ import sys
 _IMPORT_NAMES = {"z3-solver": "z3"}
 
 
+def _requirements_from_pyproject() -> list[str]:
+    """`[project].dependencies` from the source tree, for an uninstalled checkout.
+
+    Still the authoritative declaration — the same table the metadata is built
+    from — rather than a second list that can disagree with it. Returns nothing
+    if the file is absent, which is the ordinary case for a wheel install.
+    """
+    import tomllib
+    from pathlib import Path
+
+    # src/dci/diagnostics.py -> src/dci -> src -> the repository root.
+    pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    try:
+        table = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError):
+        return []
+    return list(table.get("project", {}).get("dependencies", []))
+
+
 def declared_dependencies() -> list[tuple[str, str]]:
     """`(distribution, import name)` for every declared runtime dependency.
 
@@ -36,13 +55,19 @@ def declared_dependencies() -> list[tuple[str, str]]:
     declared dependencies, and the omitted one was `z3-solver` — so an
     environment missing the solver that gates every v19 satisfiability check
     reported itself healthy, and nine tests failed at collection instead.
+
+    The uninstalled case reads `pyproject.toml` for the same reason. It used to
+    fall back to a literal six-name tuple in `run()` — which had drifted in
+    exactly the same way, omitting `z3-solver` again — so a source checkout run
+    without `pip install -e .` reported a healthy environment while the solver
+    that gates Stage 2 was absent. There is now no second list to drift.
     """
     from importlib.metadata import PackageNotFoundError, requires
 
     try:
         requirements = requires("dci") or []
-    except PackageNotFoundError:                # not installed; nothing to check
-        return []
+    except PackageNotFoundError:                # not installed as a distribution
+        requirements = _requirements_from_pyproject()
     names = []
     for requirement in requirements:
         # "numpy>=1.26", "pytest>=8 ; extra == 'dev'" -- drop extras and markers.
@@ -94,9 +119,13 @@ def run(gpu: bool = False, expect_devices: int | None = None) -> int:
 
     section("scientific core")
     declared = declared_dependencies()
-    if not declared:                            # not installed as a distribution
-        declared = [(m, m) for m in
-                    ("numpy", "pandas", "scipy", "matplotlib", "tqdm", "psutil")]
+    if not declared:
+        # Neither metadata nor pyproject. Say so and FAIL: reporting a healthy
+        # scientific core after checking nothing is the failure mode this whole
+        # function exists to prevent.
+        failures.append("dependency declaration")
+        report("declared dependencies", "NOT FOUND -- neither installed "
+               "metadata nor pyproject.toml; nothing was checked", ok=False)
     for distribution, module in declared:
         try:
             m = importlib.import_module(module)
