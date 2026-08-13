@@ -1,0 +1,211 @@
+{
+ "branch": "exp/natural-reasoning-headline",
+ "run_directory": "runs/stageS18_reasoning_design_20260811T144250Z",
+ "duplicate_alarm_threshold": 0.25,
+ "natural_reasoning_envelope": {
+  "context_limit": 40960,
+  "longest_prompt_tokens": 76,
+  "median_prompt_tokens": 72,
+  "answer_allowance": 512,
+  "control_tokens": 2,
+  "safety_margin": 820,
+  "derived_ceiling": 39550,
+  "reasoning_phase_seconds": 161.24853778799297,
+  "answer_phase_seconds": 24.57627532799961,
+  "rows": 160,
+  "cap_hits": 0
+ },
+ "files": [
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/natural_reasoning.jsonl",
+   "status": "CANONICAL",
+   "role": "natural reasoning",
+   "reason": "Per-row seeds, context-derived 39,550-token engineering ceiling, native natural closure. The endpoint of the headline figure.",
+   "bytes": 782349,
+   "sha256": "ab8bb45b7251e7868a3f7609e39b80fa590c6c093f4834618c7234516a9e279b",
+   "rows": 160,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "39550": 160
+   },
+   "replicate_pairs": 80,
+   "identical_replicate_answers": 0,
+   "duplicate_rate": 0.0,
+   "independent_seeds": true,
+   "has_condition_field": true,
+   "cap_hits": 0,
+   "empty_answers": 0,
+   "truncated": 0
+  },
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/s18_reasoning.jsonl",
+   "status": "DEPRECATED",
+   "role": "capped reasoning grid",
+   "reason": "One shared seed for all 160 requests, so nominal replicate pairs are duplicates. Superseded by s18_reseeded.jsonl. Retained, never loaded.",
+   "bytes": 2788044,
+   "sha256": "faaaaa0f75ca18e2e4627e035c33e5f709f7645e2ad92148615d04ec0cc91e74",
+   "rows": 800,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "0": 160,
+    "256": 160,
+    "512": 160,
+    "1024": 160,
+    "4096": 160
+   },
+   "replicate_pairs": 400,
+   "identical_replicate_answers": 390,
+   "duplicate_rate": 0.975,
+   "independent_seeds": false,
+   "has_condition_field": true,
+   "cap_hits": 281,
+   "empty_answers": 0,
+   "truncated": 0
+  },
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/s18_reasoning.scored.jsonl",
+   "status": "DERIVED",
+   "role": "scoring output",
+   "reason": "An analysis output of the deprecated grid, not a generation artifact.",
+   "bytes": 1561447,
+   "sha256": "1f242f4dc28dc1a2043af1f4048219796f51d85b59e8dc4863fba0d7db4ddaed",
+   "rows": 800,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "0": 160,
+    "256": 160,
+    "512": 160,
+    "1024": 160,
+    "4096": 160
+   },
+   "replicate_pairs": 400,
+   "identical_replicate_answers": 390,
+   "duplicate_rate": 0.975,
+   "independent_seeds": false,
+   "has_condition_field": true,
+   "cap_hits": 281,
+   "empty_answers": 0,
+   "truncated": 0
+  },
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/s18_reseeded.jsonl",
+   "status": "CANONICAL",
+   "role": "capped reasoning grid",
+   "reason": "Regenerated with per-row seeds. The default capped input for every figure on this branch.",
+   "bytes": 2721856,
+   "sha256": "f16b4be93effe31748b9d4c8fee52e593b9e2ab667f868c4be4489441d748992",
+   "rows": 800,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "0": 160,
+    "256": 160,
+    "512": 160,
+    "1024": 160,
+    "4096": 160
+   },
+   "replicate_pairs": 400,
+   "identical_replicate_answers": 0,
+   "duplicate_rate": 0.0,
+   "independent_seeds": true,
+   "has_condition_field": true,
+   "cap_hits": 254,
+   "empty_answers": 0,
+   "truncated": 1
+  },
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/s18_seedfix.jsonl",
+   "status": "FOREIGN",
+   "role": "Round 10 seed-fix verification",
+   "reason": "Another branch's verification run. Not used as canonical input here; reported only as an independent consistency check.",
+   "bytes": 1638673,
+   "sha256": "4d9d85bf25a16fe75b75d6b8779adde108903d26ab8668d90e3c412a8aae6da8",
+   "rows": 480,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "0": 160,
+    "512": 160,
+    "4096": 160
+   },
+   "replicate_pairs": 240,
+   "identical_replicate_answers": 0,
+   "duplicate_rate": 0.0,
+   "independent_seeds": true,
+   "has_condition_field": true,
+   "cap_hits": 86,
+   "empty_answers": 0,
+   "truncated": 0
+  },
+  {
+   "file": "runs/stageS18_reasoning_design_20260811T144250Z/s18_transition.jsonl",
+   "status": "FOREIGN",
+   "role": "transition budgets 320-640",
+   "reason": "Belongs to the Round 10 line of work on the original branch. Outside this branch's scope; not used here.",
+   "bytes": 2193330,
+   "sha256": "73b9bc0aec96cff2ed21425458da9e4f2dc450442d8cf5692700364da4c938e8",
+   "rows": 640,
+   "tasks": 20,
+   "arms": [
+    "B",
+    "C_L3"
+   ],
+   "variants": [
+    "X_PAREN_FREE",
+    "X_SEMICOLON_FREE"
+   ],
+   "budgets": {
+    "320": 160,
+    "384": 160,
+    "448": 160,
+    "640": 160
+   },
+   "replicate_pairs": 320,
+   "identical_replicate_answers": 315,
+   "duplicate_rate": 0.9844,
+   "independent_seeds": false,
+   "has_condition_field": true,
+   "cap_hits": 415,
+   "empty_answers": 0,
+   "truncated": 0
+  }
+ ]
+}

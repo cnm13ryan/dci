@@ -1,0 +1,115 @@
+{
+  "protocol": "v19",
+  "citation": "section 8.6",
+  "list_policy_hash": "428614c8efbd7db543b2027681dc7ec629b1915291e5885e2f0a9e55c36aee26",
+  "text_policy_hash": "71033dbabadb0ca7baac4c7848b298b295ac6df3089d88c4e8e6a214ba5647a2",
+  "n_packets": 3,
+  "packets": [
+    {
+      "packet_id": "2535f385991c8b9e5f559efd6e03c704",
+      "protocol": "v19",
+      "citation": "section 8.6; blinding per section 10.6",
+      "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
+      "requirement": "Place the items in the correct transitive order.",
+      "parameter_realisation": {
+        "extra_items_permitted": false,
+        "required_order": {
+          "items": [
+            "alfa",
+            "bravo",
+            "charlie"
+          ],
+          "must_precede": [
+            [
+              "alfa",
+              "bravo"
+            ],
+            [
+              "bravo",
+              "charlie"
+            ]
+          ]
+        }
+      },
+      "not_covered_deterministically": "the abstraction places each declared item at an integer position and checks the closure over those positions; it does not establish that a reader would identify the item at that position AS that item, which is the identification the list policy's label rule decides",
+      "response": "- alfa\n- bravo\n- charlie",
+      "response_hash": "b04f7b34f311bab9f92aec0540653b643f37c52a3872e7f5a808e921822cef74",
+      "answer_schema": {
+        "reviewer_id": "your identifier, distinct from the other reviewer's",
+        "satisfied": "true or false; a boolean, not a word",
+        "rationale": "why, in your own words; required"
+      },
+      "procedure": "Two reviewers answer independently and do not see each other's answer. If they disagree a third reviewer adjudicates. An unresolved disagreement fails certification and is not resolved by preferring either answer (section 8.6).",
+      "caveats": [
+        "The parameter realisation is NOT calibrated: the admissible set and its distribution are a Stage 5 output (D6). Judge the semantics at the values shown, not whether the values are the right ones.",
+        "The response was built by a deterministic constructor, not by a model. It is the witness the deterministic verifiers accepted."
+      ]
+    },
+    {
+      "packet_id": "297f0f5bf99ca8ceac216cd9a61c642b",
+      "protocol": "v19",
+      "citation": "section 8.6; blinding per section 10.6",
+      "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
+      "requirement": "Every word in the final answer must be unique under the frozen normalisation and tokenisation-for-verification rule.",
+      "parameter_realisation": {},
+      "not_covered_deterministically": "the abstraction equates distinctness with the token counts agreeing under the frozen tokenisation. Invisible characters no longer defeat it - they are removed before tokenising - but confusables remain outside any automated rule: a Cyrillic look-alike is a different string and NFKC does not merge it, so a projection satisfying this clause can still look to a reader like a repeated word. Section 10.6 assigns homoglyphs to human audit material, not to code",
+      "response": "Alfa. Bravo.",
+      "response_hash": "dfc8385a941c9477c2517386e6d68837a3bd57da7d4daec4262ffbb808b17aaa",
+      "answer_schema": {
+        "reviewer_id": "your identifier, distinct from the other reviewer's",
+        "satisfied": "true or false; a boolean, not a word",
+        "rationale": "why, in your own words; required"
+      },
+      "procedure": "Two reviewers answer independently and do not see each other's answer. If they disagree a third reviewer adjudicates. An unresolved disagreement fails certification and is not resolved by preferring either answer (section 8.6).",
+      "caveats": [
+        "The parameter realisation is NOT calibrated: the admissible set and its distribution are a Stage 5 output (D6). Judge the semantics at the values shown, not whether the values are the right ones.",
+        "The response was built by a deterministic constructor, not by a model. It is the witness the deterministic verifiers accepted."
+      ]
+    },
+    {
+      "packet_id": "9304e1eb32bb109c4ae8fca05ceb611e",
+      "protocol": "v19",
+      "citation": "section 8.6; blinding per section 10.6",
+      "question": "Does the response below satisfy the stated requirement AS A READER WOULD JUDGE IT? The deterministic check and the machine encoding do not exhaust this requirement's intended meaning; the gap is described under 'not_covered_deterministically'. Judge the requirement, not the formatting, and answer only about this response.",
+      "requirement": "Produce exactly N sentences.",
+      "parameter_realisation": {
+        "n_sentences": 3
+      },
+      "not_covered_deterministically": "the abstraction counts sentences as the frozen segmentation does, and that segmentation strips the list grammar's own markers and treats each remaining line as a sentence, so a projection satisfying this clause need not contain that many sentences as a reader would count them. The coupling is now explicit - the marker patterns are inside this clause's hash - but it is not removed",
+      "response": "Alfa. Bravo charlie. Delta echo foxtrot.",
+      "response_hash": "c979d235016b2b5980b272fc2dcd50016a6be23c1e661fa3ff1ff40714f38fc9",
+      "answer_schema": {
+        "reviewer_id": "your identifier, distinct from the other reviewer's",
+        "satisfied": "true or false; a boolean, not a word",
+        "rationale": "why, in your own words; required"
+      },
+      "procedure": "Two reviewers answer independently and do not see each other's answer. If they disagree a third reviewer adjudicates. An unresolved disagreement fails certification and is not resolved by preferring either answer (section 8.6).",
+      "caveats": [
+        "The parameter realisation is NOT calibrated: the admissible set and its distribution are a Stage 5 output (D6). Judge the semantics at the values shown, not whether the values are the right ones.",
+        "The response was built by a deterministic constructor, not by a model. It is the witness the deterministic verifiers accepted."
+      ]
+    }
+  ],
+  "unblinding_index": [
+    {
+      "packet_id": "2535f385991c8b9e5f559efd6e03c704",
+      "composition_id": "p1/review/B",
+      "encoding_hash": "e9b0135e2077c5a46bd16ee81ba80eb601a9b507c0d0f87e490a172adcc2a78f",
+      "response_hash": "b04f7b34f311bab9f92aec0540653b643f37c52a3872e7f5a808e921822cef74"
+    },
+    {
+      "packet_id": "297f0f5bf99ca8ceac216cd9a61c642b",
+      "composition_id": "p2/review/B",
+      "encoding_hash": "d7f55d9f23c1bc512837289738d9d9f069192753a977fc71a3e63771b646a27c",
+      "response_hash": "dfc8385a941c9477c2517386e6d68837a3bd57da7d4daec4262ffbb808b17aaa"
+    },
+    {
+      "packet_id": "9304e1eb32bb109c4ae8fca05ceb611e",
+      "composition_id": "p3/review/B",
+      "encoding_hash": "239351a53b8cae11e0adb044aa2b0142e1238b7ddb35bac27f7f928f7b080b68",
+      "response_hash": "c979d235016b2b5980b272fc2dcd50016a6be23c1e661fa3ff1ff40714f38fc9"
+    }
+  ],
+  "note": "REHEARSAL, not Stage 2 evidence. Section 14.2 assigns Stage 2 the review TRIGGERS; the reviews themselves are due at Stage 10, per composition, and these three arms are the only compositions currently encodable - admitted references are a Stage 8 output and background pools are Stage 1/8 content. Every composition Stage 10 accepts will need its own packet against its own witness. The index is for the investigator, not the reviewers. Send each reviewer the 'packets' array only.",
+  "stage": "Stage 10"
+}

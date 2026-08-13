@@ -32,8 +32,9 @@ material, not asserted by a registry.
 """
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
-from typing import Mapping, Sequence
+from typing import Mapping, Optional, Sequence
 
 from dci.provenance.hashes import sha
 from dci.v19.pairs import GENERATIVE_SCOPES, PAIR_IDS
@@ -179,7 +180,7 @@ class Pool:
         stable identifier for nothing, and comparing it later would appear to
         prove the material had not changed.
         """
-        item_keys = sorted(_item_key(i) for i in self.items)
+        item_keys = sorted(_content_key(i) for i in self.items)
         return sha([self.identity, item_keys])
 
     def sign(self, by: str) -> "Pool":
@@ -213,11 +214,71 @@ class Pool:
                     stratum=self.stratum, signed_by="")
 
 
-def _item_key(item) -> str:
-    """A pool item's identity, whether it is a bare id or a background entry."""
+# ------------------------------------------------------- two kinds of identity
+#
+# A pool item has two identities and they answer different questions. Collapsing
+# them into one - which is what a single _item_key did - breaks whichever question
+# it was not designed for.
+#
+#   CONTENT identity answers "has this material changed?". Section 11.2 says a
+#   pool is "signed and hashed", and section 8.2 lists the fields that determine
+#   how the material is interpreted: verifier and audit hashes, canonical
+#   wording, output schema, parameter distribution, incompatibility and
+#   entailment metadata, construction provenance. A signature over the
+#   constraint_id alone could not detect any of those changing, so it certified
+#   nothing it claimed to.
+#
+#   OVERLAP identity answers "is this the same scientific item as that one?".
+#   Here the id matters: the same constraint appearing in two splits is leakage
+#   even if one copy's metadata was edited, and a content-only key would stop
+#   detecting that. But content matters too, because a renamed copy of identical
+#   material is also leakage. So overlap uses the UNION of both.
+
+
+def _content_key(item) -> str:
+    """Canonical hash of an item's complete content, INCLUDING its declared id.
+
+    Used for signing. The id belongs in the signature because it is how every
+    other artifact references the constraint, so renaming an entry does change
+    the signed material. Routed through the provenance layer's canonicaliser,
+    which refuses values with no reproducible form rather than hashing them by
+    identity.
+    """
+    if isinstance(item, BackgroundEntry):
+        return sha(["v19/background-entry", dataclasses.asdict(item)])
+    return sha(["v19/pool-item", item])
+
+
+def _material_key(item) -> str:
+    """Canonical hash of the item's content EXCLUDING its declared id.
+
+    Used for overlap. Section 8.2 prohibits "semantic duplicates" as well as
+    exact reuse, so a copy of identical material under a new label is still the
+    same scientific item and still leakage. Keying overlap on the full content
+    hash would miss precisely that, because the rename changes the hash.
+    """
+    if isinstance(item, BackgroundEntry):
+        fields = dataclasses.asdict(item)
+        fields.pop("constraint_id")
+        return sha(["v19/background-material", fields])
+    return sha(["v19/pool-item-material", item])
+
+
+def _declared_id(item) -> str:
+    """The item's declared identifier: a label, not a content address."""
     if isinstance(item, BackgroundEntry):
         return item.constraint_id
     return str(item)
+
+
+def _overlap_keys(item) -> tuple[str, ...]:
+    """Every identity under which this item counts as "the same item".
+
+    The declared id and the id-free material hash, so leakage is caught whether
+    the duplicate kept its name and edited its fields, or kept its fields and
+    changed its name. Deliberately NOT the signing key, which includes the id.
+    """
+    return (f"id:{_declared_id(item)}", f"material:{_material_key(item)}")
 
 
 def declare_pool(pool_id: str, pair: str, kind: str, split: str,
@@ -242,12 +303,13 @@ def assert_splits_disjoint(pools: Sequence[Pool]) -> None:
         if not pool.populated:
             continue
         for item in pool.items:
-            where.setdefault(_item_key(item), set()).add(pool.split)
+            for key in _overlap_keys(item):
+                where.setdefault(key, set()).add(pool.split)
     shared = {item: sorted(splits) for item, splits in where.items()
               if len(splits) > 1}
     if shared:
         detail = "; ".join(f"{item} in {splits}"
-                           for item, splits in sorted(shared.items())[:5])
+                           for item, splits in sorted(shared.items())[:6])
         raise PoolViolation(
             f"{len(shared)} item(s) appear in more than one material split: "
             f"{detail}. Section 11.1 partitions all material that can affect a "
@@ -267,7 +329,7 @@ def assert_one_stratum_per_constraint(pools: Sequence[Pool]) -> None:
         if pool.kind != "background" or not pool.populated:
             continue
         for item in pool.items:
-            homes.setdefault(_item_key(item), set()).add(pool.stratum)
+            homes.setdefault(_declared_id(item), set()).add(pool.stratum)
         for item in pool.items:
             if isinstance(item, BackgroundEntry) and item.stratum != pool.stratum:
                 raise PoolViolation(
@@ -291,8 +353,12 @@ def assert_pool_excludes(pool: Pool, forbidden: Mapping[str, str]) -> None:
     """
     if not pool.populated:
         return
-    present = [(k, forbidden[k]) for k in
-               (_item_key(i) for i in pool.items) if k in forbidden]
+    present = []
+    for item in pool.items:
+        for key in (_declared_id(item),) + _overlap_keys(item):
+            if key in forbidden:
+                present.append((_declared_id(item), forbidden[key]))
+                break
     if present:
         detail = "; ".join(f"{item} ({why})" for item, why in present[:5])
         raise PoolViolation(
@@ -432,8 +498,67 @@ def sufficiency_report(pools: Sequence[Pool]) -> dict[str, dict[str, object]]:
     return out
 
 
-def assert_ready_for_confirmation(pools: Sequence[Pool]) -> None:
-    """Every pool required before confirmatory drawing is populated and signed."""
+def forbidden_items(pair_id: str) -> dict[str, str]:
+    """Section 8.2's exclusion map for one pair, from the pair registry.
+
+    "Neither pool may contain the pair's target, focal constraint, admitted
+    references, semantic duplicates, known incompatible rules, or content
+    allocated to another scientific split."
+
+    This assembles the mechanically identifiable part: the pair's own target and
+    focal constraint always, and its admitted references once Stage 8 has
+    produced them. Semantic duplicates are deliberately absent - section 8.7
+    assigns that determination to human review, and inventing an automatic
+    equivalence judgement here would claim a certification the protocol does not
+    grant. `semantic_duplicate_review` carries that obligation instead.
+    """
+    from dci.v19.pairs import pair as _pair
+
+    pair = _pair(pair_id)
+    out = {f"id:{pair.target.constraint_id}": "the pair's own target constraint",
+           f"id:{pair.focal.constraint_id}": "the pair's own focal constraint"}
+    for slot in pair.references:
+        if slot.admitted:
+            out[f"id:{slot.identity.get()}"] = (
+                f"an admitted reference of {pair_id} ({slot.arm})")
+    return out
+
+
+def semantic_duplicate_review(pair_id: str) -> Slot:
+    """The human-review artifact section 8.2's "semantic duplicates" needs.
+
+    Declared rather than automated. Section 8.7 requires "two independent
+    reviews, with a third reviewer adjudicating disagreement" for clauses whose
+    semantics deterministic machinery does not exhaustively cover, and semantic
+    equivalence between authored constraints is such a clause. Pretending code
+    settles it would be a fabricated certification.
+    """
+    return pending(
+        f"review.{pair_id}.semantic_duplicates", "sections 8.2, 8.7",
+        Resolution.PENDING_DECISION,
+        "two independent human reviews confirming that no pool contains a "
+        "semantic duplicate of the pair's target, focal constraint or admitted "
+        "references, with a third reviewer adjudicating disagreement",
+        depends_on=(f"pool.{pair_id}.candidate_references",),
+        note="unresolved disagreement fails certification; deterministic overlap "
+             "checks cover exact reuse and renamed identical content, not "
+             "semantic equivalence")
+
+
+def assert_ready_for_confirmation(
+        pools: Sequence[Pool],
+        exclusions: Optional[Mapping[str, str]] = None) -> None:
+    """The one gate before confirmatory drawing. Enforces, not just signatures.
+
+    Signing each pool individually proves nothing about the partition: two
+    separately valid signed pools can share an item, and section 11.1's firewall
+    is a property of the set. So this invokes every cross-pool invariant rather
+    than leaving them as helpers a caller might forget - which is exactly what
+    happened, since none of them had a production caller.
+
+    `exclusions` defaults to the union of every declared pair's forbidden map, so
+    the common case needs no argument and cannot be silently skipped.
+    """
     problems = []
     for pool in pools:
         if not pool.populated:
@@ -445,3 +570,20 @@ def assert_ready_for_confirmation(pools: Sequence[Pool]) -> None:
             "confirmatory superblock drawing needs every scientific pool signed "
             f"and hashed; {len(problems)} are not ready:\n  "
             + "\n  ".join(problems[:10]))
+
+    # Cross-pool invariants. Each raises PoolViolation, which is fail-closed and
+    # distinct from the "not authored yet" condition above.
+    assert_splits_disjoint(pools)
+    assert_one_stratum_per_constraint(pools)
+
+    if exclusions is None:
+        exclusions = {}
+        for pair_id in PAIR_IDS:
+            exclusions.update(forbidden_items(pair_id))
+    for pool in pools:
+        assert_pool_excludes(pool, exclusions)
+
+    entries = [item for pool in pools if pool.populated
+               for item in pool.items if isinstance(item, BackgroundEntry)]
+    if entries:
+        assert_no_declared_incompatibility(entries)

@@ -96,7 +96,27 @@ def load_all_reasoning(run_dir: Path) -> pd.DataFrame:
     conditions, the string "natural" for the uncapped one.
     """
     run_dir = Path(run_dir)
-    frame = load_reasoning(run_dir / "s18_reasoning.jsonl")
+    # The re-seeded capped grid is the ONLY admissible capped input. The original
+    # S18 file was generated with ONE seed for all 160 requests, which made
+    # replicate pairs byte-identical — two draws counted once. Putting it on the
+    # same figure as the natural condition, which is seeded per row, would show
+    # two different sampling regimes as one curve.
+    #
+    # There is deliberately no fallback. `runs/` is gitignored, so a regenerated
+    # or partially transferred run directory can easily be missing the re-seeded
+    # file while still holding the deprecated one; silently substituting it would
+    # publish the defect this file exists to avoid. A missing canonical input is
+    # a stop condition, not a degraded mode. The original file is kept, not
+    # deleted, so the deprecation remains auditable.
+    capped = run_dir / "s18_reseeded.jsonl"
+    if not capped.exists():
+        raise FileNotFoundError(
+            f"canonical capped grid {capped} is absent. The shared-seed grid "
+            f"{run_dir / 's18_reasoning.jsonl'} is deprecated (byte-identical "
+            "replicate pairs) and is never substituted for it. Regenerate the "
+            "re-seeded grid before building any canonical output.")
+    frame = load_reasoning(capped)
+    frame["capped_source"] = capped.name
     frame["condition"] = np.where(frame["reasoning_budget"] == 0,
                                   "NO_THINKING", "LIMITED_REASONING")
     frame["setting"] = frame["reasoning_budget"]

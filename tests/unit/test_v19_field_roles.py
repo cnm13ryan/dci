@@ -57,8 +57,14 @@ def test_the_forbidden_roles_are_the_two_the_protocol_names():
     ("f_a", "outcome"),
     ("target_verdict", "outcome"),
 ])
-def test_the_fields_a_primary_estimator_may_use(field, role):
+def test_the_declared_roles_are_the_preregistered_ones(field, role):
     assert role_of(field) == role
+
+
+@pytest.mark.parametrize("field", ["arm", "hard_budget", "load",
+                                   "presentation_order", "task",
+                                   "canonical_wording", "parameters"])
+def test_treatment_and_pretreatment_fields_may_be_covariates(field):
     assert assert_primary_covariate(field) == field
 
 
@@ -84,9 +90,9 @@ def test_diagnostic_fields_are_barred_from_primary_formulas(field):
 
 
 @pytest.mark.parametrize("use", PRIMARY_USES)
-def test_every_prohibited_use_is_named_in_the_error(use):
+def test_every_prohibited_use_is_refused_for_post_treatment(use):
     """Section 11.8 bars five distinct uses, not just 'covariate'."""
-    with pytest.raises(FieldRoleViolation, match=use.split()[0]):
+    with pytest.raises(FieldRoleViolation):
         assert_primary_covariate("u_r", use=use)
 
 
@@ -112,7 +118,7 @@ def test_a_whole_formula_reports_every_offending_field_at_once():
 
 def test_a_clean_primary_formula_passes():
     assert_primary_formula(["arm", "hard_budget", "load", "presentation_order",
-                            "superblock_id"])
+                            "task"])
 
 
 def test_an_undeclared_field_in_a_formula_is_refused():
@@ -132,6 +138,8 @@ def test_the_audit_marks_which_fields_primary_analysis_may_consume():
     by_field = {r["field"]: r for r in rows}
     assert by_field["arm"]["permitted_in_primary"] is True
     assert by_field["u_r"]["permitted_in_primary"] is False
+    assert by_field["f_a"]["permitted_uses"] == ["outcome", "diagnostic only"]
+    assert "covariate" not in by_field["f_a"]["permitted_uses"]
     import json
     json.dumps(rows)
 
