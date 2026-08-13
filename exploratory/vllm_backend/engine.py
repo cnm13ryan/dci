@@ -84,14 +84,38 @@ def render_prompt(tokenizer, request: GenerationRequest,
 
 
 def verify_template_switch(tokenizer, request: GenerationRequest,
-                           template_kwargs: dict[str, Any]) -> dict[str, Any]:
+                           template_kwargs: dict[str, Any],
+                           card: ModelCard | None = None,
+                           reasoning_mode: str | None = None) -> dict[str, Any]:
     """Prove a declared boolean switch actually changes the rendered prompt.
 
     Renders the same messages with the switch as declared and with it negated.
     If the two strings are identical the kwarg is inert — the template has no
     such variable, or it was renamed upstream — and the run would silently
     execute the wrong reasoning condition. That is refused here.
+
+    Empty kwargs are checked, not skipped. This function used to be called under
+    `if requests and template_kwargs:`, so the one case it most needed to catch —
+    a card that supplies no kwargs at all — was the one case that disabled it.
+    An empty mapping is legitimate ONLY when the card declares no reasoning
+    argument for any mode, as for Kimi-VL and Qwen3-4B-Instruct-2507. A card that
+    declares switches for other modes but not this one is an omission, and is
+    refused: that shape is how a mode silently inherits the template default.
     """
+    if not template_kwargs:
+        declared = dict(getattr(card, "template_kwargs_by_mode", {}) or {})
+        if declared:
+            raise TemplateSwitchError(
+                f"no chat-template kwargs are declared for reasoning mode "
+                f"{reasoning_mode!r} on "
+                f"{getattr(card, 'model_id', 'this checkpoint')!r}, but the "
+                f"card declares them for {sorted(declared)}. The mode would "
+                f"render at the template's own default, which is a different "
+                f"experimental condition from the one being recorded. Declare "
+                f"the kwargs for this mode, or remove it from supported_modes.")
+        return {"checked": [], "kwargs": {}, "no_reasoning_argument": True,
+                "reasoning_mode": reasoning_mode}
+
     evidence: dict[str, Any] = {"checked": [], "kwargs": dict(template_kwargs)}
     for key, value in template_kwargs.items():
         if not isinstance(value, bool):
@@ -250,9 +274,12 @@ def run(engine_plan: EnginePlan, sampling: SamplingPlan, run_plan: RunPlan,
 
     template_kwargs = dict(run_plan.chat_template_kwargs)
     switch_evidence: dict[str, Any] = {}
-    if requests and verify_switch and template_kwargs:
+    # `template_kwargs` is deliberately absent from this condition: an empty
+    # mapping is the case the check exists for.
+    if requests and verify_switch:
         switch_evidence = verify_template_switch(
-            tokenizer, requests[0], template_kwargs)
+            tokenizer, requests[0], template_kwargs, card,
+            run_plan.reasoning_mode)
 
     prompts = [render_prompt(tokenizer, r, template_kwargs) for r in requests]
 
