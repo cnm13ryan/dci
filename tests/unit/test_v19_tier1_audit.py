@@ -15,6 +15,7 @@ import json
 
 import pytest
 
+from dci.provenance.hashes import sha
 from dci.v19 import pairs
 from dci.v19 import tier1_audit as T
 from dci.v19.registry import declared_table
@@ -34,8 +35,16 @@ def a_case(unit, index, truth_class, material=("boundary_cases",)):
         # into the packet verbatim as `response`, and assert_blinded rightly
         # refuses a response that tells the reviewer what to conclude. An earlier
         # version of this fixture did leak the class, and the blinding check
-        # caught it.
-        text=f"SYNTHETIC TEST FIXTURE {abs(hash((unit, truth_class.value))) % 997}"
+        # caught it. Hence a digest of the pair rather than the pair itself.
+        #
+        # `sha`, NOT the builtin `hash`. The builtin is salted per interpreter,
+        # so `abs(hash(...)) % 997` gave twelve values from a 997-space that
+        # changed every run: about one pytest process in thirty drew a pair of
+        # units onto the same discriminator, every one of the 100 indices under
+        # them collided, and `assert_no_case_serves_two_units` -- correctly --
+        # refused the manifest. A fixture may not be a lottery.
+        text=f"SYNTHETIC TEST FIXTURE "
+             f"{sha(['v19/tier1-audit-fixture', unit, truth_class.value])[:12]}"
              f" item {index}",
         parameters={"n_items": 3},
         intended_class=truth_class,
@@ -71,6 +80,43 @@ def a_protocol_table():
     return declared_table().freeze("verifiers.tier1_audit_protocol",
                                    dict(T.PROTOCOL),
                                    by="the frozen protocol, for an apparatus test")
+
+
+# ------------------------------------------------------- the fixture itself
+def test_the_fixture_gives_every_unit_a_distinct_discriminator():
+    """Two units sharing a discriminator make identical case text under both."""
+    texts = {}
+    for unit in UNITS:
+        for truth_class in T.TruthClass:
+            texts.setdefault(a_case(unit, 0, truth_class).text, set()).add(unit)
+    shared = {text: units for text, units in texts.items() if len(units) > 1}
+    assert not shared, f"one fixture text serves several units: {shared}"
+
+
+def test_the_fixture_is_identical_under_a_different_interpreter_hash_seed():
+    """The suite must not depend on PYTHONHASHSEED.
+
+    Run in a subprocess because the salt is fixed at interpreter start: it
+    cannot be varied from inside this one. Two seeds that previously disagreed
+    are used, so the regression is reproduced rather than approximated.
+    """
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    program = (
+        f"import sys; sys.path.insert(0, {str(Path(__file__).parent)!r}); "
+        "from test_v19_tier1_audit import a_manifest; "
+        "print(a_manifest(per_class=2).manifest_hash)")
+    digests = set()
+    for seed in ("72", "73"):
+        done = subprocess.run([sys.executable, "-c", program],
+                              env={**os.environ, "PYTHONHASHSEED": seed},
+                              capture_output=True, text=True, timeout=120)
+        assert done.returncode == 0, done.stderr[-2000:]
+        digests.add(done.stdout.strip())
+    assert len(digests) == 1, f"the fixture changes with the hash seed: {digests}"
 
 
 # ------------------------------------------------------------ the audit shape

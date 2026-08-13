@@ -21,10 +21,19 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
+import sys
 import time
 from collections import Counter
+from dataclasses import replace as _replace
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from vllm_backend import engine as _engine
+from vllm_backend.hardware import probe as _probe_host
+from vllm_backend.reasoning import build_parser as _build_parser
+from vllm_backend.registry import get_or_default
+from vllm_backend.resolve import resolve_engine, resolve_sampling
 
 SYSTEM = ("Produce only the requested answer. Do not discuss, restate, "
           "enumerate, or explain the constraints or your planning process.")
@@ -75,17 +84,15 @@ def main() -> int:
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
 
-    from vllm import LLM, SamplingParams
-    from vllm.reasoning import ReasoningParserManager
-
-    llm = LLM(model=args.model, revision=args.revision, dtype="bfloat16",
-              tensor_parallel_size=2, max_model_len=args.max_model_len,
-              gpu_memory_utilization=args.gpu_memory_utilization,
-              disable_custom_all_reduce=True, enforce_eager=True,
-              seed=20260812)
-    tokenizer = llm.get_tokenizer()
-    reasoning_parser = ReasoningParserManager.get_reasoning_parser(
-        "qwen3")(tokenizer)
+    card = _replace(get_or_default(args.model), model_id=args.model)
+    plan = resolve_engine(card, _probe_host(), {
+        "tensor_parallel_size": 2, "max_model_len": args.max_model_len,
+        "gpu_memory_utilization": args.gpu_memory_utilization,
+        "seed": 20260812, "model_revision": args.revision})
+    llm, tokenizer, _load_seconds = _engine.build_engine(plan)
+    reasoning_parser, _parser_label = _build_parser(
+        card.reasoning_parser or "qwen3", tokenizer,
+        card.think_open, card.think_close)
 
     # -- verify the reasoning interface is actually on -----------------------
     rendered_on = tokenizer.apply_chat_template(
@@ -120,14 +127,14 @@ def main() -> int:
         started = time.perf_counter()
         # Concurrency 1: one prompt per generate call, so nothing this request
         # does can be blamed on another request in the batch.
-        output = llm.generate([rendered], SamplingParams(
-            temperature=0.7, top_p=0.9, top_k=-1, max_tokens=budget, seed=11))[0]
+        output = llm.generate([rendered], _engine.build_sampling(
+            resolve_sampling(max_tokens=budget), budget, 11))[0]
         elapsed = time.perf_counter() - started
         completion = output.outputs[0]
         raw = completion.text
         try:
             reasoning, answer = reasoning_parser.extract_reasoning(raw, None)
-        except Exception as error:                      # noqa: BLE001
+        except Exception as error:
             reasoning, answer = None, f"<PARSER FAILED: {error}>"
 
         closed = "</think>" in raw

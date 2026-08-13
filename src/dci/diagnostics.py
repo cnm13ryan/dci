@@ -18,9 +18,82 @@ import importlib
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
+
+
+#: Distributions whose import name differs from their package name.
+_IMPORT_NAMES = {"z3-solver": "z3"}
+
+
+def _requirements_from_pyproject() -> list[str]:
+    """`[project].dependencies` from the source tree, for an uninstalled checkout.
+
+    Still the authoritative declaration — the same table the metadata is built
+    from — rather than a second list that can disagree with it. Returns nothing
+    if the file is absent, which is the ordinary case for a wheel install.
+    """
+    import tomllib
+    from pathlib import Path
+
+    # src/dci/diagnostics.py -> src/dci -> src -> the repository root.
+    pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    try:
+        table = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError):
+        return []
+    return list(table.get("project", {}).get("dependencies", []))
+
+
+def declared_dependencies() -> list[tuple[str, str]]:
+    """`(distribution, import name)` for every declared runtime dependency.
+
+    Read from the installed distribution's own metadata rather than restated
+    here. A hand-maintained list drifts: this one listed six of the seven
+    declared dependencies, and the omitted one was `z3-solver` — so an
+    environment missing the solver that gates every v19 satisfiability check
+    reported itself healthy, and nine tests failed at collection instead.
+
+    The uninstalled case reads `pyproject.toml` for the same reason. It used to
+    fall back to a literal six-name tuple in `run()` — which had drifted in
+    exactly the same way, omitting `z3-solver` again — so a source checkout run
+    without `pip install -e .` reported a healthy environment while the solver
+    that gates Stage 2 was absent. There is now no second list to drift.
+    """
+    from importlib.metadata import PackageNotFoundError, requires
+
+    try:
+        requirements = requires("dci") or []
+    except PackageNotFoundError:                # not installed as a distribution
+        requirements = _requirements_from_pyproject()
+    names = []
+    for requirement in requirements:
+        # "numpy>=1.26", "pytest>=8 ; extra == 'dev'" -- drop extras and markers.
+        if ";" in requirement:
+            continue
+        name = re.split(r"[<>=!~\[ ]", requirement, maxsplit=1)[0].strip()
+        if name:
+            names.append((name, _IMPORT_NAMES.get(name, name.replace("-", "_"))))
+    return names
+
+
+def _module_version(distribution: str, module) -> str:
+    """A version string, preferring the distribution's own metadata.
+
+    `z3` exposes no `__version__`, so the naive attribute lookup reported "?"
+    for the one dependency whose absence started this.
+    """
+    version = getattr(module, "__version__", None)
+    if version:
+        return str(version)
+    from importlib.metadata import PackageNotFoundError, version as metadata_version
+
+    try:
+        return metadata_version(distribution)
+    except PackageNotFoundError:
+        return "?"
 
 
 def section(title):
@@ -45,13 +118,21 @@ def run(gpu: bool = False, expect_devices: int | None = None) -> int:
            ok=sys.version_info >= (3, 11)) or failures.append("python>=3.11")
 
     section("scientific core")
-    for mod in ("numpy", "pandas", "scipy", "matplotlib", "tqdm", "psutil"):
+    declared = declared_dependencies()
+    if not declared:
+        # Neither metadata nor pyproject. Say so and FAIL: reporting a healthy
+        # scientific core after checking nothing is the failure mode this whole
+        # function exists to prevent.
+        failures.append("dependency declaration")
+        report("declared dependencies", "NOT FOUND -- neither installed "
+               "metadata nor pyproject.toml; nothing was checked", ok=False)
+    for distribution, module in declared:
         try:
-            m = importlib.import_module(mod)
-            report(mod, getattr(m, "__version__", "?"), ok=True)
+            m = importlib.import_module(module)
+            report(distribution, _module_version(distribution, m), ok=True)
         except Exception as exc:
-            failures.append(mod)
-            report(mod, f"MISSING ({exc})", ok=False)
+            failures.append(distribution)
+            report(distribution, f"MISSING ({exc}) -- run `uv sync`", ok=False)
     try:
         import dci
         from dci.compat import TORCH_AVAILABLE, TRANSFORMERS_AVAILABLE
