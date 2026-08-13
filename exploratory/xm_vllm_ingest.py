@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from crossmodel import contract, seeds
 from crossmodel.adapters.base import Generation, GenerationConfig
 from crossmodel.schema import assert_provenance, build_row, final_answer_status
+from vllm_backend.contract import Outcome, canonicalise_row
 
 
 def main() -> int:
@@ -36,7 +37,10 @@ def main() -> int:
     plan = json.loads((run_dir / "plan.json").read_text())
     design = {json.loads(l)["row_id"]: json.loads(l)
               for l in (run_dir / "design.jsonl").open()}
-    raw = [json.loads(l) for l in (run_dir / args.raw).open()]
+    # ONE migration boundary, at the point of reading immutable archived
+    # rows. Everything below this line reads canonical names only.
+    raw = [canonicalise_row(json.loads(l))
+           for l in (run_dir / args.raw).open()]
     engine_path = run_dir / (Path(args.raw).stem + "_engine.json")
     engine = json.loads(engine_path.read_text()) if engine_path.exists() else {}
 
@@ -88,7 +92,7 @@ def main() -> int:
             final_answer_tokens=item["final_answer_tokens"],
             finish_reason=item["finish_reason"],
             reasoning_emitted=item["reasoning_emitted"],
-            natural_reasoning_closed=item["natural_reasoning_closed"],
+            natural_reasoning_closed=item["reasoning_closed"],
             reasoning_cap_hit=item["reasoning_cap_hit"],
             answer_truncated=item["answer_truncated"],
             # No splice ran, so the forced-close artefact is structurally
@@ -99,15 +103,21 @@ def main() -> int:
             batch_seed=None,
             latency_seconds=engine.get("generation_seconds", 0.0)
             / max(len(raw), 1),
-            technical_failure=item["technical_failure"],
-            technical_failure_reason=item["technical_failure_reason"])
+            technical_failure=item["outcome"] == Outcome.TECHNICAL_FAILURE.value,
+            technical_failure_reason=(
+                item["outcome_detail"]
+                if item["outcome"] == Outcome.TECHNICAL_FAILURE.value else ""))
         record = build_row(
             run_id=run_dir.name, design_row=row, generation=generation,
             adapter_metadata=metadata, config=config,
             reasoning_control=control,
             scientific_seed=item["seed_reasoning"])
-        record["not_generated"] = bool(item.get("not_generated"))
-        record["not_generated_reason"] = item.get("not_generated_reason", "")
+        # The scored-row schema keeps these as booleans because the Transformers
+        # adapters also feed it. Derived HERE, once, from the outcome -- not
+        # read back out of the row under their old names.
+        not_generated = item["outcome"] == Outcome.NOT_GENERATED.value
+        record["not_generated"] = not_generated
+        record["not_generated_reason"] = item["outcome_detail"] if not_generated else ""
         record["generation_ceiling"] = plan.get("generation_ceiling")
         record["final_answer_status"] = final_answer_status(record)
         records.append(record)

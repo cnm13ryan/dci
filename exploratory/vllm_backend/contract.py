@@ -123,3 +123,83 @@ class GenerationResult:
 #: The exact key set every stored row carries. Used by the schema test.
 ROW_KEYS: frozenset[str] = frozenset(
     asdict(GenerationResult(row_id="")).keys()) - {"identity"}
+
+
+# ------------------------------------------------------- historical artefacts
+#: Fields that were RENAMED when this contract became authoritative.
+#:
+#: `natural_reasoning_closed` and `closed_naturally` were two names for one
+#: fact, invented independently by the cross-model and reasoning lines of work.
+#: The rest were the reasoning line's shorter names for the same channels.
+LEGACY_RENAMES: dict[str, str] = {
+    "natural_reasoning_closed": "reasoning_closed",   # cross-model rows
+    "closed_naturally": "reasoning_closed",           # reasoning-line rows
+    "answer": "final_answer",
+    "reasoning": "reasoning_text",
+    "answer_tokens": "final_answer_tokens",
+}
+
+#: Legacy booleans that are now DERIVED from `outcome`, in this precedence.
+#: They were a triple of independent flags whose combinations were not all
+#: reachable — `technical_failure and not_generated` had no meaning — which is
+#: why the enum replaced them.
+_LEGACY_OUTCOME_FLAGS: tuple[tuple[str, str, str], ...] = (
+    ("technical_failure", Outcome.TECHNICAL_FAILURE.value,
+     "technical_failure_reason"),
+    ("not_generated", Outcome.NOT_GENERATED.value, "not_generated_reason"),
+)
+
+#: Legacy keys consumed entirely by the derivation above, and never carried
+#: forward under their own names.
+LEGACY_DERIVED: frozenset[str] = frozenset(
+    [flag for flag, _, _ in _LEGACY_OUTCOME_FLAGS]
+    + [reason for _, _, reason in _LEGACY_OUTCOME_FLAGS])
+
+
+def canonicalise_row(row: dict[str, Any]) -> dict[str, Any]:
+    """Read a stored row of ANY vintage as the canonical contract.
+
+    This is the ONE migration boundary in the repository, and it exists for a
+    single reason: the archived generations are immutable. `raw_generations.jsonl`
+    from the pre-consolidation runs carries `natural_reasoning_closed` and the
+    boolean triple; the reasoning line's files carry `answer` and `reasoning`.
+    Those bytes are the evidence and are not being rewritten.
+
+    It is deliberately NOT a compatibility layer for live code. Nothing writes
+    the legacy shape any more, so a consumer calls this once where it loads a
+    file and reads canonical names everywhere after. A row that is already
+    canonical passes through unchanged, so the call is safe to make
+    unconditionally and there is no vintage to detect at the call site.
+
+    `channel_valid` is derived, not defaulted: a legacy row that produced a
+    final answer had, by construction, a usable answer channel. A legacy row
+    with no answer and no failure flag is left `False`, because the old shape
+    could not distinguish "no channel" from "nothing generated" and inventing
+    the distinction here would fabricate evidence.
+    """
+    out = dict(row)
+
+    for legacy, canonical in LEGACY_RENAMES.items():
+        if legacy in out:
+            value = out.pop(legacy)
+            out.setdefault(canonical, value)
+
+    if "outcome" not in out:
+        outcome, detail = Outcome.OK.value, ""
+        for flag, mapped, reason_key in _LEGACY_OUTCOME_FLAGS:
+            if out.get(flag):
+                outcome, detail = mapped, str(out.get(reason_key) or "")
+                break
+        out["outcome"] = outcome
+        out.setdefault("outcome_detail", detail)
+    for key in LEGACY_DERIVED:
+        out.pop(key, None)
+
+    if "channel_valid" not in out:
+        out["channel_valid"] = bool(
+            out.get("final_answer") and out["outcome"] == Outcome.OK.value)
+
+    for key, default in (("reasoning_closed", False), ("seed_answer", 0),
+                         ("stop_reason", ""), ("outcome_detail", "")):
+        out.setdefault(key, default)
+    return out

@@ -57,6 +57,6 @@ def test_deprecated_grid_really_is_replicate_degenerate(tmp_path: Path) -> None:
     gridfixtures.write_grid(path, shared_seed=True)
     frame = plotdata.load_reasoning(path)
     groups = frame.groupby(["task_id", "arm", "variant", "reasoning_budget"])
-    identical = sum(1 for _, g in groups if g["answer"].nunique() == 1)
+    identical = sum(1 for _, g in groups if g["final_answer"].nunique() == 1)
     assert identical == groups.ngroups, (
         "fixture no longer reproduces the shared-seed defect it guards against")
