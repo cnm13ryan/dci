@@ -159,7 +159,7 @@ pass calls the layer itself, the same eight rows come out of
 `xm_actual_results.py` unchanged: still 0 of 8 identified, same verdicts, same
 constituents.
 
-### 2.1b The bounded-thinking run set — `NOT_IDENTIFIED` (6 of 8), 2 identified
+### 2.1b The bounded-thinking run set — `NOT_IDENTIFIED` (8 of 8)
 
 The eight cells above are the **NO_THINKING / NATURAL_REASONING** run set. A
 second, later set exists — `THINKING_ENABLED_BOUNDED`, ceiling 8,192 — and it is
@@ -170,17 +170,41 @@ earlier "0 of 8" statement was never about it:
 | model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | verdict |
 |---|---|---|---|---|---|---|---|---|---|
 | Qwen3.5-4B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | `TARGET_CEILING` |
-| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | **`IDENTIFIED`** |
+| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` |
 | Qwen3.5-9B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | `TARGET_CEILING` |
-| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | **`IDENTIFIED`** |
+| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` |
 | gemma-4-E4B-it | bracket | +0.000 | — | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | `TARGET_CEILING` |
 | gemma-4-E4B-it | semicolon | +0.000 | — | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | `TARGET_CEILING` |
 | Kimi-VL | bracket | +0.050 | [0.000, 0.125] | 0.054 | 0.000 | **0.405** | 0.531 | 0.138 | `FOCAL_NONUPTAKE` |
 | Kimi-VL | semicolon | **+0.278** | [0.056, 0.500] | 0.559 | 0.286 | **0.088** | 0.571 | 0.138 | `FOCAL_NONUPTAKE` |
 
-**2 of 8 poolable**, and the two are the Qwen semicolon cells — the first
-identified DCI estimates anywhere in the cross-model programme. Both are small
-and both intervals touch zero.
+**0 of 8 poolable — corrected.** An earlier version of this section reported
+2 of 8, with the Qwen semicolon cells identified. That was withdrawn by a
+self-audit of the reporting code, and the correction matters more than the
+count.
+
+Those two cells reached `IDENTIFIED` only because three of the four
+identification preconditions were **asserted rather than measured**:
+`execution_validated`, `verifier_certified` and `satisfiable` were hard-coded
+`True`, and a missing `channel_valid` column defaulted to `1.0`. With the
+defaults removed, two of those four are still unestablished for every
+cross-model cell, so all eight now carry `EVIDENCE_INCOMPLETE`:
+
+| axis | status | why |
+|---|---|---|
+| `satisfiable` | **established** | hand-authored witness certifies A ∧ B ∧ background for both backgrounds |
+| `channel_valid_rate` | **measured** | derived per row; 1.000 for Qwen and Kimi, 0.975 / 0.963 for gemma |
+| `execution_validated` | **unestablished** | THINKING_ENABLED_BOUNDED never went through Stage B/C admission |
+| `verifier_certified` | **unestablished** | no certification for these checkpoints' output class |
+
+The behavioural readings below are unchanged and still reported — the
+`TARGET_CEILING` and `FOCAL_NONUPTAKE` patterns are real properties of the data.
+What is withdrawn is the claim that any cross-model cell was *identified*, which
+the pipeline was never in a position to assert.
+
+Two feeds would settle it: a Stage B/C admission record for the bounded-thinking
+condition, and a verifier certification covering these output classes. Neither
+is a threshold change and neither weakens a gate.
 
 **The Kimi result is the important correction.** `ca35277` reported Kimi-VL as
 *"the first checkpoint here whose target instruction is not saturated"* and
@@ -197,16 +221,16 @@ What changed is that it no longer enters a pooled headline.
 **Reconciling the two statements.** "0 of 8 identified" was accurate for the run
 set it described and remains so. It was never a claim about the bounded-thinking
 set, which had not been run when it was written. Across both sets the position
-is: **2 of 16 primitive cells are identified**, both Qwen3.5 semicolon cells
-under bounded thinking, and no gemma or Kimi cell is identified in either set.
+is: **0 of 16 primitive cells are identified.**
 
-**Caveat carried forward, not resolved.** Both identified cells sit under
-material cap binding — 33.8% and 15.0% of rows truncated — below the 50%
-`CAP_BOUND` threshold frozen in `d9c4e41`. That threshold was **not** adjusted
-after seeing these results, which would have been exactly the post-hoc selection
-the framework warns against. The cap-hit rate is published beside every verdict
-so a reader can apply a stricter reading; under a 30% threshold the Qwen3.5-4B
-semicolon cell would become `CAP_BOUND` and only one cell would remain.
+**Caveat carried forward, not resolved.** The two cells that came closest to
+identification sit under material cap binding — 33.8% and 15.0% of rows
+truncated — below the 50% `CAP_BOUND` threshold frozen in `d9c4e41`. That
+threshold was **not** adjusted after seeing these results, which would have been
+exactly the post-hoc selection the framework warns against. The cap-hit rate is
+published beside every verdict so a reader can apply a stricter reading; under a
+30% threshold the Qwen3.5-4B semicolon cell would be `CAP_BOUND` on behavioural
+grounds as well as evidence-incomplete.
 
 ### 2.2 "The vLLM TP=2 retry qualified 0/5" — `SUPPORTED`
 

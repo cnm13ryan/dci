@@ -66,8 +66,13 @@ instruction was satisfied in 8.8% of answered focal rows. The one checkpoint wit
 real headroom is the one where the treatment was least delivered.
 
 The two Qwen checkpoints show the opposite pattern under bounded thinking —
-near-total uptake in both arms — and they yield the programme's first two
-IDENTIFIED cells, both small (+0.031 and +0.026, intervals touching zero). So
+near-total uptake in both arms, with small estimates (+0.031 and +0.026,
+intervals touching zero). Those two were briefly reported as the programme's
+first IDENTIFIED cells; a self-audit withdrew that, because three identification
+preconditions had been asserted rather than measured. They are now
+`EVIDENCE_INCOMPLETE`, pending a Stage B/C admission record for the
+bounded-thinking condition and a verifier certification for these output
+classes. The uptake contrast below is a direct measurement and is unaffected. So
 uptake is not a fixed property of the focal instruction: it moves with the
 reasoning condition. That is itself a result Experiment 1 should absorb, and it
 means the local/relational contrast must be measured under a declared reasoning
