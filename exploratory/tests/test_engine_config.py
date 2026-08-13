@@ -38,6 +38,18 @@ EXPECTED_TP2 = {
     # configuration is ordinary — everything they own is in the chat template,
     # not the engine — which is precisely why their absence from the registry
     # went unnoticed until it had removed their reasoning switch.
+    "Qwen/Qwen2.5-0.5B-Instruct": {
+        "model": "Qwen/Qwen2.5-0.5B-Instruct", "dtype": "bfloat16",
+        "tensor_parallel_size": 2, "max_model_len": 32768,
+        "gpu_memory_utilization": 0.85, "disable_custom_all_reduce": True,
+        "enforce_eager": True, "seed": 20260812, "trust_remote_code": False,
+    },
+    "Qwen/Qwen3-4B-Thinking-2507": {
+        "model": "Qwen/Qwen3-4B-Thinking-2507", "dtype": "bfloat16",
+        "tensor_parallel_size": 2, "max_model_len": 40960,
+        "gpu_memory_utilization": 0.85, "disable_custom_all_reduce": True,
+        "enforce_eager": True, "seed": 20260812, "trust_remote_code": False,
+    },
     "Qwen/Qwen3-4B": {
         "model": "Qwen/Qwen3-4B", "dtype": "bfloat16",
         "tensor_parallel_size": 2, "max_model_len": 40960,

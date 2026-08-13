@@ -170,6 +170,20 @@ REGISTRY: dict[str, ModelCard] = {
               "omitting it, and enable_thinking=True equals the template "
               "default. It does NOT pre-open <think> -- that is "
               "Qwen3-4B-Thinking-2507, which is why the split repair exists."),
+    "Qwen/Qwen3-4B-Thinking-2507": ModelCard(
+        model_id="Qwen/Qwen3-4B-Thinking-2507", family="qwen3",
+        reasoning_parser="qwen3",
+        # The template takes no switch: this checkpoint always thinks, so the
+        # mode is the checkpoint rather than an argument to it.
+        template_kwargs_by_mode={},
+        think_open="<think>", think_close="</think>",
+        supported_modes=(ReasoningMode.NATURAL_REASONING,
+                         ReasoningMode.LIMITED_REASONING,
+                         ReasoningMode.THINKING_ENABLED_BOUNDED),
+        notes="PRE-OPENS <think> in the prompt, verified by rendering. vLLM's "
+              "qwen3 parser looks for that marker in the OUTPUT, does not find "
+              "it, and returns the whole trace as content -- the leak the split "
+              "repair exists for. This is the checkpoint that exhibits it."),
     "Qwen/Qwen3-4B-Instruct-2507": ModelCard(
         model_id="Qwen/Qwen3-4B-Instruct-2507", family="qwen3",
         # Nothing to parse: this checkpoint has no reasoning channel.
@@ -184,6 +198,21 @@ REGISTRY: dict[str, ModelCard] = {
               "sibling is Qwen3-4B-Thinking-2507, i.e. a different execution "
               "condition. Carries the entire exploratory ladder (57 runs). "
               "Verified by rendering: enable_thinking is INERT here."),
+    # The dev/validation checkpoint. Small enough to load on one card, which is
+    # what makes a TP=1 vs TP=2 comparison cheap. Verified by rendering:
+    # enable_thinking is INERT, so it declares no reasoning argument.
+    "Qwen/Qwen2.5-0.5B-Instruct": ModelCard(
+        model_id="Qwen/Qwen2.5-0.5B-Instruct", family="qwen2.5",
+        reasoning_parser=None,
+        template_kwargs_by_mode={},
+        supported_modes=(ReasoningMode.NO_THINKING,),
+        # 32,768, not the 40,960 the other cards use: this checkpoint's
+        # max_position_embeddings is 32k, and vLLM refuses an envelope larger
+        # than the positions the weights were trained for. Caught by hardware
+        # validation, which is the only place a wrong envelope shows up.
+        max_model_len=32768,
+        notes="no reasoning channel; used for hardware validation and the "
+              "dev_fast profile"),
     "Qwen/Qwen3.5-4B": ModelCard(
         model_id="Qwen/Qwen3.5-4B", family="qwen3.5",
         reasoning_parser="qwen3",
