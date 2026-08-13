@@ -25,9 +25,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from vllm_backend.hardware import HostProfile                        # noqa: E402
-from vllm_backend.registry import ReasoningMode, get                 # noqa: E402
-from vllm_backend.resolve import (                                   # noqa: E402
+from vllm_backend.hardware import HostProfile  # noqa: E402
+from vllm_backend.registry import ReasoningMode, get  # noqa: E402
+from vllm_backend.resolve import (  # noqa: E402
     context_envelope,
     resolve_engine,
     resolve_run,
