@@ -46,3 +46,53 @@ class TestTheHardwareValidationRecordsWhatItRan:
     def test_it_records_the_answer_allowance_separately(self) -> None:
         assert '"answer_tokens": case.max_tokens' in self.SOURCE
         assert '"reasoning_budget": case.reasoning_budget' in self.SOURCE
+
+
+class TestTheEngineTokenizerCarriesItsProvenance:
+    """Fixing the key alone left the value as "unknown", which the first
+    regenerated artifact showed for all six executed cases.
+
+    `build_engine` returns `llm.get_tokenizer()` and that object was never
+    stamped — only `load_tokenizer` stamped the one IT fetched. So the run path,
+    which validates against the engine's own tokenizer, had no provenance to
+    record. The engine's tokenizer is the strongest provenance available, being
+    the object that renders the prompts, and it was reported as unknown.
+    """
+
+    SOURCE = (Path(__file__).resolve().parent.parent / "vllm_backend"
+              / "engine.py").read_text(encoding="utf-8")
+
+    def test_build_engine_stamps_the_tokenizer_it_returns(self) -> None:
+        import ast
+        tree = ast.parse(self.SOURCE)
+        fn = next(n for n in ast.walk(tree)
+                  if isinstance(n, ast.FunctionDef) and n.name == "build_engine")
+        body = ast.unparse(fn)
+        assert "_dci_acquisition" in body, (
+            "build_engine must stamp the tokenizer it returns; without it the "
+            "switch evidence records 'unknown' for the run path")
+        assert "_dci_revision" in body
+
+    def test_it_stamps_the_revision_the_engine_was_pinned_to(self) -> None:
+        """A revision recorded from anywhere else could disagree with the run."""
+        assert "plan.model_revision" in self.SOURCE
+
+    def test_the_three_acquisitions_are_distinct_and_unconfusable(self) -> None:
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from vllm_backend.engine import (ACQUIRED_BY_FALLBACK, ACQUIRED_BY_VLLM,
+                                         ACQUIRED_FROM_ENGINE)
+        values = [ACQUIRED_FROM_ENGINE, ACQUIRED_BY_VLLM, ACQUIRED_BY_FALLBACK]
+        assert len(set(values)) == 3
+        for a in values:
+            for b in values:
+                assert a is b or a not in b, f"{a!r} is a substring of {b!r}"
+
+    def test_unknown_is_not_a_declared_acquisition(self) -> None:
+        """It is the absence of provenance, and must never look like a source."""
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from vllm_backend import engine
+        declared = {engine.ACQUIRED_FROM_ENGINE, engine.ACQUIRED_BY_VLLM,
+                    engine.ACQUIRED_BY_FALLBACK}
+        assert "unknown" not in declared
