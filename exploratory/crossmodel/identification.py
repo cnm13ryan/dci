@@ -53,6 +53,16 @@ TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
 REPLICATES_DEPENDENT = "REPLICATES_DEPENDENT"
 #: The execution condition was not validated for this cell.
 EXECUTION_INVALID = "EXECUTION_INVALID"
+#: Required identification evidence was never established, so identification
+#: cannot be asserted in EITHER direction.
+#:
+#: This is distinct from every verdict above, and the distinction is the point.
+#: `VERIFIER_UNCERTIFIED` says a certification was attempted and failed;
+#: `EVIDENCE_INCOMPLETE` says none was ever recorded. Collapsing the two would
+#: let an absent feed read as a passed check — which is precisely the fail-open
+#: shape the layer exists to prevent. A cell here is not poolable, and the
+#: reason names exactly which evidence is missing so it can be supplied.
+EVIDENCE_INCOMPLETE = "EVIDENCE_INCOMPLETE"
 
 #: Only cells carrying this verdict may enter a pooled benchmark mean.
 POOLABLE = frozenset({IDENTIFIED})
@@ -61,7 +71,7 @@ ALL_VERDICTS = (
     IDENTIFIED, TARGET_CEILING, TARGET_FLOOR, FOCAL_NONUPTAKE,
     REFERENCE_NONUPTAKE, REFERENCE_CONTAMINATED, UNSATISFIABLE,
     VERIFIER_UNCERTIFIED, CAP_BOUND, CHANNEL_INVALID, TECHNICAL_FAILURE,
-    REPLICATES_DEPENDENT, EXECUTION_INVALID,
+    REPLICATES_DEPENDENT, EXECUTION_INVALID, EVIDENCE_INCOMPLETE,
 )
 
 
@@ -99,11 +109,18 @@ class CellEvidence:
     so a second pipeline can populate the same structure without renaming its
     own fields.
     """
-    # execution and channel
-    execution_validated: bool = True
-    channel_valid_rate: float = 1.0
+    # Execution and channel.
+    #
+    # These four are tri-state on purpose. `None` means the evidence was never
+    # established, and it is NOT the same as False. Defaulting them to True was
+    # the fail-open shape a review caught: three preconditions were asserted
+    # rather than measured, and two cells reached IDENTIFIED on that assertion.
+    # There is no default now — a caller that cannot supply the evidence must
+    # say so, and the cell fails closed to EVIDENCE_INCOMPLETE.
+    execution_validated: bool | None = None
+    channel_valid_rate: float | None = None
     technical_failure_rate: float = 0.0
-    verifier_certified: bool = True
+    verifier_certified: bool | None = None
     # sampling
     replicate_identical_rate: float = 0.0
     n_tasks: int = 0
@@ -119,7 +136,7 @@ class CellEvidence:
     target_failure_reference: float = float("nan")
     # caps and satisfiability
     cap_hit_rate: float = 0.0
-    satisfiable: bool = True
+    satisfiable: bool | None = None
     # estimate, carried through so the verdict travels with it
     tau: float = float("nan")
     lo: float = float("nan")
@@ -160,6 +177,27 @@ def classify(evidence: CellEvidence, thresholds: Thresholds | None = None
 
     def verdict(status: str, reason: str) -> Verdict:
         return Verdict(status, reason, ev)
+
+    # 0. Evidence completeness, before anything else.
+    #
+    # An absent feed must never read as a passed check. Each of these was
+    # previously defaulted to True/1.0, so a caller that supplied nothing got a
+    # cell certified on three assertions it had not made. `None` is not False:
+    # it means nobody established the fact either way, and a cell in that state
+    # is not identifiable in either direction.
+    missing = [name for name, value in (
+        ("execution_validated", e.execution_validated),
+        ("channel_valid_rate", e.channel_valid_rate),
+        ("verifier_certified", e.verifier_certified),
+        ("satisfiable", e.satisfiable),
+    ) if value is None]
+    if missing:
+        return verdict(EVIDENCE_INCOMPLETE,
+                       "identification evidence was never established: "
+                       + ", ".join(missing)
+                       + ". This is not a finding about the model; it is a "
+                         "missing input, and the cell cannot be identified "
+                         "either way until it is supplied.")
 
     # 1. Execution condition. A cell the validator did not clear is a statement
     #    about the harness, not about the checkpoint.
