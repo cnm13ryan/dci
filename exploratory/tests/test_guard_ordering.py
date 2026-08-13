@@ -47,6 +47,14 @@ def analysis(monkeypatch, tmp_path):
     frame = gridfixtures.natural_frame()
     monkeypatch.setattr(natural_analysis, "load_canonical",
                         lambda _run: (frame, frame))
+    # `main()` resolves the run directory before it loads anything, and that
+    # directory lives under the gitignored `runs/`. Stubbing only the loader
+    # left the test depending on whichever raw data happened to be on the
+    # machine: it passed in the worktree that still held the S18 run and failed
+    # everywhere else, including in any fresh clone. The lookup is stubbed too,
+    # so what the test asserts is guard ORDERING and nothing else.
+    from dci_exploratory import plotdata
+    monkeypatch.setattr(plotdata, "latest", lambda _pattern: tmp_path)
     return natural_analysis, out
 
 

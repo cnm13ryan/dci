@@ -53,8 +53,12 @@ def test_registering_does_not_change_the_registry_provenance_hash(registered):
 
 
 def test_the_mark_family_differs_only_in_the_mark(registered):
+    # Ranges over `_FACTORIAL_MARKS`, which names the per-sentence family, rather
+    # than over `MARK_CHARS`, which is also a plain character lookup and now
+    # carries the two non-boundary controls so that `splice_count` can be
+    # evaluated on them. The assertion itself is unchanged.
     wordings = {m: registered["constraints"][f"X_{m.upper()}_EACH"]["wordings"][0]
-                for m in extensions.MARK_CHARS}
+                for m in extensions._FACTORIAL_MARKS}
     stripped = {w.replace(m, "MARK") for m, w in wordings.items()}
     assert len(stripped) == 1, f"wordings differ by more than the mark: {wordings}"
 

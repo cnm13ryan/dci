@@ -49,7 +49,21 @@ MARK_CHARS: dict[str, tuple[str, ...]] = {
     "colon": (":",),
     "dash": ("—", "–", "--"),
     "comma": (",",),
+    # The non-boundary controls. Present so that `splice_count` — the repository's
+    # own audited proxy for "this mark is standing where a sentence boundary could
+    # stand" — can be computed for them too. Without an entry the proxy simply
+    # cannot be evaluated on the control, and the comparison the mechanism is
+    # about would have to be made with a weaker measure written for the occasion.
+    "degree": ("°",),
+    "asterisk": ("*",),
 }
+
+#: The marks the Round 4 per-sentence factorial is built from (the name
+#: `_PER_SENTENCE_MARKS` is already taken further down by the self-check table). Held separately
+#: from `MARK_CHARS` because that dict is also a plain character lookup, and a
+#: diagnostic that needs a new character must not thereby create a new
+#: per-sentence constraint.
+_FACTORIAL_MARKS = ("semicolon", "colon", "dash", "comma")
 
 #: Whether the mark can stand, in ordinary written English, exactly where a
 #: sentence boundary would stand. This is the PREDICTOR the mechanism account
@@ -59,6 +73,12 @@ MARK_IS_BOUNDARY_CAPABLE: dict[str, bool] = {
     "colon": True,         # joins clauses, though it also has a listing use
     "dash": True,          # joins clauses in informal register
     "comma": False,        # joining two independent clauses with one is an error
+    # Declared before the boundary experiment ran. Neither mark has any
+    # clause-joining use in written English: a degree symbol is a unit suffix and
+    # an asterisk is a reference marker. That is the whole reason they were
+    # chosen as controls.
+    "degree": False,
+    "asterisk": False,
 }
 
 
@@ -306,6 +326,37 @@ _ELLIPSIS = re.compile(r"\.\.\.|…")
 _DASHDASH = re.compile(r"(?<!-)--(?!-)")
 
 
+def v_increasing_prefix(text: str, k: int):
+    """Strictly increasing word counts over the FIRST `k` sentences.
+
+    Deliberately a prefix of `v_increasing_lengths` rather than a new idea: the
+    same `split_sentences`, the same `word_tokens`, the same "strictly greater"
+    comparison, the same `fraction_status` scoring, and the same treatment of a
+    text too short to score. `k = 4` reproduces the frozen rule on a
+    four-sentence answer, which is what makes the ladder a ladder.
+
+    It never reads the sentence COUNT: sentences beyond the k-th are ignored, so
+    this constraint cannot be satisfied or broken by writing more of them. That
+    is what keeps it independent of the target.
+    """
+    import numpy as np
+
+    from dci.verifiers.rules import (VerificationResult, fraction_status,
+                                     split_sentences, word_tokens)
+    lengths = [len(word_tokens(s)) for s in split_sentences(text)]
+    if len(lengths) < k:
+        return VerificationResult(
+            "unscorable", 0, 0.0,
+            {"word_counts": lengths, "required_sentences": k,
+             "reason": "fewer than k sentences to compare"})
+    prefix = lengths[:k]
+    checks = [b > a for a, b in zip(prefix, prefix[1:])]
+    score = float(np.mean(checks))
+    return VerificationResult(fraction_status(score), int(all(checks)), score,
+                              {"word_counts": lengths, "prefix": prefix,
+                               "checks": checks, "required_sentences": k})
+
+
 def v_exact_ellipsis(text: str, n: int = 1):
     """Exactly `n` ellipses — one mark, three characters, unpaired, free."""
     from dci.verifiers.rules import VerificationResult, normalize_text
@@ -551,6 +602,37 @@ _NO_SPLICE_TEMPLATES = (
     "A {mark} must not take the place of a sentence break.",
 )
 
+#: The focal ladder. Each rung names the increases it requires ONE BY ONE and
+#: then says explicitly which sentences are unconstrained, because the failure
+#: mode being repaired is a focal instruction the model never satisfies — an
+#: ambiguous "the first few sentences" would repair the rate without repairing
+#: the constraint.
+_LADDER_TEMPLATES = {
+    3: (
+        "Make sentence 2 strictly longer than sentence 1, and sentence 3 "
+        "strictly longer than sentence 2, when measured by word count. {tail}",
+        "Sentence 2 must have more words than sentence 1, and sentence 3 must "
+        "have more words than sentence 2. {tail}",
+        "Count the words: sentence 2 longer than sentence 1, sentence 3 longer "
+        "than sentence 2. {tail}",
+        "Write sentence 2 with strictly more words than sentence 1, and "
+        "sentence 3 with strictly more words than sentence 2. {tail}",
+        "In word count, sentence 1 < sentence 2 < sentence 3. {tail}",
+        "Each of the first three sentences must be strictly longer in words "
+        "than the one before it. {tail}",
+    ),
+    2: (
+        "Make sentence 2 strictly longer than sentence 1 when measured by word "
+        "count. {tail}",
+        "Sentence 2 must have more words than sentence 1. {tail}",
+        "Count the words: sentence 2 longer than sentence 1. {tail}",
+        "Write sentence 2 with strictly more words than sentence 1. {tail}",
+        "In word count, sentence 1 < sentence 2. {tail}",
+        "The second sentence must be strictly longer in words than the first. "
+        "{tail}",
+    ),
+}
+
 _NO_EXCLAM_TEMPLATES = (
     "Do not use any exclamation marks.",
     "The answer must contain no exclamation marks at all.",
@@ -595,7 +677,12 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
     out: dict[str, tuple[Any, Callable[[str], Any], tuple[str, ...]]] = {}
 
     # --- the per-sentence mark family: mark varies, wording does not ---------
-    for mark in MARK_CHARS:
+    # Scoped to the four marks the Round 4 factorial was built from, explicitly,
+    # rather than to whatever `MARK_CHARS` happens to contain. The dict gained
+    # `degree` and `asterisk` so that `splice_count` could be evaluated on the
+    # boundary controls; that diagnostic must not silently mint two new
+    # per-sentence CONSTRAINTS as a side effect.
+    for mark in _FACTORIAL_MARKS:
         cid = f"X_{mark.upper()}_EACH"
         out[cid] = (
             _mark_spec(cid, mark, spec, P),
@@ -814,6 +901,70 @@ def _catalogue(spec, P) -> dict[str, tuple[Any, Callable[[str], Any], tuple[str,
                     clause="place it wherever you judge best"),
         )
 
+    # --- clause-boundary affordance, the last surviving mechanism -------------
+    # Round 11 left one account standing: a semicolon CAN stand where a sentence
+    # boundary could stand, and the constraints it interferes with (exactly four
+    # sentences; increasing sentence lengths) are both defined over sentences.
+    # Placement freedom, single-character atomicity, mark production and wording
+    # length are already refuted, so the boundary affordance is what is left.
+    #
+    # These two marks are matched to `X_SEMICOLON_FREE` on everything the earlier
+    # rounds varied — one mark, exact count of one, whole-answer scope, free
+    # placement, the identical `_PLACEMENT_TEMPLATES` wording — and differ only in
+    # that neither can serve as a clause boundary. If one of them interferes as
+    # much as the semicolon does, the boundary account falls too.
+    #
+    # `*` is included because the directive names it, not because it is expected
+    # to be usable: `LIST_MARKER` strips a leading `*` during SEGMENTATION while
+    # `v_exact_char_total` still counts it, and `**emphasis**` yields four. The
+    # preflight measures that rather than assuming it.
+    for cid, mark, char in (("X_DEGREE_FREE", "degree symbol (°)", "°"),
+                            ("X_ASTERISK_FREE", "asterisk (*)", "*")):
+        out[cid] = (
+            spec(cid, "exploratory", f"Exactly one {mark}, placement free",
+                 "format", "global_count", "whole_text", "character_stream",
+                 "unrelated", "exact_char_total", P(char=char, n=1),
+                 "exploratory",
+                 "authored as the non-boundary control for the clause-boundary "
+                 "hypothesis",
+                 u_family="format",
+                 pathway_audit="Whole-answer count of one mark, byte-matched to "
+                               "X_SEMICOLON_FREE in count, scope and wording. "
+                               "Never reads the sentence count."),
+            (lambda c: (lambda t: _exact_char_total(t, c, 1)))(char),
+            _render(_PLACEMENT_TEMPLATES, mark=mark,
+                    clause="place it wherever you judge best"),
+        )
+
+    # --- the focal ladder, for the floor repair -------------------------------
+    # `B` demands all three adjacent increases and is satisfied 0.000-0.138 of the
+    # time, so "focal only" occurred in 7 of 640 Round 11 rows and the four-state
+    # decomposition collapsed to neither-versus-target-only. These two keep the
+    # same sentence-length ordering family and the same verifier primitives, and
+    # shorten the chain to two increases and then one.
+    #
+    # A prefix rule is scored on the FIRST k sentences of whatever the model
+    # wrote, exactly as `v_increasing_lengths` scores every sentence it finds, and
+    # is unscorable when fewer than k exist — the same convention, so the ladder
+    # is comparable to its own top rung.
+    for cid, k, tail in (("X_B_INC2", 3, "Sentence 4 may be any length."),
+                         ("X_B_INC1", 2, "Sentences 3 and 4 may be any length.")):
+        out[cid] = (
+            spec(cid, "exploratory",
+                 f"Increasing lengths over the first {k} sentences", "ordering",
+                 "cross_sentence_comparison", "sentence",
+                 "sentence_segmentation+word_counts", "focal",
+                 "x_increasing_lengths_prefix", P(k=k), "exploratory",
+                 "authored to move the focal instruction off its floor",
+                 u_family="ordering",
+                 pathway_audit="Compares the word counts of the first k "
+                               "sentences. Never reads the sentence COUNT: a "
+                               "four-sentence answer and a six-sentence answer "
+                               "are scored the same way."),
+            (lambda n: (lambda t: v_increasing_prefix(t, n)))(k),
+            _render(_LADDER_TEMPLATES[k], tail=tail),
+        )
+
     # --- route-closing prohibitions, for the double-dissociation intervention -
     # Three prohibitions of the same grammatical form and comparable length, one
     # on each suspected route and one on neither. Each is the others' control, so
@@ -1003,6 +1154,19 @@ _SELF_CHECK: dict[str, tuple[str, str]] = {
     "X_DASHDASH_FREE": ("Rain falls -- rivers rise.", "Rain -- falls -- rivers rise."),
     "X_PAREN_FREE": ("Rain falls (steadily) and rivers rise.",
                      "Rain (falls) and rivers (rise)."),
+    # Non-boundary controls. The failing text carries the same mark twice, so the
+    # check separates the count from the mark's identity.
+    "X_DEGREE_FREE": ("Rain falls at 5° and rivers rise.",
+                      "Rain falls at 5° and rivers rise to 9°."),
+    "X_ASTERISK_FREE": ("Rain falls* and rivers rise.",
+                        "Rain falls* and rivers* rise."),
+    # Focal ladder. The failing text breaks exactly the increase the rung names
+    # and leaves the unconstrained tail alone, so the check cannot pass by
+    # accident on a text that merely gets longer throughout.
+    "X_B_INC2": ("One. Two words here. Three words go here now. Short.",
+               "One two three. Two. Three words go here now. Short."),
+    "X_B_INC1": ("One. Two words here. Short. Short.",
+               "One two three. Two. Three words go here now. Short."),
     "X_SEMICOLON_AT_W1": ("Water; the cycle moves on.", "Water flows; the cycle moves on."),
     "X_SEMICOLON_AT_W2": ("Water flows; the cycle moves on.", "Water; the cycle moves on."),
     "X_SEMICOLON_FIRST5": ("Light from the sun; clouds drift by.",
