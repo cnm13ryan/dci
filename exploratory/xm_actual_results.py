@@ -122,6 +122,116 @@ def tau_per_task(cell: pd.DataFrame) -> pd.Series:
     return (rates.loc[FOCAL] - rates.loc[REFERENCE]).dropna()
 
 
+# ------------------------------------------------- identification evidence
+# Each of these replaces a hard-coded True. Where a real feed exists it is read;
+# where none exists the value is None, and the cell fails closed. Absence of
+# evidence is never evidence of validity.
+
+#: Per-checkpoint verifier certification for THIS output class. Populated only
+#: from a recorded certification. The repository's own adversarial audit
+#: (`verifier_audit/stress_corpus_results.json`) reports E_A = 0.207 against
+#: E_R = 0.000 with kappa = -0.13 on n = 31 — measurable error on the primary
+#: outcome and differential across constraints — and it was run on the canonical
+#: Qwen3-4B corpus, not on any checkpoint here. So no entry is asserted, and
+#: every cross-model cell fails closed on this axis until a certification
+#: covering its output class is recorded.
+VERIFIER_CERTIFICATION: dict[str, bool] = {}
+
+def satisfiability_witness(background: str) -> bool | None:
+    """Whether a hand-authored witness satisfies A ∧ B ∧ background.
+
+    Computed, not declared. `satisfiability_certificate.WITNESSES` holds one
+    hand-authored answer per background and this scores it through the SAME
+    verifiers the experiments use, so a verifier repair that broke the witness
+    would flip this to False rather than leaving a stale True behind.
+
+    Model output is never the evidence here. Per the framework, a witness
+    establishes LOGICAL satisfiability only — it says a low P(both) is a model
+    failure rather than an impossible task, and it says nothing about whether
+    any tested checkpoint can reach joint satisfaction.
+
+    Returns None for a background with no witness, which fails the cell closed.
+    """
+    try:
+        from satisfiability_certificate import WITNESSES
+    except Exception:                                   # noqa: BLE001
+        return None
+    text = WITNESSES.get(background)
+    if not text:
+        return None
+    for constraint in (contract.TARGET, contract.FOCAL, background):
+        if not STATE.verify(text, constraint).binary_pass:
+            return False
+    return True
+
+#: Admission records, keyed by (model_id, reasoning_mode), read from the frozen
+#: execution matrix rather than assumed.
+_ADMISSION_MATRIX = Path(__file__).resolve().parent / "CROSS_MODEL_EXECUTION_MATRIX.json"
+
+
+def _admissions() -> dict[tuple[str, str], bool]:
+    """(model_id, mode) -> admitted, from the frozen matrix if it exists."""
+    if not _ADMISSION_MATRIX.exists():
+        return {}
+    rows = json.loads(_ADMISSION_MATRIX.read_text()).get("rows", [])
+    out: dict[tuple[str, str], bool] = {}
+    for row in rows:
+        model = row.get("model_id")
+        out[(model, "NO_THINKING")] = bool(row.get("admitted_no_thinking"))
+        out[(model, "NATURAL_REASONING")] = bool(row.get("admitted_natural"))
+    return out
+
+
+def execution_validated(cell: pd.DataFrame) -> bool | None:
+    """Whether the admission matrix cleared this (checkpoint, mode).
+
+    Returns None when the matrix holds no record for the pair — which is the
+    case for every THINKING_ENABLED_BOUNDED run, since that condition was never
+    put through Stage B/C admission. Previously this was hard-coded True, so
+    those cells were certified by nothing at all.
+    """
+    model = str(cell["model_id"].iloc[0])
+    mode = str(cell["reasoning_mode"].iloc[0])
+    return _admissions().get((model, mode))
+
+
+def channel_valid_rate(cell: pd.DataFrame) -> float | None:
+    """Share of rows whose two channels were actually separated.
+
+    Uses the recorded per-row `channel_valid` where a backend writes it. No
+    backend in this dataset does, so the rate is DERIVED from fields every row
+    carries, rather than defaulted to 1.0:
+
+    * a forced-close artefact means the parser had to invent the boundary;
+    * reasoning text identical to the final answer is the X2 failure shape, in
+      which raw text was returned as both channels;
+    * in a thinking mode, a row that never opened a reasoning block did not
+      produce two channels to separate.
+
+    A row that hit the cap is NOT counted against channel validity: it separated
+    its channels and simply ran out of budget before answering, which the
+    cap-hit rate already records.
+    """
+    if "channel_valid" in cell:
+        return float(cell["channel_valid"].mean())
+    if "reasoning_text" not in cell or "reasoning_emitted" not in cell:
+        return None
+    thinking = str(cell["reasoning_mode"].iloc[0]) != "NO_THINKING"
+    valid = []
+    for _, row in cell.iterrows():
+        reasoning = str(row.get("reasoning_text") or "").strip()
+        answer = str(row.get("final_answer") or "").strip()
+        if row.get("forced_close_artefact"):
+            valid.append(False)
+        elif reasoning and answer and reasoning == answer:
+            valid.append(False)
+        elif thinking and not row.get("reasoning_emitted"):
+            valid.append(False)
+        else:
+            valid.append(True)
+    return float(np.mean(valid))
+
+
 def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.CellEvidence:
     """The constituent quantities one primitive cell contributes to its verdict.
 
@@ -148,15 +258,15 @@ def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.Cel
     duplication = seeds.replicate_duplication(cell.to_dict("records"))
     identical = duplication["identical_rate"]
 
-    channel = (float(cell["channel_valid"].mean())
-               if "channel_valid" in cell else 1.0)
-
     return identification.CellEvidence(
-        execution_validated=True,
-        channel_valid_rate=channel,
+        # Not asserted. `None` where no feed establishes the fact, which fails
+        # the cell closed to EVIDENCE_INCOMPLETE rather than certifying it.
+        execution_validated=execution_validated(cell),
+        channel_valid_rate=channel_valid_rate(cell),
         technical_failure_rate=float(
             (cell["final_answer_status"] == schema.TECHNICAL_FAILURE).mean()),
-        verifier_certified=True,
+        verifier_certified=VERIFIER_CERTIFICATION.get(
+            str(cell["model_id"].iloc[0])),
         replicate_identical_rate=0.0 if np.isnan(identical) else float(identical),
         n_tasks=len(per_task),
         n_rows_focal=len(focal),
@@ -168,7 +278,7 @@ def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.Cel
         target_failure_focal=float(focal["a_failure"].mean()),
         target_failure_reference=float(reference["a_failure"].mean()),
         cap_hit_rate=float(cell["reasoning_cap_hit"].mean()),
-        satisfiable=True,
+        satisfiable=satisfiability_witness(str(cell["background"].iloc[0])),
         tau=float(per_task.mean()) if len(per_task) else float("nan"))
 
 
