@@ -1,0 +1,500 @@
+[
+  {
+    "field": "protocol_version",
+    "category": "identity",
+    "kind": "value",
+    "value": "v15",
+    "description": "protocol version"
+  },
+  {
+    "field": "model_profile",
+    "category": "model",
+    "kind": "value",
+    "value": "dev_fast",
+    "description": "dev_fast, pilot or study"
+  },
+  {
+    "field": "model_id",
+    "category": "model",
+    "kind": "value",
+    "value": "Qwen/Qwen2.5-0.5B-Instruct",
+    "description": "Hugging Face model id"
+  },
+  {
+    "field": "model_revision",
+    "category": "model",
+    "kind": "value",
+    "value": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "description": "immutable commit; never 'main'"
+  },
+  {
+    "field": "tokenizer_sha256",
+    "category": "model",
+    "kind": "hash",
+    "value": "dry-run",
+    "description": "vocabulary, special tokens and class"
+  },
+  {
+    "field": "chat_template_sha256",
+    "category": "model",
+    "kind": "hash",
+    "value": "dry-run",
+    "description": "rendered chat template"
+  },
+  {
+    "field": "transformers_version",
+    "category": "software",
+    "kind": "value",
+    "value": null,
+    "description": "inference library version"
+  },
+  {
+    "field": "engine",
+    "category": "software",
+    "kind": "value",
+    "value": "hf_transformers",
+    "description": "inference engine"
+  },
+  {
+    "field": "inference_dtype",
+    "category": "software",
+    "kind": "value",
+    "value": "float16",
+    "description": "numerical condition"
+  },
+  {
+    "field": "attn_implementation",
+    "category": "software",
+    "kind": "value",
+    "value": "sdpa",
+    "description": "attention kernel"
+  },
+  {
+    "field": "do_sample",
+    "category": "decoding",
+    "kind": "value",
+    "value": true,
+    "description": "sampling on or off"
+  },
+  {
+    "field": "temperature",
+    "category": "decoding",
+    "kind": "value",
+    "value": 0.7,
+    "description": "sampling temperature"
+  },
+  {
+    "field": "top_p",
+    "category": "decoding",
+    "kind": "value",
+    "value": 0.9,
+    "description": "nucleus sampling"
+  },
+  {
+    "field": "max_new_tokens",
+    "category": "decoding",
+    "kind": "value",
+    "value": 180,
+    "description": "generation length"
+  },
+  {
+    "field": "max_input_tokens",
+    "category": "decoding",
+    "kind": "value",
+    "value": 1024,
+    "description": "truncation"
+  },
+  {
+    "field": "initial_batch_size",
+    "category": "decoding",
+    "kind": "value",
+    "value": 4,
+    "description": "batch membership affects the sample"
+  },
+  {
+    "field": "adaptive_batching",
+    "category": "decoding",
+    "kind": "value",
+    "value": "off",
+    "description": "off in a confirmatory run"
+  },
+  {
+    "field": "base_seed",
+    "category": "seeds",
+    "kind": "value",
+    "value": 20260901,
+    "description": "root seed"
+  },
+  {
+    "field": "screening_seeds",
+    "category": "seeds",
+    "kind": "value",
+    "value": [
+      11,
+      29
+    ],
+    "description": "stage seeds"
+  },
+  {
+    "field": "calibration_seeds",
+    "category": "seeds",
+    "kind": "value",
+    "value": [
+      11,
+      29
+    ],
+    "description": "stage seeds"
+  },
+  {
+    "field": "confirmatory_seeds",
+    "category": "seeds",
+    "kind": "value",
+    "value": [
+      11
+    ],
+    "description": "stage seeds"
+  },
+  {
+    "field": "wording_seeds",
+    "category": "seeds",
+    "kind": "value",
+    "value": [
+      11
+    ],
+    "description": "stage seeds"
+  },
+  {
+    "field": "task_bank_sha256",
+    "category": "tasks",
+    "kind": "hash",
+    "value": "2d6a72fb617fc22d5eb9e5f1f8a774a29478d242ffdfc427e1ef8cf1dcdb80f3",
+    "description": "every task id and its text"
+  },
+  {
+    "field": "calibration_tasks",
+    "category": "tasks",
+    "kind": "value",
+    "value": [
+      "CAL01",
+      "CAL02",
+      "CAL03",
+      "CAL04",
+      "CAL05",
+      "CAL06",
+      "CAL07",
+      "CAL08",
+      "CAL09",
+      "CAL10",
+      "CAL11",
+      "CAL12"
+    ],
+    "description": "calibration split"
+  },
+  {
+    "field": "confirmatory_tasks",
+    "category": "tasks",
+    "kind": "value",
+    "value": [
+      "CNF01",
+      "CNF02",
+      "CNF03",
+      "CNF04",
+      "CNF05",
+      "CNF06"
+    ],
+    "description": "confirmatory split"
+  },
+  {
+    "field": "wording_tasks",
+    "category": "tasks",
+    "kind": "value",
+    "value": [
+      "WRD01",
+      "WRD02",
+      "WRD03",
+      "WRD04"
+    ],
+    "description": "Gate 3b split"
+  },
+  {
+    "field": "instructions_sha256",
+    "category": "paraphrases",
+    "kind": "hash",
+    "value": "55bc1e7603298425c512a8e26e662c6f2addb9112a9bf73ca77849473da07ad7",
+    "description": "every rendered wording"
+  },
+  {
+    "field": "paraphrases_primary",
+    "category": "paraphrases",
+    "kind": "value",
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "description": "wordings in the primary estimand"
+  },
+  {
+    "field": "paraphrases_held_out",
+    "category": "paraphrases",
+    "kind": "value",
+    "value": [
+      6,
+      7
+    ],
+    "description": "Gate 3b only"
+  },
+  {
+    "field": "paraphrase_audit_sha256",
+    "category": "audits",
+    "kind": "hash",
+    "value": null,
+    "description": "signed semantic audit"
+  },
+  {
+    "field": "verifier_audit_sha256",
+    "category": "audits",
+    "kind": "hash",
+    "value": null,
+    "description": "signed reliability audit"
+  },
+  {
+    "field": "verifier_source_sha256",
+    "category": "verifiers",
+    "kind": "hash",
+    "value": "3b7262fac48d4b5de12135ed0cd14dc2caf6cc1a0620982c0b8dd8a58efb249d",
+    "description": "verifier implementation"
+  },
+  {
+    "field": "coupling_response_bank_sha256",
+    "category": "verifiers",
+    "kind": "hash",
+    "value": "b0f6759b9af5f88b4db16a56159077aa65f478d182e712b7b6bf635d91854370",
+    "description": "bank kappa is measured on"
+  },
+  {
+    "field": "coupling_mutation_sha256",
+    "category": "verifiers",
+    "kind": "hash",
+    "value": "745a7d78f86f23329c9989cab010eba6b94320307c81feaa0d2c4d02a5ce6c60",
+    "description": "mutation specification"
+  },
+  {
+    "field": "coupling_edit_sha256",
+    "category": "verifiers",
+    "kind": "hash",
+    "value": "20007f9dadcc7327adb1530f27cdce7c54e67522f9b49afa5000113aa937be9a",
+    "description": "coupling edit specification"
+  },
+  {
+    "field": "u_split_sha256",
+    "category": "unrelated_targets",
+    "kind": "hash",
+    "value": "3bf87f6ef7a7820e69c4b5f7f8295536f3a7cd48563898d53b6886e86b22bc3f",
+    "description": "build, validation and test assignment"
+  },
+  {
+    "field": "u_build",
+    "category": "unrelated_targets",
+    "kind": "value",
+    "value": [
+      "U_FMT_COLON1",
+      "U_LEX_ALLIT_P",
+      "U_NUM_SUM100"
+    ],
+    "description": "feature targets"
+  },
+  {
+    "field": "u_val",
+    "category": "unrelated_targets",
+    "kind": "value",
+    "value": [
+      "U_FMT_SEMI2",
+      "U_LEX_FORBID3",
+      "U_NUM_ONEPCT"
+    ],
+    "description": "validation targets"
+  },
+  {
+    "field": "u_test",
+    "category": "unrelated_targets",
+    "kind": "value",
+    "value": [
+      "U_FMT_QUOTE1",
+      "U_LEX_REQUIRE3",
+      "U_NUM_TWOINT"
+    ],
+    "description": "falsification targets"
+  },
+  {
+    "field": "candidate_pool",
+    "category": "pool",
+    "kind": "value",
+    "value": [
+      "C_L3",
+      "C_W3",
+      "C_O2",
+      "S_LONGWORD",
+      "S_ENDLONG",
+      "S_COMMA",
+      "S_MINWORDS12",
+      "S_MINWORDS15",
+      "S_MINWORDS20",
+      "S_MINWORDS25",
+      "S_MINWORDS30",
+      "S_TWOLONG",
+      "S_THREELONG",
+      "S_BAND1525",
+      "S_TWOCOMMA",
+      "S_SEMICOLON",
+      "S_COMMA12"
+    ],
+    "description": "declared pool"
+  },
+  {
+    "field": "prescreen_retained",
+    "category": "pool",
+    "kind": "value",
+    "value": [
+      "C_L3",
+      "C_O2",
+      "C_W3",
+      "S_BAND1525",
+      "S_COMMA",
+      "S_COMMA12",
+      "S_ENDLONG",
+      "S_LONGWORD",
+      "S_MINWORDS12",
+      "S_MINWORDS15",
+      "S_MINWORDS20",
+      "S_MINWORDS25",
+      "S_SEMICOLON",
+      "S_THREELONG",
+      "S_TWOCOMMA",
+      "S_TWOLONG"
+    ],
+    "description": "narrowed pool"
+  },
+  {
+    "field": "hard_eligible_universe",
+    "category": "pool",
+    "kind": "value",
+    "value": [],
+    "description": "B-independent universe"
+  },
+  {
+    "field": "feature_roles_sha256",
+    "category": "features",
+    "kind": "hash",
+    "value": "beada52cc8602f39cae888b8ba61848be89cfce20c5bd7be22060c5f5c2e1996",
+    "description": "frozen causal role of every feature"
+  },
+  {
+    "field": "calipers",
+    "category": "calipers",
+    "kind": "value",
+    "value": {
+      "d": 0.17042965579970729,
+      "g|U_FMT_COLON1|target_first": 0.09810497244112953,
+      "g|U_FMT_COLON1|added_first": 0.09810497244112953,
+      "g|U_LEX_ALLIT_P|target_first": 0.09810497244112953,
+      "g|U_LEX_ALLIT_P|added_first": 0.09810497244112953,
+      "g|U_NUM_SUM100|target_first": 0.09810497244112953,
+      "g|U_NUM_SUM100|added_first": 0.09810497244112953,
+      "r|U_FMT_COLON1|target_first": 0.25,
+      "r|U_FMT_COLON1|added_first": 0.25,
+      "r|U_LEX_ALLIT_P|target_first": 0.25,
+      "r|U_LEX_ALLIT_P|added_first": 0.25,
+      "r|U_NUM_SUM100|target_first": 0.25,
+      "r|U_NUM_SUM100|added_first": 0.25,
+      "s_d": 0.13310054001595986,
+      "s_g": 0.13310054001595986,
+      "s_r": 0.13310054001595986
+    },
+    "description": "SESOI divided by conservative upper sensitivity"
+  },
+  {
+    "field": "caliper_rule_sha256",
+    "category": "calipers",
+    "kind": "hash",
+    "value": "4519508fe2032e96705626a6448eb9aeb99fe02f08344a0c42a236c97ec3c944",
+    "description": "selection and caliper implementation"
+  },
+  {
+    "field": "sesoi",
+    "category": "calipers",
+    "kind": "value",
+    "value": 0.1,
+    "description": "smallest effect of interest"
+  },
+  {
+    "field": "selected_references",
+    "category": "selection",
+    "kind": "value",
+    "value": [
+      "S_SEMICOLON",
+      "C_W3",
+      "S_COMMA",
+      "S_MINWORDS15",
+      "C_L3",
+      "S_MINWORDS12"
+    ],
+    "description": "the primary panel"
+  },
+  {
+    "field": "pseudo_focal_cohort",
+    "category": "validation",
+    "kind": "value",
+    "value": [
+      "C_L3",
+      "C_O2",
+      "C_W3"
+    ],
+    "description": "Gate 3 cohort, frozen before U_val"
+  },
+  {
+    "field": "stochastic_weights",
+    "category": "selection",
+    "kind": "value",
+    "value": {
+      "S_SEMICOLON": 0.30000000000000454,
+      "C_W3": 0.30000000000000454,
+      "S_COMMA": 0.019241858662200843,
+      "S_MINWORDS15": 0.30000000000000454,
+      "C_L3": 0.08075814133778561,
+      "S_MINWORDS12": 0.0
+    },
+    "description": "secondary estimand weights"
+  },
+  {
+    "field": "analysis_sha256",
+    "category": "analysis",
+    "kind": "hash",
+    "value": "ab3e0cf732b8754af97ad607d4c743346fa8f302b23be0cc80c8a52562c5b437",
+    "description": "estimator and inference implementation"
+  },
+  {
+    "field": "confidence_level",
+    "category": "analysis",
+    "kind": "value",
+    "value": 0.95,
+    "description": "interval level"
+  },
+  {
+    "field": "bootstrap_reps",
+    "category": "analysis",
+    "kind": "value",
+    "value": 400,
+    "description": "resamples"
+  },
+  {
+    "field": "cluster_level",
+    "category": "analysis",
+    "kind": "value",
+    "value": "task_id",
+    "description": "resampling unit"
+  }
+]

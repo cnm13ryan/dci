@@ -1,0 +1,969 @@
+# ===================================================== signature definition
+SIG_DIFFICULTY = "d"
+SIG_COUPLING = "kappa"
+SIG_S_D, SIG_S_G, SIG_S_R, SIG_S_MAX = "s_d", "s_g", "s_r", "s_max"
+# s_max is computed and reported but is a summary of the three family-specific
+# instabilities, so matching on it as well would double count.
+WORDING_MATCHED = (SIG_S_D, SIG_S_G, SIG_S_R)
+WORDING_DIAGNOSTIC = (SIG_S_MAX,)
+
+
+def signature_components(u_build: Iterable[str]) -> list[str]:
+    comps = [SIG_DIFFICULTY]
+    for u in u_build:
+        for o in CFG.orders:
+            comps.append(f"g|{u}|{o}")
+    for u in u_build:
+        for o in CFG.orders:
+            comps.append(f"r|{u}|{o}")
+    if CFG.coupling_role == "matched":
+        comps.append(SIG_COUPLING)
+    comps.extend(WORDING_MATCHED)
+    return comps
+
+
+def component_family(component: str) -> str:
+    if component.startswith("g|"):
+        return "g"
+    if component.startswith("r|"):
+        return "r"
+    if component in WORDING_MATCHED or component in WORDING_DIAGNOSTIC:
+        return "s"
+    return component
+
+
+def component_target(component: str) -> Optional[str]:
+    return component.split("|")[1] if "|" in component else None
+
+
+def component_order(component: str) -> Optional[str]:
+    return component.split("|")[2] if component.count("|") == 2 else None
+
+
+def signature_key(cid: str, component: str) -> str:
+    return f"{cid}::{component}"
+
+
+# Every feature carries a frozen causal role. A feature may only be used in the
+# way its role permits; the role table is hashed into the protocol.
+FEATURE_ROLES: dict[str, str] = {
+    "generative_scope": "exact_eligibility",
+    "logical_compatibility": "eligibility",
+    "entailment_duplication": "eligibility",
+    "verifier_validity": "eligibility",
+    SIG_DIFFICULTY: "caliper",
+    "g": "caliper",
+    "r": "caliper",
+    SIG_COUPLING: "caliper",
+    SIG_S_D: "caliper", SIG_S_G: "caliper", SIG_S_R: "caliper",
+    SIG_S_MAX: "diagnostic",
+    "mahalanobis_distance": "ranking_after_eligibility",
+    "stochastic_weights": "weighting_after_admissibility",
+    "mutation_flip_rate": "diagnostic",
+    "response_words": "post_treatment_reported_never_matched",
+    "cross_sentence_planning_demand": "mechanism_never_matched",
+}
+FEATURE_ROLES_SHA256 = sha(FEATURE_ROLES)
+
+
+def make_signature_fn(constraint_ids: list[str], u_build: list[str],
+                      paraphrase_ids: list[int],
+                      coupling: pd.Series) -> Callable[[pd.Series], dict[str, float]]:
+    """Turn task-mean cells into a full signature for every constraint at once."""
+    comps = signature_components(u_build)
+    measured = [c for c in comps
+                if c not in (SIG_COUPLING, *WORDING_MATCHED)]
+    emit_coupling = True   # always emitted; matched only when the role says so
+
+    def fn(means: pd.Series) -> dict[str, float]:
+        out: dict[str, float] = {}
+        for cid in constraint_ids:
+            per_p: dict[int, dict[str, float]] = {}
+            for p in paraphrase_ids:
+                vals: dict[str, float] = {}
+                iso_q = cell_mean(means, iso_condition(cid), cid, p)
+                vals[SIG_DIFFICULTY] = iso_q
+                for u in u_build:
+                    iso_u = cell_mean(means, iso_condition(u), u, p)
+                    vals[f"g|{u}|{TARGET_FIRST}"] = (
+                        cell_mean(means, pair_condition(u, cid, u), u, p) - iso_u)
+                    vals[f"g|{u}|{ADDED_FIRST}"] = (
+                        cell_mean(means, pair_condition(u, cid, cid), u, p) - iso_u)
+                    vals[f"r|{u}|{TARGET_FIRST}"] = (
+                        cell_mean(means, pair_condition(u, cid, cid), cid, p) - iso_q)
+                    vals[f"r|{u}|{ADDED_FIRST}"] = (
+                        cell_mean(means, pair_condition(u, cid, u), cid, p) - iso_q)
+                per_p[p] = vals
+
+            stacked = np.array([[per_p[p][c] for c in measured]
+                                for p in paraphrase_ids], dtype=float)
+            for j, c in enumerate(measured):
+                out[signature_key(cid, c)] = float(np.nanmean(stacked[:, j]))
+            out[signature_key(cid, SIG_COUPLING)] = float(coupling.get(cid, np.nan))
+
+            # Decomposed wording instability. A single wording cannot express
+            # instability, so it is 0 by definition at P=1 and the escalation
+            # rule handles the rest.
+            if stacked.shape[0] > 1:
+                sds = np.nanstd(stacked, axis=0, ddof=1)
+                by_family: dict[str, list[float]] = {"d": [], "g": [], "r": []}
+                for j, c in enumerate(measured):
+                    by_family[component_family(c)].append(float(sds[j]))
+                s_d = float(np.nanmax(by_family["d"])) if by_family["d"] else 0.0
+                s_g = float(np.nanmax(by_family["g"])) if by_family["g"] else 0.0
+                s_r = float(np.nanmax(by_family["r"])) if by_family["r"] else 0.0
+            else:
+                s_d = s_g = s_r = 0.0
+            out[signature_key(cid, SIG_S_D)] = s_d
+            out[signature_key(cid, SIG_S_G)] = s_g
+            out[signature_key(cid, SIG_S_R)] = s_r
+            out[signature_key(cid, SIG_S_MAX)] = float(max(s_d, s_g, s_r))
+        return out
+
+    return fn
+
+
+def signature_frame(point: pd.Series, constraint_ids: list[str],
+                    u_build: list[str], include_diagnostic: bool = False) -> pd.DataFrame:
+    comps = list(signature_components(u_build))
+    if include_diagnostic:
+        comps += list(WORDING_DIAGNOSTIC)
+    return pd.DataFrame(
+        [[point.get(signature_key(c, k), np.nan) for k in comps]
+         for c in constraint_ids], index=constraint_ids, columns=comps)
+
+
+def draws_to_frames(draws: pd.DataFrame, constraint_ids: list[str],
+                    u_build: list[str]) -> np.ndarray:
+    comps = signature_components(u_build)
+    cols = [signature_key(c, k) for c in constraint_ids for k in comps]
+    return draws[cols].to_numpy(dtype=float).reshape(
+        len(draws), len(constraint_ids), len(comps))
+
+
+# =============================== sensitivity: per rotation, per order, pooled
+def _ols(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+    beta, *_ = np.linalg.lstsq(X, y, rcond=None)
+    return beta
+
+
+def indexed_frame(rows: list[dict[str, Any]], index: str,
+                  columns: Optional[list[str]] = None) -> pd.DataFrame:
+    """DataFrame.set_index that survives an empty row list.
+
+    Empty is a legitimate result throughout this notebook -- no admissible
+    candidate, no hard-eligible constraint -- and it must reach the gate that
+    reports it rather than raising a KeyError three frames earlier.
+    """
+    columns = columns or ([index] if not rows else list(rows[0].keys()))
+    if index not in columns:
+        columns = [index, *columns]
+    return pd.DataFrame(rows, columns=columns).set_index(index)
+
+
+class SensitivityNotEstimable(RuntimeError):
+    """No caliper can be derived from outcome sensitivity at this size."""
+
+
+def slope_families() -> tuple[str, ...]:
+    """Predictor families, which follow the signature actually in use.
+
+    kappa is a predictor only when it is a matched signature component. Under
+    the primary_total estimand it is audited rather than matched, so it is not
+    a column here and the design matrix has one fewer coordinate. v14 hard-coded
+    the tuple, which silently mismatched the matrix when the role changed.
+    """
+    fams = ["d", "g", "r"]
+    if CFG.coupling_role == "matched":
+        fams.append("kappa")
+    fams.append("s")
+    return tuple(fams)
+
+
+SLOPE_FAMILIES = slope_families()
+
+# Every rotation's design diagnostics, used or not, land here and are
+# written to sensitivity_diagnostics.csv.
+SENSITIVITY_DIAGNOSTICS: list[dict[str, Any]] = []
+
+
+def _slope_block(sig: pd.DataFrame, pool: list[str], held_out: str,
+                 others: list[str], order: str) -> tuple[np.ndarray, np.ndarray]:
+    col = {c: j for j, c in enumerate(sig.columns)}
+    M = sig.loc[pool].to_numpy(dtype=float)
+    pairs = np.array(list(itertools.combinations(range(len(pool)), 2)))
+    if len(pairs) == 0:
+        return np.zeros((0, len(SLOPE_FAMILIES))), np.zeros(0)
+    a, b = pairs[:, 0], pairs[:, 1]
+    y = M[a, col[f"g|{held_out}|{order}"]] - M[b, col[f"g|{held_out}|{order}"]]
+    g_cols = [col[f"g|{u}|{order}"] for u in others]
+    r_cols = [col[f"r|{u}|{order}"] for u in others]
+    s_cols = [col[c] for c in WORDING_MATCHED]
+    with np.errstate(invalid="ignore"):
+        columns = [
+            M[a, col[SIG_DIFFICULTY]] - M[b, col[SIG_DIFFICULTY]],
+            np.nanmean(M[np.ix_(a, g_cols)] - M[np.ix_(b, g_cols)], axis=1),
+            np.nanmean(M[np.ix_(a, r_cols)] - M[np.ix_(b, r_cols)], axis=1)]
+        if "kappa" in SLOPE_FAMILIES:
+            columns.append(M[a, col[SIG_COUPLING]] - M[b, col[SIG_COUPLING]])
+        columns.append(
+            np.nanmax(np.abs(M[np.ix_(a, s_cols)] - M[np.ix_(b, s_cols)]), axis=1))
+        X = np.column_stack(columns)
+    keep = np.isfinite(y) & np.isfinite(X).all(axis=1)
+    return X[keep], y[keep]
+
+
+def design_diagnostics(X: np.ndarray, y: np.ndarray, n_constraints: int
+                       ) -> dict[str, Any]:
+    """Rank, conditioning and singular values of a sensitivity design matrix.
+
+    A slope read off a rank-deficient or severely ill-conditioned design is not
+    a measurement, and v14 read one without looking. Everything here is
+    recorded whether or not the regression is used.
+    """
+    if X.size == 0:
+        return {"n_pairs": 0, "n_independent_constraints": n_constraints,
+                "n_predictors": X.shape[1] if X.ndim == 2 else 0,
+                "rank": 0, "full_rank": False, "condition_number": float("inf"),
+                "singular_values": [], "well_conditioned": False}
+    design = np.column_stack([X, np.ones(len(X))])
+    singular = np.linalg.svd(design, compute_uv=False)
+    rank = int((singular > singular.max() * 1e-10).sum()) if singular.size else 0
+    smallest = float(singular.min()) if singular.size else 0.0
+    condition = float(singular.max() / smallest) if smallest > 0 else float("inf")
+    return {"n_pairs": int(len(y)),
+            "n_independent_constraints": int(n_constraints),
+            "n_predictors": int(design.shape[1]),
+            "rank": rank, "full_rank": bool(rank == design.shape[1]),
+            "condition_number": condition,
+            "singular_values": [round(float(v), 6) for v in singular],
+            "well_conditioned": bool(condition <= CFG.max_condition_number)}
+
+
+def complete_pool(sig: pd.DataFrame, exclude: Iterable[str] = ()) -> list[str]:
+    """Constraints whose every signature component is measured.
+
+    A slope cannot be estimated from a constraint with a missing predictor, and
+    letting one undefined component empty the regression would turn a
+    measurement gap into "no caliper can be derived".
+    """
+    excluded = set(exclude)
+    return [c for c in sig.index
+            if c not in excluded and np.isfinite(sig.loc[c].to_numpy(dtype=float)).all()]
+
+
+def sensitivity_by_rotation(sig: pd.DataFrame, u_build: list[str],
+                            exclude: Iterable[str] = ()) -> pd.DataFrame:
+    """One slope vector per (held-out target, order).
+
+    The pseudo-contrast predicted is a difference in outgoing burden on the
+    held-out target, so the predictors must exclude anything measured on that
+    same target: otherwise the coefficient on it is 1 by construction.
+    """
+    pool = complete_pool(sig, exclude)
+    if len(pool) < CFG.min_constraints_for_sensitivity or len(u_build) < 2:
+        return pd.DataFrame()
+    rows = []
+    for held_out in u_build:
+        others = [u for u in u_build if u != held_out]
+        for order in CFG.orders:
+            X, y = _slope_block(sig, pool, held_out, others, order)
+            diag = design_diagnostics(X, y, len(pool))
+            usable = bool(len(y) >= len(SLOPE_FAMILIES) + 2
+                          and diag["full_rank"] and diag["well_conditioned"])
+            row = {"held_out": held_out, "order": order, "n_pairs": len(y),
+                   "usable": usable,
+                   "excluded_reason": ("" if usable else
+                                       "too few pairs" if len(y) < len(SLOPE_FAMILIES) + 2
+                                       else "rank deficient" if not diag["full_rank"]
+                                       else "ill conditioned"),
+                   **{k: v for k, v in diag.items() if k != "singular_values"},
+                   "singular_values": ";".join(
+                       f"{v:.4g}" for v in diag["singular_values"])}
+            if usable:
+                beta = _ols(np.column_stack([X, np.ones(len(y))]), y)
+                row.update({fam: float(beta[i]) for i, fam in enumerate(SLOPE_FAMILIES)})
+            else:
+                row.update({fam: float("nan") for fam in SLOPE_FAMILIES})
+            rows.append(row)
+    SENSITIVITY_DIAGNOSTICS.extend(rows)
+    frame = pd.DataFrame(rows)
+    return frame.query("usable") if len(frame) else frame
+
+
+def sensitivity_slopes(sig: pd.DataFrame, u_build: list[str],
+                       exclude: Iterable[str] = ()) -> dict[str, float]:
+    """Pooled slopes with rotation intercepts. Retained as a comparison."""
+    pool = complete_pool(sig, exclude)
+    if len(pool) < CFG.min_constraints_for_sensitivity or len(u_build) < 2:
+        return {}
+    blocks_X, blocks_y, blocks_rot = [], [], []
+    for rotation, held_out in enumerate(u_build):
+        others = [u for u in u_build if u != held_out]
+        for order in CFG.orders:
+            X, y = _slope_block(sig, pool, held_out, others, order)
+            blocks_X.append(X)
+            blocks_y.append(y)
+            blocks_rot.append(np.full(len(y), rotation))
+    X = np.vstack(blocks_X) if blocks_X else np.zeros((0, len(SLOPE_FAMILIES)))
+    y = np.concatenate(blocks_y) if blocks_y else np.zeros(0)
+    rot = np.concatenate(blocks_rot) if blocks_rot else np.zeros(0, dtype=int)
+    if len(y) < len(SLOPE_FAMILIES) + len(u_build) + 2:
+        return {}
+    dummies = np.zeros((len(rot), len(u_build)))
+    dummies[np.arange(len(rot)), rot] = 1.0
+    design = np.hstack([X, dummies])
+    singular = np.linalg.svd(design, compute_uv=False)
+    if singular.size == 0 or singular.min() <= 0:
+        return {}
+    if int((singular > singular.max() * 1e-10).sum()) < design.shape[1]:
+        return {}                      # rank deficient: not a measurement
+    if float(singular.max() / singular.min()) > CFG.max_condition_number:
+        return {}                      # ill conditioned: not a measurement
+    beta = _ols(design, y)
+    return {fam: float(beta[i]) for i, fam in enumerate(SLOPE_FAMILIES)}
+
+
+def slope_jackknife(sig: pd.DataFrame, u_build: list[str],
+                    exclude: Iterable[str] = ()) -> pd.Series:
+    """Leave-one-constraint-out standard error for the pooled slopes.
+
+    Pairwise differences that share a constraint are not independent, so a
+    naive standard error over pairs understates uncertainty. Dropping one
+    constraint at a time removes every pair it appears in at once.
+    """
+    pool = complete_pool(sig, exclude)
+    full = sensitivity_slopes(sig, u_build, exclude)
+    # NaN, not zero. v14 returned 0.0 when the jackknife could not be computed,
+    # which is the most dangerous possible answer: it says the slope is known
+    # exactly, and a slope known exactly produces the widest caliper the point
+    # estimate allows. Unavailable uncertainty is unavailable.
+    if not full or len(pool) < CFG.min_constraints_for_jackknife:
+        return pd.Series(float("nan"), index=list(SLOPE_FAMILIES))
+    estimates = []
+    for dropped in pool:
+        partial = sensitivity_slopes(sig, u_build, list(exclude) + [dropped])
+        if partial:
+            estimates.append([partial[f] for f in SLOPE_FAMILIES])
+    if len(estimates) < 3:
+        return pd.Series(float("nan"), index=list(SLOPE_FAMILIES))
+    arr = np.asarray(estimates, dtype=float)
+    n = len(arr)
+    se = np.sqrt((n - 1) / n * np.sum((arr - arr.mean(axis=0)) ** 2, axis=0))
+    return pd.Series(se, index=list(SLOPE_FAMILIES))
+
+
+def derive_calipers(sig: pd.DataFrame, sig_draws: np.ndarray,
+                    constraint_ids: list[str], u_build: list[str],
+                    exclude: Iterable[str] = ()
+                    ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """delta_r = SESOI / conservative upper sensitivity, per family.
+
+    The upper sensitivity is the largest across rotations and orders unless the
+    spread is demonstrably small, plus a one-sided allowance for slope
+    uncertainty taken as the larger of the task bootstrap and the
+    leave-one-constraint-out jackknife. Pool spread is not an input anywhere.
+    """
+    by_rotation = sensitivity_by_rotation(sig, u_build, exclude)
+    pooled = sensitivity_slopes(sig, u_build, exclude)
+    if by_rotation.empty or not pooled:
+        raise SensitivityNotEstimable(
+            f"the sensitivity regression is not estimable: "
+            f"{len(complete_pool(sig, exclude))} constraints have a complete "
+            "signature, against the minimum of 3. Pool spread is not an "
+            "acceptable substitute.")
+
+    reps = min(len(sig_draws), 200)
+    comps = signature_components(u_build)
+    boot = []
+    for i in range(reps):
+        frame = pd.DataFrame(sig_draws[i], index=constraint_ids, columns=comps)
+        slopes = sensitivity_slopes(frame, u_build, exclude)
+        if slopes:
+            boot.append([slopes[f] for f in SLOPE_FAMILIES])
+    boot_se = (pd.DataFrame(boot, columns=list(SLOPE_FAMILIES)).std(ddof=1)
+               if len(boot) > 2 else pd.Series(float("nan"), index=list(SLOPE_FAMILIES)))
+    jack_se = slope_jackknife(sig, u_build, exclude)
+    slope_se = pd.concat([boot_se, jack_se], axis=1).max(axis=1)
+    # Where neither estimator produced a standard error, the fallback is the
+    # prespecified conservative allowance, which is larger than any slope SE the
+    # design has ever produced. It is recorded as a fallback, never as a
+    # measurement, and it can only narrow a caliper.
+    slope_se_source = pd.Series(
+        np.where(slope_se.notna(), "estimated", "conservative_fallback"),
+        index=slope_se.index)
+    slope_se = slope_se.fillna(CFG.slope_se_conservative_fallback)
+
+    rows, hetero_rows = [], []
+    family_slope: dict[str, dict[str, float]] = {}
+    for fam in SLOPE_FAMILIES:
+        values = by_rotation[fam].abs()
+        largest = float(values.max())
+        smallest = float(values.min())
+        spread = (largest - smallest) / largest if largest > 0 else 0.0
+        pooled_abs = abs(pooled.get(fam, 0.0))
+        homogeneous = spread <= CFG.slope_pooling_max_relative_spread
+        # Conservative: pooling is used only when the rotations agree. When they
+        # do not, the largest sensitivity governs, so a pooled average can never
+        # produce a caliper wider than the one a clearly more sensitive
+        # component implies.
+        chosen = pooled_abs if homogeneous else max(largest, pooled_abs)
+        family_slope[fam] = {"pooled": pooled_abs, "max_rotation": largest,
+                             "min_rotation": smallest, "relative_spread": spread,
+                             "homogeneous": homogeneous, "chosen": chosen,
+                             "se": float(slope_se.get(fam, CFG.slope_se_conservative_fallback)),
+                             "se_source": str(slope_se_source.get(fam, "unknown"))}
+        hetero_rows.append({"family": fam, **family_slope[fam]})
+
+    for comp in comps:
+        fam = component_family(comp)
+        info = family_slope[fam]
+        effective = max(info["chosen"] + CFG.caliper_slope_q * info["se"],
+                        CFG.caliper_slope_floor)
+        delta = min(CFG.sesoi_risk_difference / effective, CFG.caliper_absolute_ceiling)
+        rows.append({"component": comp, "family": fam,
+                     "slope_pooled": info["pooled"],
+                     "slope_max_rotation": info["max_rotation"],
+                     "slope_relative_spread": info["relative_spread"],
+                     "pooling_justified": info["homogeneous"],
+                     "slope_se": info["se"], "slope_used": effective,
+                     "caliper": float(delta),
+                     "bound_by": ("slope floor" if effective == CFG.caliper_slope_floor
+                                  else "sensitivity"),
+                     "capped": bool(CFG.sesoi_risk_difference / effective
+                                    > CFG.caliper_absolute_ceiling)})
+    return (indexed_frame(rows, "component"),
+            pd.DataFrame(hetero_rows).set_index("family"),
+            by_rotation)
+
+
+# ================================================ uncertainty-aware admission
+def mismatch_table(sig: pd.DataFrame, draws: np.ndarray, constraint_ids: list[str],
+                   u_build: list[str], focal: str,
+                   coupling_se: Optional[pd.Series] = None
+                   ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """|z_focal - z_C| and its standard error, for every candidate.
+
+    Coupling is measured on the response bank rather than on tasks, so its
+    uncertainty does not appear in the task bootstrap and is combined in
+    explicitly. v13 treated it as exact, which made an unmeasurable coupling
+    look like a perfect match.
+    """
+    comps = signature_components(u_build)
+    f = constraint_ids.index(focal)
+    gaps, ses = {}, {}
+    for i, cid in enumerate(constraint_ids):
+        if cid == focal:
+            continue
+        diff = sig.loc[focal] - sig.loc[cid]
+        gaps[cid] = diff.abs()
+        se = pd.Series(np.nanstd(draws[:, f, :] - draws[:, i, :], axis=0, ddof=1),
+                       index=comps)
+        if coupling_se is not None and SIG_COUPLING in se.index:
+            a = float(coupling_se.get(focal, np.nan))
+            b = float(coupling_se.get(cid, np.nan))
+            combined = math.sqrt(np.nansum([a**2, b**2])) if np.isfinite([a, b]).any() else np.nan
+            se[SIG_COUPLING] = combined
+        ses[cid] = se
+    return pd.DataFrame(gaps).T, pd.DataFrame(ses).T
+
+
+def contender_distance(gaps: pd.DataFrame, calipers: pd.DataFrame,
+                       candidate_ids: Iterable[str]) -> pd.Series:
+    """Largest gap/caliper ratio over components, per candidate.
+
+    The buffer multiple a candidate would need before it counted as a contender.
+    Reported when the contender set is empty so that "no near match exists" is
+    an inspectable quantity rather than a bare verdict.
+    """
+    out = {}
+    for cid in candidate_ids:
+        if cid not in gaps.index:
+            continue
+        ratios = [float(gaps.at[cid, c]) / float(calipers.at[c, "caliper"])
+                  for c in calipers.index
+                  if np.isfinite(gaps.at[cid, c]) and float(calipers.at[c, "caliper"]) > 0]
+        out[cid] = float(max(ratios)) if ratios else float("nan")
+    return pd.Series(out, dtype=float).sort_values()
+
+
+def contender_set(gaps: pd.DataFrame, calipers: pd.DataFrame,
+                  buffer_multiple: float, candidate_ids: Iterable[str]) -> list[str]:
+    """Candidates that could plausibly enter the final panel.
+
+    Precision must protect these, not the pool median: a precise median can sit
+    beside a highly uncertain candidate that the selection would then admit.
+    """
+    distance = contender_distance(gaps, calipers, candidate_ids)
+    return sorted(distance.index[distance <= buffer_multiple].tolist())
+
+
+def precision_report(gap_se: pd.DataFrame, calipers: pd.DataFrame, n_clusters: int,
+                     contenders: Iterable[str]) -> pd.DataFrame:
+    """Is calibration precise enough to resolve the caliper for the contenders?
+
+    Never widens anything. The requirement is stated in task CLUSTERS, because
+    uncertainty comes from a cluster bootstrap: adding wordings or seeds inside
+    the same tasks leaves the between-task component untouched. The cluster
+    count is a PLANNING ESTIMATE under 1/sqrt(n) scaling, not a guarantee.
+    """
+    contenders = [c for c in contenders if c in gap_se.index]
+    rows = []
+    for comp in calipers.index:
+        delta = float(calipers.at[comp, "caliper"])
+        budget = CFG.caliper_precision_fraction * delta
+        if contenders and comp in gap_se.columns:
+            se_values = gap_se.loc[contenders, comp].astype(float)
+            worst = float(np.nanmax(se_values)) if len(se_values) else np.nan
+            worst_id = (str(se_values.idxmax()) if len(se_values.dropna()) else "")
+        else:
+            worst, worst_id = np.nan, ""
+        consumed = CFG.caliper_uncertainty_q * worst
+        ok = bool(np.isfinite(consumed) and consumed <= budget)
+        required = (n_clusters * (consumed / budget) ** 2
+                    if np.isfinite(consumed) and budget > 0 else np.nan)
+        rows.append({"component": comp, "caliper": delta,
+                     "worst_contender": worst_id, "worst_gap_se": worst,
+                     "q_times_se": consumed, "permitted": budget,
+                     "precision_ok": ok, "clusters_now": n_clusters,
+                     "clusters_required_planning_estimate":
+                         float(np.ceil(required)) if np.isfinite(required) else np.nan})
+    return indexed_frame(rows, "component")
+
+
+def reference_error_certificate(gaps: pd.DataFrame, gap_se: pd.DataFrame,
+                                calipers: pd.DataFrame,
+                                candidate_ids: Iterable[str]) -> pd.DataFrame:
+    """A conservative upper bound on the ACCUMULATED reference mismatch.
+
+    Componentwise calipers bound each coordinate separately. They do not bound
+    the total. delta_r = SESOI / s_r means a single component sitting exactly at
+    its caliper contributes s_r * delta_r = SESOI to the first-order predicted
+    burden difference -- so seventeen components each just inside their calipers
+    could, in the worst case, accumulate seventeen times the SESOI. Every
+    individual caliper passes and the reference is useless.
+
+    The certificate is
+
+        B_C = sum_r  s_r^U * ( |z_B,r - z_C,r| + q * SE_r )   <=   epsilon_ref
+
+    where s_r^U is the same conservative upper sensitivity that set the caliper.
+    Under the linear sensitivity model, B_C is an upper bound on the predicted
+    difference in outgoing burden between B and C on a generic target.
+
+    Three things about it are assumptions rather than measurements, and they are
+    recorded here rather than buried:
+
+      1. ADDITIVITY. The sum treats component sensitivities as additive. The
+         sensitivity regression estimates them jointly, so this is a first-order
+         approximation whose error is not measured.
+      2. NO CANCELLATION. Absolute values are summed, so mismatches that would
+         partly offset each other are counted as though they compound. This is
+         deliberately conservative and cannot be relaxed using candidate-pool
+         covariance, which would let the pool decide the scientific budget.
+      3. THE NUMBER. epsilon_ref = 0.05 against a 0.10 SESOI. The source
+         methodology states exactly that reservation -- half the SESOI -- but
+         for the pseudo-focal held-out prediction error, a different quantity.
+         Reusing it here is a v15 decision.
+    """
+    rows = []
+    for cid in candidate_ids:
+        if cid not in gaps.index:
+            continue
+        contributions, detail = [], {}
+        for comp in calipers.index:
+            if comp not in gaps.columns:
+                continue
+            slope = float(calipers.at[comp, "slope_used"])
+            gap = float(gaps.at[cid, comp])
+            se = float(gap_se.at[cid, comp]) if comp in gap_se.columns else 0.0
+            se = 0.0 if not np.isfinite(se) else se
+            if not np.isfinite(gap):
+                contributions.append(float("nan"))
+                detail[f"contrib_{comp}"] = float("nan")
+                continue
+            contribution = slope * (abs(gap) + CFG.caliper_uncertainty_q * se)
+            contributions.append(contribution)
+            detail[f"contrib_{comp}"] = contribution
+        finite = [c for c in contributions if np.isfinite(c)]
+        if CFG.reference_budget_aggregation == "rss":
+            total = float(np.sqrt(np.sum(np.square(finite)))) if finite else float("nan")
+        else:
+            total = float(np.sum(finite)) if finite else float("nan")
+        incomplete = len(finite) != len(contributions)
+        rows.append({
+            "constraint_id": cid,
+            "budget_total": float("nan") if incomplete else total,
+            "budget_threshold": CFG.epsilon_ref,
+            "budget_ok": bool(np.isfinite(total) and not incomplete
+                              and total <= CFG.epsilon_ref),
+            "n_components": len(contributions),
+            "n_undefined_components": len(contributions) - len(finite),
+            "largest_contribution": (max(finite) if finite else float("nan")),
+            "largest_component": (
+                max((c for c in calipers.index if f"contrib_{c}" in detail
+                     and np.isfinite(detail[f"contrib_{c}"])),
+                    key=lambda c: detail[f"contrib_{c}"], default="")),
+            **detail})
+    return indexed_frame(
+        rows, "constraint_id",
+        ["constraint_id", "budget_total", "budget_threshold", "budget_ok",
+         "n_components", "n_undefined_components", "largest_contribution",
+         "largest_component"])
+
+
+def admit_candidates(gaps: pd.DataFrame, gap_se: pd.DataFrame,
+                     calipers: pd.DataFrame, focal_scope: str,
+                     candidate_ids: Iterable[str],
+                     scopes: Optional[dict[str, str]] = None) -> pd.DataFrame:
+    """|z_focal - z_C| + q*SE <= delta, componentwise, plus the exact scope match.
+
+    Both orders are covered automatically, because the order-specific g and r
+    components are separate rows of the caliper table.
+    """
+    scope_of = scopes if scopes is not None else {
+        c: s.generative_scope for c, s in CONSTRAINTS.items()}
+    rows = []
+    for cid in candidate_ids:
+        if cid not in gaps.index:
+            continue
+        reasons = []
+        if scope_of[cid] != focal_scope:
+            reasons.append("scope mismatch (exact-match restriction)")
+        detail = {}
+        for comp in calipers.index:
+            delta = float(calipers.at[comp, "caliper"])
+            gap = float(gaps.at[cid, comp])
+            se = float(gap_se.at[cid, comp]) if comp in gap_se.columns else 0.0
+            se = 0.0 if not np.isfinite(se) else se
+            adjusted = gap + CFG.caliper_uncertainty_q * se
+            detail[f"adj_{comp}"] = adjusted
+            if not np.isfinite(gap):
+                reasons.append(f"{comp} undefined")
+            elif adjusted > delta:
+                reasons.append(f"{comp} {adjusted:.3f} > {delta:.3f}")
+        componentwise_failed = len([r for r in reasons if not r.startswith("scope")])
+        rows.append({"constraint_id": cid, "scope": scope_of[cid],
+                     "origin": (CONSTRAINTS[cid].origin if cid in CONSTRAINTS else "fixture"),
+                     "n_failed_components": componentwise_failed,
+                     "componentwise_ok": not reasons,
+                     "rejection_reasons": "; ".join(reasons[:6]), **detail})
+
+    frame = indexed_frame(rows, "constraint_id",
+                          ["constraint_id", "scope", "origin",
+                           "n_failed_components", "componentwise_ok",
+                           "rejection_reasons",
+                           *[f"adj_{c}" for c in calipers.index]])
+    if not len(frame):
+        frame["budget_total"] = pd.Series(dtype=float)
+        frame["budget_ok"] = pd.Series(dtype=bool)
+        frame["binding_criterion"] = pd.Series(dtype=object)
+        frame["eligible"] = pd.Series(dtype=bool)
+        return frame
+
+    # The joint certificate is an ADDITIONAL requirement. It can only remove
+    # candidates, never admit one the componentwise rule rejected.
+    if CFG.enforce_reference_budget and "slope_used" in calipers.columns:
+        cert = reference_error_certificate(gaps, gap_se, calipers, frame.index)
+        frame["budget_total"] = cert["budget_total"].reindex(frame.index)
+        frame["budget_ok"] = cert["budget_ok"].reindex(frame.index).fillna(False)
+        frame["largest_component"] = cert["largest_component"].reindex(frame.index)
+    else:
+        frame["budget_total"] = np.nan
+        frame["budget_ok"] = True
+        frame["largest_component"] = ""
+    frame["eligible"] = frame["componentwise_ok"] & frame["budget_ok"]
+    frame["binding_criterion"] = np.where(
+        frame["eligible"], "none",
+        np.where(~frame["componentwise_ok"],
+                 np.where(~frame["budget_ok"], "both", "componentwise"),
+                 "joint_budget"))
+    frame.loc[~frame["budget_ok"] & frame["componentwise_ok"], "rejection_reasons"] = (
+        "joint reference-error certificate "
+        + frame.loc[~frame["budget_ok"] & frame["componentwise_ok"],
+                    "budget_total"].round(4).astype(str)
+        + f" > {CFG.epsilon_ref}")
+    return frame
+
+
+# ==================================================== deterministic selection
+def regularised_mahalanobis(sig: pd.DataFrame, focal: str, pool: list[str],
+                            ridge: float) -> pd.Series:
+    """Ranking only, after every hard caliper has already been applied."""
+    block = sig.loc[pool + [focal]].astype(float)
+    block = block.loc[:, block.notna().all(axis=0)]
+    if block.shape[1] == 0 or len(pool) < 2:
+        return pd.Series(np.nan, index=pool)
+    cov = np.atleast_2d(np.cov(block.to_numpy(), rowvar=False))
+    reg = cov + ridge * np.diag(np.maximum(np.diag(cov), 1e-8)) + 1e-9 * np.eye(len(cov))
+    inv = np.linalg.pinv(reg)
+    target = block.loc[focal].to_numpy()
+    return pd.Series({cid: float(np.sqrt(max(
+        (block.loc[cid].to_numpy() - target) @ inv @ (block.loc[cid].to_numpy() - target),
+        0.0))) for cid in pool})
+
+
+def select_panel(eligible: list[str], sig: pd.DataFrame, focal: str, k: int,
+                 ridge: float) -> tuple[list[str], pd.Series]:
+    """Exactly k, chosen deterministically. Fewer than k is not identified."""
+    if len(eligible) < k:
+        raise StudyStop(
+            GateOutcome("2_feasibility", GateStatus.NOT_IDENTIFIED_SUPPORT,
+                        f"{len(eligible)} candidates passed every caliper in "
+                        f"both orders; the estimand named exactly {k}",
+                        quantities={"n_eligible": len(eligible)},
+                        thresholds={"required": k},
+                        more_data_could_resolve=False,
+                        new_protocol_version_required=True),
+            f"{len(eligible)} admissible references; exactly {k} are required.")
+    distances = regularised_mahalanobis(sig, focal, eligible, ridge)
+    ranked = sorted(eligible, key=lambda c: (float(distances[c]), c))
+    return ranked[:k], distances
+
+
+# ============================================ reference prediction and weights
+def predict_burden(sig: pd.DataFrame, donors: list[str], targets: list[str],
+                   weights: Optional[pd.Series] = None) -> dict[str, float]:
+    out = {}
+    for u in targets:
+        for o in CFG.orders:
+            comp = f"g|{u}|{o}"
+            if comp not in sig.columns:
+                continue
+            values = np.array([sig.at[c, comp] for c in donors], dtype=float)
+            if weights is None:
+                out[comp] = float(np.nanmean(values))
+            else:
+                w = np.array([float(weights[c]) for c in donors])
+                out[comp] = float(np.nansum(w * values) / max(np.nansum(w), 1e-12))
+    return out
+
+
+def fit_stochastic_weights(sig: pd.DataFrame, donors: list[str], focal: str,
+                           components: list[str],
+                           distances: Optional[pd.Series] = None) -> pd.Series:
+    """Weights on the concatenated signature across BOTH orders at once.
+
+    A penalty on individual donor distance is included, because aggregate
+    balance can otherwise be bought from individually distant donors: a
+    half-and-half mixture of (0,100) and (100,0) matches (50,50) exactly while
+    neither donor resembles the focal constraint at all.
+    """
+    from scipy.optimize import minimize
+
+    Z = sig.loc[donors, components].to_numpy(dtype=float)
+    target = sig.loc[focal, components].to_numpy(dtype=float)
+    good = np.all(np.isfinite(Z), axis=0) & np.isfinite(target)
+    Z, target = Z[:, good], target[good]
+    n = len(donors)
+    d2 = (np.array([float(distances.get(c, 0.0)) for c in donors]) ** 2
+          if distances is not None else np.zeros(n))
+    x0 = np.full(n, 1.0 / n)
+
+    def objective(w):
+        return float(np.sum((w @ Z - target) ** 2)
+                     + CFG.synthetic_distance_penalty * float(np.dot(w, d2)))
+
+    result = minimize(objective, x0, method="SLSQP",
+                      bounds=[(0.0, CFG.max_single_weight)] * n,
+                      constraints=[{"type": "eq", "fun": lambda w: float(np.sum(w) - 1.0)}],
+                      options={"maxiter": 500, "ftol": 1e-12})
+    w = np.clip(result.x, 0.0, CFG.max_single_weight)
+    w = w / w.sum() if w.sum() > 0 else x0
+    return pd.Series(w, index=donors)
+
+
+def j_effective(weights: pd.Series) -> float:
+    return float(1.0 / np.sum(np.asarray(weights, dtype=float) ** 2))
+
+
+# ============================================ hard eligibility, B-independent
+def verifier_agreement(a: str, b: str,
+                       corpus: Optional[list[str]] = None) -> tuple[float, int]:
+    """Agreement between two verifiers over INFORMATIVE probe responses.
+
+    Restricted to responses that at least one of the two accepts. Two hard
+    constraints that both reject every probe agree on 100% of it and are not
+    thereby duplicates; scoring them as such would delete most of the candidate
+    pool for a reason that has nothing to do with duplication.
+
+    Returns the agreement and the number of informative responses, so an
+    undetermined comparison is visible rather than silently counted as zero.
+    """
+    corpus = SYNTHETIC_CORPUS if corpus is None else corpus
+    va = np.array([verify(t, a).binary_pass for t in corpus])
+    vb = np.array([verify(t, b).binary_pass for t in corpus])
+    informative = (va == 1) | (vb == 1)
+    n = int(informative.sum())
+    if n < 5:
+        return float("nan"), n
+    return float(np.mean(va[informative] == vb[informative])), n
+
+
+def hard_eligible_universe(candidate_ids: Iterable[str],
+                           sig: Optional[pd.DataFrame] = None,
+                           sig_draws: Optional[np.ndarray] = None,
+                           calipers: Optional[pd.DataFrame] = None,
+                           valid_verifiers: Optional[set[str]] = None,
+                           scope: Optional[str] = None) -> pd.DataFrame:
+    """Eligibility criteria that never mention resemblance to the focal constraint.
+
+    This is the universe the pseudo-focal cohort and its donors are drawn from.
+    v13 drew both from B's own eligible neighbourhood, which asked whether
+    constraints resembling B predict one another.
+    """
+    scope = scope or CONSTRAINTS[CFG.target_id].generative_scope
+    valid_verifiers = valid_verifiers if valid_verifiers is not None else set(CONSTRAINTS)
+    protected = {CFG.target_id, CFG.focal_id, "B_SOFT"}
+    kept: list[str] = []
+    rows = []
+    for cid in sorted(candidate_ids):
+        s = CONSTRAINTS[cid]
+        reasons = []
+        if cid in protected:
+            reasons.append("is the target or the focal constraint")
+        if CFG.target_id in s.incompatible_with or CFG.focal_id in s.incompatible_with:
+            reasons.append("declared logically incompatible with A or B")
+        if set(s.entails) & {CFG.target_id, CFG.focal_id}:
+            reasons.append("declared to entail A or B")
+        if CONSTRAINTS[CFG.target_id].entails and cid in CONSTRAINTS[CFG.target_id].entails:
+            reasons.append("entailed by A")
+        if s.generative_scope != scope:
+            reasons.append(f"generative scope is {s.generative_scope}, not {scope}")
+        if cid not in valid_verifiers:
+            reasons.append("verifier validity not established at Gate M")
+        dup_a, n_a = verifier_agreement(cid, CFG.target_id)
+        dup_b, n_b = verifier_agreement(cid, CFG.focal_id)
+        if np.isfinite(dup_a) and dup_a >= CFG.duplicate_agreement_threshold:
+            reasons.append(f"verifier agrees with A on {dup_a:.3f} of {n_a} "
+                           "informative probes")
+        if np.isfinite(dup_b) and dup_b >= CFG.duplicate_agreement_threshold:
+            reasons.append(f"verifier agrees with B on {dup_b:.3f} of {n_b} "
+                           "informative probes")
+        dup_peer = ""
+        for other in kept:
+            agreement, n_peer = verifier_agreement(cid, other)
+            if np.isfinite(agreement) and agreement >= CFG.duplicate_agreement_threshold:
+                dup_peer = other
+                reasons.append(f"duplicates {other} on {agreement:.3f} of "
+                               f"{n_peer} informative probes")
+                break
+        measurable = True
+        imprecise = []
+        if sig is not None and cid in sig.index:
+            measurable = bool(np.isfinite(sig.loc[cid].to_numpy(dtype=float)).all())
+            if not measurable:
+                reasons.append("calibration signature has undefined components")
+        if (sig_draws is not None and calipers is not None and sig is not None
+                and cid in sig.index):
+            i = list(sig.index).index(cid)
+            own_se = pd.Series(np.nanstd(sig_draws[:, i, :], axis=0, ddof=1),
+                               index=list(sig.columns))
+            for comp in calipers.index:
+                budget = CFG.caliper_precision_fraction * float(calipers.at[comp, "caliper"])
+                if np.isfinite(own_se.get(comp, np.nan)) and \
+                        CFG.caliper_uncertainty_q * float(own_se[comp]) > budget:
+                    imprecise.append(comp)
+            if imprecise:
+                reasons.append(f"own measurement too imprecise on {len(imprecise)} components")
+        if not reasons:
+            kept.append(cid)
+        rows.append({"constraint_id": cid, "agreement_with_A": dup_a,
+                     "informative_probes_vs_A": n_a,
+                     "agreement_with_B": dup_b, "duplicate_of": dup_peer,
+                     "measurable": measurable, "n_imprecise_components": len(imprecise),
+                     "hard_eligible": not reasons,
+                     "rejection_reasons": "; ".join(reasons[:5])})
+    return indexed_frame(rows, "constraint_id",
+                         ["constraint_id", "agreement_with_A",
+                          "informative_probes_vs_A", "agreement_with_B",
+                          "duplicate_of", "measurable", "n_imprecise_components",
+                          "hard_eligible", "rejection_reasons"])
+
+
+print("Reference-model machinery defined.")
+print(f"signature components at |U_build| = {CFG.u_per_split}: "
+      f"{len(signature_components(['u1', 'u2', 'u3']))}  "
+      f"(wording matched on {WORDING_MATCHED}, {WORDING_DIAGNOSTIC} reported)")
+print(f"feature roles hash: {FEATURE_ROLES_SHA256[:16]}")
+
+
+# ======================================= authorization and discrepancy helpers
+def authorize_primary(g1_passed: bool, g0_passed: bool = False,
+                      g2_passed: bool = False) -> bool:
+    """Only g1 authorizes the primary confirmatory experiment.
+
+    The declared primary estimand uses the six individually admissible g1
+    references, so nothing else can stand in for them. g0 is a benchmark and
+    falsification comparator; g2 is a separate secondary estimand. v13 tuned
+    across all three and let the winner authorize, which is how a notebook
+    validates an estimand it is not going to report.
+    """
+    return bool(g1_passed)
+
+
+def stochastic_estimand_authorized(g1_passed: bool, g2_passed: bool) -> bool:
+    """The stochastic secondary needs its own validation AND a valid primary."""
+    return bool(g1_passed and g2_passed)
+
+
+def burden_components(u_targets: Iterable[str]) -> list[str]:
+    return [f"g|{u}|{o}" for u in u_targets for o in CFG.orders]
+
+
+def discrepancy_frames(point: pd.Series, draws: pd.DataFrame, focal: str,
+                       references: Iterable[str], components: Iterable[str]
+                       ) -> tuple[pd.Series, pd.DataFrame]:
+    """Per-reference held-out discrepancies, one column per (reference, component).
+
+    A linear function of the signature draws, so the joint uncertainty is
+    already correct and no second bootstrap is needed. Keeping the reference
+    index means a panel average can never conceal two references cancelling.
+    """
+    p: dict[str, float] = {}
+    d: dict[str, np.ndarray] = {}
+    for j in references:
+        for c in components:
+            fk, jk = signature_key(focal, c), signature_key(j, c)
+            if fk not in point.index or jk not in point.index:
+                continue
+            key = f"{j}|{c}"
+            p[key] = float(point[fk] - point[jk])
+            d[key] = (draws[fk] - draws[jk]).to_numpy()
+    return pd.Series(p, dtype=float), pd.DataFrame(d)
+
+
+def panel_residual_frames(point: pd.Series, draws: pd.DataFrame, focal: str,
+                          references: list[str], components: Iterable[str],
+                          weights: Optional[pd.Series] = None
+                          ) -> tuple[pd.Series, pd.DataFrame]:
+    """The pooled panel residual. A secondary diagnostic, never the gate."""
+    w = (np.full(len(references), 1.0 / len(references)) if weights is None
+         else np.array([float(weights[j]) for j in references]))
+    p: dict[str, float] = {}
+    d: dict[str, np.ndarray] = {}
+    for c in components:
+        fk = signature_key(focal, c)
+        if fk not in point.index:
+            continue
+        ref_point = sum(wi * float(point[signature_key(j, c)])
+                        for wi, j in zip(w, references))
+        ref_draws = sum(wi * draws[signature_key(j, c)].to_numpy()
+                        for wi, j in zip(w, references))
+        p[c] = float(point[fk]) - ref_point
+        d[c] = draws[fk].to_numpy() - ref_draws
+    return pd.Series(p, dtype=float), pd.DataFrame(d)
+
+
+def evaluate_pseudo_focal_cohort(evaluable: Iterable[str],
+                                 minimum: int) -> tuple[list[str], str]:
+    """Too few evaluable pseudo-focals is NOT_EVALUABLE, never a quiet pass.
+
+    A panel of exactly six for B says nothing about how many constraints can
+    themselves be given six donors from the independent universe, so the two
+    must not be confused: this returns its own status.
+    """
+    cohort = sorted(evaluable)
+    if len(cohort) < minimum:
+        return cohort, GateStatus.REFERENCE_VALIDATION_NOT_EVALUABLE
+    return cohort, GateStatus.PASS

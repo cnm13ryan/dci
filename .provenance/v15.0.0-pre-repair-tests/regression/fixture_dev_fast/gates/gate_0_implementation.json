@@ -1,0 +1,17 @@
+{
+  "gate": "0_implementation",
+  "status": "PASS",
+  "reason": "every implementation check passed",
+  "quantities": {
+    "n_checks": 110,
+    "failed": []
+  },
+  "thresholds": {
+    "required": "all"
+  },
+  "more_data_could_resolve": false,
+  "new_protocol_version_required": false,
+  "dry_run_bypassed": false,
+  "recorded_utc": "2026-08-09T10:01:01.830774+00:00",
+  "passed": true
+}

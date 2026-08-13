@@ -1,0 +1,2883 @@
+{
+  "protocol_sha256": "e92c6d01aee4ab500efa15e0703a3ba74606648d6b49b1c7cb1af68e99568497",
+  "plan": {
+    "protocol_version": "v15",
+    "fields": [
+      {
+        "field": "protocol_version",
+        "category": "identity",
+        "kind": "value",
+        "value": "v15",
+        "description": "protocol version"
+      },
+      {
+        "field": "model_profile",
+        "category": "model",
+        "kind": "value",
+        "value": "dev_fast",
+        "description": "dev_fast, pilot or study"
+      },
+      {
+        "field": "model_id",
+        "category": "model",
+        "kind": "value",
+        "value": "Qwen/Qwen2.5-0.5B-Instruct",
+        "description": "Hugging Face model id"
+      },
+      {
+        "field": "model_revision",
+        "category": "model",
+        "kind": "value",
+        "value": "7ae557604adf67be50417f59c2c2f167def9a775",
+        "description": "immutable commit; never 'main'"
+      },
+      {
+        "field": "tokenizer_sha256",
+        "category": "model",
+        "kind": "hash",
+        "value": "dry-run",
+        "description": "vocabulary, special tokens and class"
+      },
+      {
+        "field": "chat_template_sha256",
+        "category": "model",
+        "kind": "hash",
+        "value": "dry-run",
+        "description": "rendered chat template"
+      },
+      {
+        "field": "transformers_version",
+        "category": "software",
+        "kind": "value",
+        "value": null,
+        "description": "inference library version"
+      },
+      {
+        "field": "engine",
+        "category": "software",
+        "kind": "value",
+        "value": "hf_transformers",
+        "description": "inference engine"
+      },
+      {
+        "field": "inference_dtype",
+        "category": "software",
+        "kind": "value",
+        "value": "float16",
+        "description": "numerical condition"
+      },
+      {
+        "field": "attn_implementation",
+        "category": "software",
+        "kind": "value",
+        "value": "sdpa",
+        "description": "attention kernel"
+      },
+      {
+        "field": "do_sample",
+        "category": "decoding",
+        "kind": "value",
+        "value": true,
+        "description": "sampling on or off"
+      },
+      {
+        "field": "temperature",
+        "category": "decoding",
+        "kind": "value",
+        "value": 0.7,
+        "description": "sampling temperature"
+      },
+      {
+        "field": "top_p",
+        "category": "decoding",
+        "kind": "value",
+        "value": 0.9,
+        "description": "nucleus sampling"
+      },
+      {
+        "field": "max_new_tokens",
+        "category": "decoding",
+        "kind": "value",
+        "value": 180,
+        "description": "generation length"
+      },
+      {
+        "field": "max_input_tokens",
+        "category": "decoding",
+        "kind": "value",
+        "value": 1024,
+        "description": "truncation"
+      },
+      {
+        "field": "initial_batch_size",
+        "category": "decoding",
+        "kind": "value",
+        "value": 4,
+        "description": "batch membership affects the sample"
+      },
+      {
+        "field": "adaptive_batching",
+        "category": "decoding",
+        "kind": "value",
+        "value": "off",
+        "description": "off in a confirmatory run"
+      },
+      {
+        "field": "base_seed",
+        "category": "seeds",
+        "kind": "value",
+        "value": 20260901,
+        "description": "root seed"
+      },
+      {
+        "field": "screening_seeds",
+        "category": "seeds",
+        "kind": "value",
+        "value": [
+          11,
+          29
+        ],
+        "description": "stage seeds"
+      },
+      {
+        "field": "calibration_seeds",
+        "category": "seeds",
+        "kind": "value",
+        "value": [
+          11,
+          29
+        ],
+        "description": "stage seeds"
+      },
+      {
+        "field": "confirmatory_seeds",
+        "category": "seeds",
+        "kind": "value",
+        "value": [
+          11
+        ],
+        "description": "stage seeds"
+      },
+      {
+        "field": "wording_seeds",
+        "category": "seeds",
+        "kind": "value",
+        "value": [
+          11
+        ],
+        "description": "stage seeds"
+      },
+      {
+        "field": "task_bank_sha256",
+        "category": "tasks",
+        "kind": "hash",
+        "value": "2d6a72fb617fc22d5eb9e5f1f8a774a29478d242ffdfc427e1ef8cf1dcdb80f3",
+        "description": "every task id and its text"
+      },
+      {
+        "field": "calibration_tasks",
+        "category": "tasks",
+        "kind": "value",
+        "value": [
+          "CAL01",
+          "CAL02",
+          "CAL03",
+          "CAL04",
+          "CAL05",
+          "CAL06",
+          "CAL07",
+          "CAL08",
+          "CAL09",
+          "CAL10",
+          "CAL11",
+          "CAL12"
+        ],
+        "description": "calibration split"
+      },
+      {
+        "field": "confirmatory_tasks",
+        "category": "tasks",
+        "kind": "value",
+        "value": [
+          "CNF01",
+          "CNF02",
+          "CNF03",
+          "CNF04",
+          "CNF05",
+          "CNF06"
+        ],
+        "description": "confirmatory split"
+      },
+      {
+        "field": "wording_tasks",
+        "category": "tasks",
+        "kind": "value",
+        "value": [
+          "WRD01",
+          "WRD02",
+          "WRD03",
+          "WRD04"
+        ],
+        "description": "Gate 3b split"
+      },
+      {
+        "field": "instructions_sha256",
+        "category": "paraphrases",
+        "kind": "hash",
+        "value": "55bc1e7603298425c512a8e26e662c6f2addb9112a9bf73ca77849473da07ad7",
+        "description": "every rendered wording"
+      },
+      {
+        "field": "paraphrases_primary",
+        "category": "paraphrases",
+        "kind": "value",
+        "value": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "description": "wordings in the primary estimand"
+      },
+      {
+        "field": "paraphrases_held_out",
+        "category": "paraphrases",
+        "kind": "value",
+        "value": [
+          6,
+          7
+        ],
+        "description": "Gate 3b only"
+      },
+      {
+        "field": "paraphrase_audit_sha256",
+        "category": "audits",
+        "kind": "hash",
+        "value": null,
+        "description": "signed semantic audit"
+      },
+      {
+        "field": "verifier_audit_sha256",
+        "category": "audits",
+        "kind": "hash",
+        "value": null,
+        "description": "signed reliability audit"
+      },
+      {
+        "field": "verifier_source_sha256",
+        "category": "verifiers",
+        "kind": "hash",
+        "value": "3b7262fac48d4b5de12135ed0cd14dc2caf6cc1a0620982c0b8dd8a58efb249d",
+        "description": "verifier implementation"
+      },
+      {
+        "field": "coupling_response_bank_sha256",
+        "category": "verifiers",
+        "kind": "hash",
+        "value": "b0f6759b9af5f88b4db16a56159077aa65f478d182e712b7b6bf635d91854370",
+        "description": "bank kappa is measured on"
+      },
+      {
+        "field": "coupling_mutation_sha256",
+        "category": "verifiers",
+        "kind": "hash",
+        "value": "745a7d78f86f23329c9989cab010eba6b94320307c81feaa0d2c4d02a5ce6c60",
+        "description": "mutation specification"
+      },
+      {
+        "field": "coupling_edit_sha256",
+        "category": "verifiers",
+        "kind": "hash",
+        "value": "20007f9dadcc7327adb1530f27cdce7c54e67522f9b49afa5000113aa937be9a",
+        "description": "coupling edit specification"
+      },
+      {
+        "field": "u_split_sha256",
+        "category": "unrelated_targets",
+        "kind": "hash",
+        "value": "3bf87f6ef7a7820e69c4b5f7f8295536f3a7cd48563898d53b6886e86b22bc3f",
+        "description": "build, validation and test assignment"
+      },
+      {
+        "field": "u_build",
+        "category": "unrelated_targets",
+        "kind": "value",
+        "value": [
+          "U_FMT_COLON1",
+          "U_LEX_ALLIT_P",
+          "U_NUM_SUM100"
+        ],
+        "description": "feature targets"
+      },
+      {
+        "field": "u_val",
+        "category": "unrelated_targets",
+        "kind": "value",
+        "value": [
+          "U_FMT_SEMI2",
+          "U_LEX_FORBID3",
+          "U_NUM_ONEPCT"
+        ],
+        "description": "validation targets"
+      },
+      {
+        "field": "u_test",
+        "category": "unrelated_targets",
+        "kind": "value",
+        "value": [
+          "U_FMT_QUOTE1",
+          "U_LEX_REQUIRE3",
+          "U_NUM_TWOINT"
+        ],
+        "description": "falsification targets"
+      },
+      {
+        "field": "candidate_pool",
+        "category": "pool",
+        "kind": "value",
+        "value": [
+          "C_L3",
+          "C_W3",
+          "C_O2",
+          "S_LONGWORD",
+          "S_ENDLONG",
+          "S_COMMA",
+          "S_MINWORDS12",
+          "S_MINWORDS15",
+          "S_MINWORDS20",
+          "S_MINWORDS25",
+          "S_MINWORDS30",
+          "S_TWOLONG",
+          "S_THREELONG",
+          "S_BAND1525",
+          "S_TWOCOMMA",
+          "S_SEMICOLON",
+          "S_COMMA12"
+        ],
+        "description": "declared pool"
+      },
+      {
+        "field": "prescreen_retained",
+        "category": "pool",
+        "kind": "value",
+        "value": [
+          "C_L3",
+          "C_O2",
+          "C_W3",
+          "S_BAND1525",
+          "S_COMMA",
+          "S_COMMA12",
+          "S_ENDLONG",
+          "S_LONGWORD",
+          "S_MINWORDS12",
+          "S_MINWORDS15",
+          "S_MINWORDS20",
+          "S_MINWORDS25",
+          "S_SEMICOLON",
+          "S_THREELONG",
+          "S_TWOCOMMA",
+          "S_TWOLONG"
+        ],
+        "description": "narrowed pool"
+      },
+      {
+        "field": "hard_eligible_universe",
+        "category": "pool",
+        "kind": "value",
+        "value": [],
+        "description": "B-independent universe"
+      },
+      {
+        "field": "feature_roles_sha256",
+        "category": "features",
+        "kind": "hash",
+        "value": "beada52cc8602f39cae888b8ba61848be89cfce20c5bd7be22060c5f5c2e1996",
+        "description": "frozen causal role of every feature"
+      },
+      {
+        "field": "calipers",
+        "category": "calipers",
+        "kind": "value",
+        "value": {
+          "d": 0.17042965579970729,
+          "g|U_FMT_COLON1|target_first": 0.09810497244112953,
+          "g|U_FMT_COLON1|added_first": 0.09810497244112953,
+          "g|U_LEX_ALLIT_P|target_first": 0.09810497244112953,
+          "g|U_LEX_ALLIT_P|added_first": 0.09810497244112953,
+          "g|U_NUM_SUM100|target_first": 0.09810497244112953,
+          "g|U_NUM_SUM100|added_first": 0.09810497244112953,
+          "r|U_FMT_COLON1|target_first": 0.25,
+          "r|U_FMT_COLON1|added_first": 0.25,
+          "r|U_LEX_ALLIT_P|target_first": 0.25,
+          "r|U_LEX_ALLIT_P|added_first": 0.25,
+          "r|U_NUM_SUM100|target_first": 0.25,
+          "r|U_NUM_SUM100|added_first": 0.25,
+          "s_d": 0.13310054001595986,
+          "s_g": 0.13310054001595986,
+          "s_r": 0.13310054001595986
+        },
+        "description": "SESOI divided by conservative upper sensitivity"
+      },
+      {
+        "field": "caliper_rule_sha256",
+        "category": "calipers",
+        "kind": "hash",
+        "value": "4519508fe2032e96705626a6448eb9aeb99fe02f08344a0c42a236c97ec3c944",
+        "description": "selection and caliper implementation"
+      },
+      {
+        "field": "sesoi",
+        "category": "calipers",
+        "kind": "value",
+        "value": 0.1,
+        "description": "smallest effect of interest"
+      },
+      {
+        "field": "selected_references",
+        "category": "selection",
+        "kind": "value",
+        "value": [
+          "S_SEMICOLON",
+          "C_W3",
+          "S_COMMA",
+          "S_MINWORDS15",
+          "C_L3",
+          "S_MINWORDS12"
+        ],
+        "description": "the primary panel"
+      },
+      {
+        "field": "pseudo_focal_cohort",
+        "category": "validation",
+        "kind": "value",
+        "value": [
+          "C_L3",
+          "C_O2",
+          "C_W3"
+        ],
+        "description": "Gate 3 cohort, frozen before U_val"
+      },
+      {
+        "field": "stochastic_weights",
+        "category": "selection",
+        "kind": "value",
+        "value": {
+          "S_SEMICOLON": 0.30000000000000454,
+          "C_W3": 0.30000000000000454,
+          "S_COMMA": 0.019241858662200843,
+          "S_MINWORDS15": 0.30000000000000454,
+          "C_L3": 0.08075814133778561,
+          "S_MINWORDS12": 0.0
+        },
+        "description": "secondary estimand weights"
+      },
+      {
+        "field": "analysis_sha256",
+        "category": "analysis",
+        "kind": "hash",
+        "value": "ab3e0cf732b8754af97ad607d4c743346fa8f302b23be0cc80c8a52562c5b437",
+        "description": "estimator and inference implementation"
+      },
+      {
+        "field": "confidence_level",
+        "category": "analysis",
+        "kind": "value",
+        "value": 0.95,
+        "description": "interval level"
+      },
+      {
+        "field": "bootstrap_reps",
+        "category": "analysis",
+        "kind": "value",
+        "value": 400,
+        "description": "resamples"
+      },
+      {
+        "field": "cluster_level",
+        "category": "analysis",
+        "kind": "value",
+        "value": "task_id",
+        "description": "resampling unit"
+      }
+    ],
+    "constraint_registry": {
+      "A": {
+        "constraint_id": "A",
+        "source_id": "S2",
+        "name": "Exact sentence count",
+        "category": "structural",
+        "mechanism": "global_count",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation",
+        "role": "target",
+        "rule_family": "exact_sentence_count",
+        "params": [
+          [
+            "n",
+            4
+          ]
+        ],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "B": {
+        "constraint_id": "B",
+        "source_id": "O1",
+        "name": "Increasing sentence lengths",
+        "category": "ordering",
+        "mechanism": "cross_sentence_comparison",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "focal",
+        "rule_family": "increasing_lengths",
+        "params": [],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "B_SOFT": {
+        "constraint_id": "B_SOFT",
+        "source_id": "O1-soft",
+        "name": "Non-decreasing sentence lengths",
+        "category": "ordering",
+        "mechanism": "cross_sentence_comparison",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "focal",
+        "rule_family": "nondecreasing_lengths",
+        "params": [],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [
+          "B"
+        ],
+        "count_probe_sentence": ""
+      },
+      "C_L3": {
+        "constraint_id": "C_L3",
+        "source_id": "L3",
+        "name": "Sentence-initial letter S",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+initials",
+        "role": "candidate",
+        "rule_family": "sentence_initial_letter",
+        "params": [
+          [
+            "letter",
+            "S"
+          ]
+        ],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "C_W3": {
+        "constraint_id": "C_W3",
+        "source_id": "W3",
+        "name": "Minimum words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            8
+          ]
+        ],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "C_O2": {
+        "constraint_id": "C_O2",
+        "source_id": "O2",
+        "name": "Alphabetical sentence starts",
+        "category": "ordering",
+        "mechanism": "cross_sentence_comparison",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+first_words",
+        "role": "candidate",
+        "rule_family": "alphabetical_starts",
+        "params": [],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_LONGWORD": {
+        "constraint_id": "S_LONGWORD",
+        "source_id": "shadow",
+        "name": "One long word per sentence",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_lengths",
+        "role": "candidate",
+        "rule_family": "long_word_per_sentence",
+        "params": [
+          [
+            "letters",
+            7
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_ENDLONG": {
+        "constraint_id": "S_ENDLONG",
+        "source_id": "shadow",
+        "name": "Sentence ends on a long word",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+final_word",
+        "role": "candidate",
+        "rule_family": "sentence_ends_long",
+        "params": [
+          [
+            "letters",
+            7
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_COMMA": {
+        "constraint_id": "S_COMMA",
+        "source_id": "shadow",
+        "name": "Exactly one comma per sentence",
+        "category": "format",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+punctuation",
+        "role": "candidate",
+        "rule_family": "commas_per_sentence",
+        "params": [
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_MINWORDS12": {
+        "constraint_id": "S_MINWORDS12",
+        "source_id": "shadow",
+        "name": "At least 12 words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            12
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_MINWORDS15": {
+        "constraint_id": "S_MINWORDS15",
+        "source_id": "shadow",
+        "name": "At least 15 words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            15
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_MINWORDS20": {
+        "constraint_id": "S_MINWORDS20",
+        "source_id": "shadow",
+        "name": "At least 20 words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            20
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_MINWORDS25": {
+        "constraint_id": "S_MINWORDS25",
+        "source_id": "shadow",
+        "name": "At least 25 words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            25
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_MINWORDS30": {
+        "constraint_id": "S_MINWORDS30",
+        "source_id": "shadow",
+        "name": "At least 30 words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "min_words_per_sentence",
+        "params": [
+          [
+            "n",
+            30
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_TWOLONG": {
+        "constraint_id": "S_TWOLONG",
+        "source_id": "shadow",
+        "name": "Two long words per sentence",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_lengths",
+        "role": "candidate",
+        "rule_family": "n_long_words_per_sentence",
+        "params": [
+          [
+            "letters",
+            7
+          ],
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_THREELONG": {
+        "constraint_id": "S_THREELONG",
+        "source_id": "shadow",
+        "name": "Three long words per sentence",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_lengths",
+        "role": "candidate",
+        "rule_family": "n_long_words_per_sentence",
+        "params": [
+          [
+            "letters",
+            7
+          ],
+          [
+            "n",
+            3
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_BAND1525": {
+        "constraint_id": "S_BAND1525",
+        "source_id": "shadow",
+        "name": "Sentence length inside a band",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts",
+        "role": "candidate",
+        "rule_family": "word_band_per_sentence",
+        "params": [
+          [
+            "high",
+            25
+          ],
+          [
+            "low",
+            15
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_TWOCOMMA": {
+        "constraint_id": "S_TWOCOMMA",
+        "source_id": "shadow",
+        "name": "Exactly two commas per sentence",
+        "category": "format",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+punctuation",
+        "role": "candidate",
+        "rule_family": "commas_per_sentence",
+        "params": [
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_SEMICOLON": {
+        "constraint_id": "S_SEMICOLON",
+        "source_id": "shadow",
+        "name": "A semicolon in every sentence",
+        "category": "format",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+punctuation",
+        "role": "candidate",
+        "rule_family": "semicolon_per_sentence",
+        "params": [],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "S_COMMA12": {
+        "constraint_id": "S_COMMA12",
+        "source_id": "shadow",
+        "name": "A comma and twelve words per sentence",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_counts+punctuation",
+        "role": "candidate",
+        "rule_family": "comma_and_min_words",
+        "params": [
+          [
+            "n",
+            12
+          ]
+        ],
+        "origin": "shadow",
+        "pathway_removed": "cross-sentence length comparison",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "C_W1": {
+        "constraint_id": "C_W1",
+        "source_id": "W1",
+        "name": "All words unique",
+        "category": "word_level",
+        "mechanism": "sustained_maintenance",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "candidate",
+        "rule_family": "unique_words",
+        "params": [],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "C_N1": {
+        "constraint_id": "C_N1",
+        "source_id": "N1",
+        "name": "Integers summing to a total",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "candidate",
+        "rule_family": "integer_sum",
+        "params": [
+          [
+            "count",
+            3
+          ],
+          [
+            "total",
+            60
+          ]
+        ],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "C_N3": {
+        "constraint_id": "C_N3",
+        "source_id": "N3",
+        "name": "Exact distinct integer count",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "candidate",
+        "rule_family": "distinct_integers",
+        "params": [
+          [
+            "count",
+            3
+          ]
+        ],
+        "origin": "cse_pool",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_LEX_FORBID3": {
+        "constraint_id": "U_LEX_FORBID3",
+        "source_id": "u-lex-1",
+        "name": "Three forbidden words",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "forbid_word_set",
+        "params": [
+          [
+            "words",
+            [
+              "very",
+              "important",
+              "process"
+            ]
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "lexical",
+        "pathway_audit": "Token membership over the whole answer. Never segments.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_LEX_REQUIRE3": {
+        "constraint_id": "U_LEX_REQUIRE3",
+        "source_id": "u-lex-2",
+        "name": "Three mandatory words",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "require_word_set",
+        "params": [
+          [
+            "words",
+            [
+              "evidence",
+              "threshold",
+              "gradual"
+            ]
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "lexical",
+        "pathway_audit": "Token membership. Adds at most three tokens.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_LEX_NOLY": {
+        "constraint_id": "U_LEX_NOLY",
+        "source_id": "u-lex-3",
+        "name": "No word ending in -ly",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "no_suffix",
+        "params": [
+          [
+            "suffix",
+            "ly"
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "lexical",
+        "pathway_audit": "Orthographic suffix test on individual tokens.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_LEX_ALLIT_P": {
+        "constraint_id": "U_LEX_ALLIT_P",
+        "source_id": "u-lex-4",
+        "name": "Four words beginning with P",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "alliteration",
+        "params": [
+          [
+            "letter",
+            "p"
+          ],
+          [
+            "n",
+            4
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "lexical",
+        "pathway_audit": "Counts initial letters over the whole answer.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_LEX_CAPWORD": {
+        "constraint_id": "U_LEX_CAPWORD",
+        "source_id": "u-lex-5",
+        "name": "Exactly one all-capitals word",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "caps_word",
+        "params": [
+          [
+            "letters",
+            3
+          ],
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "lexical",
+        "pathway_audit": "Case test on individual tokens.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_FMT_SEMI2": {
+        "constraint_id": "U_FMT_SEMI2",
+        "source_id": "u-fmt-1",
+        "name": "Exactly two semicolons in the answer",
+        "category": "format",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "character_stream",
+        "role": "unrelated",
+        "rule_family": "exact_char_total",
+        "params": [
+          [
+            "char",
+            ";"
+          ],
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "format",
+        "pathway_audit": "Whole-answer character count, deliberately not per-sentence, unlike S_SEMICOLON.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_FMT_PAREN1": {
+        "constraint_id": "U_FMT_PAREN1",
+        "source_id": "u-fmt-2",
+        "name": "Exactly one parenthetical",
+        "category": "format",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "character_stream",
+        "role": "unrelated",
+        "rule_family": "paren_pairs",
+        "params": [
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "format",
+        "pathway_audit": "Bracket pairing over the whole answer.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_FMT_COLON1": {
+        "constraint_id": "U_FMT_COLON1",
+        "source_id": "u-fmt-3",
+        "name": "Exactly one colon",
+        "category": "format",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "character_stream",
+        "role": "unrelated",
+        "rule_family": "exact_char_total",
+        "params": [
+          [
+            "char",
+            ":"
+          ],
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "format",
+        "pathway_audit": "Whole-answer character count.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_FMT_QUOTE1": {
+        "constraint_id": "U_FMT_QUOTE1",
+        "source_id": "u-fmt-4",
+        "name": "Exactly one quoted phrase",
+        "category": "format",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "character_stream",
+        "role": "unrelated",
+        "rule_family": "quote_pairs",
+        "params": [
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "format",
+        "pathway_audit": "Quotation-mark pairing over the whole answer.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_FMT_NOCOMMA": {
+        "constraint_id": "U_FMT_NOCOMMA",
+        "source_id": "u-fmt-5",
+        "name": "No commas anywhere",
+        "category": "format",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "character_stream",
+        "role": "unrelated",
+        "rule_family": "no_char",
+        "params": [
+          [
+            "char",
+            ","
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "format",
+        "pathway_audit": "Character absence. Watch for a length side-effect: comma avoidance can shorten clauses.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_TWOINT": {
+        "constraint_id": "U_NUM_TWOINT",
+        "source_id": "u-num-1",
+        "name": "Exactly two integers",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "exact_integer_count",
+        "params": [
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Counts integer tokens.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_NODIGIT": {
+        "constraint_id": "U_NUM_NODIGIT",
+        "source_id": "u-num-2",
+        "name": "No digits",
+        "category": "numerical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "no_digits",
+        "params": [],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Digit absence. Retained as a deliberate negative control on the screen: v12 measured 1 failure in 352.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_FOURDISTINCT": {
+        "constraint_id": "U_NUM_FOURDISTINCT",
+        "source_id": "u-num-3",
+        "name": "Four distinct integers",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "distinct_integers",
+        "params": [
+          [
+            "count",
+            4
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Counts and de-duplicates integers.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_SUM100": {
+        "constraint_id": "U_NUM_SUM100",
+        "source_id": "u-num-4",
+        "name": "Three integers summing to 100",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "integer_sum",
+        "params": [
+          [
+            "count",
+            3
+          ],
+          [
+            "total",
+            100
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Arithmetic on integer tokens.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_ONEPCT": {
+        "constraint_id": "U_NUM_ONEPCT",
+        "source_id": "u-num-5",
+        "name": "Exactly one percentage",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "percent_count",
+        "params": [
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Counts percentage expressions.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_MININT": {
+        "constraint_id": "U_NUM_MININT",
+        "source_id": "u-num-6",
+        "name": "At least two integers",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "min_integer_count",
+        "params": [
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Bounded below rather than exactly: every exact-count numerical candidate is hard, and a family with no spread cannot be screened.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_NUM_MAXINT": {
+        "constraint_id": "U_NUM_MAXINT",
+        "source_id": "u-num-7",
+        "name": "At most two integers",
+        "category": "numerical",
+        "mechanism": "global_count",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "unrelated",
+        "rule_family": "max_integer_count",
+        "params": [
+          [
+            "n",
+            2
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "numerical",
+        "pathway_audit": "Bounded above rather than exactly.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      },
+      "U_BRG_VOWEL3": {
+        "constraint_id": "U_BRG_VOWEL3",
+        "source_id": "u-brg-1",
+        "name": "Three vowel-initial words per sentence",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+initials",
+        "role": "unrelated",
+        "rule_family": "vowel_words_per_sentence",
+        "params": [
+          [
+            "n",
+            3
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "bridge",
+        "pathway_audit": "Counts vowel-initial words WITHIN each sentence. Does not read the number of sentences and never compares one sentence with another. Shares A's segmentation span by design: that is what makes it a transport probe.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": "An open estimate of every autumn is around us anyway."
+      },
+      "U_BRG_CAPS1": {
+        "constraint_id": "U_BRG_CAPS1",
+        "source_id": "u-brg-2",
+        "name": "Exactly one sentence carries a capitalised word",
+        "category": "lexical",
+        "mechanism": "global_count",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+word_case",
+        "role": "unrelated",
+        "rule_family": "caps_sentence_count",
+        "params": [
+          [
+            "letters",
+            3
+          ],
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "bridge",
+        "pathway_audit": "Counts sentences WITH a property, not sentences. Adding a sentence without that property leaves it unchanged, which the count-invariance probe verifies.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": "Rivers keep their level through the night."
+      },
+      "U_BRG_NOTHE": {
+        "constraint_id": "U_BRG_NOTHE",
+        "source_id": "u-brg-3",
+        "name": "No sentence begins with 'the'",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+first_words",
+        "role": "unrelated",
+        "rule_family": "sentence_initial_forbidden_word",
+        "params": [
+          [
+            "word",
+            "the"
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "bridge",
+        "pathway_audit": "Per-sentence first-word test. No count, no comparison.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": "Rivers keep their level through the night."
+      },
+      "U_BRG_QMARK": {
+        "constraint_id": "U_BRG_QMARK",
+        "source_id": "u-brg-4",
+        "name": "Exactly one sentence ends in a question mark",
+        "category": "format",
+        "mechanism": "global_count",
+        "generative_scope": "sentence",
+        "verifier_span": "sentence_segmentation+final_punctuation",
+        "role": "unrelated",
+        "rule_family": "question_sentence_count",
+        "params": [
+          [
+            "n",
+            1
+          ]
+        ],
+        "origin": "unrelated",
+        "pathway_removed": "",
+        "u_family": "bridge",
+        "pathway_audit": "Counts sentences ending in '?', not sentences.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": "Rivers keep their level through the night."
+      },
+      "N_NEUTRAL": {
+        "constraint_id": "N_NEUTRAL",
+        "source_id": "neutral",
+        "name": "Mandatory word (screening partner)",
+        "category": "lexical",
+        "mechanism": "local_check",
+        "generative_scope": "whole_text",
+        "verifier_span": "token_stream",
+        "role": "neutral",
+        "rule_family": "require_word",
+        "params": [
+          [
+            "word",
+            "overall"
+          ]
+        ],
+        "origin": "neutral",
+        "pathway_removed": "",
+        "u_family": "",
+        "pathway_audit": "'overall' has no -ly suffix, is not in the forbidden set, carries no digits and adds no punctuation, so it cannot mechanically satisfy or violate any U candidate.",
+        "incompatible_with": [],
+        "entails": [],
+        "count_probe_sentence": ""
+      }
+    },
+    "rule_families": {
+      "exact_sentence_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exactly, never at-least"
+        ],
+        "templates": [
+          "Write exactly {n} sentences.",
+          "Your entire answer must consist of exactly {n} sentences, no more and no fewer.",
+          "Use precisely {n} sentences in total.",
+          "The answer must contain {n} sentences exactly.",
+          "Produce a response of exactly {n} sentences.",
+          "Let the total number of sentences be exactly {n}.",
+          "Your answer must run to {n} sentences and stop there.",
+          "Neither more nor fewer than {n} sentences are allowed."
+        ]
+      },
+      "increasing_lengths": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "strict inequality, measured in words"
+        ],
+        "templates": [
+          "Make each sentence strictly longer than the preceding sentence when measured by word count.",
+          "Arrange the sentences so their word counts increase strictly from one sentence to the next.",
+          "Every sentence after the first must contain more words than the sentence before it.",
+          "Order the sentences so that word count rises strictly with each successive sentence.",
+          "Each successive sentence must exceed the previous one in number of words.",
+          "From first to last, sentence word counts must form a strictly increasing sequence.",
+          "Each sentence must be longer, in words, than the one it follows.",
+          "Word counts must climb with every sentence, never level and never fall."
+        ]
+      },
+      "nondecreasing_lengths": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "non-strict inequality, measured in words"
+        ],
+        "templates": [
+          "Make each sentence at least as long as the preceding sentence when measured by word count.",
+          "No sentence may contain fewer words than the sentence before it.",
+          "Every sentence after the first must contain at least as many words as the one before it.",
+          "Order the sentences so that word count never decreases from one sentence to the next.",
+          "Sentence word counts must be non-decreasing from first to last.",
+          "A sentence may match or exceed the previous sentence in word count, but never fall below it.",
+          "Each sentence must be at least as long, in words, as the one it follows.",
+          "Word counts may hold steady or climb from sentence to sentence, but never fall."
+        ]
+      },
+      "sentence_initial_letter": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "first letter of the first word only"
+        ],
+        "templates": [
+          "Begin every sentence with a word whose first letter is {letter_upper}.",
+          "The first word of each sentence must start with the letter {letter_upper}.",
+          "Every sentence must open with a word beginning with {letter_upper}.",
+          "Start each sentence with a word whose initial letter is {letter_upper}.",
+          "The opening word of every sentence must have {letter_upper} as its first letter.",
+          "Each sentence's first word must begin with the letter {letter_upper}.",
+          "Every sentence must lead with a word starting {letter_upper}.",
+          "No sentence may begin with a word whose first letter is not {letter_upper}."
+        ]
+      },
+      "min_words_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "minimum, per sentence, no maximum implied"
+        ],
+        "templates": [
+          "Use at least {n} words in every sentence.",
+          "Each sentence must contain no fewer than {n} words.",
+          "Every sentence must have {n} words or more.",
+          "No sentence may contain fewer than {n} words.",
+          "Give each sentence a minimum of {n} words.",
+          "Each sentence's word count must be at least {n}.",
+          "Every sentence must reach {n} words or more.",
+          "Sentences shorter than {n} words are not allowed."
+        ]
+      },
+      "alphabetical_starts": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "non-strict ordering of first words"
+        ],
+        "templates": [
+          "Order the sentences alphabetically by the first word of each sentence.",
+          "The first words of successive sentences must appear in alphabetical order.",
+          "Arrange the sentences so that their opening words run in alphabetical order.",
+          "Each sentence's first word must come at or after the previous sentence's first word alphabetically.",
+          "Sort the sentences by their opening words, alphabetically ascending.",
+          "Reading the first word of each sentence in turn must give an alphabetically ordered list.",
+          "Successive sentences must not go backwards alphabetically on their first words.",
+          "Take the first word of each sentence in order; that sequence must be alphabetical."
+        ]
+      },
+      "long_word_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "at least one, per sentence, length in letters"
+        ],
+        "templates": [
+          "Include at least one word of {letters} or more letters in every sentence.",
+          "Every sentence must contain a word at least {letters} letters long.",
+          "Each sentence must include a word of no fewer than {letters} letters.",
+          "No sentence may lack a word of {letters} letters or longer.",
+          "Give every sentence at least one word whose length is {letters} letters or more.",
+          "Each sentence must hold a word spanning at least {letters} letters.",
+          "Somewhere in every sentence there must be a word of {letters} letters or more.",
+          "Sentences without a word of at least {letters} letters are not allowed."
+        ]
+      },
+      "sentence_ends_long": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "final word only, length in letters"
+        ],
+        "templates": [
+          "End every sentence with a word of {letters} or more letters.",
+          "The final word of each sentence must be at least {letters} letters long.",
+          "Every sentence must close on a word of no fewer than {letters} letters.",
+          "The last word in each sentence must have {letters} letters or more.",
+          "Finish each sentence with a word whose length is at least {letters} letters.",
+          "No sentence may end on a word shorter than {letters} letters.",
+          "Every sentence's closing word must run to {letters} letters or more.",
+          "Sentences ending on a word under {letters} letters are not allowed."
+        ]
+      },
+      "commas_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exactly, per sentence"
+        ],
+        "templates": [
+          "Use exactly {n} {noun_comma} in every sentence.",
+          "Each sentence must contain precisely {n} {noun_comma}.",
+          "Every sentence must have exactly {n} {noun_comma}, no more and no fewer.",
+          "The comma count in each sentence must be exactly {n}.",
+          "Include {n} {noun_comma} in each sentence, exactly.",
+          "No sentence may contain more or fewer than {n} {noun_comma}.",
+          "Every sentence must carry {n} {noun_comma} and no others.",
+          "Sentences with any number of commas other than {n} are not allowed."
+        ]
+      },
+      "n_long_words_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "minimum count, per sentence, length in letters"
+        ],
+        "templates": [
+          "Include at least {n} {noun_word} of {letters} or more letters in every sentence.",
+          "Every sentence must contain at least {n} {noun_word} that are {letters} letters long or longer.",
+          "Each sentence must include no fewer than {n} {noun_word} of at least {letters} letters.",
+          "In every sentence, at least {n} {noun_word} must be {letters} letters or longer.",
+          "Give each sentence a minimum of {n} {noun_word} with {letters} letters or more.",
+          "No sentence may contain fewer than {n} {noun_word} of {letters} letters or more.",
+          "Every sentence must carry {n} or more {noun_word} of at least {letters} letters.",
+          "Sentences with fewer than {n} {noun_word} of {letters} letters or more are not allowed."
+        ]
+      },
+      "word_band_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "inclusive band, per sentence"
+        ],
+        "templates": [
+          "Use between {low} and {high} words in every sentence.",
+          "Each sentence must contain no fewer than {low} and no more than {high} words.",
+          "Every sentence must have at least {low} words and at most {high} words.",
+          "Keep each sentence's word count within the range {low} to {high}, inclusive.",
+          "No sentence may fall below {low} words or rise above {high} words.",
+          "Each sentence's length in words must lie between {low} and {high} inclusive.",
+          "Every sentence must run to at least {low} words and stop by {high}.",
+          "Sentences shorter than {low} words or longer than {high} words are not allowed."
+        ]
+      },
+      "semicolon_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "at least one, per sentence"
+        ],
+        "templates": [
+          "Use at least one semicolon in every sentence.",
+          "Each sentence must contain a semicolon.",
+          "Every sentence must include at least one semicolon.",
+          "No sentence may be written without a semicolon.",
+          "Place a semicolon in each sentence.",
+          "Each sentence must carry one or more semicolons.",
+          "Every sentence must carry a semicolon somewhere in it.",
+          "Sentences without a semicolon are not allowed."
+        ]
+      },
+      "comma_and_min_words": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "conjunction of two requirements, per sentence"
+        ],
+        "templates": [
+          "Give every sentence at least one comma and at least {n} words.",
+          "Each sentence must contain a comma and no fewer than {n} words.",
+          "Every sentence must include at least one comma and have {n} words or more.",
+          "No sentence may lack a comma, and none may fall below {n} words.",
+          "Each sentence needs a minimum of one comma and a minimum of {n} words.",
+          "Every sentence must satisfy both: at least one comma, and at least {n} words.",
+          "Every sentence must carry a comma and reach {n} words or more.",
+          "Sentences without a comma, or shorter than {n} words, are not allowed."
+        ]
+      },
+      "unique_words": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "whole answer, case-insensitive"
+        ],
+        "templates": [
+          "Do not repeat any word anywhere in the answer.",
+          "Every word in the answer must be unique, ignoring capitalization.",
+          "No word may appear more than once in the whole answer, regardless of case.",
+          "Use each word at most once across the entire answer, treating upper and lower case alike.",
+          "Across the whole answer, no word may occur twice, case-insensitively.",
+          "Each word in the answer must be distinct from every other, ignoring letter case.",
+          "No word may be used twice anywhere in the answer, whatever its capitalisation.",
+          "Repeating any word, in any case, is not allowed."
+        ]
+      },
+      "integer_sum": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count AND exact sum, whole answer, no other integers"
+        ],
+        "templates": [
+          "Include exactly {count} integers whose sum is {total}. Do not include any other integers.",
+          "Use precisely {count} integer tokens, totalling {total}, with no additional integers.",
+          "The answer must contain exactly {count} integers and no others, and they must add up to {total}.",
+          "Write exactly {count} integers, no more, whose total is {total}.",
+          "Include {count} integers exactly, summing to {total}, and no further integers.",
+          "Exactly {count} integers may appear in the answer, and their sum must equal {total}.",
+          "The answer must carry {count} integers and nothing further, adding to {total}.",
+          "Any number of integers other than {count}, or any total other than {total}, is not allowed."
+        ]
+      },
+      "distinct_integers": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count AND all different, whole answer"
+        ],
+        "templates": [
+          "Include exactly {count} distinct integers and no other integers.",
+          "Use precisely {count} different integer tokens; no additional integer tokens are allowed.",
+          "The answer must contain exactly {count} integers, all different from one another.",
+          "Write exactly {count} integers, each different, with no further integers.",
+          "Exactly {count} integers may appear in the answer, and no two may be equal.",
+          "Include {count} integers exactly, all distinct, and none besides.",
+          "The answer must carry {count} integers and nothing further, none repeated.",
+          "Any number of integers other than {count}, or any repetition among them, is not allowed."
+        ]
+      },
+      "forbid_word_set": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "every listed word, whole answer, case-insensitive"
+        ],
+        "templates": [
+          "Do not use the words {words_or} anywhere in the answer.",
+          "None of the words {words_and} may appear in your answer.",
+          "The answer must avoid all of these words: {words_list}.",
+          "Exclude {words_or} from the answer entirely.",
+          "No occurrence of {words_and} is permitted anywhere in the answer.",
+          "Write the answer without ever using {words_or}.",
+          "Every one of {words_and} must be kept out of the answer.",
+          "Using {words_or} anywhere in the answer is not allowed."
+        ]
+      },
+      "require_word_set": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "every listed word at least once, whole answer"
+        ],
+        "templates": [
+          "Use the words {words_and} at least once each.",
+          "Your answer must contain all of these words: {words_list}.",
+          "Each of {words_and} must appear somewhere in the answer.",
+          "Include every one of these words at least once: {words_list}.",
+          "All of {words_and} must occur in the answer at least once.",
+          "The answer must use each of the following at least once: {words_list}.",
+          "Every one of {words_and} must be used somewhere in the answer.",
+          "Leaving out any of {words_or} is not allowed."
+        ]
+      },
+      "require_word": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "at least one occurrence, whole answer"
+        ],
+        "templates": [
+          "Use the word \"{word}\" at least once.",
+          "Your answer must contain the word \"{word}\".",
+          "The word \"{word}\" must appear somewhere in the answer.",
+          "Include \"{word}\" at least once in the answer.",
+          "Make sure \"{word}\" occurs somewhere in the answer.",
+          "At least one occurrence of \"{word}\" is required.",
+          "The answer must use \"{word}\" somewhere.",
+          "Leaving \"{word}\" out of the answer is not allowed."
+        ]
+      },
+      "no_suffix": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "orthographic ending, NOT a part-of-speech class"
+        ],
+        "templates": [
+          "Do not use any word ending in the letters \"{suffix}\".",
+          "No word in the answer may end with the letters \"{suffix}\".",
+          "Avoid every word whose final letters are \"{suffix}\".",
+          "The answer must contain no word terminating in \"{suffix}\".",
+          "Exclude all words that finish with the letter sequence \"{suffix}\".",
+          "Write the answer without any word that ends \"{suffix}\".",
+          "Every word in the answer must end in something other than \"{suffix}\".",
+          "Using any word whose last letters are \"{suffix}\" is not allowed."
+        ]
+      },
+      "alliteration": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "minimum count, whole answer, first letter of a word"
+        ],
+        "templates": [
+          "Use at least {n} {noun_word} beginning with the letter {letter_upper}.",
+          "At least {n} {noun_word} in the answer must start with {letter_upper}.",
+          "The answer must include no fewer than {n} {noun_word} whose first letter is {letter_upper}.",
+          "Include {n} or more {noun_word} that begin with {letter_upper}.",
+          "A minimum of {n} {noun_word} must have {letter_upper} as their initial letter.",
+          "Across the whole answer, {n} {noun_word} or more must start with {letter_upper}.",
+          "The answer must carry {n} or more {noun_word} starting with {letter_upper}.",
+          "Fewer than {n} {noun_word} beginning with {letter_upper} is not allowed."
+        ]
+      },
+      "caps_word": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count, whole answer, fully capitalised, minimum length"
+        ],
+        "templates": [
+          "Include exactly {n} {noun_word} written entirely in capital letters, each of at least {letters} letters.",
+          "Exactly {n} {noun_word} in the answer must be in all capitals and at least {letters} letters long.",
+          "The answer must contain precisely {n} fully capitalised {noun_word} of {letters} letters or more.",
+          "Use {n} {noun_word} in upper case throughout, each at least {letters} letters, and no others.",
+          "Exactly {n} {noun_word} may appear in all capitals, and each must span at least {letters} letters.",
+          "There must be {n} all-capitals {noun_word} of {letters} letters or more, no more and no fewer.",
+          "The answer must carry {n} all-capitals {noun_word} of at least {letters} letters, and nothing further in capitals.",
+          "Any number of fully capitalised {noun_word} of {letters} letters or more other than {n} is not allowed."
+        ]
+      },
+      "exact_char_total": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count over the WHOLE answer, not per sentence"
+        ],
+        "templates": [
+          "Use exactly {n} {noun_char} in the whole answer.",
+          "The answer must contain precisely {n} {noun_char} in total.",
+          "Across the entire answer, the number of {char_plural} must be exactly {n}.",
+          "Include {n} {noun_char} overall, no more and no fewer.",
+          "The total count of {char_plural} in the answer must equal {n}.",
+          "Exactly {n} {noun_char} may appear anywhere in the answer.",
+          "The answer as a whole must carry {n} {noun_char}.",
+          "Any number of {char_plural} in the answer other than {n} is not allowed."
+        ]
+      },
+      "no_char": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "total absence over the WHOLE answer"
+        ],
+        "templates": [
+          "Do not use any {char_plural} anywhere in the answer.",
+          "The answer must contain no {char_plural} at all.",
+          "Avoid {char_plural} entirely.",
+          "No {char_singular} may appear anywhere in the answer.",
+          "Write the answer without using a single {char_singular}.",
+          "The count of {char_plural} in the answer must be zero.",
+          "The answer as a whole must carry no {char_plural}.",
+          "Using a {char_singular} anywhere in the answer is not allowed."
+        ]
+      },
+      "paren_pairs": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count of MATCHED pairs, whole answer, round brackets"
+        ],
+        "templates": [
+          "Use exactly {n} {noun_pair} of round brackets in the whole answer.",
+          "The answer must contain precisely {n} bracketed {noun_aside}, using round brackets.",
+          "Across the entire answer, exactly {n} {noun_pair} of parentheses must appear, each opened and closed.",
+          "Include {n} parenthetical {noun_aside} in round brackets, no more and no fewer.",
+          "Exactly {n} {noun_pair} of round brackets may appear anywhere in the answer, each properly closed.",
+          "The total number of matched round-bracket {noun_pair} in the answer must be {n}.",
+          "The answer as a whole must carry {n} matched {noun_pair} of round brackets.",
+          "Any number of matched round-bracket {noun_pair} other than {n}, or any unclosed bracket, is not allowed."
+        ]
+      },
+      "quote_pairs": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count of MATCHED pairs, whole answer, double quotes"
+        ],
+        "templates": [
+          "Use exactly {n} {noun_pair} of double quotation marks in the whole answer.",
+          "The answer must contain precisely {n} quoted {noun_phrase}, marked with double quotation marks.",
+          "Across the entire answer, exactly {n} {noun_pair} of double quotation marks must appear, each opened and closed.",
+          "Include {n} double-quoted {noun_phrase} overall, no more and no fewer.",
+          "Exactly {n} matched {noun_pair} of double quotation marks may appear anywhere in the answer.",
+          "The total number of closed double-quotation {noun_pair} must be {n}.",
+          "The answer as a whole must carry {n} matched {noun_pair} of double quotation marks.",
+          "Any number of matched double-quotation {noun_pair} other than {n}, or any unclosed mark, is not allowed."
+        ]
+      },
+      "exact_integer_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count over the WHOLE answer, duplicates allowed"
+        ],
+        "templates": [
+          "Include exactly {n} {noun_integer} in the whole answer.",
+          "The answer must contain precisely {n} {noun_integer} in total.",
+          "Across the entire answer, exactly {n} {noun_integer} must appear.",
+          "Use {n} {noun_integer} overall, no more and no fewer.",
+          "The total count of integers in the answer must equal {n}.",
+          "Exactly {n} {noun_integer} may appear anywhere in the answer.",
+          "The answer as a whole must carry {n} {noun_integer}.",
+          "Any number of integers in the answer other than {n} is not allowed."
+        ]
+      },
+      "min_integer_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "minimum over the WHOLE answer, no maximum implied"
+        ],
+        "templates": [
+          "Include at least {n} {noun_integer} in the whole answer.",
+          "The answer must contain no fewer than {n} {noun_integer} in total.",
+          "Across the entire answer, {n} or more {noun_integer} must appear.",
+          "Use {n} {noun_integer} or more overall.",
+          "The total count of integers in the answer must be at least {n}.",
+          "No fewer than {n} {noun_integer} may appear anywhere in the answer.",
+          "The answer as a whole must carry {n} {noun_integer} or more.",
+          "Fewer than {n} integers in the answer is not allowed."
+        ]
+      },
+      "max_integer_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "maximum over the WHOLE answer, zero is allowed"
+        ],
+        "templates": [
+          "Include at most {n} {noun_integer} in the whole answer.",
+          "The answer must contain no more than {n} {noun_integer} in total.",
+          "Across the entire answer, at most {n} {noun_integer} may appear.",
+          "Use {n} {noun_integer} or fewer overall.",
+          "The total count of integers in the answer must be at most {n}.",
+          "No more than {n} {noun_integer} may appear anywhere in the answer.",
+          "The answer as a whole must carry {n} {noun_integer} at most.",
+          "More than {n} integers in the answer is not allowed."
+        ]
+      },
+      "vowel_words_per_sentence": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "minimum count, per sentence, first letter"
+        ],
+        "templates": [
+          "Include at least {n} words beginning with a vowel in every sentence.",
+          "Each sentence must contain no fewer than {n} words that start with a vowel.",
+          "Every sentence must have {n} or more words whose first letter is a vowel.",
+          "No sentence may contain fewer than {n} vowel-initial words.",
+          "Give each sentence a minimum of {n} words starting with a vowel.",
+          "In every sentence, at least {n} words must begin with a vowel.",
+          "Every sentence must carry {n} or more words that open with a vowel.",
+          "Sentences with fewer than {n} vowel-initial words are not allowed."
+        ]
+      },
+      "caps_sentence_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count of SENTENCES carrying a property, not of sentences"
+        ],
+        "templates": [
+          "Exactly {n} {noun_sentence} must contain a word written entirely in capital letters of at least {letters} letters.",
+          "Precisely {n} of the sentences must include a fully capitalised word of {letters} letters or more.",
+          "Across the answer, exactly {n} {noun_sentence} may carry an all-capitals word of at least {letters} letters.",
+          "The number of sentences containing a capitalised word of {letters} or more letters must be exactly {n}.",
+          "Only {n} {noun_sentence} may hold a word in capitals of at least {letters} letters, no more and no fewer.",
+          "Exactly {n} {noun_sentence} must feature a word of {letters} letters or more written in capitals.",
+          "The count of sentences carrying an all-capitals word of {letters} or more letters must be {n}.",
+          "Any number of sentences containing a fully capitalised word of at least {letters} letters other than {n} is not allowed."
+        ]
+      },
+      "sentence_initial_forbidden_word": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "first word only, per sentence"
+        ],
+        "templates": [
+          "No sentence may begin with the word \"{word}\".",
+          "The first word of a sentence must never be \"{word}\".",
+          "Do not start any sentence with \"{word}\".",
+          "Every sentence must open with a word other than \"{word}\".",
+          "Sentences beginning with \"{word}\" are not permitted.",
+          "The opening word of each sentence must differ from \"{word}\".",
+          "Each sentence must start with something other than \"{word}\".",
+          "Beginning a sentence with \"{word}\" is not allowed."
+        ]
+      },
+      "question_sentence_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count of SENTENCES ending in a question mark"
+        ],
+        "templates": [
+          "Exactly {n} {noun_sentence} must end with a question mark.",
+          "Precisely {n} of the sentences must be questions ending in a question mark.",
+          "Across the answer, exactly {n} {noun_sentence} may finish with a question mark.",
+          "The number of sentences ending in a question mark must be exactly {n}.",
+          "Only {n} {noun_sentence} may close with a question mark, no more and no fewer.",
+          "Exactly {n} {noun_sentence} must terminate in a question mark.",
+          "The count of sentences ending in a question mark must be {n}.",
+          "Any number of sentences ending with a question mark other than {n} is not allowed."
+        ]
+      },
+      "no_digits": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "total absence of numerals, whole answer"
+        ],
+        "templates": [
+          "Do not use any digits.",
+          "Your answer must contain no numerals.",
+          "No digit may appear anywhere in the answer.",
+          "Write the answer without using any numeric characters.",
+          "The answer must be free of digits entirely.",
+          "Avoid every numeral in the answer.",
+          "The answer as a whole must carry no digits.",
+          "Using a numeral anywhere in the answer is not allowed."
+        ]
+      },
+      "percent_count": {
+        "invariants": [
+          "quantifier (all / at least one / exactly)",
+          "threshold value and its units",
+          "scope (per sentence vs whole answer)",
+          "relational direction (more / fewer / before / after)",
+          "exact vs minimum vs maximum semantics",
+          "exceptions (none are permitted unless stated in every wording)",
+          "exact count, whole answer, a number followed by %"
+        ],
+        "templates": [
+          "Include exactly {n} percentage {noun_expr} in the whole answer, each written with a percent sign.",
+          "The answer must contain precisely {n} {noun_expr} of the form 'a number followed by a percent sign'.",
+          "Across the entire answer, exactly {n} percentage {noun_expr} must appear.",
+          "Use {n} percentage {noun_expr} written with %, overall, no more and no fewer.",
+          "Exactly {n} numeric percentage {noun_expr} using the % symbol may appear.",
+          "The total number of percentage expressions (a number followed by %) must be {n}.",
+          "The answer as a whole must carry {n} percentage {noun_expr}, each a number followed by %.",
+          "Any number of percentage expressions other than {n} is not allowed."
+        ]
+      }
+    },
+    "system_message": "Produce only the requested answer. Do not discuss, restate, enumerate, or explain the constraints or your planning process.",
+    "feature_roles": {
+      "generative_scope": "exact_eligibility",
+      "logical_compatibility": "eligibility",
+      "entailment_duplication": "eligibility",
+      "verifier_validity": "eligibility",
+      "d": "caliper",
+      "g": "caliper",
+      "r": "caliper",
+      "kappa": "caliper",
+      "s_d": "caliper",
+      "s_g": "caliper",
+      "s_r": "caliper",
+      "s_max": "diagnostic",
+      "mahalanobis_distance": "ranking_after_eligibility",
+      "stochastic_weights": "weighting_after_admissibility",
+      "mutation_flip_rate": "diagnostic",
+      "response_words": "post_treatment_reported_never_matched",
+      "cross_sentence_planning_demand": "mechanism_never_matched"
+    },
+    "primary_estimand": "the J x 2 matrix tau_{j,o} = E_X[mu_A(B,X,o) - mu_A(C_j,X,o)], co-primary at both presentation orders, over the g1 panel of individually admissible references",
+    "reference_robust_claim_rule": "the simultaneous max-T lower bound on min_j tau_{j,o} must exceed zero at each order separately",
+    "secondary_estimands": [
+      "50/50 order average, labelled as such",
+      "stochastic reference intervention (only if g2 validated)",
+      "order contrast",
+      "GEE logistic model",
+      "homogeneity",
+      "g0 broad-eligible benchmark",
+      "U_test falsification"
+    ],
+    "gates": {
+      "0_implementation": {
+        "gate": "0_implementation",
+        "status": "PASS",
+        "reason": "every implementation check passed",
+        "quantities": {
+          "n_checks": 110,
+          "failed": []
+        },
+        "thresholds": {
+          "required": "all"
+        },
+        "more_data_could_resolve": false,
+        "new_protocol_version_required": false,
+        "dry_run_bypassed": false,
+        "recorded_utc": "2026-08-09T10:01:01.830774+00:00",
+        "passed": true
+      },
+      "M_measurement": {
+        "gate": "M_measurement",
+        "status": "AUDIT_MISSING",
+        "reason": "the paraphrase semantic audit has not been signed",
+        "quantities": {
+          "paraphrase_audit_signed": false,
+          "paraphrase_audit_approved": false,
+          "paraphrase_audit_sha256": null,
+          "verifier_audit_signed": false,
+          "verifier_audit_passed": false,
+          "verifier_audit_status": "AUDIT_MISSING",
+          "verifier_audit_sha256": null,
+          "cases_per_truth_class_tier1": 73,
+          "cases_per_truth_class_tier2": 16,
+          "error_ceiling": 0.05,
+          "stratum_error_ceiling": 0.2,
+          "tier1_units": [
+            "A",
+            "B"
+          ],
+          "tier2_strata": 31,
+          "human_labels_required": 1284,
+          "constraints_covered": 41,
+          "missing_units": [],
+          "class_short_units": [],
+          "reliability_failed_units": []
+        },
+        "thresholds": {
+          "kappa_floor": 0.8,
+          "error_ceiling": 0.05,
+          "stratum_error_ceiling": 0.2,
+          "cases_per_truth_class_tier1": 73,
+          "cases_per_truth_class_tier2": 16
+        },
+        "more_data_could_resolve": true,
+        "new_protocol_version_required": false,
+        "dry_run_bypassed": true,
+        "recorded_utc": "2026-08-09T10:01:09.306399+00:00",
+        "passed": false
+      },
+      "1_u_bank": {
+        "gate": "1_u_bank",
+        "status": "U_PRECISION_INSUFFICIENT",
+        "reason": "families ['lexical', 'format', 'numerical', 'bridge'] would have enough targets if the indeterminate candidates were resolved",
+        "quantities": {
+          "eligible": {
+            "lexical": 1,
+            "format": 0,
+            "numerical": 0,
+            "bridge": 0
+          },
+          "indeterminate": {
+            "lexical": 3,
+            "format": 5,
+            "numerical": 7,
+            "bridge": 3
+          },
+          "screening_clusters": 8
+        },
+        "thresholds": {
+          "lexical": 3,
+          "format": 3,
+          "numerical": 3,
+          "bridge": 2
+        },
+        "more_data_could_resolve": true,
+        "new_protocol_version_required": false,
+        "dry_run_bypassed": true,
+        "recorded_utc": "2026-08-09T10:01:10.354214+00:00",
+        "passed": false
+      },
+      "2_feasibility": {
+        "gate": "2_feasibility",
+        "status": "PASS",
+        "reason": "exactly 6 individually admissible references in both orders",
+        "quantities": {
+          "n_eligible": 0,
+          "eligible": [],
+          "unsupported_components": [
+            "g|U_FMT_COLON1|target_first",
+            "g|U_FMT_COLON1|added_first",
+            "g|U_LEX_ALLIT_P|added_first",
+            "g|U_NUM_SUM100|target_first",
+            "g|U_NUM_SUM100|added_first"
+          ],
+          "paraphrases_used": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "top_blocking": {
+            "g|U_FMT_COLON1|target_first": 16,
+            "g|U_FMT_COLON1|added_first": 16,
+            "g|U_NUM_SUM100|target_first": 16,
+            "g|U_LEX_ALLIT_P|added_first": 16,
+            "g|U_NUM_SUM100|added_first": 16
+          },
+          "dry_run_bypass": true,
+          "selected": [
+            "S_SEMICOLON",
+            "C_W3",
+            "S_COMMA",
+            "S_MINWORDS15",
+            "C_L3",
+            "S_MINWORDS12"
+          ]
+        },
+        "thresholds": {
+          "required": 6
+        },
+        "more_data_could_resolve": false,
+        "new_protocol_version_required": false,
+        "dry_run_bypassed": false,
+        "recorded_utc": "2026-08-09T10:02:00.063040+00:00",
+        "passed": true
+      },
+      "3_validation": {
+        "gate": "3_validation",
+        "status": "REFERENCE_VALIDATION_FAILED",
+        "reason": "g1 failed on ['evaluable', 'worst individual reference bound on U_val']",
+        "quantities": {
+          "g1_passed": false,
+          "g2_passed": false,
+          "primary_authorized": false,
+          "stochastic_authorized": false,
+          "g0_role": "benchmark and falsification comparator; authorizes nothing",
+          "architectures": [
+            {
+              "architecture": "g0_broad_eligible",
+              "role": "benchmark only",
+              "mae": NaN,
+              "q90": NaN,
+              "n_pseudo_focal": NaN
+            },
+            {
+              "architecture": "g1_calipered_panel",
+              "role": "PRIMARY, must pass alone",
+              "mae": NaN,
+              "q90": NaN,
+              "n_pseudo_focal": NaN
+            },
+            {
+              "architecture": "g2_synthetic_weighted",
+              "role": "secondary, validated separately",
+              "mae": NaN,
+              "q90": NaN,
+              "n_pseudo_focal": NaN
+            },
+            {
+              "architecture": "random_eligible_sets",
+              "role": "falsification comparator",
+              "mae": NaN,
+              "q90": NaN,
+              "n_pseudo_focal": 0.0
+            }
+          ],
+          "criteria": [
+            {
+              "criterion": "evaluable",
+              "value": 0.0,
+              "threshold": 1.0,
+              "passed": false,
+              "architecture": "g1_calipered_panel"
+            },
+            {
+              "criterion": "worst individual reference bound on U_val",
+              "value": 0.4098635227060048,
+              "threshold": 0.1,
+              "passed": false,
+              "architecture": "g1_calipered_panel"
+            },
+            {
+              "criterion": "leave-one-reference-out shift bound",
+              "value": 0.04229617120086557,
+              "threshold": 0.05,
+              "passed": true,
+              "architecture": "g1_calipered_panel"
+            },
+            {
+              "criterion": "evaluable",
+              "value": 0.0,
+              "threshold": 1.0,
+              "passed": false,
+              "architecture": "g2_synthetic_weighted"
+            },
+            {
+              "criterion": "max single weight",
+              "value": 0.30000000000000454,
+              "threshold": 0.3,
+              "passed": true,
+              "architecture": "g2_synthetic_weighted"
+            },
+            {
+              "criterion": "effective panel size J_eff",
+              "value": 3.6115147533390695,
+              "threshold": 4.0,
+              "passed": false,
+              "architecture": "g2_synthetic_weighted"
+            }
+          ],
+          "pseudo_focal_cohort": [
+            "C_L3",
+            "C_O2",
+            "C_W3"
+          ],
+          "random_reference_mae_mean": null,
+          "u_build": [
+            "U_FMT_COLON1",
+            "U_LEX_ALLIT_P",
+            "U_NUM_SUM100"
+          ],
+          "u_val": [
+            "U_FMT_SEMI2",
+            "U_LEX_FORBID3",
+            "U_NUM_ONEPCT"
+          ],
+          "u_test": [
+            "U_FMT_QUOTE1",
+            "U_LEX_REQUIRE3",
+            "U_NUM_TWOINT"
+          ],
+          "selected_references": [
+            "S_SEMICOLON",
+            "C_W3",
+            "S_COMMA",
+            "S_MINWORDS15",
+            "C_L3",
+            "S_MINWORDS12"
+          ]
+        },
+        "thresholds": {
+          "mae": 0.05,
+          "q90": 0.1,
+          "individual": 0.1,
+          "loo": 0.05
+        },
+        "more_data_could_resolve": false,
+        "new_protocol_version_required": true,
+        "dry_run_bypassed": true,
+        "recorded_utc": "2026-08-09T10:02:16.444216+00:00",
+        "passed": false
+      },
+      "3b_wording": {
+        "gate": "3b_wording",
+        "status": "WORDING_VALIDATION_FAILED",
+        "reason": "comparability does not transport for [('C_L3', 6), ('C_L3', 7), ('C_W3', 6), ('C_W3', 7), ('S_COMMA', 6), ('S_COMMA', 7), ('S_MINWORDS12', 6), ('S_MINWORDS12', 7), ('S_MINWORDS15', 6), ('S_MINWORDS15', 7), ('S_SEMICOLON', 6), ('S_SEMICOLON', 7)]",
+        "quantities": {
+          "rule": "every (reference, held-out wording, component, order) cell",
+          "n_cells": 156,
+          "worst_cell_bound": 1.5132425871511854,
+          "worst_averaged_bound_diagnostic": 1.0243970466361803,
+          "held_out_wordings": [
+            6,
+            7
+          ],
+          "tasks": [
+            "WRD01",
+            "WRD02",
+            "WRD03",
+            "WRD04"
+          ],
+          "components": [
+            "d",
+            "g|U_FMT_SEMI2|target_first",
+            "g|U_FMT_SEMI2|added_first",
+            "g|U_LEX_FORBID3|target_first",
+            "g|U_LEX_FORBID3|added_first",
+            "g|U_NUM_ONEPCT|target_first",
+            "g|U_NUM_ONEPCT|added_first",
+            "r|U_FMT_SEMI2|target_first",
+            "r|U_FMT_SEMI2|added_first",
+            "r|U_LEX_FORBID3|target_first",
+            "r|U_LEX_FORBID3|added_first",
+            "r|U_NUM_ONEPCT|target_first",
+            "r|U_NUM_ONEPCT|added_first"
+          ],
+          "caliper_multiple": 1.5,
+          "worst_bound": 1.5132425871511854,
+          "n_failing_cells": 156,
+          "per_reference_wording": {
+            "C_L3|p6": {
+              "worst_bound": 1.1619621744185298,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "C_L3|p7": {
+              "worst_bound": 1.1758317839897652,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "C_W3|p6": {
+              "worst_bound": 1.294635516562403,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "C_W3|p7": {
+              "worst_bound": 1.25,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_COMMA|p6": {
+              "worst_bound": 1.1570418553531596,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_COMMA|p7": {
+              "worst_bound": 1.2632667660555439,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_MINWORDS12|p6": {
+              "worst_bound": 1.5132425871511854,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_MINWORDS12|p7": {
+              "worst_bound": 1.0217995939619262,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_MINWORDS15|p6": {
+              "worst_bound": 1.4560603205248925,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_MINWORDS15|p7": {
+              "worst_bound": 1.3451390065958047,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_SEMICOLON|p6": {
+              "worst_bound": 1.286759617562659,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            },
+            "S_SEMICOLON|p7": {
+              "worst_bound": 0.9366470811311146,
+              "worst_tolerance": 0.1471574586616943,
+              "n_failing": 13
+            }
+          },
+          "passed": false
+        },
+        "thresholds": {
+          "caliper_multiple": 1.5
+        },
+        "more_data_could_resolve": false,
+        "new_protocol_version_required": true,
+        "dry_run_bypassed": true,
+        "recorded_utc": "2026-08-09T10:02:21.919886+00:00",
+        "passed": false
+      }
+    },
+    "pool_dependence": {
+      "natural_only": {
+        "n_in_pool": 3,
+        "n_declared_eligible": 3,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "natural_plus_parameter_variants": {
+        "n_in_pool": 9,
+        "n_declared_eligible": 9,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "full_declared_pool": {
+        "n_in_pool": 16,
+        "n_declared_eligible": 16,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_alphabetical_starts": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_comma_and_min_words": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_commas_per_sentence": {
+        "n_in_pool": 14,
+        "n_declared_eligible": 14,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_long_word_per_sentence": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_min_words_per_sentence": {
+        "n_in_pool": 11,
+        "n_declared_eligible": 11,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_n_long_words_per_sentence": {
+        "n_in_pool": 14,
+        "n_declared_eligible": 14,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_semicolon_per_sentence": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_sentence_ends_long": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_sentence_initial_letter": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      },
+      "leave_out_word_band_per_sentence": {
+        "n_in_pool": 15,
+        "n_declared_eligible": 15,
+        "n_passing_all_calipers": 0,
+        "six_control_identification": false,
+        "eligible": ""
+      }
+    },
+    "exclusions": "none; generation failures score as failures",
+    "stopping_rule": "fixed N, no optional stopping, no interim looks",
+    "n_blocks_per_contrast": 36
+  },
+  "metadata": {
+    "created_utc": "2026-08-09T10:02:21.942482+00:00",
+    "model_profile": "dev_fast",
+    "produces_evidence": false,
+    "stamp": "DEVELOPMENT_ONLY",
+    "execution_sha256": "71a951d44c2d3cab42c79f1f2adf3b28b17bec7c4ec719e9f8cb2e9f533c18cf",
+    "execution_condition": {
+      "protocol_version": "v15",
+      "model_profile": "dev_fast",
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "engine": "hf_transformers",
+      "dtype": "float16",
+      "attn_implementation": "sdpa",
+      "do_sample": true,
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "max_new_tokens": 180,
+      "max_input_tokens": 1024,
+      "initial_batch_size": 4,
+      "adaptive_batching": "off",
+      "base_seed": 20260901,
+      "transformers": null,
+      "tokenizers": null,
+      "torch": null,
+      "dry_run": true
+    },
+    "hardware_recorded_separately": {
+      "cuda_available": false,
+      "python": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+      "platform": "Linux-6.18.5-fc-v20-x86_64-with-glibc2.39",
+      "cpu_ram_gb": 7.84,
+      "disk_free_gb": 29.45,
+      "colab_release_tag": null
+    },
+    "run_id": "run-20260809T100033Z-71a951d4"
+  }
+}

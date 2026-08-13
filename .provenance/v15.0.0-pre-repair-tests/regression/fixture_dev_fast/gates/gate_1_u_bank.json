@@ -1,0 +1,31 @@
+{
+  "gate": "1_u_bank",
+  "status": "U_PRECISION_INSUFFICIENT",
+  "reason": "families ['lexical', 'format', 'numerical', 'bridge'] would have enough targets if the indeterminate candidates were resolved",
+  "quantities": {
+    "eligible": {
+      "lexical": 1,
+      "format": 0,
+      "numerical": 0,
+      "bridge": 0
+    },
+    "indeterminate": {
+      "lexical": 3,
+      "format": 5,
+      "numerical": 7,
+      "bridge": 3
+    },
+    "screening_clusters": 8
+  },
+  "thresholds": {
+    "lexical": 3,
+    "format": 3,
+    "numerical": 3,
+    "bridge": 2
+  },
+  "more_data_could_resolve": true,
+  "new_protocol_version_required": false,
+  "dry_run_bypassed": true,
+  "recorded_utc": "2026-08-09T10:01:10.354214+00:00",
+  "passed": false
+}
