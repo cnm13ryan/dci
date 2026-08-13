@@ -92,6 +92,20 @@ MEDIAL_ABBREVIATIONS = frozenset({
 # it on generation `07769620c3a7a4468d08`. `[^\W\d_]` is "any Unicode letter".
 TRAILING_ABBREVIATION = re.compile(r"([^\W\d_](?:\.?[^\W\d_])*)\.$", re.UNICODE)
 
+# Punctuation a sentence may legitimately OPEN with, before its first letter.
+# The capitalisation heuristic has to look through these, and the set is closed
+# for the same reason the abbreviation tables are: an open-ended rule would make
+# the semantics untestable. Quotation marks and brackets cover ordinary prose;
+# the Markdown run covers emphasis and headings, which the models emit freely.
+OPENING_PUNCTUATION = "\"'`“‘„‚«‹([{⟨*_~#>"
+
+
+def _opens_with_capital(following: str) -> bool:
+    """Whether `following` starts a capitalised word, ignoring any opening
+    punctuation in front of it."""
+    stripped = following.lstrip(OPENING_PUNCTUATION)
+    return bool(stripped) and stripped[0].isupper()
+
 
 def _ends_sentence(left: str, right: str) -> bool:
     """Whether the terminator ending `left` really closes a sentence.
@@ -102,7 +116,15 @@ def _ends_sentence(left: str, right: str) -> bool:
     if terminator in "!?":
         return True                       # never ambiguous
     following = right.lstrip()
-    follows_capital = bool(following) and following[0].isupper()
+    # A sentence may open with punctuation, so this looks THROUGH it. Testing
+    # `following[0]` directly read the quote in
+    #     It ended at 6 p.m. "Tomorrow begins early."
+    # as the first character, found it was not upper-case, rejected the boundary
+    # and returned one sentence where there are two. The same applied to a
+    # bracketed or Markdown-emphasised sentence, and to the ellipsis branch
+    # below. Exact sentence count is the primary outcome, so every such merge
+    # moved the measured outcome directly.
+    follows_capital = _opens_with_capital(following)
 
     if left.endswith(".."):                # an ellipsis, not a full stop
         return follows_capital

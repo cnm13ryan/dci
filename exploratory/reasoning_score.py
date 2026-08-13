@@ -12,6 +12,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from vllm_backend.contract import canonicalise_row  # noqa: E402
+
 import numpy as np
 import pandas as pd
 
@@ -24,7 +27,9 @@ pd.set_option("display.width", 250)
 
 PATH = Path(sys.argv[1])
 TARGET = "A"
-rows = [json.loads(line) for line in PATH.open()]
+# ONE migration boundary: these files are archived generations and are not
+# being rewritten. Canonical names only, below this line.
+rows = [canonicalise_row(json.loads(line)) for line in PATH.open()]
 frame = pd.DataFrame(rows)
 
 # --- validity gate: is the answer channel an ANSWER, or continued scratch? ---
@@ -32,16 +37,16 @@ frame = pd.DataFrame(rows)
 SCRATCH = re.compile(
     r"\b(wait|let me (check|count|think|see)|i need to|hmm|actually,? (no|wait)|"
     r"let'?s count|recount|that'?s wrong)\b", re.IGNORECASE)
-frame["scratch_marker"] = frame["answer"].str.contains(SCRATCH, na=False)
-frame["answer_empty"] = frame["answer"].str.len().eq(0)
+frame["scratch_marker"] = frame["final_answer"].str.contains(SCRATCH, na=False)
+frame["answer_empty"] = frame["final_answer"].str.len().eq(0)
 
 print("### Validity of the answer channel at each assigned budget\n")
 gate = frame.groupby("reasoning_budget").agg(
-    n=("answer", "size"),
+    n=("final_answer", "size"),
     cap_hit=("reasoning_cap_hit", "mean"),
-    closed_naturally=("closed_naturally", "mean"),
+    reasoning_closed=("reasoning_closed", "mean"),
     realised_reasoning=("reasoning_tokens", "mean"),
-    answer_tokens=("answer_tokens", "mean"),
+    final_answer_tokens=("final_answer_tokens", "mean"),
     answer_truncated=("answer_truncated", "mean"),
     empty=("answer_empty", "mean"),
     scratch_in_answer=("scratch_marker", "mean"))
@@ -57,17 +62,17 @@ def verify(text, constraint):
 
 
 frame["a_pass"], frame["a_status"] = zip(*[
-    verify(t, target_id) for t in frame["answer"]])
+    verify(t, target_id) for t in frame["final_answer"]])
 frame["arm_pass"], _ = zip(*[verify(t, a) for t, a in
-                             zip(frame["answer"], frame["arm"])])
+                             zip(frame["final_answer"], frame["arm"])])
 frame["c_pass"], _ = zip(*[verify(t, v) for t, v in
-                           zip(frame["answer"], frame["variant"])])
+                           zip(frame["final_answer"], frame["variant"])])
 frame["scorable"] = frame["a_status"] != "unscorable"
 frame["a_failure"] = (1 - np.asarray(frame["a_pass"], float))
 frame["joint"] = (np.asarray(frame["a_pass"], float)
                   * np.asarray(frame["arm_pass"], float)
                   * np.asarray(frame["c_pass"], float))
-features = pd.DataFrame([mechanism.row_features(t) for t in frame["answer"]],
+features = pd.DataFrame([mechanism.row_features(t) for t in frame["final_answer"]],
                         index=frame.index)
 frame = pd.concat([frame, features], axis=1)
 
@@ -127,5 +132,5 @@ print(frame.groupby(["reasoning_budget", "variant", "arm"])["reasoning_tokens"]
       .mean().unstack(["variant", "arm"])
       .to_string(float_format=lambda v: f"{v:.1f}"))
 
-frame.drop(columns=["reasoning"]).to_json(
+frame.drop(columns=["reasoning_text"]).to_json(
     PATH.with_suffix(".scored.jsonl"), orient="records", lines=True)

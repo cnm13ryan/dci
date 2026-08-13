@@ -304,3 +304,123 @@ narrow** · **Mechanistically suggestive** · **Falsified** · **Unidentified**.
 | W10.12 | The unattached/enclosing distinction predicts amplification | **Intervention-supported but narrow** | every complied unattached variant amplifies, every enclosing one does not, across two wordings | *why* it does is now unexplained: not placement, not atomicity, not mark production | Qwen3-4B-Instruct, QAC |
 | W10.13 | An unattached mark amplifies because it can **substitute for a sentence boundary** while a wrapping construct cannot | **Mechanistically suggestive** | consistent with the semicolon's chain_share 0.43 and 1.3 sentences | the ellipsis amplifies with chain_share 0.03 — so this cannot be the whole account | untested by intervention |
 | W10.14 | `chain_share` mediates amplification | **Unidentified** (unchanged) | — | semicolon and ellipsis dissociate on it | — |
+
+---
+
+# Round 11 — the arbitration programme (`runs/arbitration_program_20260811T185546Z`)
+
+6,282 generations, correct per-unit seeds, 4 replicates. Labels as in Round 10.
+Every claim here is estimated by a 10,000-draw cluster bootstrap over the 20
+tasks and was recomputed independently from the raw JSONL (282 quantities, no
+disagreements).
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W11.1 | The Round 9/10 phenomenon survives correct decoder seeds | **Established within tested conditions** | all six headlines reproduce; per-replicate Δ agrees in sign in all four replicates of all four Experiment 1 cells | per-replicate spread 0.15–0.35, so cell-level differences below ~0.2 stay unresolvable | Qwen3-4B, Pair 3, k = 3 |
+| W11.2 | Reasoning abolishes ordinary interference | **Established within tested conditions** | τ_control falls to −0.025…+0.087 at b = 4096 in **all six** orders and on **both** models | b = 0 → 4096 mixes mode activation with dose; the nine-budget dose curve is Round 10's | both models, six orders |
+| W11.3 | Semicolon-conditioned interference is not abolished | **Established within tested conditions** | τ_amp = +0.550 [+0.450, +0.650] at QAC, b = 4096; Δ positive in all six orders at b = 4096, five intervals excluding zero | **fails to transport** to SmolLM3-3B (Δ = −0.062) | Qwen3-4B |
+| W11.4 | The sign of the semicolon's effect is set by instruction **order**, not by the mark | **Established within tested conditions** | Δ at b = 0 spans −0.537 (ACQ) to +0.388 (CQA) across the six permutations of the same three strings | — | Qwen3-4B, b = 0 |
+| W11.5 | A simple positional rule explains the order effect | **FALSIFIED** | — | 14 partitions tested; 3 separate one quantity each, by 1.16–1.33× their own within-group spread; none separates all three | six orders, 20 tasks |
+| W11.6 | ACQ's protection is a positional special case of a gradient | **Unidentified** | — | the three orders sharing each of ACQ's features give Δ = +0.000, +0.013, +0.175 | — |
+| W11.7 | Reasoning raises joint satisfaction | **FALSIFIED** | — | P(both) ≤ 0.113 in Experiment 1's 8 cells and ≥ 0.15 in only 1 of the order map's 24; reasoning moves 0.2–0.6 of mass between "neither" and "target only" | all conditions, both models |
+| W11.8 | An explicit priority cue changes which instruction survives | **FALSIFIED** | — | Ψ = +0.037 / −0.013 / −0.087 / −0.113, every interval containing zero; the one contrast clearing zero is `B>A − equal` = **+0.163**, the wrong direction | Qwen3-4B, QAC, k = 3 |
+| W11.9 | The priority null is inattention to the cue | **FALSIFIED** | — | reasoning traces mention priority/preference/trade-off in 0.54–0.69 of directed rows vs 0.21–0.39 under equal priority | as above |
+| W11.10 | A stated priority produces general assistance instead | **FALSIFIED** | — | `both(A>B) − both(equal)` = −0.062 [−0.125, −0.013] at the semicolon, b = 4096; every other contrast contains zero | as above |
+| W11.11 | The reasoning effect transports to a second lineage | **Established within tested conditions** | SmolLM3-3B: Γ = +0.400 [+0.113, +0.688] (QAC), +0.300 [+0.075, +0.537] (ACQ); τ_control +0.263 → +0.025 | one second model | byte-identical prompts |
+| W11.12 | The semicolon amplification transports | **FALSIFIED (within this comparison)** | — | Δ at b = 4096 is −0.062 (QAC) and −0.013 (ACQ) on SmolLM3-3B; Δ at b = 0 is **negative in both orders** | weakened by SmolLM3 background compliance 0.194–0.575 and a reference arm reaching 0.675 A-failure |
+| W11.13 | The order interaction transports | **FALSIFIED (within this comparison)** | — | Γ_QAC ≈ Γ_ACQ on SmolLM3 (+0.400 vs +0.300, overlapping) where Qwen3-4B differs threefold | as above |
+| W11.14 | The amplifier acts through the **sentence boundary** | **Mechanistically suggestive** (unchanged from W10.13) | the semicolon shortens answers by 0.35–0.72 sentences on Qwen3-4B and 0.42–1.17 on SmolLM3-3B; two hand-found degenerate satisfactions place the mark where a boundary would go (`…itself.; The`, a free-standing `;`) | both are incidental observations, not manipulations | untested by intervention — this is the recommended next experiment |
+| W11.15 | The arbitration observed is target-versus-focal | **Unidentified** | — | B is satisfied in 0.000–0.138 of focal-arm rows and "focal only" occurs in 7 of 640; the contest measured is target-versus-nothing | limits every arbitration reading in Rounds 9–11 |
+
+---
+
+# Round 12 — boundary mechanism and focal repair (`runs/mechanism_and_focal_repair_20260811T204943Z`)
+
+1,648 generations, Round 11 execution condition unchanged. Labels as before.
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W12.1 | A mark that can occupy a sentence boundary interferes with sentence-defined constraints more than a matched mark that cannot | **Intervention-supported** | Δ_boundary = **+0.512** [+0.375, +0.662] at b = 4096 and +0.588 [+0.438, +0.738] at b = 0; 17/20 and 19/20 tasks positive with **0 negative**; all 8 replicate cells positive | degree compliance is 0.167 below the semicolon's; the compliant-only split points the same way (+0.530, +0.566) but is post-treatment | Qwen3-4B, QAC, k = 3, 20 pilot tasks |
+| W12.2 | The mechanism variable separates the two conditions | **Established within tested conditions** | `splice_count > 0` in 0.887–0.939 of complied semicolon answers, **0.000** of complied degree answers, every cell | a proxy, and descriptive — a property of the produced text | as above |
+| W12.3 | The interference is about a mark being present and freely placed | **FALSIFIED** | — | τ(degree) = **−0.037** [−0.150, +0.062] at b = 4096 for one mark, exactly one, freely placed, identical wording | as above |
+| W12.4 | Reasoning erodes the semicolon's effect | **Not supported** | — | Γ = −0.075 [−0.212, +0.075]; the gap is as wide at b = 0 as at b = 4096 | as above |
+| W12.5 | The boundary account is causal on the mark's *use* | **Unidentified** | — | the intervention assigns the instruction; boundary behaviour follows. `X_NO_SEMI_SPLICE` was never crossed with this design | the recommended next experiment |
+| W12.6 | A shorter chain of sentence-length increases moves the focal off its floor | **Established within tested conditions** | focal compliance 0.033 → 0.258 → 0.467 across B3 → B2 → B1 | — | calibration tasks CAL13–CAL32, X_PAREN_FREE |
+| W12.7 | Moving the focal off its floor creates genuine A-versus-B competition | **FALSIFIED** | — | `P(focal only)` = 0.000, 0.000, **0.008** across the ladder; the probability moves into *both* (0.033 → 0.258 → 0.458) and the target climbs to 0.958 | as above |
+| W12.8 | Round 11's priority null was caused by the focal instruction's floor | **Weakened** | the floor was real and was repaired | the *focal only* state still did not appear, so the obstacle was not the focal being too hard | as above |
+| W12.9 | The focal-only state can be produced at all | **Established within tested conditions** | under `X_SEMICOLON_FREE`, `X_B_INC1` gives P(focal only) = 0.133 at b = 0 and 0.183 at b = 4096 | observed, not acted on: the calibration background is fixed at X_PAREN_FREE and switching would select the condition that gives the wanted result | secondary calibration only |
+| W12.10 | An explicit priority cue can change which instruction survives when both are viable | **Untested** | — | the priority re-test was **stopped** by the directive's stop condition after `NONDEGENERATE_FOCAL_NOT_IDENTIFIED` | — |
+| W12.11 | The asterisk is a usable non-boundary control | **FALSIFIED** | — | 79.2% of combined answers carry more than one asterisk; markup collision 0.188 | pre-registered hazard |
+
+---
+
+# Round 13 — anti-splice instrument (`runs/semicolon_splice_intervention_20260811T233021Z`)
+
+160 generations, manipulation preflight only; the main experiment was not run.
+
+| # | claim | status | evidence for | evidence against / limits | boundaries |
+|---|---|---|---|---|---|
+| W13.1 | `X_NO_SEMI_SPLICE` suppresses semicolon splicing when only one semicolon is required | **FALSIFIED** | — | P(splice>0 \| compliant) = 0.946 anti-splice vs 0.974 off-route at b = 4096, reduction **0.028**; **1.000 in both** at b = 0 | Qwen3-4B, QACD, k = 4, calibration tasks CAL33–CAL52 |
+| W13.2 | The anti-splice instruction works by suppressing the semicolon itself | **FALSIFIED** | — | semicolon compliance 0.925 under anti-splice vs 0.950 off-route — the mark survives | as above |
+| W13.3 | The failure is an instruction-load effect | **FALSIFIED** | — | the matched off-route instruction at identical load is obeyed **1.000**; the anti-splice one **0.050** | as above |
+| W13.4 | This model follows a count constraint on a mark but not a usage constraint on the same mark | **Established within tested conditions** | 0.925 semicolon-count compliance against 0.050 anti-splice compliance, same prompt, same answer | one mark, one usage constraint, one wording | as above |
+| W13.5 | The null is a `splice_count` artefact | **Ruled out** | — | 11/12 hand-read flags are unambiguous clause joins; the high-precision rule accounts for 0.610 of anti-splice flags vs 0.486 of off-route flags, so no differential bias | proxy tests only the following side of the mark |
+| W13.6 | Boundary-like semicolon USE causally contributes to the interference | **Unidentified — unchanged** | — | the intervention that would have tested it did not land; Ω was never computed and no outcome contrast was generated | the causal question remains open |
+| W13.7 | The splice route is closable by instruction in this model | **Unidentified** | — | one of six registry paraphrases tested; the others were deliberately not tried after seeing the failure | a prospective wording screen is the recommended next experiment |
+
+---
+
+> The section below records a different branch's lineage
+> (`exp/cross-model-transport`) and was merged in alongside the arbitration
+> results above. The two cover disjoint claims; neither supersedes the other.
+
+---
+
+## H. Cross-model transport (branch `exp/cross-model-transport`)
+
+Five open-weight checkpoints, one frozen DCI slice (A = exact 4 sentences,
+B = increasing lengths, R = sentence-initial S, QAC, load 3, 20 pilot tasks ×
+2 replicates = 160 rows per checkpoint per condition). Full detail in
+`CROSS_MODEL_EXECUTION_MATRIX.md`, `CROSS_MODEL_DCI_RESULTS.md` and
+`CROSS_MODEL_DECISIONS.md`.
+
+**Execution caveat that applies to every row below.** These ran on
+**Transformers 5.15.0**, because vLLM is not installed on this machine and no
+ROCm build is present. The canonical τ = +0.400 was produced by vLLM on
+`Qwen/Qwen3-4B`. Nothing here may be placed beside that number as the same
+execution condition.
+
+### Observations
+
+| # | observation | evidence | status | confidence |
+|---|---|---|---|---|
+| **O-X1** | **The target instruction does not fail on any newer checkpoint tested.** A-compliance is 1.000 in every arm and background for Qwen3.5-4B, gemma-4-E4B-it and gemma-4-12B-it, and 0.875–0.950 for Qwen3.5-9B | 800 rows across 5 model×condition slices, all guards passed, independently recomputed | descriptive | **0.90** |
+| **O-X2** | **τ(B→A) is therefore not estimable on 4 of 5 slices.** Where the target never fails in either arm, τ = 0 by construction, not by absence of interference | `degeneracy = TARGET_CEILING` in 9 of 10 model×background cells | structural | **0.95** |
+| **O-X3** | The one estimable cell is **Qwen3.5-9B / no-thinking / semicolon: τ = −0.150 [−0.300, 0.000]** — the *opposite* sign from the canonical result, interval touching zero | focal A-failure 0.100 vs reference 0.250 | descriptive | 0.70 |
+| **O-X4** | **Arbitration has moved.** "Focal only" and "neither" are ~0 everywhere; the model always keeps the target and trades away the focal instruction | four-state table, all slices | descriptive | 0.90 |
+| **O-X5** | **Reasoning buys joint satisfaction on gemma-4-E4B-it**: P(both) 0.20 → 0.90 (control) and 0.175 → 0.875 (semicolon) from no-thinking to natural reasoning, with the target already at ceiling in both | 320 rows, same checkpoint, same slice | descriptive; mode manipulated | 0.85 |
+| **O-X6** | **gemma-4-12B-it satisfies both instructions without thinking at all**: P(both) = 1.000 control, 0.900 semicolon; B-compliance 0.950 | 160 rows | descriptive | 0.85 |
+| **O-X7** | The semicolon still costs something, but on **joint satisfaction rather than the target**: Δ_J = **−0.100 [−0.200, −0.025]** on gemma-4-12B-it | secondary contrast, not pre-registered | descriptive | 0.70 |
+| **O-X8** | **Qwen3.5's natural reasoning does not terminate within this hardware's envelope** — independently reproducing **I21** from a different measurement (natural endpoint rather than capped budget) | Stage E pilot did not close under a 39,515-token ceiling | observation | 0.85 |
+| **O-X9** | Confirmed reasoning leakage **0/800**. 3 detector hits, all inspected, all ordinary prose using *wait* | `runs/xm_audit/leakage_queue_*.jsonl`, manual classification recorded | descriptive | 0.95 |
+
+### Interpretations
+
+| # | interpretation | status | confidence |
+|---|---|---|---|
+| **I-X1** | **The established DCI contrast does not transport to these checkpoints — because the phenomenon's precondition is gone, not because the effect was measured and found absent.** The canonical result required the target to fail 40–60% of the time; here it essentially never fails | supported for these checkpoints, this instruction pair, this backend | **0.85** |
+| **I-X2** | What varies across these checkpoints is **joint satisfaction**, not target protection | supported | 0.75 |
+| **I-X3** | A cross-model "DCI score" would be **uninformative** here: four of five slices would report 0.000 for a structural reason and one for a behavioural one | supported | 0.85 |
+
+### Explicitly NOT claimed
+
+* Not "larger models have less DCI" — gemma-4-12B-it and gemma-4-E4B-it are
+  different architectures, and Qwen3.5-4B/9B differ in post-training as well as
+  scale.
+* Not "Qwen3.5 shows no DCI under natural reasoning" — that condition was never
+  validated, so nothing was measured under it.
+* Not "semicolons do not amplify" — the target-failure channel the amplifier
+  acted through is closed on these checkpoints; the manipulation was not shown
+  inert, only unmeasurable in that channel.
+* Not comparable with the canonical +0.400: different checkpoint, different
+  backend.
