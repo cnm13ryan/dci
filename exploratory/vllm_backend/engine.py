@@ -72,6 +72,98 @@ def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
     return SamplingParams(**kwargs)
 
 
+def load_tokenizer(card: ModelCard):
+    """THE tokenizer, acquired the way inference acquires it.
+
+    `build_engine` returns `llm.get_tokenizer()`, which is authoritative but
+    costs a full weight load. Chat-template behaviour needs checking BEFORE that
+    -- a wrong reasoning condition should be refused in seconds, not after eight
+    gigabytes have been read -- so this exists to answer the same question at
+    the same source without the engine.
+
+    It goes through vLLM's own tokenizer utility rather than
+    `transformers.AutoTokenizer`. That distinction is the point: a second
+    acquisition path could resolve a different revision, a different
+    `trust_remote_code` decision or a different chat template from the one
+    inference will use, and then validation would be certifying a template the
+    run never renders.
+    """
+    try:
+        from vllm.transformers_utils.tokenizer import get_tokenizer
+    except Exception:                                   # noqa: BLE001
+        # Older/newer wheels move this. Fall back, and SAY SO on the record, so
+        # a template certified through the fallback is not mistaken for one
+        # certified through the engine's own path.
+        import transformers
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            card.model_id, trust_remote_code=card.trust_remote_code)
+        tokenizer._dci_acquisition = "transformers.AutoTokenizer (vllm util absent)"
+        return tokenizer
+    tokenizer = get_tokenizer(card.model_id,
+                              trust_remote_code=card.trust_remote_code)
+    tokenizer._dci_acquisition = "vllm.transformers_utils.get_tokenizer"
+    return tokenizer
+
+
+def validate_reasoning_control(card: ModelCard, tokenizer,
+                               request: GenerationRequest) -> dict[str, Any]:
+    """Prove the card's reasoning declarations are true of the real template.
+
+    `verify_template_switch` checks the ONE mode a run is about to execute.
+    This checks every mode the card claims to support, which is what makes the
+    card itself evidence rather than an assertion: a checkpoint that declares
+    four modes and whose template implements one is a registry error, and it is
+    cheaper to find here than in the analysis of a finished run.
+
+    Also asserts that modes declaring DIFFERENT template kwargs actually render
+    differently. A card can pass every per-mode switch check and still collapse
+    two conditions into one prompt, and no per-mode check can see that.
+
+    Modes that declare the SAME kwargs are expected to render the same, and
+    that is not a fault: LIMITED_REASONING, NATURAL_REASONING and
+    THINKING_ENABLED_BOUNDED all render with thinking enabled and differ in
+    their BUDGET policy -- capped think phase, uncapped, and a generation
+    ceiling respectively. The prompt is the same by design; the sampling plan is
+    what separates them.
+    """
+    evidence: dict[str, Any] = {
+        "model_id": card.model_id,
+        "tokenizer_acquisition": getattr(tokenizer, "_dci_acquisition", "unknown"),
+        "supported_modes": list(card.supported_modes),
+        "modes": {},
+    }
+    rendered: dict[str, str] = {}
+    declared: dict[str, dict[str, Any]] = {}
+    for mode in card.supported_modes:
+        kwargs = card.template_kwargs(mode)
+        declared[mode] = kwargs
+        evidence["modes"][mode] = verify_template_switch(
+            tokenizer, request, kwargs, card, mode)
+        rendered[mode] = render_prompt(tokenizer, request, kwargs)
+
+    modes = list(rendered)
+    collisions = [
+        (a, b) for i, a in enumerate(modes) for b in modes[i + 1:]
+        if declared[a] != declared[b] and rendered[a] == rendered[b]]
+    if collisions:
+        raise TemplateSwitchError(
+            f"{card.model_id} declares different template kwargs for "
+            f"{collisions} and yet they render IDENTICALLY. Two experimental "
+            f"conditions sharing one prompt is not a condition, it is a "
+            f"mislabel — the template does not implement the distinction the "
+            f"card claims.")
+    evidence["modes_render_distinctly"] = True
+    # Which modes share a prompt BY DESIGN, so a reader can see that the three
+    # thinking budgets are separated by sampling rather than by rendering.
+    evidence["modes_sharing_a_prompt"] = sorted(
+        {tuple(sorted((a, b))) for i, a in enumerate(modes) for b in modes[i + 1:]
+         if rendered[a] == rendered[b]})
+    evidence["pre_opens_reasoning"] = {
+        mode: text.rstrip().endswith(card.think_open)
+        for mode, text in rendered.items()} if card.think_open else {}
+    return evidence
+
+
 def render_prompt(tokenizer, request: GenerationRequest,
                   template_kwargs: dict[str, Any]) -> str:
     """Apply the chat template. System turn included only when present."""
@@ -277,9 +369,15 @@ def run(engine_plan: EnginePlan, sampling: SamplingPlan, run_plan: RunPlan,
     # `template_kwargs` is deliberately absent from this condition: an empty
     # mapping is the case the check exists for.
     if requests and verify_switch:
+        # Against the engine's OWN tokenizer, before a token is generated.
         switch_evidence = verify_template_switch(
             tokenizer, requests[0], template_kwargs, card,
             run_plan.reasoning_mode)
+        # And the whole card, not only the mode being run: a registry entry
+        # that misdescribes any of its modes is wrong now, not once some later
+        # run happens to exercise the bad one.
+        switch_evidence["card"] = validate_reasoning_control(
+            card, tokenizer, requests[0])
 
     prompts = [render_prompt(tokenizer, r, template_kwargs) for r in requests]
 

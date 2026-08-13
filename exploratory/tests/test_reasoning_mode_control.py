@@ -189,62 +189,8 @@ class TestRenderedPromptsDifferWhereTheConditionDoes:
                 != rendered[ReasoningMode.NATURAL_REASONING])
 
 
-try:                                            # optional: the study venv has no
-    import transformers                         # transformers, the vLLM one does
-except ImportError:                             # noqa: BLE001
-    transformers = None
-
-
-@pytest.mark.skipif(transformers is None,
-                    reason="transformers is not installed in this interpreter")
-class TestAgainstRealTemplates:
-    """Re-derive the registry's claims from the actual cached tokenizers.
-
-    A card is only as good as the template it describes, and these are the facts
-    that cannot be guessed from a checkpoint name.
-    """
-
-    @staticmethod
-    def _tokenizer(model_id: str):
-        try:
-            return transformers.AutoTokenizer.from_pretrained(model_id)
-        except Exception as error:                       # not cached on this host
-            pytest.skip(f"{model_id} unavailable: {type(error).__name__}")
-
-    @staticmethod
-    def _render(tokenizer, **kwargs) -> str:
-        return tokenizer.apply_chat_template(
-            [{"role": "user", "content": "explain a corkscrew"}],
-            tokenize=False, add_generation_prompt=True, **kwargs)
-
-    def test_the_hybrid_switch_is_live(self) -> None:
-        tokenizer = self._tokenizer(CANONICAL)
-        card = get(CANONICAL)
-        thinking = self._render(
-            tokenizer, **card.template_kwargs(ReasoningMode.NATURAL_REASONING))
-        not_thinking = self._render(
-            tokenizer, **card.template_kwargs(ReasoningMode.NO_THINKING))
-        assert thinking != not_thinking, (
-            "enable_thinking is inert on the checkpoint the reasoning line runs "
-            "on; the registry entry is wrong")
-
-    def test_no_thinking_pre_closes_the_channel(self) -> None:
-        """How this template implements it: a closed empty block, not omission."""
-        tokenizer = self._tokenizer(CANONICAL)
-        rendered = self._render(tokenizer, **get(CANONICAL).template_kwargs(
-            ReasoningMode.NO_THINKING))
-        assert get(CANONICAL).think_close in rendered
-
-    def test_the_instruct_template_really_has_no_switch(self) -> None:
-        """Justifies declaring empty kwargs rather than passing an inert one."""
-        tokenizer = self._tokenizer(LADDER)
-        assert (self._render(tokenizer, enable_thinking=True)
-                == self._render(tokenizer, enable_thinking=False))
-
-    def test_the_switch_check_agrees_with_the_real_template(self) -> None:
-        tokenizer = self._tokenizer(CANONICAL)
-        card = get(CANONICAL)
-        for mode in (ReasoningMode.NO_THINKING, ReasoningMode.NATURAL_REASONING,
-                     ReasoningMode.LIMITED_REASONING):
-            engine.verify_template_switch(tokenizer, _request(),
-                                          card.template_kwargs(mode), card, mode)
+# The real-template checks live in `tests/test_backend_template_authority.py`,
+# which goes through the backend's own tokenizer acquisition. Rendering
+# templates here with `transformers.AutoTokenizer` would be a SECOND validation
+# path: it could resolve a different revision or chat template from the one
+# inference uses, and then certify a template no run ever renders.
