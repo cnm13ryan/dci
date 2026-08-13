@@ -24,19 +24,30 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
-BACKEND_SCRIPT = HERE / "crossmodel" / "vllm_tp2.py"
+#: The canonical backend, invoked as a MODULE. `-m` resolves the package from
+#: the working directory, so the generation step runs with cwd=HERE; that is
+#: what the deleted `crossmodel/vllm_tp2.py` shim used to arrange by inserting
+#: the path itself. Pinned by tests/test_backend_cli_contract.py.
+BACKEND_COMMAND = ("-m", "vllm_backend")
 
 
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def run(command: list[str], log: Path) -> int:
-    """Run a step, streaming to a log so a long generation is observable."""
+def run(command: list[str], log: Path, cwd: Path | None = None) -> int:
+    """Run a step, streaming to a log so a long generation is observable.
+
+    `cwd` is required by the generation step and only by it: the backend is
+    invoked as `-m vllm_backend`, which resolves from the working directory.
+    The plan and ingest steps name their scripts by absolute path and are
+    deliberately left running wherever the driver was started.
+    """
     print("  $ " + " ".join(str(c) for c in command), flush=True)
     with log.open("a") as handle:
         completed = subprocess.run([str(c) for c in command], stdout=handle,
-                                   stderr=subprocess.STDOUT)
+                                   stderr=subprocess.STDOUT,
+                                   cwd=str(cwd) if cwd else None)
     return completed.returncode
 
 
@@ -138,11 +149,11 @@ def _drive(args, out_dir: Path, lock) -> int:
     raw_path = out_dir / "raw_generations.jsonl"
     raw_path.unlink(missing_ok=True)
 
-    generate_command = [BACKEND_PYTHON, BACKEND_SCRIPT,
+    generate_command = [BACKEND_PYTHON, *BACKEND_COMMAND,
                         "--plan", out_dir / "plan.json",
                         "--design", out_dir / "design.jsonl",
                         "--out", raw_path]
-    code = run(generate_command, log)
+    code = run(generate_command, log, cwd=HERE)
     rows_written = (sum(1 for _ in raw_path.open())
                     if raw_path.exists() else 0)
     if not rows_written:
