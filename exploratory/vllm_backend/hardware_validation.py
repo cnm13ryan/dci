@@ -163,14 +163,25 @@ def run_case(case: Case) -> dict[str, Any]:
 
     result = outcome["results"][0]
     provenance = outcome.get("provenance", {})
-    switch = provenance.get("switch_evidence", {})
+    # The key `engine.run` actually emits. Asking for "switch_evidence"
+    # silently returned {} and every committed case recorded a null
+    # tokenizer acquisition and revision -- an artifact that looked like
+    # evidence of template validation while containing none of it.
+    switch = provenance.get("template_switch_evidence", {})
     record.update(
         outcome=result.outcome,
         detail=result.outcome_detail[:300],
         ok=result.outcome == case.expect_outcome,
         engine_kwargs={k: str(v) for k, v in engine_plan.engine_kwargs().items()},
+        # `sampling.max_tokens` is the REASONING-phase cap the run actually
+        # used; for a two_phase_splice case it is the budget (256), not the
+        # answer allowance. Recording `case.max_tokens` claimed a 512-token
+        # ceiling for a phase capped at 256, which cannot be reproduced from.
         sampling={"temperature": sampling.temperature, "top_p": sampling.top_p,
-                  "top_k": sampling.top_k, "max_tokens": case.max_tokens},
+                  "top_k": sampling.top_k,
+                  "max_tokens": sampling.max_tokens,
+                  "answer_tokens": case.max_tokens,
+                  "reasoning_budget": case.reasoning_budget},
         strategy=run_plan.strategy,
         reasoning={
             "emitted": result.reasoning_emitted,

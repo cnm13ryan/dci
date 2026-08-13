@@ -23,7 +23,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from crossmodel import contract, seeds
 from crossmodel.adapters.base import Generation, GenerationConfig
 from crossmodel.schema import assert_provenance, build_row, final_answer_status
-from vllm_backend.contract import Outcome, canonicalise_row
+from vllm_backend.contract import NON_BEHAVIOURAL, Outcome, canonicalise_row
+
+
+
+def scored_failure_flags(outcome: Outcome) -> tuple[bool, bool]:
+    """`(not_generated, technical_failure)` for the scored row.
+
+    A NAMED function because it is the whole boundary between the backend's
+    outcome taxonomy and the two booleans the scored-row schema carries, and it
+    was previously three inline expressions that disagreed with the taxonomy.
+
+    `contract.NON_BEHAVIOURAL` is the declaration; this projects it, it does not
+    restate it. NOT_GENERATED has its own downstream state (an unattempted row
+    is not a failed one), so it is separated out; every other non-behavioural
+    outcome is an apparatus failure and must reach `final_answer_status` as
+    TECHNICAL_FAILURE. Reaching it as NO_FINAL_WITHIN_BUDGET instead -- which is
+    what happened to BACKEND_UNSUPPORTED, CAPACITY_EXCEEDED and CHANNEL_INVALID
+    -- scores an engine that never served the checkpoint as the model failing
+    the constraint.
+    """
+    if outcome not in NON_BEHAVIOURAL:
+        return False, False
+    if outcome is Outcome.NOT_GENERATED:
+        return True, False
+    return False, True
 
 
 def main() -> int:
@@ -83,6 +107,8 @@ def main() -> int:
     records = []
     for item in raw:
         row = design[item["row_id"]]
+        outcome = Outcome(item["outcome"])
+        not_generated, apparatus_failure = scored_failure_flags(outcome)
         generation = Generation(
             prompt=item["rendered_prompt"],
             raw_generation=item["raw_generation"],
@@ -103,10 +129,20 @@ def main() -> int:
             batch_seed=None,
             latency_seconds=engine.get("generation_seconds", 0.0)
             / max(len(raw), 1),
-            technical_failure=item["outcome"] == Outcome.TECHNICAL_FAILURE.value,
+            # Every NON-BEHAVIOURAL outcome, not just TECHNICAL_FAILURE.
+            # `contract.NON_BEHAVIOURAL` is the taxonomy's own declaration of
+            # which outcomes must never be scored as behaviour; this used to
+            # re-derive that classification by hand and got three of five
+            # wrong. BACKEND_UNSUPPORTED, CAPACITY_EXCEEDED and CHANNEL_INVALID
+            # set neither boolean, so `final_answer_status` fell through to
+            # NO_FINAL_WITHIN_BUDGET -- a BEHAVIOURAL state -- and an engine
+            # that could not serve the checkpoint at all was scored as the
+            # model failing the constraint. CHANNEL_INVALID exists verbatim
+            # "so the cell is not read as 'the model answered badly'".
+            technical_failure=apparatus_failure,
             technical_failure_reason=(
-                item["outcome_detail"]
-                if item["outcome"] == Outcome.TECHNICAL_FAILURE.value else ""))
+                f'{item["outcome"]}: {item["outcome_detail"]}'
+                if apparatus_failure else ""))
         record = build_row(
             run_id=run_dir.name, design_row=row, generation=generation,
             adapter_metadata=metadata, config=config,
@@ -115,7 +151,11 @@ def main() -> int:
         # The scored-row schema keeps these as booleans because the Transformers
         # adapters also feed it. Derived HERE, once, from the outcome -- not
         # read back out of the row under their old names.
-        not_generated = item["outcome"] == Outcome.NOT_GENERATED.value
+        # The canonical outcome, retained verbatim: the booleans below are a
+        # lossy projection of it, and an audit needs the original.
+        record["backend_outcome"] = item["outcome"]
+        record["backend_outcome_detail"] = item["outcome_detail"]
+        not_generated = outcome is Outcome.NOT_GENERATED
         record["not_generated"] = not_generated
         record["not_generated_reason"] = item["outcome_detail"] if not_generated else ""
         record["generation_ceiling"] = plan.get("generation_ceiling")
