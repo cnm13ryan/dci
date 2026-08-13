@@ -162,44 +162,122 @@ class TestTheMigrationBoundary:
         assert row["final_answer_tokens"] == 9
 
 
-class TestScoringAndPlotData:
-    """Stages 4-5: the analysis layer reads canonical names and nothing else."""
+#: A realistic experiment identity. `io.load_design` carries every design-row
+#: key through as identity, so a real run supplies these; a fixture that omits
+#: them tests a row no runner would ever emit.
+IDENTITY = {"task_id": "PLT01", "arm": "B", "variant": "X_SEMICOLON_FREE",
+            "order": "QAC", "load": 3, "replicate": 0, "reasoning_budget": 0,
+            "condition": "NO_THINKING", "native_nonthinking": True,
+            "stage": "s18", "engineering_ceiling": 0, "measured": "A",
+            "ordered_ids": ["A", "B", "X_SEMICOLON_FREE"], "scaffold": "",
+            "paraphrase_id": 0, "pair_key": "PLT01|QAC|0"}
 
-    def test_the_scorer_reads_the_canonical_answer_field(self) -> None:
-        source = (Path(__file__).resolve().parents[1] / "reasoning_score.py").read_text()
-        assert 'frame["final_answer"]' in source
-        assert 'frame["answer"]' not in source
 
-    def test_plot_data_reads_the_canonical_answer_field(self) -> None:
-        source = (Path(__file__).resolve().parents[1]
-                  / "dci_exploratory" / "plotdata.py").read_text()
-        assert 'frame["final_answer"]' in source
-        assert 'frame["answer"]' not in source
+def _rows_for_every_outcome() -> list[dict]:
+    out = []
+    for name, result in sorted(_all_outcomes().items()):
+        result.identity = dict(IDENTITY)
+        out.append(result.as_row())
+    # Truncation is a property of an OK row, not an outcome of its own.
+    truncated = _ok_result()
+    truncated.identity = dict(IDENTITY)
+    truncated.answer_truncated = True
+    truncated.reasoning_cap_hit = True
+    truncated.finish_reason = "length"
+    out.append(truncated.as_row())
+    return out
 
-    @pytest.mark.parametrize("module", ["reasoning_score.py",
-                                        "dci_exploratory/plotdata.py",
-                                        "xm_vllm_ingest.py"])
-    def test_each_consumer_crosses_the_boundary_exactly_once(self, module) -> None:
-        """Not scattered `.get()` fallbacks: one call, at the load point."""
-        source = (Path(__file__).resolve().parents[1] / module).read_text()
-        assert "canonicalise_row" in source.split("\n\n")[0] or any(
-            line.startswith(("from ", "import ")) and "canonicalise_row" in line
-            for line in source.splitlines()), f"{module} does not import it"
-        assert source.count("canonicalise_row(") == 1, (
-            f"{module} crosses the migration boundary "
-            f"{source.count('canonicalise_row(')} times; it should read a file "
-            "once and use canonical names everywhere after")
 
-    def test_no_consumer_reads_a_legacy_name(self) -> None:
+class TestPlotDataActuallyRuns:
+    """EXECUTED, not inspected.
+
+    The first version of this file asserted that `plotdata.py` contained the
+    string `frame["final_answer"]`. That passes whether or not the module runs,
+    and it did not run: loading a canonical record raised `KeyError: 'measured'`
+    because the fixture omitted an identity key every real design carries. A
+    source-text assertion cannot see that.
+    """
+
+    def _write(self, tmp_path, rows) -> Path:
+        path = tmp_path / "natural_reasoning.jsonl"
+        path.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+        return path
+
+    def test_a_canonical_record_loads_and_scores(self, tmp_path) -> None:
+        from dci_exploratory import plotdata
+
+        frame = plotdata.load_reasoning(self._write(tmp_path, [_ok_result_row()]))
+        assert frame["a_pass"].iloc[0] == 1.0
+        assert frame["n_sentences"].iloc[0] == 4
+
+    def test_every_outcome_survives_plot_data_construction(self, tmp_path) -> None:
+        """Including the non-behavioural rows a happy path never produces."""
+        from dci_exploratory import plotdata
+
+        rows = _rows_for_every_outcome()
+        frame = plotdata.load_reasoning(self._write(tmp_path, rows))
+        assert len(frame) == len(rows)
+        assert "final_answer" in frame.columns
+
+    def test_a_truncated_row_is_carried_not_dropped(self, tmp_path) -> None:
+        from dci_exploratory import plotdata
+
+        truncated = _ok_result()
+        truncated.identity = dict(IDENTITY)
+        truncated.answer_truncated = True
+        truncated.reasoning_cap_hit = True
+        frame = plotdata.load_reasoning(self._write(tmp_path, [truncated.as_row()]))
+        assert bool(frame["answer_truncated"].iloc[0]) is True
+        assert bool(frame["reasoning_cap_hit"].iloc[0]) is True
+
+    def test_an_archived_row_loads_through_the_same_call(self, tmp_path) -> None:
+        """The boundary is exercised by the loader, not bypassed by the test."""
+        from dci_exploratory import plotdata
+
+        archived = {**IDENTITY, "row_id": "r1", "answer": "Alpha. Beta. Gamma. Delta.",
+                    "reasoning": "t", "closed_naturally": True, "answer_tokens": 8,
+                    "reasoning_tokens": 3, "answer_truncated": False,
+                    "reasoning_cap_hit": False}
+        frame = plotdata.load_reasoning(self._write(tmp_path, [archived]))
+        assert frame["final_answer"].iloc[0].startswith("Alpha")
+        assert frame["a_pass"].iloc[0] == 1.0
+
+
+def _ok_result_row() -> dict:
+    result = _ok_result()
+    result.identity = dict(IDENTITY)
+    return result.as_row()
+
+
+class TestTheIngestActuallyRuns:
+    """The ingest, executed over a run directory it did not help construct."""
+
+    ARCHIVE = Path("/home/cnm13ryan/git/dci-cross-model/exploratory/runs/"
+                   "xmA_Qwen35-4B_k3")
+
+    def test_an_archived_run_ingests_to_scored_rows(self, tmp_path) -> None:
+        import shutil
+        import subprocess
+
+        if not (self.ARCHIVE / "raw_generations.jsonl").exists():
+            pytest.skip("the archived cross-model run is not on this host")
+        for name in ("plan.json", "design.jsonl", "raw_generations.jsonl",
+                     "raw_generations_engine.json"):
+            source = self.ARCHIVE / name
+            if source.exists():
+                shutil.copy(source, tmp_path / name)
         root = Path(__file__).resolve().parents[1]
-        forbidden = set(LEGACY_RENAMES) | LEGACY_DERIVED
-        offenders = []
-        for module in ("reasoning_score.py", "dci_exploratory/plotdata.py"):
-            source = (root / module).read_text()
-            for name in forbidden:
-                if f'"{name}"' in source or f"'{name}'" in source:
-                    offenders.append(f"{module}:{name}")
-        assert not offenders, f"legacy field names still read: {offenders}"
+        completed = subprocess.run(
+            [sys.executable, str(root / "xm_vllm_ingest.py"), str(tmp_path),
+             "--out", "ingested.jsonl"],
+            capture_output=True, text=True, cwd=str(root), timeout=600)
+        assert completed.returncode == 0, completed.stderr[-1500:]
+        rows = [json.loads(line)
+                for line in (tmp_path / "ingested.jsonl").open()]
+        assert len(rows) == 160
+        # The ingest derived the scored-row booleans from the outcome enum.
+        assert {"technical_failure", "not_generated"} <= set(rows[0])
+        assert not any(r["technical_failure"] for r in rows)
 
 
 class TestAgainstArchivedGenerations:
