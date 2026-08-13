@@ -36,7 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from vllm_backend import engine, io, records
 from vllm_backend.hardware import probe as probe_host
 from vllm_backend.reasoning import build_parser
-from vllm_backend.registry import ReasoningMode, get_or_default
+from vllm_backend.registry import ReasoningMode, get
 from vllm_backend.resolve import (
     context_envelope,
     resolve_engine,
@@ -58,7 +58,10 @@ def main(argv: list[str] | None = None) -> int:
     design_path, out_path = Path(argv[2]), Path(argv[3])
     answer_tokens = int(argv[4]) if len(argv) > 4 else 512
 
-    card = replace(get_or_default(model_id), model_id=model_id)
+    # `get`, not `get_or_default`: this is an experiment runner, and the
+    # fallback card cannot say how a checkpoint selects its reasoning mode.
+    # Reaching for it here is what silently dropped `enable_thinking`.
+    card = replace(get(model_id), model_id=model_id)
     host = probe_host()
     engine_plan = resolve_engine(card, host, {
         "tensor_parallel_size": 2, "max_model_len": CONTEXT_LIMIT,
@@ -78,8 +81,11 @@ def main(argv: list[str] | None = None) -> int:
         for i, r in enumerate(base_rows)]
 
     template_kwargs = run_plan.chat_template_kwargs
-    if requests and template_kwargs:
-        engine.verify_template_switch(tokenizer, requests[0], template_kwargs)
+    # NOT guarded on `template_kwargs` being non-empty: an empty mapping is
+    # exactly the case that used to disable this check silently.
+    if requests:
+        engine.verify_template_switch(tokenizer, requests[0], template_kwargs,
+                                      card, "NATURAL_REASONING")
     prompts = [engine.render_prompt(tokenizer, r, template_kwargs)
                for r in requests]
 

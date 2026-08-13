@@ -97,14 +97,44 @@ class ModelCard:
     #: engineering ceiling is not itself a cross-model confound.
     max_model_len: int = 40960
 
+    #: Whether this card's reasoning control was ESTABLISHED for the checkpoint,
+    #: as opposed to defaulted for one it has never seen.
+    #:
+    #: False only on the fallback card from `get_or_default`. It exists because
+    #: an empty `template_kwargs_by_mode` is ambiguous on its own: for Kimi-VL it
+    #: is a finding (the template takes no reasoning argument, so passing one
+    #: would be silently ignored), and for an unregistered checkpoint it is the
+    #: absence of a finding. Collapsing the two let `enable_thinking` quietly
+    #: stop being passed on `Qwen/Qwen3-4B`, which would have rendered the
+    #: NO_THINKING control identically to the thinking condition.
+    reasoning_control_declared: bool = True
+
     notes: str = ""
 
     def template_kwargs(self, reasoning_mode: str) -> dict[str, Any]:
-        """Template kwargs for a mode. Unknown mode -> empty, never a guess."""
+        """Template kwargs for a mode. Never a guess, and never silently empty.
+
+        An undeclared card raises rather than returning `{}`: empty kwargs mean
+        "this template takes no reasoning argument", which is a claim about the
+        checkpoint that a fallback is in no position to make.
+        """
+        if not self.reasoning_control_declared:
+            raise UnregisteredReasoningControl(
+                f"{self.model_id!r} is not a registered checkpoint, so how its "
+                f"chat template selects reasoning mode {reasoning_mode!r} is "
+                f"unknown. Returning no kwargs would render every mode "
+                f"identically and record the wrong experimental condition. "
+                f"Add a ModelCard for it -- verified by rendering the template "
+                f"both ways -- or run a mode-agnostic probe that does not ask "
+                f"for template kwargs.")
         return dict(self.template_kwargs_by_mode.get(reasoning_mode, {}))
 
     def supports(self, reasoning_mode: str) -> bool:
         return reasoning_mode in self.supported_modes
+
+
+class UnregisteredReasoningControl(RuntimeError):
+    """A mode-specific rendering was asked of a checkpoint with no ModelCard."""
 
 
 #: Verified against the installed wheels, not inferred from names. vLLM 0.15.1
@@ -114,6 +144,46 @@ class ModelCard:
 #: checkpoint — so Kimi falls back to its documented delimiters.
 #: `capabilities.probe()` re-checks this at run time against the live wheel.
 REGISTRY: dict[str, ModelCard] = {
+    # The two checkpoints that produced this study's existing results. Both were
+    # missing until the consolidation audit, so both fell back to the
+    # undeclared card and lost their reasoning switch. Every value below was
+    # read off the cached tokenizer by rendering the template, not inferred.
+    "Qwen/Qwen3-4B": ModelCard(
+        model_id="Qwen/Qwen3-4B", family="qwen3",
+        reasoning_parser="qwen3",
+        template_kwargs_by_mode={
+            ReasoningMode.NATURAL_REASONING: {"enable_thinking": True},
+            ReasoningMode.THINKING_ENABLED_BOUNDED: {"enable_thinking": True},
+            ReasoningMode.LIMITED_REASONING: {"enable_thinking": True},
+            ReasoningMode.NO_THINKING: {"enable_thinking": False},
+        },
+        think_open="<think>", think_close="</think>",
+        supported_modes=(ReasoningMode.NO_THINKING,
+                         ReasoningMode.LIMITED_REASONING,
+                         ReasoningMode.NATURAL_REASONING,
+                         ReasoningMode.THINKING_ENABLED_BOUNDED),
+        notes="hybrid checkpoint; the reasoning-compute line of work runs here "
+              "because vLLM 0.15.1 registers Qwen3ForCausalLM and not "
+              "Qwen3_5ForCausalLM. Verified by rendering: enable_thinking=False "
+              "injects a PRE-CLOSED '<think>\\n\\n</think>' block, so "
+              "non-thinking is implemented by closing the channel rather than "
+              "omitting it, and enable_thinking=True equals the template "
+              "default. It does NOT pre-open <think> -- that is "
+              "Qwen3-4B-Thinking-2507, which is why the split repair exists."),
+    "Qwen/Qwen3-4B-Instruct-2507": ModelCard(
+        model_id="Qwen/Qwen3-4B-Instruct-2507", family="qwen3",
+        # Nothing to parse: this checkpoint has no reasoning channel.
+        reasoning_parser=None,
+        # DECLARED empty, exactly as for Kimi-VL and for the same reason:
+        # rendering with enable_thinking True and False gives byte-identical
+        # prompts, so the template has no such variable and passing one would
+        # be silently ignored.
+        template_kwargs_by_mode={},
+        supported_modes=(ReasoningMode.NO_THINKING,),
+        notes="the non-thinking half of the Qwen3-4B split; its thinking "
+              "sibling is Qwen3-4B-Thinking-2507, i.e. a different execution "
+              "condition. Carries the entire exploratory ladder (57 runs). "
+              "Verified by rendering: enable_thinking is INERT here."),
     "Qwen/Qwen3.5-4B": ModelCard(
         model_id="Qwen/Qwen3.5-4B", family="qwen3.5",
         reasoning_parser="qwen3",
@@ -196,9 +266,17 @@ def get_or_default(model_id: str) -> ModelCard:
     Used by the probes and smoke tests, which legitimately point at arbitrary
     checkpoints. Experiment runners call `get()` so an unregistered model is a
     loud error rather than a silent set of assumptions.
+
+    The fallback is deliberately *unusable* for mode-specific work: it declares
+    no supported modes and raises from `template_kwargs`. A probe that only
+    needs to load a checkpoint and generate is unaffected; anything that asks
+    how to select a reasoning condition gets an error instead of a default,
+    because the default would be "render every mode identically".
     """
     if model_id in REGISTRY:
         return REGISTRY[model_id]
     return ModelCard(model_id=model_id, family="unregistered",
                      reasoning_parser=None,
-                     notes="not in REGISTRY; defaults assumed")
+                     supported_modes=(),
+                     reasoning_control_declared=False,
+                     notes="not in REGISTRY; reasoning control unknown")
