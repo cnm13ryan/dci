@@ -135,6 +135,43 @@ class TestEveryDriverUsesTheCanonicalEntryPoint:
             f"{driver} must pass cwd to the backend subprocess")
 
 
+class TestPathsCrossingTheSeamAreAbsolute:
+    """Setting `cwd` on the subprocess made relative paths mean two things.
+
+    Both drivers default their output directory to a RELATIVE `runs/...`. The
+    backend now runs with cwd=exploratory so `-m vllm_backend` resolves, so an
+    unresolved path is written by the driver relative to $PWD and read by the
+    backend relative to exploratory/. `xm_vllm_run` then counts rows in the
+    driver's $PWD, finds none, prints "GENERATION FAILED (0 rows)" and returns 3
+    after a successful multi-hour generation.
+
+    This is the accidental behaviour change the cwd fix introduced, and it is
+    invisible whenever the driver happens to be started from `exploratory/`.
+    """
+
+    @pytest.mark.parametrize("driver", DRIVERS)
+    def test_the_output_directory_is_resolved(self, driver) -> None:
+        tree = ast.parse((EXPLORATORY / driver).read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.Assign)
+                    and any(getattr(t, "id", "") == "out_dir"
+                            for t in node.targets)):
+                continue
+            assert (isinstance(node.value, ast.Call)
+                    and getattr(node.value.func, "attr", "") == "resolve"), (
+                f"{driver} builds out_dir without .resolve(); with cwd set on "
+                "the backend subprocess a relative path names two directories")
+            return
+        raise AssertionError(f"{driver} assigns no out_dir")
+
+    @pytest.mark.parametrize("driver", DRIVERS)
+    def test_a_relative_default_is_what_makes_this_necessary(self,
+                                                             driver) -> None:
+        """If the default ever becomes absolute this test says why it mattered."""
+        source = (EXPLORATORY / driver).read_text(encoding="utf-8")
+        assert '"runs/xmv' in source
+
+
 class TestTheOrphanDetectorStillCoversTheOldForm:
     """Deliberately NOT cleaned up with the shim.
 
