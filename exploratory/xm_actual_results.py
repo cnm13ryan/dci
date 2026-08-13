@@ -610,6 +610,35 @@ def manifest(frame: pd.DataFrame) -> list[dict]:
 
 
 # ------------------------------------------------------------------ document
+def json_safe(value):
+    """Recursively replace NaN and infinities with None, for valid JSON.
+
+    Python's `json` emits bare `NaN`, `Infinity` and `-Infinity` tokens by
+    default. None of the three is valid JSON: RFC 8259 has no non-finite
+    literals. `node`'s JSON.parse rejects the file outright, Python's own loader
+    rejects it under `parse_constant`, and `jq` silently rewrites NaN to null —
+    so a consumer either fails loudly or reads a different value than intended.
+
+    A missing estimate is genuinely absent, and `null` is how JSON says that, so
+    the conversion loses nothing. The `allow_nan=False` on every dumps below is
+    the other half: it makes any future non-finite a loud error at write time
+    instead of an invalid artifact discovered downstream.
+    """
+    if isinstance(value, float):
+        return None if (value != value or value in (float("inf"), float("-inf"))) else value
+    if isinstance(value, dict):
+        return {k: json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_safe(v) for v in value]
+    if isinstance(value, np.floating):
+        return json_safe(float(value))
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.bool_):
+        return bool(value)
+    return value
+
+
 def _ceiling_phrase(ceiling: float) -> str:
     """Say "not recorded" rather than printing a NaN as if it were a limit."""
     if ceiling is None or (isinstance(ceiling, float) and np.isnan(ceiling)):
@@ -833,10 +862,11 @@ def main() -> int:
     keep = [c for c in frame.columns if c not in ("rendered_prompt",)]
     with rows_path.open("w") as handle:
         for record in frame[keep].to_dict("records"):
-            handle.write(json.dumps(record, default=str) + "\n")
+            handle.write(json.dumps(json_safe(record), default=str,
+                                    allow_nan=False) + "\n")
 
     manifest_path = out.with_name("ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json")
-    manifest_path.write_text(json.dumps({
+    manifest_path.write_text(json.dumps(json_safe({
         "stamp": "EXPLORATORY_NO_EVIDENCE",
         "experiment": "ACTUAL_CROSS_MODEL_DCI",
         "recorded_utc": datetime.now(timezone.utc).isoformat(),
@@ -847,7 +877,7 @@ def main() -> int:
         "checkpoints_without_rows": missing,
         "headline": headline(cells).to_dict("records"),
         "cells": cells.to_dict("records"),
-    }, indent=1, default=str))
+    }), indent=1, default=str, allow_nan=False))
 
     print(document(frame, cells, missing, stamp))
     print(f"wrote {out}\n      {rows_path}\n      {manifest_path}")
