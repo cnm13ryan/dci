@@ -1,4 +1,4 @@
-"""Two-phase reasoning-budget generation on vLLM, channels kept apart.
+"""Reasoning-budget grid on vLLM, channels kept apart. Backend venv only.
 
 The reasoning channel is NEVER part of the response. Phase 1 thinks under the
 assigned budget `b`; phase 2 answers under a budget that is identical in every
@@ -10,107 +10,126 @@ rather than an interruption.
 
 Nothing is scored here. Scoring happens in the study venv against the registry,
 from the saved answer field.
+
+Engine construction, sampling, chat rendering and the record schema come from
+`vllm_backend`; this file now contains ONLY the grid, which is the part that is
+actually specific to this experiment.
+
+    python vllm_backend/reasoning_vllm.py MODEL REVISION 0,256,1024 DESIGN OUT [ANSWER_TOKENS]
 """
-import json
+from __future__ import annotations
+
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 
-MODEL = sys.argv[1]
-REVISION = sys.argv[2]
-BUDGETS = [int(b) for b in sys.argv[3].split(",")]
-DESIGN = Path(sys.argv[4])
-OUT = Path(sys.argv[5])
-ANSWER_TOKENS = int(sys.argv[6]) if len(sys.argv) > 6 else 512
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-THINK_CLOSE = "</think>"
+from vllm_backend import engine, io, records
+from vllm_backend.hardware import probe as probe_host
+from vllm_backend.reasoning import build_parser
+from vllm_backend.registry import ReasoningMode, get
+from vllm_backend.resolve import (
+    resolve_engine,
+    resolve_run,
+    resolve_sampling,
+)
+
+#: One seed PER ROW, not one per batch. A single shared seed makes two replicate
+#: rows of the same task byte-identical, so "2 replicates" silently becomes one
+#: draw counted twice. Deriving the seed from row position within the design
+#: keeps replicates distinct and keeps every run reproducible.
+SEED_BASE = 20260810
+SEED_STRIDE = 7919
 
 
-def main():
-    from vllm import LLM, SamplingParams
+def row_seeds(n: int, offset: int) -> list[int]:
+    return [SEED_BASE + offset + SEED_STRIDE * i for i in range(n)]
 
-    rows = [json.loads(line) for line in DESIGN.open()]
-    llm = LLM(model=MODEL, revision=REVISION, dtype="bfloat16",
-              tensor_parallel_size=2, gpu_memory_utilization=0.85,
-              max_model_len=16384, enforce_eager=True,
-              disable_custom_all_reduce=True, seed=20260810)
-    tok = llm.get_tokenizer()
 
-    def render(row, thinking: bool) -> str:
-        messages = []
-        if row.get("system_message"):
-            messages.append({"role": "system", "content": row["system_message"]})
-        messages.append({"role": "user", "content": row["user_prompt"]})
-        return tok.apply_chat_template(messages, tokenize=False,
-                                       add_generation_prompt=True,
-                                       enable_thinking=thinking)
+def main(argv: list[str] | None = None) -> int:
+    argv = list(argv if argv is not None else sys.argv[1:])
+    model_id, revision = argv[0], argv[1]
+    budgets = [int(b) for b in argv[2].split(",")]
+    design_path, out_path = Path(argv[3]), Path(argv[4])
+    answer_tokens = int(argv[5]) if len(argv) > 5 else 512
 
-    def seeds(offset: int) -> list[int]:
-        """One seed PER ROW, not one per batch.
+    # `get`, not `get_or_default`: this is an experiment runner, and the
+    # fallback card cannot say how a checkpoint selects its reasoning mode.
+    # Reaching for it here is what silently dropped `enable_thinking`.
+    card = replace(get(model_id), model_id=model_id)
+    host = probe_host()
+    engine_plan = resolve_engine(card, host, {
+        "tensor_parallel_size": 2, "max_model_len": 16384,
+        "seed": SEED_BASE, "model_revision": revision})
+    llm, tokenizer, load_seconds = engine.build_engine(engine_plan)
+    parser, parser_label = build_parser(card.reasoning_parser, tokenizer,
+                                        card.think_open, card.think_close)
 
-        A single shared seed makes two replicate rows of the same task
-        byte-identical, so "2 replicates" silently becomes one draw counted
-        twice. Deriving the seed from the row id keeps replicates distinct and
-        keeps every run reproducible.
-        """
-        return [20260810 + offset + 7919 * i for i in range(len(rows))]
+    base_rows = io.load_design(design_path)
+    all_results, budget_meta = [], []
 
-    records = []
-    for budget in BUDGETS:
+    for budget in budgets:
         started = time.perf_counter()
-        if budget == 0:
-            # Native non-thinking mode: one generation, fixed answer budget.
-            prompts = [render(row, False) for row in rows]
-            outs = llm.generate(prompts, [SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=s)
-                for s in seeds(0)])
-            for row, out in zip(rows, outs):
-                completion = out.outputs[0]
-                records.append(dict(row, reasoning_budget=0, reasoning="",
-                                    reasoning_tokens=0, closed_naturally=True,
-                                    reasoning_cap_hit=False,
-                                    answer=completion.text.strip(),
-                                    answer_tokens=len(completion.token_ids),
-                                    answer_truncated=completion.finish_reason == "length",
-                                    native_nonthinking=True))
-        else:
-            prompts = [render(row, True) for row in rows]
-            think = llm.generate(prompts, [SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=budget, seed=s,
-                stop=[THINK_CLOSE], include_stop_str_in_output=False)
-                for s in seeds(0)])
-            continued, meta = [], []
-            for prompt, out in zip(prompts, think):
-                completion = out.outputs[0]
-                closed = completion.finish_reason == "stop"
-                continued.append(f"{prompt}{completion.text}{THINK_CLOSE}\n\n")
-                meta.append((completion.text, len(completion.token_ids), closed))
-            answers = llm.generate(continued, [SamplingParams(
-                temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=s)
-                for s in seeds(1)])
-            for row, (reasoning, n_tokens, closed), out in zip(rows, meta, answers):
-                completion = out.outputs[0]
-                records.append(dict(row, reasoning_budget=budget,
-                                    reasoning=reasoning, reasoning_tokens=n_tokens,
-                                    closed_naturally=closed,
-                                    reasoning_cap_hit=not closed,
-                                    answer=completion.text.strip(),
-                                    answer_tokens=len(completion.token_ids),
-                                    answer_truncated=completion.finish_reason == "length",
-                                    native_nonthinking=False))
-        elapsed = time.perf_counter() - started
-        done = [r for r in records if r["reasoning_budget"] == budget]
-        print(f"b={budget:>5}  {len(done)} rows  {elapsed:6.1f}s  "
-              f"closed={sum(r['closed_naturally'] for r in done)/len(done):.3f}  "
-              f"mean_reasoning={sum(r['reasoning_tokens'] for r in done)/len(done):7.1f}  "
-              f"empty_answers={sum(1 for r in done if not r['answer'])}  "
-              f"truncated={sum(r['answer_truncated'] for r in done)}", flush=True)
+        thinking = budget > 0
+        mode = (ReasoningMode.LIMITED_REASONING if thinking
+                else ReasoningMode.NO_THINKING)
+        run_plan = resolve_run(card, mode,
+                               strategy="two_phase_splice" if thinking
+                               else "single_phase")
+        seeds = row_seeds(len(base_rows), 0)
+        answer_seeds = row_seeds(len(base_rows), 1)
+        requests = [
+            replace(r, scientific_seed=s, answer_seed=a,
+                    identity={**r.identity, "reasoning_budget": budget,
+                              "native_nonthinking": not thinking})
+            for r, s, a in zip(base_rows, seeds, answer_seeds)]
 
-    with OUT.open("w") as handle:
-        for record in records:
-            handle.write(json.dumps(record) + "\n")
-    print("wrote", OUT, len(records), "records")
+        template_kwargs = run_plan.chat_template_kwargs
+        # NOT guarded on `template_kwargs` being non-empty: an empty mapping
+        # is exactly the case that used to disable this check silently.
+        if requests:
+            engine.verify_template_switch(
+                tokenizer, requests[0], template_kwargs, card,
+                run_plan.reasoning_mode)
+        prompts = [engine.render_prompt(tokenizer, r, template_kwargs)
+                   for r in requests]
+
+        # b == 0 is the native non-thinking condition: ONE generation under the
+        # fixed answer allowance, never a truncated thinking run.
+        sampling = resolve_sampling(
+            max_tokens=budget if thinking else answer_tokens,
+            answer_tokens=answer_tokens)
+        strategy = engine.STRATEGIES[run_plan.strategy]
+        chunk = strategy(llm, tokenizer, requests, prompts, sampling, parser, card)
+
+        all_results.extend(chunk)
+        elapsed = time.perf_counter() - started
+        summary = records.summarise(chunk)
+        budget_meta.append({"budget": budget, "seconds": round(elapsed, 1),
+                            "mode": mode, **summary})
+        closed = sum(1 for r in chunk if r.reasoning_closed) or 0
+        mean_reasoning = (sum(r.reasoning_tokens for r in chunk) / len(chunk)
+                          if chunk else 0.0)
+        print(f"b={budget:>5}  {len(chunk)} rows  {elapsed:6.1f}s  "
+              f"closed={closed / max(len(chunk), 1):.3f}  "
+              f"mean_reasoning={mean_reasoning:7.1f}  "
+              f"empty_answers={summary['empty_answers']}  "
+              f"truncated={summary['answers_truncated']}", flush=True)
+
+    io.write_rows(out_path, all_results)
+    io.write_provenance(out_path, {
+        "experiment": "REASONING_BUDGET_GRID",
+        "engine_kwargs": {k: str(v) for k, v in engine_plan.engine_kwargs().items()},
+        "reasoning_parser_used": parser_label,
+        "budgets": budgets, "answer_tokens": answer_tokens,
+        "per_budget": budget_meta, "load_seconds": round(load_seconds, 1),
+        "host": host.to_dict(), "summary": records.summarise(all_results),
+    })
+    print("wrote", out_path, len(all_results), "records")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

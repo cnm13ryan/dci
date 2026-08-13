@@ -36,7 +36,15 @@ import hashlib
 import json
 import sys
 import time
+from dataclasses import replace as _replace
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from vllm_backend import engine as _engine
+from vllm_backend.hardware import probe as _probe_host
+from vllm_backend.registry import get_or_default
+from vllm_backend.resolve import resolve_engine, resolve_sampling
 
 MODEL = sys.argv[1]
 REVISION = sys.argv[2]
@@ -63,14 +71,25 @@ def scientific_seed(task_id: str, replicate: int, phase: str) -> int:
 
 
 def main():
-    from vllm import LLM, SamplingParams
-
     rows = [json.loads(line) for line in DESIGN.open()]
-    llm = LLM(model=MODEL, revision=REVISION, dtype="bfloat16",
-              tensor_parallel_size=2, gpu_memory_utilization=0.85,
-              max_model_len=16384, enforce_eager=True,
-              disable_custom_all_reduce=True, seed=MASTER_SEED)
-    tok = llm.get_tokenizer()
+    # Engine, dtype, TP size, memory utilisation and eager mode are resolved by
+    # `vllm_backend`; this file no longer restates them. The record schema below
+    # is deliberately left alone: it is an EXISTING on-disk format that
+    # `tests/test_arbitration_program.py` and the analysis read, and changing it
+    # would change experiment outputs rather than remove duplication.
+    _card = _replace(get_or_default(MODEL), model_id=MODEL)
+    _plan = resolve_engine(_card, _probe_host(), {
+        "tensor_parallel_size": 2, "max_model_len": 16384,
+        "seed": MASTER_SEED, "model_revision": REVISION})
+    llm, tok, _load_seconds = _engine.build_engine(_plan)
+
+    def _sampling(max_tokens: int, seed: int, stop=()):
+        return _engine.build_sampling(
+            resolve_sampling(max_tokens=max_tokens, answer_tokens=ANSWER_TOKENS,
+                             stop=stop,
+                             overrides={"temperature": TEMPERATURE,
+                                        "top_p": TOP_P}),
+            max_tokens, seed)
 
     def render(row, thinking: bool) -> str:
         messages = []
@@ -112,9 +131,8 @@ def main():
         if budget == 0:
             # The model's own non-thinking mode. Not a zero-length truncation.
             prompts = [render(row, False) for row in rows]
-            outs = llm.generate(prompts, [SamplingParams(
-                temperature=TEMPERATURE, top_p=TOP_P, max_tokens=ANSWER_TOKENS,
-                seed=s) for s in answer_seeds])
+            outs = llm.generate(prompts, [_sampling(ANSWER_TOKENS, s)
+                                          for s in answer_seeds])
             for row, prompt, seed, out in zip(rows, prompts, answer_seeds, outs):
                 done = out.outputs[0]
                 records.append(dict(
@@ -129,9 +147,8 @@ def main():
         else:
             think_seeds = seeds("think")
             prompts = [render(row, True) for row in rows]
-            think = llm.generate(prompts, [SamplingParams(
-                temperature=TEMPERATURE, top_p=TOP_P, max_tokens=budget, seed=s,
-                stop=[THINK_CLOSE], include_stop_str_in_output=False)
+            think = llm.generate(prompts, [
+                _sampling(budget, s, stop=(THINK_CLOSE,))
                 for s in think_seeds])
             continued, meta = [], []
             for prompt, out in zip(prompts, think):
@@ -139,9 +156,8 @@ def main():
                 continued.append(f"{prompt}{done.text}{THINK_CLOSE}\n\n")
                 meta.append((done.text, len(done.token_ids),
                              done.finish_reason == "stop", latency_of(out)))
-            answers = llm.generate(continued, [SamplingParams(
-                temperature=TEMPERATURE, top_p=TOP_P, max_tokens=ANSWER_TOKENS,
-                seed=s) for s in answer_seeds])
+            answers = llm.generate(continued, [_sampling(ANSWER_TOKENS, s)
+                                               for s in answer_seeds])
             for row, prompt, tseed, aseed, (reasoning, n, closed, tlat), out in zip(
                     rows, prompts, think_seeds, answer_seeds, meta, answers):
                 done = out.outputs[0]
