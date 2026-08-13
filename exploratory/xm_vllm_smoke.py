@@ -37,7 +37,11 @@ from crossmodel import contract, vllm_models
 
 HERE = Path(__file__).resolve().parent
 BACKEND_PYTHON = HERE / ".venv-vllm" / "bin" / "python"
-BACKEND_SCRIPT = HERE / "crossmodel" / "vllm_tp2.py"
+#: The canonical backend, invoked as a MODULE. `-m` resolves the package from
+#: the working directory, so the subprocess below runs with cwd=HERE; that is
+#: what the deleted `crossmodel/vllm_tp2.py` shim used to arrange by inserting
+#: the path itself. Pinned by tests/test_backend_cli_contract.py.
+BACKEND_COMMAND = ("-m", "vllm_backend")
 
 #: Trivial prompts carry an expected substring: a weight-integrity check, not a
 #: capability benchmark. Composed prompts are what actually elicit reasoning —
@@ -133,7 +137,7 @@ def main() -> int:
     (out_dir / "plan.json").write_text(json.dumps(plan, indent=1))
 
     # -- run the backend ----------------------------------------------------
-    command = [str(BACKEND_PYTHON), str(BACKEND_SCRIPT),
+    command = [str(BACKEND_PYTHON), *BACKEND_COMMAND,
                "--plan", str(out_dir / "plan.json"),
                "--design", str(out_dir / "design.jsonl"),
                "--out", str(out_dir / "raw_generations.jsonl")]
@@ -144,7 +148,7 @@ def main() -> int:
     log_path = out_dir / "backend.log"
     with log_path.open("w") as handle:
         completed = subprocess.run(command, stdout=handle,
-                                   stderr=subprocess.STDOUT)
+                                   stderr=subprocess.STDOUT, cwd=str(HERE))
     blob_text = log_path.read_text(errors="ignore")
 
     record: dict = {"model_id": args.model, "model_revision": revision,
