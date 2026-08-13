@@ -72,7 +72,7 @@ def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
     return SamplingParams(**kwargs)
 
 
-def load_tokenizer(card: ModelCard):
+def load_tokenizer(card: ModelCard, revision: str = ""):
     """THE tokenizer, acquired the way inference acquires it.
 
     `build_engine` returns `llm.get_tokenizer()`, which is authoritative but
@@ -80,6 +80,12 @@ def load_tokenizer(card: ModelCard):
     -- a wrong reasoning condition should be refused in seconds, not after eight
     gigabytes have been read -- so this exists to answer the same question at
     the same source without the engine.
+
+    `revision` must be the SAME pin the run passes to `LLM(...)` via
+    `EnginePlan.model_revision`. A tokenizer resolved at `main` while inference
+    pins a commit is a second path wearing the first one's name -- the chat
+    template could differ between them, which is the whole failure this function
+    exists to prevent.
 
     It goes through vLLM's own tokenizer utility rather than
     `transformers.AutoTokenizer`. That distinction is the point: a second
@@ -96,12 +102,15 @@ def load_tokenizer(card: ModelCard):
         # certified through the engine's own path.
         import transformers
         tokenizer = transformers.AutoTokenizer.from_pretrained(
-            card.model_id, trust_remote_code=card.trust_remote_code)
+            card.model_id, revision=revision or None,
+            trust_remote_code=card.trust_remote_code)
         tokenizer._dci_acquisition = "transformers.AutoTokenizer (vllm util absent)"
+        tokenizer._dci_revision = revision
         return tokenizer
-    tokenizer = get_tokenizer(card.model_id,
+    tokenizer = get_tokenizer(card.model_id, revision=revision or None,
                               trust_remote_code=card.trust_remote_code)
     tokenizer._dci_acquisition = "vllm.transformers_utils.get_tokenizer"
+    tokenizer._dci_revision = revision
     return tokenizer
 
 
@@ -129,6 +138,7 @@ def validate_reasoning_control(card: ModelCard, tokenizer,
     evidence: dict[str, Any] = {
         "model_id": card.model_id,
         "tokenizer_acquisition": getattr(tokenizer, "_dci_acquisition", "unknown"),
+        "tokenizer_revision": getattr(tokenizer, "_dci_revision", ""),
         "supported_modes": list(card.supported_modes),
         "modes": {},
     }
