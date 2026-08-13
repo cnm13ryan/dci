@@ -28,7 +28,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from crossmodel.vllm_tp2 import DelimiterParser, split  # noqa: E402
+# Moved from `crossmodel.vllm_tp2` when the eight duplicated backend scripts
+# were consolidated onto `vllm_backend`. Same implementation, one copy.
+from vllm_backend.reasoning import DelimiterParser, split  # noqa: E402
 
 START, END = "◁think▷", "◁/think▷"
 

@@ -44,6 +44,10 @@ from typing import Any, Iterable, Optional
 #: is not enough — see the module docstring.
 RUNNER_PATTERNS = (
     "crossmodel/vllm_tp2.py",
+    # The canonical backend entrypoint. `crossmodel/vllm_tp2.py` now delegates
+    # to it, but a run started as `python -m vllm_backend` shows only this on
+    # its command line, and an orphan invisible to cleanup still holds VRAM.
+    "vllm_backend",
     "vllm_capacity_probe",
     "vllm_qwen_probe",
     "xm_vllm_run.py",
