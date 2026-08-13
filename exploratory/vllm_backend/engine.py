@@ -51,7 +51,15 @@ def build_engine(plan: EnginePlan):
     started = time.perf_counter()
     llm = LLM(**plan.engine_kwargs())          # noqa: VLLM001 - canonical site
     load_seconds = time.perf_counter() - started
-    return llm, llm.get_tokenizer(), load_seconds
+    tokenizer = llm.get_tokenizer()
+    # STAMPED, like `load_tokenizer` stamps the one it fetches. This is the
+    # engine's own tokenizer -- the strongest provenance there is, because it
+    # is literally the object generation will use -- and without the stamp the
+    # switch evidence recorded "unknown" for it, which is what the retained
+    # hardware-validation artifact then claimed about every executed case.
+    tokenizer._dci_acquisition = ACQUIRED_FROM_ENGINE
+    tokenizer._dci_revision = plan.model_revision
+    return llm, tokenizer, load_seconds
 
 
 def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
@@ -72,13 +80,21 @@ def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
     return SamplingParams(**kwargs)
 
 
-#: How `load_tokenizer` obtained the tokenizer, recorded on it and carried into
-#: the switch evidence. Named constants rather than literals repeated at the
-#: assertion site: a test that sniffed for the substring "vllm" matched the
-#: FALLBACK string too, because that string says "(vllm util absent)". The guard
-#: meant to skip then fired the assertion instead, and the suite failed in the
-#: one environment the test exists to cover.
+# How a tokenizer was obtained, recorded on it and carried into the switch
+# evidence. Named constants rather than literals repeated at the assertion site:
+# a test that sniffed for the substring "vllm" matched the FALLBACK string too,
+# because that string says "(vllm util absent)". The guard meant to skip then
+# fired the assertion instead, and the suite failed in the one environment the
+# test exists to cover.
+
+#: The engine's OWN tokenizer, from a constructed `LLM`. The strongest of the
+#: three: it is the object that renders the prompts, so no second acquisition
+#: can disagree with it. `build_engine` stamps this.
+ACQUIRED_FROM_ENGINE = "vllm.LLM.get_tokenizer"
+#: `load_tokenizer`'s preferred path, for validating before paying a weight load.
 ACQUIRED_BY_VLLM = "vllm.transformers_utils.get_tokenizer"
+#: Same, where the wheel has moved the utility. Recorded so a template certified
+#: through it is never mistaken for one certified through the engine's path.
 ACQUIRED_BY_FALLBACK = "transformers.AutoTokenizer (vllm util absent)"
 
 
