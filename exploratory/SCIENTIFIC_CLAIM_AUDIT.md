@@ -126,7 +126,7 @@ tokens against a derived ceiling of 39,550, max 5,888. Guarded and re-verified.
 
 ## 2. Cross-model transport claims (PR #16)
 
-### 2.1 "Five-checkpoint cross-model DCI transport" — `NOT_IDENTIFIED` (all 8 cells)
+### 2.1 "Five-checkpoint cross-model DCI transport" — `NOT_IDENTIFIED` (all 8 cells of the NO_THINKING/NATURAL set)
 
 Applying the identification layer to the five main runs:
 
@@ -153,12 +153,94 @@ results; they are non-results, for two different and separately fixable reasons.
 Reporting them as "τ ≈ 0 across four checkpoints" invites exactly the reading
 the framework forbids: that the instrument transported and found nothing.
 
+**Reproduced under the production path.** These eight verdicts were originally
+produced by running the identification layer by hand. Now that the reporting
+pass calls the layer itself, the same eight rows come out of
+`xm_actual_results.py` unchanged: still 0 of 8 identified, same verdicts, same
+constituents.
+
+### 2.1b The bounded-thinking run set — `NOT_IDENTIFIED` (8 of 8)
+
+The eight cells above are the **NO_THINKING / NATURAL_REASONING** run set. A
+second, later set exists — `THINKING_ENABLED_BOUNDED`, ceiling 8,192 — and it is
+the one the published `ACTUAL_CROSS_MODEL_DCI_RESULTS.md` describes. It includes
+Kimi-VL, which the first set never ran. Its verdicts are different, and the
+earlier "0 of 8" statement was never about it:
+
+| model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | `TARGET_CEILING` |
+| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` |
+| Qwen3.5-9B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | `TARGET_CEILING` |
+| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` |
+| gemma-4-E4B-it | bracket | +0.000 | — | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | `TARGET_CEILING` |
+| gemma-4-E4B-it | semicolon | +0.000 | — | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | `TARGET_CEILING` |
+| Kimi-VL | bracket | +0.050 | [0.000, 0.125] | 0.054 | 0.000 | **0.405** | 0.531 | 0.138 | `FOCAL_NONUPTAKE` |
+| Kimi-VL | semicolon | **+0.278** | [0.056, 0.500] | 0.559 | 0.286 | **0.088** | 0.571 | 0.138 | `FOCAL_NONUPTAKE` |
+
+**0 of 8 poolable — corrected.** An earlier version of this section reported
+2 of 8, with the Qwen semicolon cells identified. That was withdrawn by a
+self-audit of the reporting code, and the correction matters more than the
+count.
+
+Those two cells reached `IDENTIFIED` only because three of the four
+identification preconditions were **asserted rather than measured**:
+`execution_validated`, `verifier_certified` and `satisfiable` were hard-coded
+`True`, and a missing `channel_valid` column defaulted to `1.0`. With the
+defaults removed, two of those four are still unestablished for every
+cross-model cell, so all eight now carry `EVIDENCE_INCOMPLETE`:
+
+| axis | status | why |
+|---|---|---|
+| `satisfiable` | **established** | hand-authored witness certifies A ∧ B ∧ background for both backgrounds |
+| `channel_valid_rate` | **measured** | derived per row; 1.000 for Qwen and Kimi, 0.975 / 0.963 for gemma |
+| `execution_validated` | **unestablished** | THINKING_ENABLED_BOUNDED never went through Stage B/C admission |
+| `verifier_certified` | **unestablished** | no certification for these checkpoints' output class |
+
+The behavioural readings below are unchanged and still reported — the
+`TARGET_CEILING` and `FOCAL_NONUPTAKE` patterns are real properties of the data.
+What is withdrawn is the claim that any cross-model cell was *identified*, which
+the pipeline was never in a position to assert.
+
+Two feeds would settle it: a Stage B/C admission record for the bounded-thinking
+condition, and a verifier certification covering these output classes. Neither
+is a threshold change and neither weakens a gate.
+
+**The Kimi result is the important correction.** `ca35277` reported Kimi-VL as
+*"the first checkpoint here whose target instruction is not saturated"* and
+τ = +0.278 as *"the first non-degenerate tau in the study"*. The first half is
+correct: target failure is 0.559 against 0.286, so the headroom is real and
+neither ceiling nor floor applies. But the cell is **not identified**, because
+the focal instruction was satisfied in **8.8%** of answered focal rows against
+57.1% for the reference. That is failed treatment delivery, not transport — the
+same relational/local asymmetry documented in §1, at its most extreme.
+
+τ = +0.278 is still reported, with its interval, in §1 of the results document.
+What changed is that it no longer enters a pooled headline.
+
+**Reconciling the two statements.** "0 of 8 identified" was accurate for the run
+set it described and remains so. It was never a claim about the bounded-thinking
+set, which had not been run when it was written. Across both sets the position
+is: **0 of 16 primitive cells are identified.**
+
+**Caveat carried forward, not resolved.** The two cells that came closest to
+identification sit under material cap binding — 33.8% and 15.0% of rows
+truncated — below the 50% `CAP_BOUND` threshold frozen in `d9c4e41`. That
+threshold was **not** adjusted after seeing these results, which would have been
+exactly the post-hoc selection the framework warns against. The cap-hit rate is
+published beside every verdict so a reader can apply a stricter reading; under a
+30% threshold the Qwen3.5-4B semicolon cell would be `CAP_BOUND` on behavioural
+grounds as well as evidence-incomplete.
+
 ### 2.2 "The vLLM TP=2 retry qualified 0/5" — `SUPPORTED`
 
 Unaffected by every repair here. The gate is correct and correctly refused to
 run the slice at less than 5/5. Recorded diagnoses stand.
 
 ### 2.3 "Qwen3.5-9B semicolon shows τ = −0.150" — `NOT_IDENTIFIED`
+
+(NO_THINKING set. Under bounded thinking the same checkpoint yields +0.026 and
+IS identified; see §2.1b.)
 
 The only nominally non-zero cross-model estimate. Focal uptake 27.5%; the CI
 spans zero; the sign is negative, meaning the *reference* damaged the target
@@ -222,6 +304,8 @@ Stated explicitly, because "we audited it and it held" is a result:
   `NOT_IDENTIFIED`.
 * Every capped-ladder point — unchanged.
 * All five cross-model runs remain `CANONICAL`.
+* The NO_THINKING/NATURAL verdicts are unchanged when produced by the
+  reporting pass rather than by hand: still 0 of 8 identified.
 * 0 of 25,290 stored answers change sentence count under the repaired verifier.
 
 The pipeline was, numerically, in better shape than the defect list suggests.

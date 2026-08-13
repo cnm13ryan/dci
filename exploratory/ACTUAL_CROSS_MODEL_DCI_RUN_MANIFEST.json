@@ -1,7 +1,7 @@
 {
  "stamp": "EXPLORATORY_NO_EVIDENCE",
  "experiment": "ACTUAL_CROSS_MODEL_DCI",
- "recorded_utc": "2026-08-13T03:08:20.349245+00:00",
+ "recorded_utc": "2026-08-13T10:48:09.063350+00:00",
  "contract": {
   "target": "A",
   "focal": "B",
@@ -233,7 +233,9 @@
    "No-final": 22,
    "A-fail focal": 0.29577464788732394,
    "A-fail ref": 0.14925373134328357,
-   "tau": 0.1638888888888889
+   "Cells": 2,
+   "Identified": 0,
+   "tau (identified only)": null
   },
   {
    "Model": "Qwen3.5-4B",
@@ -246,7 +248,9 @@
    "No-final": 65,
    "A-fail focal": 0.01818181818181818,
    "A-fail ref": 0.0,
-   "tau": 0.017434210526315788
+   "Cells": 2,
+   "Identified": 0,
+   "tau (identified only)": null
   },
   {
    "Model": "Qwen3.5-9B",
@@ -259,7 +263,9 @@
    "No-final": 36,
    "A-fail focal": 0.014925373134328358,
    "A-fail ref": 0.0,
-   "tau": 0.014431239388794566
+   "Cells": 2,
+   "Identified": 0,
+   "tau (identified only)": null
   },
   {
    "Model": "gemma-4-E4B-it",
@@ -272,7 +278,9 @@
    "No-final": 0,
    "A-fail focal": 0.0,
    "A-fail ref": 0.0,
-   "tau": 0.0
+   "Cells": 2,
+   "Identified": 0,
+   "tau (identified only)": null
   }
  ],
  "cells": [
@@ -297,7 +305,12 @@
    "hi": 0.0,
    "n_tasks": 9,
    "joint_focal": 1.0,
-   "degeneracy": "TARGET_CEILING"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 1.0,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.475,
+   "estimable": false
   },
   {
    "model": "Qwen3.5-4B",
@@ -320,7 +333,12 @@
    "hi": 0.09375,
    "n_tasks": 16,
    "joint_focal": 0.9333333333333333,
-   "degeneracy": "estimable"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.9666666666666667,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.3375,
+   "estimable": false
   },
   {
    "model": "Qwen3.5-9B",
@@ -343,7 +361,12 @@
    "hi": 0.0,
    "n_tasks": 16,
    "joint_focal": 1.0,
-   "degeneracy": "TARGET_CEILING"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 1.0,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.3,
+   "estimable": false
   },
   {
    "model": "Qwen3.5-9B",
@@ -366,7 +389,12 @@
    "hi": 0.07894736842105263,
    "n_tasks": 19,
    "joint_focal": 0.9722222222222222,
-   "degeneracy": "estimable"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.9722222222222222,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.15,
+   "estimable": false
   },
   {
    "model": "gemma-4-E4B-it",
@@ -389,7 +417,12 @@
    "hi": 0.0,
    "n_tasks": 20,
    "joint_focal": 0.9,
-   "degeneracy": "TARGET_CEILING"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.9,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.0,
+   "estimable": false
   },
   {
    "model": "gemma-4-E4B-it",
@@ -412,7 +445,12 @@
    "hi": 0.0,
    "n_tasks": 20,
    "joint_focal": 0.875,
-   "degeneracy": "TARGET_CEILING"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.875,
+   "reference_uptake": 1.0,
+   "cap_hit_rate": 0.0,
+   "estimable": false
   },
   {
    "model": "Kimi-VL-A3B-Thinking-2506",
@@ -435,7 +473,12 @@
    "hi": 0.125,
    "n_tasks": 20,
    "joint_focal": 0.35135135135135137,
-   "degeneracy": "estimable"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.40540540540540543,
+   "reference_uptake": 0.53125,
+   "cap_hit_rate": 0.1375,
+   "estimable": false
   },
   {
    "model": "Kimi-VL-A3B-Thinking-2506",
@@ -458,7 +501,12 @@
    "hi": 0.5,
    "n_tasks": 18,
    "joint_focal": 0.029411764705882353,
-   "degeneracy": "estimable"
+   "identification": "EVIDENCE_INCOMPLETE",
+   "identification_reason": "identification evidence was never established: execution_validated, verifier_certified. This is not a finding about the model; it is a missing input, and the cell cannot be identified either way until it is supplied.",
+   "focal_uptake": 0.08823529411764706,
+   "reference_uptake": 0.5714285714285714,
+   "cap_hit_rate": 0.1375,
+   "estimable": false
   }
  ]
 }

@@ -37,7 +37,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from crossmodel import contract, schema, seeds
+from crossmodel import contract, identification, schema, seeds
 from dci_exploratory import extensions, harvest, plotstyle
 
 extensions.register()
@@ -122,14 +122,164 @@ def tau_per_task(cell: pd.DataFrame) -> pd.Series:
     return (rates.loc[FOCAL] - rates.loc[REFERENCE]).dropna()
 
 
-def degeneracy(focal_failure: float, reference_failure: float) -> str:
-    if np.isnan(focal_failure) or np.isnan(reference_failure):
-        return "not estimated — no scoreable rows"
-    if focal_failure <= CEILING and reference_failure <= CEILING:
-        return "TARGET_CEILING"
-    if focal_failure >= FLOOR and reference_failure >= FLOOR:
-        return "TARGET_FLOOR"
-    return "estimable"
+# ------------------------------------------------- identification evidence
+# Each of these replaces a hard-coded True. Where a real feed exists it is read;
+# where none exists the value is None, and the cell fails closed. Absence of
+# evidence is never evidence of validity.
+
+#: Per-checkpoint verifier certification for THIS output class. Populated only
+#: from a recorded certification. The repository's own adversarial audit
+#: (`verifier_audit/stress_corpus_results.json`) reports E_A = 0.207 against
+#: E_R = 0.000 with kappa = -0.13 on n = 31 — measurable error on the primary
+#: outcome and differential across constraints — and it was run on the canonical
+#: Qwen3-4B corpus, not on any checkpoint here. So no entry is asserted, and
+#: every cross-model cell fails closed on this axis until a certification
+#: covering its output class is recorded.
+VERIFIER_CERTIFICATION: dict[str, bool] = {}
+
+def satisfiability_witness(background: str) -> bool | None:
+    """Whether a hand-authored witness satisfies A ∧ B ∧ background.
+
+    Computed, not declared. `satisfiability_certificate.WITNESSES` holds one
+    hand-authored answer per background and this scores it through the SAME
+    verifiers the experiments use, so a verifier repair that broke the witness
+    would flip this to False rather than leaving a stale True behind.
+
+    Model output is never the evidence here. Per the framework, a witness
+    establishes LOGICAL satisfiability only — it says a low P(both) is a model
+    failure rather than an impossible task, and it says nothing about whether
+    any tested checkpoint can reach joint satisfaction.
+
+    Returns None for a background with no witness, which fails the cell closed.
+    """
+    try:
+        from satisfiability_certificate import WITNESSES
+    except Exception:                                   # noqa: BLE001
+        return None
+    text = WITNESSES.get(background)
+    if not text:
+        return None
+    for constraint in (contract.TARGET, contract.FOCAL, background):
+        if not STATE.verify(text, constraint).binary_pass:
+            return False
+    return True
+
+#: Admission records, keyed by (model_id, reasoning_mode), read from the frozen
+#: execution matrix rather than assumed.
+_ADMISSION_MATRIX = Path(__file__).resolve().parent / "CROSS_MODEL_EXECUTION_MATRIX.json"
+
+
+def _admissions() -> dict[tuple[str, str], bool]:
+    """(model_id, mode) -> admitted, from the frozen matrix if it exists."""
+    if not _ADMISSION_MATRIX.exists():
+        return {}
+    rows = json.loads(_ADMISSION_MATRIX.read_text()).get("rows", [])
+    out: dict[tuple[str, str], bool] = {}
+    for row in rows:
+        model = row.get("model_id")
+        out[(model, "NO_THINKING")] = bool(row.get("admitted_no_thinking"))
+        out[(model, "NATURAL_REASONING")] = bool(row.get("admitted_natural"))
+    return out
+
+
+def execution_validated(cell: pd.DataFrame) -> bool | None:
+    """Whether the admission matrix cleared this (checkpoint, mode).
+
+    Returns None when the matrix holds no record for the pair — which is the
+    case for every THINKING_ENABLED_BOUNDED run, since that condition was never
+    put through Stage B/C admission. Previously this was hard-coded True, so
+    those cells were certified by nothing at all.
+    """
+    model = str(cell["model_id"].iloc[0])
+    mode = str(cell["reasoning_mode"].iloc[0])
+    return _admissions().get((model, mode))
+
+
+def channel_valid_rate(cell: pd.DataFrame) -> float | None:
+    """Share of rows whose two channels were actually separated.
+
+    Uses the recorded per-row `channel_valid` where a backend writes it. No
+    backend in this dataset does, so the rate is DERIVED from fields every row
+    carries, rather than defaulted to 1.0:
+
+    * a forced-close artefact means the parser had to invent the boundary;
+    * reasoning text identical to the final answer is the X2 failure shape, in
+      which raw text was returned as both channels;
+    * in a thinking mode, a row that never opened a reasoning block did not
+      produce two channels to separate.
+
+    A row that hit the cap is NOT counted against channel validity: it separated
+    its channels and simply ran out of budget before answering, which the
+    cap-hit rate already records.
+    """
+    if "channel_valid" in cell:
+        return float(cell["channel_valid"].mean())
+    if "reasoning_text" not in cell or "reasoning_emitted" not in cell:
+        return None
+    thinking = str(cell["reasoning_mode"].iloc[0]) != "NO_THINKING"
+    valid = []
+    for _, row in cell.iterrows():
+        reasoning = str(row.get("reasoning_text") or "").strip()
+        answer = str(row.get("final_answer") or "").strip()
+        if row.get("forced_close_artefact"):
+            valid.append(False)
+        elif reasoning and answer and reasoning == answer:
+            valid.append(False)
+        elif thinking and not row.get("reasoning_emitted"):
+            valid.append(False)
+        else:
+            valid.append(True)
+    return float(np.mean(valid))
+
+
+def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.CellEvidence:
+    """The constituent quantities one primitive cell contributes to its verdict.
+
+    This is the only place the reporting pass decides what a column MEANS to the
+    identification layer, so a mis-mapping is one edit rather than many.
+
+    Two mappings are load-bearing and were established from the data rather than
+    assumed:
+
+    * `channel_valid_rate` is NOT `scoreable`. A row can separate its reasoning
+      and answer channels perfectly and still carry no final answer; conflating
+      the two reports a cap-truncated run as a parser failure. The backends that
+      record a per-row `channel_valid` are believed; where the column is absent
+      the channels did separate, so the rate is 1.0.
+
+    * `cap_hit_rate` carries the missing answers. On this dataset
+      NO_FINAL_WITHIN_BUDGET and `reasoning_cap_hit` are the SAME event — a
+      517/123 diagonal with no off-diagonal cell — because a model that spends
+      its whole budget reasoning emits no answer. So the cap rate already
+      accounts for the missingness and the two must not be counted twice.
+    """
+    focal = cell[cell["arm"] == FOCAL]
+    reference = cell[cell["arm"] == REFERENCE]
+    duplication = seeds.replicate_duplication(cell.to_dict("records"))
+    identical = duplication["identical_rate"]
+
+    return identification.CellEvidence(
+        # Not asserted. `None` where no feed establishes the fact, which fails
+        # the cell closed to EVIDENCE_INCOMPLETE rather than certifying it.
+        execution_validated=execution_validated(cell),
+        channel_valid_rate=channel_valid_rate(cell),
+        technical_failure_rate=float(
+            (cell["final_answer_status"] == schema.TECHNICAL_FAILURE).mean()),
+        verifier_certified=VERIFIER_CERTIFICATION.get(
+            str(cell["model_id"].iloc[0])),
+        replicate_identical_rate=0.0 if np.isnan(identical) else float(identical),
+        n_tasks=len(per_task),
+        n_rows_focal=len(focal),
+        n_rows_reference=len(reference),
+        n_answered_focal=int(focal["scoreable"].sum()),
+        n_answered_reference=int(reference["scoreable"].sum()),
+        focal_uptake=float(focal["arm_pass"].mean()),
+        reference_uptake=float(reference["arm_pass"].mean()),
+        target_failure_focal=float(focal["a_failure"].mean()),
+        target_failure_reference=float(reference["a_failure"].mean()),
+        cap_hit_rate=float(cell["reasoning_cap_hit"].mean()),
+        satisfiable=satisfiability_witness(str(cell["background"].iloc[0])),
+        tau=float(per_task.mean()) if len(per_task) else float("nan"))
 
 
 def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
@@ -146,6 +296,8 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
                   "hi": float("nan"), "n_tasks": 0})
         focal_rate = focal["a_failure"].mean()
         reference_rate = reference["a_failure"].mean()
+        evidence = cell_evidence(cell, per_task)
+        verdict = identification.classify(evidence)
         out.append({
             "model": model.split("/")[-1], "model_id": model,
             "backend": cell["backend"].iloc[0], "load": load,
@@ -169,7 +321,18 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
             "n_tasks": stats["n_tasks"],
             "joint_focal": (focal["outcome"] == "both satisfied").sum()
             / max(int(focal["scoreable"].sum()), 1),
-            "degeneracy": degeneracy(focal_rate, reference_rate)})
+            # The verdict comes from the shared layer rather than a local
+            # ceiling/floor test. The previous `degeneracy()` helper emitted
+            # three labels and could only ever see two failure modes; the layer
+            # distinguishes thirteen, and the ones it adds are the ones this
+            # dataset actually hits — an undelivered focal instruction is not a
+            # ceiling, and neither is a cap-truncated run.
+            "identification": verdict.status,
+            "identification_reason": verdict.reason,
+            "focal_uptake": evidence.focal_uptake,
+            "reference_uptake": evidence.reference_uptake,
+            "cap_hit_rate": evidence.cap_hit_rate,
+            "estimable": verdict.poolable})
     return pd.DataFrame(out)
 
 
@@ -208,9 +371,23 @@ def headline(cells: pd.DataFrame) -> pd.DataFrame:
                                    part["final_answers_focal"]),
             "A-fail ref": pooled(part["A_fail_reference"],
                                  part["final_answers_reference"]),
+            # tau is pooled over IDENTIFIED cells only. Averaging an unidentified
+            # cell into a headline tau is the specific error the identification
+            # layer exists to prevent: a TARGET_CEILING cell contributes a
+            # structural zero, and a FOCAL_NONUPTAKE cell contributes an estimate
+            # of a treatment that was never delivered. Both drag a pooled mean
+            # toward zero while looking like evidence of no interference.
+            #
+            # The failure rates above are NOT restricted, because they are
+            # descriptions of what happened rather than estimates of an effect,
+            # and suppressing them would hide the very degeneracy being reported.
+            #
             # tau is a paired within-task contrast, so its natural weight is the
             # cell's overall contribution rather than either arm's alone.
-            "tau": pooled(part["tau"], weight)})
+            "Cells": len(part),
+            "Identified": int(part["estimable"].sum()),
+            "tau (identified only)": pooled(
+                part["tau"].where(part["estimable"]), weight)})
     return pd.DataFrame(out)
 
 
@@ -433,6 +610,35 @@ def manifest(frame: pd.DataFrame) -> list[dict]:
 
 
 # ------------------------------------------------------------------ document
+def json_safe(value):
+    """Recursively replace NaN and infinities with None, for valid JSON.
+
+    Python's `json` emits bare `NaN`, `Infinity` and `-Infinity` tokens by
+    default. None of the three is valid JSON: RFC 8259 has no non-finite
+    literals. `node`'s JSON.parse rejects the file outright, Python's own loader
+    rejects it under `parse_constant`, and `jq` silently rewrites NaN to null —
+    so a consumer either fails loudly or reads a different value than intended.
+
+    A missing estimate is genuinely absent, and `null` is how JSON says that, so
+    the conversion loses nothing. The `allow_nan=False` on every dumps below is
+    the other half: it makes any future non-finite a loud error at write time
+    instead of an invalid artifact discovered downstream.
+    """
+    if isinstance(value, float):
+        return None if (value != value or value in (float("inf"), float("-inf"))) else value
+    if isinstance(value, dict):
+        return {k: json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_safe(v) for v in value]
+    if isinstance(value, np.floating):
+        return json_safe(float(value))
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.bool_):
+        return bool(value)
+    return value
+
+
 def _ceiling_phrase(ceiling: float) -> str:
     """Say "not recorded" rather than printing a NaN as if it were a limit."""
     if ceiling is None or (isinstance(ceiling, float) and np.isnan(ceiling)):
@@ -498,14 +704,17 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
         "",
         "τ = P(A fails | focal B) − P(A fails | reference C_L3), over rows that "
         "produced a final answer, pooled across backgrounds and weighted by "
-        "those rows. Per-background detail and the degeneracy label are in §1.",
+        "those rows. Per-background detail and the identification verdict are in "
+        "§1. The pooled τ column covers IDENTIFIED cells only; the count of "
+        "cells and of identified cells is printed beside it.",
         "",
         "## 1. k=3 results",
         "",
         table(cells[["model", "backend", "load", "background", "requested",
                      "final_answers", "no_final", "technical_failures",
-                     "A_fail_focal", "A_fail_reference", "tau", "lo", "hi",
-                     "n_tasks", "joint_focal", "degeneracy"]]
+                     "A_fail_focal", "A_fail_reference", "focal_uptake",
+                     "reference_uptake", "cap_hit_rate", "tau", "lo", "hi",
+                     "n_tasks", "joint_focal", "identification"]]
               [cells["load"] == contract.LOAD]),
         "",
         "A `TARGET_CEILING` label means the target instruction essentially "
@@ -575,7 +784,7 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
             table(k5[["model", "backend", "load", "background", "requested",
                       "final_answers", "no_final", "A_fail_focal",
                       "A_fail_reference", "tau", "lo", "hi", "n_tasks",
-                      "degeneracy"]]),
+                      "identification"]]),
             "",
             "### Semicolon-minus-control contrast at k=5",
             "",
@@ -653,10 +862,11 @@ def main() -> int:
     keep = [c for c in frame.columns if c not in ("rendered_prompt",)]
     with rows_path.open("w") as handle:
         for record in frame[keep].to_dict("records"):
-            handle.write(json.dumps(record, default=str) + "\n")
+            handle.write(json.dumps(json_safe(record), default=str,
+                                    allow_nan=False) + "\n")
 
     manifest_path = out.with_name("ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json")
-    manifest_path.write_text(json.dumps({
+    manifest_path.write_text(json.dumps(json_safe({
         "stamp": "EXPLORATORY_NO_EVIDENCE",
         "experiment": "ACTUAL_CROSS_MODEL_DCI",
         "recorded_utc": datetime.now(timezone.utc).isoformat(),
@@ -667,7 +877,7 @@ def main() -> int:
         "checkpoints_without_rows": missing,
         "headline": headline(cells).to_dict("records"),
         "cells": cells.to_dict("records"),
-    }, indent=1, default=str))
+    }), indent=1, default=str, allow_nan=False))
 
     print(document(frame, cells, missing, stamp))
     print(f"wrote {out}\n      {rows_path}\n      {manifest_path}")

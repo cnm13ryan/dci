@@ -32,9 +32,18 @@ import xm_actual_results as R  # noqa: E402
 
 def cell(model: str, background: str, *, focal_n: int, focal_fail: int,
          ref_n: int, ref_fail: int, load: int = 3,
-         backend: str = "transformers") -> dict:
-    """One per-cell row with independently controllable arm denominators."""
+         backend: str = "transformers", identification: str = "IDENTIFIED",
+         estimable: bool = True) -> dict:
+    """One per-cell row with independently controllable arm denominators.
+
+    `identification`/`estimable` default to an identified cell so the
+    denominator assertions below isolate the weighting, not the pooling gate.
+    """
     return {
+        "identification": identification,
+        "identification_reason": "",
+        "estimable": estimable,
+        "focal_uptake": 1.0, "reference_uptake": 1.0, "cap_hit_rate": 0.0,
         "model": model, "model_id": f"org/{model}", "backend": backend,
         "load": load, "background": background, "variant": background,
         "requested": (focal_n + ref_n) * 2,
@@ -45,7 +54,7 @@ def cell(model: str, background: str, *, focal_n: int, focal_fail: int,
         "A_fail_focal": focal_fail / focal_n if focal_n else float("nan"),
         "A_fail_reference": ref_fail / ref_n if ref_n else float("nan"),
         "tau": 0.0, "lo": 0.0, "hi": 0.0, "n_tasks": 20,
-        "joint_focal": 0.0, "degeneracy": "estimable",
+        "joint_focal": 0.0,
     }
 
 
