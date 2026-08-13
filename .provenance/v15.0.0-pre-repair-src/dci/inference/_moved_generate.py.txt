@@ -1,0 +1,76 @@
+def generate_batch(batch_rows: list[dict[str, Any]],
+                   batch_seed: int) -> tuple[list[str], dict[str, Any]]:
+    profile: dict[str, Any] = {}
+    if CFG.dry_run:
+        texts = [synthetic_response(r) for r in batch_rows]
+        for r, text in zip(batch_rows, texts):
+            tokens = len(word_tokens(text))
+            TERMINATION_RECORDS.append({
+                "row_id": r["row_id"], "generated_token_count": tokens,
+                "ended_with_eos": True, "hit_max_new_tokens": False,
+                "output_truncated": False, "stop_reason": "synthetic_eos"})
+        return texts, profile
+
+    load_model()
+    set_all_seeds(batch_seed)
+
+    absent = [r["row_id"] for r in batch_rows if r["row_id"] not in _PROMPT_IDS]
+    if absent:
+        raise RuntimeError(f"{len(absent)} rows were never pre-tokenised.")
+
+    t0 = time.perf_counter()
+    padded = tokenizer.pad({"input_ids": [_PROMPT_IDS[r["row_id"]] for r in batch_rows]},
+                           return_tensors="pt")
+    profile["tokenize_seconds"] = time.perf_counter() - t0
+    profile["input_tokens"] = int(padded["attention_mask"].sum())
+
+    t0 = time.perf_counter()
+    device = next(model.parameters()).device
+    padded = {k: v.to(device) for k, v in padded.items()}
+    torch.cuda.synchronize()
+    profile["h2d_seconds"] = time.perf_counter() - t0
+
+    width = padded["input_ids"].shape[1]
+    torch.cuda.reset_peak_memory_stats()
+    t0 = time.perf_counter()
+    with torch.inference_mode():
+        out = model.generate(
+            **padded, max_new_tokens=CFG.max_new_tokens, do_sample=CFG.do_sample,
+            temperature=CFG.temperature, top_p=CFG.top_p,
+            pad_token_id=tokenizer.pad_token_id, eos_token_id=tokenizer.eos_token_id,
+            use_cache=True)
+    torch.cuda.synchronize()
+    profile["generate_seconds"] = time.perf_counter() - t0
+
+    generated = out[:, width:]
+    # The pad token IS the EOS token here, so counting non-pad positions would
+    # drop the terminal EOS and undercount every completed sequence by one.
+    eos = tokenizer.eos_token_id
+    lengths, terminations = [], []
+    for r, row in zip(batch_rows, generated.tolist()):
+        stop = next((i for i, t in enumerate(row) if t == eos), None)
+        length = len(row) if stop is None else stop + 1
+        lengths.append(length)
+        # Per-row termination diagnostics. These are POST-TREATMENT: they are
+        # reported by arm and never conditioned on.
+        terminations.append({
+            "row_id": r["row_id"],
+            "generated_token_count": int(length),
+            "ended_with_eos": bool(stop is not None),
+            "hit_max_new_tokens": bool(length >= CFG.max_new_tokens),
+            "output_truncated": bool(stop is None and length >= CFG.max_new_tokens),
+            "stop_reason": ("eos" if stop is not None else
+                            "max_new_tokens" if length >= CFG.max_new_tokens
+                            else "unknown")})
+    TERMINATION_RECORDS.extend(terminations)
+    profile["output_tokens"] = int(sum(lengths))
+    profile["n_hit_max_new_tokens"] = int(sum(t["hit_max_new_tokens"] for t in terminations))
+    profile["peak_allocated_bytes"] = int(torch.cuda.max_memory_allocated())
+    profile["peak_reserved_bytes"] = int(torch.cuda.max_memory_reserved())
+
+    t0 = time.perf_counter()
+    texts = tokenizer.batch_decode(generated, skip_special_tokens=True)
+    profile["decode_seconds"] = time.perf_counter() - t0
+    return texts, profile
+
+

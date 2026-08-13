@@ -1,0 +1,111 @@
+check,passed,detail
+verifier_unit_tests,True,96 assertions
+bridge_targets_pass_both_pathway_probes,True,4 bridge targets
+bridge_family_excluded_from_u_build,True,bridge targets share A's segmentation span and may only validate
+signature_only_emits_requested_targets,True,16 components
+coupling_is_always_measured_and_declared,True,"estimand primary_total, kappa role audit: matched status follows the declared estimand, never convenience"
+kappa_matched_and_total_are_not_the_same_estimand,True,"different reference definitions, different interpretations"
+wording_instability_is_decomposed,True,
+design_unique_screening,True,688 rows
+design_unique_prescreen,True,216 rows
+design_unique_calibration,True,1056 rows
+design_unique_confirmatory,True,180 rows
+design_unique_placebo,True,90 rows
+design_unique_wording,True,272 rows
+confirmatory_balanced,True,
+confirmatory_has_both_orders,True,
+no_burned_topics_in_any_design,True,
+held_out_wordings_never_enter_construction,True,"holdout (6, 7) absent from calibration and confirmation"
+held_out_wordings_are_actually_evaluated,True,Gate 3b consumes exactly the held-out wordings
+wording_validation_uses_its_own_tasks,True,
+benchmark_prompts_are_not_scientific,True,
+oracle_matches_closed_form,True,observed 0.5970 vs closed form 0.5882
+oracle_has_designed_focal_excess,True,
+oracle_has_designed_order_effect,True,
+oracle_gives_bridge_targets_dynamic_range,True,"{'U_BRG_VOWEL3': np.float64(0.71), 'U_BRG_CAPS1': np.float64(0.52), 'U_BRG_NOTHE': np.float64(0.27), 'U_BRG_QMARK': np.float64(0.52)}"
+oracle_gives_every_constraint_dynamic_range,True,"45 constraints; fewest satisfying 13, fewest violating 36"
+oracle_realised_rate_equals_designed_beta,True,closed form 0.5882 = beta 0.5882
+sensitivity_estimated_per_rotation_and_order,True,6 rotation-order slope vectors
+calipers_never_exceed_ceiling,True,
+calipers_invert_sesoi_against_slope,True,
+caliper_uses_no_pool_spread,True,no pool-spread symbol is referenced anywhere in caliper derivation or admission
+heterogeneous_sensitivity_takes_the_conservative_maximum,True,a pooled average may never widen a caliper past the sensitive rotation
+admission_matches_componentwise_rule,True,
+wide_calipers_admit_everything,True,
+joint_budget_rejects_accumulated_moderate_mismatches,True,"every caliper passes at 95% of its width, total certificate 1.520 > 0.05"
+joint_budget_records_which_criterion_was_binding,True,the reader can tell which rule refused the candidate
+joint_budget_admits_a_genuinely_close_reference,True,"the certificate is a bound on accumulated bias, not a second caliper"
+joint_budget_can_only_remove_candidates,True,
+scope_exact_match_binds,True,
+uncertainty_can_only_remove_candidates,True,
+panel_is_exactly_k,True,
+panel_is_deterministic,True,
+short_pool_raises_not_identified_support,True,and it says more data would NOT help
+precision_and_support_failures_are_distinct_statuses,True,
+contender_set_is_a_subset_of_the_pool,True,2 contenders of 11
+precision_gate_protects_contenders_not_the_median,True,a single imprecise contender fails the gate even though the pool median is exact
+precision_reports_a_planning_estimate_in_clusters,True,
+sufficient_precision_passes,True,
+empty_contender_set_is_a_support_statement_not_a_precision_one,True,no candidate inside the buffer at 5x the caliper
+contender_distance_reports_the_multiple_that_would_be_needed,True,5.000 calipers
+empty_admission_returns_a_reportable_frame,True,"an empty pool is a state the gate reports, not a KeyError below it"
+empty_hard_eligible_universe_is_reportable,True,
+weights_respect_cap,True,max 0.300
+weights_sum_to_one,True,
+distance_penalty_downweights_a_distant_donor,True,aggregate balance cannot be bought from an individually distant donor
+g0_cannot_authorize_a_failed_g1,True,
+g2_cannot_authorize_a_failed_g1,True,
+g1_alone_authorizes_the_primary,True,
+failed_g2_does_not_invalidate_g1,True,the stochastic secondary is withheld; the primary panel stands
+too_few_pseudo_focals_returns_not_evaluable,True,
+enough_pseudo_focals_passes,True,
+panel_mean_hides_cancellation,True,panel residual bound 0.005
+per_reference_validation_catches_cancellation,True,worst individual bound 0.206
+gate4_fails_on_uncertainty_not_point_estimate,True,point 0.010 but bound 0.168
+paired_advantage_detects_a_real_improvement,True,
+paired_advantage_is_not_fooled_by_a_tie,True,
+unsigned_paraphrase_audit_does_not_pass,True,
+signed_audit_cannot_be_overwritten_by_a_rerun,True,guarded write left the file untouched
+measurement_sample_needs_no_model,True,1608 blinded cases over 33 audit units
+measurement_sample_is_blinded,True,"no constraint id, no arm, no tier, no automatic verdict"
+every_selectable_constraint_is_covered_by_an_audited_unit,True,41 constraints over 2 tier-1 units and 31 tier-2 strata
+audit_sample_contains_malformed_and_boundary_cases,True,"221 malformed, 718 boundary"
+gateM_can_be_passed_by_a_perfect_verifier,True,status PASS; pooled tier-2 denominators 620 fail / 620 pass
+audit_size_inverts_the_bound_the_gate_applies,True,"73 per truth class is the smallest that attains 5%; v14 used 59, whose bound is 0.061"
+too_few_human_fail_examples_cannot_certify_false_pass,True,"with no human failures the false-pass bound is NaN, not zero"
+too_few_human_pass_examples_cannot_certify_false_fail,True,"with no human passes the false-fail bound is NaN, not zero"
+missing_truth_class_returns_its_own_status,True,"AUDIT_CLASS_SUPPORT_INSUFFICIENT, distinct from a demonstrated defect"
+false_fail_error_can_fail_the_measurement_gate,True,"false-fail is gated, not merely reported"
+demonstrated_verifier_defect_is_never_more_data_resolvable,True,VERIFIER_RELIABILITY_FAILED
+every_randomisation_relevant_field_alters_the_fingerprint,True,14 fields tested
+profile_is_in_the_fingerprint_and_the_path,True,
+local_cache_deletion_is_visible,True,
+drive_restore_reproduces_a_deleted_local_cache,True,"2 batches, 8 rows recovered"
+restore_regenerates_nothing_already_committed,True,
+foreign_profile_cache_is_quarantined_not_read,True,1 quarantined
+simultaneous_wider_than_marginal,True,critical value 2.348
+wilson_bounds_zero_events_sensibly,True,12 cases cannot establish a 5% ceiling; about 59 can
+holm_is_monotone_and_bounded,True,
+simultaneous_power_is_never_above_marginal,True,the claim rule needs a larger effect than one contrast does
+hard_eligibility_is_deterministic,True,
+hard_eligibility_never_reads_a_B_neighbourhood,True,no B-relative symbol referenced; 17 constraints in the universe
+hard_eligibility_excludes_the_focal_and_its_variants,True,
+end_to_end_signature_is_finite,True,
+end_to_end_signature_has_variation,True,
+end_to_end_recovers_designed_difficulty,True,max deviation 0.090
+require_gate_raises_when_absent,True,
+b_relative_object_cannot_reach_the_pseudo_focal_universe,True,the taint propagates through an intermediate object whose own construction never mentions the focal constraint
+lineage_check_is_on_the_argument_not_the_function,True,the pseudo-focal construction validates what it is handed
+indeterminate_u_targets_cannot_enter_an_evidential_split,True,a family holding both kinds contributes only its resolved members
+opposing_held_out_wording_discrepancies_cannot_cancel,True,the average is 0.000 and would pass any tolerance; the worst per-wording cell is 0.120
+rank_deficient_sensitivity_fails_safely,True,"every predictor an exact multiple of d: no rotation survives, and no caliper is produced"
+sensitivity_diagnostics_record_rank_and_conditioning,True,24 rotations recorded so far
+unavailable_jackknife_uncertainty_cannot_become_zero,True,"an unestimable standard error is NaN, and the caliper falls back to the declared conservative allowance of 1.0"
+scientific_input_truncation_fails_before_generation,True,"the check runs on the untruncated tokenisation, before any batch"
+output_truncation_metadata_are_recorded_per_row,True,816 rows recorded so far
+hardware_mismatch_prevents_scientific_resume,True,"no equivalence classes are declared, so strict consistency binds"
+gate4_failure_preserves_confirmatory_historical_status,True,design validity survives a failed Gate 4; the export label carries the terminal verdict and the matrix is neither hidden nor regenerated
+pilot_task_splits_are_complete_and_disjoint,True,10 stage pairs disjoint; every stage holds exactly its declared cluster count
+a_short_task_allocation_raises_rather_than_shrinking,True,no stage can quietly receive fewer clusters than declared
+budget_snapshots_state_their_basis_and_whether_they_are_realised,True,0 snapshots so far
+require_gate_raises_on_failure,True,

@@ -1,0 +1,12 @@
+{
+  "confirmatory_design_valid": false,
+  "final_falsification_status": "FINAL_FALSIFICATION_FAILED",
+  "export_label": "PROVISIONAL",
+  "measurement_valid": false,
+  "pre_confirmatory_gates_passed": false,
+  "any_gate_bypassed": true,
+  "profile_produces_evidence": false,
+  "frozen": true,
+  "plan_sha256": "e92c6d01aee4ab500efa15e0703a3ba74606648d6b49b1c7cb1af68e99568497",
+  "gate4_excluded_from_design_validity": true
+}

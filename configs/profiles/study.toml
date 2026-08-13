@@ -1,0 +1,8 @@
+# THE evidence-producing profile (Qwen2.5-3B, full sizes). Only meaningful on
+# the frozen cloud execution class after both audits are signed. Requires
+# --execute; the pipeline still refuses without signed audits (Gate M).
+model_profile = "study"
+run_mode = "full"
+dry_run_mode = false
+use_google_drive = true
+data_root = "artifacts"

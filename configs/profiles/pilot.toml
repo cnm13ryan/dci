@@ -1,0 +1,7 @@
+# Non-evidence empirical feasibility on Qwen2.5-1.5B. Requires a GPU stack and
+# --execute; outputs are stamped PILOT_MODEL_SPECIFIC and transfer nowhere.
+model_profile = "pilot"
+run_mode = "smoke"
+dry_run_mode = false
+use_google_drive = true
+data_root = "artifacts"
