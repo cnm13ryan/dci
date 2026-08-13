@@ -19,7 +19,11 @@ from typing import Any, Optional
 import numpy as np
 import pandas as pd
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from dci_exploratory import extensions, harvest, mechanism, plotstyle
+from vllm_backend.contract import canonicalise_row
 
 #: Language that would mean the answer channel is continued scratch work rather
 #: than an answer. This is the Round 8 failure mode, checked rather than assumed.
@@ -55,18 +59,20 @@ def latest(pattern: str) -> Path:
 # ------------------------------------------------------- the reasoning run
 def load_reasoning(path: Path) -> pd.DataFrame:
     """Score the vLLM reasoning-budget generations from the ANSWER field only."""
-    frame = pd.DataFrame([json.loads(line) for line in Path(path).open()])
+    # ONE migration boundary: archived generations, read as canonical.
+    frame = pd.DataFrame([canonicalise_row(json.loads(line))
+                          for line in Path(path).open()])
     target = frame["measured"].iloc[0]
 
-    frame["a_pass"] = [_pass(t, target) for t in frame["answer"]]
-    frame["arm_pass"] = [_pass(t, a) for t, a in zip(frame["answer"], frame["arm"])]
-    frame["c_pass"] = [_pass(t, v) for t, v in zip(frame["answer"], frame["variant"])]
+    frame["a_pass"] = [_pass(t, target) for t in frame["final_answer"]]
+    frame["arm_pass"] = [_pass(t, a) for t, a in zip(frame["final_answer"], frame["arm"])]
+    frame["c_pass"] = [_pass(t, v) for t, v in zip(frame["final_answer"], frame["variant"])]
     frame["a_failure"] = 1.0 - frame["a_pass"]
     frame["joint"] = frame["a_pass"] * frame["arm_pass"] * frame["c_pass"]
 
-    frame["answer_empty"] = frame["answer"].str.strip().str.len().eq(0)
-    frame["scratch_marker"] = frame["answer"].str.contains(SCRATCH, na=False)
-    features = pd.DataFrame([mechanism.row_features(t) for t in frame["answer"]],
+    frame["answer_empty"] = frame["final_answer"].str.strip().str.len().eq(0)
+    frame["scratch_marker"] = frame["final_answer"].str.contains(SCRATCH, na=False)
+    features = pd.DataFrame([mechanism.row_features(t) for t in frame["final_answer"]],
                             index=frame.index)
     frame = pd.concat([frame, features], axis=1)
 
@@ -75,7 +81,7 @@ def load_reasoning(path: Path) -> pd.DataFrame:
          (frame["a_pass"] == 1) & (frame["arm_pass"] == 0),
          (frame["a_pass"] == 0) & (frame["arm_pass"] == 1)],
         ["both", "target only", "focal only"], default="neither")
-    return frame.drop(columns=["reasoning"])
+    return frame.drop(columns=["reasoning_text"])
 
 
 def load_all_reasoning(run_dir: Path) -> pd.DataFrame:
@@ -160,12 +166,12 @@ def reasoning_cells(frame: pd.DataFrame) -> pd.DataFrame:
         record = {"reasoning_budget": budget, "variant": variant, "arm": arm,
                   "n_rows": len(cell), "n_tasks": cell["task_id"].nunique(),
                   "cap_hit": cell["reasoning_cap_hit"].mean(),
-                  "closed_naturally": cell["closed_naturally"].mean(),
+                  "reasoning_closed": cell["reasoning_closed"].mean(),
                   "realised_reasoning_mean": cell["reasoning_tokens"].mean(),
                   "realised_reasoning_median": cell["reasoning_tokens"].median(),
                   "realised_reasoning_p25": cell["reasoning_tokens"].quantile(.25),
                   "realised_reasoning_p75": cell["reasoning_tokens"].quantile(.75),
-                  "answer_tokens_mean": cell["answer_tokens"].mean(),
+                  "answer_tokens_mean": cell["final_answer_tokens"].mean(),
                   "answer_truncated": cell["answer_truncated"].mean(),
                   "answer_empty": cell["answer_empty"].mean(),
                   "scratch_in_answer": cell["scratch_marker"].mean(),

@@ -8,7 +8,7 @@ ceiling is never reached:
     ceiling = context_limit
               - longest_rendered_prompt
               - answer_allowance          (identical to every other condition)
-              - control_tokens            (the `</think>` splice)
+              - control_tokens            (the close-delimiter splice)
               - safety_margin             (2% of the context window)
 
 The number is whatever that arithmetic gives. It is deliberately NOT a round
@@ -18,118 +18,129 @@ almost never touches.
 
 "Natural" means only this: the experiment did not stop the model's reasoning
 before it finished. It does not mean unlimited compute or unlimited context.
+
+The arithmetic now lives in `vllm_backend.resolve.context_envelope`; engine,
+sampling and schema come from `vllm_backend`.
+
+    python vllm_backend/natural_reasoning.py MODEL REVISION DESIGN OUT [ANSWER_TOKENS]
 """
-import json
-import math
+from __future__ import annotations
+
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 
-MODEL = sys.argv[1]
-REVISION = sys.argv[2]
-DESIGN = Path(sys.argv[3])
-OUT = Path(sys.argv[4])
-ANSWER_TOKENS = int(sys.argv[5]) if len(sys.argv) > 5 else 512
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-THINK_CLOSE = "</think>"
-CONTEXT_LIMIT = 40960          # Qwen3-4B max_position_embeddings, read from config
-SAFETY_FRACTION = 0.02         # reserve 2% of the window rather than trust the edge
+from vllm_backend import engine, io, records
+from vllm_backend.hardware import probe as probe_host
+from vllm_backend.reasoning import build_parser
+from vllm_backend.registry import ReasoningMode, get
+from vllm_backend.resolve import (
+    context_envelope,
+    resolve_engine,
+    resolve_run,
+    resolve_sampling,
+)
+
+CONTEXT_LIMIT = 40960          # practical envelope, read from the config
+SAFETY_FRACTION = 0.02         # reserve 2% rather than trust the edge
 #: Offset that keeps this condition's seeds disjoint from every other run.
 SEED_OFFSET = 90000
+SEED_BASE = 20260810
+SEED_STRIDE = 7919
 
 
-def main():
-    from vllm import LLM, SamplingParams
+def main(argv: list[str] | None = None) -> int:
+    argv = list(argv if argv is not None else sys.argv[1:])
+    model_id, revision = argv[0], argv[1]
+    design_path, out_path = Path(argv[2]), Path(argv[3])
+    answer_tokens = int(argv[4]) if len(argv) > 4 else 512
 
-    rows = [json.loads(line) for line in DESIGN.open()]
-    llm = LLM(model=MODEL, revision=REVISION, dtype="bfloat16",
-              tensor_parallel_size=2, gpu_memory_utilization=0.85,
-              max_model_len=CONTEXT_LIMIT, enforce_eager=True,
-              disable_custom_all_reduce=True, seed=20260810)
-    tok = llm.get_tokenizer()
+    # `get`, not `get_or_default`: this is an experiment runner, and the
+    # fallback card cannot say how a checkpoint selects its reasoning mode.
+    # Reaching for it here is what silently dropped `enable_thinking`.
+    card = replace(get(model_id), model_id=model_id)
+    host = probe_host()
+    engine_plan = resolve_engine(card, host, {
+        "tensor_parallel_size": 2, "max_model_len": CONTEXT_LIMIT,
+        "seed": SEED_BASE, "model_revision": revision})
+    llm, tokenizer, load_seconds = engine.build_engine(engine_plan)
+    parser, parser_label = build_parser(card.reasoning_parser, tokenizer,
+                                        card.think_open, card.think_close)
 
-    prompts = []
-    for row in rows:
-        messages = []
-        if row.get("system_message"):
-            messages.append({"role": "system", "content": row["system_message"]})
-        messages.append({"role": "user", "content": row["user_prompt"]})
-        prompts.append(tok.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True,
-            enable_thinking=True))
+    run_plan = resolve_run(card, ReasoningMode.NATURAL_REASONING,
+                           strategy="two_phase_splice")
+    base_rows = io.load_design(design_path)
+    requests = [
+        replace(r,
+                scientific_seed=SEED_BASE + SEED_OFFSET + SEED_STRIDE * i,
+                answer_seed=SEED_BASE + SEED_OFFSET + 1 + SEED_STRIDE * i,
+                identity={**r.identity, "condition": "NATURAL_REASONING"})
+        for i, r in enumerate(base_rows)]
 
-    prompt_tokens = [len(tok.encode(p, add_special_tokens=False)) for p in prompts]
-    longest_prompt = max(prompt_tokens)
-    control_tokens = len(tok.encode(f"{THINK_CLOSE}\n\n", add_special_tokens=False))
-    safety = math.ceil(CONTEXT_LIMIT * SAFETY_FRACTION)
-    ceiling = CONTEXT_LIMIT - longest_prompt - ANSWER_TOKENS - control_tokens - safety
+    template_kwargs = run_plan.chat_template_kwargs
+    # NOT guarded on `template_kwargs` being non-empty: an empty mapping is
+    # exactly the case that used to disable this check silently.
+    if requests:
+        engine.verify_template_switch(tokenizer, requests[0], template_kwargs,
+                                      card, "NATURAL_REASONING")
+    prompts = [engine.render_prompt(tokenizer, r, template_kwargs)
+               for r in requests]
 
-    envelope = {"context_limit": CONTEXT_LIMIT, "longest_prompt_tokens": longest_prompt,
-                "median_prompt_tokens": sorted(prompt_tokens)[len(prompt_tokens) // 2],
-                "answer_allowance": ANSWER_TOKENS, "control_tokens": control_tokens,
-                "safety_margin": safety, "derived_ceiling": ceiling}
-    print("engineering envelope:", json.dumps(envelope), flush=True)
+    prompt_tokens = [len(tokenizer.encode(p, add_special_tokens=False))
+                     for p in prompts]
+    control_tokens = len(tokenizer.encode(f"{card.think_close}\n\n",
+                                          add_special_tokens=False))
+    ceiling = context_envelope(CONTEXT_LIMIT, max(prompt_tokens), answer_tokens,
+                               control_tokens, SAFETY_FRACTION)
+    envelope = {
+        "context_limit": CONTEXT_LIMIT,
+        "longest_prompt_tokens": max(prompt_tokens),
+        "median_prompt_tokens": sorted(prompt_tokens)[len(prompt_tokens) // 2],
+        "answer_allowance": answer_tokens, "control_tokens": control_tokens,
+        "safety_fraction": SAFETY_FRACTION, "derived_ceiling": ceiling,
+    }
+    print("engineering envelope:", envelope, flush=True)
 
-    # One seed PER ROW. A single shared seed makes two replicate rows of the same
-    # task byte-identical, so "2 replicates" silently becomes one draw counted
-    # twice. Same convention as the fixed `reasoning_vllm.py`.
-    def seeds(offset: int) -> list[int]:
-        return [20260810 + offset + 7919 * i for i in range(len(prompts))]
+    requests = [replace(r, identity={**r.identity, "reasoning_budget": ceiling,
+                                     "engineering_ceiling": ceiling})
+                for r in requests]
 
     started = time.perf_counter()
-    think = llm.generate(prompts, [SamplingParams(
-        temperature=0.7, top_p=0.9, max_tokens=ceiling, seed=s,
-        stop=[THINK_CLOSE], include_stop_str_in_output=False)
-        for s in seeds(SEED_OFFSET)])
-    think_seconds = time.perf_counter() - started
+    sampling = resolve_sampling(max_tokens=ceiling, answer_tokens=answer_tokens)
+    results = engine.generate_two_phase_splice(
+        llm, tokenizer, requests, prompts, sampling, parser, card)
+    elapsed = time.perf_counter() - started
 
-    continued, meta = [], []
-    for prompt, out in zip(prompts, think):
-        completion = out.outputs[0]
-        closed = completion.finish_reason == "stop"
-        continued.append(f"{prompt}{completion.text}{THINK_CLOSE}\n\n")
-        meta.append((completion.text, len(completion.token_ids), closed))
+    io.write_rows(out_path, results)
+    summary = records.summarise(results)
+    io.write_provenance(out_path, {
+        "experiment": "NATURAL_REASONING",
+        "engine_kwargs": {k: str(v) for k, v in engine_plan.engine_kwargs().items()},
+        "reasoning_parser_used": parser_label, **envelope,
+        "generation_seconds": round(elapsed, 1),
+        "load_seconds": round(load_seconds, 1),
+        "host": host.to_dict(), "summary": summary,
+    })
 
-    started = time.perf_counter()
-    answers = llm.generate(continued, [SamplingParams(
-        temperature=0.7, top_p=0.9, max_tokens=ANSWER_TOKENS, seed=s)
-        for s in seeds(SEED_OFFSET + 1)])
-    answer_seconds = time.perf_counter() - started
+    lengths = sorted(r.reasoning_tokens for r in results)
+    caps = summary["reasoning_cap_hits"]
 
-    records = []
-    for row, (reasoning, n_tokens, closed), out in zip(rows, meta, answers):
-        completion = out.outputs[0]
-        records.append(dict(
-            row, condition="NATURAL_REASONING", reasoning_budget=ceiling,
-            engineering_ceiling=ceiling, reasoning=reasoning,
-            reasoning_tokens=n_tokens, closed_naturally=closed,
-            reasoning_cap_hit=not closed, answer=completion.text.strip(),
-            answer_tokens=len(completion.token_ids),
-            answer_truncated=completion.finish_reason == "length",
-            native_nonthinking=False))
-
-    with OUT.open("w") as handle:
-        for record in records:
-            handle.write(json.dumps(record) + "\n")
-    (OUT.with_name(OUT.stem + "_envelope.json")).write_text(json.dumps(
-        {**envelope, "reasoning_phase_seconds": think_seconds,
-         "answer_phase_seconds": answer_seconds, "rows": len(records),
-         "cap_hits": sum(r["reasoning_cap_hit"] for r in records)}, indent=1))
-
-    lengths = sorted(r["reasoning_tokens"] for r in records)
-    caps = sum(r["reasoning_cap_hit"] for r in records)
-
-    def pct(p):
+    def pct(p: float) -> int:
         return lengths[min(len(lengths) - 1, int(p * len(lengths)))]
 
-    print(f"\nNATURAL_REASONING · {len(records)} rows · ceiling {ceiling}")
-    print(f"  reached the ceiling: {caps}/{len(records)}"
+    print(f"\nNATURAL_REASONING · {len(results)} rows · ceiling {ceiling}")
+    print(f"  reached the ceiling: {caps}/{len(results)}"
           f"{'  <-- INVALID, the ceiling binds' if caps else '  (none — the ceiling never binds)'}")
-    print(f"  reasoning tokens: min {lengths[0]} · p25 {pct(.25)} · median {pct(.5)} "
-          f"· p75 {pct(.75)} · p90 {pct(.9)} · max {lengths[-1]}")
-    print(f"  empty answers: {sum(1 for r in records if not r['answer'])} · "
-          f"truncated: {sum(r['answer_truncated'] for r in records)}")
-    print(f"  reasoning phase {think_seconds:.1f}s · answer phase {answer_seconds:.1f}s")
+    if lengths:
+        print(f"  reasoning tokens: min {lengths[0]} · p25 {pct(.25)} "
+              f"· median {pct(.5)} · p75 {pct(.75)} · p90 {pct(.9)} "
+              f"· max {lengths[-1]}")
+    print(f"  empty answers: {summary['empty_answers']} · "
+          f"truncated: {summary['answers_truncated']}")
+    print(f"  generation {elapsed:.1f}s")
     return 1 if caps else 0
 
 
