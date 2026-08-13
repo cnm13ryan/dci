@@ -90,7 +90,12 @@ def main() -> int:
     spec = vllm_models.get(args.model)
 
     tag = args.model.split("/")[-1].replace(".", "")
-    out_dir = Path(args.out or f"runs/xmv_smoke_{tag}_{utc_stamp()}")
+    # RESOLVED. The backend runs with cwd=exploratory so that `-m vllm_backend`
+    # can find the package, and the default here is RELATIVE ("runs/..."), so an
+    # unresolved path would be written by this driver relative to $PWD and read
+    # by the backend relative to exploratory/. Absolute paths make the working
+    # directory irrelevant to where generations land.
+    out_dir = Path(args.out or f"runs/xmv_smoke_{tag}_{utc_stamp()}").resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # -- revision -----------------------------------------------------------
