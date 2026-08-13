@@ -1,7 +1,7 @@
 {
  "stamp": "EXPLORATORY_NO_EVIDENCE",
  "experiment": "ACTUAL_CROSS_MODEL_DCI",
- "recorded_utc": "2026-08-13T10:39:11.996316+00:00",
+ "recorded_utc": "2026-08-13T10:48:09.063350+00:00",
  "contract": {
   "target": "A",
   "focal": "B",
@@ -235,7 +235,7 @@
    "A-fail ref": 0.14925373134328357,
    "Cells": 2,
    "Identified": 0,
-   "tau (identified only)": NaN
+   "tau (identified only)": null
   },
   {
    "Model": "Qwen3.5-4B",
@@ -250,7 +250,7 @@
    "A-fail ref": 0.0,
    "Cells": 2,
    "Identified": 0,
-   "tau (identified only)": NaN
+   "tau (identified only)": null
   },
   {
    "Model": "Qwen3.5-9B",
@@ -265,7 +265,7 @@
    "A-fail ref": 0.0,
    "Cells": 2,
    "Identified": 0,
-   "tau (identified only)": NaN
+   "tau (identified only)": null
   },
   {
    "Model": "gemma-4-E4B-it",
@@ -280,7 +280,7 @@
    "A-fail ref": 0.0,
    "Cells": 2,
    "Identified": 0,
-   "tau (identified only)": NaN
+   "tau (identified only)": null
   }
  ],
  "cells": [
