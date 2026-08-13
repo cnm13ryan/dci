@@ -34,6 +34,14 @@ dependencies = [
     "accelerate>=1.4.0",
     "huggingface-hub>=0.29.2",
     "pytest>=8.0",
+    # Kimi-VL-A3B-Thinking-2506 ships its own tiktoken-backed tokenizer
+    # (`tokenization_moonshot.py`), so the checkpoint cannot be loaded at all
+    # without these. They are pure tokenizer dependencies and touch NOTHING in
+    # the GPU stack — deliberately unlike the CUDA-only flash-attn that the
+    # model card's vLLM recipe suggests, which is not installed on this ROCm
+    # host and must not be.
+    "tiktoken>=0.7",
+    "blobfile>=3.0",
 ]
 
 [tool.uv]
