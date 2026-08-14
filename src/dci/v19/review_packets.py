@@ -242,3 +242,46 @@ def outstanding(compositions: Sequence[Composition],
         if review.state is not ReviewState.HUMAN_REVIEW_PASSED:
             missing.append(composition.composition_id)
     return tuple(missing)
+
+
+# --------------------------------------------------- the published review set
+#: The Pair 1 ordering used by the canonical review compositions.
+REVIEW_RELATION_ITEMS = ("alfa", "bravo", "charlie")
+REVIEW_RELATION_EDGES = (("alfa", "bravo"), ("bravo", "charlie"))
+
+
+def canonical_review_compositions(policy: ListPolicy) -> tuple[Composition, ...]:
+    """One minimal load-2 focal composition per pair, for the semantic review.
+
+    This lives here rather than in the test that first needed it because
+    `docs/v19_stage2_semantic_review_packets.json` is generated FROM it. While the
+    definition sat in a test, the published artifact had no producer outside the
+    test suite, so it could only be refreshed by hand - and a hand-refreshed
+    artifact is exactly what the packet bundle exists to make unnecessary.
+    """
+    from dci.v19 import encoding as E
+    from dci.v19.parsing import OrderingRelation
+
+    relation = OrderingRelation(items=REVIEW_RELATION_ITEMS,
+                                edges=REVIEW_RELATION_EDGES)
+    return (
+        E.encode_composition("p1/review/B", pair_id="p1", arm="B", load=2,
+                             realisations={
+                                 pairs.PAIR_1.target.constraint_id: {
+                                     "n_items": 3, "policy": policy},
+                                 pairs.PAIR_1.focal.constraint_id: {
+                                     "relation": relation, "policy": policy}}),
+        E.encode_composition("p2/review/B", pair_id="p2", arm="B", load=2,
+                             realisations={
+                                 pairs.PAIR_2.target.constraint_id: {
+                                     "mandatory_words": ("alfa", "bravo"),
+                                     "policy": policy},
+                                 pairs.PAIR_2.focal.constraint_id: {
+                                     "policy": policy}}),
+        E.encode_composition("p3/review/B", pair_id="p3", arm="B", load=2,
+                             realisations={
+                                 pairs.PAIR_3.target.constraint_id: {
+                                     "n_sentences": 3, "policy": policy},
+                                 pairs.PAIR_3.focal.constraint_id: {
+                                     "policy": policy}}),
+    )
