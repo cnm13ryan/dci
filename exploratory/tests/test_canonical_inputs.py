@@ -14,6 +14,8 @@ failure in the data it silently admits.
 """
 from __future__ import annotations
 
+import ast
+import json
 import sys
 from pathlib import Path
 
@@ -24,6 +26,171 @@ sys.path.insert(0, str(EXPLORATORY))
 
 from dci_exploratory import plotdata  # noqa: E402
 from tests import gridfixtures  # noqa: E402
+
+
+def test_the_raw_loader_itself_refuses_non_admissible_evidence(tmp_path: Path) -> None:
+    """The guard sits on `load_reasoning`, not only on the wrapper above it.
+
+    Second defect, found after the first was fixed: `load_all_reasoning` refused
+    the shared-seed grid, but `make_figures.py` never called it — it called
+    `load_reasoning` on `s18_reasoning.jsonl` directly and concatenated the
+    Round 10 `s18_transition.jsonl` budgets. So the tested invariant and the
+    production figure path disagreed, and the committed row-level export came
+    from the unguarded one. A guard beside the path is not a guard.
+    """
+    for name in ("s18_reasoning.jsonl", "s18_transition.jsonl",
+                 "s18_reasoning.scored.jsonl"):
+        path = tmp_path / name
+        gridfixtures.write_grid(path, shared_seed=True)
+        with pytest.raises(plotdata.NonAdmissibleEvidence, match=name):
+            plotdata.load_reasoning(path)
+
+
+def test_the_admissible_grid_still_loads(tmp_path: Path) -> None:
+    path = tmp_path / "s18_reseeded.jsonl"
+    gridfixtures.write_grid(path, shared_seed=False)
+    assert len(plotdata.load_reasoning(path)) == 16
+
+
+def test_demonstrating_the_defect_needs_an_explicit_opt_in(tmp_path: Path) -> None:
+    """The escape hatch exists only so the deprecation can be evidenced."""
+    path = tmp_path / "s18_reasoning.jsonl"
+    gridfixtures.write_grid(path, shared_seed=True)
+    frame = plotdata.load_reasoning(path, allow_non_admissible=True)
+    assert len(frame) == 16
+
+
+def test_the_figure_builder_uses_the_guarded_loader() -> None:
+    """`make_figures.build` must route through `load_all_reasoning`.
+
+    Asserted against the source because `build()` needs a real run directory to
+    execute, and `runs/` is gitignored — so the property that actually regressed
+    (which loader the production path calls) would otherwise be untested here.
+    """
+    source = (Path(__file__).resolve().parents[1] / "make_figures.py").read_text()
+    build = source[source.index("def build("):]
+    build = build[:build.index("\n# =====")]
+    # Comments are stripped: the block explains which files it no longer reads,
+    # and naming them in prose must not read as reading them.
+    code = "\n".join(line for line in build.splitlines()
+                     if not line.lstrip().startswith("#"))
+    assert "load_all_reasoning(run)" in code
+    for bypass in ("s18_reasoning.jsonl", "s18_transition.jsonl"):
+        assert bypass not in code, (
+            f"make_figures.build reaches past the guard to {bypass}")
+
+
+def test_no_production_script_names_a_non_admissible_generation_file() -> None:
+    """Generalises the check above to every script, not just `make_figures`.
+
+    The narrow version missed `round10_analysis.py`, which carried the identical
+    bypass — it loaded `s18_reasoning.jsonl` and appended `s18_transition.jsonl`
+    onto one curve. A guard that is only asserted at the one call site someone
+    remembered is how the second call site survives.
+
+    The check is on USE, not mention: `natural_analysis.py` names the deprecated
+    grid in order to print that it is refusing it, which is the opposite of a
+    bypass. So a filename is an offence only when it reaches a loader.
+    """
+    root = Path(__file__).resolve().parents[1]
+    loaders = {"load_reasoning", "load_all_reasoning", "load", "read_json",
+               "read_csv", "load_jsonl"}
+    offenders = []
+
+    for path in sorted(root.rglob("*.py")):
+        if "__pycache__" in path.parts or ".venv" in str(path) or "tests" in path.parts:
+            continue
+        try:
+            tree = ast.parse(path.read_text(errors="ignore"))
+        except SyntaxError:                       # not our problem here
+            continue
+
+        def literals(node: ast.AST) -> set[str]:
+            return {n.value for n in ast.walk(node)
+                    if isinstance(n, ast.Constant) and isinstance(n.value, str)
+                    and n.value in plotdata.NON_ADMISSIBLE}
+
+        # Variables bound to an expression naming a non-admissible file.
+        tainted: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign) and literals(node.value):
+                tainted.update(t.id for t in node.targets if isinstance(t, ast.Name))
+
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            func = node.func
+            name = (func.attr if isinstance(func, ast.Attribute)
+                    else func.id if isinstance(func, ast.Name) else "")
+            if name not in loaders:
+                continue
+            for arg in list(node.args) + [k.value for k in node.keywords]:
+                used = literals(arg) | {n.id for n in ast.walk(arg)
+                                        if isinstance(n, ast.Name) and n.id in tainted}
+                if used:
+                    offenders.append(
+                        f"{path.relative_to(root)}:{node.lineno} {name}({sorted(used)})")
+
+    assert not offenders, (
+        "these call sites load evidence recorded non-admissible in "
+        f"REASONING_DATA_PROVENANCE.md: {offenders}")
+
+
+def test_the_natural_endpoint_never_reaches_a_numeric_budget_axis(
+        tmp_path: Path) -> None:
+    """The capped curves are numeric; the natural condition is not a dose.
+
+    Regression: routing `build()` through `load_all_reasoning` was right for
+    admission and wrong for the axis — the natural rows carry the context-derived
+    engineering CEILING in `reasoning_budget` (39,550), `reasoning_cells` groups
+    on that column, and `main` feeds the unique values straight to
+    `budget_axis` -> `set_xticks`. That put a tick an order of magnitude past the
+    real 0-4096 curve and labelled a ceiling as an assigned budget.
+
+    `make_headline.py` is where the natural endpoint belongs, and it places it
+    categorically by `setting`.
+    """
+    gridfixtures.write_grid(tmp_path / "s18_reseeded.jsonl", shared_seed=False)
+    rows = [json.loads(line)
+            for line in (tmp_path / "s18_reseeded.jsonl").open()]
+    for row in rows:
+        row["reasoning_budget"] = 39550
+    (tmp_path / "natural_reasoning.jsonl").write_text(
+        "".join(json.dumps(r) + "\n" for r in rows))
+
+    frame = plotdata.load_all_reasoning(tmp_path)
+    assert "NATURAL_REASONING" in set(frame["condition"]), "fixture is not exercising it"
+
+    # What `build()` does before aggregating, asserted on the source so the
+    # filter cannot quietly disappear.
+    source = (Path(__file__).resolve().parents[1] / "make_figures.py").read_text()
+    build = source[source.index("def build("):]
+    build = build[:build.index("\n# =====")]
+    code = "\n".join(line for line in build.splitlines()
+                     if not line.lstrip().startswith("#"))
+    assert 'NATURAL_REASONING' in code, (
+        "make_figures.build no longer excludes the natural condition from the "
+        "numeric budget curves")
+
+    capped = frame[frame["condition"] != "NATURAL_REASONING"]
+    budgets = sorted(plotdata.reasoning_cells(capped)["reasoning_budget"].unique())
+    assert 39550 not in budgets, budgets
+
+
+def test_no_tracked_script_depends_on_an_ephemeral_session_path() -> None:
+    """Figure data once came from a /tmp agent scratchpad on another machine."""
+    root = Path(__file__).resolve().parents[1]
+    here = Path(__file__).resolve()
+    needles = ('"/tmp/', "'/tmp/", '"/home/', "'/home/")
+    offenders = []
+    for path in sorted(root.rglob("*.py")):
+        if "__pycache__" in path.parts or ".venv" in str(path):
+            continue
+        if path.resolve() == here:      # this file necessarily spells the needles
+            continue
+        text = path.read_text(errors="ignore")
+        offenders += [f"{path.relative_to(root)} -> {n}" for n in needles if n in text]
+    assert not offenders, offenders
 
 
 def test_missing_reseeded_grid_refuses_to_load(tmp_path: Path) -> None:
@@ -55,7 +222,9 @@ def test_deprecated_grid_really_is_replicate_degenerate(tmp_path: Path) -> None:
     """The reason the fallback is refused, asserted rather than assumed."""
     path = tmp_path / "s18_reasoning.jsonl"
     gridfixtures.write_grid(path, shared_seed=True)
-    frame = plotdata.load_reasoning(path)
+    # The one legitimate use of the escape hatch: evidencing the defect that put
+    # this file on the non-admissible list in the first place.
+    frame = plotdata.load_reasoning(path, allow_non_admissible=True)
     groups = frame.groupby(["task_id", "arm", "variant", "reasoning_budget"])
     identical = sum(1 for _, g in groups if g["final_answer"].nunique() == 1)
     assert identical == groups.ngroups, (
