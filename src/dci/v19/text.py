@@ -165,6 +165,38 @@ CANONICAL_TEXT_POLICY = TextPolicy(
     collapse_whitespace=True)
 
 
+def abbreviation_guard_state(policy: TextPolicy) -> dict[str, Any]:
+    """What the named guard is actually made of, for the specification hash.
+
+    `sentence_abbreviation_guard` records WHICH guard runs. That is not enough to
+    freeze the measurement: the guard lives in `dci.verifiers.rules`, outside this
+    module, and its decision is driven by two abbreviation tables, a trailing-token
+    pattern and an opening-punctuation set. Adding one entry to
+    `TITLE_ABBREVIATIONS` changes sentence counts — and therefore F_A — while the
+    guard's NAME, the v19 helpers' source, and every hash derived from them stay
+    identical.
+
+    That gap opened the moment Pair 3 stopped carrying its own segmentation and
+    delegated to the certified implementation. Delegation is right; leaving the
+    delegate outside the frozen closure is not. So the substance travels with the
+    name, and a future guard repair cannot retain the frozen bundle identity.
+
+    A policy that declares no guard has no guard state: the raw regex split is
+    fully described by `sentence_boundary`, which is already a policy field.
+    """
+    policy = require_policy(policy)
+    if policy.sentence_abbreviation_guard != ABBREVIATION_GUARD:
+        return {"guard": policy.sentence_abbreviation_guard}
+    return {
+        "guard": policy.sentence_abbreviation_guard,
+        "boundary_pattern": rules.SENTENCE_BOUNDARY.pattern,
+        "title_abbreviations": sorted(rules.TITLE_ABBREVIATIONS),
+        "medial_abbreviations": sorted(rules.MEDIAL_ABBREVIATIONS),
+        "trailing_abbreviation_pattern": rules.TRAILING_ABBREVIATION.pattern,
+        "opening_punctuation": "".join(sorted(rules.OPENING_PUNCTUATION)),
+    }
+
+
 def require_policy(policy: Any) -> TextPolicy:
     """Refuse anything but an explicit text policy."""
     if not isinstance(policy, TextPolicy):

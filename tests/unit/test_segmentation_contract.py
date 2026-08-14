@@ -40,6 +40,7 @@ from pathlib import Path
 import pytest
 
 from dci.v19 import text as textlib
+from dci.v19 import verifiers as V
 from dci.v19.parsing import CANONICAL_LIST_POLICY as P
 from dci.v19.parsing import sentences as v19_sentences
 from dci.verifiers import rules
@@ -250,6 +251,54 @@ def test_dropping_the_guard_moves_the_specification_hash():
 def test_an_undeclared_guard_is_refused():
     with pytest.raises(textlib.TextPolicyError, match="sentence_abbreviation_guard|not one of"):
         dataclasses.replace(TP, sentence_abbreviation_guard="hand-rolled")
+
+
+def test_the_delegated_guard_is_inside_the_frozen_closure():
+    """Delegation must not move executed behaviour outside the hash.
+
+    Found in review of the repair: once Pair 3 delegates boundary decisions to
+    `rules`, a change to the abbreviation TABLES moves sentence counts — and so
+    F_A — while the guard's name, every v19 helper's source, and every hash
+    derived from them stay identical. The freeze would then certify an identity
+    the measurement no longer has.
+
+    Both halves are covered: the tables travel in the spec hash via
+    `abbreviation_guard_state`, and the delegated functions' source travels in
+    the implementation hash via the Pair 3 implementation tuples.
+    """
+    built = V.bundle(P)
+    for constraint_id in ("v19:p3.target.exact_sentence_count",
+                          "v19:p3.focal.increasing_lengths"):
+        closure = {fn.__name__ for fn in built[constraint_id].implementation}
+        assert {"split_line", "ends_sentence", "_opens_with_capital"} <= closure, (
+            f"{constraint_id} executes the delegated guard but does not hash it")
+
+    guard = built["v19:p3.target.exact_sentence_count"].spec.segmentation[
+        "abbreviation_guard"]
+    assert guard["guard"] == textlib.ABBREVIATION_GUARD
+    assert sorted(rules.TITLE_ABBREVIATIONS) == guard["title_abbreviations"]
+    assert sorted(rules.MEDIAL_ABBREVIATIONS) == guard["medial_abbreviations"]
+    assert guard["boundary_pattern"] == rules.SENTENCE_BOUNDARY.pattern
+
+
+def test_changing_an_abbreviation_table_moves_the_frozen_identity(monkeypatch):
+    """The property above, exercised rather than described.
+
+    `Gov.` is not a title abbreviation today, so adding it changes where a
+    sentence ends. If that can happen without the bundle hash moving, the freeze
+    is not freezing the measurement.
+    """
+    text = "I met Gov. Adams yesterday. He agreed."
+    before_count = len(v19_sentences(text, P))
+    before_hash = V.bundle_hash(P)
+
+    monkeypatch.setattr(rules, "TITLE_ABBREVIATIONS",
+                        frozenset(rules.TITLE_ABBREVIATIONS | {"gov"}))
+
+    assert len(v19_sentences(text, P)) != before_count, "fixture stopped biting"
+    assert V.bundle_hash(P) != before_hash, (
+        "an abbreviation-table change moved F_A without moving the frozen "
+        "bundle identity")
 
 
 def test_the_guard_name_resolves_to_the_function_it_names():
