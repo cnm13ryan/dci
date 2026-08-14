@@ -17,14 +17,19 @@ disagreement outside the table fails.
 roughly two thousand comparisons. Every one lies in a class amendment A2 names, and
 Pair 3's focal rule disagrees nowhere at all.
 
-KNOWN FAILING, and deliberately left so. Six further `p3.target` disagreements are
-observed, all on abbreviations and initials, because the abbreviation repair reached
-the inherited verifier and not the frozen v19 policy. They are the defect, not a
-correction of it, so they do not belong in the table below; the repair needs a
-re-freeze and a re-audit that section 10.6 reserves to the review procedure. See
-`docs/v19_pair3_segmentation_defect.md`. This test is the instrument that caught it
-and it should stay red until the repair lands.
+This test was RED between `8809282` and the segmentation repair, on six further
+`p3.target` disagreements over abbreviations and initials, because the abbreviation
+repair had reached the inherited verifier and not the frozen v19 policy. They were
+the defect, not a correction of it, which is why they were never added to the table
+below. The repair ports the guard onto the frozen policy, so those six are gone
+rather than enumerated and the table is unchanged at 15.
+
+The re-freeze it required is done; the Stage 2 semantic RE-AUDIT that section 10.6
+also requires is not, and is human work. See `docs/v19_pair3_segmentation_defect.md`
+for what remains outstanding.
 """
+
+import dataclasses
 
 import pytest
 
@@ -149,16 +154,6 @@ def observed_disagreements() -> list[tuple[str, str, int, int]]:
 
 
 # ------------------------------------------------------- the enumerated audit
-@pytest.mark.xfail(
-    strict=True,
-    reason="Pair 3 segmentation defect, recorded open in "
-           "docs/v19_pair3_segmentation_defect.md: the abbreviation repair "
-           "reached the inherited verifier and not the frozen v19 policy, so six "
-           "p3.target disagreements over abbreviations and initials are observed. "
-           "They are the defect, not a correction, so they are NOT added to "
-           "EXPECTED_DISAGREEMENTS. strict=True: when the repair lands this test "
-           "XPASSes and fails, which is what forces this marker to be removed "
-           "rather than left behind.")
 def test_the_disagreement_set_is_exactly_the_enumerated_one():
     """Section 11.3: a disagreement is a justified correction or an audit failure."""
     observed = set(observed_disagreements())
@@ -271,7 +266,7 @@ def test_a_mandatory_word_the_tokeniser_would_split_is_missing_metadata():
 
 
 @pytest.mark.parametrize("text,verdict,why", [
-    ("A. Two words. Three words here.", Verdict.PASS, "1, 2, 3 strictly increase"),
+    ("One. Two words. Three words here.", Verdict.PASS, "1, 2, 3 strictly increase"),
     ("Three words here. Two words. A.", Verdict.FAIL, "the lengths decrease"),
     ("Two words. Two words.", Verdict.FAIL, "equal is not an increase"),
     ("Alfa.", Verdict.FAIL,
@@ -413,7 +408,7 @@ def test_the_target_and_focal_verifiers_share_the_sentence_segmentation():
     ("One. Two. Three.", 3),
     ("One! Two? Three.", 3),
     ("One.Two.Three.", 1),                        # no space: one segment
-    ("Mr. Smith went home. He stayed.", 3),       # the abbreviation splits
+    ("Mr. Smith went home. He stayed.", 2),       # the title abbreviation does NOT split
     ("One\nTwo\nThree", 3),                       # newlines segment too
     ("- One\n- Two\n- Three", 3),                 # the grammar's markers are stripped
     ("- ЖЖЖ\n- ЩЩЩ", 2),                          # and a non-Latin item is a segment
@@ -423,6 +418,42 @@ def test_a_segmentation_level_perturbation_is_visible_in_the_parse(text, segment
     got = V.verify_exact_sentence_count(text, n_sentences=segments, policy=P)
     assert got.verdict is Verdict.PASS
     assert got.evidence["observed_count"] == segments
+
+
+@pytest.mark.parametrize("text", [
+    "Mr. Smith went to Washington. He stayed.",
+    "Sales spike at 6 a.m. when others sleep.",
+    "It ended at 6 p.m. \"Tomorrow begins early.\"",
+    "e.g. this is one. And another.",
+    "A. B. C. D. E.",
+    "J. R. Smith went home. He stayed.",
+    "**Bold.** Next one.",
+    "(Aside.) Next one.",
+    "One. Two. Three. Four.",
+])
+def test_pair_three_segmentation_matches_the_certified_inherited_splitter(text):
+    """The abbreviation guard and the closing-mark class are NOT re-typed here.
+
+    Regression this pins: `SENTENCE_BOUNDARY_PATTERN` claimed to be inherited
+    verbatim but re-declared a narrower pre-repair class, and dropping
+    `rules.ends_sentence` restored the abbreviation over-count that the blinded
+    human audit had already removed once. `p3.target` is the primary outcome F_A,
+    so a silent divergence here moves every sentence-count result.
+    """
+    assert len(sentences(text, P)) == len(rules.split_sentences(text)), text
+
+
+def test_the_segmentation_guard_is_declared_in_the_specification_hash():
+    """A future policy may drop the guard, but not without saying so in the hash."""
+    assert TP.sentence_abbreviation_guard == textlib.ABBREVIATION_GUARD
+    assert TP.sentence_boundary == rules.SENTENCE_BOUNDARY.pattern
+    state = TP.state()
+    assert state["sentence_abbreviation_guard"] == textlib.ABBREVIATION_GUARD
+    unguarded = dataclasses.replace(
+        TP, sentence_abbreviation_guard=textlib.NO_ABBREVIATION_GUARD)
+    assert unguarded.policy_hash != TP.policy_hash
+    assert len(textlib.split_sentences("Mr. Smith went home. He stayed.",
+                                       unguarded)) == 3
 
 
 def test_a_conversational_preamble_changes_the_observed_count():

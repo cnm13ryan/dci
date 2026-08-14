@@ -130,7 +130,8 @@ def test_the_state_is_serialisable_and_carries_every_decision():
     assert json.loads(json.dumps(state)) == state
     assert set(state) == {"policy_id", "unicode_normalisation",
                           "removed_categories", "case_rule", "word_pattern",
-                          "sentence_boundary", "collapse_whitespace"}
+                          "sentence_boundary", "sentence_abbreviation_guard",
+                          "collapse_whitespace"}
 
 
 # ------------------------------------- correction 1: the Unicode word pattern

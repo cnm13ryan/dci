@@ -105,8 +105,8 @@ and [`exploratory/HYPOTHESES.md`](exploratory/HYPOTHESES.md).
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: the figure-data admission
-fix noted in §5.
+whether old and new remain comparable. Most recent: a Pair 3 sentence-segmentation
+repair in the v19 layer, and the figure-data admission fix noted in §5.
 
 ## 7. Where to look
 
