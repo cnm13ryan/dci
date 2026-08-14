@@ -1,7 +1,8 @@
 # Pair 3 target verifier: abbreviations are not protected under the frozen v19 policy
 
-**Status:** open. Blocks the v19 Stage 2 freeze. Not repairable without a re-freeze
-and a re-audit, which is why this is a record and not a patch.
+**Status:** code repaired; **Stage 2 re-audit outstanding**. Still blocks the v19
+Stage 2 freeze until the re-audit runs. See "Repair" at the end of this document —
+the rest of the record describes the defect as it stood and is kept as written.
 
 **Discovered:** 13 Aug 2026, by `tests/unit/test_v19_inherited_verifier_audit.py::`
 `test_the_disagreement_set_is_exactly_the_enumerated_one`, which is the section 11.3
@@ -41,7 +42,7 @@ They first met at `8809282`, the 13 Aug merge that is `main`'s tip, and the audi
 test has been red since. A clean textual merge — the two commits touch different
 files — with a semantic conflict underneath.
 
-## Why it is not fixed here
+## Why it was not fixed when this was written
 
 The frozen Stage 2 declaration pins the verifier's `implementation_hash`. Changing
 `dci.v19.text.split_sentences` was tried and the freeze mechanism refused to load:
@@ -98,3 +99,51 @@ The reasoning:
 * `strict=True` means the marker cannot outlive the defect: the moment the repair
   lands the test XPASSes, which pytest reports as a failure, forcing whoever fixes
   it to remove the marker in the same change.
+
+That marker has now been **removed**: the repair below makes the test pass,
+and `strict=True` meant it could not have been left behind.
+---
+
+## Repair
+
+Steps 1-4 of the sequence above are done. **Step 5 is not**, and it is the step
+that governs whether this freeze may be presented as reviewed.
+
+| step | state |
+|---|---|
+| 1. port abbreviation protection into `dci.v19.text.split_sentences` | done |
+| 2. declare the correction | done, as a hashed policy field rather than an `INTENTIONAL_CORRECTIONS` entry — see below |
+| 3. re-freeze `verifiers.specification_bundle` | done, via `tools/refreeze_stage2.py` |
+| 4. regenerate `docs/v19_stage2_semantic_review_packets.json` | done, via `tools/generate_review_packets.py` |
+| 5. **re-run the Stage 2 semantic review** | **OUTSTANDING** |
+
+Because 3 and 4 are done and 5 is not, the caution this document already stated
+now applies in the other direction: the packets on disk are no longer the packets
+any reviewer saw. Nothing may claim Stage 2 review has been satisfied until the
+review is re-run against the current bundle. The three packet ids changed.
+
+**Deviation from step 2 as written.** The correction is recorded as a new
+`TextPolicy` field, `sentence_abbreviation_guard`, naming
+`dci.verifiers.rules.ends_sentence`, rather than as an `INTENTIONAL_CORRECTIONS`
+entry. The field is in `TextPolicy.state()` and therefore inside the Pair 3
+specification hash, so the choice of guard is auditable from the object and a
+future policy wanting the raw regex split has to declare it. The
+`INTENTIONAL_CORRECTIONS` table continues to describe amendment A2's *verdict*
+corrections against the inherited verifiers; this is a change to the frozen
+policy itself, which is what the hash exists to record.
+
+**Why the repair was made rather than deferred further.** The defect was
+re-examined from first principles against the blinded human audit in
+`exploratory/verifier_audit/` — human sentence counts recorded against real study
+outputs with arm, condition and every verdict withheld. Over the 65 labelled
+responses the inherited segmenter agrees 65/65 and the frozen v19 policy 46/65,
+all 19 disagreements being over-counts. On the 43 labelled cases carrying a target
+`n`, six (14%) have their F_A verdict flipped, and in every one the unguarded
+policy is wrong against the human verdict — a false FAIL on a compliant answer.
+The guard's own documented cost, a sentence ending in a bare capital letter read
+as an initial, occurs 0 times in the 240-response corpus.
+
+**Regression cover.** `tests/unit/test_segmentation_contract.py` states the
+contract at the seam and runs the existing boundary banks through *both* layers.
+All 39 prior boundary tests called only `rules.split_sentences`, and that
+one-sidedness is why the two implementations drifted apart in the first place.

@@ -107,10 +107,15 @@ def _opens_with_capital(following: str) -> bool:
     return bool(stripped) and stripped[0].isupper()
 
 
-def _ends_sentence(left: str, right: str) -> bool:
+def ends_sentence(left: str, right: str) -> bool:
     """Whether the terminator ending `left` really closes a sentence.
 
     `left` includes the terminator; `right` is what follows the whitespace.
+
+    Public because `dci.v19.text.split_sentences` calls it. The v19 segmentation
+    used to re-declare only the boundary REGEX and drop this guard, which silently
+    restored the abbreviation over-count this function exists to prevent. One
+    implementation, called from both layers, is what makes that unrepeatable.
     """
     terminator = left[-1:]
     if terminator in "!?":
@@ -146,12 +151,27 @@ def _ends_sentence(left: str, right: str) -> bool:
     return True
 
 
-def _split_line(line: str) -> list[str]:
-    """Split one line at the boundaries that survive `_ends_sentence`."""
+def split_line(line: str, boundary: re.Pattern[str] | None = None, *,
+               guarded: bool = True) -> list[str]:
+    """Split one line at the boundaries that survive `ends_sentence`.
+
+    `boundary` defaults to `SENTENCE_BOUNDARY`; `dci.v19.text` passes the pattern
+    compiled from its own declared, hashed policy field so the regex stays a
+    policy decision while this loop stays a single implementation. `guarded=False`
+    is the raw regex split, which only a policy that says so may ask for.
+
+    Public and parameterised because the v19 layer used to carry its own copy of
+    this loop AND its own regex, and the copy drifted back to a pre-repair
+    pattern without the abbreviation guard. Sentence-count is the primary
+    outcome, so a second copy of this logic is a second measurement.
+    """
+    pattern = SENTENCE_BOUNDARY if boundary is None else boundary
+    if not guarded:
+        return pattern.split(line)
     parts: list[str] = []
     start = 0
-    for match in SENTENCE_BOUNDARY.finditer(line):
-        if _ends_sentence(line[:match.start()], line[match.end():]):
+    for match in pattern.finditer(line):
+        if ends_sentence(line[:match.start()], line[match.end():]):
             parts.append(line[start:match.start()])
             start = match.end()
     parts.append(line[start:])
@@ -187,7 +207,7 @@ def split_sentences(text: Any) -> list[str]:
             continue
         parts.extend(
             part.strip()
-            for part in _split_line(line)
+            for part in split_line(line)
             if re.search(r"[A-Za-z0-9]", part))
     if parts:
         return parts
