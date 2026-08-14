@@ -44,5 +44,11 @@ jobs:
       # Runs against the same install: the exploratory tests import
       # `dci_exploratory` and `crossmodel`, which reach the scientific
       # definitions through `dci`, and none of them loads a model.
+      #
+      # `if: always()` because the two suites are independent evidence. On the
+      # first run of this workflow the confirmatory step failed on a known
+      # pre-existing defect and this step never executed, so a green exploratory
+      # result was withheld for an unrelated reason. A reader needs both.
       - name: Exploratory suite
+        if: always()
         run: pytest exploratory/tests -q
