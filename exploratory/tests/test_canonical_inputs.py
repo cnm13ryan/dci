@@ -135,6 +135,22 @@ def test_no_production_script_names_a_non_admissible_generation_file() -> None:
         f"REASONING_DATA_PROVENANCE.md: {offenders}")
 
 
+def test_no_tracked_script_depends_on_an_ephemeral_session_path() -> None:
+    """Figure data once came from a /tmp agent scratchpad on another machine."""
+    root = Path(__file__).resolve().parents[1]
+    here = Path(__file__).resolve()
+    needles = ('"/tmp/', "'/tmp/", '"/home/', "'/home/")
+    offenders = []
+    for path in sorted(root.rglob("*.py")):
+        if "__pycache__" in path.parts or ".venv" in str(path):
+            continue
+        if path.resolve() == here:      # this file necessarily spells the needles
+            continue
+        text = path.read_text(errors="ignore")
+        offenders += [f"{path.relative_to(root)} -> {n}" for n in needles if n in text]
+    assert not offenders, offenders
+
+
 def test_missing_reseeded_grid_refuses_to_load(tmp_path: Path) -> None:
     gridfixtures.write_grid(tmp_path / "s18_reasoning.jsonl", shared_seed=True)
     gridfixtures.write_grid(tmp_path / "natural_reasoning.jsonl", shared_seed=False)
