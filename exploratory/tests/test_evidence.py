@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -74,6 +75,44 @@ def test_every_copied_file_is_present_and_matches_its_hash(bundle: Path):
         assert path.exists(), f"{bundle.name} declares {entry['file']} COPIED but it is absent"
         assert sha256(path) == entry["sha256"], (
             f"{bundle.name}/{entry['file']} does not match its recorded hash")
+
+
+@pytest.mark.parametrize("bundle", bundles(), ids=lambda p: p.name)
+def test_a_bundle_carries_the_raw_generations(bundle: Path):
+    """Without them the bundle is unverifiable, which defeats promoting it.
+
+    `verify_independently.py` reads `generations.jsonl` unconditionally. A bundle
+    that records it ABSENT presents as durable evidence and crashes the moment
+    anyone tries to check it — so ABSENT is refused at promotion time, and this
+    asserts the property on anything already committed.
+    """
+    record = json.loads((bundle / "evidence.json").read_text())
+    entry = next((f for f in record["files"]
+                  if f["file"] == "generations.jsonl"), None)
+    assert entry is not None, f"{bundle.name} does not mention generations.jsonl"
+    assert entry.get("status") in {"COPIED", "BY_HASH"}, (
+        f"{bundle.name} records generations.jsonl as {entry.get('status')}; a "
+        "bundle without the raw generations cannot be verified from a clone")
+
+
+def test_promotion_refuses_a_run_without_raw_generations(tmp_path: Path):
+    """The refusal itself, exercised — the tests above only see what got written."""
+    import subprocess
+
+    run = tmp_path / "runs" / "stageX_20260101T000000Z"
+    run.mkdir(parents=True)
+    (run / "config.json").write_text('{"stage":"X","model":{},"selection":{}}')
+    (run / "design.jsonl").write_text('{"row_id":"r1"}\n')
+    # generations.jsonl deliberately absent
+
+    target = EXPLORATORY / "evidence" / "should-not-exist"
+    result = subprocess.run(
+        [sys.executable, str(EXPLORATORY / "promote_evidence.py"), str(run),
+         "--slug", "should-not-exist", "--claim", "x", "--execute"],
+        capture_output=True, text=True, check=False)   # a non-zero exit is the point
+    assert result.returncode != 0, "promotion succeeded without raw generations"
+    assert "refusing to promote" in result.stderr
+    assert not target.exists(), "a bundle was written despite the refusal"
 
 
 @pytest.mark.parametrize("bundle", bundles(), ids=lambda p: p.name)

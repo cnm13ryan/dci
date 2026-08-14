@@ -15,6 +15,7 @@ failure in the data it silently admits.
 from __future__ import annotations
 
 import ast
+import json
 import sys
 from pathlib import Path
 
@@ -133,6 +134,47 @@ def test_no_production_script_names_a_non_admissible_generation_file() -> None:
     assert not offenders, (
         "these call sites load evidence recorded non-admissible in "
         f"REASONING_DATA_PROVENANCE.md: {offenders}")
+
+
+def test_the_natural_endpoint_never_reaches_a_numeric_budget_axis(
+        tmp_path: Path) -> None:
+    """The capped curves are numeric; the natural condition is not a dose.
+
+    Regression: routing `build()` through `load_all_reasoning` was right for
+    admission and wrong for the axis — the natural rows carry the context-derived
+    engineering CEILING in `reasoning_budget` (39,550), `reasoning_cells` groups
+    on that column, and `main` feeds the unique values straight to
+    `budget_axis` -> `set_xticks`. That put a tick an order of magnitude past the
+    real 0-4096 curve and labelled a ceiling as an assigned budget.
+
+    `make_headline.py` is where the natural endpoint belongs, and it places it
+    categorically by `setting`.
+    """
+    gridfixtures.write_grid(tmp_path / "s18_reseeded.jsonl", shared_seed=False)
+    rows = [json.loads(line)
+            for line in (tmp_path / "s18_reseeded.jsonl").open()]
+    for row in rows:
+        row["reasoning_budget"] = 39550
+    (tmp_path / "natural_reasoning.jsonl").write_text(
+        "".join(json.dumps(r) + "\n" for r in rows))
+
+    frame = plotdata.load_all_reasoning(tmp_path)
+    assert "NATURAL_REASONING" in set(frame["condition"]), "fixture is not exercising it"
+
+    # What `build()` does before aggregating, asserted on the source so the
+    # filter cannot quietly disappear.
+    source = (Path(__file__).resolve().parents[1] / "make_figures.py").read_text()
+    build = source[source.index("def build("):]
+    build = build[:build.index("\n# =====")]
+    code = "\n".join(line for line in build.splitlines()
+                     if not line.lstrip().startswith("#"))
+    assert 'NATURAL_REASONING' in code, (
+        "make_figures.build no longer excludes the natural condition from the "
+        "numeric budget curves")
+
+    capped = frame[frame["condition"] != "NATURAL_REASONING"]
+    budgets = sorted(plotdata.reasoning_cells(capped)["reasoning_budget"].unique())
+    assert 39550 not in budgets, budgets
 
 
 def test_no_tracked_script_depends_on_an_ephemeral_session_path() -> None:
