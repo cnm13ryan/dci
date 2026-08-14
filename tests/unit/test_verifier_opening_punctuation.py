@@ -1,6 +1,6 @@
 """Sentence boundaries must survive an opening quote, bracket or Markdown mark.
 
-Defect: `_ends_sentence` decided the ambiguous cases — a medial abbreviation, or
+Defect: `ends_sentence` decided the ambiguous cases — a medial abbreviation, or
 an ellipsis — by testing `following[0].isupper()`. When the next sentence opens
 with punctuation rather than its first letter, `following[0]` is that
 punctuation, which is never upper-case, so the boundary was rejected and two

@@ -48,6 +48,7 @@ from dataclasses import dataclass
 from typing import Any, cast
 
 from dci.provenance.hashes import sha
+from dci.verifiers import rules
 
 NORMALISATIONS = ("none", "NFC", "NFD", "NFKC", "NFKD")
 CASE_RULES = ("casefold", "lower", "none")
@@ -63,9 +64,23 @@ INVISIBLE_CATEGORIES = ("Cf", "Cc")
 # alphanumeric in any script.
 UNICODE_WORD_PATTERN = r"[^\W_]+(?:['’\-][^\W_]+)*"
 
-# Sentence boundaries, inherited verbatim from `rules.SENTENCE_BOUNDARY` because
-# the segmentation rule itself was never the defect.
-SENTENCE_BOUNDARY_PATTERN = r'(?<=[.!?])["”’]?\s+'
+# Sentence boundaries, taken FROM `rules.SENTENCE_BOUNDARY` rather than re-typed
+# from it. The previous literal here claimed to be verbatim and was not: it
+# allowed at most one closing mark from a three-character set, which is the
+# PRE-repair class, so `**Bold.** Next.` and `(Aside.) Next.` stopped splitting.
+#
+# Re-declaring the pattern also dropped the abbreviation guard that wraps it in
+# `rules.split_line`, so "Mr. Smith went to Washington. He stayed." segmented as
+# three sentences instead of two. Both halves of the Pair 3 segmentation now come
+# from the one certified implementation; see `sentence_abbreviation_guard`.
+SENTENCE_BOUNDARY_PATTERN = rules.SENTENCE_BOUNDARY.pattern
+
+#: Provenance of the boundary-disambiguation rule applied on top of the pattern.
+#: Named (not a bool) so the specification hash records WHICH guard ran, and so a
+#: future policy that legitimately wants raw regex splitting has to say so.
+ABBREVIATION_GUARD = "dci.verifiers.rules.ends_sentence"
+NO_ABBREVIATION_GUARD = "none"
+ABBREVIATION_GUARDS = (ABBREVIATION_GUARD, NO_ABBREVIATION_GUARD)
 
 
 class TextPolicyError(ValueError):
@@ -83,10 +98,18 @@ class TextPolicy:
     word_pattern: str
     sentence_boundary: str
     collapse_whitespace: bool
+    #: Which boundary-disambiguation rule runs on top of `sentence_boundary`.
+    #: A regex alone cannot decide "Mr. Smith" or "6 a.m. when", and a policy that
+    #: does not name a guard is declaring that it wants the raw split.
+    sentence_abbreviation_guard: str = ABBREVIATION_GUARD
 
     def __post_init__(self):
         if not self.policy_id or not self.provenance:
             raise TextPolicyError("a text policy needs an id and a provenance note")
+        if self.sentence_abbreviation_guard not in ABBREVIATION_GUARDS:
+            raise TextPolicyError(
+                f"{self.policy_id}: {self.sentence_abbreviation_guard!r} is not one "
+                f"of {ABBREVIATION_GUARDS}")
         if self.unicode_normalisation not in NORMALISATIONS:
             raise TextPolicyError(
                 f"{self.policy_id}: {self.unicode_normalisation!r} is not one of "
@@ -114,6 +137,7 @@ class TextPolicy:
                 "case_rule": self.case_rule,
                 "word_pattern": self.word_pattern,
                 "sentence_boundary": self.sentence_boundary,
+                "sentence_abbreviation_guard": self.sentence_abbreviation_guard,
                 "collapse_whitespace": self.collapse_whitespace}
 
     @property
@@ -215,6 +239,7 @@ def split_sentences(text: Any, policy: TextPolicy,
     marker = re.compile("|".join(strip_markers)) if strip_markers else None
     boundary = re.compile(policy.sentence_boundary)
     word = re.compile(policy.word_pattern)
+    guarded = policy.sentence_abbreviation_guard == ABBREVIATION_GUARD
     parts: list[str] = []
     for line in clean.split("\n"):
         if marker is not None:
@@ -222,7 +247,8 @@ def split_sentences(text: Any, policy: TextPolicy,
         line = line.strip()
         if not line:
             continue
-        parts.extend(part.strip() for part in boundary.split(line)
+        parts.extend(part.strip()
+                     for part in rules.split_line(line, boundary, guarded=guarded)
                      if word.search(part))
     if parts:
         return parts
