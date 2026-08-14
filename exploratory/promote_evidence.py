@@ -64,6 +64,14 @@ DEFAULT_RECORDS = (
     "generations.jsonl",
 )
 
+#: The one record a bundle may not be written without. See the refusal in
+#: `build` for why it is required rather than merely default.
+REQUIRED_RECORD = "generations.jsonl"
+
+
+class MissingRawGenerations(FileNotFoundError):
+    """A run that cannot be promoted, because its numbers would be uncheckable."""
+
 #: Files above this size are recorded by hash and location rather than copied, so
 #: promoting a claim never silently commits hundreds of megabytes.
 DEFAULT_MAX_MIB = 40.0
@@ -110,6 +118,18 @@ def build(run_dir: Path, slug: str, claim: str, extra: tuple[str, ...],
     for name in wanted:
         path = run_dir / name
         if not path.exists():
+            # `generations.jsonl` is not optional. A bundle without it records
+            # what was run and leaves the numbers uncheckable, which is the exact
+            # failure promotion exists to prevent: `verify_independently.py`
+            # reads it unconditionally, so an ABSENT entry produces an artifact
+            # that presents as durable evidence and crashes when anyone tries to
+            # verify it.
+            if name == REQUIRED_RECORD:
+                raise MissingRawGenerations(
+                    f"{path} does not exist. A promoted bundle must carry the raw "
+                    "generations, because they are what makes its numbers "
+                    "recomputable from a clone. Promote a run that completed, or "
+                    "keep this one ephemeral.")
             files.append({"file": name, "status": "ABSENT",
                           "note": "not produced by this run"})
             continue
@@ -169,8 +189,12 @@ def main(argv: list[str]) -> int:
         return 2
 
     extra = tuple(n.strip() for n in args.also.split(",") if n.strip())
-    evidence, to_copy = build(args.run_dir, args.slug, args.claim, extra,
-                              args.max_mib)
+    try:
+        evidence, to_copy = build(args.run_dir, args.slug, args.claim, extra,
+                                  args.max_mib)
+    except MissingRawGenerations as error:
+        print(f"refusing to promote: {error}", file=sys.stderr)
+        return 2
 
     print(f"evidence/{args.slug}  <- {args.run_dir}")
     for record in evidence["files"]:

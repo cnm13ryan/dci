@@ -98,6 +98,22 @@ def build() -> dict:
     # column, which the bare budget number cannot express.
     reasoning = plotdata.load_all_reasoning(run)
 
+    # Capped conditions ONLY, because every figure in this module puts
+    # `reasoning_budget` on a NUMERIC axis: `main` derives its ticks from
+    # `cells["reasoning_budget"].unique()` and `budget_axis` calls `set_xticks`
+    # on them. The natural condition carries the context-derived engineering
+    # CEILING in that column (39,550), which is not an assigned dose at all —
+    # so leaving it in adds a tick an order of magnitude beyond the real 0-4096
+    # curve, squashes that curve against the origin, and labels a ceiling as a
+    # budget. `make_headline.py` is the module that shows the natural endpoint,
+    # and it does so categorically, selecting on `setting` rather than plotting
+    # `reasoning_budget`.
+    #
+    # The guarded loader is still what admits the data; this only chooses which
+    # of the conditions it returns belong on this axis.
+    capped = reasoning[reasoning["condition"] != "NATURAL_REASONING"]
+    reasoning = capped.reset_index(drop=True)
+
     # Driver logs are read from the run directory and nowhere else. They used to
     # be copied in from an agent session's scratchpad under /tmp, so the time
     # axis depended on a path that vanishes with the session and never existed on
