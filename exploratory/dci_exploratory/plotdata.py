@@ -57,8 +57,44 @@ def latest(pattern: str) -> Path:
 
 
 # ------------------------------------------------------- the reasoning run
-def load_reasoning(path: Path) -> pd.DataFrame:
+#: Generation files that exist on disk and must never reach a figure or a table,
+#: with the reason, mirroring the status column in `REASONING_DATA_PROVENANCE.md`.
+#: Keyed by basename because that is what survives a run directory being copied.
+#:
+#: This check lives in `load_reasoning`, not only in `load_all_reasoning`, because
+#: `load_all_reasoning` was the guarded wrapper and `make_figures.py` reached past
+#: it to the raw loader — so the tested invariant and the production figure path
+#: disagreed, and the committed row-level export came from the unguarded one. A
+#: guard beside the path is not a guard.
+NON_ADMISSIBLE: dict[str, str] = {
+    "s18_reasoning.jsonl": (
+        "DEPRECATED: one shared seed for all 160 requests, so nominal replicate "
+        "pairs are byte-identical (390/400). Superseded by s18_reseeded.jsonl"),
+    "s18_transition.jsonl": (
+        "FOREIGN: Round 10 transition budgets from another branch, 98.4% "
+        "duplicate replicate pairs; deprecated as curve-shape evidence"),
+    "s18_reasoning.scored.jsonl": (
+        "DERIVED from the deprecated shared-seed grid, not a generation artifact"),
+}
+
+
+class NonAdmissibleEvidence(ValueError):
+    """A generation file whose recorded status forbids it as analysis input."""
+
+
+def check_admissible(path: Path, *, allow_non_admissible: bool = False) -> None:
+    """Refuse a known-deprecated generation file as an analysis input."""
+    reason = NON_ADMISSIBLE.get(Path(path).name)
+    if reason and not allow_non_admissible:
+        raise NonAdmissibleEvidence(
+            f"{path} is not admissible evidence — {reason}. Pass "
+            "allow_non_admissible=True only to demonstrate the defect itself.")
+
+
+def load_reasoning(path: Path, *,
+                   allow_non_admissible: bool = False) -> pd.DataFrame:
     """Score the vLLM reasoning-budget generations from the ANSWER field only."""
+    check_admissible(path, allow_non_admissible=allow_non_admissible)
     # ONE migration boundary: archived generations, read as canonical.
     frame = pd.DataFrame([canonicalise_row(json.loads(line))
                           for line in Path(path).open()])
