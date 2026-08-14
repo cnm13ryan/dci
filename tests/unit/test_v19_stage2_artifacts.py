@@ -20,17 +20,16 @@ from pathlib import Path
 
 import pytest
 
-from dci.v19 import encoding as E
 from dci.v19 import frozen, pairs
 from dci.v19 import review_packets as RP
 from dci.v19.parsing import CANONICAL_LIST_POLICY as P
-from dci.v19.parsing import OrderingRelation
 from dci.v19.registry import REGISTRY, build, declared_table
 
 pytestmark = pytest.mark.cpu
 
-RELATION = OrderingRelation(items=("alfa", "bravo", "charlie"),
-                            edges=(("alfa", "bravo"), ("bravo", "charlie")))
+# The review compositions and their Pair 1 ordering now live in
+# `review_packets.canonical_review_compositions`, so the published packet bundle
+# has a producer outside the test suite. See `reviewable_compositions` below.
 
 # Amendments A1-A4 accepted by the investigator, then the artifacts Stage 2
 # produces once those decisions exist. Order matters: frozen.apply refuses a
@@ -48,25 +47,8 @@ RECORDED = ACCEPTED + PRODUCED
 
 
 def reviewable_compositions():
-    return (
-        E.encode_composition("p1/review/B", pair_id="p1", arm="B", load=2,
-                             realisations={
-                                 pairs.PAIR_1.target.constraint_id: {
-                                     "n_items": 3, "policy": P},
-                                 pairs.PAIR_1.focal.constraint_id: {
-                                     "relation": RELATION, "policy": P}}),
-        E.encode_composition("p2/review/B", pair_id="p2", arm="B", load=2,
-                             realisations={
-                                 pairs.PAIR_2.target.constraint_id: {
-                                     "mandatory_words": ("alfa", "bravo"),
-                                     "policy": P},
-                                 pairs.PAIR_2.focal.constraint_id: {"policy": P}}),
-        E.encode_composition("p3/review/B", pair_id="p3", arm="B", load=2,
-                             realisations={
-                                 pairs.PAIR_3.target.constraint_id: {
-                                     "n_sentences": 3, "policy": P},
-                                 pairs.PAIR_3.focal.constraint_id: {"policy": P}}),
-    )
+    """The published set, from the library, so the test and the generator agree."""
+    return RP.canonical_review_compositions(P)
 
 
 def write_records(directory, records):
