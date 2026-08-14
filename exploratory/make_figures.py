@@ -9,7 +9,6 @@ the numbers already published in the matrices.
 """
 from __future__ import annotations
 
-import shutil
 import sys
 from pathlib import Path
 
@@ -89,29 +88,41 @@ def cond_rows(cells, variant, arm=None):
 def build() -> dict:
     print("rebuilding plot data from run artifacts …")
     run = plotdata.latest("runs/stageS18_reasoning_design_*/")
-    # The Round 10 transition budgets are additional points on the SAME design,
-    # generated under the same execution condition, so they belong on the same
-    # curve rather than in a second figure.
-    parts = [run / "s18_reasoning.jsonl"]
-    transition = run / "s18_transition.jsonl"
-    if transition.exists():
-        parts.append(transition)
-    reasoning = pd.concat([plotdata.load_reasoning(p) for p in parts],
-                          ignore_index=True)
+    # Through the guarded loader, which is the ONLY admissible route to the capped
+    # grid. This used to read `s18_reasoning.jsonl` directly and concatenate the
+    # Round 10 `s18_transition.jsonl` budgets onto the same curve. Both files are
+    # recorded non-admissible in REASONING_DATA_PROVENANCE.md — the first shares
+    # one seed across all 160 requests, the second is 98.4% duplicate replicate
+    # pairs — so every figure and every exported row built here carried two
+    # sampling regimes as one. `load_all_reasoning` also supplies the `condition`
+    # column, which the bare budget number cannot express.
+    reasoning = plotdata.load_all_reasoning(run)
 
-    log = Path("/tmp/claude-1000/-home-cnm13ryan-git-dci/"
-               "1f6c8f08-cc59-4f5d-9e64-e3f36d0c6265/scratchpad/s18.log")
+    # Capped conditions ONLY, because every figure in this module puts
+    # `reasoning_budget` on a NUMERIC axis: `main` derives its ticks from
+    # `cells["reasoning_budget"].unique()` and `budget_axis` calls `set_xticks`
+    # on them. The natural condition carries the context-derived engineering
+    # CEILING in that column (39,550), which is not an assigned dose at all —
+    # so leaving it in adds a tick an order of magnitude beyond the real 0-4096
+    # curve, squashes that curve against the origin, and labels a ceiling as a
+    # budget. `make_headline.py` is the module that shows the natural endpoint,
+    # and it does so categorically, selecting on `setting` rather than plotting
+    # `reasoning_budget`.
+    #
+    # The guarded loader is still what admits the data; this only chooses which
+    # of the conditions it returns belong on this axis.
+    capped = reasoning[reasoning["condition"] != "NATURAL_REASONING"]
+    reasoning = capped.reset_index(drop=True)
+
+    # Driver logs are read from the run directory and nowhere else. They used to
+    # be copied in from an agent session's scratchpad under /tmp, so the time
+    # axis depended on a path that vanishes with the session and never existed on
+    # another machine. If the logs are not beside the generations, the timing
+    # frame is empty and the time-axis figure is skipped.
     preserved_log = run / "generation_log.txt"
-    if log.exists() and not preserved_log.exists():
-        shutil.copy(log, preserved_log)
-    # The Round 10 transition budgets were timed in their own driver log; both
-    # are preserved beside the generations so the time axis stays reconstructable.
-    round10 = Path("/tmp/claude-1000/-home-cnm13ryan-git-dci/"
-                   "1f6c8f08-cc59-4f5d-9e64-e3f36d0c6265/scratchpad/round10.log")
     preserved_r10 = run / "generation_log_round10.txt"
-    if round10.exists():
-        shutil.copy(round10, preserved_r10)
-    rows_per_budget = int(len(reasoning) / reasoning["reasoning_budget"].nunique())
+    budgets = int(reasoning["reasoning_budget"].nunique())
+    rows_per_budget = int(len(reasoning) / budgets) if budgets else 0
     logs = [p for p in (preserved_log, preserved_r10) if p.exists()]
     timing = (pd.concat([plotdata.reasoning_timing(p, rows_per_budget) for p in logs],
                         ignore_index=True).drop_duplicates("reasoning_budget")

@@ -101,11 +101,15 @@ def show(title: str, frame: pd.DataFrame, amp: str, ctrl: str, label: str) -> pd
 def main() -> int:
     runs = {}
     s18 = latest("runs/stageS18_reasoning_design_*/")
-    parts = [s18 / "s18_reasoning.jsonl"]
-    if (s18 / "s18_transition.jsonl").exists():
-        parts.append(s18 / "s18_transition.jsonl")
-    runs["S18 + transition · QAC k=3"] = (
-        load(*parts), plotstyle.AMP, plotstyle.CTRL, "s18")
+    # The re-seeded grid, and only it. This cell used to load
+    # `s18_reasoning.jsonl` and append `s18_transition.jsonl`: the first shares
+    # one seed across all 160 requests (390/400 byte-identical replicate pairs)
+    # and the second is 98.4% duplicate pairs, so the curve mixed two sampling
+    # regimes. `plotdata.load_reasoning` now refuses both by name. The transition
+    # budgets have no re-seeded replacement and were deprecated as curve-shape
+    # evidence, so the cell no longer advertises them in its label.
+    runs["S18 · QAC k=3"] = (
+        load(s18 / "s18_reseeded.jsonl"), plotstyle.AMP, plotstyle.CTRL, "s18")
 
     for pattern, name, amp, ctrl, tag in (
             ("runs/stageS25_placement_reasoning_*/", "S25 placement × reasoning · QAC k=3",

@@ -63,26 +63,31 @@ def test_the_lock_is_released_when_the_body_raises(lock_paths):
     assert manifest["state"] == "failed"
 
 
+def _child_tries_to_acquire(gpu_lock_path, out_dir, result):
+    """Module level, not a closure: `spawn` (the macOS default start method)
+    pickles the target, and a locally defined function cannot be pickled. As a
+    closure this test failed on every non-fork platform for a reason that had
+    nothing to do with the lock it tests."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from crossmodel import runlock as child_runlock
+
+    try:
+        with child_runlock.RunLock(out_dir, "test/model", "0" * 40,
+                                   gpu_lock_path=Path(gpu_lock_path),
+                                   reap_orphans=False):
+            result.value = 0                # acquired — wrong
+    except child_runlock.RunLockError:
+        result.value = 1                    # refused — right
+
+
 def test_the_lock_excludes_across_processes(lock_paths):
     """flock is held by the OS, so exclusion must survive a real second process."""
     gpu_lock, run_a, run_b = lock_paths
 
-    def child(gpu_lock_path, out_dir, result):
-        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-        from crossmodel import runlock as child_runlock
-
-        try:
-            with child_runlock.RunLock(out_dir, "test/model", "0" * 40,
-                                       gpu_lock_path=Path(gpu_lock_path),
-                                       reap_orphans=False):
-                result.value = 0            # acquired — wrong
-        except child_runlock.RunLockError:
-            result.value = 1                # refused — right
-
     with make_lock(gpu_lock, run_a):
         result = multiprocessing.Value("i", -1)
         process = multiprocessing.Process(
-            target=child, args=(str(gpu_lock), run_b, result))
+            target=_child_tries_to_acquire, args=(str(gpu_lock), run_b, result))
         process.start()
         process.join(60)
         assert result.value == 1, "a separate process acquired a held GPU lock"
@@ -170,5 +175,23 @@ def test_audit_machine_reports_the_fields_a_capacity_claim_needs():
     audit = runlock.audit_machine()
     for field in ("free_vram_gib", "runner_processes", "shm_segments"):
         assert field in audit
+
+
+def test_host_memory_is_absent_rather_than_wrong_off_linux():
+    """`host_memory_gib` reads /proc/meminfo and returns {} where there is none.
+
+    Asserted on every platform so the degradation stays deliberate: a capacity
+    claim built on a silently invented number is the failure mode this whole
+    module exists to prevent.
+    """
+    memory = runlock.host_memory_gib()
+    assert isinstance(memory, dict)
+    if sys.platform != "linux":
+        assert memory == {}
+
+
+@pytest.mark.linux
+def test_host_memory_is_reported_on_the_workstation():
+    """The run hosts are Linux; there the reading must actually be present."""
     memory = runlock.host_memory_gib()
     assert "MemAvailable" in memory and memory["MemAvailable"] > 0
