@@ -63,6 +63,7 @@ from dci.v19.parsing import (
     sentences,
 )
 from dci.v19.text import TextPolicy
+from dci.verifiers import rules
 
 
 class Verdict(str, enum.Enum):
@@ -265,9 +266,17 @@ def frozen_segmentation(text_policy: TextPolicy,
     Includes the marker patterns when the verifier's span depends on them, which is
     how section 4.4's shared segmentation becomes visible in Pair 3's hash rather
     than hidden inside a helper.
+
+    It also carries the abbreviation guard's substance, not merely its name. The
+    policy declares WHICH guard runs; `abbreviation_guard_state` records what that
+    guard decides with, because the guard now lives in `dci.verifiers.rules` and a
+    change to its tables moves F_A without moving any v19 source. See that
+    function for why delegation made this necessary.
     """
     state: dict[str, Any] = {"text_policy": text_policy.state(),
-                             "text_policy_hash": text_policy.policy_hash}
+                             "text_policy_hash": text_policy.policy_hash,
+                             "abbreviation_guard":
+                                 textlib.abbreviation_guard_state(text_policy)}
     if list_policy is not None:
         state["list_policy_hash"] = list_policy.policy_hash
         state["marker_patterns"] = list(list_policy.marker_patterns())
@@ -745,15 +754,23 @@ def bundle(policy: ListPolicy = CANONICAL_LIST_POLICY) -> dict[str, Verifier]:
         pairs.PAIR_3.target.constraint_id: Verifier(
             spec=_p3_target_spec(policy),
             run=lambda t, **kw: verify_exact_sentence_count(t, policy=policy, **kw),
+            # `rules.split_line` and `rules.ends_sentence` are the delegated
+            # boundary decision. They execute on every scored answer, so their
+            # source belongs in the hash of "the code that ran" exactly as much
+            # as the v19 helpers do.
             implementation=(verify_exact_sentence_count, sentences,
-                            textlib.split_sentences, textlib.normalise),
+                            textlib.split_sentences, textlib.normalise,
+                            rules.split_line, rules.ends_sentence,
+                            rules._opens_with_capital),
             status="inherited_corrected"),
         pairs.PAIR_3.focal.constraint_id: Verifier(
             spec=_p3_focal_spec(policy),
             run=lambda t, **kw: verify_increasing_lengths(t, policy=policy, **kw),
             implementation=(verify_increasing_lengths, sentence_lengths,
                             textlib.sentence_lengths, textlib.split_sentences,
-                            textlib.word_tokens, textlib.normalise),
+                            textlib.word_tokens, textlib.normalise,
+                            rules.split_line, rules.ends_sentence,
+                            rules._opens_with_capital),
             status="inherited_corrected"),
     }
     return built
