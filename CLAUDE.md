@@ -3,6 +3,25 @@
 Start at [`RESEARCH_STATE.md`](RESEARCH_STATE.md). It is the 10-minute
 orientation and it links to everything else.
 
+## Research codebase principles
+
+- Optimize for research velocity, reproducibility, and scientific legibility rather than production-software cleanliness.
+- Inspect the relevant execution, evidence, and dependency paths before making consequential changes.
+- Keep exploratory code easy to change, replace, and break. Do not preserve obsolete experimental interfaces for compatibility alone.
+- Treat governed or frozen protocol code separately from exploratory code. Do not silently change reviewed scientific definitions or artifacts.
+- Preserve important results through durable, self-describing evidence rather than through permanent source-code compatibility.
+- When a result becomes scientifically important, ensure its configuration, protocol identity, execution condition, outputs, producing code, and provenance remain recoverable.
+- Never allow implementation changes to silently change what existing evidence means. Identify the affected results and their comparability explicitly.
+- Treat changes to verifiers, parsers, prompts, metrics, sampling, configuration, model loading, or inference behaviour as potentially scientifically consequential.
+- Prefer experiment-local code and configuration until repeated reuse, repeated bugs, or a stable semantic boundary justifies extraction.
+- Keep shared infrastructure small and narrow. Do not introduce universal experiment frameworks, giant configuration objects, or speculative abstractions.
+- Put important invariants on mandatory execution paths and enforce them with tests or assertions rather than relying on documentation.
+- Treat agent-produced results as provisional until load-bearing claims have been checked against raw outputs or independently recomputed.
+- Produce machine-readable intermediate results for important analyses. Avoid relying on terminal output or manually transcribed numbers as evidence.
+- Preserve historical observations and evidence when interpretations change. Record supersession, invalidation, or non-comparability rather than rewriting history.
+- Keep the researcher-facing current-state documentation updated when a change materially alters the scientific picture, while linking to evidence rather than duplicating it.
+- Prefer small, independently testable migrations and refactors over large rewrites. Refactor in response to demonstrated friction.
+
 ## Two areas, different expectations
 
 - **`src/dci/`, `configs/`, `notebook_source/`** — the preregistered protocol.
