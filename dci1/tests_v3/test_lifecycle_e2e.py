@@ -55,8 +55,24 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     # the harness annotations.
     step("gate1", "--model", MODEL, expect=1)
     packet = tree.data_dir("gate1") / "annotation_packet.jsonl"
-    labels_path = base.parent / "annotations.json"
-    fs.write_json(labels_path, make_synthetic_annotations(packet))
+    # Labels travel through the reviewer workflow (blinded sessions ->
+    # immutable finalisation -> export), proving the exported file is
+    # exactly what the registered gate1 parser accepts.
+    from dci1v3.annotation.store import (
+        AnnotatorSession,
+        export_annotations,
+    )
+    truth = make_synthetic_annotations(packet)
+    annotation_workspace = base.parent / "annotation_work"
+    for name in ("A1", "A2", "A3"):
+        reviewer = AnnotatorSession(
+            packet_path=packet, workspace=annotation_workspace,
+            model=MODEL, annotator=name)
+        for display in range(1, len(reviewer.packet) + 1):
+            item_id = reviewer._item_id_for_display(display)
+            reviewer.record(display, label=truth[item_id][0])
+        reviewer.finalize(face_validity=True)
+    labels_path = export_annotations(annotation_workspace, MODEL, packet)
     step("gate1", "--model", MODEL, "--annotations", str(labels_path))
     step("gate2a", "--model", MODEL)
     step("gate2b", "--model", MODEL)
