@@ -1,5 +1,5 @@
 {
-  "schema_version": "autorater-config/3",
+  "schema_version": "autorater-config/4",
   "judge_model_key": "gpt-oss-20b",
   "judge_model_id": "openai/gpt-oss-20b",
   "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
@@ -8,14 +8,19 @@
     "environment": "dci1/environments/backend/.venv (pinned uv environment, vLLM 0.15.1+rocm720, bfloat16 activations over the checkpoint's own MXFP4 weights)",
     "chat_template": "the pinned snapshot's own harmony chat template at judge_revision, applied with the chat_template_kwargs below"
   },
-  "chat_template_kwargs": {"reasoning_effort": "medium"},
+  "chat_template_kwargs": {
+    "reasoning_effort": "high"
+  },
   "prompt_version": "gate1-judge/2.0.0",
   "parser_version": "gate1-parse/2.0.0",
-  "label_mapping": {"SATISFIES": "pass", "VIOLATES": "fail"},
+  "label_mapping": {
+    "SATISFIES": "pass",
+    "VIOLATES": "fail"
+  },
   "decoding": {
     "policy": "greedy",
-    "max_new_tokens": 1024,
+    "max_new_tokens": 2048,
     "skip_special_tokens": false
   },
-  "notes": "The single configured autorater (amendments A2/A3/A3.1): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring. The judge is deliberately not one of the four registered replications. Parse errors, refusals, backend failures, and invalid outputs keep distinct operational statuses and are never recoded into SATISFIES or VIOLATES. A3.1 (pre-freeze, after the first development round and an operational A/B on synthetic items): reasoning_effort low->medium and cap 512->1024 — low-effort counting mislabels exact-n items (systematic +-1 and saturation miscounts) while medium counts correctly and needs the larger cap; the prompt text is unchanged (rule-line-exclusion prompt variants tested WORSE and were rejected). The first development round's judgments are parked as superseded, never deleted."
+  "notes": "The single configured autorater (amendments A2/A3/A3.1/A3.2): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring. The judge is deliberately not one of the four registered replications. Parse errors, refusals, backend failures, and invalid outputs keep distinct operational statuses and are never recoded into SATISFIES or VIOLATES. A3.2 (pre-freeze, field comparison): reasoning_effort medium->high and cap 1024->2048 (the smallest cap that keeps high-effort transcripts from truncating on the diagnostic p90; larger caps would crowd the judge's 4096 context). The medium-effort development round (config hash 1b1b4df...) is parked as superseded, never deleted; prompt gate1-judge/2.0.0 and parser gate1-parse/2.0.0 unchanged throughout."
 }

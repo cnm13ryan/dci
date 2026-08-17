@@ -163,8 +163,12 @@ DOMAIN_AUTORATER_SEED = "dci1v3:autorater:v1"
 #: round showed low-effort counting mislabels (systematic ±1 and
 #: saturation miscounts) that medium effort corrects — at medium the
 #: analyses are longer, and 512 would convert the accuracy gain into
-#: truncations.
-AUTORATER_CAP = 1024
+#: truncations; 1024 → 2048 with reasoning_effort high (A3.2 field
+#: comparison: at high, 1024 truncates the p90 diagnostic transcript —
+#: 2048 is the smallest cap that unconfounds the comparison, and
+#: larger caps would crowd the judge's 4096 context with the longest
+#: pool prompts).
+AUTORATER_CAP = 2048
 AUTORATER_SCHEMA_VERSION = "autorater-judgment/1"
 
 #: Versioned judge prompts; the active version comes from the autorater

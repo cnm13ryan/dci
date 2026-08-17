@@ -327,7 +327,7 @@ def test_config_binds_the_frozen_protocol():
     # equal the judge registry's declaration.
     assert config["chat_template_kwargs"] == judge.chat_template_kwargs
     assert config["chat_template_kwargs"] == {"reasoning_effort":
-                                              "medium"}
+                                              "high"}
     for key in ("judge_revision", "parser_version", "label_mapping",
                 "backend", "chat_template_kwargs"):
         assert key in config     # covered by config_hash (computed over
@@ -339,7 +339,7 @@ def test_config_refuses_judging_condition_drift(tmp_path):
     from dci1v3.errors import ProtocolError
     raw = _json.loads(
         (autorater._CONFIG_PATH).read_text())
-    raw["chat_template_kwargs"] = {"reasoning_effort": "high"}
+    raw["chat_template_kwargs"] = {"reasoning_effort": "low"}
     doctored = tmp_path / "autorater.json"
     doctored.write_text(_json.dumps(raw))
     with pytest.raises(ProtocolError, match="single-valued"):
@@ -355,11 +355,11 @@ def test_run_autorater_plan_carries_hashed_judging_condition(tmp_path):
         return synthetic_judge(run_dir, plan, rows, disagree_rate=0.0)
 
     items = [_wording_pool_item(0, 1, 1, "pass")]
-    autorater.run_autorater(tmp_path / "dev", items,
-                            config=autorater.load_config(),
+    config = autorater.load_config()
+    autorater.run_autorater(tmp_path / "dev", items, config=config,
                             phase="development", generate_fn=capturing,
                             environment={})
-    assert seen["chat_template_kwargs"] == {"reasoning_effort": "medium"}
+    assert seen["chat_template_kwargs"] == config["chat_template_kwargs"]
     assert seen["generation_ceiling"] == C.AUTORATER_CAP
     assert seen["skip_special_tokens"] is False
     assert seen["tensor_parallel_size"] == 1

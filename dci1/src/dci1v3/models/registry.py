@@ -111,12 +111,13 @@ JUDGE_MODELS: tuple[ModelSpec, ...] = (
         model_id="openai/gpt-oss-20b",
         revision="6cee5e81ee83917806bbde320786a8fb61efebee",
         family="gpt-oss",
-        # Medium effort: the pre-freeze A/B showed low-effort counting
-        # mislabels exact-n items (systematic ±1) while medium counts
-        # correctly; the judging condition is registered in the hashed
-        # autorater config, which load_config validates against this spec.
-        thinking_policy="medium",
-        chat_template_kwargs={"reasoning_effort": "medium"},
+        # The judging condition is registered in the hashed autorater
+        # config, which load_config validates against this spec. Effort
+        # history (all pre-freeze): low mislabeled exact-n counting;
+        # medium counted correctly (A3.1); high registered for the
+        # A3.2 field comparison against the parked medium round.
+        thinking_policy="high",
+        chat_template_kwargs={"reasoning_effort": "high"},
         switch_expectation="live",
         leakage_markers=(),
     ),
