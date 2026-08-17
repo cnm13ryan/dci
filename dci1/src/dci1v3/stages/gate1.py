@@ -164,8 +164,9 @@ def carry_over(job: Job) -> dict[str, Any]:
         mismatches.append("normalisation")
     packet_rows = fs.read_jsonl(packet_path)
     for row in packet_rows:
-        expected = identity["construct"].format(n=row["n"])
-        if row["constraint_text"] != expected:
+        # The registered wording renderer handles the n=1 singular exactly
+        # as the v2 instrument did.
+        if row["constraint_text"] != target_wordings(row["n"])[0]:
             mismatches.append("construct definition")
             break
     body = {
@@ -179,6 +180,27 @@ def carry_over(job: Job) -> dict[str, Any]:
             "target_source_hash": sha_text(v2_target),
             "words_source_hash": sha_text(v2_words)},
     }
+    existing = job.tree.carry_over_record
+    if existing.exists():
+        prior = fs.read_json(existing)
+        if prior.get("accepted"):
+            raise ProtocolError("an accepted carry-over record already "
+                                "exists; carry-over is single-shot")
+        # A refused carry-over is not accepted evidence: preserve it for
+        # audit as superseded_non_evidence and record the supersession.
+        from dci1v3.engine.artifacts import record_state
+        from dci1v3.protocol.hashing import sha_obj
+        parked = (job.tree.data_dir("artifacts") / "superseded"
+                  / f"carry_over.{sha_obj(prior)[:12]}.json")
+        parked.parent.mkdir(parents=True, exist_ok=True)
+        existing.rename(parked)
+        for state in ("generated", "committed", "superseded"):
+            record_state(job.tree,
+                         artifact_id=f"carry_over:{sha_obj(prior)[:12]}",
+                         path=parked,
+                         artifact_type="superseded_non_evidence",
+                         state=state, stage="carry-over",
+                         producing_commit=job.producing_commit)
     fs.write_json_once(job.tree.carry_over_record, body)
     if mismatches:
         return {"status": "REFUSED", "body": body, "input_hashes": {},
