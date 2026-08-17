@@ -85,7 +85,9 @@ def readiness_report(context: StudyContext, *,
         "not_executed": [
             "registered confirmatory generation (prohibited at readiness)",
             "real-model qualification through Gate 2B (GPU-dependent)",
-            "Gate 1 human annotation (one independent annotator per "
-            "model under amendment A1, human-dependent)",
+            "independent human validation (unavailable — amendment A2: "
+            "Gate 1 runs the autorater-assisted verifier workflow; the "
+            "annotation packet and reviewer GUI are preserved for a "
+            "future `human-audit`)",
         ],
     }

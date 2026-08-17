@@ -240,3 +240,21 @@ registered rules are unchanged. The annotations contract is
 enforced). References to "three annotators" elsewhere in this report
 describe the pre-amendment design and are retained as the historical
 record.
+
+## Addendum (2026-08-17): amendment A2 — autorater-assisted Gate 1
+
+No independent human annotator is available. Gate 1 now runs the
+autorater-assisted verifier workflow (DECISIONS_V3.md, Amendments, A2):
+deterministic development/calibration split of the existing response pool,
+one configured autorater for development-phase disagreement inspection,
+a study-level verifier-freeze manifest, held-out calibration reported as a
+full 2×2 contingency with no automatic threshold, and an explicit
+researcher approval closing the gate. The A1 human packet, reviewer GUI,
+and single-annotator criterion are preserved verbatim behind
+`human-audit` for future independent validation. Claim boundary, stated
+in every gate, freeze, and analysis record: **"The frozen deterministic
+verifier was developed and evaluated on held-out responses against the
+specified autorater under the registered configuration. Independent human
+validation is unavailable."** Autorater agreement is never presented as
+human validation or ground truth, and no language model judges any scored
+outcome.

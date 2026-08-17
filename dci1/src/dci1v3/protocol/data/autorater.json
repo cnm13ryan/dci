@@ -1,0 +1,10 @@
+{
+  "schema_version": "autorater-config/1",
+  "judge_model_key": "qwen3-4b-instruct-2507",
+  "prompt_version": "gate1-judge/1.0.0",
+  "decoding": {
+    "policy": "greedy",
+    "max_new_tokens": 48
+  },
+  "notes": "The single configured autorater (amendment A2): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring."
+}

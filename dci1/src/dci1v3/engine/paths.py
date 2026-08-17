@@ -32,7 +32,9 @@ STAGE_RECORD_FILES = {
 
 #: Non-stage registered records permitted in the tree root.
 AUX_RECORD_FILES = ("transition_log.jsonl", "terminal_report.json",
-                    "carry_over.json", "pseudo_runs.json", "greedy_run.json")
+                    "carry_over.json", "pseudo_runs.json", "greedy_run.json",
+                    "gate1_dev.json", "gate1_calibration.json",
+                    "human_audit.json")
 
 #: Data directories a model tree may contain.
 STAGE_DATA_DIRS = ("qualification", "pilot", "prescreen", "gate1", "gate2a",

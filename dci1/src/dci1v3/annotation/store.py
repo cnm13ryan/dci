@@ -268,7 +268,7 @@ def _locked_sessions(workspace: Path, model: str, packet_path: Path
 
 def export_annotations(workspace: Path, model: str, packet_path: Path,
                        out_path: Path | None = None) -> Path:
-    """The exact external file `gate1 --annotations` accepts."""
+    """The exact external file `human-audit --annotations` accepts."""
     packet = load_packet(packet_path)
     sessions = _locked_sessions(workspace, model, packet_path)
     annotations: dict[str, Any] = {}

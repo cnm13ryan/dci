@@ -9,6 +9,7 @@ from typing import Any
 from dci1v3.errors import ProtocolError
 from dci1v3.models.registry import ModelSpec
 from dci1v3.protocol.constants import (
+    AUTORATER_CAP,
     CAP_GRID,
     DECODING,
     ENGINE_SEED,
@@ -19,7 +20,7 @@ from dci1v3.protocol.constants import (
 
 def backend_plan(spec: ModelSpec, *, cap: int, decoding: str = "stochastic",
                  chunk_size: int = 32) -> dict[str, Any]:
-    if cap not in CAP_GRID and cap != PILOT_CAP:
+    if cap not in CAP_GRID and cap not in (PILOT_CAP, AUTORATER_CAP):
         raise ProtocolError(f"cap {cap} outside the registered grid")
     if decoding == "stochastic":
         policy, top_k = DECODING, DECODING["top_k"]

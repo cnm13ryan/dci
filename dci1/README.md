@@ -344,15 +344,43 @@ item, with the registered Wilson bound and thresholds unchanged:
 
 The annotator sees only the registered constraint text and the unmodified
 response, in a seeded shuffled order; item identities, verifier verdicts,
-class structure, and sampling status are structurally absent. Finalisation
-requires a binary label on every item plus the §10 face-validity judgment,
-and is immutable. The researcher dashboard (`--dashboard`) shows
-completion status only until that single annotator finalises, then
-reveals human-to-verifier diagnostics and exports the exact file
-(`{item_id: ["pass"|"fail"], "face_validity": [bool]}`) for:
+autorater outputs, class structure, and sampling status are structurally
+absent. Finalisation requires a binary label on every item plus the §10
+face-validity judgment, and is immutable. The researcher dashboard
+(`--dashboard`) shows completion status only until that single annotator
+finalises, then reveals human-to-verifier diagnostics and exports the
+exact file (`{item_id: ["pass"|"fail"], "face_validity": [bool]}`) for:
 
-    $PY -m dci1v3.cli gate1 --model <model> --annotations \
+    $PY -m dci1v3.cli human-audit --model <model> --annotations \
         annotations/<model>/gate1_annotations.json
 
 Working files live in `annotations/` (gitignored); labels enter evidence
-only through the registered Gate 1 pathway.
+only through the registered `human-audit` pathway.
+
+## Gate 1 without a human annotator (amendment A2)
+
+No independent human annotator is currently available, so Gate 1 runs the
+autorater-assisted verifier workflow (one configured autorater,
+`src/dci1v3/protocol/data/autorater.json`; a proxy instrument — never
+human validation, never ground truth, never part of scoring):
+
+    $PY -m dci1v3.cli gate1-dev       --model <model>   # dev half + report
+    #   inspect evidence/dci1-v3/<model>/gate1/autorater/dev/report.json,
+    #   refine the verifier if needed (regression tests), re-run gate1-dev
+    $PY -m dci1v3.cli verifier-freeze                   # study-level, once
+    $PY -m dci1v3.cli gate1-calibrate --model <model>   # held-out half
+    #   inspect evidence/dci1-v3/<model>/gate1_calibration.json
+    $PY -m dci1v3.cli gate1 --model <model> \
+        --approve-autorater-calibration                 # explicit approval
+
+The development/calibration split is deterministic, stratified, and
+disjoint; the calibration half stays untouched until the verifier freezes;
+the calibration report carries coverage, marginals, directional
+disagreement, and the full 2×2 contingency table with **no automatic
+acceptance threshold** — closing the gate is an explicit researcher
+decision. If behaviorally relevant verifier code changes after freezing,
+calibration evidence is marked contaminated and a fresh held-out split is
+required. Strongest supported claim: *"The frozen deterministic verifier
+was developed and evaluated on held-out responses against the specified
+autorater under the registered configuration. Independent human validation
+is unavailable."*

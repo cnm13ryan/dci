@@ -97,3 +97,48 @@ def synthetic_generate(run_dir: Path, plan: dict[str, Any],
                            "vllm_version": "synthetic-0",
                            "torch_version": "synthetic-0",
                            "rocm_version": "synthetic-0"}}
+
+
+def synthetic_judge(run_dir: Path, plan: dict[str, Any],
+                    design_rows: list[dict[str, Any]],
+                    *, disagree_rate: float = 0.02,
+                    invalid_rate: float = 0.0) -> dict[str, Any]:
+    """GenerateFn-compatible mocked autorater (A2, tests only).
+
+    Parses the registered judge prompt, answers with the plain reading
+    (S0 count vs n), flips the verdict with seeded probability
+    ``disagree_rate``, and emits an unparseable output with probability
+    ``invalid_rate`` so every status path is exercisable offline.
+    """
+    from dci1v3.protocol.constants import AUTORATER_PROMPTS
+    from dci1v3.verifiers.target import s0_count
+
+    rows = []
+    for design in design_rows:
+        rng = random.Random(int(design["scientific_seed"]))
+        prompt = design["user_prompt"]
+        constraint = prompt.split("Rule: ", 1)[1].split("\n", 1)[0]
+        body = prompt.split("Text:\n", 1)[1]
+        response = body.rsplit("\n---\n", 1)[0]
+        n = parse_wording(constraint)[1]
+        verdict = s0_count(response) == n
+        if rng.random() < disagree_rate:
+            verdict = not verdict
+        if rng.random() < invalid_rate:
+            text = "Maybe; it depends on how one reads the rule."
+        else:
+            text = ("YES" if verdict else "NO") + \
+                "\nCounted the occurrences in the text."
+        rows.append({
+            **design,
+            "outcome": "OK",
+            "raw_generation": text,
+            "final_answer": text,
+            "finish_reason": "stop",
+            "prompt_tokens": len(prompt.split()),
+            "total_generated_tokens": len(text.split()),
+            "seed_reasoning": int(design["scientific_seed"]),
+        })
+    return {"rows": rows,
+            "provenance": {"gpu_name": "synthetic",
+                           "vllm_version": "synthetic-0"}}
