@@ -527,7 +527,8 @@ def verifier_freeze(context, *, autorater_config: str | None = None
         "autorater_config": {k: config[k] for k in
                              ("schema_version", "judge_model_key",
                               "judge_model_id", "judge_revision",
-                              "backend", "prompt_version",
+                              "backend", "chat_template_kwargs",
+                              "prompt_version",
                               "parser_version", "label_mapping",
                               "decoding", "config_hash", "prompt_hash")},
     }
@@ -626,7 +627,8 @@ def gate1_signoff(context, *, phase: str,
         "autorater_config": {k: config[k] for k in
                              ("schema_version", "judge_model_key",
                               "judge_model_id", "judge_revision",
-                              "backend", "prompt_version",
+                              "backend", "chat_template_kwargs",
+                              "prompt_version",
                               "parser_version", "label_mapping",
                               "decoding", "config_hash", "prompt_hash")},
         "models": models,
