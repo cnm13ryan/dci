@@ -142,6 +142,12 @@ GATE1_ANNOTATORS = 1
 HUMAN_VALIDATION_UNAVAILABLE = "HUMAN_VALIDATION_UNAVAILABLE"
 HUMAN_VALIDATION_COMPLETE = "HUMAN_VALIDATION_COMPLETE"
 
+#: Machine-distinguishable measurement bases (A2.1): a generic PASSED
+#: stage state never implies human validation; downstream readers use
+#: these markers, never the stage status alone.
+MEASUREMENT_BASIS_AUTORATER = "autorater_calibration_approved"
+MEASUREMENT_BASIS_HUMAN = "human_validated"
+
 #: Deterministic development/calibration split of the Gate 1 response
 #: pool: seeded, stratified by verifier class, disjoint halves.
 AUTORATER_SPLIT_SEED = 202608175

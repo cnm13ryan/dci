@@ -146,14 +146,19 @@ def run_freeze(job: Job) -> dict[str, Any]:
 
 
 def _measurement_basis(job: Job) -> dict[str, Any]:
-    """Amendment A2: the freeze carries the measurement's evidence basis
-    and claim scope verbatim from the Gate 1 record."""
+    """Amendment A2/A2.1: the freeze carries the measurement's evidence
+    basis machine-readably, and the EFFECTIVE human-validation status —
+    a completed human audit takes precedence over the Gate 1 record's
+    declaration; a generic PASSED state implies nothing."""
+    from dci1v3.stages.gate1 import human_validation_status
+
     record = load_stage_record(job.tree, C.STAGE_GATE1)
     payload = verify_signed(record, job.context.signing_key_path,
                             where="gate1_measurement")
     body = payload["body"]
-    return {"basis": body.get("basis"),
-            "human_validation": body.get("human_validation"),
+    return {"measurement_basis": body.get("measurement_basis"),
+            "basis": body.get("basis"),
+            "human_validation": human_validation_status(job.tree),
             "strongest_claim": body.get("strongest_claim"),
             "measurement_scope": body.get("measurement_scope")}
 

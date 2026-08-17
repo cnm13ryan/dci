@@ -177,6 +177,88 @@ def _packet_rows(sampled: dict[str, list[dict[str, Any]]]
             for cls in ("pass", "fail") for i in sampled[cls]]
 
 
+def _pool_hash(reservoir: list[dict[str, Any]]) -> str:
+    """The realised response-pool boundary: identities and response bytes."""
+    return sha_obj(sorted((i["item_id"], i["response_hash"])
+                          for i in reservoir))
+
+
+def human_validation_status(tree) -> dict[str, Any]:
+    """The effective human-validation status for downstream readers
+    (A2.1): the human-audit record when one exists, else the Gate 1
+    record's declaration, else unavailable. A generic PASSED stage state
+    never implies human validation."""
+    audit_path = tree.root / "human_audit.json"
+    if audit_path.exists():
+        audit = fs.read_json(audit_path)
+        return {"human_validation": audit["human_validation"],
+                "source": "human_audit", "outcome": audit["outcome"]}
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.engine.transitions import load_stage_record
+    record = load_stage_record(tree, C.STAGE_GATE1)
+    if record is not None:
+        body = verify_signed(record, tree.context.signing_key_path,
+                             where="gate1_measurement")["body"]
+        return {"human_validation": body.get(
+                    "human_validation", C.HUMAN_VALIDATION_UNAVAILABLE),
+                "source": "gate1_record",
+                "measurement_basis": body.get("measurement_basis")}
+    return {"human_validation": C.HUMAN_VALIDATION_UNAVAILABLE,
+            "source": "none"}
+
+
+def assert_calibration_unexposed(tree) -> None:
+    """One-shot calibration (A2.1), enforced through the append-only
+    ledger BEFORE any mutation: once calibration evidence exists in any
+    state, the held-out half is exposed and can never be re-presented as
+    fresh; a contaminated (superseded) calibration additionally requires
+    genuinely new untouched response data — not a reshuffle of the
+    exposed pool — before independent calibration can be claimed again."""
+    from dci1v3.engine.artifacts import artifact_states
+    prior = artifact_states(tree).get("op:gate1-calibrate")
+    if prior is None:
+        return
+    if prior["state"] == "superseded":
+        raise ProtocolError(
+            "calibration evidence is contaminated (verifier changed after "
+            "inspection); recalibration requires genuinely new untouched "
+            "response data — the existing pool is exposed and a reshuffle "
+            "of it is not fresh held-out evidence")
+    raise ProtocolError(
+        f"calibration already ran (ledger state {prior['state']!r}); "
+        f"calibration is one-shot and the held-out half is exposed")
+
+
+def binding_mismatches(entry: dict[str, Any],
+                       current: dict[str, Any]) -> list[str]:
+    """Keys of the realised evidence boundary that differ from the frozen
+    manifest entry."""
+    return sorted(k for k in current if current[k] != entry.get(k))
+
+
+def _assert_freeze_binding(job: Job, manifest: dict[str, Any]) -> None:
+    """The freeze binds the realised evidence boundary (A2.1): the current
+    pool, split, and development record must be byte-identical to what the
+    manifest recorded for this model."""
+    included = manifest.get("development_runs", {}).get("included", {})
+    entry = included.get(job.spec.model_key)
+    if entry is None:
+        raise IntegrityError(
+            f"{job.spec.model_key} was not a designated development run "
+            f"in the verifier freeze; calibration refused")
+    reservoir, split = _pool_and_split(job)
+    dev_path = job.tree.root / "gate1_dev.json"
+    current = {"pool_hash": _pool_hash(reservoir),
+               "split_hash": split["split_hash"],
+               "dev_record_hash": sha_file(dev_path)}
+    mismatched = binding_mismatches(entry, current)
+    if mismatched:
+        raise IntegrityError(
+            f"the realised evidence boundary differs from the verifier "
+            f"freeze for {job.spec.model_key}: {mismatched}; the frozen "
+            f"holdout is not the one on disk")
+
+
 def _pool_and_split(job: Job) -> tuple[list[dict[str, Any]],
                                        dict[str, Any]]:
     reservoir = _reservoir(job)
@@ -283,6 +365,7 @@ def gate1_dev(job: Job) -> dict[str, Any]:
         "determinism": determinism,
         "reservoir": counts,
         "packet_hash": sha_text(packet_bytes),
+        "pool_hash": _pool_hash(reservoir),
         "split_hash": split["split_hash"],
         "development_items": len(dev_items),
         "autorater_config_hash": config["config_hash"],
@@ -301,17 +384,51 @@ def gate1_dev(job: Job) -> dict[str, Any]:
 def verifier_freeze(context, *, autorater_config: str | None = None
                     ) -> dict[str, Any]:
     """Study-level, single-shot: the verifier-freeze manifest binding the
-    verifier implementation, regression-test state, code revision, split
-    derivation, and autorater configuration. Runs the verifier regression
-    suite and refuses to freeze on any failure."""
+    verifier implementation, regression-test state, code revision, the
+    designated development runs with their REALISED pool and split hashes,
+    and the autorater configuration. Every registered, non-terminal model
+    replication must have completed (and had inspectable) `gate1-dev`
+    before the freeze; the manifest records exactly which runs were
+    included. Runs the verifier regression suite and refuses on failure."""
     from dci1v3.engine import gitinfo, store
+    from dci1v3.engine.paths import model_tree
     from dci1v3.engine.signing import sign_payload
+    from dci1v3.engine.transitions import terminal_status
+    from dci1v3.models.registry import MODEL_KEYS
 
     manifest_path = context.study_root / "verifier_freeze.json"
     if manifest_path.exists():
         raise ProtocolError("the verifier is already frozen; changing a "
                             "frozen instrument requires audited "
                             "supersession")
+
+    included: dict[str, dict[str, str]] = {}
+    excluded: dict[str, str] = {}
+    missing: list[str] = []
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        status = terminal_status(tree)
+        if status is not None:
+            excluded[model_key] = f"terminal: {status}"
+            continue
+        dev_path = tree.root / "gate1_dev.json"
+        split_path = tree.data_dir("gate1") / "autorater" / "split.json"
+        if not dev_path.exists() or not split_path.exists():
+            missing.append(model_key)
+            continue
+        dev = fs.read_json(dev_path)
+        included[model_key] = {
+            "dev_record_hash": sha_file(dev_path),
+            "pool_hash": dev["pool_hash"],
+            "split_hash": dev["split_hash"],
+        }
+    if missing:
+        raise ProtocolError(
+            f"verifier freeze requires every designated development run "
+            f"first; missing gate1-dev for: {missing}")
+    if not included:
+        raise ProtocolError("no development runs available to freeze over")
+
     gitinfo.assert_clean_worktree(context.repo_root)
     commit = gitinfo.head_commit(context.repo_root)
     gitinfo.assert_sources_in_commit(context.repo_root, commit)
@@ -346,6 +463,7 @@ def verifier_freeze(context, *, autorater_config: str | None = None
         "producing_commit": commit,
         "split_derivation": {"seed": C.AUTORATER_SPLIT_SEED,
                              "domain": C.DOMAIN_AUTORATER_SPLIT},
+        "development_runs": {"included": included, "excluded": excluded},
         "autorater_config": {k: config[k] for k in
                              ("schema_version", "judge_model_key",
                               "prompt_version", "decoding",
@@ -379,15 +497,16 @@ def gate1_calibrate(job: Job) -> dict[str, Any]:
     if not dev_record.exists():
         raise ProtocolError("gate1-calibrate requires the development "
                             "phase (gate1-dev) first")
+    assert_calibration_unexposed(job.tree)      # ledger-first, pre-mutation
     manifest = _load_verifier_freeze(job)
     autorater.assert_verifier_unchanged(manifest)
+    _assert_freeze_binding(job, manifest)
 
     out_path = job.tree.root / "gate1_calibration.json"
     if out_path.exists():
         raise ProtocolError(
-            "a calibration report already exists; if the verifier changed "
-            "after inspecting it, that evidence is contaminated and a "
-            "fresh held-out split is required (audited supersession)")
+            "a calibration report already exists; calibration is one-shot "
+            "and the held-out half is exposed")
 
     config = autorater.load_config(job.options.get("autorater_config"))
     if config["config_hash"] != \
@@ -451,6 +570,7 @@ def run_gate1(job: Job) -> dict[str, Any]:
     manifest = _load_verifier_freeze(job)
     try:
         autorater.assert_verifier_unchanged(manifest)
+        _assert_freeze_binding(job, manifest)
     except IntegrityError:
         record_state(job.tree, artifact_id="op:gate1-calibrate",
                      path=calibration_path,
@@ -466,6 +586,7 @@ def run_gate1(job: Job) -> dict[str, Any]:
                  producing_commit=job.producing_commit)
 
     body = {
+        "measurement_basis": C.MEASUREMENT_BASIS_AUTORATER,
         "basis": "autorater-calibrated frozen verifier; explicit "
                  "researcher approval",
         "human_validation": C.HUMAN_VALIDATION_UNAVAILABLE,

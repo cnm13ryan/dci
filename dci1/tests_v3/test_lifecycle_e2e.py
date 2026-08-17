@@ -58,6 +58,15 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     packet_hash_before = fs.read_json(
         tree.root / "gate1_dev.json")["packet_hash"]
     step("gate1-calibrate", "--model", MODEL, expect=1)   # not frozen yet
+    # A2.1: the study-level freeze refuses until every designated (non-
+    # terminal) replication has completed its development run.
+    step("verifier-freeze", expect=1)
+    for other in ("qwen3-4b", "qwen3-4b-instruct-2507",
+                  "gemma-3n-e4b-it"):
+        step("qualify", "--model", other)
+        step("pilot", "--model", other)
+        step("prescreen", "--model", other)
+        step("gate1-dev", "--model", other)
     step("verifier-freeze")
     step("gate1-calibrate", "--model", MODEL)
     step("gate1", "--model", MODEL, expect=1)   # approval flag required
@@ -147,6 +156,78 @@ def test_gate1_record_states_claim_boundaries(lifecycle):
     from dci1v3.protocol.hashing import sha_text
     assert sha_text(Path(lifecycle["packet"]).read_text()) == \
         lifecycle["packet_hash_before"]
+
+
+def test_verifier_freeze_binds_realised_boundary(lifecycle):
+    """A2.1: the manifest records every designated development run with
+    the realised pool/split/dev-record hashes actually on disk."""
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.engine.paths import model_tree
+    from dci1v3.protocol.hashing import sha_file
+
+    ctx = lifecycle["ctx"]
+    manifest = verify_signed(
+        fs.read_json(ctx.study_root / "verifier_freeze.json"),
+        ctx.signing_key_path, where="verifier_freeze")
+    included = manifest["development_runs"]["included"]
+    assert sorted(included) == ["gemma-3n-e2b-it", "gemma-3n-e4b-it",
+                                "qwen3-4b", "qwen3-4b-instruct-2507"]
+    assert manifest["development_runs"]["excluded"] == {}
+    for model_key, entry in included.items():
+        tree = model_tree(ctx, model_key)
+        dev = fs.read_json(tree.root / "gate1_dev.json")
+        split = fs.read_json(tree.data_dir("gate1") / "autorater"
+                             / "split.json")
+        assert entry["pool_hash"] == dev["pool_hash"]
+        assert entry["split_hash"] == split["split_hash"]
+        assert entry["dev_record_hash"] == sha_file(
+            tree.root / "gate1_dev.json")
+
+
+def test_gate1_basis_machine_distinguishable(lifecycle):
+    """A2.1: PASSED never implies human validation — the basis marker and
+    the effective human-validation status are machine-readable at every
+    downstream reader."""
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.engine.transitions import load_stage_record
+    from dci1v3.stages.gate1 import human_validation_status
+
+    tree, ctx = lifecycle["tree"], lifecycle["ctx"]
+    gate1 = verify_signed(load_stage_record(tree, C.STAGE_GATE1),
+                          ctx.signing_key_path, where="gate1")["body"]
+    assert gate1["measurement_basis"] == "autorater_calibration_approved"
+    assert gate1["measurement_basis"] != "human_validated"
+    freeze = verify_signed(load_stage_record(tree, C.STAGE_FREEZE),
+                           ctx.signing_key_path, where="freeze")["body"]
+    basis = freeze["measurement_basis"]
+    assert basis["measurement_basis"] == "autorater_calibration_approved"
+    # The freeze ran before the human audit: effective status at freeze
+    # time was UNAVAILABLE, sourced from the gate record.
+    assert basis["human_validation"]["human_validation"] == \
+        "HUMAN_VALIDATION_UNAVAILABLE"
+    # After the audit (end of lifecycle), the effective status flips —
+    # sourced from the audit record, never from the PASSED state.
+    effective = human_validation_status(tree)
+    assert effective == {"human_validation": "HUMAN_VALIDATION_COMPLETE",
+                         "source": "human_audit",
+                         "outcome": "ESTABLISHED"}
+
+
+def test_zz_exposed_calibration_cannot_rerun(lifecycle):
+    """A2.1: calibration is one-shot through the ledger — deleting the
+    record file cannot re-present the exposed holdout as fresh."""
+    import shutil as _shutil
+    tree = lifecycle["tree"]
+    base, repo = lifecycle["base"], lifecycle["repo"]
+    record = tree.root / "gate1_calibration.json"
+    durable_copy = tree.durable / "gate1_calibration.json"
+    record.unlink()
+    try:
+        assert run_cli(base, repo, "gate1-calibrate",
+                       "--model", MODEL) == 1
+        assert not record.exists()          # refused before any mutation
+    finally:
+        _shutil.copy2(durable_copy, record)
 
 
 def test_human_audit_bounds_recompute_from_single_labels(lifecycle):

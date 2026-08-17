@@ -384,3 +384,14 @@ required. Strongest supported claim: *"The frozen deterministic verifier
 was developed and evaluated on held-out responses against the specified
 autorater under the registered configuration. Independent human validation
 is unavailable."*
+
+**Order of operations (A2.1):** run `gate1-dev` for **every** registered,
+non-terminal model and inspect each development report **before** the
+single study-level `verifier-freeze`; the freeze records exactly which
+development runs it covers and binds each model's realised pool/split
+hashes, which calibration and approval re-verify. Calibration is one-shot:
+its held-out half is exposed once judged, and after contamination only
+genuinely new response data (never a reshuffle) can support independent
+calibration. Deferred limitations: the future human-audit packet overlaps
+verifier-development data, and the default judge is itself an evaluated
+replication (swap `protocol/data/autorater.json` per run if desired).
