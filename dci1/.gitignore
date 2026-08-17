@@ -16,3 +16,7 @@ environments/backend/vendor/*.whl
 __pycache__/
 *.pyc
 src/*.egg-info/
+
+# Gate 1 annotation workspace (reviewer GUI working files; the exported
+# annotations file enters evidence only through `gate1 --annotations`).
+annotations/

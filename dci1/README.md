@@ -330,3 +330,26 @@ Every mutating command runs the one production path: writer lock →
 clean-worktree check → canonical evidence verification → predecessor
 validation → stage function → durable write → hash verification →
 signed record → transition log. There is no dirty-tree bypass.
+
+## Gate 1 reviewer GUI (v3)
+
+Human annotation runs through a dependency-free local web app
+(`dci1v3/annotation/`, decision V20). One blinded session per annotator:
+
+    $PY -m dci1v3.annotation.server --model gemma-3n-e2b-it --annotator A1
+    # keyboard-first: 1 = SATISFIES, 2 = VIOLATES, F = flag; autosaves.
+
+Annotators see only the registered constraint text and the unmodified
+response, in a per-annotator shuffled order; item identities, verifier
+verdicts, class structure, and other annotators' labels are structurally
+absent. Finalisation requires a binary label on every item plus the §10
+face-validity judgment, and is immutable. The researcher dashboard
+(`--dashboard`) shows completion status only until all three annotators
+lock, then reveals agreement/verifier diagnostics and exports the exact
+file for:
+
+    $PY -m dci1v3.cli gate1 --model <model> --annotations \
+        annotations/<model>/gate1_annotations.json
+
+Working files live in `annotations/` (gitignored); labels enter evidence
+only through the registered Gate 1 pathway.
