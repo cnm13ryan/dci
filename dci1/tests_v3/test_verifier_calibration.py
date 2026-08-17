@@ -323,10 +323,81 @@ def test_config_binds_the_frozen_protocol():
     assert config["label_mapping"] == C.AUTORATER_LABEL_MAPPING
     assert config["decoding"]["max_new_tokens"] == C.AUTORATER_CAP
     assert config["decoding"]["policy"] == "greedy"
+    # A3.1: the judging condition is part of the hashed config and must
+    # equal the judge registry's declaration.
+    assert config["chat_template_kwargs"] == judge.chat_template_kwargs
+    assert config["chat_template_kwargs"] == {"reasoning_effort":
+                                              "medium"}
     for key in ("judge_revision", "parser_version", "label_mapping",
-                "backend"):
+                "backend", "chat_template_kwargs"):
         assert key in config     # covered by config_hash (computed over
     #                              every non-hash key at load time)
+
+
+def test_config_refuses_judging_condition_drift(tmp_path):
+    import json as _json
+    from dci1v3.errors import ProtocolError
+    raw = _json.loads(
+        (autorater._CONFIG_PATH).read_text())
+    raw["chat_template_kwargs"] = {"reasoning_effort": "high"}
+    doctored = tmp_path / "autorater.json"
+    doctored.write_text(_json.dumps(raw))
+    with pytest.raises(ProtocolError, match="single-valued"):
+        autorater.load_config(doctored)
+
+
+def test_run_autorater_plan_carries_hashed_judging_condition(tmp_path):
+    from dci1v3.generation.synthetic import synthetic_judge
+    seen = {}
+
+    def capturing(run_dir, plan, rows):
+        seen.update(plan)
+        return synthetic_judge(run_dir, plan, rows, disagree_rate=0.0)
+
+    items = [_wording_pool_item(0, 1, 1, "pass")]
+    autorater.run_autorater(tmp_path / "dev", items,
+                            config=autorater.load_config(),
+                            phase="development", generate_fn=capturing,
+                            environment={})
+    assert seen["chat_template_kwargs"] == {"reasoning_effort": "medium"}
+    assert seen["generation_ceiling"] == C.AUTORATER_CAP
+    assert seen["skip_special_tokens"] is False
+    assert seen["tensor_parallel_size"] == 1
+
+
+def test_stale_judge_rows_detected_and_parked(registered_ctx):
+    """A3.1 supersession: judge rows from a prior configuration are
+    detected, parked under superseded/<old-prefix>/ with ledger
+    entries, and never deleted."""
+    import json as _json
+
+    from dci1v3.engine.artifacts import artifact_states
+    from dci1v3.engine.paths import model_tree
+    from dci1v3.stages.gate1 import park_stale_judgments
+
+    config = autorater.load_config()
+    tree = model_tree(registered_ctx, "gemma-3n-e2b-it")
+    auto_dir = tree.data_dir("gate1") / "autorater"
+    writer = autorater.CacheWriter(auto_dir / "dev" / "judge_rows.jsonl")
+    writer.append([{"row_id": "judge:x", "item_id": "x",
+                    "prompt_hash": "p" * 64, "config_hash": "0" * 64,
+                    "raw_generation": "SATISFIES", "finish_reason":
+                    "stop", "outcome": "OK"}])
+    (tree.root / "gate1_dev.json").write_text(_json.dumps({"old": True}))
+
+    old = autorater.stale_config_rows(auto_dir / "dev", config)
+    assert old == "0" * 64
+    assert autorater.stale_config_rows(auto_dir / "dev_repeat",
+                                       config) is None
+
+    parked = park_stale_judgments(tree, auto_dir, {"dev": old},
+                                  producing_commit="c" * 40)
+    assert not (auto_dir / "dev").exists()
+    assert (parked / "dev" / "judge_rows.jsonl").exists()
+    assert _json.loads((parked / "gate1_dev.json").read_text()) == \
+        {"old": True}
+    state = artifact_states(tree)[f"autorater-dev:{'0' * 12}"]
+    assert state["state"] == "superseded"
 
 
 def test_stale_cached_judge_rows_fail_closed(tmp_path):
