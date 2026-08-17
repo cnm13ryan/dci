@@ -116,6 +116,12 @@ class SamplingPlan:
     #: uninterrupted generation, the model closes its own reasoning.
     stop: tuple[str, ...] = ()
     include_stop_str_in_output: bool = False
+    #: Whether detokenisation drops special tokens (vLLM's default). Kept True
+    #: for every archived plan; a plan sets False when the consumer needs the
+    #: checkpoint's own channel markers preserved in `raw_generation` — e.g.
+    #: harmony-format checkpoints (gpt-oss), whose analysis/final channels are
+    #: separated ONLY by special tokens and would otherwise concatenate.
+    skip_special_tokens: bool = True
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)

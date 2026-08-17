@@ -53,6 +53,16 @@ def main(argv: list[str] | None = None) -> int:
         help="study-level: freeze the verifier for held-out calibration "
              "(runs the verifier regression suite first)")
     vfreeze.add_argument("--autorater-config", default=None)
+    signoff = sub.add_parser(
+        "gate1-signoff",
+        help="study-level: the cross-model inspection summary "
+             "(development before the freeze, calibration before "
+             "approval); --notes attaches the researcher's inspection "
+             "record")
+    signoff.add_argument("--phase", required=True,
+                         choices=("development", "calibration"))
+    signoff.add_argument("--notes", default=None)
+    signoff.add_argument("--autorater-config", default=None)
     readiness = sub.add_parser("readiness", help="the item-65 report")
     readiness.add_argument("--out", default=None)
     for name in MODEL_OPERATIONS:
@@ -88,6 +98,11 @@ def main(argv: list[str] | None = None) -> int:
             from dci1v3.stages.gate1 import verifier_freeze
             outcome = verifier_freeze(
                 context, autorater_config=args.autorater_config)
+        elif args.command == "gate1-signoff":
+            from dci1v3.stages.gate1 import gate1_signoff
+            outcome = gate1_signoff(
+                context, phase=args.phase, notes_path=args.notes,
+                autorater_config=args.autorater_config)
         elif args.command == "readiness":
             from dci1v3.stages.report import readiness_report
             outcome = readiness_report(context)

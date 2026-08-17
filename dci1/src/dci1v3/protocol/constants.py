@@ -154,23 +154,37 @@ AUTORATER_SPLIT_SEED = 202608175
 DOMAIN_AUTORATER_SPLIT = "dci1v3:autorater-split:v1"
 DOMAIN_AUTORATER_SEED = "dci1v3:autorater:v1"
 
-#: Greedy small-cap judging: one-line verdict plus an optional short
-#: task-facing justification.
-AUTORATER_CAP = 48
+#: Greedy judging cap. The configured judge (openai/gpt-oss-20b) emits a
+#: harmony transcript — an analysis channel at the registered low
+#: reasoning effort, then the final verdict channel — so the cap covers
+#: BOTH channels; a truncated transcript parses as invalid_output, never
+#: as a label.
+AUTORATER_CAP = 256
 AUTORATER_SCHEMA_VERSION = "autorater-judgment/1"
 
 #: Versioned judge prompts; the active version comes from the autorater
 #: configuration and its hash is recorded with every judgment run.
+#: gate1-judge/1.0.0 (YES/NO vocabulary, never executed against a real
+#: judge) was superseded by 2.0.0 before any real judgment: the
+#: registered scientific labels are SATISFIES and VIOLATES.
 AUTORATER_PROMPTS = {
-    "gate1-judge/1.0.0": (
+    "gate1-judge/2.0.0": (
         "You are checking one rule against one text.\n"
         "Rule: {constraint}\n"
         "Text:\n{response}\n"
         "---\n"
-        "Does the text satisfy the rule? Answer YES or NO on the first "
-        "line. You may add one short reason on the second line.\n"
+        "Does the text satisfy the rule? Answer with exactly one word on "
+        "the first line: SATISFIES or VIOLATES. You may add one short "
+        "reason on the second line.\n"
         "Answer:"),
 }
+
+#: The registered parser and its binary mapping from the judge's output
+#: vocabulary to the verifier's classes. Parse errors, refusals, and
+#: generation failures keep their own operational statuses and are never
+#: recoded into either label.
+AUTORATER_PARSER_VERSION = "gate1-parse/2.0.0"
+AUTORATER_LABEL_MAPPING = {"SATISFIES": "pass", "VIOLATES": "fail"}
 
 #: The registered strongest supported claim while human validation is
 #: unavailable (amendment A2) — attached verbatim to gate, freeze, and

@@ -19,7 +19,8 @@ from dci1v3.protocol.constants import (
 
 
 def backend_plan(spec: ModelSpec, *, cap: int, decoding: str = "stochastic",
-                 chunk_size: int = 32) -> dict[str, Any]:
+                 chunk_size: int = 32,
+                 skip_special_tokens: bool = True) -> dict[str, Any]:
     if cap not in CAP_GRID and cap not in (PILOT_CAP, AUTORATER_CAP):
         raise ProtocolError(f"cap {cap} outside the registered grid")
     if decoding == "stochastic":
@@ -57,4 +58,7 @@ def backend_plan(spec: ModelSpec, *, cap: int, decoding: str = "stochastic",
         "think_open": "",
         "think_close": "",
         "decoding_policy": decoding,
+        # False only for harmony-format judges (gpt-oss), whose analysis
+        # and final channels are separated solely by special tokens.
+        "skip_special_tokens": skip_special_tokens,
     }

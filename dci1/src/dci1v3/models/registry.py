@@ -96,6 +96,41 @@ FIRST_MODEL_KEY = MODEL_KEYS[0]        # gemma-3n-e2b-it: E2B runs first
 E2B_STOP_STATUSES = ("REFERENCE_POOL_MISMATCH", "COMPOSED_HEADROOM_FAILURE")
 
 
+#: Judge models (amendment A2/A3): deliberately DISJOINT from the four
+#: registered replications, so the autorater is never one of the models
+#: it develops or evaluates the verifier against. Judges are proxy
+#: instruments — never scored, never substituted for a replication, and
+#: their revisions are pinned exactly like the replications'.
+#: gpt-oss-20b emits harmony transcripts; the registered judging
+#: condition is the checkpoint's own low reasoning effort, selected
+#: through its chat template.
+JUDGE_MODELS: tuple[ModelSpec, ...] = (
+    ModelSpec(
+        execution_order=0,                 # not part of the replication order
+        model_key="gpt-oss-20b",
+        model_id="openai/gpt-oss-20b",
+        revision="6cee5e81ee83917806bbde320786a8fb61efebee",
+        family="gpt-oss",
+        thinking_policy="low",             # harmony analysis at low effort
+        chat_template_kwargs={"reasoning_effort": "low"},
+        switch_expectation="live",
+        leakage_markers=(),
+    ),
+)
+JUDGE_BY_KEY = {m.model_key: m for m in JUDGE_MODELS}
+
+
+def get_judge(model_key: str) -> ModelSpec:
+    """Resolve a judge. Registered replications are deliberately NOT
+    valid judges: a model must never rate the verifier that scores it."""
+    if model_key not in JUDGE_BY_KEY:
+        raise ProtocolError(
+            f"{model_key!r} is not a registered judge model; registered "
+            f"judges: {tuple(JUDGE_BY_KEY)} (the four study replications "
+            f"are deliberately excluded)")
+    return JUDGE_BY_KEY[model_key]
+
+
 def get_model(model_key: str) -> ModelSpec:
     if model_key not in MODEL_BY_KEY:
         raise ProtocolError(

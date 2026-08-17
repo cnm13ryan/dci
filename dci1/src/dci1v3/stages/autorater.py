@@ -24,7 +24,7 @@ from typing import Any
 from dci1v3.engine import fs
 from dci1v3.engine.store import CacheWriter
 from dci1v3.errors import IntegrityError, ProtocolError
-from dci1v3.models.registry import get_model
+from dci1v3.models.registry import get_judge
 from dci1v3.protocol import constants as C
 from dci1v3.protocol.hashing import domain_int, sha_obj, sha_text
 
@@ -39,16 +39,41 @@ _CONFIG_PATH = (Path(__file__).resolve().parents[1] / "protocol" / "data"
 
 
 def load_config(path: Path | None = None) -> dict[str, Any]:
+    """The frozen autorater protocol: judge identity and pinned revision,
+    backend, prompt version, parser version, binary label mapping, and
+    greedy decoding — all covered by config_hash, all recorded with every
+    judgment. Fails closed on any drift from the registered constants."""
     config = fs.read_json(path or _CONFIG_PATH)
-    for key in ("schema_version", "judge_model_key", "prompt_version",
-                "decoding"):
+    for key in ("schema_version", "judge_model_key", "judge_model_id",
+                "judge_revision", "backend", "prompt_version",
+                "parser_version", "label_mapping", "decoding"):
         if key not in config:
             raise ProtocolError(f"autorater config missing {key!r}")
     if config["prompt_version"] not in C.AUTORATER_PROMPTS:
         raise ProtocolError(
             f"unknown autorater prompt version "
             f"{config['prompt_version']!r}")
-    get_model(config["judge_model_key"])       # must be registered
+    if config["parser_version"] != C.AUTORATER_PARSER_VERSION:
+        raise ProtocolError(
+            f"autorater config names parser {config['parser_version']!r} "
+            f"but this code implements {C.AUTORATER_PARSER_VERSION!r}")
+    if config["label_mapping"] != C.AUTORATER_LABEL_MAPPING:
+        raise ProtocolError(
+            "autorater config's binary label mapping differs from the "
+            "registered SATISFIES/VIOLATES mapping")
+    judge = get_judge(config["judge_model_key"])
+    if (config["judge_model_id"], config["judge_revision"]) != \
+            (judge.model_id, judge.revision):
+        raise ProtocolError(
+            f"autorater config pins {config['judge_model_id']}@"
+            f"{config['judge_revision'][:12]} but the judge registry pins "
+            f"{judge.model_id}@{judge.revision[:12]}")
+    if int(config["decoding"]["max_new_tokens"]) != C.AUTORATER_CAP:
+        raise ProtocolError(
+            f"autorater config cap {config['decoding']['max_new_tokens']} "
+            f"differs from the registered AUTORATER_CAP {C.AUTORATER_CAP}")
+    if config["decoding"]["policy"] != "greedy":
+        raise ProtocolError("the registered autorater decoding is greedy")
     config["config_hash"] = sha_obj(
         {k: v for k, v in config.items() if k != "config_hash"})
     config["prompt_hash"] = sha_text(
@@ -90,19 +115,43 @@ def judge_prompt(config: dict[str, Any], item: dict[str, Any]) -> str:
                            response=item["response_text"])
 
 
+#: Harmony channel markers (gpt-oss). The judge's transcript interleaves
+#: an analysis channel and a final channel, separated only by special
+#: tokens; the parser reads ONLY the final channel. A transcript that
+#: never reaches its final channel (e.g. truncated at the cap) is
+#: invalid_output, never a label.
+_HARMONY_FINAL = "<|channel|>final<|message|>"
+_HARMONY_STOPS = ("<|return|>", "<|end|>", "<|call|>")
+
+
 def parse_judgment(raw: str) -> tuple[str, str | None, str | None]:
-    """(status, label, justification). Labels are only pass/fail; every
-    other outcome keeps its own status and is never recoded."""
+    """(status, label, justification) — parser gate1-parse/2.0.0.
+
+    The registered vocabulary is SATISFIES/VIOLATES on the first line of
+    the judge's final message, mapped by AUTORATER_LABEL_MAPPING; every
+    other outcome keeps its own operational status and is never recoded
+    into a label."""
     text = raw.strip()
     if not text:
         return INVALID_OUTPUT, None, None
+    if "<|channel|>" in text:                  # a harmony transcript
+        if _HARMONY_FINAL not in text:
+            return INVALID_OUTPUT, None, None  # never reached its verdict
+        text = text.rsplit(_HARMONY_FINAL, 1)[1]
+        for stop in _HARMONY_STOPS:
+            text = text.split(stop, 1)[0]
+        text = text.strip()
+        if not text:
+            return INVALID_OUTPUT, None, None
     first, _, rest = text.partition("\n")
     token = "".join(ch for ch in first.strip().upper()
                     if ch.isalpha())
-    if token.startswith("YES"):
-        return VALID, "pass", rest.strip() or None
-    if token.startswith("NO"):
-        return VALID, "fail", rest.strip() or None
+    if token.startswith("SATISF"):
+        return VALID, C.AUTORATER_LABEL_MAPPING["SATISFIES"], \
+            rest.strip() or None
+    if token.startswith("VIOLAT"):
+        return VALID, C.AUTORATER_LABEL_MAPPING["VIOLATES"], \
+            rest.strip() or None
     from dci1v3.analysis.taxonomy import is_refusal
     if is_refusal(text):
         return REFUSAL, None, None
@@ -127,14 +176,32 @@ def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
 
     phase_dir = Path(phase_dir)
     phase_dir.mkdir(parents=True, exist_ok=True)
-    judge = get_model(config["judge_model_key"])
+    judge = get_judge(config["judge_model_key"])
     run_id = sha_obj({"config": config["config_hash"], "phase": phase,
                       "items": sorted(i["item_id"] for i in items)})[:16]
 
     from dci1v3.generation.plans import backend_plan
-    plan = backend_plan(judge, cap=C.AUTORATER_CAP, decoding="greedy")
+    plan = backend_plan(
+        judge, cap=C.AUTORATER_CAP, decoding="greedy",
+        skip_special_tokens=bool(
+            config["decoding"].get("skip_special_tokens", True)))
 
     writer = CacheWriter(phase_dir / "judge_rows.jsonl")
+    # Cached judgments are reusable ONLY while their provenance is valid:
+    # every stored row must have been produced under this exact autorater
+    # configuration and this exact rendered prompt.
+    for row in writer.rows():
+        item = next((i for i in items
+                     if f"judge:{i['item_id']}" == row["row_id"]), None)
+        if row.get("config_hash") != config["config_hash"] or (
+                item is not None and
+                row["prompt_hash"] != sha_text(judge_prompt(config, item))):
+            raise IntegrityError(
+                f"cached judge row {row['row_id']!r} in {phase_dir} was "
+                f"produced under a different autorater configuration or "
+                f"prompt; stale judgments cannot be reused — resolving "
+                f"this requires an audited decision about the phase "
+                f"directory, never silent regeneration")
     have = writer.existing_ids()
     missing = [i for i in items if f"judge:{i['item_id']}" not in have]
     if missing:
@@ -160,6 +227,7 @@ def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
             {"row_id": design["row_id"],
              "item_id": design["item_id"],
              "prompt_hash": design["prompt_hash"],
+             "config_hash": config["config_hash"],
              "raw_generation": by_id[design["row_id"]]["raw_generation"],
              "finish_reason": by_id[design["row_id"]].get(
                  "finish_reason", ""),
@@ -245,14 +313,26 @@ def judgment_report(judgments: list[dict[str, Any]]) -> dict[str, Any]:
                 table["verifier_fail_autorater_pass"]},
         "disagreement_rate": (disagreements / len(valid)
                               if valid else None),
+        # The full-set identification interval [a/N, (a+(N-N_v))/N]: the
+        # agreement rate is only interval-identified when some judgments
+        # are invalid. Not an acceptance threshold; nothing decides on it.
+        "agreement_identification_interval": (
+            {"agree_valid": len(valid) - disagreements,
+             "lower": (len(valid) - disagreements) / total,
+             "upper": (len(valid) - disagreements + total - len(valid))
+                      / total}
+            if total else None),
+        "label_mapping": dict(C.AUTORATER_LABEL_MAPPING),
         "not_human_validation": True,
     }
 
 
 def disagreement_listing(items_by_id: dict[str, dict[str, Any]],
-                         judgments: list[dict[str, Any]],
-                         *, limit: int = 200) -> list[dict[str, Any]]:
-    """Inspection material for the development phase."""
+                         judgments: list[dict[str, Any]]
+                         ) -> list[dict[str, Any]]:
+    """EVERY disagreement, complete: item identity, constraint, the full
+    response, both labels, the judge's short justification, and the
+    frozen split stratum. Inspection material — never truncated."""
     listing = []
     for j in judgments:
         if j["status"] == VALID and j["label"] != j["verifier_label"]:
@@ -263,8 +343,64 @@ def disagreement_listing(items_by_id: dict[str, dict[str, Any]],
                 "autorater": j["label"],
                 "justification": j["justification"],
                 "constraint_text": item["constraint_text"],
-                "response_excerpt": item["response_text"][:400]})
-    return listing[:limit]
+                "response_text": item["response_text"],
+                "n": item.get("n"),
+                "source": item.get("source"),
+                "split_class": j.get("split_class")})
+    return listing
+
+
+def disagreement_breakdown(items_by_id: dict[str, dict[str, Any]],
+                           judgments: list[dict[str, Any]]
+                           ) -> dict[str, dict[str, int]]:
+    """Descriptive disagreement concentrations by target severity ``n``
+    and by source pool. Counts only; no threshold reads them."""
+    by_n: dict[str, int] = {}
+    by_source: dict[str, int] = {}
+    for j in judgments:
+        if j["status"] == VALID and j["label"] != j["verifier_label"]:
+            item = items_by_id[j["item_id"]]
+            n = str(item.get("n"))
+            source = str(item.get("source"))
+            by_n[n] = by_n.get(n, 0) + 1
+            by_source[source] = by_source.get(source, 0) + 1
+    return {"by_n": dict(sorted(by_n.items())),
+            "by_source": dict(sorted(by_source.items()))}
+
+
+def stability_comparison(primary: list[dict[str, Any]],
+                         repeat: list[dict[str, Any]]
+                         ) -> dict[str, Any]:
+    """Development-only repeated-run check: the identical prompt, model,
+    decoding, and configuration judged twice. Reports label flips and
+    operational-status changes with the affected item IDs. The repeated
+    labels are never averaged and never voted; the primary run remains
+    the development evidence. Unexpected variation under greedy decoding
+    means model/backend reproducibility needs investigation before the
+    verifier freeze."""
+    second = {j["item_id"]: j for j in repeat}
+    label_flips, status_changes = [], []
+    for j in primary:
+        twin = second.get(j["item_id"])
+        if twin is None:
+            status_changes.append({"item_id": j["item_id"],
+                                   "first": j["status"],
+                                   "second": "missing"})
+            continue
+        if j["status"] != twin["status"]:
+            status_changes.append({"item_id": j["item_id"],
+                                   "first": j["status"],
+                                   "second": twin["status"]})
+        elif j["status"] == VALID and j["label"] != twin["label"]:
+            label_flips.append({"item_id": j["item_id"],
+                                "first": j["label"],
+                                "second": twin["label"]})
+    return {"items": len(primary),
+            "label_flips": len(label_flips),
+            "status_changes": len(status_changes),
+            "flipped_items": label_flips,
+            "status_changed_items": status_changes,
+            "stable": not label_flips and not status_changes}
 
 
 # --------------------------------------------------- verifier freeze check

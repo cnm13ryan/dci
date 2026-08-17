@@ -57,18 +57,41 @@ def test_split_refuses_duplicate_ids():
 
 # -------------------------------------------------------------- parsing
 @pytest.mark.parametrize("raw,expected", [
-    ("YES", ("valid", "pass", None)),
-    ("yes\nBecause it appears once.", ("valid", "pass",
-                                       "Because it appears once.")),
-    ("NO.", ("valid", "fail", None)),
-    ("  No \n too many occurrences ", ("valid", "fail",
-                                       "too many occurrences")),
+    ("SATISFIES", ("valid", "pass", None)),
+    ("satisfies\nExactly one occurrence.", ("valid", "pass",
+                                            "Exactly one occurrence.")),
+    ("VIOLATES.", ("valid", "fail", None)),
+    ("  Violates \n too many occurrences ", ("valid", "fail",
+                                             "too many occurrences")),
+    ("SATISFIED", ("valid", "pass", None)),      # registered prefix rule
     ("Maybe; unclear.", ("invalid_output", None, None)),
+    ("YES", ("invalid_output", None, None)),     # superseded vocabulary
     ("", ("invalid_output", None, None)),
     ("I cannot help with that.", ("refusal", None, None)),
-    ("YESTERDAY it rained", ("valid", "pass", None)),  # YES-prefix rule
 ])
 def test_parse_judgment_statuses(raw, expected):
+    assert autorater.parse_judgment(raw) == expected
+
+
+@pytest.mark.parametrize("raw,expected", [
+    # A full harmony transcript: only the final channel is judged.
+    ("<|channel|>analysis<|message|>Count is 1, matches n.<|end|>"
+     "<|start|>assistant<|channel|>final<|message|>SATISFIES\n"
+     "one occurrence<|return|>",
+     ("valid", "pass", "one occurrence")),
+    ("<|channel|>analysis<|message|>Too many. The word VIOLATES? yes."
+     "<|end|><|start|>assistant<|channel|>final<|message|>VIOLATES"
+     "<|return|>",
+     ("valid", "fail", None)),
+    # Truncated at the cap before the final channel: never a label.
+    ("<|channel|>analysis<|message|>Counting occurrences of the wo",
+     ("invalid_output", None, None)),
+    # Final channel present but empty.
+    ("<|channel|>analysis<|message|>x<|end|><|start|>assistant"
+     "<|channel|>final<|message|><|return|>",
+     ("invalid_output", None, None)),
+])
+def test_parse_judgment_harmony_final_channel(raw, expected):
     assert autorater.parse_judgment(raw) == expected
 
 
@@ -119,21 +142,89 @@ def test_contingency_and_directional_disagreement():
 def test_disagreement_listing_for_inspection():
     pool = {f"item-{i}": {"item_id": f"item-{i}",
                           "constraint_text": "rule",
-                          "response_text": "x" * 500}
+                          "response_text": "x" * 500,
+                          "n": 2, "source": "prescreen"}
             for i in range(3)}
     judgments = [
         {"status": "valid", "label": "fail", "verifier_label": "pass",
-         "item_id": "item-0", "justification": "missing occurrence"},
+         "item_id": "item-0", "justification": "missing occurrence",
+         "split_class": "pass"},
         {"status": "valid", "label": "pass", "verifier_label": "pass",
-         "item_id": "item-1", "justification": None},
+         "item_id": "item-1", "justification": None,
+         "split_class": "pass"},
         {"status": "invalid_output", "label": None,
          "verifier_label": "fail", "item_id": "item-2",
-         "justification": None},
+         "justification": None, "split_class": "fail"},
     ]
     listing = autorater.disagreement_listing(pool, judgments)
     assert [l["item_id"] for l in listing] == ["item-0"]
     assert listing[0]["justification"] == "missing occurrence"
-    assert len(listing[0]["response_excerpt"]) == 400
+    # every disagreement carries the COMPLETE response, never an excerpt
+    assert listing[0]["response_text"] == "x" * 500
+    assert listing[0]["split_class"] == "pass"
+    assert listing[0]["n"] == 2 and listing[0]["source"] == "prescreen"
+
+
+def test_disagreement_breakdown_by_n_and_source():
+    pool = {"a": {"item_id": "a", "n": 1, "source": "prescreen"},
+            "b": {"item_id": "b", "n": 1, "source": "validation"},
+            "c": {"item_id": "c", "n": 5, "source": "validation"}}
+    judgments = [
+        {"status": "valid", "label": "fail", "verifier_label": "pass",
+         "item_id": "a"},
+        {"status": "valid", "label": "pass", "verifier_label": "fail",
+         "item_id": "b"},
+        {"status": "valid", "label": "fail", "verifier_label": "pass",
+         "item_id": "c"},
+        {"status": "invalid_output", "label": None,
+         "verifier_label": "fail", "item_id": "c"},
+    ]
+    breakdown = autorater.disagreement_breakdown(pool, judgments)
+    assert breakdown["by_n"] == {"1": 2, "5": 1}
+    assert breakdown["by_source"] == {"prescreen": 1, "validation": 2}
+
+
+def test_agreement_identification_interval():
+    """[a/N, (a+(N-N_v))/N]: the full-set agreement rate is only
+    interval-identified when some judgments are invalid."""
+    judgments = (
+        [{"status": "valid", "label": "pass", "verifier_label": "pass"}]
+        * 6
+        + [{"status": "valid", "label": "fail",
+            "verifier_label": "pass"}] * 2
+        + [{"status": "refusal", "label": None,
+            "verifier_label": "fail"}] * 2)
+    interval = autorater.judgment_report(judgments)[
+        "agreement_identification_interval"]
+    assert interval["agree_valid"] == 6
+    assert interval["lower"] == pytest.approx(0.6)
+    assert interval["upper"] == pytest.approx(0.8)
+    # fully valid: the interval collapses to the point estimate
+    point = autorater.judgment_report(judgments[:8])[
+        "agreement_identification_interval"]
+    assert point["lower"] == point["upper"] == pytest.approx(6 / 8)
+
+
+def test_stability_comparison_reports_flips_never_votes():
+    primary = [
+        {"item_id": "a", "status": "valid", "label": "pass"},
+        {"item_id": "b", "status": "valid", "label": "fail"},
+        {"item_id": "c", "status": "refusal", "label": None},
+    ]
+    stable = autorater.stability_comparison(primary, list(primary))
+    assert stable["stable"] and stable["label_flips"] == 0 \
+        and stable["status_changes"] == 0
+    wobbly = [
+        {"item_id": "a", "status": "valid", "label": "fail"},   # flip
+        {"item_id": "b", "status": "invalid_output", "label": None},
+        {"item_id": "c", "status": "refusal", "label": None},
+    ]
+    report = autorater.stability_comparison(primary, wobbly)
+    assert not report["stable"]
+    assert report["label_flips"] == 1 and report["status_changes"] == 1
+    assert report["flipped_items"][0]["item_id"] == "a"
+    assert report["status_changed_items"][0]["item_id"] == "b"
+    assert "vote" not in str(report).lower()
 
 
 # ------------------------------------------------------- verifier freeze
@@ -188,21 +279,85 @@ def test_claim_boundaries_registered():
 def test_synthetic_judge_statuses(tmp_path):
     from dci1v3.generation.synthetic import synthetic_judge
     from dci1v3.protocol.constants import AUTORATER_PROMPTS
-    template = AUTORATER_PROMPTS["gate1-judge/1.0.0"]
+    template = AUTORATER_PROMPTS["gate1-judge/2.0.0"]
     rows = [{"row_id": f"judge:{i}", "scientific_seed": i,
              "user_prompt": template.format(
                  constraint="Use the word however exactly 1 time.",
                  response="just once: however.")}
             for i in range(60)]
     ok = synthetic_judge(tmp_path, {}, rows, disagree_rate=0.0)["rows"]
-    assert all(r["raw_generation"].startswith("YES") for r in ok)
+    assert all(r["raw_generation"].startswith("SATISFIES") for r in ok)
     flipped = synthetic_judge(tmp_path, {}, rows, disagree_rate=1.0)
-    assert all(r["raw_generation"].startswith("NO")
+    assert all(r["raw_generation"].startswith("VIOLATES")
                for r in flipped["rows"])
     invalid = synthetic_judge(tmp_path, {}, rows, invalid_rate=1.0)
     statuses = {autorater.parse_judgment(r["raw_generation"])[0]
                 for r in invalid["rows"]}
     assert statuses == {"invalid_output"}
+
+
+# ------------------------------------------------- A3 frozen protocol
+def test_judge_is_never_a_registered_replication():
+    """The autorater must not be a model the verifier scores."""
+    from dci1v3.errors import ProtocolError
+    from dci1v3.models.registry import JUDGE_BY_KEY, MODEL_KEYS, get_judge
+    assert not set(JUDGE_BY_KEY) & set(MODEL_KEYS)
+    for model_key in MODEL_KEYS:
+        with pytest.raises(ProtocolError, match="not a registered judge"):
+            get_judge(model_key)
+    config = autorater.load_config()
+    assert config["judge_model_key"] in JUDGE_BY_KEY
+    assert config["judge_model_key"] not in MODEL_KEYS
+
+
+def test_config_binds_the_frozen_protocol():
+    """Revision, parser, mapping, cap, and greedy decoding are all
+    validated against the registered constants and covered by the
+    config hash."""
+    config = autorater.load_config()
+    judge = __import__("dci1v3.models.registry",
+                       fromlist=["get_judge"]).get_judge(
+        config["judge_model_key"])
+    assert config["judge_revision"] == judge.revision
+    assert config["parser_version"] == C.AUTORATER_PARSER_VERSION
+    assert config["label_mapping"] == C.AUTORATER_LABEL_MAPPING
+    assert config["decoding"]["max_new_tokens"] == C.AUTORATER_CAP
+    assert config["decoding"]["policy"] == "greedy"
+    for key in ("judge_revision", "parser_version", "label_mapping",
+                "backend"):
+        assert key in config     # covered by config_hash (computed over
+    #                              every non-hash key at load time)
+
+
+def test_stale_cached_judge_rows_fail_closed(tmp_path):
+    """Cached judgments are reusable only under valid provenance: a row
+    produced under a different configuration refuses the run."""
+    import json
+
+    from dci1v3.engine import fs as engine_fs
+    from dci1v3.generation.synthetic import synthetic_judge
+
+    items = [_wording_pool_item(0, 1, 1, "pass")]
+    config = autorater.load_config()
+    phase_dir = tmp_path / "dev"
+    autorater.run_autorater(
+        phase_dir, items, config=config, phase="development",
+        generate_fn=lambda d, p, r: synthetic_judge(d, p, r,
+                                                    disagree_rate=0.0),
+        environment={})
+    rows_path = phase_dir / "judge_rows.jsonl"
+    row = json.loads(rows_path.read_text().splitlines()[0])
+    row["config_hash"] = "0" * 64
+    row = engine_fs.row_with_hash(
+        {k: v for k, v in row.items() if k != "row_hash"})
+    rows_path.write_text(json.dumps(row, sort_keys=True,
+                                    ensure_ascii=False) + "\n")
+    with pytest.raises(IntegrityError, match="different autorater"):
+        autorater.run_autorater(
+            phase_dir, items, config=config, phase="development",
+            generate_fn=lambda d, p, r: synthetic_judge(
+                d, p, r, disagree_rate=0.0),
+            environment={})
 
 
 # ----------------------------------------------------- A2.1 invariants

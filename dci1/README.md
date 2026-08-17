@@ -361,15 +361,24 @@ only through the registered `human-audit` pathway.
 
 No independent human annotator is currently available, so Gate 1 runs the
 autorater-assisted verifier workflow (one configured autorater,
-`src/dci1v3/protocol/data/autorater.json`; a proxy instrument — never
-human validation, never ground truth, never part of scoring):
+`src/dci1v3/protocol/data/autorater.json`: `openai/gpt-oss-20b` at its
+pinned revision, harmony chat template at low reasoning effort, prompt
+`gate1-judge/2.0.0` with the SATISFIES/VIOLATES vocabulary, parser
+`gate1-parse/2.0.0`, greedy, cap 256 — a proxy instrument, never human
+validation, never ground truth, never part of scoring; the judge is
+deliberately not one of the four study replications):
 
     $PY -m dci1v3.cli gate1-dev       --model <model>   # dev half + report
+    #   (includes the development-only repeated-run stability check)
     #   inspect evidence/dci1-v3/<model>/gate1/autorater/dev/report.json,
     #   refine the verifier if needed (regression tests), re-run gate1-dev
+    $PY -m dci1v3.cli gate1-signoff --phase development \
+        --notes <inspection.json>                       # cross-model record
     $PY -m dci1v3.cli verifier-freeze                   # study-level, once
     $PY -m dci1v3.cli gate1-calibrate --model <model>   # held-out half
     #   inspect evidence/dci1-v3/<model>/gate1_calibration.json
+    $PY -m dci1v3.cli gate1-signoff --phase calibration \
+        --notes <inspection.json>                       # case appendix
     $PY -m dci1v3.cli gate1 --model <model> \
         --approve-autorater-calibration                 # explicit approval
 
@@ -392,6 +401,9 @@ development runs it covers and binds each model's realised pool/split
 hashes, which calibration and approval re-verify. Calibration is one-shot:
 its held-out half is exposed once judged, and after contamination only
 genuinely new response data (never a reshuffle) can support independent
-calibration. Deferred limitations: the future human-audit packet overlaps
-verifier-development data, and the default judge is itself an evaluated
-replication (swap `protocol/data/autorater.json` per run if desired).
+calibration. Reports additionally carry the full-set agreement
+identification interval `[a/N, (a+(N−N_v))/N]` and descriptive
+disagreement breakdowns by `n` and source pool — all descriptive, none a
+threshold. Deferred limitation: the future human-audit packet overlaps
+verifier-development data (annotator independence is unaffected; a
+pristine human holdout would need new data).

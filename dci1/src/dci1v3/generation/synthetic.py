@@ -127,7 +127,7 @@ def synthetic_judge(run_dir: Path, plan: dict[str, Any],
         if rng.random() < invalid_rate:
             text = "Maybe; it depends on how one reads the rule."
         else:
-            text = ("YES" if verdict else "NO") + \
+            text = ("SATISFIES" if verdict else "VIOLATES") + \
                 "\nCounted the occurrences in the text."
         rows.append({
             **design,

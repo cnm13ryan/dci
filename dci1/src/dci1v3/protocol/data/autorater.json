@@ -1,10 +1,20 @@
 {
-  "schema_version": "autorater-config/1",
-  "judge_model_key": "qwen3-4b-instruct-2507",
-  "prompt_version": "gate1-judge/1.0.0",
+  "schema_version": "autorater-config/2",
+  "judge_model_key": "gpt-oss-20b",
+  "judge_model_id": "openai/gpt-oss-20b",
+  "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+  "backend": {
+    "kind": "vllm-subprocess",
+    "environment": "dci1/environments/backend/.venv (pinned uv environment, vLLM 0.15.1+rocm720, bfloat16 activations over the checkpoint's own MXFP4 weights)",
+    "chat_template": "the pinned snapshot's own harmony chat template at judge_revision, applied with chat_template_kwargs {\"reasoning_effort\": \"low\"}"
+  },
+  "prompt_version": "gate1-judge/2.0.0",
+  "parser_version": "gate1-parse/2.0.0",
+  "label_mapping": {"SATISFIES": "pass", "VIOLATES": "fail"},
   "decoding": {
     "policy": "greedy",
-    "max_new_tokens": 48
+    "max_new_tokens": 256,
+    "skip_special_tokens": false
   },
-  "notes": "The single configured autorater (amendment A2): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring."
+  "notes": "The single configured autorater (amendments A2/A3): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring. The judge is deliberately not one of the four registered replications. Parse errors, refusals, backend failures, and invalid outputs keep distinct operational statuses and are never recoded into SATISFIES or VIOLATES. max_new_tokens covers the harmony analysis channel plus the final verdict channel; skip_special_tokens=false preserves the channel markers so the parser reads only the final channel."
 }
