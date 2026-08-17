@@ -112,7 +112,19 @@ def parse_judgment(raw: str) -> tuple[str, str | None, str | None]:
 def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
                   config: dict[str, Any], phase: str, generate_fn,
                   environment: dict[str, Any]) -> list[dict[str, Any]]:
-    """Judge every item once; append-once storage; full provenance."""
+    """Judge every item once; append-once storage; full provenance.
+
+    Only successful judge generations are committed, so a transient
+    backend failure is retried on the next run (a still-missing row is
+    reported as ``generation_failure``, never recoded). Each generation
+    attempt keeps its own raw run directory. The comparison label is the
+    CURRENT verifier's live verdict — the development loop exists to
+    refine the verifier, so judgments must track it — while the
+    development/calibration split stays stratified on the frozen
+    generation-time classes (split stability across refinement).
+    """
+    from dci1v3.verifiers.target import s0_count
+
     phase_dir = Path(phase_dir)
     phase_dir.mkdir(parents=True, exist_ok=True)
     judge = get_model(config["judge_model_key"])
@@ -137,30 +149,35 @@ def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
                     judge.model_id, sha_text(prompt)),
                 "item_id": item["item_id"],
                 "prompt_hash": sha_text(prompt)})
-        outcome = generate_fn(phase_dir / "backend_runs", plan, design_rows)
+        attempt = 0
+        while (phase_dir / "backend_runs" / f"attempt{attempt}").exists():
+            attempt += 1
+        run_dir = phase_dir / "backend_runs" / f"attempt{attempt}"
+        run_dir.mkdir(parents=True, exist_ok=True)
+        outcome = generate_fn(run_dir, plan, design_rows)
         by_id = {row["row_id"]: row for row in outcome["rows"]}
         writer.append([
             {"row_id": design["row_id"],
              "item_id": design["item_id"],
              "prompt_hash": design["prompt_hash"],
-             "raw_generation": by_id.get(design["row_id"], {}).get(
-                 "raw_generation", ""),
-             "finish_reason": by_id.get(design["row_id"], {}).get(
+             "raw_generation": by_id[design["row_id"]]["raw_generation"],
+             "finish_reason": by_id[design["row_id"]].get(
                  "finish_reason", ""),
-             "outcome": by_id.get(design["row_id"], {}).get(
-                 "outcome", "MISSING")}
-            for design in design_rows])
+             "outcome": "OK"}
+            for design in design_rows
+            if by_id.get(design["row_id"], {}).get("outcome") == "OK"])
 
     raw_rows = {row["item_id"]: row for row in writer.rows()}
     judgments = []
     for item in items:
+        live_verifier = ("pass" if s0_count(item["response_text"])
+                         == item["n"] else "fail")
         raw = raw_rows.get(item["item_id"])
-        if raw is None or raw["outcome"] != "OK":
+        if raw is None:
             status, label, justification = GENERATION_FAILURE, None, None
-            raw_text = "" if raw is None else raw["raw_generation"]
         else:
-            raw_text = raw["raw_generation"]
-            status, label, justification = parse_judgment(raw_text)
+            status, label, justification = parse_judgment(
+                raw["raw_generation"])
         judgments.append({
             "schema_version": C.AUTORATER_SCHEMA_VERSION,
             "run_id": run_id, "phase": phase,
@@ -177,7 +194,8 @@ def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
             "config_hash": config["config_hash"],
             "status": status, "label": label,
             "justification": justification,
-            "verifier_label": item["verifier_class"],
+            "verifier_label": live_verifier,
+            "split_class": item["verifier_class"],   # frozen stratum
         })
     path = phase_dir / "judgments.jsonl"
     fs.atomic_write_text(path, "".join(
