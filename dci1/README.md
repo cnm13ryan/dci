@@ -362,9 +362,9 @@ only through the registered `human-audit` pathway.
 No independent human annotator is currently available, so Gate 1 runs the
 autorater-assisted verifier workflow (one configured autorater,
 `src/dci1v3/protocol/data/autorater.json`: `openai/gpt-oss-20b` at its
-pinned revision, harmony chat template at medium reasoning effort (A3.1), prompt
+pinned revision, harmony chat template at high reasoning effort (A3.2), prompt
 `gate1-judge/2.0.0` with the SATISFIES/VIOLATES vocabulary, parser
-`gate1-parse/2.0.0`, greedy, cap 1024 — a proxy instrument, never human
+`gate1-parse/2.0.0`, greedy, cap 2048 — a proxy instrument, never human
 validation, never ground truth, never part of scoring; the judge is
 deliberately not one of the four study replications):
 
