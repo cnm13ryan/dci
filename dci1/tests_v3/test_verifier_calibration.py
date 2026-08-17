@@ -251,3 +251,71 @@ def test_calibration_one_shot_via_ledger(registered_ctx):
         **kwargs, "artifact_type": "superseded_non_evidence"})
     with pytest.raises(ProtocolError, match="genuinely new untouched"):
         assert_calibration_unexposed(tree)
+
+
+# ------------------------------------------------ dev-loop label fidelity
+def _wording_pool_item(i: int, n: int, count: int, stored_class: str):
+    return {"item_id": f"live-{i:02d}",
+            "response_text": " ".join(["however"] * count) or "no word",
+            "response_hash": f"lh{i}",
+            "constraint_text": f"Use the word however exactly {n} "
+                               f"{'time' if n == 1 else 'times'}.",
+            "n": n, "verifier_class": stored_class}
+
+
+def test_judgments_use_live_verifier_not_frozen_stratum(tmp_path):
+    """The comparison label tracks the CURRENT verifier (the dev loop
+    exists to refine it); the split stratum stays frozen."""
+    from dci1v3.generation.synthetic import synthetic_judge
+    # Live verdict is pass (count == n) but the stored stratum says fail —
+    # as it would after a verifier refinement changed the verdict.
+    items = [_wording_pool_item(0, 2, 2, stored_class="fail"),
+             _wording_pool_item(1, 1, 3, stored_class="pass")]
+    judgments = autorater.run_autorater(
+        tmp_path / "dev", items, config=autorater.load_config(),
+        phase="development",
+        generate_fn=lambda d, p, r: synthetic_judge(d, p, r,
+                                                    disagree_rate=0.0),
+        environment={})
+    by_id = {j["item_id"]: j for j in judgments}
+    assert by_id["live-00"]["verifier_label"] == "pass"   # live, not stored
+    assert by_id["live-00"]["split_class"] == "fail"      # frozen stratum
+    assert by_id["live-01"]["verifier_label"] == "fail"
+    assert by_id["live-01"]["split_class"] == "pass"
+
+
+def test_generation_failures_retry_and_attempts_preserved(tmp_path):
+    """Transient judge failures are retried on the next run (still
+    reported as generation_failure until repaired) and every generation
+    attempt keeps its own raw run directory."""
+    from dci1v3.generation.synthetic import synthetic_judge
+    items = [_wording_pool_item(i, 1, 1, "pass") for i in range(4)]
+    fail_ids = {"judge:live-00", "judge:live-01"}
+
+    def flaky(run_dir, plan, rows):
+        outcome = synthetic_judge(run_dir, plan, rows, disagree_rate=0.0)
+        for row in outcome["rows"]:
+            if row["row_id"] in fail_ids:
+                row["outcome"] = "ENGINE_ERROR"
+        return outcome
+
+    phase_dir = tmp_path / "dev"
+    config = autorater.load_config()
+    first = autorater.run_autorater(phase_dir, items, config=config,
+                                    phase="development",
+                                    generate_fn=flaky, environment={})
+    statuses = {j["item_id"]: j["status"] for j in first}
+    assert statuses["live-00"] == "generation_failure"
+    assert statuses["live-02"] == "valid"
+    assert (phase_dir / "backend_runs" / "attempt0").exists()
+
+    second = autorater.run_autorater(
+        phase_dir, items, config=config, phase="development",
+        generate_fn=lambda d, p, r: synthetic_judge(d, p, r,
+                                                    disagree_rate=0.0),
+        environment={})
+    assert all(j["status"] == "valid" for j in second)
+    assert (phase_dir / "backend_runs" / "attempt1").exists()
+    ids = [r["row_id"] for r in
+           autorater.CacheWriter(phase_dir / "judge_rows.jsonl").rows()]
+    assert len(ids) == len(set(ids)) == 4        # append-once, repaired
