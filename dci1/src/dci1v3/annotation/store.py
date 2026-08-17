@@ -1,12 +1,14 @@
 """Annotation workspace: blinded sessions, autosave, immutable
 finalisation, and export to the exact Gate 1 annotations format.
 
-One session = one (model, annotator) pair over one registered packet.
-Sessions are independent files; an annotator-facing payload contains only
-the constraint text, the response text, and that annotator's own saved
-work — never item identities, verifier verdicts, class structure, or other
-annotators' labels. Display order is a per-annotator seeded shuffle, so
-the packet's class-ordered layout cannot leak.
+Under amendment A1 (DECISIONS_V3.md), each model packet is annotated by
+exactly one independent human annotator. One session = one (model,
+annotator) pair over one registered packet; a second annotator cannot open
+a session for a model that already has one. The annotator-facing payload
+contains only the constraint text, the response text, and that annotator's
+own saved work — never item identities, verifier verdicts, class
+structure, or sampling status. Display order is a seeded shuffle, so the
+packet's class-ordered layout cannot leak.
 
 The scientific label vocabulary is the registered binary one
 (``pass`` / ``fail``; shown as SATISFIES / VIOLATES). Flags, sequence
@@ -75,6 +77,14 @@ class AnnotatorSession:
         self.packet_hash = sha_text(self.packet_path.read_text())
         self.dir = Path(workspace) / model
         self.path = self.dir / f"{annotator}.json"
+        others = [p.stem for p in _session_files(workspace, model)
+                  if p != self.path]
+        if others and not self.path.exists():
+            raise AnnotationWorkflowError(
+                f"model {model} already has annotator {others[0]!r}; the "
+                f"amended Gate 1 uses exactly one independent annotator "
+                f"per model (remove the existing workspace session to "
+                f"reassign)")
         self._state = self._load_or_create()
         if self._state["packet_hash"] != self.packet_hash:
             raise AnnotationWorkflowError(
@@ -245,13 +255,14 @@ def _locked_sessions(workspace: Path, model: str, packet_path: Path
                  if s["finalized"] and s["packet_hash"] == packet_hash]
     if len(finalized) < GATE1_ANNOTATORS:
         raise AnnotationWorkflowError(
-            f"{len(finalized)}/{GATE1_ANNOTATORS} annotators finalised; "
-            f"agreement and verifier diagnostics stay hidden until every "
-            f"required label is locked")
+            f"{len(finalized)}/{GATE1_ANNOTATORS} annotator(s) finalised; "
+            f"verifier diagnostics stay hidden until the independent "
+            f"annotator's labels are locked")
     if len(finalized) > GATE1_ANNOTATORS:
         raise AnnotationWorkflowError(
             f"{len(finalized)} finalised sessions exceed the registered "
-            f"{GATE1_ANNOTATORS}; remove the surplus before export")
+            f"{GATE1_ANNOTATORS} (amendment A1: one independent annotator "
+            f"per model); remove the surplus before export")
     return sorted(finalized, key=lambda s: s["annotator"])
 
 
@@ -283,36 +294,34 @@ def export_annotations(workspace: Path, model: str, packet_path: Path,
 
 def diagnostics(workspace: Path, model: str, packet_path: Path
                 ) -> dict[str, Any]:
-    """Post-lock only: agreement, verifier comparison, disagreements."""
+    """Post-lock only: human-to-verifier disagreement from the single
+    independent annotator's labels (amendment A1), per verifier class,
+    with the registered one-sided 95% Wilson upper bound previewed."""
+    from dci1v3.analysis.stats import wilson_upper_one_sided
     from dci1v3.verifiers.target import s0_count
 
     packet = load_packet(packet_path)
     sessions = _locked_sessions(workspace, model, packet_path)
-    names = [s["annotator"] for s in sessions]
-    pair_counts = {(a, b): 0 for i, a in enumerate(names)
-                   for b in names[i + 1:]}
-    majority_vs_verifier = {"pass": {"items": 0, "disagreements": 0},
-                            "fail": {"items": 0, "disagreements": 0}}
+    annotator = sessions[0]
+    human_vs_verifier = {"pass": {"items": 0, "disagreements": 0},
+                         "fail": {"items": 0, "disagreements": 0}}
     disagreement_items = 0
     for row in packet:
-        labels = {s["annotator"]: s["labels"][row["item_id"]]["label"]
-                  for s in sessions}
-        for (a, b) in pair_counts:
-            pair_counts[(a, b)] += labels[a] == labels[b]
-        votes = sum(1 for v in labels.values() if v == "pass")
-        majority = "pass" if votes * 2 > len(labels) else "fail"
+        human = annotator["labels"][row["item_id"]]["label"]
         verifier = ("pass" if s0_count(row["response_text"]) == row["n"]
                     else "fail")
-        majority_vs_verifier[verifier]["items"] += 1
-        if majority != verifier:
-            majority_vs_verifier[verifier]["disagreements"] += 1
+        human_vs_verifier[verifier]["items"] += 1
+        if human != verifier:
+            human_vs_verifier[verifier]["disagreements"] += 1
             disagreement_items += 1
-    total = len(packet)
+    for cls, cell in human_vs_verifier.items():
+        cell["wilson_upper"] = (
+            wilson_upper_one_sided(cell["disagreements"], cell["items"])
+            if cell["items"] else None)
     return {
-        "model": model, "items": total, "annotators": names,
-        "pairwise_agreement": {f"{a}|{b}": count / total
-                               for (a, b), count in pair_counts.items()},
-        "majority_vs_verifier_by_class": majority_vs_verifier,
-        "majority_verifier_disagreements": disagreement_items,
+        "model": model, "items": len(packet),
+        "annotator": annotator["annotator"],
+        "human_vs_verifier_by_class": human_vs_verifier,
+        "human_verifier_disagreements": disagreement_items,
         "face_validity": [bool(s["face_validity"]) for s in sessions],
     }

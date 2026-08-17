@@ -334,19 +334,22 @@ signed record → transition log. There is no dirty-tree bypass.
 ## Gate 1 reviewer GUI (v3)
 
 Human annotation runs through a dependency-free local web app
-(`dci1v3/annotation/`, decision V20). One blinded session per annotator:
+(`dci1v3/annotation/`, decision V20 as amended by A1). Under amendment A1,
+**exactly one independent annotator** covers each model packet — Gate 1
+measures human-to-verifier disagreement from one independent judgment per
+item, with the registered Wilson bound and thresholds unchanged:
 
     $PY -m dci1v3.annotation.server --model gemma-3n-e2b-it --annotator A1
     # keyboard-first: 1 = SATISFIES, 2 = VIOLATES, F = flag; autosaves.
 
-Annotators see only the registered constraint text and the unmodified
-response, in a per-annotator shuffled order; item identities, verifier
-verdicts, class structure, and other annotators' labels are structurally
-absent. Finalisation requires a binary label on every item plus the §10
-face-validity judgment, and is immutable. The researcher dashboard
-(`--dashboard`) shows completion status only until all three annotators
-lock, then reveals agreement/verifier diagnostics and exports the exact
-file for:
+The annotator sees only the registered constraint text and the unmodified
+response, in a seeded shuffled order; item identities, verifier verdicts,
+class structure, and sampling status are structurally absent. Finalisation
+requires a binary label on every item plus the §10 face-validity judgment,
+and is immutable. The researcher dashboard (`--dashboard`) shows
+completion status only until that single annotator finalises, then
+reveals human-to-verifier diagnostics and exports the exact file
+(`{item_id: ["pass"|"fail"], "face_validity": [bool]}`) for:
 
     $PY -m dci1v3.cli gate1 --model <model> --annotations \
         annotations/<model>/gate1_annotations.json

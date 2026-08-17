@@ -224,3 +224,19 @@ admitted families), Gate 2B (≥3 composed-valid families) — each with its
 registered terminal status if failed. Nothing else blocks: the apparatus,
 custody, provenance, and analysis machinery are complete and exercised
 end to end.
+
+---
+
+## Addendum (2026-08-17): amendment A1 — single-annotator Gate 1
+
+After this report was written and **before any human annotation began**,
+the researcher amended Gate 1 from three annotators to **one independent
+human annotator per model** (DECISIONS_V3.md, Amendments, A1). Gate 1 now
+measures human-to-verifier disagreement from one independent judgment per
+item; the sampled packets, verifier-class stratification, one-sided 95%
+Wilson bound, ≤ 0.10 threshold, exhausted-class rules, and all other
+registered rules are unchanged. The annotations contract is
+`{item_id: ["pass"|"fail"], "face_validity": [bool]}` (length exactly 1,
+enforced). References to "three annotators" elsewhere in this report
+describe the pre-amendment design and are retained as the historical
+record.
