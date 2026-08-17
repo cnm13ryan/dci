@@ -94,20 +94,21 @@ def _reservoir(job: Job) -> list[dict[str, Any]]:
         raise ProtocolError("Gate 1 requires the pre-screen cache")
     for row in cache_rows(prescreen_cache):
         if row["constraint_id"] is None:
-            items.append(_item(row))
+            items.append(_item(row, source="prescreen"))
     validation_dir = job.tree.data_dir("gate1") / "validation"
     if (validation_dir / "cache.jsonl").exists():
         for row in cache_rows(validation_dir):
-            items.append(_item(row))
+            items.append(_item(row, source="validation"))
     return items
 
 
-def _item(row: dict[str, Any]) -> dict[str, Any]:
+def _item(row: dict[str, Any], *, source: str) -> dict[str, Any]:
     return {"item_id": row["row_id"],
             "response_text": row["raw_response"],
             "response_hash": row["response_content_hash"],
             "constraint_text": target_wordings(row["n"])[0],
             "n": row["n"],
+            "source": source,          # descriptive provenance only
             "verifier_class": ("pass" if row["verdicts"]["s0"] == row["n"]
                                else "fail")}
 
@@ -352,11 +353,22 @@ def gate1_dev(job: Job) -> dict[str, Any]:
         stage_dir / "autorater" / "dev", dev_items, config=config,
         phase="development", generate_fn=judge_generate_fn(job),
         environment=job.environment)
+    # Development-only stability check: the identical items judged a
+    # second time under the identical configuration. Reported, never
+    # averaged, never voted; the primary run stays the dev evidence.
+    repeat = autorater.run_autorater(
+        stage_dir / "autorater" / "dev_repeat", dev_items, config=config,
+        phase="development-stability",
+        generate_fn=judge_generate_fn(job), environment=job.environment)
+    stability = autorater.stability_comparison(judgments, repeat)
+    items_by_id = {i["item_id"]: i for i in dev_items}
     report = autorater.judgment_report(judgments)
-    listing = autorater.disagreement_listing(
-        {i["item_id"]: i for i in dev_items}, judgments)
+    listing = autorater.disagreement_listing(items_by_id, judgments)
+    breakdown = autorater.disagreement_breakdown(items_by_id, judgments)
     fs.write_json(stage_dir / "autorater" / "dev" / "report.json",
-                  {"report": report, "disagreements": listing})
+                  {"report": report, "disagreements": listing,
+                   "disagreement_breakdown": breakdown,
+                   "stability": stability})
 
     body = {
         "phase": "verifier-development",
@@ -369,6 +381,8 @@ def gate1_dev(job: Job) -> dict[str, Any]:
         "development_items": len(dev_items),
         "autorater_config_hash": config["config_hash"],
         "development_report": report,
+        "disagreement_breakdown": breakdown,
+        "stability": stability,
         "disagreements_to_inspect": len(listing),
         "verifier_sources": autorater.verifier_source_state(),
         "not_human_validation": True,
@@ -465,14 +479,120 @@ def verifier_freeze(context, *, autorater_config: str | None = None
         "development_runs": {"included": included, "excluded": excluded},
         "autorater_config": {k: config[k] for k in
                              ("schema_version", "judge_model_key",
-                              "prompt_version", "decoding",
-                              "config_hash", "prompt_hash")},
+                              "judge_model_id", "judge_revision",
+                              "backend", "prompt_version",
+                              "parser_version", "label_mapping",
+                              "decoding", "config_hash", "prompt_hash")},
     }
     record = sign_payload(payload, context.signing_key_path)
     fs.write_json_once(manifest_path, record)
     store.replicate(context.study_root, context.durable_study_root)
     return {"frozen": True, "record_hash": record["record_hash"],
             "producing_commit": commit}
+
+
+def gate1_signoff(context, *, phase: str,
+                  notes_path: str | None = None,
+                  autorater_config: str | None = None) -> dict[str, Any]:
+    """The cross-model inspection summary (study-level, re-runnable while
+    inspection iterates).
+
+    ``development``: produced BEFORE the verifier freeze — configuration
+    and judge revision, realised pool/split hashes, coverage and
+    invalid-output summaries, the four contingency tables, directional
+    disagreement patterns, repeated-run stability, and the machine check
+    that no calibration item has been exposed. ``calibration``: produced
+    before approval — the four contingency tables, coverage and invalid
+    rates, directional disagreements, identification intervals,
+    descriptive concentrations, and the complete case appendix. The
+    researcher's inspection record (disagreements inspected and
+    classified, verifier changes with their regression tests, remaining
+    known limitations) attaches through ``--notes``. Documentation for
+    the approval decision — it decides nothing itself."""
+    from dci1v3.engine import store
+    from dci1v3.engine.artifacts import artifact_states
+    from dci1v3.engine.paths import model_tree
+    from dci1v3.engine.transitions import terminal_status
+    from dci1v3.models.registry import MODEL_KEYS
+
+    if phase not in ("development", "calibration"):
+        raise ProtocolError(f"unknown sign-off phase {phase!r}")
+    config = autorater.load_config(
+        Path(autorater_config) if autorater_config else None)
+    notes = fs.read_json(Path(notes_path)) if notes_path else None
+
+    models: dict[str, dict[str, Any]] = {}
+    excluded: dict[str, str] = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        status = terminal_status(tree)
+        if status is not None:
+            excluded[model_key] = f"terminal: {status}"
+            continue
+        if phase == "development":
+            dev_path = tree.root / "gate1_dev.json"
+            if not dev_path.exists():
+                raise ProtocolError(f"no gate1-dev record for {model_key}")
+            dev = fs.read_json(dev_path)
+            if dev["autorater_config_hash"] != config["config_hash"]:
+                raise ProtocolError(
+                    f"{model_key}'s development run used a different "
+                    f"autorater configuration")
+            calibration_rows = (tree.data_dir("gate1") / "autorater"
+                                / "calibration" / "judgments.jsonl")
+            models[model_key] = {
+                "dev_record_hash": sha_file(dev_path),
+                "pool_hash": dev["pool_hash"],
+                "split_hash": dev["split_hash"],
+                "development_items": dev["development_items"],
+                "report": dev["development_report"],
+                "disagreement_breakdown": dev["disagreement_breakdown"],
+                "stability": dev["stability"],
+                "disagreements_to_inspect": dev["disagreements_to_inspect"],
+                "calibration_untouched": (
+                    not calibration_rows.exists()
+                    and artifact_states(tree).get("op:gate1-calibrate")
+                    is None),
+            }
+        else:
+            cal_path = tree.root / "gate1_calibration.json"
+            if not cal_path.exists():
+                raise ProtocolError(
+                    f"no gate1-calibrate record for {model_key}")
+            cal = fs.read_json(cal_path)
+            if cal["autorater_config_hash"] != config["config_hash"]:
+                raise ProtocolError(
+                    f"{model_key}'s calibration used a different "
+                    f"autorater configuration")
+            models[model_key] = {
+                "calibration_record_hash": sha_file(cal_path),
+                "split_hash": cal["split_hash"],
+                "calibration_items": cal["calibration_items"],
+                "report": cal["report"],
+                "disagreement_breakdown": cal["disagreement_breakdown"],
+                "case_appendix": cal["disagreements"],
+            }
+
+    body = {
+        "kind": f"gate1_{phase}_signoff",
+        "study_id": context.study_id,
+        "autorater_config": {k: config[k] for k in
+                             ("schema_version", "judge_model_key",
+                              "judge_model_id", "judge_revision",
+                              "backend", "prompt_version",
+                              "parser_version", "label_mapping",
+                              "decoding", "config_hash", "prompt_hash")},
+        "models": models,
+        "excluded": excluded,
+        "inspection_notes": notes,
+        "not_human_validation": True,
+        "measurement_scope": C.MEASUREMENT_SCOPE,
+    }
+    out_path = context.study_root / f"gate1_{phase}_signoff.json"
+    fs.write_json(out_path, body)
+    store.replicate(context.study_root, context.durable_study_root)
+    return {"written": str(out_path), "models": sorted(models),
+            "excluded": excluded}
 
 
 def _load_verifier_freeze(job: Job) -> dict[str, Any]:
@@ -522,7 +642,10 @@ def gate1_calibrate(job: Job) -> dict[str, Any]:
         calibration_items, config=config, phase="calibration",
         generate_fn=judge_generate_fn(job),
         environment=job.environment)
+    items_by_id = {i["item_id"]: i for i in calibration_items}
     report = autorater.judgment_report(judgments)
+    listing = autorater.disagreement_listing(items_by_id, judgments)
+    breakdown = autorater.disagreement_breakdown(items_by_id, judgments)
 
     body = {
         "phase": "autorater-calibration",
@@ -532,6 +655,8 @@ def gate1_calibrate(job: Job) -> dict[str, Any]:
         "autorater_config_hash": config["config_hash"],
         "verifier_freeze_hash": sha_obj(manifest),
         "report": report,
+        "disagreements": listing,
+        "disagreement_breakdown": breakdown,
         "approval": "pending explicit researcher approval "
                     "(`gate1 --approve-autorater-calibration`)",
         "not_human_validation": True,

@@ -60,6 +60,7 @@ def load_plan(path: str | Path) -> tuple[EnginePlan, SamplingPlan, RunPlan,
         top_k=int(top_k) if top_k and int(top_k) > 0 else -1,
         max_tokens=budget,
         answer_tokens=answer_tokens,
+        skip_special_tokens=bool(raw.get("skip_special_tokens", True)),
     )
 
     card = get_or_default(raw["model_id"])
