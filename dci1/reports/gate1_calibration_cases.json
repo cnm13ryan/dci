@@ -1,0 +1,1443 @@
+{
+ "kind": "gate1_calibration_inspection_material",
+ "note": "One-shot held-out calibration under the frozen verifier and autorater-config/4. Descriptive only; no acceptance threshold; never human validation or ground truth. Approval is a researcher decision.",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "calibration_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 218,
+     "lower": 0.8861788617886179,
+     "upper": 0.9512195121951219
+    },
+    "autorater_marginal": {
+     "fail": 74,
+     "pass": 156
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 73,
+     "verifier_fail_autorater_pass": 11,
+     "verifier_pass_autorater_fail": 1,
+     "verifier_pass_autorater_pass": 145
+    },
+    "coverage": 0.9349593495934959,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 11,
+     "verifier_pass_autorater_fail": 1
+    },
+    "disagreement_rate": 0.05217391304347826,
+    "disagreements": 12,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 16,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 230,
+    "verifier_marginal": {
+     "fail": 96,
+     "pass": 150
+    }
+   },
+   "disagreement_breakdown": {
+    "by_n": {
+     "2": 1,
+     "3": 1,
+     "4": 1,
+     "5": 3,
+     "6": 1,
+     "7": 2,
+     "8": 3
+    },
+    "by_source": {
+     "prescreen": 5,
+     "validation": 7
+    }
+   },
+   "invalid_breakdown": {
+    "by_n": {
+     "2": 1,
+     "5": 3,
+     "7": 3,
+     "8": 9
+    },
+    "by_source": {
+     "gate1_validation": 14,
+     "prescreen": 2
+    }
+   },
+   "verifier_freeze_hash": "334bb2b18079c1eecaa0292a741f27ae962609c40961f2ddbbdf949d0017af52",
+   "autorater_config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2",
+   "split_hash": "f9f4a593fc97919422034ab35f3553d44667d77477be4c6eeddcc1c138bcbdde",
+   "calibration_items": 246,
+   "wall_seconds_judge_pass": 953,
+   "gen_tokens": {
+    "min": 129,
+    "median": 702.0,
+    "p90": 1760,
+    "max": 2048,
+    "mean": 849.9,
+    "total": 209072
+   },
+   "development_high_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 218,
+     "lower": 0.8861788617886179,
+     "upper": 0.967479674796748
+    },
+    "autorater_marginal": {
+     "fail": 77,
+     "pass": 149
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 75,
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 2,
+     "verifier_pass_autorater_pass": 143
+    },
+    "coverage": 0.9186991869918699,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 2
+    },
+    "disagreement_rate": 0.035398230088495575,
+    "disagreements": 8,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 20,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 226,
+    "verifier_marginal": {
+     "fail": 96,
+     "pass": 150
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 9,
+    "autorater error — severe miscount (claimed 8, actual 10)": 1,
+    "autorater error — miscount (no explicit count parsed)": 1,
+    "autorater error — over-count by one": 1
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "8 occurrences",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold, while, *however*, inadvertently warming the kitchen behind it, using the word \"however\" exactly eight times:\n\nThe fundamental principle behind a refrigerator's cooling process involves a refrigerant circulating through a closed system.  The refrigerant absorbs heat from the inside of the refrigerator, making the interior cold. *However*, this heat isn't simply removed; it's transferred to the surrounding environment.  The refrigerator uses a compressor to increase the pressure and temperature of the refrigerant. *However*, this high-pressure, high-temperature refrigerant then releases its heat outside the refrigerator through the condenser coils on the back or bottom.  *However*, the heat isn't *completely* dissipated.  A portion of that heat inevitably radiates into the kitchen. *However*, the refrigerator's efficiency is designed to minimize this heat transfer.  The evaporator coils, located inside the refrigerator, absorb heat from the food and drinks. *However*, the temperature difference between the inside and the kitchen isn't perfectly uniform.  *However*, the kitchen's ambient temperature is generally warmer than the refrigerator's interior, leading to some heat exchange.  *However*, the overall effect is a cooling of the refrigerator's interior, even though the kitchen experiences a degree of warming due to this heat transfer. The refrigerator is working hard to maintain a cold environment inside, but it's not entirely isolated from the surrounding heat.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:1",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 10,
+     "s0_independent": 10,
+     "word_boundary_regex_count": 10,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — severe miscount (claimed 8, actual 10)",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, let's break down how a refrigerator keeps its inside cold, and how it inadvertently warms the kitchen, using the word \"however\" at least eight times. It's a bit of a complex process, so here's the explanation, with \"however\" sprinkled in strategically.\n\nThe fundamental principle behind a refrigerator's cooling is a cycle involving a refrigerant. This refrigerant is a special fluid that changes state – from a liquid to a gas and back again – to absorb and release heat. **However**, the refrigerator doesn't cool the kitchen directly. Instead, it's a closed system.\n\nThe process begins with the compressor, which compresses the refrigerant gas, increasing its pressure and temperature. **However**, this high-pressure, hot gas then flows through the condenser coils, usually located on the back or bottom of the refrigerator. Here, the heat is released into the kitchen, warming the surrounding air. **However**, this heat transfer is a byproduct of the cooling process itself.\n\nNext, the now-cooled refrigerant gas passes through an expansion valve. This valve reduces the pressure of the gas, causing it to cool significantly. **However**, this colder, low-pressure gas then flows into the evaporator coils inside the refrigerator. The evaporator coils are surrounded by a cold surface, and as the refrigerant absorbs heat from the inside of the fridge, it turns back into a liquid. **However**, this absorption of heat means the interior of the fridge cools down.\n\nThe liquid refrigerant then flows back to the compressor, completing the cycle. **However**, the kitchen is still getting warmer because the compressor is constantly releasing heat. The refrigerator essentially acts as a heat pump; it moves heat *from* the inside *to* the outside. **However**, the heat is released into the kitchen during the process. **However**, the overall effect is that the inside of the refrigerator is kept cold, while the kitchen experiences a small temperature increase. The efficiency of this heat transfer is key; a well-insulated refrigerator minimizes the heat leak into the kitchen, making the process more efficient.\n\nIn short, while the refrigerator cools its interior, it’s not directly cooling the kitchen; it's transferring heat from inside the fridge to the kitchen, a process that's unavoidable and, unfortunately, contributes to the kitchen warming up.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why wet roads and damp fabric appear darker than dry ones, using the word \"however\" at least five times:\n\nThe reason wet surfaces appear darker than dry ones boils down to how light interacts with them. Dry surfaces reflect light more diffusely, scattering it in many directions. This scattered light appears brighter to our eyes. **However**, when a surface is wet, the water fills in the microscopic irregularities and pores. This smooth surface reflects light in a more specular manner – meaning light bounces off in a more concentrated direction.\n\n**However**, this concentrated reflection tends to absorb more of the light that hits it, especially the wavelengths of light that are more visible to the human eye (like blue and green). The wavelengths that are absorbed are essentially \"taken in\" by the water molecules and the surface itself. **However**, the remaining reflected light is often in the redder portions of the spectrum, which we perceive as darker. \n\nFurthermore, the water itself can absorb some light, particularly in the longer wavelengths. **However**, the overall effect is a reduction in the amount of light reflected, leading to a darker appearance.  **However**, it's important to note that the exact darkness depends on the type of material, the depth of the water, and the angle of the light source. \n\nIn essence, the change in light reflection due to the presence of water fundamentally alters the color we perceive, making wet surfaces appear darker than their dry counterparts.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Six uses of however.",
+     "judge_claimed_count": null,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, let's explore why toasting bread transforms both its texture and flavor, and I'll make sure to use the word \"however\" at least six times.\n\nToasting bread is a fascinating process that fundamentally alters its structure and taste. The primary change begins with the application of heat.  Initially, the bread's surface undergoes a rapid dehydration.  This is **however** a crucial step because moisture is the key to the bread's soft, airy interior.  As the water evaporates, the bread's cell walls begin to collapse. \n\nThis collapse leads to a significant textural change. The once soft and pliable crumb becomes firmer and more rigid. The crust, exposed to the direct heat, develops a crisp, crunchy exterior. **However**, the extent of this crispness depends on the degree of toasting.  A light toast will have a subtle textural difference, while a darker toast will develop a more pronounced, almost brittle, crust. \n\nFlavor-wise, the transformation is equally complex.  The Maillard reaction, a chemical reaction between amino acids and reducing sugars, is a major player here.  This reaction occurs at high temperatures and is responsible for the browning and the characteristic nutty, savory flavors we associate with toasted bread.  **However**, this reaction isn't the only contributor. Caramelization of sugars also plays a role, adding sweetness and depth.\n\nFurthermore, the heat causes volatile compounds within the bread to be released. These compounds contribute to the aroma and flavor profile.  **However**, the specific compounds released depend on the type of bread and the toasting time.  Different breads will have different flavor nuances. \n\nIt’s important to note that the Maillard reaction and caramelization are highly temperature-dependent.  Therefore, even small variations in the toasting process can result in noticeable differences in both texture and flavor.  **However**, it's also worth noting that the initial softness of the bread's crumb is vital; a stale bread won't toast well and won't develop the desired textures or flavors.\n\nUltimately, toasting bread isn't just about making it crispier; it's about unlocking a whole new dimension of flavor and texture.  **However**, the process is a delicate balance of physical and chemical changes, making it a truly rewarding culinary endeavor.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:4:0",
+     "n": 4,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word however appears exactly four times.",
+     "judge_claimed_count": 4,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, incorporating the word \"however\" exactly four times.\n\nThe difference in sound arises from several key factors. Firstly, when a singer harmonizes, they're not simply repeating the same melody. They're adding complementary vocal lines, often differing in pitch, rhythm, and phrasing. This creates a richer, more complex texture. **However**, the harmonies are built upon a specific musical relationship, a conversation between voices that adds depth and interest.\n\nSecondly, the nuances of each singer's individual vocal timbre – their unique tone, vibrato, and style – are distinct. When two singers harmonize, these individual qualities blend together, creating a unique sonic tapestry. **However**, if the singer is recorded twice, the second recording is essentially a duplicate of the first, lacking the individual personality and dynamic variations inherent in a live performance.\n\nFurthermore, the way the harmonies are *performed* is crucial. A singer might slightly alter their pitch, add ornamentation, or subtly change their phrasing while harmonizing. These small differences contribute significantly to the overall sonic character. **However**, in a double recording, any slight variations are lost, resulting in a more uniform and less interesting sound.\n\nFinally, the arrangement and production play a role. The way the harmonies are layered and processed in a recording can further alter the final sound. **However**, even with careful production, the inherent differences between the two performances will still be present, offering a unique quality absent in a single, duplicated recording. Therefore, the difference is a complex interplay of vocal performance, individual vocal qualities, and the recording process itself.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-39:solo:A:7:0",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Exactly 7 occurrences.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a breakdown of what happens to nutrients when a whale dies and sinks to the deep sea floor, incorporating the word \"however\" at least seven times.\n\nWhen a whale dies and sinks to the deep sea floor, the initial reaction is decomposition. Bacteria and other microorganisms begin to break down the whale's tissues, releasing a significant amount of organic matter. This process is incredibly slow, taking decades or even centuries, *however*, the sheer mass of the whale creates a substantial food source for these decomposers. The breakdown process releases nutrients like nitrogen, phosphorus, and carbon back into the surrounding water. \n\nThe deep sea is a nutrient-poor environment, *however*, the whale's decomposition acts as a major fertilizer. This influx of nutrients fuels the growth of microbial communities, which in turn support larger organisms like bacteria, archaea, and eventually, other invertebrates. The released nutrients can also stimulate the growth of chemosynthetic bacteria, which thrive around hydrothermal vents and cold seeps, forming the base of unique ecosystems. \n\nThe sinking whale also physically alters the seafloor, creating a new habitat. This can affect sediment composition and water circulation patterns, *however*, the long-term impact is complex and not fully understood. The nutrients released are not simply lost; they are recycled within the deep-sea ecosystem. \n\nThe organic matter from the whale eventually becomes incorporated into the sediment, forming a layer of organic-rich material. This layer can be a crucial source of energy for organisms that live in the deep sea, *however*, it also provides a reservoir for long-term carbon sequestration, potentially influencing global carbon cycles. \n\nThe decomposition process isn't uniform; different parts of the whale decompose at different rates. Soft tissues decompose faster, *however*, the bones and other hard parts can persist for a very long time, acting as a long-term source of nutrients and a habitat for specialized organisms. \n\nIt's important to note that the deep sea is a very isolated environment, *however*, the influx of nutrients from the whale can have cascading effects throughout the ecosystem, influencing food webs and overall biodiversity. \n\nTherefore, while the initial decomposition might seem like a loss, the nutrients ultimately become part of the deep-sea ecosystem, contributing to its unique and often surprising biodiversity, *however*, the process is a slow and intricate one.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "7 occurrences of \"however\".",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response addressing how a new manager can earn trust from a team that preferred their predecessor, incorporating the word \"however\" exactly seven times.\n\nStepping into a new management role is always a challenge, especially when the team has a strong affinity for the previous leader. Earning trust takes time and consistent effort. **However**, the first step is to acknowledge the past. Acknowledging the predecessor's contributions and recognizing the team's positive experiences working with them demonstrates respect and avoids immediate dismissal. This doesn't mean you're apologizing for taking over; it's about understanding the existing dynamics.\n\nNext, focus on demonstrating competence and a clear vision. Clearly articulate your goals and how they align with the team's objectives. **However**, be prepared to listen to the team's concerns and incorporate their input where possible.  Don't immediately impose your own style; build upon what's already working.  Show genuine interest in understanding their perspectives, even if they differ from your own.\n\nCommunication is key.  Be transparent about your approach, your expectations, and your decision-making process.  **However**, avoid over-communicating to the point of being overwhelming. Find a balance.  Regular one-on-one meetings are invaluable for building rapport and addressing individual needs. \n\nIt's crucial to be reliable and follow through on commitments.  Deliver on promises, meet deadlines, and be someone the team can count on. **However**, recognize that building trust is a continuous process, not a one-time event.  There will be bumps in the road. \n\nDemonstrate empathy and a willingness to support team members.  Advocate for them, celebrate their successes, and help them overcome challenges.  **However**, don't shy away from difficult conversations or tough decisions.  Authenticity is paramount; be yourself and let your genuine care for the team shine through.\n\nFinally, remember that trust isn't earned overnight. It takes consistent actions, genuine care, and a demonstrated commitment to the team's well-being. **However**, even with initial resistance, a proactive and empathetic approach can gradually rebuild and strengthen relationships. **However,** it's important to be patient.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word appears 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, incorporating the word \"however\" exactly 5 times.\n\nWhen two singers harmonize, the resulting sound is fundamentally different because of the interplay of multiple vocal parts. One singer provides the lead melody, while the other(s) offer supporting harmonies, often differing in pitch, rhythm, and timbre. This creates a richer, more complex texture. **However**, the individual vocal qualities of each singer are still present and contribute to the overall sound.\n\nIf a single singer is recorded twice, the resulting audio is essentially a repetition of the same vocal performance. **However**, the subtle nuances of the original performance – slight variations in breath control, phrasing, and vocal color – are lost. The second recording lacks the dynamic and expressive qualities that made the first recording unique. **However**, the repetition can sometimes be used creatively to create interesting effects, like layering or doubling vocals.\n\nThe difference boils down to the intentionality of the two approaches. Harmonies are a deliberate musical construction, adding layers and complexity.  The second recording is simply a duplication, lacking the intentional layering and interplay.  **However**, skilled production techniques can sometimes manipulate a duplicated vocal track to create a semblance of harmony, but it rarely replicates the organic feel of a true vocal harmony.  **However**, even with clever manipulation, the fundamental difference remains: the added richness and complexity of the original harmony versus the simple, repeated vocal.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:technology-06:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word however appears exactly twice.",
+     "judge_claimed_count": 2,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Recommendation systems employ a variety of techniques to predict what a user might like next. The core principle is to identify patterns in user behavior and item characteristics. These patterns are then used to generate a ranked list of items the user might find relevant.\n\nThere are several common approaches:\n\n*   **Collaborative Filtering:** This method analyzes the behavior of users with similar tastes. If users who liked item A also liked item B, and you are a user who liked item A, the system will recommend item B. This can be further broken down into user-based (finding users similar to you) and item-based (finding items similar to what you've liked).\n\n*   **Content-Based Filtering:** This approach analyzes the attributes of items themselves. If you've liked items with specific keywords, genres, or authors, the system will recommend items with similar attributes.\n\n*   **Hybrid Approaches:** Many systems combine collaborative and content-based filtering to leverage the strengths of both. This often results in more accurate and diverse recommendations.\n\n*   **Popularity-Based:** This is the simplest approach, recommending the most popular items. However, it's less personalized.\n\n*   **Contextual Filtering:** This considers the current context, such as the time of day, location, or device being used.\n\nThe system uses various algorithms to score items and rank them. These algorithms can range from simple mathematical formulas to complex machine learning models like neural networks. The system constantly learns and adapts based on user feedback (e.g., clicks, purchases, ratings) to improve its recommendations over time. **However**, the effectiveness of these systems heavily relies on the quality and quantity of available data.  It's important to remember that these systems are not perfect and can sometimes make inaccurate suggestions. **However**, they are continuously improving with advancements in machine learning and data science.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:technology-09:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "8 occurrences",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response explaining how a small coding mistake can lead to a large outage, incorporating the word \"however\" at least eight times.  It's designed to be comprehensive and explain the cascading effect.\n\nA seemingly minor coding error – a misplaced semicolon, a logic flaw in a conditional statement, or a subtle bug in data validation – can, **however**, have devastating consequences in a complex software system. It’s a common truth in the world of software development that the devil is often in the details.  Think of it like a single loose brick in a carefully constructed wall; it might not seem significant at first.  However, that loose brick can eventually cause the whole structure to crumble.\n\nThe problem often arises when these small, isolated errors are integrated into a large, interconnected system.  The system is built with multiple layers, dependencies, and intricate workflows.  **However**, the impact of a single error can ripple through these layers, triggering unexpected behavior. For example, a simple database query error might cause a critical process to fail, leading to cascading failures across the entire application.\n\nConsider an e-commerce website. A small bug in the inventory management code, **however**, could prevent orders from being processed correctly.  This might seem like a localized issue, but it could lead to a complete shutdown of the order processing system, impacting thousands of customers.  The website might become inaccessible, and the business could suffer significant financial losses.  **However**, the fix might require significant effort, potentially involving extensive debugging and code refactoring.\n\nFurthermore, the error could trigger security vulnerabilities. A small logic flaw in authentication could allow unauthorized access to sensitive data.  **However**, a successful exploit could result in a major data breach, damaging the company's reputation and leading to legal repercussions. The consequences, **however**, extend far beyond just a system outage.\n\nThe complexity of modern systems makes it difficult to fully test all possible scenarios.  **However**, even with extensive testing, subtle bugs can slip through, especially in complex integrations.  The sheer volume of code and the constant changes that occur in a dynamic environment make it nearly impossible to catch every single potential problem.  Therefore, a seemingly insignificant coding error can snowball into a full-blown outage.  It’s a sobering reminder that meticulous attention to detail and rigorous testing are paramount, even when dealing with seemingly trivial lines of code.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word appears three times.",
+     "judge_claimed_count": 3,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a breakdown of how a new manager can earn trust from a team that preferred their predecessor, incorporating the word \"however\" exactly three times:\n\nIt's a delicate situation, and earning trust takes time and consistent effort. The first step is to **demonstrate competence and a clear vision.**  Show that you understand the team's work, the challenges they face, and the goals the organization is pursuing.  This involves actively listening to the team, asking questions, and seeking their input on how to best achieve those goals.  Be transparent about your leadership style and how you plan to operate.  **However,** avoid directly criticizing the previous manager.  Focus on the future and how *you* intend to contribute to the team's success.\n\nNext, focus on **building relationships**.  Get to know individual team members – their strengths, their career aspirations, and their concerns.  Regular one-on-one meetings are crucial.  Show genuine interest in their well-being and professional development.  Be approachable and available.  **However,** avoid being overly familiar or intrusive; maintain a professional boundary.\n\nFinally, **consistently follow through on commitments.**  If you say you'll do something, do it.  This builds reliability and demonstrates that you are dependable.  It's important to be empathetic and acknowledge the team's past experiences.  **However,** be prepared to explain any changes in approach or priorities, and clearly articulate *why* those changes are necessary. It takes time, but building trust is an ongoing process.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-48:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Six times used.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Many teams opt for short, daily meetings instead of long weekly ones for several compelling reasons. Primarily, it fosters a sense of immediacy and allows for quicker problem-solving. **However**, a long weekly meeting can easily become a time sink, filled with updates that could be handled more efficiently elsewhere. Short daily stand-ups, often lasting 15-20 minutes, keep everyone focused on current priorities and roadblocks. \n\nFurthermore, these shorter meetings facilitate better communication and collaboration. **However**, they also encourage a more agile and responsive work environment.  It's easier to quickly address urgent issues and adjust plans when everyone is regularly connected. \n\nOf course, there are potential drawbacks. **However**, the constant interruptions can be disruptive to deep work.  Therefore, teams often implement strategies to minimize distractions and ensure meetings remain focused.  **However**, the benefits of increased transparency, faster issue resolution, and improved team alignment generally outweigh the drawbacks.  Ultimately, the shift to daily meetings is a strategic decision designed to enhance productivity and responsiveness, and it is a common practice that many organizations have found successful.  **However**, it's crucial to adapt this approach to the specific needs of the team and project.\n\n\n\n"
+    }
+   ],
+   "invalid_cases": [
+    {
+     "item_id": "gate1_validation:art-and-design-29:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "d 7. So it's a violation. So answer: VIOLATES. Then second line: \"The word 'however' appears 7 times, not 8.\" That is short. That is correct.\n\nBut we need to check if the text uses \"however\" exactly 8"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:7:1",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "s. The text includes 7 times in the body. But the quoted \"however\" might be considered a separate usage. But the rule might be that the text uses the word \"however\" exactly 7 times. The text includes "
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ts. The effect is a fascinating interplay of light and how it interacts with the surface. Here's a detailed explanation, ensuring the word \"however\" appears exactly eight times.\"\n\nYes, that is part of"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:1",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ISFIES or VIOLATES. You may add one short reason on the second line.\" So we can do:\n\nSATISFIES\n8 occurrences\n\nYes. That is correct. Let's double-check the count again to be absolutely sure. Let's copy"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "comes.\" -> capital \"However\"\n- \"However, the crust's increased rigidity and dryness contribute to a more satisfying textural experience.\" -> capital \"However\"\n- \"The internal texture, however, remains"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:5:0",
+     "n": 5,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ity.\" That's the fourth.\n\nAlso: \"However, the specific ingredients and techniques used to whip the cream also influence its stability.\" That's the fourth.\n\nAlso: \"However, the specific ingredients and"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "VIOLATES\nThe word however appears only 6 times, not 8.\n\nBut we need to keep the second line short. The instruction: \"You may add one short reason on the second line.\" So we can say \"Only 6 occurrences"
+    },
+    {
+     "item_id": "gate1_validation:history-47:solo:A:8:1",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "times used\". That is short. Or \"8 times used\". That is short. Or \"8 times used\". That is short. Or \"8 times used\". That is short. Or \"8 times used\". That is short. Or \"8 times used\". That is short. Or"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-50:solo:A:5:0",
+     "n": 5,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ng a sense of stability. Slang, however, is inherently ephemer... Wait, the text says: \"Slang, however, is inherently ephemer...\"\n\nBut the actual text: \"Slang, however, is inherently ephemer...\" Wait,"
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:7:0",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "s 7 times.\n\nWe need to check if the second line is required. The instructions: \"Answer with exactly one word on the first line: SATISFIES or VIOLATES. You may add one short reason on the second line.\""
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:5:1",
+     "n": 5,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": " Or \"It uses however 4 times.\" That is short. Or \"It uses however 4 times.\" That is short. Or \"It uses however 4 times.\" That is short. Or \"It uses however 4 times.\" That is short. Or \"It uses however"
+    },
+    {
+     "item_id": "gate1_validation:technology-06:solo:A:7:0",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "s available.\" That's two. \"However, designing and tuning these hybrid systems can be complex.\" That's three. \"However, cleaning and preprocessing this data can be a significant challenge.\" That's four"
+    },
+    {
+     "item_id": "gate1_validation:technology-06:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "icantly improve relevance.\" That's three.\n\n\"Deep learning is increasingly used to create more sophisticated models. These models can learn complex patterns from vast amounts of data. However, training"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-39:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "r other organisms. However, this habitat is often sparse and specialized.\" That's 6.\n\n7. \"However,\" at start of fifth paragraph: \"However, it's crucial to understand that the nutrient cycling is not a"
+    },
+    {
+     "item_id": "prescreen:art-and-design-35:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "d \"however\" appears exactly twice. The text includes \"However\" twice. But we need to check if there are any other occurrences of \"however\" in the text. The text includes \"...\"\n\nWe need to check if the"
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "reason. That should satisfy.\n\nBut we need to double-check that the rule is \"Use the word however exactly 8 times.\" The text uses \"However\" with capital H. The rule says \"Use the word however exactly 8"
+    }
+   ]
+  },
+  "qwen3-4b": {
+   "calibration_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 238,
+     "lower": 0.967479674796748,
+     "upper": 0.9878048780487805
+    },
+    "autorater_marginal": {
+     "fail": 71,
+     "pass": 170
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 68,
+     "verifier_fail_autorater_pass": 0,
+     "verifier_pass_autorater_fail": 3,
+     "verifier_pass_autorater_pass": 170
+    },
+    "coverage": 0.9796747967479674,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 0,
+     "verifier_pass_autorater_fail": 3
+    },
+    "disagreement_rate": 0.012448132780082987,
+    "disagreements": 3,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 5,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 241,
+    "verifier_marginal": {
+     "fail": 72,
+     "pass": 174
+    }
+   },
+   "disagreement_breakdown": {
+    "by_n": {
+     "2": 1,
+     "5": 1,
+     "6": 1
+    },
+    "by_source": {
+     "prescreen": 1,
+     "validation": 2
+    }
+   },
+   "invalid_breakdown": {
+    "by_n": {
+     "4": 1,
+     "6": 1,
+     "7": 2,
+     "8": 1
+    },
+    "by_source": {
+     "gate1_validation": 4,
+     "prescreen": 1
+    }
+   },
+   "verifier_freeze_hash": "334bb2b18079c1eecaa0292a741f27ae962609c40961f2ddbbdf949d0017af52",
+   "autorater_config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2",
+   "split_hash": "7aaa102ca5afa6787afa506f6248976b22c31ee457a0eea3f5896e1cfbb1f60e",
+   "calibration_items": 246,
+   "wall_seconds_judge_pass": 821,
+   "gen_tokens": {
+    "min": 184,
+    "median": 457.0,
+    "p90": 863,
+    "max": 2048,
+    "mean": 558.7,
+    "total": 137446
+   },
+   "development_high_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 238,
+     "lower": 0.967479674796748,
+     "upper": 0.9959349593495935
+    },
+    "autorater_marginal": {
+     "fail": 67,
+     "pass": 172
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 66,
+     "verifier_fail_autorater_pass": 0,
+     "verifier_pass_autorater_fail": 1,
+     "verifier_pass_autorater_pass": 172
+    },
+    "coverage": 0.9715447154471545,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 0,
+     "verifier_pass_autorater_fail": 1
+    },
+    "disagreement_rate": 0.0041841004184100415,
+    "disagreements": 1,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 7,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 239,
+    "verifier_marginal": {
+     "fail": 72,
+     "pass": 174
+    }
+   },
+   "classification_tally": {
+    "autorater error — miscount (no explicit count parsed)": 1,
+    "autorater error — over-count by one": 2
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:food-51:solo:A:2:1",
+     "n": 2,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Only one \"however\" appears.",
+     "judge_claimed_count": null,
+     "s0_count": 2,
+     "s0_independent": 2,
+     "word_boundary_regex_count": 2,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "Whipped cream holds its shape while poured cream does not because the air is trapped in the whipped cream during the whipping process. This air creates a light, fluffy structure that gives it stability. However, poured cream lacks this air and therefore does not hold its shape. \n\nThe word **however** must appear exactly 2 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Six occurrences found.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Whipped cream holds its shape while poured cream does not because it contains air bubbles that are trapped during the whipping process. However, these air bubbles give whipped cream its light, fluffy texture and ability to maintain its form. However, poured cream lacks these air bubbles and therefore does not hold its shape. However, the fat content in whipped cream also contributes to its stability. However, when cream is poured, it does not have the same structure. However, this difference in structure is what allows whipped cream to hold its shape while poured cream does not."
+    },
+    {
+     "item_id": "prescreen:technology-06:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "7 occurrences instead of 6",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Recommendation systems decide what to show a person next by analyzing their past behavior, preferences, and interactions. However, they also consider the popularity of items, the diversity of recommendations, and the context in which the user is engaging. However, they must balance personalization with the need to introduce new content. However, they use collaborative filtering to find similar users and their preferences. However, they rely on machine learning algorithms to predict what a user might like. However, they take into account the time sensitivity of recommendations. However, they ensure that the recommendations are relevant and not just based on random chance."
+    }
+   ],
+   "invalid_cases": [
+    {
+     "item_id": "gate1_validation:food-51:solo:A:6:0",
+     "n": 6,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": ". When cream is whipped, the fat molecules form a stable network that traps air bubbles, allowing the cream to hold its form. However, poured cream lacks this structure and simply flows due to gravity"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:7:1",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "een spaces in cities exacerbates the issue, as plants and trees help cool the environment through evapotranspiration.\" That's 1.\n\n- Sentence 6: \"However, the concentration of people and infrastructure"
+    },
+    {
+     "item_id": "gate1_validation:history-47:solo:A:4:0",
+     "n": 4,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ver\" appears exactly 4 times. But we need to check if the word \"however\" appears exactly 4 times. But we need to check if the word \"however\" appears exactly 4 times. But we need to check if the word \""
+    },
+    {
+     "item_id": "gate1_validation:music-12:solo:A:7:1",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "That is short. Or \"8 times.\" That is short. Or \"8 times.\" That is short. Or \"8 times.\" That is short. Or \"8 times.\" That is short. Or \"8 times.\" That is short. Or \"8 times.\" That is short. Or \"8 times"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-21:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "hort. Or \"24 times.\" That is short. Or \"24 times.\" That is short. Or \"24 times.\" That is short. Or \"24 times.\" That is short. Or \"24 times.\" That is short. Or \"24 times.\" That is short. Or \"24 times.\""
+    }
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "calibration_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 238,
+     "lower": 0.9635627530364372,
+     "upper": 0.97165991902834
+    },
+    "autorater_marginal": {
+     "fail": 85,
+     "pass": 160
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 80,
+     "verifier_fail_autorater_pass": 2,
+     "verifier_pass_autorater_fail": 5,
+     "verifier_pass_autorater_pass": 158
+    },
+    "coverage": 0.9919028340080972,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 2,
+     "verifier_pass_autorater_fail": 5
+    },
+    "disagreement_rate": 0.02857142857142857,
+    "disagreements": 7,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 2,
+     "refusal": 0
+    },
+    "items": 247,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 245,
+    "verifier_marginal": {
+     "fail": 83,
+     "pass": 164
+    }
+   },
+   "disagreement_breakdown": {
+    "by_n": {
+     "2": 1,
+     "5": 1,
+     "6": 3,
+     "7": 2
+    },
+    "by_source": {
+     "prescreen": 2,
+     "validation": 5
+    }
+   },
+   "invalid_breakdown": {
+    "by_n": {
+     "7": 2
+    },
+    "by_source": {
+     "prescreen": 2
+    }
+   },
+   "verifier_freeze_hash": "334bb2b18079c1eecaa0292a741f27ae962609c40961f2ddbbdf949d0017af52",
+   "autorater_config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2",
+   "split_hash": "2ddf65141de0bf99cc07ea92afa6d0eab696bd9d4e1839cf4793fc627c89f9ad",
+   "calibration_items": 247,
+   "wall_seconds_judge_pass": 661,
+   "gen_tokens": {
+    "min": 138,
+    "median": 533,
+    "p90": 1033,
+    "max": 2048,
+    "mean": 611.1,
+    "total": 150932
+   },
+   "development_high_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 227,
+     "lower": 0.926530612244898,
+     "upper": 0.9510204081632653
+    },
+    "autorater_marginal": {
+     "fail": 75,
+     "pass": 164
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 72,
+     "verifier_fail_autorater_pass": 9,
+     "verifier_pass_autorater_fail": 3,
+     "verifier_pass_autorater_pass": 155
+    },
+    "coverage": 0.9755102040816327,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 9,
+     "verifier_pass_autorater_fail": 3
+    },
+    "disagreement_rate": 0.0502092050209205,
+    "disagreements": 12,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 6,
+     "refusal": 0
+    },
+    "items": 245,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 239,
+    "verifier_marginal": {
+     "fail": 82,
+     "pass": 163
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 4,
+    "autorater error — over-count by one": 3
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:7:0",
+     "n": 7,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Only 6 occurrences.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A refrigerator keeps its inside cold by removing heat from the interior and transferring it to the kitchen through a process called heat exchange. Inside the fridge, a refrigerant absorbs heat from the food and air, then circulates through a compressor and condenser. The condenser releases that heat into the surrounding kitchen air, warming it slightly. This is why the kitchen behind the fridge feels warmer — the refrigerator is not creating cold; it is moving heat from inside to outside. However, this heat transfer is necessary for the cooling process. However, the system is designed to minimize energy loss. However, the kitchen gains warmth due to the heat expelled by the condenser. However, the cold inside is maintained by the continuous cycle of heat absorption and release. However, the refrigerator does not violate the laws of thermodynamics. However, the warmth in the kitchen is a direct result of the heat transfer mechanism.  \n\n(Word \"however\" appears exactly 7 times.)"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "6 occurrences",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Whipped cream holds its shape while poured cream does not because whipped cream contains air bubbles that are stabilized by the proteins in the cream, forming a network that supports its structure. This structure is created during the whipping process, which incorporates air and causes the fat molecules to align and form a stable emulsion. However, when cream is simply poured, the air is not incorporated, and the fat molecules remain unstructured, so the cream flows freely. However, without the proper protein network, the cream cannot maintain its form. However, the presence of these proteins is essential for the texture. However, the process of whipping changes the physical properties significantly. However, without agitation, the cream remains liquid. However, the key difference lies in the structure formed during whipping. The word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-48:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Gentle movement often eases stiffness better than complete rest because it promotes blood flow to affected areas, which helps deliver oxygen and nutrients to tissues that are under stress. This circulation supports healing and reduces inflammation. Additionally, movement maintains joint flexibility and muscle tone, preventing the stiffening that can occur when muscles and joints remain inactive. However, complete rest can lead to muscle atrophy and reduced mobility over time. However, the body responds more effectively to dynamic activity than to inactivity. However, rest may offer temporary relief but lacks long-term benefits. However, gentle movement enhances nerve signaling and improves range of motion. However, it also helps prevent the buildup of adhesions that contribute to stiffness. Therefore, the body functions better with movement than with stillness. However, the key takeaway is that gentle motion supports recovery more than prolonged rest.  \n\n(Word \"however\" appears exactly 6 times as required.)"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:2:0",
+     "n": 2,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word \"however\" appears three times instead of two.",
+     "judge_claimed_count": 3,
+     "s0_count": 2,
+     "s0_independent": 2,
+     "word_boundary_regex_count": 2,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Languages borrow expressions from one another due to cultural exchange, trade, migration, and increasing global connectivity. When people from different linguistic backgrounds interact, they often adopt words or phrases that are more convenient or meaningful in a new context. For example, English has borrowed countless terms from French, Spanish, and Mandarin, especially in areas like cuisine, technology, and fashion.\n\nHowever, borrowed terms do not always remain unchanged. Over time, they may undergo phonetic changes, semantic shifts, or be adapted to fit the grammar and vocabulary of the borrowing language. For instance, the French word \"café\" became \"coffee\" in English, and over centuries, it has evolved in usage and pronunciation. Similarly, some borrowed expressions become so integrated that they are no longer seen as foreign, and their original source is forgotten.\n\nHowever, in some cases, borrowed terms may be rejected or replaced entirely if they don’t align with native usage or cultural values. Ultimately, language evolution is dynamic, and borrowing is a natural part of how languages adapt and grow."
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Six occurrences.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team influences what happens between rounds by making strategic decisions about rest, hydration, nutrition, and mental preparation. They assess the opponent's style and adjust the boxer’s tactics accordingly. The corner team also manages the boxer’s physical condition, ensuring they are ready for the next round. However, they must balance aggression with recovery to avoid overexertion. However, their input can shift the pace of the fight based on real-time performance. However, they often communicate with the boxer to maintain focus and confidence. However, their decisions can impact the outcome of the match significantly. However, they also ensure the boxer stays within the rules and avoids unnecessary risks."
+    },
+    {
+     "item_id": "prescreen:everyday-science-04:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word \"however\" appears only 6 times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A refrigerator keeps its inside cold by removing heat from the interior and transferring it to the surrounding kitchen air. This process uses a refrigerant that circulates through a system of coils—inside the fridge and outside the unit—absorbing heat from the cold compartment and releasing it into the kitchen. The heat released outside is greater than the cold absorbed inside, which is why the kitchen feels warmer. However, the refrigerator does not create cold; it merely moves heat. However, this heat transfer causes the kitchen to warm slightly. However, the system is designed to maintain a stable internal temperature. However, the energy used to power the compressor contributes to the overall heat output. However, the cold inside is a result of removing heat, not creating it. However, the kitchen warms because it gains the heat that was moved from the fridge.  \n\n(Note: The word \"however\" appears exactly 7 times as required.)"
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "There are 7 occurrences of however.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Wet roads and damp fabric appear darker than when they are dry due to the way light reflects off the surface. When a surface is wet, water fills in the microscopic irregularities, smoothing the surface and reducing light scattering. This causes more light to be reflected directly back to the observer, which enhances the perceived brightness—however, the actual visual effect is often interpreted as darker because the water layer absorbs certain wavelengths of light, especially in the blue and green spectrum. Additionally, the wet surface may create a glossy sheen that contrasts with the dry, matte texture, making the area appear deeper in tone. However, the human eye perceives this as a darker hue due to the reduced contrast. However, the presence of water can also cause specular reflection, which distracts from the overall color, making the surface seem less vibrant. However, the combination of absorption and reflection leads to a lower overall luminance. However, this effect is more noticeable under certain lighting conditions. However, the reason the surface looks darker is not due to a change in actual color, but in how our eyes interpret the reflected light."
+    }
+   ],
+   "invalid_cases": [
+    {
+     "item_id": "prescreen:technology-09:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "xtra lines or words. The second line can be a short reason. So we can do that. That is correct.\n\nThus final answer: \"VIOLATES\" on first line, second line: \"The word 'however' appears 17 times, not 7.\""
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-48:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "s of however.\" That is correct.\n\nBut we need to check if the text includes \"however\" in the last sentence. It says \"The word however must appear exactly 7 times in your answer.\" That includes \"however"
+    }
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "calibration_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 223,
+     "lower": 0.9065040650406504,
+     "upper": 0.9634146341463414
+    },
+    "autorater_marginal": {
+     "fail": 37,
+     "pass": 195
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 36,
+     "verifier_fail_autorater_pass": 8,
+     "verifier_pass_autorater_fail": 1,
+     "verifier_pass_autorater_pass": 187
+    },
+    "coverage": 0.943089430894309,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 8,
+     "verifier_pass_autorater_fail": 1
+    },
+    "disagreement_rate": 0.03879310344827586,
+    "disagreements": 9,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 14,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 232,
+    "verifier_marginal": {
+     "fail": 53,
+     "pass": 193
+    }
+   },
+   "disagreement_breakdown": {
+    "by_n": {
+     "4": 3,
+     "6": 1,
+     "7": 2,
+     "8": 3
+    },
+    "by_source": {
+     "prescreen": 4,
+     "validation": 5
+    }
+   },
+   "invalid_breakdown": {
+    "by_n": {
+     "2": 1,
+     "4": 2,
+     "6": 1,
+     "7": 4,
+     "8": 6
+    },
+    "by_source": {
+     "gate1_validation": 10,
+     "prescreen": 4
+    }
+   },
+   "verifier_freeze_hash": "334bb2b18079c1eecaa0292a741f27ae962609c40961f2ddbbdf949d0017af52",
+   "autorater_config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2",
+   "split_hash": "b29ae4f0ff6b048b7c9881e8b7d0ef7901d98bc9580aa593daf9389b169c9d4e",
+   "calibration_items": 246,
+   "wall_seconds_judge_pass": 934,
+   "gen_tokens": {
+    "min": 121,
+    "median": 704.0,
+    "p90": 1710,
+    "max": 2048,
+    "mean": 824.7,
+    "total": 202876
+   },
+   "development_high_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 230,
+     "lower": 0.9349593495934959,
+     "upper": 0.9715447154471545
+    },
+    "autorater_marginal": {
+     "fail": 42,
+     "pass": 195
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 41,
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 1,
+     "verifier_pass_autorater_pass": 189
+    },
+    "coverage": 0.9634146341463414,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 1
+    },
+    "disagreement_rate": 0.029535864978902954,
+    "disagreements": 7,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 9,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 237,
+    "verifier_marginal": {
+     "fail": 53,
+     "pass": 193
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 7,
+    "autorater error — miscount (no explicit count parsed)": 2
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold while warming the kitchen behind it, explained with the requested use of the word \"however\" exactly eight times:\n\nA refrigerator doesn't actually \"warm\" the kitchen; it *releases* heat. The core principle relies on a refrigerant cycle, a clever process of transferring heat. Inside the fridge, a refrigerant absorbs heat, causing it to evaporate into a gas. This process is energy-intensive, **however**, it's a necessary step to cool the interior. \n\nThis gaseous refrigerant then travels to the condenser coils, usually located on the back or bottom of the refrigerator. Here, the refrigerant releases the heat it absorbed inside the fridge into the surrounding kitchen air. **However**, this heat release is what makes the back of the refrigerator feel warmer. It's a byproduct of the cooling process.\n\nA compressor then compresses the refrigerant gas, increasing its temperature and pressure.  **However**, this compression requires energy, which is why refrigerators consume electricity.  The high-pressure, high-temperature refrigerant then flows to the expansion valve. **However**, as the refrigerant passes through the expansion valve, its pressure drops, causing it to cool significantly.\n\nThis cold, low-pressure refrigerant is then ready to repeat the cycle, absorbing heat inside the fridge.  **However**, the overall effect is a net cooling inside the fridge, achieved by expelling heat elsewhere.  The kitchen experiences a slight temperature increase, **however**, it's usually not significant enough to noticeably warm the entire room.  The efficiency of the refrigerator's design greatly affects how much heat is released. **However**, modern refrigerators are designed to minimize heat transfer to the surrounding environment. **However**, it's important to remember that all refrigerators, by their nature, involve heat transfer – it's an unavoidable part of the cooling process.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:4:0",
+     "n": 4,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "It contains exactly four instances of however.",
+     "judge_claimed_count": null,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, using \"however\" exactly four times:\n\nWhen you record a singer twice and layer the tracks, the resulting sound is fundamentally different from a true harmony. The duplicated singer simply creates a doubling effect, often sounding louder and fuller, **however**, it lacks the nuanced interplay of a real harmony. A true harmony involves singers adjusting their pitch and timing to create intervals (like thirds, fifths, etc.) that complement each other.\n\nThe key difference lies in the subtle variations inherent in human performance. Two singers, even when attempting the same notes, will naturally have slight differences in intonation (pitch accuracy), rhythm, and timbre (tone color). These slight imperfections are what create the warmth and richness of a harmony. A doubled track, **however**, replicates the exact same performance, removing these vital variations.\n\nFurthermore, a real harmony often involves call-and-response, embellishments, and dynamic shifts between the voices. These elements are absent in a simple doubling. The resulting sound is generally more monolithic and less interesting.  **However**, skilled singers can create a sense of depth through careful timing and subtle variations within the doubled track, but it's still a pale imitation of a genuine harmony.\n\nUltimately, the difference is about more than just volume. A true harmony possesses a dynamic interplay and a sense of interwoven melodies that a duplicated track simply cannot replicate. **However**, it's important to note that doubling can be a useful production technique, but it's crucial to understand its limitations in comparison to a properly executed vocal harmony.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:4:1",
+     "n": 4,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly four times.",
+     "judge_claimed_count": 4,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why two singers harmonizing sound different from one singer recorded twice, incorporating \"however\" exactly four times:\n\nWhen you record a singer twice and layer the tracks, the result is fundamentally different from a true harmony. The doubled track creates a doubling effect – it’s essentially the same performance repeated. **However**, the perceived difference comes from several factors related to the way our brains process sound. \n\nFirstly, even with precise timing, slight variations in the individual performances will be present. A singer might subtly alter their pitch, vibrato, or dynamics between takes. These minute differences, when layered, introduce a slight \"off-ness\" that our ears pick up on. **However**, this isn’t the same as a deliberate harmonic relationship.\n\nA true harmony involves intentional pitch relationships – notes that are specifically chosen to complement and enhance the melody. The interplay between the two voices creates a richer, more complex sonic texture. The perceived difference is due to the *relationship* between the notes, not just the repetition of the same vocal performance. \n\nFurthermore, the way the sound waves interact when two voices are harmonizing creates complex overtones and cancellations. This interaction adds depth and richness that is absent in a simple doubling. **However**, this richness is entirely different from simply having a repeated vocal track. The harmonic relationship adds a new dimension to the sound.\n\nFinally, even with perfect pitch and timing, the psychological effect is significant. We *expect* a harmony to be a blend of two distinct voices working together. This expectation influences how we perceive the sound. **However**, the doubling effect often feels sterile and less engaging because it lacks the interplay and intentionality of a true vocal harmony.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's why two singers harmonizing sound different from one singer recorded twice, incorporating the word \"however\" at least six times:\n\nThe fundamental difference lies in the complexities introduced by the interaction of two distinct voices. When a singer is recorded twice, you essentially have the same vocal performance played twice, creating a doubling effect. This can sound fuller, **however**, it lacks the subtle nuances of true harmony. The second recording is simply a repetition, lacking the dynamic interplay of two separate vocal entities.\n\nHarmonizing, on the other hand, involves independent vocal lines that are carefully crafted to complement each other. Each singer is performing a different melody, rhythm, and often, different vocal techniques. **However**, the goal is for these lines to blend together in a pleasing and cohesive way, creating a richer, more complex sound than a simple doubling. The micro-variations in timing, pitch, and timbre between the two singers are crucial to the harmonic effect.\n\nThink of it this way: one singer is like a single color, while two harmonizing singers are like two colors blended together. The resulting color is richer and more interesting. The blend isn’t just a simple overlay; it’s an active interaction. **However**, achieving a good harmony requires careful arrangement and skilled vocalists who can adjust their pitch and timing to create a pleasing sonic texture.\n\nFurthermore, the psychological effect is different. Listening to a single voice repeated can feel monotonous, even if technically proficient. The listener's ear recognizes the repetition, and it can become predictable. **However**, the interplay between two voices creates a sense of movement and depth. The listener is constantly hearing how the voices relate to each other, which is engaging.\n\nAnother key aspect is the subtle differences in vocal timbre. Even identical singers have slight variations in their voice – their resonance, breath control, and vibrato aren't perfectly identical. These differences, when combined in a harmony, add a layer of warmth and character that a single, repeated recording simply can't replicate. **However**, these subtle differences must be carefully managed to avoid clashing or sounding disjointed.\n\nFinally, the perceived space and dimension are different. A single, repeated recording feels flatter and more confined. Two harmonizing voices, especially when mixed properly, can create a sense of width and depth in the soundscape. **However**, this is entirely dependent on the recording techniques used, such as panning and reverb. Therefore, while a doubled track can be useful for thickening a sound, true harmony"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's why two singers harmonizing sound different from one singer recorded twice, ensuring the word \"however\" appears exactly seven times:\n\nThe difference boils down to several crucial factors. Firstly, even with identical vocal techniques, two different singers will inherently possess unique tonal qualities – different timbre, resonance, and vocal quirks. This is the fundamental starting point; **however**, these subtle differences are amplified when creating harmonies.\n\nSecondly, the slight variations in timing and intonation between two singers, even when striving for precision, contribute significantly to the harmonic texture. A perfectly synchronized duplicate would sound sterile and unnatural. **However**, these small deviations create a sense of warmth and human imperfection that's often desirable in harmonies. The interplay of these minor differences is key.\n\nFurthermore, the way the brain processes two distinct voices simultaneously is different from processing a single voice repeated. The listener perceives the interaction between the voices – their relationship to each other, their blend, and their individual contributions to the overall sound. **However**, this perception is far more complex than simply hearing a repetition. It's about the *relationship* between the two.\n\nAnother element is the subtle psychological effect. Hearing two voices, even singing the same notes, triggers a different cognitive response. The listener subconsciously analyzes the interplay and the \"space\" between the voices. **However**, the human ear is very good at discerning subtle differences in pitch, rhythm and timbre.\n\nThe stereo image also plays a role. A well-produced harmony will utilize panning and other spatial effects to create a sense of depth and separation between the voices. A single recording, even if doubled, lacks this inherent spatial dimension. **However**, a poorly executed doubling can sound artificial and flat.\n\nFinally, the emotional impact is often vastly different. Two singers harmonizing can evoke feelings of warmth, intimacy, or complexity that a single, duplicated voice simply cannot achieve. **However**, this is subjective and depends on the specific song and the vocal styles involved. The feeling of a true harmony is often more profound. **However**, it is important to note that technical perfection in a single vocal can sometimes be more impressive.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:art-and-design-29:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Contains 9 instances of \"however\".",
+     "judge_claimed_count": null,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "Murals possess a remarkable power to reshape perceptions and significantly alter how people feel about a neighborhood. They act as visual catalysts, transforming previously overlooked or even neglected spaces into vibrant focal points. **However**, the impact isn't always immediate or universally positive; initial reactions can vary depending on individual preferences and cultural backgrounds. **However**, over time, well-executed murals tend to foster a stronger sense of community pride. They offer a shared visual identity, a symbol of collective effort and artistic expression, fostering a feeling of belonging.\n\nFurthermore, murals can inject life and color into areas that might otherwise feel drab or unwelcoming. **However**, this revitalization isn't solely aesthetic; they can also stimulate economic activity. Increased foot traffic drawn by the artwork can benefit local businesses. **However**, this benefit needs to be carefully managed to avoid gentrification and displacement of existing residents. \n\nThe narratives depicted in murals also play a crucial role. Murals that celebrate local history, culture, or community heroes can instill a sense of connection to the past and inspire hope for the future. **However**, it’s vital that these narratives are inclusive and representative of the diverse population within the neighborhood. **However**, poorly conceived or culturally insensitive murals can inadvertently create division or resentment. \n\nUltimately, the success of a mural project hinges on community involvement and thoughtful planning. When residents are actively involved in the selection of themes and artists, the mural becomes a genuine reflection of the neighborhood's spirit. **However**, even with careful planning, the impact is multifaceted and evolves over time. **However**, the overall effect is often a more positive, vibrant, and connected neighborhood environment, fostering a sense of place and belonging.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:food-51:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "7 times used",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's why whipped cream holds its shape, while poured cream doesn't, with the requested usage of the word \"however\" exactly seven times:\n\nThe difference between whipped cream and poured cream lies primarily in the incorporation of air and the stabilization of that air within the cream. Poured cream, essentially liquid heavy cream, lacks this crucial element. It's simply a mixture of fat, water, and protein. **However**, it doesn't have the structural integrity to maintain a solid form.\n\nWhipped cream, on the other hand, undergoes a process of aeration.  Beating cream incorporates air bubbles into the fat globules. This creates a foam structure. **However**, the fat molecules surrounding these air bubbles create a network that physically supports the foam. The proteins in the cream also play a role, forming a scaffold that further strengthens this network.\n\nThe fat molecules create a barrier around the air bubbles, preventing them from collapsing.  This is a key factor. **However**, this barrier isn't permanent.  Over time, the air bubbles gradually escape, causing the whipped cream to deflate. The degree of stability depends on factors like fat content, sugar content, and the amount of air incorporated. \n\nTherefore, the structure of whipped cream is significantly different. It's not just a simple suspension of air; it's a complex foam. **However**, poured cream is not a foam at all. It's simply a liquid.  The lack of a stable foam structure is the fundamental difference. **However**, the addition of stabilizers like gelatin or cornstarch can help to prolong the lifespan of whipped cream, preventing it from collapsing as quickly. **However**, even with stabilizers, it will eventually lose its shape. **However**, the crucial point is the initial incorporation and stabilization of air, a process entirely absent in poured cream.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word 'however' appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Proverbs and slang represent vastly different aspects of language and culture, leading to their contrasting lifespans. Proverbs, those concise statements of common truths or general observations, survive for centuries for several key reasons. Firstly, they often encapsulate fundamental human experiences and wisdom. They address universal themes like love, loss, hard work, and perseverance. **However**, their meaning isn't tied to a specific time or place. This timelessness allows them to resonate across generations. Secondly, proverbs are often deeply ingrained in a culture's collective consciousness, passed down through storytelling and education. **However**, their simplicity and memorable structure make them easy to retain and recite.\n\nSlang, on the other hand, is inherently ephemeral. It’s born from the need for new ways to express oneself, often within specific subcultures or age groups. **However**, slang's very nature – its novelty and association with a particular period – makes it inherently transient. It’s often tied to current trends, music, and social movements. **However**, the rapid evolution of language means that what’s \"in\" today is often \"out\" tomorrow. The fleeting nature of trends means slang quickly loses its relevance as the cultural landscape shifts.\n\nFurthermore, the context of usage plays a crucial role. Proverbs are frequently integrated into formal discourse, literature, and even legal systems. **However**, slang is generally restricted to informal settings and tends to be avoided in more formal communication. **However**, this restriction also contributes to its rapid decay; as the context in which it's used diminishes, so does its frequency. **However**, there can be exceptions; some slang terms, particularly those adopted by mainstream culture, might persist longer than others, but even these eventually fade. **However**, the sheer volume of new slang constantly entering the lexicon ensures a continuous cycle of obsolescence. **However**, proverbs, grounded in enduring truths, stand as enduring testaments to human experience.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:4:0",
+     "n": 4,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly four times.",
+     "judge_claimed_count": 4,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, incorporating \"however\" four times:\n\nThe difference in sound arises from several key factors. When a singer records themselves twice, you essentially have the same vocal performance repeated. **However**, this repetition lacks the subtle nuances of human interaction inherent in a true harmony. The two tracks are identical, leading to a somewhat sterile and artificial feel.\n\nA true harmony, on the other hand, involves two separate voices, each with its own unique characteristics – timbre, vibrato, phrasing, and dynamic variations.  The slight imperfections and individual stylistic choices of each singer contribute to a richer, more organic sound. **However**, these individual differences are precisely what make a harmony compelling and interesting. \n\nFurthermore, the spatial relationship between the two voices is crucial. A good harmony considers panning (left/right placement), reverb, and other effects to create a sense of depth and separation.  Simply layering the same recording doesn't achieve this; it results in a dense, often muddy sound. **However**, skilled mixing can sometimes mitigate this, but it's difficult to fully replicate the natural separation and blend of two distinct vocal performances.\n\nFinally, the interplay between the two voices is dynamic. They respond to each other, creating a push and pull that adds complexity.  This dynamic interaction is missing when one voice is simply duplicated. **However**, this dynamic interaction is a core element of what makes a harmony sound so pleasing to the ear.\n\n\n\n"
+    }
+   ],
+   "invalid_cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:7:1",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "des \"However\" only in bold. But we need to check if there is any \"however\" in the text that is not bold. The text includes \"However\" only in bold. But we need to check if there is any \"however\" in the"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:1",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ir inside the fridge, cooling the food. This process makes the air inside the refrigerator colder. **However**, the kitchen air is still warmer, and this heat is transferred to the refrigerant.\" -> 5\n"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:4:0",
+     "n": 4,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": " and reducing sugars, is a key contributor to the browning and the development of complex flavors. \n\nThe Maillard reaction isn't the only factor at play; caramelization also contributes, especially to"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "is last paragraph:\n\n- After \"experience.\" -> \"However\" (6)\n- After \"profiles.\" -> \"However\" (7)\n- After \"taste.\" -> \"However\" (8)\n- After \"researched.\" -> \"However\" (9)\n- After \"toast.\" -> \"However\" ("
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:4:0",
+     "n": 4,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": " the text: The text includes \"However\" after \"some individuals have inner ears that are more easily stimulated, or their brains are less adept at filtering out conflicting sensory information.\" Then \""
+    },
+    {
+     "item_id": "gate1_validation:history-47:solo:A:8:0",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "text might have \"however\" in the last line: \"However, the establishment of university towns created\". That is the 6th. So it's 6. So it's a violation. So answer: VIOLATES. Then a short reason. That is"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-50:solo:A:7:0",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": " like \"however\" inside a word? No. So it's fine.\n\nThus the answer: \"SATISFIES\" on the first line, and a short reason on the second line. The second line can be something like \"The word appears 7 times"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:8:1",
+     "n": 8,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "l depth\"? Yes. Did we count \"however\" after \"it's rarely a substitute for genuine vocal harmony, however it can be useful\"? Yes. That is 9. Wait, we counted 9. But we just counted 8. Let's check again"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-39:solo:A:7:0",
+     "n": 7,
+     "source": "gate1_validation",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ibutes to the biodiversity of the deep-sea floor. **However**, the rate of decomposition is heavily influenced by factors such as temperature, pressure, and the availability of oxygen (or lack thereof"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:6:0",
+     "n": 6,
+     "source": "gate1_validation",
+     "split_class": "pass",
+     "verifier_label": "pass",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "genuine care will eventually win over even the most hesitant team members.\"\n\nSo we have \"However\" in paragraph 1, paragraph 2, paragraph 3, paragraph 4 (first \"However\" after \"This shows respect...\"),"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ficial charters that granted them privileges like self-governance and the right to award degrees. **However**, this process was not without its challenges. Disputes over curriculum, faculty governance"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ason: \"The word 'however' appears only once.\" That is the short reason. That is correct.\n\nBut we need to check if the text uses \"however\" exactly 2 times. The text uses \"However,\" only once. So it's a"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ll-worn sayings encapsulating wisdom or common truths, have a remarkable resilience. **However**, their longevity isn't accidental. They often address universal human experiences – love, loss, success"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "verifier_label": "fail",
+     "status": "invalid_output",
+     "finish_reason": "length",
+     "raw_tail": "ificant \"marine snow\" event – a large, concentrated input of organic matter and nutrients. This influx can temporarily boost productivity in the surrounding area. **However**, the impact is localized."
+    }
+   ]
+  }
+ }
+}
