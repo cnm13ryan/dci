@@ -29,11 +29,8 @@ from dci1v3.topics.split import pilot_blocks
 
 
 def _generate_fn(job: Job):
-    if job.context.namespace == "synthetic":
-        from dci1v3.generation.synthetic import synthetic_generate
-        return synthetic_generate
-    from dci1v3.generation.backend import run_backend
-    return run_backend
+    from dci1v3.stages.inference import generate_fn
+    return generate_fn(job)
 
 
 def _tamper_probe(stage_dir) -> None:

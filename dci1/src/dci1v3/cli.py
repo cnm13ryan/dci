@@ -52,6 +52,10 @@ def main(argv: list[str] | None = None) -> int:
     for name in MODEL_OPERATIONS:
         cmd = sub.add_parser(name)
         cmd.add_argument("--model", required=True, choices=MODEL_KEYS)
+        cmd.add_argument("--device", type=int, default=0,
+                         help="GPU device for backend runs (operational "
+                              "routing only; both cards are the same "
+                              "registered hardware class)")
         if name == "gate1":
             cmd.add_argument("--annotations", default=None)
         if name == "pseudo-runs":
@@ -72,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
                 fs.write_json(Path(args.out), outcome)
         else:
             options = {}
-            for key in ("annotations", "runs", "expected"):
+            for key in ("annotations", "runs", "expected", "device"):
                 if getattr(args, key, None) is not None:
                     options[key] = getattr(args, key)
             outcome = dispatch(context, args.command, args.model, **options)

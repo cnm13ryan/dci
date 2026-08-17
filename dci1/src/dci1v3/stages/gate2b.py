@@ -33,11 +33,8 @@ def gate2a_payload(job: Job) -> dict[str, Any]:
 
 
 def _generate_fn(job: Job):
-    if job.context.namespace == "synthetic":
-        from dci1v3.generation.synthetic import synthetic_generate
-        return synthetic_generate
-    from dci1v3.generation.backend import run_backend
-    return run_backend
+    from dci1v3.stages.inference import generate_fn
+    return generate_fn(job)
 
 
 @operation("gate2b", stage=C.STAGE_GATE2B)

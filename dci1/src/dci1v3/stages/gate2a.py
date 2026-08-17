@@ -36,11 +36,8 @@ def selected_cap(job: Job) -> int:
 
 
 def _generate_fn(job: Job):
-    if job.context.namespace == "synthetic":
-        from dci1v3.generation.synthetic import synthetic_generate
-        return synthetic_generate
-    from dci1v3.generation.backend import run_backend
-    return run_backend
+    from dci1v3.stages.inference import generate_fn
+    return generate_fn(job)
 
 
 def _rates(rows: list[dict[str, Any]], key_fn) -> dict[Any, float]:
