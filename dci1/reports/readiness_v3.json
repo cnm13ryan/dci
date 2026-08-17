@@ -10,19 +10,19 @@
   "masking": "dci1v3/stages/masking.py (persistent single-shot mask and unmask; pilot/confirmatory namespaces disjoint)",
   "model_states": {
     "gemma-3n-e2b-it": {
-      "state": "QUALIFIED",
+      "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "gemma-3n-e4b-it": {
-      "state": "QUALIFIED",
+      "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "qwen3-4b": {
-      "state": "QUALIFIED",
+      "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "qwen3-4b-instruct-2507": {
-      "state": "QUALIFIED",
+      "state": "REGIME_SCREEN_PASS",
       "terminal": null
     }
   },
@@ -59,7 +59,7 @@
   "not_executed": [
     "registered confirmatory generation (prohibited at readiness)",
     "real-model qualification through Gate 2B (GPU-dependent)",
-    "Gate 1 human annotation (three annotators, human-dependent)"
+    "Gate 1 human annotation (one independent annotator per model under amendment A1, human-dependent)"
   ],
   "predecessor_verification": "hash AND signature on every stage record (engine/transitions.py)",
   "protocol": "DCI-1",

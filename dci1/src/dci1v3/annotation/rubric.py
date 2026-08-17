@@ -10,7 +10,7 @@ to the annotator's own judgment.
 """
 from __future__ import annotations
 
-RUBRIC_VERSION = "1.0.0"
+RUBRIC_VERSION = "1.1.0"      # A1: one independent annotator per model
 
 INSTRUCTIONS = """\
 You will judge a series of items. Each item shows one rule and one
@@ -30,9 +30,9 @@ or closing remarks; the rule applies to all of it. Count by reading; do
 not use search tools or scripts. There is no trick: the rule means what
 it plainly says.
 
-Work at your own pace. Your answers are saved as you go and belong to you
-alone; nobody else's answers are visible here, and nothing about how any
-item was produced or pre-scored is shown to you.
+Work at your own pace. Your answers are saved as you go. You are the
+independent judge for this set: your labels stand on their own, and
+nothing about how any item was produced or pre-scored is shown to you.
 """
 
 #: Twelve worked examples (§25): the plain reading on clear cases.

@@ -55,23 +55,34 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     # the harness annotations.
     step("gate1", "--model", MODEL, expect=1)
     packet = tree.data_dir("gate1") / "annotation_packet.jsonl"
-    # Labels travel through the reviewer workflow (blinded sessions ->
+    # Labels travel through the reviewer workflow (one blinded session ->
     # immutable finalisation -> export), proving the exported file is
-    # exactly what the registered gate1 parser accepts.
+    # exactly what the registered gate1 parser accepts. Zero-label and
+    # multi-label files must be rejected by the real parser first.
     from dci1v3.annotation.store import (
         AnnotatorSession,
         export_annotations,
     )
     truth = make_synthetic_annotations(packet)
+    bad_zero = base.parent / "bad_zero.json"
+    fs.write_json(bad_zero, {"face_validity": [True]})
+    step("gate1", "--model", MODEL, "--annotations", str(bad_zero),
+         expect=1)
+    bad_three = base.parent / "bad_three.json"
+    fs.write_json(bad_three, {
+        **{item_id: labels * 3 for item_id, labels in truth.items()
+           if item_id != "face_validity"},
+        "face_validity": [True, True, True]})
+    step("gate1", "--model", MODEL, "--annotations", str(bad_three),
+         expect=1)
     annotation_workspace = base.parent / "annotation_work"
-    for name in ("A1", "A2", "A3"):
-        reviewer = AnnotatorSession(
-            packet_path=packet, workspace=annotation_workspace,
-            model=MODEL, annotator=name)
-        for display in range(1, len(reviewer.packet) + 1):
-            item_id = reviewer._item_id_for_display(display)
-            reviewer.record(display, label=truth[item_id][0])
-        reviewer.finalize(face_validity=True)
+    reviewer = AnnotatorSession(
+        packet_path=packet, workspace=annotation_workspace,
+        model=MODEL, annotator="A1")
+    for display in range(1, len(reviewer.packet) + 1):
+        item_id = reviewer._item_id_for_display(display)
+        reviewer.record(display, label=truth[item_id][0])
+    reviewer.finalize(face_validity=True)
     labels_path = export_annotations(annotation_workspace, MODEL, packet)
     step("gate1", "--model", MODEL, "--annotations", str(labels_path))
     step("gate2a", "--model", MODEL)
@@ -87,12 +98,46 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     step("greedy", "--model", MODEL)
     step("verify-evidence", "--model", MODEL)
     return {"ctx": ctx, "tree": tree, "base": base, "repo": repo,
-            "trace": trace}
+            "trace": trace, "labels_path": labels_path, "packet": packet}
 
 
 def test_full_stage_sequence_reached(lifecycle):
     from dci1v3.engine.transitions import current_state
     assert current_state(lifecycle["tree"]) == C.STAGE_UNMASKED_ANALYSIS
+
+
+def test_gate1_bounds_recompute_from_single_labels(lifecycle):
+    """The recorded class bounds equal an independent recomputation of
+    human-to-verifier disagreement from the single-annotator export."""
+    from dci1v3.analysis.stats import wilson_upper_one_sided
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.engine.transitions import load_stage_record
+    from dci1v3.verifiers.target import s0_count
+
+    tree, ctx = lifecycle["tree"], lifecycle["ctx"]
+    annotations = fs.read_json(lifecycle["labels_path"])
+    assert all(len(labels) == 1 for item_id, labels in annotations.items()
+               if item_id != "face_validity")
+    assert len(annotations["face_validity"]) == 1
+    body = verify_signed(load_stage_record(tree, C.STAGE_GATE1),
+                         ctx.signing_key_path, where="gate1")["body"]
+    recomputed: dict[str, dict[str, int]] = {
+        "pass": {"cases": 0, "disagreements": 0},
+        "fail": {"cases": 0, "disagreements": 0}}
+    for line in Path(lifecycle["packet"]).read_text().splitlines():
+        row = json.loads(line)
+        verifier = ("pass" if s0_count(row["response_text"]) == row["n"]
+                    else "fail")
+        recomputed[verifier]["cases"] += 1
+        if annotations[row["item_id"]][0] != verifier:
+            recomputed[verifier]["disagreements"] += 1
+    for cls, cell in recomputed.items():
+        recorded = body["class_bounds"][cls]
+        assert recorded["cases"] == cell["cases"]
+        assert recorded["disagreements"] == cell["disagreements"]
+        assert recorded["wilson_upper"] == pytest.approx(
+            wilson_upper_one_sided(cell["disagreements"], cell["cases"]))
+    assert body["face_validity"] == {"agreements": 1, "of": 1}
 
 
 def test_confirmatory_matrix_counts(lifecycle):

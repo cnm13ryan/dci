@@ -119,7 +119,12 @@ SHORT_RESPONSE_WORDS = 3                             # §16 compliance flag
 GATE1_DISAGREEMENT_MAX = 0.10        # one-sided 95% Wilson upper bound
 GATE1_CLASS_TARGET = 150             # natural cases per verifier class
 GATE1_EXTRA_RESPONSES_MAX = 300      # frozen additional validation set
-GATE1_ANNOTATORS = 3
+#: Amendment A1 (2026-08-17, before any human annotation began): one
+#: independent human annotator per model replication. Gate 1 measures
+#: human-to-verifier disagreement from one independent judgment per item;
+#: sampling, classes, the one-sided Wilson bound, and every threshold are
+#: unchanged. See DECISIONS_V3.md, Amendments.
+GATE1_ANNOTATORS = 1
 DETERMINISM_PROCESSES = 3
 DETERMINISM_REQUIRED = 1.0
 BOUNDARY_CASES_REQUIRED = 40

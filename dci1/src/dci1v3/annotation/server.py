@@ -5,14 +5,16 @@ Annotator mode serves exactly one blinded (model, annotator) session:
     python -m dci1v3.annotation.server --model gemma-3n-e2b-it \\
         --annotator A1 [--port 8765]
 
-Researcher mode serves the progress dashboard (and, only once a packet's
-required labels are locked, agreement and verifier diagnostics + export):
+Under amendment A1, exactly one independent annotator covers each model
+packet. Researcher mode serves the progress dashboard (and, only once that
+annotator has irrevocably finalised, human-to-verifier diagnostics +
+export):
 
     python -m dci1v3.annotation.server --dashboard [--port 8766]
 
 The server binds to 127.0.0.1 only. Annotator payloads carry no item
-identities, verifier information, or other annotators' labels; judgments
-autosave on every keypress.
+identities, verifier information, or sampling status; judgments autosave
+on every keypress.
 """
 from __future__ import annotations
 

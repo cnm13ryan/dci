@@ -1,13 +1,14 @@
 """Gate 1: measurement (§10, §18.3, items 31–34) and the E2B carry-over.
 
-Boundary suite, three-process determinism at agreement 1.000, the closed
-natural-response reservoir with the frozen additional validation set, the
-seeded min(150, N_c) sample per verifier class, and the one-sided 95%
-Wilson disagreement bound at most 0.10 in both classes. Human labels are
-external input; without them the gate does not pass and reports
-PENDING_HUMAN (not a terminal status). A bound above 0.10 with 150 cases
-is MEASUREMENT_NOT_ESTABLISHED; an exhausted natural class below 150 is
-MEASUREMENT_EVIDENCE_INSUFFICIENT.
+Boundary suite, three-process verifier determinism at agreement 1.000, the
+closed natural-response reservoir with the frozen additional validation
+set, the seeded min(150, N_c) sample per verifier class, and the one-sided
+95% Wilson bound (at most 0.10 in both classes) on human-to-verifier
+disagreement — under amendment A1, one independent human judgment per item
+(DECISIONS_V3.md, Amendments). Human labels are external input; without
+them the gate does not pass and reports PENDING_HUMAN (not a terminal
+status). A bound above 0.10 with 150 cases is MEASUREMENT_NOT_ESTABLISHED;
+an exhausted natural class below 150 is MEASUREMENT_EVIDENCE_INSUFFICIENT.
 """
 from __future__ import annotations
 
@@ -264,8 +265,8 @@ def run_gate1(job: Job) -> dict[str, Any]:
     annotations = _load_annotations(job)
     if annotations is None:
         raise ProtocolError(
-            f"PENDING_HUMAN: {len(packet)} sampled responses await three "
-            f"annotators; packet at {packet_path}")
+            f"PENDING_HUMAN: {len(packet)} sampled responses await the "
+            f"independent annotator; packet at {packet_path}")
     stored = stage_dir / "annotations.json"
     if not stored.exists():
         fs.write_json_once(stored, annotations)
@@ -280,13 +281,16 @@ def run_gate1(job: Job) -> dict[str, Any]:
                 labels = annotations.get(item["response_hash"])
             if labels is None or len(labels) != C.GATE1_ANNOTATORS:
                 raise ProtocolError(
-                    f"PENDING_HUMAN: item {item['item_id']} lacks "
-                    f"{C.GATE1_ANNOTATORS} labels")
-            majority = ("pass" if sum(1 for l in labels if l == "pass") >= 2
-                        else "fail")
+                    f"PENDING_HUMAN: item {item['item_id']} lacks exactly "
+                    f"{C.GATE1_ANNOTATORS} human label(s)")
+            if any(label not in ("pass", "fail") for label in labels):
+                raise ProtocolError(
+                    f"PENDING_HUMAN: item {item['item_id']} carries a "
+                    f"label outside the registered binary vocabulary")
+            human = labels[0]        # amendment A1: one independent judgment
             verifier = ("pass" if target_mod.s0_count(
                 item["response_text"]) == item["n"] else "fail")
-            if majority != verifier:
+            if human != verifier:
                 disagreements += 1
         bound = wilson_upper_one_sided(disagreements, len(items)) \
             if items else 1.0

@@ -61,15 +61,16 @@ def registered_ctx(ctx) -> StudyContext:
 
 
 def make_synthetic_annotations(packet_path: Path) -> dict:
-    """Synthetic annotators: three labels per item agreeing with S0."""
+    """Synthetic annotator: one independent label per item agreeing with
+    S0 (amendment A1: exactly one human judgment per item)."""
     import json
 
     from dci1v3.verifiers.target import s0_count
 
-    annotations: dict = {"face_validity": [True, True, True]}
+    annotations: dict = {"face_validity": [True]}
     for line in packet_path.read_text().splitlines():
         item = json.loads(line)
         label = "pass" if s0_count(item["response_text"]) == item["n"] \
             else "fail"
-        annotations[item["item_id"]] = [label] * 3
+        annotations[item["item_id"]] = [label]
     return annotations

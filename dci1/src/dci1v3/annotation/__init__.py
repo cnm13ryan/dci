@@ -8,4 +8,4 @@ It defines no scientific rule: labels are the registered binary vocabulary
 metadata that never enter the exported scientific file.
 """
 
-INTERFACE_VERSION = "dci1v3-annotation/1.0.0"
+INTERFACE_VERSION = "dci1v3-annotation/1.1.0"   # A1: single annotator
