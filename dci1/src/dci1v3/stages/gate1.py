@@ -48,7 +48,6 @@ from dci1v3.protocol.hashing import sha_file, sha_obj, sha_text
 from dci1v3.protocol.seeds import gate1_sample_seed
 from dci1v3.protocol.wordings import target_wordings
 from dci1v3.stages import autorater
-from dci1v3.stages.determinism_worker import verdict_digest
 from dci1v3.topics.split import split_topics
 from dci1v3.verifiers import target as target_mod
 from dci1v3.verifiers import words as words_mod
