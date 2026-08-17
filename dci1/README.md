@@ -364,7 +364,7 @@ autorater-assisted verifier workflow (one configured autorater,
 `src/dci1v3/protocol/data/autorater.json`: `openai/gpt-oss-20b` at its
 pinned revision, harmony chat template at low reasoning effort, prompt
 `gate1-judge/2.0.0` with the SATISFIES/VIOLATES vocabulary, parser
-`gate1-parse/2.0.0`, greedy, cap 256 — a proxy instrument, never human
+`gate1-parse/2.0.0`, greedy, cap 512 — a proxy instrument, never human
 validation, never ground truth, never part of scoring; the judge is
 deliberately not one of the four study replications):
 

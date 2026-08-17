@@ -158,8 +158,10 @@ DOMAIN_AUTORATER_SEED = "dci1v3:autorater:v1"
 #: harmony transcript — an analysis channel at the registered low
 #: reasoning effort, then the final verdict channel — so the cap covers
 #: BOTH channels; a truncated transcript parses as invalid_output, never
-#: as a label.
-AUTORATER_CAP = 256
+#: as a label. 512 rather than 256 after the pre-freeze operational
+#: smoke test showed occurrence-counting analyses can exceed 256 tokens
+#: on hard cases; set before any development or calibration judgment.
+AUTORATER_CAP = 512
 AUTORATER_SCHEMA_VERSION = "autorater-judgment/1"
 
 #: Versioned judge prompts; the active version comes from the autorater

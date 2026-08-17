@@ -13,7 +13,7 @@
   "label_mapping": {"SATISFIES": "pass", "VIOLATES": "fail"},
   "decoding": {
     "policy": "greedy",
-    "max_new_tokens": 256,
+    "max_new_tokens": 512,
     "skip_special_tokens": false
   },
   "notes": "The single configured autorater (amendments A2/A3): a proxy instrument for verifier development and held-out evaluation. Never human validation, never ground truth, never part of scoring. The judge is deliberately not one of the four registered replications. Parse errors, refusals, backend failures, and invalid outputs keep distinct operational statuses and are never recoded into SATISFIES or VIOLATES. max_new_tokens covers the harmony analysis channel plus the final verdict channel; skip_special_tokens=false preserves the channel markers so the parser reads only the final channel."
