@@ -24,7 +24,8 @@ from dci1v3.models.registry import MODEL_KEYS
 import dci1v3.stages  # noqa: F401  — populates the operation registry
 
 MODEL_OPERATIONS = (
-    "qualify", "pilot", "prescreen", "carry-over", "gate1", "gate2a",
+    "qualify", "pilot", "prescreen", "carry-over", "gate1-dev",
+    "gate1-calibrate", "gate1", "human-audit", "gate2a",
     "gate2b", "freeze", "generate", "select-primary", "mask",
     "masked-analysis", "unmask", "final-analysis", "pseudo-runs", "greedy",
     "verify-evidence",
@@ -47,6 +48,11 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("register", help="create the signed study registration")
+    vfreeze = sub.add_parser(
+        "verifier-freeze",
+        help="study-level: freeze the verifier for held-out calibration "
+             "(runs the verifier regression suite first)")
+    vfreeze.add_argument("--autorater-config", default=None)
     readiness = sub.add_parser("readiness", help="the item-65 report")
     readiness.add_argument("--out", default=None)
     for name in MODEL_OPERATIONS:
@@ -56,8 +62,17 @@ def main(argv: list[str] | None = None) -> int:
                          help="GPU device for backend runs (operational "
                               "routing only; both cards are the same "
                               "registered hardware class)")
+        if name in ("gate1-dev", "gate1-calibrate"):
+            cmd.add_argument("--autorater-config", default=None)
         if name == "gate1":
-            cmd.add_argument("--annotations", default=None)
+            cmd.add_argument("--approve-autorater-calibration",
+                             action="store_true",
+                             help="explicit researcher approval of the "
+                                  "inspected calibration report")
+        if name == "human-audit":
+            cmd.add_argument("--annotations", required=True,
+                             help="the reviewer-GUI export (independent "
+                                  "human labels)")
         if name == "pseudo-runs":
             cmd.add_argument("--runs", type=int, default=None)
         if name == "verify-evidence":
@@ -69,6 +84,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "register":
             from dci1v3.stages.registration import register_study
             outcome = register_study(context)
+        elif args.command == "verifier-freeze":
+            from dci1v3.stages.gate1 import verifier_freeze
+            outcome = verifier_freeze(
+                context, autorater_config=args.autorater_config)
         elif args.command == "readiness":
             from dci1v3.stages.report import readiness_report
             outcome = readiness_report(context)
@@ -76,8 +95,10 @@ def main(argv: list[str] | None = None) -> int:
                 fs.write_json(Path(args.out), outcome)
         else:
             options = {}
-            for key in ("annotations", "runs", "expected", "device"):
-                if getattr(args, key, None) is not None:
+            for key in ("annotations", "runs", "expected", "device",
+                        "autorater_config",
+                        "approve_autorater_calibration"):
+                if getattr(args, key, None):
                     options[key] = getattr(args, key)
             outcome = dispatch(context, args.command, args.model, **options)
     except V3Error as error:

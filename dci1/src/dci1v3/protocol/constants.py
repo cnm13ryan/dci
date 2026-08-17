@@ -125,6 +125,65 @@ GATE1_EXTRA_RESPONSES_MAX = 300      # frozen additional validation set
 #: sampling, classes, the one-sided Wilson bound, and every threshold are
 #: unchanged. See DECISIONS_V3.md, Amendments.
 GATE1_ANNOTATORS = 1
+
+# --- Amendment A2 (2026-08-17): no independent human annotator is
+# available. Gate 1's human-agreement criterion becomes UNAVAILABLE (not
+# waived): the frozen packet, reviewer GUI, and parser remain intact and a
+# `human-audit` operation can attach independent human evidence at any
+# later time. The executable Gate 1 is an autorater-assisted verifier
+# workflow: deterministic development/calibration split of the response
+# pool -> verifier + one configured autorater on the development half ->
+# disagreement inspection and verifier regression tests -> verifier-freeze
+# manifest -> the same autorater on the untouched calibration half ->
+# calibration report (no automatic threshold) -> explicit researcher
+# approval. Autorater evidence is a proxy instrument for verifier
+# development and held-out evaluation; it is NEVER human validation or
+# ground truth, and no language model judges any scored outcome (§10).
+HUMAN_VALIDATION_UNAVAILABLE = "HUMAN_VALIDATION_UNAVAILABLE"
+HUMAN_VALIDATION_COMPLETE = "HUMAN_VALIDATION_COMPLETE"
+
+#: Deterministic development/calibration split of the Gate 1 response
+#: pool: seeded, stratified by verifier class, disjoint halves.
+AUTORATER_SPLIT_SEED = 202608175
+DOMAIN_AUTORATER_SPLIT = "dci1v3:autorater-split:v1"
+DOMAIN_AUTORATER_SEED = "dci1v3:autorater:v1"
+
+#: Greedy small-cap judging: one-line verdict plus an optional short
+#: task-facing justification.
+AUTORATER_CAP = 48
+AUTORATER_SCHEMA_VERSION = "autorater-judgment/1"
+
+#: Versioned judge prompts; the active version comes from the autorater
+#: configuration and its hash is recorded with every judgment run.
+AUTORATER_PROMPTS = {
+    "gate1-judge/1.0.0": (
+        "You are checking one rule against one text.\n"
+        "Rule: {constraint}\n"
+        "Text:\n{response}\n"
+        "---\n"
+        "Does the text satisfy the rule? Answer YES or NO on the first "
+        "line. You may add one short reason on the second line.\n"
+        "Answer:"),
+}
+
+#: The registered strongest supported claim while human validation is
+#: unavailable (amendment A2) — attached verbatim to gate, freeze, and
+#: analysis outputs.
+STRONGEST_CLAIM = (
+    "The frozen deterministic verifier was developed and evaluated on "
+    "held-out responses against the specified autorater under the "
+    "registered configuration. Independent human validation is "
+    "unavailable.")
+
+MEASUREMENT_SCOPE = {
+    "outcome_definition": "verifier-defined: target failure under the "
+                          "frozen deterministic rule S0",
+    "human_validation": HUMAN_VALIDATION_UNAVAILABLE,
+    "strongest_claim": STRONGEST_CLAIM,
+    "does_not_support": "claims about compliance as an independent human "
+                        "would judge it; autorater agreement is a proxy "
+                        "evaluation, not human validation or ground truth",
+}
 DETERMINISM_PROCESSES = 3
 DETERMINISM_REQUIRED = 1.0
 BOUNDARY_CASES_REQUIRED = 40

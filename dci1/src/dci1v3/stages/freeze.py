@@ -138,10 +138,24 @@ def run_freeze(job: Job) -> dict[str, Any]:
         "solo_calibration_summary": {
             "target_rate": gate2a["target_curve"][str(params["n"])],
             "focal_rate": gate2a["focal_curve"][str(params["m"])]},
+        "measurement_basis": _measurement_basis(job),
     }
     return {"status": "PASSED", "body": body,
             "input_hashes": {"gate_records": sha_obj(gate_hashes)},
             "output_hashes": {"block_plan": body["block_plan_hash"]}}
+
+
+def _measurement_basis(job: Job) -> dict[str, Any]:
+    """Amendment A2: the freeze carries the measurement's evidence basis
+    and claim scope verbatim from the Gate 1 record."""
+    record = load_stage_record(job.tree, C.STAGE_GATE1)
+    payload = verify_signed(record, job.context.signing_key_path,
+                            where="gate1_measurement")
+    body = payload["body"]
+    return {"basis": body.get("basis"),
+            "human_validation": body.get("human_validation"),
+            "strongest_claim": body.get("strongest_claim"),
+            "measurement_scope": body.get("measurement_scope")}
 
 
 def _qualification_hardware(job: Job) -> str | None:

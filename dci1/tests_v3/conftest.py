@@ -36,6 +36,13 @@ def build_synthetic_repo(root: Path) -> Path:
     shutil.copy(DCI1 / "uv.lock", repo / "dci1" / "uv.lock")
     shutil.copy(DCI1 / "requirements-frozen.txt",
                 repo / "dci1" / "requirements-frozen.txt")
+    # verifier-freeze runs the regression suite from the context's repo.
+    tests_dir = repo / "dci1" / "tests_v3"
+    tests_dir.mkdir(parents=True)
+    for name in ("conftest.py", "test_verifiers.py"):
+        shutil.copy(DCI1 / "tests_v3" / name, tests_dir / name)
+    (repo / ".gitignore").write_text("__pycache__/\n*.pyc\n"
+                                     ".pytest_cache/\n")
     _git(repo, "init", "-q")
     _git(repo, "config", "user.email", "v3@test")
     _git(repo, "config", "user.name", "v3 test harness")

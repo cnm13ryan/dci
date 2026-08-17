@@ -159,6 +159,7 @@ def analyse(primary_rows: list[dict[str, Any]], *, model_id: str, n: int,
 
     return {
         "n": n, "blocks": table.n_blocks, "resamples": resamples,
+        "measurement_scope": C.MEASUREMENT_SCOPE,
         "families": intervals,
         "uptake_intervals": uptake,
         "uptake_flagged": uptake_flagged,

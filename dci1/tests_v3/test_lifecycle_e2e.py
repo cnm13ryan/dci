@@ -51,40 +51,17 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     step("qualify", "--model", MODEL)
     step("pilot", "--model", MODEL)
     step("prescreen", "--model", MODEL)
-    # Gate 1 blocks on human labels first (PENDING_HUMAN), then passes with
-    # the harness annotations.
-    step("gate1", "--model", MODEL, expect=1)
+    # Amendment A2: the autorater-assisted verifier workflow (Gate 1 no
+    # longer blocks on human labels; human-audit runs at the end).
+    step("gate1-dev", "--model", MODEL)
     packet = tree.data_dir("gate1") / "annotation_packet.jsonl"
-    # Labels travel through the reviewer workflow (one blinded session ->
-    # immutable finalisation -> export), proving the exported file is
-    # exactly what the registered gate1 parser accepts. Zero-label and
-    # multi-label files must be rejected by the real parser first.
-    from dci1v3.annotation.store import (
-        AnnotatorSession,
-        export_annotations,
-    )
-    truth = make_synthetic_annotations(packet)
-    bad_zero = base.parent / "bad_zero.json"
-    fs.write_json(bad_zero, {"face_validity": [True]})
-    step("gate1", "--model", MODEL, "--annotations", str(bad_zero),
-         expect=1)
-    bad_three = base.parent / "bad_three.json"
-    fs.write_json(bad_three, {
-        **{item_id: labels * 3 for item_id, labels in truth.items()
-           if item_id != "face_validity"},
-        "face_validity": [True, True, True]})
-    step("gate1", "--model", MODEL, "--annotations", str(bad_three),
-         expect=1)
-    annotation_workspace = base.parent / "annotation_work"
-    reviewer = AnnotatorSession(
-        packet_path=packet, workspace=annotation_workspace,
-        model=MODEL, annotator="A1")
-    for display in range(1, len(reviewer.packet) + 1):
-        item_id = reviewer._item_id_for_display(display)
-        reviewer.record(display, label=truth[item_id][0])
-    reviewer.finalize(face_validity=True)
-    labels_path = export_annotations(annotation_workspace, MODEL, packet)
-    step("gate1", "--model", MODEL, "--annotations", str(labels_path))
+    packet_hash_before = fs.read_json(
+        tree.root / "gate1_dev.json")["packet_hash"]
+    step("gate1-calibrate", "--model", MODEL, expect=1)   # not frozen yet
+    step("verifier-freeze")
+    step("gate1-calibrate", "--model", MODEL)
+    step("gate1", "--model", MODEL, expect=1)   # approval flag required
+    step("gate1", "--model", MODEL, "--approve-autorater-calibration")
     step("gate2a", "--model", MODEL)
     step("gate2b", "--model", MODEL)
     step("freeze", "--model", MODEL)
@@ -97,8 +74,39 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     step("pseudo-runs", "--model", MODEL, "--runs", "25")
     step("greedy", "--model", MODEL)
     step("verify-evidence", "--model", MODEL)
+
+    # The preserved human pathway: reviewer GUI -> export -> human-audit.
+    # Zero-label and multi-label files must be rejected by the real parser.
+    from dci1v3.annotation.store import (
+        AnnotatorSession,
+        export_annotations,
+    )
+    truth = make_synthetic_annotations(packet)
+    bad_zero = base.parent / "bad_zero.json"
+    fs.write_json(bad_zero, {"face_validity": [True]})
+    step("human-audit", "--model", MODEL, "--annotations", str(bad_zero),
+         expect=1)
+    bad_three = base.parent / "bad_three.json"
+    fs.write_json(bad_three, {
+        **{item_id: labels * 3 for item_id, labels in truth.items()
+           if item_id != "face_validity"},
+        "face_validity": [True, True, True]})
+    step("human-audit", "--model", MODEL, "--annotations",
+         str(bad_three), expect=1)
+    annotation_workspace = base.parent / "annotation_work"
+    reviewer = AnnotatorSession(
+        packet_path=packet, workspace=annotation_workspace,
+        model=MODEL, annotator="A1")
+    for display in range(1, len(reviewer.packet) + 1):
+        item_id = reviewer._item_id_for_display(display)
+        reviewer.record(display, label=truth[item_id][0])
+    reviewer.finalize(face_validity=True)
+    labels_path = export_annotations(annotation_workspace, MODEL, packet)
+    step("human-audit", "--model", MODEL, "--annotations",
+         str(labels_path))
     return {"ctx": ctx, "tree": tree, "base": base, "repo": repo,
-            "trace": trace, "labels_path": labels_path, "packet": packet}
+            "trace": trace, "labels_path": labels_path, "packet": packet,
+            "packet_hash_before": packet_hash_before}
 
 
 def test_full_stage_sequence_reached(lifecycle):
@@ -106,21 +114,54 @@ def test_full_stage_sequence_reached(lifecycle):
     assert current_state(lifecycle["tree"]) == C.STAGE_UNMASKED_ANALYSIS
 
 
-def test_gate1_bounds_recompute_from_single_labels(lifecycle):
-    """The recorded class bounds equal an independent recomputation of
-    human-to-verifier disagreement from the single-annotator export."""
-    from dci1v3.analysis.stats import wilson_upper_one_sided
+def test_gate1_record_states_claim_boundaries(lifecycle):
+    """The Gate 1 record carries the autorater basis, the exact
+    strongest-claim sentence, and HUMAN_VALIDATION_UNAVAILABLE — and no
+    implication that human validation occurred."""
     from dci1v3.engine.signing import verify_signed
     from dci1v3.engine.transitions import load_stage_record
-    from dci1v3.verifiers.target import s0_count
 
     tree, ctx = lifecycle["tree"], lifecycle["ctx"]
+    body = verify_signed(load_stage_record(tree, C.STAGE_GATE1),
+                         ctx.signing_key_path, where="gate1")["body"]
+    assert body["human_validation"] == "HUMAN_VALIDATION_UNAVAILABLE"
+    assert body["strongest_claim"] == C.STRONGEST_CLAIM
+    assert body["calibration_report"]["not_human_validation"] is True
+    assert "wilson" not in json.dumps(
+        body["calibration_report"]).lower()      # no human threshold reuse
+    assert body["development_report"]["contingency"]
+    # Untouched-calibration guarantee: dev and calibration judgments are
+    # disjoint item sets matching the recorded split.
+    autorater_dir = tree.data_dir("gate1") / "autorater"
+    dev_ids = {json.loads(l)["item_id"] for l in
+               (autorater_dir / "dev" / "judgments.jsonl")
+               .read_text().splitlines()}
+    cal_ids = {json.loads(l)["item_id"] for l in
+               (autorater_dir / "calibration" / "judgments.jsonl")
+               .read_text().splitlines()}
+    assert dev_ids and cal_ids and not (dev_ids & cal_ids)
+    split = fs.read_json(autorater_dir / "split.json")
+    assert dev_ids == set(split["development"])
+    assert cal_ids == set(split["calibration"])
+    # The frozen human packet is untouched by the autorater workflow.
+    from dci1v3.protocol.hashing import sha_text
+    assert sha_text(Path(lifecycle["packet"]).read_text()) == \
+        lifecycle["packet_hash_before"]
+
+
+def test_human_audit_bounds_recompute_from_single_labels(lifecycle):
+    """The preserved human pathway: audit bounds equal an independent
+    recomputation from the single-annotator export."""
+    from dci1v3.analysis.stats import wilson_upper_one_sided
+    from dci1v3.verifiers.target import s0_count
+
+    tree = lifecycle["tree"]
     annotations = fs.read_json(lifecycle["labels_path"])
     assert all(len(labels) == 1 for item_id, labels in annotations.items()
                if item_id != "face_validity")
-    assert len(annotations["face_validity"]) == 1
-    body = verify_signed(load_stage_record(tree, C.STAGE_GATE1),
-                         ctx.signing_key_path, where="gate1")["body"]
+    audit = fs.read_json(tree.root / "human_audit.json")
+    assert audit["outcome"] == "ESTABLISHED"
+    assert audit["human_validation"] == "HUMAN_VALIDATION_COMPLETE"
     recomputed: dict[str, dict[str, int]] = {
         "pass": {"cases": 0, "disagreements": 0},
         "fail": {"cases": 0, "disagreements": 0}}
@@ -132,12 +173,12 @@ def test_gate1_bounds_recompute_from_single_labels(lifecycle):
         if annotations[row["item_id"]][0] != verifier:
             recomputed[verifier]["disagreements"] += 1
     for cls, cell in recomputed.items():
-        recorded = body["class_bounds"][cls]
+        recorded = audit["class_bounds"][cls]
         assert recorded["cases"] == cell["cases"]
         assert recorded["disagreements"] == cell["disagreements"]
         assert recorded["wilson_upper"] == pytest.approx(
             wilson_upper_one_sided(cell["disagreements"], cell["cases"]))
-    assert body["face_validity"] == {"agreements": 1, "of": 1}
+    assert audit["face_validity"] == {"agreements": 1, "of": 1}
 
 
 def test_confirmatory_matrix_counts(lifecycle):

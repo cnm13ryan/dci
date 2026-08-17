@@ -1,14 +1,29 @@
-"""Gate 1: measurement (§10, §18.3, items 31–34) and the E2B carry-over.
+"""Gate 1 under amendment A2: the autorater-assisted verifier workflow,
+plus the E2B carry-over and the preserved human-validation pathway.
 
-Boundary suite, three-process verifier determinism at agreement 1.000, the
-closed natural-response reservoir with the frozen additional validation
-set, the seeded min(150, N_c) sample per verifier class, and the one-sided
-95% Wilson bound (at most 0.10 in both classes) on human-to-verifier
-disagreement — under amendment A1, one independent human judgment per item
-(DECISIONS_V3.md, Amendments). Human labels are external input; without
-them the gate does not pass and reports PENDING_HUMAN (not a terminal
-status). A bound above 0.10 with 150 cases is MEASUREMENT_NOT_ESTABLISHED;
-an exhausted natural class below 150 is MEASUREMENT_EVIDENCE_INSUFFICIENT.
+    response pool (pre-screen + frozen validation responses)
+    -> deterministic development/calibration split
+    -> `gate1-dev`: verifier + configured autorater on the development
+       half; disagreement listing for inspection; re-runnable while the
+       verifier is under development (regression tests guard changes)
+    -> `verifier-freeze` (study-level): manifest binding verifier sources,
+       regression-test state, code revision, split, autorater config
+    -> `gate1-calibrate`: the same autorater on the untouched calibration
+       half; full report (coverage, marginals, 2x2 contingency,
+       directional disagreement) with NO automatic acceptance threshold
+    -> `gate1 --approve-autorater-calibration`: the explicit researcher
+       approval that writes the GATE_1 stage record
+
+The stage record states ``HUMAN_VALIDATION_UNAVAILABLE`` and the
+registered strongest-claim sentence; autorater evidence is never
+presented as human validation. The blinded annotation packet, reviewer
+GUI, and parser are preserved unchanged; when an independent human
+becomes available, `human-audit --annotations` attaches that evidence
+(the original A1 criterion: one label per item, one-sided 95% Wilson
+bound at most 0.10 per verifier class).
+
+Boundary-suite and three-process determinism failures remain the
+registered MEASUREMENT_NOT_ESTABLISHED terminal outcomes.
 """
 from __future__ import annotations
 
@@ -22,15 +37,17 @@ from typing import Any
 
 from dci1v3.analysis.stats import wilson_upper_one_sided
 from dci1v3.engine import fs
+from dci1v3.engine.artifacts import record_state
 from dci1v3.engine.dispatch import Job, operation
-from dci1v3.errors import ProtocolError, TerminalStatus
+from dci1v3.errors import IntegrityError, ProtocolError, TerminalStatus
 from dci1v3.generation.cache import cache_rows, fill_cache
 from dci1v3.generation.plans import backend_plan
 from dci1v3.generation.prompts import Cell, prompt_plan, solo_cells
 from dci1v3.protocol import constants as C
-from dci1v3.protocol.hashing import sha_obj, sha_text
+from dci1v3.protocol.hashing import sha_file, sha_obj, sha_text
 from dci1v3.protocol.seeds import gate1_sample_seed
 from dci1v3.protocol.wordings import target_wordings
+from dci1v3.stages import autorater
 from dci1v3.stages.determinism_worker import verdict_digest
 from dci1v3.topics.split import split_topics
 from dci1v3.verifiers import target as target_mod
@@ -48,6 +65,7 @@ V2_TARGET_SOURCE = "src/dci1/verifiers/target.py"
 V2_WORDS_SOURCE = "src/dci1/verifiers/words.py"
 
 
+# --------------------------------------------------------------- helpers
 def _determinism(items: list[dict[str, Any]], *, processes: int
                  ) -> dict[str, Any]:
     """Run every verifier over every item in three separate processes."""
@@ -69,8 +87,8 @@ def _determinism(items: list[dict[str, Any]], *, processes: int
 
 
 def _reservoir(job: Job) -> list[dict[str, Any]]:
-    """Naturally generated target-solo responses: pre-screen rows plus any
-    dedicated validation rows already generated."""
+    """The response pool: naturally generated pre-screen target-solo rows
+    plus the frozen measurement-validation rows."""
     items = []
     prescreen_cache = job.tree.data_dir("prescreen") / "full"
     if not (prescreen_cache / "cache.jsonl").exists():
@@ -96,9 +114,7 @@ def _item(row: dict[str, Any]) -> dict[str, Any]:
 
 
 def _validation_cells() -> list[Cell]:
-    """The frozen additional measurement-validation set: pre-screen topics
-    across the full target grid, enumerated topic-major and truncated to
-    300 draws (DECISIONS_V3 V07)."""
+    """The frozen additional measurement-validation set (DECISIONS V07)."""
     split = split_topics()
     base = solo_cells("gate1_validation", split["prescreen"],
                       [("A", n) for n in C.TARGET_GRID], draws=1)
@@ -119,6 +135,7 @@ def _generate_fn(job: Job):
 
 def _sample(job: Job, reservoir: list[dict[str, Any]]
             ) -> dict[str, list[dict[str, Any]]]:
+    """The frozen human-annotation sample: min(150, N_c) per class."""
     sampled = {}
     for cls in ("pass", "fail"):
         members = sorted([i for i in reservoir
@@ -132,8 +149,7 @@ def _sample(job: Job, reservoir: list[dict[str, Any]]
 
 
 def instrument_identity() -> dict[str, str]:
-    """The carry-over comparison surfaces (§10): construct, normalisation,
-    target-verifier source, boundary specification."""
+    """The carry-over comparison surfaces (§10)."""
     return {
         "construct": "Use the word however exactly {n} times.",
         "normalisation_source": inspect.getsource(words_mod.alpha_runs),
@@ -142,6 +158,422 @@ def instrument_identity() -> dict[str, str]:
     }
 
 
+def _selected_cap(job: Job) -> int:
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.engine.transitions import load_stage_record
+    record = load_stage_record(job.tree, C.STAGE_REGIME)
+    if record is None:
+        raise ProtocolError("Gate 1 requires the regime-screen record")
+    payload = verify_signed(record, job.context.signing_key_path,
+                            where="regime_screen")
+    return int(payload["body"]["selected_cap"])
+
+
+def _packet_rows(sampled: dict[str, list[dict[str, Any]]]
+                 ) -> list[dict[str, Any]]:
+    return [{"item_id": i["item_id"],
+             "response_text": i["response_text"],
+             "constraint_text": i["constraint_text"], "n": i["n"]}
+            for cls in ("pass", "fail") for i in sampled[cls]]
+
+
+def _pool_and_split(job: Job) -> tuple[list[dict[str, Any]],
+                                       dict[str, Any]]:
+    reservoir = _reservoir(job)
+    split_path = job.tree.data_dir("gate1") / "autorater" / "split.json"
+    split = autorater.make_split(reservoir, model_id=job.spec.model_id)
+    if split_path.exists():
+        stored = fs.read_json(split_path)
+        if stored["split_hash"] != split["split_hash"]:
+            raise IntegrityError(
+                "the stored development/calibration split differs from "
+                "the deterministic derivation; the pool changed")
+        split = stored
+    else:
+        split_path.parent.mkdir(parents=True, exist_ok=True)
+        fs.write_json_once(split_path, split)
+    return reservoir, split
+
+
+def _half(reservoir: list[dict[str, Any]], split: dict[str, Any],
+          half: str) -> list[dict[str, Any]]:
+    wanted = set(split[half])
+    items = [i for i in reservoir if i["item_id"] in wanted]
+    if len(items) != len(wanted):
+        raise IntegrityError(f"{half} half is missing pool items")
+    return sorted(items, key=lambda i: i["item_id"])
+
+
+# ------------------------------------------------------------ operations
+@operation("gate1-dev", stage=None)
+def gate1_dev(job: Job) -> dict[str, Any]:
+    """Development phase: pool assembly, executable measurement checks,
+    the frozen human packet, and autorater judging of the development
+    half. Re-runnable while the verifier is under development."""
+    stage_dir = job.tree.data_dir("gate1")
+    stage_dir.mkdir(parents=True, exist_ok=True)
+
+    boundary = evaluate_suite()
+    if boundary["handled_as_specified"] != C.BOUNDARY_CASES_REQUIRED:
+        raise TerminalStatus("MEASUREMENT_NOT_ESTABLISHED", {
+            "criterion": "forty-case boundary suite",
+            "observed": boundary})
+
+    reservoir = _reservoir(job)
+    counts = {cls: sum(1 for i in reservoir
+                       if i["verifier_class"] == cls)
+              for cls in ("pass", "fail")}
+    if min(counts.values()) < C.GATE1_CLASS_TARGET and \
+            not (stage_dir / "validation" / "cache.jsonl").exists():
+        cells = _validation_cells()
+        validation_dir = stage_dir / "validation"
+        validation_dir.mkdir(parents=True, exist_ok=True)
+        if not (validation_dir / "prompt_plan.json").exists():
+            fs.write_json_once(validation_dir / "prompt_plan.json",
+                               prompt_plan(cells))
+        fill_cache(validation_dir, cells, spec=job.spec,
+                   stage="gate1_validation",
+                   generation_root=C.GENERATION_ROOT_SEED,
+                   plan=backend_plan(job.spec, cap=_selected_cap(job)),
+                   generate_fn=_generate_fn(job),
+                   environment=job.environment)
+        reservoir = _reservoir(job)
+
+    determinism = _determinism(
+        [{"item_id": i["item_id"], "response_text": i["response_text"]}
+         for i in reservoir], processes=C.DETERMINISM_PROCESSES)
+    if determinism["agreement"] != C.DETERMINISM_REQUIRED:
+        raise TerminalStatus("MEASUREMENT_NOT_ESTABLISHED", {
+            "criterion": "verifier determinism 1.000",
+            "observed": determinism})
+
+    # The frozen future-human packet (unchanged A1 sampling).
+    sampled = _sample(job, reservoir)
+    packet = _packet_rows(sampled)
+    packet_path = stage_dir / "annotation_packet.jsonl"
+    packet_bytes = "".join(
+        json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n"
+        for r in packet)
+    if packet_path.exists():
+        if sha_text(packet_path.read_text()) != sha_text(packet_bytes):
+            raise IntegrityError(
+                "the stored annotation packet differs from the frozen "
+                "sampling derivation")
+    else:
+        packet_path.write_text(packet_bytes)
+
+    # Autorater on the development half only.
+    reservoir, split = _pool_and_split(job)
+    config = autorater.load_config(job.options.get("autorater_config"))
+    dev_items = _half(reservoir, split, "development")
+    from dci1v3.stages.inference import judge_generate_fn
+    judgments = autorater.run_autorater(
+        stage_dir / "autorater" / "dev", dev_items, config=config,
+        phase="development", generate_fn=judge_generate_fn(job),
+        environment=job.environment)
+    report = autorater.judgment_report(judgments)
+    listing = autorater.disagreement_listing(
+        {i["item_id"]: i for i in dev_items}, judgments)
+    fs.write_json(stage_dir / "autorater" / "dev" / "report.json",
+                  {"report": report, "disagreements": listing})
+
+    body = {
+        "phase": "verifier-development",
+        "boundary_suite": {"handled": boundary["handled_as_specified"]},
+        "determinism": determinism,
+        "reservoir": counts,
+        "packet_hash": sha_text(packet_bytes),
+        "split_hash": split["split_hash"],
+        "development_items": len(dev_items),
+        "autorater_config_hash": config["config_hash"],
+        "development_report": report,
+        "disagreements_to_inspect": len(listing),
+        "verifier_sources": autorater.verifier_source_state(),
+        "not_human_validation": True,
+    }
+    fs.write_json(job.tree.root / "gate1_dev.json", body)
+    return {"status": "COMPLETED", "body": body,
+            "input_hashes": {"autorater_config": config["config_hash"],
+                             "split": split["split_hash"]},
+            "output_hashes": {"development_report": sha_obj(report)}}
+
+
+def verifier_freeze(context, *, autorater_config: str | None = None
+                    ) -> dict[str, Any]:
+    """Study-level, single-shot: the verifier-freeze manifest binding the
+    verifier implementation, regression-test state, code revision, split
+    derivation, and autorater configuration. Runs the verifier regression
+    suite and refuses to freeze on any failure."""
+    from dci1v3.engine import gitinfo, store
+    from dci1v3.engine.signing import sign_payload
+
+    manifest_path = context.study_root / "verifier_freeze.json"
+    if manifest_path.exists():
+        raise ProtocolError("the verifier is already frozen; changing a "
+                            "frozen instrument requires audited "
+                            "supersession")
+    gitinfo.assert_clean_worktree(context.repo_root)
+    commit = gitinfo.head_commit(context.repo_root)
+    gitinfo.assert_sources_in_commit(context.repo_root, commit)
+
+    test_path = (context.repo_root / "dci1" / "tests_v3"
+                 / "test_verifiers.py")
+    if not test_path.exists():
+        raise ProtocolError(f"verifier regression tests missing at "
+                            f"{test_path}")
+    completed = subprocess.run(
+        [sys.executable, "-B", "-m", "pytest", "-q", str(test_path),
+         "-p", "no:cacheprovider"],
+        capture_output=True, text=True,
+        cwd=str(context.repo_root / "dci1"),
+        env={**__import__("os").environ,
+             "PYTHONDONTWRITEBYTECODE": "1"})
+    if completed.returncode != 0:
+        raise ProtocolError(
+            f"verifier regression suite failed; freeze refused:\n"
+            f"{completed.stdout[-800:]}")
+
+    config = autorater.load_config(
+        Path(autorater_config) if autorater_config else None)
+    payload = {
+        "kind": "verifier_freeze",
+        "study_id": context.study_id,
+        "verifier_sources": autorater.verifier_source_state(),
+        "regression_tests": {
+            "path": "dci1/tests_v3/test_verifiers.py",
+            "file_hash": sha_file(test_path),
+            "result": completed.stdout.strip().splitlines()[-1]},
+        "producing_commit": commit,
+        "split_derivation": {"seed": C.AUTORATER_SPLIT_SEED,
+                             "domain": C.DOMAIN_AUTORATER_SPLIT},
+        "autorater_config": {k: config[k] for k in
+                             ("schema_version", "judge_model_key",
+                              "prompt_version", "decoding",
+                              "config_hash", "prompt_hash")},
+    }
+    record = sign_payload(payload, context.signing_key_path)
+    fs.write_json_once(manifest_path, record)
+    store.replicate(context.study_root, context.durable_study_root)
+    return {"frozen": True, "record_hash": record["record_hash"],
+            "producing_commit": commit}
+
+
+def _load_verifier_freeze(job: Job) -> dict[str, Any]:
+    from dci1v3.engine.signing import verify_signed
+    manifest_path = job.context.study_root / "verifier_freeze.json"
+    if not manifest_path.exists():
+        raise ProtocolError(
+            "the verifier is not frozen; run `verifier-freeze` after "
+            "development-phase inspection")
+    return verify_signed(fs.read_json(manifest_path),
+                         job.context.signing_key_path,
+                         where="verifier_freeze")
+
+
+@operation("gate1-calibrate", stage=None)
+def gate1_calibrate(job: Job) -> dict[str, Any]:
+    """Held-out evaluation: the same configured autorater on the
+    untouched calibration half of the pool. Reports everything, decides
+    nothing: there is no automatic acceptance threshold."""
+    dev_record = job.tree.root / "gate1_dev.json"
+    if not dev_record.exists():
+        raise ProtocolError("gate1-calibrate requires the development "
+                            "phase (gate1-dev) first")
+    manifest = _load_verifier_freeze(job)
+    autorater.assert_verifier_unchanged(manifest)
+
+    out_path = job.tree.root / "gate1_calibration.json"
+    if out_path.exists():
+        raise ProtocolError(
+            "a calibration report already exists; if the verifier changed "
+            "after inspecting it, that evidence is contaminated and a "
+            "fresh held-out split is required (audited supersession)")
+
+    config = autorater.load_config(job.options.get("autorater_config"))
+    if config["config_hash"] != \
+            manifest["autorater_config"]["config_hash"]:
+        raise IntegrityError(
+            "autorater configuration differs from the verifier-freeze "
+            "manifest; calibration must use the same configured autorater")
+
+    reservoir, split = _pool_and_split(job)
+    calibration_items = _half(reservoir, split, "calibration")
+    from dci1v3.stages.inference import judge_generate_fn
+    judgments = autorater.run_autorater(
+        job.tree.data_dir("gate1") / "autorater" / "calibration",
+        calibration_items, config=config, phase="calibration",
+        generate_fn=judge_generate_fn(job),
+        environment=job.environment)
+    report = autorater.judgment_report(judgments)
+
+    body = {
+        "phase": "autorater-calibration",
+        "status": "REPORTED",
+        "split_hash": split["split_hash"],
+        "calibration_items": len(calibration_items),
+        "autorater_config_hash": config["config_hash"],
+        "verifier_freeze_hash": sha_obj(manifest),
+        "report": report,
+        "approval": "pending explicit researcher approval "
+                    "(`gate1 --approve-autorater-calibration`)",
+        "not_human_validation": True,
+    }
+    fs.write_json_once(out_path, body)
+    record_state(job.tree, artifact_id="op:gate1-calibrate",
+                 path=out_path, artifact_type="gate_record",
+                 state="generated", stage="gate1-calibrate",
+                 producing_commit=job.producing_commit)
+    record_state(job.tree, artifact_id="op:gate1-calibrate",
+                 path=out_path, artifact_type="gate_record",
+                 state="committed", stage="gate1-calibrate",
+                 producing_commit=job.producing_commit)
+    return {"status": "REPORTED", "body": body,
+            "input_hashes": {"split": split["split_hash"],
+                             "verifier_freeze": body[
+                                 "verifier_freeze_hash"]},
+            "output_hashes": {"calibration_report": sha_obj(report)}}
+
+
+@operation("gate1", stage=C.STAGE_GATE1)
+def run_gate1(job: Job) -> dict[str, Any]:
+    """The explicit researcher approval that closes Gate 1 (A2)."""
+    if not job.options.get("approve_autorater_calibration"):
+        raise ProtocolError(
+            "Gate 1 closes only on explicit researcher approval: inspect "
+            "gate1_calibration.json and re-run with "
+            "--approve-autorater-calibration")
+    dev_path = job.tree.root / "gate1_dev.json"
+    calibration_path = job.tree.root / "gate1_calibration.json"
+    for path, hint in ((dev_path, "gate1-dev"),
+                       (calibration_path, "gate1-calibrate")):
+        if not path.exists():
+            raise ProtocolError(f"approval requires {hint} first")
+    manifest = _load_verifier_freeze(job)
+    try:
+        autorater.assert_verifier_unchanged(manifest)
+    except IntegrityError:
+        record_state(job.tree, artifact_id="op:gate1-calibrate",
+                     path=calibration_path,
+                     artifact_type="superseded_non_evidence",
+                     state="superseded", stage="gate1-calibrate",
+                     producing_commit=job.producing_commit)
+        raise
+    dev = fs.read_json(dev_path)
+    calibration = fs.read_json(calibration_path)
+    record_state(job.tree, artifact_id="op:gate1-calibrate",
+                 path=calibration_path, artifact_type="gate_record",
+                 state="accepted", stage="gate1-calibrate",
+                 producing_commit=job.producing_commit)
+
+    body = {
+        "basis": "autorater-calibrated frozen verifier; explicit "
+                 "researcher approval",
+        "human_validation": C.HUMAN_VALIDATION_UNAVAILABLE,
+        "strongest_claim": C.STRONGEST_CLAIM,
+        "measurement_scope": C.MEASUREMENT_SCOPE,
+        "boundary_suite": dev["boundary_suite"],
+        "determinism": dev["determinism"],
+        "reservoir": dev["reservoir"],
+        "packet_hash": dev["packet_hash"],
+        "split_hash": dev["split_hash"],
+        "verifier_freeze_hash": calibration["verifier_freeze_hash"],
+        "autorater_config_hash": calibration["autorater_config_hash"],
+        "development_report": dev["development_report"],
+        "calibration_report": calibration["report"],
+        "approval": {"action": "--approve-autorater-calibration",
+                     "recorded_by": "canonical dispatcher"},
+        "human_pathway": "annotation packet + reviewer GUI preserved; "
+                         "attach evidence later via `human-audit`",
+        "instrument": {k: sha_text(v)
+                       for k, v in instrument_identity().items()},
+        "carry_over": (fs.read_json(job.tree.carry_over_record)
+                       if job.tree.carry_over_record.exists() else None),
+    }
+    return {"status": "PASSED", "body": body,
+            "input_hashes": {
+                "development": sha_file(dev_path),
+                "calibration": sha_file(calibration_path),
+                "verifier_freeze": calibration["verifier_freeze_hash"]},
+            "output_hashes": {"packet": dev["packet_hash"]}}
+
+
+@operation("human-audit", stage=None)
+def human_audit(job: Job) -> dict[str, Any]:
+    """The preserved independent human validation (original A1 criterion),
+    attachable whenever an independent annotator becomes available."""
+    annotations_path = job.options.get("annotations")
+    if not annotations_path:
+        raise ProtocolError("human-audit requires --annotations (the "
+                            "reviewer-GUI export)")
+    out_path = job.tree.root / "human_audit.json"
+    if out_path.exists():
+        raise ProtocolError("a human audit is already recorded; "
+                            "supersession requires an audited decision")
+    packet_path = job.tree.data_dir("gate1") / "annotation_packet.jsonl"
+    if not packet_path.exists():
+        raise ProtocolError("no annotation packet exists for this model")
+    annotations = fs.read_json(Path(annotations_path))
+
+    by_class: dict[str, dict[str, int]] = {
+        "pass": {"cases": 0, "disagreements": 0},
+        "fail": {"cases": 0, "disagreements": 0}}
+    for line in packet_path.read_text().splitlines():
+        row = json.loads(line)
+        labels = annotations.get(row["item_id"])
+        if labels is None or len(labels) != C.GATE1_ANNOTATORS:
+            raise ProtocolError(
+                f"item {row['item_id']} lacks exactly "
+                f"{C.GATE1_ANNOTATORS} human label(s)")
+        if any(label not in ("pass", "fail") for label in labels):
+            raise ProtocolError(
+                f"item {row['item_id']} carries a label outside the "
+                f"registered binary vocabulary")
+        human = labels[0]
+        verifier = ("pass" if target_mod.s0_count(
+            row["response_text"]) == row["n"] else "fail")
+        by_class[verifier]["cases"] += 1
+        if human != verifier:
+            by_class[verifier]["disagreements"] += 1
+    face = annotations.get("face_validity")
+    if not (isinstance(face, list) and len(face) == C.GATE1_ANNOTATORS):
+        raise ProtocolError("face-validity judgement missing")
+
+    outcome = "ESTABLISHED"
+    for cls, cell in by_class.items():
+        cell["wilson_upper"] = (
+            wilson_upper_one_sided(cell["disagreements"], cell["cases"])
+            if cell["cases"] else None)
+        if cell["wilson_upper"] is None or \
+                cell["wilson_upper"] > C.GATE1_DISAGREEMENT_MAX:
+            outcome = ("BOUND_EXCEEDED"
+                       if cell["cases"] >= C.GATE1_CLASS_TARGET
+                       else "EVIDENCE_INSUFFICIENT")
+    body = {
+        "outcome": outcome,
+        "human_validation": (C.HUMAN_VALIDATION_COMPLETE
+                             if outcome == "ESTABLISHED"
+                             else C.HUMAN_VALIDATION_UNAVAILABLE),
+        "class_bounds": by_class,
+        "threshold": C.GATE1_DISAGREEMENT_MAX,
+        "face_validity": {"agreements": sum(1 for f in face if f),
+                          "of": len(face)},
+        "packet_hash": sha_text(packet_path.read_text()),
+        "annotations_hash": sha_file(Path(annotations_path)),
+        "interpretation": (
+            "independent human validation established" if outcome ==
+            "ESTABLISHED" else
+            "human evidence does not certify the measurement; downstream "
+            "results keep (or escalate) the unvalidated-measurement "
+            "caveat"),
+    }
+    fs.write_json_once(out_path, body)
+    return {"status": outcome, "body": body,
+            "input_hashes": {"annotations": body["annotations_hash"],
+                             "packet": body["packet_hash"]},
+            "output_hashes": {"audit": sha_file(out_path)}}
+
+
+# ------------------------------------------------------------ carry-over
 @operation("carry-over", stage=None)
 def carry_over(job: Job) -> dict[str, Any]:
     """The authorised E2B v2 Gate 1 packet carry-over (item 2)."""
@@ -184,10 +616,6 @@ def carry_over(job: Job) -> dict[str, Any]:
         if prior.get("accepted"):
             raise ProtocolError("an accepted carry-over record already "
                                 "exists; carry-over is single-shot")
-        # A refused carry-over is not accepted evidence: preserve it for
-        # audit as superseded_non_evidence and record the supersession.
-        from dci1v3.engine.artifacts import record_state
-        from dci1v3.protocol.hashing import sha_obj
         parked = (job.tree.data_dir("artifacts") / "superseded"
                   / f"carry_over.{sha_obj(prior)[:12]}.json")
         parked.parent.mkdir(parents=True, exist_ok=True)
@@ -206,155 +634,3 @@ def carry_over(job: Job) -> dict[str, Any]:
     return {"status": "COMPLETED", "body": body,
             "input_hashes": {"packet": body["source_packet_hash"]},
             "output_hashes": {}}
-
-
-@operation("gate1", stage=C.STAGE_GATE1)
-def run_gate1(job: Job) -> dict[str, Any]:
-    stage_dir = job.tree.data_dir("gate1")
-    stage_dir.mkdir(parents=True, exist_ok=True)
-
-    boundary = evaluate_suite()
-    if boundary["handled_as_specified"] != C.BOUNDARY_CASES_REQUIRED:
-        raise TerminalStatus("MEASUREMENT_NOT_ESTABLISHED", {
-            "criterion": "forty-case boundary suite",
-            "observed": boundary})
-
-    reservoir = _reservoir(job)
-    counts = {cls: sum(1 for i in reservoir
-                       if i["verifier_class"] == cls)
-              for cls in ("pass", "fail")}
-    if min(counts.values()) < C.GATE1_CLASS_TARGET and \
-            not (stage_dir / "validation" / "cache.jsonl").exists():
-        cells = _validation_cells()
-        validation_dir = stage_dir / "validation"
-        validation_dir.mkdir(parents=True, exist_ok=True)
-        if not (validation_dir / "prompt_plan.json").exists():
-            fs.write_json_once(validation_dir / "prompt_plan.json",
-                               prompt_plan(cells))
-        cap = _selected_cap(job)
-        fill_cache(validation_dir, cells, spec=job.spec,
-                   stage="gate1_validation",
-                   generation_root=C.GENERATION_ROOT_SEED,
-                   plan=backend_plan(job.spec, cap=cap),
-                   generate_fn=_generate_fn(job),
-                   environment=job.environment)
-        reservoir = _reservoir(job)          # reservoir now closes
-        counts = {cls: sum(1 for i in reservoir
-                           if i["verifier_class"] == cls)
-                  for cls in ("pass", "fail")}
-
-    determinism = _determinism(
-        [{"item_id": i["item_id"], "response_text": i["response_text"]}
-         for i in reservoir], processes=C.DETERMINISM_PROCESSES)
-    if determinism["agreement"] != C.DETERMINISM_REQUIRED:
-        raise TerminalStatus("MEASUREMENT_NOT_ESTABLISHED", {
-            "criterion": "verifier determinism 1.000",
-            "observed": determinism})
-
-    sampled = _sample(job, reservoir)
-    packet = [{"item_id": i["item_id"],
-               "response_text": i["response_text"],
-               "constraint_text": i["constraint_text"], "n": i["n"]}
-              for cls in ("pass", "fail") for i in sampled[cls]]
-    packet_path = stage_dir / "annotation_packet.jsonl"
-    if not packet_path.exists():
-        packet_path.write_text("".join(
-            json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n"
-            for r in packet))
-
-    annotations = _load_annotations(job)
-    if annotations is None:
-        raise ProtocolError(
-            f"PENDING_HUMAN: {len(packet)} sampled responses await the "
-            f"independent annotator; packet at {packet_path}")
-    stored = stage_dir / "annotations.json"
-    if not stored.exists():
-        fs.write_json_once(stored, annotations)
-
-    class_bounds: dict[str, Any] = {}
-    for cls in ("pass", "fail"):
-        items = sampled[cls]
-        disagreements = 0
-        for item in items:
-            labels = annotations.get(item["item_id"])
-            if labels is None:
-                labels = annotations.get(item["response_hash"])
-            if labels is None or len(labels) != C.GATE1_ANNOTATORS:
-                raise ProtocolError(
-                    f"PENDING_HUMAN: item {item['item_id']} lacks exactly "
-                    f"{C.GATE1_ANNOTATORS} human label(s)")
-            if any(label not in ("pass", "fail") for label in labels):
-                raise ProtocolError(
-                    f"PENDING_HUMAN: item {item['item_id']} carries a "
-                    f"label outside the registered binary vocabulary")
-            human = labels[0]        # amendment A1: one independent judgment
-            verifier = ("pass" if target_mod.s0_count(
-                item["response_text"]) == item["n"] else "fail")
-            if human != verifier:
-                disagreements += 1
-        bound = wilson_upper_one_sided(disagreements, len(items)) \
-            if items else 1.0
-        class_bounds[cls] = {"cases": len(items),
-                             "disagreements": disagreements,
-                             "wilson_upper": bound}
-        if bound > C.GATE1_DISAGREEMENT_MAX:
-            if len(items) >= C.GATE1_CLASS_TARGET:
-                raise TerminalStatus("MEASUREMENT_NOT_ESTABLISHED", {
-                    "criterion": f"one-sided 95% Wilson upper bound at "
-                                 f"most {C.GATE1_DISAGREEMENT_MAX}",
-                    "class": cls, "bounds": class_bounds})
-            raise TerminalStatus("MEASUREMENT_EVIDENCE_INSUFFICIENT", {
-                "criterion": "natural class exhausted below 150 cases",
-                "class": cls, "bounds": class_bounds,
-                "reservoir": counts})
-
-    face = annotations.get("face_validity")
-    if not (isinstance(face, list) and len(face) == C.GATE1_ANNOTATORS):
-        raise ProtocolError("PENDING_HUMAN: face-validity judgements "
-                            "missing")
-
-    body = {
-        "boundary_suite": {"handled": boundary["handled_as_specified"]},
-        "determinism": determinism,
-        "reservoir": counts,
-        "sampled": {cls: len(sampled[cls]) for cls in sampled},
-        "class_bounds": class_bounds,
-        "face_validity": {"agreements": sum(1 for f in face if f),
-                          "of": len(face)},
-        "discriminant_validity": {
-            "verifier_inputs": ["response text", "target identity", "n"],
-            "parse_independent": True},
-        "carry_over": (fs.read_json(job.tree.carry_over_record)
-                       if job.tree.carry_over_record.exists() else None),
-        "instrument": {k: sha_text(v)
-                       for k, v in instrument_identity().items()},
-    }
-    return {"status": "PASSED", "body": body,
-            "input_hashes": {"packet": sha_text(packet_path.read_text())},
-            "output_hashes": {"bounds": sha_obj(class_bounds)}}
-
-
-def _selected_cap(job: Job) -> int:
-    from dci1v3.engine.signing import verify_signed
-    from dci1v3.engine.transitions import load_stage_record
-    record = load_stage_record(job.tree, C.STAGE_REGIME)
-    if record is None:
-        raise ProtocolError("Gate 1 requires the regime-screen record")
-    payload = verify_signed(record, job.context.signing_key_path,
-                            where="regime_screen")
-    return int(payload["body"]["selected_cap"])
-
-
-def _load_annotations(job: Job) -> dict[str, Any] | None:
-    path = job.options.get("annotations")
-    if path:
-        return fs.read_json(Path(path))
-    default = job.tree.data_dir("gate1") / "annotations.json"
-    if default.exists():
-        return fs.read_json(default)
-    carried = job.tree.carry_over_record
-    if carried.exists():
-        record = fs.read_json(carried)
-        if record.get("accepted") and record.get("annotations"):
-            return record["annotations"]
-    return None
