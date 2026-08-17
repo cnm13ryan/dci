@@ -30,6 +30,7 @@ from __future__ import annotations
 import inspect
 import json
 import random
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -286,6 +287,37 @@ def _half(reservoir: list[dict[str, Any]], split: dict[str, Any],
     return sorted(items, key=lambda i: i["item_id"])
 
 
+def park_stale_judgments(tree, autorater_dir: Path,
+                         stale: dict[str, str], *,
+                         producing_commit: str) -> Path:
+    """The audited supersession of judge runs produced under a prior
+    autorater configuration (A3.1): the stale phase directories — and a
+    copy of the development record they produced — are PARKED under
+    ``superseded/<old-config-prefix>/`` with append-only ledger entries,
+    never deleted, so the prior round stays inspectable evidence of the
+    instrument's history."""
+    old_tag = sorted(set(stale.values()))[0][:12]
+    parked_root = Path(autorater_dir) / "superseded" / old_tag
+    parked_root.mkdir(parents=True, exist_ok=True)
+    dev_record = tree.root / "gate1_dev.json"
+    if dev_record.exists() and \
+            not (parked_root / "gate1_dev.json").exists():
+        shutil.copy2(dev_record, parked_root / "gate1_dev.json")
+    for phase in sorted(stale):
+        target = parked_root / phase
+        (Path(autorater_dir) / phase).rename(target)
+        # The ledger records the raw judgment store (the directory's
+        # load-bearing artifact); the whole phase directory moves with it.
+        for state in ("generated", "committed", "superseded"):
+            record_state(tree,
+                         artifact_id=f"autorater-{phase}:{old_tag}",
+                         path=target / "judge_rows.jsonl",
+                         artifact_type="superseded_non_evidence",
+                         state=state, stage="gate1-dev",
+                         producing_commit=producing_commit)
+    return parked_root
+
+
 # ------------------------------------------------------------ operations
 @operation("gate1-dev", stage=None)
 def gate1_dev(job: Job) -> dict[str, Any]:
@@ -347,6 +379,21 @@ def gate1_dev(job: Job) -> dict[str, Any]:
     # Autorater on the development half only.
     reservoir, split = _pool_and_split(job)
     config = autorater.load_config(job.options.get("autorater_config"))
+    autorater_dir = stage_dir / "autorater"
+    stale = {phase: old for phase in ("dev", "dev_repeat")
+             if (old := autorater.stale_config_rows(
+                 autorater_dir / phase, config)) is not None}
+    if stale:
+        if not job.options.get("supersede_stale_judgments"):
+            raise ProtocolError(
+                f"stored judge rows were produced under a different "
+                f"autorater configuration ({stale}); re-running "
+                f"development under the revised protocol is an explicit "
+                f"audited decision — re-run with "
+                f"--supersede-stale-judgments to park (never delete) "
+                f"the prior round")
+        park_stale_judgments(job.tree, autorater_dir, stale,
+                             producing_commit=job.producing_commit)
     dev_items = _half(reservoir, split, "development")
     from dci1v3.stages.inference import judge_generate_fn
     judgments = autorater.run_autorater(

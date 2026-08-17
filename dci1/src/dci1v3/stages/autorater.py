@@ -45,8 +45,9 @@ def load_config(path: Path | None = None) -> dict[str, Any]:
     judgment. Fails closed on any drift from the registered constants."""
     config = fs.read_json(path or _CONFIG_PATH)
     for key in ("schema_version", "judge_model_key", "judge_model_id",
-                "judge_revision", "backend", "prompt_version",
-                "parser_version", "label_mapping", "decoding"):
+                "judge_revision", "backend", "chat_template_kwargs",
+                "prompt_version", "parser_version", "label_mapping",
+                "decoding"):
         if key not in config:
             raise ProtocolError(f"autorater config missing {key!r}")
     if config["prompt_version"] not in C.AUTORATER_PROMPTS:
@@ -68,6 +69,12 @@ def load_config(path: Path | None = None) -> dict[str, Any]:
             f"autorater config pins {config['judge_model_id']}@"
             f"{config['judge_revision'][:12]} but the judge registry pins "
             f"{judge.model_id}@{judge.revision[:12]}")
+    if config["chat_template_kwargs"] != judge.chat_template_kwargs:
+        raise ProtocolError(
+            f"autorater config's judging condition "
+            f"{config['chat_template_kwargs']} differs from the judge "
+            f"registry's {judge.chat_template_kwargs}; the registered "
+            f"condition is single-valued")
     if int(config["decoding"]["max_new_tokens"]) != C.AUTORATER_CAP:
         raise ProtocolError(
             f"autorater config cap {config['decoding']['max_new_tokens']} "
@@ -185,6 +192,10 @@ def run_autorater(phase_dir: Path, items: list[dict[str, Any]], *,
         judge, cap=C.AUTORATER_CAP, decoding="greedy",
         skip_special_tokens=bool(
             config["decoding"].get("skip_special_tokens", True)))
+    # The judging condition comes from the HASHED config (load_config
+    # verifies it equals the judge registry's), so every judgment's
+    # config_hash covers the rendered reasoning condition.
+    plan["chat_template_kwargs"] = dict(config["chat_template_kwargs"])
 
     writer = CacheWriter(phase_dir / "judge_rows.jsonl")
     # Cached judgments are reusable ONLY while their provenance is valid:
@@ -401,6 +412,21 @@ def stability_comparison(primary: list[dict[str, Any]],
             "flipped_items": label_flips,
             "status_changed_items": status_changes,
             "stable": not label_flips and not status_changes}
+
+
+def stale_config_rows(phase_dir: Path, config: dict[str, Any]
+                      ) -> str | None:
+    """The prior config hash when a phase directory holds judge rows
+    produced under a DIFFERENT autorater configuration, else None.
+    Detection only — superseding a stale phase is an explicit audited
+    decision made by the gate1-dev operator, never automatic."""
+    path = Path(phase_dir) / "judge_rows.jsonl"
+    if not path.exists():
+        return None
+    for row in CacheWriter(path).rows():
+        if row.get("config_hash") != config["config_hash"]:
+            return row.get("config_hash") or "unknown"
+    return None
 
 
 # --------------------------------------------------- verifier freeze check

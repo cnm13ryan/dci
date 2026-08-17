@@ -155,13 +155,16 @@ DOMAIN_AUTORATER_SPLIT = "dci1v3:autorater-split:v1"
 DOMAIN_AUTORATER_SEED = "dci1v3:autorater:v1"
 
 #: Greedy judging cap. The configured judge (openai/gpt-oss-20b) emits a
-#: harmony transcript — an analysis channel at the registered low
-#: reasoning effort, then the final verdict channel — so the cap covers
-#: BOTH channels; a truncated transcript parses as invalid_output, never
-#: as a label. 512 rather than 256 after the pre-freeze operational
-#: smoke test showed occurrence-counting analyses can exceed 256 tokens
-#: on hard cases; set before any development or calibration judgment.
-AUTORATER_CAP = 512
+#: harmony transcript — an analysis channel, then the final verdict
+#: channel — so the cap covers BOTH channels; a truncated transcript
+#: parses as invalid_output, never as a label. History (all pre-freeze,
+#: operational A/B on synthetic items only): 256 → 512 after the smoke
+#: test; 512 → 1024 with reasoning_effort medium after the development
+#: round showed low-effort counting mislabels (systematic ±1 and
+#: saturation miscounts) that medium effort corrects — at medium the
+#: analyses are longer, and 512 would convert the accuracy gain into
+#: truncations.
+AUTORATER_CAP = 1024
 AUTORATER_SCHEMA_VERSION = "autorater-judgment/1"
 
 #: Versioned judge prompts; the active version comes from the autorater

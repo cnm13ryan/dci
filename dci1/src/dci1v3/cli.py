@@ -74,6 +74,13 @@ def main(argv: list[str] | None = None) -> int:
                               "registered hardware class)")
         if name in ("gate1-dev", "gate1-calibrate"):
             cmd.add_argument("--autorater-config", default=None)
+        if name == "gate1-dev":
+            cmd.add_argument("--supersede-stale-judgments",
+                             action="store_true",
+                             help="audited decision: park judge runs "
+                                  "made under a prior autorater "
+                                  "configuration and re-judge under "
+                                  "the current one")
         if name == "gate1":
             cmd.add_argument("--approve-autorater-calibration",
                              action="store_true",
@@ -111,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             options = {}
             for key in ("annotations", "runs", "expected", "device",
-                        "autorater_config",
+                        "autorater_config", "supersede_stale_judgments",
                         "approve_autorater_calibration"):
                 if getattr(args, key, None):
                     options[key] = getattr(args, key)
