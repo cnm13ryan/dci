@@ -1,0 +1,1541 @@
+Read the experimental design and the relevant project files in full. Red-team the design strictly against the methodological and experimental guidelines established in those project files.
+Return only the following two sections.
+1. Red-team findings
+Identify the important weaknesses, failure modes, confounds, validity threats, under-specified decisions, and ways the experiment could produce misleading conclusions.
+For each finding, provide:
+
+* Issue: the specific problem.
+* Why it matters: how it could bias, invalidate, or weaken the inference.
+* Severity: Critical / Major / Moderate / Minor.
+* Evidence: the exact part of the experimental design and, where relevant, the project guideline it conflicts with.
+
+Prioritize substantive threats to the experiment. Do not spend space on stylistic, documentation, or implementation issues unless they affect scientific validity or reproducibility.
+2. Concrete recommendations
+For every Critical, Major, or Moderate finding, give a corresponding actionable fix.
+For each recommendation, provide:
+
+* Change: exactly what should be modified.
+* Implementation: the concrete experimental, statistical, data, evaluation, or engineering change required.
+* Success criterion: what must be true after the change for the issue to be considered resolved.
+* Priority: P0 / P1 / P2.
+
+Keep the response concise and decision-oriented. Do not summarize the experiment, explain background concepts, praise the design, provide general commentary, or include any sections beyond Red-team findings and Concrete recommendations.
+
+---
+
+Below is a tightened version of the passage. I have preserved the substantive findings, numerical results, severity assessments, evidence trail, priorities, and success criteria, while removing repetition, repairing awkward notation, and making the inferential logic more explicit. 
+
+# 1. Red-team findings
+
+### F1. The reference set collapsed to a single easy reference, so (\tau) no longer cleanly identifies focal-specific interference
+
+**Issue.** After Round 1, every contrast in the programme uses the single reference (C_{L3}), with arms of the form ({B,C_{L3}}) throughout §§6–9. Round 1 had already shown strong reference dependence: (\tau) ranged from approximately (+0.30) for ordinary references to (-0.57) for the semicolon reference, while the pooled estimate was approximately (+0.02). The retained reference is also near the failure floor. §5.2 reports control failure rates of only (0.004)–(0.006), and §3.2 reports zero failures for two ordinary references.
+
+**Why it matters.** When
+[
+P(F_A=1\mid \text{reference arm})\approx 0,
+]
+the contrast
+[
+\tau \approx P(F_A=1\mid \text{focal arm}).
+]
+The reference subtraction therefore contributes almost no adjustment. The resulting estimate cannot cleanly distinguish focal-specific interference from the simpler possibility that the focal instruction is intrinsically difficult in that context. Every downstream headline quantity based on this reference, including (+0.400), (+0.950), (\Delta_{\text{boundary}}), (\Delta_{\text{placement}}), (\Psi), and (\Gamma), inherits this identification problem.
+
+This also conflicts with the project's preregistered treatment of (\tau) as a family of reference-specific effects. The registration explicitly argues that collapsing across references discards the heterogeneity that motivated the reference family and that an inconvenient reference cannot simply be removed.
+
+**Severity:** Critical.
+
+**Evidence:** `DCI_exploratory_global_analysis.tex` §§2.1, 3.1, 5.2; `claude/dci_v15_preregistration_draft.md` on the six-reference family, min/max claim rule, and (\epsilon_{\text{ref}}) caliper certificate; `Section_9.2_Choosing_Your_Manipulation.md` on active and passive controls.
+
+### F2. The canonical zero in the control context is floor-degenerate, and its zero-width interval is an artefact
+
+**Issue.** The headline result reports bracket-background
+[
+\tau=0.000;[0.000,0.000]
+]
+with zero failures across all 20 tasks. The figure caption acknowledges that the corresponding bar required a nominal width merely to remain visible. Yet the marginal failure probabilities in the focal and reference arms are not reported.
+
+The four-state results imply target compliance of approximately (0.975) or higher in both arms, placing both close to the failure floor. With roughly 40 observations per arm and zero observed events, the data remain compatible with a non-trivial underlying event probability. A nonparametric cluster bootstrap cannot represent this uncertainty when every sampled cluster contains zero events, so it returns a zero-width interval by construction.
+
+**Why it matters.** The report correctly refuses to interpret this structure elsewhere. §10.1 states that (\tau=0-0=0) under `TARGET_CEILING` is not evidence that interference is absent. The same degeneracy nevertheless supplies one half of the central C4 dissociation. This creates an internal inconsistency and substantially overstates the precision of the bracket-background result.
+
+The claimed dissociation therefore compares a floor-limited control context with a non-floor semicolon context. Before the difference can support a substantive conclusion, the control context must be evaluated at an operating point with sufficient failure-rate headroom.
+
+**Severity:** Critical.
+
+**Evidence:** `DCI_exploratory_global_analysis.tex` §§7.3, 7.4, 10.1; `section_8.1_reliability_notes.md`; `section_6.5_computing_precision.md`.
+
+### F3. Underpowered null results are repeatedly interpreted as refutations
+
+**Issue.** The exploratory programme declares no smallest effect size of interest, power target, or precision target, and the sample size is fixed by the 20-task bank. Several null results are nevertheless stated categorically. Examples include
+[
+\Delta_{\text{placement}} =  +0.000/-0.050/-0.050/+0.000,
+]
+followed by the conclusion that there is "no placement effect at any reasoning level"; the SmolLM3 contrast (\Delta=-0.062); and the statement that every (\Psi) interval contains zero, without printing those intervals. Even the reported
+[
+\Gamma=-0.075;[-0.212,+0.075]
+]
+is used to support the claim that reasoning does not close the gap. Appendix B then classifies several hypotheses as `REFUTED`.
+
+**Why it matters.** The project's own registration sets a smallest effect size of interest of (0.10) risk-difference units and reports simultaneous minimum detectable effects of approximately (0.12)–(0.22) even with 48 clusters. With only 20 clusters, the exploratory analyses are still less precise. These experiments therefore cannot exclude effects at or above the project's own threshold of substantive interest.
+
+A non-significant estimate establishes insufficient evidence for a detectable difference under the fitted analysis. It does not establish equivalence or refute the underlying hypothesis.
+
+**Severity:** Critical.
+
+**Evidence:** `.tex` §§6, 7.4, 9.1, Appendix A items 19 and 24, Appendix B; `section_10_4_sample_size_planning.md`; `section_6.4_inference_and_its_discontents.md`; `claude/dci_v15_preregistration_draft.md`.
+
+### F4. The same 20-task bank supports almost every substantive claim
+
+**Issue.** The report states that the same 20 tasks were reused across approximately 11 experimental rounds and more than 35,000 generations. The only larger sample is a later 64-task calibration split used for screening. The relationship between the 20 exploratory tasks and the preregistered burned, screening, calibration, pilot, and confirmatory splits is not documented.
+
+**Why it matters.** Repeated exploration on the same task bank allows task-specific structure to shape hypotheses, manipulations, metrics, and interpretations. Leave-one-task-out analyses and task-cluster bootstraps measure stability within the observed task sample. They cannot establish generalisation to new tasks.
+
+The missing provenance also creates a potential confirmatory-contamination problem. If any exploratory tasks overlap the preregistered confirmatory topics, the nominally held-out confirmatory sample has already informed the research programme.
+
+**Severity:** Critical.
+
+**Evidence:** `.tex` §§2.4, 12.2–12.3; `section_15_1_confirmatory_visualization.md`; `Section_9.1_Experimental_Designs.md`; `Section_11.2_Preregistration.md`; `claude/dci_v15_preregistration_draft.md` §14.6.
+
+### F5. The existing preregistration cannot confirm most of the exploratory claims
+
+**Issue.** §12.3 states that the confirmatory arm is exactly what the preregistration line was designed to support. The actual registered study differs materially from the exploratory programme. It uses `Qwen/Qwen2.5-3B-Instruct`, (S=\varnothing), (k=2), and a six-reference (\tau) family. Mechanism claims, (k>2), other models, and cross-model transport are explicitly outside its scope. The pilot registration also states that it is not powered to detect scientifically relevant effects for its preregistered quantities.
+
+**Why it matters.** Claims C3–C8 concern background gating, higher constraint loads, reasoning interventions, mechanisms, and cross-model transport. The current registration provides no confirmatory test for most of these claims. The report therefore implies a confirmatory pathway that does not presently exist.
+
+**Severity:** Critical.
+
+**Evidence:** `.tex` §12.3; `claude/dci_v15_preregistration_draft.md` §§21–22 and study specification; `claude/dci_pilot_preregistration_draft.md`; `Section_11.2_Preregistration.md`.
+
+### F6. The claim about "any thinking at all" relies on a reasoning-budget cell already judged uninterpretable
+
+**Issue.** C4 depends on the claim that the control condition collapses at the smallest positive reasoning budget, (b=256). Yet §7.2 reports a 95% reasoning-cap hit rate at (b=256) and explicitly declines to interpret the cell. The denser transition-budget experiment that might have resolved the intermediate regime was deprecated because 98.4% of replicate pairs were duplicates.
+
+**Why it matters.** A 95% cap-hit rate means the intended reasoning process was usually interrupted. Any reduction in (\tau) can therefore reflect truncation or censoring induced by the cap. The programme itself recognises that a binding cap constitutes a treatment. The claim that the effect disappears once any reasoning is permitted consequently rests on a cell that fails its own interpretability criterion.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §§7.2, 7.3, 11, Appendix A item 18, Appendix F; `section_10_3_sampling_biases.md`.
+
+### F7. The headline dissociation is an interaction claim, but the interaction is never estimated
+
+**Issue.** §7.3 reports separate (\tau) estimates for bracket and semicolon backgrounds under (b=0) and natural reasoning, then concludes that the backgrounds are statistically indistinguishable at (b=0) and that the dissociation emerges under reasoning. The required background-by-reasoning interaction is not estimated for this endpoint.
+
+**Why it matters.** The relevant estimand is the change in the between-background contrast:
+[
+\Delta_r = \tau_{\text{semicolon},r} - \tau_{\text{bracket},r},
+]
+followed by
+[
+\Gamma = \Delta_{\text{natural}} - \Delta_{b=0}.
+]
+Separate confidence intervals for the constituent (\tau) values cannot establish this interaction. Overlapping intervals also do not establish equality.
+
+C4 therefore requires a direct estimate of (\Gamma) from the paired task structure before the claim that the dissociation "emerges under reasoning" is supported.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §§2.2, 7.3, 9.1; `section_6.5_computing_precision.md`; `section_6.4_inference_and_its_discontents.md`.
+
+### F8. There is no multiplicity control despite dozens of related analyses
+
+**Issue.** The report states that no multiple-comparisons correction was applied. The programme nevertheless examines dozens of correlated contrasts across (\tau), (\Delta), (\Gamma), four-state outcomes, (\Delta_{\text{joint}}), compliance, chain metrics, reasoning length, model variants, and orderings. Several load-bearing results lie close to the significance boundary, including
+[
+\Delta_{\text{joint}}=-0.100[-0.200,-0.025],
+]
+the Qwen3.5-9B estimate
+[
+\tau=-0.150[-0.300,0.000],
+]
+and the ACQ estimate
+[
+\Delta=-0.125[-0.250,0.000].
+]
+
+**Why it matters.** Repeated testing increases the probability that at least one nominal 95% interval excludes zero by chance. With 20 independent tests, this probability is approximately (1-0.95^{20}\approx0.64); dependence changes the exact value without removing the underlying problem. Marginal findings should therefore remain hypothesis-generating unless they survive a prospectively defined family-wise procedure.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §§10.1, 12.3, 13, Appendix A items 28–29; `section_6.4_inference_and_its_discontents.md`; `Section_11.1_Garden_of_Forking_Paths.md`; `section_8.4_multiple_measures_notes.md`.
+
+### F9. The inferential procedure is poorly matched to the data structure and has not been calibrated
+
+**Issue.** The programme relies almost entirely on percentile task-clustered bootstrap intervals over 20 clusters, generally with only 2–4 observations per cluster and a binary outcome. The main pipeline uses 4,000 draws, while the verifier uses 10,000. Wording or paraphrase variation, replicate structure, and random slopes are not explicitly modelled. No A/A experiment, permutation calibration, or other null experiment assesses the realised behaviour of the inferential procedure.
+
+**Why it matters.** Boundary cells produce degenerate bootstrap intervals, and small numbers of clusters can produce poorly calibrated percentile intervals. The crossed task and wording structure also means that task-only clustering may omit meaningful sources of dependence. The registration itself prescribes stronger safeguards, including studentised max-(T) simultaneous intervals and Holm-adjusted (p)-values.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §2.4 and Appendix E; `section_7-4_using_models_to_analyze_data-2.md`; `section_7-3_linear_mixed_effects_models.md`; `section_15_1_confirmatory_visualization.md`; `claude/dci_v15_preregistration_draft.md`.
+
+### F10. The boundary-control manipulation also changes answer content
+
+**Issue.** §9.1 describes the comparison between "exactly one semicolon" and "exactly one degree symbol" as matched on everything else. A degree-symbol requirement can induce numeric or temperature-related content. The programme itself encountered a condition-specific segmentation failure involving `"20°C."`.
+
+**Why it matters.** The manipulation therefore changes several dimensions simultaneously: punctuation-boundary affordances, likely semantic content, and exposure to segmenter errors. Any observed (\Delta_{\text{boundary}}) can contain contributions from each. The argument that segmentation error makes the observed effect conservative addresses the possible direction of measurement error. It does not remove the semantic-content confound.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §9.1 and associated figure caption; `Section_9.2_Choosing_Your_Manipulation.md`; `section_8.2_validity_notes.md`.
+
+### F11. Mechanism and manipulation-gate analyses condition on post-treatment compliance
+
+**Issue.** The mechanism proxy is reported among semicolon-compliant and degree-symbol-compliant responses, and the anti-splice gate is evaluated among semicolon-compliant answers. Compliance differs across experimental conditions and can itself be affected by the manipulation.
+
+**Why it matters.** Restricting analysis to a treatment-affected subgroup can introduce post-treatment selection bias. The reported proxy separation and the gate verdict therefore estimate a selected-subpopulation quantity whose composition can differ by condition. This is particularly consequential because the gate verdict stopped the programme's intended causal test of C6.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §§9.1–9.2; `section_12_3_ensuring_high_quality_data.md`; `section_10_3_sampling_biases.md`.
+
+### F12. Replicate independence was verified for the vLLM experiments but remains unverified for earlier canonical runs
+
+**Issue.** §11 states that replicate independence is measured rather than assumed. In practice, the audit and reseeding procedure applies to the vLLM reasoning datasets. Rounds 1–6 and the Round 7 Transformers runs remain marked `Canonical`, although their lineage files record the per-request seed policy as unestablished.
+
+**Why it matters.** The same replication defect elsewhere reduced effective sample size substantially and shifted some estimates by as much as (0.325). Claims C1–C3 depend heavily on these earlier datasets. Their effective sample sizes and uncertainty estimates remain uncertain until the replicate structure is directly audited.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §11 and Appendix F; `exp-2` lineage §7; `exp-3` lineage §7; `section_3-1_reproducibility.md`.
+
+### F13. Treatment-caused unscorable outcomes are handled differently from the preregistered scoring rule
+
+**Issue.** §10.2 records ceiling-bound rows as a separate state instead of treating them as target failures. One checkpoint has 65 such rows out of 160, while another has none. The preregistration defines (F_A=1) for every outcome other than a full pass specifically to prevent conditioning the primary analysis on treatment-affected observability.
+
+**Why it matters.** When one condition produces far more unscorable or ceiling-bound observations, excluding those observations changes the analysed population differently across conditions. A comparison involving approximately 41% excluded rows in one condition and 0% in another is therefore difficult to interpret causally.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §10.2; `claude/dci_v15_preregistration_draft.md`; `section_10_3_sampling_biases.md`; `section_12_3_ensuring_high_quality_data.md`.
+
+### F14. The SmolLM3 transport result is interpreted even though the manipulation failed to transfer
+
+**Issue.** SmolLM3 background compliance ranges from approximately (0.194) to (0.575), compared with (0.706)–(0.938) on the canonical model. §7.4 explicitly recognises that identical prompt text did not produce an equivalent treatment. Nevertheless, (\Delta=-0.062) contributes to the C7 non-transport conclusion and the `WEAKENED` verdict in Appendix B.
+
+**Why it matters.** A transport test requires the intended intervention to be instantiated adequately on the target model. When manipulation uptake is poor, a small effect can arise because the treatment was not delivered as intended. The corresponding transport effect is therefore unidentified under the intended construct.
+
+**Severity:** Major.
+
+**Evidence:** `.tex` §7.4, Appendix A item 24, Appendix B; `Section_9.2_Choosing_Your_Manipulation.md`; `section_12_3_ensuring_high_quality_data.md`.
+
+### F15. Mechanism proxies were revised using the same failures subsequently used to validate them
+
+**Issue.** The chaining metric was redefined after an audit exposed style-dependent recall problems and was then checked again on the same 18 audited outputs. The splice-count regex also contained a silent colon/dash error before being repaired. These measures subsequently support the boundary and count-versus-usage conclusions.
+
+**Why it matters.** A proxy revised in response to observed errors needs independent validation. Re-evaluating it on the cases that motivated the revision provides development-set performance, not held-out evidence of measurement validity. No held-out precision, recall, or inter-rater reliability estimates are reported.
+
+**Severity:** Moderate.
+
+**Evidence:** `.tex` §4.2, §9.1, Appendix C items 7–8; `section_8.2_validity_notes.md`; `section_8.3_selecting_a_measure_notes.md`.
+
+### F16. The analysis sometimes interprets observed behaviour as "choice" despite insufficient evidence of capability
+
+**Issue.** §7.4 uses hand-authored witness answers to argue that near-zero joint compliance represents behavioural choice on an achievable task. C5 similarly uses arbitration language in settings where focal-instruction success can be as low as (0.000)–(0.138). The abstract then presents several findings without consistently qualifying them by checkpoint, reference, task bank, or experimental load.
+
+**Why it matters.** A human-generated witness proves that the instruction set is logically satisfiable. It does not demonstrate that the tested model has the capability to produce such an answer reliably. When focal compliance is near floor, capability failure and behavioural prioritisation remain observationally difficult to separate.
+
+The strongest language should therefore describe observed outcome patterns until an independent capability probe establishes substantial attainable joint compliance.
+
+**Severity:** Moderate.
+
+**Evidence:** `.tex` abstract, §7.4, §12.4; `section_14_4_writing_responsibly.md`; `section_8.2_validity_notes.md`.
+
+### F17. Internal reproducibility checks exist, but the evidence base cannot yet be independently reproduced
+
+**Issue.** The project records internal tests, SHA-256 manifests, provenance guards, and deprecated-run status. The materials required for external reproduction are not yet available: the 20-task bank, complete prompts, raw generations, scoring code, analysis code, codebook, and a formal data-availability statement are absent from the public evidence package.
+
+**Why it matters.** Internal reruns establish an important form of computational repeatability. Independent reproduction and replication additionally require access to the raw generations, task materials, scoring procedures, and analysis implementation.
+
+**Severity:** Moderate.
+
+**Evidence:** `.tex` §11 and Appendices E–F; `section_3-1_reproducibility.md`; `section_3-4_replication_theory_open_science.md`; `section_13_2_data_management.md`; `section_14_3_writing_reproducibly.md`.
+
+# 2. Concrete recommendations
+
+### R1. Restore the reference family
+
+**Change.** Treat (\tau) as a reference-indexed family rather than a single-reference scalar.
+
+**Implementation.** Re-run the canonical no-thinking and natural-reasoning endpoints using at least four admitted references, ideally the six specified in the registration. Select them using the registered matching and caliper procedure, and require their isolated target-failure rates to lie in a usable range, such as (0.10)–(0.60). Report
+[
+\tau_j
+]
+for every admitted reference (j), together with (\min_j\tau_j), (\max_j\tau_j), and the marginal failure probabilities in both arms.
+
+**Success criterion.** The semicolon-versus-bracket dissociation persists for (\min_j\tau_j), with every reference arm retaining at least (0.10) target-failure headroom. Otherwise, describe the phenomenon as reference-dependent heterogeneity.
+
+**Priority:** P0.
+
+### R2. Remove floor-degenerate cells from load-bearing claims
+
+**Change.** Treat zero-event cells as boundary-limited measurements and move the control condition to an informative operating point.
+
+**Implementation.** Report the two constituent arm-level failure probabilities beside every (\tau). Use an interval procedure that remains informative at the boundary. Re-run the bracket-background natural-reasoning condition at a harder setting, such as (k=5) or a six-sentence requirement, selected prospectively so that both arms have meaningful failure-rate headroom.
+
+**Success criterion.** No load-bearing estimate has a zero-width uncertainty interval, and the bracket-background result is reproduced in a cell where both arms have at least (0.10) target-failure headroom.
+
+**Priority:** P0.
+
+### R3. Use the preregistered SESOI to distinguish equivalence from insufficient precision
+
+**Change.** Adopt (\pm0.10) risk difference as the operational equivalence region and remove categorical null claims that cannot exclude effects of that magnitude.
+
+**Implementation.** Compute and report minimum detectable effects and expected interval widths for (\tau), (\Delta), and (\Gamma) at 20 task clusters. Reanalyse (\Delta_{\text{placement}}), (\Gamma), (\Psi), the SmolLM3 contrast, and the six-order partition results using a formal equivalence procedure against (\pm0.10). Relabel failed equivalence tests as `UNDERPOWERED` or `NOT_IDENTIFIED`.
+
+**Success criterion.** Every statement of "no effect" or "refuted" is supported by equivalence at (\pm0.10); every other null result is explicitly described as inconclusive.
+
+**Priority:** P0.
+
+### R4. Replicate the load-bearing results on fresh tasks
+
+**Change.** Introduce a genuinely held-out task sample with explicit provenance.
+
+**Implementation.** Define the target task population and sampling rule. Draw at least 40 new tasks that are disjoint from the existing 20-task bank, the 64-task calibration set, and all preregistered confirmatory topics. Pre-specify the natural-endpoint background dissociation and (\Delta_{\text{boundary}}) as the two primary replication contrasts. Also publish a provenance map connecting the existing 20 tasks to every registered split.
+
+**Success criterion.** Both primary contrasts reproduce in sign on the new tasks, with point estimates lying within the original uncertainty intervals, and no existing exploratory task overlaps the confirmatory bank.
+
+**Priority:** P0.
+
+### R5. Map every exploratory claim to an actual confirmatory instrument
+
+**Change.** Correct §12.3 and make the exploratory-to-confirmatory pathway explicit.
+
+**Implementation.** Create a coverage table for C1–C8 showing which registered study can test each claim: V15 confirmatory, V16 pilot, or none. Record the relevant design mismatches, including model, (k), background set, reference family, mechanism scope, and transport scope. For claims with no suitable instrument, either preregister an appropriate confirmatory study or state explicitly that confirmation is not currently planned.
+
+**Success criterion.** Every substantive claim has either a named confirmatory test or an explicit `NO CONFIRMATORY INSTRUMENT` designation.
+
+**Priority:** P0.
+
+### R6. Re-establish the reasoning mode claim using non-binding budgets
+
+**Change.** Base reasoning conclusions exclusively on budget cells in which the cap rarely binds.
+
+**Implementation.** Re-run positive budgets such as (256,384,512,768,) and (1024) with independently generated, content-addressed seeds. Admit a budget to substantive interpretation only when the cap-hit rate is at most 2% in every condition. If (b=256) remains binding, identify the smallest tested non-binding budget and restrict the claim accordingly.
+
+**Success criterion.** Control-side repair is reproduced at one or more positive budgets with cap-hit rates (\leq2%). Otherwise, withdraw the "any thinking at all" formulation.
+
+**Priority:** P0.
+
+### R7. Estimate the headline interaction directly
+
+**Change.** Make the background-by-reasoning interaction the estimand corresponding to C4.
+
+**Implementation.** Estimate
+[
+\Delta_{0} = \tau_{\text{semicolon},0} - \tau_{\text{bracket},0},
+]
+[
+\Delta_{\text{natural}} = \tau_{\text{semicolon,natural}} - \tau_{\text{bracket,natural}},
+]
+and
+[
+\Gamma = \Delta_{\text{natural}} - \Delta_{0},
+]
+using the same resampled task indices so that pairing is preserved.
+
+**Success criterion.** The statement that the dissociation emerges under reasoning is supported by a reported (\Gamma) and uncertainty interval. If the interval includes zero at the relevant inferential threshold, restrict the conclusion to persistence of interference in the semicolon context under reasoning.
+
+**Priority:** P0.
+
+### R8. Define inferential families and control multiplicity within each family
+
+**Change.** Organise the exploratory estimates into prospectively defined inferential families.
+
+**Implementation.** Separate headline (\tau/\Delta/\Gamma), order effects, four-state outcomes, and cross-model analyses. Recompute each family using the simultaneous procedure specified in the registration, such as studentised max-(T) intervals with Holm-adjusted bootstrap (p)-values on shared resamples. Results supported only by marginal intervals should remain explicitly hypothesis-generating.
+
+**Success criterion.** Every load-bearing claim is supported by a simultaneous interval. Marginal quantities such as (\Delta_{\text{joint}}), Qwen3.5-9B (\tau), and the ACQ estimate either survive the family-wise analysis or are removed from confirmatory-sounding claim language.
+
+**Priority:** P1.
+
+### R9. Add a model-based analysis and calibrate the inferential procedure empirically
+
+**Change.** Supplement the task-cluster bootstrap with an analysis that explicitly represents the hierarchical data structure.
+
+**Implementation.** Fit a logistic GLMM with crossed random intercepts for task and wording or paraphrase, together with an appropriate random slope for the manipulated factor, or use a small-sample-corrected GEE when justified. Standardise the bootstrap implementation across all branches. Add an A/A experiment and a treatment-label permutation analysis to measure the empirical behaviour of the estimator under a known null.
+
+**Success criterion.** The model-based and bootstrap headline estimates agree to within one interval half-width, and the null-calibration experiment produces a false-positive rate compatible with the nominal level.
+
+**Priority:** P1.
+
+### R10. Replicate the boundary result against multiple content-neutral controls
+
+**Change.** Separate boundary affordance from degree-symbol-specific semantic effects.
+
+**Implementation.** Add at least two additional non-boundary marks that are prospectively screened for high compliance, minimal semantic-content induction, and compatibility with the segmentation pipeline. For each condition, report diagnostics such as numeric-token frequency, output length, topic shift, and hand-labelled segmenter error.
+
+**Success criterion.** (\Delta_{\text{boundary}}) remains positive across all admissible non-boundary controls, with no material differential segmentation error. Otherwise, state the result specifically as a semicolon-versus-degree-symbol effect.
+
+**Priority:** P1.
+
+### R11. Recompute mechanism and gate statistics on an intent-to-treat basis
+
+**Change.** Define the primary mechanism estimands over all assigned rows.
+
+**Implementation.** Recalculate splice-proxy prevalence and the anti-splice manipulation gate without conditioning on punctuation compliance. Report compliance itself as a separate treatment outcome. If a compliance-conditional estimand remains scientifically useful, accompany it with an explicit identification analysis, such as principal-stratification assumptions or partial-identification bounds.
+
+**Success criterion.** The mechanism separation and manipulation-gate decision persist under the unconditional analysis. If they do not, revise the corresponding mechanism conclusions.
+
+**Priority:** P1.
+
+### R12. Audit replicate independence for every canonical dataset
+
+**Change.** Apply the replicate-independence standard uniformly across the full experimental lineage.
+
+**Implementation.** For every Transformers-era canonical run, calculate the byte-identical replicate-pair rate and within-task outcome correlation. Define a prospective threshold for unacceptable duplication, such as 5%, and regenerate every claim-bearing dataset that exceeds it.
+
+**Success criterion.** Every dataset labelled `Canonical` in Appendix F has a measured duplication statistic, and C1–C3 depend exclusively on datasets that pass the declared threshold.
+
+**Priority:** P1.
+
+### R13. Apply the registered primary scoring rule consistently
+
+**Change.** Count every outcome other than a full pass as target failure in the primary analysis.
+
+**Implementation.** Treat unscorable, truncated, ceiling-bound, and no-final-within-budget rows as (F_A=1). Report the frequency of every row state separately by condition. Retain any alternative treatment of these rows as a labelled sensitivity analysis.
+
+**Success criterion.** The primary analysis contains no condition-dependent exclusion, row-state rates are visible for every condition, and the primary and sensitivity estimates agree in sign for the headline contrasts.
+
+**Priority:** P1.
+
+### R14. Require successful manipulation uptake before interpreting cross-model transport
+
+**Change.** Establish a prospective uptake criterion for every model-transfer experiment.
+
+**Implementation.** Set a minimum background-compliance threshold, such as (0.70), together with a minimum target-failure headroom requirement. Adapt the wording using calibration tasks until the target model passes these gates. If satisfactory uptake cannot be achieved, classify the transport comparison as `NOT_IDENTIFIED_UPTAKE`.
+
+**Success criterion.** Every cross-model (\Delta) used in a substantive claim comes from a model-condition pair that passes the uptake gate. The SmolLM3 conclusion is either reproduced under adequate uptake or reclassified as unidentified.
+
+**Priority:** P1.
+
+### R15. Validate mechanism proxies on genuinely held-out annotations
+
+**Change.** Freeze each structural proxy before evaluating its measurement performance.
+
+**Implementation.** Construct a fresh stratified validation sample of at least 100 responses, balanced across relevant backgrounds and reasoning conditions, and exclude every response used during proxy development. Obtain independent human labels and report precision, recall, and inter-rater agreement by condition. Version and freeze the resulting scoring rule.
+
+**Success criterion.** Held-out inter-rater agreement reaches approximately (\kappa\geq0.80), measurement error does not differ materially across conditions, and the mechanism conclusions remain stable when recomputed using the validated proxy.
+
+**Priority:** P2.
+
+### R16. Separate demonstrated capability from observed prioritisation
+
+**Change.** Reserve "choice" and "arbitration" language for settings where the model has demonstrated meaningful capacity for joint compliance.
+
+**Implementation.** Run a capability probe using interventions such as few-shot demonstrations or an in-context witness solution and estimate the attainable joint-compliance rate. Where focal compliance remains near floor, describe the empirical outcome states directly. Qualify all abstract-level conclusions by the relevant checkpoint, task bank, reference design, and constraint load.
+
+**Success criterion.** Any retained claim about behavioural choice is accompanied by evidence that the model can attain joint compliance at a rate substantially above the observed floor. Otherwise, use capability-neutral terminology.
+
+**Priority:** P2.
+
+### R17. Release the complete reproducibility package
+
+**Change.** Make the canonical evidence base independently reproducible.
+
+**Implementation.** Release the 20-task bank, complete rendered prompts, raw generations for every canonical run, scoring and verifier code, analysis code, environment specification, and row-schema codebook. Add a data and materials availability statement. Retain deprecated datasets in the release with their status and reason for deprecation clearly recorded.
+
+**Success criterion.** An independent researcher can reproduce the canonical headline table and at least one reported (\Delta) directly from the released raw generations without contacting the authors.
+
+**Priority:** P2.
+
+---
+
+Read the following sources carefully:
+
+1. **Shortcut Learning in Deep Neural Networks**: https://arxiv.org/pdf/2004.07780
+2. The attached **DCI exploratory global analysis** document.
+
+
+Using the shortcut-learning framework from the paper, identify **plausible shortcut explanations for the empirical phenomena reported in the DCI analysis**.
+
+I want a focused hypothesis-generation exercise. Do not broadly summarize either source.
+
+For each important phenomenon in the DCI results, provide:
+
+1. **Shortcut feature**
+   * Name the specific surface-level or easily exploitable feature the model could be using.
+   * Explain briefly how reliance on that feature could produce the observed behaviour.
+2. **Feature combination**
+   * Identify plausible combinations of two or more features that could jointly determine the model's behaviour.
+   * Specify the combination explicitly, for example:
+     [
+     \text{feature A} + \text{feature B} \rightarrow \text{observed behaviour}.
+     ]
+   * Explain why the interaction could matter even if neither feature alone fully explains the result.
+
+Organize the answer as a concise table with the following columns:
+
+| Observed DCI phenomenon | Candidate shortcut feature(s) | Plausible feature combination(s) | Why this could explain the observation |
+| ----------------------- | ----------------------------- | -------------------------------- | -------------------------------------- |
+
+Focus especially on shortcuts involving properties of the actual prompt and output that the model could readily exploit, such as lexical cues, punctuation, syntax, instruction position, structural affordances, output formatting, local token patterns, or interactions among these features. Treat these only as examples, not as a predetermined list.
+
+Distinguish clearly between:
+* a **shortcut feature**, where behaviour can be explained largely by reliance on one predictive cue; and
+* a **feature combination**, where behaviour depends on the conjunction or interaction of several cues.
+
+Generate multiple competing explanations where warranted. Do not assume that any candidate shortcut is actually responsible for the result.
+
+Keep the output primarily as a **list of concrete candidate shortcut features and feature combinations**. Avoid an extended literature review, methodological critique, or recommendations for future experiments unless a very short diagnostic note is necessary to make a proposed shortcut intelligible.
+
+---
+
+# Shortcut-learning hypotheses for the DCI exploratory results
+
+This section develops candidate shortcut-learning explanations for the DCI exploratory results. Every proposed rule is a hypothesis about a decision procedure the model *could* be using. None is claimed to be the mechanism responsible for the observed behaviour. The purpose is to identify simple surface-sensitive rules that can reproduce the existing observations and to distinguish them from richer explanations involving planning, arbitration, or explicit reasoning.
+
+## Scope and conceptual transfer
+
+The shortcut-learning framework asks whether a system succeeds by using the intended solution procedure or by relying on a feature that happens to predict the correct behaviour on the training distribution. A shortcut becomes visible when that feature is separated from the intended solution under distribution shift ([Geirhos et al., 2020](https://arxiv.org/abs/2004.07780)).
+
+For DCI, the framework can be mapped as follows.
+
+* **Intended solution.** Satisfy every instruction in the composed prompt simultaneously. In the present design, joint satisfiability is established by verifier-passing witness answers (DCI §7.4).
+* **Reference regime.** As a working hypothesis, instruction-tuning and preference data provide many examples in which formatting constraints occur in relatively canonical forms and can often be solved independently.
+* **Distribution shift.** DCI composes several countable and potentially structurally competing constraints, varies their order, and replaces one instruction with a matched reference. Composition itself therefore supplies the relevant shift.
+* **Shortcut.** A generation rule that responds to prompt-surface features such as glyph identity, quantifier scope, serial position, or familiar collocations, and that succeeds in ordinary settings while failing when those features are decorrelated from the intended solution.
+
+This framing imposes a useful evidential discipline. A result should not be attributed to affordance-sensitive planning or explicit constraint arbitration when a simpler surface-sensitive decision rule explains the same pattern. The interpretation advanced in the DCI analysis, namely that a mark capable of functioning as a sentence boundary induces an output structure that consumes the units counted by the target instruction (DCI §12.2), is therefore one candidate mechanism among several.
+
+Several superficially plausible alternatives are already inconsistent with the exploratory evidence and can be excluded from the candidate set. Colon *emission* does not covary with amplification: production varies from 0.15 to 0.95 across conditions, while the within-condition association is −0.049. Placement freedom is null at every tested reasoning budget. Single-character atomicity cannot explain the result because the ellipsis also amplifies interference. A general rule based on "any freely placed unattached mark" is inconsistent with the degree-symbol control. Finally, the central behaviours occur under greedy decoding. At (q=3), failure reaches 1.000 and 97.5% of outputs contain one sentence. Candidate explanations therefore need to account for the model's modal completion rather than stochastic sampling variation.
+
+## Candidate feature inventory
+
+The following features provide a common vocabulary for the hypotheses below.
+
+| Tag     | Candidate feature                       | Candidate decision rule                                                                                                                                                                                                                                                                                                               |
+| ------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **F1**  | **Glyph-checkability**                  | Constraints are easier to execute when they reduce to a direct operation such as "emit character (c) exactly (n) times" or "avoid character (c)." Constraints requiring word counting, cross-sentence comparison, or syntactic-relation checking lack an equally direct surface operation and may receive weaker behavioural control. |
+| **F2**  | **Boundary-unit mismatch**              | Boundary-capable marks such as `;`, `:`, `…`, and `.` can affect the model's effective segmentation of the response. If that segmentation differs from the verifier's sentence definition, the model may generate a structure that appears internally adequate while failing the external sentence-count verifier.                    |
+| **F3**  | **Right-context continuation prior**    | Marks such as `;` and `:` strongly predict continuation within an existing sentence. After emitting such a mark, the model may therefore assign greater probability to lowercase continuation and less probability to a full stop and sentence restart.                                                                               |
+| **F4**  | **Register priming**                    | A requested glyph may activate a characteristic writing register before detailed content is planned. Semicolons may favour long-periodic expository prose; degree symbols may favour terse numeric or technical prose.                                                                                                                |
+| **F5**  | **Scope noun as planning unit**         | Expressions such as "in the whole answer" and "in each sentence" specify different units over which the model organises the response. The linguistic scope of the instruction may therefore determine the unit that is enumerated during generation.                                                                                  |
+| **F6**  | **Serial-list template match**          | A requirement for several semicolons may activate a familiar `a; b; c` construction. The transition from one or two required marks to three or more may therefore induce a categorical change in output structure.                                                                                                                    |
+| **F7**  | **Primacy-based template setting**      | Early structural instructions may establish an initial response template. Later instructions are then incorporated into that template without complete replanning.                                                                                                                                                                    |
+| **F8**  | **Vacuous satisfaction under collapse** | Some relational constraints become trivially or vacuously satisfied when the output collapses to a single unit. For example, a one-sentence answer contains no adjacent sentence pair that can violate "each sentence must be longer than the previous one."                                                                          |
+| **F9**  | **Negation-scope insensitivity**        | A prohibition can lexically mention the construction it seeks to prevent. The named construction may act as a positive surface prime when behavioural control over the negation is weak.                                                                                                                                              |
+| **F10** | **Collocation lock**                    | A requested placement can coincide with a highly familiar construction such as `; however,`. Fixing the position of the mark then preserves its ordinary clause-joining function.                                                                                                                                                     |
+| **F11** | **Trace re-priming**                    | Reasoning traces themselves contain prose and punctuation. Repeated exposure to the trigger glyph or its associated structure inside the trace may alter the distribution from which the final answer is generated.                                                                                                                   |
+| **F12** | **Checklist-loop affordance**           | A numbered list of countable constraints may invite repeated item-by-item verification. Rechecking one item can reopen another, creating a reasoning loop without a reliable termination criterion.                                                                                                                                   |
+| **F13** | **Benchmark-template retrieval**        | Canonical instructions such as "write exactly (N) sentences" may activate a strongly learned response template in later checkpoints, reducing the need to compute the target constraint dynamically.                                                                                                                                  |
+| **F14** | **Comparative-growth append loop**      | "Each sentence must be longer than the previous one" can encourage repeated clause addition. Length can be increased cheaply through commas and subordinate clauses without creating new verifier-visible sentence boundaries.                                                                                                        |
+| **F15** | **Short-answer allowance**              | Within a relatively short answer budget, a single orthographic sentence can accommodate several required marks. The generation policy therefore faces little pressure to introduce additional terminal boundaries.                                                                                                                    |
+
+## Candidate shortcuts by observed phenomenon
+
+### 1. The registered focal is nearly harmless while an admitted reference is strongly harmful
+
+**Observation.** The registered focal (B), which requires strictly lengthening sentences, produces failure rates of 0.067 and 0.317. `S_SEMICOLON` produces 0.633 and 0.567, while ordinary references remain at or below 0.05. The pooled (\tau) is approximately +0.02 (DCI §3.1).
+
+**Candidate shortcut.** F1 proposes that the semicolon instruction is behaviourally privileged because it specifies a directly executable glyph operation. F2 adds that executing this particular glyph operation can alter the sentence unit counted by the target.
+
+**Feature combination.**
+
+[
+F1 + F2
+\quad\Rightarrow\quad
+\text{surface-executable constraint} + \text{boundary-capable glyph}
+\quad\Rightarrow\quad
+\text{target failure}.
+]
+
+Neither feature alone explains the full asymmetry. F1 predicts that the semicolon instruction will be obeyed, but obedience alone does not imply target failure. F2 identifies the source of structural interference, but does not explain why the nonglyph focal (B) remains relatively harmless. Their conjunction predicts that large interference should arise primarily when a constraint is both directly surface-executable and structurally coupled to the target's counting unit.
+
+The same account predicts weak effects for quote and bracket-pair references: they are directly checkable glyph constraints, yet they lack the same sentence-boundary capability.
+
+### 2. The chaining disposition appears even when no target conflict exists
+
+**Observation.** A bare instruction to "use at least 2 semicolons," with no sentence-count target, produces a mean of 1.225 sentences and 1.075 sentences on `gemma-2-9b` (DCI §4.1).
+
+This result establishes that the relevant structural disposition can appear without any competing instruction. A conflict-resolution mechanism is therefore unnecessary to produce the baseline chaining behaviour.
+
+Two shortcuts remain plausible. Under F4, the semicolon instruction selects a long-periodic writing register before detailed planning. Under F3, each semicolon locally favours continuation within the existing sentence. F5 can reinforce either effect because "in the whole answer" represents the response as one countable object.
+
+Two candidate combinations follow:
+
+[
+F4 + F15
+\rightarrow
+\text{long-periodic register within a short-answer envelope}
+\rightarrow
+\text{few terminal periods},
+]
+
+and
+
+[
+F3 + F5
+\rightarrow
+\text{local continuation pressure across a whole-answer unit}
+\rightarrow
+\text{few sentence restarts}.
+]
+
+These hypotheses make different predictions. F4 predicts changes in vocabulary, clause structure, and sentence length throughout the answer. F3 predicts an effect concentrated in the tokens immediately following each semicolon. The replication on Gemma makes a checkpoint-specific explanation less attractive, although it does not distinguish these two broader mechanisms.
+
+### 3. The dose threshold occurs at (q\approx3) and is invariant to target count
+
+**Observation.** At (N=4), failure rises approximately as 0.113, 0.306, 0.988, 0.988, 1.000, and 1.000 as the required semicolon count increases. The decisive transition between (q=2) and (q=3) occurs for every tested (N\in{2,\ldots,6}) (DCI §4.1).
+
+**Candidate shortcut.** F6 provides a simple explanation. Three required marks may cross the threshold at which a canonical semicolon-list template becomes strongly activated. One or two semicolons can be inserted into ordinary prose; three or more encourage an `a; b; c` construction.
+
+Combined with F5:
+
+[
+F6 + F5
+\rightarrow
+\text{serial-list template applied at whole-answer scope}
+\rightarrow
+\text{one chained response}.
+]
+
+The invariance to (N) is especially informative. A mechanism that explicitly compares the semicolon demand with the required number of sentences should generally depend on both quantities. A threshold determined entirely by (q) is more consistent with a decision rule triggered by the focal demand itself.
+
+### 4. Paragraph targets survive while sentence targets collapse
+
+**Observation.** Paragraph count remains exactly 4.000 while sentence count collapses within the same responses (DCI §4.2).
+
+**Candidate shortcut.** F2 predicts selective damage to units whose delimiter class overlaps with the demanded mark. Semicolons can interact with sentence segmentation, whereas they cannot imitate the paragraph delimiter `\n\n`.
+
+Thus:
+
+[
+F2 + F1
+\rightarrow
+\text{mid-line glyph manipulation}
+\rightarrow
+\text{sentence-level interference without paragraph-level interference}.
+]
+
+This is strong evidence against undifferentiated accounts based on generic overload. A general loss of instruction-following capacity should create some pressure on both structural targets. A delimiter-sensitive rule predicts the observed unit specificity.
+
+### 5. Identical colon counts behave differently under whole-answer and per-sentence scope
+
+**Observation.** Four colons produce 0.850 target failure under whole-answer scope and 0.000 under per-sentence scope (DCI §4.2).
+
+**Candidate shortcut.** F5 directly predicts this inversion. "In the whole answer" establishes the response as the counted object. "In each sentence" explicitly invokes individual sentences as the relevant planning units.
+
+The count and glyph remain fixed:
+
+[
+F5 + F1
+\rightarrow
+\text{same surface-checking demand}
++
+\text{different planning unit}
+\rightarrow
+\text{different output structure}.
+]
+
+At whole-answer scope, F3 or F6 can then concentrate the requested marks into a single chained string.
+
+This interpretation contains an important unresolved tension. Round 1 reports substantial failure for a per-sentence semicolon condition. Those runs also differ in load, order, and background, so they do not isolate scope in the same way. The current evidence therefore supports scope sensitivity without establishing that per-sentence wording is universally protective.
+
+### 6. The colon exhibits a pure interaction with (B)
+
+**Observation.**
+
+[
+F(A)=0.000,\qquad
+F(A+B)=0.000,\qquad
+F(A+\text{colon})=0.013,
+]
+
+while
+
+[
+F(A+B+\text{colon})=0.312.
+]
+
+The colon alone yields approximately 1.150 sentences (DCI §5.1).
+
+**Candidate shortcut.** This pattern requires a feature combination because the component manipulations have negligible main effects. F4 or F3 supplies a weak pressure toward a chained, single-sentence response. F8 then makes the collapsed state unusually stable because (B) becomes vacuously satisfied when only one sentence exists.
+
+[
+F4/F3 + F8
+\rightarrow
+\text{weak push toward collapse}
++
+\text{relational constraint becomes vacuously satisfied}
+\rightarrow
+\text{stable single-sentence solution}.
+]
+
+This account yields a direct prediction. Replacing (B) with a constraint that is *violated* by a one-sentence answer should sharply reduce or eliminate the interaction.
+
+### 7. Instruction order produces a structured surface with sign reversal
+
+**Observation.** The estimated order effects are:
+
+[
+\Delta(\pi):
+\quad
+QAC=0.400,;
+QCA=0.400,;
+CQA=0.325,;
+AQC=0.250,;
+CAQ=0.150,;
+ACQ=-0.125.
+]
+
+CAQ and ACQ place the focal instruction in the same position yet differ by 0.275. Fourteen simple positional partitions fail (DCI §5.2).
+
+**Candidate shortcut.** F7 proposes that early structural instructions establish a response template. A second surface variable may concern the relative order of the background and target constraints.
+
+The data are consistent with a two-factor rule:
+
+[
+\text{earlier focal/background influence}
++
+\text{relative ordering of structural constraints}
+\rightarrow
+\Delta(\pi).
+]
+
+The focal's effect declines broadly with later placement. At fixed focal position, background-before-target also produces greater amplification than target-before-background:
+
+[
+CQA > AQC,
+\qquad
+CAQ > ACQ.
+]
+
+This reproduces the full ranking more closely than any single positional variable considered in isolation. The remaining interaction implies configurational dependence: the effect of one instruction's position depends on the placement of the others.
+
+### 8. Emitting the colon does not predict failure
+
+**Observation.** Colon production ranges from approximately 0.15 to 0.95 across order conditions without tracking (\Delta). Within the colon condition, colon-bearing answers are slightly *less* likely to fail, with an association of −0.049 (DCI §5.2).
+
+**Candidate shortcut.** This result shifts attention away from a simple output-token account. Under F4 and F5, the instruction can alter the response plan before the relevant glyph is emitted.
+
+[
+F4 + F5
+\rightarrow
+\text{instruction-side plan change}
+\rightarrow
+\text{target failure},
+]
+
+while colon emission remains a downstream consequence of that plan.
+
+The small negative association can also arise from a third variable. A well-structured enumerative plan might simultaneously increase colon production and preserve explicit sentence boundaries. Colon emission would then correlate with *lower* failure even though the colon instruction helped determine the earlier plan.
+
+The data therefore favour candidate mechanisms operating during instruction interpretation or plan formation over mechanisms in which the emitted colon itself is the sole causal event.
+
+### 9. Mark identity produces a strong ordering of amplification
+
+**Observation.**
+
+[
+\tau_{\text{semicolon}}=+0.950,\qquad
+\tau_{\text{colon}}=+0.450,\qquad
+\tau_{\text{quote}}=+0.050,\qquad
+\tau_{\text{brackets}}=0.000,
+]
+
+with compliance at or above 0.950 (DCI §6).
+
+Three candidates predict approximately the same ordering:
+
+1. **F2:** sentence-boundary capability;
+2. **F3:** strength of the continuation prior following the mark;
+3. **F4:** register induced by the mark.
+
+These properties covary for the tested glyphs, so the existing contrast does not cleanly identify which feature is operative.
+
+They can, however, be distinguished using stored outputs. F2 predicts that amplification should covary with segmentation ambiguity. F3 predicts that it should covary with the probability of lowercase continuation or the absence of a sentence restart immediately after the mark. F4 predicts broader changes in properties such as mean sentence length, clause structure, and lexical register across the response.
+
+### 10. Ellipsis amplifies interference without producing clause chaining
+
+**Observation.** The ellipsis produces amplification of +0.325 with compliance 1.000, while its chaining share is only 0.025 compared with 0.432 for the semicolon (DCI §6).
+
+**Candidate shortcut.** F2 explains this result without requiring clause chaining. An ellipsis is boundary-capable and segmentation-ambiguous even when it does not join two clauses.
+
+[
+F2 + F1
+\rightarrow
+\text{reliably emitted ambiguous boundary mark}
+\rightarrow
+\text{sentence-count error without clause chaining}.
+]
+
+This is among the strongest existing observations separating a segmentation-based account from a narrow chaining account. The DCI result already establishes that chaining is unnecessary for amplification. A segmentation-mismatch account predicts exactly such a dissociation.
+
+One analytic check follows directly: recompute the relevant outcomes under alternative sentence segmenters that treat `…` differently. A large sensitivity to segmentation rules would strengthen F2; stability across segmenters would weaken the narrow verifier-mismatch version of that hypothesis.
+
+### 11. Anchoring semicolon placement does not reduce the effect
+
+**Observation.** The placement contrast is approximately zero at reasoning budgets (b=0,256,1024,4096), with anchor compliance ranging from 0.700 to 0.875. Ten word-position formulations are poorly complied with, at approximately 0.000 to 0.338 (DCI §6).
+
+**Candidate shortcut.** F10 points to an important property of the anchor itself. The semicolon was placed immediately before "however," producing the highly familiar construction `; however,`. The manipulation therefore restricted location while preserving a canonical clause-joining role.
+
+[
+F10 + F2
+\rightarrow
+\text{fixed location with boundary-like function preserved}
+\rightarrow
+\text{little change in interference}.
+]
+
+On this account, the experiment successfully manipulates placement freedom but does not remove the hypothesised damaging affordance. The null result therefore provides limited evidence about whether arbitrary placement search is necessary.
+
+The low compliance of word-index instructions separately supports F1: instructions requiring explicit position counting are much less surface-checkable than direct glyph-count requirements.
+
+### 12. Semicolon and degree symbol dissociate despite matched surface requirements
+
+**Observation.** The boundary contrast is +0.588 at (b=0) and +0.512 at (b=4096), with (\Gamma=-0.075). The splice proxy is approximately 0.887 to 0.939 for semicolons and 0.000 for degree symbols (DCI §9.1).
+
+**Primary candidate.** F2 predicts this result directly. Semicolons are boundary-capable; degree symbols are not.
+
+A competing explanation remains under F4. Degree symbols usually require a numeric host such as `20°C` and may therefore induce a terse technical register. The control condition could consequently introduce a sentence-promoting influence in addition to removing boundary capability.
+
+The contrast can therefore be represented as:
+
+[
+F2 + F4
+\rightarrow
+\text{boundary difference}
++
+\text{register difference}.
+]
+
+The existing comparison is nevertheless unusually strong because unattachedness, count, scope, and compliance are closely matched, and boundary capability was declared as a predictor before generation. The residual shortcut-learning concern is narrower: the two marks may differ along another behaviourally consequential surface dimension.
+
+A more discriminating contrast would use a non-boundary mark associated with long-periodic prose, or a boundary-capable mark associated with a terse register.
+
+### 13. Reasoning repairs bracket interference while substantial semicolon interference remains
+
+**Observation.** Bracket (\tau) falls from +0.450 to 0.000 across all 20 tasks. Semicolon (\tau) falls only from +0.525 to +0.400 under voluntary reasoning. At (b=0), the two backgrounds are indistinguishable; the dissociation appears only once reasoning is introduced (DCI §7.3).
+
+This emergence is important. A fixed claim that the semicolon condition is intrinsically "harder" does not explain why the two conditions begin at the same behavioural point and separate only under reasoning.
+
+**Candidate shortcut 1: trace re-priming.** Under F11, the reasoning trace is additional prose that can reproduce the semicolon and its associated continuation statistics. The answer is therefore generated from a context in which the harmful surface pattern has been reinforced.
+
+[
+F11 + F2
+\rightarrow
+\text{reasoning repairs the abstract plan}
++
+\text{trace reintroduces boundary-sensitive surface pressure}
+\rightarrow
+\text{partial repair}.
+]
+
+**Candidate shortcut 2: plan-transcription failure.** Reasoning may successfully construct an explicit four-sentence plan in both conditions. Brackets can then be inserted without altering sentence boundaries. Semicolons remain naturally associated with boundary-like positions, so the final transcription step disrupts the previously constructed plan.
+
+These hypotheses can be distinguished by examining the stored traces. F11 predicts greater semicolon density or semicolon-like structures in reasoning tokens. The plan-transcription account predicts explicit correct sentence plans that are subsequently violated in the final answer.
+
+### 14. Reasoning reverses the order effect
+
+**Observation.** ACQ is strongly protective without reasoning, (\Delta=-0.537), and becomes harmful with reasoning, (\Delta=+0.188). At (b=4096), the semicolon is harmful under all six instruction orders (DCI §7.4).
+
+**Candidate shortcut.** F7 may dominate when no reasoning trace is available. Reasoning can weaken this shortcut if the trace restates the constraints in a more canonical or order-invariant representation. F11 then leaves mark identity as the dominant residual feature.
+
+[
+F7_{b=0}
++
+F11_{b>0}
+\rightarrow
+\text{prompt-order dependence disappears as constraints are restated}
+\rightarrow
+\text{uniform residual semicolon effect}.
+]
+
+This hypothesis predicts that reasoning traces should reorder or regroup the constraints independently of their original prompt order. If true, residual performance under reasoning should correlate more strongly with the order in which constraints are represented in the trace than with their original serial position.
+
+### 15. Reasoning changes arbitration states without producing reliable joint satisfaction
+
+**Observation.** Probability mass moves primarily from "neither" to "target only," reaching approximately 0.90. "Both" remains at or below 7.5% even when measured interference disappears. Under the semicolon condition, approximately 45% of responses remain in "neither." Witness answers establish that joint satisfaction is achievable (DCI §7.4).
+
+**Candidate shortcut.** F1 provides an alternative interpretation of this state distribution. If one constraint maps onto a direct surface operation while another requires comparative or relational checking, the model may execute whichever rule is easier to represent without constructing a joint solution.
+
+F14 can reinforce the asymmetry:
+
+[
+F1 + F14
+\rightarrow
+\text{unequal checkability}
++
+\text{length growth through clause append}
+\rightarrow
+{\text{target only},\text{neither}}
+\text{ dominate}.
+]
+
+Under this account, the scarcity of "both" reflects the absence of a generation rule that jointly represents the two requirements. A useful discriminating prediction follows: pairing two independently glyph-checkable constraints should produce much higher joint satisfaction if F1 is the dominant shortcut, holding total instruction load approximately constant.
+
+### 16. Explicit priority instructions fail to control behaviour
+
+**Observation.** The priority effect (\Psi) is approximately zero, and three of four estimates have signs opposite to the predicted direction. The reasoning traces nevertheless mention the priority instruction in approximately 0.54 to 0.69 of directed rows (DCI §7.4).
+
+**Candidate shortcut.** F1 classifies "prioritise X over Y" as an instruction without a simple surface operation. F11 explains why the instruction can appear in the trace without gaining behavioural control.
+
+[
+F1 + F11
+\rightarrow
+\text{priority instruction copied into reasoning}
++
+\text{no direct generation operation}
+\rightarrow
+\text{trace acknowledgement without behavioural effect}.
+]
+
+This interpretation connects the priority-cue result to the focal floor and the count-versus-usage dissociation. Across all three cases, explicit linguistic representation of a constraint provides weak evidence that the model possesses an effective operation for enforcing it during generation.
+
+### 17. Semicolon count is obeyed while semicolon usage remains almost completely wrong
+
+**Observation.** Under the anti-splice instruction, semicolon-count compliance is 0.925 while semicolon-usage compliance is approximately 0.05. A matched prohibition against exclamation marks is obeyed at 1.000. Reasoning length rises from roughly 470 to 979 tokens (DCI §9.2).
+
+**Candidate shortcut.** F1 distinguishes the two instructions. Counting or prohibiting a glyph has a direct surface representation. "Do not join two complete sentences with it" requires evaluating a syntactic relation between the material on either side of the mark.
+
+F9 adds a possible second effect. The anti-splice instruction explicitly describes the forbidden construction and may therefore prime it.
+
+[
+F1 + F9
+\rightarrow
+\text{strong control of mark count}
++
+\text{weak syntactic-relation checking}
++
+\text{positive lexical priming of the forbidden structure}
+\rightarrow
+\text{persistent splicing}.
+]
+
+The matched exclamation-mark control is important because it shows that prohibition itself is not sufficient to explain the failure. The difficult component is the relational use restriction.
+
+The increased reasoning length is also informative. It is compatible with a model that detects a difficult constraint and expends additional computation without finding an effective surface operation that satisfies it.
+
+### 18. Later checkpoints show a target ceiling and a shift in the channel of interference
+
+**Observation.** Structural (\tau) is zero in nine of ten cells across five 2026 checkpoints. The only estimable (\tau) is negative. On `gemma-4-12B`, the semicolon's cost appears instead as (\Delta_{\text{joint}}=-0.100) (DCI §10.1).
+
+**Candidate shortcut.** F13 proposes that "write exactly (N) sentences" has become a strongly learned output template in later post-training. If retrieving this template is cheap, the target can remain at ceiling while the cost of composition appears in compliance with another instruction.
+
+[
+F13 + F1
+\rightarrow
+\text{strongly retrieved target shape}
++
+\text{competing focal operation}
+\rightarrow
+\text{cost shifts from target failure to joint-compliance failure}.
+]
+
+This hypothesis reframes transport failure as a possible change in the learned decision rule across checkpoints. It remains comparatively speculative because the relevant post-training data are unavailable. It should therefore be treated as a candidate explanation rather than an inferred mechanism.
+
+### 19. Reasoning buys focal compliance on `gemma-4-E4B`
+
+**Observation.** On `gemma-4-E4B`, "both" rises from 0.20 to 0.90 under reasoning while the target is already near ceiling. This reverses the direction seen on the canonical checkpoint, where reasoning primarily protects the target (DCI §10.1).
+
+**Candidate shortcut.** F13 combined with F1 offers a resource-allocation interpretation. If the target response shape is already retrieved reliably, additional reasoning can be devoted to whichever requirement remains unresolved.
+
+[
+F13 + F1
+\rightarrow
+\text{target solved at negligible marginal cost}
+\rightarrow
+\text{additional reasoning improves focal compliance}.
+]
+
+This explains why the behavioural benefit of reasoning can shift across checkpoints without requiring a different high-level arbitration objective. The same computational policy can produce different observed effects when the baseline difficulty of each component changes.
+
+### 20. Amplification fails to transport to `SmolLM3-3B` under low background compliance
+
+**Observation.** The amplification contrast changes from +0.512 to −0.062 on `SmolLM3-3B`, while background compliance lies between only 0.194 and 0.575 (DCI §7.4).
+
+**Candidate shortcut.** F1 can be treated as an uptake precondition. A mark-specific mechanism cannot operate consistently when the model often fails to execute the requested mark manipulation in the first place.
+
+[
+\text{low F1 uptake}
+\rightarrow
+\text{weak exposure to the hypothesised mark-mediated mechanism}
+\rightarrow
+\text{attenuated or uninterpretable amplification}.
+]
+
+This makes the transport result partially compliance-mediated. Byte-identical prompts do not constitute behaviourally equivalent treatments when instruction uptake differs substantially across models. A stronger transport test therefore requires either matched uptake or an analysis that explicitly separates treatment compliance from the downstream interference mechanism.
+
+### 21. `Qwen3.5` terminates reasoning on trivial prompts and fails to terminate on DCI-shaped prompts
+
+**Observation.** `Qwen3.5` closes its reasoning trace on 8 of 8 trivial prompts and essentially never closes it on DCI-shaped prompts within an approximately 40k-token envelope, with concurrency fixed at one and the template and parser independently verified (DCI §10.2).
+
+**Candidate shortcut.** F12 proposes that the numbered DCI prompt induces an iterative verification loop. Each countable constraint invites checking; checking one constraint can expose or create a possible violation of another.
+
+Combined with F1:
+
+[
+F12 + F1
+\rightarrow
+\text{enumerated countable constraints}
+\rightarrow
+\text{repeated surface verification}
+\rightarrow
+\text{no stable termination condition}.
+]
+
+The present analysis classifies this observation primarily as an apparatus issue, which remains appropriate for the registered experiment. The prompt-shape dependence nevertheless leaves open a behavioural explanation.
+
+The hypothesis predicts that termination should improve when the same substantive constraints are expressed as continuous prose without enumeration, or when otherwise similar instructions remove explicit countable quantities. These manipulations would distinguish a prompt-induced verification loop from a backend-specific failure more directly.
+
+## Which observations carry the greatest discriminative weight?
+
+Three sets of results are especially informative because they already separate broad classes of shortcut explanations.
+
+First, **paragraph survival, ellipsis amplification, and the failure of output-mark emission to predict target failure** provide the strongest evidence about where the relevant mechanism can act. Paragraph survival localises the effect to a particular structural unit. Ellipsis amplification shows that clause chaining is unnecessary. The weak or negative association between actual mark emission and failure indicates that a simple output-token mechanism is insufficient. Together, these observations concentrate attention on instruction interpretation, segmentation, and response planning.
+
+Second, **mark identity and the semicolon-versus-degree-symbol comparison** leave F2, F3, and F4 partially confounded. Boundary capability, continuation statistics, and writing register covary across the marks tested so far. A decisive discriminator requires a manipulation that separates these properties. One useful class would contain non-boundary marks associated with long-periodic prose. Another would contain boundary-capable marks associated with terse registers.
+
+Third, **the focal floor, ineffective priority cue, and count-versus-usage dissociation** can all be generated by F1. If glyph-checkability is genuinely the operative shortcut, these should be understood as different manifestations of a common decision rule. The model follows constraints that map cleanly onto local surface operations and struggles when compliance requires a relational representation or explicit comparison across larger linguistic units.
+
+This consolidation matters because explanatory economy is itself informative. A shortcut hypothesis becomes more credible when the same operational rule predicts several otherwise disconnected observations. It becomes less credible when each new result requires an additional ad hoc feature.
+
+## Glossary and inferential boundaries
+
+**Shortcut feature.** A prompt-surface or output-surface property on which a generation rule can condition. Reliance on the feature becomes scientifically relevant when the rule succeeds in environments where that feature correlates with the intended solution and fails after the two are decorrelated ([Geirhos et al., 2020](https://arxiv.org/abs/2004.07780)).
+
+**Feature combination.** A decision rule whose behaviour depends on the conjunction or interaction of multiple features. The strongest empirical signature is an interaction accompanied by weak or absent main effects. The (+0.312) colon interaction, with both singleton conditions at approximately zero, is the clearest DCI example.
+
+**Amplification ((\Delta)).** A difference between two (\tau) values across a background manipulation. Each (\tau) is itself a difference in target-failure probability between a focal condition and its matched-reference condition (DCI §2.2). Any proposed explanation of (\Delta) therefore needs to account for a difference of differences. Explaining a high raw failure rate alone is insufficient.
+
+**Boundary capability.** The property of a mark that allows it to occupy a location that can plausibly function as a sentence boundary. Boundary capability is the principal surviving predictor identified in the DCI exploratory programme and was declared in code before the relevant generation experiment (DCI §9.1). F2 sharpens this idea by distinguishing the model's effective segmentation from the sentence unit implemented by the verifier. Under that formulation, interference can arise when the two segmentation systems treat the same punctuation differently.
+
+**Scope of inference.** All hypotheses above are bounded by the experimental regime represented in the exploratory programme: one pair family, one task bank, one language, numbered instruction lists, (k\in{3,5}), a small collection of open-weight checkpoints, and a certified but heuristic sentence segmenter (DCI §12.3). These candidate decision rules therefore describe behaviour within that regime. Their transport to free-form prompts, non-enumerated instruction delivery, other languages, other task families, or substantially different model classes requires separate evidence.
+
+The most defensible current conclusion is consequently narrower than a claim about a single underlying mechanism. The exploratory evidence substantially constrains the candidate space. Generic overload, unrestricted placement search, simple mark emission, single-character atomicity, and undifferentiated chaining accounts are difficult to reconcile with the full pattern. The remaining explanations concentrate around four interacting properties: **surface checkability, boundary sensitivity, linguistic scope, and prompt-induced response templates**. The next inferential step is to design contrasts that separate these properties from one another, particularly boundary capability from continuation statistics and register priming.
+
+## Sources
+
+Geirhos, R., Jacobsen, J.-H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., & Wichmann, F. A. (2020). *Shortcut learning in deep neural networks*. [arXiv:2004.07780](https://arxiv.org/abs/2004.07780).
+
+*Directional Constraint Interference: A Global Analysis of the Exploratory Programme*. (2026, August 12). Uploaded DCI exploratory analysis; section references are given inline throughout.
+
+---
+
+Read this thoroughly and read @DCI_exploratory_global_analysis(1).tex then tell me what would you work on and thus what are the work items that you would pass onto the coding agent.
+
+---
+
+The main opportunity is to stop adding more loosely connected exploratory rounds and turn the surviving shortcut hypotheses into a small number of discriminating experiments. The shortcut analysis has already compressed the plausible explanation space to four families: surface checkability, boundary sensitivity, linguistic scope, and prompt-induced response templates.  The global analysis independently identifies the same bottleneck from the empirical side: the boundary account is predictive rather than causal, the reasoning result needs stronger identification, almost everything comes from the same 20 tasks, and cross-model transport is being measured at unsuitable operating points. [DCI global analysis](sandbox:/mnt/data/DCI_exploratory_global_analysis%281%29.tex)
+
+### What I would work on first
+
+I would organize the next work into four workstreams, in this order.
+
+| Priority | Workstream                                        | Core question                                                                                             |
+| -------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **P0**   | 1. Harden the existing headline results           | Which current conclusions survive corrected inference and measurement?                                    |
+| **P0**   | 2. Discriminate the surviving shortcut hypotheses | Is boundary capability actually special, or is it continuation, register, scope, or surface checkability? |
+| **P0**   | 3. Obtain a causal boundary-use intervention      | Does preventing boundary-like semicolon use actually remove the interference?                             |
+| **P1**   | 4. Restore operating points and test transport    | Does the phenomenon reappear on newer models once the target can actually fail?                           |
+
+I would specifically avoid another broad exploratory sweep across models, marks, orders, budgets, and prompts simultaneously. The existing programme already has enough phenomena. The bottleneck is discrimination between explanations.
+
+## 1. P0: Harden the existing evidence before generating much new data
+
+Several important corrections can be performed largely from existing generations.
+
+**W1. Estimate the actual reasoning × background interaction.** The headline claim is currently supported by four constituent (\tau) values, while the scientific claim is an interaction. Compute
+
+[
+\Delta_0=\tau_{\mathrm{semicolon},0}-\tau_{\mathrm{bracket},0},
+]
+
+[
+\Delta_R=\tau_{\mathrm{semicolon},R}-\tau_{\mathrm{bracket},R},
+]
+
+and
+
+[
+\Gamma=\Delta_R-\Delta_0.
+]
+
+Use identical task-resampling indices throughout. The coding agent should output the estimate, simultaneous uncertainty interval, task-level contributions, and leave-one-task-out sensitivity. The phrase “reasoning creates the dissociation” should depend on (\Gamma), rather than separate confidence intervals.
+
+**W2. Diagnose the floor-degenerate bracket result.** Report constituent arm failure rates for every headline (\tau), especially the natural-reasoning bracket cell. Add an uncertainty analysis that remains informative when zero failures are observed. Flag any cell whose operating point prevents meaningful estimation. The present ([0,0]) bootstrap interval should never be interpreted as literal certainty.
+
+**W3. Audit every canonical pre-vLLM dataset for replicate independence.** Apply the identical-pair and within-task correlation audit already used successfully on the reasoning datasets to Rounds 1 to 6 and the earlier Transformers data. Any dataset failing the frozen duplication threshold should lose `Canonical` status or be regenerated.
+
+**W4. Reanalyse treatment-caused missing or ceiling-bound outputs using the registered failure rule.** Primary scoring should count every non-pass as (F_A=1). Keep alternative handling only as sensitivity analyses.
+
+**W5. Freeze inferential families.** Define a small headline family, probably C4 reasoning, C6 boundary, and the principal interaction estimates, then compute simultaneous intervals. The dozens of secondary exploratory analyses can remain exploratory without retrospectively forcing all of them through confirmatory statistics.
+
+These tasks tell you which scientific claims are actually worth carrying into the next experiments.
+
+## 2. P0: Run one experiment designed specifically to separate F2, F3 and F4
+
+This is the most important new scientific work.
+
+The present semicolon-versus-degree-symbol experiment does not uniquely identify “boundary capability.” The candidate explanations remain approximately:
+
+[
+\begin{aligned}
+F2 &: \text{boundary/segmentation sensitivity},\
+F3 &: \text{right-context continuation prior},\
+F4 &: \text{writing-register priming}.
+\end{aligned}
+]
+
+Semicolons and degree symbols differ on all three dimensions.
+
+**W6. Build a prospective mark-characterisation screen.** Before running DCI outcomes, assemble perhaps 8 to 12 candidate marks. For each mark, independently characterize:
+
+* whether it can plausibly occupy a sentence or clause boundary;
+* immediate continuation behaviour following the mark;
+* compliance with an exact-count instruction;
+* induced response length;
+* numeric-token frequency;
+* lexical/register changes;
+* segmentation error rate.
+
+Do this on held-out calibration tasks. Freeze admissibility and feature labels before observing the DCI contrast.
+
+**W7. Select a small factorial set of marks that decorrelates the candidate properties.** You want contrasts such as:
+
+[
+\text{boundary-capable} + \text{strong continuation}
+]
+
+versus
+
+[
+\text{non-boundary} + \text{strong continuation},
+]
+
+and, if feasible,
+
+[
+\text{boundary-capable} + \text{different register}.
+]
+
+The goal is scientific separation, not simply accumulating more punctuation marks.
+
+**W8. Run the same frozen DCI contrast over those selected marks.** Model amplification as a function of the prospectively characterized properties. The decisive question becomes:
+
+> Once continuation tendency and register effects are separated, does boundary capability still predict (\Delta)?
+
+That would advance the mechanism substantially beyond “semicolon differs from degree symbol.”
+
+## 3. P0: Repair the anti-splice causal experiment
+
+The global analysis already identifies this as the cheapest route from prediction toward causation, but the shortcut analysis reveals an important modification to the proposed procedure.
+
+The previous manipulation gate conditions on semicolon-compliant responses. Since compliance can itself be treatment affected, the primary gate should be intent-to-treat.
+
+**W9. Prospectively screen anti-splice formulations on fresh calibration tasks.** Test the six unused formulations plus any carefully designed new formulations. During screening, expose only manipulation outcomes to the selection procedure. Do not inspect target failure.
+
+For each formulation measure, over **all assigned responses**:
+
+1. semicolon-count compliance;
+2. splice prevalence;
+3. non-splice semicolon usage;
+4. target-independent formatting failures;
+5. reasoning length as a descriptive diagnostic.
+
+Freeze a gate such as a large absolute or relative reduction in splice prevalence while preserving acceptable semicolon-count compliance.
+
+**W10. If and only if a formulation passes, run the main (\Omega) experiment.** Compare the successful anti-splice instruction against a load-matched off-route control and estimate whether suppressing boundary-like use reduces DCI.
+
+This provides a much cleaner causal ladder:
+
+[
+\text{semicolon instruction}
+\rightarrow
+\text{boundary-like use}
+\rightarrow
+\text{target failure}.
+]
+
+If no formulation can suppress boundary use despite preserving mark-count compliance, that is itself a strong replication of the “surface count versus structural usage” dissociation.
+
+## 4. P0/P1: Directly test the surface-checkability hypothesis
+
+I think this is underexploited in the current global analysis. The shortcut document identifies one candidate, F1, that economically connects several otherwise separate findings:
+
+* exact glyph counts are followed;
+* semicolon usage restrictions fail;
+* explicit priority instructions have little behavioural control;
+* the original relational focal is near floor;
+* reasoning can discuss a constraint without successfully executing it.
+
+That deserves its own experiment.
+
+**W11. Construct matched local-versus-relational constraint pairs.** Hold the object as constant as possible while varying what must be computed.
+
+For example, contrast constraints requiring:
+
+[
+\text{local surface operation}
+]
+
+with constraints requiring:
+
+[
+\text{relation across linguistic units}.
+]
+
+Do this across several constraint families so that “relational” is not synonymous with “semicolon.”
+
+**W12. Measure both individual and joint compliance.** The key prediction is that local, directly checkable constraints remain easy under composition while relational constraints degrade sharply, even when wording length, instruction count, and nominal difficulty are approximately matched.
+
+If this replicates across several families, “surface checkability” becomes a substantially more general candidate explanation for DCI than punctuation alone.
+
+## 5. P1: Mine the existing reasoning traces before generating another large reasoning dataset
+
+There is already enough trace data to discriminate two explanations for reasoning-resistant semicolon interference.
+
+**W13. Build a frozen trace-analysis pipeline testing F11 versus plan-transcription failure.**
+
+For every canonical reasoning trace, extract:
+
+* whether the constraints are explicitly restated;
+* their order of restatement;
+* whether the trace explicitly plans (N) sentences;
+* whether it enumerates sentence contents;
+* occurrences of the focal punctuation;
+* semicolon-like clause structures;
+* predicted sentence count according to the trace plan;
+* whether the final answer subsequently violates that plan.
+
+Then manually annotate a stratified held-out subset.
+
+The two predictions are different:
+
+[
+\textbf{Trace re-priming:}\quad
+\text{more semicolon-related structure in reasoning}
+\rightarrow
+\text{greater final failure},
+]
+
+whereas
+
+[
+\textbf{Plan-transcription failure:}\quad
+\text{correct explicit plan in trace}
++
+\text{incorrect final realization}
+\rightarrow
+\text{failure}.
+]
+
+The same analysis can test whether reasoning reorganises instruction order internally, which provides a possible explanation for the observed reversal of the six-order surface.
+
+This is high-value because it requires little or no new inference compute.
+
+## 6. P1: Test whether the (q\approx3) transition is a serial-template shortcut
+
+The absolute semicolon threshold is one of the cleanest phenomena in the entire programme, yet its proposed explanation remains vague.
+
+**W14. Analyse the (q=1,2,3,4) outputs structurally.** Quantify the transition in semicolon-separated segment count, clause lengths, coordination structure, list-like templates, sentence length, and lexical markers.
+
+Then run a small prospective test crossing:
+
+[
+q \times \text{mark identity}.
+]
+
+If semicolon alone exhibits the sharp (2\rightarrow3) transition, the evidence favours a semicolon-specific template. If several marks switch at approximately three requested occurrences, a more generic count/template rule becomes plausible.
+
+This directly tests F6 rather than merely redescribing the dose curve.
+
+## 7. P1: Replicate the decisive contrasts on fresh tasks
+
+The same 20 tasks have been searched extremely heavily. This is now the largest general validity problem.
+
+**W15. Create a fresh replication bank with explicit provenance.** Keep it entirely disjoint from the original 20 exploratory tasks, calibration tasks, and any future confirmatory bank.
+
+Do not replay the entire 35,000-generation programme. Replicate only a few frozen quantities:
+
+1. the reasoning × background interaction;
+2. the boundary-property contrast;
+3. whichever shortcut-discrimination contrast emerges from W6–W8;
+4. optionally the (q=2\rightarrow3) threshold.
+
+I would also restore multiple admissible references for these tests rather than continuing with a single near-floor reference.
+
+This gives much more information per generation than another exploratory grid on the original tasks.
+
+## 8. P1/P2: Restore cross-model operating points only after the above
+
+I would still run the proposed `gemma-4-12B` (k=5) experiment, but I would move it below the mechanism work.
+
+**W16. Calibrate each target model to an informative operating point before measuring DCI.** Require prospectively:
+
+[
+0.10 \lesssim P(F_A=1) \lesssim 0.60
+]
+
+or another frozen headroom region in both relevant arms. Increase (k), target difficulty, or task difficulty without changing the scientific construct until the primary estimand is measurable.
+
+**W17. Re-run `gemma-4-12B` at (k=5)** under the best scientifically valid backend and dual-GPU configuration that actually supports the architecture. Treat backend identity as part of the experimental condition. Do not force vLLM if the heterogeneous-head-dimension incompatibility remains unresolved.
+
+**W18. Treat SmolLM3 as unidentified until manipulation uptake is adequate.** Calibrate wording until the background manipulation passes an uptake gate, or label the transport comparison `NOT_IDENTIFIED_UPTAKE`.
+
+## 9. P2: Turn the Qwen3.5 non-termination result into a small diagnostic experiment
+
+This is interesting, although peripheral to the main DCI mechanism.
+
+The shortcut hypothesis F12 predicts that enumerated, explicitly countable DCI prompts induce a checklist-like verification loop.
+
+**W19. Run a prompt-shape termination factorial on Qwen3.5.** Preserve substantive requirements while varying:
+
+* numbered list versus continuous prose;
+* explicit counts versus semantically equivalent non-enumerated wording;
+* single versus composed constraints;
+* DCI-shaped versus matched low-conflict prompts.
+
+Measure closure rate, reasoning-token count, cap-hit rate, and final-answer validity.
+
+If non-closure follows prompt shape rather than substantive difficulty, this becomes a real behavioural finding about agentic reasoning loops rather than an unexplained model qualification failure.
+
+### What I would actually hand the coding agent
+
+I would give the coding agent the work in this sequence:
+
+1. **Existing-data hardening:** W1–W5.
+2. **Trace analysis:** W13.
+3. **Prospective mark screen and discriminating boundary experiment:** W6–W8.
+4. **Prospective anti-splice screen and gated causal experiment:** W9–W10.
+5. **Fresh-task replication of the resulting two or three strongest claims:** W15.
+6. **Surface-checkability experiment:** W11–W12.
+7. **Dose-template experiment:** W14.
+8. **Cross-model operating-point restoration:** W16–W18.
+9. **Qwen3.5 prompt-shape diagnostic:** W19.
+
+The central scientific shift is from asking **“does semicolon-related DCI keep appearing?”** to asking **“which simple decision rule uniquely predicts when it appears?”** At present, the most important unresolved competition is:
+
+[
+\boxed{
+\text{boundary sensitivity}
+\quad\text{vs}\quad
+\text{continuation prior}
+\quad\text{vs}\quad
+\text{register priming}
+}
+]
+
+with **surface checkability** potentially sitting one level above all three as a more general account of why some composed instructions acquire behavioural control while others remain linguistically represented but operationally ineffective. I would make that discrimination the centre of the next experimental cycle.
+
+---
+
+You mentioned the four families: surface checkability, boundary sensitivity, linguistic scope, and prompt-induced response templates. Please explain in plain language.
+
+---
+
+The four families are best understood as four different kinds of simple rules the model might be using instead of explicitly solving the whole instruction-composition problem. They are hypotheses, not established mechanisms. 
+
+### 1. Surface checkability
+
+This asks: **Is the instruction easy for the model to enforce by looking at the surface form of its own output?**
+
+Some instructions translate into extremely simple operations:
+
+* “Use exactly three semicolons.”
+* “Do not use an exclamation mark.”
+* “Include the word `apple` twice.”
+
+The model can approximately implement these as:
+
+> “Have I produced this character enough times?”
+
+Other instructions require relationships to be checked across larger pieces of text:
+
+* “Each sentence must be longer than the previous sentence.”
+* “Do not use a semicolon to join two independent clauses.”
+* “Prioritise instruction A over instruction B if they conflict.”
+
+Those require the model to identify sentences or clauses, compare them, understand syntactic relationships, or make an explicit priority decision.
+
+The shortcut hypothesis is therefore:
+
+[
+\text{easy local check}
+\rightarrow
+\text{strong behavioural control}
+]
+
+while
+
+[
+\text{relational/global check}
+\rightarrow
+\text{weak behavioural control}.
+]
+
+This could explain why the model can get the **number of semicolons right** while getting their **grammatical use wrong**. It knows how to satisfy “put three `;` characters somewhere” much more readily than “put three semicolons somewhere, while ensuring none joins two complete clauses.”
+
+So surface checkability concerns **how easy an instruction is to turn into a simple generation-time rule**.
+
+---
+
+### 2. Boundary sensitivity
+
+This concerns **what certain punctuation marks do to the structure of the generated text**.
+
+A semicolon is unusual because it is both:
+
+1. a character that can be counted, and
+2. something that naturally sits between clauses.
+
+Suppose the target instruction says:
+
+> “Write exactly four sentences.”
+
+Then the model needs to create four sentence boundaries.
+
+Now add:
+
+> “Use exactly three semicolons.”
+
+A possible shortcut is that semicolons strongly encourage the model to continue the current sentence:
+
+> idea one; idea two; idea three; idea four.
+
+The model may therefore produce what feels like several conceptual units while the verifier sees only **one sentence**.
+
+That gives a rule like:
+
+[
+\text{semicolon}
+\rightarrow
+\text{continue current sentence}
+\rightarrow
+\text{fewer full stops}
+\rightarrow
+\text{sentence-count failure}.
+]
+
+This helps explain several DCI observations. Paragraph counts can survive while sentence counts collapse, because semicolons interfere with sentence structure but do little to paragraph boundaries. Ellipses can also cause interference even without conventional clause chaining, because they too can behave ambiguously around sentence boundaries. By contrast, a degree symbol such as `°` has essentially no sentence-boundary role.
+
+So boundary sensitivity means:
+
+> **Certain requested symbols may change how the model divides its answer into structural units.**
+
+It is currently one of the strongest surviving explanations, although the present experiments do not yet cleanly separate boundary effects from other properties associated with semicolons.
+
+---
+
+### 3. Linguistic scope
+
+This concerns **what unit the instruction tells the model to organise around**.
+
+Compare:
+
+> “Use four colons in the whole answer.”
+
+with:
+
+> “Use one colon in each sentence.”
+
+Numerically, both can require four colons.
+
+But psychologically, or computationally, they present very different generation problems.
+
+“In the whole answer” encourages something like:
+
+> “I need one response containing four colons.”
+
+“In each sentence” encourages:
+
+> “I need sentence 1 with a colon, sentence 2 with a colon, sentence 3 with a colon, sentence 4 with a colon.”
+
+The latter wording explicitly reminds the model that **sentences are separate planning units**.
+
+So the shortcut could be:
+
+[
+\text{“whole answer”}
+\rightarrow
+\text{plan one global text object}
+]
+
+whereas
+
+[
+\text{“each sentence”}
+\rightarrow
+\text{plan sentence-by-sentence}.
+]
+
+That matters because the actual number of required punctuation marks can remain identical while the model's output organisation changes dramatically.
+
+This is what I mean by linguistic scope: **the wording tells the model what part of the response the requirement applies to, and that may implicitly determine how the model structures the answer.**
+
+---
+
+### 4. Prompt-induced response templates
+
+This is the broadest family.
+
+The idea is that certain wording patterns may cause the model to retrieve a familiar **way of writing**, instead of constructing the response from scratch according to all the constraints.
+
+For example, asking for several semicolons might activate something resembling:
+
+> “First idea; second idea; third idea; final idea.”
+
+Once that template is activated, generating one long semicolon-linked sentence becomes very natural.
+
+This could explain the striking threshold you observed around three semicolons. One or two semicolons can simply be inserted into ordinary prose:
+
+> Sentence one. Sentence two; with an additional clause. Sentence three.
+
+But when the instruction requires three or more, the easiest familiar solution may switch categorically to:
+
+> A; B; C; D.
+
+So the model could behave approximately like:
+
+[
+q=1,2
+\rightarrow
+\text{ordinary prose + inserted semicolons}
+]
+
+but
+
+[
+q\geq3
+\rightarrow
+\text{retrieve semicolon-list template}.
+]
+
+Prompt order may work similarly. If the first instruction says “write exactly four sentences,” the model may establish a four-sentence template early. If another structural instruction appears first, it may establish a different template. Later instructions then get fitted into whatever plan has already been activated.
+
+Reasoning can introduce templates too. A reasoning trace might restate instructions, enumerate requirements, or repeatedly use a particular punctuation structure, thereby changing the template from which the final answer is produced.
+
+So prompt-induced response templates means:
+
+> **The prompt activates a familiar generation pattern, and subsequent behaviour follows that pattern even when it conflicts with another instruction.**
+
+---
+
+The cleanest way to distinguish the four is to ask what the hypothetical shortcut is sensitive to:
+
+| Family                   | What is the model responding to?                  | Simple example                                                             |
+| ------------------------ | ------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Surface checkability** | How easy the constraint is to verify locally      | Counting `;` is easier than checking whether `;` joins independent clauses |
+| **Boundary sensitivity** | How a symbol affects sentence or clause structure | `;` encourages continuation instead of starting another sentence           |
+| **Linguistic scope**     | What unit the wording tells the model to organise | “whole answer” versus “in each sentence”                                   |
+| **Response templates**   | Familiar writing patterns triggered by the prompt | “use 3 semicolons” triggers an `A; B; C; D` structure                      |
+
+They can also **operate together**. For example, the semicolon result could arise because the semicolon is easy to count, tends to preserve the current sentence, and activates a familiar chained-list template:
+
+[
+\boxed{
+\text{surface checkability}
++
+\text{boundary sensitivity}
++
+\text{semicolon template}
+\rightarrow
+\text{high semicolon compliance but sentence-count failure}
+}
+]
+
+The current DCI evidence narrows the candidate explanations substantially, but it does not yet tell us which of these properties is causally primary. That separation is the main experimental question I would address next.
+
+
+
+
+

@@ -1,0 +1,31 @@
+{
+  "1_report": {
+    "analysis_table_hash": "52c472f2c2a2c9346f7f26308c2385c2585a6b6b72996a87c0d5ac437314d573",
+    "estimand": "tau_target_first",
+    "file": "report.json"
+  },
+  "2_analysis_row": {
+    "bootstrap_seed": 170369780109201498,
+    "family": "F1",
+    "input_accepted_hash": "893692a5cad18c89",
+    "n_blocks": 6
+  },
+  "3_accepted_row": {
+    "arm": "focal",
+    "block_id": "P00",
+    "cache_record_id": "qwen3-4b:pilot:P00:focal:0",
+    "response_content_hash": "2eed62e85ab46405",
+    "selected_pool_index": 0
+  },
+  "4_cache_record": {
+    "finish_reason": "stop",
+    "generation_seed": 3652967726924556707,
+    "model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "record_hash": "d46aa0bfb5d00a62",
+    "row_id": "qwen3-4b:pilot:P00:focal:0"
+  },
+  "5_prompt": {
+    "prompt_first_line": "Why do car windows fog up on the inside during cold, damp weather?",
+    "prompt_hash": "47156988d68e4024"
+  }
+}
