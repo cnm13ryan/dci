@@ -90,12 +90,8 @@ def run_greedy(job: Job) -> dict[str, Any]:
     if not (stage_dir / "prompt_plan.json").exists():
         fs.write_json_once(stage_dir / "prompt_plan.json",
                            prompt_plan(cells))
-    if job.context.namespace == "synthetic":
-        from dci1v3.generation.synthetic import synthetic_generate
-        generate = synthetic_generate
-    else:
-        from dci1v3.generation.backend import run_backend
-        generate = run_backend
+    from dci1v3.stages.inference import generate_fn
+    generate = generate_fn(job)
     fill_cache(stage_dir, cells, spec=job.spec, stage="greedy",
                generation_root=C.GENERATION_ROOT_SEED,
                plan=backend_plan(job.spec,
