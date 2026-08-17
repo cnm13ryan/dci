@@ -10,18 +10,34 @@
   "masking": "dci1v3/stages/masking.py (persistent single-shot mask and unmask; pilot/confirmatory namespaces disjoint)",
   "model_states": {
     "gemma-3n-e2b-it": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
       "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "gemma-3n-e4b-it": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
       "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "qwen3-4b": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
       "state": "REGIME_SCREEN_PASS",
       "terminal": null
     },
     "qwen3-4b-instruct-2507": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
       "state": "REGIME_SCREEN_PASS",
       "terminal": null
     }

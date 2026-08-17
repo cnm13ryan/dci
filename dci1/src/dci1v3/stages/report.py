@@ -35,7 +35,15 @@ def model_states(context: StudyContext) -> dict[str, Any]:
             terminal = transitions.terminal_status(tree)
         except V3Error as error:
             state, terminal = f"VERIFICATION_ERROR: {error}", None
-        states[model_key] = {"state": state, "terminal": terminal}
+        entry: dict[str, Any] = {"state": state, "terminal": terminal}
+        # A2.1: a PASSED Gate 1 never implies human validation — surface
+        # the machine-readable basis wherever the stage is reported.
+        try:
+            from dci1v3.stages.gate1 import human_validation_status
+            entry["measurement"] = human_validation_status(tree)
+        except V3Error as error:
+            entry["measurement"] = {"error": str(error)}
+        states[model_key] = entry
     return states
 
 

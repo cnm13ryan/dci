@@ -203,3 +203,51 @@ def test_synthetic_judge_statuses(tmp_path):
     statuses = {autorater.parse_judgment(r["raw_generation"])[0]
                 for r in invalid["rows"]}
     assert statuses == {"invalid_output"}
+
+
+# ----------------------------------------------------- A2.1 invariants
+def test_freeze_refused_before_designated_dev_runs(registered_ctx):
+    """The study-level freeze cannot occur before every designated
+    (non-terminal) replication completed gate1-dev."""
+    from dci1v3.errors import ProtocolError
+    from dci1v3.stages.gate1 import verifier_freeze
+    with pytest.raises(ProtocolError, match="missing gate1-dev"):
+        verifier_freeze(registered_ctx)
+    assert not (registered_ctx.study_root
+                / "verifier_freeze.json").exists()
+
+
+def test_binding_mismatch_detection():
+    from dci1v3.stages.gate1 import binding_mismatches
+    entry = {"pool_hash": "a", "split_hash": "b", "dev_record_hash": "c"}
+    assert binding_mismatches(entry, dict(entry)) == []
+    assert binding_mismatches(entry, {**entry, "pool_hash": "X"}) == \
+        ["pool_hash"]
+    assert binding_mismatches({}, entry) == \
+        ["dev_record_hash", "pool_hash", "split_hash"]
+
+
+def test_calibration_one_shot_via_ledger(registered_ctx):
+    """Exposed calibration data can never be re-presented as fresh: the
+    append-only ledger refuses before mutation, in every prior state."""
+    from dci1v3.engine.artifacts import record_state
+    from dci1v3.engine.paths import model_tree
+    from dci1v3.errors import ProtocolError
+    from dci1v3.stages.gate1 import assert_calibration_unexposed
+
+    tree = model_tree(registered_ctx, "gemma-3n-e2b-it")
+    assert_calibration_unexposed(tree)            # no prior state: fine
+    path = tree.root / "gate1_calibration.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("{}")
+    kwargs = dict(artifact_id="op:gate1-calibrate", path=path,
+                  artifact_type="gate_record", stage="gate1-calibrate",
+                  producing_commit="c" * 40)
+    record_state(tree, state="generated", **kwargs)
+    record_state(tree, state="committed", **kwargs)
+    with pytest.raises(ProtocolError, match="one-shot"):
+        assert_calibration_unexposed(tree)
+    record_state(tree, state="superseded", **{
+        **kwargs, "artifact_type": "superseded_non_evidence"})
+    with pytest.raises(ProtocolError, match="genuinely new untouched"):
+        assert_calibration_unexposed(tree)
