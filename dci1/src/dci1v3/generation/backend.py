@@ -43,6 +43,11 @@ def backend_env(device: int) -> dict[str, str]:
     env["HIP_VISIBLE_DEVICES"] = str(device)
     env["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
     env["NCCL_P2P_DISABLE"] = "1"
+    # Every model revision is a pinned local snapshot; offline hub mode
+    # guarantees the engine reads exactly that snapshot and makes runs
+    # immune to transient network failures (observed: a DNS blip blocked a
+    # gate1 validation run mid-study).
+    env["HF_HUB_OFFLINE"] = "1"
     return env
 
 
