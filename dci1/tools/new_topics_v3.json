@@ -1,0 +1,74 @@
+{
+  "everyday science": [
+    "Why does a hot drink cool down faster when you blow across its surface?",
+    "Why do windows fog up on the inside of a car on a cold morning?",
+    "Why does a balloon shrink when you put it in the freezer?",
+    "Why does bread go stale faster in the fridge than on the counter?"
+  ],
+  "history": [
+    "How did the spread of the printing press change everyday life in towns?",
+    "Why did many early cities grow up beside large rivers?",
+    "How did canals change the movement of goods before railways existed?",
+    "Why did medieval towns often hold markets on fixed days of the week?"
+  ],
+  "geography": [
+    "Why do some coastal towns experience fog far more often than places inland?",
+    "How does a river delta form where a river meets the sea?",
+    "Why are many deserts found on the leeward side of mountain ranges?",
+    "Why do temperatures swing more widely in places far from the ocean?"
+  ],
+  "food": [
+    "Why does resting meat after cooking make it juicier when carved?",
+    "Why does toasting bread change both its texture and its flavour?",
+    "Why do onions taste sweeter after being cooked slowly for a long time?",
+    "Why does whipped cream hold its shape while poured cream does not?"
+  ],
+  "music": [
+    "Why do two singers harmonising sound different from one singer recorded twice?",
+    "How does the shape of a concert hall affect what the audience hears?",
+    "Why does a melody often feel unfinished when it stops before the final note?",
+    "Why can the same song feel faster or slower depending on its arrangement?"
+  ],
+  "sport": [
+    "Why do relay teams practise baton changes as much as sprinting itself?",
+    "How does playing at high altitude affect endurance athletes?",
+    "Why do tennis players bounce the ball several times before serving?",
+    "Why does a curved run-up help a footballer bend a free kick?"
+  ],
+  "work and organisations": [
+    "Why do many teams hold short daily meetings instead of long weekly ones?",
+    "How does clear handover between shifts reduce mistakes in a workplace?",
+    "Why do organisations often struggle when a long-serving employee suddenly leaves?",
+    "Why can adding more people to a late project slow it down further?"
+  ],
+  "health and the body": [
+    "Why does gentle movement often ease stiffness better than complete rest?",
+    "Why do people breathe faster when climbing stairs than when walking on level ground?",
+    "How does regular sleep timing affect how rested a person feels?",
+    "Why does a scab form over a cut as it heals?"
+  ],
+  "technology": [
+    "Why do phone batteries drain faster in very cold weather?",
+    "How does predictive text learn the phrases a person types most often?",
+    "Why do video calls sometimes lag even on a fast connection?",
+    "Why does restarting a device fix so many temporary glitches?"
+  ],
+  "language and writing": [
+    "Why do languages borrow so many terms for foods from other cultures?",
+    "How does reading aloud help a writer notice awkward phrasing?",
+    "Why do proverbs survive for centuries while slang fades quickly?",
+    "Why is it often easier to understand a language than to speak it?"
+  ],
+  "art and design": [
+    "Why do warm colours seem to advance while cool colours seem to recede?",
+    "How does negative space shape what a viewer notices in a poster?",
+    "Why do many chairs celebrated for their looks turn out to be uncomfortable?",
+    "Why do museums light paintings differently from sculpture?"
+  ],
+  "the natural world": [
+    "Why do some trees drop their leaves before winter while others keep them?",
+    "How do tides create distinct zones of life on a rocky shore?",
+    "Why do wolves and other pack hunters share food after a hunt?",
+    "Why do desert plants often have waxy surfaces and deep roots?"
+  ]
+}

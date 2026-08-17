@@ -1,0 +1,18 @@
+# Working evidence and its durable mirror: registered artifacts are
+# content-hashed and signed, and runs must never dirty the Git worktree
+# (prereg v3 §28 / item 10), so they live outside version control.
+evidence/
+durable_root/
+
+# Environments (rebuilt from the committed uv locks).
+.venv/
+environments/backend/.venv/
+
+# The vendored ROCm wheels are pinned by environments/backend/vendor/
+# MANIFEST.sha256; the binaries themselves stay out of git.
+environments/backend/vendor/*.whl
+
+# Python build noise.
+__pycache__/
+*.pyc
+src/*.egg-info/

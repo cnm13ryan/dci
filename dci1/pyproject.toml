@@ -1,0 +1,30 @@
+# DCI-1 confirmatory study — isolated research module (see README.md).
+# Scientific environment: dci1/.venv (Python 3.13), uv-managed. uv.lock and
+# requirements-frozen.txt (deterministic `uv export --frozen` output) are the
+# canonical dependency representation required by prereg v3 §28. The GPU
+# backend environment lives in environments/backend and is a separate,
+# pinned interpreter (vLLM 0.15.1+rocm720).
+[project]
+name = "dci1"
+version = "3.0.0"
+description = "DCI-1 study module: closed v2 implementation and the v3 implementation"
+requires-python = ">=3.13"
+dependencies = ["numpy==2.5.2"]
+
+[dependency-groups]
+dev = ["pytest==9.1.1", "pyarrow==25.0.1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "tests_v3"]
+markers = [
+    "cpu: runs with no GPU stack installed",
+    "gpu: needs the pinned ROCm backend environment and a real GPU",
+    "slow: the full synthetic end-to-end lifecycle",
+]
