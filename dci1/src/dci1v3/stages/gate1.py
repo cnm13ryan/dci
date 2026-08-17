@@ -227,8 +227,9 @@ def run_gate1(job: Job) -> dict[str, Any]:
         cells = _validation_cells()
         validation_dir = stage_dir / "validation"
         validation_dir.mkdir(parents=True, exist_ok=True)
-        fs.write_json_once(validation_dir / "prompt_plan.json",
-                           prompt_plan(cells))
+        if not (validation_dir / "prompt_plan.json").exists():
+            fs.write_json_once(validation_dir / "prompt_plan.json",
+                               prompt_plan(cells))
         cap = _selected_cap(job)
         fill_cache(validation_dir, cells, spec=job.spec,
                    stage="gate1_validation",
