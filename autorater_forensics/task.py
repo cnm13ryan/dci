@@ -110,9 +110,11 @@ def judge_parse():
 
 @task
 def forensics(effort: str = "low",
-              dataset_path: str = "dataset/diagnostic.jsonl") -> Task:
+              dataset_path: str = "dataset/diagnostic.jsonl",
+              max_tokens: int = 2048) -> Task:
     if effort not in EFFORTS:
         raise ValueError(f"effort must be one of {EFFORTS}")
+    max_tokens = int(max_tokens)
     dataset = json_dataset(
         dataset_path,
         FieldSpec(input="input", target="target", id="id",
@@ -134,7 +136,7 @@ def forensics(effort: str = "low",
         config=GenerateConfig(
             temperature=0.0,
             top_p=1.0,
-            max_tokens=2048,
+            max_tokens=max_tokens,
             seed=20260817,
             # verbatim top-level chat-completions parameter; the pinned
             # vLLM maps it into the harmony chat template

@@ -4,13 +4,17 @@
 # judge; GPU selectable (default 0). Diagnostic-only: the production
 # Gate 1 serving architecture (offline subprocess seam) is unchanged.
 #
-#   bash server/launch_server.sh [device] [port]
+#   bash server/launch_server.sh [device] [port] [max-model-len]
+#
+# max-model-len defaults to 4096 (the original diagnostic runs); the
+# E1 cap-search servers use 12288 so 8192-token completions fit.
 #
 # NOTE: while this server holds a GPU, do not start registered backend
 # runs on the same device (the production GpuLock does not see it).
 set -eu
 DEVICE=${1:-0}
 PORT=${2:-8555}
+MAXLEN=${3:-4096}
 B=/home/cnm13ryan/git/dci/dci1/environments/backend/.venv
 LOG=$(dirname "$0")/vllm_server_p${2:-8555}.log
 
@@ -24,7 +28,7 @@ env -u ROCR_VISIBLE_DEVICES -u CUDA_VISIBLE_DEVICES \
     --revision 6cee5e81ee83917806bbde320786a8fb61efebee \
     --served-model-name gpt-oss-20b \
     --dtype bfloat16 \
-    --max-model-len 4096 \
+    --max-model-len "$MAXLEN" \
     --gpu-memory-utilization 0.85 \
     --enforce-eager \
     --no-enable-prefix-caching \
