@@ -31,6 +31,9 @@ def main():
     ap.add_argument("--chunk", type=int, default=32)
     ap.add_argument("--device", type=int, default=0)
     ap.add_argument("--cap", type=int, default=2048)
+    ap.add_argument("--dataset", default=None,
+                    help="alternate sample JSONL (default: the 61 "
+                         "controls from diagnostic.jsonl)")
     args = ap.parse_args()
 
     from dci1v3.generation.backend import run_backend
@@ -45,17 +48,31 @@ def main():
         (REPO / "dci1" / "src" / "dci1v3" / "protocol" / "data"
          / "autorater.json").read_text())
     judge = get_judge(config["judge_model_key"])
+    # The registered plan builder only accepts registered caps; for the
+    # diagnostic cap search we build at the registered AUTORATER_CAP and
+    # override ONLY the cap fields (the parameter under test). Scratch
+    # output only — never a registered run.
+    build_cap = args.cap if args.cap in (2048,) else 2048
     plan = backend_plan(
-        judge, cap=args.cap, decoding="greedy",
+        judge, cap=build_cap, decoding="greedy",
         chunk_size=args.chunk,
         skip_special_tokens=bool(
             config["decoding"].get("skip_special_tokens", True)))
+    if args.cap != build_cap:
+        plan["generation_ceiling"] = args.cap
+        plan["answer_tokens"] = args.cap
+        if plan["max_model_len"] < args.cap + 1024:
+            plan["max_model_len"] = args.cap + 1024
     plan["chat_template_kwargs"] = {"reasoning_effort": args.effort}
 
-    controls = [json.loads(l) for l in
-                (ROOT / "dataset" / "diagnostic.jsonl").read_text()
-                .splitlines()]
-    controls = [r for r in controls if not r["contested"]]
+    if args.dataset:
+        controls = [json.loads(l) for l in
+                    Path(args.dataset).read_text().splitlines()]
+    else:
+        controls = [json.loads(l) for l in
+                    (ROOT / "dataset" / "diagnostic.jsonl").read_text()
+                    .splitlines()]
+        controls = [r for r in controls if not r["contested"]]
     design_rows = []
     for r in sorted(controls, key=lambda r: r["item_id"]):
         item = {"constraint_text": r["constraint_text"],
@@ -71,8 +88,10 @@ def main():
             "sample_id": r["id"],
             "prompt_hash": sha_text(prompt)})
 
+    tag = (f"_{Path(args.dataset).stem}" if args.dataset else "")
     run_dir = (ROOT / "experiments" / "scratch" / "exp3"
-               / f"offline_{args.effort}_chunk{args.chunk}_cap{args.cap}")
+               / f"offline_{args.effort}_chunk{args.chunk}"
+                 f"_cap{args.cap}{tag}")
     outcome = run_backend(run_dir, plan, design_rows,
                           device=args.device)
     by_id = {row["row_id"]: row for row in outcome["rows"]}

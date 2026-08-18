@@ -151,7 +151,49 @@ disjoint from the calibration sample, sealed in
 (sha256 `f8831598e275487037e6e51cd85e1df2b33c8e359d13836e500e9ab7b881d7a3`).
 Not run, not inspected.
 
-## E12 — decision
+## E8 — human calibration results (added 2026-08-18 evening)
+
+The researcher (single annotator, "Bryan" — also the study author;
+real but not independent external validation) completed the 56-item
+blind calibration review: all 56 items judged (0 UNSURE), ~52 minutes,
+response hashes match the frozen pool, zero reveals before judgment,
+zero synthetic rows.
+
+**Human vs deterministic verifier: 56/56 = 100%** (exact 95% binomial
+lower bound ≈ 93.6%). The frozen rule-based checker is human-anchored
+on a population-representative sample: every human disagreement with
+the study's instruments lies in the MODEL JUDGE, not the verifier.
+
+Candidates on the same 56 human-labelled items (coverage in
+parentheses; failures per the frozen rules count against coverage,
+never as VIOLATES):
+
+| configuration | context | correct among valid | human-SAT | human-VIO |
+|---|---|---|---|---|
+| high@8192   | serialized API (deterministic ×3) | **55/56 = 98.2%** (100%) | 39/39 | 16/17 |
+| medium@8192 | serialized API | 51/56 = 91.1% (100%) | 37/39 | 14/17 |
+| high@8192   | registered offline seam, chunk 32 | 50/54 = 92.6% (96.4%; 2 invalid) | 35/39 | 15/17 |
+| medium@8192 | registered offline seam, chunk 32 | 52/56 = 92.9% (100%) | 37/39 | 15/17 |
+| high@2048   | registered rounds (context) | 52/53 = 98.1% (94.6%) | 37/37 | 15/16 |
+| medium@2048 | registered rounds (context) | 51/55 = 92.7% (98.2%) | 37/39 | 14/16 |
+| low@2048    | registered rounds (context) | 40/56 = 71.4% (100%) | 29/39 | 11/17 |
+
+Paired discordants on identical items: serialized-API context —
+high right where medium wrong 4, medium right where high wrong **0**.
+Offline context — 1 vs 1 (tie), 3 shared misses. **The candidate
+ranking is context-dependent**: path equivalence between the two
+deterministic contexts fails for high (51/56 identical judgments;
+on all 3 label-level differences the API path matched the human) and
+nearly holds for medium (55/56). The shared blind spot across every
+configuration and context is one boundary miscount
+(`…health-and-the-body-35…5:0`: 6 occurrences judged as 5; human and
+verifier both say VIOLATES).
+
+Rejected-configuration check: low (71.4%) is far below every surviving
+candidate on the same labels — the rejection is confirmed by human
+evidence, not just operational criteria.
+
+## E12 — decision (superseded by the E8 addendum below)
 
 **DO NOT PROCEED.** Missing evidence, exactly:
 
@@ -175,3 +217,37 @@ stability (exact determinism in frozen contexts), root cause of path
 divergence (batch-composition numerics; templating and parsing
 excluded), failure-state separation, pre-registered measurement rules,
 population-representative sampling design, blind review protocol.
+
+## E12 addendum — after human calibration (2026-08-18 evening)
+
+Against the §12 checklist: output-limit ✓ (8192; two residual offline
+invalids noted), repeat stability ✓ (0% in frozen contexts),
+failure separation ✓, rules frozen before scoring ✓, representative
+human calibration ✓ (single-annotator caveat), both-class performance
+✓ for high@8192-serialized (39/39 and 16/17), rejected configuration
+confirmed worse ✓ (low 71.4%).
+
+Still open — the verdict remains **DO NOT PROCEED**, now for exactly
+three items:
+
+1. **Configuration + context selection and freeze** (researcher
+   decision): the evidence points to high@8192 in the serialized
+   deterministic serving context (98.2%, 100% coverage, exact
+   repeatability, dominant 4–0 in paired comparison); adopting it
+   for Gate 1 requires an audited amendment of the registered
+   autorater configuration (cap 2048 → 8192, serving context bound
+   into the config) and a new freeze cycle. Keeping the current
+   offline chunk-32 context instead leaves medium and high tied
+   (~93%) with a known ~7% boundary-error band.
+2. **Sealed reserved final check** (40 items,
+   sha256 `f8831598e275…`): run once, only after (1) is frozen.
+3. **Annotation independence**: the calibration labels come from one
+   annotator who is also the study author. Blindness was enforced
+   mechanically, but independent replication (a second blind
+   annotator on the same 56 items, or an external reviewer) is the
+   remaining validity upgrade.
+
+Positive human-anchored results that need no further work: the
+deterministic verifier is 56/56 with blind human judgment on the Gate 1
+population; every model-judge configuration is measurably worse than
+the deterministic verifier it was meant to validate.
