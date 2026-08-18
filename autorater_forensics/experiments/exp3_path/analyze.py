@@ -89,16 +89,41 @@ def pair(lines, title, a, b, name_a, name_b):
             "text_compared": len(both_final)}
 
 
+ROUND_ROWS = {
+    "low": "gate1/autorater/superseded/881d78927247/dev/judge_rows.jsonl",
+    "medium":
+        "gate1/autorater/superseded/1b1b4df78a17/dev/judge_rows.jsonl",
+    "high": "gate1/autorater/dev/judge_rows.jsonl",
+}
+
+
+def registered_finals(effort: str) -> dict[str, str]:
+    """item_id -> final-channel text from the registered round's raw
+    generations (READ-ONLY)."""
+    evidence = ROOT.parent / "dci1" / "evidence" / "dci1-v3"
+    out = {}
+    for model_dir in evidence.iterdir():
+        p = model_dir / ROUND_ROWS[effort]
+        if not p.exists():
+            continue
+        for row in map(json.loads, p.read_text().splitlines()):
+            final = harmony_final(row.get("raw_generation"))
+            out[f"{model_dir.name}::{row['item_id']}"] = final or ""
+    return out
+
+
 def main():
     ds = [json.loads(l) for l in
           (ROOT / "dataset" / "diagnostic.jsonl").read_text()
           .splitlines()]
     controls = {r["id"]: r for r in ds if not r["contested"]}
-    registered = {e: {i: {"label": r[f"prior_{e}_label"],
-                          "status": r[f"prior_{e}_status"],
-                          "final": ""}
-                      for i, r in controls.items()}
-                  for e in ("low", "medium", "high")}
+    registered = {}
+    for e in ("low", "medium", "high"):
+        finals = registered_finals(e)
+        registered[e] = {i: {"label": r[f"prior_{e}_label"],
+                             "status": r[f"prior_{e}_status"],
+                             "final": finals.get(i, "")}
+                         for i, r in controls.items()}
     lines = ["# E3 — execution-path divergence, paired factor tests",
              f"\nControls: {len(controls)}. Registered labels come from "
              "the three registered development rounds (offline seam, "

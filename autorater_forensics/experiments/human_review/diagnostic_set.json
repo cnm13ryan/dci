@@ -1,0 +1,117 @@
+{
+ "design": "PREREGISTERED.md E5 diagnostic set \u2014 deliberately unusual cases; NEVER used to estimate overall accuracy",
+ "quotas": {
+  "medium_vs_high_disagree": 6,
+  "path_flip_control": 4,
+  "previously_truncated": 4,
+  "long_response": 4,
+  "high_n": 3,
+  "all_settings_vs_verifier": 3
+ },
+ "category_pool_sizes": {
+  "medium_vs_high_disagree": 20,
+  "path_flip_control": 15,
+  "previously_truncated": 35,
+  "long_response": 37,
+  "high_n": 132,
+  "all_settings_vs_verifier": 3
+ },
+ "items": [
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-04:solo:A:7:0",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-36:solo:A:5:1",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-49:solo:A:3:1",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-51:solo:A:5:1",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-51:solo:A:7:0",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:8:0",
+   "category": "medium_vs_high_disagree"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:art-and-design-29:solo:A:3:0",
+   "category": "path_flip_control"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:art-and-design-35:solo:A:6:0",
+   "category": "path_flip_control"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-36:solo:A:6:0",
+   "category": "path_flip_control"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-49:solo:A:5:1",
+   "category": "path_flip_control"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-05:solo:A:6:0",
+   "category": "previously_truncated"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:health-and-the-body-35:solo:A:7:0",
+   "category": "previously_truncated"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:2:0",
+   "category": "previously_truncated"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:5:0",
+   "category": "previously_truncated"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-05:solo:A:5:0",
+   "category": "long_response"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-15:solo:A:7:1",
+   "category": "long_response"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:language-and-writing-00:solo:A:6:0",
+   "category": "long_response"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:language-and-writing-00:solo:A:8:0",
+   "category": "long_response"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:art-and-design-35:solo:A:8:0",
+   "category": "high_n"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-36:solo:A:7:0",
+   "category": "high_n"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-49:solo:A:7:1",
+   "category": "high_n"
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-49:solo:A:6:1",
+   "category": "all_settings_vs_verifier"
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-51:solo:A:7:1",
+   "category": "all_settings_vs_verifier"
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:geography-05:solo:A:8:0",
+   "category": "all_settings_vs_verifier"
+  }
+ ]
+}
