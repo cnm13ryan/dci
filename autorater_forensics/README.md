@@ -145,6 +145,40 @@ reveals a recurring phenomenon — the taxonomy is discovered, not
 pre-committed. `grep_scanner` and `llm_scanner` from `inspect_scout`
 are available for quick variants.
 
+## Stability experiments (experiments/)
+
+`experiments/PREREGISTERED.md` fixes the designs, thresholds, and
+rejection rules for the judge-stability program BEFORE any run;
+`experiments/FINDINGS.md` holds the consolidated results. Layout:
+
+    experiments/
+    ├── PREREGISTERED.md        fixed designs/thresholds (committed first)
+    ├── FINDINGS.md             consolidated results + decision
+    ├── build_sets.py           E1/E2 datasets, calibration sample,
+    │                           sealed reserved final-check IDs
+    ├── exp1_cap/               output-cap search (run.sh, analyze.py)
+    ├── exp2_repeat/            3x identical repeat triples per effort
+    ├── exp3_path/              path-divergence factor tests: prompt
+    │                           token identity, conc=1 vs 4, registered
+    │                           offline seam at chunk 32/1
+    ├── escalation.py           pre-specified human-escalation triggers
+    └── human_review/           blind review CLI + fixed definitions +
+                                paired agreement report + sampled sets
+
+Human-review flow (when an annotator is available): blind `review_app.py
+review --set calibration --annotator NAME` (shows ONLY instruction,
+response, definitions, edge rules; refuses piped input), then
+`reveal` per item AFTER commit, then `agreement_report.py` for the
+paired per-configuration comparison. `records/` is append-only; the
+self-test marks its records synthetic and `agreement_report.py`
+refuses them. The reserved final-check IDs
+(`reserved_final_check_ids.json`) stay sealed until the full
+configuration is frozen.
+
+Analysis outputs land in `analysis/out/`: `exp1_report.md`,
+`exp2_report.md`, `exp3_report.md`, `exp1_records.jsonl`,
+`escalation.json`.
+
 ## Extension points (deliberately not built yet)
 
 Oracle labels / human calibration (e.g. CJE) can be added later without
