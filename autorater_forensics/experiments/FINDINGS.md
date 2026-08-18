@@ -251,3 +251,38 @@ Positive human-anchored results that need no further work: the
 deterministic verifier is 56/56 with blind human judgment on the Gate 1
 population; every model-judge configuration is measurably worse than
 the deterministic verifier it was meant to validate.
+
+## Evidence classification and researcher decision (2026-08-18, after E8)
+
+Recorded on explicit researcher instruction; this closes the program's
+role in Gate 1 without amending any registered record:
+
+1. **The registered Gate 1 autorater configuration remains
+   autorater-config/4 (reasoning_effort high, cap 2048).** Nothing in
+   this workspace amends it. Every 8192-cap result here (E1/E2/E8) is
+   **forward-looking diagnostic evidence** — material for a possible
+   future audited amendment and freeze cycle, never part of a
+   registered record.
+2. **The 56-item blind human labels
+   (`human_review/records/calibration_Bryan.jsonl`) are diagnostic
+   evidence, not registered A1 validation.** They are real, blind,
+   hash-verified human judgments, but they were produced by a study
+   author on this workspace's calibration sample — not by an
+   independent annotator on the registered annotation packet through
+   the registered `human-audit` pathway. The registered Gate 1 record
+   therefore keeps `HUMAN_VALIDATION_UNAVAILABLE`, and no registered
+   artifact may cite these labels as human validation.
+3. **The sealed 40-item reserved set stays sealed** (sha256
+   `f8831598e275487037e6e51cd85e1df2b33c8e359d13836e500e9ab7b881d7a3`),
+   to be opened at most once, only after any future judge-configuration
+   freeze.
+4. **The registered pipeline proceeds under the registered claim
+   boundary.** The E12 "DO NOT PROCEED" verdict answered this
+   program's own question — whether to adopt a new, human-anchored
+   judge configuration — and its open item (1) is now resolved by the
+   researcher's decision to retain high@2048; items (2) and (3) remain
+   open as diagnostic follow-ups that do not gate the registered
+   pipeline. Gate 1 calibration sign-off and the explicit researcher
+   approvals run in `dci1v3` under the registered configuration and the
+   registered strongest-claim sentence; the decision record is
+   `dci1/reports/gate1_calibration_signoff_notes.json`.
