@@ -24,7 +24,7 @@ from dci1v3.engine.environment import environment_digest, environment_record
 from dci1v3.engine.locks import WriterLock
 from dci1v3.engine.paths import ModelTree, model_tree
 from dci1v3.engine.verify import verify_evidence
-from dci1v3.errors import ProtocolError, TerminalStatus
+from dci1v3.errors import IntegrityError, ProtocolError, TerminalStatus
 from dci1v3.models.registry import ModelSpec, get_model
 from dci1v3.protocol import constants as C
 
@@ -60,6 +60,40 @@ def operation(name: str, *, stage: str | None, mutating: bool = True):
                                    mutating=mutating)
         return fn
     return register
+
+
+def verifier_binding_required(op: Operation) -> bool:
+    """Whether an operation's scientific validity depends on the Gate-1
+    verifier freeze: every stage from Gate 2A onward, plus the greedy
+    replication — the one non-stage command that scores newly generated
+    rows. GATE_1 itself is excluded: its approval path performs its own
+    drift check with the registered calibration-supersession handling."""
+    if op.name == "greedy":
+        return True
+    return op.stage is not None and \
+        C.STAGE_SEQUENCE.index(op.stage) > \
+        C.STAGE_SEQUENCE.index(C.STAGE_GATE1)
+
+
+def assert_verifier_binding(context: StudyContext) -> None:
+    """Post-Gate-1 instrument integrity: the current verifier sources
+    must be byte-identical to the signed verifier-freeze manifest before
+    any downstream mutation. Fails closed when the manifest is missing
+    or unverifiable, and never rewrites the manifest — reconciling a
+    drift is an audited supersession-and-recalibration decision."""
+    from dci1v3.engine import fs
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.stages.autorater import assert_verifier_unchanged
+
+    manifest_path = context.study_root / "verifier_freeze.json"
+    if not manifest_path.exists():
+        raise IntegrityError(
+            "post-Gate-1 operations require the signed verifier-freeze "
+            f"manifest; missing from {manifest_path}")
+    payload = verify_signed(fs.read_json(manifest_path),
+                            context.signing_key_path,
+                            where="verifier_freeze")
+    assert_verifier_unchanged(payload)
 
 
 def _assert_execution_order(context: StudyContext, model_key: str) -> None:
@@ -106,6 +140,8 @@ def dispatch(context: StudyContext, name: str, model_key: str,
             transitions.assert_transition_allowed(tree, op.stage)
         else:
             transitions.assert_generation_allowed(tree)
+        if verifier_binding_required(op):
+            assert_verifier_binding(context)
         env = environment_record(context)
         job = Job(context=context, tree=tree, spec=spec,
                   producing_commit=commit, environment=env,

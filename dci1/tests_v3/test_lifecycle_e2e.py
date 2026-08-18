@@ -71,6 +71,25 @@ def lifecycle(synthetic_repo, tmp_path_factory):
     step("gate1-calibrate", "--model", MODEL)
     step("gate1", "--model", MODEL, expect=1)   # approval flag required
     step("gate1", "--model", MODEL, "--approve-autorater-calibration")
+    # Post-Gate-1 verifier binding, end-to-end through the dispatcher:
+    # a signed freeze manifest whose verifier hashes differ from the
+    # current sources blocks the next downstream stage before any
+    # mutation; restoring the true manifest re-enables the pipeline.
+    from dci1v3.engine.dispatch import dispatch
+    from dci1v3.engine.signing import sign_payload, verify_signed
+    from dci1v3.errors import IntegrityError
+    manifest_file = ctx.study_root / "verifier_freeze.json"
+    manifest_before = manifest_file.read_text()
+    drifted = verify_signed(json.loads(manifest_before),
+                            ctx.signing_key_path, where="verifier_freeze")
+    drifted["verifier_sources"]["target.py"] = "0" * 64
+    manifest_file.write_text(json.dumps(
+        sign_payload(drifted, ctx.signing_key_path)))
+    with pytest.raises(IntegrityError, match="verifier code changed"):
+        dispatch(ctx, "gate2a", MODEL)
+    assert not tree.stage_record(C.STAGE_GATE2A).exists()
+    assert not (tree.data_dir("gate2a") / "cache.jsonl").exists()
+    manifest_file.write_text(manifest_before)
     step("gate2a", "--model", MODEL)
     step("gate2b", "--model", MODEL)
     step("freeze", "--model", MODEL)
@@ -281,6 +300,29 @@ def test_final_result_and_claims_exist(lifecycle):
         assert claim["direction"] is not None or claim["status"] != "OK"
     assert result["blocks"] == C.N_BLOCKS
     assert result["resamples"] == C.BOOTSTRAP_RESAMPLES
+
+
+def test_rows_traceable_to_frozen_verifier(lifecycle):
+    """Verifier-binding regression (E): every stored verdict row records
+    the verifier_source_hash of the verifier that scored it, and that
+    hash derives from the freeze manifest's verdict modules — stored
+    evidence stays traceable to the Gate-1-frozen instrument."""
+    from dci1v3.engine.signing import verify_signed
+    from dci1v3.protocol.hashing import sha_obj
+    from dci1v3.verifiers import verifier_source_hash
+
+    tree, ctx = lifecycle["tree"], lifecycle["ctx"]
+    manifest = verify_signed(
+        fs.read_json(ctx.study_root / "verifier_freeze.json"),
+        ctx.signing_key_path, where="verifier_freeze")
+    frozen_hash = sha_obj({name: manifest["verifier_sources"][name]
+                           for name in ("words.py", "target.py",
+                                        "families.py", "boundary.py")})
+    assert frozen_hash == verifier_source_hash()
+    rows = fs.read_jsonl(tree.data_dir("confirmatory") / "cache.jsonl")
+    assert rows and all(
+        row["verdicts"]["verifier_source_hash"] == frozen_hash
+        for row in rows)
 
 
 def test_pilot_and_confirmatory_share_production_paths(lifecycle):
