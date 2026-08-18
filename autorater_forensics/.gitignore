@@ -6,3 +6,5 @@ scans/results/
 __pycache__/
 *.pyc
 server/*.log
+logs_exp/
+experiments/scratch/
