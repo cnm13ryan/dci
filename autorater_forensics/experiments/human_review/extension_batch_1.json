@@ -1,0 +1,1303 @@
+{
+ "batch": 1,
+ "seed_domain": "forensics:human-calibration-extension:v1",
+ "base_seed": 20260818,
+ "seed": 7350242440367418297,
+ "design": "extension of the E5 calibration set; class-balanced (disproportionate across verifier classes, proportional across source models within a class), SRS within stratum for the representative component; deterministic purposive selection for the boundary component",
+ "population_size": 983,
+ "eligible_size": 887,
+ "excluded": {
+  "sealed": 40,
+  "calibration": 56,
+  "already_labelled": 56,
+  "revealed": 0
+ },
+ "excluded_prior_batches": 0,
+ "class_targets_cumulative": {
+  "pass": 52,
+  "fail": 52
+ },
+ "existing_by_class_stratum": {
+  "pass": {
+   "gemma-3n-e2b-it": 9,
+   "qwen3-4b": 10,
+   "qwen3-4b-instruct-2507": 9,
+   "gemma-3n-e4b-it": 11
+  },
+  "fail": {
+   "gemma-3n-e2b-it": 5,
+   "qwen3-4b": 4,
+   "qwen3-4b-instruct-2507": 5,
+   "gemma-3n-e4b-it": 3
+  }
+ },
+ "representative_allocation": {
+  "pass": {
+   "gemma-3n-e2b-it": 2,
+   "qwen3-4b": 4,
+   "qwen3-4b-instruct-2507": 3,
+   "gemma-3n-e4b-it": 4
+  },
+  "fail": {
+   "gemma-3n-e2b-it": 11,
+   "qwen3-4b": 8,
+   "qwen3-4b-instruct-2507": 9,
+   "gemma-3n-e4b-it": 7
+  }
+ },
+ "boundary_per_class": 8,
+ "boundary_pool_sizes": {
+  "fail|generation_truncated": 3,
+  "fail|high_n": 21,
+  "fail|judge_effort_disagreement": 98,
+  "fail|judge_non_valid_status": 10,
+  "fail|judge_vs_verifier": 17,
+  "fail|long_response": 2,
+  "fail|near_miss_count": 112,
+  "pass|generation_truncated": 4,
+  "pass|high_n": 55,
+  "pass|judge_effort_disagreement": 133,
+  "pass|judge_non_valid_status": 10,
+  "pass|judge_vs_verifier": 2,
+  "pass|long_response": 18
+ },
+ "boundary_realised": {
+  "fail|generation_truncated": 1,
+  "fail|high_n": 1,
+  "fail|judge_effort_disagreement": 1,
+  "fail|judge_non_valid_status": 1,
+  "fail|judge_vs_verifier": 2,
+  "fail|long_response": 1,
+  "fail|near_miss_count": 1,
+  "pass|generation_truncated": 1,
+  "pass|high_n": 1,
+  "pass|judge_effort_disagreement": 2,
+  "pass|judge_non_valid_status": 1,
+  "pass|judge_vs_verifier": 2,
+  "pass|long_response": 1
+ },
+ "long_response_threshold_words": {
+  "pass": 314,
+  "fail": 340
+ },
+ "sealed_set_sha256": "f8831598e275487037e6e51cd85e1df2b33c8e359d13836e500e9ab7b881d7a3",
+ "verifier_note": "verifier_class / s0_count are recorded for analysis only; the reviewer interface never loads them",
+ "samples": [
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:art-and-design-29:solo:A:1:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:art-and-design-29:solo:A:1:0",
+   "n": 1,
+   "source_pool": "validation",
+   "response_sha256": "7342c5d473bfabe10131038ac7d6597094dfce4dc9138e8f8e8a31c22077a10b",
+   "response_words": 98,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 0,
+   "component": "boundary",
+   "boundary_category": "near_miss_count",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:art-and-design-35:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:art-and-design-35:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "6981160018ecb0bb70861bb9cb152a8cef4e540c508ae9ca4e554e27bf846b2e",
+   "response_words": 246,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_non_valid_status",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-04:solo:A:5:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:everyday-science-04:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "c8da2f29cf9a9cbcfa813643c2b9807e29ecda5027a6bce8b19272f6440ceb73",
+   "response_words": 232,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 5,
+   "component": "boundary",
+   "boundary_category": "judge_effort_disagreement",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-04:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:everyday-science-04:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "ee4ebd028aacbccc0d0ede286d9cc463b3a2fd83075a578aa184cadee4bb7a96",
+   "response_words": 334,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_effort_disagreement",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:everyday-science-36:solo:A:5:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:everyday-science-36:solo:A:5:1",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "f748b691aec170fb928bad01f87609ac09d06eb7b937f01cbc37c4effe967c2c",
+   "response_words": 200,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 5,
+   "component": "boundary",
+   "boundary_category": "judge_effort_disagreement",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-49:solo:A:7:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:food-49:solo:A:7:1",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "48c7d66dec4078a3e28882de964f3555751b7afd9b7d6c16372c3f3bc8d429d3",
+   "response_words": 240,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 7,
+   "component": "boundary",
+   "boundary_category": "high_n",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:food-51:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:food-51:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "8b736a31ecc3937bb49daf3c9850c44f59ba9ed23d48fb092da2c920153bc8f3",
+   "response_words": 210,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 10,
+   "component": "boundary",
+   "boundary_category": "high_n",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-05:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:geography-05:solo:A:6:0",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "0e2b1cf106413500cac60415166ce37d9c2ea3b502614a38611ae7479291a9be",
+   "response_words": 386,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_non_valid_status",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:language-and-writing-50:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:language-and-writing-50:solo:A:6:0",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "7a483a42fbe2cae25c46d7cbf35dab412bc4df7d729b8a28e8094653c34330a9",
+   "response_words": 272,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 5,
+   "component": "boundary",
+   "boundary_category": "judge_vs_verifier",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:music-12:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:music-12:solo:A:6:0",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "836530d8872a2136e81e2db4c1f1195b6247940fbdf044a9e25b06789707fd14",
+   "response_words": 350,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 6,
+   "component": "boundary",
+   "boundary_category": "long_response",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-35:solo:A:7:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-35:solo:A:7:1",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "b2530a27ba3fc7bea9ef3a9f93963ce76109f1bc7ce0e35b5088c7aecadb7de8",
+   "response_words": 393,
+   "finish_reason": "length",
+   "verifier_class": "pass",
+   "s0_count": 7,
+   "component": "boundary",
+   "boundary_category": "generation_truncated",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-35:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-35:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "1aa6339d4756406f4cb72c0ad17e7aa1fc2a411175843255fcb9d2db85cf91de",
+   "response_words": 393,
+   "finish_reason": "length",
+   "verifier_class": "fail",
+   "s0_count": 6,
+   "component": "boundary",
+   "boundary_category": "generation_truncated",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:geography-05:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:geography-05:solo:A:6:0",
+   "n": 6,
+   "source_pool": "prescreen",
+   "response_sha256": "ad543aa89ea7b9d319201ed82a08b86ed73d674f6ffbeccec026cac084071891",
+   "response_words": 398,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "long_response",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:geography-14:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:geography-14:solo:A:8:0",
+   "n": 8,
+   "source_pool": "prescreen",
+   "response_sha256": "7a4c29b459c9d5505ab84eb89bd50708debdcd80e9915bbecc1a39fbde6c22ae",
+   "response_words": 327,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_vs_verifier",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-51:solo:A:7:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-51:solo:A:7:1",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "14e9ce8adaa16eddfd18f66cb658f9a5a97102c6499e2eb7ba3b4cda7fc8b5c0",
+   "response_words": 278,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_vs_verifier",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:geography-05:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:geography-05:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "fa4f29c612b743e781930372b711d310a1b5fc99207f4c4508e99a132a5a7f89",
+   "response_words": 159,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 8,
+   "component": "boundary",
+   "boundary_category": "judge_vs_verifier",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": null
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-05:solo:A:5:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:geography-05:solo:A:5:1",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "76adfed9c1b6adeedb2585b00f05c9caf2012d08e41d0c4b4b948cbdeba67e32",
+   "response_words": 280,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 4,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-14:solo:A:7:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:geography-14:solo:A:7:1",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "67b400af6748ee8edb28cf5660e986697f5255c0618680f44eb4be05e9a31939",
+   "response_words": 295,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 6,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:health-and-the-body-35:solo:A:5:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:health-and-the-body-35:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "5a7927d961c58c1c0c5014abd721b9e98bf3eaf1cf62d019b2d7c796d7da7c08",
+   "response_words": 267,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 5,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.015625
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:health-and-the-body-48:solo:A:5:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "543c84595213b524e792f620029f66f4381499acaace1b81432cd71c3b6f14be",
+   "response_words": 234,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 6,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:4:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:history-47:solo:A:4:0",
+   "n": 4,
+   "source_pool": "validation",
+   "response_sha256": "7bae94e8ba9dc8705b87db03d957b1e414ca4fa8a95d59bea8af22d9f966245a",
+   "response_words": 326,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 5,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:language-and-writing-00:solo:A:5:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:language-and-writing-00:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "0ffcaead61e1dcf25359331f17919658d221409610a02d8320e3b62ecc7d42a8",
+   "response_words": 336,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 0,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:language-and-writing-50:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:language-and-writing-50:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "f4de9e00e116a8c4583abdfa7ded57ea31beecadc66fcba88b2c607f51e47971",
+   "response_words": 324,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-50:solo:A:1:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-50:solo:A:1:0",
+   "n": 1,
+   "source_pool": "validation",
+   "response_sha256": "b6ec609c7d56a944ae8ec10156633d71ccdfefa1068afaaf045d59d1e506929a",
+   "response_words": 84,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 1,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.015625
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:music-12:solo:A:4:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:music-12:solo:A:4:0",
+   "n": 4,
+   "source_pool": "prescreen",
+   "response_sha256": "4f4c97ca89009a5ed531586c5191f0fcdd5f50c7b956de64530eb83bc9815ccf",
+   "response_words": 292,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 3,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:technology-06:solo:A:3:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:technology-06:solo:A:3:0",
+   "n": 3,
+   "source_pool": "prescreen",
+   "response_sha256": "901f14ea1522f4196b355967bb6773a3a2cf161231dedf8cab4c9fc77e4fd5b1",
+   "response_words": 204,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 1,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:technology-09:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:technology-09:solo:A:6:0",
+   "n": 6,
+   "source_pool": "prescreen",
+   "response_sha256": "1a1569ce05100c61bc78af1da0a4df696b1b5da2e31ed6c3435c7de66057b367",
+   "response_words": 273,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 5,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:technology-09:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:technology-09:solo:A:7:0",
+   "n": 7,
+   "source_pool": "prescreen",
+   "response_sha256": "3a4b1ef0638d29e79184f7c2adad8162ba2b595cef8c14802d67fd0fb2ba9a6e",
+   "response_words": 352,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 1,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:the-natural-world-39:solo:A:1:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:the-natural-world-39:solo:A:1:0",
+   "n": 1,
+   "source_pool": "prescreen",
+   "response_sha256": "4a190219f1d43128525f6dcf5351ef87da9ae200a25026de019a52e0c7d92ef0",
+   "response_words": 126,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 0,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.134146
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:everyday-science-36:solo:A:8:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "310729f145f72612b435bcf08c1e3d6212adad09db632dd3545eea88d14b0947",
+   "response_words": 353,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 10,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-49:solo:A:2:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-49:solo:A:2:0",
+   "n": 2,
+   "source_pool": "validation",
+   "response_sha256": "b493166d91b2a3b2c9c5e4cc5bcad82c6759ca67e02761d32c917eb8a4ce8082",
+   "response_words": 158,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 2,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.022989
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-49:solo:A:8:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-49:solo:A:8:1",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "a9d27e5ce44c3a182abb6275674b75fcc5a29f75102ad14e212bbab32c77d767",
+   "response_words": 309,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 9,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-51:solo:A:8:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-51:solo:A:8:1",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "f107accc72f622ac81e8130acac5ac2fb909bc5bc0b576affbf90c68fb36c52b",
+   "response_words": 302,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 9,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:geography-14:solo:A:8:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:geography-14:solo:A:8:1",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "89a049e95141c400d4514d53d33ebabf6b5148325b1e3252b08c9b4c40ad615f",
+   "response_words": 342,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 8,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.022989
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:health-and-the-body-35:solo:A:8:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:health-and-the-body-35:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "ba8fe2967530f06d039d0130616b48694e23492269c60e9c478de95983809ecf",
+   "response_words": 328,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 9,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:history-15:solo:A:7:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:history-15:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "1478e06cf3757fd1c3790fad5480d5ac48fd4ded8dc6eefb0147ee872deb97cd",
+   "response_words": 335,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.022989
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:history-47:solo:A:7:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:history-47:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "d093c32ae504aec8e97d401cc59e4d736c0171e76b7ddac7fda136e8cd23c79b",
+   "response_words": 386,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:technology-06:solo:A:8:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:technology-06:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "c6cce7b161502fa732ffbbf27752421334e1c7761bd0842c8ce78d81185d7880",
+   "response_words": 301,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 9,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:work-and-organisations-01:solo:A:5:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:1",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "0b3d2c0cba1254dadeadc3dc4701d9e5905ac80d11612593c01976face05db61",
+   "response_words": 316,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 6,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.142857
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:work-and-organisations-01:solo:A:7:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:work-and-organisations-01:solo:A:7:0",
+   "n": 7,
+   "source_pool": "prescreen",
+   "response_sha256": "f819148ec3712b20592d41415f3c6514c1e2d58495b9906fae37bffe1d32d71d",
+   "response_words": 291,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.022989
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:art-and-design-35:solo:A:4:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:art-and-design-35:solo:A:4:0",
+   "n": 4,
+   "source_pool": "validation",
+   "response_sha256": "153e846ea769a2d3f1771955003aba441497c240c810f49de488bf6347bdf18c",
+   "response_words": 121,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 3,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:everyday-science-36:solo:A:6:1",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:everyday-science-36:solo:A:6:1",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "7c10088e7e327cb70264c2c1790c743c25550cb9ab8ad99ea7436fbc50516c91",
+   "response_words": 126,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 5,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:food-49:solo:A:7:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:food-49:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "8bcf5b2d5409dbbdca855b6d67558b9987c05848428afcf8e54015b31fa89f89",
+   "response_words": 136,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 6,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:geography-14:solo:A:2:1",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:geography-14:solo:A:2:1",
+   "n": 2,
+   "source_pool": "validation",
+   "response_sha256": "53e7382165bd6e578126df7672d6a3d66d86a065811b016673012d0a4fb40dcf",
+   "response_words": 97,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 2,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.020833
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:language-and-writing-50:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:language-and-writing-50:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "b10bec1676049db22d01d7b3750f996e9527a4991d048302025bd3c1a52410e7",
+   "response_words": 148,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:music-48:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:music-48:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "691b6ee4f49d31eb6da05cef3ab771aeab62b00afc934366aab9716dae0a2fee",
+   "response_words": 140,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:sport-35:solo:A:6:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:sport-35:solo:A:6:0",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "f7af4d6f0714b523dc2051312cd2b0c58c504931711238e713c2510bf6fea851",
+   "response_words": 86,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 5,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:sport-35:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:sport-35:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "45fb6b404afc399b697b606af092e9bd76bfce5debb76467bac14ce8e9acb68f",
+   "response_words": 124,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:technology-09:solo:A:1:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:technology-09:solo:A:1:0",
+   "n": 1,
+   "source_pool": "validation",
+   "response_sha256": "48b3e1c1c4fda7452ce6c9490279e26348cc178c5d86ed06f6bc330050c26f53",
+   "response_words": 109,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 1,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.020833
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:technology-09:solo:A:7:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:technology-09:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "fe58aa6e782da518dd6581dcf2f7c597c8391e5a9d0811a8d370b0dd4fa4ee5a",
+   "response_words": 270,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 14,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:work-and-organisations-01:solo:A:5:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "ce14f1e37b56eb8b79e193ba9c00c171787d8172fa450b55f66f0126b9f0e5bd",
+   "response_words": 85,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 4,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.121622
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:geography-05:solo:A:3:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:geography-05:solo:A:3:0",
+   "n": 3,
+   "source_pool": "prescreen",
+   "response_sha256": "9be028e8abe4dc3e4608a60c04b7a77316e9ba8010a388a996092a396b9d700b",
+   "response_words": 126,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 3,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.020833
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:art-and-design-29:solo:A:7:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:art-and-design-29:solo:A:7:0",
+   "n": 7,
+   "source_pool": "validation",
+   "response_sha256": "cb3e112c1b4d4c8ac104a88ae5eb4201be9459711a4537398e1340656fde346c",
+   "response_words": 136,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 8,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:history-15:solo:A:8:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:history-15:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "b3acba9a9e3531a16175bfb24d142ff304c18b2f7375683c03e2ed819ac22369",
+   "response_words": 129,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 10,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:language-and-writing-00:solo:A:1:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:language-and-writing-00:solo:A:1:0",
+   "n": 1,
+   "source_pool": "validation",
+   "response_sha256": "07856ab2386925101cc357e269c122176a069664859c967bb98488bfc629b43f",
+   "response_words": 144,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 2,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:language-and-writing-00:solo:A:5:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:language-and-writing-00:solo:A:5:0",
+   "n": 5,
+   "source_pool": "validation",
+   "response_sha256": "e7077fec189840620f0fa1a1e13f3313e5c5af34971c9d9a256a59562e0a93ea",
+   "response_words": 239,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:language-and-writing-50:solo:A:3:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:language-and-writing-50:solo:A:3:0",
+   "n": 3,
+   "source_pool": "validation",
+   "response_sha256": "653a62f57dc6a8db466d296badd7f0db87d9cbcad4d35f325d22f740a6e47e51",
+   "response_words": 64,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 2,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:music-48:solo:A:6:1",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:music-48:solo:A:6:1",
+   "n": 6,
+   "source_pool": "validation",
+   "response_sha256": "be2b10295b09a15e7a57c401fa0293462404f95e7dcaeb9638dfe11fdd07401a",
+   "response_words": 161,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 7,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:music-48:solo:A:8:1",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:music-48:solo:A:8:1",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "09874d2a0e84daea29160438db2db4eb7f9508805ae67d833fc594cb7fae363d",
+   "response_words": 186,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 9,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:sport-35:solo:A:4:1",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:sport-35:solo:A:4:1",
+   "n": 4,
+   "source_pool": "validation",
+   "response_sha256": "5f2e8ffe167676af1004bd7b6c8c3b368599ebb00c3eebaebf5a20d7fd892e7a",
+   "response_words": 86,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 4,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.025478
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:sport-50:solo:A:8:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:sport-50:solo:A:8:0",
+   "n": 8,
+   "source_pool": "validation",
+   "response_sha256": "9da5db453cfac96f7bfe77c9dab2493e599349224846c0e4d3dda05a9ee69252",
+   "response_words": 96,
+   "finish_reason": "stop",
+   "verifier_class": "fail",
+   "s0_count": 10,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.126984
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:work-and-organisations-48:solo:A:1:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:work-and-organisations-48:solo:A:1:0",
+   "n": 1,
+   "source_pool": "validation",
+   "response_sha256": "3f08d10d887e938b8ed5f7f0e3ab1445af3d76ee46f0ec9f98d0756c171d6b41",
+   "response_words": 43,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 1,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.025478
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:work-and-organisations-48:solo:A:2:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:work-and-organisations-48:solo:A:2:0",
+   "n": 2,
+   "source_pool": "validation",
+   "response_sha256": "138f77cdc71f3bf5d110307f4efb1c976c967d3f4ae2d7df5f9e7e964ccb544c",
+   "response_words": 49,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 2,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.025478
+  },
+  {
+   "id": "qwen3-4b::prescreen:sport-35:solo:A:3:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:sport-35:solo:A:3:0",
+   "n": 3,
+   "source_pool": "prescreen",
+   "response_sha256": "d31bb9cb28eefa9386d0c8bd14379d378d22a9281c1c1406b04c06272cf58dc5",
+   "response_words": 67,
+   "finish_reason": "stop",
+   "verifier_class": "pass",
+   "s0_count": 3,
+   "component": "representative",
+   "boundary_category": null,
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.025478
+  }
+ ]
+}

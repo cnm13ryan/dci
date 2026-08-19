@@ -163,7 +163,8 @@ rejection rules for the judge-stability program BEFORE any run;
     │                           offline seam at chunk 32/1
     ├── escalation.py           pre-specified human-escalation triggers
     └── human_review/           blind review CLI + fixed definitions +
-                                paired agreement report + sampled sets
+                                paired agreement report + sampled sets +
+                                extension sampler + validation report
 
 Human-review flow (when an annotator is available): blind `review_app.py
 review --set calibration --annotator NAME` (shows ONLY instruction,
@@ -174,6 +175,21 @@ self-test marks its records synthetic and `agreement_report.py`
 refuses them. The reserved final-check IDs
 (`reserved_final_check_ids.json`) stay sealed until the full
 configuration is frozen.
+
+Verifier-validation flow (PREREGISTERED.md E5.1) — strengthening the
+human-vs-verifier bound from ≤10% to ≤5% per class:
+
+    build_extension_set.py --batch 1        # write-once sampled batch
+    review_app.py sets                      # what is available
+    review_app.py review --set extension1 --annotator NAME
+    review_app.py pin                       # pin records after a session
+    validation_report.py --json out.json    # bounds + stopping decision
+
+`sampling.py` draws the batch (class-balanced representative component +
+purposive boundary component, hard exclusions, domain-separated seed),
+`records_io.py` keeps records hash-chained and prefix-pinned, and
+`validation.py` computes the per-class Wilson bounds and the sequential
+stopping rule. Records are never edited, only appended.
 
 Analysis outputs land in `analysis/out/`: `exp1_report.md`,
 `exp2_report.md`, `exp3_report.md`, `exp1_records.jsonl`,
