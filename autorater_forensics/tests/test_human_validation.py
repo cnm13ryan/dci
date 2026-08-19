@@ -71,6 +71,23 @@ def population():
     return sampling.population()
 
 
+@pytest.fixture
+def initial_records(tmp_path):
+    """A records directory holding ONLY the initial 56 labels.
+
+    The sampler reads the live records directory to compute deficits, so
+    a test that used it directly would silently change meaning as soon as
+    a batch is labelled. Pinning the fixture to the initial state keeps
+    these assertions about the *design* rather than about how much
+    labelling has happened since.
+    """
+    d = tmp_path / "records"
+    d.mkdir()
+    name = "calibration_Bryan.jsonl"
+    (d / name).write_bytes((HR / "records" / name).read_bytes())
+    return d
+
+
 # ------------------------------------------------------ Wilson machinery
 def test_wilson_matches_the_registered_implementation():
     registered = _load_registered_stats()
@@ -103,32 +120,38 @@ def test_required_n_grows_with_observed_errors():
 
 
 # --------------------------------------------------------- the sampler
-def test_sampling_is_reproducible(population):
-    a = sampling.build_extension(1, class_targets=CLASS_TARGETS)
-    b = sampling.build_extension(1, class_targets=CLASS_TARGETS)
+def test_sampling_is_reproducible(population, initial_records):
+    a = sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                                 records_dir=initial_records)
+    b = sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                                 records_dir=initial_records)
     assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
     assert a["seed"] == sampling.batch_seed(1)
     assert a["seed"] != sampling.batch_seed(2)
 
 
-def test_extension_excludes_sealed_calibration_labelled_and_revealed():
-    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS)
+def test_extension_excludes_sealed_calibration_labelled_and_revealed(
+        initial_records):
+    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                                        records_dir=initial_records)
     ids = {s["id"] for s in manifest["samples"]}
     assert len(ids) == len(manifest["samples"])          # no duplicates
     assert not ids & sampling.sealed_ids()
     assert not ids & sampling.calibration_ids()
-    assert not ids & sampling.labelled_ids()
-    assert not ids & sampling.revealed_ids()
+    assert not ids & sampling.labelled_ids(initial_records)
+    assert not ids & sampling.revealed_ids(initial_records)
 
 
-def test_extension_reaches_the_per_class_targets(population):
+def test_extension_reaches_the_per_class_targets(population,
+                                                 initial_records):
     manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS,
-                                        boundary_per_class=8)
+                                        boundary_per_class=8,
+                                        records_dir=initial_records)
     index = {i["id"]: i for i in population}
     rep = [s for s in manifest["samples"]
            if s["component"] == "representative"]
     bnd = [s for s in manifest["samples"] if s["component"] == "boundary"]
-    already = sampling.labelled_ids()
+    already = sampling.labelled_ids(initial_records)
     for cls, existing in (("pass", 39), ("fail", 17)):
         assert sum(1 for i in already
                    if index[i]["verifier_class"] == cls) == existing
@@ -137,8 +160,10 @@ def test_extension_reaches_the_per_class_targets(population):
         assert sum(1 for s in bnd if s["verifier_class"] == cls) == 8
 
 
-def test_sample_rows_carry_the_required_provenance(population):
-    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS)
+def test_sample_rows_carry_the_required_provenance(population,
+                                                  initial_records):
+    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                                        records_dir=initial_records)
     index = {i["id"]: i for i in population}
     required = {"id", "model", "item_id", "n", "source_pool",
                 "response_sha256", "verifier_class", "s0_count",
@@ -167,8 +192,9 @@ def test_sample_response_hashes_bind_to_registered_evidence(population):
             pool[item["item_id"]]["response_hash"]
 
 
-def test_boundary_categories_are_disjoint_and_declared():
-    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS)
+def test_boundary_categories_are_disjoint_and_declared(initial_records):
+    manifest = sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                                        records_dir=initial_records)
     declared = {c for c, _ in sampling.BOUNDARY_QUOTAS}
     for row in manifest["samples"]:
         if row["component"] == "boundary":
@@ -178,11 +204,13 @@ def test_boundary_categories_are_disjoint_and_declared():
 
 
 # ------------------------------------------- evidence and seal protection
-def test_sampler_never_writes_registered_evidence_or_the_seal():
+def test_sampler_never_writes_registered_evidence_or_the_seal(
+        initial_records):
     before = {p: p.stat().st_mtime_ns
               for p in paths.EVIDENCE.rglob("*") if p.is_file()}
     sealed_before = sampling.SEALED_PATH.read_bytes()
-    sampling.build_extension(1, class_targets=CLASS_TARGETS)
+    sampling.build_extension(1, class_targets=CLASS_TARGETS,
+                             records_dir=initial_records)
     validation.build_report(
         review_dir=HR,
         record_paths=[HR / "records" / "calibration_Bryan.jsonl"])
@@ -243,12 +271,12 @@ def test_reviewer_refuses_a_sealed_id(tmp_path, monkeypatch):
 def test_reviewer_never_re_presents_an_item_across_sets(tmp_path,
                                                         monkeypatch):
     app = _review_app()
-    already = sorted(sampling.labelled_ids())[:1]
+    items = app.load_items("calibration")
+    ids = [i["id"] for i in items]
+    already = [ids[0]]          # judged under some OTHER set name
     monkeypatch.setattr(app, "judged_ids", lambda a: set(already))
     monkeypatch.setattr(app, "record_path",
                         lambda s, a: tmp_path / "rec.jsonl")
-    items = app.load_items("calibration")
-    ids = [i["id"] for i in items]
     assert already[0] in ids                       # it is in the set...
     app.review("calibration", "dup",
                ["S"] * (len(items) - 1))           # ...but not presented
@@ -430,3 +458,56 @@ def test_report_refuses_a_response_hash_that_moved(tmp_path, population):
     review = _fake_review_dir(tmp_path / "rev", [item["id"]])
     with pytest.raises(validation.ValidationError, match="registered"):
         validation.build_report(review_dir=review, record_paths=[rec])
+
+
+# ------------------------------------------- the completed review (locked)
+def test_completed_review_result_is_locked(population):
+    """Regression guard on the delivered result. 120 blind labels,
+    4 conflicts, all off-by-one in the same direction; the verifier-pass
+    class meets <=5% and the verifier-fail class meets neither bound."""
+    records = [HR / "records" / "calibration_Bryan.jsonl",
+               HR / "records" / "extension1_Bryan.jsonl"]
+    if not records[1].exists():
+        pytest.skip("extension batch not yet labelled")
+    report = validation.build_report(review_dir=HR, record_paths=records)
+    assert report["counts"]["records"] == 120
+    assert report["counts"]["labelled"] == 120
+    assert report["counts"]["abstentions"] == 0
+    assert report["overall_accuracy"] == pytest.approx(116 / 120)
+    assert report["table_human_x_verifier"] == {
+        "SATISFIES|fail": 4, "SATISFIES|pass": 60, "VIOLATES|fail": 56}
+    rep = report["by_component"]["representative"]
+    assert (rep["pass"]["cases"], rep["pass"]["disagreements"]) == (52, 0)
+    assert (rep["fail"]["cases"], rep["fail"]["disagreements"]) == (52, 4)
+    assert rep["pass"]["meets"]["0.05"] is True
+    assert rep["fail"]["meets"]["0.10"] is False
+    assert rep["fail"]["reachable_at_observed_rate"]["0.05"] is False
+    assert report["stopping"]["decision"] == "ESCALATE"
+    # the purposive stress component found nothing
+    bnd = report["by_component"]["boundary"]
+    assert bnd["pass"]["disagreements"] == bnd["fail"]["disagreements"] == 0
+
+
+def test_every_discordant_item_is_a_verifier_win(population):
+    """Each conflict recounted independently of the frozen verifier: the
+    verifier's count is the correct one, and every conflict is the human
+    reading n where the true count is n+1."""
+    records = [HR / "records" / "calibration_Bryan.jsonl",
+               HR / "records" / "extension1_Bryan.jsonl"]
+    if not records[1].exists():
+        pytest.skip("extension batch not yet labelled")
+    report = validation.build_report(review_dir=HR, record_paths=records)
+    from forensics import dataset as dsmod
+    import re
+    pools = {}
+    assert report["discordant"]
+    for item in report["discordant"]:
+        model, item_id = item["id"].split("::", 1)
+        pools.setdefault(model, dsmod.pool_items(model))
+        text = pools[model][item_id]["response_text"]
+        regex = len(re.findall(r"\bhowever\b", text, re.I))
+        split = sum(1 for w in re.split(r"[^A-Za-z]+", text)
+                    if w.lower() == "however")
+        assert regex == split == item["s0_count"]      # verifier correct
+        assert item["s0_count"] == item["target_n"] + 1     # off by one
+        assert item["human"] == "SATISFIES"            # one direction only

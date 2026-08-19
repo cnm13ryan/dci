@@ -314,3 +314,69 @@ Status of the blocker in "E12 addendum" is unchanged in kind: an
 independent annotator is still required. What has changed is that the
 target, the sample, and the stopping rule are now fixed in advance, so
 the next annotation session has a defined endpoint instead of an open one.
+
+### Result of extension batch 1 (2026-08-19, 64 labels, annotator Bryan)
+
+Complete: 120 blind labels, 100% coverage, 0 abstentions, chain-verified
+and prefix-pinned. **116/120 agree with the deterministic verifier =
+96.7%; 4 conflicts = 3.3%.**
+
+| slice | cases | conflicts | rate | 95% Wilson upper |
+|---|---|---|---|---|
+| verifier-pass (representative, 52) | 52 | 0 | 0.0% | **4.9% — meets ≤5%** |
+| verifier-fail (representative, 52) | 52 | 4 | 7.7% | **16.1% — meets neither ≤5% nor ≤10%** |
+| boundary stress probe (8 + 8) | 16 | 0 | 0.0% | — |
+
+The stopping rule returns **ESCALATE**: at a 7.7% observed rate the 5%
+bound is unreachable at any sample size, and 10% would need 34 further
+fail-class labels with zero further errors.
+
+**The verifier was correct in all four discordant cases.** Each was
+recounted by four independent methods (registered `s0` in evidence, the
+forensics reimplementation, a `\bhowever\b` regex, and a non-alphabetic
+split-and-match); all four agreed with the verifier on all four items.
+
+Every conflict has the same shape — human SATISFIES, verifier fail, true
+count exactly n+1:
+
+| item | n | true count | apparent cause |
+|---|---|---|---|
+| `e2b::…history-47:solo:A:4:0` | 4 | 5 | four `**However**` bolded, one plain `However,` |
+| `e4b::…history-47:solo:A:7:0` | 7 | 8 | final two occurrences 99 chars apart |
+| `e4b::…technology-06:solo:A:8:0` | 8 | 9 | two close pairs (58 and 95 chars apart) |
+| `qwen3-4b::…language-and-writing-00:solo:A:1:0` | 1 | 2 | one use + one quoted mention 19 chars apart |
+
+The error is concentrated entirely on the off-by-one boundary: **4/44 =
+9.1%** on fail items with |s0 − n| = 1, and **0/16** on every fail item
+with a larger margin. It does not track response length or occurrence
+count (conflict rate 3.6% / 2.9% / 2.2% / 7.7% across s0 bands 0–2 /
+3–5 / 6–8 / 9+). The direction is uniform: zero conflicts in the
+verifier-pass class, where landing on n is correct. That signature is
+consistent with anchoring on the stated target — the reader is told
+"exactly n", counts, and at a true count of n+1 lands on n and confirms.
+
+The last item is different in kind: `However, the word "however" must
+appear exactly once in this answer.` is one use plus one metalinguistic
+mention. Frozen edge rule 5 says quotations count, so the verifier
+applies the registered rule; whether that rule captures the intended
+construct is a separate question and is NOT resolved here.
+
+**Consequences.**
+
+1. The ≤5% per-class claim **holds for the verifier-pass class and fails
+   for the verifier-fail class**. Do not state it unqualified.
+2. The registered A1 criterion (≤10% per class) is also **not met** on
+   the verifier-fail class by this evidence.
+3. Because the verifier was right every time, this bounds *unaided human
+   counting reliability at the off-by-one boundary*, not verifier error.
+   It is nonetheless a real limit on what "human-validated" can mean for
+   an exact-occurrence-count construct: a careful reader separates
+   far-misses perfectly and off-by-one at 9.1%.
+4. Blind labels are preserved as recorded. No adjudication pass was run;
+   if one is run later it must be recorded in a separate channel and
+   reported alongside the blind rate, never in place of it.
+
+Artifacts: `experiments/human_review/validation_report.{md,json}`,
+`records/extension1_Bryan.jsonl` (chained), `records/digests.jsonl`
+(pins). Sealed reserved set sha256 `f8831598…d7a3` unchanged; 0 sealed
+ids labelled.
