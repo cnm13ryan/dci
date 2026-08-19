@@ -167,16 +167,28 @@ the one the published `ACTUAL_CROSS_MODEL_DCI_RESULTS.md` describes. It includes
 Kimi-VL, which the first set never ran. Its verdicts are different, and the
 earlier "0 of 8" statement was never about it:
 
-| model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | verdict |
-|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-4B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | `TARGET_CEILING` |
-| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` |
-| Qwen3.5-9B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | `TARGET_CEILING` |
-| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` |
-| gemma-4-E4B-it | bracket | +0.000 | — | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | `TARGET_CEILING` |
-| gemma-4-E4B-it | semicolon | +0.000 | — | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | `TARGET_CEILING` |
-| Kimi-VL | bracket | +0.050 | [0.000, 0.125] | 0.054 | 0.000 | **0.405** | 0.531 | 0.138 | `FOCAL_NONUPTAKE` |
-| Kimi-VL | semicolon | **+0.278** | [0.056, 0.500] | 0.559 | 0.286 | **0.088** | 0.571 | 0.138 | `FOCAL_NONUPTAKE` |
+Two columns, because two different questions are being asked. **Identification**
+answers *may this contrast be read causally?* — and every cell fails it, on
+missing prerequisite evidence rather than on anything the model did.
+**Behavioural** answers *what was observed?* — it is the verdict the same
+`classify()` returns once the two missing feeds are supplied, holding every
+measured constituent fixed. Reporting only the first would hide the second, and
+the second is where the science is.
+
+| model | background | τ | 95% CI | F_focal | F_ref | uptake focal | uptake ref | cap-hit | identification | behavioural |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
+| Qwen3.5-4B | semicolon | +0.031 | [0.000, 0.094] | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | `EVIDENCE_INCOMPLETE` | `IDENTIFIED` |
+| Qwen3.5-9B | bracket | +0.000 | — | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
+| Qwen3.5-9B | semicolon | +0.026 | [0.000, 0.079] | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | `EVIDENCE_INCOMPLETE` | `IDENTIFIED` |
+| gemma-4-E4B-it | bracket | +0.000 | — | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
+| gemma-4-E4B-it | semicolon | +0.000 | — | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | `EVIDENCE_INCOMPLETE` | `TARGET_CEILING` |
+| Kimi-VL | bracket | +0.050 | [0.000, 0.125] | 0.054 | 0.000 | **0.405** | 0.531 | 0.138 | `EVIDENCE_INCOMPLETE` | `FOCAL_NONUPTAKE` |
+| Kimi-VL | semicolon | **+0.278** | [0.056, 0.500] | 0.559 | 0.286 | **0.088** | 0.571 | 0.138 | `EVIDENCE_INCOMPLETE` | `FOCAL_NONUPTAKE` |
+
+The behavioural column is computed, not asserted: re-derive it by calling
+`classify()` on each row's constituents with `execution_validated`,
+`verifier_certified` and `satisfiable` set to `True`.
 
 **0 of 8 poolable — corrected.** An earlier version of this section reported
 2 of 8, with the Qwen semicolon cells identified. That was withdrawn by a
@@ -197,14 +209,25 @@ cross-model cell, so all eight now carry `EVIDENCE_INCOMPLETE`:
 | `execution_validated` | **unestablished** | THINKING_ENABLED_BOUNDED never went through Stage B/C admission |
 | `verifier_certified` | **unestablished** | no certification for these checkpoints' output class |
 
-The behavioural readings below are unchanged and still reported — the
-`TARGET_CEILING` and `FOCAL_NONUPTAKE` patterns are real properties of the data.
-What is withdrawn is the claim that any cross-model cell was *identified*, which
-the pipeline was never in a position to assert.
+The behavioural readings are unchanged and still reported — the `TARGET_CEILING`
+and `FOCAL_NONUPTAKE` patterns are real properties of the data, and they are what
+the behavioural column above carries. What is withdrawn is the claim that any
+cross-model cell was *identified*, which the pipeline was never in a position to
+assert.
 
 Two feeds would settle it: a Stage B/C admission record for the bounded-thinking
-condition, and a verifier certification covering these output classes. Neither
-is a threshold change and neither weakens a gate.
+condition, and a verifier certification covering these output classes. Neither is
+a threshold change and neither weakens a gate.
+
+**What those feeds would and would not buy.** They would move exactly **two of
+eight** cells to `IDENTIFIED` — the two Qwen3.5 semicolon cells, τ = +0.031
+[0.000, 0.094] and +0.026 [0.000, 0.079]. The other six would still fail, on
+their own behaviour rather than on missing evidence: four `TARGET_CEILING`, two
+`FOCAL_NONUPTAKE`. So supplying the evidence is worth doing, and it does not
+rescue the transport study. Both cells that would clear it are small with
+intervals touching zero, and both sit under material cap binding (33.8% and
+15.0%) below the 50% `CAP_BOUND` threshold frozen in `d9c4e41` — a threshold
+deliberately not adjusted after seeing these results.
 
 **The Kimi result is the important correction.** `ca35277` reported Kimi-VL as
 *"the first checkpoint here whose target instruction is not saturated"* and
@@ -239,8 +262,10 @@ run the slice at less than 5/5. Recorded diagnoses stand.
 
 ### 2.3 "Qwen3.5-9B semicolon shows τ = −0.150" — `NOT_IDENTIFIED`
 
-(NO_THINKING set. Under bounded thinking the same checkpoint yields +0.026 and
-IS identified; see §2.1b.)
+(NO_THINKING set. Under bounded thinking the same checkpoint yields +0.026,
+which is **also not identified** — `EVIDENCE_INCOMPLETE`, and behaviourally the
+one cell that would clear the gates if the two missing feeds were supplied. See
+§2.1b.)
 
 The only nominally non-zero cross-model estimate. Focal uptake 27.5%; the CI
 spans zero; the sign is negative, meaning the *reference* damaged the target

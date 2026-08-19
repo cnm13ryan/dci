@@ -244,8 +244,10 @@ def cell_evidence(cell: pd.DataFrame, per_task: pd.Series) -> identification.Cel
     * `channel_valid_rate` is NOT `scoreable`. A row can separate its reasoning
       and answer channels perfectly and still carry no final answer; conflating
       the two reports a cap-truncated run as a parser failure. The backends that
-      record a per-row `channel_valid` are believed; where the column is absent
-      the channels did separate, so the rate is 1.0.
+      record a per-row `channel_valid` are believed; where the column is ABSENT
+      the rate is `None`, not 1.0 — an unrecorded channel is an unestablished
+      one, and defaulting it to perfect is the fail-open shape this layer exists
+      to prevent.
 
     * `cap_hit_rate` carries the missing answers. On this dataset
       NO_FINAL_WITHIN_BUDGET and `reasoning_cap_hit` are the SAME event — a
@@ -297,7 +299,8 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
         focal_rate = focal["a_failure"].mean()
         reference_rate = reference["a_failure"].mean()
         evidence = cell_evidence(cell, per_task)
-        verdict = identification.classify(evidence)
+        reading = identification.read(evidence)
+        verdict = reading.identification
         out.append({
             "model": model.split("/")[-1], "model_id": model,
             "backend": cell["backend"].iloc[0], "load": load,
@@ -329,6 +332,14 @@ def per_cell(frame: pd.DataFrame) -> pd.DataFrame:
             # ceiling, and neither is a cap-truncated run.
             "identification": verdict.status,
             "identification_reason": verdict.reason,
+            # The second layer. `classify()` returns the first verdict that
+            # applies, so a cell blocked on a missing feed says nothing about
+            # the model — the ceiling and the undelivered focal instruction
+            # vanish behind EVIDENCE_INCOMPLETE. That is right for pooling and
+            # wrong for reading, so what was observed is reported beside
+            # whether it may be read causally. Only `estimable` governs pooling.
+            "behavioural": reading.behavioural.status,
+            "behavioural_reason": reading.behavioural.reason,
             "focal_uptake": evidence.focal_uptake,
             "reference_uptake": evidence.reference_uptake,
             "cap_hit_rate": evidence.cap_hit_rate,
@@ -714,13 +725,34 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
                      "final_answers", "no_final", "technical_failures",
                      "A_fail_focal", "A_fail_reference", "focal_uptake",
                      "reference_uptake", "cap_hit_rate", "tau", "lo", "hi",
-                     "n_tasks", "joint_focal", "identification"]]
+                     "n_tasks", "joint_focal", "identification",
+                     "behavioural"]]
               [cells["load"] == contract.LOAD]),
         "",
-        "A `TARGET_CEILING` label means the target instruction essentially "
+        "**Two verdict columns, because two different questions are being "
+        "asked.** `identification` answers *may this contrast be read "
+        "causally?* — and it alone governs whether a cell enters the pooled τ. "
+        "`behavioural` answers *what was observed?* — the verdict the same "
+        "classifier returns once any missing prerequisite feed is supplied, "
+        "holding every measured constituent fixed. Where nothing was missing "
+        "the two coincide.",
+        "",
+        "The distinction matters because the classifier returns the FIRST "
+        "verdict that applies. A cell blocked on evidence it was never given "
+        "reports `EVIDENCE_INCOMPLETE` and would otherwise say nothing at all "
+        "about the model — the ceiling, the floor and the undelivered focal "
+        "instruction would all disappear behind the block. Failing closed is "
+        "right for pooling and wrong for reading, so both are printed.",
+        "",
+        "A `TARGET_CEILING` reading means the target instruction essentially "
         "never fails in either arm, so τ is 0 **by construction** rather than "
-        "by absence of interference. The number is reported, not withheld; it "
-        "simply cannot carry the signal the design was built to detect.",
+        "by absence of interference. `FOCAL_NONUPTAKE` means the focal "
+        "instruction was not followed often enough to count as delivered, so "
+        "τ estimates the effect of *presenting* it. `EVIDENCE_INCOMPLETE` is "
+        "not a statement about the model at all: it means a prerequisite — "
+        "execution admission, verifier certification, satisfiability, channel "
+        "validity — was never recorded for this cell. Every number is "
+        "reported, not withheld; none of them may be pooled.",
         "",
         "### Who is missing from the scored subsample",
         "",
@@ -784,7 +816,7 @@ def document(frame: pd.DataFrame, cells: pd.DataFrame, missing: list[dict],
             table(k5[["model", "backend", "load", "background", "requested",
                       "final_answers", "no_final", "A_fail_focal",
                       "A_fail_reference", "tau", "lo", "hi", "n_tasks",
-                      "identification"]]),
+                      "identification", "behavioural"]]),
             "",
             "### Semicolon-minus-control contrast at k=5",
             "",
