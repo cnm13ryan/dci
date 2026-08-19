@@ -1,0 +1,111 @@
+{
+ "note": "unregistered read-only sensitivity; see RESULTS_V3.md \u00a76",
+ "seed": 0,
+ "resamples": 10000,
+ "models": {
+  "gemma-3n-e2b-it": {
+   "n_star": 5,
+   "blocks": 384,
+   "tau_registered_exact": {
+    "target_first": 0.006944444444444478,
+    "added_first": -0.026041666666666644
+   },
+   "tau_tolerant_pass_within_1": {
+    "target_first": -0.03993055555555554,
+    "added_first": 0.03645833333333334
+   },
+   "tau_nearmiss_component": {
+    "target_first": 0.046875000000000035,
+    "added_first": -0.06249999999999997
+   },
+   "tolerant_ci_unregistered": {
+    "target_first": [
+     -0.09375,
+     0.013888888888888902
+    ],
+    "added_first": [
+     -0.00868055555555555,
+     0.08506944444444446
+    ]
+   },
+   "arm_failure_rates": {
+    "AB": {
+     "exact_fail": 0.4322916666666667,
+     "near_miss": 0.3203125,
+     "far_miss": 0.11197916666666667,
+     "near_share_of_failures": 0.7409638554216867
+    },
+    "AR1": {
+     "exact_fail": 0.4375,
+     "near_miss": 0.3229166666666667,
+     "far_miss": 0.11458333333333333,
+     "near_share_of_failures": 0.7380952380952381
+    },
+    "AR2": {
+     "exact_fail": 0.3671875,
+     "near_miss": 0.3020833333333333,
+     "far_miss": 0.06510416666666667,
+     "near_share_of_failures": 0.8226950354609929
+    },
+    "AR3": {
+     "exact_fail": 0.5208333333333334,
+     "near_miss": 0.359375,
+     "far_miss": 0.16145833333333334,
+     "near_share_of_failures": 0.69
+    }
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "n_star": 7,
+   "blocks": 384,
+   "tau_registered_exact": {
+    "target_first": 0.09027777777777783,
+    "added_first": 0.03993055555555559
+   },
+   "tau_tolerant_pass_within_1": {
+    "target_first": 0.05555555555555556,
+    "added_first": 0.1232638888888889
+   },
+   "tau_nearmiss_component": {
+    "target_first": 0.034722222222222265,
+    "added_first": -0.0833333333333333
+   },
+   "tolerant_ci_unregistered": {
+    "target_first": [
+     0.006944444444444451,
+     0.10590277777777779
+    ],
+    "added_first": [
+     0.05729166666666668,
+     0.19097222222222224
+    ]
+   },
+   "arm_failure_rates": {
+    "AB": {
+     "exact_fail": 0.5989583333333334,
+     "near_miss": 0.4036458333333333,
+     "far_miss": 0.1953125,
+     "near_share_of_failures": 0.6739130434782609
+    },
+    "AR1": {
+     "exact_fail": 0.5130208333333334,
+     "near_miss": 0.4348958333333333,
+     "far_miss": 0.078125,
+     "near_share_of_failures": 0.8477157360406091
+    },
+    "AR2": {
+     "exact_fail": 0.53125,
+     "near_miss": 0.4140625,
+     "far_miss": 0.1171875,
+     "near_share_of_failures": 0.7794117647058824
+    },
+    "AR3": {
+     "exact_fail": 0.5572916666666666,
+     "near_miss": 0.4348958333333333,
+     "far_miss": 0.12239583333333333,
+     "near_share_of_failures": 0.780373831775701
+    }
+   }
+  }
+ }
+}
