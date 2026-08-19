@@ -286,3 +286,31 @@ role in Gate 1 without amending any registered record:
    approvals run in `dci1v3` under the registered configuration and the
    registered strongest-claim sentence; the decision record is
    `dci1/reports/gate1_calibration_signoff_notes.json`.
+
+## Human-validation extension (added 2026-08-19)
+
+The 56 blind labels reported above give a one-sided 95% Wilson upper
+bound on the human-vs-verifier disagreement rate of **6.5% in the
+verifier-pass class (39 labels, 0 disagreements)** and **13.7% in the
+verifier-fail class (17 labels, 0 disagreements)**. The pass class
+therefore already meets the registered 10% criterion; **the fail class
+does not** — 17 labels cannot support a 10% bound even at zero
+disagreements. This is a sample-size fact, not a verifier defect.
+
+To reach ≤5% per class the mechanism registered in PREREGISTERED.md E5.1
+is now built and dry-run verified (no human labels fabricated):
+
+* `experiments/human_review/extension_batch_1.json` — 64 items, write-once:
+  48 representative (13 verifier-pass, 35 verifier-fail, topping each
+  class up to 52) plus 16 purposive boundary items (8 per class).
+  Excluded by construction: the 56 already labelled, the initial
+  calibration sample, and all 40 SEALED reserved ids (sha256
+  `f8831598…d7a3`, unchanged).
+* Reviewer, records and report as described in E5.1. The stopping rule
+  currently reads **CONTINUE**, next-batch representative targets
+  `{pass: 13, fail: 35}`, projected total 104 labels against a 150 ceiling.
+
+Status of the blocker in "E12 addendum" is unchanged in kind: an
+independent annotator is still required. What has changed is that the
+target, the sample, and the stopping rule are now fixed in advance, so
+the next annotation session has a defined endpoint instead of an open one.

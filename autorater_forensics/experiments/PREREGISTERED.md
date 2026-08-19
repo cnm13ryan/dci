@@ -222,3 +222,86 @@ evidence enumerated. (Human annotation is currently unavailable, so
 `DO NOT PROCEED` is the expected outcome of this phase; the deliverable
 is the evidence that the remaining blockers are exactly and only the
 human-label items.)
+
+## E5.1 — Amendment: extension of the human calibration set
+
+*Fixed 2026-08-19, before any extension label is collected. E5 already
+permits extension "by drawing additional items with the same procedure";
+this amendment states exactly what "the same procedure" means when the
+binding quantity is a per-class bound, and what changes.*
+
+**Target.** The decision quantity is the disagreement rate between a
+blind human reading and the frozen deterministic S0 verifier,
+*conditional on the verifier's own class*, bounded by a one-sided 95%
+Wilson upper bound — the same statistic and interval the registered Gate 1
+human audit uses (`dci1v3/stages/gate1.py::human_audit`,
+`GATE1_DISAGREEMENT_MAX = 0.10`). The strengthened target is **≤ 5% per
+class**, which requires **52 zero-disagreement labels per class** (52 →
+4.95%, 51 → 5.04%); the registered 10% target requires 25. The initial
+sample delivers 39 verifier-pass and 17 verifier-fail labels, so the
+shortfall is **13 pass-class and 35 fail-class** items.
+
+**What stays the same.** Population = the 983 dev-half Gate 1 items.
+Strata = source model × verifier class. Simple random sampling within
+stratum, per-item inclusion probability recorded. Blind reviewer
+interface, append-only records, reveal only after commit.
+
+**What changes, and why.** The initial draw allocated proportionally over
+the *whole* population, which is why the fail class — the smaller one —
+governs the achievable bound. Extension batches allocate
+**disproportionately across classes and proportionally across models
+within a class**, topping each class up to its own cumulative target.
+Allocation is computed on the cumulative target and the existing labels
+are subtracted, so the combined sample stays proportionally allocated
+over models within each class. Because the criterion is class-conditional
+this introduces no bias in the quantity under test; pooling *across*
+classes requires the recorded inclusion probabilities.
+
+**Two components, never pooled silently.**
+
+* `representative` — the SRS component. **The ≤5% claim is made on this
+  component and on no other.**
+* `boundary` — a purposive, deterministic stress probe of 8 items per
+  class, drawn in the fixed priority order `embedded_or_adjacent_form`,
+  `judge_effort_disagreement`, `judge_vs_verifier`, `near_miss_count`,
+  `judge_non_valid_status`, `generation_truncated`, `high_n`,
+  `long_response` (disjoint assignment, model round-robin by sorted id,
+  shortfalls rolled forward, realised composition and pool sizes
+  recorded). Adversarially enriched by construction: its error rate is
+  **not** a population estimate and is reported separately. It exists so
+  a systematic verifier failure cannot hide behind a clean random sample.
+
+**Exclusions (hard).** Already-labelled items, items whose hidden fields
+have been revealed to a human, the initial calibration sample, earlier
+extension batches, and every id in the SEALED reserved final-check set —
+whose ids are read *only* as an exclusion set and whose SHA-256 is
+recorded in each batch manifest and re-checked after the build.
+
+**Sequential stopping rule.** After each completed batch, for each class
+and each target ∈ {10%, 5%}: `MET` if the Wilson upper bound already
+meets the target; otherwise the additional requirement is recomputed
+**from the observed disagreement count** as the smallest class size whose
+bound meets the target with no further disagreements — the original
+target is never assumed to remain sufficient. If the observed
+disagreement *rate* is at or above the target the rule reports
+`UNREACHABLE_AT_OBSERVED_RATE` and the batch escalates, because that is a
+finding about the verifier, not a sampling shortfall. Planned expansion
+ceiling: ~150 total labels.
+
+**Seeds.** Extension seeds are domain-separated
+(`forensics:human-calibration-extension:v1`, base 20260818, per batch),
+so they can never collide with the calibration seed (20260818) or the
+sealed-set seed (20260819). Batch manifests are write-once.
+
+**Operational states.** Unchanged from E7 and enforced in code: the human
+label vocabulary is `SATISFIES` / `VIOLATES` / `UNSURE` only. `UNSURE` is
+an abstention — counted, reported, never converted to a label. Judge
+statuses, truncation and generation failures are reported in a separate
+operational channel and never merged into a human label.
+
+**What this does not do.** The primary scientific outcome (F_A) is
+produced by the frozen deterministic verifier and is not touched. These
+labels bound how often that verifier is wrong; they never overwrite it.
+These are forensics-workspace labels over the dev-half population: they
+are **not** registered Gate 1 A1 annotations, which require a full
+annotation packet exported through `dci1v3.cli gate1 human-audit`.

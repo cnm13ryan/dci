@@ -68,7 +68,13 @@ def pool_items(model_key: str) -> dict[str, dict[str, Any]]:
             items[row["row_id"]] = {
                 "response_text": row["raw_response"],
                 "n": row["n"], "source_pool": source,
-                "registered_s0": row["verdicts"]["s0"]}
+                "registered_s0": row["verdicts"]["s0"],
+                # provenance of the frozen response bytes; the registered
+                # content hash is sha256(raw_response), so a human record's
+                # response_sha256 binds directly to registered evidence
+                "response_hash": row["response_content_hash"],
+                "finish_reason": row["finish_reason"],
+                "token_count": row["token_count"]}
     return items
 
 
