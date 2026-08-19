@@ -62,15 +62,23 @@ class StudyContext:
             raise ProtocolError(
                 f"namespace {self.namespace!r} requires study_id "
                 f"{expected!r}, got {self.study_id!r}")
-        for root in (self.evidence_root, self.durable_root):
-            resolved = Path(root).resolve()
+        # The check is on the v4 STUDY roots, not on their parents: v4 and the
+        # historical studies share `dci1/evidence`, and it is the per-study
+        # subtree that must never overlap. A v4 root that resolved inside a v3
+        # or pilot tree, or that contained one, is refused here rather than
+        # discovered when an artifact lands in the wrong place.
+        for root in (Path(self.evidence_root) / self.study_id,
+                     Path(self.durable_root) / self.study_id):
+            resolved = root.resolve()
             for foreign in foreign_roots():
-                if resolved.is_relative_to(foreign.resolve()) or \
-                        foreign.resolve().is_relative_to(resolved):
+                foreign_resolved = foreign.resolve()
+                if resolved.is_relative_to(foreign_resolved) or \
+                        foreign_resolved.is_relative_to(resolved):
                     raise ProtocolError(
-                        f"v4 root {resolved} overlaps the historical tree "
-                        f"{foreign}; v4 never writes into a v2, v3 or pilot "
-                        f"tree and never adopts one as its own root (§26)")
+                        f"the v4 study root {resolved} overlaps the "
+                        f"historical tree {foreign}; v4 never writes into a "
+                        f"v2, v3 or pilot tree and never adopts one as its "
+                        f"own root (§26)")
         if self.namespace == "synthetic":
             registered = registered_context()
             for root in (self.evidence_root, self.durable_root):
