@@ -25,6 +25,7 @@ from dci1v4.models.registry import assert_disjoint_judges, get_model
 from dci1v4.protocol import constants as C
 from dci1v4.protocol import wordings
 from dci1v4.protocol.hashing import sha_obj
+from dci1v4.stages.registration import assert_manifest_matches_code
 from dci1v4.topics.bank import authoring_record, load_bank
 from dci1v4.topics.split import confirmatory_blocks, split_hash, split_topics
 from dci1v4.verifiers import boundary, carryover, witnesses, wording_suite
@@ -36,6 +37,13 @@ def qualification_payload(tree: ModelTree, ctx: dict[str, Any], *,
     """Everything §18 stage 1 requires, computed and hashed."""
     spec = get_model(tree.model_key)
     assert_disjoint_judges()
+
+    # §6.1: every study-wide rule is fixed in the signed registration manifest
+    # BEFORE the first qualification. Qualification fails closed without it,
+    # and fails closed if the running code no longer implements what was
+    # registered — otherwise the manifest would describe the study rather than
+    # constrain it.
+    manifest = assert_manifest_matches_code(tree.context)
 
     bank = load_bank()
     split = split_topics(bank)
@@ -61,6 +69,7 @@ def qualification_payload(tree: ModelTree, ctx: dict[str, Any], *,
 
     return {
         "outcome": "PASS",
+        "registration_manifest_hash": manifest["manifest_hash"],
         "model_id": spec.model_id,
         "model_revision": spec.revision,
         "thinking_policy": spec.thinking_policy,
