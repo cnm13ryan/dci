@@ -2,8 +2,10 @@
 
 **Date:** 2026-08-19 · **Protocol:** DCI-1 v3.0 · **Study id:** `dci1-v3`
 **Question:** does adding a focal constraint B ("every word ≤ m letters")
-increase failure on a target constraint A ("use the word *however*
-exactly n times"), relative to nuisance-matched reference constraints R?
+increase exact-count failure under the frozen deterministic rule S0 on a
+target constraint A ("use the word *however* exactly n times"), relative
+to reference constraints R matched on solo failure rate (the registered
+nuisance-matching criterion)?
 **Authority:** `user-notes/DCI-1_preregistration_v3.md` as amended
 (`DECISIONS_V3.md`); readiness report `REPORT_V3.md`. All record hashes
 below are the first 12 hex of signed records under `evidence/dci1-v3/`;
@@ -68,7 +70,7 @@ simultaneous interval. Full family tables (F1–F6):
 
 ### Design selected per replication (Gates 2A/2B)
 
-| Model | n\* | m\* | Focal rate @ m\* | Matched references (family@severity → arm) | Records |
+| Model | n\* | m\* | Focal rate @ m\* | References, matched on solo failure rate (family@severity → arm) | Records |
 |---|---:|---:|---:|---|---|
 | E2B | 5 | 7 | 0.188 | RF1@5 (≤5 words starting "b") → AR1 · RF2@5 (≤5 "-ing" words) → AR2 · RF6@4 (≤4 capitals) → AR3 | 2A `57986a4e3676` · 2B `e5aa5ae1b5fa` · freeze `2e44601714b3` |
 | E4B | 7 | 7 | 0.240 | RF2@2 (≤2 "-ing" words) → AR1 · RF6@4 (≤4 capitals) → AR2 · RF4@4 (≤4 double-letter words) → AR3 | 2A `9853efca70c3` · 2B `2ced8a24fcb8` · freeze `99a5693c4693` |
@@ -103,14 +105,22 @@ Confirmatory manifests: E2B `d4e8ce9b88ce`, E4B `76dd5aa0521f`
 
 | Model | Diagnostic | target-first | added-first | Note |
 |---|---|---|---|---|
-| E2B | Pseudo-selection, 1,000 alternative primary draws | mean +0.089 · 99.5% > 0 | mean +0.038 · 85.4% > 0 | Registered draw (+0.007) is *below the 5th percentile* (+0.030) of its own draw distribution |
+| E2B | Pseudo-selection, 1,000 alternative primary draws | mean +0.089 · 99.5% of re-selections > 0 | mean +0.038 · 85.4% of re-selections > 0 | Registered draw (+0.007) is *below the 5th percentile* (+0.030) of its own draw distribution |
 | E2B | Greedy (96 blocks, temperature 0) | pooled mean +0.104 · 40.6% of blocks > 0 | | no draw lottery |
-| E4B | Pseudo-selection, 1,000 draws | mean +0.065 · 94.9% > 0 | mean +0.081 · 98.8% > 0 | registered draws near the pseudo means |
+| E4B | Pseudo-selection, 1,000 draws | mean +0.065 · 94.9% of re-selections > 0 | mean +0.081 · 98.8% of re-selections > 0 | registered draws near the pseudo means |
 | E4B | Greedy (96 blocks) | pooled mean +0.111 · 50.0% of blocks > 0 | | |
 
-Every diagnostic mean is positive, in the +0.04 … +0.11 range. Primary-
-draw luck moved E2B's registered target-first estimate by ≈ −0.08
-relative to its across-draw mean. Diagnostics inform design, not claims.
+What each diagnostic computes (`stages/sensitivity.py`): pseudo-selection
+re-runs the registered per-stratum estimator 1,000 times under alternative
+draw selections from the *same* frozen confirmatory cache (separate seed
+domain `dci1v3:pseudo:v1`; zero new inference; sign-positive shares are
+over the 1,000 re-selections). Greedy is a *different generation
+population* — one temperature-0 draw per primary arm on the first 96
+confirmatory blocks, block contrast pooled across both order strata
+(shares are over blocks). Neither is the registered τ̂; neither supports
+a confirmatory claim. Every diagnostic mean is positive, in the
++0.04 … +0.11 range. Primary-draw luck moved E2B's registered
+target-first estimate by ≈ −0.08 relative to its across-draw mean.
 
 ## 3. Qwen replications: not identified under the registered design
 
@@ -135,24 +145,41 @@ evidence about the effect.
 
 ## 4. Cross-model synthesis
 
-* **Does adding B increase failure on A relative to matched
-  references?** REGISTERED: not resolved in either identified
-  replication. DIAGNOSTIC: pseudo-selection distributions, greedy runs,
-  the E4B marginal intervals, and E4B per-reference homogeneity
-  consistently point to a small positive effect, roughly +0.04 … +0.11
-  absolute failure-rate increase.
+* **Does adding B increase exact-count failure on A relative to the
+  solo-rate-matched references?** REGISTERED: not resolved in either
+  identified replication. DIAGNOSTIC: pseudo-selection distributions,
+  greedy runs, the E4B marginal intervals, and E4B per-reference
+  homogeneity are consistently directionally positive, with means of
+  roughly +0.04 … +0.11 — they describe different quantities than the
+  registered τ̂ (draw-averages and a greedy population) and are not
+  confirmatory evidence of an effect.
+* **What does τ estimate?** The average *swap effect* against the frozen
+  reference set (the analysis code's own term:
+  `secondary.pooled_swap_effect`): the change in exact-count target
+  failure when B replaces one of R1–R3, averaged over that set. The
+  stronger reading — identity-specific directional interference caused
+  by B's semantic identity — additionally requires the references to be
+  exchangeable and comparably taken up in composition. Both supports
+  failed or flagged here (exchangeability false in both models; E2B's
+  resolved per-reference sign split; E4B uptake flags on all three
+  references), so even a resolved τ would have licensed the swap-effect
+  claim, not the identity-specific one, without further assumptions.
 * **Directional?** Unresolved under the registered rule, 4 of 4
   estimands. Closest call: E4B target-first (simultaneous lower bound
   −0.003).
-* **Replicated?** No. At the registered level E2B (compatible with
-  zero; equivalence licensed in one stratum) and E4B (positive trend)
-  diverge. Diagnostics soften but do not remove the discrepancy: E2B's
-  across-draw mean (+0.089 target-first) resembles E4B's (+0.065), and
-  its registered draw is a low-tail draw.
+* **Replicated?** The estimand was estimable in two of the four
+  registered replications; within those two the registered results
+  diverge (E2B compatible with zero, equivalence licensed in one
+  stratum; E4B positive but unresolved). The two Qwen replications
+  terminated before estimation and carry no evidence either way — that
+  is non-identification, not failure to replicate. Diagnostics soften
+  but do not remove the E2B/E4B divergence: E2B's across-draw mean
+  (+0.089 target-first) resembles E4B's (+0.065), and its registered
+  draw is a low-tail draw.
 * **Practically large?** No, by the study's own standard. Nothing
   approaches a resolved magnitude above SESOI 0.10; the one resolved
-  magnitude statement is that E2B target-first is *smaller* than 0.10
-  in absolute value.
+  magnitude statement is that the E2B target-first simultaneous
+  interval lies wholly inside the ±0.10 equivalence region.
 * **Confirmatory vs exploratory.** Confirmatory: the four τ claims, the
   equivalence claim, the exchangeability failures, the two terminal
   outcomes. Everything else in this report is diagnostic, caveat, or
@@ -166,7 +193,10 @@ S0), Gate 1 basis `autorater_calibration_approved`,
 human validation (author-annotator, blind, chained + hash-pinned
 records; committed `7ead292`;
 `autorater_forensics/experiments/human_review/validation_report.{md,json}`):
-120 labels, overall agreement 116/120 = 96.7%.
+120 labels, overall agreement 116/120 = 96.7%. Coverage: 120/120
+presented items labelled, 0 abstentions. Confusion counts
+(human × verifier): SATISFIES∧pass 60, SATISFIES∧fail 4,
+VIOLATES∧fail 56, VIOLATES∧pass 0.
 
 | Slice | Cases | Disagreements | Rate | 95% Wilson upper | Registered ≤ 10% |
 |---|---:|---:|---:|---:|---|
@@ -185,6 +215,31 @@ verbatim; no adjudication was run; the sealed 40-item reserved set
 (sha256 `f8831598…d7a3`) is untouched. This annotator is the study
 author; the labels are diagnostic evidence, not registered independent
 A1 validation.
+
+The registered proxy instrument is fully pinned (autorater-config/4:
+judge `openai/gpt-oss-20b` @ `6cee5e81`, prompt `gate1-judge/2.0.0`,
+parser `gate1-parse/2.0.0`, greedy decoding, reasoning_effort=high,
+cap 2048; SATISFIES/VIOLATES → pass/fail; invalid outputs recorded as
+distinct statuses, never recoded into labels). Its characterized failure
+modes — dominant systematic overcount-by-one, undercounts, dense-text
+saturation miscounts, cap truncation → `invalid_output`, and one
+verdict/justification contradiction — are documented with complete case
+listings in `reports/gate1_dev_review*.md` and `DECISIONS_V3.md`
+(A3–A3.2); all 31 held-out calibration disagreements were judge-side.
+
+Three validation questions must not be conflated. (1) *Does S0
+implement the registered exact-count rule correctly?* Supported:
+independent reimplementation, regex and split-and-match recounts, the
+boundary suite, and 0/52 pass-class human disagreements. (2) *Can an
+unaided human reproduce S0?* Bounded here: off-by-one error ≈ 9% on
+|s0−n| = 1 fail items, 0% at larger margins. (3) *Does exact-count
+satisfaction under S0 validly operationalise the intended construct of
+instruction compliance?* **Not resolved by this study** — the registered
+`measurement_scope` in every analysis record states the outcome is
+verifier-defined and does not support claims about compliance as an
+independent human would judge it; the quoted-mention discordant case
+(frozen edge rule counts a metalinguistic mention of "however") is a
+stored example of the construct question, explicitly left open.
 
 ## 6. Near-miss sensitivity (SENSITIVITY — unregistered, read-only)
 
@@ -220,27 +275,33 @@ untouched by construction.
 
 ## 7. Bottom line
 
-**DCI-1 v3 did not find a confirmable directional interference
-effect.** In the two replications where the registered design was
+**Registered inference did not resolve positive directional
+interference.** In the two replications where the registered design was
 identified (gemma-3n-e2b-it, gemma-3n-e4b-it), adding the composed
-focal constraint changed exact-count target failure by an amount the
-study could not resolve in direction; the one resolved registered claim
-is that for E2B in the target-first stratum the effect is *equivalent
-to zero within ±0.10*. E4B's estimates are positive (+0.09
-target-first, +0.04 added-first) but fall just short of resolution
-under the registered simultaneous rule.
+focal constraint changed exact-count target failure under S0 by an
+amount the study could not resolve in direction. The one resolved
+registered claim is for E2B in the target-first stratum: the
+simultaneous 95% confidence interval lies wholly inside the
+prespecified ±0.10 equivalence region (registered claim label:
+"equivalence"). E4B's estimates are positive (+0.09 target-first,
++0.04 added-first) but fall just short of resolution under the
+registered simultaneous rule.
 
 The registered secondary diagnostics and the unregistered sensitivity
-consistently indicate a **real but small positive interference effect —
-roughly +0.04 … +0.12 absolute failure increase, below the study's own
-0.10 practical-significance threshold** — clearest in E4B and in
+are **consistently directionally positive**, with point estimates of
+roughly +0.04 … +0.12 — most below the 0.10 SESOI, though the greedy
+means (≈ +0.10 … +0.11) and the tolerant added-first sensitivity
+estimate (+0.123) reach or exceed it — clearest in E4B and in
 across-draw averages, and not attributable to off-by-one counting
-noise. The two Qwen replications produced no estimate: a
-design-identification failure that says nothing about the effect. All
-outcomes are verifier-defined; human validation certifies the
-verifier-pass class (0/52) while the verifier-fail class missed the
-registered ≤ 10% criterion (Wilson upper 16.1%), every disagreement
-being a human off-by-one miscount, not a verifier error.
+noise. These diagnostics motivate a better-powered follow-up; they are
+not confirmatory evidence of an effect, and magnitude is unresolved
+everywhere except the single E2B equivalence stratum. The two Qwen
+replications produced no estimate: a design-identification failure that
+says nothing about the effect. All outcomes are verifier-defined; human
+validation certifies the verifier-pass class (0/52) while the
+verifier-fail class missed the registered ≤ 10% criterion (Wilson upper
+16.1%), every disagreement being a human off-by-one miscount, not a
+verifier error.
 
 ## 8. Remaining scientific blockers, ranked
 
@@ -254,8 +315,8 @@ being a human off-by-one miscount, not a verifier error.
    run.** The primary-draw lottery has an SD (≈ 0.036–0.039) comparable
    to the block-level SE, and E2B's registered draw landed below its
    own 5th percentile. Averaging over draws as the registered estimand
-   (or ≥ 2–3× blocks) would resolve effects of the observed
-   ≈ +0.05–0.09 size; the current design cannot.
+   (or ≥ 2–3× blocks) would resolve effects of the size suggested by
+   the diagnostics (≈ +0.05–0.09); the current design cannot.
 3. **Redesign reference matching.** Match on demonstrated uptake as
    well as solo failure rate, and use adaptive severity grids — one
    change addressing both the E4B manipulation-check flags and the Qwen
