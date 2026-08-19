@@ -327,3 +327,40 @@ def test_the_session_file_lives_outside_the_evidence_tree(tmp_path):
     session.finalise()
     assert not workspace.resolve().is_relative_to(
         context.study_root.resolve())
+
+
+def test_gate1_cannot_pass_on_human_validation_unavailable_alone():
+    """§18 stage 4: Gate 1 passes on §10.2 plus §10.3 **or** §10.4.
+
+    ``human_validation_unavailable`` is the state in which neither pathway has
+    completed. §10.3 routes it to §10.4 without waiving the criterion, so it
+    identifies the situation rather than licensing the gate; v3 recorded
+    ``autorater_calibration_approved`` as its basis with
+    HUMAN_VALIDATION_UNAVAILABLE as the identification status.
+    """
+    from dci1v4.errors import TerminalStatus
+
+    instruments = [("A", 3), ("B", 8)]
+    responses = [c["text"] for c in boundary.FOCAL_CASES][:8]
+    determinism = gate1.three_process_determinism(instruments, responses)
+    reimplementation = gate1.independent_agreement(instruments, responses)
+    suites = boundary.evaluate_suites()
+
+    with pytest.raises(TerminalStatus) as excinfo:
+        gate1.gate1_payload(
+            instrument_list=instruments, determinism=determinism,
+            suites=suites, reimplementation=reimplementation,
+            adversarial={}, measurement_basis="human_validation_unavailable",
+            identification_statuses=["HUMAN_VALIDATION_UNAVAILABLE"])
+    assert excinfo.value.status == "MEASUREMENT_EVIDENCE_INSUFFICIENT"
+
+    approved = gate1.gate1_payload(
+        instrument_list=instruments, determinism=determinism, suites=suites,
+        reimplementation=reimplementation, adversarial={},
+        measurement_basis="autorater_calibration_approved",
+        autorater={"approved": True},
+        identification_statuses=["HUMAN_VALIDATION_UNAVAILABLE"])
+    assert approved["outcome"] == "PASS"
+    assert approved["scope_sentence"] == C.SCOPE_SENTENCE
+    assert approved["identification_statuses"] == \
+        ["HUMAN_VALIDATION_UNAVAILABLE"]

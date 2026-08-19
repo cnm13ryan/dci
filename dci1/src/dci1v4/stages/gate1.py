@@ -261,6 +261,20 @@ def gate1_payload(*, instrument_list: Sequence[tuple[str, int]],
     elif measurement_basis == "autorater_calibration_approved":
         if not (autorater and autorater.get("approved")):
             _fail("measured_excess", "the autorater pathway is not approved")
+    else:
+        # §18 stage 4: Gate 1 passes on §10.2 **plus §10.3 or §10.4**.
+        # ``human_validation_unavailable`` is the state in which neither
+        # pathway has completed. §10.3 routes it to §10.4 "without waiving the
+        # criterion", so it is not itself a basis Gate 1 can pass on: the
+        # autorater pathway has to finish and the researcher has to approve it
+        # explicitly. v3's Gate 1 recorded basis
+        # ``autorater_calibration_approved`` with HUMAN_VALIDATION_UNAVAILABLE
+        # as the identification status, which is the same distinction.
+        _fail("evidence_insufficient",
+              "the measurement basis is human_validation_unavailable: no "
+              "independent annotator completed §10.3 and the §10.4 autorater "
+              "pathway has not been approved, so neither pathway Gate 1 "
+              "requires has completed")
 
     if failures:
         status = ("MEASUREMENT_NOT_ESTABLISHED"
