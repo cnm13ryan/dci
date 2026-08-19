@@ -3,9 +3,13 @@
 > **This module now holds two protocol versions.** The v2 implementation
 > (`src/dci1`, below) is **closed**: all four model replications reached
 > preregistered terminal outcomes with zero confirmatory generations. The
-> active implementation is **v3** (`src/dci1v3`) — see the
+> **v3** study (`src/dci1v3`) is also **complete** (2026-08-19): both
+> Gemma replications ran the full registered pipeline through
+> `UNMASKED_ANALYSIS`; both Qwen replications terminated at Gate 2A with
+> `REFERENCE_POOL_MISMATCH`. See the
 > [DCI-1 v3](#dci-1-v3-srcdci1v3) section at the end of this file,
-> `DECISIONS_V3.md`, and `REPORT_V3.md`.
+> `DECISIONS_V3.md`, `REPORT_V3.md`, and **`RESULTS_V3.md`** (final
+> results).
 
 ## v2 (closed): preregistration v2 + amendments A1/A2 + Addendum A
 
@@ -253,7 +257,10 @@ and analysis. Shared generic infrastructure: the vLLM backend process seam
 
 Authoritative v3 documents: the preregistration; `DECISIONS_V3.md`
 (registered manifest values and executable readings, V01–V19);
-`REPORT_V3.md` (the item-65 readiness report).
+`REPORT_V3.md` (the item-65 readiness report); `RESULTS_V3.md` (the
+final results report — study complete 2026-08-19: both Gemma
+replications through `UNMASKED_ANALYSIS`, both Qwen replications
+terminal `REFERENCE_POOL_MISMATCH` at Gate 2A).
 
 ## Layout
 

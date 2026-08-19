@@ -258,3 +258,17 @@ specified autorater under the registered configuration. Independent human
 validation is unavailable."** Autorater agreement is never presented as
 human validation or ground truth, and no language model judges any scored
 outcome.
+
+## Addendum (2026-08-19): execution complete — see RESULTS_V3.md
+
+The registered pipeline has since run to completion under the amended
+Gate 1 (A2/A3 line, autorater-config/4, verifier freeze `334bb2b18079`):
+`gemma-3n-e2b-it` and `gemma-3n-e4b-it` completed every stage through
+`UNMASKED_ANALYSIS` with `verify-evidence` VERIFIED; `qwen3-4b` and
+`qwen3-4b-instruct-2507` reached the registered terminal outcome
+`REFERENCE_POOL_MISMATCH` at Gate 2A. Statements above that generation
+has not run, that no terminal outcome exists, and the item-14/15 lists
+of unexecuted work are the historical record of the readiness snapshot.
+The final results, claim outcomes, measurement-validity caveats, and
+remaining blockers are reported in **`RESULTS_V3.md`** (with the
+evidence index of signed record hashes).
