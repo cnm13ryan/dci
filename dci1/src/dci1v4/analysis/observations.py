@@ -28,6 +28,10 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Sequence
 
 from dci1v4.errors import IntegrityError, ProtocolError
+from dci1v4.protocol.constants import EXACT_COUNT_RULES
+from dci1v4.protocol.constants import (
+    GRADED_ROBUSTNESS_THRESHOLD as GRADED_THRESHOLD,
+)
 
 OUTCOME_FIRST = "outcome_first"
 OUTCOME_SECOND = "outcome_second"
@@ -54,6 +58,7 @@ class Observation:
     vacuity: float                  # share of draws that were vacuous passes
     truncation: float               # share of draws truncated at the cap
     non_vacuous_compliance: float   # mean of (X and non-vacuous): §17.4 bound
+    graded_threshold: float         # mean of 1[G >= 0.99]: the F5 graded recoding
     response_words: float           # mean word count: registered mediator
     processing_failures: int
 
@@ -63,8 +68,19 @@ def _mean(values: Sequence[float]) -> float:
 
 
 def build_observations(rows: Iterable[dict[str, Any]], *, m_draws: int,
-                       ) -> list[Observation]:
-    """Form one cell mean per (cell, constituent) over exactly ``m_draws``."""
+                       exact_count_rule: str = "s0") -> list[Observation]:
+    """Form one cell mean per (cell, constituent) over exactly ``m_draws``.
+
+    ``exact_count_rule`` re-scores the A-side under one of the §9.2 registered
+    alternatives. S0 is the outcome and applies unchanged in every cell; S1,
+    S2 and S3 belong to the robustness family of §23 and never redefine X_A,
+    which is why they are a parameter of this builder rather than of the
+    verifier: the stored verdict is always S0's.
+    """
+    rule = exact_count_rule.lower()
+    if rule.upper() not in EXACT_COUNT_RULES:
+        raise ProtocolError(f"{exact_count_rule!r} is not a registered "
+                            f"exact-count rule {EXACT_COUNT_RULES}")
     grouped: dict[str, list[dict[str, Any]]] = {}
     for row in rows:
         grouped.setdefault(row["cell_id"], []).append(row)
@@ -83,6 +99,10 @@ def build_observations(rows: Iterable[dict[str, Any]], *, m_draws: int,
             scored = []
             for row in members:
                 entry = next(s for s in row["scores"] if s["slot"] == slot)
+                if entry["kind"] == "A" and rule != "s0":
+                    realised = row["exact_count_alternatives"][rule]
+                    entry = {**entry,
+                             "passed": realised == entry["severity"]}
                 scored.append((entry, row))
             position = scored[0][0]["position"]
             companion = next((s for s in slots if s != slot), None)
@@ -102,6 +122,12 @@ def build_observations(rows: Iterable[dict[str, Any]], *, m_draws: int,
                                   for _, r in scored]),
                 non_vacuous_compliance=_mean(
                     [1.0 if (e["passed"] and e["non_vacuous"]) else 0.0
+                     for e, _ in scored]),
+                # §15 family F5: the graded recoding thresholds the DRAW-level
+                # graded score, so it is formed here rather than by
+                # thresholding a cell mean afterwards.
+                graded_threshold=_mean(
+                    [1.0 if float(e["graded"]) >= GRADED_THRESHOLD else 0.0
                      for e, _ in scored]),
                 response_words=_mean([float(r["word_count"])
                                       for _, r in scored]),

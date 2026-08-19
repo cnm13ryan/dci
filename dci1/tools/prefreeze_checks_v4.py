@@ -29,6 +29,7 @@ sys.path.insert(0, str(DCI1 / "src"))
 
 OUT_DIR = DCI1 / "docs" / "v4_prefreeze"
 V3_EVIDENCE = DCI1 / "evidence" / "dci1-v3"
+V4_EVIDENCE = DCI1 / "evidence" / "dci1-v4"
 PILOT_EVIDENCE = DCI1 / "evidence" / "br-pilot-v4"
 PILOT_REPORTS = DCI1 / "reports" / "br_pilot_v4"
 USER_NOTES = DCI1.parent / "user-notes"
@@ -325,28 +326,68 @@ def check_c6() -> dict:
     return out
 
 
+def _v4_regime(model_key: str) -> dict | None:
+    """A realised v4 regime-screen record, if the stage has run."""
+    path = V4_EVIDENCE / model_key / "regime_screen.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())["payload"]
+
+
+ALL_MODELS = GEMMAS + QWENS
+
+
 def check_c7() -> dict:
-    """Whether a reference severity matched to A exists in each family ladder."""
+    """Whether a reference severity matched to A exists in each family ladder.
+
+    §12.2 answers this per model on the 24 pre-screen topics; §12.3 confirms it
+    on the 96 solo-calibration topics at Gate 2. What the screen can settle is
+    whether the ladder *reaches* A at all — the question v3's four-point grid
+    could not answer.
+    """
     from dci1v4.protocol.wordings import assert_caliper_feasible
 
     feasible = assert_caliper_feasible()
+    realised: dict[str, Any] = {}
+    for model_key in ALL_MODELS:
+        payload = _v4_regime(model_key)
+        if payload is None:
+            realised[model_key] = {"status": "regime screen not run"}
+            continue
+        families = payload["families_with_a_matched_rung"]
+        realised[model_key] = {
+            "selected_cap": payload["completion_cap"]["selected_cap"],
+            "anchor_n": payload["anchor_n"],
+            "a_prescreen_compliance": payload["ladder_screen"][
+                "a_solo_compliance"],
+            "families_with_a_rung_within_the_caliper": families,
+            "families_matched": len(families),
+            "three_or_more_families_matched": len(families) >= 3,
+            "rungs_within_the_caliper": payload["rungs_within_the_caliper"],
+            "shortlist": payload["shortlist"],
+            "note": ("measured on the 24 pre-screen topics at one draw per "
+                     "cell; §12.3 re-measures every shortlisted severity on "
+                     "the 96 solo-calibration topics and §13.2 admits against "
+                     "that"),
+        }
+    ran = [k for k, v in realised.items() if "status" not in v]
     return {
-        "check": "C7", "status": "BLOCKED",
-        "reason": ("the answer is empirical and needs the §12.2 dense ladder "
-                   "screen at the selected cap on the 24 v4 pre-screen topics "
-                   "for each model, followed by §12.3 confirmation on the 96 "
-                   "solo-calibration topics"),
-        "what_is_established_here": {
+        "check": "C7",
+        "status": "PARTIAL" if ran else "BLOCKED",
+        "models_screened": ran,
+        "realised": realised,
+        "what_is_established_without_generation": {
             "ladder_severities": 94,
-            "families": len(feasible),
             "severities_meeting_the_length_caliper_at_every_n":
                 {k: len(v) for k, v in feasible.items()},
             "note": ("every registered severity of every family meets the "
                      "§7.3 length caliper against A, so no family is excluded "
                      "for a wording-length reason before any measurement"),
         },
-        "registered_outcome_if_it_fails": "EXCESS_NOT_IDENTIFIED and the "
-                                          "reduced design of §8.6",
+        "remaining": ("§12.3 confirmation on the 96 solo-calibration topics, "
+                      "which is Gate 2 and is downstream of Gate 1"),
+        "registered_outcome_if_it_fails": ("EXCESS_NOT_IDENTIFIED and the "
+                                           "reduced design of §8.6"),
     }
 
 
@@ -385,14 +426,34 @@ def check_c7b() -> dict:
 
 
 def check_c8() -> dict:
+    """Operating regime for the two Qwen replications."""
+    realised: dict[str, Any] = {}
+    for model_key in QWENS:
+        payload = _v4_regime(model_key)
+        if payload is None:
+            realised[model_key] = {"status": "regime screen not run"}
+            continue
+        realised[model_key] = {
+            "selected_cap": payload["completion_cap"]["selected_cap"],
+            "zero_constraint_truncation": payload["completion_cap"][
+                "zero_constraint_truncation"],
+            "a_curve": payload["ladder_screen"]["A"]
+            if "A" in payload["ladder_screen"] else
+            payload["ladder_screen"].get("curves", {}).get("A"),
+            "b_curve": payload["ladder_screen"].get("B"),
+            "families_matched": len(payload["families_with_a_matched_rung"]),
+        }
+    ran = [k for k, v in realised.items() if "status" not in v]
     return {
-        "check": "C8", "status": "BLOCKED",
-        "reason": ("neither Qwen model's solo compliance for the exact-count "
-                   "constraint at any n, nor for the word-length constraint "
-                   "at any m, exists yet; both terminated v3 at Gate 2A "
-                   "before the question arose"),
-        "what_settles_it": "run §12 for both models",
+        "check": "C8",
+        "status": "PARTIAL" if ran else "BLOCKED",
         "models": list(QWENS),
+        "realised": realised,
+        "reason": ("neither Qwen model's solo compliance existed in the "
+                   "corpus; both terminated v3 at Gate 2A before the question "
+                   "arose"),
+        "remaining": ("§12.3 and §12.4, which are Gate 2 and are downstream "
+                      "of Gate 1"),
         "permitted_outcome": ("REGIME_NOT_FOUND is a statement about the "
                               "registered grid and never about the model or "
                               "the hypothesis"),
@@ -413,33 +474,70 @@ def check_c9() -> dict:
 
 
 def check_c10() -> dict:
+    """Realised vacuity rates and the 20-word threshold."""
     from dci1v4.verifiers.compliance import NON_VACUITY_MIN_WORDS
 
+    realised: dict[str, Any] = {}
+    for model_key in ALL_MODELS:
+        payload = _v4_regime(model_key)
+        if payload is None:
+            continue
+        vacuity = payload.get("vacuity_by_cell", {})
+        realised[model_key] = {
+            "solo_cells_measured": len(vacuity),
+            "cells_above_0.10": sorted(k for k, v in vacuity.items()
+                                       if v > 0.10),
+            "max_vacuity": max(vacuity.values()) if vacuity else None,
+            "mean_vacuity": (sum(vacuity.values()) / len(vacuity)
+                             if vacuity else None),
+        }
     return {
-        "check": "C10", "status": "BLOCKED",
-        "reason": ("the realised vacuity rate at the registered 20-word "
-                   "threshold is unmeasured per cell type; it needs the §12 "
-                   "and §13.6 calibration stages on real models"),
+        "check": "C10",
+        "status": "PARTIAL" if realised else "BLOCKED",
         "threshold_words": NON_VACUITY_MIN_WORDS,
         "threshold_is_fixed_before_confirmatory_generation": True,
         "never_tuned_to_a_rate": True,
-        "implementation": ("the per-cell vacuity rate is computed by "
-                           "analysis.observations and gated by family F6; the "
-                           "measurement is what is outstanding"),
+        "realised_on_the_ladder_screen": realised,
+        "remaining": ("the per-cell-type rate on the §12 and §13.6 "
+                      "calibration stages, which are downstream of Gate 1"),
     }
 
 
 def check_c11() -> dict:
+    """Accidental compliance and per-cell truncation."""
+    realised: dict[str, Any] = {}
+    for model_key in ALL_MODELS:
+        payload = _v4_regime(model_key)
+        if payload is None:
+            continue
+        truncation = payload["truncation_by_cell"]
+        above = {k: v for k, v in truncation.items()
+                 if v > 0.10}
+        realised[model_key] = {
+            "cap": payload["completion_cap"]["selected_cap"],
+            "cap_set_truncation": {
+                str(row["cap"]): {
+                    "constrained": row["constrained_truncation"],
+                    "zero_constraint": row["zero_constraint_truncation"]}
+                for row in payload["completion_cap"]["table"]},
+            "ladder_cells_above_the_bound_threshold": len(above),
+            "ladder_cells": len(truncation),
+            "worst_ladder_cell": (max(truncation.items(),
+                                      key=lambda kv: kv[1])
+                                  if truncation else None),
+        }
     return {
-        "check": "C11", "status": "BLOCKED",
-        "reason": ("accidental compliance and per-cell truncation are "
-                   "measured at Gate 2 and Gate 4 on real generations"),
+        "check": "C11",
+        "status": "PARTIAL" if realised else "BLOCKED",
+        "realised": realised,
         "implementation": ("every registered constraint absent from a prompt "
                            "is scored on every row and marked as an "
                            "accidental-compliance diagnostic; every figure "
                            "from a cell above the truncation threshold is "
                            "emitted as a bound by the emitter itself"),
         "truncation_bound_threshold": 0.10,
+        "remaining": ("per-cell accidental compliance at Gate 2 and Gate 4, "
+                      "which are downstream of Gate 1"),
     }
 
 
@@ -699,7 +797,7 @@ def check_c14() -> dict:
     """Duplicate-generation rate under the v4 seed derivation."""
     from dci1v4.generation.cache import duplicate_report
 
-    out: dict = {"check": "C14", "legacy_comparison": {}}
+    out: dict = {"check": "C14", "legacy_comparison": {}, "realised_v4": {}}
     for model_key in GEMMAS:
         rows = _pilot_rows(model_key)
         if not rows:
@@ -711,17 +809,29 @@ def check_c14() -> dict:
                        r.get("raw_response", "").encode()).hexdigest()}
                   for r in rows]
         out["legacy_comparison"][model_key] = duplicate_report(shaped)
-    out["status"] = "PARTIAL"
+
+    # The realised v4 rate, from every v4 cache written so far.
+    for cache in sorted(V4_EVIDENCE.rglob("cache.jsonl")):
+        rows = _read_jsonl(cache)
+        if not rows:
+            continue
+        report = duplicate_report(rows)
+        out["realised_v4"][str(cache.relative_to(V4_EVIDENCE))] = {
+            "draws": len(rows), "overall_rate": report["overall_rate"],
+            "worst_cell_rate": report["worst_cell_rate"],
+            "within_qualification_limit":
+                report["overall_rate"] <= 0.05,
+        }
+    ran = bool(out["realised_v4"])
+    out["status"] = "PARTIAL" if ran else "BLOCKED"
     out["v4_seed_derivation"] = ("root seed, stage label, model identity, "
                                  "prompt hash, draw index — experimental "
                                  "identity, never batch position")
     out["qualification_threshold"] = 0.05
-    out["reason"] = ("the realised v4 duplicate rate needs v4 generations; "
-                     "the rate is computed on every cache fill by "
-                     "generation.cache.duplicate_report and reported in the "
-                     "cache report of every stage")
-    out["note"] = ("the pilot figures above are the B+R pilot's own, under "
-                   "the v3 seed derivation, and are design evidence only")
+    out["remaining"] = ("the confirmatory rate, which needs confirmatory "
+                        "generation")
+    out["note"] = ("the pilot figures are the B+R pilot's own, under the v3 "
+                   "seed derivation, and are design evidence only")
     return out
 
 

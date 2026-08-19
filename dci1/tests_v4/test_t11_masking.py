@@ -27,8 +27,8 @@ def _observations(blocks=16):
                 cell_type=f"solo:{slot}", outcome_slot=slot,
                 companion_slot=None, position=1, configuration=None, draws=4,
                 compliance=0.8, graded=0.8, vacuity=0.0, truncation=0.0,
-                non_vacuous_compliance=0.8, response_words=60.0,
-                processing_failures=0))
+                non_vacuous_compliance=0.8, graded_threshold=0.8,
+                response_words=60.0, processing_failures=0))
         for outcome in SLOTS:
             for companion in SLOTS:
                 if outcome == companion:
@@ -44,7 +44,8 @@ def _observations(blocks=16):
                         position=position, configuration=configuration,
                         draws=4, compliance=0.6, graded=0.6, vacuity=0.0,
                         truncation=0.0, non_vacuous_compliance=0.6,
-                        response_words=55.0, processing_failures=0))
+                        graded_threshold=0.6, response_words=55.0,
+                        processing_failures=0))
     return out
 
 
