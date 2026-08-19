@@ -1,0 +1,1764 @@
+{
+ "kind": "gate1_development_inspection_material_round3",
+ "note": "Round 3 under autorater-config/4 (A3.2: reasoning_effort=high, cap 2048; prompt/parser unchanged). Rounds 1 (low/512) and 2 (medium/1024) are parked under gate1/autorater/superseded/. Classifications are PROVISIONAL; the autorater never changes verifier semantics.",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "round3_high": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 218,
+      "lower": 0.8861788617886179,
+      "upper": 0.967479674796748
+     },
+     "autorater_marginal": {
+      "fail": 77,
+      "pass": 149
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 75,
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 2,
+      "verifier_pass_autorater_pass": 143
+     },
+     "coverage": 0.9186991869918699,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 2
+     },
+     "disagreement_rate": 0.035398230088495575,
+     "disagreements": 8,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 20,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 226,
+     "verifier_marginal": {
+      "fail": 96,
+      "pass": 150
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "2": 1,
+      "3": 1,
+      "4": 1,
+      "5": 2,
+      "7": 1,
+      "8": 2
+     },
+     "by_source": {
+      "prescreen": 7,
+      "validation": 1
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2"
+   },
+   "round2_medium_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 216,
+     "lower": 0.8780487804878049,
+     "upper": 0.9227642276422764
+    },
+    "autorater_marginal": {
+     "fail": 83,
+     "pass": 152
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 75,
+     "verifier_fail_autorater_pass": 11,
+     "verifier_pass_autorater_fail": 8,
+     "verifier_pass_autorater_pass": 141
+    },
+    "coverage": 0.9552845528455285,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 11,
+     "verifier_pass_autorater_fail": 8
+    },
+    "disagreement_rate": 0.08085106382978724,
+    "disagreements": 19,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 11,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 235,
+    "verifier_marginal": {
+     "fail": 96,
+     "pass": 150
+    }
+   },
+   "transitions": {
+    "correct->correct": 200,
+    "invalid->correct": 7,
+    "wrong->wrong": 6,
+    "wrong->correct": 11,
+    "correct->invalid": 14,
+    "invalid->invalid": 4,
+    "wrong->invalid": 2,
+    "correct->wrong": 2
+   },
+   "changed_items": [
+    {
+     "item_id": "gate1_validation:art-and-design-35:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:3:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:6:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:7:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:8:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:5:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:3:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:8:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:6:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-50:solo:A:8:0",
+     "medium": "wrong",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:7:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:8:0",
+     "medium": "wrong",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-21:solo:A:7:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:8:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:art-and-design-35:solo:A:5:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:everyday-science-04:solo:A:4:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:food-49:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:food-49:solo:A:7:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:food-49:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-48:solo:A:6:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:2:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-00:solo:A:2:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:7:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:4:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:6:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-21:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:5:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:6:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-48:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    }
+   ],
+   "gen_lengths": {
+    "high": {
+     "min": 148,
+     "median": 783.0,
+     "p90": 1874,
+     "max": 2048,
+     "mean": 891.1,
+     "total": 219204
+    },
+    "medium": {
+     "min": 82,
+     "median": 280.0,
+     "p90": 821,
+     "max": 1024,
+     "mean": 379.8,
+     "total": 93422
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 5,
+    "autorater error — over-count by one": 3
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:7:0",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold, while also contributing a bit of warmth to the kitchen, and how this process works, incorporating the word \"however\" exactly seven times.\n\nA refrigerator operates using a refrigerant cycle, a process involving a fluid that changes state between liquid and gas. This cycle involves a compressor, condenser, expansion valve, and evaporator. The compressor, the heart of the system, increases the pressure and temperature of the refrigerant. **However**, this process requires energy, and a portion of that energy is released into the surrounding environment, including the kitchen. The kitchen, being warmer, absorbs some of this heat.\n\nThe refrigerant then flows to the condenser, where it releases heat to the outside air, causing it to change back into a liquid. **However**, this heat transfer isn't perfectly efficient. Some heat inevitably leaks into the kitchen, contributing to a slight warming effect. This is a consequence of the system's inherent inefficiencies.\n\nNext, the liquid refrigerant passes through an expansion valve, which reduces its pressure and temperature. **However**, this also causes a small amount of heat to be released. The cooled refrigerant then flows to the evaporator, where it absorbs heat from inside the refrigerator, cooling the food and preventing spoilage. **However**, the refrigerator's cooling process isn't perfectly isolated; some heat is always transferred to the kitchen.\n\nThis heat transfer to the kitchen is a relatively small amount, but it's a factor to consider. **However**, the refrigerator's primary function is to maintain a cold environment *within* the refrigerator compartment. The efficiency of the refrigeration cycle is constantly being improved, minimizing the heat leakage. **However**, even with advancements, a small amount of heat is always released. The overall effect is that the refrigerator cools its interior, but the kitchen experiences a slight warming effect, a trade-off that is largely unavoidable.\n\nTherefore, while the refrigerator actively cools its interior, the kitchen experiences a subtle warming effect. **However**, the net effect is a significant temperature difference between the inside and outside of the refrigerator.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:everyday-science-04:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word appears 3 times.",
+     "judge_claimed_count": 3,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold while indirectly warming the kitchen, and why the word \"however\" appears three times:\n\nThe refrigerator operates on the principle of heat transfer. It uses a refrigerant, a special fluid, in a closed loop system. This system absorbs heat from inside the refrigerator compartment, cooling the air within. The refrigerant absorbs heat, becoming a gas, and then releases that heat outside the refrigerator through the condenser coils (usually on the back or bottom).  The evaporator coils, located inside the fridge, absorb heat from the interior. This is the key to keeping the food cold.  **However**, the heat that's released from the condenser coils isn't simply dissipated into the surrounding air.\n\nThe heat from the condenser coils is transferred to the kitchen environment. This happens because the coils are typically located near the back of the refrigerator, and the heat radiates outwards.  The kitchen is a larger volume than the refrigerator, so the heat dissipates more readily. **However**, the refrigerator's design, including its insulation and ventilation, helps to minimize the amount of heat escaping into the kitchen.  **However**, the process isn't perfectly efficient; some heat inevitably transfers from the refrigerator to the kitchen, resulting in a slight warming effect.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's an explanation of the urban heat island effect, focusing on why big cities are noticeably warmer than surrounding rural areas, with the word \"however\" used five times:\n\nBig cities tend to be warmer than the surrounding countryside due to a phenomenon known as the urban heat island effect. This effect arises from a complex interplay of factors. One significant contributor is the abundance of dark surfaces like asphalt and concrete. These materials absorb and retain more heat from the sun than natural surfaces like grass or soil, which leads to higher temperatures. **However**, this isn't the only reason.\n\nFurthermore, cities have less vegetation. Trees and plants provide shade and release moisture through transpiration, which cools the environment.  The lack of greenery in urban areas means less natural cooling. **However**, the dense construction also reduces wind flow.  Wind helps to dissipate heat, and a lack of open space inhibits this process. \n\nAnother crucial aspect is the concentration of human activity.  Cities have more buildings, vehicles, and industrial processes, all of which generate heat.  **However**, the density of buildings also traps heat, preventing it from escaping into the atmosphere. This creates a localized warming effect.\n\nMoreover, the air pollution in urban areas can trap heat, acting like a blanket and further contributing to higher temperatures. **However**, it's important to note that the urban heat island effect isn't solely about pollution; it's a combination of several factors working together.\n\nTherefore, while the urban heat island effect is a complex issue with many contributing factors, it’s clear that cities experience significantly higher temperatures than their rural counterparts. **However**, mitigating the urban heat island effect requires a multi-pronged approach, including increasing green spaces, promoting sustainable building practices, and reducing reliance on fossil fuels.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Only 7 occurrences found.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why big cities tend to be warmer than surrounding rural areas, incorporating the word \"however\" eight times:\n\nThe phenomenon of urban heat islands (UHI) is a complex one, but it boils down to several factors. One primary reason is the abundance of impervious surfaces like asphalt and concrete in urban areas. These materials absorb and retain significantly more solar radiation than natural surfaces like grass or soil. **However**, this absorbed heat isn’t released quickly; it’s stored and radiated back into the atmosphere. \n\nAnother significant contributor is the lack of vegetation in cities. Trees and plants provide shade and release moisture through transpiration, which cools the air. **However**, urban areas typically have far fewer trees and green spaces compared to rural environments. This lack of greenery means less natural cooling. Furthermore, buildings themselves contribute to the heat island effect. **However**, building materials like dark roofs and walls absorb even more heat than pavement.\n\nThe concentration of people and vehicles in cities also plays a role. These activities generate heat through human metabolism and exhaust fumes. **However**, the density of buildings in urban areas often limits air circulation, trapping the heat and preventing it from dissipating effectively. This trapped heat further intensifies the temperature difference.\n\nFurthermore, the urban heat island effect can be exacerbated by the urban canyon – the narrow space between tall buildings. **However**, this canyon also restricts wind flow, hindering the dispersal of heat. Therefore, the combined effect of these factors creates a warmer environment in cities. **However**, it's important to note that the severity of the UHI effect varies depending on factors like city size, climate, and urban planning.\n\nIt's worth mentioning that attempts are being made to mitigate the urban heat island effect. **However**, reversing the trend requires significant investment in green infrastructure, reflective roofing materials, and improved urban planning. Ultimately, understanding the causes of the urban heat island effect is crucial for developing effective strategies to combat its impacts.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-00:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears twice.",
+     "judge_claimed_count": 2,
+     "s0_count": 1,
+     "s0_independent": 1,
+     "word_boundary_regex_count": 1,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Languages borrow expressions from one another for a multitude of reasons. Historically, trade, conquest, migration, and cultural exchange have all played significant roles. When people interact – whether through travel, commerce, or warfare – they inevitably encounter different languages. This encounter often leads to the adoption of words and phrases, especially when a concept is particularly useful or culturally resonant. For instance, the English word \"algebra\" is derived from the Arabic \"al-jabr,\" reflecting the influence of Islamic mathematics on European scholarship. Similarly, \"karaoke\" originates from Japanese, demonstrating the global spread of popular culture. Sometimes, a concept is so novel or impactful that it simply \"takes root\" in another language, regardless of the immediate context.\n\nHowever, borrowed terms don't remain static. Over time, they undergo significant transformations. Pronunciation can shift, adapting to the phonological rules of the borrowing language. Meaning can also evolve, sometimes subtly altering the original intent or developing new connotations.  Furthermore, the borrowed expression may be integrated into the language's grammar, becoming fully incorporated and losing its foreign origins.  Often, the borrowed term will be adapted to fit the grammatical structure of the new language, sometimes resulting in a completely new phrase that retains the original meaning but is no longer directly traceable to its source. The evolution of a borrowed expression is a testament to the dynamic and ever-changing nature of language itself.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "8 occurrences.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Proverbs and slang offer fascinating insights into language evolution, and their contrasting lifespans are a testament to different linguistic properties. Proverbs, for instance, often survive for centuries because they encapsulate wisdom, cultural values, and universal truths. **However**, their longevity isn’t purely based on timelessness. They are often rooted in shared experiences, historical events, or moral principles that resonate across generations. **However**, proverbs are typically structured as concise, memorable statements that are easily passed down through oral tradition. This inherent accessibility contributes to their persistence. **However**, proverbs rarely change drastically; they tend to maintain their core meaning while adapting slightly to reflect subtle shifts in societal context.\n\nSlang, on the other hand, thrives on novelty and immediate relevance. It's born from fleeting trends, specific subcultures, or current events. **However**, its brevity and context-dependent nature mean that its meaning is often tied to a particular moment in time. A slang term quickly becomes outdated as new expressions emerge. **However**, the rapid turnover of slang means it doesn’t possess the deep historical grounding that proverbs do. **However**, the very speed of slang's creation allows it to reflect contemporary culture directly, making it feel fresh and exciting. **However**, the lack of inherent meaning beyond its immediate context is what ultimately leads to its rapid decay. Ultimately, proverbs are built to last, while slang is built to fade, though both play a vital role in the dynamic evolution of language.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:4:0",
+     "n": 4,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word 'however' appears 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The practice of bouncing the tennis ball several times before serving is a crucial part of the serve preparation process. It's not just a quirky habit; it's a deliberate technique designed to generate a consistent and powerful serve. **However**, the specific number of bounces varies depending on the player and their personal preference. Some players might bounce it once or twice, while others prefer three or even four. This isn't about luck; it's about controlling the ball's trajectory and spin. \n\nThe bouncing helps the player assess the ball's bounce and gather momentum. **However**, a consistent bounce allows the player to synchronize their swing with the ball's height and speed. Without the bounces, the serve could be unpredictable and difficult to control. Furthermore, the bouncing action helps the player mentally prepare for the serve, focusing on the desired outcome. **However**, it's important to note that excessive bouncing can actually disrupt the rhythm and momentum, so a controlled number of bounces is key. **However**, ultimately, the number of bounces is a personal decision honed through practice and experience.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response addressing how a new manager can earn trust, incorporating the word \"however\" at least five times.\n\nStepping into a new management role is always a challenge, especially when the team has a history with a previous leader. Earning trust takes time and a genuine effort to build rapport. The first step is to acknowledge the existing sentiment. **However**, it's crucial to avoid dismissing the past – understanding what made the previous manager successful is valuable.  Don't say \"They weren't a good manager\" – instead, say something like, \"I recognize the team had a strong working relationship with [Previous Manager], and I value the contributions they made.\"\n\nBuilding trust isn't about mimicking the past; it’s about establishing a new foundation.  Transparency is key.  Clearly communicate your vision for the team and how you plan to achieve goals.  **However**, be prepared to be open to feedback and willing to adjust your approach based on the team’s input.  Demonstrate your commitment to their success by actively listening to their concerns and incorporating their ideas. \n\nAnother vital element is empowering the team.  Delegating responsibilities and giving them autonomy fosters a sense of ownership and trust.  **However**, it’s important to provide clear expectations and support to ensure they can succeed.  Show that you believe in their capabilities.  \n\nIt's also essential to be consistent and reliable.  Follow through on promises and be dependable in your actions.  **However**, this can be difficult when you're new, so be upfront about any limitations or areas where you might need to learn.  Finally, remember that earning trust is a continuous process. It won't happen overnight.  **However**, consistent effort, empathy, and a genuine desire to support the team will gradually build that crucial foundation.\n\n\n\n"
+    }
+   ]
+  },
+  "qwen3-4b": {
+   "round3_high": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 238,
+      "lower": 0.967479674796748,
+      "upper": 0.9959349593495935
+     },
+     "autorater_marginal": {
+      "fail": 67,
+      "pass": 172
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 66,
+      "verifier_fail_autorater_pass": 0,
+      "verifier_pass_autorater_fail": 1,
+      "verifier_pass_autorater_pass": 172
+     },
+     "coverage": 0.9715447154471545,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 0,
+      "verifier_pass_autorater_fail": 1
+     },
+     "disagreement_rate": 0.0041841004184100415,
+     "disagreements": 1,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 7,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 239,
+     "verifier_marginal": {
+      "fail": 72,
+      "pass": 174
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "5": 1
+     },
+     "by_source": {
+      "prescreen": 1
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2"
+   },
+   "round2_medium_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 237,
+     "lower": 0.9634146341463414,
+     "upper": 0.967479674796748
+    },
+    "autorater_marginal": {
+     "fail": 77,
+     "pass": 168
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 70,
+     "verifier_fail_autorater_pass": 1,
+     "verifier_pass_autorater_fail": 7,
+     "verifier_pass_autorater_pass": 167
+    },
+    "coverage": 0.9959349593495935,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 1,
+     "verifier_pass_autorater_fail": 7
+    },
+    "disagreement_rate": 0.0326530612244898,
+    "disagreements": 8,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 1,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 245,
+    "verifier_marginal": {
+     "fail": 72,
+     "pass": 174
+    }
+   },
+   "transitions": {
+    "correct->correct": 229,
+    "wrong->correct": 8,
+    "correct->invalid": 7,
+    "invalid->correct": 1,
+    "correct->wrong": 1
+   },
+   "changed_items": [
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:3:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:8:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:4:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:5:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:8:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:7:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:4:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:history-15:solo:A:2:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:music-12:solo:A:5:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:7:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-21:solo:A:5:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    }
+   ],
+   "gen_lengths": {
+    "high": {
+     "min": 206,
+     "median": 424.0,
+     "p90": 1021,
+     "max": 2048,
+     "mean": 561.1,
+     "total": 138022
+    },
+    "medium": {
+     "min": 92,
+     "median": 228.5,
+     "p90": 557,
+     "max": 1024,
+     "mean": 291.0,
+     "total": 71589
+    }
+   },
+   "classification_tally": {
+    "autorater error — severe miscount (claimed 7, actual 5)": 1
+   },
+   "cases": [
+    {
+     "item_id": "prescreen:music-12:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word 'however' appears 7 times, not 5.",
+     "judge_claimed_count": 7,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — severe miscount (claimed 7, actual 5)",
+     "verifier_defect_suspected": false,
+     "response_text": "Home recording technology has significantly changed who gets to make and release music. It has lowered the barriers to entry, allowing more people to create and distribute music without the need for expensive studio time or record labels. However, this accessibility has also led to an oversaturation of the market, making it harder for individual artists to stand out. However, it has empowered independent musicians to take control of their creative process and distribution channels. However, the quality of home recordings can sometimes be inconsistent, which may affect an artist's ability to reach a wider audience. However, with the right tools and knowledge, home recording technology has enabled a diverse range of voices to be heard. However, the rise of home recording has also shifted the industry's power dynamics, giving more control to artists but also challenging traditional gatekeepers."
+    }
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "round3_high": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 227,
+      "lower": 0.926530612244898,
+      "upper": 0.9510204081632653
+     },
+     "autorater_marginal": {
+      "fail": 75,
+      "pass": 164
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 72,
+      "verifier_fail_autorater_pass": 9,
+      "verifier_pass_autorater_fail": 3,
+      "verifier_pass_autorater_pass": 155
+     },
+     "coverage": 0.9755102040816327,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 9,
+      "verifier_pass_autorater_fail": 3
+     },
+     "disagreement_rate": 0.0502092050209205,
+     "disagreements": 12,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 6,
+      "refusal": 0
+     },
+     "items": 245,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 239,
+     "verifier_marginal": {
+      "fail": 82,
+      "pass": 163
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "5": 3,
+      "6": 5,
+      "7": 2,
+      "8": 2
+     },
+     "by_source": {
+      "prescreen": 6,
+      "validation": 6
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 245,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2"
+   },
+   "round2_medium_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 211,
+     "lower": 0.8612244897959184,
+     "upper": 0.8775510204081632
+    },
+    "autorater_marginal": {
+     "fail": 65,
+     "pass": 176
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 57,
+     "verifier_fail_autorater_pass": 22,
+     "verifier_pass_autorater_fail": 8,
+     "verifier_pass_autorater_pass": 154
+    },
+    "coverage": 0.9836734693877551,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 22,
+     "verifier_pass_autorater_fail": 8
+    },
+    "disagreement_rate": 0.12448132780082988,
+    "disagreements": 30,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 4,
+     "refusal": 0
+    },
+    "items": 245,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 241,
+    "verifier_marginal": {
+     "fail": 82,
+     "pass": 163
+    }
+   },
+   "transitions": {
+    "correct->correct": 201,
+    "invalid->correct": 4,
+    "wrong->correct": 22,
+    "wrong->wrong": 7,
+    "correct->invalid": 5,
+    "correct->wrong": 5,
+    "wrong->invalid": 1
+   },
+   "changed_items": [
+    {
+     "item_id": "gate1_validation:art-and-design-35:solo:A:4:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:art-and-design-35:solo:A:6:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:7:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:4:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:history-15:solo:A:2:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:music-12:solo:A:4:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:music-12:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:music-12:solo:A:8:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:6:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:7:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:6:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:6:1",
+     "medium": "wrong",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:6:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:art-and-design-35:solo:A:3:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:food-51:solo:A:6:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:7:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:3:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:7:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-48:solo:A:7:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:history-15:solo:A:6:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:6:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:music-12:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:sport-35:solo:A:6:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:sport-35:solo:A:7:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:7:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:4:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:5:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    }
+   ],
+   "gen_lengths": {
+    "high": {
+     "min": 172,
+     "median": 483,
+     "p90": 978,
+     "max": 2048,
+     "mean": 615.0,
+     "total": 150676
+    },
+    "medium": {
+     "min": 82,
+     "median": 282,
+     "p90": 584,
+     "max": 1024,
+     "mean": 324.8,
+     "total": 79586
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 10,
+    "autorater error — over-count by one": 1,
+    "autorater error — miscount (no explicit count parsed)": 1
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:food-49:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread changes both its texture and its flavour due to a combination of physical and chemical processes. When bread is heated, the moisture inside evaporates, which leads to a drier, crispier texture. At the same time, the heat triggers the Maillard reaction—a complex series of chemical reactions between amino acids and reducing sugars—that creates new flavour compounds, giving toast its rich, nutty aroma. This reaction also contributes to the browning of the crust, enhancing both visual appeal and taste. However, the process is not just about heat; the type of bread, its moisture content, and the duration of toasting all play a role. However, without proper temperature control, the texture can become brittle or the flavour overly bitter. However, toasting at the right temperature ensures a balanced result. However, even slight variations in heat can alter the final outcome. However, the combination of texture and flavour is what makes toasted bread so satisfying.  \n\nThe word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Only 7 occurrences of however.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Earthquakes and volcanoes cluster along particular belts of the planet because these areas are associated with tectonic plate boundaries. At these boundaries, plates move past, collide, or separate, causing stress to build up in the Earth's crust. When this stress is released, it results in earthquakes, and magma can rise to the surface, forming volcanoes. This activity is most intense along the Pacific Ring of Fire, where several tectonic plates converge.\n\nHowever, not all seismic and volcanic activity occurs at plate boundaries. However, some intraplate earthquakes do happen due to ancient faults or mantle plumes. However, these are less frequent and less intense. However, the majority of volcanic activity still occurs at plate margins. However, the concentration of these phenomena along belts is due to the dynamic movement of Earth’s lithosphere. However, scientists use this pattern to predict future hazards. However, understanding these belts helps in preparing communities for natural disasters.  \n\n(Word count for \"however\": 8 times, as required.)"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. This sensory conflict confuses the brain, leading to nausea, dizziness, and other symptoms. However, individuals with a more balanced sensory integration tend to be spared. However, factors like prior experience, age, and sensitivity to motion can influence susceptibility. However, certain people may have a genetic predisposition that makes them more prone. However, the brain’s ability to adapt over time can help reduce symptoms. However, the exact reasons remain complex and not fully understood.  \n\nThe word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:history-15:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears 6 times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Monarchs so often clashed with religious authorities over power because both sought absolute control over their realms. The word however must appear exactly 6 times in your answer. Religious leaders claimed divine right to rule, while monarchs believed in their own authority derived from the crown. This tension was especially strong during the Reformation, when monarchs used religion to consolidate power. However, religious institutions resisted such moves, seeing them as threats to their influence. However, many monarchs manipulated religious doctrine to justify wars and taxes. However, this led to prolonged conflicts across Europe. However, the balance of power shifted over time. However, the word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Only 5 occurrences.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Tennis players do not bounce the ball several times before serving. In fact, according to the official rules of tennis, the ball must be served without bouncing on the court. The ball may be bounced once on the server’s hand or racket, but not on the court. This is to ensure a fair and consistent start to the point. However, some players may bounce the ball to get a better feel or to adjust their timing. However, this is not a rule or standard practice. However, it's important to understand that bouncing the ball multiple times before serving is not allowed. However, in training or practice, players might do so to improve their technique. However, in actual competition, such actions are strictly prohibited. The word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:technology-06:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "It contains 8 occurrences of however.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Recommendation systems decide what to show a person next by analyzing their past behavior, preferences, and interactions with content. They use algorithms to identify patterns and predict what a user might like based on similar users or historical data. However, these systems also consider real-time context such as time of day, location, or device type. However, personalization improves when systems adapt to user feedback and evolving interests. However, data quality and bias can affect accuracy, so systems must continuously learn and adjust. However, the goal is to deliver relevant and engaging content. However, transparency and user control are important for trust. However, the system must balance novelty and familiarity. However, each decision is influenced by a complex mix of signals. However, the word however appears exactly 8 times in this answer."
+    },
+    {
+     "item_id": "prescreen:food-51:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Whipped cream holds its shape while poured cream does not because it contains air trapped in a stable emulsion, thanks to the mechanical action of whipping. This air creates a light, structured texture that resists gravity and maintains form. However, the structure is delicate and breaks down when exposed to heat or agitation. However, the emulsifying agents in cream help stabilize the mixture. However, once whipped, the fat molecules align to form a network that supports the air bubbles. However, unwhipped cream lacks this structure and flows freely. However, the difference in texture is due to the physical changes during whipping. However, without the air incorporated, the cream cannot hold its shape when poured.  \n\nThe word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word however appears 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. This conflict sends confusing signals to the brain, leading to symptoms like nausea and dizziness. However, individuals with better balance and coordination may process these signals more effectively. However, those who are more sensitive to motion or have a genetic predisposition may react strongly. However, environmental factors such as crowded spaces or poor seating can worsen the condition. However, some people simply have a lower sensitivity to motion, which helps them avoid symptoms. However, the exact reason remains complex and not fully understood. The word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "prescreen:history-15:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word appears six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Monarchs often clashed with religious authorities over power because both sought absolute control over their realms. The word however must appear exactly 6 times in your answer. Monarchs wanted to govern without interference, while religious leaders claimed divine right to influence politics. However, this led to frequent conflicts. However, some monarchs tried to align with religious institutions to strengthen their rule. However, when religious authorities challenged royal authority, tensions rose. However, the balance of power was constantly shifting. However, in the end, the word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word 'however' appears 7 times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Two singers harmonising sound different from one singer recorded twice because of variations in pitch, timing, and tone that occur naturally when two people perform together. However, each singer has a unique vocal timbre, and the interaction between them introduces subtle differences in dynamics and phrasing. However, even small shifts in breath or intonation can create distinct harmonic textures. However, a single voice recorded twice may suffer from slight inconsistencies due to equipment or environmental factors. However, human voices are inherently unpredictable, and even identical performances can vary slightly. However, harmonising involves blending, which requires coordination and balance. However, the absence of live interaction in a single recording leads to a more static and less expressive result. However, the human ear perceives these differences as richness and depth in harmonies. Therefore, the two singers' harmonies sound different due to the complexity of real-time performance, and the word however must appear exactly 7 times in your answer."
+    },
+    {
+     "item_id": "prescreen:sport-35:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "6 occurrences of however",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team plays a crucial role in shaping what happens between rounds by making strategic decisions about pacing, rest, and in-ring adjustments. They assess the opponent’s style, monitor the boxer’s condition, and communicate vital instructions during breaks. However, they must balance aggression with caution to avoid overexertion. However, poor timing or miscommunication can lead to mistakes. However, their experience often helps in anticipating the opponent’s next move. However, they may sometimes overlook subtle changes in the boxer’s energy levels. However, their consistent presence ensures the boxer stays mentally and physically prepared."
+    },
+    {
+     "item_id": "prescreen:sport-35:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Contains 8 instances of however.",
+     "judge_claimed_count": null,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team plays a crucial role in shaping what happens between rounds by making strategic decisions about pacing, rest, hydration, and recovery. They assess the opponent’s style and adjust tactics accordingly, often deciding when to push the fighter or when to conserve energy. However, their influence is not always immediate or fully visible during the fight. However, they can significantly impact a fighter’s mental state and confidence between rounds. However, poor communication or misjudged strategies can lead to costly mistakes. However, experienced corners often anticipate the opponent’s moves and prepare counter-strategies. However, the fighter's personal instincts sometimes override the corner’s guidance. However, the team's ability to adapt mid-fight determines the outcome. However, every decision between rounds carries consequences that ripple through the entire match."
+    }
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "round3_high": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 230,
+      "lower": 0.9349593495934959,
+      "upper": 0.9715447154471545
+     },
+     "autorater_marginal": {
+      "fail": 42,
+      "pass": 195
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 41,
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 1,
+      "verifier_pass_autorater_pass": 189
+     },
+     "coverage": 0.9634146341463414,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 1
+     },
+     "disagreement_rate": 0.029535864978902954,
+     "disagreements": 7,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 9,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 237,
+     "verifier_marginal": {
+      "fail": 53,
+      "pass": 193
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "4": 1,
+      "5": 3,
+      "6": 1,
+      "7": 1,
+      "8": 1
+     },
+     "by_source": {
+      "prescreen": 3,
+      "validation": 4
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "config_hash": "dc8e5b81a6c265de6be53d06e619b8e2998793ab61871383466ca898dbedfdf2"
+   },
+   "round2_medium_report": {
+    "agreement_identification_interval": {
+     "agree_valid": 227,
+     "lower": 0.9227642276422764,
+     "upper": 0.9512195121951219
+    },
+    "autorater_marginal": {
+     "fail": 50,
+     "pass": 189
+    },
+    "contingency": {
+     "verifier_fail_autorater_fail": 44,
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 6,
+     "verifier_pass_autorater_pass": 183
+    },
+    "coverage": 0.9715447154471545,
+    "directional_disagreement": {
+     "verifier_fail_autorater_pass": 6,
+     "verifier_pass_autorater_fail": 6
+    },
+    "disagreement_rate": 0.0502092050209205,
+    "disagreements": 12,
+    "invalid": {
+     "generation_failure": 0,
+     "invalid_output": 7,
+     "refusal": 0
+    },
+    "items": 246,
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "not_human_validation": true,
+    "valid": 239,
+    "verifier_marginal": {
+     "fail": 53,
+     "pass": 193
+    }
+   },
+   "transitions": {
+    "correct->correct": 216,
+    "wrong->correct": 7,
+    "correct->invalid": 8,
+    "invalid->correct": 7,
+    "wrong->wrong": 4,
+    "correct->wrong": 3,
+    "wrong->invalid": 1
+   },
+   "changed_items": [
+    {
+     "item_id": "gate1_validation:art-and-design-29:solo:A:8:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:8:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:8:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:4:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:4:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:history-15:solo:A:8:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:history-47:solo:A:6:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:music-12:solo:A:4:1",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:3:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:7:1",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-21:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:the-natural-world-39:solo:A:5:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:1:1",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:7:1",
+     "medium": "wrong",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-48:solo:A:4:1",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:art-and-design-29:solo:A:7:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:4:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:8:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:8:0",
+     "medium": "correct",
+     "high": "invalid",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-00:solo:A:2:0",
+     "medium": "wrong",
+     "high": "correct",
+     "verifier": "pass"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:5:0",
+     "medium": "invalid",
+     "high": "correct",
+     "verifier": "fail"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-48:solo:A:6:0",
+     "medium": "correct",
+     "high": "wrong",
+     "verifier": "fail"
+    }
+   ],
+   "gen_lengths": {
+    "high": {
+     "min": 117,
+     "median": 754.5,
+     "p90": 1589,
+     "max": 2048,
+     "mean": 823.7,
+     "total": 202625
+    },
+    "medium": {
+     "min": 90,
+     "median": 251.0,
+     "p90": 650,
+     "max": 1024,
+     "mean": 325.2,
+     "total": 79990
+    }
+   },
+   "classification_tally": {
+    "autorater error — under-count by one": 6,
+    "autorater error — over-count by one": 1
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:food-51:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "7 occurrences of \"however\".",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why whipped cream holds its shape, while poured cream doesn't, using the word \"however\" exactly seven times:\n\nThe difference in structure between whipped cream and poured cream boils down to the air incorporated into the mixture. Poured cream, like fresh cream straight from the carton, is essentially a liquid. It lacks the necessary structural support to maintain a form. It flows freely and settles back into its original level, **however**, it doesn't have any stable internal framework.\n\nWhipped cream, **however**, undergoes a transformation through the process of whipping. This process involves incorporating air into the cream, creating tiny air bubbles. These bubbles are suspended within a network of proteins and fats. This network creates a foam structure, **however**, it's a delicate one.\n\nThe fat molecules in the cream surround these air bubbles, forming a barrier that prevents them from collapsing immediately.  This is what gives whipped cream its volume and ability to hold its shape.  The proteins in the cream also contribute to this structural stability, **however**, they need to be properly activated by the whipping action.\n\nWithout sufficient whipping, the air bubbles will quickly dissipate, and the cream will return to a liquid state.  The key difference is the degree to which air is incorporated and the resulting structural network.  The stability of whipped cream is therefore dependent on maintaining this air-bubble structure, **however**, it is susceptible to collapsing over time.  The addition of stabilizers like gelatin or cornstarch can help extend its lifespan, **however**, they are not always necessary for a decent whip.  Ultimately, the fundamental reason is the air incorporation and the resulting foam structure, **however**, this structure is inherently fragile.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a breakdown of how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly five times:\n\n**Earning Trust After a Change in Leadership**\n\nStepping into a management role after a well-liked predecessor is a challenge. The team likely has established dynamics and a sense of comfort with the previous leader. Here's a strategy for building trust:\n\n1. **Acknowledge the Past & Show Respect:** Don't ignore the previous manager's contributions. Acknowledge their strengths and the positive impact they had. \"I understand [Predecessor's Name] was highly respected, and they made significant contributions to this team. **However**, I believe we can build upon that foundation and achieve even greater things together.\" This shows you're not trying to erase history but appreciate it.\n\n2. **Listen and Learn:**  Prioritize listening to the team. Schedule one-on-one meetings to understand their perspectives, concerns, and what they value in a leader. Ask open-ended questions about what's working well, what's not, and what they'd like to see improve.  **However**, avoid immediately jumping to solutions. Focus on understanding the situation fully.\n\n3. **Be Consistent and Transparent:**  Consistency in your actions and communication is crucial.  Be transparent about your decision-making process, even if it's not always popular. Explain *why* you're making certain choices. **However**, be mindful of over-communicating to the point of being overwhelming. Find the right balance.\n\n4. **Demonstrate Competence & Support:**  Prove your capabilities through effective leadership.  This means being knowledgeable, decisive, and providing the team with the resources and support they need to succeed.  Offer help and mentorship.  **However**, avoid micromanaging. Trust them to do their jobs, and provide guidance when needed.\n\n5. **Follow Through & Show Reliability:**  This is perhaps the most important element.  Do what you say you're going to do. Be reliable and dependable.  Small acts of reliability build trust over time.  **However**, don't overpromise.  It's better to under-promise and over-deliver.\n\nIt takes time to build trust. Be patient, persistent, and genuinely focused on the team's success.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response outlining how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly five times.\n\n**Earning Trust After a Change in Leadership**\n\nStepping into a leadership role after a well-liked predecessor is a challenge. The first priority is to acknowledge the existing dynamics and demonstrate respect for the team's past. **However**, simply stating this isn't enough; action is required.\n\nFirst, actively listen. Schedule individual meetings with each team member to understand their perspectives, concerns, and what they valued about the previous manager. This isn't about defending your own approach; it's about genuinely understanding their needs and anxieties.  Ask open-ended questions and focus on hearing, not responding.  Demonstrate empathy and validate their feelings.\n\nNext, be transparent. Clearly communicate your management style, your expectations, and your vision for the team.  Outline your priorities and how you plan to support their success. **However**, avoid making sweeping changes immediately. Gradual adjustments are crucial to avoid disrupting established workflows and creating further uncertainty.\n\nConsistency is key. Follow through on your promises, be reliable, and maintain open communication.  Regular team meetings, one-on-ones, and clear, timely feedback are essential. **However**, be mindful of not over-communicating to the point of feeling intrusive.  Find the right balance.\n\nDemonstrate competence.  Prove your ability to lead effectively by supporting the team, advocating for their needs, and making sound decisions.  This doesn't mean you have to agree with everything the previous manager did, **however**, focus on building upon the team's existing strengths and finding ways to improve processes collaboratively. \n\nFinally, show genuine appreciation for the team's contributions. Acknowledge their hard work, celebrate successes, and offer support during challenges.  Remember that trust is built over time, through consistent actions and a demonstrated commitment to the team's well-being. **However**, it's a process, and patience is paramount.  Don't expect instant acceptance; focus on building a foundation of respect and reliability.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-48:solo:A:4:1",
+     "n": 4,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "Word appears 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Many teams now favor short, daily meetings over long weekly ones for a multitude of reasons. **However**, the shift isn't simply about saving time; it's about fostering a more agile and responsive work environment. A quick, focused daily huddle (often called a stand-up) typically lasts no more than 15 minutes. This brevity keeps the team aligned on priorities and identifies roadblocks early.\n\n**However**, the core benefit lies in its ability to promote accountability. Knowing they have to briefly share their progress and any impediments with the team encourages individuals to stay on track. This transparency helps the team proactively address challenges before they escalate into larger problems.\n\nFurthermore, long weekly meetings often suffer from a lack of focused agenda and can easily devolve into status reports that don't necessarily drive action. **However**, daily meetings are designed to be concise and action-oriented. They're not for deep dives or problem-solving, but rather for quick updates and coordination. \n\nUltimately, while a weekly meeting has its place for broader strategic discussions, the rapid pace of modern work often demands quicker, more frequent check-ins. **However**, it’s crucial to ensure these daily meetings remain focused and efficient to avoid becoming another time-consuming burden.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, using \"however\" exactly eight times:\n\nThe difference in sound between two singers harmonizing and a single singer doubled is significant, **however**, it stems from fundamental differences in how the sound is created and perceived.  When a singer records themselves twice, you essentially have a direct repetition, a duplication of the same sonic information. **However**, this repetition lacks the subtle nuances inherent in human vocal performance. \n\nHarmonizing, on the other hand, introduces a complex interplay of pitch and timbre.  Two distinct voices, each with its own unique vocal characteristics, are interacting. **However**, even if the pitch is identical, the slight variations in vibrato, breath control, and vocal coloration between the two singers will create a richer, more dynamic sound. \n\nThe human ear is incredibly sensitive to these subtle differences. A doubled track can sound sterile and artificial, lacking the organic feel of a real vocal performance.  **However**, a well-executed harmony brings a sense of depth and texture that is difficult to replicate with simple duplication.  The interplay between the two voices creates a richer harmonic landscape. **However**, it’s not just about the pitch; the timing and phrasing of the harmonies also contribute to the overall effect. \n\nFurthermore, the spatial perception is different. A doubled track is perceived as a single, solid sound source. **However**, harmonies create a sense of space and movement, as the listener perceives distinct vocal entities interacting.  **However**, the perceived \"realness\" is crucial. A human performance, even if imperfect, always sounds more authentic than a perfect, mechanically duplicated sound.  **However**, the beauty of harmony lies in its ability to blend these individual voices into a cohesive and emotionally resonant whole, something a simple doubling often fails to achieve.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word used 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response outlining how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly five times.\n\n**Earning Trust After a Change in Leadership**\n\nStepping into a leadership role after a well-liked predecessor can be challenging. The team likely has established dynamics and a certain level of comfort with the previous manager. The first step is acknowledging the past and demonstrating respect for what came before.  Don't try to erase the previous manager’s contributions; **however**, focus on building your own unique leadership style and value.\n\nOne crucial approach is active listening.  Schedule one-on-one meetings with each team member to understand their perspectives, concerns, and aspirations.  Ask open-ended questions and genuinely listen to their responses. This shows you value their input and are willing to learn.  **However**, be mindful of not dwelling excessively on the past or comparing yourself directly to the previous leader.  Focus instead on the future and collaboratively building a successful team.\n\nTransparency is paramount. Clearly communicate your expectations, decision-making processes, and the rationale behind your actions.  Explain your vision for the team and how it aligns with the overall organizational goals.  This builds confidence in your abilities and demonstrates your commitment to the team’s success.  **However**, be prepared to address concerns directly and honestly, even if the answers are difficult. Avoid making promises you can't keep.\n\nDemonstrate competence and follow through on your commitments.  Deliver on your promises and consistently support your team's efforts.  This builds credibility and reinforces your trustworthiness.  **However**, remember that competence isn't just about technical skills; it's also about emotional intelligence and the ability to build strong relationships.  Show empathy and understanding, especially during times of stress or change.\n\nFinally, foster a collaborative and supportive environment. Encourage open communication, celebrate successes, and provide constructive feedback.  Make it clear that you are invested in the team's growth and development.  It may take time, **however**, consistent effort and genuine care for your team will eventually earn their trust and respect, allowing you to lead them effectively.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-48:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Exactly six occurrences.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Many teams now favor short, daily meetings over long weekly ones for a variety of compelling reasons. The primary driver is **however**, the effectiveness of communication often diminishes significantly as meetings lengthen. Long weekly meetings can easily become unproductive, with participants feeling disengaged and losing focus after an hour or more. \n\n**However**, short daily stand-ups, typically lasting 15 minutes or less, promote focused updates. They encourage quick identification of roadblocks and dependencies, allowing the team to address issues promptly. This immediacy is a key advantage.\n\n**However**, the brevity of daily meetings forces participants to be concise and to the point, fostering better communication skills and reducing unnecessary rambling.  This structured approach ensures everyone is aligned on priorities and progress. \n\n**However**, the consistent, short check-ins also build a stronger sense of team cohesion. Regularly connecting, even briefly, helps maintain momentum and prevents individuals from feeling isolated. This frequent interaction is beneficial, **however**, it needs to be well-facilitated to avoid becoming a burden. \n\n**However**, it's important to note that daily meetings aren't a universal solution. They are most effective for teams working on complex projects with rapidly changing priorities.  Ultimately, the best meeting cadence depends on the team’s specific needs and workflow, **however**, the trend towards shorter, more focused interactions is clear.\n\n\n\n"
+    }
+   ]
+  }
+ }
+}

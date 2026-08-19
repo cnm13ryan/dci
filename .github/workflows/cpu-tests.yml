@@ -1,0 +1,54 @@
+# The CPU tier, on every push and pull request.
+#
+# The repository already carried the safeguards this runs — the seed-regime
+# audit, the canonical-input guard, the metric spec freeze, the inherited
+# verifier audit — and nothing executed them. A `p3.target` segmentation
+# regression consequently sat on `main`: the sentence verifier that decides the
+# primary outcome had silently lost its abbreviation guard, and the test that
+# exists to catch exactly that was red and unread.
+#
+# Both suites run without any GPU stack, in about two minutes. The hardware and
+# `slow` tiers are deliberately excluded: they need the ROCm workstation, the
+# Lambda API, or sixteen minutes, and a CI job nobody waits for is a CI job
+# nobody reads.
+name: cpu-tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # The scientific core depends on NO GPU stack by design; torch and
+      # transformers arrive only through environments/rocm|cuda. If this step
+      # ever needs one of them, that rule has been broken somewhere.
+      - name: Install the core package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest
+
+      - name: Confirmatory suite (CPU tier)
+        run: |
+          pytest tests/ -q \
+            -m "not slow and not gpu and not rocm and not cuda and not cloud"
+
+      # Runs against the same install: the exploratory tests import
+      # `dci_exploratory` and `crossmodel`, which reach the scientific
+      # definitions through `dci`, and none of them loads a model.
+      #
+      # `if: always()` because the two suites are independent evidence. On the
+      # first run of this workflow the confirmatory step failed on a known
+      # pre-existing defect and this step never executed, so a green exploratory
+      # result was withheld for an unrelated reason. A reader needs both.
+      - name: Exploratory suite
+        if: always()
+        run: pytest exploratory/tests -q

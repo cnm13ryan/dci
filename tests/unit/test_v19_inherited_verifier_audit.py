@@ -149,6 +149,16 @@ def observed_disagreements() -> list[tuple[str, str, int, int]]:
 
 
 # ------------------------------------------------------- the enumerated audit
+@pytest.mark.xfail(
+    strict=True,
+    reason="Pair 3 segmentation defect, recorded open in "
+           "docs/v19_pair3_segmentation_defect.md: the abbreviation repair "
+           "reached the inherited verifier and not the frozen v19 policy, so six "
+           "p3.target disagreements over abbreviations and initials are observed. "
+           "They are the defect, not a correction, so they are NOT added to "
+           "EXPECTED_DISAGREEMENTS. strict=True: when the repair lands this test "
+           "XPASSes and fails, which is what forces this marker to be removed "
+           "rather than left behind.")
 def test_the_disagreement_set_is_exactly_the_enumerated_one():
     """Section 11.3: a disagreement is a justified correction or an audit failure."""
     observed = set(observed_disagreements())

@@ -1,0 +1,2882 @@
+[
+ {
+  "topic_id": "everyday-science-00",
+  "area": "everyday science",
+  "question": "Why does a metal spoon feel colder than a wooden one in the same room?"
+ },
+ {
+  "topic_id": "everyday-science-01",
+  "area": "everyday science",
+  "question": "How does soap manage to lift grease from dishes when plain water cannot?"
+ },
+ {
+  "topic_id": "everyday-science-02",
+  "area": "everyday science",
+  "question": "What makes ice cubes crack and pop when dropped into a warm drink?"
+ },
+ {
+  "topic_id": "everyday-science-03",
+  "area": "everyday science",
+  "question": "Why do car windows fog up on the inside during cold, damp weather?"
+ },
+ {
+  "topic_id": "everyday-science-04",
+  "area": "everyday science",
+  "question": "How does a refrigerator keep its inside cold while warming the kitchen behind it?"
+ },
+ {
+  "topic_id": "everyday-science-05",
+  "area": "everyday science",
+  "question": "What happens inside a fizzy drink when the bottle is shaken and then opened?"
+ },
+ {
+  "topic_id": "everyday-science-06",
+  "area": "everyday science",
+  "question": "How do microwave ovens heat the food without strongly heating the plate beneath it?"
+ },
+ {
+  "topic_id": "everyday-science-07",
+  "area": "everyday science",
+  "question": "Why do your ears pop when a plane climbs or a car descends a mountain?"
+ },
+ {
+  "topic_id": "everyday-science-08",
+  "area": "everyday science",
+  "question": "What makes a helium balloon droop and sink after a few days indoors?"
+ },
+ {
+  "topic_id": "everyday-science-09",
+  "area": "everyday science",
+  "question": "Why does static electricity build up when you shuffle across a carpet in winter?"
+ },
+ {
+  "topic_id": "everyday-science-10",
+  "area": "everyday science",
+  "question": "What makes a bathroom mirror fog after a hot shower, and how can it be prevented?"
+ },
+ {
+  "topic_id": "everyday-science-11",
+  "area": "everyday science",
+  "question": "Why do phone batteries drain so quickly in freezing outdoor temperatures?"
+ },
+ {
+  "topic_id": "everyday-science-12",
+  "area": "everyday science",
+  "question": "How does a vacuum flask keep coffee hot for hours yet also keep drinks cold?"
+ },
+ {
+  "topic_id": "everyday-science-13",
+  "area": "everyday science",
+  "question": "How does sunscreen protect skin during a long day in bright sunlight?"
+ },
+ {
+  "topic_id": "everyday-science-14",
+  "area": "everyday science",
+  "question": "Why does the daytime sky look blue while sunsets glow orange and red?"
+ },
+ {
+  "topic_id": "everyday-science-15",
+  "area": "everyday science",
+  "question": "What conditions produce a rainbow, and why does it appear as a curved arc?"
+ },
+ {
+  "topic_id": "everyday-science-16",
+  "area": "everyday science",
+  "question": "Why does thunder arrive noticeably later than the lightning flash that caused it?"
+ },
+ {
+  "topic_id": "everyday-science-17",
+  "area": "everyday science",
+  "question": "Why do wet clothes make you feel much colder once a breeze picks up?"
+ },
+ {
+  "topic_id": "everyday-science-18",
+  "area": "everyday science",
+  "question": "Why does a straw appear bent where it enters a glass of water?"
+ },
+ {
+  "topic_id": "everyday-science-19",
+  "area": "everyday science",
+  "question": "What makes a kettle rumble and hiss in the moments before it boils?"
+ },
+ {
+  "topic_id": "everyday-science-20",
+  "area": "everyday science",
+  "question": "Why does scattering salt help clear icy pavements in winter?"
+ },
+ {
+  "topic_id": "everyday-science-21",
+  "area": "everyday science",
+  "question": "Why do puddles vanish faster on windy days even when the air stays cool?"
+ },
+ {
+  "topic_id": "everyday-science-22",
+  "area": "everyday science",
+  "question": "What keeps a moving bicycle upright when a stationary one topples over?"
+ },
+ {
+  "topic_id": "everyday-science-23",
+  "area": "everyday science",
+  "question": "Why do magnets grip a steel fridge door yet ignore an aluminum pan?"
+ },
+ {
+  "topic_id": "everyday-science-24",
+  "area": "everyday science",
+  "question": "Why does your recorded voice sound so unlike the voice you hear while speaking?"
+ },
+ {
+  "topic_id": "everyday-science-25",
+  "area": "everyday science",
+  "question": "Why does the moon seem to follow your car along the road at night?"
+ },
+ {
+  "topic_id": "everyday-science-26",
+  "area": "everyday science",
+  "question": "Why does hair turn frizzy on humid days and lie flatter in dry air?"
+ },
+ {
+  "topic_id": "everyday-science-27",
+  "area": "everyday science",
+  "question": "Why do bathroom tiles feel icy underfoot while the bath mat feels warm?"
+ },
+ {
+  "topic_id": "everyday-science-28",
+  "area": "everyday science",
+  "question": "Why do distant sounds often carry farther across water or on still nights?"
+ },
+ {
+  "topic_id": "everyday-science-29",
+  "area": "everyday science",
+  "question": "What happens inside a glow stick when you snap it and it lights up?"
+ },
+ {
+  "topic_id": "everyday-science-30",
+  "area": "everyday science",
+  "question": "Why does chopping onions make your eyes sting and water?"
+ },
+ {
+  "topic_id": "everyday-science-31",
+  "area": "everyday science",
+  "question": "How do feathery frost patterns form on windows during freezing nights?"
+ },
+ {
+  "topic_id": "everyday-science-32",
+  "area": "everyday science",
+  "question": "What makes a hot air balloon rise, and how does the pilot steer its height?"
+ },
+ {
+  "topic_id": "everyday-science-33",
+  "area": "everyday science",
+  "question": "Why does a compass needle always swing around to face the same direction?"
+ },
+ {
+  "topic_id": "everyday-science-34",
+  "area": "everyday science",
+  "question": "Why are soap bubbles round, and what gives them their swirling rainbow sheen?"
+ },
+ {
+  "topic_id": "everyday-science-35",
+  "area": "everyday science",
+  "question": "Why does a candle flame point upward and flicker even in still air?"
+ },
+ {
+  "topic_id": "everyday-science-36",
+  "area": "everyday science",
+  "question": "Why do wet roads and damp fabric look darker than when they are dry?"
+ },
+ {
+  "topic_id": "everyday-science-37",
+  "area": "everyday science",
+  "question": "Why do you feel so much lighter when floating in a swimming pool?"
+ },
+ {
+  "topic_id": "everyday-science-38",
+  "area": "everyday science",
+  "question": "Why do LED bulbs stay cool while old-style incandescent bulbs get burning hot?"
+ },
+ {
+  "topic_id": "everyday-science-39",
+  "area": "everyday science",
+  "question": "Why does dew appear on grass during clear, calm early mornings?"
+ },
+ {
+  "topic_id": "everyday-science-40",
+  "area": "everyday science",
+  "question": "Why do bridges and railway tracks include small gaps between their long sections?"
+ },
+ {
+  "topic_id": "everyday-science-41",
+  "area": "everyday science",
+  "question": "Why can you see your breath on a cold morning but not in summer?"
+ },
+ {
+  "topic_id": "everyday-science-42",
+  "area": "everyday science",
+  "question": "What keeps a spinning top balanced long after a motionless one would fall?"
+ },
+ {
+  "topic_id": "everyday-science-43",
+  "area": "everyday science",
+  "question": "How do noise-canceling headphones quiet the steady drone of an airplane cabin?"
+ },
+ {
+  "topic_id": "everyday-science-44",
+  "area": "everyday science",
+  "question": "Why do houseplants on a windowsill gradually lean toward the glass?"
+ },
+ {
+  "topic_id": "everyday-science-45",
+  "area": "everyday science",
+  "question": "Why does a bruise shift through several colors as it heals over days?"
+ },
+ {
+  "topic_id": "everyday-science-46",
+  "area": "everyday science",
+  "question": "Why do people yawn when they see someone else yawning?"
+ },
+ {
+  "topic_id": "everyday-science-47",
+  "area": "everyday science",
+  "question": "Why do fingertips wrinkle after a long soak in the bath?"
+ },
+ {
+  "topic_id": "history-00",
+  "area": "history",
+  "question": "Why did many early civilizations grow up along great river valleys rather than in forests?"
+ },
+ {
+  "topic_id": "history-01",
+  "area": "history",
+  "question": "How did the spread of printing change who could join public debate?"
+ },
+ {
+  "topic_id": "history-02",
+  "area": "history",
+  "question": "What made overland trade routes across Asia so influential beyond the goods they carried?"
+ },
+ {
+  "topic_id": "history-03",
+  "area": "history",
+  "question": "Why did stone castles gradually lose their military value as gunpowder weapons improved?"
+ },
+ {
+  "topic_id": "history-04",
+  "area": "history",
+  "question": "How did devastating plagues reshape labor, wages, and social order in medieval Europe?"
+ },
+ {
+  "topic_id": "history-05",
+  "area": "history",
+  "question": "In what ways did taming horses transform how societies fought, traded, and traveled?"
+ },
+ {
+  "topic_id": "history-06",
+  "area": "history",
+  "question": "Why did powerful empires invest in long road networks, and what advantages followed?"
+ },
+ {
+  "topic_id": "history-07",
+  "area": "history",
+  "question": "How did advances in navigation let sailors venture far beyond familiar coastlines?"
+ },
+ {
+  "topic_id": "history-08",
+  "area": "history",
+  "question": "What made defensive walls so central to city life for thousands of years?"
+ },
+ {
+  "topic_id": "history-09",
+  "area": "history",
+  "question": "Why did industrial factories pull so many people from the countryside into cities?"
+ },
+ {
+  "topic_id": "history-10",
+  "area": "history",
+  "question": "How did the telegraph change diplomacy and commerce across great distances?"
+ },
+ {
+  "topic_id": "history-11",
+  "area": "history",
+  "question": "What roles did craft guilds play in medieval towns, and why did they fade?"
+ },
+ {
+  "topic_id": "history-12",
+  "area": "history",
+  "question": "How did colonial powers justify expansion, and how were those claims resisted?"
+ },
+ {
+  "topic_id": "history-13",
+  "area": "history",
+  "question": "Why did surplus harvests matter so much for the rise of early states?"
+ },
+ {
+  "topic_id": "history-14",
+  "area": "history",
+  "question": "In what ways did railways transform economies and daily life during the industrial era?"
+ },
+ {
+  "topic_id": "history-15",
+  "area": "history",
+  "question": "Why did monarchs so often clash with religious authorities over power?"
+ },
+ {
+  "topic_id": "history-16",
+  "area": "history",
+  "question": "How did minted coinage change trade compared with earlier barter arrangements?"
+ },
+ {
+  "topic_id": "history-17",
+  "area": "history",
+  "question": "What made long sieges such a defining feature of warfare before modern times?"
+ },
+ {
+  "topic_id": "history-18",
+  "area": "history",
+  "question": "Why did revolutions so often follow years of famine, debt, or heavy taxation?"
+ },
+ {
+  "topic_id": "history-19",
+  "area": "history",
+  "question": "How did the exchange of crops and animals between hemispheres reshape diets and economies?"
+ },
+ {
+  "topic_id": "history-20",
+  "area": "history",
+  "question": "Why did early record keeping develop alongside taxation, trade, and temple administration?"
+ },
+ {
+  "topic_id": "history-21",
+  "area": "history",
+  "question": "How did nomadic horse peoples repeatedly overrun wealthy settled empires?"
+ },
+ {
+  "topic_id": "history-22",
+  "area": "history",
+  "question": "What forces slowly dissolved feudal obligations across much of Europe?"
+ },
+ {
+  "topic_id": "history-23",
+  "area": "history",
+  "question": "Why were spices once so precious that nations fought wars over their trade?"
+ },
+ {
+  "topic_id": "history-24",
+  "area": "history",
+  "question": "How did clean water and sewer projects transform life in crowded industrial cities?"
+ },
+ {
+  "topic_id": "history-25",
+  "area": "history",
+  "question": "Why did slavery become central to some colonial economies, and what forces ended it?"
+ },
+ {
+  "topic_id": "history-26",
+  "area": "history",
+  "question": "How did wartime propaganda shape what ordinary people believed and feared?"
+ },
+ {
+  "topic_id": "history-27",
+  "area": "history",
+  "question": "In what ways did wartime labor shortages shift expectations about women's work?"
+ },
+ {
+  "topic_id": "history-28",
+  "area": "history",
+  "question": "Why did some societies pour enormous wealth into tombs, temples, and monuments?"
+ },
+ {
+  "topic_id": "history-29",
+  "area": "history",
+  "question": "How were skilled trades passed on through apprenticeship before formal schooling spread?"
+ },
+ {
+  "topic_id": "history-30",
+  "area": "history",
+  "question": "Why were great libraries and archives treasured, and why were their losses so damaging?"
+ },
+ {
+  "topic_id": "history-31",
+  "area": "history",
+  "question": "Why did seafaring empires govern so differently from vast land-based ones?"
+ },
+ {
+  "topic_id": "history-32",
+  "area": "history",
+  "question": "How did the adoption of paper money change merchants, rulers, and markets?"
+ },
+ {
+  "topic_id": "history-33",
+  "area": "history",
+  "question": "Why did cities at trade crossroads often become centers of learning and exchange?"
+ },
+ {
+  "topic_id": "history-34",
+  "area": "history",
+  "question": "What led many countries to abandon public executions over time?"
+ },
+ {
+  "topic_id": "history-35",
+  "area": "history",
+  "question": "How did mass conscription reshape the bond between citizens and their governments?"
+ },
+ {
+  "topic_id": "history-36",
+  "area": "history",
+  "question": "Why did early modern states build standing armies and permanent bureaucracies?"
+ },
+ {
+  "topic_id": "history-37",
+  "area": "history",
+  "question": "In what ways did radio broadcasting change politics between the world wars?"
+ },
+ {
+  "topic_id": "history-38",
+  "area": "history",
+  "question": "Why do boundaries drawn by departing colonial powers still fuel disputes today?"
+ },
+ {
+  "topic_id": "history-39",
+  "area": "history",
+  "question": "How have famine and migration shaped one another throughout recorded history?"
+ },
+ {
+  "topic_id": "history-40",
+  "area": "history",
+  "question": "What made improved plows and harnesses so significant for medieval farming?"
+ },
+ {
+  "topic_id": "history-41",
+  "area": "history",
+  "question": "Why did expanding trade push merchants to invent banking, credit, and insurance?"
+ },
+ {
+  "topic_id": "history-42",
+  "area": "history",
+  "question": "How did epidemics repeatedly decide the outcomes of military campaigns and conquests?"
+ },
+ {
+  "topic_id": "history-43",
+  "area": "history",
+  "question": "Why did pilgrimage routes become channels for trade and cultural exchange?"
+ },
+ {
+  "topic_id": "history-44",
+  "area": "history",
+  "question": "How did canals shape trade and industry before railways spread widely?"
+ },
+ {
+  "topic_id": "history-45",
+  "area": "history",
+  "question": "Why did great empires so often crumble from internal strain rather than invasion?"
+ },
+ {
+  "topic_id": "history-46",
+  "area": "history",
+  "question": "What made publicly displayed law codes valuable to rulers of early empires?"
+ },
+ {
+  "topic_id": "history-47",
+  "area": "history",
+  "question": "How did the first universities emerge in medieval towns, and whom did they serve?"
+ },
+ {
+  "topic_id": "geography-00",
+  "area": "geography",
+  "question": "Why do deserts often lie on the western edges of continents in certain zones?"
+ },
+ {
+  "topic_id": "geography-01",
+  "area": "geography",
+  "question": "How do mountain ranges cast rain shadows that leave one side parched?"
+ },
+ {
+  "topic_id": "geography-02",
+  "area": "geography",
+  "question": "What makes river deltas so fertile yet so exposed to flooding?"
+ },
+ {
+  "topic_id": "geography-03",
+  "area": "geography",
+  "question": "Why do coastlines keep changing shape over decades and centuries?"
+ },
+ {
+  "topic_id": "geography-04",
+  "area": "geography",
+  "question": "How do ocean currents shape the climates of the coastal cities near them?"
+ },
+ {
+  "topic_id": "geography-05",
+  "area": "geography",
+  "question": "Why do earthquakes and volcanoes cluster along particular belts of the planet?"
+ },
+ {
+  "topic_id": "geography-06",
+  "area": "geography",
+  "question": "What happens upstream and downstream when a great river is dammed?"
+ },
+ {
+  "topic_id": "geography-07",
+  "area": "geography",
+  "question": "Why do so many of the world's largest cities sit beside coasts or rivers?"
+ },
+ {
+  "topic_id": "geography-08",
+  "area": "geography",
+  "question": "How do glaciers carve valleys, and what traces do they leave behind?"
+ },
+ {
+  "topic_id": "geography-09",
+  "area": "geography",
+  "question": "Why do remote islands so often shelter plants and animals found nowhere else?"
+ },
+ {
+  "topic_id": "geography-10",
+  "area": "geography",
+  "question": "What makes monsoon rains both a lifeline and a hazard for the regions awaiting them?"
+ },
+ {
+  "topic_id": "geography-11",
+  "area": "geography",
+  "question": "How does climbing in altitude change the climate even close to the equator?"
+ },
+ {
+  "topic_id": "geography-12",
+  "area": "geography",
+  "question": "Why are wetlands so valuable despite being difficult places to build?"
+ },
+ {
+  "topic_id": "geography-13",
+  "area": "geography",
+  "question": "What forces sculpt sand dunes, and why do whole dunes slowly migrate?"
+ },
+ {
+  "topic_id": "geography-14",
+  "area": "geography",
+  "question": "How do big cities end up noticeably warmer than the countryside around them?"
+ },
+ {
+  "topic_id": "geography-15",
+  "area": "geography",
+  "question": "Why do time zone boundaries zigzag around countries instead of following clean lines?"
+ },
+ {
+  "topic_id": "geography-16",
+  "area": "geography",
+  "question": "What makes some soils wonderfully fertile while nearby ground stays barren?"
+ },
+ {
+  "topic_id": "geography-17",
+  "area": "geography",
+  "question": "How does clearing forests change local rainfall and the behavior of rivers?"
+ },
+ {
+  "topic_id": "geography-18",
+  "area": "geography",
+  "question": "Why do some regions swing between punishing droughts and destructive floods?"
+ },
+ {
+  "topic_id": "geography-19",
+  "area": "geography",
+  "question": "What natural features create a fine harbor, and why do ports flourish there?"
+ },
+ {
+  "topic_id": "geography-20",
+  "area": "geography",
+  "question": "Why do tidal ranges vary so dramatically from one shore to another?"
+ },
+ {
+  "topic_id": "geography-21",
+  "area": "geography",
+  "question": "Why are the polar regions so much colder than the tropics?"
+ },
+ {
+  "topic_id": "geography-22",
+  "area": "geography",
+  "question": "What happens to low-lying coasts and their communities as sea levels rise?"
+ },
+ {
+  "topic_id": "geography-23",
+  "area": "geography",
+  "question": "How does a river change along its journey from mountain source to the sea?"
+ },
+ {
+  "topic_id": "geography-24",
+  "area": "geography",
+  "question": "Why do lush rainforests often grow on surprisingly poor soils?"
+ },
+ {
+  "topic_id": "geography-25",
+  "area": "geography",
+  "question": "What makes fjords so distinctive, and how were they carved?"
+ },
+ {
+  "topic_id": "geography-26",
+  "area": "geography",
+  "question": "How do boundaries that follow rivers cause trouble when the water shifts course?"
+ },
+ {
+  "topic_id": "geography-27",
+  "area": "geography",
+  "question": "Why do some resource-rich countries stay poor while resource-poor neighbors prosper?"
+ },
+ {
+  "topic_id": "geography-28",
+  "area": "geography",
+  "question": "What draws people to farm and settle on the slopes of active volcanoes?"
+ },
+ {
+  "topic_id": "geography-29",
+  "area": "geography",
+  "question": "How does a lake gradually become a marsh and eventually dry land?"
+ },
+ {
+  "topic_id": "geography-30",
+  "area": "geography",
+  "question": "Why do windward coasts get such different weather from sheltered ones nearby?"
+ },
+ {
+  "topic_id": "geography-31",
+  "area": "geography",
+  "question": "What makes limestone country prone to sinkholes, caves, and vanishing rivers?"
+ },
+ {
+  "topic_id": "geography-32",
+  "area": "geography",
+  "question": "How do chains of islands rise from the middle of deep oceans?"
+ },
+ {
+  "topic_id": "geography-33",
+  "area": "geography",
+  "question": "Why do grasslands rather than forests cover the interiors of large continents?"
+ },
+ {
+  "topic_id": "geography-34",
+  "area": "geography",
+  "question": "What happens when underground water is pumped out faster than rain refills it?"
+ },
+ {
+  "topic_id": "geography-35",
+  "area": "geography",
+  "question": "What makes mountain passes so important to the regions on either side of a range?"
+ },
+ {
+  "topic_id": "geography-36",
+  "area": "geography",
+  "question": "Why do avalanches and landslides strike some slopes far more than others?"
+ },
+ {
+  "topic_id": "geography-37",
+  "area": "geography",
+  "question": "What makes estuaries such rich nurseries for fish and birds?"
+ },
+ {
+  "topic_id": "geography-38",
+  "area": "geography",
+  "question": "How does the shape of a coastline affect how badly storm surges strike it?"
+ },
+ {
+  "topic_id": "geography-39",
+  "area": "geography",
+  "question": "Why do deserts turn bitterly cold at night after scorching afternoons?"
+ },
+ {
+  "topic_id": "geography-40",
+  "area": "geography",
+  "question": "How do maps distort the world, and why must flat maps always trade something away?"
+ },
+ {
+  "topic_id": "geography-41",
+  "area": "geography",
+  "question": "How do communities adapt to living above the tree line or on permafrost?"
+ },
+ {
+  "topic_id": "geography-42",
+  "area": "geography",
+  "question": "Why are some rivers navigable for long stretches while others break into rapids?"
+ },
+ {
+  "topic_id": "geography-43",
+  "area": "geography",
+  "question": "What happens along a boundary where two plates grind sideways past each other?"
+ },
+ {
+  "topic_id": "geography-44",
+  "area": "geography",
+  "question": "How does distance from the sea shape how extreme a region's seasons become?"
+ },
+ {
+  "topic_id": "geography-45",
+  "area": "geography",
+  "question": "Why do a few narrow waterways carry such an outsized share of global shipping?"
+ },
+ {
+  "topic_id": "geography-46",
+  "area": "geography",
+  "question": "What makes floodplains tempting for farmers yet dangerous for growing cities?"
+ },
+ {
+  "topic_id": "geography-47",
+  "area": "geography",
+  "question": "Why are coral reefs confined to particular waters, and how do they build up?"
+ },
+ {
+  "topic_id": "food-00",
+  "area": "food",
+  "question": "Why does bread dough rise, and what happens inside the loaf as it bakes?"
+ },
+ {
+  "topic_id": "food-01",
+  "area": "food",
+  "question": "How does searing meat change its flavor compared with gently boiling it?"
+ },
+ {
+  "topic_id": "food-02",
+  "area": "food",
+  "question": "What gives fermented foods like yogurt and kimchi their distinctive tang?"
+ },
+ {
+  "topic_id": "food-03",
+  "area": "food",
+  "question": "Why do onions taste harsh when raw yet turn sweet when slowly cooked?"
+ },
+ {
+  "topic_id": "food-04",
+  "area": "food",
+  "question": "How does salt do far more in cooking than simply making dishes salty?"
+ },
+ {
+  "topic_id": "food-05",
+  "area": "food",
+  "question": "What happens when egg whites are whipped into a glossy, stable foam?"
+ },
+ {
+  "topic_id": "food-06",
+  "area": "food",
+  "question": "Why does good chocolate melt so smoothly the moment it hits the tongue?"
+ },
+ {
+  "topic_id": "food-07",
+  "area": "food",
+  "question": "How do marinades change both the texture and the taste of meat?"
+ },
+ {
+  "topic_id": "food-08",
+  "area": "food",
+  "question": "What sets sourdough apart from breads raised with commercial yeast?"
+ },
+ {
+  "topic_id": "food-09",
+  "area": "food",
+  "question": "Why does cut fruit turn brown, and how do cooks slow the change?"
+ },
+ {
+  "topic_id": "food-10",
+  "area": "food",
+  "question": "How does one basic ingredient, milk, become cheeses with such different textures and flavors?"
+ },
+ {
+  "topic_id": "food-11",
+  "area": "food",
+  "question": "Why do cooks treat savory umami as a taste of its own, and which foods supply it richly?"
+ },
+ {
+  "topic_id": "food-12",
+  "area": "food",
+  "question": "What happens when milk is heated too fast in a pan on the stove?"
+ },
+ {
+  "topic_id": "food-13",
+  "area": "food",
+  "question": "Why do chili peppers feel burning hot even though they carry no real heat?"
+ },
+ {
+  "topic_id": "food-14",
+  "area": "food",
+  "question": "How does letting a roast rest before carving change the final result?"
+ },
+ {
+  "topic_id": "food-15",
+  "area": "food",
+  "question": "What makes deep-fried food so crisp at first and so soggy later?"
+ },
+ {
+  "topic_id": "food-16",
+  "area": "food",
+  "question": "Why do some cuisines center on rice while others build around wheat or maize?"
+ },
+ {
+  "topic_id": "food-17",
+  "area": "food",
+  "question": "How does smoking both preserve food and layer it with flavor?"
+ },
+ {
+  "topic_id": "food-18",
+  "area": "food",
+  "question": "What explains the fierce regional rivalries over the right way to barbecue?"
+ },
+ {
+  "topic_id": "food-19",
+  "area": "food",
+  "question": "Why does slightly stale bread outperform fresh in many classic dishes?"
+ },
+ {
+  "topic_id": "food-20",
+  "area": "food",
+  "question": "How do pickling and brining keep vegetables good to eat for months?"
+ },
+ {
+  "topic_id": "food-21",
+  "area": "food",
+  "question": "Why does a rich broth demand hours while a stir-fry needs only minutes?"
+ },
+ {
+  "topic_id": "food-22",
+  "area": "food",
+  "question": "Why do many cooks save the cloudy water left over from boiling pasta?"
+ },
+ {
+  "topic_id": "food-23",
+  "area": "food",
+  "question": "How does kneading develop dough, and why do bakers sometimes stop early?"
+ },
+ {
+  "topic_id": "food-24",
+  "area": "food",
+  "question": "What happens as sugar heats past melting and slides into caramel?"
+ },
+ {
+  "topic_id": "food-25",
+  "area": "food",
+  "question": "Why do beans paired with grains anchor everyday meals in so many cultures?"
+ },
+ {
+  "topic_id": "food-26",
+  "area": "food",
+  "question": "How did household refrigeration change what families around the world eat daily?"
+ },
+ {
+  "topic_id": "food-27",
+  "area": "food",
+  "question": "What makes street food such a beloved centerpiece of eating in many cities?"
+ },
+ {
+  "topic_id": "food-28",
+  "area": "food",
+  "question": "Why do particular spice pairings show up again and again within a region's cooking?"
+ },
+ {
+  "topic_id": "food-29",
+  "area": "food",
+  "question": "Why did flatbreads become the daily staple in some regions while risen loaves ruled elsewhere?"
+ },
+ {
+  "topic_id": "food-30",
+  "area": "food",
+  "question": "Why do some cheeses melt into stretchy strands while others split into oily pools?"
+ },
+ {
+  "topic_id": "food-31",
+  "area": "food",
+  "question": "Why is bitterness prized in coffee and dark greens yet bred out of many vegetables?"
+ },
+ {
+  "topic_id": "food-32",
+  "area": "food",
+  "question": "How do vegetarian cuisines build deep savory flavor without any meat?"
+ },
+ {
+  "topic_id": "food-33",
+  "area": "food",
+  "question": "What makes tough, well-worked cuts turn silky in a slow braise while lean cuts dry out?"
+ },
+ {
+  "topic_id": "food-34",
+  "area": "food",
+  "question": "Why does toast smell and taste so different from the plain bread it began as?"
+ },
+ {
+  "topic_id": "food-35",
+  "area": "food",
+  "question": "How does ice cream stay soft and scoopable instead of freezing solid?"
+ },
+ {
+  "topic_id": "food-36",
+  "area": "food",
+  "question": "Why do dishes pairing sweet with salty or crisp with soft feel so satisfying?"
+ },
+ {
+  "topic_id": "food-37",
+  "area": "food",
+  "question": "Why are some hams and cheeses aged for years, and what changes during the wait?"
+ },
+ {
+  "topic_id": "food-38",
+  "area": "food",
+  "question": "How can a cook rescue a dish that has turned out too salty, spicy, or sour?"
+ },
+ {
+  "topic_id": "food-39",
+  "area": "food",
+  "question": "What makes fresh pasta and dried pasta behave so differently in the pot?"
+ },
+ {
+  "topic_id": "food-40",
+  "area": "food",
+  "question": "Why does the same coffee taste so different depending on how it is brewed?"
+ },
+ {
+  "topic_id": "food-41",
+  "area": "food",
+  "question": "How do water temperature and steeping time transform the flavor of tea?"
+ },
+ {
+  "topic_id": "food-42",
+  "area": "food",
+  "question": "What happens when butter is browned, and why do bakers treasure the result?"
+ },
+ {
+  "topic_id": "food-43",
+  "area": "food",
+  "question": "Why do certain drinks seem to flatter particular foods when served together?"
+ },
+ {
+  "topic_id": "food-44",
+  "area": "food",
+  "question": "What makes many stews and curries taste even better the following day?"
+ },
+ {
+  "topic_id": "food-45",
+  "area": "food",
+  "question": "Why does popcorn burst open while other dried grains simply scorch?"
+ },
+ {
+  "topic_id": "food-46",
+  "area": "food",
+  "question": "Why does rice sometimes cook up fluffy and separate but other times sticky?"
+ },
+ {
+  "topic_id": "food-47",
+  "area": "food",
+  "question": "Why do some kitchens rest batters and doughs before cooking, and what does the pause achieve?"
+ },
+ {
+  "topic_id": "music-00",
+  "area": "music",
+  "question": "Why do some songs get stuck in people's heads for days while others fade almost immediately?"
+ },
+ {
+  "topic_id": "music-01",
+  "area": "music",
+  "question": "How does playing in an ensemble change the way a musician listens compared with practising alone?"
+ },
+ {
+  "topic_id": "music-02",
+  "area": "music",
+  "question": "What makes live concerts feel emotionally different from hearing the same recording at home?"
+ },
+ {
+  "topic_id": "music-03",
+  "area": "music",
+  "question": "In what ways can a melody suggest sadness or joy without any lyrics at all?"
+ },
+ {
+  "topic_id": "music-04",
+  "area": "music",
+  "question": "How do drummers keep a band together when every player has a slightly different sense of timing?"
+ },
+ {
+  "topic_id": "music-05",
+  "area": "music",
+  "question": "Why do many people's musical tastes form in adolescence and stay stable through adulthood?"
+ },
+ {
+  "topic_id": "music-06",
+  "area": "music",
+  "question": "What happens when a familiar tune is played much slower than its usual tempo?"
+ },
+ {
+  "topic_id": "music-07",
+  "area": "music",
+  "question": "How does a film score guide an audience's feelings during a scene without them noticing?"
+ },
+ {
+  "topic_id": "music-08",
+  "area": "music",
+  "question": "Why can a cover version of a song sometimes feel more powerful than the original?"
+ },
+ {
+  "topic_id": "music-09",
+  "area": "music",
+  "question": "What makes improvisation in jazz demanding even for technically accomplished performers?"
+ },
+ {
+  "topic_id": "music-10",
+  "area": "music",
+  "question": "How do street musicians decide what to play to hold the attention of passers-by?"
+ },
+ {
+  "topic_id": "music-11",
+  "area": "music",
+  "question": "Why does singing together in a group often create a sense of belonging among strangers?"
+ },
+ {
+  "topic_id": "music-12",
+  "area": "music",
+  "question": "In what ways has home recording technology changed who gets to make and release music?"
+ },
+ {
+  "topic_id": "music-13",
+  "area": "music",
+  "question": "What makes some voices instantly recognisable even across very different songs and styles?"
+ },
+ {
+  "topic_id": "music-14",
+  "area": "music",
+  "question": "How does a conductor shape an orchestra's performance beyond simply keeping time?"
+ },
+ {
+  "topic_id": "music-15",
+  "area": "music",
+  "question": "Why do lullabies around the world tend to share a gentle, repetitive quality?"
+ },
+ {
+  "topic_id": "music-16",
+  "area": "music",
+  "question": "What happens when musicians from different traditions collaborate on a single piece?"
+ },
+ {
+  "topic_id": "music-17",
+  "area": "music",
+  "question": "How does silence function as an expressive tool within a musical performance?"
+ },
+ {
+  "topic_id": "music-18",
+  "area": "music",
+  "question": "Why do audiences often clap along in time even when nobody asks them to?"
+ },
+ {
+  "topic_id": "music-19",
+  "area": "music",
+  "question": "What makes learning an instrument as an adult different from learning one as a child?"
+ },
+ {
+  "topic_id": "music-20",
+  "area": "music",
+  "question": "How do music festivals build a sense of community among thousands of strangers?"
+ },
+ {
+  "topic_id": "music-21",
+  "area": "music",
+  "question": "Why might a song tied to a memory bring back feelings more vividly than a photograph?"
+ },
+ {
+  "topic_id": "music-22",
+  "area": "music",
+  "question": "In what ways do national anthems try to stir collective pride through sound?"
+ },
+ {
+  "topic_id": "music-23",
+  "area": "music",
+  "question": "What makes a bass line effective at making people want to dance?"
+ },
+ {
+  "topic_id": "music-24",
+  "area": "music",
+  "question": "How has streaming changed the way listeners discover and value new artists?"
+ },
+ {
+  "topic_id": "music-25",
+  "area": "music",
+  "question": "Why do some musicians deliberately leave small imperfections in their recordings?"
+ },
+ {
+  "topic_id": "music-26",
+  "area": "music",
+  "question": "What happens to a choir's sound when singers listen closely to one another rather than to themselves?"
+ },
+ {
+  "topic_id": "music-27",
+  "area": "music",
+  "question": "How does busking differ from stage performance in what it demands of a musician?"
+ },
+ {
+  "topic_id": "music-28",
+  "area": "music",
+  "question": "Why can repetition in music feel hypnotic rather than boring?"
+ },
+ {
+  "topic_id": "music-29",
+  "area": "music",
+  "question": "What makes duets compelling when two very different voices are paired?"
+ },
+ {
+  "topic_id": "music-30",
+  "area": "music",
+  "question": "How do protest songs manage to carry political messages that speeches cannot?"
+ },
+ {
+  "topic_id": "music-31",
+  "area": "music",
+  "question": "Why do many listeners return to sad music when they are already feeling low?"
+ },
+ {
+  "topic_id": "music-32",
+  "area": "music",
+  "question": "In what ways does dancing change how people experience the music they hear?"
+ },
+ {
+  "topic_id": "music-33",
+  "area": "music",
+  "question": "What makes a good encore, and why do audiences expect one at the end of a show?"
+ },
+ {
+  "topic_id": "music-34",
+  "area": "music",
+  "question": "How do session musicians adapt quickly to styles they may never have played before?"
+ },
+ {
+  "topic_id": "music-35",
+  "area": "music",
+  "question": "Why does music from a person's homeland often hit harder after years living abroad?"
+ },
+ {
+  "topic_id": "music-36",
+  "area": "music",
+  "question": "What happens when an orchestra performs without a conductor at the front?"
+ },
+ {
+  "topic_id": "music-37",
+  "area": "music",
+  "question": "How do producers decide which take of a performance is the one worth keeping?"
+ },
+ {
+  "topic_id": "music-38",
+  "area": "music",
+  "question": "Why are choruses usually the part of a song that crowds sing loudest?"
+ },
+ {
+  "topic_id": "music-39",
+  "area": "music",
+  "question": "What makes vinyl records appealing to listeners who grew up with digital sound?"
+ },
+ {
+  "topic_id": "music-40",
+  "area": "music",
+  "question": "How does stage fright affect performers, and how do experienced musicians manage it?"
+ },
+ {
+  "topic_id": "music-41",
+  "area": "music",
+  "question": "Why do certain chord changes feel satisfying even to people with no musical training?"
+ },
+ {
+  "topic_id": "music-42",
+  "area": "music",
+  "question": "In what ways can music in shops and restaurants influence how customers behave?"
+ },
+ {
+  "topic_id": "music-43",
+  "area": "music",
+  "question": "What makes a remix succeed in giving an old track a new life?"
+ },
+ {
+  "topic_id": "music-44",
+  "area": "music",
+  "question": "How do music teachers keep beginners motivated through the awkward early stages?"
+ },
+ {
+  "topic_id": "music-45",
+  "area": "music",
+  "question": "Why do fans often feel personal loyalty to bands they have never met?"
+ },
+ {
+  "topic_id": "music-46",
+  "area": "music",
+  "question": "What happens to a song's meaning when it is used in an advertisement?"
+ },
+ {
+  "topic_id": "music-47",
+  "area": "music",
+  "question": "How do wedding playlists balance the tastes of guests across several generations?"
+ },
+ {
+  "topic_id": "sport-00",
+  "area": "sport",
+  "question": "Why do home teams often perform better in front of their own supporters?"
+ },
+ {
+  "topic_id": "sport-01",
+  "area": "sport",
+  "question": "How does a referee keep control of a match when tempers begin to fray?"
+ },
+ {
+  "topic_id": "sport-02",
+  "area": "sport",
+  "question": "What makes marathon running appealing to people who will never win a race?"
+ },
+ {
+  "topic_id": "sport-03",
+  "area": "sport",
+  "question": "In what ways does youth sport teach lessons that classrooms struggle to deliver?"
+ },
+ {
+  "topic_id": "sport-04",
+  "area": "sport",
+  "question": "Why can an underdog victory feel more memorable than a champion's routine win?"
+ },
+ {
+  "topic_id": "sport-05",
+  "area": "sport",
+  "question": "How do coaches rebuild a team's confidence after a heavy defeat?"
+ },
+ {
+  "topic_id": "sport-06",
+  "area": "sport",
+  "question": "What happens to athletes' identities when injury forces an early retirement?"
+ },
+ {
+  "topic_id": "sport-07",
+  "area": "sport",
+  "question": "Why do local rivalries in sport often outlast the players who started them?"
+ },
+ {
+  "topic_id": "sport-08",
+  "area": "sport",
+  "question": "How do goalkeepers stay focused during long stretches when the ball never comes near them?"
+ },
+ {
+  "topic_id": "sport-09",
+  "area": "sport",
+  "question": "What makes a captain effective beyond simply being the best player on the team?"
+ },
+ {
+  "topic_id": "sport-10",
+  "area": "sport",
+  "question": "In what ways has data analysis changed how professional teams pick their tactics?"
+ },
+ {
+  "topic_id": "sport-11",
+  "area": "sport",
+  "question": "Why do fans keep supporting clubs that disappoint them season after season?"
+ },
+ {
+  "topic_id": "sport-12",
+  "area": "sport",
+  "question": "How does altitude affect endurance athletes, and how do they prepare for it?"
+ },
+ {
+  "topic_id": "sport-13",
+  "area": "sport",
+  "question": "What makes doubles tennis a different game from playing singles?"
+ },
+ {
+  "topic_id": "sport-14",
+  "area": "sport",
+  "question": "Why do many sports use handicaps or weight classes to keep competition fair?"
+ },
+ {
+  "topic_id": "sport-15",
+  "area": "sport",
+  "question": "How does crowd noise influence decisions made in the heat of a game?"
+ },
+ {
+  "topic_id": "sport-16",
+  "area": "sport",
+  "question": "What happens when a promising junior athlete is pushed too hard too young?"
+ },
+ {
+  "topic_id": "sport-17",
+  "area": "sport",
+  "question": "Why is retiring at the top so difficult for many great competitors?"
+ },
+ {
+  "topic_id": "sport-18",
+  "area": "sport",
+  "question": "In what ways do team warm-ups serve purposes beyond loosening muscles?"
+ },
+ {
+  "topic_id": "sport-19",
+  "area": "sport",
+  "question": "How do umpires and officials cope with the abuse that sometimes comes with the job?"
+ },
+ {
+  "topic_id": "sport-20",
+  "area": "sport",
+  "question": "What makes penalty shootouts such a severe test of nerve for players?"
+ },
+ {
+  "topic_id": "sport-21",
+  "area": "sport",
+  "question": "Why do training partners often push athletes further than solo sessions can?"
+ },
+ {
+  "topic_id": "sport-22",
+  "area": "sport",
+  "question": "How does sport bring together communities divided by politics or class?"
+ },
+ {
+  "topic_id": "sport-23",
+  "area": "sport",
+  "question": "What makes a comeback from far behind so gripping for spectators?"
+ },
+ {
+  "topic_id": "sport-24",
+  "area": "sport",
+  "question": "Why do some athletes perform best under pressure while others freeze?"
+ },
+ {
+  "topic_id": "sport-25",
+  "area": "sport",
+  "question": "How do endurance cyclists share the workload within a team during a long race?"
+ },
+ {
+  "topic_id": "sport-26",
+  "area": "sport",
+  "question": "What happens to a dressing room when star players and managers fall out?"
+ },
+ {
+  "topic_id": "sport-27",
+  "area": "sport",
+  "question": "Why do amateur clubs survive on volunteers, and what keeps those volunteers giving their time?"
+ },
+ {
+  "topic_id": "sport-28",
+  "area": "sport",
+  "question": "In what ways does commentary shape how viewers understand a live match?"
+ },
+ {
+  "topic_id": "sport-29",
+  "area": "sport",
+  "question": "How does playing in bad weather change the tactics teams choose?"
+ },
+ {
+  "topic_id": "sport-30",
+  "area": "sport",
+  "question": "What makes certain sports more popular in some countries than in others?"
+ },
+ {
+  "topic_id": "sport-31",
+  "area": "sport",
+  "question": "Why is superstition so common among otherwise rational competitors before a big event?"
+ },
+ {
+  "topic_id": "sport-32",
+  "area": "sport",
+  "question": "How do relay teams turn individual runners into a single coordinated unit?"
+ },
+ {
+  "topic_id": "sport-33",
+  "area": "sport",
+  "question": "What happens when technology such as video review interrupts the flow of a game?"
+ },
+ {
+  "topic_id": "sport-34",
+  "area": "sport",
+  "question": "Why do fans travel long distances for away matches despite the cost and hassle?"
+ },
+ {
+  "topic_id": "sport-35",
+  "area": "sport",
+  "question": "How does a boxer's corner team influence what happens between rounds?"
+ },
+ {
+  "topic_id": "sport-36",
+  "area": "sport",
+  "question": "What makes swimming training famously monotonous, and how do swimmers stay motivated?"
+ },
+ {
+  "topic_id": "sport-37",
+  "area": "sport",
+  "question": "In what ways do school sports days shape children's attitudes toward competition?"
+ },
+ {
+  "topic_id": "sport-38",
+  "area": "sport",
+  "question": "Why do transfer rumours grip supporters even before any deal is done?"
+ },
+ {
+  "topic_id": "sport-39",
+  "area": "sport",
+  "question": "How do climbers manage fear when a fall would carry real consequences?"
+ },
+ {
+  "topic_id": "sport-40",
+  "area": "sport",
+  "question": "What makes veteran athletes valuable to a squad even after their speed fades?"
+ },
+ {
+  "topic_id": "sport-41",
+  "area": "sport",
+  "question": "Why do stadium atmospheres differ so much from one club to another?"
+ },
+ {
+  "topic_id": "sport-42",
+  "area": "sport",
+  "question": "How does sport help newcomers to a country find friends and a foothold?"
+ },
+ {
+  "topic_id": "sport-43",
+  "area": "sport",
+  "question": "What happens to a team's style when a long-serving manager finally leaves?"
+ },
+ {
+  "topic_id": "sport-44",
+  "area": "sport",
+  "question": "Why are draws satisfying in some sports and deeply frustrating in others?"
+ },
+ {
+  "topic_id": "sport-45",
+  "area": "sport",
+  "question": "How do sports photographers anticipate the decisive moment in fast play?"
+ },
+ {
+  "topic_id": "sport-46",
+  "area": "sport",
+  "question": "What makes grassroots coaching different from managing elite professionals?"
+ },
+ {
+  "topic_id": "sport-47",
+  "area": "sport",
+  "question": "In what ways do sporting rules evolve to balance safety with spectacle?"
+ },
+ {
+  "topic_id": "work-and-organisations-00",
+  "area": "work and organisations",
+  "question": "Why do many meetings run long while still leaving decisions unmade?"
+ },
+ {
+  "topic_id": "work-and-organisations-01",
+  "area": "work and organisations",
+  "question": "How does a new manager earn trust from a team that preferred their predecessor?"
+ },
+ {
+  "topic_id": "work-and-organisations-02",
+  "area": "work and organisations",
+  "question": "What makes some open-plan offices energising and others exhausting to work in?"
+ },
+ {
+  "topic_id": "work-and-organisations-03",
+  "area": "work and organisations",
+  "question": "In what ways does remote working change how trust is built between colleagues?"
+ },
+ {
+  "topic_id": "work-and-organisations-04",
+  "area": "work and organisations",
+  "question": "Why do organisations often keep procedures long after everyone forgets their purpose?"
+ },
+ {
+  "topic_id": "work-and-organisations-05",
+  "area": "work and organisations",
+  "question": "How do small firms compete with large corporations for talented staff?"
+ },
+ {
+  "topic_id": "work-and-organisations-06",
+  "area": "work and organisations",
+  "question": "What happens to workplace culture when a company doubles in size quickly?"
+ },
+ {
+  "topic_id": "work-and-organisations-07",
+  "area": "work and organisations",
+  "question": "Why is giving honest feedback upward so much harder than giving it downward?"
+ },
+ {
+  "topic_id": "work-and-organisations-08",
+  "area": "work and organisations",
+  "question": "How do night-shift staff manage the strain that irregular hours place on daily life?"
+ },
+ {
+  "topic_id": "work-and-organisations-09",
+  "area": "work and organisations",
+  "question": "What makes a job interview a poor predictor of how someone will actually perform?"
+ },
+ {
+  "topic_id": "work-and-organisations-10",
+  "area": "work and organisations",
+  "question": "In what ways can a mentor shape a career more than formal training does?"
+ },
+ {
+  "topic_id": "work-and-organisations-11",
+  "area": "work and organisations",
+  "question": "Why do restructures often lower morale even when few jobs are actually lost?"
+ },
+ {
+  "topic_id": "work-and-organisations-12",
+  "area": "work and organisations",
+  "question": "How does humour help teams cope with stressful periods at work?"
+ },
+ {
+  "topic_id": "work-and-organisations-13",
+  "area": "work and organisations",
+  "question": "What happens when an organisation promotes its best specialist into a management role?"
+ },
+ {
+  "topic_id": "work-and-organisations-14",
+  "area": "work and organisations",
+  "question": "Why do many employees feel busier than ever despite tools meant to save time?"
+ },
+ {
+  "topic_id": "work-and-organisations-15",
+  "area": "work and organisations",
+  "question": "How do family businesses handle the handover from one generation to the next?"
+ },
+ {
+  "topic_id": "work-and-organisations-16",
+  "area": "work and organisations",
+  "question": "What makes the first weeks in a new job decisive for whether a hire stays or leaves?"
+ },
+ {
+  "topic_id": "work-and-organisations-17",
+  "area": "work and organisations",
+  "question": "In what ways do office layouts quietly signal who holds power?"
+ },
+ {
+  "topic_id": "work-and-organisations-18",
+  "area": "work and organisations",
+  "question": "Why do volunteers often show more commitment than some paid employees?"
+ },
+ {
+  "topic_id": "work-and-organisations-19",
+  "area": "work and organisations",
+  "question": "How does burnout creep up on people who love their jobs?"
+ },
+ {
+  "topic_id": "work-and-organisations-20",
+  "area": "work and organisations",
+  "question": "What makes cross-department projects so prone to delay and confusion?"
+ },
+ {
+  "topic_id": "work-and-organisations-21",
+  "area": "work and organisations",
+  "question": "Why do companies say culture matters yet struggle to describe their own?"
+ },
+ {
+  "topic_id": "work-and-organisations-22",
+  "area": "work and organisations",
+  "question": "How do unions balance the interests of their loudest members against the quiet majority?"
+ },
+ {
+  "topic_id": "work-and-organisations-23",
+  "area": "work and organisations",
+  "question": "What happens when pay levels inside a team become common knowledge?"
+ },
+ {
+  "topic_id": "work-and-organisations-24",
+  "area": "work and organisations",
+  "question": "Why is delegating difficult for founders who built everything themselves?"
+ },
+ {
+  "topic_id": "work-and-organisations-25",
+  "area": "work and organisations",
+  "question": "How do apprenticeships turn novices into skilled tradespeople over time?"
+ },
+ {
+  "topic_id": "work-and-organisations-26",
+  "area": "work and organisations",
+  "question": "What makes some teams argue productively while others just argue?"
+ },
+ {
+  "topic_id": "work-and-organisations-27",
+  "area": "work and organisations",
+  "question": "In what ways can performance targets distort the behaviour they were meant to improve?"
+ },
+ {
+  "topic_id": "work-and-organisations-28",
+  "area": "work and organisations",
+  "question": "Why do rumours travel faster through an organisation than official announcements?"
+ },
+ {
+  "topic_id": "work-and-organisations-29",
+  "area": "work and organisations",
+  "question": "How does a receptionist shape visitors' impressions of an entire company?"
+ },
+ {
+  "topic_id": "work-and-organisations-30",
+  "area": "work and organisations",
+  "question": "What happens to decision-making when a leader surrounds themselves with agreeable people?"
+ },
+ {
+  "topic_id": "work-and-organisations-31",
+  "area": "work and organisations",
+  "question": "Why do commutes affect job satisfaction more than many employers assume?"
+ },
+ {
+  "topic_id": "work-and-organisations-32",
+  "area": "work and organisations",
+  "question": "How do freelancers build stability in careers without a guaranteed wage?"
+ },
+ {
+  "topic_id": "work-and-organisations-33",
+  "area": "work and organisations",
+  "question": "What makes exit interviews revealing, and why do firms often ignore what they hear?"
+ },
+ {
+  "topic_id": "work-and-organisations-34",
+  "area": "work and organisations",
+  "question": "In what ways do uniforms and dress codes shape behaviour at work?"
+ },
+ {
+  "topic_id": "work-and-organisations-35",
+  "area": "work and organisations",
+  "question": "Why do mergers frequently disappoint the people who planned them?"
+ },
+ {
+  "topic_id": "work-and-organisations-36",
+  "area": "work and organisations",
+  "question": "How does shift handover in hospitals or factories prevent small errors becoming big ones?"
+ },
+ {
+  "topic_id": "work-and-organisations-37",
+  "area": "work and organisations",
+  "question": "What makes a good chairperson able to get the quietest voice in the room heard?"
+ },
+ {
+  "topic_id": "work-and-organisations-38",
+  "area": "work and organisations",
+  "question": "Why do side projects at work sometimes produce more value than official ones?"
+ },
+ {
+  "topic_id": "work-and-organisations-39",
+  "area": "work and organisations",
+  "question": "How do seasonal industries keep skilled staff coming back year after year?"
+ },
+ {
+  "topic_id": "work-and-organisations-40",
+  "area": "work and organisations",
+  "question": "What happens when an employee's values clash with a profitable line of business?"
+ },
+ {
+  "topic_id": "work-and-organisations-41",
+  "area": "work and organisations",
+  "question": "Why is admitting a mistake easier in some workplaces than in others?"
+ },
+ {
+  "topic_id": "work-and-organisations-42",
+  "area": "work and organisations",
+  "question": "How do organisations preserve hard-won knowledge when veteran staff retire?"
+ },
+ {
+  "topic_id": "work-and-organisations-43",
+  "area": "work and organisations",
+  "question": "What makes hybrid schedules tricky for the colleagues who stay in the office?"
+ },
+ {
+  "topic_id": "work-and-organisations-44",
+  "area": "work and organisations",
+  "question": "In what ways do awards and titles motivate staff differently from money?"
+ },
+ {
+  "topic_id": "work-and-organisations-45",
+  "area": "work and organisations",
+  "question": "How do trade shows and conferences pay off for firms beyond immediate sales?"
+ },
+ {
+  "topic_id": "work-and-organisations-46",
+  "area": "work and organisations",
+  "question": "How does a strike affect relationships inside a workplace long after it ends?"
+ },
+ {
+  "topic_id": "work-and-organisations-47",
+  "area": "work and organisations",
+  "question": "What happens to ambition when promotion paths inside a firm are unclear?"
+ },
+ {
+  "topic_id": "health-and-the-body-00",
+  "area": "health and the body",
+  "question": "Why does a good night's sleep improve mood, focus, and patience the next day?"
+ },
+ {
+  "topic_id": "health-and-the-body-01",
+  "area": "health and the body",
+  "question": "How does regular walking benefit people who cannot manage strenuous exercise?"
+ },
+ {
+  "topic_id": "health-and-the-body-02",
+  "area": "health and the body",
+  "question": "What happens inside the body during the first weeks after quitting smoking?"
+ },
+ {
+  "topic_id": "health-and-the-body-03",
+  "area": "health and the body",
+  "question": "In what ways does chronic stress show up physically before a person notices it mentally?"
+ },
+ {
+  "topic_id": "health-and-the-body-04",
+  "area": "health and the body",
+  "question": "Why do hydration needs change with heat, activity, and age?"
+ },
+ {
+  "topic_id": "health-and-the-body-05",
+  "area": "health and the body",
+  "question": "How does laughter affect the body beyond simply lifting the mood?"
+ },
+ {
+  "topic_id": "health-and-the-body-06",
+  "area": "health and the body",
+  "question": "What makes breakfast habits so variable, and how do they affect energy through the morning?"
+ },
+ {
+  "topic_id": "health-and-the-body-07",
+  "area": "health and the body",
+  "question": "Why do muscles ache the day after unfamiliar exercise rather than immediately?"
+ },
+ {
+  "topic_id": "health-and-the-body-08",
+  "area": "health and the body",
+  "question": "How does the body adapt over weeks when someone starts strength training?"
+ },
+ {
+  "topic_id": "health-and-the-body-09",
+  "area": "health and the body",
+  "question": "What happens to balance and coordination as people move into old age?"
+ },
+ {
+  "topic_id": "health-and-the-body-10",
+  "area": "health and the body",
+  "question": "Why do vaccines that cause brief discomfort still protect against far worse illness?"
+ },
+ {
+  "topic_id": "health-and-the-body-11",
+  "area": "health and the body",
+  "question": "In what ways does gut health influence energy and mood day to day?"
+ },
+ {
+  "topic_id": "health-and-the-body-12",
+  "area": "health and the body",
+  "question": "How does fever help the body fight infection even though it feels awful?"
+ },
+ {
+  "topic_id": "health-and-the-body-13",
+  "area": "health and the body",
+  "question": "What makes posture matter for people who sit at desks all day?"
+ },
+ {
+  "topic_id": "health-and-the-body-14",
+  "area": "health and the body",
+  "question": "Why does sunlight exposure during the day affect sleep patterns hours later at night?"
+ },
+ {
+  "topic_id": "health-and-the-body-15",
+  "area": "health and the body",
+  "question": "How do doctors weigh a treatment's benefits against its side effects when advising patients?"
+ },
+ {
+  "topic_id": "health-and-the-body-16",
+  "area": "health and the body",
+  "question": "What happens to the heart and lungs during a sustained bout of aerobic exercise?"
+ },
+ {
+  "topic_id": "health-and-the-body-17",
+  "area": "health and the body",
+  "question": "Why do people often catch colds after periods of exhaustion or stress?"
+ },
+ {
+  "topic_id": "health-and-the-body-18",
+  "area": "health and the body",
+  "question": "How does skin repair itself after a minor cut or scrape?"
+ },
+ {
+  "topic_id": "health-and-the-body-19",
+  "area": "health and the body",
+  "question": "What makes chronic pain harder to treat than the sharp pain of an injury?"
+ },
+ {
+  "topic_id": "health-and-the-body-20",
+  "area": "health and the body",
+  "question": "In what ways do social connections influence physical health over a lifetime?"
+ },
+ {
+  "topic_id": "health-and-the-body-21",
+  "area": "health and the body",
+  "question": "Why can dieting rapidly often lead to regaining the weight later?"
+ },
+ {
+  "topic_id": "health-and-the-body-22",
+  "area": "health and the body",
+  "question": "How does caffeine affect the body from the first sip to late evening?"
+ },
+ {
+  "topic_id": "health-and-the-body-23",
+  "area": "health and the body",
+  "question": "What happens when someone holds their breath, and why can they not do it indefinitely?"
+ },
+ {
+  "topic_id": "health-and-the-body-24",
+  "area": "health and the body",
+  "question": "Why do children need more sleep than adults do?"
+ },
+ {
+  "topic_id": "health-and-the-body-25",
+  "area": "health and the body",
+  "question": "How does the placebo effect produce real changes in how patients feel?"
+ },
+ {
+  "topic_id": "health-and-the-body-26",
+  "area": "health and the body",
+  "question": "What makes hand washing such an effective defence against infection?"
+ },
+ {
+  "topic_id": "health-and-the-body-27",
+  "area": "health and the body",
+  "question": "In what ways does hearing loss affect a person's social life and confidence?"
+ },
+ {
+  "topic_id": "health-and-the-body-28",
+  "area": "health and the body",
+  "question": "Why do bruises change colour as they heal?"
+ },
+ {
+  "topic_id": "health-and-the-body-29",
+  "area": "health and the body",
+  "question": "How does the body regulate its temperature on a very hot day?"
+ },
+ {
+  "topic_id": "health-and-the-body-30",
+  "area": "health and the body",
+  "question": "What happens to fitness gains when training stops for a month or more?"
+ },
+ {
+  "topic_id": "health-and-the-body-31",
+  "area": "health and the body",
+  "question": "Why is breaking a habit like nail biting so difficult even when the person wants to stop?"
+ },
+ {
+  "topic_id": "health-and-the-body-32",
+  "area": "health and the body",
+  "question": "How do stretching routines help before and after physical activity?"
+ },
+ {
+  "topic_id": "health-and-the-body-33",
+  "area": "health and the body",
+  "question": "What makes some people early risers and others night owls?"
+ },
+ {
+  "topic_id": "health-and-the-body-34",
+  "area": "health and the body",
+  "question": "In what ways does pregnancy change the body beyond the visible ones?"
+ },
+ {
+  "topic_id": "health-and-the-body-35",
+  "area": "health and the body",
+  "question": "Why does motion sickness strike some travellers and spare others?"
+ },
+ {
+  "topic_id": "health-and-the-body-36",
+  "area": "health and the body",
+  "question": "How does grief affect the body as well as the mind?"
+ },
+ {
+  "topic_id": "health-and-the-body-37",
+  "area": "health and the body",
+  "question": "What happens during an allergic reaction, and why do reactions vary so much in severity?"
+ },
+ {
+  "topic_id": "health-and-the-body-38",
+  "area": "health and the body",
+  "question": "Why do doctors encourage movement soon after many surgeries rather than long bed rest?"
+ },
+ {
+  "topic_id": "health-and-the-body-39",
+  "area": "health and the body",
+  "question": "How does regular dental care protect more than just the teeth?"
+ },
+ {
+  "topic_id": "health-and-the-body-40",
+  "area": "health and the body",
+  "question": "Why does the body need rest days to grow stronger after hard training?"
+ },
+ {
+  "topic_id": "health-and-the-body-41",
+  "area": "health and the body",
+  "question": "How does the immune system distinguish harmful invaders from the body's own cells?"
+ },
+ {
+  "topic_id": "health-and-the-body-42",
+  "area": "health and the body",
+  "question": "Why does alcohol affect judgement, balance, and reaction speed?"
+ },
+ {
+  "topic_id": "health-and-the-body-43",
+  "area": "health and the body",
+  "question": "What happens to eyesight during prolonged screen use, and how can people ease the strain?"
+ },
+ {
+  "topic_id": "health-and-the-body-44",
+  "area": "health and the body",
+  "question": "How do broken bones knit back together over the weeks after a fracture?"
+ },
+ {
+  "topic_id": "health-and-the-body-45",
+  "area": "health and the body",
+  "question": "Why do people yawn, and why does yawning seem contagious?"
+ },
+ {
+  "topic_id": "health-and-the-body-46",
+  "area": "health and the body",
+  "question": "What makes sleep deprivation dangerous for drivers even when they feel awake?"
+ },
+ {
+  "topic_id": "health-and-the-body-47",
+  "area": "health and the body",
+  "question": "How does regular exposure to nature seem to benefit both body and mind?"
+ },
+ {
+  "topic_id": "technology-00",
+  "area": "technology",
+  "question": "Why do software updates sometimes introduce new problems even when they are meant to fix old ones?"
+ },
+ {
+  "topic_id": "technology-01",
+  "area": "technology",
+  "question": "How does caching help websites and apps feel faster to the people using them?"
+ },
+ {
+  "topic_id": "technology-02",
+  "area": "technology",
+  "question": "What makes battery life such a persistent design challenge for portable devices?"
+ },
+ {
+  "topic_id": "technology-03",
+  "area": "technology",
+  "question": "In what ways can redundancy make a computer system more reliable?"
+ },
+ {
+  "topic_id": "technology-04",
+  "area": "technology",
+  "question": "What happens when too many people try to use the same online service at once?"
+ },
+ {
+  "topic_id": "technology-05",
+  "area": "technology",
+  "question": "Why do many devices need occasional restarts to keep working smoothly?"
+ },
+ {
+  "topic_id": "technology-06",
+  "area": "technology",
+  "question": "How do recommendation systems decide what to show a person next?"
+ },
+ {
+  "topic_id": "technology-07",
+  "area": "technology",
+  "question": "What trade-offs do engineers weigh when making a gadget smaller and lighter?"
+ },
+ {
+  "topic_id": "technology-08",
+  "area": "technology",
+  "question": "Why is encrypting data important even for people with nothing to hide?"
+ },
+ {
+  "topic_id": "technology-09",
+  "area": "technology",
+  "question": "How can a small coding mistake lead to a large outage?"
+ },
+ {
+  "topic_id": "technology-10",
+  "area": "technology",
+  "question": "What makes touchscreen interfaces easy for beginners yet limiting for some expert users?"
+ },
+ {
+  "topic_id": "technology-11",
+  "area": "technology",
+  "question": "Why do wireless signals weaken as they pass through walls and floors?"
+ },
+ {
+  "topic_id": "technology-12",
+  "area": "technology",
+  "question": "How does version control help teams of programmers work on the same project?"
+ },
+ {
+  "topic_id": "technology-13",
+  "area": "technology",
+  "question": "What are the advantages and drawbacks of storing files in the cloud rather than locally?"
+ },
+ {
+  "topic_id": "technology-14",
+  "area": "technology",
+  "question": "Why do phishing attempts still succeed despite widespread awareness campaigns?"
+ },
+ {
+  "topic_id": "technology-15",
+  "area": "technology",
+  "question": "How does compression allow large videos to travel quickly across networks?"
+ },
+ {
+  "topic_id": "technology-16",
+  "area": "technology",
+  "question": "What makes some login credentials much harder for attackers to guess than others?"
+ },
+ {
+  "topic_id": "technology-17",
+  "area": "technology",
+  "question": "Why might a company choose open-source software instead of a commercial product?"
+ },
+ {
+  "topic_id": "technology-18",
+  "area": "technology",
+  "question": "How do sensors in a modern car help drivers avoid collisions?"
+ },
+ {
+  "topic_id": "technology-19",
+  "area": "technology",
+  "question": "What happens when a machine learning model is trained on biased examples?"
+ },
+ {
+  "topic_id": "technology-20",
+  "area": "technology",
+  "question": "Why is backward compatibility both valuable and burdensome for technology companies?"
+ },
+ {
+  "topic_id": "technology-21",
+  "area": "technology",
+  "question": "How do noise-cancelling headphones reduce the sounds around a listener?"
+ },
+ {
+  "topic_id": "technology-22",
+  "area": "technology",
+  "question": "What makes designing software for accessibility good for all users, not just some?"
+ },
+ {
+  "topic_id": "technology-23",
+  "area": "technology",
+  "question": "Why do batteries degrade over time even with careful use?"
+ },
+ {
+  "topic_id": "technology-24",
+  "area": "technology",
+  "question": "How does two-factor authentication add protection beyond a single secret code?"
+ },
+ {
+  "topic_id": "technology-25",
+  "area": "technology",
+  "question": "What challenges arise when translating a desktop application to a small phone screen?"
+ },
+ {
+  "topic_id": "technology-26",
+  "area": "technology",
+  "question": "Why do search engines rank some pages above others?"
+ },
+ {
+  "topic_id": "technology-27",
+  "area": "technology",
+  "question": "How can automation change the kinds of tasks people do at work?"
+ },
+ {
+  "topic_id": "technology-28",
+  "area": "technology",
+  "question": "What makes real-time video calls technically harder than sending recorded clips?"
+ },
+ {
+  "topic_id": "technology-29",
+  "area": "technology",
+  "question": "Why does hardware often outlast the software support it receives?"
+ },
+ {
+  "topic_id": "technology-30",
+  "area": "technology",
+  "question": "How do navigation devices figure out where a person is standing?"
+ },
+ {
+  "topic_id": "technology-31",
+  "area": "technology",
+  "question": "What are the risks of connecting everyday appliances to the internet?"
+ },
+ {
+  "topic_id": "technology-32",
+  "area": "technology",
+  "question": "Why is testing software thoroughly so difficult even for large teams?"
+ },
+ {
+  "topic_id": "technology-33",
+  "area": "technology",
+  "question": "How does a firewall decide which network traffic to allow through?"
+ },
+ {
+  "topic_id": "technology-34",
+  "area": "technology",
+  "question": "What makes electronic waste a growing problem, and how might design reduce it?"
+ },
+ {
+  "topic_id": "technology-35",
+  "area": "technology",
+  "question": "Why do some technologies spread quickly while others with clear benefits stall?"
+ },
+ {
+  "topic_id": "technology-36",
+  "area": "technology",
+  "question": "How does streaming music differ from downloading it, from a listener's point of view?"
+ },
+ {
+  "topic_id": "technology-37",
+  "area": "technology",
+  "question": "What happens when a widely used online platform suddenly changes its rules?"
+ },
+ {
+  "topic_id": "technology-38",
+  "area": "technology",
+  "question": "Why can old file formats become unreadable, and what does that mean for digital archives?"
+ },
+ {
+  "topic_id": "technology-39",
+  "area": "technology",
+  "question": "How do spam filters decide which messages deserve a person's attention?"
+ },
+ {
+  "topic_id": "technology-40",
+  "area": "technology",
+  "question": "What makes voice assistants struggle with accents and background noise?"
+ },
+ {
+  "topic_id": "technology-41",
+  "area": "technology",
+  "question": "Why is it hard to remove personal information completely once it is online?"
+ },
+ {
+  "topic_id": "technology-42",
+  "area": "technology",
+  "question": "How can simulation help engineers test designs before building anything physical?"
+ },
+ {
+  "topic_id": "technology-43",
+  "area": "technology",
+  "question": "What trade-offs come with making devices waterproof, repairable, or both?"
+ },
+ {
+  "topic_id": "technology-44",
+  "area": "technology",
+  "question": "Why do progress bars often mislead users about how long a task will take?"
+ },
+ {
+  "topic_id": "technology-45",
+  "area": "technology",
+  "question": "How do solar panels turn sunlight into usable electricity for a home?"
+ },
+ {
+  "topic_id": "technology-46",
+  "area": "technology",
+  "question": "What makes maintaining old software systems risky yet often unavoidable for organizations?"
+ },
+ {
+  "topic_id": "technology-47",
+  "area": "technology",
+  "question": "Why might engineers deliberately limit a product's features rather than adding everything possible?"
+ },
+ {
+  "topic_id": "language-and-writing-00",
+  "area": "language and writing",
+  "question": "Why do languages borrow expressions from one another, and what happens to borrowed terms over time?"
+ },
+ {
+  "topic_id": "language-and-writing-01",
+  "area": "language and writing",
+  "question": "How can the same sentence carry very different meanings depending on tone of voice?"
+ },
+ {
+  "topic_id": "language-and-writing-02",
+  "area": "language and writing",
+  "question": "What makes a set of instructions genuinely easy to follow?"
+ },
+ {
+  "topic_id": "language-and-writing-03",
+  "area": "language and writing",
+  "question": "Why do metaphors help people grasp unfamiliar ideas?"
+ },
+ {
+  "topic_id": "language-and-writing-04",
+  "area": "language and writing",
+  "question": "In what ways does an audience shape how a speaker chooses to say something?"
+ },
+ {
+  "topic_id": "language-and-writing-05",
+  "area": "language and writing",
+  "question": "What is lost and what is gained when a story is translated into another language?"
+ },
+ {
+  "topic_id": "language-and-writing-06",
+  "area": "language and writing",
+  "question": "How does humor rely on timing and shared expectations between teller and listener?"
+ },
+ {
+  "topic_id": "language-and-writing-07",
+  "area": "language and writing",
+  "question": "Why do euphemisms arise around topics like death, money, and bodily functions?"
+ },
+ {
+  "topic_id": "language-and-writing-08",
+  "area": "language and writing",
+  "question": "What makes some openings of novels pull readers in immediately?"
+ },
+ {
+  "topic_id": "language-and-writing-09",
+  "area": "language and writing",
+  "question": "How does repetition work as a persuasive device in speeches?"
+ },
+ {
+  "topic_id": "language-and-writing-10",
+  "area": "language and writing",
+  "question": "Why can silence or a pause communicate as much as speech?"
+ },
+ {
+  "topic_id": "language-and-writing-11",
+  "area": "language and writing",
+  "question": "What happens to a joke when someone has to explain it?"
+ },
+ {
+  "topic_id": "language-and-writing-12",
+  "area": "language and writing",
+  "question": "How do regional dialects develop within a single shared language?"
+ },
+ {
+  "topic_id": "language-and-writing-13",
+  "area": "language and writing",
+  "question": "Why is it often harder to write briefly than at length?"
+ },
+ {
+  "topic_id": "language-and-writing-14",
+  "area": "language and writing",
+  "question": "What makes dialogue in fiction feel natural even though real conversation is messier?"
+ },
+ {
+  "topic_id": "language-and-writing-15",
+  "area": "language and writing",
+  "question": "How does point of view change the way readers judge events in a story?"
+ },
+ {
+  "topic_id": "language-and-writing-16",
+  "area": "language and writing",
+  "question": "Why do slang expressions fade quickly while some settle into everyday speech?"
+ },
+ {
+  "topic_id": "language-and-writing-17",
+  "area": "language and writing",
+  "question": "What role does exaggeration play in storytelling and everyday conversation?"
+ },
+ {
+  "topic_id": "language-and-writing-18",
+  "area": "language and writing",
+  "question": "How can punctuation change the rhythm and feel of a sentence?"
+ },
+ {
+  "topic_id": "language-and-writing-19",
+  "area": "language and writing",
+  "question": "Why do people adjust their speech differently with friends, strangers, and authority figures?"
+ },
+ {
+  "topic_id": "language-and-writing-20",
+  "area": "language and writing",
+  "question": "What makes an apology sound sincere rather than hollow to its recipient?"
+ },
+ {
+  "topic_id": "language-and-writing-21",
+  "area": "language and writing",
+  "question": "How do children pick up grammar without any formal lessons?"
+ },
+ {
+  "topic_id": "language-and-writing-22",
+  "area": "language and writing",
+  "question": "Why does reading aloud reveal problems in writing that silent reading misses?"
+ },
+ {
+  "topic_id": "language-and-writing-23",
+  "area": "language and writing",
+  "question": "What makes a translation feel wooden even when it is technically accurate?"
+ },
+ {
+  "topic_id": "language-and-writing-24",
+  "area": "language and writing",
+  "question": "How do writers create suspense while still playing fair with the reader?"
+ },
+ {
+  "topic_id": "language-and-writing-25",
+  "area": "language and writing",
+  "question": "Why are some ideas easier to express in one language than another?"
+ },
+ {
+  "topic_id": "language-and-writing-26",
+  "area": "language and writing",
+  "question": "What happens when technical jargon escapes into everyday conversation?"
+ },
+ {
+  "topic_id": "language-and-writing-27",
+  "area": "language and writing",
+  "question": "How does rhythm affect whether a line of poetry stays in memory?"
+ },
+ {
+  "topic_id": "language-and-writing-28",
+  "area": "language and writing",
+  "question": "Why do formal and casual registers exist, and what signals the shift between them?"
+ },
+ {
+  "topic_id": "language-and-writing-29",
+  "area": "language and writing",
+  "question": "What makes a headline persuasive, and when does persuasion become misleading?"
+ },
+ {
+  "topic_id": "language-and-writing-30",
+  "area": "language and writing",
+  "question": "How does a narrator's reliability shape a reader's trust in a story?"
+ },
+ {
+  "topic_id": "language-and-writing-31",
+  "area": "language and writing",
+  "question": "Why do proverbs survive across generations while ordinary sayings vanish?"
+ },
+ {
+  "topic_id": "language-and-writing-32",
+  "area": "language and writing",
+  "question": "In what ways does storytelling around a table differ from storytelling on a page?"
+ },
+ {
+  "topic_id": "language-and-writing-33",
+  "area": "language and writing",
+  "question": "What makes small talk socially useful despite carrying little real information?"
+ },
+ {
+  "topic_id": "language-and-writing-34",
+  "area": "language and writing",
+  "question": "How does pacing influence whether a long presentation holds an audience's attention?"
+ },
+ {
+  "topic_id": "language-and-writing-35",
+  "area": "language and writing",
+  "question": "Why can flattery and genuine praise be hard to tell apart in writing?"
+ },
+ {
+  "topic_id": "language-and-writing-36",
+  "area": "language and writing",
+  "question": "What happens to meaning when sarcasm moves from speech to text?"
+ },
+ {
+  "topic_id": "language-and-writing-37",
+  "area": "language and writing",
+  "question": "How do bilingual speakers decide which language to use in a given moment?"
+ },
+ {
+  "topic_id": "language-and-writing-38",
+  "area": "language and writing",
+  "question": "Why do names of places and products carry emotional associations beyond their plain meaning?"
+ },
+ {
+  "topic_id": "language-and-writing-39",
+  "area": "language and writing",
+  "question": "What makes revising a draft harder, in some respects, than producing the first version?"
+ },
+ {
+  "topic_id": "language-and-writing-40",
+  "area": "language and writing",
+  "question": "How does understatement achieve effects that direct statement often cannot?"
+ },
+ {
+  "topic_id": "language-and-writing-41",
+  "area": "language and writing",
+  "question": "Why do misunderstandings arise so easily in written messages between colleagues?"
+ },
+ {
+  "topic_id": "language-and-writing-42",
+  "area": "language and writing",
+  "question": "What distinguishes a story told to entertain from one told to persuade?"
+ },
+ {
+  "topic_id": "language-and-writing-43",
+  "area": "language and writing",
+  "question": "How does rhyme influence what people remember from songs and slogans?"
+ },
+ {
+  "topic_id": "language-and-writing-44",
+  "area": "language and writing",
+  "question": "Why do languages simplify some grammatical forms over centuries while complicating others?"
+ },
+ {
+  "topic_id": "language-and-writing-45",
+  "area": "language and writing",
+  "question": "What makes an ending feel earned rather than abrupt in a piece of fiction?"
+ },
+ {
+  "topic_id": "language-and-writing-46",
+  "area": "language and writing",
+  "question": "How do skilled interviewers phrase questions to invite honest, detailed answers?"
+ },
+ {
+  "topic_id": "language-and-writing-47",
+  "area": "language and writing",
+  "question": "Why does a familiar accent evoke comfort in some listeners and prejudice in others?"
+ },
+ {
+  "topic_id": "art-and-design-00",
+  "area": "art and design",
+  "question": "Why does negative space matter as much as the objects it surrounds in a composition?"
+ },
+ {
+  "topic_id": "art-and-design-01",
+  "area": "art and design",
+  "question": "How do warm and cool colors change the mood of a painting?"
+ },
+ {
+  "topic_id": "art-and-design-02",
+  "area": "art and design",
+  "question": "What makes a chair well designed beyond simply being comfortable?"
+ },
+ {
+  "topic_id": "art-and-design-03",
+  "area": "art and design",
+  "question": "In what ways does lighting transform how a sculpture is experienced?"
+ },
+ {
+  "topic_id": "art-and-design-04",
+  "area": "art and design",
+  "question": "Why do artists sketch loosely before committing to a finished piece?"
+ },
+ {
+  "topic_id": "art-and-design-05",
+  "area": "art and design",
+  "question": "How does symmetry create a sense of calm while asymmetry creates energy?"
+ },
+ {
+  "topic_id": "art-and-design-06",
+  "area": "art and design",
+  "question": "What happens when a familiar everyday object is displayed as art in a gallery?"
+ },
+ {
+  "topic_id": "art-and-design-07",
+  "area": "art and design",
+  "question": "Why do certain color pairings clash while others feel harmonious?"
+ },
+ {
+  "topic_id": "art-and-design-08",
+  "area": "art and design",
+  "question": "How does scale affect the emotional impact of a public monument?"
+ },
+ {
+  "topic_id": "art-and-design-09",
+  "area": "art and design",
+  "question": "What makes a logo memorable without being visually complicated?"
+ },
+ {
+  "topic_id": "art-and-design-10",
+  "area": "art and design",
+  "question": "Why do museums control lighting and humidity so carefully around old artworks?"
+ },
+ {
+  "topic_id": "art-and-design-11",
+  "area": "art and design",
+  "question": "How can texture be suggested convincingly on a flat painted surface?"
+ },
+ {
+  "topic_id": "art-and-design-12",
+  "area": "art and design",
+  "question": "What distinguishes craft from fine art, and does the distinction still matter?"
+ },
+ {
+  "topic_id": "art-and-design-13",
+  "area": "art and design",
+  "question": "Why do buildings from different eras give streets such different moods?"
+ },
+ {
+  "topic_id": "art-and-design-14",
+  "area": "art and design",
+  "question": "How does repetition of shapes create rhythm in a visual composition?"
+ },
+ {
+  "topic_id": "art-and-design-15",
+  "area": "art and design",
+  "question": "What makes hand-thrown pottery appealing in an age of flawless machine production?"
+ },
+ {
+  "topic_id": "art-and-design-16",
+  "area": "art and design",
+  "question": "Why might a designer choose an ugly or awkward form on purpose?"
+ },
+ {
+  "topic_id": "art-and-design-17",
+  "area": "art and design",
+  "question": "How do portrait painters convey personality beyond simple physical likeness?"
+ },
+ {
+  "topic_id": "art-and-design-18",
+  "area": "art and design",
+  "question": "What role does empty space play in the layout of a well-designed page?"
+ },
+ {
+  "topic_id": "art-and-design-19",
+  "area": "art and design",
+  "question": "Why do some color schemes feel dated while others stay timeless?"
+ },
+ {
+  "topic_id": "art-and-design-20",
+  "area": "art and design",
+  "question": "How does perspective drawing create the illusion of depth on a flat surface?"
+ },
+ {
+  "topic_id": "art-and-design-21",
+  "area": "art and design",
+  "question": "What makes a poster communicate instantly while a painting rewards long looking?"
+ },
+ {
+  "topic_id": "art-and-design-22",
+  "area": "art and design",
+  "question": "Why do architects think about how a building will weather and age over decades?"
+ },
+ {
+  "topic_id": "art-and-design-23",
+  "area": "art and design",
+  "question": "How do costume choices on stage tell an audience about a figure before any speech?"
+ },
+ {
+  "topic_id": "art-and-design-24",
+  "area": "art and design",
+  "question": "What happens to an artwork's meaning when it is reproduced endlessly on posters and mugs?"
+ },
+ {
+  "topic_id": "art-and-design-25",
+  "area": "art and design",
+  "question": "Why is drawing from direct observation still valued when photography exists?"
+ },
+ {
+  "topic_id": "art-and-design-26",
+  "area": "art and design",
+  "question": "How does the frame around a picture influence how viewers perceive it?"
+ },
+ {
+  "topic_id": "art-and-design-27",
+  "area": "art and design",
+  "question": "What makes minimalist design difficult to execute well despite its apparent simplicity?"
+ },
+ {
+  "topic_id": "art-and-design-28",
+  "area": "art and design",
+  "question": "Why do sculptors choose particular materials, and how does material change meaning?"
+ },
+ {
+  "topic_id": "art-and-design-29",
+  "area": "art and design",
+  "question": "How do murals change the way people feel about a neighborhood?"
+ },
+ {
+  "topic_id": "art-and-design-30",
+  "area": "art and design",
+  "question": "What separates an inviting public plaza from one that people avoid?"
+ },
+ {
+  "topic_id": "art-and-design-31",
+  "area": "art and design",
+  "question": "Why do artists return to the same subject repeatedly across a career?"
+ },
+ {
+  "topic_id": "art-and-design-32",
+  "area": "art and design",
+  "question": "How does contrast guide a viewer's eye through a composition?"
+ },
+ {
+  "topic_id": "art-and-design-33",
+  "area": "art and design",
+  "question": "What makes certain patterns soothing to look at while others feel busy?"
+ },
+ {
+  "topic_id": "art-and-design-34",
+  "area": "art and design",
+  "question": "How does color influence appetite in restaurant and food packaging design?"
+ },
+ {
+  "topic_id": "art-and-design-35",
+  "area": "art and design",
+  "question": "Why does handmade imperfection often read as warmth rather than error?"
+ },
+ {
+  "topic_id": "art-and-design-36",
+  "area": "art and design",
+  "question": "What do stage set designers consider when creating a world the audience will believe?"
+ },
+ {
+  "topic_id": "art-and-design-37",
+  "area": "art and design",
+  "question": "How can everyday tools be beautiful, and does their beauty change how we use them?"
+ },
+ {
+  "topic_id": "art-and-design-38",
+  "area": "art and design",
+  "question": "Why do fashion styles circle back decades later in altered forms?"
+ },
+ {
+  "topic_id": "art-and-design-39",
+  "area": "art and design",
+  "question": "What makes a photograph feel candid rather than carefully staged?"
+ },
+ {
+  "topic_id": "art-and-design-40",
+  "area": "art and design",
+  "question": "How do landscape painters suggest great distance without drawing every detail?"
+ },
+ {
+  "topic_id": "art-and-design-41",
+  "area": "art and design",
+  "question": "Why is restoring an old painting controversial among conservators and historians?"
+ },
+ {
+  "topic_id": "art-and-design-42",
+  "area": "art and design",
+  "question": "What happens when street art is moved from its original wall into a museum?"
+ },
+ {
+  "topic_id": "art-and-design-43",
+  "area": "art and design",
+  "question": "How does industrial design balance safety, cost, and visual appeal in household products?"
+ },
+ {
+  "topic_id": "art-and-design-44",
+  "area": "art and design",
+  "question": "Why do children's drawings charm adults despite ignoring technical rules?"
+ },
+ {
+  "topic_id": "art-and-design-45",
+  "area": "art and design",
+  "question": "What makes an exhibition's arrangement shape how visitors understand the individual works?"
+ },
+ {
+  "topic_id": "art-and-design-46",
+  "area": "art and design",
+  "question": "How do animators give weight and personality to drawn figures?"
+ },
+ {
+  "topic_id": "art-and-design-47",
+  "area": "art and design",
+  "question": "Why does a limited palette often produce stronger paintings than unlimited color choices?"
+ },
+ {
+  "topic_id": "the-natural-world-00",
+  "area": "the natural world",
+  "question": "Why do many trees shed their leaves before winter rather than keeping them?"
+ },
+ {
+  "topic_id": "the-natural-world-01",
+  "area": "the natural world",
+  "question": "How do rivers gradually reshape the landscapes they flow through?"
+ },
+ {
+  "topic_id": "the-natural-world-02",
+  "area": "the natural world",
+  "question": "What makes certain animals thrive in cities while others vanish from them?"
+ },
+ {
+  "topic_id": "the-natural-world-03",
+  "area": "the natural world",
+  "question": "In what ways do ocean currents influence weather far inland?"
+ },
+ {
+  "topic_id": "the-natural-world-04",
+  "area": "the natural world",
+  "question": "Why do deserts become cold at night despite their scorching days?"
+ },
+ {
+  "topic_id": "the-natural-world-05",
+  "area": "the natural world",
+  "question": "How do bees and flowering plants depend on each other?"
+ },
+ {
+  "topic_id": "the-natural-world-06",
+  "area": "the natural world",
+  "question": "What happens to a forest in the decades after a major fire?"
+ },
+ {
+  "topic_id": "the-natural-world-07",
+  "area": "the natural world",
+  "question": "Why do some birds migrate enormous distances while related species stay put?"
+ },
+ {
+  "topic_id": "the-natural-world-08",
+  "area": "the natural world",
+  "question": "How does soil form, and why does it take so long?"
+ },
+ {
+  "topic_id": "the-natural-world-09",
+  "area": "the natural world",
+  "question": "What makes wetlands valuable even though they were long dismissed as wasteland?"
+ },
+ {
+  "topic_id": "the-natural-world-10",
+  "area": "the natural world",
+  "question": "Why do mountain ranges have such different climates on their two sides?"
+ },
+ {
+  "topic_id": "the-natural-world-11",
+  "area": "the natural world",
+  "question": "How do predators help keep prey populations and landscapes healthy?"
+ },
+ {
+  "topic_id": "the-natural-world-12",
+  "area": "the natural world",
+  "question": "What explains the astonishing variety of beak shapes among birds?"
+ },
+ {
+  "topic_id": "the-natural-world-13",
+  "area": "the natural world",
+  "question": "Why do coral reefs support so much life compared with surrounding open water?"
+ },
+ {
+  "topic_id": "the-natural-world-14",
+  "area": "the natural world",
+  "question": "How do seeds travel far from their parent plants without moving on their own?"
+ },
+ {
+  "topic_id": "the-natural-world-15",
+  "area": "the natural world",
+  "question": "What makes islands home to species found nowhere else on the planet?"
+ },
+ {
+  "topic_id": "the-natural-world-16",
+  "area": "the natural world",
+  "question": "Why does the moon influence tides, and how do coastal creatures respond?"
+ },
+ {
+  "topic_id": "the-natural-world-17",
+  "area": "the natural world",
+  "question": "How do animals survive winters when food is scarce and temperatures plunge?"
+ },
+ {
+  "topic_id": "the-natural-world-18",
+  "area": "the natural world",
+  "question": "What happens underground in a forest that visitors never see?"
+ },
+ {
+  "topic_id": "the-natural-world-19",
+  "area": "the natural world",
+  "question": "Why do some volcanic regions support unusually fertile farmland?"
+ },
+ {
+  "topic_id": "the-natural-world-20",
+  "area": "the natural world",
+  "question": "How does camouflage evolve, and why do some animals advertise themselves instead?"
+ },
+ {
+  "topic_id": "the-natural-world-21",
+  "area": "the natural world",
+  "question": "What makes old-growth forests different from younger woodland that has regrown?"
+ },
+ {
+  "topic_id": "the-natural-world-22",
+  "area": "the natural world",
+  "question": "Why are amphibians often the first animals to decline when an environment degrades?"
+ },
+ {
+  "topic_id": "the-natural-world-23",
+  "area": "the natural world",
+  "question": "Why do some trees shed their leaves in autumn while others stay green all year?"
+ },
+ {
+  "topic_id": "the-natural-world-24",
+  "area": "the natural world",
+  "question": "What explains why autumn leaves turn such vivid colors in some regions?"
+ },
+ {
+  "topic_id": "the-natural-world-25",
+  "area": "the natural world",
+  "question": "Why do certain plants thrive in poor soil where crops fail?"
+ },
+ {
+  "topic_id": "the-natural-world-26",
+  "area": "the natural world",
+  "question": "How do migrating animals find their way across unfamiliar terrain?"
+ },
+ {
+  "topic_id": "the-natural-world-27",
+  "area": "the natural world",
+  "question": "What happens when a top predator disappears from an ecosystem?"
+ },
+ {
+  "topic_id": "the-natural-world-28",
+  "area": "the natural world",
+  "question": "Why do rainforests recycle nutrients so quickly compared with temperate woods?"
+ },
+ {
+  "topic_id": "the-natural-world-29",
+  "area": "the natural world",
+  "question": "How do storms form over warm oceans and lose strength over land?"
+ },
+ {
+  "topic_id": "the-natural-world-30",
+  "area": "the natural world",
+  "question": "What makes caves develop their strange formations over long stretches of time?"
+ },
+ {
+  "topic_id": "the-natural-world-31",
+  "area": "the natural world",
+  "question": "Why do animals on remote islands often lose their fear of people?"
+ },
+ {
+  "topic_id": "the-natural-world-32",
+  "area": "the natural world",
+  "question": "How does a river delta build new land at the coast?"
+ },
+ {
+  "topic_id": "the-natural-world-33",
+  "area": "the natural world",
+  "question": "What explains the regular patterns seen in sand dunes and snowdrifts?"
+ },
+ {
+  "topic_id": "the-natural-world-34",
+  "area": "the natural world",
+  "question": "Why are some plants adapted to need fire for their seeds to sprout?"
+ },
+ {
+  "topic_id": "the-natural-world-35",
+  "area": "the natural world",
+  "question": "How do lichens manage to live on bare rock where nothing else grows?"
+ },
+ {
+  "topic_id": "the-natural-world-36",
+  "area": "the natural world",
+  "question": "What makes estuaries such rich nurseries for young fish and shellfish?"
+ },
+ {
+  "topic_id": "the-natural-world-37",
+  "area": "the natural world",
+  "question": "Why do large animals tend to be rarer than small ones in any habitat?"
+ },
+ {
+  "topic_id": "the-natural-world-38",
+  "area": "the natural world",
+  "question": "How do plants sense the seasons and time their flowering?"
+ },
+ {
+  "topic_id": "the-natural-world-39",
+  "area": "the natural world",
+  "question": "What happens to nutrients when a whale dies and sinks to the deep sea floor?"
+ },
+ {
+  "topic_id": "the-natural-world-40",
+  "area": "the natural world",
+  "question": "Why do polar regions swing between months of darkness and midnight sun?"
+ },
+ {
+  "topic_id": "the-natural-world-41",
+  "area": "the natural world",
+  "question": "How do ants coordinate complex tasks without any leader directing them?"
+ },
+ {
+  "topic_id": "the-natural-world-42",
+  "area": "the natural world",
+  "question": "What makes mangroves able to grow where salt water would kill most trees?"
+ },
+ {
+  "topic_id": "the-natural-world-43",
+  "area": "the natural world",
+  "question": "Why does the variety of living species tend to increase toward the equator?"
+ },
+ {
+  "topic_id": "the-natural-world-44",
+  "area": "the natural world",
+  "question": "How do beavers change the landscape, and who benefits from those changes?"
+ },
+ {
+  "topic_id": "the-natural-world-45",
+  "area": "the natural world",
+  "question": "What explains the shapes of clouds, and why do they signal coming weather?"
+ },
+ {
+  "topic_id": "the-natural-world-46",
+  "area": "the natural world",
+  "question": "Why do fungi matter so much to forests despite being mostly invisible?"
+ },
+ {
+  "topic_id": "the-natural-world-47",
+  "area": "the natural world",
+  "question": "How do tide pools support such varied life despite harsh daily changes?"
+ }
+]

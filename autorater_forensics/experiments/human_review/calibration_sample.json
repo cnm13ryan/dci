@@ -1,0 +1,689 @@
+{
+ "seed": 20260818,
+ "population_size": 983,
+ "design": "stratified proportional, strata = source model x deterministic verifier class, SRS within stratum",
+ "allocation": {
+  "gemma-3n-e2b-it|fail": 5,
+  "gemma-3n-e2b-it|pass": 9,
+  "gemma-3n-e4b-it|fail": 3,
+  "gemma-3n-e4b-it|pass": 11,
+  "qwen3-4b|fail": 4,
+  "qwen3-4b|pass": 10,
+  "qwen3-4b-instruct-2507|fail": 5,
+  "qwen3-4b-instruct-2507|pass": 9
+ },
+ "samples": [
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:geography-05:solo:A:3:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:geography-05:solo:A:3:0",
+   "n": 3,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.052083
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:5:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:history-47:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.052083
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-35:solo:A:1:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-35:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.052083
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:work-and-organisations-48:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:work-and-organisations-48:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.052083
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:language-and-writing-00:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:language-and-writing-00:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.052083
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:music-12:solo:A:7:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:music-12:solo:A:7:1",
+   "n": 7,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:music-48:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:music-48:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-35:solo:A:5:1",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-35:solo:A:5:1",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:sport-50:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:sport-50:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:the-natural-world-39:solo:A:6:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "gate1_validation:the-natural-world-39:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:art-and-design-35:solo:A:1:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:art-and-design-35:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:sport-35:solo:A:3:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:sport-35:solo:A:3:0",
+   "n": 3,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:sport-35:solo:A:7:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:sport-35:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e2b-it::prescreen:the-natural-world-39:solo:A:8:0",
+   "model": "gemma-3n-e2b-it",
+   "item_id": "prescreen:the-natural-world-39:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e2b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.06
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:everyday-science-36:solo:A:2:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:everyday-science-36:solo:A:2:0",
+   "n": 2,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.056604
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-51:solo:A:6:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-51:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.056604
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:language-and-writing-00:solo:A:6:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:language-and-writing-00:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "fail",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "fail"
+   ],
+   "inclusion_probability": 0.056604
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:food-49:solo:A:6:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:food-49:solo:A:6:1",
+   "n": 6,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:geography-05:solo:A:2:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:geography-05:solo:A:2:0",
+   "n": 2,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:health-and-the-body-35:solo:A:5:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:health-and-the-body-35:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:history-15:solo:A:8:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:history-15:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:music-12:solo:A:5:1",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:music-12:solo:A:5:1",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:work-and-organisations-48:solo:A:4:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "gate1_validation:work-and-organisations-48:solo:A:4:0",
+   "n": 4,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:art-and-design-29:solo:A:1:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:art-and-design-29:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:history-47:solo:A:5:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:history-47:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:the-natural-world-21:solo:A:4:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:the-natural-world-21:solo:A:4:0",
+   "n": 4,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:the-natural-world-21:solo:A:6:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:the-natural-world-21:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "gemma-3n-e4b-it::prescreen:work-and-organisations-48:solo:A:8:0",
+   "model": "gemma-3n-e4b-it",
+   "item_id": "prescreen:work-and-organisations-48:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "gemma-3n-e4b-it",
+    "pass"
+   ],
+   "inclusion_probability": 0.056995
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:music-48:solo:A:6:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:music-48:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.055556
+  },
+  {
+   "id": "qwen3-4b::prescreen:health-and-the-body-48:solo:A:7:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:health-and-the-body-48:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.055556
+  },
+  {
+   "id": "qwen3-4b::prescreen:music-48:solo:A:8:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:music-48:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.055556
+  },
+  {
+   "id": "qwen3-4b::prescreen:sport-35:solo:A:8:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:sport-35:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b",
+    "fail"
+   ],
+   "inclusion_probability": 0.055556
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:art-and-design-29:solo:A:3:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:art-and-design-29:solo:A:3:0",
+   "n": 3,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:everyday-science-04:solo:A:1:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:everyday-science-04:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:everyday-science-04:solo:A:1:1",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:everyday-science-04:solo:A:1:1",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:health-and-the-body-48:solo:A:5:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:history-47:solo:A:2:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:history-47:solo:A:2:0",
+   "n": 2,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:language-and-writing-00:solo:A:3:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:language-and-writing-00:solo:A:3:0",
+   "n": 3,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:the-natural-world-21:solo:A:1:0",
+   "model": "qwen3-4b",
+   "item_id": "gate1_validation:the-natural-world-21:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::prescreen:art-and-design-35:solo:A:2:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:art-and-design-35:solo:A:2:0",
+   "n": 2,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::prescreen:work-and-organisations-01:solo:A:5:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:work-and-organisations-01:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b::prescreen:work-and-organisations-48:solo:A:1:0",
+   "model": "qwen3-4b",
+   "item_id": "prescreen:work-and-organisations-48:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b",
+    "pass"
+   ],
+   "inclusion_probability": 0.057471
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:history-47:solo:A:6:1",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:history-47:solo:A:6:1",
+   "n": 6,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.060976
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:music-48:solo:A:6:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:music-48:solo:A:6:0",
+   "n": 6,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.060976
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:food-49:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:food-49:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.060976
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:health-and-the-body-35:solo:A:5:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:health-and-the-body-35:solo:A:5:0",
+   "n": 5,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.060976
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:health-and-the-body-35:solo:A:7:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:health-and-the-body-35:solo:A:7:0",
+   "n": 7,
+   "verifier_class": "fail",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "fail"
+   ],
+   "inclusion_probability": 0.060976
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:everyday-science-04:solo:A:4:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:everyday-science-04:solo:A:4:0",
+   "n": 4,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:food-51:solo:A:4:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:food-51:solo:A:4:0",
+   "n": 4,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:geography-05:solo:A:2:1",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:geography-05:solo:A:2:1",
+   "n": 2,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:music-12:solo:A:4:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:music-12:solo:A:4:0",
+   "n": 4,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::gate1_validation:music-12:solo:A:8:1",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "gate1_validation:music-12:solo:A:8:1",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:geography-14:solo:A:1:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:geography-14:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:health-and-the-body-35:solo:A:1:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:health-and-the-body-35:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:the-natural-world-21:solo:A:1:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:the-natural-world-21:solo:A:1:0",
+   "n": 1,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  },
+  {
+   "id": "qwen3-4b-instruct-2507::prescreen:work-and-organisations-01:solo:A:8:0",
+   "model": "qwen3-4b-instruct-2507",
+   "item_id": "prescreen:work-and-organisations-01:solo:A:8:0",
+   "n": 8,
+   "verifier_class": "pass",
+   "stratum": [
+    "qwen3-4b-instruct-2507",
+    "pass"
+   ],
+   "inclusion_probability": 0.055215
+  }
+ ]
+}

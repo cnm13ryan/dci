@@ -1,0 +1,33 @@
+{
+  "produced_by": "make_figures.py::build",
+  "regenerate": "uv run --project . python make_figures.py",
+  "source_run_glob": "runs/stageS18_reasoning_design_*/",
+  "status": "SUPERSEDED_NOT_REGENERABLE_HERE",
+  "note": "These exports are the de facto row-level evidence in this repository: runs/ is gitignored and absent from a clean checkout, so reasoning_rows.csv is the only place the scored rows survive. They are retained for that reason and must not be read as current.",
+  "why_superseded": "They were written by the pre-guard version of make_figures.py::build, which called plotdata.load_reasoning directly on s18_reasoning.jsonl (DEPRECATED: one shared seed for all 160 requests, 390/400 byte-identical replicate pairs) and concatenated s18_transition.jsonl (FOREIGN: Round 10 transition budgets, 98.4% duplicate pairs) onto the same curve. Both are recorded non-admissible in REASONING_DATA_PROVENANCE.md. build() now routes through plotdata.load_all_reasoning, which admits only s18_reseeded.jsonl plus natural_reasoning.jsonl.",
+  "observable_symptom": "reasoning_rows.csv carries reasoning_budget values 320, 384, 448 and 640. Those are the transition budgets and they cannot appear in an export built through the guarded loader.",
+  "observable_symptom_round10": "Every row of round10_s18.csv carries experiment = 'S18 + transition · QAC k=3' and the file contains b = 320 and 384. The migrated script labels that cell 'S18 · QAC k=3' and cannot emit the transition budgets, so both are proof the file predates the fix.",
+  "round10_label_before": "S18 + transition · QAC k=3",
+  "round10_label_after": "S18 · QAC k=3",
+  "regeneration_blocked_by": "The source run directory is not present in this checkout. Regenerating requires runs/stageS18_reasoning_design_*/ with s18_reseeded.jsonl and natural_reasoning.jsonl, on the workstation that holds them.",
+  "expected_after_regeneration": {
+    "admissible_budgets": [0, 256, 512, 1024, 4096],
+    "plus_condition": "NATURAL_REASONING",
+    "removed_budgets": [320, 384, 448, 640]
+  },
+  "affects": [
+    "reasoning_rows.csv",
+    "reasoning_cells.csv",
+    "reasoning_tau_and_delta.csv",
+    "reasoning_timing.csv",
+    "fig01..fig18 built from them",
+    "round10_s18.csv — written by round10_analysis.py, which carried the identical bypass: its S18 cell loaded s18_reasoning.jsonl and appended s18_transition.jsonl. It now loads s18_reseeded.jsonl only, and the cell is relabelled 'S18 · QAC k=3' because it no longer includes the transition budgets."
+  ],
+  "not_affected_siblings": [
+    "round10_s25.csv, round10_s26.csv, round10_s27.csv — those cells glob *_reasoning.jsonl inside their own run directories (stageS25/S26/S27) and never touched the S18 files"
+  ],
+  "does_not_affect": [
+    "figure1_headline.* and the natural-endpoint numbers, which are built by make_headline.py — that script already called the guarded plotdata.load_all_reasoning and never read the deprecated grid",
+    "natural_*.csv, which come from natural_analysis.py against natural_reasoning.jsonl"
+  ]
+}
