@@ -7,8 +7,9 @@ predecessor PASS record's hash and signature, the §10.6 verifier binding, a
 clean worktree, invoked-source membership in the producing commit, and the
 append-only transition log.
 
-Implemented stages: qualification, gate0 (the procedural pilot), and regime
-(completion-cap selection followed by the dense ladder screen). Gate 2, Gate 3
+Implemented stages: register (the §6.1 study-wide manifest, which must exist
+before the first qualification), qualification, gate0 (the procedural pilot),
+and regime (completion-cap selection followed by the dense ladder screen). Gate 2, Gate 3
 and Gate 4 are implemented in the package and are driven from here once the
 regime screen has produced a shortlist.
 
@@ -42,7 +43,7 @@ from dci1v4.generation.cache import cache_rows, fill_cache         # noqa: E402
 from dci1v4.models.registry import MODEL_KEYS, get_model           # noqa: E402
 from dci1v4.protocol import constants as C                         # noqa: E402
 from dci1v4.stages import pilot as pilot_stage                     # noqa: E402
-from dci1v4.stages import qualification, regime                    # noqa: E402
+from dci1v4.stages import qualification, regime, registration      # noqa: E402
 from dci1v4.topics.split import (                                  # noqa: E402
     pilot_blocks,
     split_topics,
@@ -212,10 +213,35 @@ STAGES = {
 }
 
 
+def _memo_provenance() -> dict:
+    """Check C19: the memo hash, the quoted §G row 1 lines and both dates."""
+    import hashlib
+
+    memo = DCI1.parent / "user-notes" / "dci-construct-pass2.md"
+    quoted = []
+    if memo.exists():
+        for line in memo.read_text().splitlines():
+            if "0.25" in line and "0.10" in line:
+                quoted.append(line.strip())
+    return {
+        "memo": "user-notes/dci-construct-pass2.md",
+        "memo_sha256": (hashlib.sha256(memo.read_bytes()).hexdigest()
+                        if memo.exists() else None),
+        "memo_date": "14 August 2026",
+        "preregistration_date": "19 August 2026",
+        "quoted_lines": quoted[:2],
+        "note": ("both Delta_R thresholds were fixed in the memo before any "
+                 "data addressing them existed in this constraint vocabulary "
+                 "and were transcribed into the pilot protocol before the "
+                 "pilot generated anything"),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True, choices=MODEL_KEYS)
-    parser.add_argument("--stage", required=True, choices=sorted(STAGES))
+    parser.add_argument("--stage", required=True,
+                        choices=sorted(STAGES) + ["register"])
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--cap", type=int, default=768,
                         help="completion cap for stages that precede the "
@@ -225,6 +251,19 @@ def main() -> int:
     context = registered_context()
     if not context.signing_key_path.exists():
         create_signing_key(context.signing_key_path)
+    if args.stage == "register":
+        from dci1v4.engine import gitinfo
+
+        gitinfo.assert_clean_worktree(context.repo_root)
+        commit = gitinfo.head_commit(context.repo_root)
+        manifest = registration.register(
+            context, producing_commit=commit,
+            memo_provenance=_memo_provenance())
+        print(json.dumps({"stage": "REGISTRATION",
+                          "manifest_hash": manifest["manifest_hash"],
+                          "frozen": manifest["frozen"]}, indent=2))
+        return 0
+
     tree = model_tree(context, args.model)
     tree.root.mkdir(parents=True, exist_ok=True)
 

@@ -305,3 +305,78 @@ def test_no_number_in_a_report_is_transcribed_by_hand():
                              rows)
     with pytest.raises(ProtocolError, match="transcribed by hand"):
         assert_no_manual_numbers("the estimate was 0.9999", rows)
+
+
+def test_the_registration_manifest_precedes_qualification(tmp_path):
+    """§6.1: every study-wide rule is fixed in the signed manifest BEFORE the
+    first qualification, and qualification fails closed without it."""
+    from dci1v4.stages import registration
+
+    context = synthetic_context(tmp_path)
+    create_signing_key(context.signing_key_path)
+    with pytest.raises(IntegrityError, match="registration manifest is "
+                                             "missing"):
+        registration.load_manifest(context)
+
+    manifest = registration.register(context, producing_commit="c" * 40)
+    assert manifest["frozen"] is False
+    assert manifest["study_id"] == context.study_id
+    loaded = registration.load_manifest(context)
+    assert loaded["manifest_hash"] == manifest["manifest_hash"]
+    registration.assert_manifest_matches_code(context)
+
+    with pytest.raises(IntegrityError, match="write-once"):
+        registration.register(context, producing_commit="c" * 40)
+
+
+def test_the_manifest_carries_no_model_adaptive_value(tmp_path):
+    """§6.1: n*, m*, the cap, the admitted references and the design in force
+    reach the code only through the per-model gate records."""
+    from dci1v4.stages import registration
+
+    context = synthetic_context(tmp_path)
+    create_signing_key(context.signing_key_path)
+    manifest = registration.build_manifest(context, producing_commit="c" * 40)
+    registration.assert_no_model_adaptive_values(manifest)
+    # The selection *rules* are study-wide and are named as rules; a manifest
+    # carrying a selected *value* under any of the model-adaptive names is
+    # refused.
+    assert "n_star_selection_rule" in manifest["selection_rules"]
+    assert "n_star" not in manifest["selection_rules"]
+    for key in registration.MODEL_ADAPTIVE_KEYS:
+        with pytest.raises(ProtocolError, match="model-adaptive"):
+            registration.assert_no_model_adaptive_values(
+                {**manifest, "selection_rules": {key: 3}})
+
+
+def test_the_manifest_fixes_every_study_wide_rule(tmp_path):
+    from dci1v4.stages import registration
+
+    context = synthetic_context(tmp_path)
+    create_signing_key(context.signing_key_path)
+    manifest = registration.build_manifest(context, producing_commit="c" * 40)
+    for section in ("constraints", "instruments", "design", "topics",
+                    "decoding_policy_form", "selection_rules",
+                    "estimands_and_families", "thresholds_and_regions",
+                    "precision_preconditions", "variance_model", "bootstrap",
+                    "seeds", "masking", "gate_rules", "artifact_semantics",
+                    "claim_ladder", "codebook"):
+        assert manifest[section], section
+    assert manifest["gate_rules"]["gate3_is_terminal"] is False
+    assert manifest["gate_rules"]["early_stop_rule"] == "withdrawn (§6.1)"
+    assert manifest["seeds"]["no_draw_selector"] is True
+    assert manifest["constraints"]["wording_length_measured_against"] == "A"
+
+
+def test_a_drifted_study_wide_rule_fails_qualification_closed(tmp_path,
+                                                              monkeypatch):
+    from dci1v4.protocol import constants as constants_module
+    from dci1v4.stages import registration
+
+    context = synthetic_context(tmp_path)
+    create_signing_key(context.signing_key_path)
+    registration.register(context, producing_commit="c" * 40)
+    registration.assert_manifest_matches_code(context)
+    monkeypatch.setattr(constants_module, "REFERENCE_CALIPER", 0.20)
+    with pytest.raises(IntegrityError, match="no longer implements"):
+        registration.assert_manifest_matches_code(context)
