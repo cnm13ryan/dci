@@ -30,8 +30,8 @@ from pathlib import Path
 
 import pytest
 from dci1v3.protocol.seeds import primary_draw_index
-from dci1v4.compliance import compliance_vector, score_constraint
-from dci1v4.constraints import Constraint
+from dci1v4.verifiers.compliance import compliance_vector, score_constraint
+from dci1v4.verifiers.constraints import Constraint
 
 DCI1 = Path(__file__).resolve().parents[1]
 V3_EVIDENCE = DCI1 / "evidence" / "dci1-v3"

@@ -27,10 +27,10 @@ import shutil
 from pathlib import Path
 
 import pytest
-from dci1v4 import instrument_source_hash
-from dci1v4.carryover import CarryOverMismatch, carry_over_record
-from dci1v4.compliance import NON_VACUITY_MIN_WORDS, compliance_vector, score_constraint
-from dci1v4.constraints import (
+from dci1v4.verifiers import verifier_source_hash as instrument_source_hash
+from dci1v4.verifiers.carryover import CarryOverMismatch, carry_over_record
+from dci1v4.verifiers.compliance import NON_VACUITY_MIN_WORDS, compliance_vector, score_constraint
+from dci1v4.verifiers.constraints import (
     FOCAL_GRID,
     REFERENCE_LADDERS,
     TARGET_GRID,
@@ -38,10 +38,11 @@ from dci1v4.constraints import (
     Constraint,
 )
 from dci1v4.errors import InstrumentError
-from dci1v4.hashing import INSTRUMENT_MODULES
+from dci1v4.verifiers import SEMANTIC_MODULES as INSTRUMENT_MODULES
 
-V4_DIR = Path(__file__).resolve().parents[1] / "src" / "dci1v4"
-V3_VERIFIERS = V4_DIR.parent / "dci1v3" / "verifiers"
+V4_DIR = (Path(__file__).resolve().parents[1] / "src" / "dci1v4"
+          / "verifiers")
+V3_VERIFIERS = V4_DIR.parents[1] / "dci1v3" / "verifiers"
 
 A5 = Constraint("A", 5)
 B7 = Constraint("B", 7)
@@ -263,7 +264,7 @@ def test_vector_refuses_duplicate_and_empty_constraint_lists():
 
 
 def test_processing_failure_fails_closed(monkeypatch):
-    from dci1v4 import statistics as stats
+    from dci1v4.verifiers import statistics as stats
 
     def boom(_text):
         raise RuntimeError("synthetic verifier fault")
@@ -304,7 +305,7 @@ def test_boolean_pass_matches_v3_on_every_shared_severity():
     from dci1v3.protocol import constants as v3c
     from dci1v3.verifiers.families import family_passes, focal_passes
     from dci1v3.verifiers.target import s0_count, s1_count, s2_count, s3_count
-    from dci1v4 import target as v4target
+    from dci1v4.verifiers import target as v4target
 
     for text in TRICKY_TEXTS:
         for m in v3c.FOCAL_GRID:
