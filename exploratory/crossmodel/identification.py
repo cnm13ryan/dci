@@ -21,10 +21,25 @@ Ordering matters. Execution and channel validity are checked before any
 behavioural reading, because a cell whose harness failed is not a measurement of
 the model at all. Uptake is checked before headroom, because an instruction that
 was never delivered explains a floor more simply than the target does.
+
+That ordering has a cost, and `read()` exists to pay it. `classify()` returns the
+FIRST verdict that applies, so a cell blocked on missing prerequisite evidence
+returns `EVIDENCE_INCOMPLETE` and says nothing about what the model did — the
+ceiling, the floor, the undelivered instruction all disappear behind the block.
+Failing closed is right for pooling and wrong for reading, so the two questions
+are answered separately:
+
+    identification  may this contrast be read causally?
+    behavioural     what was observed?
+
+`read()` returns both. The behavioural layer is not a weaker gate: it is the same
+`classify()` on the same measured constituents, with only the ABSENT prerequisite
+axes filled in. Nothing it reports may be pooled — `poolable` continues to follow
+the identification layer alone.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, replace
 from typing import Any
 
 # ---------------------------------------------------------------- verdicts
@@ -296,6 +311,87 @@ def classify(evidence: CellEvidence, thresholds: Thresholds | None = None
                    f"{e.focal_uptake:.0%}/{e.reference_uptake:.0%}")
 
 
+#: The axes that record whether a PREREQUISITE was established, as opposed to
+#: measuring what the model did. Only these may legitimately be absent, and only
+#: these are supplied when computing the behavioural reading. Everything else in
+#: `CellEvidence` is a measurement, and a measurement is never invented.
+PREREQUISITE_AXES: tuple[str, ...] = (
+    "execution_validated", "channel_valid_rate", "verifier_certified",
+    "satisfiable",
+)
+
+#: What each prerequisite axis looks like when it IS established. Used only to
+#: answer the counterfactual "what would this cell read as, once the missing
+#: feeds arrive" — never to pool, and never written back onto the cell.
+_ESTABLISHED: dict[str, Any] = {
+    "execution_validated": True, "channel_valid_rate": 1.0,
+    "verifier_certified": True, "satisfiable": True,
+}
+
+
+@dataclass
+class Reading:
+    """Both answers for one cell, kept apart because they are different questions.
+
+    `identification` decides whether the contrast may be read causally, and is
+    the ONLY layer that governs pooling. `behavioural` says what the data look
+    like, and is meaningful even where identification blocks — a cell can be
+    unpoolable because a feed is missing while still plainly showing a target
+    ceiling or an undelivered focal instruction.
+
+    Where nothing was missing the two layers coincide, and the pair reads as the
+    same verdict twice. That is deliberate: a reader should never have to know
+    which case they are in to read the row.
+    """
+    identification: Verdict
+    behavioural: Verdict
+
+    @property
+    def poolable(self) -> bool:
+        """Pooling follows identification alone. The behavioural layer never
+        admits a cell that identification refused."""
+        return self.identification.poolable
+
+    @property
+    def blocked_on_evidence(self) -> bool:
+        return self.identification.status == EVIDENCE_INCOMPLETE
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"identification": self.identification.status,
+                "identification_reason": self.identification.reason,
+                "behavioural": self.behavioural.status,
+                "behavioural_reason": self.behavioural.reason,
+                **self.identification.evidence}
+
+
+def read(evidence: CellEvidence, thresholds: Thresholds | None = None
+         ) -> Reading:
+    """Both layers for one primitive cell.
+
+    The behavioural layer re-runs the SAME `classify()` on the SAME measured
+    constituents, with only the absent prerequisite axes filled in. So it cannot
+    be more permissive about anything the model actually did: a ceiling stays a
+    ceiling and an undelivered instruction stays undelivered. What it removes is
+    exactly the block that has nothing to do with the model.
+
+    It is also honest about its own limits. If the missing feed later arrives as
+    a FAILURE rather than a pass — an admission refused, a verifier that does not
+    certify — the behavioural reading was never the identification verdict, and
+    `identification` is the one that stands.
+    """
+    ident = classify(evidence, thresholds)
+    if ident.status != EVIDENCE_INCOMPLETE:
+        return Reading(ident, ident)
+    supplied = replace(evidence, **{
+        axis: _ESTABLISHED[axis] for axis in PREREQUISITE_AXES
+        if getattr(evidence, axis) is None})
+    return Reading(ident, classify(supplied, thresholds))
+
+
 def poolable(verdicts) -> list:
-    """The subset of cells a benchmark mean may be taken over."""
+    """The subset of cells a benchmark mean may be taken over.
+
+    Accepts `Verdict` or `Reading`: both expose `poolable`, and for a `Reading`
+    it is the identification layer that answers.
+    """
     return [v for v in verdicts if v.poolable]

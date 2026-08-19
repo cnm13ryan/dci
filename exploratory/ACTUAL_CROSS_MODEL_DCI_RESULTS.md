@@ -1,6 +1,6 @@
 # Cross-model DCI — the actual dataset
 
-Recorded 2026-08-13 10:48 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
+Recorded 2026-08-13 12:22 UTC. Machine-readable twins: `ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl`, `ACTUAL_CROSS_MODEL_DCI_RUN_MANIFEST.json`.
 
 `EXPLORATORY_NO_EVIDENCE`. One frozen design — target A, focal B, reference C_L3, order QAC, 20 pilot tasks, 2 replicates, two backgrounds — run against every checkpoint that could be made to execute it. **Backends differ per checkpoint** and that difference is recorded on every row; see §6 before comparing any two models.
 
@@ -18,19 +18,23 @@ Condition: `THINKING_ENABLED_BOUNDED`. Thinking is on, no budget is assigned, an
 
 ## 1. k=3 results
 
-| model | backend | load | background | requested | final_answers | no_final | technical_failures | A_fail_focal | A_fail_reference | focal_uptake | reference_uptake | cap_hit_rate | tau | lo | hi | n_tasks | joint_focal | identification |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-4B | vllm | 3 | control (+1 bracket pair) | 80 | 42 | 38 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | 0.000 | 0.000 | 0.000 | 9 | 1.000 | EVIDENCE_INCOMPLETE |
-| Qwen3.5-4B | vllm | 3 | +1 semicolon | 80 | 53 | 27 | 0 | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | 0.031 | 0.000 | 0.094 | 16 | 0.933 | EVIDENCE_INCOMPLETE |
-| Qwen3.5-9B | vllm | 3 | control (+1 bracket pair) | 80 | 56 | 24 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | 0.000 | 0.000 | 0.000 | 16 | 1.000 | EVIDENCE_INCOMPLETE |
-| Qwen3.5-9B | vllm | 3 | +1 semicolon | 80 | 68 | 12 | 0 | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | 0.026 | 0.000 | 0.079 | 19 | 0.972 | EVIDENCE_INCOMPLETE |
-| gemma-4-E4B-it | transformers | 3 | control (+1 bracket pair) | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.900 | EVIDENCE_INCOMPLETE |
-| gemma-4-E4B-it | transformers | 3 | +1 semicolon | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.875 | EVIDENCE_INCOMPLETE |
-| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | control (+1 bracket pair) | 80 | 69 | 11 | 0 | 0.054 | 0.000 | 0.405 | 0.531 | 0.138 | 0.050 | 0.000 | 0.125 | 20 | 0.351 | EVIDENCE_INCOMPLETE |
-| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | +1 semicolon | 80 | 69 | 11 | 0 | 0.559 | 0.286 | 0.088 | 0.571 | 0.138 | 0.278 | 0.056 | 0.500 | 18 | 0.029 | EVIDENCE_INCOMPLETE |
+| model | backend | load | background | requested | final_answers | no_final | technical_failures | A_fail_focal | A_fail_reference | focal_uptake | reference_uptake | cap_hit_rate | tau | lo | hi | n_tasks | joint_focal | identification | behavioural |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | vllm | 3 | control (+1 bracket pair) | 80 | 42 | 38 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.475 | 0.000 | 0.000 | 0.000 | 9 | 1.000 | EVIDENCE_INCOMPLETE | TARGET_CEILING |
+| Qwen3.5-4B | vllm | 3 | +1 semicolon | 80 | 53 | 27 | 0 | 0.033 | 0.000 | 0.967 | 1.000 | 0.338 | 0.031 | 0.000 | 0.094 | 16 | 0.933 | EVIDENCE_INCOMPLETE | IDENTIFIED |
+| Qwen3.5-9B | vllm | 3 | control (+1 bracket pair) | 80 | 56 | 24 | 0 | 0.000 | 0.000 | 1.000 | 1.000 | 0.300 | 0.000 | 0.000 | 0.000 | 16 | 1.000 | EVIDENCE_INCOMPLETE | TARGET_CEILING |
+| Qwen3.5-9B | vllm | 3 | +1 semicolon | 80 | 68 | 12 | 0 | 0.028 | 0.000 | 0.972 | 1.000 | 0.150 | 0.026 | 0.000 | 0.079 | 19 | 0.972 | EVIDENCE_INCOMPLETE | IDENTIFIED |
+| gemma-4-E4B-it | transformers | 3 | control (+1 bracket pair) | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.900 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.900 | EVIDENCE_INCOMPLETE | TARGET_CEILING |
+| gemma-4-E4B-it | transformers | 3 | +1 semicolon | 80 | 80 | 0 | 0 | 0.000 | 0.000 | 0.875 | 1.000 | 0.000 | 0.000 | 0.000 | 0.000 | 20 | 0.875 | EVIDENCE_INCOMPLETE | TARGET_CEILING |
+| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | control (+1 bracket pair) | 80 | 69 | 11 | 0 | 0.054 | 0.000 | 0.405 | 0.531 | 0.138 | 0.050 | 0.000 | 0.125 | 20 | 0.351 | EVIDENCE_INCOMPLETE | FOCAL_NONUPTAKE |
+| Kimi-VL-A3B-Thinking-2506 | transformers | 3 | +1 semicolon | 80 | 69 | 11 | 0 | 0.559 | 0.286 | 0.088 | 0.571 | 0.138 | 0.278 | 0.056 | 0.500 | 18 | 0.029 | EVIDENCE_INCOMPLETE | FOCAL_NONUPTAKE |
 
 
-A `TARGET_CEILING` label means the target instruction essentially never fails in either arm, so τ is 0 **by construction** rather than by absence of interference. The number is reported, not withheld; it simply cannot carry the signal the design was built to detect.
+**Two verdict columns, because two different questions are being asked.** `identification` answers *may this contrast be read causally?* — and it alone governs whether a cell enters the pooled τ. `behavioural` answers *what was observed?* — the verdict the same classifier returns once any missing prerequisite feed is supplied, holding every measured constituent fixed. Where nothing was missing the two coincide.
+
+The distinction matters because the classifier returns the FIRST verdict that applies. A cell blocked on evidence it was never given reports `EVIDENCE_INCOMPLETE` and would otherwise say nothing at all about the model — the ceiling, the floor and the undelivered focal instruction would all disappear behind the block. Failing closed is right for pooling and wrong for reading, so both are printed.
+
+A `TARGET_CEILING` reading means the target instruction essentially never fails in either arm, so τ is 0 **by construction** rather than by absence of interference. `FOCAL_NONUPTAKE` means the focal instruction was not followed often enough to count as delivered, so τ estimates the effect of *presenting* it. `EVIDENCE_INCOMPLETE` is not a statement about the model at all: it means a prerequisite — execution admission, verifier certification, satisfiability, channel validity — was never recorded for this cell. Every number is reported, not withheld; none of them may be pooled.
 
 ### Who is missing from the scored subsample
 
