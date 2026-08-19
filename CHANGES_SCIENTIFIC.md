@@ -73,8 +73,34 @@ that does exist — v4's demoted Delta^A reproduces v3's recorded
 +0.065104167 — and confirms the compliance/failure identity that makes the
 demotion argument rest on rows rather than on a summary.
 
+**A third finding, from the first real-model screen.** On the E2B pre-screen
+(24 topics, one draw per cell, at the selected cap of 512), the dense ladder
+does reach A: six of the eight families carry a rung within the 0.10 caliper of
+A's pre-screen solo compliance, which the v3 four-point grid could not manage
+(4 of 32 rungs). But **every one of those 13 matched rungs fails §13.2's
+family-solo-vacuity condition** — 0 of 13 survive, leaving 0 of 8 families
+viable on that sample. The mechanism is structural: A's solo compliance is low,
+so matching it needs a restrictive "at most q", and a restrictive budget
+constraint is satisfied by writing a shorter answer. 1,150 of the 1,153 vacuous
+passes are short answers rather than truncations, at a mean response length of
+55.7 words with 46.6% of responses under the registered 20-word threshold.
+
+§13.2 is evaluated at Gate 2 on 96 topics at M = 4, not on this screening
+sample, so this is not an admission decision. It is decision-relevant for V3
+(the caliper), V4 (the 20-word threshold) and V5 (matched versus
+difficulty-spanning references), and it is reported rather than resolved. If it
+holds at Gate 2, the replication takes the §8.6 reduced design with
+`EXCESS_NOT_IDENTIFIED` and L3 — the study's headline claim level — is
+withheld.
+
+**The same screen also measures trap T-7.** At cap 512 the constrained
+truncation rate is 0.028 and the zero-constraint rate is 0.917. Had the
+zero-constraint prompts entered the cap criterion, no registered cap would have
+qualified (0.250 even at 1024) and the replication would have terminated
+`RESPONSE_LENGTH_INCOMPATIBLE` before measuring anything.
+
 **Evidence.** `dci1/docs/v4_prefreeze/` (one JSON per check, C1 to C20),
-`docs/v4_traceability.md`, `dci1/tests_v4/` (316 tests: T1 to T14 plus the
+`docs/v4_traceability.md`, `dci1/tests_v4/` (324 tests: T1 to T14 plus the
 anti-regression group), and the signed v4 records under
 `dci1/evidence/dci1-v4/`.
 

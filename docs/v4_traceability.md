@@ -39,6 +39,8 @@ by content:
 | §4 | The block is the unit; order balanced within block | `topics/split.py`, `design/cells.py` | T4, T9 | done |
 | §5 | Excluded phenomena; no L5 code path | `claims.assert_no_l5_emitter` | T10 | done |
 | §6.1 | Four replications, registered order, no early stop | `models/registry.py` | T2, anti-regression | done |
+| §6.1 | Signed study-wide registration manifest, before the first qualification | `stages/registration.py` | T12 | done |
+| §6.1 | A model-adaptive value never appears in a study-wide rule | `registration.assert_no_model_adaptive_values` | T12 | done |
 | §6.1 | Cross-replication firewall, asserted statically | `protocol/constants.py` (no filesystem access), `models/registry.py` (reads no record) | T1 | done |
 | §6.2 | 624 newly authored topics, 52 per area, four authoring rules | `topics/bank.py`, `tools/build_topics_v4.py` | T4 | done |
 | §6.2 | Seeded five-way split 2/8/2/32/8; all disjoint | `topics/split.py` | T4 | done |
@@ -104,6 +106,9 @@ by content:
 | §21 | The analysis in its fixed order; fail closed | `analysis/run.py` | T14 | done |
 | §22 | Prohibited and mediating quantities | `protocol/codebook.py`, `diagnostics.length_strata_description` | T9, T12 | done |
 | §23 | Secondary analyses and the failure taxonomy split by margin | `analysis/diagnostics.py` | T11, T13 | done |
+| §23 | The primary estimands recomputed under S1, S2 and S3 | `run.alternative_rule_recomputation` | T9 | done |
+| §23, §11.5 | Δ^A behind its three gates, withheld when any fails | `diagnostics.report_delta_a` | T9 | done |
+| §11.5 | Joint-state redistribution across configurations | `diagnostics.joint_state_redistribution` | T11 | done |
 | §24 | Segmentation and construct-validity checks | `verifiers/boundary.py`, `verifiers/adversarial.py` | T5 | done |
 | §25 | Contamination controls; accidental compliance | `stages/release.py`, `diagnostics.accidental_compliance` | T13 | done |
 | §26 | Artifact states; the closed vocabulary; one path function | `engine/{artifacts,paths,verify}.py` | T12 | done |
@@ -166,6 +171,35 @@ of the same index on the same topic, giving 96 × M paired observations. Draws
 are exchangeable within a cell, so the index is a labelling convention rather
 than a scientific choice, and the clustered paired standard error is reported
 beside the interval so the dependence the pairing ignores stays visible.
+
+## 7b. Interpretation: the anchor the ladder shortlist is built against
+
+§12.2 produces "the shortlist of at most three ladder severities per family
+whose solo compliance is nearest the pre-screen solo compliance of A". A has
+eight registered severities and n\* is not selected until Gate 2, so "the
+pre-screen solo compliance of A" needs an n. The runner uses the n whose
+pre-screen compliance is nearest the §12.3 aim of 0.70 — the value Gate 2 will
+itself minimise distance from — and records it as `anchor_n` on the regime
+record, so the anchor is auditable rather than implicit. The shortlist is a
+screening device: §12.3 re-measures every shortlisted severity on the 96
+calibration topics against A at the selected n\*, and §13.2 admits against
+that.
+
+## 7c. A measured tension between two §13.2 conditions
+
+On the E2B pre-screen, **every** rung that matches A on solo compliance
+(condition 1) fails the family solo vacuity condition (condition 6): 0 of 13
+survive, 0 of 8 families remain viable. The mechanism is structural rather than
+incidental — A's solo compliance is low, so matching it needs a restrictive
+"at most q", and a restrictive budget constraint is satisfied by writing a
+shorter answer. 1,150 of the 1,153 vacuous passes are short answers, not
+truncations.
+
+This is a screening sample, not the admission decision: §13.2 is evaluated at
+Gate 2 on 96 topics at M = 4. But it is decision-relevant for V3 (the caliper),
+V4 (the 20-word threshold) and V5 (matched versus difficulty-spanning
+references), and it is recorded rather than resolved. See
+`dci1/docs/v4_prefreeze/C10.json`.
 
 ## 7. What blocks the freeze
 

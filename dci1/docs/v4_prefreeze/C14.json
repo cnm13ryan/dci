@@ -18,9 +18,41 @@
       "worst_cell_rate": 1.0
     }
   },
-  "note": "the pilot figures above are the B+R pilot's own, under the v3 seed derivation, and are design evidence only",
+  "note": "the pilot figures are the B+R pilot's own, under the v3 seed derivation, and are design evidence only",
   "qualification_threshold": 0.05,
-  "reason": "the realised v4 duplicate rate needs v4 generations; the rate is computed on every cache fill by generation.cache.duplicate_report and reported in the cache report of every stage",
+  "realised_v4": {
+    "gemma-3n-e2b-it/pilot/pilot-cap768/cache.jsonl": {
+      "draws": 1200,
+      "overall_rate": 0.017222222222222222,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 1.0
+    },
+    "gemma-3n-e2b-it/prescreen/capscreen-cap1024/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e2b-it/prescreen/capscreen-cap512/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e2b-it/prescreen/capscreen-cap768/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e2b-it/prescreen/ladder-cap512/cache.jsonl": {
+      "draws": 2544,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    }
+  },
+  "remaining": "the confirmatory rate, which needs confirmatory generation",
   "status": "PARTIAL",
   "v4_seed_derivation": "root seed, stage label, model identity, prompt hash, draw index \u2014 experimental identity, never batch position"
 }
