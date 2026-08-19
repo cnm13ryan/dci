@@ -1,0 +1,927 @@
+{
+ "kind": "gate1_development_inspection_notes",
+ "date": "2026-08-17",
+ "decision": {
+  "selected_configuration": "autorater-config/4 (openai/gpt-oss-20b @ 6cee5e81, prompt gate1-judge/2.0.0, parser gate1-parse/2.0.0, greedy, skip_special_tokens=false, reasoning_effort=high, cap 2048) for held-out calibration",
+  "grounds": [
+   "low reasoning (config/2) is dominated: systematic +-1 and saturation counting mislabels (235 development disagreements)",
+   "medium (config/3) improves substantially over low (235 -> 69 disagreements)",
+   "high (config/4) further reduces valid-label errors (69 -> 28 disagreements; per-item transitions wrong->correct 48 vs correct->wrong 11)",
+   "high increases length-truncated invalid outputs (23 -> 42, all finish_reason=length, all distinct operational statuses, never recoded into labels)",
+   "high nevertheless improves the conservative full-set agreement lower bound overall ([0.906,0.930] -> [0.929,0.972]) and for every registered model, and the severity-stratified conservative error rate (disagreements+invalids over total items) is equal-or-better at every n in the cross-model aggregate (total 92 -> 70, 0.0936 -> 0.0712)",
+   "repeated greedy stability is perfect (0 label flips, 0 status changes) in all three rounds under fixed execution configuration",
+   "all residual high-effort disagreements inspected are judge-side counting errors; the frozen verifier, its independent reimplementation, and a word-boundary regex agree 28/28",
+   "no verifier defect has been identified in any round (mechanical agreement 235/235, 69/69, 28/28)",
+   "additional compute cost (~2.2x tokens; 63 vs 30 minutes for the development phase) is acceptable at this study's scale"
+  ],
+  "verifier_changes": "none in any round; regression suite unchanged",
+  "known_limitations": [
+   "coverage 95.7% under high (vs 97.7% medium): truncation abstentions concentrate on dense high-n fail-class texts (largest single stratum regression: qwen3-4b n=8, 0 -> 5 conservative errors, all truncations) \u2014 the known trade-off, not a new failure mode",
+   "residual disagreement direction is predominantly verifier-fail -> SATISFIES under-counting on near-miss items",
+   "autorater evidence is a proxy evaluation only: never human validation, never ground truth"
+  ]
+ },
+ "severity_stratified_diagnostic": {
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "1": {
+     "items": 23,
+     "medium": {
+      "valid": 23,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 23,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "2": {
+     "items": 31,
+     "medium": {
+      "valid": 31,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0323,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0323
+     },
+     "high": {
+      "valid": 31,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0323,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0323
+     }
+    },
+    "3": {
+     "items": 33,
+     "medium": {
+      "valid": 33,
+      "coverage": 1.0,
+      "disagree": 5,
+      "disagree_rate_valid": 0.1515,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 5,
+      "conservative_rate": 0.1515
+     },
+     "high": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0312,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 2,
+      "conservative_rate": 0.0606
+     }
+    },
+    "4": {
+     "items": 33,
+     "medium": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 1,
+      "conservative_rate": 0.0303
+     },
+     "high": {
+      "valid": 31,
+      "coverage": 0.9394,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0323,
+      "invalid": 2,
+      "invalid_rate": 0.0606,
+      "conservative": 3,
+      "conservative_rate": 0.0909
+     }
+    },
+    "5": {
+     "items": 31,
+     "medium": {
+      "valid": 31,
+      "coverage": 1.0,
+      "disagree": 4,
+      "disagree_rate_valid": 0.129,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 4,
+      "conservative_rate": 0.129
+     },
+     "high": {
+      "valid": 28,
+      "coverage": 0.9032,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0714,
+      "invalid": 3,
+      "invalid_rate": 0.0968,
+      "conservative": 5,
+      "conservative_rate": 0.1613
+     }
+    },
+    "6": {
+     "items": 37,
+     "medium": {
+      "valid": 34,
+      "coverage": 0.9189,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0588,
+      "invalid": 3,
+      "invalid_rate": 0.0811,
+      "conservative": 5,
+      "conservative_rate": 0.1351
+     },
+     "high": {
+      "valid": 35,
+      "coverage": 0.9459,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 2,
+      "invalid_rate": 0.0541,
+      "conservative": 2,
+      "conservative_rate": 0.0541
+     }
+    },
+    "7": {
+     "items": 30,
+     "medium": {
+      "valid": 28,
+      "coverage": 0.9333,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0357,
+      "invalid": 2,
+      "invalid_rate": 0.0667,
+      "conservative": 3,
+      "conservative_rate": 0.1
+     },
+     "high": {
+      "valid": 25,
+      "coverage": 0.8333,
+      "disagree": 1,
+      "disagree_rate_valid": 0.04,
+      "invalid": 5,
+      "invalid_rate": 0.1667,
+      "conservative": 6,
+      "conservative_rate": 0.2
+     }
+    },
+    "8": {
+     "items": 28,
+     "medium": {
+      "valid": 23,
+      "coverage": 0.8214,
+      "disagree": 6,
+      "disagree_rate_valid": 0.2609,
+      "invalid": 5,
+      "invalid_rate": 0.1786,
+      "conservative": 11,
+      "conservative_rate": 0.3929
+     },
+     "high": {
+      "valid": 21,
+      "coverage": 0.75,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0952,
+      "invalid": 7,
+      "invalid_rate": 0.25,
+      "conservative": 9,
+      "conservative_rate": 0.3214
+     }
+    }
+   },
+   "qwen3-4b": {
+    "1": {
+     "items": 34,
+     "medium": {
+      "valid": 34,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 34,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "2": {
+     "items": 26,
+     "medium": {
+      "valid": 26,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0385,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0385
+     },
+     "high": {
+      "valid": 26,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "3": {
+     "items": 35,
+     "medium": {
+      "valid": 35,
+      "coverage": 1.0,
+      "disagree": 3,
+      "disagree_rate_valid": 0.0857,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 3,
+      "conservative_rate": 0.0857
+     },
+     "high": {
+      "valid": 35,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "4": {
+     "items": 37,
+     "medium": {
+      "valid": 37,
+      "coverage": 1.0,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0541,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 2,
+      "conservative_rate": 0.0541
+     },
+     "high": {
+      "valid": 37,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "5": {
+     "items": 33,
+     "medium": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0312,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 2,
+      "conservative_rate": 0.0606
+     },
+     "high": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0312,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 2,
+      "conservative_rate": 0.0606
+     }
+    },
+    "6": {
+     "items": 24,
+     "medium": {
+      "valid": 24,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 24,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "7": {
+     "items": 24,
+     "medium": {
+      "valid": 24,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0417,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0417
+     },
+     "high": {
+      "valid": 23,
+      "coverage": 0.9583,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 1,
+      "invalid_rate": 0.0417,
+      "conservative": 1,
+      "conservative_rate": 0.0417
+     }
+    },
+    "8": {
+     "items": 33,
+     "medium": {
+      "valid": 33,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 28,
+      "coverage": 0.8485,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 5,
+      "invalid_rate": 0.1515,
+      "conservative": 5,
+      "conservative_rate": 0.1515
+     }
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "1": {
+     "items": 35,
+     "medium": {
+      "valid": 35,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 35,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "2": {
+     "items": 30,
+     "medium": {
+      "valid": 30,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     },
+     "high": {
+      "valid": 29,
+      "coverage": 0.9667,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 1,
+      "invalid_rate": 0.0333,
+      "conservative": 1,
+      "conservative_rate": 0.0333
+     }
+    },
+    "3": {
+     "items": 35,
+     "medium": {
+      "valid": 34,
+      "coverage": 0.9714,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0588,
+      "invalid": 1,
+      "invalid_rate": 0.0286,
+      "conservative": 3,
+      "conservative_rate": 0.0857
+     },
+     "high": {
+      "valid": 35,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "4": {
+     "items": 33,
+     "medium": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0625,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 3,
+      "conservative_rate": 0.0909
+     },
+     "high": {
+      "valid": 32,
+      "coverage": 0.9697,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 1,
+      "invalid_rate": 0.0303,
+      "conservative": 1,
+      "conservative_rate": 0.0303
+     }
+    },
+    "5": {
+     "items": 30,
+     "medium": {
+      "valid": 30,
+      "coverage": 1.0,
+      "disagree": 8,
+      "disagree_rate_valid": 0.2667,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 8,
+      "conservative_rate": 0.2667
+     },
+     "high": {
+      "valid": 30,
+      "coverage": 1.0,
+      "disagree": 3,
+      "disagree_rate_valid": 0.1,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 3,
+      "conservative_rate": 0.1
+     }
+    },
+    "6": {
+     "items": 27,
+     "medium": {
+      "valid": 27,
+      "coverage": 1.0,
+      "disagree": 6,
+      "disagree_rate_valid": 0.2222,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 6,
+      "conservative_rate": 0.2222
+     },
+     "high": {
+      "valid": 26,
+      "coverage": 0.963,
+      "disagree": 5,
+      "disagree_rate_valid": 0.1923,
+      "invalid": 1,
+      "invalid_rate": 0.037,
+      "conservative": 6,
+      "conservative_rate": 0.2222
+     }
+    },
+    "7": {
+     "items": 25,
+     "medium": {
+      "valid": 24,
+      "coverage": 0.96,
+      "disagree": 6,
+      "disagree_rate_valid": 0.25,
+      "invalid": 1,
+      "invalid_rate": 0.04,
+      "conservative": 7,
+      "conservative_rate": 0.28
+     },
+     "high": {
+      "valid": 25,
+      "coverage": 1.0,
+      "disagree": 2,
+      "disagree_rate_valid": 0.08,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 2,
+      "conservative_rate": 0.08
+     }
+    },
+    "8": {
+     "items": 30,
+     "medium": {
+      "valid": 29,
+      "coverage": 0.9667,
+      "disagree": 6,
+      "disagree_rate_valid": 0.2069,
+      "invalid": 1,
+      "invalid_rate": 0.0333,
+      "conservative": 7,
+      "conservative_rate": 0.2333
+     },
+     "high": {
+      "valid": 27,
+      "coverage": 0.9,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0741,
+      "invalid": 3,
+      "invalid_rate": 0.1,
+      "conservative": 5,
+      "conservative_rate": 0.1667
+     }
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "1": {
+     "items": 30,
+     "medium": {
+      "valid": 30,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0333,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0333
+     },
+     "high": {
+      "valid": 30,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "2": {
+     "items": 32,
+     "medium": {
+      "valid": 32,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0312,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0312
+     },
+     "high": {
+      "valid": 32,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "3": {
+     "items": 28,
+     "medium": {
+      "valid": 28,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0357,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0357
+     },
+     "high": {
+      "valid": 28,
+      "coverage": 1.0,
+      "disagree": 0,
+      "disagree_rate_valid": 0.0,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 0,
+      "conservative_rate": 0.0
+     }
+    },
+    "4": {
+     "items": 26,
+     "medium": {
+      "valid": 25,
+      "coverage": 0.9615,
+      "disagree": 1,
+      "disagree_rate_valid": 0.04,
+      "invalid": 1,
+      "invalid_rate": 0.0385,
+      "conservative": 2,
+      "conservative_rate": 0.0769
+     },
+     "high": {
+      "valid": 24,
+      "coverage": 0.9231,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0417,
+      "invalid": 2,
+      "invalid_rate": 0.0769,
+      "conservative": 3,
+      "conservative_rate": 0.1154
+     }
+    },
+    "5": {
+     "items": 29,
+     "medium": {
+      "valid": 28,
+      "coverage": 0.9655,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0714,
+      "invalid": 1,
+      "invalid_rate": 0.0345,
+      "conservative": 3,
+      "conservative_rate": 0.1034
+     },
+     "high": {
+      "valid": 28,
+      "coverage": 0.9655,
+      "disagree": 3,
+      "disagree_rate_valid": 0.1071,
+      "invalid": 1,
+      "invalid_rate": 0.0345,
+      "conservative": 4,
+      "conservative_rate": 0.1379
+     }
+    },
+    "6": {
+     "items": 34,
+     "medium": {
+      "valid": 34,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0294,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0294
+     },
+     "high": {
+      "valid": 34,
+      "coverage": 1.0,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0294,
+      "invalid": 0,
+      "invalid_rate": 0.0,
+      "conservative": 1,
+      "conservative_rate": 0.0294
+     }
+    },
+    "7": {
+     "items": 28,
+     "medium": {
+      "valid": 27,
+      "coverage": 0.9643,
+      "disagree": 2,
+      "disagree_rate_valid": 0.0741,
+      "invalid": 1,
+      "invalid_rate": 0.0357,
+      "conservative": 3,
+      "conservative_rate": 0.1071
+     },
+     "high": {
+      "valid": 26,
+      "coverage": 0.9286,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0385,
+      "invalid": 2,
+      "invalid_rate": 0.0714,
+      "conservative": 3,
+      "conservative_rate": 0.1071
+     }
+    },
+    "8": {
+     "items": 39,
+     "medium": {
+      "valid": 35,
+      "coverage": 0.8974,
+      "disagree": 3,
+      "disagree_rate_valid": 0.0857,
+      "invalid": 4,
+      "invalid_rate": 0.1026,
+      "conservative": 7,
+      "conservative_rate": 0.1795
+     },
+     "high": {
+      "valid": 35,
+      "coverage": 0.8974,
+      "disagree": 1,
+      "disagree_rate_valid": 0.0286,
+      "invalid": 4,
+      "invalid_rate": 0.1026,
+      "conservative": 5,
+      "conservative_rate": 0.1282
+     }
+    }
+   }
+  },
+  "overall_by_n": {
+   "1": {
+    "items": 122,
+    "medium": {
+     "valid": 122,
+     "disagree": 1,
+     "invalid": 0,
+     "conservative": 1,
+     "conservative_rate": 0.0082
+    },
+    "high": {
+     "valid": 122,
+     "disagree": 0,
+     "invalid": 0,
+     "conservative": 0,
+     "conservative_rate": 0.0
+    }
+   },
+   "2": {
+    "items": 119,
+    "medium": {
+     "valid": 119,
+     "disagree": 3,
+     "invalid": 0,
+     "conservative": 3,
+     "conservative_rate": 0.0252
+    },
+    "high": {
+     "valid": 118,
+     "disagree": 1,
+     "invalid": 1,
+     "conservative": 2,
+     "conservative_rate": 0.0168
+    }
+   },
+   "3": {
+    "items": 131,
+    "medium": {
+     "valid": 130,
+     "disagree": 11,
+     "invalid": 1,
+     "conservative": 12,
+     "conservative_rate": 0.0916
+    },
+    "high": {
+     "valid": 130,
+     "disagree": 1,
+     "invalid": 1,
+     "conservative": 2,
+     "conservative_rate": 0.0153
+    }
+   },
+   "4": {
+    "items": 129,
+    "medium": {
+     "valid": 126,
+     "disagree": 5,
+     "invalid": 3,
+     "conservative": 8,
+     "conservative_rate": 0.062
+    },
+    "high": {
+     "valid": 124,
+     "disagree": 2,
+     "invalid": 5,
+     "conservative": 7,
+     "conservative_rate": 0.0543
+    }
+   },
+   "5": {
+    "items": 123,
+    "medium": {
+     "valid": 121,
+     "disagree": 15,
+     "invalid": 2,
+     "conservative": 17,
+     "conservative_rate": 0.1382
+    },
+    "high": {
+     "valid": 118,
+     "disagree": 9,
+     "invalid": 5,
+     "conservative": 14,
+     "conservative_rate": 0.1138
+    }
+   },
+   "6": {
+    "items": 122,
+    "medium": {
+     "valid": 119,
+     "disagree": 9,
+     "invalid": 3,
+     "conservative": 12,
+     "conservative_rate": 0.0984
+    },
+    "high": {
+     "valid": 119,
+     "disagree": 6,
+     "invalid": 3,
+     "conservative": 9,
+     "conservative_rate": 0.0738
+    }
+   },
+   "7": {
+    "items": 107,
+    "medium": {
+     "valid": 103,
+     "disagree": 10,
+     "invalid": 4,
+     "conservative": 14,
+     "conservative_rate": 0.1308
+    },
+    "high": {
+     "valid": 99,
+     "disagree": 4,
+     "invalid": 8,
+     "conservative": 12,
+     "conservative_rate": 0.1121
+    }
+   },
+   "8": {
+    "items": 130,
+    "medium": {
+     "valid": 120,
+     "disagree": 15,
+     "invalid": 10,
+     "conservative": 25,
+     "conservative_rate": 0.1923
+    },
+    "high": {
+     "valid": 111,
+     "disagree": 5,
+     "invalid": 19,
+     "conservative": 24,
+     "conservative_rate": 0.1846
+    }
+   }
+  },
+  "total": {
+   "items": 983,
+   "medium_conservative": 92,
+   "high_conservative": 70
+  }
+ },
+ "prior_rounds": {
+  "round1_low_512": "config hash 881d78927247..., parked under gate1/autorater/superseded/881d78927247/",
+  "round2_medium_1024": "config hash 1b1b4df78a17..., parked under gate1/autorater/superseded/1b1b4df78a17/"
+ },
+ "reviews": [
+  "reports/gate1_dev_review.md",
+  "reports/gate1_dev_review_r2.md",
+  "reports/gate1_dev_review_r3.md",
+  "reports/gate1_dev_cases.json",
+  "reports/gate1_dev_cases_r2.json",
+  "reports/gate1_dev_cases_r3.json"
+ ]
+}

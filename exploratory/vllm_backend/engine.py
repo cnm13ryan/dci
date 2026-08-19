@@ -73,6 +73,7 @@ def build_sampling(sampling: SamplingPlan, max_tokens: int, seed: int):
         "top_k": sampling.top_k if sampling.top_k and sampling.top_k > 0 else -1,
         "max_tokens": int(max_tokens),
         "seed": int(seed),
+        "skip_special_tokens": sampling.skip_special_tokens,
     }
     if sampling.stop:
         kwargs["stop"] = list(sampling.stop)

@@ -1,0 +1,96 @@
+{
+  "artifact_states": "dci1v3/engine/artifacts.py (monotonic ledger)",
+  "cache_and_selection": "dci1v3/generation/cache.py + dci1v3/stages/select.py (response-blind hash rule)",
+  "canonical_interface": "dci1v3.cli via dci1v3.engine.dispatch",
+  "durable_restoration": "dci1v3/engine/store.py (replicate/assert_replicated/restore)",
+  "evidence_verification": "dci1v3/engine/verify.py (11 named checks)",
+  "gate1": "dci1v3/stages/gate1.py (reservoir, seeded sample, one-sided Wilson bound; carry-over in carry_over)",
+  "git_cleanliness": "dci1v3/engine/gitinfo.py (no bypass)",
+  "implementation_root": "dci1/src/dci1v3",
+  "masking": "dci1v3/stages/masking.py (persistent single-shot mask and unmask; pilot/confirmatory namespaces disjoint)",
+  "model_states": {
+    "gemma-3n-e2b-it": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
+      "state": "REGIME_SCREEN_PASS",
+      "terminal": null
+    },
+    "gemma-3n-e4b-it": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
+      "state": "REGIME_SCREEN_PASS",
+      "terminal": null
+    },
+    "qwen3-4b": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
+      "state": "REGIME_SCREEN_PASS",
+      "terminal": null
+    },
+    "qwen3-4b-instruct-2507": {
+      "measurement": {
+        "human_validation": "HUMAN_VALIDATION_UNAVAILABLE",
+        "source": "none"
+      },
+      "state": "REGIME_SCREEN_PASS",
+      "terminal": null
+    }
+  },
+  "models": [
+    {
+      "execution_order": 1,
+      "model_id": "google/gemma-3n-E2B-it",
+      "model_key": "gemma-3n-e2b-it",
+      "revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+      "thinking_policy": "unavailable"
+    },
+    {
+      "execution_order": 2,
+      "model_id": "Qwen/Qwen3-4B",
+      "model_key": "qwen3-4b",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "thinking_policy": "disabled"
+    },
+    {
+      "execution_order": 3,
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_key": "qwen3-4b-instruct-2507",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "thinking_policy": "unavailable"
+    },
+    {
+      "execution_order": 4,
+      "model_id": "google/gemma-3n-E4B-it",
+      "model_key": "gemma-3n-e4b-it",
+      "revision": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+      "thinking_policy": "unavailable"
+    }
+  ],
+  "not_executed": [
+    "registered confirmatory generation (prohibited at readiness)",
+    "real-model qualification through Gate 2B (GPU-dependent)",
+    "independent human validation (unavailable — amendment A2: Gate 1 runs the autorater-assisted verifier workflow; the annotation packet and reviewer GUI are preserved for a future `human-audit`)"
+  ],
+  "predecessor_verification": "hash AND signature on every stage record (engine/transitions.py)",
+  "protocol": "DCI-1",
+  "protocol_version": "3.0",
+  "pseudo_run_isolation": "dci1v3/stages/sensitivity.py (separate domain and derived path)",
+  "scientific_dependency_isolation": "dci1v3 imports no earlier DCI implementation; verified by tests_v3/test_transcription.py::test_no_v2_imports",
+  "sequestered_access_control": "dci1v3/topics/sequestered.py (opaque manifest, fail-closed)",
+  "shared_generic_infrastructure": [
+    "exploratory/vllm_backend (subprocess seam)",
+    "dci1/environments/backend (pinned vLLM interpreter)"
+  ],
+  "state_machine": "dci1v3/engine/transitions.py",
+  "study_id": "dci1-v3",
+  "synthetic_lifecycle": null,
+  "test_results": null,
+  "uv_provenance": "dci1v3/engine/environment.py (uv.lock + frozen export, fail-closed)",
+  "writer_locking": "dci1v3/engine/locks.py (cross-process flock)"
+}

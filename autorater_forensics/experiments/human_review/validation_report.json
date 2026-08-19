@@ -1,0 +1,294 @@
+{
+ "criterion": {
+  "quantity": "human-vs-verifier disagreement rate, conditional on the deterministic verifier's class",
+  "interval": "one-sided 95% Wilson upper bound",
+  "registered_target": 0.1,
+  "strengthened_target": 0.05,
+  "claim_component": "representative"
+ },
+ "integrity": {
+  "records": [
+   {
+    "pins": {
+     "pins": 3,
+     "files": 2
+    },
+    "chains": [
+     {
+      "file": "calibration_Bryan.jsonl",
+      "records": 56,
+      "chained": 0,
+      "unchained_legacy": 56
+     },
+     {
+      "file": "extension1_Bryan.jsonl",
+      "records": 64,
+      "chained": 64,
+      "unchained_legacy": 0
+     }
+    ]
+   }
+  ],
+  "sealed_set_sha256": "f8831598e275487037e6e51cd85e1df2b33c8e359d13836e500e9ab7b881d7a3",
+  "sealed_ids_labelled": 0
+ },
+ "counts": {
+  "presented": 120,
+  "records": 120,
+  "labelled": 120,
+  "abstentions": 0,
+  "coverage": 1.0,
+  "response_rate": 1.0,
+  "unassigned_to_a_sample_set": []
+ },
+ "table_human_x_verifier": {
+  "SATISFIES|fail": 4,
+  "SATISFIES|pass": 60,
+  "VIOLATES|fail": 56
+ },
+ "overall_accuracy": 0.9666666666666667,
+ "by_component": {
+  "representative": {
+   "pass": {
+    "cases": 52,
+    "disagreements": 0,
+    "error_rate": 0.0,
+    "wilson_upper_one_sided_95": 0.0494564770454331,
+    "meets": {
+     "0.10": true,
+     "0.05": true
+    },
+    "required_n": {
+     "0.10": 25,
+     "0.05": 52
+    },
+    "additional_labels_required": {
+     "0.10": 0,
+     "0.05": 0
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": true
+    },
+    "target_applies": true
+   },
+   "fail": {
+    "cases": 52,
+    "disagreements": 4,
+    "error_rate": 0.07692307692307693,
+    "wilson_upper_one_sided_95": 0.16069211293721097,
+    "meets": {
+     "0.10": false,
+     "0.05": false
+    },
+    "required_n": {
+     "0.10": 86,
+     "0.05": 175
+    },
+    "additional_labels_required": {
+     "0.10": 34,
+     "0.05": 123
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": false
+    },
+    "target_applies": true
+   }
+  },
+  "boundary": {
+   "pass": {
+    "cases": 8,
+    "disagreements": 0,
+    "error_rate": 0.0,
+    "wilson_upper_one_sided_95": 0.25272359742376327,
+    "meets": {
+     "0.10": false,
+     "0.05": false
+    },
+    "required_n": {
+     "0.10": 25,
+     "0.05": 52
+    },
+    "additional_labels_required": {
+     "0.10": 17,
+     "0.05": 44
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": true
+    },
+    "target_applies": false
+   },
+   "fail": {
+    "cases": 8,
+    "disagreements": 0,
+    "error_rate": 0.0,
+    "wilson_upper_one_sided_95": 0.25272359742376327,
+    "meets": {
+     "0.10": false,
+     "0.05": false
+    },
+    "required_n": {
+     "0.10": 25,
+     "0.05": 52
+    },
+    "additional_labels_required": {
+     "0.10": 17,
+     "0.05": 44
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": true
+    },
+    "target_applies": false
+   }
+  },
+  "pooled": {
+   "pass": {
+    "cases": 60,
+    "disagreements": 0,
+    "error_rate": 0.0,
+    "wilson_upper_one_sided_95": 0.043146798593270294,
+    "meets": {
+     "0.10": true,
+     "0.05": true
+    },
+    "required_n": {
+     "0.10": 25,
+     "0.05": 52
+    },
+    "additional_labels_required": {
+     "0.10": 0,
+     "0.05": 0
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": true
+    },
+    "target_applies": false
+   },
+   "fail": {
+    "cases": 60,
+    "disagreements": 4,
+    "error_rate": 0.06666666666666667,
+    "wilson_upper_one_sided_95": 0.14044777997813881,
+    "meets": {
+     "0.10": false,
+     "0.05": false
+    },
+    "required_n": {
+     "0.10": 86,
+     "0.05": 175
+    },
+    "additional_labels_required": {
+     "0.10": 26,
+     "0.05": 115
+    },
+    "reachable_at_observed_rate": {
+     "0.10": true,
+     "0.05": false
+    },
+    "target_applies": false
+   }
+  }
+ },
+ "discordant": [
+  {
+   "id": "gemma-3n-e2b-it::gate1_validation:history-47:solo:A:4:0",
+   "human": "SATISFIES",
+   "verifier_class": "fail",
+   "target_n": 4,
+   "s0_count": 5,
+   "response_words": 326,
+   "finish_reason": "stop",
+   "component": "representative",
+   "boundary_category": null
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:history-47:solo:A:7:0",
+   "human": "SATISFIES",
+   "verifier_class": "fail",
+   "target_n": 7,
+   "s0_count": 8,
+   "response_words": 386,
+   "finish_reason": "stop",
+   "component": "representative",
+   "boundary_category": null
+  },
+  {
+   "id": "gemma-3n-e4b-it::gate1_validation:technology-06:solo:A:8:0",
+   "human": "SATISFIES",
+   "verifier_class": "fail",
+   "target_n": 8,
+   "s0_count": 9,
+   "response_words": 301,
+   "finish_reason": "stop",
+   "component": "representative",
+   "boundary_category": null
+  },
+  {
+   "id": "qwen3-4b::gate1_validation:language-and-writing-00:solo:A:1:0",
+   "human": "SATISFIES",
+   "verifier_class": "fail",
+   "target_n": 1,
+   "s0_count": 2,
+   "response_words": 144,
+   "finish_reason": "stop",
+   "component": "representative",
+   "boundary_category": null
+  }
+ ],
+ "operational": {
+  "note": "reported for the instrument, never merged into a human label: an operational failure is not a judgment",
+  "human_abstentions": 0,
+  "abstention_ids": [],
+  "pool_finish_reason": {
+   "stop": 115,
+   "length": 5
+  },
+  "registered_judge_statuses": {
+   "valid": 343,
+   "invalid_output": 17
+  }
+ },
+ "stopping": {
+  "decision": "ESCALATE",
+  "per_class": {
+   "pass": {
+    "cases": 52,
+    "disagreements": 0,
+    "0.10": {
+     "status": "MET",
+     "additional_labels_required": 0
+    },
+    "0.05": {
+     "status": "MET",
+     "additional_labels_required": 0
+    }
+   },
+   "fail": {
+    "cases": 52,
+    "disagreements": 4,
+    "0.10": {
+     "status": "CONTINUE",
+     "additional_labels_required": 34
+    },
+    "0.05": {
+     "status": "UNREACHABLE_AT_OBSERVED_RATE",
+     "additional_labels_required": 123
+    }
+   }
+  },
+  "next_batch_representative_targets": {
+   "pass": 0,
+   "fail": 123
+  },
+  "budget": {
+   "max_total_labels": 150,
+   "projected_total_labels": 243,
+   "within_budget": false
+  },
+  "interpretation": "the observed disagreement rate cannot meet the target at any sample size; this is a finding about the verifier, not a sampling shortfall"
+ }
+}
