@@ -11,9 +11,9 @@ from __future__ import annotations
 
 # --------------------------------------------------------------- §6.2 topics
 SUBJECT_AREAS = (
-    "everyday_science", "history", "geography", "food", "music", "sport",
-    "work_and_organisations", "health_and_the_body", "technology",
-    "language_and_writing", "art_and_design", "the_natural_world",
+    "everyday science", "history", "geography", "food", "music", "sport",
+    "work and organisations", "health and the body", "technology",
+    "language and writing", "art and design", "the natural world",
 )
 TOPICS_PER_AREA = 52
 PRESCREEN_PER_AREA = 2
