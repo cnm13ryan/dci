@@ -1,0 +1,1097 @@
+Below is a tightened version that preserves the substantive distinctions, empirical claims, and source-provenance scheme of the original while reducing repetition and sharpening the construct argument. 
+
+# Directional Constraint Interference as a Benchmark Construct
+
+**Operational definition, scope, and decomposition analysis**
+
+Prepared 12 August 2026. Sources: Bean et al. (2025), *Measuring What Matters: Construct Validity in Large Language Model Benchmarks*, and the DCI exploratory global analysis (12 August 2026).
+
+## Central conclusion
+
+Directional Constraint Interference (DCI) is defined precisely enough to implement experimentally, but its current scalar estimand is too narrow to support the full interpretation suggested by the construct. The existing measure,
+
+[
+\tau = P(\text{fail }A\mid A+B+S) - P(\text{fail }A\mid A+R+S),
+]
+
+measures how replacing a matched reference instruction (R) with a focal instruction (B) changes failure on a designated target instruction (A). This controls for generic instruction load and identifies an effect of the slot occupant's identity. **[DCI]**
+
+The exploratory programme nevertheless shows that the resulting effect depends strongly on the surrounding configuration. The same instructions can produce positive, null, or negative effects depending on background instructions, instruction order, reasoning state, and load. The data also separate at least three phenomena that (\tau) alone cannot distinguish: an instruction can independently induce a particular response strategy; the surrounding configuration can determine whether that strategy damages the target; and the model can resolve the resulting composition in qualitatively different ways. **[DCI, INFER]**
+
+DCI should therefore be treated as a composite benchmark construct with three separately reported components:
+
+1. **dispositional strategy induction**, measuring what an instruction does to output structure even when no target is present;
+2. **configuration-gated target damage**, measured by (\tau) and its higher-order contrasts across backgrounds, order, load, and reasoning;
+3. **resolution profile**, measuring which combination of constraints survives through the four joint-compliance outcomes.
+
+Constraint followability should serve as an admission gate, while structural affordances such as whether punctuation can substitute for a sentence boundary should be used for stratified sampling rather than scored as part of DCI.
+
+A second issue concerns the word *directional*. The present experiments consistently designate one instruction as the target and do not estimate the reciprocal effect. If directionality is intended to mean that (B\rightarrow A) may differ from (A\rightarrow B), the benchmark should eventually measure both directions. Until then, the empirical construct is more precisely described as **configuration-specific, identity-dependent damage to a designated target constraint**. **[INFER]**
+
+# 1. Operational definition
+
+## 1.1 What the construct must distinguish
+
+The intuitive statement that “adding instruction (B) makes the model worse at instruction (A)” does not identify interference cleanly. Adding (B) simultaneously changes the identity of the instructions and increases the total number of instructions. Any observed degradation could therefore reflect generic compositional load rather than a property of (B). **[DCI]** Bean et al. (2025) describe the corresponding construct-validity requirement as measuring the intended phenomenon without allowing additional subtasks to confound the measurement. **[BEAN]**
+
+DCI addresses this problem through a **matched slot-occupant swap**. Two prompts contain the same number of instructions in the same positions and differ only in whether one slot contains the focal instruction (B) or a matched reference (R). This isolates the effect associated with the identity of the occupant while holding instruction count fixed. **[DCI]**
+
+The exploratory results reveal a second requirement. Interference cannot generally be treated as a stable property of an instruction pair. In a 2×2 factorial experiment, target failure was 0.000 with the target alone, 0.000 with the target plus focal instruction, 0.013 with the target plus background, and 0.312 when all three appeared together. Neither additional instruction produced appreciable damage independently. Their combination did. In a separate order experiment, rearranging the same three instructions moved the amplification contrast from (+0.400) to (-0.125). **[DCI]**
+
+The appropriate unit is therefore the **configuration**, meaning the complete experimental setting in which the contrast is measured. **[INFER]**
+
+## 1.2 Definition
+
+A concise operational definition is:
+
+> **Directional Constraint Interference is a configuration-specific change in compliance with a designated target instruction caused by replacing one co-present instruction with a matched alternative in a fixed prompt slot, while holding instruction count, task, prompt structure, and execution conditions constant.**
+
+Three parts of this definition are essential.
+
+**Replacement.** The focal instruction replaces another instruction instead of being added to an otherwise shorter prompt. This controls generic load. **[DCI]**
+
+**Matching.** The reference must be drawn from a preregistered admissible set, be comparable in difficulty and form, and demonstrably receive comparable uptake from the model. Matching must be empirically audited. The exploratory programme found that an admitted reference could itself become the strongest interferer, and cross-model experiments showed substantial differences in compliance with nominally identical background instructions. **[DCI, INFER]**
+
+**Designation.** The benchmark specifies in advance which instruction is the target. The measured effect concerns compliance with that target. **[DCI]**
+
+## 1.3 Configuration and estimands
+
+Define the experimental configuration as
+
+[
+\mathcal{C} = (A,B,R,S,\pi,k,b,E,T),
+]
+
+where:
+
+* (A) is the target instruction;
+* (B) is the focal slot occupant;
+* (R) is its matched reference;
+* (S) is the background instruction set;
+* (\pi) is instruction order;
+* (k) is total instruction count;
+* (b) is reasoning state or budget;
+* (E) is the execution condition;
+* (T) is the evaluation task bank.
+
+Within a fixed configuration, the primary estimand is
+
+[
+\tau(\mathcal{C}) = P(\text{fail }A\mid A+B+S,\pi,k,b,E) - P(\text{fail }A\mid A+R+S,\pi,k,b,E).
+]
+
+A positive value means that (B) produces more target failure than (R) under that configuration. **[DCI]**
+
+Two higher-order contrasts already appear in the exploratory programme. (\Delta) compares (\tau) across changes in context such as background, order, or load. (\Gamma) compares these contextual effects across reasoning conditions. The programme also introduced (\Delta_{\text{joint}}), which measures changes in the probability that both relevant instructions are satisfied. **[DCI]**
+
+The benchmark should record four outcome families for each configuration:
+
+1. target compliance in the focal arm;
+2. target compliance in the reference arm;
+3. compliance with the corresponding slot occupant;
+4. the structural profile of the output, including the unit constrained by (A) and relevant strategy proxies such as clause chaining, splicing, and response length.
+
+The third quantity enables the four-state classification:
+
+[
+{\text{both},\ \text{target only},\ \text{occupant only},\ \text{neither}}.
+]
+
+The fourth is necessary because the exploratory evidence indicates that some instructions alter response structure independently of the target. **[DCI, INFER]**
+
+## 1.4 Identification conditions
+
+A numerical (\tau) is meaningful only when the experimental cell provides an operating point at which interference can actually be observed. The exploratory programme encountered several cases in which (\tau) could be calculated while the intended construct was unidentified.
+
+The principal identification requirements are:
+
+* **Target headroom.** The target must have sufficient probability of both success and failure for the focal and reference conditions to differ. When the target is effectively perfect, (\tau=0) follows mechanically.
+* **Occupant uptake.** The focal and reference instructions must actually be followed at substantial and reasonably comparable rates. An ignored instruction does not constitute a successfully delivered treatment.
+* **Reference integrity.** The reference must not independently damage the target relative to an appropriate baseline.
+* **Satisfiability.** At least one verifier-confirmed output must exist that satisfies the complete instruction set.
+* **Verifier validity.** Automated verifiers must be certified against blinded human judgements and checked for both false positives and false negatives.
+* **Channel separation.** Only the final answer should be scored when reasoning and answer channels are distinct.
+* **Non-binding limits.** Output and reasoning caps must be verified not to bind differentially across experimental cells.
+* **Replicate independence.** Nominal replicate generations must genuinely vary rather than silently share identical randomness.
+* **Execution-condition pinning.** Checkpoint revision, inference backend, numerical precision, chat template, parser, decoding parameters, answer extraction, and seeding procedure must be treated as part of the experimental condition.
+
+These requirements follow directly from failures encountered during the exploratory programme, including target ceilings, reference contamination, verifier errors, selective truncation, shared seeds, and incorrect model loading. **[DCI]** They instantiate Bean et al.'s broader recommendation to examine whether benchmark failures correlate with confounds instead of the intended construct. **[BEAN, INFER]**
+
+A benchmark cell should therefore receive one of three broad interpretations.
+
+A **positive** cell satisfies all identification requirements and yields a positive (\tau) whose task-clustered interval excludes zero.
+
+A **negative** cell satisfies the requirements but provides no reliable evidence of a nonzero effect.
+
+An **unidentified** cell violates at least one identification condition. Its numerical contrast should not contribute to an aggregate estimate.
+
+The existing `TARGET_CEILING` flag should therefore be generalised into an explicit family of identification verdicts, such as `TARGET_CEILING`, `TARGET_FLOOR`, `OCCUPANT_NOT_COMPLIED`, `REFERENCE_CONTAMINATED`, `UNSATISFIABLE_COMPOSITION`, `CAP_BOUND`, `CHANNEL_LEAK`, `VERIFIER_UNCERTIFIED`, and `REPLICATES_DEPENDENT`. **[INFER]**
+
+The proportion of sampled configurations that are identified should itself be reported. This quantity describes the domain over which the benchmark can make behavioural claims.
+
+## 1.5 Units of analysis
+
+The benchmark contains several distinct statistical units.
+
+The **generation** is the scoring unit. Each generation receives compliance labels and structural measurements.
+
+The **configuration** is the estimand unit. Values of (\tau), (\Delta), (\Gamma), and the four-state distribution are defined for a fully specified configuration.
+
+The **task** is the principal uncertainty unit. The exploratory programme uses task-clustered bootstrap intervals because generations produced for the same task are not independent observations. **[DCI]**
+
+The **reporting unit** should be a stratified profile over configurations. A single scalar DCI score would obscure interactions and sign reversals that are central to the empirical phenomenon. **[INFER]**
+
+# 2. Scope of the construct
+
+## 2.1 Included phenomena
+
+The current DCI programme studies compliance with structural output constraints that can be evaluated by deterministic verifiers certified against human judgement.
+
+The focal and target instructions do not need to be logically contradictory. This is important because the strongest evidence concerns **incidental structural incompatibility**. For example, the instruction to use at least two semicolons produced a mean output of 1.225 sentences even when no sentence-count target was present, with a replication mean of 1.075 in another model family. **[DCI]** The instruction therefore appears to induce a response strategy that independently changes the same structural unit constrained by the target.
+
+DCI consequently includes cases in which one instruction changes the model's generation strategy and thereby makes another satisfiable instruction harder to fulfil.
+
+The currently studied treatment dimensions include:
+
+* background-instruction identity;
+* instruction order;
+* total instruction load;
+* reasoning state or reasoning budget;
+* slot-occupant identity.
+
+These variables belong inside the construct because the exploratory evidence shows that they alter the interference effect itself. Order can reverse its sign, reasoning can remove the effect in one background while preserving it in another, and load can change its interaction structure. **[DCI]**
+
+## 2.2 Excluded phenomena
+
+Several superficially similar effects fall outside the construct.
+
+**Generic instruction-following difficulty** concerns a model's baseline inability to satisfy the target. It is separated from DCI by the matched slot-swap design and target-alone baselines.
+
+**Generic load effects** arise from increasing the number of instructions. DCI holds instruction count fixed within each primary contrast.
+
+**Task-specific difficulty** concerns failures concentrated on unusually difficult tasks. Task-clustered uncertainty estimates and leave-one-task-out analyses address this possibility.
+
+**Verifier coupling** occurs when automated evaluators share correlated errors. This is a measurement artefact, not behavioural interference.
+
+**Logical incompatibility** occurs when no response can simultaneously satisfy the instructions. Such cells should fail the satisfiability gate.
+
+**Instruction non-uptake** occurs when the model does not follow the supposed treatment instruction. The exploratory anti-splice experiment illustrates the importance of this distinction: the relevant usage instruction was followed only about 5% of the time, while a count constraint involving the same punctuation mark was followed 92.5% of the time. The experiment correctly stopped at its manipulation gate. **[DCI]**
+
+**Execution artefacts** include truncation, reasoning-channel leakage, parser errors, incorrect model classes, missing checkpoint weights, and incompatible templates. Such failures can produce fluent outputs that automated verifiers mistakenly interpret as ordinary model behaviour.
+
+**Priority arbitration** is the specific claim that the model deliberately prioritises one instruction over another. The current evidence does not establish this mechanism. Explicit priority cues produced no reliable predicted shift in the four-state outcome distribution. **[DCI]**
+
+**Response length**, **simple punctuation emission**, and **placement search** have also received direct tests and do not account for the observed pattern. **[DCI]**
+
+## 2.3 Current empirical coverage
+
+The existing programme covers a narrow but increasingly well-characterised region of the possible construct space:
+
+* primarily one target family, usually “write exactly four sentences”;
+* punctuation occupants including semicolons, colons, quotation marks, bracket pairs, ellipses, and degree symbols;
+* several non-punctuation comparison instructions;
+* two or more background conditions;
+* all six instruction orders at (k=3), with partial extension to (k=5);
+* multiple reasoning conditions;
+* twenty English evaluation tasks plus a larger calibration bank;
+* open-weight models in roughly the 3B to 12B range;
+* target compliance, occupant compliance, joint-compliance states, and structural strategy proxies.
+
+This coverage supports claims about structural composition under a specific experimental regime. It does not yet support a general theory of instruction interference.
+
+## 2.4 Major untested dimensions
+
+Important dimensions remain outside the current evidence base.
+
+Other output units, including words, lines, headings, list items, and structured formats, remain largely untested. A paragraph-count probe produced a null result while sentence counts collapsed, which is consistent with unit-specific interference.
+
+Other target-instruction families have not been systematically tested.
+
+Semantic or content-level conflicts remain outside the current design.
+
+Multi-turn interactions, tool use, non-English prompts, substantially larger instruction loads, large proprietary models, and broad decoding variation remain untested or minimally tested.
+
+All current mechanism claims are behavioural. No internal-representation evidence has been collected.
+
+Most importantly, the proposed boundary-based mechanism remains predictive rather than causal. The programme designed a mechanism estimand (\Omega), but its manipulation failed the preregistered gate and the causal contrast was therefore never computed. **[DCI]**
+
+## 2.5 Limits on interpretation
+
+Four limitations materially constrain the benchmark's current claims.
+
+First, every strong positive result concerns a sentence-count target. The paragraph null suggests that the phenomenon may be specific to sentence segmentation or to structural units with particular generation affordances. A broader composition claim requires replication across at least one independent target family and one additional structural unit.
+
+Second, the focal instruction is often close to a compliance floor. In the relevant experiments, focal compliance ranges from approximately 0.000 to 0.138, with very few “focal only” outcomes. This makes strong claims about reciprocal arbitration premature. Attempts to increase focal compliance moved probability mass primarily toward satisfying both instructions rather than creating a clean target-versus-focal trade-off. **[DCI]**
+
+Third, modern checkpoints frequently place the target at ceiling. Across five 2026-era checkpoints, nine of ten primary cells produced structural zeros because the target almost never failed. These results show that the current task is an operating-point-dependent instrument. They do not show that newer models lack DCI. **[DCI]**
+
+Fourth, structural boundary affordance strongly predicts interference but has not been established as its cause. It may therefore be used to organise sampling and generate hypotheses, while remaining outside the scored construct.
+
+The entire programme is also exploratory. It reuses the same small task bank across many rounds and has examined many contrasts without a unified multiple-comparison correction. The signs and broad existence claims appear considerably better supported than exact magnitudes or fine-grained interaction patterns. **[DCI]**
+
+## 2.6 Strongest currently defensible claim
+
+Under these restrictions, the benchmark can support the following claim:
+
+> For a specified model checkpoint and execution condition, DCI measures how replacing one co-present instruction with a matched alternative changes the probability of failure on a designated, satisfiable, verifier-checked target constraint within an identified configuration. It additionally characterises how the model distributes outcomes across joint compliance states and reports the region of the sampled configuration space in which the contrast is identifiable.
+
+The slot swap supports a causal claim about the effect of **slot-occupant identity within that configuration**. It does not establish the causal mechanism responsible for the behavioural effect. The result remains conditional on model, execution condition, task distribution, instruction family, and configuration.
+
+# 3. Does DCI require decomposition?
+
+Bean et al. (2025) recommend separating subcomponents when a benchmark targets a composite phenomenon. **[BEAN]** A useful decomposition should satisfy three requirements. The proposed component must require a distinct comparison, two configurations can differ on that component despite having similar (\tau), and the exploratory evidence must already demonstrate the distinction. **[INFER]**
+
+Under this criterion, DCI contains three primary components.
+
+## 3.1 Component 1: Dispositional strategy induction
+
+**Dispositional strategy induction** is the change in output structure caused by an instruction when no target instruction is present.
+
+Its counterfactual is:
+
+[
+\text{occupant present, no target}
+\quad\text{versus}\quad
+\text{occupant absent, no target}.
+]
+
+Relevant outcomes include sentence count, clause chaining, punctuation splicing, and response length.
+
+This component is empirically distinct from interference itself. The semicolon instruction produced approximately one-sentence outputs even without a sentence-count target. A dose experiment further found a sharp transition as the requested number of semicolons increased, with failure approaching one around three or more requested marks across several target counts. **[DCI]**
+
+These results suggest that the occupant can induce a response strategy independently of any competing target. That distinction matters scientifically. A scalar (\tau) could otherwise be interpreted as evidence that the model explicitly trades instructions against one another, even when the damaging structural tendency appears before any competing constraint is introduced.
+
+This component should therefore be measured separately as a primary axis.
+
+## 3.2 Component 2: Configuration-gated target damage
+
+The second component is the target damage captured by (\tau), together with its dependence on background, order, load, and reasoning.
+
+The exploratory programme shows that this dependence is central to the phenomenon. At the canonical low dose, the focal and background instructions have essentially no individual main effects but produce a large effect jointly. Reordering identical instructions can reverse the sign. A second order experiment spans approximately (-0.54) to (+0.39) under one reasoning condition, while higher reasoning changes the pattern again. Increasing instruction load preserves some cells while disrupting the positional structure found at lower load. **[DCI]**
+
+These results make a configuration average scientifically misleading. A positive mean can combine configurations in which the focal instruction is harmful, inert, and protective.
+
+The benchmark should therefore report (\tau) separately for preregistered configuration strata. It should additionally report dispersion across the grid, including the range and number or proportion of sign reversals. **[INFER]**
+
+## 3.3 Component 3: Resolution profile
+
+The third component concerns **how the model resolves the composition**.
+
+Its natural outcome space is:
+
+[
+(\text{target satisfied?},\ \text{occupant satisfied?})
+\in
+{(1,1),(1,0),(0,1),(0,0)}.
+]
+
+This four-state outcome contains information that (\tau) discards.
+
+The exploratory results already demonstrate the distinction. Two conditions can arrive at similar target failure through opposite compliance patterns. Some configurations produce substantial “neither” mass, indicating joint collapse instead of a clean trade-off. On newer models, the target often remains at ceiling while the probability of satisfying both instructions changes substantially. In the cross-model campaign, the clearest nonzero effect was observed in the joint-compliance channel even where (\tau) was structurally degenerate. **[DCI]**
+
+The resolution profile should therefore become co-primary with (\tau). The benchmark should predefine joint-compliance contrasts at the same inferential levels used for target failure, rather than introducing them only after (\tau) becomes unusable.
+
+## 3.4 Constraint followability as an admission gate
+
+The distinction between **count constraints** and **usage constraints** should remain outside the scored construct.
+
+The exploratory programme found that a model could obey a punctuation-count requirement roughly 92.5% of the time while following a usage rule concerning the same punctuation mark only about 5% of the time. **[DCI]** This shows that surface similarity between instructions does not imply comparable followability.
+
+Followability therefore determines whether an instruction is suitable for the benchmark. It should be assessed before admission to the focal or reference registry and reported diagnostically. A failed manipulation gate should produce an unidentified experiment, not a null DCI result.
+
+## 3.5 Structural affordance as a stratification variable
+
+Whether a mark can function where a sentence boundary would otherwise occur is currently the strongest predictor of amplification. The corresponding boundary contrast is approximately (+0.59) without reasoning and (+0.51) under the high-reasoning condition, with strong separation on the behavioural proxy. **[DCI]**
+
+This makes structural affordance useful for stratifying occupant sampling and testing generalisation. It should not enter the DCI score because its causal role has not been established.
+
+# 4. Recommended benchmark formulation
+
+The resulting benchmark should treat DCI as a structured measurement profile:
+
+| Element                               | Comparison                                      | Role                    |
+| ------------------------------------- | ----------------------------------------------- | ----------------------- |
+| **Dispositional strategy induction**  | Occupant present vs absent, no target           | Primary component       |
+| **Configuration-gated target damage** | Focal vs matched reference within configuration | Primary component       |
+| **Resolution profile**                | Joint target-occupant compliance                | Co-primary component    |
+| **Constraint followability**          | Pre-benchmark compliance testing                | Admission gate          |
+| **Structural affordance**             | Matched structural categories                   | Stratification variable |
+
+Every reported configuration should additionally receive an identification verdict.
+
+This decomposition preserves the construct's central causal comparison while preventing several distinct behavioural processes from being collapsed into one scalar. It also addresses the principal failure mode observed in the modern-model experiments: a target at ceiling can make (\tau) structurally zero while meaningful changes remain visible in joint compliance.
+
+Order and background do not require separate construct components because the evidence indicates that they belong to the same configuration-gating structure. Reasoning should remain a treatment axis because it modifies the components rather than defining a new outcome. Task identity remains the clustering unit for uncertainty. Response length, mark emission, and placement search have already been weakened or falsified as explanations and therefore do not warrant independent benchmark dimensions.
+
+## Directionality
+
+One conceptual issue remains unresolved. The term **directional** implies that the benchmark can distinguish
+
+[
+B\rightarrow A
+]
+
+from
+
+[
+A\rightarrow B.
+]
+
+The exploratory programme estimates only the first type of contrast because (A) remains the designated target throughout. The reciprocal effect has not been measured, and the low compliance of the current focal instruction makes the reciprocal operating point difficult to identify.
+
+A fully directional benchmark should therefore construct reciprocal item pairs in which both instructions can independently serve as targets and both have sufficient headroom. This would permit direct estimation of
+
+[
+\tau_{B\rightarrow A}
+\quad\text{and}\quad
+\tau_{A\rightarrow B},
+]
+
+followed by an asymmetry contrast such as
+
+[
+\delta_{A,B} = \tau_{B\rightarrow A} - \tau_{A\rightarrow B}.
+]
+
+Until such measurements exist, the empirical construct should be interpreted more narrowly as **configuration-specific, identity-dependent interference with a designated target constraint**. This formulation matches what the current design actually identifies while leaving reciprocal directionality as a clear extension of the benchmark.
+
+---
+
+You mentioned that DCI's current scalar estimand is too narrow to support the full interpretation as suggested by the construct. Tell me why
+
+---
+
+The core problem is that the current DCI estimand, (\tau), answers one narrow question:
+
+[
+\tau = P(\text{fail }A\mid B) - P(\text{fail }A\mid R).
+]
+
+In plain language: **when I replace reference instruction (R) with focal instruction (B), how much more often does the designated target instruction (A) fail?**
+
+That is a useful causal quantity. The problem is that the broader idea of “instruction interference” implicitly asks several additional questions that (\tau) cannot answer. The exploratory results show that those additional distinctions materially change the scientific interpretation. 
+
+### 1. (\tau) tells you that (A) was damaged, but not *how* it was damaged
+
+Suppose
+
+[
+\tau = +0.30.
+]
+
+That tells us that replacing (R) with (B) increases failure on (A) by 30 percentage points.
+
+But at least two very different processes could generate that same number.
+
+In the first case, the model may be genuinely struggling to satisfy (A) and (B) simultaneously and effectively sacrificing (A) to satisfy (B).
+
+In the second case, (B) may independently induce a response style that happens to make (A) harder to satisfy. For example, your exploratory evidence shows that a semicolon instruction can push the model toward producing approximately one long sentence **even when there is no sentence-count target present at all**. In that case, (A)'s failure is collateral damage from a response strategy already induced by (B). It need not represent an explicit trade-off between (A) and (B).
+
+Both mechanisms can produce the same (\tau). Scientifically, however, they imply quite different phenomena.
+
+This is why the **dispositional strategy induction** measurement matters. You need to ask what (B) does when (A) is absent before interpreting what happens when the two coexist.
+
+### 2. (\tau) only scores (A), so it throws away what happened to (B)
+
+This is probably the clearest limitation.
+
+Imagine two conditions with exactly the same:
+
+[
+\tau=+0.30.
+]
+
+They could have completely different joint outcomes.
+
+In one:
+
+* (A) fails;
+* (B) succeeds.
+
+That looks like something resembling **constraint substitution or arbitration**. The model preserved (B) at the expense of (A).
+
+In another:
+
+* (A) fails;
+* (B) also fails.
+
+That is **joint collapse**. The model did not successfully prioritise (B). It simply became worse at satisfying the composition.
+
+Because (\tau) records only whether (A) failed, these cases are indistinguishable.
+
+That is why the four-state outcome
+
+[
+{\text{both},\text{ target only},\text{ focal only},\text{ neither}}
+]
+
+contains information that (\tau) necessarily discards.
+
+This becomes particularly important in your newer-model experiments. When (A) is almost always satisfied, (\tau) becomes mechanically close to zero, while reasoning can still move the model dramatically from satisfying only (A) to satisfying **both** instructions. A (\tau)-only benchmark would describe both situations as essentially identical even though compositional performance has changed substantially.
+
+### 3. A single (\tau) does not represent a stable property of the instruction pair
+
+The exploratory programme gives strong evidence for this.
+
+You might initially want to say:
+
+> “(B) interferes with (A).”
+
+That formulation suggests something approximately like a property of the pair ((A,B)).
+
+But your experiments show that the effect can depend strongly on everything surrounding that pair:
+
+[
+\tau = \tau(A,B,R,S,\pi,k,b,E).
+]
+
+In particular:
+
+* (S): background instructions;
+* (\pi): instruction order;
+* (k): instruction load;
+* (b): reasoning condition;
+* (E): execution condition.
+
+The strongest demonstration is instruction order. Reordering exactly the same instructions can move the measured effect from strongly harmful to protective. So saying that “(B) has (\tau=0.2) interference with (A)” by averaging over configurations could obscure the actual phenomenon.
+
+For example, suppose three configurations give:
+
+[
+\tau_1=+0.40,\qquad
+\tau_2=0,\qquad
+\tau_3=-0.20.
+]
+
+Their mean is
+
+[
+\bar{\tau}=+0.067.
+]
+
+Reporting (+0.067) suggests a small harmful effect. Yet the actual finding is much more interesting: **the same instruction changes from strongly harmful to neutral to protective as the configuration changes**.
+
+The variation itself is part of the phenomenon. A scalar average destroys it.
+
+This is why I called the target damage **configuration-gated**.
+
+### 4. Sometimes (\tau=0) means “no interference”; sometimes it means “the experiment could not measure interference”
+
+This is another fundamental limitation.
+
+Consider a modern model that satisfies (A) essentially 100% of the time in both arms:
+
+[
+P(\text{fail }A\mid B)=0,
+]
+
+[
+P(\text{fail }A\mid R)=0.
+]
+
+Then necessarily,
+
+[
+\tau=0.
+]
+
+But there are two possible interpretations:
+
+1. (B) genuinely has no effect on (A);
+2. (A) is so easy for this model that your instrument has no room to detect damage.
+
+The exploratory programme encountered exactly this problem on newer checkpoints. Therefore the numerical value (\tau=0) cannot by itself establish absence of interference.
+
+You need an **identification verdict** alongside the estimate. The distinction is:
+
+[
+\text{identified null}
+\neq
+\text{structural zero from target ceiling}.
+]
+
+This is why target headroom, occupant uptake, reference integrity, satisfiability, and the other gates matter. They tell you whether (\tau) is actually interpretable.
+
+### 5. (\tau_{B\rightarrow A}) does not establish the “directional” part of DCI
+
+There is also a narrower conceptual issue with the construct's name.
+
+The current experiment asks:
+
+[
+B\rightarrow A:
+\quad
+\text{Does changing }B\text{ affect compliance with }A?
+]
+
+Calling the phenomenon **directional** naturally suggests that we care about whether
+
+[
+B\rightarrow A
+]
+
+differs from
+
+[
+A\rightarrow B.
+]
+
+For example, perhaps semicolon instructions severely damage sentence-count compliance while sentence-count instructions barely affect semicolon compliance. That asymmetry would be genuinely directional.
+
+But the current (\tau) measures only the first direction because (A) is always designated as the target. To establish directional asymmetry, you ultimately need both:
+
+[
+\tau_{B\rightarrow A}
+\quad\text{and}\quad
+\tau_{A\rightarrow B}.
+]
+
+Then you could define something like
+
+[
+\delta_{A,B} = \tau_{B\rightarrow A} - \tau_{A\rightarrow B}.
+]
+
+The current programme has not yet measured that quantity.
+
+### The simplest way to think about it
+
+The distinction is:
+
+> **(\tau) measures target damage. DCI, as the emerging construct, appears to concern the broader structure of how instructions interact.**
+
+The exploratory programme suggests that understanding that interaction requires at least three questions:
+
+1. **What does (B) make the model do on its own?**
+   This is dispositional strategy induction.
+
+2. **Under which configurations does (B) damage (A), and by how much?**
+   This is what (\tau), (\Delta), and (\Gamma) principally measure.
+
+3. **When composition becomes difficult, which instructions survive?**
+   This is the resolution profile.
+
+So I would not discard (\tau). It remains the cleanest primary causal estimand for **damage to a designated target**. The correction is to avoid treating it as a sufficient statistic for the entire DCI phenomenon. The evidence you have collected already shows that two experiments can have the same (\tau), or both have (\tau=0), while representing scientifically different forms of instruction interaction.
+
+---
+
+Tell me in more detail what are the three sub-components that are under DCI. Make sure your explanation is clear, concise and short.
+
+---
+
+The three DCI sub-components capture three different stages of what happens when instructions interact.
+
+### 1. Dispositional strategy induction
+
+This asks:
+
+> **What behaviour does instruction (B) induce even when target instruction (A) is absent?**
+
+For example, a semicolon instruction may independently push the model toward writing fewer, longer sentences. If that happens before any sentence-count constraint is introduced, then part of the later interference comes from a response strategy already induced by (B).
+
+So this component measures the **behavioural tendency created by an instruction on its own**.
+
+### 2. Configuration-gated target damage
+
+This asks:
+
+> **When does (B) actually make the model worse at satisfying (A)?**
+
+This is the core quantity measured by (\tau):
+
+[
+\tau
+====
+
+## P(\text{fail }A\mid B)
+
+P(\text{fail }A\mid R).
+]
+
+The important finding is that this damage depends on the wider configuration. The same (B) may strongly damage (A) in one instruction order or background, have no effect in another, and even improve (A) in another.
+
+So this component measures **how much target damage occurs, and under which surrounding conditions it occurs**.
+
+### 3. Resolution profile
+
+This asks:
+
+> **When the instructions are combined, which ones does the model ultimately satisfy?**
+
+There are four possibilities:
+
+[
+{\text{both},\ \text{A only},\ \text{B only},\ \text{neither}}.
+]
+
+This distinguishes very different outcomes. If (A) fails while (B) succeeds, the model appears to preserve (B) at (A)'s expense. If both fail, the composition has instead produced broader breakdown.
+
+So this component measures **how the model resolves the competing demands once interference occurs**.
+
+In short:
+
+[
+\boxed{
+\text{What does }B\text{ induce?}
+\rightarrow
+\text{When does it damage }A\text{?}
+\rightarrow
+\text{What ultimately survives?}
+}
+]
+
+These correspond respectively to **strategy induction, target damage, and resolution**.
+
+---
+
+Read the attached DCI benchmark document thoroughly. Structure the analysis around the three proposed sub-components of DCI:
+
+1. **Dispositional strategy induction**
+2. **Configuration-gated target damage**
+3. **Resolution profile**
+
+The aim is to determine whether these are the right sub-components, define their estimands precisely, and use them to determine what the benchmark should measure next.
+
+For each sub-component, answer:
+
+### 1. Construct
+
+* What exactly is this component intended to capture?
+* Is it conceptually distinct from the other two components?
+* What alternative explanations or confounds could produce the same observed behaviour?
+
+### 2. Estimand
+
+* What is the precise estimand for this component?
+* What are the treatment, comparison condition, outcome, and unit of analysis?
+* What experimental contrast identifies the estimand?
+* Under what conditions is the estimand unidentified or uninterpretable?
+
+### 3. Measurement
+
+* What variables and outcomes should be measured?
+* What experimental conditions are required?
+* What minimum controls, baselines, and diagnostic checks are necessary?
+
+Then use these three estimands to guide the broader benchmark design. In particular, ask:
+
+* How should unrelated or background tasks be controlled so that general task difficulty is not mistaken for DCI?
+* How should instruction order, load, reasoning condition, and background composition enter the estimands?
+* How should format constraints and shared structural affordances be tested as possible drivers or moderators?
+* How should target and focal-instruction followability be separated from interference?
+* How should the four joint outcomes, **both / target only / focal only / neither**, be incorporated into the resolution estimand?
+* How should automated parsers and verifiers be validated for accuracy, consistency, false positives, false negatives, and differential bias across experimental arms?
+* How should ceilings, floors, non-uptake, reference contamination, unsatisfiable compositions, truncation, and other execution artefacts affect identification?
+* Which measurements are required to establish that the three components generalise across target families, constraint families, tasks, configurations, and models?
+* Does genuine **directionality** require estimating both (B\rightarrow A) and (A\rightarrow B), and if so, what reciprocal estimands should be used?
+
+Conclude with a compact proposed measurement framework containing, for each of the three components:
+
+**construct → estimand → experimental contrast → primary outcomes → identification conditions**
+
+Then identify the **3–5 highest-priority experiments** needed to establish this framework.
+
+Keep the analysis concise and focused on measurement and experimental design. Red-team the proposed decomposition where necessary rather than assuming that the three components are correct.
+
+---
+
+## Assessment
+
+The three-part decomposition is useful, with one important correction: **they are better treated as three layers of a measurement framework than as three co-equal subconstructs of DCI**.
+
+1. **Dispositional strategy induction** is an antecedent property of the focal instruction (B). It asks what (B) does before interference with (A) is possible.
+2. **Configuration-gated target damage** is the causal core of DCI. It asks whether replacing a matched reference with (B) causes additional failure of (A).
+3. **Resolution profile** is a richer description of the joint outcome after composition. Mathematically, it contains target damage as one of its marginals.
+
+I would also rename the first and third components more cautiously. The documents provide behavioural evidence, not evidence that the model implements a coherent internal “strategy” or deliberately “resolves” conflicts. **A-free structural induction**, **configuration-specific target damage**, and **joint-compliance profile** are safer operational names. The benchmark itself notes that its structural measurements are behavioural proxies and that explicit priority arbitration was not established. 
+
+Let (X) denote a task or superblock draw, let
+
+[
+c=(S,\pi,k,b,E)
+]
+
+denote the surrounding configuration, and let (R_j) be an independently admitted matched reference. Let (Y_A=1) mean that (A) is satisfied and (F_A=1-Y_A).
+
+---
+
+# 1. Dispositional strategy induction
+
+### Construct
+
+This component asks:
+
+> **What systematic change in behaviour does (B) cause when (A) is absent?**
+
+The motivating observation is that the semicolon instruction already shifts outputs toward approximately one sentence without a sentence-count target. That means some later failure of (A) may arise because (B) independently changes generation structure, rather than because the model encounters (A) and (B) and then trades them off. 
+
+It is conceptually distinct from target damage because **no target exists in this experiment**. Strictly speaking, however, this makes it an antecedent of DCI rather than interference itself.
+
+Important alternative explanations include generic additional-instruction difficulty, response-length changes, task-topic effects, wording effects, simple mark emission, and measurement artefacts. The benchmark already reports evidence weakening length and simple mark-emission explanations. 
+
+### Estimand
+
+Let (Z) be a preregistered vector of target-relevant structural outcomes, for example sentence count, paragraph count, clause chaining, splice rate, and response length.
+
+The clean reference-specific estimand is
+
+[
+\sigma_{B,j}(c_0) = \mathbb{E}_X \left[ Z(B,X,c_0,A\text{ absent}) -  Z(R_j,X,c_0,A\text{ absent}) \right].
+]
+
+Here:
+
+* **Treatment:** (B) occupies the slot.
+* **Comparison:** matched (R_j) occupies the same slot.
+* **Outcome:** (Z), preferably a small preregistered structural feature vector.
+* **Unit:** task/superblock (X), with stochastic generations nested within it.
+
+This is preferable to simply comparing “(B) present” against “(B) absent”, because the latter reintroduces generic instruction-load effects. A no-occupant condition should still be included as a descriptive baseline.
+
+The estimand becomes uninterpretable when (B) or (R_j) is not followed, the structural measurements are unreliable, the reference itself violates its admission criteria, or execution conditions differ across arms.
+
+### Measurement
+
+Required conditions are therefore:
+
+* (B)-only and (R_j)-only matched prompts with (A) absent;
+* preferably a no-occupant baseline;
+* several matched references;
+* multiple tasks and instruction paraphrases;
+* dose variation where (B) has a meaningful quantitative parameter.
+
+Minimum diagnostics are occupant compliance, matched prompt load, verified structural parsers, raw-output audits, and confirmation that the purported structural effect is not merely response length or task difficulty.
+
+---
+
+# 2. Configuration-gated target damage
+
+### Construct
+
+This is the **core DCI construct**:
+
+> **How much does replacing a matched occupant (R_j) with (B) causally change failure of the designated target (A), within a specified configuration?**
+
+The qualifier “within a specified configuration” is essential. The benchmark documents show that order can reverse the sign of the effect, backgrounds can create interactions despite negligible main effects, reasoning can remove interference in one context while leaving it in another, and load changes the surface. DCI is therefore not supported as an intrinsic scalar property of the pair ((A,B)). 
+
+Alternative explanations include generic background difficulty, contaminated references, non-uptake of (B), target ceilings or floors, unsatisfiable compositions, task-specific difficulty, and execution artefacts.
+
+### Estimand
+
+For reference (R_j),
+
+[
+\tau^{(j)}_{B\rightarrow A}(c) = \mathbb{E}_X \left[ P(F_A=1\mid B,X,c) - P(F_A=1\mid R_j,X,c) \right].
+]
+
+Thus:
+
+* **Treatment:** slot occupant (B).
+* **Comparison:** matched reference (R_j).
+* **Outcome:** failure of (A).
+* **Unit:** task/superblock (X).
+* **Configuration:** (c=(S,\pi,k,b,E)) is held fixed inside each primitive contrast.
+
+References should remain reference-specific. Averaging references too early can conceal counterfactual sensitivity.
+
+Configuration moderators then become differences of DCI effects. For example, a background moderation estimand is
+
+[
+\Delta_S = \tau(S_1) - \tau(S_0).
+]
+
+This distinction is crucial. A background that simply increases failure in **both** (B) and reference arms creates generic difficulty. A genuine DCI moderator changes the (B-R) difference.
+
+Similarly,
+
+[
+\Delta_\pi=\tau(\pi_1)-\tau(\pi_0),
+\qquad
+\Delta_k=\tau(k_1)-\tau(k_0),
+]
+
+and reasoning moderation can be defined by contrasts across (b).
+
+The estimand is unidentified or directionally censored when the target lacks headroom, (B) or (R_j) is not delivered, the reference itself damages (A), the composition is unsatisfiable, or the execution pipeline is invalid. The benchmark's modern-model results illustrate the most important case: target compliance near 1 makes (0-0=0) a structural zero rather than evidence that DCI is absent. 
+
+### Measurement
+
+Every primitive DCI cell should measure:
+
+* absolute target failure under (B);
+* absolute target failure under every (R_j);
+* (B) and reference compliance;
+* target-alone performance;
+* background-only or matched-control target performance;
+* reasoning use and truncation;
+* task-level variation.
+
+Backgrounds should enter a crossed design:
+
+[
+\text{occupant }(B/R)
+\times
+\text{background }(S_1/S_0),
+]
+
+so that generic background difficulty and genuine moderation can be separated.
+
+Order, load, reasoning condition, and background composition should be treated as **crossed moderators of (\tau)**. They should not be averaged before their primitive surfaces have been inspected.
+
+---
+
+# 3. Resolution profile
+
+### Construct
+
+This component asks:
+
+> **Once (A) and (B) are composed, what joint compliance outcome results?**
+
+There are four states:
+
+[
+(A+,B+),\quad
+(A+,B-),\quad
+(A-,B+),\quad
+(A-,B-).
+]
+
+These distinguish successful composition, preservation of (A) only, preservation of (B) only, and joint failure.
+
+This is substantively useful because the same target-failure rate can arise through very different behaviours. The benchmark already reports cases where the two instructions reach similar structural endpoints through opposite compliance patterns and cases with substantial “neither” mass. 
+
+The red-team point is that this component is **not statistically independent of target damage**. The four-state distribution contains (\tau) as a marginal. It should therefore be treated as a richer outcome representation, rather than a separate causal phenomenon.
+
+### Estimand
+
+For occupant (q\in{B,R_j}), define
+
+[
+\mathbf p_q(c) = 
+\begin{bmatrix}
+P(A+,q+)\
+P(A+,q-)\
+P(A-,q+)\
+P(A-,q-)
+\end{bmatrix}.
+]
+
+The causal joint-compliance contrast is
+
+[
+\boldsymbol{\rho}^{(j)}(c) = \mathbf p_B(c)-\mathbf p_{R_j}(c).
+]
+
+This four-dimensional vector sums to zero and describes how replacing (R_j) with (B) redistributes probability among the four outcomes.
+
+Target damage is already contained within it:
+
+[
+\tau^{(j)}_{B\rightarrow A} = \rho^{(j)}*{A-,q+} + \rho^{(j)}*{A-,q-}.
+]
+
+So Component 2 is a marginal summary of Component 3.
+
+A useful descriptive statistic is
+
+[
+P(B+\mid A-,B),
+]
+
+which answers “when (A) fails, how often does (B) survive?” However, this should **not** be interpreted as a causal contrast across experimental arms, because conditioning on (A)'s post-treatment failure selects different subsets of generations in different arms.
+
+The resolution estimand becomes weak or uninterpretable when either instruction is near a compliance floor or ceiling, when joint satisfaction is impossible, or when the two compliance verifiers have different or arm-dependent error rates. The existing focal floor is therefore a serious limitation: much of the current evidence is effectively target-versus-nothing rather than a clean two-way trade-off. 
+
+### Measurement
+
+Every focal-arm generation should receive both (A) and (B) labels. Every reference-arm generation should analogously receive (A) and (R_j) labels.
+
+Required controls include:
+
+* independent followability calibration for (A), (B), and (R_j);
+* witness-based satisfiability checks;
+* enough headroom for both (A) and (B);
+* independent validation of both verifiers;
+* explicit reporting of all four cells, including zero or rare cells;
+* no interpretation of “(B) only” as deliberate prioritisation without an additional causal test.
+
+---
+
+# Cross-cutting benchmark design
+
+### Background tasks and unrelated difficulty
+
+Use backgrounds as crossed treatments, not merely as additional prompt content. For each background (S), estimate both:
+
+[
+D_S = P(F_A\mid R,S) - P(F_A\mid R,S_0),
+]
+
+which measures generic background-induced difficulty, and
+
+[
+M_S = \tau(S) - \tau(S_0),
+]
+
+which measures genuine moderation of DCI.
+
+A large (D_S) with (M_S\approx0) means “harder prompt”. A large (M_S) means the background changes the focal-specific effect.
+
+### Order, load, reasoning, and background composition
+
+These belong in the configuration:
+
+[
+c=(S,\pi,k,b,E).
+]
+
+Estimate (\tau(c)) and (\boldsymbol\rho(c)) within each preregistered configuration. Use contrasts across configurations to study moderation. Do not report an overall average before showing sign reversals and dispersion.
+
+For strategy induction, first establish a minimal A-free baseline. Context-conditioned versions of (\sigma) can then test whether the supposed disposition itself depends on backgrounds or reasoning.
+
+### Format constraints and structural affordances
+
+The existing evidence does not justify treating “format constraint” as a causal explanation. Exact counting, global scope, and formatting class were insufficient to explain amplification, while clause-boundary affordance was strongly predictive but never causally established. 
+
+The next design should therefore cross at least two properties prospectively:
+
+[
+\text{shared structural unit}
+\times
+\text{shared structural affordance}.
+]
+
+Use multiple independent instructions in every cell. A category represented by one punctuation mark cannot support a family-level inference.
+
+### Followability versus interference
+
+Followability is an **admission condition**, not a DCI score.
+
+Before an instruction enters the benchmark, establish that:
+
+[
+P(A+),\quad P(B+),\quad P(R_j+)
+]
+
+are all non-degenerate under appropriate isolated and compositional calibration conditions.
+
+This matters because the programme found approximately 92.5% compliance with a semicolon count constraint but only about 5% compliance with a usage constraint involving the same mark. Surface similarity therefore does not imply comparable treatment delivery. 
+
+### Parser and verifier validation
+
+Every automated verifier should be validated against blinded human judgements on a held-out, stratified audit sample.
+
+At minimum report:
+
+* sensitivity;
+* specificity;
+* false-positive rate;
+* false-negative rate;
+* disagreement with humans;
+* uncertainty on those rates;
+* error rates separately by experimental arm;
+* error rates by model, output length, and relevant edge-case class.
+
+Include deliberately adversarial fixtures such as abbreviations, unusual punctuation, malformed outputs, boundary cases, and truncations. Differential error matters particularly: identical overall accuracy can still bias (\tau) if the verifier makes more false positives in one arm.
+
+### Identification
+
+Every primitive cell should receive an identification status before contributing to a benchmark summary. At minimum:
+
+`IDENTIFIED`
+`TARGET_CEILING`
+`TARGET_FLOOR`
+`OCCUPANT_NONUPTAKE`
+`REFERENCE_CONTAMINATED`
+`UNSATISFIABLE`
+`VERIFIER_UNCERTIFIED`
+`TRUNCATED_OR_CAP_BOUND`
+`CHANNEL_LEAK`
+`EXECUTION_INVALID`
+`REPLICATES_DEPENDENT`
+
+The benchmark should report the fraction of the sampled configuration space that is actually identified. This prevents mechanically null cells from being interpreted as behavioural negatives.
+
+### Generalisation
+
+The three-layer framework is not established as a general DCI benchmark until the same measurements are reproduced across:
+
+* multiple independently constructed target families;
+* multiple focal/reference families;
+* more than one structural unit;
+* format and non-format constraints;
+* fresh task banks;
+* multiple configurations;
+* multiple model families.
+
+Critically, several independently sampled pairs are required within each proposed family before making statements about “format constraints”, “relational constraints”, or any other class. A single pair per class confounds family with item identity.
+
+### Directionality
+
+If “directional” means only that the benchmark asks a causal question with a designated outcome, estimating (B\rightarrow A) is sufficient.
+
+If the scientific claim is **asymmetry**, genuine directionality requires both directions.
+
+For the forward direction:
+
+[
+\tau^{(j)}_{B\rightarrow A} = E[F_A\mid A+B+S] - E[F_A\mid A+R^{B}_j+S].
+]
+
+For the reverse direction, (B) becomes the designated target and (A) becomes the focal occupant:
+
+[
+\tau^{(\ell)}_{A\rightarrow B} = E[F_B\mid B+A+S] - E[F_B\mid B+R^{A}_\ell+S].
+]
+
+The two directions require their **own matched reference sets** because a valid reference for (B) need not be a valid reference for (A).
+
+The safest primary result is the ordered pair
+
+[
+\left(
+\tau_{B\rightarrow A},
+\tau_{A\rightarrow B}
+\right).
+]
+
+An asymmetry summary
+
+[
+\delta_{A,B} = \tau_{B\rightarrow A} - \tau_{A\rightarrow B}
+]
+
+can be secondary, provided both directions are individually identified.
+
+---
+
+## Proposed measurement framework
+
+| Layer                                    | Construct                                            | Estimand                                            | Experimental contrast                     | Primary outcomes                             | Identification conditions                                                                            |
+| ---------------------------------------- | ---------------------------------------------------- | --------------------------------------------------- | ----------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **A-free structural induction**          | Behaviour induced by (B) before (A) exists           | (\boldsymbol\sigma_{B,j}=E[Z_B-Z_{R_j}])            | (B) vs matched (R_j), (A) absent          | Preregistered structural feature vector (Z)  | Occupant uptake, matched load, valid structural measures, valid references                           |
+| **Configuration-specific target damage** | Causal damage to designated (A)                      | (\tau^{(j)}_{B\to A}(c)=E[F_A(B)-F_A(R_j)])         | Matched focal/reference slot swap         | Target failure plus absolute arm rates       | Target headroom, uptake, reference integrity, satisfiability, valid execution                        |
+| **Joint-compliance profile**             | How probability is distributed across joint outcomes | (\boldsymbol\rho^{(j)}=\mathbf p_B-\mathbf p_{R_j}) | Same slot swap, scoring both instructions | Both / target only / occupant only / neither | Both instructions followable, joint satisfiability, two validated verifiers, no severe floor/ceiling |
+
+The main conceptual conclusion is therefore: **retain the three layers, but make only configuration-specific target damage the defining DCI causal estimand.** A-free structural induction explains what the focal instruction brings into the composition, while the joint-compliance profile explains where the behavioural cost appears. This avoids forcing three analytically useful measurements into the stronger claim that DCI consists of three independent latent phenomena. 
+
+## Highest-priority experiments
+
+1. **A-free matched-induction experiment.** Compare (B), several (R_j), and a no-occupant baseline with (A) absent. Measure preregistered structural outcomes and dose response. This establishes whether Component 1 is real and focal-specific.
+
+2. **Identified factorial DCI experiment.** Use a pair with target headroom and high focal uptake, then cross (B/R_j) with background, order, load, and reasoning. This establishes the causal (\tau(c)) surface while separating moderation from generic difficulty.
+
+3. **Non-degenerate joint-compliance experiment.** Deliberately locate an operating point where both (A) and (B) can pass and fail. Estimate the full four-state vector. This is necessary before making claims about arbitration, sacrifice, or resolution.
+
+4. **Structural-unit × affordance generalisation experiment.** Use several independent instruction pairs in each cell to test whether shared structural units and boundary-like affordances predict or cause stronger interference. This directly tests the strongest current explanatory hypothesis without equating it with punctuation.
+
+5. **Reciprocal, multi-family replication.** For several independently constructed target-focal families and at least two model families, estimate both (\tau_{B\to A}) and (\tau_{A\to B}). This is the experiment needed to justify the term **directional** and to establish that the framework extends beyond sentence-count/punctuation DCI.
+
+---
+
+
+
+
+
+
