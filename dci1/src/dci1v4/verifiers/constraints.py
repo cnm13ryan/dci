@@ -11,10 +11,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from dci1v4.errors import InstrumentError
-from dci1v4.target import TARGET_WORD
+from dci1v4.verifiers.target import TARGET_WORD
 
 __all__ = ["TARGET_WORD", "TARGET_GRID", "FOCAL_GRID", "REFERENCE_LADDERS",
-           "KINDS", "Constraint", "registered_severities"]
+           "FAMILY_IDS", "N_LADDER_SEVERITIES", "KINDS", "Constraint",
+           "registered_severities"]
 
 TARGET_GRID = tuple(range(1, 9))                    # A: n
 FOCAL_GRID = (7, 8, 9, 10)                          # B: m
@@ -32,7 +33,9 @@ REFERENCE_LADDERS: dict[str, tuple[int, ...]] = {
     "RF8": tuple(range(0, 9)),    # words ending with y
 }
 
-KINDS = ("A", "B") + tuple(REFERENCE_LADDERS)
+FAMILY_IDS = tuple(REFERENCE_LADDERS)
+N_LADDER_SEVERITIES = sum(len(g) for g in REFERENCE_LADDERS.values())   # 94
+KINDS = ("A", "B") + FAMILY_IDS
 
 
 def registered_severities(kind: str) -> tuple[int, ...]:

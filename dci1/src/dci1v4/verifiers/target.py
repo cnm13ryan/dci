@@ -10,7 +10,7 @@ graded-score mappings live in ``dci1v4.compliance`` (§7.4), not here.
 """
 from __future__ import annotations
 
-from dci1v4.words import alpha_runs
+from dci1v4.verifiers.words import alpha_runs
 
 TARGET_WORD = "however"
 

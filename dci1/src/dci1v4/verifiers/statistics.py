@@ -15,8 +15,8 @@ from __future__ import annotations
 
 from typing import Callable
 
-from dci1v4.constraints import REFERENCE_LADDERS
-from dci1v4.words import words_lower
+from dci1v4.verifiers.constraints import REFERENCE_LADDERS
+from dci1v4.verifiers.words import words_lower
 
 
 def focal_statistic(text: str) -> int:
