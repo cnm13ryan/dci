@@ -13,6 +13,73 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-19 — DCI-1 v4: a fresh study, and two findings that move v4r2's own numbers
+
+**What changed.** A complete implementation of `DCI1_preregistration_v4r2.md`
+under `dci1/src/dci1v4/`, isolated from v2, v3 and the B+R pilot: its own
+namespace, its own evidence and durable roots, its own root seeds and
+`dci1v4:` domain strings, its own 624-topic bank, and no scientific import of
+any earlier DCI module. The protocol is **not frozen** and no confirmatory
+generation has run; Gate 5 and confirmatory generation are implemented and
+refuse to execute.
+
+**What measurement changed for v4.** Everything, relative to v3, because v4r2
+is a different protocol: the primitive is the per-constraint compliance vector
+rather than target failure; the outcome scale is compliance rather than
+failure; references are matched to **A** on solo compliance rather than to B on
+solo failure; order is a cell-level factor; all M draws enter the cell mean and
+no draw selector exists; a composed generation yields two observations. None of
+this reinterprets a v3 number: v3's evidence tree is untouched and v4 reads it
+only as design evidence, through one guarded door that stamps every result
+non-confirmatory.
+
+**What measurement changed for v4r2's registered constants.** Two pre-freeze
+checks produced figures that differ from the ones v4r2 carries, and both bear
+on decisions the researcher has not yet made.
+
+* **C6, the companion-difficulty anchor.** v4r2 §13.1 and the change summary
+  report the reference-minus-A solo gap as +0.198 (E2B) and +0.210 (E4B),
+  taking `P(A solo)` from the v3 confirmatory target-alone arm and the
+  reference rates from the Gate 2A cells on a different topic set. Reading
+  `solo:A:<n*>` from the Gate 2A cache instead puts A and every reference on
+  the same 96 topics and the same estimator, which is what C6 asks for, and
+  the gap is **+0.164 (E2B) and +0.101 (E4B)**. Only 4 of 32 measured rungs
+  sit within the registered 0.10 caliper of A on the v3 four-point grid.
+* **C12, the allocation.** §16.1 registers phi = 0.27 under an assumed
+  among-reference correlation of 1 and phi ~ 0.37 under 0.5, both fitted to
+  the pilot's reported interval widths. Estimated directly from the pilot rows
+  on the outcome the design uses — B re-scored under the v4 instrument at the
+  pilot's own m\* — the among-reference correlation is **0.72** and phi is
+  **0.556 (E2B) and 0.441 (E4B)** pooled. Pooled phi carries the pilot's
+  order variance, which the v4 design cannot have because order is
+  within-block; estimated inside each order stratum it is **0.395**. At 0.395
+  the registered 384 blocks at M = 4 still meets every precision precondition,
+  by 0.0008 on the half-width of D. At phi = 0.44 it stops qualifying and the
+  registered menu rule moves to 480 blocks at M = 4, 48,000 generations per
+  model.
+
+**Which results are affected.** No existing result. v3's evidence, its records
+and its reported numbers are unchanged and unreinterpreted; the B+R pilot's
+rows are unchanged and were re-scored from raw text under the current v4
+instrument with agreement 1.000 against its recorded verdicts (C13). What the
+two findings affect is prospective: the feasibility of the §13.2 caliper (C7)
+and the choice of allocation (V1), both of which are still open.
+
+**Comparability.** v3 and v4 numbers are not comparable and are never compared:
+different estimands, different outcome scale, different topics, different
+instrument population, different design. C18 confirms the one algebraic bridge
+that does exist — v4's demoted Delta^A reproduces v3's recorded
+`secondary.pooled_swap_effect` exactly from the v3 rows, at -0.009548611 and
++0.065104167 — and confirms the compliance/failure identity that makes the
+demotion argument rest on rows rather than on a summary.
+
+**Evidence.** `dci1/docs/v4_prefreeze/` (one JSON per check, C1 to C20),
+`docs/v4_traceability.md`, `dci1/tests_v4/` (316 tests: T1 to T14 plus the
+anti-regression group), and the signed v4 records under
+`dci1/evidence/dci1-v4/`.
+
+---
+
 ## 2026-08-13 — figure data admission: the guard moved onto the mandatory path
 
 **What changed.** `plotdata.load_all_reasoning` refused the deprecated shared-seed
