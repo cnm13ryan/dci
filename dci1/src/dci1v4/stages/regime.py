@@ -21,10 +21,10 @@ nearest A's pre-screen solo compliance. **The shortlist is written before Gate
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Sequence
 
+from dci1v4.design.cells import Cell, Constituent
 from dci1v4.design.prompts import prompt_hash, render
 from dci1v4.errors import ProtocolError, TerminalStatus
 from dci1v4.protocol import constants as C
@@ -42,46 +42,58 @@ CAP_FIXTURE_N = 3
 CAP_FIXTURE_M = 8
 
 
-@dataclass(frozen=True)
-class ScreenCell:
-    cell_id: str
-    kind: str | None
-    severity: int | None
-    load: int
-    topic_id: str
-    prompt: str
-    prompt_hash: str
-    draws: int
+def _screen_cell(stage: str, topic: dict[str, Any], *, cell_type: str,
+                 constituents: tuple[Constituent, ...], draws: int) -> Cell:
+    """A screen cell is an ordinary v4 cell whose block is its own topic.
+
+    Reusing ``design.cells.Cell`` keeps the screen on exactly the same row
+    schema, seed derivation and integrity path as every other stage; a
+    parallel cell type would be a second place for those to drift.
+    """
+    prompt = render(topic["question"], [c.text for c in constituents])
+    return Cell(cell_id=f"{stage}:{topic['topic_id']}:{cell_type}",
+                stage=stage, cell_type=cell_type, topic_id=topic["topic_id"],
+                block_id=topic["topic_id"], block_index=None,
+                constituents=constituents, order=None, prompt=prompt,
+                prompt_hash=prompt_hash(prompt), draws=draws)
 
 
 def cap_selection_cells(prescreen_topics: Sequence[dict[str, Any]]
-                        ) -> list[ScreenCell]:
-    """The §12.1 subject-balanced 96-prompt set, at loads zero, one and two."""
-    cells: list[ScreenCell] = []
+                        ) -> list[Cell]:
+    """The §12.1 subject-balanced 96-prompt set, at loads zero, one and two.
+
+    Four prompts per pre-screen topic: one with no constraint, one with A, one
+    with B, and one with both. §12.1 requires all three loads to be present,
+    requires the selection to read the constrained prompts only, and requires
+    the zero-constraint truncation rate to be recorded separately — the three
+    things v3's cap selection did not do, and the reason its no-constraint arm
+    was measured on mostly truncated text (T-7).
+    """
+    cells: list[Cell] = []
     for position, topic in enumerate(prescreen_topics):
         w = position % C.N_WORDINGS
-        target = wording("A", w, CAP_FIXTURE_N)
-        focal = wording("B", w, CAP_FIXTURE_M)
-        variants = [
-            ("load0", [], 0),
-            ("load1:A", [target], 1),
-            ("load1:B", [focal], 1),
-            ("load2:A+B", [target, focal], 2),
-        ]
-        for label, lines, load in variants:
-            prompt = render(topic["question"], lines)
-            cells.append(ScreenCell(
-                cell_id=f"cap:{topic['topic_id']}:{label}",
-                kind=None, severity=None, load=load,
-                topic_id=topic["topic_id"], prompt=prompt,
-                prompt_hash=prompt_hash(prompt), draws=1))
+        target = Constituent("A", "A", CAP_FIXTURE_N, 1, w,
+                             wording("A", w, CAP_FIXTURE_N))
+        focal = Constituent("B", "B", CAP_FIXTURE_M, 1, w,
+                            wording("B", w, CAP_FIXTURE_M))
+        focal_second = Constituent("B", "B", CAP_FIXTURE_M, 2, w,
+                                   wording("B", w, CAP_FIXTURE_M))
+        for cell_type, constituents in (("cap:load0", ()),
+                                        ("cap:load1:A", (target,)),
+                                        ("cap:load1:B", (focal,)),
+                                        ("cap:load2:A+B",
+                                         (target, focal_second))):
+            cells.append(_screen_cell("prescreen", topic,
+                                      cell_type=cell_type,
+                                      constituents=constituents, draws=1))
     if len(cells) != C.CAP_SELECTION_PROMPTS:
         raise ProtocolError(f"the cap-selection set holds {len(cells)} "
                             f"prompts, not {C.CAP_SELECTION_PROMPTS}")
     loads = {c.load for c in cells}
     if loads != set(C.CAP_SET_LOADS):
-        raise ProtocolError(f"the cap-selection set carries loads {sorted(loads)}, "
-                            f"and §12.1 requires {list(C.CAP_SET_LOADS)}")
+        raise ProtocolError(f"the cap-selection set carries loads "
+                            f"{sorted(loads)}, and §12.1 requires "
+                            f"{list(C.CAP_SET_LOADS)}")
     return cells
 
 
@@ -120,27 +132,29 @@ def select_cap(truncation_by_cap: dict[int, dict[str, float]]) -> dict[str, Any]
                      "(§12.1)")}
 
 
-def ladder_screen_cells(prescreen_topics: Sequence[dict[str, Any]]
-                        ) -> list[ScreenCell]:
-    """§12.2: the full n grid, the full m grid, and all 94 ladder severities
-    on the 24 pre-screen topics at one draw per cell."""
+def ladder_kinds() -> list[tuple[str, int]]:
+    """The full n grid, the full m grid, and all 94 ladder severities."""
     kinds: list[tuple[str, int]] = [("A", n) for n in TARGET_GRID]
     kinds += [("B", m) for m in FOCAL_GRID]
     for family, ladder in REFERENCE_LADDERS.items():
         kinds += [(family, q) for q in ladder]
+    return kinds
 
-    cells: list[ScreenCell] = []
+
+def ladder_screen_cells(prescreen_topics: Sequence[dict[str, Any]]
+                        ) -> list[Cell]:
+    """§12.2: every registered severity on the 24 pre-screen topics, one draw
+    per cell. (8 + 4 + 94) x 24 = 2,544 generations."""
+    kinds = ladder_kinds()
+    cells: list[Cell] = []
     for position, topic in enumerate(prescreen_topics):
         for offset, (kind, severity) in enumerate(kinds):
             w = (position + offset) % C.N_WORDINGS
-            prompt = render(topic["question"],
-                            [wording(kind, w, severity)])
-            cells.append(ScreenCell(
-                cell_id=f"ladder:{topic['topic_id']}:{kind}:{severity}",
-                kind=kind, severity=severity, load=1,
-                topic_id=topic["topic_id"], prompt=prompt,
-                prompt_hash=prompt_hash(prompt),
-                draws=C.LADDER_SCREEN_DRAWS))
+            constituent = Constituent(kind, kind, severity, 1, w,
+                                      wording(kind, w, severity))
+            cells.append(_screen_cell(
+                "prescreen", topic, cell_type=f"ladder:{kind}:{severity}",
+                constituents=(constituent,), draws=C.LADDER_SCREEN_DRAWS))
     expected = len(kinds) * len(prescreen_topics)
     if len(cells) != expected:
         raise ProtocolError(f"{len(cells)} ladder cells, expected {expected}")
