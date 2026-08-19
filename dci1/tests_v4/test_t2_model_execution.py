@@ -72,9 +72,19 @@ def test_the_registered_decoding_policy():
     assert plan["top_k"] == 50
     assert plan["dtype"] == "bfloat16"
     assert plan["tensor_parallel_size"] == 1
-    assert plan["max_new_tokens"] in C.COMPLETION_CAPS
-    assert plan["revision"] == spec.revision
+    assert plan["generation_ceiling"] in C.COMPLETION_CAPS
+    assert plan["answer_tokens"] == plan["generation_ceiling"]
+    assert plan["model_revision"] == spec.revision
     assert plan["thinking_policy"] == spec.thinking_policy
+    # Every backend-consumed field is explicit; the seam's registry supplies
+    # nothing, so a default that changed on the far side cannot silently
+    # change the experimental condition.
+    for field in ("model_family", "quantization", "enforce_eager",
+                  "disable_custom_all_reduce", "cpu_offload_gb",
+                  "engine_seed", "trust_remote_code", "reasoning_mode",
+                  "strategy", "skip_special_tokens"):
+        assert field in plan, field
+    assert plan["reasoning_mode"] == "NO_THINKING"
 
 
 def test_the_greedy_sensitivity_plan_is_temperature_zero():
@@ -82,6 +92,8 @@ def test_the_greedy_sensitivity_plan_is_temperature_zero():
     plan = build_plan(spec, stage="greedy", max_new_tokens=768,
                       temperature=C.GREEDY_TEMPERATURE)
     assert plan["temperature"] == 0.0
+    assert plan["decoding_policy"] == "greedy"
+    assert plan["top_k"] == 0          # the seam spells top-k off as 0
 
 
 def test_the_serialised_plan_pins_concurrency_at_one():

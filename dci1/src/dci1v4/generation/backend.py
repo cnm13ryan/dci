@@ -83,28 +83,65 @@ class GpuLock:
         self._handle.close()
 
 
+#: Engine seed for the shared execution primitive. Distinct from every
+#: scientific seed: per-request seeds travel on the request and are derived
+#: from experimental identity (protocol/seeds.py), and this value only fixes
+#: engine-level state the backend needs.
+ENGINE_SEED = 20260819
+
+
 def build_plan(spec, *, stage: str, max_new_tokens: int,
                temperature: float = 0.7, top_p: float = 0.9,
-               top_k: int = 50, serialised: bool = False) -> dict[str, Any]:
-    """The registered decoding policy for one stage (§6.1 registered form)."""
+               top_k: int = 50, chunk_size: int = 32,
+               skip_special_tokens: bool = True,
+               serialised: bool = False) -> dict[str, Any]:
+    """The registered decoding policy for one stage, in the seam's own schema.
+
+    Every backend-consumed field is explicit and the backend registry supplies
+    nothing: a default that changed on the far side of the seam would be an
+    unlogged change of experimental condition. ``reasoning_mode`` is
+    NO_THINKING for every registered v4 model — the hybrid Qwen has thinking
+    disabled through its chat template's own switch, and the other three have
+    no thinking channel at all (§6.1).
+    """
     plan: dict[str, Any] = {
         "model_id": spec.model_id,
-        "revision": spec.revision,
+        "model_revision": spec.revision,
+        "model_family": spec.family,
         "dtype": spec.dtype,
+        "quantization": "none",
         "tensor_parallel_size": spec.tensor_parallel_size,
         "gpu_memory_utilization": spec.gpu_memory_utilization,
+        "disable_custom_all_reduce": True,
+        "enforce_eager": True,
+        "cpu_offload_gb": 0.0,
         "max_model_len": spec.max_model_len,
-        "max_new_tokens": max_new_tokens,
+        "engine_seed": ENGINE_SEED,
+        "trust_remote_code": False,
+        "limit_mm_per_prompt": None,
         "temperature": temperature,
         "top_p": top_p,
-        "top_k": top_k,
+        # The seam spells "top-k off" as 0 on input; a registered positive
+        # value passes through unchanged.
+        "top_k": top_k if temperature > 0 else 0,
+        "generation_ceiling": max_new_tokens,
+        "answer_tokens": max_new_tokens,
+        "chunk_size": chunk_size,
+        "deadline_seconds": None,
+        "strategy": "single_phase",
+        "reasoning_mode": "NO_THINKING",
         "chat_template_kwargs": dict(spec.chat_template_kwargs),
+        "reasoning_parser": None,
+        "think_open": "",
+        "think_close": "",
+        "decoding_policy": "greedy" if temperature == 0 else "stochastic",
+        "skip_special_tokens": skip_special_tokens,
         "thinking_policy": spec.thinking_policy,
         "stage": stage,
     }
     if serialised:
         # §10.4 / T-15: concurrent serving produced repeated-run label
-        # instability, so any autorater path serves at concurrency one.
+        # instability, so any autorater path serves one request at a time.
         plan["max_concurrency"] = 1
         plan["chunk_size"] = 1
     return plan
