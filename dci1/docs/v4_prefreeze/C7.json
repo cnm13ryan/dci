@@ -1,0 +1,21 @@
+{
+  "check": "C7",
+  "reason": "the answer is empirical and needs the \u00a712.2 dense ladder screen at the selected cap on the 24 v4 pre-screen topics for each model, followed by \u00a712.3 confirmation on the 96 solo-calibration topics",
+  "registered_outcome_if_it_fails": "EXCESS_NOT_IDENTIFIED and the reduced design of \u00a78.6",
+  "status": "BLOCKED",
+  "what_is_established_here": {
+    "families": 8,
+    "ladder_severities": 94,
+    "note": "every registered severity of every family meets the \u00a77.3 length caliper against A, so no family is excluded for a wording-length reason before any measurement",
+    "severities_meeting_the_length_caliper_at_every_n": {
+      "RF1": 9,
+      "RF2": 9,
+      "RF3": 9,
+      "RF4": 7,
+      "RF5": 13,
+      "RF6": 13,
+      "RF7": 25,
+      "RF8": 9
+    }
+  }
+}

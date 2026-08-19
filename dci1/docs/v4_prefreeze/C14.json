@@ -1,0 +1,26 @@
+{
+  "check": "C14",
+  "legacy_comparison": {
+    "gemma-3n-e2b-it": {
+      "cells": 288,
+      "duplicate_pairs": 5,
+      "overall_rate": 0.017361111111111112,
+      "pairs": 288,
+      "worst_cell": "brpilot-v4:art-and-design-50:br:RF6:4",
+      "worst_cell_rate": 1.0
+    },
+    "gemma-3n-e4b-it": {
+      "cells": 288,
+      "duplicate_pairs": 8,
+      "overall_rate": 0.027777777777777776,
+      "pairs": 288,
+      "worst_cell": "brpilot-v4:art-and-design-48:br:RF4:4",
+      "worst_cell_rate": 1.0
+    }
+  },
+  "note": "the pilot figures above are the B+R pilot's own, under the v3 seed derivation, and are design evidence only",
+  "qualification_threshold": 0.05,
+  "reason": "the realised v4 duplicate rate needs v4 generations; the rate is computed on every cache fill by generation.cache.duplicate_report and reported in the cache report of every stage",
+  "status": "PARTIAL",
+  "v4_seed_derivation": "root seed, stage label, model identity, prompt hash, draw index \u2014 experimental identity, never batch position"
+}

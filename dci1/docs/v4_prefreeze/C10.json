@@ -1,0 +1,9 @@
+{
+  "check": "C10",
+  "implementation": "the per-cell vacuity rate is computed by analysis.observations and gated by family F6; the measurement is what is outstanding",
+  "never_tuned_to_a_rate": true,
+  "reason": "the realised vacuity rate at the registered 20-word threshold is unmeasured per cell type; it needs the \u00a712 and \u00a713.6 calibration stages on real models",
+  "status": "BLOCKED",
+  "threshold_is_fixed_before_confirmatory_generation": true,
+  "threshold_words": 20
+}

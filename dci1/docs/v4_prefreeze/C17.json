@@ -1,0 +1,44 @@
+{
+  "authored": 624,
+  "authoring_record": {
+    "authored_total": 624,
+    "bank_hash": "90f9b19034e1a02326da7661f8a18a15a8059bb469e1f8a7bba3b81acb03d8f2",
+    "released_per_area": {
+      "art and design": 44,
+      "everyday science": 44,
+      "food": 44,
+      "geography": 44,
+      "health and the body": 44,
+      "history": 44,
+      "language and writing": 44,
+      "music": 44,
+      "sport": 44,
+      "technology": 44,
+      "the natural world": 44,
+      "work and organisations": 44
+    },
+    "released_total": 528,
+    "rules_attested_by_the_author": [
+      "answerable from general knowledge without tools, arithmetic, or recall of a specific named fact",
+      "no reused text from any public dataset or examination"
+    ],
+    "rules_checked_mechanically": [
+      "single short open question, no digits, no quoted material",
+      "admitted open interrogative opening",
+      "no letter, word-shape, punctuation-count or capitalisation vocabulary",
+      "disjoint from every v3 topic identity and content hash"
+    ]
+  },
+  "check": "C17",
+  "disjoint_from_v3": true,
+  "released": 528,
+  "sequestered": 96,
+  "split_counts": {
+    "composed": 24,
+    "confirmatory": 384,
+    "prescreen": 24,
+    "solo": 96
+  },
+  "split_hash": "c1dc4c8b5060e224d17051bbd3755db59ed5b976967a3641fcb4ba9f02d83708",
+  "status": "COMPLETE"
+}
