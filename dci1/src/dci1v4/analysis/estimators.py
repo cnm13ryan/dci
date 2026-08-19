@@ -35,6 +35,8 @@ from dci1v4.protocol import constants as C
 Scale = str
 PRIMARY_SCALE: Scale = "compliance"
 VACUITY_FORCED_SCALE: Scale = "non_vacuous_compliance"
+#: §15 family F5: a pass requires the graded score at or above 0.99.
+GRADED_THRESHOLD_SCALE: Scale = "graded_threshold"
 
 
 def _value(obs, scale: Scale) -> float:
@@ -201,11 +203,12 @@ def family_members(table: ObservationTable, configuration: str
                    ) -> dict[str, dict[str, list[float]]]:
     """Every registered family member as a per-block vector (§15).
 
-    F5's graded members are computed from the graded cell mean rather than from
-    a recoded indicator, because a cell mean of a thresholded indicator needs
-    the draw-level graded score; ``analysis.run`` supplies that variant from the
-    rows and passes it in. Here F5 carries the vacuity-forced members, which
-    are exactly the primary estimands on the ``non_vacuous_compliance`` scale.
+    F5 carries two recodings of the primary estimands: the vacuity-forced one
+    of §17.4, which is the primary scale with every vacuous pass turned into a
+    failure, and the graded one, in which a pass requires the graded score at
+    or above 0.99. Both are formed at the draw level in
+    ``analysis.observations``, so neither is a cell mean thresholded after the
+    fact.
     """
     references = reference_slots(table)
     full = len(references) == C.N_FINAL_REFERENCES
@@ -253,6 +256,12 @@ def family_members(table: ObservationTable, configuration: str
     if full:
         out["F5"]["Delta_R|vacuity_forced"] = delta_r(table, configuration,
                                                       scale=forced)
+    graded = GRADED_THRESHOLD_SCALE
+    out["F5"]["D(B<-A)|graded_0.99"] = delivery_loss(
+        table, "B", "A", configuration, scale=graded)
+    if full:
+        out["F5"]["Delta_R|graded_0.99"] = delta_r(table, configuration,
+                                                   scale=graded)
 
     out["F6"] = {"vac(B|A+B)-vac(B solo)":
                  vacuity_difference(table, "A", configuration)}

@@ -128,6 +128,42 @@ def emit_claims(families: Mapping[str, FamilyResult], configuration: str, *,
     return emitted
 
 
+def alternative_rule_recomputation(rows: Sequence[Mapping[str, Any]], *,
+                                   model_id: str, m_draws: int,
+                                   resamples: int = 1000) -> dict[str, Any]:
+    """§23: the primary estimands recomputed under S1, S2 and S3 for the
+    A-side outcome.
+
+    The alternatives never redefine X_A (§9.2): the stored verdict stays S0's
+    and the recomputation rebuilds cell means from the recorded alternative
+    counts. Robustness family only; no claim reads it.
+    """
+    out: dict[str, Any] = {}
+    for rule in ("s1", "s2", "s3"):
+        table = ObservationTable(build_observations(rows, m_draws=m_draws,
+                                                    exact_count_rule=rule))
+        per_configuration = {}
+        for configuration in CONFIGURATIONS:
+            members = {
+                "D(A<-B)": estimators.delivery_loss(table, "A", "B",
+                                                    configuration),
+            }
+            references = estimators.reference_slots(table)
+            if len(references) == C.N_FINAL_REFERENCES:
+                members["Delta^A"] = estimators.delta_a(table, configuration)
+            per_configuration[configuration] = bootstrap_family(
+                members, seed=bootstrap_seed(BOOTSTRAP_ROOT_SEED, model_id,
+                                             configuration, f"S:{rule}"),
+                configuration=configuration, family=f"robustness:{rule}",
+                resamples=resamples)
+        out[rule] = {cfg: {name: vars(member) for name, member
+                           in result.members.items()}
+                     for cfg, result in per_configuration.items()}
+    return {"rules": out,
+            "status": ("robustness family only; S1-S3 never redefine X_A "
+                       "and support no claim (§9.2, §23)")}
+
+
 def run_analysis(rows: Sequence[Mapping[str, Any]], *, model_key: str,
                  model_id: str, m_draws: int, measurement_basis: str,
                  identification_status: Sequence[str] = (),
@@ -156,8 +192,20 @@ def run_analysis(rows: Sequence[Mapping[str, Any]], *, model_key: str,
         outcome["f6_gate"] = f6_gate(outcome["families"])
         per_configuration[configuration] = outcome
 
+    # §23 secondaries that do not need unmasking. The joint-state quantities
+    # and their redistribution are step 12 and belong to the unmasked phase.
+    secondary = {
+        "accidental_compliance": diagnostics.accidental_compliance(rows),
+        "response_length_mediator": diagnostics.length_strata_description(
+            observations),
+        "alternative_exact_count_rules": alternative_rule_recomputation(
+            rows, model_id=model_id, m_draws=m_draws,
+            resamples=min(resamples, 1000)),
+    }
+
     # Step 12 belongs to the unmasked phase and is not run here.
     return {
+        "secondary": secondary,
         "model_key": model_key, "model_id": model_id,
         "within_block": within_block, "resample_shape": shape,
         "per_cell": per_cell,

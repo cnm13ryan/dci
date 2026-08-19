@@ -47,7 +47,8 @@ def _observation(block, outcome, companion, position, compliance, *,
         graded=compliance if graded is None else graded, vacuity=vacuity,
         truncation=0.0,
         non_vacuous_compliance=max(0.0, compliance - vacuity),
-        response_words=60.0, processing_failures=0)
+        graded_threshold=compliance, response_words=60.0,
+        processing_failures=0)
 
 
 def _table(blocks=24, *, solo=0.8, composed=None, vacuity=0.0):
@@ -333,3 +334,85 @@ def test_a_degenerate_all_identical_contrast_is_retained_not_dropped():
     assert member.estimate == pytest.approx(0.0)
     assert member.standard_error == 0.0
     assert math.isfinite(member.simultaneous_lower)
+
+
+def test_every_family_carries_exactly_its_registered_members():
+    """§15: F5 has six members — the four F1 estimands under the
+    vacuity-forced recoding plus D(B<-A) and Delta_R under the graded
+    threshold at 0.99."""
+    table = _table(blocks=16, vacuity=0.02)
+    members = estimators.family_members(table, "outcome_first")
+    for family, registered in C.FAMILY_MEMBERS.items():
+        assert set(members[family]) == set(registered), family
+    assert len(members["F5"]) == 6
+
+
+def test_the_graded_recoding_thresholds_draws_not_a_cell_mean():
+    """A cell whose graded scores straddle 0.99 is not rescued by its mean:
+    the threshold is applied per draw."""
+    from dci1v4.analysis.observations import build_observations
+
+    rows = []
+    for draw, graded in enumerate((1.0, 1.0, 0.5, 0.5)):
+        rows.append({
+            "cell_id": "c", "draw_index": draw, "block_id": "b0",
+            "cell_type": "solo:B", "truncated": False, "word_count": 60,
+            "exact_count_alternatives": {"s0": 0, "s1": 0, "s2": 0, "s3": 0},
+            "scores": [{"slot": "B", "kind": "B", "severity": 8,
+                        "position": 1, "wording_index": 0, "statistic": 8,
+                        "passed": True, "graded": graded, "non_vacuous": True,
+                        "vacuous_pass": False, "processing_failure": False,
+                        "role": "outcome"}],
+        })
+    observation = build_observations(rows, m_draws=4)[0]
+    assert observation.compliance == 1.0
+    assert observation.graded == pytest.approx(0.75)
+    assert observation.graded_threshold == pytest.approx(0.5)
+
+
+def test_the_alternative_exact_count_rules_rescore_only_the_A_side():
+    """§9.2: S1-S3 never redefine X_A; they re-score the A-side for the
+    robustness family and the stored verdict stays S0's."""
+    from dci1v4.analysis.observations import build_observations
+
+    rows = []
+    for draw in range(4):
+        rows.append({
+            "cell_id": "c", "draw_index": draw, "block_id": "b0",
+            "cell_type": "solo:A", "truncated": False, "word_count": 60,
+            "exact_count_alternatives": {"s0": 3, "s1": 1, "s2": 3, "s3": 3},
+            "scores": [{"slot": "A", "kind": "A", "severity": 3,
+                        "position": 1, "wording_index": 0, "statistic": 3,
+                        "passed": True, "graded": 1.0, "non_vacuous": True,
+                        "vacuous_pass": False, "processing_failure": False,
+                        "role": "outcome"}],
+        })
+    assert build_observations(rows, m_draws=4)[0].compliance == 1.0
+    assert build_observations(rows, m_draws=4,
+                              exact_count_rule="s1")[0].compliance == 0.0
+    assert build_observations(rows, m_draws=4,
+                              exact_count_rule="s2")[0].compliance == 1.0
+    with pytest.raises(ProtocolError, match="not a registered"):
+        build_observations(rows, m_draws=4, exact_count_rule="s9")
+
+
+def test_delta_a_is_withheld_unless_all_three_gates_hold():
+    """§11.5: the demoted diagnostic is reported only with outcome headroom,
+    a matched companion, and its configuration quoted."""
+    from dci1v4.analysis import diagnostics
+
+    ok = diagnostics.report_delta_a(
+        0.05, configuration="outcome_first", outcome_solo_compliance=0.70,
+        realised_gaps={"R1": 0.02, "R2": 0.03, "R3": 0.01})
+    assert ok["gates_satisfied"] is True and ok["estimate"] == 0.05
+
+    ceiling = diagnostics.report_delta_a(
+        0.05, configuration="outcome_first", outcome_solo_compliance=0.999,
+        realised_gaps={"R1": 0.02})
+    assert ceiling["gates_satisfied"] is False and "estimate" not in ceiling
+
+    unmatched = diagnostics.report_delta_a(
+        0.05, configuration="outcome_first", outcome_solo_compliance=0.70,
+        realised_gaps={"R1": 0.30})
+    assert unmatched["gates_satisfied"] is False
+    assert unmatched["unmatched_references"] == ["R1"]

@@ -115,6 +115,34 @@ def graded_manipulation_check(present: Sequence[float],
 
 
 # ------------------------------------------------------------- joint states
+def joint_state_redistribution(by_configuration: Mapping[str, Mapping[str, Any]]
+                               ) -> dict[str, Any]:
+    """§11.5: the change in the four-state vector across configurations that
+    do not alter which constraints are present.
+
+    Reported **within** cell and never differenced across cells with different
+    constituents, and computed post-unmasking like the vectors themselves.
+    """
+    configurations = sorted(by_configuration)
+    cells = set.intersection(*[set(v["cells"]) for v in
+                               by_configuration.values()]) \
+        if by_configuration else set()
+    out: dict[str, Any] = {}
+    for cell_type in sorted(cells):
+        vectors = {cfg: by_configuration[cfg]["cells"][cell_type]["vector"]
+                   for cfg in configurations}
+        keys = ("P(0,0)", "P(0,1)", "P(1,0)", "P(1,1)")
+        out[cell_type] = {
+            "per_configuration": vectors,
+            "change": {k: vectors[configurations[-1]][k]
+                       - vectors[configurations[0]][k] for k in keys}
+            if len(configurations) == 2 else None,
+        }
+    return {"computed": "post-unmasking",
+            "supports_claims": "none; reported within cell only (§11.5)",
+            "configurations": configurations, "cells": out}
+
+
 def joint_states(rows: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
     """§11.5: the four-state vector per composed cell, and joint success.
 
@@ -202,6 +230,53 @@ def accidental_compliance(rows: Iterable[Mapping[str, Any]]
                       cell_type=cell_type)}
     return {"role": "accidental-compliance diagnostic; never an outcome (§25)",
             "figures": out}
+
+
+# ------------------------------------------- the demoted v3 estimand, gated
+DELTA_A_GATES = (
+    "outcome headroom: the outcome constraint is not at ceiling",
+    "a companion matched on measured solo compliance",
+    "the configuration is quoted with the number",
+)
+
+
+def report_delta_a(estimate: float, *, configuration: str,
+                   outcome_solo_compliance: float,
+                   realised_gaps: Mapping[str, float],
+                   caliper: float = C.REFERENCE_CALIPER) -> dict[str, Any]:
+    """§11.5, §23: Delta^A is reported only with its three gates satisfied.
+
+    It is v3's registered pooled swap effect re-expressed on the compliance
+    scale, and v4 demotes it: three sign reversals in the legacy corpus, and it
+    is structurally degenerate where the outcome is at ceiling. The gates are
+    checked here and the number is **withheld** when any fails, rather than
+    reported with a caveat attached.
+    """
+    at_ceiling = outcome_solo_compliance > 1 - C.GRADED_DEGENERACY_LOW * 10
+    unmatched = sorted(name for name, gap in realised_gaps.items()
+                       if abs(gap) > caliper)
+    gates = {
+        DELTA_A_GATES[0]: not at_ceiling,
+        DELTA_A_GATES[1]: not unmatched,
+        DELTA_A_GATES[2]: bool(configuration),
+    }
+    satisfied = all(gates.values())
+    record: dict[str, Any] = {
+        "quantity": "Delta^A", "status": "demoted diagnostic",
+        "gates": gates, "gates_satisfied": satisfied,
+        "configuration": configuration,
+        "outcome_solo_compliance": outcome_solo_compliance,
+        "unmatched_references": unmatched,
+        "identity": ("Delta^A = mean_j C(A|A+R_j) - C(A|A+B) "
+                     "= F(A|A+B) - mean_j F(A|A+R_j), the second form being "
+                     "exactly v3's secondary.pooled_swap_effect"),
+    }
+    if satisfied:
+        record["estimate"] = estimate
+    else:
+        record["withheld"] = ("the demoted diagnostic is reported only with "
+                              "all three gates satisfied (§11.5)")
+    return record
 
 
 # -------------------------------------------- companion-difficulty sensitivity
