@@ -46,4 +46,5 @@ markers = [
     "cuda: needs the CUDA stack (Lambda)",
     "slow: full-pipeline regression (minutes)",
     "cloud: touches the Lambda API (never run in CI)",
+    "linux: depends on a Linux-only interface (/proc, cgroups); skipped elsewhere",
 ]

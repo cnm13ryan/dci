@@ -1,0 +1,32 @@
+{
+  "date": "2026-08-18",
+  "phase": "calibration",
+  "inspection_record": {
+    "review": "dci1/reports/gate1_calibration_review.md",
+    "cases": "dci1/reports/gate1_calibration_cases.json",
+    "calibration_provenance": "one-shot held-out calibration (2026-08-17) for all four replications under the signed verifier freeze (record 334bb2b..., producing commit 66232a7) and frozen autorater-config/4; non-exposure, freeze binding, and configuration identity verified before every run",
+    "disagreements_inspected": "31/31 held-out disagreements mechanically cross-checked: the frozen S0 verifier, the independent reimplementation, and a word-boundary regex agree on every case; each classifies as a judge-side miscount (26 of 31 are +-1 counting errors; one severe saturation under-count)",
+    "verifier_changes_since_freeze": "none — verifier sources byte-identical to the freeze manifest at inspection and at sign-off; the post-Gate-1 dispatcher now re-verifies this binding before every downstream stage (Gate 2A onward, plus greedy)",
+    "remaining_known_limitations": [
+      "coverage on the gemma replications (0.935 / 0.943): truncation abstentions on dense high-n texts, transparent in the operational statuses and priced into the identification-interval lower bounds",
+      "E2B directional lean: 11 of its 12 disagreements are verifier-fail -> SATISFIES under-counts on near-miss items",
+      "one severe saturation case (E2B: judge claimed 8 occurrences on a 10-occurrence n=8 text), the known mode surviving at high effort, single occurrence",
+      "autorater evidence is a proxy evaluation only — never human validation, never ground truth; the registered human-validation status remains HUMAN_VALIDATION_UNAVAILABLE"
+    ]
+  },
+  "decision": {
+    "grounds": [
+      "held-out behavior reproduces the development-characterized instrument: overall 985 items, 948 valid (coverage 0.962), 31 disagreements (0.033 of valid), identification interval [0.931, 0.968] against development's [0.929, 0.972]",
+      "no new qualitative failure mode; 37 invalid outputs, all finish_reason=length, same high-n concentration as development; no refusals, no generation failures, no backend anomalies",
+      "no deterministic-verifier defect in any round: mechanical agreement 235/235 (dev r1), 69/69 (r2), 28/28 (r3), 31/31 (calibration)",
+      "no distribution shift: per-model disagreement rates (0.052 / 0.012 / 0.029 / 0.039) sit within the development-round ranges",
+      "the evidence supports exactly the registered weaker claim, verbatim: 'The frozen deterministic verifier was developed and evaluated on held-out responses against the specified autorater under the registered configuration. Independent human validation is unavailable.'"
+    ],
+    "researcher_decision": "retain the registered autorater-config/4 (reasoning_effort high, cap 2048); complete gate1-signoff --phase calibration; then approve autorater calibration (gate1 --approve-autorater-calibration) for all four replications, beginning with gemma-3n-e2b-it"
+  },
+  "supplementary_diagnostics_not_registered_evidence": {
+    "workspace": "autorater_forensics/ (standalone Inspect AI workspace; reads registered evidence read-only; never feeds back into registered records)",
+    "classification": "diagnostic only. The 56-item author-performed blind human calibration (deterministic verifier 56/56 with the human labels on that sample) is NOT registered A1 validation: the labels come from a study author on the workspace's own stratified sample, not from an independent annotator on the registered annotation packet via the registered human-audit pathway. The 8192-cap and serving-context stability results are forward-looking diagnostic evidence for a possible future audited amendment; they do not modify the registered configuration. The sealed 40-item reserved set (sha256 f8831598e275487037e6e51cd85e1df2b33c8e359d13836e500e9ab7b881d7a3) remains sealed.",
+    "reference": "autorater_forensics/experiments/FINDINGS.md — 'Evidence classification and researcher decision (2026-08-18, after E8)'"
+  }
+}

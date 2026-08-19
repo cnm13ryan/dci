@@ -1,0 +1,1838 @@
+{
+ "kind": "gate1_development_inspection_material_round2",
+ "note": "Round 2 under autorater-config/3 (A3.1: reasoning_effort=medium, cap 1024; prompt and parser unchanged). Round 1 is parked under gate1/autorater/superseded/. Classifications are PROVISIONAL; the autorater never changes verifier semantics.",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "round2": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 216,
+      "lower": 0.8780487804878049,
+      "upper": 0.9227642276422764
+     },
+     "autorater_marginal": {
+      "fail": 83,
+      "pass": 152
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 75,
+      "verifier_fail_autorater_pass": 11,
+      "verifier_pass_autorater_fail": 8,
+      "verifier_pass_autorater_pass": 141
+     },
+     "coverage": 0.9552845528455285,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 11,
+      "verifier_pass_autorater_fail": 8
+     },
+     "disagreement_rate": 0.08085106382978724,
+     "disagreements": 19,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 11,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 235,
+     "verifier_marginal": {
+      "fail": 96,
+      "pass": 150
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "2": 1,
+      "3": 5,
+      "5": 4,
+      "6": 2,
+      "7": 1,
+      "8": 6
+     },
+     "by_source": {
+      "prescreen": 12,
+      "validation": 7
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "pool_hash": "c1ea6ee5cc6b5d9ebfac8755f9b0f086dfefaa813f14ea5381009bc74edd0f5a",
+    "split_hash": "f9f4a593fc97919422034ab35f3553d44667d77477be4c6eeddcc1c138bcbdde",
+    "autorater_config_hash": "1b1b4df78a1785917e4c0ab38c58e10809bee5e78f965acda1553f7732cd9d55"
+   },
+   "comparison": {
+    "round1": {
+     "items": 246,
+     "valid": 245,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 1,
+      "refusal": 0
+     },
+     "coverage": 0.9959,
+     "contingency": {
+      "verifier_fail_autorater_fail": 63,
+      "verifier_fail_autorater_pass": 32,
+      "verifier_pass_autorater_fail": 48,
+      "verifier_pass_autorater_pass": 102
+     },
+     "disagreements": 80,
+     "disagreement_rate": 0.3265,
+     "directional": {
+      "verifier_fail_autorater_pass": 32,
+      "verifier_pass_autorater_fail": 48
+     },
+     "interval": {
+      "agree_valid": 165,
+      "lower": 0.6707317073170732,
+      "upper": 0.6747967479674797
+     }
+    },
+    "round2": {
+     "items": 246,
+     "valid": 235,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 11,
+      "refusal": 0
+     },
+     "coverage": 0.9553,
+     "contingency": {
+      "verifier_fail_autorater_fail": 75,
+      "verifier_fail_autorater_pass": 11,
+      "verifier_pass_autorater_fail": 8,
+      "verifier_pass_autorater_pass": 141
+     },
+     "disagreements": 19,
+     "disagreement_rate": 0.0809,
+     "directional": {
+      "verifier_fail_autorater_pass": 11,
+      "verifier_pass_autorater_fail": 8
+     },
+     "interval": {
+      "agree_valid": 216,
+      "lower": 0.8780487804878049,
+      "upper": 0.9227642276422764
+     }
+    },
+    "round1_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "round2_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    }
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:7:0",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold, while also contributing a bit of warmth to the kitchen, and how this process works, incorporating the word \"however\" exactly seven times.\n\nA refrigerator operates using a refrigerant cycle, a process involving a fluid that changes state between liquid and gas. This cycle involves a compressor, condenser, expansion valve, and evaporator. The compressor, the heart of the system, increases the pressure and temperature of the refrigerant. **However**, this process requires energy, and a portion of that energy is released into the surrounding environment, including the kitchen. The kitchen, being warmer, absorbs some of this heat.\n\nThe refrigerant then flows to the condenser, where it releases heat to the outside air, causing it to change back into a liquid. **However**, this heat transfer isn't perfectly efficient. Some heat inevitably leaks into the kitchen, contributing to a slight warming effect. This is a consequence of the system's inherent inefficiencies.\n\nNext, the liquid refrigerant passes through an expansion valve, which reduces its pressure and temperature. **However**, this also causes a small amount of heat to be released. The cooled refrigerant then flows to the evaporator, where it absorbs heat from inside the refrigerator, cooling the food and preventing spoilage. **However**, the refrigerator's cooling process isn't perfectly isolated; some heat is always transferred to the kitchen.\n\nThis heat transfer to the kitchen is a relatively small amount, but it's a factor to consider. **However**, the refrigerator's primary function is to maintain a cold environment *within* the refrigerator compartment. The efficiency of the refrigeration cycle is constantly being improved, minimizing the heat leakage. **However**, even with advancements, a small amount of heat is always released. The overall effect is that the refrigerator cools its interior, but the kitchen experiences a slight warming effect, a trade-off that is largely unavoidable.\n\nTherefore, while the refrigerator actively cools its interior, the kitchen experiences a subtle warming effect. **However**, the net effect is a significant temperature difference between the inside and outside of the refrigerator.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:3:1",
+     "n": 3,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread dramatically alters both its texture and flavor through a complex interplay of chemical reactions. Initially, the heat causes the starch molecules in the bread to gelatinize, softening the interior. **However**, this softening is followed by the Maillard reaction, a chemical reaction between amino acids and reducing sugars. This is the primary driver of the characteristic browning and development of complex flavors like nutty, caramel-like notes.\n\nThe Maillard reaction also creates hundreds of different volatile organic compounds, contributing to the aroma and taste. The surface of the bread undergoes physical changes as well; the moisture evaporates, leading to a crispier crust. **However**, this evaporation also concentrates the flavors within the bread, making them more pronounced. Furthermore, the heat denatures proteins in the crust, contributing to its firm, crunchy texture.\n\nTherefore, the combination of physical changes – moisture loss and protein denaturation – and chemical reactions – the Maillard reaction and caramelization – results in a significantly different texture and flavor profile compared to untoasted bread. **However**, it's important to note that the degree of these changes is directly related to the duration and temperature of the toasting process, allowing for a wide range of flavor and texture variations.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly six times in the text.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, let's break down why toasting bread changes its texture and flavor, using the word \"however\" at least six times.\n\nToasting bread fundamentally alters its structure and sensory experience. The primary reason for this change is the application of heat. Initially, the bread's surface is relatively soft and porous. **However**, as heat is applied, the water molecules within the bread begin to evaporate. This evaporation causes the starch molecules to recrystallize, a process that leads to a firmer, denser texture. **However**, the degree of recrystallization is directly related to the duration and intensity of the heat.\n\nFurthermore, the Maillard reaction, a complex series of chemical reactions between amino acids and reducing sugars, becomes prominent during toasting. This reaction is what gives toasted bread its characteristic brown color and, most importantly, its complex, savory flavor. **However**, the Maillard reaction isn't just limited to color; it creates hundreds of different flavor compounds. These compounds are formed when sugars and amino acids react, resulting in nutty, caramel-like, and slightly bitter notes. \n\nThe crust also undergoes significant changes. The outer layers of the bread, which are initially soft, become hardened and develop a crispy texture. **However**, this crispiness isn't simply due to dryness; it's also because the heat causes the proteins in the crust to coagulate and crosslink. This crosslinking creates a network that makes the crust brittle. \n\nTherefore, the changes aren't just superficial. The internal structure changes with the recrystallization of starch, while the external structure transforms due to protein coagulation. **However**, the flavor change is the most noticeable. The Maillard reaction creates a whole new spectrum of tastes that are absent in untoasted bread. \n\n**However**, the specific flavor profile depends on the type of bread and the toasting level. A lightly toasted slice will have a milder, more subtle flavor, while a heavily toasted slice will be intensely flavored and almost caramelized. The overall effect is a transformation from a soft, somewhat bland bread to a flavorful, textured delight.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-50:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times in the text.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The longevity of proverbs compared to the fleeting nature of slang is a fascinating phenomenon, and there are several factors contributing to this difference. Proverbs, unlike slang, often carry a deep cultural weight and are rooted in shared experiences and values. **However**, their survival isn't a simple matter of timeless wisdom. Rather, they persist because they encapsulate universal truths or observations about human nature and society. These truths resonate across generations, offering a framework for understanding the world. **However**, proverbs are often intentionally crafted to be concise and memorable, making them easier to transmit orally and across time.\n\nSlang, on the other hand, is inherently tied to specific social groups and trends. It's a product of the present moment, a way to signal belonging and express contemporary attitudes. **However**, its meaning is often highly contextual and easily misinterpreted by outsiders. As social landscapes shift and new trends emerge, slang inevitably becomes outdated. **However**, this doesn't mean it disappears entirely; it often finds its way into other linguistic forms, sometimes influencing the development of new slang or even becoming incorporated into formal language. \n\nThe reason proverbs endure is also related to their function. They aren't just about expressing a fleeting thought; they’re about imparting wisdom, offering guidance, and providing a sense of shared identity. **However**, the act of repeating a proverb, even if it's a familiar one, reinforces its meaning and strengthens its cultural significance. Slang, by contrast, is often ephemeral, a burst of linguistic energy that quickly dissipates. **However**, even as slang fades, its influence can be seen in the evolution of language itself. \n\nUltimately, proverbs' enduring power lies in their ability to connect with people across time and cultures, offering a timeless reflection of the human condition. **However**, slang's short lifespan is a testament to the ever-changing nature of language and the dynamic social forces that shape it. Therefore, while proverbs persist, slang's rapid decline is a natural consequence of its ephemeral nature.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:music-48:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears only 7 times, not 8.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, let's explore why two singers harmonizing sound different from one singer recorded twice, and why it's a fascinating sonic phenomenon. It's a complex interplay of vocal technique, recording techniques, and the very nature of how sound interacts. Here's a detailed breakdown, using \"however\" eight times.\n\nFirstly, when a single singer is recorded twice, you're essentially creating a duplicate of the same vocal performance. **However**, the resulting sound is generally identical, at least in terms of the fundamental melody and rhythm.  The recording process, with careful attention to microphone placement and signal processing, aims to capture the exact same vocal nuances.  The individual characteristics, the subtle inflections, and the unique timbre are replicated.  **However**, there's a crucial difference in how these duplicates interact.\n\nThe magic happens when two singers harmonize.  The harmonies aren't just simple copies of each other.  They are often built upon different melodic lines, often slightly varied in pitch or rhythm. **However**, the listener's brain actively processes these different lines, creating a richer, more complex soundscape.  The human ear perceives the interplay between the two voices, not just the individual notes.  This is where the distinct difference arises.\n\nConsider the physical aspect.  The two singers are physically different individuals. Their vocal cords vibrate at slightly different frequencies, producing subtly different timbres.  **However**, the harmony isn't just about frequency; it's about the *relationship* between those frequencies. The harmonic intervals (the distance between notes) are altered by the interaction of the two voices. This creates a different texture and emotional impact.\n\nFurthermore, the recording process itself plays a role.  When recording a harmony, the engineers often use techniques to subtly adjust the balance between the two voices.  This is done to achieve a specific sonic aesthetic. **However**, even with these adjustments, the core difference remains: the two voices are not simply identical copies.\n\nThe listener's perception is key.  The brain actively compares the two voices and constructs a new sonic entity.  This process is not a simple summation; it's an interpretation.  **However**, this interpretation is shaped by the musical context and the overall arrangement. The subtle differences in the two voices contribute to the overall texture and emotional depth of the harmony.\n\nIn short, while a single recording is a direct replication, a harmony involves a dynamic interaction between two distinct voices.  **However**, the resulting sound is"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times in the text.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response addressing how a new manager can earn trust from a team that preferred their predecessor, incorporating the word \"however\" exactly five times.\n\nIt's a delicate situation when stepping into a leadership role, especially when the previous manager was well-regarded.  The key is to demonstrate genuine respect for the existing team and their history. **However**, immediately trying to overstep or replace the past leader's methods is a recipe for disaster. A good starting point is to actively listen to the team's concerns and understand what resonated with them about the previous manager. \n\nTransparency is crucial. Be open about your own leadership style and how you plan to approach challenges, but **however** you frame it, avoid making it sound like you're dismissing what came before. Acknowledge the strengths of the previous leader and demonstrate that you value the team's experience. \n\nBuilding trust requires consistent, reliable action.  Focus on delivering results, meeting deadlines, and fostering a supportive work environment.  **However**, even with consistent performance, building trust takes time; it's a process, not an event.  Showing empathy and a willingness to learn from the team's perspectives is essential.  **However**, be prepared to adapt your approach as you learn more about their needs and preferences.  Ultimately, demonstrating a commitment to the team's success, and a willingness to collaborate, will help you earn their respect and trust.  **However**, remember that earning trust is an ongoing effort, and it will take patience and consistent behavior.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times in the text.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "It’s a delicate dance for a new manager to earn the trust of a team that’s clearly comfortable with their predecessor. It's not about immediately mimicking the old manager, but rather demonstrating a genuine commitment to the team's success and well-being. The first step is **however**, acknowledging the existing rapport. Don’t dismiss the team’s positive feelings towards the previous leader. Instead, validate their past experience.\n\n**However**, the new manager needs to clearly articulate *why* they believe they can bring a different, and potentially beneficial, perspective. This requires transparency and open communication.  They should explain their management style, outlining how they plan to support the team's growth and address any concerns the team might have.  **However**, this explanation shouldn't sound defensive or dismissive of the past.\n\n**However**, building trust isn’t a one-time event; it's an ongoing process.  Consistent action is key.  This means demonstrating competence in their role, proactively addressing challenges, and fostering a collaborative environment. **However**, they must also be empathetic and understanding.  The team may have invested time and energy into the previous manager's methods, and a new approach can feel disruptive.\n\n**However**, demonstrating a genuine interest in the team’s individual needs is crucial.  Regular one-on-one meetings, actively soliciting feedback, and recognizing individual contributions can go a long way.  **However**, it’s important to avoid being overly solicitous or appearing to micromanage. \n\n**However**,  the new manager must also be willing to learn from the past.  They can ask questions about what worked well under the previous leader, and how they can build upon those successes.  **However**, this learning should be used to inform their own approach, not to replicate the old manager's methods.  Ultimately, earning trust is about building a relationship built on mutual respect and shared goals.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:everyday-science-04:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word \"however\" appears exactly three times.",
+     "judge_claimed_count": 3,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's how a refrigerator keeps its inside cold while indirectly warming the kitchen, and why the word \"however\" appears three times:\n\nThe refrigerator operates on the principle of heat transfer. It uses a refrigerant, a special fluid, in a closed loop system. This system absorbs heat from inside the refrigerator compartment, cooling the air within. The refrigerant absorbs heat, becoming a gas, and then releases that heat outside the refrigerator through the condenser coils (usually on the back or bottom).  The evaporator coils, located inside the fridge, absorb heat from the interior. This is the key to keeping the food cold.  **However**, the heat that's released from the condenser coils isn't simply dissipated into the surrounding air.\n\nThe heat from the condenser coils is transferred to the kitchen environment. This happens because the coils are typically located near the back of the refrigerator, and the heat radiates outwards.  The kitchen is a larger volume than the refrigerator, so the heat dissipates more readily. **However**, the refrigerator's design, including its insulation and ventilation, helps to minimize the amount of heat escaping into the kitchen.  **However**, the process isn't perfectly efficient; some heat inevitably transfers from the refrigerator to the kitchen, resulting in a slight warming effect.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why wet roads and damp fabric appear darker than dry ones, using the word \"however\" at least five times:\n\nThe reason wet roads and damp fabric appear darker is primarily due to the way light interacts with the surface. Dry surfaces reflect light more directly, creating a brighter appearance. **However**, when a surface is wet, the water molecules scatter the light. This scattering effect diffuses the light, preventing it from reflecting back to our eyes in a concentrated beam.  **However**, the scattered light is often a combination of wavelengths, and certain wavelengths, particularly those in the blue and violet spectrum, are more readily absorbed by the water and the underlying material.  **However**, the overall effect is a reduction in the intensity of reflected light, resulting in a darker appearance.  **However**, the water also tends to absorb some of the light, further contributing to the darkening.  **However**, it's important to remember that the exact color difference can vary depending on the material, the type of water, and the angle of observation.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:food-49:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread changes both its texture and flavor through a complex interplay of chemical reactions. Primarily, the heat causes the starches in the bread to gelatinize, meaning they absorb water and swell. This results in a softer, more pliable interior. **However**, the Maillard reaction, a chemical reaction between amino acids and reducing sugars, is a major contributor to the flavor development. This reaction creates hundreds of different flavor compounds, contributing to the characteristic nutty, savory, and slightly caramelized taste we associate with toasted bread. \n\nFurthermore, the heat also causes moisture to evaporate from the surface of the bread. This evaporation hardens the crust, creating a desirable crispness. **However**, this hardening also changes the surface chemistry, leading to the development of a more complex flavor profile. The browned surface becomes more porous, allowing for greater interaction with air and further flavor development. \n\nUltimately, the combination of gelatinization, Maillard reaction, and moisture loss creates a distinctly different texture and flavor compared to untoasted bread. It's a transformation driven by heat, and the specific compounds formed are responsible for the delightful changes. **However**, the exact intensity and nuances of these changes depend on factors like the type of bread, the temperature, and the duration of toasting.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:food-49:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears nine times, exceeding the required eight.",
+     "judge_claimed_count": 9,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread undergoes a fascinating transformation, fundamentally altering both its texture and flavor. The process starts with the application of heat, which initiates a complex series of chemical reactions. **However**, the initial change is primarily textural. The heat causes the starch molecules in the bread to gelatinize, meaning they absorb water and swell. **However**, this gelatinization is quickly followed by the Maillard reaction.\n\nThe Maillard reaction is a chemical reaction between amino acids and reducing sugars, and it's the key to the characteristic browning and flavor development of toasted bread. **However**, this reaction isn't just about color; it's responsible for hundreds of flavor compounds. These compounds are complex and contribute to the nutty, savory, and slightly caramelized notes we associate with toasted bread. **However**, the physical structure of the bread also changes. The crust becomes harder and crisper as the moisture evaporates. This is because the heat causes the cell walls in the crust to collapse, and the proteins become cross-linked, creating a more rigid structure. **However**, the interior also changes. The soft, fluffy crumb becomes denser and more porous.\n\nFurthermore, the heat modifies the aroma of the bread. **However**, the heat breaks down the complex molecules within the bread, releasing volatile compounds that contribute to the toasted aroma. **However**, this aroma is different from the aroma of untoasted bread, which is often more yeasty and sweet. **However**, the final result is a significantly different sensory experience, making toasted bread a desirable food item. The changes are complex and interconnected; texture and flavor are inextricably linked in the toasting process.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's an explanation of the urban heat island effect, focusing on why big cities are noticeably warmer than surrounding rural areas, with the word \"however\" used five times:\n\nBig cities tend to be warmer than the surrounding countryside due to a phenomenon known as the urban heat island effect. This effect arises from a complex interplay of factors. One significant contributor is the abundance of dark surfaces like asphalt and concrete. These materials absorb and retain more heat from the sun than natural surfaces like grass or soil, which leads to higher temperatures. **However**, this isn't the only reason.\n\nFurthermore, cities have less vegetation. Trees and plants provide shade and release moisture through transpiration, which cools the environment.  The lack of greenery in urban areas means less natural cooling. **However**, the dense construction also reduces wind flow.  Wind helps to dissipate heat, and a lack of open space inhibits this process. \n\nAnother crucial aspect is the concentration of human activity.  Cities have more buildings, vehicles, and industrial processes, all of which generate heat.  **However**, the density of buildings also traps heat, preventing it from escaping into the atmosphere. This creates a localized warming effect.\n\nMoreover, the air pollution in urban areas can trap heat, acting like a blanket and further contributing to higher temperatures. **However**, it's important to note that the urban heat island effect isn't solely about pollution; it's a combination of several factors working together.\n\nTherefore, while the urban heat island effect is a complex issue with many contributing factors, it’s clear that cities experience significantly higher temperatures than their rural counterparts. **However**, mitigating the urban heat island effect requires a multi-pronged approach, including increasing green spaces, promoting sustainable building practices, and reducing reliance on fossil fuels.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears only seven times, not eight.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why big cities tend to be warmer than surrounding rural areas, incorporating the word \"however\" eight times:\n\nThe phenomenon of urban heat islands (UHI) is a complex one, but it boils down to several factors. One primary reason is the abundance of impervious surfaces like asphalt and concrete in urban areas. These materials absorb and retain significantly more solar radiation than natural surfaces like grass or soil. **However**, this absorbed heat isn’t released quickly; it’s stored and radiated back into the atmosphere. \n\nAnother significant contributor is the lack of vegetation in cities. Trees and plants provide shade and release moisture through transpiration, which cools the air. **However**, urban areas typically have far fewer trees and green spaces compared to rural environments. This lack of greenery means less natural cooling. Furthermore, buildings themselves contribute to the heat island effect. **However**, building materials like dark roofs and walls absorb even more heat than pavement.\n\nThe concentration of people and vehicles in cities also plays a role. These activities generate heat through human metabolism and exhaust fumes. **However**, the density of buildings in urban areas often limits air circulation, trapping the heat and preventing it from dissipating effectively. This trapped heat further intensifies the temperature difference.\n\nFurthermore, the urban heat island effect can be exacerbated by the urban canyon – the narrow space between tall buildings. **However**, this canyon also restricts wind flow, hindering the dispersal of heat. Therefore, the combined effect of these factors creates a warmer environment in cities. **However**, it's important to note that the severity of the UHI effect varies depending on factors like city size, climate, and urban planning.\n\nIt's worth mentioning that attempts are being made to mitigate the urban heat island effect. **However**, reversing the trend requires significant investment in green infrastructure, reflective roofing materials, and improved urban planning. Ultimately, understanding the causes of the urban heat island effect is crucial for developing effective strategies to combat its impacts.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly twice in the text.",
+     "judge_claimed_count": 2,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The emergence of the first universities in medieval towns was a gradual process, driven by a confluence of factors. Initially, centers of learning arose organically, often linked to cathedral schools or monastic institutions. These institutions, focused on religious texts and scholarship, began to expand their curriculum and attract students from beyond their immediate vicinity. The growing demand for skilled scribes and administrators, fueled by the burgeoning church and expanding trade, created a need for more formalized education. \n\nHowever, the development of universities as distinct institutions was largely spurred by the rise of towns and cities. These urban centers provided the necessary infrastructure – housing, markets, and a concentration of intellectual activity – to support a larger student population. The universities, such as the University of Bologna (Italy) in the 11th century, started to offer a broader range of subjects, including law, medicine, and the liberal arts, moving away from solely religious instruction. \n\nInitially, these universities primarily served the needs of the clergy, legal professionals, and the wealthy elite. Students from noble families, merchants, and those seeking advancement within the church or legal system could access higher education. However, they also gradually began to attract students from diverse backgrounds, including those seeking to become physicians, artisans, or administrators.  It’s important to note that access was still limited, and often dependent on financial means and social standing, however, the seeds of a more inclusive educational system were being sown.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The emergence of the first universities in medieval towns was a gradual process, driven by a confluence of factors. Initially, centers of learning arose organically within existing monastic institutions and cathedral schools. Monasteries, particularly those with libraries and a strong emphasis on scholarship, provided a foundation for teaching. Cathedral schools, attached to cathedrals, offered instruction in theology and scripture, serving the clergy and the wealthy elite. **However**, these institutions were often limited in scope and focused primarily on religious studies.\n\nThe key catalyst for formal university development was the growth of towns and the increasing demand for skilled professionals. As towns flourished, so did the need for individuals who could manage trade, administer justice, and conduct scientific inquiry. This demand spurred the establishment of dedicated schools focused on specific disciplines like law, medicine, and arts. These schools often grew around existing guilds, which provided practical training and a sense of community. **However**, the initial focus wasn't solely on the needs of the towns themselves; they were often closely linked to the Church and the preservation of classical learning.\n\nThe early universities, like those in Bologna (law), Paris (theology and arts), and Oxford (arts and medicine), primarily served the clergy, nobility, and wealthy merchants. The curriculum was heavily weighted towards theology and classical texts, and access was often restricted to those with the resources and social standing to pay tuition and fees.  **However**, over time, universities began to attract a broader student body, including those from lower social classes, although this remained a gradual and often contested process.  The universities thus represented a significant shift in the intellectual landscape, fostering a more secular and independent pursuit of knowledge, albeit initially within a highly stratified society.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-50:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times in the text.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Proverbs and slang offer fascinating insights into language evolution, and their contrasting lifespans are a testament to different linguistic properties. Proverbs, for instance, often survive for centuries because they encapsulate wisdom, cultural values, and universal truths. **However**, their longevity isn’t purely based on timelessness. They are often rooted in shared experiences, historical events, or moral principles that resonate across generations. **However**, proverbs are typically structured as concise, memorable statements that are easily passed down through oral tradition. This inherent accessibility contributes to their persistence. **However**, proverbs rarely change drastically; they tend to maintain their core meaning while adapting slightly to reflect subtle shifts in societal context.\n\nSlang, on the other hand, thrives on novelty and immediate relevance. It's born from fleeting trends, specific subcultures, or current events. **However**, its brevity and context-dependent nature mean that its meaning is often tied to a particular moment in time. A slang term quickly becomes outdated as new expressions emerge. **However**, the rapid turnover of slang means it doesn’t possess the deep historical grounding that proverbs do. **However**, the very speed of slang's creation allows it to reflect contemporary culture directly, making it feel fresh and exciting. **However**, the lack of inherent meaning beyond its immediate context is what ultimately leads to its rapid decay. Ultimately, proverbs are built to last, while slang is built to fade, though both play a vital role in the dynamic evolution of language.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears 7 times, exceeding the required 6.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Tennis players bounce the ball several times before serving, and this is a fundamental rule of the game. The purpose of this bouncing ritual, however, isn't just for show; it’s a crucial element of strategic play. However, the specific number of bounces is dictated by the rules of the sport, and it’s precisely *how* the ball is bounced that distinguishes a legal serve from an illegal one. However, the bounce isn’t simply a matter of luck or finesse; it’s about generating power and control. However, a player must bounce the ball once on each side of the net.  Furthermore, the bounce is designed to give the player a moment to assess the court and decide on the optimal trajectory for their serve. However, failing to adhere to these rules, even unintentionally, results in a fault, and the point is awarded to the opponent. Therefore, the bouncing process is integral to the overall strategic and technical aspects of the game; however, mastering the bounce is essential for success.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, not three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "When a whale dies and sinks to the deep sea floor, a complex process of decomposition begins. The whale's body, composed of organic matter, is gradually broken down by bacteria and fungi. This process releases nutrients like nitrogen, phosphorus, and carbon into the surrounding seawater. **However**, the rate of decomposition is extremely slow due to the cold temperatures and high pressure of the deep ocean. The whale's tissues are also heavily mineralized, meaning they contain a significant amount of calcium carbonate, which slows down the decomposition process even further. \n\nThe released nutrients become available to other organisms in the deep sea ecosystem. These nutrients fuel the growth of bacteria, which in turn support larger organisms like worms, crustaceans, and other invertebrates. **However**, the sheer amount of organic matter released can also create a localized area of nutrient enrichment, potentially impacting the delicate balance of the deep-sea environment.\n\nEventually, the whale's remains can become incorporated into the sediment, contributing to the formation of sedimentary rocks over geological timescales. The carbon in the whale's body is eventually transformed into fossilized material. **However**, this process is a very long one, taking millions of years. So, while the nutrients are released initially, their ultimate fate is a slow and gradual return to the Earth's crust.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times in the text.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response addressing how a new manager can earn trust, incorporating the word \"however\" at least five times.\n\nStepping into a new management role is always a challenge, especially when the team has a history with a previous leader. Earning trust takes time and a genuine effort to build rapport. The first step is to acknowledge the existing sentiment. **However**, it's crucial to avoid dismissing the past – understanding what made the previous manager successful is valuable.  Don't say \"They weren't a good manager\" – instead, say something like, \"I recognize the team had a strong working relationship with [Previous Manager], and I value the contributions they made.\"\n\nBuilding trust isn't about mimicking the past; it’s about establishing a new foundation.  Transparency is key.  Clearly communicate your vision for the team and how you plan to achieve goals.  **However**, be prepared to be open to feedback and willing to adjust your approach based on the team’s input.  Demonstrate your commitment to their success by actively listening to their concerns and incorporating their ideas. \n\nAnother vital element is empowering the team.  Delegating responsibilities and giving them autonomy fosters a sense of ownership and trust.  **However**, it’s important to provide clear expectations and support to ensure they can succeed.  Show that you believe in their capabilities.  \n\nIt's also essential to be consistent and reliable.  Follow through on promises and be dependable in your actions.  **However**, this can be difficult when you're new, so be upfront about any limitations or areas where you might need to learn.  Finally, remember that earning trust is a continuous process. It won't happen overnight.  **However**, consistent effort, empathy, and a genuine desire to support the team will gradually build that crucial foundation.\n\n\n\n"
+    }
+   ],
+   "classification_tally": {
+    "autorater error — under-count by one": 11,
+    "autorater error — over-count by one": 8
+   }
+  },
+  "qwen3-4b": {
+   "round2": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 237,
+      "lower": 0.9634146341463414,
+      "upper": 0.967479674796748
+     },
+     "autorater_marginal": {
+      "fail": 77,
+      "pass": 168
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 70,
+      "verifier_fail_autorater_pass": 1,
+      "verifier_pass_autorater_fail": 7,
+      "verifier_pass_autorater_pass": 167
+     },
+     "coverage": 0.9959349593495935,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 1,
+      "verifier_pass_autorater_fail": 7
+     },
+     "disagreement_rate": 0.0326530612244898,
+     "disagreements": 8,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 1,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 245,
+     "verifier_marginal": {
+      "fail": 72,
+      "pass": 174
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "2": 1,
+      "3": 3,
+      "4": 2,
+      "5": 1,
+      "7": 1
+     },
+     "by_source": {
+      "prescreen": 3,
+      "validation": 5
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "pool_hash": "cc983224a098eb0446ae3a575d2118e783fd2bd72665f5539ee31ebc3957c647",
+    "split_hash": "7aaa102ca5afa6787afa506f6248976b22c31ee457a0eea3f5896e1cfbb1f60e",
+    "autorater_config_hash": "1b1b4df78a1785917e4c0ab38c58e10809bee5e78f965acda1553f7732cd9d55"
+   },
+   "comparison": {
+    "round1": {
+     "items": 246,
+     "valid": 244,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 2,
+      "refusal": 0
+     },
+     "coverage": 0.9919,
+     "contingency": {
+      "verifier_fail_autorater_fail": 62,
+      "verifier_fail_autorater_pass": 9,
+      "verifier_pass_autorater_fail": 14,
+      "verifier_pass_autorater_pass": 159
+     },
+     "disagreements": 23,
+     "disagreement_rate": 0.0943,
+     "directional": {
+      "verifier_fail_autorater_pass": 9,
+      "verifier_pass_autorater_fail": 14
+     },
+     "interval": {
+      "agree_valid": 221,
+      "lower": 0.8983739837398373,
+      "upper": 0.9065040650406504
+     }
+    },
+    "round2": {
+     "items": 246,
+     "valid": 245,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 1,
+      "refusal": 0
+     },
+     "coverage": 0.9959,
+     "contingency": {
+      "verifier_fail_autorater_fail": 70,
+      "verifier_fail_autorater_pass": 1,
+      "verifier_pass_autorater_fail": 7,
+      "verifier_pass_autorater_pass": 167
+     },
+     "disagreements": 8,
+     "disagreement_rate": 0.0327,
+     "directional": {
+      "verifier_fail_autorater_pass": 1,
+      "verifier_pass_autorater_fail": 7
+     },
+     "interval": {
+      "agree_valid": 237,
+      "lower": 0.9634146341463414,
+      "upper": 0.967479674796748
+     }
+    },
+    "round1_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "round2_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    }
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:3:0",
+     "n": 3,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Wet roads and damp fabric look darker than when they are dry because water fills in the tiny gaps and pores on their surfaces, making them more reflective. However, the added moisture also causes the surface to appear more uniformly shaded, which enhances the perception of color depth. However, this effect is not always consistent, as the actual light absorption can vary. However, the combination of these factors creates the illusion of a darker appearance when the surface is wet."
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:3:1",
+     "n": 3,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "four occurrences",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Wet roads and damp fabric look darker than when they are dry because water fills in the tiny gaps and pores on their surfaces, making them more reflective. However, the presence of water also causes the surface to appear more saturated, which enhances the perception of color. However, when the surface is dry, the light reflects more diffusely, making the color seem less intense. However, this effect is not always consistent, as the actual color of the surface can vary depending on the light source and the surrounding environment."
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:4:0",
+     "n": 4,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears five times, exceeding the required four.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spares others due to differences in how the body processes motion. However, individuals vary in their sensitivity to motion cues. However, the inner ear plays a key role in balancing and orientation, and those with more sensitive inner ears are more prone to motion sickness. However, some people have a stronger ability to adapt to motion, which helps them avoid the symptoms. However, factors like the type of travel, individual psychology, and prior experiences also influence whether someone experiences motion sickness."
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears 6 times, not 5.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Gentle movement often eases stiffness better than complete rest because it promotes blood flow and releases tension in the muscles. However, complete rest can sometimes make stiffness worse by reducing circulation and encouraging stiffness to set in. However, movement also helps to maintain joint flexibility and prevent muscle atrophy. However, it is important to balance movement with rest to avoid overexertion. However, when done properly, gentle movement can be more effective than complete rest. However, the key is to find the right amount of movement that is comfortable and not painful."
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A new manager can earn trust from a team that preferred their predecessor by demonstrating consistency, reliability, and a genuine commitment to the team's success. However, it's important to acknowledge that the team may have formed strong opinions about the previous leader. However, this doesn't mean the new manager can't build rapport and earn their trust. However, the key is to listen actively and show empathy. However, it's also important to set clear expectations and communicate openly. However, the new manager should avoid making assumptions about the team's preferences. However, by taking the time to understand the team's needs and concerns, the manager can build a foundation of trust. However, trust is built over time through consistent actions and reliable results. However, the new manager must remain patient and focused on long-term goals."
+    },
+    {
+     "item_id": "prescreen:everyday-science-36:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Wet roads and damp fabric look darker than when they are dry because water fills in the tiny gaps and pores on their surfaces, making them more reflective. However, the presence of water also causes the surface to appear more uniformly colored, which enhances the perception of darkness. However, this effect is not due to the absorption of light, but rather to the way light interacts with the wet surface. However, when the surface is dry, it has more irregularities that scatter light in different directions, making it appear lighter."
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:4:0",
+     "n": 4,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears five times, exceeding the required four.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Big cities end up noticeably warmer than the countryside around them due to the **urban heat island effect**. This phenomenon occurs because cities have a higher concentration of buildings, roads, and other infrastructure that absorb and retain more heat than natural landscapes. Additionally, human activities such as vehicle traffic, industrial processes, and energy consumption release heat into the environment. \n\nHowever, the **urban heat island effect** is not just a result of physical structures; it is also influenced by the **alteration of land use** and the **reduction of green spaces**. However, the **heat generated by human activity** plays a significant role in raising city temperatures. However, this warming effect is most pronounced during the night when there is less natural cooling. \n\nTherefore, big cities are **notably warmer** than the countryside around them, **however**, this difference can be mitigated through urban planning that incorporates more green spaces and sustainable practices."
+    },
+    {
+     "item_id": "prescreen:history-15:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears three times, exceeding the required two.",
+     "judge_claimed_count": 3,
+     "s0_count": 2,
+     "s0_independent": 2,
+     "word_boundary_regex_count": 2,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Monarchs often clashed with religious authorities over power because both groups sought control over key aspects of society. The monarchy aimed to maintain political authority and governance, while religious authorities, especially in Christian Europe, claimed spiritual and moral authority. This tension was exacerbated by the belief that the church had a divine mandate, which sometimes conflicted with royal power. However, these conflicts were not always inevitable, as some monarchs and religious leaders found ways to cooperate. However, in many cases, the struggle for influence and control led to significant disputes."
+    }
+   ],
+   "classification_tally": {
+    "autorater error — over-count by one": 7,
+    "autorater error — under-count by one": 1
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "round2": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 211,
+      "lower": 0.8612244897959184,
+      "upper": 0.8775510204081632
+     },
+     "autorater_marginal": {
+      "fail": 65,
+      "pass": 176
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 57,
+      "verifier_fail_autorater_pass": 22,
+      "verifier_pass_autorater_fail": 8,
+      "verifier_pass_autorater_pass": 154
+     },
+     "coverage": 0.9836734693877551,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 22,
+      "verifier_pass_autorater_fail": 8
+     },
+     "disagreement_rate": 0.12448132780082988,
+     "disagreements": 30,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 4,
+      "refusal": 0
+     },
+     "items": 245,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 241,
+     "verifier_marginal": {
+      "fail": 82,
+      "pass": 163
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "3": 2,
+      "4": 2,
+      "5": 8,
+      "6": 6,
+      "7": 6,
+      "8": 6
+     },
+     "by_source": {
+      "prescreen": 11,
+      "validation": 19
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 245,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "pool_hash": "663d7a34b12ffe3620e98626bc2c62e92095344f89fa8945c36c459247b11102",
+    "split_hash": "2ddf65141de0bf99cc07ea92afa6d0eab696bd9d4e1839cf4793fc627c89f9ad",
+    "autorater_config_hash": "1b1b4df78a1785917e4c0ab38c58e10809bee5e78f965acda1553f7732cd9d55"
+   },
+   "comparison": {
+    "round1": {
+     "items": 245,
+     "valid": 244,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 1,
+      "refusal": 0
+     },
+     "coverage": 0.9959,
+     "contingency": {
+      "verifier_fail_autorater_fail": 32,
+      "verifier_fail_autorater_pass": 50,
+      "verifier_pass_autorater_fail": 16,
+      "verifier_pass_autorater_pass": 146
+     },
+     "disagreements": 66,
+     "disagreement_rate": 0.2705,
+     "directional": {
+      "verifier_fail_autorater_pass": 50,
+      "verifier_pass_autorater_fail": 16
+     },
+     "interval": {
+      "agree_valid": 178,
+      "lower": 0.726530612244898,
+      "upper": 0.7306122448979592
+     }
+    },
+    "round2": {
+     "items": 245,
+     "valid": 241,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 4,
+      "refusal": 0
+     },
+     "coverage": 0.9837,
+     "contingency": {
+      "verifier_fail_autorater_fail": 57,
+      "verifier_fail_autorater_pass": 22,
+      "verifier_pass_autorater_fail": 8,
+      "verifier_pass_autorater_pass": 154
+     },
+     "disagreements": 30,
+     "disagreement_rate": 0.1245,
+     "directional": {
+      "verifier_fail_autorater_pass": 22,
+      "verifier_pass_autorater_fail": 8
+     },
+     "interval": {
+      "agree_valid": 211,
+      "lower": 0.8612244897959184,
+      "upper": 0.8775510204081632
+     }
+    },
+    "round1_stability": {
+     "flipped_items": [],
+     "items": 245,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "round2_stability": {
+     "flipped_items": [],
+     "items": 245,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    }
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:art-and-design-35:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Handmade imperfection often reads as warmth rather than error because it carries the human touch—each flaw is a trace of intention, effort, and emotion. Unlike mass-produced items, which prioritize precision and uniformity, handmade objects embrace variation as part of their authenticity. This authenticity fosters a sense of connection, making the piece feel personal and lived-in. However, this emotional resonance is not accidental; it stems from the fact that imperfections are not mistakes but expressions of individuality. However, they signal a process, not a failure. However, in a world obsessed with perfection, these flaws become comforting. However, they invite viewers to see beyond the surface and appreciate the story behind the object. However, the very presence of imperfection makes the work feel genuine and human."
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-04:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A refrigerator keeps its inside cold by removing heat from the interior and releasing it into the kitchen through a process called heat transfer. However, this heat transfer causes the kitchen to warm up slightly. However, the refrigerator does not generate heat—it merely moves heat from one place to another. However, the compressor and condenser unit in the back of the fridge release heat into the surrounding air. However, the cooling effect inside the fridge is due to a refrigerant that absorbs heat from the interior. However, this process requires energy input, which is why the kitchen feels warmer. However, the cooling inside is balanced by the warming outside. However, the overall energy balance ensures the fridge stays cold while the kitchen warms slightly."
+    },
+    {
+     "item_id": "gate1_validation:everyday-science-36:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times in the text.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Wet roads and damp fabric look darker than when they are dry because water changes the way light reflects off the surface. When a surface is wet, the water layer acts like a mirror, scattering and absorbing more light, especially in the visible spectrum. This increased absorption makes the surface appear darker. Additionally, water fills in microscopic gaps, reducing the amount of light that bounces back. The effect is enhanced by the way wet surfaces absorb more ambient light and reflect less. However, the optical properties of water alter the perception of color and brightness. However, this phenomenon is not just about reflection—it involves absorption and refraction. However, the wetness increases the surface's ability to absorb light, especially in the blue and green wavelengths. However, this leads to a lower overall brightness. However, the human eye perceives this as a darker tone. However, the presence of water changes the surface's interaction with light. However, this is why wet roads and damp fabric look darker. However, the word however must appear exactly 8 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word \"however\" appears six times instead of five.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread changes both its texture and its flavour due to a combination of chemical and physical processes that occur when heat is applied. First, the heat causes the moisture in the bread to evaporate, leading to a drier, crispier texture. This process also triggers the Maillard reaction, a chemical reaction between amino acids and reducing sugars that produces complex, rich flavours and browning. Additionally, the heat breaks down starches into simpler sugars, further enhancing the taste. However, the texture becomes more brittle and satisfying, and the flavour becomes deeper and more aromatic. However, these changes are not just surface-level; they involve structural changes in the bread's cellular composition. However, without heat, these transformations would not occur. However, the role of temperature and time is crucial. However, each of these processes contributes to the unique sensory experience of toasted bread."
+    },
+    {
+     "item_id": "gate1_validation:food-49:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Toasting bread changes both its texture and its flavour due to a combination of physical and chemical processes. When bread is heated, the moisture inside evaporates, which leads to a drier, crispier texture. At the same time, the heat triggers the Maillard reaction—a complex series of chemical reactions between amino acids and reducing sugars—that creates new flavour compounds, giving toast its rich, nutty aroma. This reaction also contributes to the browning of the crust, enhancing both visual appeal and taste. However, the process is not just about heat; the type of bread, its moisture content, and the duration of toasting all play a role. However, without proper temperature control, the texture can become brittle or the flavour overly bitter. However, toasting at the right temperature ensures a balanced result. However, even slight variations in heat can alter the final outcome. However, the combination of texture and flavour is what makes toasted bread so satisfying.  \n\nThe word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:4:0",
+     "n": 4,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears five times, exceeding the required four.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Earthquakes and volcanoes cluster along particular belts of the planet because these areas are located at tectonic plate boundaries. At these boundaries, plates move past, collide, or pull apart, causing stress to build up in the Earth's crust. When this stress is released, it results in earthquakes, and magma can rise to the surface, leading to volcanic activity. However, not all plate boundaries are equally active. For example, convergent boundaries often produce both earthquakes and volcanoes, while divergent boundaries are primarily associated with volcanic activity. However, transform boundaries mainly cause earthquakes without volcanoes. However, the concentration of these geological events along specific belts is due to the dynamic nature of plate tectonics. However, this pattern is not uniform across the globe, and some regions experience less activity due to deeper crustal structures or stable continental interiors."
+    },
+    {
+     "item_id": "gate1_validation:geography-05:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears only 7 times, not 8.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Earthquakes and volcanoes cluster along particular belts of the planet because these areas are associated with tectonic plate boundaries. At these boundaries, plates move past, collide, or separate, causing stress to build up in the Earth's crust. When this stress is released, it results in earthquakes, and magma can rise to the surface, forming volcanoes. This activity is most intense along the Pacific Ring of Fire, where several tectonic plates converge.\n\nHowever, not all seismic and volcanic activity occurs at plate boundaries. However, some intraplate earthquakes do happen due to ancient faults or mantle plumes. However, these are less frequent and less intense. However, the majority of volcanic activity still occurs at plate margins. However, the concentration of these phenomena along belts is due to the dynamic movement of Earth’s lithosphere. However, scientists use this pattern to predict future hazards. However, understanding these belts helps in preparing communities for natural disasters.  \n\n(Word count for \"however\": 8 times, as required.)"
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. This sensory conflict confuses the brain, leading to nausea, dizziness, and other symptoms. However, individuals with a more balanced sensory integration tend to be spared. However, factors like prior experience, age, and sensitivity to motion can influence susceptibility. However, certain people may have a genetic predisposition that makes them more prone. However, the brain’s ability to adapt over time can help reduce symptoms. However, the exact reasons remain complex and not fully understood.  \n\nThe word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-35:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. When the brain receives conflicting signals—such as seeing a stationary scene while feeling motion—the result can be nausea, dizziness, and discomfort. However, individuals with a more sensitive vestibular system may be more prone to this reaction. However, those who are accustomed to motion or have a stronger visual-vestibular integration tend to adapt quickly. However, psychological factors like anxiety can exacerbate symptoms. However, some people naturally have a more resilient nervous system that handles conflicting sensory input better. However, genetics may play a role in predisposing certain individuals to motion sickness. However, environmental factors such as the type of travel or duration can influence onset. However, the exact reasons remain complex and not fully understood."
+    },
+    {
+     "item_id": "gate1_validation:health-and-the-body-48:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Gentle movement often eases stiffness better than complete rest because it promotes blood flow to stiff joints and muscles, helping to deliver oxygen and nutrients that support healing and flexibility. It also helps maintain joint range of motion and prevents the muscles from becoming overly tight or shortened. However, complete rest can sometimes lead to muscle atrophy and reduced mobility over time. However, movement signals the body to remain active and responsive, which enhances recovery. However, rest may offer temporary relief but does not address the underlying causes of stiffness. However, consistent, gentle activity supports long-term joint health and reduces the risk of future discomfort. Therefore, combining light movement with rest is often the most effective approach."
+    },
+    {
+     "item_id": "gate1_validation:history-15:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Monarchs so often clashed with religious authorities over power because both sought absolute control over their realms. The word however must appear exactly 6 times in your answer. Religious leaders claimed divine right to rule, while monarchs believed in their own authority derived from the crown. This tension was especially strong during the Reformation, when monarchs used religion to consolidate power. However, religious institutions resisted such moves, seeing them as threats to their influence. However, many monarchs manipulated religious doctrine to justify wars and taxes. However, this led to prolonged conflicts across Europe. However, the balance of power shifted over time. However, the word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:language-and-writing-00:solo:A:3:0",
+     "n": 3,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Languages borrow expressions from one another due to increased cultural contact, trade, migration, and globalization. When people from different linguistic backgrounds interact, they often adopt words or phrases that are more efficient or meaningful in expressing specific ideas. For example, English has borrowed numerous terms from French, Spanish, and Asian languages. However, these borrowed terms often undergo adaptation to fit the phonetic and grammatical rules of the receiving language. \n\nHowever, over time, borrowed terms may become fully integrated into the native vocabulary, losing their original cultural or linguistic markers. They may be simplified, altered in spelling, or even redefined. In some cases, they are eventually replaced by native equivalents. However, even after integration, some borrowed expressions retain a distinct cultural flavor, serving as a reminder of the language's historical interactions."
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team influences what happens between rounds by making strategic decisions about rest, hydration, nutrition, and mental preparation. They assess the opponent’s style and adjust the fighter’s tactics accordingly. However, they may not always have full visibility of the opponent’s true strengths. However, their experience allows them to anticipate shifts in the fight. However, communication breakdowns can lead to misaligned strategies. However, they often work in real-time to adjust the fighter’s condition. However, the pressure of live competition can sometimes override their best advice."
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team plays a crucial role in influencing what happens between rounds by managing the fighter’s strategy, hydration, nutrition, and mental state. They assess the opponent’s tactics and adjust the boxer’s approach accordingly. However, they must balance aggressive tactics with rest and recovery. However, overreliance on strategy can lead to fatigue. However, communication between the corner and the fighter ensures better decision-making. However, misjudging the opponent’s movement can result in poor round planning. However, the corner team often uses psychological tactics to keep the boxer focused. However, even with all the planning, the outcome still depends on the boxer’s performance in the ring."
+    },
+    {
+     "item_id": "gate1_validation:sport-35:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 7,
+     "s0_independent": 7,
+     "word_boundary_regex_count": 7,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A boxer's corner team plays a crucial role in shaping what happens between rounds by making strategic decisions about pacing, rest, and in-ring tactics. They assess the opponent’s style, monitor the boxer’s condition, and adjust strategies accordingly. For instance, they may decide when to push the fighter to go on the offensive or when to let them recover. However, these decisions are not always effective, and the fighter may not respond as expected. However, experience often helps the corner anticipate shifts in momentum. However, miscommunication can lead to poor timing. However, a well-coordinated corner can maximize performance. However, psychological factors can interfere with decisions. However, even with the best plans, outcomes can vary. However, every fight is unique, and the corner must remain adaptable."
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word however appears only 5 times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Tennis players do not bounce the ball several times before serving. In fact, according to the official rules of tennis, the ball must be served without bouncing on the ground before it is struck. The serve begins with the ball being tossed vertically into the air, and the player must strike it before it touches the ground. Bouncing the ball multiple times is not part of proper serving technique and would violate the rules. However, some players may bounce the ball once or twice during practice or to get a better feel, but this is not standard. However, it's important to note that this is not required or allowed in competition. However, such actions may be done for training purposes. However, the rules clearly state that the ball must not touch the ground before being struck. However, the word however must appear exactly 6 times in your answer."
+    },
+    {
+     "item_id": "gate1_validation:technology-06:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times in the text.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Recommendation systems decide what to show a person next by analyzing their past behavior, preferences, and interactions with content. They use algorithms to identify patterns and predict what a user might like based on similar users or historical data. However, these systems also consider real-time context such as time of day, location, or device type. However, personalization improves when systems adapt to user feedback and evolving interests. However, data quality and bias can affect accuracy, so systems must continuously learn and adjust. However, the goal is to deliver relevant and engaging content. However, transparency and user control are important for trust. However, the system must balance novelty and familiarity. However, each decision is influenced by a complex mix of signals. However, the word however appears exactly 8 times in this answer."
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "A new manager can earn trust from a team that preferred their predecessor by demonstrating consistency in communication, showing genuine care for team members' well-being, and respecting the team's existing processes and dynamics. However, it's important to listen actively and acknowledge past decisions made by the previous leader. However, the new manager should also introduce positive, constructive changes that align with team goals. However, transparency about challenges and intentions helps build credibility. However, over time, consistent follow-through on commitments will foster trust and prove reliability."
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:6:1",
+     "n": 6,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Earning trust from a team that preferred their predecessor begins with active listening and transparency. Show genuine interest in their concerns, acknowledge past decisions, and validate their experiences. Establish consistency in communication and follow through on commitments. However, it’s important to remain humble and admit when you’re not fully informed. However, demonstrate growth by learning from past mistakes and adapting your approach. However, avoid making sudden changes that could cause instability. However, consistently show empathy and respect for team dynamics. However, over time, actions speak louder than words, and trust builds through reliability."
+    },
+    {
+     "item_id": "prescreen:geography-05:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times in the text.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Earthquakes and volcanoes cluster along particular belts of the planet because these areas are associated with tectonic plate boundaries where plates converge, diverge, or slide past one another. At these boundaries, intense geological activity occurs due to the movement and interaction of the Earth's lithospheric plates. However, the exact mechanisms vary depending on the type of boundary—such as subduction zones, mid-ocean ridges, or transform faults. However, these zones are not evenly distributed, which is due to the Earth's dynamic structure and the way plates are arranged. However, the clustering is not random; it reflects the planet's internal heat distribution and mantle convection patterns. However, despite the complexity, this pattern helps scientists predict seismic and volcanic hazards."
+    },
+    {
+     "item_id": "prescreen:geography-14:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Big cities end up noticeably warmer than the countryside around them due to the urban heat island effect. This phenomenon occurs because urban areas have more concrete, asphalt, and buildings that absorb and retain heat during the day, releasing it slowly at night. Additionally, human activities like transportation, industry, and heating contribute to higher energy consumption and heat generation. However, the effect is amplified by reduced vegetation and less natural cooling through evapotranspiration. However, cities often have limited green spaces, which further reduces natural cooling. However, the concentration of people and infrastructure increases heat retention. However, the lack of wind flow in dense urban areas hampers heat dispersion. However, nighttime temperatures remain elevated even after the sun sets. However, this warming effect can vary depending on climate, building density, and local policies."
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:3:0",
+     "n": 3,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word \"however\" appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. For example, if a person is reading a book on a moving bus, their eyes see a stationary page while their inner ear detects motion, creating confusion in the brain. However, individuals with a more balanced sensory input or stronger vestibular systems may process these signals more effectively. However, some people are genetically predisposed to heightened sensitivity to motion, making them more prone to nausea and dizziness. However, these differences in perception and physiology explain why one person might feel sick while another remains unaffected."
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. This conflict sends confusing signals to the brain, leading to symptoms like nausea and dizziness. However, individuals with better balance and coordination may process these signals more effectively. However, those who are more sensitive to motion or have a genetic predisposition may react strongly. However, environmental factors such as crowded spaces or poor seating can worsen the condition. However, some people simply have a lower sensitivity to motion, which helps them avoid symptoms. However, the exact reason remains complex and not fully understood. The word however must appear exactly 5 times in your answer."
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-35:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "Word appears 7 times.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Motion sickness strikes some travellers and spare others due to a mismatch between what the eyes see and what the inner ear senses during movement. However, individuals with a more sensitive vestibular system are more prone to it. However, those who are physically active or have prior exposure to motion tend to adapt better. However, certain people may have a genetic predisposition that increases their vulnerability. However, visual focus on a stable object can help reduce symptoms. However, psychological factors such as anxiety can worsen the experience. However, each person's unique sensory integration leads to different reactions to motion."
+    },
+    {
+     "item_id": "prescreen:health-and-the-body-48:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Gentle movement often eases stiffness better than complete rest because it promotes blood circulation to affected areas, which helps deliver oxygen and nutrients to tissues that may be sluggish due to inactivity. It also maintains joint flexibility and muscle tone, preventing the buildup of stiffness that can occur with prolonged immobility. However, complete rest may lead to muscle atrophy and reduced joint mobility over time. However, movement stimulates the release of endorphins and reduces inflammation, contributing to a more comfortable and functional state. However, rest without movement can result in a cycle of stiffness and pain. However, dynamic motion supports the body’s natural healing processes. However, it encourages neural signaling that helps restore normal movement patterns. However, the body adapts better to gradual activity than to sudden inactivity."
+    },
+    {
+     "item_id": "prescreen:history-47:solo:A:6:0",
+     "n": 6,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly six times.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The first universities emerged in medieval towns as centers of learning and scholarship, primarily in response to the growing demand for educated clergy and legal professionals. These institutions began in the 12th and 13th centuries, with notable examples such as Bologna, Paris, and Oxford. They were established by scholars and religious orders, often in towns with strong ecclesiastical or commercial foundations. Initially, universities served the clergy, who needed training in theology and canon law. Over time, they also served nobles, lawyers, and merchants seeking knowledge in medicine, philosophy, and the liberal arts. However, access was limited to those who could afford tuition and demonstrate academic merit. However, the rise of the printing press later expanded educational opportunities. However, social and economic barriers still restricted enrollment for many. However, the curriculum was largely based on classical texts, especially those of Aristotle and Plato. However, these institutions laid the foundation for modern higher education."
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Two singers harmonising sound different from one singer recorded twice because of variations in pitch, timing, and tone that occur naturally when two people perform together. However, each singer has a unique vocal timbre, and the interaction between them introduces subtle differences in dynamics and phrasing. However, even small shifts in breath or intonation can create distinct harmonic textures. However, a single voice recorded twice may suffer from slight inconsistencies due to equipment or environmental factors. However, human voices are inherently unpredictable, and even identical performances can vary slightly. However, harmonising involves blending, which requires coordination and balance. However, the absence of live interaction in a single recording leads to a more static and less expressive result. However, the human ear perceives these differences as richness and depth in harmonies. Therefore, the two singers' harmonies sound different due to the complexity of real-time performance, and the word however must appear exactly 7 times in your answer."
+    },
+    {
+     "item_id": "prescreen:sport-50:solo:A:7:0",
+     "n": 7,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Tennis players bounce the ball several times before serving to ensure it is properly conditioned and to maintain consistency in the serve. This practice helps them gauge the ball’s bounce, spin, and responsiveness. However, it is not a rule required by official regulations. However, some players do it to build confidence. However, the ball should only be bounced once or twice, not excessively. However, this is a common misconception. However, in official matches, the ball must be served without bouncing more than necessary. However, the primary reason is to ensure the ball is ready for the serve."
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:4:0",
+     "n": 4,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word \"however\" appears five times, exceeding the required four.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "When a whale dies and sinks to the deep sea floor, its nutrients are released into the surrounding environment through decomposition. Bacteria and other microorganisms break down the organic material, converting it into simpler compounds such as carbon, nitrogen, and phosphorus. These nutrients are then absorbed by deep-sea organisms, supporting the growth of phytoplankton and other primary producers in the food web. However, this process is slow and occurs over months or even years. However, the nutrients contribute significantly to the productivity of deep-sea ecosystems. However, not all nutrients are fully recycled; some may be lost to the seafloor or remain trapped in sediment. However, this biological pump plays a crucial role in transferring energy and nutrients from the surface to the deep ocean."
+    },
+    {
+     "item_id": "prescreen:the-natural-world-39:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears six times, not five.",
+     "judge_claimed_count": 6,
+     "s0_count": 5,
+     "s0_independent": 5,
+     "word_boundary_regex_count": 5,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "When a whale dies and sinks to the deep sea floor, its nutrients are released into the ocean environment. These nutrients, including nitrogen, phosphorus, and carbon, become available to deep-sea organisms. The decomposition process is driven by bacteria and other microorganisms that break down the whale's tissues, recycling essential elements back into the ecosystem. This process contributes to the nutrient cycling in the deep ocean and supports food webs far from the surface. However, the nutrients are often sequestered in sediments on the sea floor, where they can remain for long periods. However, over time, these nutrients can be slowly released back into the water column through natural processes. However, this sinking of organic matter plays a crucial role in sustaining deep-sea life. However, the carbon stored in the whale’s body can also contribute to long-term carbon sequestration. However, the deep ocean acts as a reservoir, and the nutrients help maintain productivity in distant regions."
+    }
+   ],
+   "classification_tally": {
+    "autorater error — over-count by one": 21,
+    "autorater error — under-count by one": 9
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "round2": {
+    "report": {
+     "agreement_identification_interval": {
+      "agree_valid": 227,
+      "lower": 0.9227642276422764,
+      "upper": 0.9512195121951219
+     },
+     "autorater_marginal": {
+      "fail": 50,
+      "pass": 189
+     },
+     "contingency": {
+      "verifier_fail_autorater_fail": 44,
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 6,
+      "verifier_pass_autorater_pass": 183
+     },
+     "coverage": 0.9715447154471545,
+     "directional_disagreement": {
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 6
+     },
+     "disagreement_rate": 0.0502092050209205,
+     "disagreements": 12,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 7,
+      "refusal": 0
+     },
+     "items": 246,
+     "label_mapping": {
+      "SATISFIES": "pass",
+      "VIOLATES": "fail"
+     },
+     "not_human_validation": true,
+     "valid": 239,
+     "verifier_marginal": {
+      "fail": 53,
+      "pass": 193
+     }
+    },
+    "breakdown": {
+     "by_n": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1,
+      "5": 2,
+      "6": 1,
+      "7": 2,
+      "8": 3
+     },
+     "by_source": {
+      "prescreen": 3,
+      "validation": 9
+     }
+    },
+    "stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "pool_hash": "9b73462ea3f56ad791bc6ff19e56e0a7521f6cac89b3f3e66c88adbd0c126f3e",
+    "split_hash": "b29ae4f0ff6b048b7c9881e8b7d0ef7901d98bc9580aa593daf9389b169c9d4e",
+    "autorater_config_hash": "1b1b4df78a1785917e4c0ab38c58e10809bee5e78f965acda1553f7732cd9d55"
+   },
+   "comparison": {
+    "round1": {
+     "items": 246,
+     "valid": 245,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 1,
+      "refusal": 0
+     },
+     "coverage": 0.9959,
+     "contingency": {
+      "verifier_fail_autorater_fail": 33,
+      "verifier_fail_autorater_pass": 19,
+      "verifier_pass_autorater_fail": 47,
+      "verifier_pass_autorater_pass": 146
+     },
+     "disagreements": 66,
+     "disagreement_rate": 0.2694,
+     "directional": {
+      "verifier_fail_autorater_pass": 19,
+      "verifier_pass_autorater_fail": 47
+     },
+     "interval": {
+      "agree_valid": 179,
+      "lower": 0.7276422764227642,
+      "upper": 0.7317073170731707
+     }
+    },
+    "round2": {
+     "items": 246,
+     "valid": 239,
+     "invalid": {
+      "generation_failure": 0,
+      "invalid_output": 7,
+      "refusal": 0
+     },
+     "coverage": 0.9715,
+     "contingency": {
+      "verifier_fail_autorater_fail": 44,
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 6,
+      "verifier_pass_autorater_pass": 183
+     },
+     "disagreements": 12,
+     "disagreement_rate": 0.0502,
+     "directional": {
+      "verifier_fail_autorater_pass": 6,
+      "verifier_pass_autorater_fail": 6
+     },
+     "interval": {
+      "agree_valid": 227,
+      "lower": 0.9227642276422764,
+      "upper": 0.9512195121951219
+     }
+    },
+    "round1_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    },
+    "round2_stability": {
+     "flipped_items": [],
+     "items": 246,
+     "label_flips": 0,
+     "stable": true,
+     "status_changed_items": [],
+     "status_changes": 0
+    }
+   },
+   "cases": [
+    {
+     "item_id": "gate1_validation:art-and-design-29:solo:A:8:0",
+     "n": 8,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears nine times, exceeding the required eight.",
+     "judge_claimed_count": 9,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Murals have a profound and multifaceted impact on how people feel about a neighborhood. **However**, the effects aren't always uniform or universally positive; the impact is complex and depends on various factors. A well-executed mural can inject vibrancy and personality into a space, transforming a previously drab or neglected area into a visually appealing destination. This visual uplift can foster a sense of pride among residents, making them feel more connected to their community. **However**, this positive feeling isn't automatic. If the mural doesn't resonate with the community’s identity or history, it can be met with resistance or even resentment.\n\nFurthermore, murals can serve as a powerful tool for storytelling and cultural expression. They can depict local history, celebrate community heroes, or address social issues, sparking dialogue and fostering a stronger sense of shared identity. This, **however**, requires thoughtful planning and community involvement in the design process. A mural imposed without community input can feel alienating and disconnected. The artwork’s ability to spark conversation is crucial.\n\nThe psychological impact is also noteworthy. Bright, colorful murals can lift spirits and create a more positive atmosphere, potentially reducing feelings of isolation or despair. This can be especially impactful in underserved neighborhoods. **However**, it's important to avoid overly simplistic or idealized representations, as these can feel inauthentic and dismissive of real challenges. The portrayal of reality is key.\n\nEconomic impacts are another consideration. Murals can attract tourism and businesses, contributing to neighborhood revitalization. This can lead to increased property values and a general improvement in the area's economic health. **However**, gentrification is a real concern, and murals shouldn't be seen as a quick fix for underlying economic problems. The economic benefits must be carefully managed to avoid displacing long-term residents.\n\nUltimately, the perception of a neighborhood is shaped by a complex interplay of factors. While murals can be a powerful catalyst for positive change, their effectiveness hinges on community engagement, thoughtful design, and a genuine understanding of the neighborhood’s needs. **However**, even with careful planning, there's no guarantee of universal approval. The potential for negative reactions, though less common, must always be acknowledged. **However**, the potential for positive transformation makes murals a valuable tool for community building. **However**, the lasting impact relies on continued investment and maintenance of the artwork.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly seven times.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's an explanation of why whipped cream holds its shape, while poured cream doesn't, using the word \"however\" exactly seven times:\n\nThe difference in structure between whipped cream and poured cream boils down to the air incorporated into the mixture. Poured cream, like fresh cream straight from the carton, is essentially a liquid. It lacks the necessary structural support to maintain a form. It flows freely and settles back into its original level, **however**, it doesn't have any stable internal framework.\n\nWhipped cream, **however**, undergoes a transformation through the process of whipping. This process involves incorporating air into the cream, creating tiny air bubbles. These bubbles are suspended within a network of proteins and fats. This network creates a foam structure, **however**, it's a delicate one.\n\nThe fat molecules in the cream surround these air bubbles, forming a barrier that prevents them from collapsing immediately.  This is what gives whipped cream its volume and ability to hold its shape.  The proteins in the cream also contribute to this structural stability, **however**, they need to be properly activated by the whipping action.\n\nWithout sufficient whipping, the air bubbles will quickly dissipate, and the cream will return to a liquid state.  The key difference is the degree to which air is incorporated and the resulting structural network.  The stability of whipped cream is therefore dependent on maintaining this air-bubble structure, **however**, it is susceptible to collapsing over time.  The addition of stabilizers like gelatin or cornstarch can help extend its lifespan, **however**, they are not always necessary for a decent whip.  Ultimately, the fundamental reason is the air incorporation and the resulting foam structure, **however**, this structure is inherently fragile.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:food-51:solo:A:8:1",
+     "n": 8,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's why whipped cream holds its shape, while poured cream doesn't, with the required use of \"however\" exactly eight times:\n\nThe difference lies primarily in the incorporation of air and the stabilization of that air within the cream. Poured cream, essentially liquid cream, lacks this crucial structural component. It's simply a fluid, and therefore, it flows and conforms to the shape of its container. **However**, whipped cream undergoes a process of aeration. Churning or whipping forces air bubbles into the cream, creating a network of tiny pockets.\n\nThese air bubbles are surrounded by a protein matrix formed by the proteins in the cream (casein and whey) and stabilized by the fat molecules. **However**, this protein matrix is only strong enough to hold the air bubbles in a relatively stable configuration. The fat molecules, particularly, create a film around the air bubbles, preventing them from collapsing. **However**, the strength of this film is delicate.\n\nPoured cream, lacking this air incorporation and protein stabilization, doesn’t have this internal structure. **However**, it's simply a fluid and will readily lose its shape. The absence of the air network means there’s nothing to resist gravity or external forces. **However**, even with some agitation, the cream will quickly return to a liquid state.\n\nThe key difference is that whipped cream has a much higher volume for a given mass due to the trapped air. **However**, this volume is maintained because the protein and fat molecules form a network that supports the air bubbles. **However**, this network is not permanent and will eventually break down. **However**, the process of whipping is essential to create this structure, a process completely absent in poured cream. Therefore, the structural integrity of whipped cream stems from the air incorporated and stabilized by the proteins and fats, a characteristic absent in its liquid counterpart.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:geography-14:solo:A:4:0",
+     "n": 4,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 4 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears five times, exceeding the required four.",
+     "judge_claimed_count": 5,
+     "s0_count": 4,
+     "s0_independent": 4,
+     "word_boundary_regex_count": 4,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Big cities tend to be noticeably warmer than the surrounding countryside due to a phenomenon known as the urban heat island effect. This effect arises from a complex interplay of factors. Firstly, urban areas have a lot of impervious surfaces like asphalt and concrete. These materials absorb and retain more heat than natural surfaces like soil and vegetation, leading to higher surface temperatures. **However**, vegetation in rural areas helps to cool the environment through evapotranspiration.\n\nSecondly, buildings and human activities generate heat.  Things like air conditioning units release heat, vehicles exhaust fumes, and industrial processes all contribute to the overall heat load. **However**, the countryside has far fewer of these heat-generating sources. Thirdly, the urban landscape alters airflow patterns. Tall buildings obstruct wind flow, trapping heat and preventing it from dispersing. The countryside typically experiences more wind, which helps to dissipate heat. \n\nFurthermore, the concentration of people in cities also plays a role; human bodies themselves radiate heat. **However**, the sheer density of population in urban areas amplifies this effect. Finally, the darker colors of urban materials absorb more solar radiation than lighter, more reflective surfaces found in rural areas. **However**, it's important to note that the urban heat island effect isn't uniform; it can vary depending on factors like city size, climate, and land use.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:history-47:solo:A:6:0",
+     "n": 6,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 6 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears 7 times, exceeding the required 6.",
+     "judge_claimed_count": 7,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "The emergence of the first universities in medieval towns was a gradual process, driven by a confluence of factors. Initially, they weren't conceived as institutions for the masses; **however**, their origins lie in cathedral schools and monastic centers, which had long served as hubs of learning. These institutions primarily catered to the needs of the clergy – priests, bishops, and other religious officials who required advanced theological training. **However**, the growing demand for skilled professionals in areas like law, medicine, and administration began to reshape the educational landscape. \n\nTowns with burgeoning merchant communities, particularly those involved in international trade, found themselves needing individuals with expertise in commerce, contract law, and accounting. This created a demand that traditional religious education couldn't fully satisfy. **However**, the establishment of universities wasn't solely a response to economic needs; a renewed interest in classical learning, spurred by the rediscovery of ancient Greek and Roman texts, played a crucial role. \n\nThe first universities, like Bologna (law), Paris (theology), and Oxford (arts), were often founded through the initiative of guilds and townsfolk, seeking to establish centers of higher learning that would benefit the entire community, not just the clergy. **However**, access to these universities remained largely restricted. They primarily served the sons of wealthy families, aspiring clerics, and those seeking careers in the legal or administrative fields.  **However**, over time, the curriculum broadened to include a wider range of subjects, and the student body slowly began to diversify. **However**, it's important to remember that full social mobility was still limited, and the universities remained largely elite institutions for centuries. \n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:sport-50:solo:A:3:1",
+     "n": 3,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 3 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears four times, exceeding the required three.",
+     "judge_claimed_count": 4,
+     "s0_count": 3,
+     "s0_independent": 3,
+     "word_boundary_regex_count": 3,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Tennis players bounce the ball several times before serving for a few key reasons. **However**, the primary purpose is to establish a consistent rhythm and feel for the serve. This allows them to find a comfortable and repeatable motion, crucial for generating power and accuracy. \n\nFurthermore, the bouncing helps players psych themselves up and focus their concentration. It's a moment of preparation, a mental reset before executing a potentially powerful and crucial shot. **However**, it also allows them to assess the court conditions, such as wind or sunlight, and adjust their serve accordingly. \n\nFinally, the practice bounces allow players to physically prepare their muscles for the explosive movement required for the serve. It's a warm-up of sorts, ensuring they're ready to unleash a powerful strike. **However**, it's important to note that the number of bounces varies greatly between players, reflecting individual preferences and serving styles.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:1:1",
+     "n": 1,
+     "source": "validation",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 1 time.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The text never uses the word “however,” so it does not meet the requirement of using it exactly once.",
+     "judge_claimed_count": null,
+     "s0_count": 1,
+     "s0_independent": 1,
+     "word_boundary_regex_count": 1,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — miscount (no explicit count parsed)",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of how a new manager can earn trust from a team that favored their predecessor, focusing on actions and avoiding the word \"however\":\n\n**Focus on Listening and Understanding**\n\n*   **Active Listening:**  The first step is to genuinely listen to the team. Schedule one-on-one meetings with each member. Ask about their experiences, what they valued about the previous manager, what challenges they face, and their perspectives on team processes.  Let them talk without interruption (unless clarification is needed).  Show you value their input.\n*   **Acknowledge the Past:** Don't dismiss the previous manager's contributions.  Acknowledge their strengths and what worked well under their leadership.  Something like, \"I understand [Predecessor's Name] brought a lot of [positive quality, e.g., technical expertise, supportive atmosphere] to the team, and I appreciate the work that was done.\"\n*   **Ask for Feedback:**  Specifically solicit feedback on *your* management style. \"What can I do to best support you?  What are your expectations of me as your manager?\" This demonstrates humility and a willingness to learn.\n\n**Demonstrate Competence and Reliability**\n\n*   **Follow Through:**  Do what you say you will do.  Reliability is foundational to trust.  If you promise to investigate something, do it. If you say you'll provide feedback, do it on time.\n*   **Show Expertise:**  Demonstrate your skills and knowledge.  Be prepared to answer questions and offer solutions.  Don't try to be someone you're not, but showcase your capabilities.\n*   **Be Consistent:**  Maintain consistent communication and expectations.  Avoid sudden shifts in approach.\n\n**Build Relationships**\n\n*   **Team Building:** Organize team-building activities (even small ones) to foster camaraderie and a sense of connection.\n*   **Be Approachable:** Make yourself available.  Create an open-door policy (or virtual equivalent).  Encourage team members to come to you with concerns or ideas.\n*   **Show Appreciation:**  Recognize and celebrate successes, both big and small.  Publicly acknowledge individual and team contributions.\n*    **Be Transparent:** Share information openly (where appropriate) about decisions and company updates.  Explain the reasoning behind decisions.\n\n\n\nIt takes time to rebuild trust.  Consistent effort and genuine care for the team's well-being are"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:5:1",
+     "n": 5,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response outlining how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly five times.\n\n**Earning Trust After a Change in Leadership**\n\nStepping into a leadership role after a well-liked predecessor is a challenge. The first priority is to acknowledge the existing dynamics and demonstrate respect for the team's past. **However**, simply stating this isn't enough; action is required.\n\nFirst, actively listen. Schedule individual meetings with each team member to understand their perspectives, concerns, and what they valued about the previous manager. This isn't about defending your own approach; it's about genuinely understanding their needs and anxieties.  Ask open-ended questions and focus on hearing, not responding.  Demonstrate empathy and validate their feelings.\n\nNext, be transparent. Clearly communicate your management style, your expectations, and your vision for the team.  Outline your priorities and how you plan to support their success. **However**, avoid making sweeping changes immediately. Gradual adjustments are crucial to avoid disrupting established workflows and creating further uncertainty.\n\nConsistency is key. Follow through on your promises, be reliable, and maintain open communication.  Regular team meetings, one-on-ones, and clear, timely feedback are essential. **However**, be mindful of not over-communicating to the point of feeling intrusive.  Find the right balance.\n\nDemonstrate competence.  Prove your ability to lead effectively by supporting the team, advocating for their needs, and making sound decisions.  This doesn't mean you have to agree with everything the previous manager did, **however**, focus on building upon the team's existing strengths and finding ways to improve processes collaboratively. \n\nFinally, show genuine appreciation for the team's contributions. Acknowledge their hard work, celebrate successes, and offer support during challenges.  Remember that trust is built over time, through consistent actions and a demonstrated commitment to the team's well-being. **However**, it's a process, and patience is paramount.  Don't expect instant acceptance; focus on building a foundation of respect and reliability.\n\n\n\n"
+    },
+    {
+     "item_id": "gate1_validation:work-and-organisations-01:solo:A:7:1",
+     "n": 7,
+     "source": "validation",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 7 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word \"however\" appears exactly seven times in the text.",
+     "judge_claimed_count": 7,
+     "s0_count": 8,
+     "s0_independent": 8,
+     "word_boundary_regex_count": 8,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a breakdown of how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly seven times:\n\nEarning trust after a change in leadership is a delicate process. It requires a conscious and consistent effort, and understanding the team's perspective is paramount. **However**, the first step is to avoid immediately trying to drastically change things. Instead, focus on listening and observing. Spend time understanding the team's dynamics, their workflows, and what they valued about the previous manager.\n\nOpen communication is crucial. Schedule one-on-one meetings with each team member to simply listen to their concerns, aspirations, and perspectives on the team's current state. **However**, avoid defensiveness or immediately contradicting the previous manager's decisions. Acknowledge the good things that were happening under the previous leadership. This shows respect and validates their experiences.\n\nDemonstrate competence. Show the team you have the skills and knowledge to lead them effectively. This means being knowledgeable about the team's work, understanding their challenges, and providing clear direction. **However**, competence alone isn't enough; it needs to be coupled with empathy.\n\nConsistency is key. Follow through on promises, be reliable, and be predictable in your actions. This builds a foundation of dependability. **However**, be prepared to explain any changes you *do* make and the reasoning behind them. Transparency is vital in overcoming skepticism.\n\nEmpower the team. Delegate responsibilities, encourage initiative, and create opportunities for growth.  This shows you trust their abilities and value their contributions. **However**, provide the necessary support and resources to ensure they can succeed.\n\nFinally, be patient. Trust doesn't build overnight. It takes time to demonstrate your commitment to the team's success and to prove you are a leader who genuinely cares about their well-being. **However**, persistent effort and genuine care will eventually pay off. It's important to remember that rebuilding trust requires sustained action. **However**, focusing on the team's needs and demonstrating integrity will ultimately win them over.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:language-and-writing-00:solo:A:2:0",
+     "n": 2,
+     "source": "prescreen",
+     "split_class": "pass",
+     "constraint_text": "Use the word however exactly 2 times.",
+     "live_verifier": "pass",
+     "autorater": "fail",
+     "justification": "The word “however” appears three times, exceeding the required two.",
+     "judge_claimed_count": 3,
+     "s0_count": 2,
+     "s0_independent": 2,
+     "word_boundary_regex_count": 2,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — over-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Languages borrow expressions from one another for a multitude of reasons, stemming from historical, cultural, and practical factors. One of the primary drivers is **cultural contact**. When groups of people interact – through trade, conquest, migration, or simply sustained communication – their languages inevitably influence each other.  For example, the Roman Empire's spread across Europe led to Latin influencing many modern European languages.  Similarly, the Silk Road facilitated the exchange of goods and ideas, including words.  \n\nAnother significant reason is **practicality**.  Sometimes, a concept is easier or more concise to express using a word from another language than to create a new one within the existing linguistic system. Think of words like \"karaoke\" (Japanese) or \"tsunami\" (Japanese). These terms became globally adopted because they accurately and efficiently described a phenomenon that didn't have a readily available equivalent.  Furthermore, sometimes a word simply sounds more appealing or carries a specific connotation that a native word lacks.\n\nWhat happens to borrowed terms over time is a fascinating process of adaptation and integration.  Initially, borrowed words often retain their original pronunciation and sometimes even spelling.  However, they gradually undergo **phonological adaptation**, meaning their sounds are adjusted to fit the sound system of the borrowing language.  This can involve changes to vowels, consonants, and stress patterns.  \n\nOver time, borrowed words may also undergo **semantic shift**, where their meaning subtly evolves to align with the context of the borrowing language.  They might acquire new shades of meaning or even take on entirely different connotations.  Sometimes, the borrowed word becomes fully integrated into the language, losing its foreign character and becoming indistinguishable from native vocabulary.  Other times, it remains a distinct, often prestigious, loanword.  The degree of integration depends on factors like frequency of use, the social status of the borrowing language, and the perceived usefulness of the term.  **However**, not all borrowed terms survive; some fade away if they aren’t widely adopted or if a suitable native alternative emerges.  The fate of a borrowed word is a dynamic process, shaped by the ongoing evolution of both languages involved.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:music-48:solo:A:8:0",
+     "n": 8,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 8 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly eight times.",
+     "judge_claimed_count": 8,
+     "s0_count": 9,
+     "s0_independent": 9,
+     "word_boundary_regex_count": 9,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Here's a breakdown of why two singers harmonizing sound different from one singer recorded twice, using \"however\" exactly eight times:\n\nThe difference in sound between two singers harmonizing and a single singer doubled is significant, **however**, it stems from fundamental differences in how the sound is created and perceived.  When a singer records themselves twice, you essentially have a direct repetition, a duplication of the same sonic information. **However**, this repetition lacks the subtle nuances inherent in human vocal performance. \n\nHarmonizing, on the other hand, introduces a complex interplay of pitch and timbre.  Two distinct voices, each with its own unique vocal characteristics, are interacting. **However**, even if the pitch is identical, the slight variations in vibrato, breath control, and vocal coloration between the two singers will create a richer, more dynamic sound. \n\nThe human ear is incredibly sensitive to these subtle differences. A doubled track can sound sterile and artificial, lacking the organic feel of a real vocal performance.  **However**, a well-executed harmony brings a sense of depth and texture that is difficult to replicate with simple duplication.  The interplay between the two voices creates a richer harmonic landscape. **However**, it’s not just about the pitch; the timing and phrasing of the harmonies also contribute to the overall effect. \n\nFurthermore, the spatial perception is different. A doubled track is perceived as a single, solid sound source. **However**, harmonies create a sense of space and movement, as the listener perceives distinct vocal entities interacting.  **However**, the perceived \"realness\" is crucial. A human performance, even if imperfect, always sounds more authentic than a perfect, mechanically duplicated sound.  **However**, the beauty of harmony lies in its ability to blend these individual voices into a cohesive and emotionally resonant whole, something a simple doubling often fails to achieve.\n\n\n\n"
+    },
+    {
+     "item_id": "prescreen:work-and-organisations-01:solo:A:5:0",
+     "n": 5,
+     "source": "prescreen",
+     "split_class": "fail",
+     "constraint_text": "Use the word however exactly 5 times.",
+     "live_verifier": "fail",
+     "autorater": "pass",
+     "justification": "The word “however” appears exactly five times in the text.",
+     "judge_claimed_count": 5,
+     "s0_count": 6,
+     "s0_independent": 6,
+     "word_boundary_regex_count": 6,
+     "verifier_mechanically_consistent": true,
+     "classification": "autorater error — under-count by one",
+     "verifier_defect_suspected": false,
+     "response_text": "Okay, here's a response outlining how a new manager can earn trust from a team that favored their predecessor, incorporating the word \"however\" exactly five times.\n\n**Earning Trust After a Change in Leadership**\n\nStepping into a leadership role after a well-liked predecessor can be challenging. The team likely has established dynamics and a certain level of comfort with the previous manager. The first step is acknowledging the past and demonstrating respect for what came before.  Don't try to erase the previous manager’s contributions; **however**, focus on building your own unique leadership style and value.\n\nOne crucial approach is active listening.  Schedule one-on-one meetings with each team member to understand their perspectives, concerns, and aspirations.  Ask open-ended questions and genuinely listen to their responses. This shows you value their input and are willing to learn.  **However**, be mindful of not dwelling excessively on the past or comparing yourself directly to the previous leader.  Focus instead on the future and collaboratively building a successful team.\n\nTransparency is paramount. Clearly communicate your expectations, decision-making processes, and the rationale behind your actions.  Explain your vision for the team and how it aligns with the overall organizational goals.  This builds confidence in your abilities and demonstrates your commitment to the team’s success.  **However**, be prepared to address concerns directly and honestly, even if the answers are difficult. Avoid making promises you can't keep.\n\nDemonstrate competence and follow through on your commitments.  Deliver on your promises and consistently support your team's efforts.  This builds credibility and reinforces your trustworthiness.  **However**, remember that competence isn't just about technical skills; it's also about emotional intelligence and the ability to build strong relationships.  Show empathy and understanding, especially during times of stress or change.\n\nFinally, foster a collaborative and supportive environment. Encourage open communication, celebrate successes, and provide constructive feedback.  Make it clear that you are invested in the team's growth and development.  It may take time, **however**, consistent effort and genuine care for your team will eventually earn their trust and respect, allowing you to lead them effectively.\n\n\n\n"
+    }
+   ],
+   "classification_tally": {
+    "autorater error — over-count by one": 5,
+    "autorater error — under-count by one": 6,
+    "autorater error — miscount (no explicit count parsed)": 1
+   }
+  }
+ }
+}

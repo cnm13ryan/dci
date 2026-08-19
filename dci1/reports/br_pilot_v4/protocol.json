@@ -1,0 +1,118 @@
+{
+ "name": "br-pilot-v4",
+ "status": "non-confirmatory pilot; not a registered v3 stage; not a v4 confirmatory run",
+ "question": "Is the deterioration of focal delivery under composition specific to the target A, or generic to adding any matched companion constraint?",
+ "source_authority": {
+  "design": "user-notes/dci-construct-pass2.md \u00a7G row 1",
+  "thresholds_verbatim": "D(B<-A) - D(B<-R) > 0.25 supports H1 and licenses a pairwise construct. < 0.10 supports H2 and refutes the pairwise framing entirely",
+  "reuse_rules": "user-notes/prompt-to-red-team.md \u00a7L",
+  "b_plus_s_mapping": "In v3 every prompt carries the topic background and no third constraint exists, so B+S coincides with the existing Gate 2A B-alone cell; it is reused, not generated."
+ },
+ "models": [
+  "gemma-3n-e2b-it",
+  "gemma-3n-e4b-it"
+ ],
+ "models_excluded": {
+  "qwen3-4b": "terminal at Gate 2A; no registered B+A cell, so D(B<-A) is undefined",
+  "qwen3-4b-instruct-2507": "same"
+ },
+ "design": {
+  "topics": "the 96 solo-calibration topics (non-confirmatory pool), frozen split order",
+  "topic_order_sha256": "19fb16f6c2a0a2e7df7c61510ff6243626ddd3a6a3054377b0cd462f0e5a58e5",
+  "cells_per_model": "3 references x 96 topics",
+  "references": {
+   "gemma-3n-e2b-it": [
+    [
+     "RF1",
+     5
+    ],
+    [
+     "RF2",
+     5
+    ],
+    [
+     "RF6",
+     4
+    ]
+   ],
+   "gemma-3n-e4b-it": [
+    [
+     "RF2",
+     2
+    ],
+    [
+     "RF6",
+     4
+    ],
+    [
+     "RF4",
+     4
+    ]
+   ]
+  },
+  "m_star": {
+   "gemma-3n-e2b-it": 7,
+   "gemma-3n-e4b-it": 7
+  },
+  "draws_per_cell": 2,
+  "rows_per_model": 576,
+  "allocation": "position p: order p mod 2 (even = B first); B wording p mod 4; R wording (p + p//4) mod 4; shared across the topic's three reference cells",
+  "extension_rule": "If the 95% bootstrap CI of Delta spans either decision threshold, extend every cell once to 4 draws (indices 2,3; identical seed derivation) and classify from the extended data. No other extension is permitted."
+ },
+ "generation": {
+  "backend": "pinned vLLM backend via dci1v3.generation.backend.run_backend",
+  "plan": "dci1v3.generation.plans.backend_plan(spec, cap=512, decoding='stochastic') \u2014 byte-identical builder to the registered stages",
+  "decoding": {
+   "temperature": 0.7,
+   "top_p": 0.9,
+   "top_k": 50
+  },
+  "completion_cap": 512,
+  "seed_scheme": "generation_seed(GENERATION_ROOT_SEED, 'brpilot-v4', model_id, prompt_hash, draw_index); the stage label separates this stream from every registered stage",
+  "cache_dir": "evidence/br-pilot-v4/<model_key>/ \u2014 never inside evidence/dci1-v3"
+ },
+ "outcomes": {
+  "instrument": "frozen deterministic verifier",
+  "verifier_source_hash": "2059509dc0892a3a01928194e2c8a3431b0c07a81f33c235a0d77f1f29ad4f1b",
+  "focal_pass": "added_verifier('B', m_star)(raw_response)",
+  "reference_pass": "added_verifier(family, q)(raw_response) (stored as added_pass)",
+  "diagnostics": [
+   "s0 accidental-'however' count",
+   "finish_reason == 'length' (truncation)",
+   "responses under 3 words",
+   "joint compliance states",
+   "per-order P(B|R)"
+  ]
+ },
+ "reused_baselines": {
+  "B_alone": "gate2a solo:B:7 rows, 96 topics x 1 draw (E2B 78/96, E4B 73/96)",
+  "R_alone": "gate2a solo:<family>:<q> rows at the frozen reference severities, same topics",
+  "B_plus_A": "confirmatory AB added_pass, 384 blocks x 16 draws (E2B 2115/6144, E4B 2730/6144)",
+  "validity": "pinned by tests_v3/test_br_pilot_characterization.py: frozen verifier hash on every reused row equals the current instrument, verdicts recompute exactly, content hashes verify, revisions match the registry",
+  "cross_set_note": "P(B|A) comes from confirmatory topics while the pilot runs on solo-calibration topics; the seeded area-stratified random split makes the sets exchangeable by design, and B-solo cancels from Delta so only P(B|R) - P(B|A) carries the cross-set comparison."
+ },
+ "estimator": {
+  "cell_rates": "equal weight per topic: per-topic draw mean, then mean over topics (blocks for P(B|A))",
+  "quantities": [
+   "P(B solo), P(B|R_j), P(B|Rbar) = mean_j P(B|R_j), P(B|A)",
+   "D(B<-A) = P(B solo) - P(B|A)",
+   "D(B<-R_j) = P(B solo) - P(B|R_j)",
+   "Delta = D(B<-A) - D(B<-Rbar) = P(B|Rbar) - P(B|A)",
+   "Delta_j = P(B|R_j) - P(B|A)",
+   "reciprocal D(R_j<-B) = P(R_j solo) - P(R_j|B)"
+  ],
+  "uncertainty": "nonparametric bootstrap, 10000 resamples, seed 20260819, percentile 95% intervals; units: solo topics (stratified by pilot order 48/48, joint per-topic vector preserves pairing) independently of confirmatory blocks (stratified by registered order 192/192)"
+ },
+ "classification_rule": {
+  "H1_pair_specific": "Delta point estimate > 0.25",
+  "H2_generic_load": "Delta point estimate < 0.1",
+  "otherwise": "INDETERMINATE",
+  "robustness": "classification is CI-robust when the 95% CI excludes the nearest opposing threshold"
+ },
+ "prohibitions": [
+  "no write inside evidence/dci1-v3",
+  "no sequestered topics",
+  "no confirmatory claim from this pilot",
+  "no threshold or design change after generation begins"
+ ]
+}
