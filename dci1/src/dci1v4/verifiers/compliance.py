@@ -18,11 +18,11 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import Sequence
 
-from dci1v4.constraints import Constraint
+from dci1v4.verifiers.constraints import Constraint
 from dci1v4.errors import InstrumentError
-from dci1v4.statistics import FAMILY_STATISTICS, focal_statistic
-from dci1v4.target import s0_count
-from dci1v4.words import alpha_runs, words_lower
+from dci1v4.verifiers.statistics import FAMILY_STATISTICS, focal_statistic
+from dci1v4.verifiers.target import s0_count
+from dci1v4.verifiers.words import alpha_runs, words_lower
 
 #: §9.3: below this many words a non-violation pass is vacuous. The topic
 #: space asks for 60–120 word answers; the value is fixed pre-freeze and is
