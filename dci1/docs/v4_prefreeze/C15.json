@@ -1,0 +1,16 @@
+{
+  "admission": "positive: an input must prove it is a registered v4 artifact, rather than merely fail a deny list",
+  "check": "C15",
+  "classification": {
+    "legacy": "legacy_exploratory",
+    "pilot": "pilot_cache",
+    "v3": "v3_evidence"
+  },
+  "refused": {
+    "legacy": true,
+    "pilot": true,
+    "v3": true
+  },
+  "status": "COMPLETE",
+  "tests": "tests_v4/test_t1_authority_isolation.py"
+}

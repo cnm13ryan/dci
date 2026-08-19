@@ -1,0 +1,73 @@
+{
+  "check": "C18",
+  "models": {
+    "gemma-3n-e2b-it": {
+      "on_all_cached_draws": {
+        "arm_compliance": {
+          "A": 0.6619466145833334,
+          "AB": 0.5244140625,
+          "AR1": 0.5804036458333334,
+          "AR2": 0.6661783854166666,
+          "AR3": 0.5183919270833334,
+          "TOPIC": 0.0
+        },
+        "delta_a_compliance_form": 0.06391059027777779,
+        "delta_a_failure_form": 0.06391059027777785,
+        "identity_holds": true,
+        "rows": 36864
+      },
+      "on_v3_selected_rows": {
+        "arm_compliance": {
+          "A": 0.6666666666666666,
+          "AB": 0.5677083333333334,
+          "AR1": 0.5625,
+          "AR2": 0.6328125,
+          "AR3": 0.4791666666666667,
+          "TOPIC": 0.0
+        },
+        "delta_a_compliance_form": -0.00954861111111116,
+        "delta_a_failure_form": -0.009548611111111105,
+        "identity_holds": true,
+        "rows": 2304
+      },
+      "recorded_pooled_swap_effect": -0.009548611111111082,
+      "reproduces_the_recorded_value": true,
+      "why_the_two_differ": "v3 analysed one draw of sixteen per cell under its registered selector; the all-draw figure is a draw average. Both are correct and they answer different questions, which is the same distinction v4r2 draws for the pilot's P(B|A)"
+    },
+    "gemma-3n-e4b-it": {
+      "on_all_cached_draws": {
+        "arm_compliance": {
+          "A": 0.5826822916666666,
+          "AB": 0.4012044270833333,
+          "AR1": 0.47705078125,
+          "AR2": 0.4690755208333333,
+          "AR3": 0.478515625,
+          "TOPIC": 0.0
+        },
+        "delta_a_compliance_form": 0.07367621527777779,
+        "delta_a_failure_form": 0.07367621527777779,
+        "identity_holds": true,
+        "rows": 36864
+      },
+      "on_v3_selected_rows": {
+        "arm_compliance": {
+          "A": 0.578125,
+          "AB": 0.4010416666666667,
+          "AR1": 0.4869791666666667,
+          "AR2": 0.46875,
+          "AR3": 0.4427083333333333,
+          "TOPIC": 0.0
+        },
+        "delta_a_compliance_form": 0.06510416666666663,
+        "delta_a_failure_form": 0.06510416666666663,
+        "identity_holds": true,
+        "rows": 2304
+      },
+      "recorded_pooled_swap_effect": 0.0651041666666667,
+      "reproduces_the_recorded_value": true,
+      "why_the_two_differ": "v3 analysed one draw of sixteen per cell under its registered selector; the all-draw figure is a draw average. Both are correct and they answer different questions, which is the same distinction v4r2 draws for the pilot's P(B|A)"
+    }
+  },
+  "note": "computed from the v3 rows, not from its summary record, so the demotion argument rests on the rows. Delta^A is a demoted diagnostic in v4 and these rows enter no v4 estimator",
+  "status": "COMPLETE"
+}

@@ -1,0 +1,12 @@
+{
+  "artifacts_carrying_the_label": [
+    "docs/v4_prefreeze/C6.json",
+    "docs/v4_prefreeze/C12.json",
+    "docs/v4_prefreeze/C13.json",
+    "docs/v4_prefreeze/C14.json",
+    "docs/v4_prefreeze/C18.json"
+  ],
+  "check": "C20",
+  "mechanism": "every read of the pilot or the v3 cache goes through dci1v4.engine.guards.design_evidence_read, which returns a stamp carrying classification 'design_evidence', status 'non-confirmatory', and the note that the source licenses no scientific claim, its rows may never enter a v4 estimator, and its point estimates are never the effect the confirmatory design expects",
+  "status": "COMPLETE"
+}

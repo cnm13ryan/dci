@@ -1,0 +1,10 @@
+{
+  "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+  "check": "C2",
+  "graded_and_predicate_checks": 530,
+  "included_in_the_canonical_verifier_hash": true,
+  "mismatches": [],
+  "non_vacuity_threshold_words": 20,
+  "note": "compliance.py carries both \u00a77.4 graded scores and the \u00a79.3 predicates and is inside the canonical verifier hash, so a change to either invalidates every downstream stage",
+  "status": "COMPLETE"
+}

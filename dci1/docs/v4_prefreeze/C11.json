@@ -1,0 +1,7 @@
+{
+  "check": "C11",
+  "implementation": "every registered constraint absent from a prompt is scored on every row and marked as an accidental-compliance diagnostic; every figure from a cell above the truncation threshold is emitted as a bound by the emitter itself",
+  "reason": "accidental compliance and per-cell truncation are measured at Gate 2 and Gate 4 on real generations",
+  "status": "BLOCKED",
+  "truncation_bound_threshold": 0.1
+}

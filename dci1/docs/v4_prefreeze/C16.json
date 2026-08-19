@@ -1,0 +1,17 @@
+{
+  "check": "C16",
+  "note": "every term of every registered contrast is looked up by the same block identifier, so a cross-set term is structurally impossible; the pilot's caveat is removed by running every cell on the same blocks",
+  "status": "COMPLETE",
+  "within_block_report": {
+    "blocks": 8,
+    "cells_per_block": 45,
+    "cross_set_terms": 0,
+    "slots": [
+      "A",
+      "B",
+      "R1",
+      "R2",
+      "R3"
+    ]
+  }
+}

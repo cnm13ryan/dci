@@ -1,0 +1,13 @@
+{
+  "annotator_available": false,
+  "author_labels_disposition": "the 120 v3 blinded labels and the 56-item calibration sample were produced by the study author; they are diagnostic evidence and are never carried as v4 independent human validation (T-16)",
+  "author_labels_present": true,
+  "check": "C3",
+  "implementation_status": "the pathway is implemented in dci1v4.stages.autorater and is exercised by tests_v4/test_t5_measurement.py; only the judge execution is outstanding",
+  "measurement_basis_route": "autorater_calibration_approved",
+  "paired_medium_versus_high_comparison": "NOT RUN",
+  "reason": "no annotator independent of the design and analysis team is available to this process, and none can be obtained autonomously; V8's registered default therefore applies",
+  "registered_outcome": "HUMAN_VALIDATION_UNAVAILABLE",
+  "status": "BLOCKED",
+  "what_would_settle_it": "either an independent annotator, or the \u00a710.4 pathway executed end to end: the medium-versus-high comparison on the existing 56-item sample under serialised execution at concurrency one and the frozen cap, paired on the same items, with coverage, per-class agreement, the confusion matrix, the discordant-item table, truncation incidence and deterministic reproducibility, then selection under the \u00a710.4 hierarchy with the rejected alternative recorded"
+}

@@ -1,0 +1,17 @@
+{
+  "blocks": 384,
+  "blocks_carrying_every_solo_cell": 384,
+  "check": "C7b",
+  "emitted_beside_every_excess_statement": true,
+  "estimator_reads_the_same_blocks": true,
+  "note": "the realised gap estimator reads the A solo cell and every admitted reference solo cell from the same 384 blocks, and analysis.claims attaches the \u00a728.1 companion-difficulty block whenever a realised gap exceeds the qualifier",
+  "qualifier": 0.15,
+  "solo_cell_types": [
+    "solo:A",
+    "solo:B",
+    "solo:R1",
+    "solo:R2",
+    "solo:R3"
+  ],
+  "status": "COMPLETE"
+}
