@@ -5,7 +5,15 @@
     "qwen3-4b-instruct-2507"
   ],
   "permitted_outcome": "REGIME_NOT_FOUND is a statement about the registered grid and never about the model or the hypothesis",
-  "reason": "neither Qwen model's solo compliance for the exact-count constraint at any n, nor for the word-length constraint at any m, exists yet; both terminated v3 at Gate 2A before the question arose",
-  "status": "BLOCKED",
-  "what_settles_it": "run \u00a712 for both models"
+  "realised": {
+    "qwen3-4b": {
+      "status": "regime screen not run"
+    },
+    "qwen3-4b-instruct-2507": {
+      "status": "regime screen not run"
+    }
+  },
+  "reason": "neither Qwen model's solo compliance existed in the corpus; both terminated v3 at Gate 2A before the question arose",
+  "remaining": "\u00a712.3 and \u00a712.4, which are Gate 2 and are downstream of Gate 1",
+  "status": "BLOCKED"
 }

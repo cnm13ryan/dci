@@ -1,7 +1,32 @@
 {
   "check": "C11",
   "implementation": "every registered constraint absent from a prompt is scored on every row and marked as an accidental-compliance diagnostic; every figure from a cell above the truncation threshold is emitted as a bound by the emitter itself",
-  "reason": "accidental compliance and per-cell truncation are measured at Gate 2 and Gate 4 on real generations",
-  "status": "BLOCKED",
+  "realised": {
+    "gemma-3n-e2b-it": {
+      "cap": 512,
+      "cap_set_truncation": {
+        "1024": {
+          "constrained": 0.0,
+          "zero_constraint": 0.25
+        },
+        "512": {
+          "constrained": 0.027777777777777776,
+          "zero_constraint": 0.9166666666666666
+        },
+        "768": {
+          "constrained": 0.0,
+          "zero_constraint": 0.4166666666666667
+        }
+      },
+      "ladder_cells": 106,
+      "ladder_cells_above_the_bound_threshold": 8,
+      "worst_ladder_cell": [
+        "ladder:A:8",
+        0.3333333333333333
+      ]
+    }
+  },
+  "remaining": "per-cell accidental compliance at Gate 2 and Gate 4, which are downstream of Gate 1",
+  "status": "PARTIAL",
   "truncation_bound_threshold": 0.1
 }

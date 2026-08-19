@@ -78,6 +78,27 @@ and [`exploratory/HYPOTHESES.md`](exploratory/HYPOTHESES.md).
   extraction. Results from materially different conditions are reported side by
   side, never pooled. *(`CROSS_MODEL_EXECUTION_MATRIX.md`)*
 
+## 4b. DCI-1: the registered study line
+
+`dci1/` is a separate, isolated study module with its own preregistrations and
+its own evidence tree. It does not share code with `src/dci/` or
+`exploratory/`.
+
+| Version | Status |
+|---|---|
+| v2 | closed |
+| v3 | closed. Two Gemma replications reached UNMASKED_ANALYSIS; both Qwen replications terminated at Gate 2A. `dci1/RESULTS_V3.md` |
+| B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
+| **v4** | **implemented, not frozen, no confirmatory data.** `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
+
+v4 replaces target failure with the per-constraint compliance vector, makes
+reciprocal delivery loss the primary estimand, matches references to A on solo
+compliance rather than to B on solo failure, and makes instruction order a
+cell-level factor. It is a different protocol: v3 and v4 numbers are not
+comparable and are never compared. Nine registered open decisions (V1 to V9)
+and seven pre-freeze checks remain open; the freeze and confirmatory generation
+are implemented and deliberately not executed.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under

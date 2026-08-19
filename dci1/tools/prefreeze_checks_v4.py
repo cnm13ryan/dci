@@ -473,16 +473,76 @@ def check_c9() -> dict:
             "base_sentence": report["base_sentence"]}
 
 
+def _matched_rung_vacuity(model_key: str) -> dict | None:
+    """The C7 x C10 interaction: do the rungs that match A survive §13.2's
+    vacuity condition?
+
+    §13.2 admits a severity for its closeness to A's solo compliance
+    (condition 1) **and** for a family solo vacuity rate at or below 0.10
+    (condition 6). Those two pull in opposite directions by construction: A's
+    solo compliance is low, so matching it means a restrictive "at most q",
+    and a restrictive budget constraint is satisfied by writing a shorter
+    answer. This measures whether both can hold at once.
+    """
+    payload = _v4_regime(model_key)
+    if payload is None:
+        return None
+    caches = sorted((V4_EVIDENCE / model_key / "prescreen").glob(
+        "ladder-cap*/cache.jsonl"))
+    if not caches:
+        return None
+    rows = _read_jsonl(caches[0])
+    per_rung: dict[str, list] = defaultdict(list)
+    for row in rows:
+        score = row["scores"][0]
+        per_rung[f"{score['kind']}:{score['severity']}"].append(row)
+
+    matched = payload["rungs_within_the_caliper"]
+    table = []
+    for rung, compliance in sorted(matched.items()):
+        members = per_rung.get(rung, [])
+        if not members:
+            continue
+        vacuity = sum(1 for r in members
+                      if r["scores"][0]["vacuous_pass"]) / len(members)
+        table.append({
+            "rung": rung, "solo_compliance": compliance,
+            "solo_vacuity": vacuity,
+            "mean_words": statistics.fmean(r["word_count"] for r in members),
+            "truncation": sum(1 for r in members
+                              if r["truncated"]) / len(members),
+            "meets_condition_6": vacuity <= 0.10,
+        })
+    surviving = [row for row in table if row["meets_condition_6"]]
+    families = sorted({row["rung"].split(":")[0] for row in surviving})
+    return {
+        "matched_rungs": len(table),
+        "surviving_the_vacuity_condition": len(surviving),
+        "families_still_viable": families,
+        "three_or_more_families_viable": len(families) >= 3,
+        "table": table,
+        "reading": ("on the pre-screen sample, satisfying §13.2 condition 1 "
+                    "and condition 6 at once"
+                    + (" is possible" if len(families) >= 3 else
+                       " was not achieved for any family")),
+    }
+
+
 def check_c10() -> dict:
     """Realised vacuity rates and the 20-word threshold."""
     from dci1v4.verifiers.compliance import NON_VACUITY_MIN_WORDS
 
     realised: dict[str, Any] = {}
+    interaction: dict[str, Any] = {}
     for model_key in ALL_MODELS:
         payload = _v4_regime(model_key)
         if payload is None:
             continue
         vacuity = payload.get("vacuity_by_cell", {})
+        caches = sorted((V4_EVIDENCE / model_key / "prescreen").glob(
+            "ladder-cap*/cache.jsonl"))
+        rows = _read_jsonl(caches[0]) if caches else []
+        vacuous = [r for r in rows if r["scores"][0]["vacuous_pass"]]
         realised[model_key] = {
             "solo_cells_measured": len(vacuity),
             "cells_above_0.10": sorted(k for k, v in vacuity.items()
@@ -490,7 +550,25 @@ def check_c10() -> dict:
             "max_vacuity": max(vacuity.values()) if vacuity else None,
             "mean_vacuity": (sum(vacuity.values()) / len(vacuity)
                              if vacuity else None),
+            "driver": {
+                "vacuous_passes": len(vacuous),
+                "of_which_truncated": sum(1 for r in vacuous
+                                          if r["truncated"]),
+                "of_which_under_the_word_threshold": sum(
+                    1 for r in vacuous
+                    if r["word_count"] < NON_VACUITY_MIN_WORDS),
+                "mean_response_words": (
+                    statistics.fmean(r["word_count"] for r in rows)
+                    if rows else None),
+                "share_under_the_word_threshold": (
+                    sum(1 for r in rows
+                        if r["word_count"] < NON_VACUITY_MIN_WORDS) / len(rows)
+                    if rows else None),
+            },
         }
+        found = _matched_rung_vacuity(model_key)
+        if found:
+            interaction[model_key] = found
     return {
         "check": "C10",
         "status": "PARTIAL" if realised else "BLOCKED",
@@ -498,8 +576,22 @@ def check_c10() -> dict:
         "threshold_is_fixed_before_confirmatory_generation": True,
         "never_tuned_to_a_rate": True,
         "realised_on_the_ladder_screen": realised,
+        "c7_x_c10_interaction": interaction,
+        "finding": (
+            "vacuity here is driven by response SHORTENING, not by "
+            "truncation, and it concentrates at exactly the restrictive "
+            "severities that match A on solo compliance. §13.2 condition 1 "
+            "(match A) and condition 6 (family solo vacuity at most 0.10) "
+            "therefore pull against each other by construction: A's solo "
+            "compliance is low, matching it needs a restrictive 'at most q', "
+            "and a restrictive budget constraint is satisfied by writing a "
+            "shorter answer. This is a decision-relevant interaction between "
+            "open decisions V3, V4 and V5 and is reported, not resolved"),
         "remaining": ("the per-cell-type rate on the §12 and §13.6 "
-                      "calibration stages, which are downstream of Gate 1"),
+                      "calibration stages, at M=4 on 96 topics, which is "
+                      "where §13.2 is actually evaluated; the pre-screen "
+                      "supplies the shortlist and the §13.2 condition 2 "
+                      "confirmation only"),
     }
 
 
