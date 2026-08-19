@@ -78,7 +78,7 @@ class GpuLock:
 
 def run_backend(run_dir: Path, plan: dict[str, Any],
                 design_rows: list[dict[str, Any]], *, device: int = 0,
-                timeout_seconds: float = 4 * 3600) -> dict[str, Any]:
+                timeout_seconds: float = 24 * 3600) -> dict[str, Any]:
     """Execute one real backend run; return {"rows": [...],
     "provenance": {...}}."""
     if not BACKEND_PYTHON.exists():
