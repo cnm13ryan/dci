@@ -1,0 +1,63 @@
+{
+ "artifact": "\u00a710.4 criterion-4 annotation packet manifest",
+ "blinding_note": "the v3 packet's ids named the model (\"gemma-3n-e2b-it::gate1_validation:...\"), so v3 blinded the verdict but not the model label. This packet mints opaque ids and keeps the mapping in the sealed key.",
+ "chosen_sizing": "\u00a710.4",
+ "classification": "Gate 1 input evidence. No session started. Author labels are diagnostic evidence and \u00a710.4 hierarchy input, NEVER independent validation.",
+ "conditions_compared": [
+  "carried-medium",
+  "v4prompt-high",
+  "v4prompt-medium"
+ ],
+ "controls": {
+  "by_stratum": {
+   "A:fail:margin_larger": 1,
+   "A:fail:margin_one": 3,
+   "A:pass": 1,
+   "B:fail:margin_one": 2,
+   "B:pass": 4
+  },
+  "n": 11,
+  "shortfall_note": "A:fail:margin_larger is 7 of 8 discordant, so matched concordant controls do not exist in that stratum; the shortfall is topped up from the concordant pool at large and recorded rather than hidden",
+  "stratum_shortfall": {
+   "A:fail:margin_larger": 6
+  }
+ },
+ "discordant": {
+  "by_stratum": {
+   "A:fail:margin_larger": 7,
+   "A:fail:margin_one": 3,
+   "B:fail:margin_one": 1
+  },
+  "n": 11
+ },
+ "estimated_minutes": [
+  11,
+  22
+ ],
+ "key_hash": "836fe5e7f700c170cef281df5f7f300a3cca3dcac4cbdbf665a6d67fbb0d94d0",
+ "outstanding_before_a_session_can_run": [
+  "the tool-assisted marking interface: \u00a710.3 requires the annotator to mark each qualifying feature with the interface tallying the annotator's OWN marks, and the v3 review app takes a bare S/V/U judgment instead. This is the registered fix for v3's failure mode -- all four v3 disagreements were unaided off-by-one counting errors at margin one, and four independent recounts reproduced the verifier every time.",
+  "a B-class reviewer definition set: the v3 definitions are A-specific (an occurrence-count instruction) and 1 of the 22 items is B-class",
+  "explicit researcher agreement to run the session"
+ ],
+ "packet_hash": "392f8bd9ff21bef50c71689972740d8941b1815677a32962c09e858f9f3880dc",
+ "presentation_ids_are_opaque": true,
+ "presentation_order": "seeded; discordant and control interleaved",
+ "protocol_properties_required": [
+  "blind: no arm, model label, companion, verifier verdict or other annotator's work visible",
+  "tool-assisted marking, no automatic detection or counting",
+  "chained, hash-pinned records",
+  "seeded stratified sample, per instrument",
+  "fail-class stratification by realised margin, reported separately"
+ ],
+ "rejected_sizing": {
+  "hours": [
+   5.8,
+   11.5
+  ],
+  "items": 692,
+  "rule": "\u00a710.3, min(150, N_c) per class per instrument",
+  "why_rejected": "\u00a710.3 requires an annotator independent of the design and analysis team; the annotator is the study author, so the basis stays HUMAN_VALIDATION_UNAVAILABLE however many items are labelled"
+ },
+ "total_to_label": 22
+}

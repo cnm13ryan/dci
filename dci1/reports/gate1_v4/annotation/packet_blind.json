@@ -1,0 +1,121 @@
+{
+ "artifact": "\u00a710.4 criterion-4 annotation packet (BLIND)",
+ "contains": "an opaque presentation id, the constraint and the response, and nothing else",
+ "excluded_from_this_file": "the real item id, the model, the verifier class, the margin, the stratum, the arm, and every condition's label -- all in the sealed key",
+ "items": 22,
+ "samples": [
+  {
+   "constraint": "The word however must appear exactly 1 time.",
+   "id": "g1c4-cff17647177e",
+   "response": "Border regions often develop their own distinct culture due to a confluence of factors. Geographic isolation, historical separation, and interactions with different populations contribute significantly.  For example, physical barriers like mountains or rivers can limit interaction, fostering unique traditions and dialects.  Furthermore, contact with different cultures \u2013 whether through trade, migration, or conflict \u2013 leads to cultural blending and adaptation. This process results in a unique cultural identity that often diverges from the dominant culture of the surrounding areas.  Ultimately, the constant interplay of these influences shapes a distinct cultural landscape."
+  },
+  {
+   "constraint": "Include however exactly 2 times in your answer.",
+   "id": "g1c4-8b690bfe8e95",
+   "response": "Technical debt, that's the implied cost of rework caused by choosing an easy solution now instead of a better approach that would take longer. It's a common phenomenon in long-lived systems, and several factors contribute to its accumulation.\n\nHere's a breakdown of why technical debt tends to build up over time:\n\n*   **Constant Evolution and Change:** Long-lived systems are rarely static. Requirements change, new technologies emerge, and business needs shift.  Trying to keep up with these changes often leads to shortcuts.  Developers might opt for quick fixes or simpler solutions to address immediate needs, knowing that a more robust solution can be implemented later. This is especially true when faced with tight deadlines or pressure to deliver quickly.\n*   **Lack of Refactoring:**  As systems age, code can become increasingly complex and difficult to understand.  Without regular refactoring \u2013 the process of improving the internal structure of the code \u2013 this complexity accumulates.  Refactoring is often deferred because it's seen as time-consuming and disruptive, even though it's essential for maintaining long-term maintainability.\n*   **Inadequate Documentation:**  Poor or missing documentation makes it harder for developers to understand existing code, leading to more frequent and costly changes.  When documentation is lacking, it's easier to make quick, ad-hoc changes that can create further issues down the line.\n*   **Changing Team Skillsets:**  Teams may rotate, and new developers may join with different skillsets than those who originally built the system.  This can lead to code that isn't easily understood or maintained by the new team members.\n*   **Ignoring Design Principles:**  Over time, developers might deviate from established design principles, opting for simpler, but potentially less maintainable, solutions.  This can happen when prioritizing speed over quality, especially when dealing with urgent issues.\n*   **Lack of Automated Testing:** Insufficient or poorly maintained automated tests make it more difficult to identify and fix bugs introduced by quick fixes or changes. This can lead to a snowball effect where small problems compound over time.\n*   **The \"Quick Fix\" Mentality:** A culture that prioritizes quick fixes over proper design and implementation often contributes to the accumulation of technical debt.  Developers might be incentivized to prioritize delivering functionality over building a solid foundation.\n\nEssentially, the longer a system exists, the more opportunities there are for shortcuts and compromises.  This results in a growing accumulation of **technical debt**, which can eventually"
+  },
+  {
+   "constraint": "Your answer must contain however exactly 1 time.",
+   "id": "g1c4-27a2355acb28",
+   "response": "Floodplains are attractive to farmers despite the risk because they offer fertile soil rich in nutrients deposited by rivers and streams. This fertile soil significantly increases crop yields compared to drier areas. The readily available water supply from the river is also a major advantage, crucial for irrigation and crop growth. However, farmers must carefully manage their land and implement flood mitigation strategies to minimize the potential damage and losses associated with flooding."
+  },
+  {
+   "constraint": "Your answer must contain however exactly 4 times.",
+   "id": "g1c4-b56e2109a9e5",
+   "response": "The thickness of a cut of meat significantly impacts how it cooks, influencing both the internal temperature required for doneness and the overall texture achieved. A thinner cut, like a flank steak, cooks much faster than a thicker cut, such as a rib roast. This is because thinner cuts have less muscle tissue and therefore less heat to conduct. Consequently, thinner cuts are often best cooked quickly over high heat to achieve a desirable sear and then finished in a cooler oven. \n\nConversely, thicker cuts require longer cooking times at lower temperatures to ensure they reach a safe and palatable internal temperature throughout.  The longer cooking time allows for more even heat distribution.  A thicker cut might benefit from techniques like braising or slow roasting, which involve moist heat to break down connective tissue.  \n\nTherefore, understanding the thickness of the meat is crucial for achieving the desired level of doneness and texture.  The cooking method you choose will also be influenced by the thickness.  You'll need to adjust cooking times and temperatures accordingly.  Proper thickness assessment is essential for every successful meat dish."
+  },
+  {
+   "constraint": "Use the word however exactly 1 time.",
+   "id": "g1c4-aa62b9653412",
+   "response": "Cave systems are more common in rock types with soluble minerals, particularly limestone and dolomite. These rocks are composed primarily of calcium carbonate, which is easily dissolved by slightly acidic water. As rainwater seeps through the ground, it absorbs carbon dioxide, becoming slightly acidic. This acidic water slowly dissolves the limestone and dolomite over long periods, creating cracks and fissures that eventually develop into extensive cave systems. Other soluble rocks like gypsum and salt can also form caves, but limestone and dolomite are the most prevalent due to their abundance and chemical properties."
+  },
+  {
+   "constraint": "Every word in the answer must have at most 9 letters.",
+   "id": "g1c4-f4b7ac71f2cc",
+   "response": "Early ports faced pest risks. Ships held sick folks. \nShips stayed away from towns. \nCities kept ships apart. \nThis slowed spread of ills. \nQuarantine grew soon. \nLaws kept ships back. \nThis saved lives then. \nPorts used this skill."
+  },
+  {
+   "constraint": "Your answer must contain however exactly 2 times.",
+   "id": "g1c4-638138418145",
+   "response": "The phenomenon of water droplets forming on the outside of a cold glass is due to a process called **condensation**. This happens because the glass is colder than the surrounding air. The air near the glass is warmer and contains water vapor. When the warm, moist air comes into contact with the cold glass, the water vapor cools down and changes from a gaseous state to a liquid state. This change of state is condensation, and the water molecules clump together to form tiny droplets on the glass's surface.\n\nThe rate of condensation is influenced by the temperature difference and the humidity of the air. The colder the glass and the higher the humidity, the more likely condensation is to occur. Essentially, the glass acts as a surface that cools the surrounding air, causing the water vapor to condense."
+  },
+  {
+   "constraint": "The word however must appear exactly 1 time.",
+   "id": "g1c4-8864fcf0bb40",
+   "response": "Appetites often change with the seasons due to a complex interplay of biological and environmental factors. As temperatures drop in the fall and winter, many people experience a decrease in appetite. This is partly linked to hormonal changes, particularly the drop in serotonin levels, which can affect mood and appetite. The colder weather can also trigger a physiological response, prompting the body to conserve energy, leading to reduced food intake.  Conversely, in the spring and summer, warmer temperatures and increased daylight hours can stimulate appetite, often leading to a desire for lighter, more refreshing foods.  The availability of seasonal produce also plays a role \u2013 the abundance of fruits and vegetables in summer can influence food choices and, consequently, appetite.  The changing seasons are a powerful influence on our bodies, and these changes in appetite are a direct result."
+  },
+  {
+   "constraint": "Include however exactly 2 times in your answer.",
+   "id": "g1c4-4bd42f6d0ac9",
+   "response": "The bending of a straw when it enters a glass of water is a classic demonstration of buoyancy and how liquids interact with objects. The straw isn't *actually* bending; it appears to be due to the way the water is distributed around it. Here's a breakdown:\n\nAs the straw enters the water, the water pressure increases on the side of the straw that is submerged. This pressure is greater than the atmospheric pressure pushing on the top of the straw. This pressure difference creates a net force that pushes the straw downwards, causing it to bend.  The water's surface tension also plays a role, creating a sort of \"skin\" that resists the bending.\n\nThe key is that the water isn't simply filling the straw; it's filling the space *around* the straw.  The water level rises on the side of the straw that's submerged, and the water pressure increases significantly there.  This increased pressure is what causes the apparent bend.\n\nIt's important to note that the straw is still relatively rigid, but the water's pressure is effectively acting as a force that overcomes the straw's internal resistance to bending.  The amount of bending depends on the straw's material, its diameter, and the depth of the water.  It's a fascinating example of how fluids can exert pressure and influence the shape of objects within them. The effect is quite noticeable, and it's a common phenomenon you'll see."
+  },
+  {
+   "constraint": "Do not use any word longer than 9 letters.",
+   "id": "g1c4-e6e07362c4fc",
+   "response": "Here's why expert interfaces trip up new users, using short words:\n\n*   **Lots of terms:** They use words pros know.\n*   **Lots of ways:** Many paths to do tasks.\n*   **Hidden stuff:** Key tools are not seen.\n*   **No clear signs:** What to do is not shown.\n*   **Hard to learn:** New folks get lost."
+  },
+  {
+   "constraint": "No word in your answer may exceed 10 letters.",
+   "id": "g1c4-2ae50eb28265",
+   "response": "Water. It condenses."
+  },
+  {
+   "constraint": "Your answer must contain however exactly 4 times.",
+   "id": "g1c4-c23854200ed1",
+   "response": "A poet's decision of where to break a line is a crucial aspect of crafting impactful poetry. It's not simply about aesthetics; it's a deliberate choice driven by several factors. First, **rhythm** is paramount. Line breaks can create pauses, emphasize certain words, and control the pace of the poem. A line break can mirror a natural pause in speech, mimicking the way we naturally breathe and think. The placement of a break can also enhance the poem's overall musicality.\n\nSecond, **meaning** is key. Line breaks can shape the meaning of a phrase or sentence, creating emphasis or suggesting a shift in thought. A carefully chosen break might highlight a key word or phrase, forcing the reader to consider its significance. The placement can subtly alter the poem's overall message.\n\nThird, **visual impact** plays a role. Line breaks contribute significantly to the poem's visual appearance on the page. They create visual patterns and can direct the reader's eye.  The arrangement of lines can enhance the poem's overall form and contribute to its aesthetic appeal.  A skilled poet uses line breaks to create a particular visual effect.\n\nFinally, **form** dictates much of the decision.  Whether the poem is a sonnet, a haiku, or free verse, the rules regarding line breaks will be different.  Even in free verse, the poet is making choices to create a specific effect. The placement of each line break is a calculated decision, adding depth and nuance to the poem's structure."
+  },
+  {
+   "constraint": "No word in your answer may exceed 10 letters.",
+   "id": "g1c4-878aed218c0e",
+   "response": "Complex terms,\nDense code,\nHidden flows,\nHard to grasp."
+  },
+  {
+   "constraint": "Use only words of 8 letters or fewer.",
+   "id": "g1c4-f31b2c1dd34f",
+   "response": "Cave sites form best in **limestone**. It's soft, and water can **dissolve** it. This makes **holes** and **tunnels**. Other rocks like **granite** are hard, so caves are rare."
+  },
+  {
+   "constraint": "Your answer must contain however exactly 3 times.",
+   "id": "g1c4-438a1529e850",
+   "response": "An interview and an ordinary conversation are fundamentally different, despite both involving two or more people communicating. The key difference lies in the structure and purpose. An interview is a structured exchange, typically with a defined goal \u2013 to gather information, assess skills, or evaluate suitability for a specific role. It follows a predetermined format with specific questions and answers, and often involves a formal setting. An ordinary conversation, on the other hand, is often spontaneous and unstructured, driven by casual topics and personal connection. The focus isn't on information gathering but on rapport-building and sharing. Therefore, while both can be dynamic, the **interview** is highly focused, while an ordinary conversation is generally more free-flowing.  The interviewer\u2019s role is to elicit specific details, whereas in a casual setting, the conversation is more open-ended.  Finally, the overall tone of an **interview** tends to be more formal and professional than a casual chat."
+  },
+  {
+   "constraint": "Your answer must contain however exactly 1 time.",
+   "id": "g1c4-1f7410cd48c8",
+   "response": "The straw appears bent where it enters the glass of water due to a phenomenon called refraction. Refraction is the bending of light as it passes from one medium to another (in this case, from air to water). Light travels slower in water than in air. This difference in speed causes the light rays coming from the straw to bend as they enter the water, making the straw appear bent to an observer looking at the water. It's a visual illusion caused by the change in the speed of light."
+  },
+  {
+   "constraint": "Include however exactly 1 time in your answer.",
+   "id": "g1c4-65031f01784c",
+   "response": "The body's adjustment to shift work is a complex process involving a variety of physiological and psychological responses. Here's a breakdown:\n\n**1. Circadian Rhythm Disruption:**  The primary challenge is that shift work disrupts the body's natural internal clock, the circadian rhythm. This rhythm regulates sleep-wake cycles, hormone release, body temperature, and other bodily functions.  Normally, this rhythm is synchronized with the 24-hour day-night cycle. Shift work throws this synchronization off, leading to a mismatch between when we're exposed to light and darkness and when we need to be awake.\n\n**2. Hormonal Changes:**  Shift work impacts several hormones:\n    *   **Melatonin:**  This hormone, which promotes sleep, is typically released in the evening.  Shift workers often experience reduced melatonin production during their work shifts, leading to difficulty falling asleep.\n    *   **Cortisol:**  This stress hormone is usually highest in the morning. Shift work can disrupt cortisol levels, potentially leading to chronic stress and fatigue.\n    *   **Growth Hormone:**  Growth hormone secretion is often suppressed during the night.\n    *   **Other Hormones:**  Changes occur in hormones related to appetite, metabolism, and mood.\n\n**3. Sleep-Wake Cycle Alterations:**  The body tries to compensate for the disruption.  People working shifts often experience:\n    *   **Delayed Sleep Phase:**  The natural tendency to fall asleep later.\n    *   **Reduced Sleep Duration:**  Getting less sleep than desired.\n    *   **Fragmented Sleep:**  More frequent awakenings during the night.\n    *   **Difficulty Falling Asleep:**  Insomnia.\n\n**4. Physiological Adaptations:**  The body adapts through various mechanisms:\n    *   **Increased Alertness:**  The brain may increase alertness during work periods.\n    *   **Changes in Body Temperature:**  Temperature fluctuations can influence sleepiness and wakefulness.\n    *   **Cardiovascular Changes:** Shift work can increase the risk of cardiovascular problems.\n    *   **Metabolic Changes:**  Disrupted sleep and hormonal imbalances can affect metabolism, increasing the risk of weight gain and type 2 diabetes.\n\n**5. Psychological Effects:**  Shift work can also have significant psychological consequences:\n    *   **Mood Disturbances:**  Increased risk of depression and anxiety.\n    *   **Cognitive Impairment:**  Difficulty concentrating, impaired decision-making"
+  },
+  {
+   "constraint": "Your answer must contain however exactly 1 time.",
+   "id": "g1c4-934c4c4a1a0c",
+   "response": "Some logos survive decades of redesign because they possess a certain inherent strength. Often, these logos are simple, memorable, and easily recognizable. They might leverage a strong visual metaphor or a distinctive shape that resonates with the brand's core identity.  Furthermore, a well-established brand often has a loyal customer base who are resistant to change and appreciate familiarity.  A successful redesign, while potentially updating the logo, must retain the essence of the original, avoiding drastic alterations that would alienate existing customers.  Ultimately, longevity isn't about constant evolution, but about enduring relevance and positive brand recognition."
+  },
+  {
+   "constraint": "Use only words of 10 letters or fewer.",
+   "id": "g1c4-c8c421d85840",
+   "response": "Here's how injury alters an athlete, beyond just body fix:\n\n*   **Mental shift:** Loss, fear, doubt.\n*   **Focus change:** Less sport, more rest.\n*   **Self-view:** Doubt, worth feels low.\n*   **Stress rise:** Worry, pain, fear.\n*   **Skill fades:** Game feels hard now.\n*   **Team bond:** Trust shifts, feels weak.\n*   **Future plans:** Dreams may change fast.\n*   **Inner strength:** Finds new core.\n*   **Self-worth:** Grows, finds new grace."
+  },
+  {
+   "constraint": "No word in your answer may exceed 10 letters.",
+   "id": "g1c4-551c795dd193",
+   "response": "Plan for growth.\n\nAssess soil.\nPlan beds.\nPlant seeds.\nWatch trends.\nAdd new plants.\nEnjoy life!"
+  },
+  {
+   "constraint": "Your answer must contain however exactly 4 times.",
+   "id": "g1c4-d439e37c33b4",
+   "response": "The body's ability to adjust to shift work is a complex process involving various biological and physiological changes. It's not a quick fix, and the adaptation process can take days or even weeks. Here's a breakdown of how the body attempts to adjust, and the challenges involved:\n\n**1. Circadian Rhythm Disruption:** The core issue with shift work is the disruption of the body's natural circadian rhythm, the internal biological clock that regulates sleep-wake cycles, hormone release, and other bodily functions. This rhythm is primarily controlled by light exposure. When the light-dark cycle is drastically altered by a shift in work schedule, the body struggles to synchronize its internal clock with the new schedule. The body tries to compensate, but it's not always successful.\n\n**2. Hormone Regulation Changes:** Several hormones are significantly affected. Melatonin, the sleep hormone, is often suppressed during shifts, leading to difficulty falling asleep. Cortisol, a stress hormone, typically rises during the day and can be elevated during shifts, contributing to fatigue. The body also experiences changes in other hormones like growth hormone and insulin, impacting energy levels and metabolism. These hormonal shifts are a major part of the adjustment process.\n\n**3. Sleep-Wake Cycle Adjustment:** The body attempts to shift its sleep-wake cycle. Initially, this might involve feeling more tired during the shift and struggling to fall asleep during breaks. Over time, the body may gradually shift its sleep schedule, leading to a more consistent sleep pattern. This adaptation is influenced by factors like light exposure during the shift, caffeine intake, and the individual's genetic predisposition. The degree of adjustment varies greatly.\n\n**4. Physiological Adaptation:** Beyond hormones, other physiological changes occur. The body might experience changes in body temperature, heart rate, and blood pressure. These changes are attempts to maintain homeostasis (internal balance) despite the disrupted schedule.  The effectiveness of this adaptation depends on individual factors and the duration of shift work.  It takes time for the body to fully re-establish its normal rhythms, and some individuals may experience chronic sleep problems even after adjusting.  Ultimately, the body's ability to adapt is a dynamic process, and not everyone adapts equally well."
+  },
+  {
+   "constraint": "Include however exactly 2 times in your answer.",
+   "id": "g1c4-0c4414440c99",
+   "response": "Some logos endure for decades despite redesigns because they often possess a combination of factors that contribute to their lasting appeal. A strong, memorable design is a key element; a logo that is easily recognizable and instantly associated with the brand's values and identity has a higher chance of survival.  Furthermore, a well-executed redesign can actually *improve* a logo's relevance, updating it to reflect contemporary aesthetics while retaining core brand recognition.  This is particularly true if the redesign thoughtfully considers the brand's evolution and target audience.  A successful redesign avoids alienating existing customers and instead reinforces the brand's position in the market.  Ultimately, a logo's longevity often hinges on its inherent strength and the brand's ability to adapt and remain relevant over time."
+  }
+ ],
+ "seed": 202608193,
+ "seed_domain": "gate1:annotation:v4",
+ "set_name": "gate1-v4-criterion4"
+}
