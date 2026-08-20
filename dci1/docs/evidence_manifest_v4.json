@@ -1,0 +1,806 @@
+{
+ "classification": "content manifest of registered pre-freeze evidence",
+ "critical_count": 17,
+ "devices": {
+  "durable_root": 64512,
+  "evidence": 64512,
+  "same_device": true
+ },
+ "durable_root": "durable_root/dci1-v4",
+ "evidence_root": "evidence/dci1-v4",
+ "file_count": 157,
+ "files": {
+  "gemma-3n-e2b-it/gate0_apparatus.json": {
+   "bytes": 24584,
+   "critical": true,
+   "sha256": "b1b64920b193a4635a66edd0a3525b7873b850a580018b6db3501d5b65468584"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/backend_runs/round0/backend.log": {
+   "bytes": 100701,
+   "critical": false,
+   "sha256": "50e84a907039d00bc2a8b6f05d212e79d19403e06c37e075db22b5cae9a59791"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 510792,
+   "critical": false,
+   "sha256": "eb0b27bd55b793fba4e8959662f2b822d3ef1780a72128a61e98546d5b8d4e22"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/backend_runs/round0/plan.json": {
+   "bytes": 913,
+   "critical": false,
+   "sha256": "5f7b50cf575b10f014d1dc4628629aee304260ddaeb26e3cc845749249df35a2"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 2013681,
+   "critical": false,
+   "sha256": "0e3853a59fcce56479fc73866d6210c3805d89889761d5f46bb5ae1be69ebfb5"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4113,
+   "critical": false,
+   "sha256": "d515195dc0ceb74ec1adf756966ff614e80616e5bf63c80fe989df9728403d09"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/cache.jsonl": {
+   "bytes": 3784365,
+   "critical": false,
+   "sha256": "60ee48fbf1f96efb5717dee8e9f337cce7f1b5c795ae124a259de59eaacb8656"
+  },
+  "gemma-3n-e2b-it/pilot/pilot-cap768/cache_report.json": {
+   "bytes": 276,
+   "critical": false,
+   "sha256": "7d0d11a028b079dafcf87d0c7408068ce2580d0aad92b6030929223fe3da664f"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/backend_runs/round0/backend.log": {
+   "bytes": 21605,
+   "critical": false,
+   "sha256": "2ffdd7a243c4eb882eca18de272d8777ed40e55fcc8889cf5d2d2d35f3860cc8"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/backend_runs/round0/design.jsonl": {
+   "bytes": 36497,
+   "critical": false,
+   "sha256": "3bee7a2b857ba502a9c79aec268e71fa6488e5839cc0f270805f0260d15f91a3"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/backend_runs/round0/plan.json": {
+   "bytes": 917,
+   "critical": false,
+   "sha256": "86eba93753360238f38de577ebe8ec2010d733e6dc396de272f1aa0679a896b0"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/backend_runs/round0/rows.jsonl": {
+   "bytes": 360761,
+   "critical": false,
+   "sha256": "323adeda4bef937c034beed1e9f227fe1a8fccbcb65e564f847ec22ffd6ed4bf"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/backend_runs/round0/rows_engine.json": {
+   "bytes": 4017,
+   "critical": false,
+   "sha256": "67b3e336bddd8831077f14b0fdfd161987701cedc7aff1d34400a960ec2bf9a9"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/cache.jsonl": {
+   "bytes": 301077,
+   "critical": false,
+   "sha256": "c9b42125b9d0e91a32ca65ffce12670896d58a3dc83320a5a04e21cc5a833d31"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap1024/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/backend_runs/round0/backend.log": {
+   "bytes": 19090,
+   "critical": false,
+   "sha256": "9d9e1f5af400059cb3ba23cba5fcd491d287777a7578a50faa8a8b4c51e4bec5"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 36497,
+   "critical": false,
+   "sha256": "3bee7a2b857ba502a9c79aec268e71fa6488e5839cc0f270805f0260d15f91a3"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/backend_runs/round0/plan.json": {
+   "bytes": 915,
+   "critical": false,
+   "sha256": "1cd6b88ed0153acacf0c358b2ac1ebbed63419add52a076e3e69a3fba9201025"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 291127,
+   "critical": false,
+   "sha256": "fab590f664a68678917b61636131e9fe77f6f7d80f9b574bbff2df4122612af2"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4016,
+   "critical": false,
+   "sha256": "bfb6ff22b719c82b17f6efcb8f42be8828f0c99efd579c23ac54f8b396303dd2"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/cache.jsonl": {
+   "bytes": 266342,
+   "critical": false,
+   "sha256": "2963e10adc339907aacfe3540767eb8fffbf460e74198a2cb939bd9ae63978de"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap512/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/backend_runs/round0/backend.log": {
+   "bytes": 20769,
+   "critical": false,
+   "sha256": "3127af63e7c940897acb96b82ff72b21ec12698c8e1a8db99dcd1f5d31f6902b"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 36497,
+   "critical": false,
+   "sha256": "3bee7a2b857ba502a9c79aec268e71fa6488e5839cc0f270805f0260d15f91a3"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/backend_runs/round0/plan.json": {
+   "bytes": 915,
+   "critical": false,
+   "sha256": "f15ed56ba98f70b1ff207412e4e3c6dfb324b84d42e9ddefaf8d1108245ea604"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 340428,
+   "critical": false,
+   "sha256": "cf77fd9e41f8773f179edcc7b256f645f1d6374ef7ec3082fc124c40f90c5394"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4016,
+   "critical": false,
+   "sha256": "ed64d866ea4d3bbbdfee8b0d75a7f3175937544b5c1ee568d4e683cf2bf77a5f"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/cache.jsonl": {
+   "bytes": 290911,
+   "critical": false,
+   "sha256": "87ca400e1ea99abf795facd12293742b4f41d8d19038c4494a3053f14238cecd"
+  },
+  "gemma-3n-e2b-it/prescreen/capscreen-cap768/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/backend_runs/round0/backend.log": {
+   "bytes": 186885,
+   "critical": false,
+   "sha256": "94dce63a230e50c826aacf501a762097c9b2f32664c54af95eb65957fc555b4a"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 960272,
+   "critical": false,
+   "sha256": "6cf63a36e3c15f8bf6e2c58d4aaa17684767dbc97c4bb8d2aaa97b69f8a0910c"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/backend_runs/round0/plan.json": {
+   "bytes": 914,
+   "critical": false,
+   "sha256": "f633e97765e95eb013ec54975250e6c728bbf294dde425567cc6b63cdc889fd9"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 4063686,
+   "critical": false,
+   "sha256": "f3f2445c8bff991e4ee52e9beba3f3d71a184e59a4fdfdcff82a6e9c6a169375"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4065,
+   "critical": false,
+   "sha256": "acdebfbb2a6b1fce299d8d96fefa3d017f7f3c774bca27684f966774b01d4fdb"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/cache.jsonl": {
+   "bytes": 5240063,
+   "critical": false,
+   "sha256": "a6152c4db25a61141e52f271e0395583197a4e8d9150c97ef2b5653e2fc7b597"
+  },
+  "gemma-3n-e2b-it/prescreen/ladder-cap512/cache_report.json": {
+   "bytes": 221,
+   "critical": false,
+   "sha256": "4f539aab6c0d07150affb1352b669359fb2029a51a575ec8c7ccc67f0f8e5c16"
+  },
+  "gemma-3n-e2b-it/qualification.json": {
+   "bytes": 14820,
+   "critical": true,
+   "sha256": "76192b644043e696de948b623f57e3b9e6e3195903a016d15aed8971b6e5a17c"
+  },
+  "gemma-3n-e2b-it/regime_screen.json": {
+   "bytes": 18725,
+   "critical": true,
+   "sha256": "53bbd407fcb5aa7e5dd1736dd7bcc0e36b15cffcc909335329a9507f28344927"
+  },
+  "gemma-3n-e2b-it/transition_log.jsonl": {
+   "bytes": 2895,
+   "critical": true,
+   "sha256": "1ad73f3a23e644287ba17a29aa949ca8e1d02f36cc713cd7101dd5de923b501d"
+  },
+  "gemma-3n-e4b-it/gate0_apparatus.json": {
+   "bytes": 24584,
+   "critical": true,
+   "sha256": "8e76178e2f4c3924efd0ba02f553808e4ce206b9d89465f53c4a738b03ed2ac1"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/backend_runs/round0/backend.log": {
+   "bytes": 128019,
+   "critical": false,
+   "sha256": "5a67ff22316b50779e2e437e098664ee169aecf0d99158c397d3746393e6257a"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 510805,
+   "critical": false,
+   "sha256": "8de0fe18cc7581b6e029437f9cd96fa3cfb7771d3eab8d17520e0ca089cc798d"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/backend_runs/round0/plan.json": {
+   "bytes": 913,
+   "critical": false,
+   "sha256": "e8d6884d1eb01f954a04df56308bc417b9141cc0d80860f4417cb7fc9522a8fe"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 1917497,
+   "critical": false,
+   "sha256": "a8bda1668e04c18c02d960975c42c3f4c16fb4beb6e1f10e7775e0564b1b340c"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4113,
+   "critical": false,
+   "sha256": "b9bb97e8657f907fd1e93eafe8e8564f402735bf96f1d1adfd25ca3a78d892aa"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/cache.jsonl": {
+   "bytes": 3733034,
+   "critical": false,
+   "sha256": "c2d72bb6b64051e9e58edbb6340f07281d4a91270dc9ed82f49561ef5878feeb"
+  },
+  "gemma-3n-e4b-it/pilot/pilot-cap768/cache_report.json": {
+   "bytes": 288,
+   "critical": false,
+   "sha256": "cc7d8977429511a95185a767a2bbe789e3a1ef85c78e1f75896aa0511e760c8c"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/backend_runs/round0/backend.log": {
+   "bytes": 23002,
+   "critical": false,
+   "sha256": "b7f87aceaf7c1500cd09cbc09accdeedad1d88dd567925b21aaa39ff01127378"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/backend_runs/round0/design.jsonl": {
+   "bytes": 36498,
+   "critical": false,
+   "sha256": "304b01868b81645ec089d297ac6bcebf1608b5cb23d57974f9d0bbfe89b9317d"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/backend_runs/round0/plan.json": {
+   "bytes": 917,
+   "critical": false,
+   "sha256": "8568f73d858c74b8b93b79aab32a4c6e1100c3f5b2fa68507faba7122c4c93df"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/backend_runs/round0/rows.jsonl": {
+   "bytes": 361001,
+   "critical": false,
+   "sha256": "83926dcd8026bfdbaa90a6f89a6ac02eac10fbb9aaa20789cd16cd814bf90c95"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/backend_runs/round0/rows_engine.json": {
+   "bytes": 4018,
+   "critical": false,
+   "sha256": "ea7c3d4e296429cadd91200f9aab7eb0c2f599546603b28843f06fb2e530e8c9"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/cache.jsonl": {
+   "bytes": 301038,
+   "critical": false,
+   "sha256": "705efd280e85dd34aea9b34fcdfc2517894d276437a3ba8449d064387f74f377"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap1024/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/backend_runs/round0/backend.log": {
+   "bytes": 20754,
+   "critical": false,
+   "sha256": "6f898dce7392f5b5767de9e2a226df1cdcc1064a651abe791757d03857eac1f1"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 36498,
+   "critical": false,
+   "sha256": "304b01868b81645ec089d297ac6bcebf1608b5cb23d57974f9d0bbfe89b9317d"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/backend_runs/round0/plan.json": {
+   "bytes": 915,
+   "critical": false,
+   "sha256": "190a77a0bba6184797774f6e85267781c2ad339fd29289e40f8f2a40ada1ba46"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 298128,
+   "critical": false,
+   "sha256": "84a7b6da84d338d98c217ed35e10035c9acba224a8bf390243ddff84ce3504c6"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4016,
+   "critical": false,
+   "sha256": "f870a3e7ed9c7fed364b9dec2118193f4a33d10fae1f8730e3075b6e769126d5"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/cache.jsonl": {
+   "bytes": 269677,
+   "critical": false,
+   "sha256": "38032919d6cc9badcb4aa44a46a3390e5ed8a250a1ddf5d6a84425d3aeedc057"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap512/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/backend_runs/round0/backend.log": {
+   "bytes": 21743,
+   "critical": false,
+   "sha256": "24152525f68b064405075194d1504796aea3795411d3b14db34beb37678bef3f"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 36498,
+   "critical": false,
+   "sha256": "304b01868b81645ec089d297ac6bcebf1608b5cb23d57974f9d0bbfe89b9317d"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/backend_runs/round0/plan.json": {
+   "bytes": 915,
+   "critical": false,
+   "sha256": "c173b4f725bc63f172e08e5b84e937f80b98a8e64d8b54788780a3c970abc16a"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 342073,
+   "critical": false,
+   "sha256": "c50de7dd5db208d69e885a4aab5889753a035308dba6169d3c0f8b221792d76e"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4017,
+   "critical": false,
+   "sha256": "55adb8cfae7f24a452ef6ae1f9ca83bc5ee132d93420d366354a1c4a322567af"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/cache.jsonl": {
+   "bytes": 291644,
+   "critical": false,
+   "sha256": "1a191ae7bb848d16fea847370b98bb8974458078312319d96605b75ba1fc1da0"
+  },
+  "gemma-3n-e4b-it/prescreen/capscreen-cap768/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/backend_runs/round0/backend.log": {
+   "bytes": 247259,
+   "critical": false,
+   "sha256": "79b3dee9e5c61e9933ca7dede3ed280756b7b61ee4556eaef7bcbe75f598855f"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 960253,
+   "critical": false,
+   "sha256": "39c26fbe45a3d1f2c3bd5a4045dc7f47c512ef185cc32f3dbfbba6b345ccadc3"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/backend_runs/round0/plan.json": {
+   "bytes": 914,
+   "critical": false,
+   "sha256": "12f7f05f5b0c4cf9ccf5cb8b1ddef639f830827ad456b86e5e71be09022b085e"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 3810570,
+   "critical": false,
+   "sha256": "306b30317e132603303fabbadce6c694a7033add1de50a2c89699101f955da0e"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4065,
+   "critical": false,
+   "sha256": "a12dfd8fccad6e1a5af1085c202b3258667ef8e4619afc099a7f6faf7dba919a"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/cache.jsonl": {
+   "bytes": 5111616,
+   "critical": false,
+   "sha256": "f9253fa46b6ff528514a0825f12f462f2c923abc36d520a88059475bf79256d7"
+  },
+  "gemma-3n-e4b-it/prescreen/ladder-cap512/cache_report.json": {
+   "bytes": 221,
+   "critical": false,
+   "sha256": "4f539aab6c0d07150affb1352b669359fb2029a51a575ec8c7ccc67f0f8e5c16"
+  },
+  "gemma-3n-e4b-it/qualification.json": {
+   "bytes": 14820,
+   "critical": true,
+   "sha256": "28d17aefc87a97d9f743f519e67c8862cf56bacc0430c495856a7b63069a1757"
+  },
+  "gemma-3n-e4b-it/regime_screen.json": {
+   "bytes": 18385,
+   "critical": true,
+   "sha256": "bc5893aa2bf04607b61ab076ba9d98bfc54221c3c50e11fe49c777c8076fb2d7"
+  },
+  "gemma-3n-e4b-it/transition_log.jsonl": {
+   "bytes": 3506,
+   "critical": true,
+   "sha256": "826e6d1d4e2a116e9d3daa17dcc5384ff8cfec4db04d8cf036393064f3f9b859"
+  },
+  "qwen3-4b-instruct-2507/gate0_apparatus.json": {
+   "bytes": 25326,
+   "critical": true,
+   "sha256": "a4ba78222f6d8ec623ef759caca786c7d880e55dc5833906ee20c911e6620dfe"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/backend_runs/round0/backend.log": {
+   "bytes": 77238,
+   "critical": false,
+   "sha256": "ce0a4adf50b0a765c726c61d829b6ed0caf8df62f66642c7e848066148be747c"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 510812,
+   "critical": false,
+   "sha256": "17168af9cada072888e374560459fa212e617768a525605ec225864dd8959ff0"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/backend_runs/round0/plan.json": {
+   "bytes": 916,
+   "critical": false,
+   "sha256": "59206747616475491da85003097b253a4fd80ef60ee6a3d0443178ea78b9467e"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 2028657,
+   "critical": false,
+   "sha256": "0708086186475eb021de66ebab3e039288b918ed1c7faef9fef508ebc3a08a2c"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4319,
+   "critical": false,
+   "sha256": "1f9b4f5afbfd0440aa7792036fec49f5812a80d9e9873c3e3e69630ec5f75975"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/cache.jsonl": {
+   "bytes": 3801870,
+   "critical": false,
+   "sha256": "5e378a9ca015fcea388571f2a37a6177fd03b0240af4d9ab5521f2dfd150394e"
+  },
+  "qwen3-4b-instruct-2507/pilot/pilot-cap768/cache_report.json": {
+   "bytes": 281,
+   "critical": false,
+   "sha256": "2aaffad67c6ad083a877aac642e36cbf93068fe9eaffd2c31b6d3e6d95676e3e"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/backend_runs/round0/backend.log": {
+   "bytes": 17720,
+   "critical": false,
+   "sha256": "c93148fb9ef2108d3f7ccfc8c4052216f8fb11f36e4865c0178c51b7fac2dee2"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/backend_runs/round0/design.jsonl": {
+   "bytes": 36496,
+   "critical": false,
+   "sha256": "7679ad29d346e5da1b3a0407ce49da3ca3f554ed77c30ec503d6b3174894180f"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/backend_runs/round0/plan.json": {
+   "bytes": 920,
+   "critical": false,
+   "sha256": "ba2231930de9e168d88b5c98204e4032c8372c677aca2e522ce7997ecada7f68"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/backend_runs/round0/rows.jsonl": {
+   "bytes": 205571,
+   "critical": false,
+   "sha256": "bc93c8b06f2430552a4310c2bbd0d636ac98d4c2a67988699fff3fae0a2ab6b4"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/backend_runs/round0/rows_engine.json": {
+   "bytes": 4216,
+   "critical": false,
+   "sha256": "49b061411bf7207c48cb9df636896fe09afefed58bfa6f7c035f9cf1a4ed1f78"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/cache.jsonl": {
+   "bytes": 225031,
+   "critical": false,
+   "sha256": "16d3bb5d8b0a6f228562ff4b207e81263cd868f01c30b802c0a5dc60e5939661"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/backend_runs/round0/backend.log": {
+   "bytes": 17727,
+   "critical": false,
+   "sha256": "57e9a21f33ab429a05a982903ee117db590ba02f1aba1edbc2105e65adb615b4"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 36496,
+   "critical": false,
+   "sha256": "7679ad29d346e5da1b3a0407ce49da3ca3f554ed77c30ec503d6b3174894180f"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/backend_runs/round0/plan.json": {
+   "bytes": 918,
+   "critical": false,
+   "sha256": "c01ae327e15048a67f2393f5a0ebf1510d29761cfc6d9384977dcea7981887c3"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 204655,
+   "critical": false,
+   "sha256": "fa81adf4824a9d3a67e6558df250adf6c29b8c72093d5776aae9073bf57c860c"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4214,
+   "critical": false,
+   "sha256": "5a039d8f65ed59f33f404015ea799bcbd26d489d75bb313544eccc57ecb01278"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/cache.jsonl": {
+   "bytes": 224570,
+   "critical": false,
+   "sha256": "b6935d0b3e647f509f7fa1c03a08b859d35cf3b1386de37ee3cdf9126e1a7198"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/backend_runs/round0/backend.log": {
+   "bytes": 17317,
+   "critical": false,
+   "sha256": "00c1c51f1592ebd55d2a8bfc736d9b3c613a0f6e2faf60c5fe2d107088cea213"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 36496,
+   "critical": false,
+   "sha256": "7679ad29d346e5da1b3a0407ce49da3ca3f554ed77c30ec503d6b3174894180f"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/backend_runs/round0/plan.json": {
+   "bytes": 918,
+   "critical": false,
+   "sha256": "3a5dd72a2c6dd0f697e0116099b53aa7dafb2ea529fbf66798a0b776865db495"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 205047,
+   "critical": false,
+   "sha256": "6ccceaf9940fbd48abbf31626fe60b3a4ead2e74099e035ba128fd26396f2d47"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 4213,
+   "critical": false,
+   "sha256": "d2355c17b5492fa78a6255e0968d82ed572e27f988c71d32ccf9bb8d76b26888"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/cache.jsonl": {
+   "bytes": 224771,
+   "critical": false,
+   "sha256": "e3864161cbbdee102eb9b03294e181d52009cd188faf5cd62d88bfd8c0687524"
+  },
+  "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/backend_runs/round0/backend.log": {
+   "bytes": 158339,
+   "critical": false,
+   "sha256": "2f63f8d23272c39817d62082a2b1fee913d04898124bfb753392fa98d6ef2c26"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 960234,
+   "critical": false,
+   "sha256": "cf3402b0d47902f4218d231cd8645e91109ebe26257d1b5a38540cf65effd5fb"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/backend_runs/round0/plan.json": {
+   "bytes": 917,
+   "critical": false,
+   "sha256": "60914fe668c0e481c25ede48f245765c79faef11b5b4671965455af7642341d8"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 4306371,
+   "critical": false,
+   "sha256": "bac71587a3e6c12a6d5d1754da51de06d85e310363e5758222542f19c7f73edf"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 4266,
+   "critical": false,
+   "sha256": "76eff78e54c34fbe50db9c5e08b69a2e7ae7bdedc4ed1c6ab83c68981ff33ff8"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/cache.jsonl": {
+   "bytes": 5393611,
+   "critical": false,
+   "sha256": "5eedd9326d0511b847ee1ea083937d4ffb1ee60956ecc07a2de64ee2c82701de"
+  },
+  "qwen3-4b-instruct-2507/prescreen/ladder-cap512/cache_report.json": {
+   "bytes": 221,
+   "critical": false,
+   "sha256": "4f539aab6c0d07150affb1352b669359fb2029a51a575ec8c7ccc67f0f8e5c16"
+  },
+  "qwen3-4b-instruct-2507/qualification.json": {
+   "bytes": 14853,
+   "critical": true,
+   "sha256": "ae9622849a5d6bb2c76ac3d6d1ba42a3e003abc55ea96511f0392f8b8d6a7c9e"
+  },
+  "qwen3-4b-instruct-2507/regime_screen.json": {
+   "bytes": 18635,
+   "critical": true,
+   "sha256": "193b26b63890687fac001be13f19053d072e7d60e8d1e98c64a21da90f052588"
+  },
+  "qwen3-4b-instruct-2507/transition_log.jsonl": {
+   "bytes": 2951,
+   "critical": true,
+   "sha256": "c3e2ab1cebb2bce7d842b79e1c3b3e5c59cdd564a0c64592158f00657bbdd08f"
+  },
+  "qwen3-4b/gate0_apparatus.json": {
+   "bytes": 24570,
+   "critical": true,
+   "sha256": "2fb98358aa801954478f959eb2464edb63abdbbc74d43a24a7077fdb3af8c556"
+  },
+  "qwen3-4b/pilot/pilot-cap768/backend_runs/round0/backend.log": {
+   "bytes": 67287,
+   "critical": false,
+   "sha256": "c8631c6d100c79e9430348d7cbb911b00dff3cde5fb6d0e8457f3089284d0c89"
+  },
+  "qwen3-4b/pilot/pilot-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 510812,
+   "critical": false,
+   "sha256": "114e5cf36f0918cd882bd0cb01f6cfda5fc121b7107ba1a38761df25f9dbd288"
+  },
+  "qwen3-4b/pilot/pilot-cap768/backend_runs/round0/plan.json": {
+   "bytes": 931,
+   "critical": false,
+   "sha256": "33c77bc55e8ff155eed84ea40b7452145d90e19d3a7e75796a67d728fdd0e8ba"
+  },
+  "qwen3-4b/pilot/pilot-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 1502115,
+   "critical": false,
+   "sha256": "95b8a52ec06a8bc3712e249b9429a01bc4680e0dc2aa794608cbe1d54e77c6f5"
+  },
+  "qwen3-4b/pilot/pilot-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 7123,
+   "critical": false,
+   "sha256": "a864de6c2b2628704fad10047a3046d516e73b2e87df332e239d5c9fa3b33e5a"
+  },
+  "qwen3-4b/pilot/pilot-cap768/cache.jsonl": {
+   "bytes": 3495739,
+   "critical": false,
+   "sha256": "9bcf6d66743b2f73426516945d8d2b5bcfb8d4f4e3ec20d32a6ea716f34663fb"
+  },
+  "qwen3-4b/pilot/pilot-cap768/cache_report.json": {
+   "bytes": 286,
+   "critical": false,
+   "sha256": "59aed4377b5e6929ef20862f2ba253fc23204811be1b415fc875a9931d139a53"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/backend_runs/round0/backend.log": {
+   "bytes": 17460,
+   "critical": false,
+   "sha256": "f3bd21037e24b08032836479558cb16889aff1424e3b79b5acc96cda39d4ddff"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/backend_runs/round0/design.jsonl": {
+   "bytes": 36493,
+   "critical": false,
+   "sha256": "2a41406ede8cb4c9c0ed027fb72cc1c5ac9776b5f8355031d037de179142df9a"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/backend_runs/round0/plan.json": {
+   "bytes": 935,
+   "critical": false,
+   "sha256": "f06e5394419fa6d6bc64c48338fd62d8ccb05b32a18cb4e5963d50a7a7b6d719"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/backend_runs/round0/rows.jsonl": {
+   "bytes": 225929,
+   "critical": false,
+   "sha256": "41bc23f20c03d6dc3cb14e5d3b9819298470e5ce08723c9efa0d7a6e07a42d3d"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/backend_runs/round0/rows_engine.json": {
+   "bytes": 6992,
+   "critical": false,
+   "sha256": "4793d5cb1c2491704559178bab38e48f3ec5518d7b7bac3657712b1a54c35d45"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/cache.jsonl": {
+   "bytes": 231733,
+   "critical": false,
+   "sha256": "106e7a747f30e4ed2007a3b4d03f73c9ea511ba3528e0c2fdd05c21d0b1021f4"
+  },
+  "qwen3-4b/prescreen/capscreen-cap1024/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/backend_runs/round0/backend.log": {
+   "bytes": 16758,
+   "critical": false,
+   "sha256": "3132c96bcdfb2a54618011fbb96fe284e93071cc5c9b340f47dc3a4fe41a780d"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 36493,
+   "critical": false,
+   "sha256": "2a41406ede8cb4c9c0ed027fb72cc1c5ac9776b5f8355031d037de179142df9a"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/backend_runs/round0/plan.json": {
+   "bytes": 933,
+   "critical": false,
+   "sha256": "d0ee0d55e1f5d1887383965dca7f0112ccf4bb9c649474d2d149952b98eb4df1"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 212521,
+   "critical": false,
+   "sha256": "599197fa6f0a0be3aeeb26431187cd0cff69eb0360c62f2b847765fa89e6dac5"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 6989,
+   "critical": false,
+   "sha256": "b5d271f67e0a5ca9fb90a23afa10f2826c8e09fefe641d3d8d69f4c0d0894105"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/cache.jsonl": {
+   "bytes": 225039,
+   "critical": false,
+   "sha256": "ea28cb0668eeeb3e691e23a3193a7208fdb71c654df8ea9c33b133beccd3930d"
+  },
+  "qwen3-4b/prescreen/capscreen-cap512/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/backend_runs/round0/backend.log": {
+   "bytes": 17584,
+   "critical": false,
+   "sha256": "2ee675c7956c558e3d61821534fa2310fdb96c2b3cd49ab5c28dec2095a57fa2"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/backend_runs/round0/design.jsonl": {
+   "bytes": 36493,
+   "critical": false,
+   "sha256": "2a41406ede8cb4c9c0ed027fb72cc1c5ac9776b5f8355031d037de179142df9a"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/backend_runs/round0/plan.json": {
+   "bytes": 933,
+   "critical": false,
+   "sha256": "aca6e460055499fe430a80546cd46523f8fc774c53d2cd8d9ff04268b269ab39"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/backend_runs/round0/rows.jsonl": {
+   "bytes": 224949,
+   "critical": false,
+   "sha256": "6cf46b15d804d24675f3b256d76ad055a6c062e2cbc64eceddc84f32f2b34082"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/backend_runs/round0/rows_engine.json": {
+   "bytes": 6989,
+   "critical": false,
+   "sha256": "93643b68861c095bbed97954201d46967b6f1d7d64820d675798aeb84719a00c"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/cache.jsonl": {
+   "bytes": 231263,
+   "critical": false,
+   "sha256": "e837887627b7e48008f8e9fc6c7038a1a3c439e8c5bc2c15333a6783598e99bd"
+  },
+  "qwen3-4b/prescreen/capscreen-cap768/cache_report.json": {
+   "bytes": 215,
+   "critical": false,
+   "sha256": "5a5ed7101ba2066d50840a0502f7fe24e0b95c8303ef5251815669f022423364"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/backend_runs/round0/backend.log": {
+   "bytes": 142739,
+   "critical": false,
+   "sha256": "acaa3d60589b9a99e8bd532bd6b1b2f1bebb667a1c3ee911f04e05b265dc36c9"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/backend_runs/round0/design.jsonl": {
+   "bytes": 960221,
+   "critical": false,
+   "sha256": "ef9129df75f8e693443b8ec2a8de1e863a530c621332863f518b1b0277542f69"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/backend_runs/round0/plan.json": {
+   "bytes": 932,
+   "critical": false,
+   "sha256": "706ace979a3c4c4196722667a311327d64db121f75cb1155280e32ccc9e24adf"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/backend_runs/round0/rows.jsonl": {
+   "bytes": 3197551,
+   "critical": false,
+   "sha256": "f21674214e2377be71aa90574b6d68aec392e92db7a1c64a22c188028e88a9ec"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/backend_runs/round0/rows_engine.json": {
+   "bytes": 7085,
+   "critical": false,
+   "sha256": "c35d9ea619e24044e2f598c95d5e06f69bab2d7510cb0c20cac20b7f362f77b8"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/cache.jsonl": {
+   "bytes": 4756441,
+   "critical": false,
+   "sha256": "34551ef44853a334e0dfe57049205175b594f327dd61f576f382a4556926e046"
+  },
+  "qwen3-4b/prescreen/ladder-cap512/cache_report.json": {
+   "bytes": 221,
+   "critical": false,
+   "sha256": "4f539aab6c0d07150affb1352b669359fb2029a51a575ec8c7ccc67f0f8e5c16"
+  },
+  "qwen3-4b/qualification.json": {
+   "bytes": 14816,
+   "critical": true,
+   "sha256": "8e826985867072ab175fff81a62bd523b12a450ffbb86c1fde2bda664a14fd57"
+  },
+  "qwen3-4b/regime_screen.json": {
+   "bytes": 17987,
+   "critical": true,
+   "sha256": "221cda4c14771c9ee30271c674f533f1d609e532b41c5f303128a1d229ae25cb"
+  },
+  "qwen3-4b/transition_log.jsonl": {
+   "bytes": 4038,
+   "critical": true,
+   "sha256": "917dda7df48af8c24b4113aa1d59056ee1f0477735df5beb9e783774699be0d0"
+  },
+  "registration/manifest.json": {
+   "bytes": 19192,
+   "critical": true,
+   "sha256": "4f2f1521263f6a1243849bd673420bd93d5e6e6ca944f2466a4acd837d8f0bca"
+  }
+ },
+ "mirror_complete": true,
+ "purpose": "makes loss detectable in a fresh clone; it cannot restore the tree, which is gitignored by prereg \u00a728",
+ "second_physical_copy": false,
+ "second_physical_copy_note": "VERIFIED 2026-08-20: evidence/ and durable_root/ share device 64512 (/dev/mapper/ubuntu--vg-ubuntu--lv, the single root volume). The mirror protects against a bad write or a partial run, NOT against loss of the disk. No off-host copy of the evidence exists. The repository has a remote (github.com/cnm13ryan/dci.git), so this manifest survives a push even though the 72 MB of generations it describes never can.",
+ "study_id": "dci1-v4",
+ "total_bytes": 72558847,
+ "unmirrored": []
+}

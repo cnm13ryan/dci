@@ -204,3 +204,26 @@ preserved beside the generations; otherwise the timing frame is empty and the
 figure is skipped, which the code already handled.
 
 **Evidence.** `test_no_tracked_script_depends_on_an_ephemeral_session_path`.
+
+## 2026-08-20 — durable replication moved to the stage exit (operational)
+
+**What changed.** `engine/dispatch.run_stage` now replicates to
+`durable_root/` *after* the signed stage record and its transition-log entry
+are written, and verifies the copy with `store.assert_replicated`. The stage
+bodies replicated before returning, so the record itself — written afterwards
+by the dispatcher — was the one file guaranteed not to be mirrored.
+`stages/registration.register` likewise now mirrors the manifest.
+
+**Which results are affected.** None numerically. Four `regime_screen.json`
+records, the registration manifest, four transition logs and three backend logs
+had no current second copy; the mirror has been completed and verified
+(157 files, `assert_replicated` passes). No evidence content changed — the
+missing files were copied, not regenerated.
+
+**Comparability.** Old and new remain fully comparable. This is a durability
+defect in replication ordering, not a change to what any number means.
+
+**Also.** `generation/backend.run_backend` now starts the backend in its own
+process group with `PR_SET_PDEATHSIG`, and tears the group down on every exit
+path. Three `vllm_backend` parents had survived their driver by twelve hours.
+No effect on generated content: the backend binary, plan and seeds are unchanged.

@@ -25,7 +25,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from dci1v4.engine import fs
+from dci1v4.engine import fs, store
 from dci1v4.engine.context import StudyContext
 from dci1v4.engine.signing import create_signing_key, sign_payload, verify_signed
 from dci1v4.errors import IntegrityError, ProtocolError
@@ -265,6 +265,13 @@ def register(context: StudyContext, *, producing_commit: str,
                               memo_provenance=memo_provenance)
     fs.write_json_once(context.registration_manifest,
                        sign_payload(manifest, context.signing_key_path))
+    # The manifest is the study's root of trust; it gets a second copy on the
+    # way out, like every stage record (see engine.dispatch._mirror).
+    registration_root = context.registration_manifest.parent
+    durable_root = (Path(context.durable_root) / context.study_id
+                    / registration_root.name)
+    store.replicate(registration_root, durable_root)
+    store.assert_replicated(registration_root, durable_root)
     return manifest
 
 

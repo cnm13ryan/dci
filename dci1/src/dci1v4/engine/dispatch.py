@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from dci1v4.engine import fs, gitinfo, transitions
+from dci1v4.engine import fs, store, gitinfo, transitions
 from dci1v4.engine.binding import require_frozen_verifier
 from dci1v4.engine.environment import environment_digest, environment_record
 from dci1v4.engine.paths import ModelTree
@@ -50,6 +50,21 @@ def frozen_verifier_hash(tree: ModelTree) -> str | None:
         return None
     payload = transitions.read_stage_record(tree, C.STAGE_GATE1)
     return payload.get("verifier_source_hash")
+
+
+
+def _mirror(tree: ModelTree) -> None:
+    """Replicate to durable storage AFTER the record exists, and verify.
+
+    The stage bodies used to call ``store.replicate`` themselves and then
+    return, so the signed stage record and its transition-log entry -- written
+    by this function afterwards -- were the two files guaranteed *not* to reach
+    the mirror. Four ``regime_screen.json`` records and the registration
+    manifest were found with no second copy at all. Replication belongs on the
+    way out, not inside the body, and it is verified rather than assumed.
+    """
+    store.replicate(tree.root, tree.durable)
+    store.assert_replicated(tree.root, tree.durable)
 
 
 def run_stage(tree: ModelTree, stage: str,
@@ -96,6 +111,7 @@ def run_stage(tree: ModelTree, stage: str,
             tree, stage=stage, outcome=terminal.status,
             producing_commit=commit, environment_digest=digest,
             detail={"terminal": True})
+        _mirror(tree)
         return {"outcome": terminal.status, "terminal": True,
                 "record": record}
     except Exception as error:
@@ -117,5 +133,6 @@ def run_stage(tree: ModelTree, stage: str,
         output_hash=sha_file(path),
         detail={"identification_statuses":
                 payload.get("identification_statuses", [])})
+    _mirror(tree)
     return {"outcome": payload["outcome"], "terminal": False,
             "record": fs.read_json(path)["payload"], "path": str(path)}

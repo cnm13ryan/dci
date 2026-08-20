@@ -20,10 +20,14 @@ T-15), which the plan carries as ``max_concurrency``.
 """
 from __future__ import annotations
 
+import atexit
+import ctypes
 import fcntl
 import json
 import os
+import signal
 import subprocess
+import time
 from pathlib import Path
 from typing import Any, Callable
 
@@ -56,6 +60,78 @@ def backend_env(device: int) -> dict[str, str]:
     # to transient network failure.
     env["HF_HUB_OFFLINE"] = "1"
     return env
+
+
+# ------------------------------------------------------------- child teardown
+#: Process groups of backends this interpreter started and has not yet reaped.
+#: A stage that exits, raises, times out or is signalled must leave no backend
+#: behind: three orphaned ``vllm_backend`` parents were observed alive for
+#: twelve hours after their driver shell died, holding KFD registrations that
+#: block the next run's device check.
+_LIVE_BACKEND_PGIDS: set[int] = set()
+
+#: ``prctl(PR_SET_PDEATHSIG, SIGKILL)``. The kernel signals the child when its
+#: parent dies, which is the only teardown that survives ``kill -9`` of the
+#: driver -- no handler of ours runs in that case.
+_PR_SET_PDEATHSIG = 1
+
+
+def _child_setup() -> None:
+    """Run in the child between fork and exec."""
+    os.setsid()                       # own process group, so we can killpg it
+    try:
+        ctypes.CDLL("libc.so.6", use_errno=True).prctl(
+            _PR_SET_PDEATHSIG, signal.SIGKILL, 0, 0, 0)
+    except OSError:                   # non-Linux or no libc: the finally-block
+        pass                          # and the signal handlers still apply
+
+
+def _terminate_group(pgid: int, *, grace: float = 10.0) -> None:
+    """SIGTERM the group, then SIGKILL whatever is still standing."""
+    for sig, wait in ((signal.SIGTERM, grace), (signal.SIGKILL, 2.0)):
+        try:
+            os.killpg(pgid, sig)
+        except ProcessLookupError:
+            _LIVE_BACKEND_PGIDS.discard(pgid)
+            return
+        except OSError:
+            break
+        deadline = time.monotonic() + wait
+        while time.monotonic() < deadline:
+            try:
+                os.killpg(pgid, 0)
+            except ProcessLookupError:
+                _LIVE_BACKEND_PGIDS.discard(pgid)
+                return
+            time.sleep(0.1)
+    _LIVE_BACKEND_PGIDS.discard(pgid)
+
+
+def _reap_all() -> None:
+    for pgid in list(_LIVE_BACKEND_PGIDS):
+        _terminate_group(pgid)
+
+
+def _install_teardown_handlers() -> None:
+    """Reap backends on normal exit and on the signals a driver actually gets."""
+    atexit.register(_reap_all)
+    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+        previous = signal.getsignal(sig)
+
+        def handler(signum, frame, _previous=previous):
+            _reap_all()
+            if callable(_previous):
+                _previous(signum, frame)
+            else:
+                signal.signal(signum, signal.SIG_DFL)
+                os.kill(os.getpid(), signum)
+        try:
+            signal.signal(sig, handler)
+        except ValueError:            # not the main thread; atexit still holds
+            pass
+
+
+_install_teardown_handlers()
 
 
 class GpuLock:
@@ -174,10 +250,31 @@ def run_backend(run_dir: Path, plan: dict[str, Any],
     if plan.get("chunk_size"):
         command += ["--chunk-size", str(plan["chunk_size"])]
     with GpuLock(device), log_path.open("w") as log:
-        completed = subprocess.run(command, cwd=str(BACKEND_CWD),
+        # start_new_session detaches the backend into its own process group so
+        # the whole tree can be killed as a unit; the finally-block below is
+        # the only thing that then reaps it, on every exit path.
+        process = subprocess.Popen(command, cwd=str(BACKEND_CWD),
                                    env=backend_env(device), stdout=log,
                                    stderr=subprocess.STDOUT,
-                                   timeout=timeout_seconds)
+                                   preexec_fn=_child_setup)
+        pgid = process.pid
+        _LIVE_BACKEND_PGIDS.add(pgid)
+        try:
+            returncode = process.wait(timeout=timeout_seconds)
+        except BaseException:
+            # Timeout, KeyboardInterrupt, or anything else: the group dies with
+            # us. Re-raised after teardown so the caller still sees the cause.
+            _terminate_group(pgid)
+            raise
+        finally:
+            _LIVE_BACKEND_PGIDS.discard(pgid)
+            try:
+                os.killpg(pgid, 0)
+            except ProcessLookupError:
+                pass
+            else:
+                _terminate_group(pgid)
+    completed = subprocess.CompletedProcess(command, returncode)
     if completed.returncode == 3:
         raise IntegrityError(f"backend crashed (see {log_path}); no rows are "
                              f"trusted")
