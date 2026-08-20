@@ -12,7 +12,10 @@ and certified the same way:
 
 Candidates are never composed with each other in this screen (every screen cell
 carries one constraint, or the A+B fixture pair), so only the A and B pairings
-are certified.
+are certified. That envelope is now enforced rather than described: every
+builder below is authored against A's carrier and B's long-word violator, and
+applying it to a reference family reports the construction failure as an
+entailment. See ``CERTIFIABLE_OTHERS``.
 """
 from __future__ import annotations
 
@@ -37,6 +40,28 @@ _TOKENS = {"CL1": "brew",      # b-initial, no a, not y-final, no double, 4 char
 _FILLER = "the river runs west then it drifts to the north"
 
 
+#: The pairings this constructor can certify. Enforced, not documented: the
+#: non-entailment branch below fails ``other`` by appending FOCAL_VIOLATOR,
+#: which moves B's statistic and *no* reference family's, so an out-of-envelope
+#: call silently reports a construction failure as an entailment claim.
+CERTIFIABLE_OTHERS: tuple[str, ...] = ("A", "B")
+
+
+def assert_in_envelope(other: Constraint) -> None:
+    """Refuse a pairing this constructor cannot honestly certify."""
+    if other.kind not in CERTIFIABLE_OTHERS:
+        raise ProtocolError(
+            f"fs_screen_v4.witnesses certifies candidate x A and candidate x B "
+            f"only; {other.kind}@{other.severity} is outside its envelope. Its "
+            f"non-entailment branch fails the companion by appending a long "
+            f"word, which no reference family counts, so the call would report "
+            f"a construction failure as '<candidate> appears to entail "
+            f"{other.kind}@{other.severity}'. Candidate x reference and "
+            f"candidate x candidate witnesses need a constructor that does not "
+            f"exist; that obligation is a cost of Amendment B, not of this "
+            f"screen.")
+
+
 def _passes_registered(constraint: Constraint, text: str) -> bool:
     return score_constraint(constraint, text, truncated=False).passed
 
@@ -44,6 +69,8 @@ def _passes_registered(constraint: Constraint, text: str) -> bool:
 def joint_witness(kind: str, q: int, *, other: Constraint | None = None) -> str:
     """A response satisfying the candidate at ``q`` and ``other`` at once."""
     family = cc.CANDIDATES[kind]
+    if other is not None:
+        assert_in_envelope(other)
     n = other.severity if (other is not None and other.kind == "A") else 0
     carrier = ("however " * n).strip()
 
@@ -63,6 +90,7 @@ def joint_witness(kind: str, q: int, *, other: Constraint | None = None) -> str:
 
 def verify_candidate_pair(kind: str, q: int, other: Constraint) -> None:
     """Joint satisfiability and both non-entailment directions."""
+    assert_in_envelope(other)
     joint = joint_witness(kind, q, other=other)
     if not cc.passes(kind, q, joint):
         raise ProtocolError(
