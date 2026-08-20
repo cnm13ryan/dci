@@ -1,0 +1,33 @@
+{
+ "compares_against": "v4prompt-high replicate 0, device 1",
+ "condition": "v4prompt-high",
+ "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
+ "coverage": 0.875,
+ "device": 0,
+ "items": 16,
+ "judgments": {
+  "gemma-3n-e2b-it:ladder:A:1:art-and-design-08": "fail",
+  "gemma-3n-e2b-it:ladder:A:1:art-and-design-47": "fail",
+  "gemma-3n-e2b-it:ladder:A:1:everyday-science-42": "fail",
+  "gemma-3n-e2b-it:ladder:A:1:geography-31": "pass",
+  "gemma-3n-e2b-it:ladder:A:2:art-and-design-47": "fail",
+  "gemma-3n-e2b-it:ladder:A:2:everyday-science-34": "fail",
+  "gemma-3n-e2b-it:ladder:A:2:everyday-science-42": "fail",
+  "gemma-3n-e2b-it:ladder:B:10:art-and-design-08": "pass",
+  "gemma-3n-e2b-it:ladder:B:10:everyday-science-34": "pass",
+  "gemma-3n-e2b-it:ladder:B:7:music-38": "fail",
+  "gemma-3n-e2b-it:ladder:B:8:geography-31": "fail",
+  "gemma-3n-e2b-it:ladder:B:8:technology-31": "fail",
+  "gemma-3n-e2b-it:ladder:B:9:history-20": "fail",
+  "gemma-3n-e4b-it:ladder:B:7:food-43": "fail"
+ },
+ "note": "serialised at concurrency one, same pinned judge revision, same hashed configuration, different GPU. Not a condition and never part of the selection; it tests whether the device is inert.",
+ "sample_hash": "8dffcb5a18925c5ec57e75dbf3d1504e3b09fd4f269565459dca4cb2e07ca5b3",
+ "seconds_per_item": 51.86,
+ "sidecar": "cross-device determinism",
+ "status_counts": {
+  "invalid_output": 2,
+  "valid": 14
+ },
+ "truncation_rate": 0.125
+}
