@@ -176,3 +176,56 @@ than a 118-word one. Amendment A narrows the range over which that gradient can
 operate; it does not change its direction. Amendment B addresses the gradient.
 The two are complements and the screen tests them as crossed factors precisely
 so that their separate sufficiency can be reported.
+
+---
+
+## 9. Screen outcome — 2026-08-20. **Adoption condition NOT met.**
+
+The FORM × STEM screen (`dci1/reports/fs_screen_v4/REPORT.md`, protocol hash
+`98f8ee0d…`) tested this amendment against §6 above.
+
+**Condition 1 — B-solo vacuous share ≤ 0.10: met on three of four models.**
+0.000 (E2B), 0.000 (E4B), 0.000 (Qwen3-4B), 0.167 (Qwen3-4B-Instruct), against
+0.474 / 0.389 / 1.000 / 0.944 under the current stem. The amendment does what it
+was proposed to do, and more than was claimed: under `floored` the raw and
+≥20-word estimates of D(B←A) **converge**, so the length confound in the primary
+estimand largely disappears.
+
+**Condition 3 — the stem is obeyed**, at 0.709–0.891 in the 60–120 band. It is
+not an inert instruction the models ignore.
+
+**Condition 2 — no model pushed to a terminal range outcome: FAILED.**
+
+| model | B curve under `floored` (m = 7,8,9,10) | verdict |
+|---|---|---|
+| E2B | .50 .46 .62 .75 | 2/4 eligible, m\* = 10 (grid maximum) |
+| E4B | .42 .67 .71 .88 | 3/4 eligible, m\* = 10 (grid maximum) |
+| Qwen3-4B | .04 .17 .21 .33 | **`FOCAL_RANGE_EXHAUSTED`** |
+| Qwen3-4B-Inst | .17 .25 .42 .54 | **`FOCAL_RANGE_EXHAUSTED`** |
+
+**Both Qwen replications terminate at Gate 2 under this amendment.** §5.3 of this
+draft predicted exactly that, and it is realised on the two models where the
+reference failure is decisive. The mechanism is the one the diagnostic
+established: B is length-monotone, so forcing length makes it strictly harder.
+Even where the grid survives, m\* is driven to m = 10 — the most permissive rung
+that exists — leaving no headroom in the direction the stem pushes.
+
+Robustness: decisive for Qwen3-4B (best value 0.33 against a 0.60 floor, a gap of
+6.5 topics of 24); **marginal for Qwen3-4B-Instruct** (0.54, only 1.5 topics
+below the floor) and not settled there.
+
+### Recommendation
+
+**Do not adopt as specified.** §6 said a condition-1 pass with a condition-2
+failure on one model would be a real result and not a reason to discard the
+amendment. It failed on *two* models, and the failure is terminal rather than
+merely awkward: it does not degrade an estimate, it ends the replication.
+
+The amendment is not dead. It is **blocked on the focal grid**, which was
+calibrated under the current stem and is too restrictive under a floored one.
+A revised Amendment A would pair the stem with an extended focal grid. Pooled
+max-word-length distributions under `floored` are consistent with the band being
+restored around m = 10–12, and m ≈ 11+ for Qwen3-4B — but that is an
+extrapolation from text generated under other severities and establishes
+nothing. **It is a hypothesis for a second screen, not a result**, and the
+extended grid would itself be an amendment to §7.1.
