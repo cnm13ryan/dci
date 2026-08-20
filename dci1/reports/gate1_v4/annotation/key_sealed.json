@@ -1,0 +1,359 @@
+{
+ "artifact": "\u00a710.4 criterion-4 annotation key (SEALED)",
+ "items": 22,
+ "key": {
+  "g1c4-0c4414440c99": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+   "margin": 2,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "353154de77c7cc0da35de9aef2d48b99a4e0ff4a95d82654074f03f262908ca2",
+   "severity": 2,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-1f7410cd48c8": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:everyday-science-42",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "8a9235effd469536ca32c8ea084f6cd08f2fea21daf35ecb85f0a687ae3512d5",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-27a2355acb28": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "pass",
+    "v4prompt-medium": "pass"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+   "margin": 0,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "e4f7a93f85b10bc92f5918f3976413426fb6ffaec6be7fbc83dffc73c6f1151f",
+   "severity": 1,
+   "stratum": "A:pass",
+   "verifier_class": "pass"
+  },
+  "g1c4-2ae50eb28265": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "pass",
+    "v4prompt-medium": "pass"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e2b-it:ladder:B:10:everyday-science-34",
+   "margin": 0,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "0a21f465039952847e0b38ac682675b9a3b50814866cbf1ba841f8d30caac496",
+   "severity": 10,
+   "stratum": "B:pass",
+   "verifier_class": "pass"
+  },
+  "g1c4-438a1529e850": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:3:language-and-writing-22",
+   "margin": 3,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "c7907661f05dba1bfa21555d9701f3ab63ba332459e9d4074b46bf944adb18cf",
+   "severity": 3,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-4bd42f6d0ac9": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-42",
+   "margin": 2,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "177280b072e1bf82c75e995629ba7dd1db6e279cc48bebc40f0df201714d88ef",
+   "severity": 2,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-551c795dd193": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "pass",
+    "v4prompt-medium": "pass"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+   "margin": 0,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "01a444abf13a0bbc7ce58426f1703df0631b070c5cd3ca33399cfd1e9121e9b1",
+   "severity": 10,
+   "stratum": "B:pass",
+   "verifier_class": "pass"
+  },
+  "g1c4-638138418145": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+   "margin": 2,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "c41a427cc0f092365e565b9c15a6725392dca5e41fab3153f957d23948cb6a97",
+   "severity": 2,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-65031f01784c": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": null,
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-15",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "1c962995602a6d250690ef16cd8273c0a1e94d8d8fe167e36bb25eaa20af7bac",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-878aed218c0e": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "pass",
+    "v4prompt-medium": "pass"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e2b-it:ladder:B:10:technology-31",
+   "margin": 0,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "b633caa32db7c2c2b831351d47db3f635ea92066784c4ce58c8b962e5c32c933",
+   "severity": 10,
+   "stratum": "B:pass",
+   "verifier_class": "pass"
+  },
+  "g1c4-8864fcf0bb40": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:health-and-the-body-26",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "e4a12e868276b157ba1190a9fee80603a20ff8d16bdaf3865c73fc1018d47ccd",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-8b690bfe8e95": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": null,
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:2:technology-51",
+   "margin": 2,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "de05749e9104ce8f170fa561b9fdc495f1785f85b498bc71b54ffca18344d79a",
+   "severity": 2,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-934c4c4a1a0c": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "5f0d18ce4052501b98476223ce9b64299f0ab78d3cd810071c89e62d58c5640c",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-aa62b9653412": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-27",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "453407409cbdc57ca23d1d6626ab85efe7b1e8439a94b168a3292529fc7f8e6e",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-b56e2109a9e5": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:4:food-24",
+   "margin": 4,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "8a4c00a4d696e1b7908d235d2cc6492b5250e34fec012b151f8d7ee593a42175",
+   "severity": 4,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-c23854200ed1": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:4:language-and-writing-10",
+   "margin": 4,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "bdaaaa333a8879c14e9df98c2c062d4e4966ff3a4fe1d0acc746d734f24b7444",
+   "severity": 4,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-c8c421d85840": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "pass",
+    "v4prompt-medium": "pass"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e2b-it:ladder:B:10:sport-14",
+   "margin": 0,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "ff9dd58c0f3baa6701e09da8a38cd7ede170523b214178125a446ea01017826d",
+   "severity": 10,
+   "stratum": "B:pass",
+   "verifier_class": "pass"
+  },
+  "g1c4-cff17647177e": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:1:history-34",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "7cc5d1b1c4c7dc8b2eb2068f0c9485cdf823e0daca3b67288025d322f3d11d8c",
+   "severity": 1,
+   "stratum": "A:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-d439e37c33b4": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "A",
+   "item_id": "gemma-3n-e2b-it:ladder:A:4:health-and-the-body-15",
+   "margin": 4,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "b7d436f7c77d8e7c32b2a9ae1874cde8cdd33ffc65210e6393aa1607a3827857",
+   "severity": 4,
+   "stratum": "A:fail:margin_larger",
+   "verifier_class": "fail"
+  },
+  "g1c4-e6e07362c4fc": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e4b-it:ladder:B:9:technology-31",
+   "margin": 1,
+   "model": "gemma-3n-e4b-it",
+   "response_sha256": "64a9fe7eae5a27b59f88fcf4c681325e102ce301253b6aa89df595697689e4a5",
+   "severity": 9,
+   "stratum": "B:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-f31b2c1dd34f": {
+   "arm": "control",
+   "condition_labels": {
+    "carried-medium": "fail",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e4b-it:ladder:B:8:geography-27",
+   "margin": 1,
+   "model": "gemma-3n-e4b-it",
+   "response_sha256": "c4248093ddc3e727d3ac41bfa52e62ff2f8c77a81e9ef2d4f85ac14e593a50c8",
+   "severity": 8,
+   "stratum": "B:fail:margin_one",
+   "verifier_class": "fail"
+  },
+  "g1c4-f4b7ac71f2cc": {
+   "arm": "discordant",
+   "condition_labels": {
+    "carried-medium": "pass",
+    "v4prompt-high": "fail",
+    "v4prompt-medium": "fail"
+   },
+   "instrument": "B",
+   "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+   "margin": 1,
+   "model": "gemma-3n-e2b-it",
+   "response_sha256": "7530a10f8c10ae66a358d3fb38f625f7d2986fe0622fb27d10abd4fdefcffcf2",
+   "severity": 9,
+   "stratum": "B:fail:margin_one",
+   "verifier_class": "fail"
+  }
+ },
+ "open_after": "every label is committed, and never before"
+}
