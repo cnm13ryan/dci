@@ -73,25 +73,46 @@ that does exist — v4's demoted Delta^A reproduces v3's recorded
 +0.065104167 — and confirms the compliance/failure identity that makes the
 demotion argument rest on rows rather than on a summary.
 
-**A third finding, from the first real-model screen.** On the E2B pre-screen
-(24 topics, one draw per cell, at the selected cap of 512), the dense ladder
-does reach A: six of the eight families carry a rung within the 0.10 caliper of
-A's pre-screen solo compliance, which the v3 four-point grid could not manage
-(4 of 32 rungs). But **every one of those 13 matched rungs fails §13.2's
-family-solo-vacuity condition** — 0 of 13 survive, leaving 0 of 8 families
-viable on that sample. The mechanism is structural: A's solo compliance is low,
-so matching it needs a restrictive "at most q", and a restrictive budget
-constraint is satisfied by writing a shorter answer. 1,150 of the 1,153 vacuous
-passes are short answers rather than truncations, at a mean response length of
-55.7 words with 46.6% of responses under the registered 20-word threshold.
+**A third finding, from the real-model screens, in four of four replications.**
+All four registered models completed QUALIFIED, GATE_0_APPARATUS and
+REGIME_SCREEN; each selected cap 512; 15,264 real generations in total.
 
-§13.2 is evaluated at Gate 2 on 96 topics at M = 4, not on this screening
-sample, so this is not an admission decision. It is decision-relevant for V3
-(the caliper), V4 (the 20-word threshold) and V5 (matched versus
-difficulty-spanning references), and it is reported rather than resolved. If it
-holds at Gate 2, the replication takes the §8.6 reduced design with
-`EXCESS_NOT_IDENTIFIED` and L3 — the study's headline claim level — is
-withheld.
+The dense ladder **does** reach A: five or six of the eight families carry a
+rung within the 0.10 caliper in every model, against 4 of 32 rungs on the v3
+four-point grid. But **not one of the 64 matched rungs across the four models
+survives §13.2's family-solo-vacuity condition** — 13, 9, 24 and 18 matched
+rungs, zero surviving in each case, leaving zero viable families everywhere.
+
+The mechanism is structural rather than incidental, and it is measured on
+identical prompts: unconstrained, gemma-3n-E2B-it writes 329 words and
+Qwen3-4B writes 282; with one constraint, 121 and 49; with two, 80 and 25. A's
+solo compliance is low, so matching it needs a restrictive "at most q"; a
+restrictive budget constraint is satisfied by writing a shorter answer; and a
+shorter answer makes the pass vacuous. Of the 4,873 vacuous passes across the
+four screens, **seven** were truncations. §13.2 condition 1 and condition 6
+pull against each other by construction.
+
+§13.2 is evaluated at Gate 2 on 96 topics at M = 4, not on these screening
+samples, so this is not an admission decision. It is decision-relevant for V3
+(the caliper), V4 (the 20-word threshold, whose §9.3 justification — a topic
+space asking for sixty to one hundred and twenty word answers — holds
+unconstrained and does not describe what any of the four models produces once a
+constraint is present) and V5 (difficulty-spanning references would not need
+the reference to be as hard as A). It is reported rather than resolved. If it
+holds at Gate 2, every replication takes the §8.6 reduced design with
+`EXCESS_NOT_IDENTIFIED` and L3 — the study's headline claim level — is withheld
+in all four.
+
+**A fourth finding: two Qwen grid boundaries.** Neither Qwen model's operating
+regime existed anywhere in the corpus. Qwen3-4B is squeezed at both edges of
+the registered grids — n\* would be 1, the floor, and m\* would be 10, the
+ceiling and the only eligible value, its B curve reading 0.25 / 0.58 / 0.54 /
+0.75 against a [0.60, 0.95] band. A small shift at Gate 2 puts it into
+`TARGET_RANGE_EXHAUSTED` or `FOCAL_RANGE_EXHAUSTED`, which are statements about
+the registered grid and never about the model. Qwen3-4B-Instruct-2507 is the
+mirror image on the A side, 0.92 at both n = 1 and n = 2 falling to 0.12 by
+n = 8. The thinking-disabled path was validated on real data: zero
+`<think>`/`</think>` leakage in 1,200 Qwen3-4B pilot draws.
 
 **The same screen also measures trap T-7.** At cap 512 the constrained
 truncation rate is 0.028 and the zero-constraint rate is 0.917. Had the

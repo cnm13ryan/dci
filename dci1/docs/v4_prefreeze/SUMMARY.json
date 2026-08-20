@@ -1,3 +1,23 @@
 {
-  "C10": "PARTIAL"
+  "C1": "COMPLETE",
+  "C10": "PARTIAL",
+  "C11": "PARTIAL",
+  "C12": "PARTIAL",
+  "C13": "COMPLETE",
+  "C14": "PARTIAL",
+  "C15": "COMPLETE",
+  "C16": "COMPLETE",
+  "C17": "COMPLETE",
+  "C18": "COMPLETE",
+  "C19": "COMPLETE",
+  "C2": "COMPLETE",
+  "C20": "COMPLETE",
+  "C3": "BLOCKED",
+  "C4": "COMPLETE",
+  "C5": "COMPLETE",
+  "C6": "COMPLETE",
+  "C7": "PARTIAL",
+  "C7b": "COMPLETE",
+  "C8": "PARTIAL",
+  "C9": "COMPLETE"
 }
