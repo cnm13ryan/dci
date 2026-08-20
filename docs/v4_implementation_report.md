@@ -174,54 +174,83 @@ v3 ever selected".
 
 These rows are design evidence. They enter no v4 estimator.
 
-## 11. C7 — the dense ladder reaches A, and then hits the vacuity condition
+## 11. C7 × C10 — the ladder reaches A, and then the vacuity condition removes every rung
 
-**gemma-3n-E2B-it, the §12.2 screen at the selected cap of 512** (24 pre-screen
-topics, one draw per cell, 2,544 generations).
+**All four registered replications completed QUALIFIED → GATE_0_APPARATUS →
+REGIME_SCREEN.** Every one selected cap 512 and passed.
 
-A's curve peaks at n = 4 with 0.667 and never exceeds it; B's curve is 0.833 /
-0.875 / 0.833 / 0.958 at m = 7 / 8 / 9 / 10. Anchored on A at n = 4:
+**C7: the dense ladder does reach A.** Anchored on A at each model's own
+pre-screen best, five or six of the eight families carry a rung inside the 0.10
+caliper in every model — against 4 of 32 rungs on the v3 four-point grid. The
+ladder interiors are what make matching to A possible at all, which is what
+C7 asks.
 
-**Six of the eight families carry a rung within the 0.10 caliper** — RF1, RF2,
-RF3, RF4, RF7, RF8; thirteen rungs in all. RF5 (commas) never falls below 0.917
-even at q = 0, and RF6 (upper-case) never lands in the band. That is the answer
-C7 asks for: the dense ladder does reach A, where the v3 four-point grid managed
-4 of 32 rungs.
+**C10: and not one of those rungs survives §13.2's vacuity condition.**
 
-**But every one of those thirteen rungs fails §13.2's family-solo-vacuity
-condition.** Zero of thirteen survive; zero of eight families remain viable on
-this sample.
+| model | anchor n | A | families reaching A | matched rungs | surviving condition 6 | mean words | share under 20 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| gemma-3n-E2B-it | 4 | 0.667 | 6 | 13 | **0** | 55.7 | 0.466 |
+| gemma-3n-E4B-it | 1 | 0.667 | 5 | 9 | **0** | 48.2 | 0.497 |
+| Qwen3-4B | 1 | 0.708 | 6 | 24 | **0** | 31.6 | 0.621 |
+| Qwen3-4B-Instruct-2507 | 3 | 0.708 | 5 | 18 | **0** | 64.2 | 0.542 |
 
-| rung | solo compliance | solo vacuity | mean words |
+**Zero of sixty-four matched rungs, in four of four replications, across two
+architectures.** Of the 4,873 vacuous passes across all four screens, **seven**
+were truncations; the rest are short answers.
+
+The mechanism is structural rather than incidental, and it is measured on
+identical prompts:
+
+| model | unconstrained | one constraint | two constraints |
 |---|---:|---:|---:|
-| RF1:1 | 0.667 | 0.292 | 63 |
-| RF2:1 | 0.667 | 0.542 | 63 |
-| RF3:1 | 0.750 | 0.750 | 65 |
-| RF4:4 | 0.583 | 0.250 | 60 |
-| RF7:5 | 0.667 | 0.625 | 30 |
-| RF8:1 | 0.583 | 0.458 | 78 |
+| gemma-3n-E2B-it | 329 words | 121 | 80 |
+| Qwen3-4B | 282 words | 49 | **25** |
 
-*(six of thirteen shown; the full table is in `dci1/docs/v4_prefreeze/C10.json`)*
+Both models write long answers unprompted, so this is constraint-driven
+shortening, not a model style — exactly the mediator §22 registers and the
+reason §13.3 refuses response length as a matching criterion. A's solo
+compliance is low, so matching it needs a restrictive "at most q"; a
+restrictive budget constraint is satisfied by writing a shorter answer; and a
+shorter answer makes the pass vacuous. §13.2 condition 1 and condition 6 pull
+against each other by construction.
 
-The mechanism is structural, not incidental. A's solo compliance is low, so
-matching it needs a restrictive "at most q", and a restrictive budget constraint
-is satisfied by **writing a shorter answer**. Across the whole screen the mean
-response is 55.7 words and 46.6% of responses fall under the registered 20-word
-threshold; **1,150 of the 1,153 vacuous passes are short answers, only 3 are
-truncations**. §13.2 condition 1 and condition 6 pull against each other by
-construction.
-
-**What this is and is not.** It is a screening sample: §13.2 is evaluated at
-Gate 2 on 96 topics at M = 4, and the pre-screen supplies only the shortlist and
-the §13.2 condition-2 confirmation. It is not an admission decision. But if it
-holds at Gate 2, the replication takes the §8.6 reduced design with
+**What this is and is not.** These are screening samples: 24 topics, one draw
+per cell. §13.2 is evaluated at Gate 2 on 96 topics at M = 4, and the
+pre-screen supplies only the shortlist and the §13.2 condition-2 confirmation.
+This is not an admission decision. But it reproduces in every registered model,
+and if it holds at Gate 2 every replication takes the §8.6 reduced design with
 `EXCESS_NOT_IDENTIFIED`, and **L3 — the level carrying the study's
-discriminating question — is withheld**.
+discriminating question — is withheld in all four.**
 
-It is decision-relevant for three open decisions at once: V3 (the caliper), V4
-(the 20-word threshold, which must not be tuned to a rate) and V5 (matched
-versus difficulty-spanning references, which would sidestep the tension by not
-requiring the reference to be as hard as A). It is reported, not resolved.
+It bears on three open decisions at once: **V3** (the caliper), **V4** (the
+20-word threshold, which §9.3 justifies by a topic space that "asks for sixty
+to one hundred and twenty word answers" — true unconstrained, and not what
+either family of model produces once a constraint is present), and **V5**
+(difficulty-spanning references would not need the reference to be as hard as
+A, and would sidestep the tension). Reported, not resolved.
+
+## 11b. C8 — the two Qwen replications, and two grid boundaries
+
+Neither Qwen model's operating regime existed anywhere in the corpus; both
+terminated v3 at Gate 2A before the question arose. Both now have curves.
+
+| model | A curve, n = 1…8 | eligible n | B curve, m = 7…10 | eligible m |
+|---|---|---|---|---|
+| gemma-3n-E2B-it | .33 .38 .46 .67 .50 .42 .46 .42 | 4, 5 | .83 .88 .83 .96 | 7, 8, 9 |
+| gemma-3n-E4B-it | .67 .54 .67 .79 .62 .58 .42 .50 | 1–6, 8 | .67 .83 .83 .92 | 7–10 |
+| **Qwen3-4B** | .71 .62 .46 .50 .42 .42 .25 .17 | 1, 2, 4 | **.25 .58 .54 .75** | **10 only** |
+| Qwen3-4B-Instruct-2507 | .92 .92 .71 .62 .46 .29 .25 .12 | 3, 4 | .71 .79 .92 .88 | 7–10 |
+
+**Qwen3-4B is squeezed at both grid edges**: n\* would be 1, the floor, and m\*
+would be 10, the ceiling and the only eligible value. A small shift at Gate 2's
+calibration measurement puts it into `TARGET_RANGE_EXHAUSTED` or
+`FOCAL_RANGE_EXHAUSTED` — which are statements about the registered grid, never
+about the model. Qwen3-4B-Instruct is the mirror image on the A side: 0.92 at
+both n = 1 and n = 2, dropping to 0.12 by n = 8.
+
+The thinking-disabled path was also validated on real generations: **zero
+`<think>`/`</think>` leakage in 1,200 Qwen3-4B pilot draws**, through the chat
+template's own `enable_thinking` switch, as §6.1 requires.
 
 ## 12. C11 / T-7 — the completion cap, measured
 
@@ -368,15 +397,20 @@ clean worktree, and invoked-source membership in the producing commit.
 
 | model | QUALIFIED | GATE_0_APPARATUS | REGIME_SCREEN |
 |---|---|---|---|
-| gemma-3n-E2B-it | PASS | PASS (1,200 draws, all eight §19 conditions) | PASS (cap 512; 2,544-cell ladder) |
-| gemma-3n-E4B-it | PASS | not yet run | not yet run |
-| Qwen3-4B | PASS | not yet run | not yet run |
-| Qwen3-4B-Instruct-2507 | PASS | not yet run | not yet run |
+| gemma-3n-E2B-it | PASS | PASS | PASS (cap 512) |
+| gemma-3n-E4B-it | PASS | PASS | PASS (cap 512) |
+| Qwen3-4B | PASS | PASS | PASS (cap 512) |
+| Qwen3-4B-Instruct-2507 | PASS | PASS | PASS (cap 512) |
 
-The three remaining screens are resumable: `tools/run_stage_v4.py` skips any
-stage whose record exists, so re-running the driver continues from where it
-stopped. Each model needs roughly 35 minutes of GPU time — 1,200 pilot draws,
-3 × 96 cap-selection prompts and 2,544 ladder cells.
+**Every pre-confirmatory stage the environment supports has run, in the
+registered model order, for all four replications.** Each Gate 0 committed
+1,200 cached draws and met all eight §19 acceptance conditions; each regime
+screen ran 3 × 96 cap-selection prompts and a 2,544-cell dense ladder. 15,264
+real generations in total.
+
+The two cards were run as two independent single-GPU queues — the registered
+`tensor_parallel_size` is 1 and stays 1, so parallelism came from running two
+models at once, never from splitting one across both.
 
 **Gates 2, 3 and 4 are not reachable in this task even with GPU time
 available.** They are downstream of GATE_1_MEASUREMENT in the registered

@@ -24,6 +24,75 @@
         "ladder:A:8",
         0.3333333333333333
       ]
+    },
+    "gemma-3n-e4b-it": {
+      "cap": 512,
+      "cap_set_truncation": {
+        "1024": {
+          "constrained": 0.0,
+          "zero_constraint": 0.25
+        },
+        "512": {
+          "constrained": 0.0,
+          "zero_constraint": 0.875
+        },
+        "768": {
+          "constrained": 0.0,
+          "zero_constraint": 0.5416666666666666
+        }
+      },
+      "ladder_cells": 106,
+      "ladder_cells_above_the_bound_threshold": 1,
+      "worst_ladder_cell": [
+        "ladder:A:7",
+        0.16666666666666666
+      ]
+    },
+    "qwen3-4b": {
+      "cap": 512,
+      "cap_set_truncation": {
+        "1024": {
+          "constrained": 0.0,
+          "zero_constraint": 0.0
+        },
+        "512": {
+          "constrained": 0.0,
+          "zero_constraint": 0.375
+        },
+        "768": {
+          "constrained": 0.0,
+          "zero_constraint": 0.08333333333333333
+        }
+      },
+      "ladder_cells": 106,
+      "ladder_cells_above_the_bound_threshold": 0,
+      "worst_ladder_cell": [
+        "ladder:RF1:3",
+        0.041666666666666664
+      ]
+    },
+    "qwen3-4b-instruct-2507": {
+      "cap": 512,
+      "cap_set_truncation": {
+        "1024": {
+          "constrained": 0.0,
+          "zero_constraint": 0.0
+        },
+        "512": {
+          "constrained": 0.0,
+          "zero_constraint": 0.041666666666666664
+        },
+        "768": {
+          "constrained": 0.0,
+          "zero_constraint": 0.0
+        }
+      },
+      "ladder_cells": 106,
+      "ladder_cells_above_the_bound_threshold": 32,
+      "worst_ladder_cell": [
+        "ladder:RF4:4",
+        0.5416666666666666
+      ]
     }
   },
   "remaining": "per-cell accidental compliance at Gate 2 and Gate 4, which are downstream of Gate 1",

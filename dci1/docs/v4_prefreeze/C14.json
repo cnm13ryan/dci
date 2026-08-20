@@ -50,6 +50,96 @@
       "overall_rate": 0.0,
       "within_qualification_limit": true,
       "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e4b-it/pilot/pilot-cap768/cache.jsonl": {
+      "draws": 1200,
+      "overall_rate": 0.022222222222222223,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 1.0
+    },
+    "gemma-3n-e4b-it/prescreen/capscreen-cap1024/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e4b-it/prescreen/capscreen-cap512/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e4b-it/prescreen/capscreen-cap768/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "gemma-3n-e4b-it/prescreen/ladder-cap512/cache.jsonl": {
+      "draws": 2544,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b-instruct-2507/pilot/pilot-cap768/cache.jsonl": {
+      "draws": 1200,
+      "overall_rate": 0.07888888888888888,
+      "within_qualification_limit": false,
+      "worst_cell_rate": 1.0
+    },
+    "qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b-instruct-2507/prescreen/capscreen-cap512/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b-instruct-2507/prescreen/capscreen-cap768/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b-instruct-2507/prescreen/ladder-cap512/cache.jsonl": {
+      "draws": 2544,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b/pilot/pilot-cap768/cache.jsonl": {
+      "draws": 1200,
+      "overall_rate": 0.14222222222222222,
+      "within_qualification_limit": false,
+      "worst_cell_rate": 1.0
+    },
+    "qwen3-4b/prescreen/capscreen-cap1024/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b/prescreen/capscreen-cap512/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b/prescreen/capscreen-cap768/cache.jsonl": {
+      "draws": 96,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
+    },
+    "qwen3-4b/prescreen/ladder-cap512/cache.jsonl": {
+      "draws": 2544,
+      "overall_rate": 0.0,
+      "within_qualification_limit": true,
+      "worst_cell_rate": 0.0
     }
   },
   "remaining": "the confirmatory rate, which needs confirmatory generation",
