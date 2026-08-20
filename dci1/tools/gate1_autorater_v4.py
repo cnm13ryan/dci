@@ -342,48 +342,120 @@ def agreement(judgments: dict[str, str],
             for k, v in sorted(per.items())}
 
 
+def _wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
+    if n == 0:
+        return (float("nan"), float("nan"))
+    p = k / n
+    d = 1 + z * z / n
+    centre = (p + z * z / (2 * n)) / d
+    half = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / d
+    return (max(0.0, centre - half), min(1.0, centre + half))
+
+
 def select(results: dict[str, dict], items: list[dict[str, Any]],
            repeatability: dict[str, Any]) -> dict[str, Any]:
-    """§10.4's hierarchy, in order. A later criterion never overrides an
-    earlier one, and the rejected alternative is recorded."""
+    """§10.4's hierarchy, in order, under BOTH readings of its threshold words.
+
+    Criterion 2 is worded "adequate output cap and **absence of problematic**
+    truncation" and criterion 3 "**valid** parsing and coverage". Those are
+    threshold words, not ranking words, and no threshold is registered. Two
+    readings follow and they do not agree, so both are reported:
+
+    * **ranking** -- take the best value at each criterion. Decisive, but it can
+      decide on a difference of two items out of forty-eight.
+    * **threshold** -- eliminate only a condition that is *distinguishably*
+      worse than the best, meaning its 95% Wilson interval does not overlap the
+      best condition's. Turns the threshold words into a decision without
+      inventing a constant.
+
+    A later criterion never overrides an earlier one under either reading.
+    """
     names = sorted(results)
-    steps = []
 
-    def decide(name, values, prefer):
+    def ranking(values, prefer):
         best = prefer(values.values())
-        winners = [k for k, v in values.items() if v == best]
-        steps.append({"criterion": name, "values": values,
-                      "surviving": winners,
-                      "decided": len(winners) == 1})
-        return winners
+        return [k for k, v in values.items() if v == best]
 
-    alive = names
-    v = {k: repeatability.get(k, {}).get("exactly_repeatable")
-         for k in alive}
-    if set(v.values()) != {None}:
-        alive = decide("valid deterministic execution", v, max) or alive
-    if len(alive) > 1:
-        v = {k: results[k]["truncation_rate"] for k in alive}
-        alive = decide("adequate output cap and absence of problematic "
-                       "truncation", v, min)
-    if len(alive) > 1:
-        v = {k: results[k]["coverage"] for k in alive}
-        alive = decide("valid parsing and coverage", v, max)
-    human_pending = len(alive) > 1
-    if human_pending:
-        steps.append({
-            "criterion": "agreement with human labels",
-            "values": None, "surviving": alive, "decided": False,
-            "note": ("no annotator independent of the design and analysis team "
-                     "exists, so §10.3's criterion cannot be met and this "
-                     "criterion is OUTSTANDING. Author-performed labels are "
-                     "diagnostic evidence and §10.4 hierarchy input; they are "
-                     "never independent validation.")})
+    def distinguishable(counts, n, *, lower_is_better):
+        """Survivors: everything whose Wilson interval overlaps the best."""
+        rates = {k: counts[k] / n[k] for k in counts}
+        best = (min if lower_is_better else max)(rates.values())
+        anchor = next(k for k, v in rates.items() if v == best)
+        lo_a, hi_a = _wilson(counts[anchor], n[anchor])
+        out = []
+        for k in counts:
+            lo, hi = _wilson(counts[k], n[k])
+            worse_and_separated = (lo > hi_a) if lower_is_better else (hi < lo_a)
+            if not worse_and_separated:
+                out.append(k)
+        return sorted(out)
+
+    readings: dict[str, Any] = {}
+    for reading in ("ranking", "threshold"):
+        alive, steps = list(names), []
+        det = {k: repeatability.get(k, {}).get("exactly_repeatable")
+               for k in alive}
+        if set(det.values()) != {None}:
+            survivors = [k for k, v in det.items() if v] or alive
+            steps.append({"criterion": "valid deterministic execution",
+                          "values": det, "surviving": survivors,
+                          "decided": len(survivors) == 1})
+            alive = survivors
+        if len(alive) > 1:
+            trunc = {k: results[k]["truncated"] for k in alive}
+            n = {k: results[k]["items"] for k in alive}
+            survivors = (ranking({k: results[k]["truncation_rate"] for k in alive}, min)
+                         if reading == "ranking"
+                         else distinguishable(trunc, n, lower_is_better=True))
+            steps.append({
+                "criterion": ("adequate output cap and absence of problematic "
+                              "truncation"),
+                "values": {k: f"{trunc[k]}/{n[k]}" for k in alive},
+                "surviving": survivors, "decided": len(survivors) == 1})
+            alive = survivors
+        if len(alive) > 1:
+            covered = {k: len(results[k]["judgments"]) for k in alive}
+            n = {k: results[k]["items"] for k in alive}
+            survivors = (ranking({k: results[k]["coverage"] for k in alive}, max)
+                         if reading == "ranking"
+                         else distinguishable(covered, n, lower_is_better=False))
+            steps.append({"criterion": "valid parsing and coverage",
+                          "values": {k: f"{covered[k]}/{n[k]}" for k in alive},
+                          "surviving": survivors,
+                          "decided": len(survivors) == 1})
+            alive = survivors
+        human_pending = len(alive) > 1
+        if human_pending:
+            steps.append({
+                "criterion": "agreement with human labels",
+                "values": None, "surviving": alive, "decided": False,
+                "note": ("OUTSTANDING. No annotator independent of the design "
+                         "and analysis team exists, so §10.3's criterion cannot "
+                         "be met; author labels are diagnostic evidence and "
+                         "§10.4 hierarchy input, never independent validation.")})
+        readings[reading] = {"steps": steps, "surviving": alive,
+                             "decided_at": (steps[-1]["criterion"]
+                                            if steps and steps[-1]["decided"]
+                                            else None),
+                             "human_criterion_outstanding": human_pending}
+
     return {
         "hierarchy": list(autorater.SELECTION_HIERARCHY),
-        "steps": steps,
-        "surviving_after_criteria_1_to_3": alive,
-        "human_criterion_outstanding": human_pending,
+        "readings": readings,
+        "reading_note": (
+            "criterion 2 says 'absence of PROBLEMATIC truncation' and criterion "
+            "3 'VALID parsing and coverage'. Those are threshold words and no "
+            "threshold is registered. The ranking reading takes the best value "
+            "at each criterion; the threshold reading eliminates only what is "
+            "distinguishably worse at 95%. Both are reported because they do "
+            "not agree on whether criterion 4 is reached."),
+        "agreed_by_both_readings": sorted(
+            set(readings["ranking"]["surviving"])
+            & set(readings["threshold"]["surviving"])),
+        "steps": readings["ranking"]["steps"],
+        "surviving_after_criteria_1_to_3": readings["ranking"]["surviving"],
+        "human_criterion_outstanding": (
+            readings["threshold"]["human_criterion_outstanding"]),
         "verifier_agreement_by_condition": {
             k: agreement(results[k]["judgments"], items) for k in names},
         "note": ("agreement with the deterministic VERIFIER is reported for "
@@ -443,6 +515,9 @@ def combine(sample) -> dict[str, Any]:
     """Read every persisted condition and apply the §10.4 hierarchy."""
     loaded = {}
     for path in sorted(COND_DIR.glob("*.json")):
+        if path.name.startswith("_"):
+            continue          # sidecars (e.g. the cross-device check) are not
+                              # conditions and never enter the selection
         payload = json.loads(path.read_text())
         if payload["sample_hash"] != sha_obj(sorted(i["item_id"]
                                                     for i in sample)):
@@ -471,7 +546,65 @@ def combine(sample) -> dict[str, Any]:
             pairs[f"{a} vs {b}"] = autorater.paired_comparison(
                 [i["item_id"] for i in sample], results[a]["judgments"],
                 results[b]["judgments"], reference)
-    return {"conditions": {k: {kk: v[kk] for kk in
+    sidecars = {}
+    for path in sorted(COND_DIR.glob("_*.json")):
+        side = json.loads(path.read_text())
+        condition = side["condition"]
+        primary = loaded.get(condition)
+        if primary is None:
+            continue
+        common = [k for k in side["judgments"] if k in primary["judgments"]]
+        prefix = [i["item_id"] for i in sample[:side["items"]]]
+        # Agreement over the prefix INCLUDING items that produced no verdict:
+        # a device that changed which items reach a verdict would be a device
+        # effect too, so non-verdicts are compared rather than dropped.
+        agree = sum(1 for k in prefix
+                    if side["judgments"].get(k) == primary["judgments"].get(k))
+        sidecars[path.stem] = {
+            **{k: side[k] for k in ("sidecar", "condition", "device", "items",
+                                    "coverage", "truncation_rate",
+                                    "config_hash", "note")},
+            "compared_against": f"{condition} replicate 0",
+            "items_compared": len(prefix),
+            "labels_identical": agree,
+            "agreement": agree / len(prefix) if prefix else float("nan"),
+            "device_is_inert": agree == len(prefix),
+            "same_config_hash": side["config_hash"] == primary["config"]["config_hash"],
+            "counted_in_selection": False,
+        }
+
+    alive = select(results, sample, repeat)["readings"]["threshold"]["surviving"]
+    discordant: set[str] = set()
+    for i, a in enumerate(sorted(alive)):
+        for b in sorted(alive)[i + 1:]:
+            for d in pairs[f"{a} vs {b}"]["discordant_items"]:
+                discordant.add(d["item_id"])
+    by_stratum: dict[str, int] = {}
+    index = {i["item_id"]: i for i in sample}
+    for item_id in discordant:
+        key = stratum(index[item_id])
+        by_stratum[key] = by_stratum.get(key, 0) + 1
+    criterion_4_set = {
+        "conditions_still_alive": sorted(alive),
+        "discordant_items": sorted(discordant),
+        "n_discordant": len(discordant),
+        "by_stratum": by_stratum,
+        "matched_control": len(discordant),
+        "total_to_label": 2 * len(discordant),
+        "estimated_minutes": [round(2 * len(discordant) * 30 / 60),
+                              round(2 * len(discordant) * 60 / 60)],
+        "rule": ("§10.4's fourth criterion needs only enough paired items to "
+                 "separate the surviving conditions. Conditions that never "
+                 "disagree cannot be separated by any number of labels, so "
+                 "only the discordant items carry information; an equal number "
+                 "of concordant controls is added so the sample is not "
+                 "conditioned on disagreement."),
+        "invariant": ("these are author labels: diagnostic evidence and §10.4 "
+                      "hierarchy input, never independent validation"),
+    }
+
+    return {"sidecars": sidecars, "criterion_4_annotation_set": criterion_4_set,
+            "conditions": {k: {kk: v[kk] for kk in
                                ("condition", "config", "items",
                                 "status_counts", "coverage", "truncated",
                                 "truncation_rate", "seconds",
