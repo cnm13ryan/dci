@@ -1,0 +1,251 @@
+{
+ "artifact": "\u00a710.4 autorater pathway, development phase, A and B classes",
+ "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "classification": "Gate 1 input evidence. Gate 1 is NOT approved. The single-shot freeze and the one-shot calibration are deliberately NOT claimed.",
+ "conditions": {
+  "high": {
+   "condition": "high",
+   "config": {
+    "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "decoding": {
+     "chat_template_kwargs": {
+      "reasoning_effort": "high"
+     },
+     "max_new_tokens": 2048,
+     "policy": "greedy",
+     "skip_special_tokens": false
+    },
+    "execution_concurrency": 1,
+    "execution_mode": "serialised",
+    "judge_model_id": "openai/gpt-oss-20b",
+    "judge_model_key": "gpt-oss-20b",
+    "judge_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "label_mapping": {
+     "SATISFIES": "pass",
+     "VIOLATES": "fail"
+    },
+    "output_cap": 2048,
+    "parser_version": "gate1-parse/2.0.0",
+    "prompt_hash": "2d4dab45ab1f8a513cbfaeb8c34c4c03df3fe423d49c902af22e33add160adb5",
+    "prompt_version": "gate1-judge/2.0.0"
+   },
+   "coverage": 0.25,
+   "items": 8,
+   "run_dir": "reports/gate1_v4/judge_runs/high-rep0/87763084451f",
+   "seconds": 857.7,
+   "seconds_per_item": 107.21,
+   "status_counts": {
+    "invalid_output": 6,
+    "valid": 2
+   },
+   "truncated": 6,
+   "truncation_rate": 0.75
+  }
+ },
+ "judge_rows": {
+  "high": [
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "7263cd1204699bea3ad7b0ded5f6b9ba0232c1f88415360bd73c772bd8528c87",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
+    "justification": "The word \"however\" is missing.",
+    "label": "fail",
+    "margin": 1,
+    "prompt_hash": "e11c5ec2fcc252cd67b3bd427b5f40a986b895c7750e6c72c452d3d0fd5ba940",
+    "status": "valid",
+    "stratum": "A:fail:margin_one",
+    "tokens": 732,
+    "truncated": false,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
+    "justification": "however, the text contains the word once.",
+    "label": "pass",
+    "margin": 0,
+    "prompt_hash": "718ea70f3ab03f493bb54d1e651dee0e0d46142b45d3234d0a9229cdb3e6e940",
+    "status": "valid",
+    "stratum": "A:pass",
+    "tokens": 1265,
+    "truncated": false,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
+    "justification": null,
+    "label": null,
+    "margin": 3,
+    "prompt_hash": "996f587e9b03c2a0d501b31c92e17760f7eb476a827f212e1a2f892477a44365",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "5ce8c2038adea075fbe20902d9a3c154a6e2debaf173ea11072bd5a7bafa5349",
+    "status": "invalid_output",
+    "stratum": "B:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "B",
+    "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
+    "justification": null,
+    "label": null,
+    "margin": 0,
+    "prompt_hash": "a14b0ff89ab8f8d9897dbd75fa8fd64c1ae45a88d265fd0be734c5352a0b3414",
+    "status": "invalid_output",
+    "stratum": "B:pass",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "pass"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
+    "justification": null,
+    "label": null,
+    "margin": 2,
+    "prompt_hash": "eea33ed00b5ea003e8d4aed0eb87069010524317fd6180e0592f7974be1b8c57",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_larger",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   },
+   {
+    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "instrument": "A",
+    "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
+    "justification": null,
+    "label": null,
+    "margin": 1,
+    "prompt_hash": "7d7c53d066d30c7e3e04f6237c49ca75f942c944316c55502b23c2c10070a870",
+    "status": "invalid_output",
+    "stratum": "A:fail:margin_one",
+    "tokens": 2048,
+    "truncated": true,
+    "verifier_class": "fail"
+   }
+  ]
+ },
+ "judged_subsample": {
+  "derivation": "deterministic round-robin over strata in item-id order across the development half",
+  "hash": "95d5d9a7e129fd7a231cb39007486a1dbdec8163bf1680f10373660a3bb4d293",
+  "n": 8,
+  "stratum_balanced": true
+ },
+ "not_claimed": {
+  "autorater_calibration": "one-shot; not claimed",
+  "autorater_freeze": "single-shot; not claimed",
+  "held_out_half": "derived and hashed, never judged; it stays untouched for the real one-shot calibration",
+  "reason": "both bind the canonical verifier hash, and Amendment C would change it by changing FOCAL_GRID, which is inside the \u00a710.6 semantic module set. Spending a one-shot on a hash that is likely to be superseded would require an explicit invalidation to recover."
+ },
+ "paired_comparison": null,
+ "pool": {
+  "calibration": 577,
+  "development": 575,
+  "disjoint": true,
+  "instruments": {
+   "A": 768,
+   "B": 384
+  },
+  "items": 1152,
+  "source": "the registered \u00a712.2 dense ladder screen, read only",
+  "split_hash": "7db4c260b3e2b3a2aa0427bac8777c51579b67fe0572ffd94aa69306b5bc9584",
+  "strata": {
+   "A:fail:margin_larger": {
+    "calibration": 91,
+    "development": 91,
+    "n": 182
+   },
+   "A:fail:margin_one": {
+    "calibration": 98,
+    "development": 98,
+    "n": 196
+   },
+   "A:pass": {
+    "calibration": 195,
+    "development": 195,
+    "n": 390
+   },
+   "B:fail:margin_larger": {
+    "calibration": 27,
+    "development": 26,
+    "n": 53
+   },
+   "B:fail:margin_one": {
+    "calibration": 20,
+    "development": 19,
+    "n": 39
+   },
+   "B:pass": {
+    "calibration": 146,
+    "development": 146,
+    "n": 292
+   }
+  }
+ },
+ "repeatability": {},
+ "selection": {
+  "hierarchy": [
+   "valid deterministic execution",
+   "adequate output cap and absence of problematic truncation",
+   "valid parsing and coverage",
+   "agreement with human labels",
+   "the lower-cost setting when performance is practically indistinguishable"
+  ],
+  "human_criterion_outstanding": false,
+  "note": "agreement with the deterministic VERIFIER is reported for every condition but is not a selection criterion: \u00a710.4's fourth criterion is agreement with HUMAN labels. Selecting the judge that best matches the verifier would make the held-out evaluation circular.",
+  "steps": [],
+  "surviving_after_criteria_1_to_3": [
+   "high"
+  ],
+  "verifier_agreement_by_condition": {
+   "high": {
+    "A:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 1
+    },
+    "A:pass": {
+     "agreement": 1.0,
+     "n": 1
+    },
+    "overall": {
+     "agreement": 1.0,
+     "n": 2
+    }
+   }
+  }
+ }
+}
