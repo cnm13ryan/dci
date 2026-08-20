@@ -209,6 +209,40 @@ estimates of D(B←A) **converge** (+0.208/+0.208, +0.375/+0.375,
 restricted column, but under `floored` there is almost nothing left for it to
 bite on.
 
+> **Addendum, 2026-08-20 — the argument above understates itself, because the
+> ≥20-word column is the wrong operation.** Dropping rows that fail the
+> non-vacuity predicate conditions on a consequence of the treatment; §9.3 says
+> so in terms and registers a different remedy — §17.4's recomputation with
+> every vacuous pass **forced to a failure**, no row dropped. Recomputed from
+> the same rows (`D_B_from_A_forced` in `results.json`):
+>
+> | model | stem | raw | **§17.4 forced** | ≥20 w only | vacuous share |
+> |---|---|---:|---:|---:|---:|
+> | E2B | current | +0.375 | **+0.000** | +0.250 | 0.474 |
+> | E2B | **floored** | +0.208 | **+0.208** | +0.208 | 0.000 |
+> | E4B | current | +0.333 | **+0.042** | +0.230 | 0.389 |
+> | E4B | **floored** | +0.375 | **+0.375** | +0.375 | 0.000 |
+> | Qwen3-4B | current | +0.125 | **−0.042** | −0.071 | 1.000 |
+> | Qwen3-4B | **floored** | +0.000 | **+0.000** | −0.007 | 0.000 |
+> | Qwen3-4B-Inst | current | +0.042 | **−0.375** | −0.333 | 0.944 |
+> | Qwen3-4B-Inst | **floored** | −0.167 | **−0.208** | −0.199 | 0.167 |
+>
+> Under `current` the registered bound does not merely shrink D(B←A), it
+> **annihilates it on E2B (+0.375 → +0.000) and reverses its sign on both
+> Qwens**. Under `floored` raw and forced are *identical* on three of four
+> models and differ by 0.041 on the fourth. §17.4 licenses a claim only when the
+> primary estimate and the forced recomputation license the **same** claim —
+> so under the current stem this axis is **unresolved by rule**, and under the
+> floored stem it is not. That is a third argument for Amendment A, independent
+> of the reference pool (§3) and of the focal grid, and it is stronger than the
+> convergence argument in the paragraph above.
+>
+> *Prompted by the sibling session `dci-79`, which established the same point on
+> the B+R pilot: Δ_R = +0.343/+0.375 raw becomes +0.095/+0.068 forced, both
+> below the 0.10 generic-load threshold. Recomputed independently from the pilot
+> rows on this side and reproduced to within 0.0002. The table above is this
+> screen's own four-model version of the same finding.*
+
 ---
 
 ## 5. Attribution — and the finding that decides it

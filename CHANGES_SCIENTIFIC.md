@@ -462,3 +462,70 @@ selection. Independently recomputed here as 4,910 pairs in 45 kind-pair classes,
 3,750 of them reference × reference, and confirmed against the signed stage-1
 `qualification.json` of all four models, each recording
 `pairs=4910, kind_pairs=45, witnesses_verified=true`.
+---
+
+## 2026-08-20 — the screens now report the registered §17.4 vacuity bound, not only the restriction
+
+**What changed.** `fs_screen_v4.analysis.b_side` and
+`bgrid_screen_v4.analysis.d_b_from_a` gained `D_B_from_A_forced`,
+`b_solo_forced` and `b_composed_forced`. The existing `D_B_from_A_raw` and
+`D_B_from_A_long_only` are unchanged, and no pre-existing value in either
+`results.json` moved — the regeneration is purely additive apart from the
+`collider_caveat` text, which now names the registered alternative.
+
+**Why.** `D_B_from_A_long_only` **drops** rows failing the §9.3 non-vacuity
+predicate, separately in each arm. §9.3 registers the opposite operation and
+says why in terms: vacuous passes count as passes in the primary estimand
+"because response shortening under composition is a candidate mechanism rather
+than a nuisance, and removing them would condition on a consequence of the
+treatment", and they are handled by "the registered partial-identification
+recomputation of §17.4, in which every primary estimand is recomputed with all
+vacuous passes forced to failures". The restriction is a collider-conditioned
+sub-population; the forcing is the registered bound. Both are now reported and
+labelled.
+
+**What it shows, and it is not small.** On the FORM × STEM screen's own rows:
+
+| model | stem | raw | §17.4 forced | ≥20 w only | vacuous share |
+|---|---|---:|---:|---:|---:|
+| E2B | current | +0.375 | **+0.000** | +0.250 | 0.474 |
+| E2B | floored | +0.208 | **+0.208** | +0.208 | 0.000 |
+| E4B | current | +0.333 | **+0.042** | +0.230 | 0.389 |
+| E4B | floored | +0.375 | **+0.375** | +0.375 | 0.000 |
+| Qwen3-4B | current | +0.125 | **−0.042** | −0.071 | 1.000 |
+| Qwen3-4B | floored | +0.000 | **+0.000** | −0.007 | 0.000 |
+| Qwen3-4B-Inst | current | +0.042 | **−0.375** | −0.333 | 0.944 |
+| Qwen3-4B-Inst | floored | −0.167 | **−0.208** | −0.199 | 0.167 |
+
+Under the current stem the bound annihilates D(B←A) on E2B and reverses its
+sign on both Qwens. Under the floored stem raw and forced are identical on
+three of four models. §17.4 licenses a claim only when the primary estimate and
+the forced recomputation license the same claim, so **under the current stem
+this axis is unresolved by rule and under the floored stem it is not.** That is
+a third argument for Amendment A, independent of the reference pool and of the
+focal grid.
+
+**Which results are affected.** No screen verdict changes: the §2.4 reference
+and B-side criteria, the §1.4 B-grid verdict and every compliance figure are
+computed from quantities that did not move. What changes is that a reader can
+no longer take the ≥20-word column as a corrected estimate — the registered
+bound now sits beside it, and on the current stem it disagrees.
+
+**Provenance.** The objection is `dci-79`'s, raised against its own earlier
+sensitivity analysis of the B+R pilot: it had tested vacuity by restricting to
+≥20-word responses (Δ_R +0.343 → +0.348, +0.375 → +0.360, apparently unmoved),
+which drops 36% of the B+R arm and 0% of the A+B arm. Under §17.4's forcing
+Δ_R is **+0.095** and **+0.068**, both below the 0.10 generic-load threshold.
+Recomputed independently here from the raw pilot rows and the registered
+verifier: +0.0952 and +0.0678, and the restriction drops 36.3% against 0.1%.
+The movement is entirely in `P(B|R̄)` (0.688 → 0.439, 0.819 → 0.512); `P(B|A)`
+does not move at all (0.3442 → 0.3441, 0.4443 → 0.4443), because the A+B
+responses average 128–139 words and are never vacuous.
+
+**Consequence for the pilot's headline.** The frozen pilot result
+`dci1/reports/br_pilot_v4/result.json` is untouched and its raw Δ_R stands as
+recorded. But raw licenses PAIR_SPECIFIC (> 0.25) and the §17.4 bound licenses
+generic load (< 0.10), so under §17.4 the correct disposition is **the axis
+reported unresolved with both bounds**, not either reading alone. The earlier
+`CHANGES_SCIENTIFIC.md` characterisation "Δ is not a vacuity artifact (holds at
+≥20 words)" rested on the restriction and should not be quoted.

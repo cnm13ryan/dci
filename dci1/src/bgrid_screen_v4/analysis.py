@@ -285,10 +285,20 @@ def d_b_from_a(rows: Sequence[dict], m: int, *,
     passes = [t for t in topics if bp(solo[t])]
     vac = [t for t in passes if solo[t]["word_count"] < threshold]
     paired = [bp(solo[t]) - bp(comp[t]) for t in topics]
+
+    def forced(r) -> float:
+        """SS17.4: a vacuous pass is recomputed as a failure. No row dropped."""
+        return 1.0 if (bp(r) and r["word_count"] >= threshold
+                       and not r["truncated"]) else 0.0
+
+    fs = stt.fmean(forced(solo[t]) for t in topics)
+    fc = stt.fmean(forced(comp[t]) for t in topics)
     return {
         "available": True, "m": m, "topics": len(topics),
         "b_solo": p_solo, "b_composed": p_comp,
         "D_B_from_A_raw": p_solo - p_comp,
+        "D_B_from_A_forced": fs - fc,
+        "b_solo_forced": fs, "b_composed_forced": fc,
         "D_B_from_A_long_only": ps - pc,
         "paired_se": (stt.pstdev(paired) / math.sqrt(len(paired))
                       if len(paired) > 1 else float("nan")),
@@ -299,9 +309,12 @@ def d_b_from_a(rows: Sequence[dict], m: int, *,
             [comp[t]["word_count"] for t in topics]),
         "n_long_solo": len(long_s), "n_long_composed": len(long_c),
         "collider_caveat": (
-            "the long-only figure conditions on word count, a post-treatment "
-            "variable and a collider. It is a sensitivity diagnostic, NOT a "
-            "corrected estimate of D(B<-A)."),
+            "the long-only figure DROPS rows failing the non-vacuity "
+            "predicate in each arm separately, so it conditions on word "
+            "count, a post-treatment variable and a collider. It is NOT a "
+            "corrected estimate of D(B<-A). The registered operation is "
+            "D_B_from_A_forced beside it (SS17.4): every vacuous pass "
+            "recomputed as a failure, no row dropped."),
     }
 
 
