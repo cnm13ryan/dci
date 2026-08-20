@@ -3,6 +3,47 @@
 **Status: DRAFT. NOT ADOPTED. Nothing in the registered protocol, the
 verifiers, the grids or the code has been changed by this document.**
 
+> **Superseded in part, 2026-08-20.** §1's proposal to extend `FOCAL_GRID`
+> globally to (7, …, 12) is superseded by the Gate-2 calibration screen
+> (`dci1/reports/cal_screen_v4/`, protocol hash `fd49e5d4…`), which measured B's
+> floored-stem solo curve on the 96 registered solo-calibration topics at
+> M_cal = 4. Under the floored stem the registered grid already supplies an
+> in-band m\* on three of four models — E2B m = 10, E4B m = 9,
+> qwen3-4b-instruct-2507 m = 10 — and only qwen3-4b returns
+> `FOCAL_RANGE_EXHAUSTED`. On qwen3-4b-instruct-2507 a global extension is
+> actively harmful: §12.3 selects the rung nearest 0.80, which moves m\* from 10
+> to 11, and m = 10 is the only rung on any model feasible under both readings
+> of §12.4's graded clause while m = 11 is not. **The amendment should therefore
+> be per-model — the extended grid invoked only for a replication whose
+> registered grid is exhausted — rather than a global change to `FOCAL_GRID`.**
+> The B-grid screen's §1.4 MARGINAL verdict is not overturned by this; it is
+> confirmed on fresh topics for qwen3-4b, which is the one model that needs the
+> extension.
+>
+> *Measured and drafted by the sibling session `dci-79`; recorded here verbatim
+> rather than folded into §1, so that what this document proposed and what the
+> evidence later said stay separately legible.*
+
+> **A second blocker surfaced by the same screen, 2026-08-20.** §12.4's
+> graded-degeneracy clause is ambiguous in a way that decides whether Gate 2 can
+> start at all, and it is unresolved in both the prose and the code:
+> `gates.gate2_payload` compares one float per constraint against 0.99 and does
+> not say which float, and no registered caller has ever fixed the reading.
+> **For B the clause is either incoherent or inert.** Under the *mean* reading
+> it fires on every in-band rung, because B's graded score
+> `1 − (words over m)/(total words)` rises with compliance and crosses 0.99
+> inside the focal band — so §12.3 declares a rung eligible and §12.4 declares
+> the same rung degenerate. Under the *share* reading it fires on no in-band
+> rung, because that would need compliance above 0.99 and the band already caps
+> it at 0.95. For A the clause behaves as intended: measured on the B-grid
+> screen's floored A-solo cells, mean graded runs 0.646–1.000 and the share
+> 0.333–1.000, and it fires only on two near-ceiling qwen3-4b-instruct-2507
+> rungs whose compliance is 1.000 — which is the degeneracy it was written to
+> catch. **The defect is specific to B's graded definition.** This is a
+> preregistration defect rather than a screen result and belongs in
+> `DCI1_v4r2_unresolved_decisions.md` as a V-decision; the choice between the
+> two readings is the researcher's and is not made here.
+
 Companion to Amendment A (the prompt stem) and Amendment B (the reference
 pool). Evidence: `dci1/reports/bgrid_screen_v4/REPORT.md`, screen protocol hash
 `6a63ba782db0de6e1c4d80763065dda7ced1279e3c8ddcc097c7119087f4fff2`, a

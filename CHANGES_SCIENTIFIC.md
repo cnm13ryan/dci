@@ -352,3 +352,55 @@ identically and `assert_no_config_drift` cannot tell them apart. The v4 driver
 places it inside `decoding`, which is a declared field, and
 `tests_v4/test_gate1_autorater_config.py` pins both the workaround and the
 failure mode. **The registered helper was not modified.**
+
+## 2026-08-20 — §12.4's graded-degeneracy clause is ambiguous, and for B it is incoherent or inert
+
+**What changed.** Nothing. This records a preregistration defect found while
+cross-checking the Gate-2 calibration screen, not a change to any code or
+artifact.
+
+**The defect.** §12.4 requires "the graded distribution of each outcome
+constraint" to be non-degenerate, "meaning it is not concentrated above 0.99 or
+below 0.01". `gates.gate2_payload` accepts `graded_distribution` as one float
+per constraint and compares it against `GRADED_DEGENERACY_HIGH = 0.99`. **It
+does not say which float.** Every caller in the repository was checked: an
+arbitrary probe in `tests_v4/test_t6_stage_machine.py` and the calibration
+screen, which correctly runs both. No registered caller has ever fixed the
+reading, so the ambiguity is open in the code as well as in the prose.
+
+**For B the two readings are not merely different, they are the two ends of the
+protocol.** B's graded score is `1 − (words over m)/(total words)`, which cannot
+fall far from 1 for any plausible response — a failing sixty-word answer with
+two over-length words scores 0.967.
+
+- **Mean reading** — mean graded rises with compliance and crosses 0.99 *inside*
+  the focal band. Measured on the B-grid screen's floored B-solo cells, it fires
+  on every in-band rung of three of four models. So §12.3 declares a rung
+  eligible and §12.4 declares the same rung degenerate: **two registered
+  criteria in direct contradiction**.
+- **Share reading** — B scores 1.0 when it passes and, empirically, above 0.99
+  when it fails in 65 of 18,432 rows (0.0035). The share is therefore the pass
+  rate plus 0.0035, and exceeding 0.99 would need compliance above 0.99, which
+  the focal band already caps at 0.95. It fires on **no** in-band rung on any
+  model under either stem. **Inert.**
+
+**The defect is specific to B.** On A the clause behaves as written: measured on
+the same screen's floored A-solo cells, mean graded runs 0.646–1.000 and the
+share 0.333–1.000, and it fires only on two near-ceiling
+qwen3-4b-instruct-2507 rungs whose compliance is 1.000 — which is the degeneracy
+it exists to catch. The exact-count form has a graded score that varies; the
+word-length budget's does not.
+
+**Which results are affected.** None retrospectively — Gate 2 has not run. Going
+forward the choice decides whether any replication starts: under the mean
+reading **no rung of any grid is feasible on any model under either stem**.
+
+**Disposition.** A V-decision for the researcher, recorded in
+`user-notes/DCI1_v4_amendment_C_focal_grid.md` and belonging in
+`DCI1_v4r2_unresolved_decisions.md`. Not decided here. Both readings are
+reported wherever the quantity appears.
+
+**Provenance.** The two-reading problem was found by the sibling session
+`dci-79` on the 96-topic calibration screen; the contradiction-with-§12.3
+framing and the A-side characterisation are from this session's B-grid rows.
+Both are cross-checked on independent samples.
