@@ -1,0 +1,2963 @@
+{
+ "analysis_seed": 20260821,
+ "bootstrap_draws": 2000,
+ "classification": "design evidence; non-confirmatory",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "a_curve_floored": {
+    "band": [
+     0.5,
+     0.85
+    ],
+    "bounds": "inclusive (\u00a712.3)",
+    "compliance_at_n_star": 0.7083333333333334,
+    "curve": {
+     "1": 0.7083333333333334,
+     "2": 0.5,
+     "3": 0.5,
+     "4": 0.5416666666666666,
+     "5": 0.4166666666666667,
+     "6": 0.4583333333333333,
+     "7": 0.5416666666666666,
+     "8": 0.4583333333333333
+    },
+    "eligible": [
+     1,
+     2,
+     3,
+     4,
+     7
+    ],
+    "n_star": 1,
+    "terminal_status": null,
+    "would_terminate": false
+   },
+   "b_curve_current": {
+    "7": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.07677843980861063
+     },
+     "max_word_length": {
+      "max": 10,
+      "mean": 6.291666666666667,
+      "median": 6.0,
+      "q10": 5.0,
+      "q90": 8.7
+     },
+     "n": 24,
+     "non_vacuous": 0.3333333333333333,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": true,
+     "stem_satisfied": 0.16666666666666666,
+     "truncation": 0.0,
+     "vacuity": 0.5,
+     "vacuous_share_of_passes": 0.6,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 28.541666666666668,
+      "median": 19.0,
+      "q10": 6.300000000000001,
+      "q25": 13.0,
+      "q75": 35.25,
+      "q90": 72.89999999999999,
+      "share_under_threshold": 0.5
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.75,
+      "n_topics": 24,
+      "se": 0.06700259116050827
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 6.708333333333333,
+      "median": 6.0,
+      "q10": 5.0,
+      "q90": 8.7
+     },
+     "n": 24,
+     "non_vacuous": 0.5,
+     "raw": 0.875,
+     "raw_k": 21,
+     "registered_rung": true,
+     "stem_satisfied": 0.041666666666666664,
+     "truncation": 0.0,
+     "vacuity": 0.375,
+     "vacuous_share_of_passes": 0.42857142857142855,
+     "wilson": [
+      0.6899571185214243,
+      0.9565574496068442
+     ],
+     "words": {
+      "mean": 27.166666666666668,
+      "median": 22.0,
+      "q10": 9.200000000000001,
+      "q25": 15.5,
+      "q75": 41.25,
+      "q90": 42.0,
+      "share_under_threshold": 0.4166666666666667
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.07629244890824168
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 7.375,
+      "median": 7.0,
+      "q10": 5.0,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.6666666666666666,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": true,
+     "stem_satisfied": 0.125,
+     "truncation": 0.0,
+     "vacuity": 0.16666666666666666,
+     "vacuous_share_of_passes": 0.2,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 30.875,
+      "median": 26.0,
+      "q10": 14.3,
+      "q25": 21.75,
+      "q75": 35.25,
+      "q90": 58.69999999999999,
+      "share_under_threshold": 0.20833333333333334
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.875,
+      "n_topics": 24,
+      "se": 0.040487346917483576
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 7.416666666666667,
+      "median": 7.0,
+      "q10": 5.300000000000001,
+      "q90": 9.0
+     },
+     "n": 24,
+     "non_vacuous": 0.625,
+     "raw": 0.9583333333333334,
+     "raw_k": 23,
+     "registered_rung": true,
+     "stem_satisfied": 0.08333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.3333333333333333,
+     "vacuous_share_of_passes": 0.34782608695652173,
+     "wilson": [
+      0.7975777375115778,
+      0.992606734645195
+     ],
+     "words": {
+      "mean": 26.25,
+      "median": 21.0,
+      "q10": 5.200000000000001,
+      "q25": 15.5,
+      "q75": 32.75,
+      "q90": 51.39999999999999,
+      "share_under_threshold": 0.375
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 10,
+      "mean": 7.708333333333333,
+      "median": 7.5,
+      "q10": 6.0,
+      "q90": 9.7
+     },
+     "n": 24,
+     "non_vacuous": 0.7916666666666666,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.08333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.20833333333333334,
+     "vacuous_share_of_passes": 0.20833333333333334,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 32.25,
+      "median": 32.0,
+      "q10": 12.600000000000001,
+      "q25": 20.0,
+      "q75": 36.25,
+      "q90": 51.0,
+      "share_under_threshold": 0.20833333333333334
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 8.083333333333334,
+      "median": 8.0,
+      "q10": 6.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.625,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.041666666666666664,
+     "truncation": 0.0,
+     "vacuity": 0.375,
+     "vacuous_share_of_passes": 0.375,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 26.5,
+      "median": 21.5,
+      "q10": 11.9,
+      "q25": 16.75,
+      "q75": 34.25,
+      "q90": 39.8,
+      "share_under_threshold": 0.375
+     }
+    }
+   },
+   "b_curve_floored": {
+    "7": {
+     "cluster": {
+      "hi": 0.5833333333333334,
+      "lo": 0.25,
+      "n_topics": 24,
+      "se": 0.09695212879446112
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 8.125,
+      "median": 8.0,
+      "q10": 6.0,
+      "q90": 10.7
+     },
+     "n": 24,
+     "non_vacuous": 0.4166666666666667,
+     "raw": 0.4166666666666667,
+     "raw_k": 10,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.24467347246538232,
+      0.6116566235061137
+     ],
+     "words": {
+      "mean": 83.83333333333333,
+      "median": 83.5,
+      "q10": 75.6,
+      "q25": 77.0,
+      "q75": 89.25,
+      "q90": 94.4,
+      "share_under_threshold": 0.0
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.5833333333333334,
+      "lo": 0.25,
+      "n_topics": 24,
+      "se": 0.10149503956132809
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 8.458333333333334,
+      "median": 9.0,
+      "q10": 6.0,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.4166666666666667,
+     "raw": 0.4166666666666667,
+     "raw_k": 10,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.24467347246538232,
+      0.6116566235061137
+     ],
+     "words": {
+      "mean": 84.375,
+      "median": 83.5,
+      "q10": 77.0,
+      "q25": 78.0,
+      "q75": 90.0,
+      "q90": 92.0,
+      "share_under_threshold": 0.0
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.5833333333333334,
+      "lo": 0.25,
+      "n_topics": 24,
+      "se": 0.09824028083112231
+     },
+     "max_word_length": {
+      "max": 16,
+      "mean": 10.041666666666666,
+      "median": 10.0,
+      "q10": 7.300000000000001,
+      "q90": 12.7
+     },
+     "n": 24,
+     "non_vacuous": 0.4166666666666667,
+     "raw": 0.4166666666666667,
+     "raw_k": 10,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.24467347246538232,
+      0.6116566235061137
+     ],
+     "words": {
+      "mean": 84.16666666666667,
+      "median": 85.0,
+      "q10": 74.3,
+      "q25": 78.0,
+      "q75": 89.25,
+      "q90": 91.7,
+      "share_under_threshold": 0.0
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.8333333333333334,
+      "n_topics": 24,
+      "se": 0.056675719252408066
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 8.708333333333334,
+      "median": 9.0,
+      "q10": 6.300000000000001,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.9166666666666666,
+     "raw": 0.9166666666666666,
+     "raw_k": 22,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.741507847985494,
+      0.9768416721570266
+     ],
+     "words": {
+      "mean": 84.875,
+      "median": 84.5,
+      "q10": 70.0,
+      "q25": 78.5,
+      "q75": 93.0,
+      "q90": 97.0,
+      "share_under_threshold": 0.0
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.07654962760269388
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 9.833333333333334,
+      "median": 10.0,
+      "q10": 7.300000000000001,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.8333333333333334,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": false,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 85.125,
+      "median": 86.5,
+      "q10": 71.6,
+      "q25": 78.5,
+      "q75": 88.75,
+      "q90": 102.4,
+      "share_under_threshold": 0.0
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 9.375,
+      "median": 9.5,
+      "q10": 8.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 1.0,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 85.91666666666667,
+      "median": 86.5,
+      "q10": 77.0,
+      "q25": 81.0,
+      "q75": 92.25,
+      "q90": 96.0,
+      "share_under_threshold": 0.0
+     }
+    }
+   },
+   "d_b_from_a": {
+    "10": {
+     "D_B_from_A_long_only": 0.33333333333333326,
+     "D_B_from_A_raw": 0.33333333333333326,
+     "available": true,
+     "b_composed": 0.5833333333333334,
+     "b_solo": 0.9166666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 95.5,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09622504486493763,
+     "solo_median_words": 84.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.8333333333333334,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 93.5,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10724614730194794,
+     "solo_median_words": 86.5,
+     "topics": 24
+    }
+   },
+   "d_b_from_a_all_rungs": {
+    "7": {
+     "D_B_from_A_long_only": 0.20833333333333334,
+     "D_B_from_A_raw": 0.20833333333333334,
+     "available": true,
+     "b_composed": 0.20833333333333334,
+     "b_solo": 0.4166666666666667,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 97.0,
+     "m": 7,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.08289816934939807,
+     "solo_median_words": 83.5,
+     "topics": 24
+    },
+    "8": {
+     "D_B_from_A_long_only": 0.16666666666666669,
+     "D_B_from_A_raw": 0.16666666666666669,
+     "available": true,
+     "b_composed": 0.25,
+     "b_solo": 0.4166666666666667,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 99.5,
+     "m": 8,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09622504486493763,
+     "solo_median_words": 83.5,
+     "topics": 24
+    },
+    "9": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.2916666666666667,
+     "b_solo": 0.4166666666666667,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 97.0,
+     "m": 9,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10724614730194794,
+     "solo_median_words": 85.0,
+     "topics": 24
+    },
+    "10": {
+     "D_B_from_A_long_only": 0.33333333333333326,
+     "D_B_from_A_raw": 0.33333333333333326,
+     "available": true,
+     "b_composed": 0.5833333333333334,
+     "b_solo": 0.9166666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 95.5,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09622504486493763,
+     "solo_median_words": 84.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.8333333333333334,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 93.5,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10724614730194794,
+     "solo_median_words": 86.5,
+     "topics": 24
+    },
+    "12": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.875,
+     "b_solo": 1.0,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 90.0,
+     "m": 12,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.06750771560841522,
+     "solo_median_words": 86.5,
+     "topics": 24
+    }
+   },
+   "extrapolation_gap": {
+    "available": true,
+    "fit_on": {
+     "7": 0.5,
+     "8": 0.4583333333333333,
+     "9": 0.625,
+     "10": 0.75
+    },
+    "intercept": -0.19583333333333341,
+    "note": "an OLS line in m fitted to four points, extrapolated two rungs. It is reported because the brief asks for the gap, not because it is a good model of a bounded proportion",
+    "per_m": {
+     "11": {
+      "gap": 0.02083333333333348,
+      "measured": 0.8333333333333334,
+      "predicted": 0.8124999999999999
+     },
+     "12": {
+      "gap": 0.09583333333333333,
+      "measured": 1.0,
+      "predicted": 0.9041666666666667
+     }
+    },
+    "slope": 0.09166666666666667
+   },
+   "max_truncation_floored": 0.0,
+   "max_vacuous_share_floored": 0.0,
+   "median_words_floored": 84.75,
+   "model_key": "gemma-3n-e2b-it",
+   "replication_gap": {
+    "mean_abs_gap": 0.12499999999999997,
+    "mean_signed_gap": -0.04166666666666666,
+    "note": "two independent single draws per topic under different seed roots; a gap of this size is sampling noise, not disagreement",
+    "per_m": {
+     "7": {
+      "bgrid_screen": 0.4166666666666667,
+      "fs_screen": 0.5,
+      "gap": -0.08333333333333331
+     },
+     "8": {
+      "bgrid_screen": 0.4166666666666667,
+      "fs_screen": 0.4583333333333333,
+      "gap": -0.04166666666666663
+     },
+     "9": {
+      "bgrid_screen": 0.4166666666666667,
+      "fs_screen": 0.625,
+      "gap": -0.20833333333333331
+     },
+     "10": {
+      "bgrid_screen": 0.9166666666666666,
+      "fs_screen": 0.75,
+      "gap": 0.16666666666666663
+     }
+    }
+   },
+   "short": "E2B",
+   "stem_satisfaction_floored": 1.0,
+   "verdict_any_in_band_rung": {
+    "any_clear_of_both_edges": true,
+    "in_band": [
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.31666666666666665,
+      "distance_to_upper": 0.033333333333333326,
+      "m": 10,
+      "raw": 0.9166666666666666,
+      "registered_rung": true,
+      "se": 0.056675719252408066,
+      "se_to_lower": 5.587342707665981,
+      "se_to_upper": 0.5881413376490505
+     },
+     {
+      "clear_of_both_edges": true,
+      "distance_to_lower": 0.2333333333333334,
+      "distance_to_upper": 0.11666666666666659,
+      "m": 11,
+      "raw": 0.8333333333333334,
+      "registered_rung": false,
+      "se": 0.07654962760269388,
+      "se_to_lower": 3.0481315277505296,
+      "se_to_upper": 1.5240657638752633
+     }
+    ],
+    "reason": "at least one in-band rung sits more than one clustered standard error from both band edges",
+    "smallest_in_band": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.31666666666666665,
+     "distance_to_upper": 0.033333333333333326,
+     "m": 10,
+     "raw": 0.9166666666666666,
+     "registered_rung": true,
+     "se": 0.056675719252408066,
+     "se_to_lower": 5.587342707665981,
+     "se_to_upper": 0.5881413376490505
+    },
+    "status": "PASS"
+   },
+   "verdict_smallest_in_band_rung": {
+    "rung": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.31666666666666665,
+     "distance_to_upper": 0.033333333333333326,
+     "m": 10,
+     "raw": 0.9166666666666666,
+     "registered_rung": true,
+     "se": 0.056675719252408066,
+     "se_to_lower": 5.587342707665981,
+     "se_to_upper": 0.5881413376490505
+    },
+    "status": "MARGINAL"
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "a_curve_floored": {
+    "band": [
+     0.5,
+     0.85
+    ],
+    "bounds": "inclusive (\u00a712.3)",
+    "compliance_at_n_star": 0.6666666666666666,
+    "curve": {
+     "1": 0.8333333333333334,
+     "2": 0.6666666666666666,
+     "3": 0.875,
+     "4": 0.7916666666666666,
+     "5": 0.75,
+     "6": 0.625,
+     "7": 0.5833333333333334,
+     "8": 0.5833333333333334
+    },
+    "eligible": [
+     1,
+     2,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "n_star": 2,
+    "terminal_status": null,
+    "would_terminate": false
+   },
+   "b_curve_current": {
+    "7": {
+     "cluster": {
+      "hi": 0.8333333333333334,
+      "lo": 0.5,
+      "n_topics": 24,
+      "se": 0.09690981453277979
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 7.041666666666667,
+      "median": 7.0,
+      "q10": 5.0,
+      "q90": 9.7
+     },
+     "n": 24,
+     "non_vacuous": 0.375,
+     "raw": 0.6666666666666666,
+     "raw_k": 16,
+     "registered_rung": true,
+     "stem_satisfied": 0.25,
+     "truncation": 0.0,
+     "vacuity": 0.2916666666666667,
+     "vacuous_share_of_passes": 0.4375,
+     "wilson": [
+      0.4670595949408046,
+      0.8202802131162036
+     ],
+     "words": {
+      "mean": 35.0,
+      "median": 29.0,
+      "q10": 10.3,
+      "q25": 18.25,
+      "q75": 53.25,
+      "q90": 66.7,
+      "share_under_threshold": 0.2916666666666667
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.0746948392488843
+     },
+     "max_word_length": {
+      "max": 10,
+      "mean": 7.041666666666667,
+      "median": 7.0,
+      "q10": 6.0,
+      "q90": 9.0
+     },
+     "n": 24,
+     "non_vacuous": 0.5833333333333334,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": true,
+     "stem_satisfied": 0.125,
+     "truncation": 0.0,
+     "vacuity": 0.25,
+     "vacuous_share_of_passes": 0.3,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 34.041666666666664,
+      "median": 30.0,
+      "q10": 15.3,
+      "q25": 19.0,
+      "q75": 43.25,
+      "q90": 60.099999999999994,
+      "share_under_threshold": 0.2916666666666667
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.07640453091113118
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 7.5,
+      "median": 7.0,
+      "q10": 5.300000000000001,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.7083333333333334,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": true,
+     "stem_satisfied": 0.08333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.125,
+     "vacuous_share_of_passes": 0.15,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 34.583333333333336,
+      "median": 33.5,
+      "q10": 12.500000000000002,
+      "q25": 21.75,
+      "q75": 46.5,
+      "q90": 54.4,
+      "share_under_threshold": 0.16666666666666666
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.7916666666666666,
+      "n_topics": 24,
+      "se": 0.057757139409581035
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 7.541666666666667,
+      "median": 7.5,
+      "q10": 5.0,
+      "q90": 9.7
+     },
+     "n": 24,
+     "non_vacuous": 0.5833333333333334,
+     "raw": 0.9166666666666666,
+     "raw_k": 22,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.3333333333333333,
+     "vacuous_share_of_passes": 0.36363636363636365,
+     "wilson": [
+      0.741507847985494,
+      0.9768416721570266
+     ],
+     "words": {
+      "mean": 40.875,
+      "median": 30.5,
+      "q10": 10.3,
+      "q25": 16.75,
+      "q75": 44.25,
+      "q90": 52.7,
+      "share_under_threshold": 0.375
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 10,
+      "mean": 7.75,
+      "median": 8.0,
+      "q10": 5.0,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.75,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.16666666666666666,
+     "truncation": 0.0,
+     "vacuity": 0.25,
+     "vacuous_share_of_passes": 0.25,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 34.5,
+      "median": 32.5,
+      "q10": 8.500000000000002,
+      "q25": 20.5,
+      "q75": 47.5,
+      "q90": 67.0,
+      "share_under_threshold": 0.25
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 8.083333333333334,
+      "median": 9.0,
+      "q10": 5.300000000000001,
+      "q90": 10.0
+     },
+     "n": 24,
+     "non_vacuous": 0.75,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.041666666666666664,
+     "truncation": 0.0,
+     "vacuity": 0.25,
+     "vacuous_share_of_passes": 0.25,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 34.208333333333336,
+      "median": 25.5,
+      "q10": 10.3,
+      "q25": 19.75,
+      "q75": 41.75,
+      "q90": 55.0,
+      "share_under_threshold": 0.25
+     }
+    }
+   },
+   "b_curve_floored": {
+    "7": {
+     "cluster": {
+      "hi": 0.6666666666666666,
+      "lo": 0.3333333333333333,
+      "n_topics": 24,
+      "se": 0.10179799407268407
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 8.083333333333334,
+      "median": 7.5,
+      "q10": 6.0,
+      "q90": 10.7
+     },
+     "n": 24,
+     "non_vacuous": 0.5,
+     "raw": 0.5,
+     "raw_k": 12,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.31427131627763083,
+      0.6857286837223692
+     ],
+     "words": {
+      "mean": 82.5,
+      "median": 80.5,
+      "q10": 71.3,
+      "q25": 75.5,
+      "q75": 88.5,
+      "q90": 95.1,
+      "share_under_threshold": 0.0
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.7916666666666666,
+      "lo": 0.4583333333333333,
+      "n_topics": 24,
+      "se": 0.09682072628417143
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 8.208333333333334,
+      "median": 8.0,
+      "q10": 6.0,
+      "q90": 10.7
+     },
+     "n": 24,
+     "non_vacuous": 0.625,
+     "raw": 0.625,
+     "raw_k": 15,
+     "registered_rung": true,
+     "stem_satisfied": 0.9583333333333334,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.42709619037907065,
+      0.7884086656636855
+     ],
+     "words": {
+      "mean": 81.0,
+      "median": 79.5,
+      "q10": 73.6,
+      "q25": 76.0,
+      "q75": 87.25,
+      "q90": 92.0,
+      "share_under_threshold": 0.0
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.8333333333333334,
+      "lo": 0.5,
+      "n_topics": 24,
+      "se": 0.09393004932750045
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 8.75,
+      "median": 8.5,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.6666666666666666,
+     "raw": 0.6666666666666666,
+     "raw_k": 16,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.4670595949408046,
+      0.8202802131162036
+     ],
+     "words": {
+      "mean": 83.16666666666667,
+      "median": 83.0,
+      "q10": 76.3,
+      "q25": 80.0,
+      "q75": 88.25,
+      "q90": 90.7,
+      "share_under_threshold": 0.0
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 0.875,
+      "lo": 0.625,
+      "n_topics": 24,
+      "se": 0.08941778307783947
+     },
+     "max_word_length": {
+      "max": 14,
+      "mean": 9.0,
+      "median": 9.0,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.75,
+     "raw": 0.75,
+     "raw_k": 18,
+     "registered_rung": true,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.5510017468789357,
+      0.8800079652065766
+     ],
+     "words": {
+      "mean": 81.66666666666667,
+      "median": 84.5,
+      "q10": 66.6,
+      "q25": 77.5,
+      "q75": 88.0,
+      "q90": 90.7,
+      "share_under_threshold": 0.0
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 8.833333333333334,
+      "median": 9.0,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 1.0,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 82.20833333333333,
+      "median": 82.0,
+      "q10": 72.3,
+      "q25": 76.75,
+      "q75": 89.5,
+      "q90": 93.8,
+      "share_under_threshold": 0.0
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.875,
+      "n_topics": 24,
+      "se": 0.041035194075059254
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 9.5,
+      "median": 9.5,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.9583333333333334,
+     "raw": 0.9583333333333334,
+     "raw_k": 23,
+     "registered_rung": false,
+     "stem_satisfied": 1.0,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.7975777375115778,
+      0.992606734645195
+     ],
+     "words": {
+      "mean": 81.95833333333333,
+      "median": 82.5,
+      "q10": 70.9,
+      "q25": 75.5,
+      "q75": 87.5,
+      "q90": 93.7,
+      "share_under_threshold": 0.0
+     }
+    }
+   },
+   "d_b_from_a": {
+    "8": {
+     "D_B_from_A_long_only": 0.5,
+     "D_B_from_A_raw": 0.5,
+     "available": true,
+     "b_composed": 0.125,
+     "b_solo": 0.625,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 96.5,
+     "m": 8,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10206207261596577,
+     "solo_median_words": 79.5,
+     "topics": 24
+    },
+    "9": {
+     "D_B_from_A_long_only": 0.3333333333333333,
+     "D_B_from_A_raw": 0.3333333333333333,
+     "available": true,
+     "b_composed": 0.3333333333333333,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 96.0,
+     "m": 9,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.1272937693043289,
+     "solo_median_words": 83.0,
+     "topics": 24
+    },
+    "10": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.625,
+     "b_solo": 0.75,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 99.0,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10724614730194794,
+     "solo_median_words": 84.5,
+     "topics": 24
+    }
+   },
+   "d_b_from_a_all_rungs": {
+    "7": {
+     "D_B_from_A_long_only": 0.29166666666666663,
+     "D_B_from_A_raw": 0.29166666666666663,
+     "available": true,
+     "b_composed": 0.20833333333333334,
+     "b_solo": 0.5,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 93.5,
+     "m": 7,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10991105410655844,
+     "solo_median_words": 80.5,
+     "topics": 24
+    },
+    "8": {
+     "D_B_from_A_long_only": 0.5,
+     "D_B_from_A_raw": 0.5,
+     "available": true,
+     "b_composed": 0.125,
+     "b_solo": 0.625,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 96.5,
+     "m": 8,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10206207261596577,
+     "solo_median_words": 79.5,
+     "topics": 24
+    },
+    "9": {
+     "D_B_from_A_long_only": 0.3333333333333333,
+     "D_B_from_A_raw": 0.3333333333333333,
+     "available": true,
+     "b_composed": 0.3333333333333333,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 96.0,
+     "m": 9,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.1272937693043289,
+     "solo_median_words": 83.0,
+     "topics": 24
+    },
+    "10": {
+     "D_B_from_A_long_only": 0.125,
+     "D_B_from_A_raw": 0.125,
+     "available": true,
+     "b_composed": 0.625,
+     "b_solo": 0.75,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 99.0,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10724614730194794,
+     "solo_median_words": 84.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": 0.25,
+     "D_B_from_A_raw": 0.25,
+     "available": true,
+     "b_composed": 0.75,
+     "b_solo": 1.0,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 92.5,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.08838834764831845,
+     "solo_median_words": 82.0,
+     "topics": 24
+    },
+    "12": {
+     "D_B_from_A_long_only": -0.04166666666666663,
+     "D_B_from_A_raw": -0.04166666666666663,
+     "available": true,
+     "b_composed": 1.0,
+     "b_solo": 0.9583333333333334,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 96.0,
+     "m": 12,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.04078937543219004,
+     "solo_median_words": 82.5,
+     "topics": 24
+    }
+   },
+   "extrapolation_gap": {
+    "available": true,
+    "fit_on": {
+     "7": 0.4166666666666667,
+     "8": 0.6666666666666666,
+     "9": 0.7083333333333334,
+     "10": 0.875
+    },
+    "intercept": -0.5375,
+    "note": "an OLS line in m fitted to four points, extrapolated two rungs. It is reported because the brief asks for the gap, not because it is a good model of a bounded proportion",
+    "per_m": {
+     "11": {
+      "gap": 0.0,
+      "measured": 1.0,
+      "predicted": 1.0
+     },
+     "12": {
+      "gap": -0.04166666666666663,
+      "measured": 0.9583333333333334,
+      "predicted": 1.0
+     }
+    },
+    "slope": 0.14166666666666666
+   },
+   "max_truncation_floored": 0.0,
+   "max_vacuous_share_floored": 0.0,
+   "median_words_floored": 82.25,
+   "model_key": "gemma-3n-e4b-it",
+   "replication_gap": {
+    "mean_abs_gap": 0.07291666666666667,
+    "mean_signed_gap": -0.031250000000000014,
+    "note": "two independent single draws per topic under different seed roots; a gap of this size is sampling noise, not disagreement",
+    "per_m": {
+     "7": {
+      "bgrid_screen": 0.5,
+      "fs_screen": 0.4166666666666667,
+      "gap": 0.08333333333333331
+     },
+     "8": {
+      "bgrid_screen": 0.625,
+      "fs_screen": 0.6666666666666666,
+      "gap": -0.04166666666666663
+     },
+     "9": {
+      "bgrid_screen": 0.6666666666666666,
+      "fs_screen": 0.7083333333333334,
+      "gap": -0.04166666666666674
+     },
+     "10": {
+      "bgrid_screen": 0.75,
+      "fs_screen": 0.875,
+      "gap": -0.125
+     }
+    }
+   },
+   "short": "E4B",
+   "stem_satisfaction_floored": 0.9930555555555555,
+   "verdict_any_in_band_rung": {
+    "any_clear_of_both_edges": true,
+    "in_band": [
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.025000000000000022,
+      "distance_to_upper": 0.32499999999999996,
+      "m": 8,
+      "raw": 0.625,
+      "registered_rung": true,
+      "se": 0.09682072628417143,
+      "se_to_lower": 0.25820917647967595,
+      "se_to_upper": 3.356719294235784
+     },
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.06666666666666665,
+      "distance_to_upper": 0.2833333333333333,
+      "m": 9,
+      "raw": 0.6666666666666666,
+      "registered_rung": true,
+      "se": 0.09393004932750045,
+      "se_to_lower": 0.7097480214688684,
+      "se_to_upper": 3.016429091242691
+     },
+     {
+      "clear_of_both_edges": true,
+      "distance_to_lower": 0.15000000000000002,
+      "distance_to_upper": 0.19999999999999996,
+      "m": 10,
+      "raw": 0.75,
+      "registered_rung": true,
+      "se": 0.08941778307783947,
+      "se_to_lower": 1.6775186639264235,
+      "se_to_upper": 2.236691551901897
+     }
+    ],
+    "reason": "at least one in-band rung sits more than one clustered standard error from both band edges",
+    "smallest_in_band": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.025000000000000022,
+     "distance_to_upper": 0.32499999999999996,
+     "m": 8,
+     "raw": 0.625,
+     "registered_rung": true,
+     "se": 0.09682072628417143,
+     "se_to_lower": 0.25820917647967595,
+     "se_to_upper": 3.356719294235784
+    },
+    "status": "PASS"
+   },
+   "verdict_smallest_in_band_rung": {
+    "rung": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.025000000000000022,
+     "distance_to_upper": 0.32499999999999996,
+     "m": 8,
+     "raw": 0.625,
+     "registered_rung": true,
+     "se": 0.09682072628417143,
+     "se_to_lower": 0.25820917647967595,
+     "se_to_upper": 3.356719294235784
+    },
+    "status": "MARGINAL"
+   }
+  },
+  "qwen3-4b": {
+   "a_curve_floored": {
+    "band": [
+     0.5,
+     0.85
+    ],
+    "bounds": "inclusive (\u00a712.3)",
+    "compliance_at_n_star": 0.6666666666666666,
+    "curve": {
+     "1": 0.875,
+     "2": 0.6666666666666666,
+     "3": 0.5416666666666666,
+     "4": 0.5833333333333334,
+     "5": 0.5,
+     "6": 0.5,
+     "7": 0.4166666666666667,
+     "8": 0.3333333333333333
+    },
+    "eligible": [
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "n_star": 2,
+    "terminal_status": null,
+    "would_terminate": false
+   },
+   "b_curve_current": {
+    "7": {
+     "cluster": {
+      "hi": 0.4166666666666667,
+      "lo": 0.125,
+      "n_topics": 24,
+      "se": 0.0885796487160943
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 9.125,
+      "median": 9.0,
+      "q10": 6.300000000000001,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.0,
+     "raw": 0.25,
+     "raw_k": 6,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.25,
+     "vacuous_share_of_passes": 1.0,
+     "wilson": [
+      0.1199920347934233,
+      0.4489982531210644
+     ],
+     "words": {
+      "mean": 12.083333333333334,
+      "median": 7.0,
+      "q10": 1.0,
+      "q25": 3.75,
+      "q75": 15.25,
+      "q90": 30.79999999999999,
+      "share_under_threshold": 0.7916666666666666
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.75,
+      "lo": 0.4166666666666667,
+      "n_topics": 24,
+      "se": 0.10327508228768341
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 8.25,
+      "median": 8.0,
+      "q10": 6.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.20833333333333334,
+     "raw": 0.5833333333333334,
+     "raw_k": 14,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.375,
+     "vacuous_share_of_passes": 0.6428571428571429,
+     "wilson": [
+      0.3883433764938864,
+      0.7553265275346177
+     ],
+     "words": {
+      "mean": 12.208333333333334,
+      "median": 9.0,
+      "q10": 1.0,
+      "q25": 3.0,
+      "q75": 20.25,
+      "q90": 22.4,
+      "share_under_threshold": 0.7083333333333334
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.7083333333333334,
+      "lo": 0.375,
+      "n_topics": 24,
+      "se": 0.10089116583601361
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 8.875,
+      "median": 9.0,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.08333333333333333,
+     "raw": 0.5416666666666666,
+     "raw_k": 13,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.4583333333333333,
+     "vacuous_share_of_passes": 0.8461538461538461,
+     "wilson": [
+      0.35074553553106635,
+      0.7210894164831857
+     ],
+     "words": {
+      "mean": 12.75,
+      "median": 8.5,
+      "q10": 3.0,
+      "q25": 4.0,
+      "q75": 14.0,
+      "q90": 31.4,
+      "share_under_threshold": 0.75
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 0.875,
+      "lo": 0.5833333333333334,
+      "n_topics": 24,
+      "se": 0.08985771690953674
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 8.625,
+      "median": 9.0,
+      "q10": 6.0,
+      "q90": 11.7
+     },
+     "n": 24,
+     "non_vacuous": 0.125,
+     "raw": 0.75,
+     "raw_k": 18,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.625,
+     "vacuous_share_of_passes": 0.8333333333333334,
+     "wilson": [
+      0.5510017468789357,
+      0.8800079652065766
+     ],
+     "words": {
+      "mean": 30.875,
+      "median": 10.0,
+      "q10": 3.0,
+      "q25": 4.75,
+      "q75": 25.75,
+      "q90": 99.99999999999994,
+      "share_under_threshold": 0.7083333333333334
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.7083333333333334,
+      "n_topics": 24,
+      "se": 0.07584992664154513
+     },
+     "max_word_length": {
+      "max": 15,
+      "mean": 9.833333333333334,
+      "median": 10.0,
+      "q10": 7.0,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.25,
+     "raw": 0.8333333333333334,
+     "raw_k": 20,
+     "registered_rung": false,
+     "stem_satisfied": 0.125,
+     "truncation": 0.0,
+     "vacuity": 0.5833333333333334,
+     "vacuous_share_of_passes": 0.7,
+     "wilson": [
+      0.6414652961213058,
+      0.9332143199927109
+     ],
+     "words": {
+      "mean": 20.541666666666668,
+      "median": 11.0,
+      "q10": 4.0,
+      "q25": 5.75,
+      "q75": 32.25,
+      "q90": 59.89999999999998,
+      "share_under_threshold": 0.6666666666666666
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.875,
+      "n_topics": 24,
+      "se": 0.042606845881527335
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 8.625,
+      "median": 9.0,
+      "q10": 6.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.3333333333333333,
+     "raw": 0.9583333333333334,
+     "raw_k": 23,
+     "registered_rung": false,
+     "stem_satisfied": 0.20833333333333334,
+     "truncation": 0.0,
+     "vacuity": 0.625,
+     "vacuous_share_of_passes": 0.6521739130434783,
+     "wilson": [
+      0.7975777375115778,
+      0.992606734645195
+     ],
+     "words": {
+      "mean": 26.458333333333332,
+      "median": 11.0,
+      "q10": 4.0,
+      "q25": 5.0,
+      "q75": 44.0,
+      "q90": 68.5,
+      "share_under_threshold": 0.625
+     }
+    }
+   },
+   "b_curve_floored": {
+    "7": {
+     "cluster": {
+      "hi": 0.125,
+      "lo": 0.0,
+      "n_topics": 24,
+      "se": 0.04181222492020459
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.25,
+      "median": 10.0,
+      "q10": 8.0,
+      "q90": 13.0
+     },
+     "n": 24,
+     "non_vacuous": 0.041666666666666664,
+     "raw": 0.041666666666666664,
+     "raw_k": 1,
+     "registered_rung": true,
+     "stem_satisfied": 0.2916666666666667,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.007393265354805126,
+      0.20242226248842232
+     ],
+     "words": {
+      "mean": 52.5,
+      "median": 49.5,
+      "q10": 36.3,
+      "q25": 43.25,
+      "q75": 61.25,
+      "q90": 74.69999999999999,
+      "share_under_threshold": 0.0
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.25,
+      "lo": 0.041666666666666664,
+      "n_topics": 24,
+      "se": 0.06820331889529521
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.375,
+      "median": 10.0,
+      "q10": 8.3,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.125,
+     "raw": 0.125,
+     "raw_k": 3,
+     "registered_rung": true,
+     "stem_satisfied": 0.375,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.04344255039315584,
+      0.3100428814785757
+     ],
+     "words": {
+      "mean": 54.375,
+      "median": 55.5,
+      "q10": 36.2,
+      "q25": 46.0,
+      "q75": 63.0,
+      "q90": 69.4,
+      "share_under_threshold": 0.0
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.2916666666666667,
+      "lo": 0.041666666666666664,
+      "n_topics": 24,
+      "se": 0.07637370429888375
+     },
+     "max_word_length": {
+      "max": 14,
+      "mean": 10.833333333333334,
+      "median": 10.5,
+      "q10": 9.0,
+      "q90": 12.7
+     },
+     "n": 24,
+     "non_vacuous": 0.16666666666666666,
+     "raw": 0.16666666666666666,
+     "raw_k": 4,
+     "registered_rung": true,
+     "stem_satisfied": 0.3333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.06678568000728924,
+      0.3585347038786943
+     ],
+     "words": {
+      "mean": 54.666666666666664,
+      "median": 55.0,
+      "q10": 46.3,
+      "q25": 50.0,
+      "q75": 61.25,
+      "q90": 65.1,
+      "share_under_threshold": 0.0
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 0.5416666666666666,
+      "lo": 0.20833333333333334,
+      "n_topics": 24,
+      "se": 0.09821638304939535
+     },
+     "max_word_length": {
+      "max": 16,
+      "mean": 11.166666666666666,
+      "median": 11.0,
+      "q10": 9.0,
+      "q90": 13.7
+     },
+     "n": 24,
+     "non_vacuous": 0.375,
+     "raw": 0.375,
+     "raw_k": 9,
+     "registered_rung": true,
+     "stem_satisfied": 0.3333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.21159133433631458,
+      0.5729038096209293
+     ],
+     "words": {
+      "mean": 56.791666666666664,
+      "median": 56.5,
+      "q10": 34.1,
+      "q25": 50.0,
+      "q75": 64.5,
+      "q90": 70.7,
+      "share_under_threshold": 0.0
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 0.7916666666666666,
+      "lo": 0.4583333333333333,
+      "n_topics": 24,
+      "se": 0.10057608369344628
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 11.083333333333334,
+      "median": 11.0,
+      "q10": 9.3,
+      "q90": 13.0
+     },
+     "n": 24,
+     "non_vacuous": 0.625,
+     "raw": 0.625,
+     "raw_k": 15,
+     "registered_rung": false,
+     "stem_satisfied": 0.5416666666666666,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.42709619037907065,
+      0.7884086656636855
+     ],
+     "words": {
+      "mean": 56.791666666666664,
+      "median": 61.0,
+      "q10": 41.3,
+      "q25": 44.75,
+      "q75": 64.25,
+      "q90": 72.5,
+      "share_under_threshold": 0.0
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.75,
+      "n_topics": 24,
+      "se": 0.0684287919371095
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.958333333333334,
+      "median": 11.0,
+      "q10": 9.0,
+      "q90": 12.7
+     },
+     "n": 24,
+     "non_vacuous": 0.875,
+     "raw": 0.875,
+     "raw_k": 21,
+     "registered_rung": false,
+     "stem_satisfied": 0.4166666666666667,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.6899571185214243,
+      0.9565574496068442
+     ],
+     "words": {
+      "mean": 55.333333333333336,
+      "median": 58.5,
+      "q10": 43.9,
+      "q25": 47.0,
+      "q75": 61.75,
+      "q90": 68.7,
+      "share_under_threshold": 0.0
+     }
+    }
+   },
+   "d_b_from_a": {
+    "11": {
+     "D_B_from_A_long_only": -0.08333333333333337,
+     "D_B_from_A_raw": -0.08333333333333337,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.625,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 47.0,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10063456073742667,
+     "solo_median_words": 61.0,
+     "topics": 24
+    },
+    "12": {
+     "D_B_from_A_long_only": -0.08333333333333337,
+     "D_B_from_A_raw": -0.08333333333333337,
+     "available": true,
+     "b_composed": 0.9583333333333334,
+     "b_solo": 0.875,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 50.0,
+     "m": 12,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.0564169333655275,
+     "solo_median_words": 58.5,
+     "topics": 24
+    }
+   },
+   "d_b_from_a_all_rungs": {
+    "7": {
+     "D_B_from_A_long_only": -0.08333333333333334,
+     "D_B_from_A_raw": -0.08333333333333334,
+     "available": true,
+     "b_composed": 0.125,
+     "b_solo": 0.041666666666666664,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 44.5,
+     "m": 7,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.08157875086438009,
+     "solo_median_words": 49.5,
+     "topics": 24
+    },
+    "8": {
+     "D_B_from_A_long_only": 0.04166666666666667,
+     "D_B_from_A_raw": 0.04166666666666667,
+     "available": true,
+     "b_composed": 0.08333333333333333,
+     "b_solo": 0.125,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 46.0,
+     "m": 8,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.07166585916857741,
+     "solo_median_words": 55.5,
+     "topics": 24
+    },
+    "9": {
+     "D_B_from_A_long_only": -0.041666666666666685,
+     "D_B_from_A_raw": -0.041666666666666685,
+     "available": true,
+     "b_composed": 0.20833333333333334,
+     "b_solo": 0.16666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 49.5,
+     "m": 9,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09278048066588464,
+     "solo_median_words": 55.0,
+     "topics": 24
+    },
+    "10": {
+     "D_B_from_A_long_only": -0.16666666666666663,
+     "D_B_from_A_raw": -0.16666666666666663,
+     "available": true,
+     "b_composed": 0.5416666666666666,
+     "b_solo": 0.375,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 48.0,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.112833866731055,
+     "solo_median_words": 56.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": -0.08333333333333337,
+     "D_B_from_A_raw": -0.08333333333333337,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.625,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 47.0,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.10063456073742667,
+     "solo_median_words": 61.0,
+     "topics": 24
+    },
+    "12": {
+     "D_B_from_A_long_only": -0.08333333333333337,
+     "D_B_from_A_raw": -0.08333333333333337,
+     "available": true,
+     "b_composed": 0.9583333333333334,
+     "b_solo": 0.875,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 50.0,
+     "m": 12,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.0564169333655275,
+     "solo_median_words": 58.5,
+     "topics": 24
+    }
+   },
+   "extrapolation_gap": {
+    "available": true,
+    "fit_on": {
+     "7": 0.041666666666666664,
+     "8": 0.16666666666666666,
+     "9": 0.20833333333333334,
+     "10": 0.3333333333333333
+    },
+    "intercept": -0.5916666666666666,
+    "note": "an OLS line in m fitted to four points, extrapolated two rungs. It is reported because the brief asks for the gap, not because it is a good model of a bounded proportion",
+    "per_m": {
+     "11": {
+      "gap": 0.20833333333333326,
+      "measured": 0.625,
+      "predicted": 0.41666666666666674
+     },
+     "12": {
+      "gap": 0.3666666666666667,
+      "measured": 0.875,
+      "predicted": 0.5083333333333333
+     }
+    },
+    "slope": 0.09166666666666666
+   },
+   "max_truncation_floored": 0.0,
+   "max_vacuous_share_floored": 0.0,
+   "median_words_floored": 56.0,
+   "model_key": "qwen3-4b",
+   "replication_gap": {
+    "mean_abs_gap": 0.03125000000000001,
+    "mean_signed_gap": -0.010416666666666664,
+    "note": "two independent single draws per topic under different seed roots; a gap of this size is sampling noise, not disagreement",
+    "per_m": {
+     "7": {
+      "bgrid_screen": 0.041666666666666664,
+      "fs_screen": 0.041666666666666664,
+      "gap": 0.0
+     },
+     "8": {
+      "bgrid_screen": 0.125,
+      "fs_screen": 0.16666666666666666,
+      "gap": -0.04166666666666666
+     },
+     "9": {
+      "bgrid_screen": 0.16666666666666666,
+      "fs_screen": 0.20833333333333334,
+      "gap": -0.041666666666666685
+     },
+     "10": {
+      "bgrid_screen": 0.375,
+      "fs_screen": 0.3333333333333333,
+      "gap": 0.041666666666666685
+     }
+    }
+   },
+   "short": "Qwen3-4B",
+   "stem_satisfaction_floored": 0.3819444444444444,
+   "verdict_any_in_band_rung": {
+    "any_clear_of_both_edges": true,
+    "in_band": [
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.025000000000000022,
+      "distance_to_upper": 0.32499999999999996,
+      "m": 11,
+      "raw": 0.625,
+      "registered_rung": false,
+      "se": 0.10057608369344628,
+      "se_to_lower": 0.24856804005412936,
+      "se_to_upper": 3.231384520703678
+     },
+     {
+      "clear_of_both_edges": true,
+      "distance_to_lower": 0.275,
+      "distance_to_upper": 0.07499999999999996,
+      "m": 12,
+      "raw": 0.875,
+      "registered_rung": false,
+      "se": 0.0684287919371095,
+      "se_to_lower": 4.018776193692603,
+      "se_to_upper": 1.0960298710070728
+     }
+    ],
+    "reason": "at least one in-band rung sits more than one clustered standard error from both band edges",
+    "smallest_in_band": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.025000000000000022,
+     "distance_to_upper": 0.32499999999999996,
+     "m": 11,
+     "raw": 0.625,
+     "registered_rung": false,
+     "se": 0.10057608369344628,
+     "se_to_lower": 0.24856804005412936,
+     "se_to_upper": 3.231384520703678
+    },
+    "status": "PASS"
+   },
+   "verdict_smallest_in_band_rung": {
+    "rung": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.025000000000000022,
+     "distance_to_upper": 0.32499999999999996,
+     "m": 11,
+     "raw": 0.625,
+     "registered_rung": false,
+     "se": 0.10057608369344628,
+     "se_to_lower": 0.24856804005412936,
+     "se_to_upper": 3.231384520703678
+    },
+    "status": "MARGINAL"
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "a_curve_floored": {
+    "band": [
+     0.5,
+     0.85
+    ],
+    "bounds": "inclusive (\u00a712.3)",
+    "compliance_at_n_star": 0.5,
+    "curve": {
+     "1": 0.9583333333333334,
+     "2": 1.0,
+     "3": 0.9583333333333334,
+     "4": 1.0,
+     "5": 0.5,
+     "6": 0.4166666666666667,
+     "7": 0.3333333333333333,
+     "8": 0.5
+    },
+    "eligible": [
+     5,
+     8
+    ],
+    "n_star": 5,
+    "terminal_status": null,
+    "would_terminate": false
+   },
+   "b_curve_current": {
+    "7": {
+     "cluster": {
+      "hi": 0.875,
+      "lo": 0.5416666666666666,
+      "n_topics": 24,
+      "se": 0.09298263726811223
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 6.791666666666667,
+      "median": 7.0,
+      "q10": 5.0,
+      "q90": 9.7
+     },
+     "n": 24,
+     "non_vacuous": 0.041666666666666664,
+     "raw": 0.7083333333333334,
+     "raw_k": 17,
+     "registered_rung": true,
+     "stem_satisfied": 0.041666666666666664,
+     "truncation": 0.0,
+     "vacuity": 0.6666666666666666,
+     "vacuous_share_of_passes": 0.9411764705882353,
+     "wilson": [
+      0.508319363412903,
+      0.8508553966583573
+     ],
+     "words": {
+      "mean": 16.416666666666668,
+      "median": 7.0,
+      "q10": 2.0,
+      "q25": 3.0,
+      "q75": 15.0,
+      "q90": 26.299999999999994,
+      "share_under_threshold": 0.8333333333333334
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.9166666666666666,
+      "lo": 0.6666666666666666,
+      "n_topics": 24,
+      "se": 0.08481514826373883
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 6.833333333333333,
+      "median": 6.5,
+      "q10": 5.0,
+      "q90": 9.0
+     },
+     "n": 24,
+     "non_vacuous": 0.125,
+     "raw": 0.7916666666666666,
+     "raw_k": 19,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.6666666666666666,
+     "vacuous_share_of_passes": 0.8421052631578947,
+     "wilson": [
+      0.5952915551476452,
+      0.9075531089521192
+     ],
+     "words": {
+      "mean": 17.583333333333332,
+      "median": 7.5,
+      "q10": 3.0,
+      "q25": 3.0,
+      "q75": 12.5,
+      "q90": 32.99999999999999,
+      "share_under_threshold": 0.7916666666666666
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.8333333333333334,
+      "n_topics": 24,
+      "se": 0.05739772002343725
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 6.333333333333333,
+      "median": 6.0,
+      "q10": 5.0,
+      "q90": 7.699999999999999
+     },
+     "n": 24,
+     "non_vacuous": 0.041666666666666664,
+     "raw": 0.9166666666666666,
+     "raw_k": 22,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.875,
+     "vacuous_share_of_passes": 0.9545454545454546,
+     "wilson": [
+      0.741507847985494,
+      0.9768416721570266
+     ],
+     "words": {
+      "mean": 6.208333333333333,
+      "median": 4.0,
+      "q10": 2.0,
+      "q25": 3.0,
+      "q75": 8.0,
+      "q90": 10.399999999999999,
+      "share_under_threshold": 0.9583333333333334
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 0.9583333333333334,
+      "lo": 0.75,
+      "n_topics": 24,
+      "se": 0.06881398222240562
+     },
+     "max_word_length": {
+      "max": 14,
+      "mean": 7.458333333333333,
+      "median": 7.0,
+      "q10": 5.0,
+      "q90": 10.399999999999999
+     },
+     "n": 24,
+     "non_vacuous": 0.041666666666666664,
+     "raw": 0.875,
+     "raw_k": 21,
+     "registered_rung": true,
+     "stem_satisfied": 0.0,
+     "truncation": 0.041666666666666664,
+     "vacuity": 0.8333333333333334,
+     "vacuous_share_of_passes": 0.9523809523809523,
+     "wilson": [
+      0.6899571185214243,
+      0.9565574496068442
+     ],
+     "words": {
+      "mean": 25.25,
+      "median": 10.0,
+      "q10": 3.0,
+      "q25": 3.0,
+      "q75": 15.0,
+      "q90": 28.999999999999986,
+      "share_under_threshold": 0.875
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 11,
+      "mean": 7.0,
+      "median": 7.0,
+      "q10": 5.300000000000001,
+      "q90": 9.0
+     },
+     "n": 24,
+     "non_vacuous": 0.041666666666666664,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.9583333333333334,
+     "vacuous_share_of_passes": 0.9583333333333334,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 6.75,
+      "median": 5.0,
+      "q10": 3.0,
+      "q25": 4.0,
+      "q75": 9.0,
+      "q90": 10.7,
+      "share_under_threshold": 0.9583333333333334
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 1.0,
+      "n_topics": 24,
+      "se": 0.0
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 7.333333333333333,
+      "median": 7.0,
+      "q10": 5.0,
+      "q90": 10.7
+     },
+     "n": 24,
+     "non_vacuous": 0.125,
+     "raw": 1.0,
+     "raw_k": 24,
+     "registered_rung": false,
+     "stem_satisfied": 0.0,
+     "truncation": 0.0,
+     "vacuity": 0.875,
+     "vacuous_share_of_passes": 0.875,
+     "wilson": [
+      0.8620194241710247,
+      1.0
+     ],
+     "words": {
+      "mean": 16.333333333333332,
+      "median": 5.5,
+      "q10": 3.3000000000000003,
+      "q25": 4.0,
+      "q75": 8.25,
+      "q90": 23.599999999999994,
+      "share_under_threshold": 0.875
+     }
+    }
+   },
+   "b_curve_floored": {
+    "7": {
+     "cluster": {
+      "hi": 0.25,
+      "lo": 0.041666666666666664,
+      "n_topics": 24,
+      "se": 0.0671495015287199
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 9.583333333333334,
+      "median": 10.0,
+      "q10": 7.300000000000001,
+      "q90": 11.7
+     },
+     "n": 24,
+     "non_vacuous": 0.125,
+     "raw": 0.125,
+     "raw_k": 3,
+     "registered_rung": true,
+     "stem_satisfied": 0.20833333333333334,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.04344255039315584,
+      0.3100428814785757
+     ],
+     "words": {
+      "mean": 45.208333333333336,
+      "median": 41.5,
+      "q10": 29.0,
+      "q25": 33.5,
+      "q75": 55.75,
+      "q90": 64.7,
+      "share_under_threshold": 0.0
+     }
+    },
+    "8": {
+     "cluster": {
+      "hi": 0.5833333333333334,
+      "lo": 0.25,
+      "n_topics": 24,
+      "se": 0.1033628654036083
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 9.083333333333334,
+      "median": 9.0,
+      "q10": 7.0,
+      "q90": 11.0
+     },
+     "n": 24,
+     "non_vacuous": 0.375,
+     "raw": 0.4166666666666667,
+     "raw_k": 10,
+     "registered_rung": true,
+     "stem_satisfied": 0.2916666666666667,
+     "truncation": 0.0,
+     "vacuity": 0.041666666666666664,
+     "vacuous_share_of_passes": 0.1,
+     "wilson": [
+      0.24467347246538232,
+      0.6116566235061137
+     ],
+     "words": {
+      "mean": 49.0,
+      "median": 51.0,
+      "q10": 27.200000000000003,
+      "q25": 43.0,
+      "q75": 61.5,
+      "q90": 66.7,
+      "share_under_threshold": 0.041666666666666664
+     }
+    },
+    "9": {
+     "cluster": {
+      "hi": 0.5416666666666666,
+      "lo": 0.20833333333333334,
+      "n_topics": 24,
+      "se": 0.10126215419162174
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.041666666666666,
+      "median": 10.0,
+      "q10": 8.0,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.375,
+     "raw": 0.375,
+     "raw_k": 9,
+     "registered_rung": true,
+     "stem_satisfied": 0.2916666666666667,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.21159133433631458,
+      0.5729038096209293
+     ],
+     "words": {
+      "mean": 48.291666666666664,
+      "median": 44.0,
+      "q10": 32.0,
+      "q25": 39.5,
+      "q75": 62.5,
+      "q90": 69.8,
+      "share_under_threshold": 0.041666666666666664
+     }
+    },
+    "10": {
+     "cluster": {
+      "hi": 0.8333333333333334,
+      "lo": 0.5,
+      "n_topics": 24,
+      "se": 0.09389433333984183
+     },
+     "max_word_length": {
+      "max": 12,
+      "mean": 9.75,
+      "median": 10.0,
+      "q10": 8.0,
+      "q90": 11.7
+     },
+     "n": 24,
+     "non_vacuous": 0.625,
+     "raw": 0.6666666666666666,
+     "raw_k": 16,
+     "registered_rung": true,
+     "stem_satisfied": 0.20833333333333334,
+     "truncation": 0.0,
+     "vacuity": 0.041666666666666664,
+     "vacuous_share_of_passes": 0.0625,
+     "wilson": [
+      0.4670595949408046,
+      0.8202802131162036
+     ],
+     "words": {
+      "mean": 47.625,
+      "median": 47.5,
+      "q10": 28.3,
+      "q25": 37.75,
+      "q75": 59.0,
+      "q90": 68.0,
+      "share_under_threshold": 0.041666666666666664
+     }
+    },
+    "11": {
+     "cluster": {
+      "hi": 0.8333333333333334,
+      "lo": 0.5,
+      "n_topics": 24,
+      "se": 0.09697435765018847
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.375,
+      "median": 11.0,
+      "q10": 8.0,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.6666666666666666,
+     "raw": 0.6666666666666666,
+     "raw_k": 16,
+     "registered_rung": false,
+     "stem_satisfied": 0.3333333333333333,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.4670595949408046,
+      0.8202802131162036
+     ],
+     "words": {
+      "mean": 53.458333333333336,
+      "median": 52.5,
+      "q10": 33.2,
+      "q25": 43.25,
+      "q75": 62.0,
+      "q90": 75.8,
+      "share_under_threshold": 0.0
+     }
+    },
+    "12": {
+     "cluster": {
+      "hi": 1.0,
+      "lo": 0.875,
+      "n_topics": 24,
+      "se": 0.04099100087553094
+     },
+     "max_word_length": {
+      "max": 13,
+      "mean": 10.333333333333334,
+      "median": 11.0,
+      "q10": 8.0,
+      "q90": 12.0
+     },
+     "n": 24,
+     "non_vacuous": 0.9583333333333334,
+     "raw": 0.9583333333333334,
+     "raw_k": 23,
+     "registered_rung": false,
+     "stem_satisfied": 0.4166666666666667,
+     "truncation": 0.0,
+     "vacuity": 0.0,
+     "vacuous_share_of_passes": 0.0,
+     "wilson": [
+      0.7975777375115778,
+      0.992606734645195
+     ],
+     "words": {
+      "mean": 52.708333333333336,
+      "median": 55.5,
+      "q10": 34.3,
+      "q25": 43.75,
+      "q75": 61.5,
+      "q90": 66.8,
+      "share_under_threshold": 0.0
+     }
+    }
+   },
+   "d_b_from_a": {
+    "10": {
+     "D_B_from_A_long_only": -0.0561594202898551,
+     "D_B_from_A_raw": -0.04166666666666674,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0625,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 49.5,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 23,
+     "paired_se": 0.12471031247269426,
+     "solo_median_words": 47.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": -0.16666666666666674,
+     "D_B_from_A_raw": -0.16666666666666674,
+     "available": true,
+     "b_composed": 0.8333333333333334,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 51.0,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09622504486493763,
+     "solo_median_words": 52.5,
+     "topics": 24
+    }
+   },
+   "d_b_from_a_all_rungs": {
+    "7": {
+     "D_B_from_A_long_only": -0.04166666666666666,
+     "D_B_from_A_raw": -0.04166666666666666,
+     "available": true,
+     "b_composed": 0.16666666666666666,
+     "b_solo": 0.125,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 50.0,
+     "m": 7,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09278048066588464,
+     "solo_median_words": 41.5,
+     "topics": 24
+    },
+    "8": {
+     "D_B_from_A_long_only": 0.016304347826086973,
+     "D_B_from_A_raw": 0.041666666666666685,
+     "available": true,
+     "b_composed": 0.375,
+     "b_solo": 0.4166666666666667,
+     "b_solo_vacuous_share_of_passes": 0.1,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 54.0,
+     "m": 8,
+     "n_long_composed": 24,
+     "n_long_solo": 23,
+     "paired_se": 0.09278048066588464,
+     "solo_median_words": 51.0,
+     "topics": 24
+    },
+    "9": {
+     "D_B_from_A_long_only": -0.10869565217391303,
+     "D_B_from_A_raw": -0.125,
+     "available": true,
+     "b_composed": 0.5,
+     "b_solo": 0.375,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 51.5,
+     "m": 9,
+     "n_long_composed": 24,
+     "n_long_solo": 23,
+     "paired_se": 0.08960755486502736,
+     "solo_median_words": 44.0,
+     "topics": 24
+    },
+    "10": {
+     "D_B_from_A_long_only": -0.0561594202898551,
+     "D_B_from_A_raw": -0.04166666666666674,
+     "available": true,
+     "b_composed": 0.7083333333333334,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0625,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 49.5,
+     "m": 10,
+     "n_long_composed": 24,
+     "n_long_solo": 23,
+     "paired_se": 0.12471031247269426,
+     "solo_median_words": 47.5,
+     "topics": 24
+    },
+    "11": {
+     "D_B_from_A_long_only": -0.16666666666666674,
+     "D_B_from_A_raw": -0.16666666666666674,
+     "available": true,
+     "b_composed": 0.8333333333333334,
+     "b_solo": 0.6666666666666666,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 51.0,
+     "m": 11,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.09622504486493763,
+     "solo_median_words": 52.5,
+     "topics": 24
+    },
+    "12": {
+     "D_B_from_A_long_only": 0.08333333333333337,
+     "D_B_from_A_raw": 0.08333333333333337,
+     "available": true,
+     "b_composed": 0.875,
+     "b_solo": 0.9583333333333334,
+     "b_solo_vacuous_share_of_passes": 0.0,
+     "collider_caveat": "the long-only figure conditions on word count, a post-treatment variable and a collider. It is a sensitivity diagnostic, NOT a corrected estimate of D(B<-A).",
+     "composed_median_words": 54.5,
+     "m": 12,
+     "n_long_composed": 24,
+     "n_long_solo": 24,
+     "paired_se": 0.0564169333655275,
+     "solo_median_words": 55.5,
+     "topics": 24
+    }
+   },
+   "extrapolation_gap": {
+    "available": true,
+    "fit_on": {
+     "7": 0.16666666666666666,
+     "8": 0.25,
+     "9": 0.4166666666666667,
+     "10": 0.5416666666666666
+    },
+    "intercept": -0.7541666666666664,
+    "note": "an OLS line in m fitted to four points, extrapolated two rungs. It is reported because the brief asks for the gap, not because it is a good model of a bounded proportion",
+    "per_m": {
+     "11": {
+      "gap": -1.1102230246251565e-16,
+      "measured": 0.6666666666666666,
+      "predicted": 0.6666666666666667
+     },
+     "12": {
+      "gap": 0.16249999999999998,
+      "measured": 0.9583333333333334,
+      "predicted": 0.7958333333333334
+     }
+    },
+    "slope": 0.12916666666666665
+   },
+   "max_truncation_floored": 0.0,
+   "max_vacuous_share_floored": 0.1,
+   "median_words_floored": 49.25,
+   "model_key": "qwen3-4b-instruct-2507",
+   "replication_gap": {
+    "mean_abs_gap": 0.09375,
+    "mean_signed_gap": 0.052083333333333336,
+    "note": "two independent single draws per topic under different seed roots; a gap of this size is sampling noise, not disagreement",
+    "per_m": {
+     "7": {
+      "bgrid_screen": 0.125,
+      "fs_screen": 0.16666666666666666,
+      "gap": -0.04166666666666666
+     },
+     "8": {
+      "bgrid_screen": 0.4166666666666667,
+      "fs_screen": 0.25,
+      "gap": 0.16666666666666669
+     },
+     "9": {
+      "bgrid_screen": 0.375,
+      "fs_screen": 0.4166666666666667,
+      "gap": -0.041666666666666685
+     },
+     "10": {
+      "bgrid_screen": 0.6666666666666666,
+      "fs_screen": 0.5416666666666666,
+      "gap": 0.125
+     }
+    }
+   },
+   "short": "Qwen3-4B-Inst",
+   "stem_satisfaction_floored": 0.2916666666666667,
+   "verdict_any_in_band_rung": {
+    "any_clear_of_both_edges": false,
+    "in_band": [
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.06666666666666665,
+      "distance_to_upper": 0.2833333333333333,
+      "m": 10,
+      "raw": 0.6666666666666666,
+      "registered_rung": true,
+      "se": 0.09389433333984183,
+      "se_to_lower": 0.7100179989070569,
+      "se_to_upper": 3.017576495354992
+     },
+     {
+      "clear_of_both_edges": false,
+      "distance_to_lower": 0.06666666666666665,
+      "distance_to_upper": 0.2833333333333333,
+      "m": 11,
+      "raw": 0.6666666666666666,
+      "registered_rung": false,
+      "se": 0.09697435765018847,
+      "se_to_lower": 0.6874669580916485,
+      "se_to_upper": 2.9217345718895067
+     }
+    ],
+    "reason": "every in-band rung sits within one clustered standard error of a band edge",
+    "smallest_in_band": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.06666666666666665,
+     "distance_to_upper": 0.2833333333333333,
+     "m": 10,
+     "raw": 0.6666666666666666,
+     "registered_rung": true,
+     "se": 0.09389433333984183,
+     "se_to_lower": 0.7100179989070569,
+     "se_to_upper": 3.017576495354992
+    },
+    "status": "MARGINAL"
+   },
+   "verdict_smallest_in_band_rung": {
+    "rung": {
+     "clear_of_both_edges": false,
+     "distance_to_lower": 0.06666666666666665,
+     "distance_to_upper": 0.2833333333333333,
+     "m": 10,
+     "raw": 0.6666666666666666,
+     "registered_rung": true,
+     "se": 0.09389433333984183,
+     "se_to_lower": 0.7100179989070569,
+     "se_to_upper": 3.017576495354992
+    },
+    "status": "MARGINAL"
+   }
+  }
+ },
+ "producing_commit": "9523917347dcafb1fec3a8263c4b441f0244456a",
+ "reading_note": "\u00a71.4 says 'at least one m inside the band, and THAT rung sits more than one standard error from both band edges'. The permissive reading takes the antecedent to be any in-band rung; the stricter reading takes it to be the smallest in-band rung of \u00a71.3. Both are reported. They give the same study verdict.",
+ "registered_focal_grid": [
+  7,
+  8,
+  9,
+  10
+ ],
+ "screen_focal_grid": [
+  7,
+  8,
+  9,
+  10,
+  11,
+  12
+ ],
+ "screen_only_extension": [
+  11,
+  12
+ ],
+ "screen_protocol_hash": "6a63ba782db0de6e1c4d80763065dda7ced1279e3c8ddcc097c7119087f4fff2",
+ "seed_domain": "bgrid:gen:v1",
+ "seed_root": 202608210,
+ "study_id": "bgrid-screen-v4",
+ "verdict": {
+  "consequence": "an in-band rung exists on all four models but at least one is within one standard error of a band edge; a fresh-topic confirmation is required before any grid amendment",
+  "per_model": {
+   "gemma-3n-e2b-it": "PASS",
+   "gemma-3n-e4b-it": "PASS",
+   "qwen3-4b": "PASS",
+   "qwen3-4b-instruct-2507": "MARGINAL"
+  },
+  "rule": "\u00a71.4, frozen before the first generation",
+  "verdict": "MARGINAL"
+ },
+ "verdict_under_the_stricter_reading": {
+  "consequence": "an in-band rung exists on all four models but at least one is within one standard error of a band edge; a fresh-topic confirmation is required before any grid amendment",
+  "per_model": {
+   "gemma-3n-e2b-it": "MARGINAL",
+   "gemma-3n-e4b-it": "MARGINAL",
+   "qwen3-4b": "MARGINAL",
+   "qwen3-4b-instruct-2507": "MARGINAL"
+  },
+  "rule": "\u00a71.4, frozen before the first generation",
+  "verdict": "MARGINAL"
+ }
+}
