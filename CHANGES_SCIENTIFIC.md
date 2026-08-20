@@ -404,3 +404,61 @@ reported wherever the quantity appears.
 `dci-79` on the 96-topic calibration screen; the contradiction-with-§12.3
 framing and the A-side characterisation are from this session's B-grid rows.
 Both are cross-checked on independent samples.
+---
+
+## 2026-08-20 — the screen's witness constructor reported construction failures as entailment claims
+
+**What changed.** `dci1/src/fs_screen_v4/witnesses.py` now enforces the envelope
+it previously only documented. `verify_candidate_pair` and `joint_witness` build
+their "candidate satisfied, companion failed" witness by appending
+`FOCAL_VIOLATOR`, a long word — which fails **B** and moves **no** reference
+family's statistic. Applied to a reference family the construction therefore
+fails to produce a violating text, and the function reported that failure as
+`CR6@7 appears to entail RF3@4`: a false scientific claim, raised by the
+machinery whose whole purpose is to certify that no such entailment holds.
+Reproduced for CR6, CR4 and CL1 against RF1, RF3 and RF6. A new
+`assert_in_envelope` refuses any companion outside `("A", "B")` and names the
+reason; two tests in `dci1/tests_v4/test_fs_screen_isolation.py` pin it.
+
+**Found by** the sibling session `dci-79`, which hit it while building the
+matrix screen's witness check and bounded its own call site. Reproduced and
+fixed at the source here.
+
+**Which results are affected: none.** The FORM × STEM screen only ever called
+the function with A and B companions, which are inside the envelope.
+`verify_all` still certifies 576 compositions, and the frozen screen protocol
+payload at `dci1/reports/fs_screen_v4/screen_protocol.json`
+(`98f8ee0d…6755e5`) is byte-identical apart from `producing_commit`, which
+floats with HEAD by design. Every screen number stays comparable. The defect was
+latent: it could only fire on a call the screen never makes.
+
+**Why it is recorded here anyway.** The failure mode is not a crash but a
+*wrong verdict with the right shape*, on a §7.3 certification path. Anyone
+extending the screen to a larger pool would have met it, and its natural reading
+is the opposite of the truth.
+
+**Related, and larger: Amendment B's cost list was incomplete.**
+`user-notes/DCI1_v4_amendment_B_reference_pool.md` §5 costed the new predicates,
+CR6's numerator, the canonical verifier hash and the Gate 1 instrument set. It
+omitted §7.3's witness obligation over the enlarged pool, which is quadratic in
+the pool: under §6's recommended adoption set (CR7, CR4, CR6) the pool goes from
+106 instances / 4,910 pairs to 130 / 7,646, of which **2,448 pairs have no
+constructive certificate** against the 288 candidate × A/B compositions the
+screen proved. Three classes are uncovered — candidate × reference,
+candidate × candidate, and anything involving B at m = 11 or 12, which the
+registered `Constraint` constructor refuses by design. Recorded as §5a of that
+document, with the adoption sequence corrected to include building the missing
+constructor before the boundary suite. **Nothing was adopted.** The cost
+disappears if the registered pool clears three families under Amendment A's
+stem.
+
+**Not a hole, checked and cleared.** The same investigation raised, and then
+retracted, a suspected gap in §13.2 condition 5 (witnesses against *every* other
+admitted reference) on the grounds that `admit_family` checks only A and B.
+There is no gap: `verifiers.witnesses.verify_all_witnesses` certifies
+`all_pairs()` — every unordered pair of distinct kinds over
+`registered_instances()`, reference × reference included — pool-wide before any
+selection. Independently recomputed here as 4,910 pairs in 45 kind-pair classes,
+3,750 of them reference × reference, and confirmed against the signed stage-1
+`qualification.json` of all four models, each recording
+`pairs=4910, kind_pairs=45, witnesses_verified=true`.

@@ -11,6 +11,11 @@ estimator can reach them.
 witnesses), §13.2 (reference admission), with a mandatory consequence for
 §10.2 and therefore for Gate 1.
 
+> **The cost list in §5 was incomplete — see §5a, added 2026-08-20.** It omitted
+> §7.3's witness obligation over the enlarged pool: 2,448 pairs with no
+> constructive certificate under §6's recommended adoption set, against the 288
+> the screen actually proved. Read §5a before reading §9's recommendation.
+
 ---
 
 ## 1. The problem this answers
@@ -146,6 +151,78 @@ Five of six candidates reuse a registered numerator unchanged, so their
 not in this study. There is no order in which it can be adopted afterwards
 without discarding Gate 1's instrument freeze.
 
+### 5a. The cost list above is incomplete — §7.3's witness obligation over the enlarged pool
+
+> **Added 2026-08-20.** §5 names four costs: the new predicates, CR6's new
+> numerator, the canonical verifier hash, and the Gate 1 instrument set with its
+> boundary suite. It does not name the largest one. **Found by the sibling
+> session `dci-79`** while building the matrix screen's witness check;
+> independently reproduced and sized here.
+
+§7.3 requires, for **every registered unordered pair of constraints at every
+registered severity**, a machine-verified witness satisfying both, and one
+witness in each direction of non-entailment. That obligation is discharged
+pool-wide at qualification by `verifiers.witnesses.verify_all_witnesses`, which
+iterates `all_pairs()` — every unordered pair of *distinct kinds* over
+`registered_instances()`, reference × reference included. It is recorded and
+signed on all four models at stage 1:
+
+| model | pairs | kind-pair classes | verified |
+|---|---|---|---|
+| gemma-3n-e2b-it | 4,910 | 45 | true |
+| gemma-3n-e4b-it | 4,910 | 45 | true |
+| qwen3-4b | 4,910 | 45 | true |
+| qwen3-4b-instruct-2507 | 4,910 | 45 | true |
+
+Enlarging the pool enlarges that set, and the growth is quadratic in the pool,
+not linear in the families added:
+
+| adoption set | instances added | pool pairs | certified by this screen | **uncertified obligation** |
+|---|---|---|---|---|
+| rate families CR7, CR4, CR6 (§6's recommendation) | 24 | 4,910 → 7,646 | 288 (candidate × A/B) | **2,448** |
+| lower-bound families CL1, CL7, CL8 | 24 | 4,910 → 7,646 | 288 | **2,448** |
+| all six candidates | 48 | 4,910 → 10,958 | 576 | **5,472** |
+
+The screen certified candidate × A and candidate × B — 576 compositions, all six
+candidates against the full target and focal grids. Every other pair an enlarged
+pool creates has **no constructive certificate**, in three classes:
+
+1. **candidate × registered family** — 2,256 pairs under the recommended set,
+   and exactly what an enlarged pool is *for*;
+2. **candidate × candidate** — 192 pairs, unavoidable once more than one
+   candidate is adopted;
+3. **anything involving B at m = 11 or 12** — the registered `Constraint`
+   constructor refuses those severities by design, so Amendments B and C
+   interact here rather than composing independently.
+
+**And the existing constructor cannot simply be pointed at them.** Used outside
+its envelope, `fs_screen_v4.witnesses.verify_candidate_pair` *silently
+misreported*: its "candidate satisfied, companion failed" branch fails the
+companion by appending a long word, which moves B's statistic and no reference
+family's, so against RF3 it raised `CR6@7 appears to entail RF3@4` — a
+construction failure dressed as an entailment claim, in the one place a reader
+would trust a machine verdict. Reproduced on this side for CR6, CR4 and CL1
+against RF1, RF3 and RF6. The envelope is now **enforced rather than
+documented**: `assert_in_envelope` refuses any companion outside `("A", "B")`
+and names why, and two tests in `tests_v4/test_fs_screen_isolation.py` pin it.
+No screen output changed — `verify_all` still certifies 576 compositions and the
+frozen screen protocol payload is byte-identical apart from `producing_commit`.
+
+**Consequence for this amendment.** Adopting it requires a witness constructor
+that does not exist: one that builds joint and both-direction non-entailment
+witnesses for candidate × reference and candidate × candidate at every severity
+combination, for a form whose numerator is a *rate* rather than a count. That is
+new code on a §7.3 mandatory pre-generation path, and it lands *before* Gate 1
+by §5's sequencing argument, alongside the boundary suite and the re-run
+determinism and audit checks. It should be costed with them, not discovered
+after adoption.
+
+**This cost disappears entirely if the registered pool clears three families
+under Amendment A's stem** — the condition dci-79's pool arm is measuring. In
+that case Amendment B is unnecessary and this obligation is never incurred.
+
+---
+
 ## 6. Consequences for §13.2
 
 The six admission conditions apply unchanged. Two behave differently:
@@ -242,8 +319,9 @@ draw. §12.3 re-measures on the disjoint 96 solo-calibration topics at M = 4 and
 the instability of the counts argues it may not. **The candidate families must
 clear the conjunction on the calibration set before they are adopted into the
 registered pool.** Adoption still has to precede Gate 1 for the §10.2 reason in
-§5, so the sequence is: calibration-set confirmation → adopt → extend the
-boundary suite → Gate 1.
+§5, so the sequence is: calibration-set confirmation → adopt → **build the
+missing candidate × reference and candidate × candidate witness constructor
+(§5a)** → extend the boundary suite → Gate 1.
 
 The screen did **not** reproduce the bimodality that made the registered pool
 fail, so §8's discard condition is not triggered.

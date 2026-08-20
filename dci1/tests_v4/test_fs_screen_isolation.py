@@ -13,11 +13,13 @@ import pytest
 
 from dci1v4.engine.context import DCI1_ROOT
 from dci1v4.engine.guards import assert_registered_v4_input
-from dci1v4.errors import ProvenanceGuardError
+from dci1v4.errors import (InstrumentError, ProtocolError,
+                           ProvenanceGuardError)
 from dci1v4.protocol import constants as C
 from dci1v4.protocol import seeds as v4seeds
 from dci1v4.verifiers import verifier_source_hash
 from dci1v4.verifiers.constraints import (FOCAL_GRID, REFERENCE_LADDERS,
+                                          Constraint,
                                           TARGET_GRID)
 
 from fs_screen_v4 import constraints as cc
@@ -122,6 +124,40 @@ def test_candidate_witnesses_are_certified():
     assert result["compositions_certified"] == 48 * (len(TARGET_GRID)
                                                      + len(FOCAL_GRID))
 
+
+
+def test_the_witness_constructor_refuses_pairings_it_cannot_certify():
+    """Out of its envelope this builder reported a construction failure as an
+    entailment claim -- ``CR6@7 appears to entail RF3@4`` -- because its
+    non-entailment branch fails the companion by appending a long word, which
+    moves B's statistic and no reference family's. Found by dci-79 while
+    building the matrix screen's witness check. The envelope is now enforced.
+    """
+    assert witnesses.CERTIFIABLE_OTHERS == ("A", "B")
+    for other in (Constraint("RF3", 4), Constraint("RF1", 2)):
+        with pytest.raises(ProtocolError) as excinfo:
+            witnesses.verify_candidate_pair("CR6", 7, other)
+        message = str(excinfo.value)
+        assert "outside its envelope" in message
+        assert "appears to entail" not in message.replace(
+            "'<candidate> appears to entail", "")
+    # The A and B pairings the screen actually certified are untouched.
+    witnesses.verify_candidate_pair("CR6", 7, Constraint("A", TARGET_GRID[0]))
+    witnesses.verify_candidate_pair("CR6", 7, Constraint("B", FOCAL_GRID[0]))
+
+
+def test_candidate_x_candidate_witnesses_have_no_constructor():
+    """Amendment B's cost list omitted this: an enlarged pool owes 7.3
+    witnesses for candidate x reference and candidate x candidate pairs, and
+    nothing in this screen constructs one.
+    """
+    other = Constraint("A", TARGET_GRID[0])
+    assert "CL1" not in witnesses.CERTIFIABLE_OTHERS
+    # joint_witness takes a registered Constraint; a candidate cannot even be
+    # expressed as one, which is the shape of the missing work.
+    with pytest.raises(InstrumentError):
+        Constraint("CL1", 3)
+    witnesses.assert_in_envelope(other)  # the registered companion is fine
 
 # ---------------------------------------------------------------- the STEM
 def test_stem_appears_in_every_floored_cell_and_no_current_cell():
