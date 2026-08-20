@@ -99,6 +99,33 @@ comparable and are never compared. Nine registered open decisions (V1 to V9)
 and seven pre-freeze checks remain open; the freeze and confirmatory generation
 are implemented and deliberately not executed.
 
+### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
+
+A read-only diagnostic established that the §13.2 reference criterion fails for
+a **structural** reason, not a statistical one: every registered reference
+family is an `S <= q` monotone count budget whose pass set is downward-closed
+under prefix, so the empty string scores 94/94 on the pool, 4/4 on B, and 0/8
+on A. Only 3-6 of 94 rungs per model meet the vacuity condition and **none**
+fall inside the caliper. B carries the same defect and B is the primary
+outcome, so `D(B<-A)` itself carries a length channel.
+
+A non-confirmatory FORM x STEM screen (13,392 rows, protocol hash
+`98f8ee0d...`) tested two answers. **FORM works**: candidate non-budget
+families reach the condition-1 ∧ condition-6 conjunction on three of four
+models, with bootstrap P(>=3) of 0.41-0.88 against 0.000-0.001 for the
+registered pool, and the result is insensitive to the non-vacuity threshold.
+**STEM works for its stated purpose but is not adoptable**: a uniform
+answer-length instruction removes B-solo vacuity and makes the raw and
+length-restricted `D(B<-A)` converge, but drives **both Qwen replications to
+`FOCAL_RANGE_EXHAUSTED`**.
+
+Nothing registered changed. Two amendment drafts sit in `user-notes/`, neither
+adopted; Amendment B (reference form) is supported and blocked on
+calibration-set confirmation, Amendment A (prompt stem) is blocked on the focal
+grid. Full report: `dci1/reports/fs_screen_v4/REPORT.md`.
+
+Gate 1 remains the binding constraint on everything downstream.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under

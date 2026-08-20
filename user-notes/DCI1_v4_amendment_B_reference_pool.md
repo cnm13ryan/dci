@@ -193,3 +193,57 @@ foreclose. A failure means the two remaining options are the ones set out in
 the screen report: change the outcome constraint's structural class, or accept
 the reduced design of §8.6 with L3 withheld **by design** and the reason
 recorded, rather than as a fallback nobody chose.
+
+---
+
+## 9. Screen outcome — 2026-08-20. **Supported; proceed, with one condition.**
+
+The FORM × STEM screen (`dci1/reports/fs_screen_v4/REPORT.md`, protocol hash
+`98f8ee0d…`) tested the candidate families under both stems.
+
+**Families meeting the §13.2 condition-1 ∧ condition-6 conjunction at the same
+severity** (three required):
+
+| model | registered pool (`count × current`) | candidates (`candidate × current`) |
+|---|---:|---|
+| E2B | 0 | **3** — CL7, CR6, CR7 |
+| E4B | 0 | **4** — CL7, CR4, CR6, CR7 |
+| Qwen3-4B | 0 | **5** — CL1, CL7, CR4, CR6, CR7 |
+| Qwen3-4B-Inst | 0 | 2 — CL1, CR6 |
+
+Topic-clustered bootstrap P(≥3 families): **0.000–0.001** for the registered
+pool against **0.41–0.88** for the candidates. That contrast is the finding; the
+individual counts are not stable at one-family resolution on 24 topics at one
+draw, and the bootstrap of a threshold-crossing count is itself optimistic.
+
+**The candidate result is insensitive to the non-vacuity threshold.** Across
+T ∈ {10, 20, 30} the count is flat (E2B returns 3 at every T; E4B 3–4), because
+candidates produce few short answers so their vacuity barely moves with the
+threshold. The registered pool returns 0 across the whole grid except where
+T = 10 loosens the vacuity condition itself. **The candidates did not clear the
+criterion by threshold choice**, which is the objection this design most needed
+to answer.
+
+CR7 and CR6 appear in every non-empty qualifying set; CR4 in three. **The rate
+families carry the result.** CL7 also qualifies on three models, but on ladders
+that had to be geometric and model-agnostic because the counts vary threefold
+across models while the rates do not.
+
+### Recommendation
+
+**Proceed with the three rate families — CR7, CR4, CR6.** This is the set §6
+recommended in advance and the screen supports it: they carry the result, they
+share one model-portable ladder, and they avoid the lower-bound families' length
+*floor*, which would push length up while B pushes it down.
+
+**One condition, not optional.** Everything above is 24 pre-screen topics at one
+draw. §12.3 re-measures on the disjoint 96 solo-calibration topics at M = 4 and
+§13.2 admits against *that*. This screen has never been shown to predict it, and
+the instability of the counts argues it may not. **The candidate families must
+clear the conjunction on the calibration set before they are adopted into the
+registered pool.** Adoption still has to precede Gate 1 for the §10.2 reason in
+§5, so the sequence is: calibration-set confirmation → adopt → extend the
+boundary suite → Gate 1.
+
+The screen did **not** reproduce the bimodality that made the registered pool
+fail, so §8's discard condition is not triggered.

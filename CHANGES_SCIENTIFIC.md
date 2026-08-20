@@ -227,3 +227,33 @@ defect in replication ordering, not a change to what any number means.
 process group with `PR_SET_PDEATHSIG`, and tears the group down on every exit
 path. Three `vllm_backend` parents had survived their driver by twelve hours.
 No effect on generated content: the backend binary, plan and seeds are unchanged.
+
+## 2026-08-20 — FORM × STEM screen (non-confirmatory design evidence)
+
+**What changed.** Nothing registered. A new non-confirmatory screen
+(`dci1/src/fs_screen_v4/`, evidence at `dci1/evidence/fs-screen-v4/`,
+protocol hash `98f8ee0da826b5023e24c32f8b33d9fce1f645372742d6a0c2edec4f086755e5`)
+generated 13,392 rows across the four registered models to test two candidate
+answers to the length channel documented in the 2026-08-20 diagnostic. It has
+the same standing as the B+R pilot: design evidence, non-confirmatory, refused
+by the v4 positive-admission guard, and it enters no v4 estimator.
+
+**Which results are affected.** None. No registered constant, verifier,
+threshold, grid, ladder, wording or protocol text was changed; the canonical
+verifier hash still equals the one in the signed registration manifest, and a
+test asserts it. The registered §12.2 ladder screen and §12.1 cap set were read
+for the `count × current` baseline and were not regenerated.
+
+**Comparability.** Screen rows are NOT comparable with registered v4 evidence
+and must never be pooled with it: they carry a different stage label, a
+different seed root (202608200, domain `fsscreen:gen:v1`) and, in the `floored`
+arm, a different prompt template. The `current`-stem baselines reproduce the
+registered records exactly, which is what makes the two arms comparable *with
+each other*.
+
+**What it found.** The registered pool fails the §13.2 condition-1 ∧ condition-6
+conjunction with bootstrap P(≥3 families) of 0.000–0.001 on all four models;
+candidate non-budget forms reach 0.41–0.88. A uniform answer-length stem removes
+B-solo vacuity (0.39–1.00 → 0.00–0.17) and makes the raw and length-restricted
+D(B←A) converge, but drives both Qwen models to `FOCAL_RANGE_EXHAUSTED`.
+Two amendments are drafted in `user-notes/` and **neither is adopted**.

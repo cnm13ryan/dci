@@ -59,9 +59,40 @@ def _registered_rows(model: str) -> list[dict[str, Any]]:
     return out
 
 
+def _registered_capscreen(model: str) -> list[dict[str, Any]]:
+    """The §12.1 cap-selection set at the selected cap: the ONLY registered
+    source of an A+B fixture cell and a B-solo cell on the same topics under
+    the CURRENT stem. Without it the STEM contrast has no baseline."""
+    record = json.loads(
+        (REGISTERED / model / "regime_screen.json").read_text())
+    cap = record.get("payload", record)["completion_cap"]["selected_cap"]
+    path = REGISTERED / model / "prescreen" / f"capscreen-cap{cap}" / "cache.jsonl"
+    out = []
+    for line in path.open():
+        r = json.loads(line)
+        if r["cell_type"] == "cap:load1:B":
+            kind, severity, companion = "B", pl.FIXTURE_B_M, None
+        elif r["cell_type"] == "cap:load2:A+B":
+            kind, severity, companion = "A", pl.FIXTURE_A_N, ["B", pl.FIXTURE_B_M]
+        else:
+            continue
+        out.append({
+            "form": "outcome", "stem": "current", "kind": kind,
+            "severity": severity, "topic_id": r["topic_id"],
+            "word_count": r["word_count"], "truncated": r["truncated"],
+            "companion": companion, "raw_response": r["raw_response"],
+            "scores": [{"kind": s["kind"], "severity": s["severity"],
+                        "passed": s["passed"], "statistic": s["statistic"]}
+                       for s in r["scores"]],
+            "stem_satisfied": pl.stem_satisfied(r["word_count"]),
+            "source": "registered §12.1 cap set (reused, not regenerated)",
+            "fixture_only": True})
+    return out
+
+
 def load_cells(model: str) -> list[dict[str, Any]]:
     screen = sorted((SCREEN / model).glob("screen-cap*/cache.jsonl"))
-    rows = list(_registered_rows(model))
+    rows = list(_registered_rows(model)) + _registered_capscreen(model)
     for path in screen:
         rows += [json.loads(line) for line in path.open()]
     return rows
@@ -121,8 +152,8 @@ def severity_table(rows: Sequence[dict], *, threshold: int = 20
     """§2.3 per-severity readouts, keyed by (form, stem, kind, severity)."""
     groups: dict[tuple, list] = {}
     for r in rows:
-        if r.get("companion"):
-            continue                        # composed cells handled separately
+        if r.get("companion") or r.get("fixture_only"):
+            continue      # composed cells, and cap-set fixtures, are separate
         groups.setdefault((r["form"], r["stem"], r["kind"], r["severity"]),
                           []).append(r)
     out = {}
