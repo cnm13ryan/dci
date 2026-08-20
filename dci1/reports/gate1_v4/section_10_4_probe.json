@@ -3,11 +3,11 @@
  "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
  "classification": "Gate 1 input evidence. Gate 1 is NOT approved. The single-shot freeze and the one-shot calibration are deliberately NOT claimed.",
  "conditions": {
-  "high": {
-   "condition": "high",
+  "v4prompt-high": {
+   "condition": "v4prompt-high",
    "config": {
     "backend": "vllm-subprocess; dci1/environments/backend/.venv, pinned vLLM 0.15.1+rocm720",
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "decoding": {
      "chat_template_kwargs": {
       "reasoning_effort": "high"
@@ -27,134 +27,133 @@
     },
     "output_cap": 2048,
     "parser_version": "gate1-parse/2.0.0",
-    "prompt_hash": "2d4dab45ab1f8a513cbfaeb8c34c4c03df3fe423d49c902af22e33add160adb5",
-    "prompt_version": "gate1-judge/2.0.0"
+    "prompt_hash": "f46eb07eab8819386ab35b818d71753a28fb5a935947a2eb20e07223fd322ede",
+    "prompt_version": "gate1-judge-v4/1.0.0"
    },
-   "coverage": 0.25,
+   "coverage": 1.0,
    "items": 8,
-   "run_dir": "reports/gate1_v4/judge_runs/high-rep0/87763084451f",
-   "seconds": 857.7,
-   "seconds_per_item": 107.21,
+   "run_dir": "reports/gate1_v4/judge_runs/v4prompt-high-rep0/61d9d0f3d42d",
+   "seconds": 344.4,
+   "seconds_per_item": 43.06,
    "status_counts": {
-    "invalid_output": 6,
-    "valid": 2
+    "valid": 8
    },
-   "truncated": 6,
-   "truncation_rate": 0.75
+   "truncated": 0,
+   "truncation_rate": 0.0
   }
  },
  "judge_rows": {
-  "high": [
+  "v4prompt-high": [
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "A",
     "item_id": "gemma-3n-e2b-it:ladder:A:2:art-and-design-47",
-    "justification": null,
-    "label": null,
+    "justification": "The word \"however\" appears 0 times.",
+    "label": "fail",
     "margin": 2,
-    "prompt_hash": "7263cd1204699bea3ad7b0ded5f6b9ba0232c1f88415360bd73c772bd8528c87",
-    "status": "invalid_output",
+    "prompt_hash": "2f4f069614f559bdecd645e66668a50f23c2325133858f3da943f3b2410c8bae",
+    "status": "valid",
     "stratum": "A:fail:margin_larger",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 577,
+    "truncated": false,
     "verifier_class": "fail"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "A",
     "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-08",
-    "justification": "The word \"however\" is missing.",
+    "justification": "The word \"however\" does not appear in the text.",
     "label": "fail",
     "margin": 1,
-    "prompt_hash": "e11c5ec2fcc252cd67b3bd427b5f40a986b895c7750e6c72c452d3d0fd5ba940",
+    "prompt_hash": "fc1403e84cc95e12bc14a48636fe160ce7c03b9fef82de9f57f23b4325677c56",
     "status": "valid",
     "stratum": "A:fail:margin_one",
-    "tokens": 732,
+    "tokens": 1287,
     "truncated": false,
     "verifier_class": "fail"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "A",
     "item_id": "gemma-3n-e2b-it:ladder:A:1:geography-31",
-    "justification": "however, the text contains the word once.",
+    "justification": "The word 'however' appears once.",
     "label": "pass",
     "margin": 0,
-    "prompt_hash": "718ea70f3ab03f493bb54d1e651dee0e0d46142b45d3234d0a9229cdb3e6e940",
+    "prompt_hash": "9acddf9add5e3d713d9c98696c6e4a63760648a2d8c417017843124087c15de8",
     "status": "valid",
     "stratum": "A:pass",
-    "tokens": 1265,
+    "tokens": 405,
     "truncated": false,
     "verifier_class": "pass"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "B",
     "item_id": "gemma-3n-e2b-it:ladder:B:7:music-38",
-    "justification": null,
-    "label": null,
+    "justification": "Orchestras >7 letters.",
+    "label": "fail",
     "margin": 3,
-    "prompt_hash": "996f587e9b03c2a0d501b31c92e17760f7eb476a827f212e1a2f892477a44365",
-    "status": "invalid_output",
+    "prompt_hash": "949c7a326aecbf9dbe023557c6a4ecb496489dc2a2f637b55df1cb9a331f71b0",
+    "status": "valid",
     "stratum": "B:fail:margin_larger",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 741,
+    "truncated": false,
     "verifier_class": "fail"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "B",
     "item_id": "gemma-3n-e2b-it:ladder:B:9:history-20",
-    "justification": null,
-    "label": null,
+    "justification": "Quarantine has 10 letters.",
+    "label": "fail",
     "margin": 1,
-    "prompt_hash": "5ce8c2038adea075fbe20902d9a3c154a6e2debaf173ea11072bd5a7bafa5349",
-    "status": "invalid_output",
+    "prompt_hash": "6b451cd1c7a3ef294d7e9a7dc27e37ee9b1ca3ffeac921cf371afb4ee4350d26",
+    "status": "valid",
     "stratum": "B:fail:margin_one",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 822,
+    "truncated": false,
     "verifier_class": "fail"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "B",
     "item_id": "gemma-3n-e2b-it:ladder:B:10:art-and-design-08",
-    "justification": null,
-    "label": null,
+    "justification": "All words <=10 letters.",
+    "label": "pass",
     "margin": 0,
-    "prompt_hash": "a14b0ff89ab8f8d9897dbd75fa8fd64c1ae45a88d265fd0be734c5352a0b3414",
-    "status": "invalid_output",
+    "prompt_hash": "6a6c0d91364e155206a34734f341ee1011c081f3f74252b5c892bdd2d33e5e8a",
+    "status": "valid",
     "stratum": "B:pass",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 448,
+    "truncated": false,
     "verifier_class": "pass"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "A",
     "item_id": "gemma-3n-e2b-it:ladder:A:2:everyday-science-34",
-    "justification": null,
-    "label": null,
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
     "margin": 2,
-    "prompt_hash": "eea33ed00b5ea003e8d4aed0eb87069010524317fd6180e0592f7974be1b8c57",
-    "status": "invalid_output",
+    "prompt_hash": "10077e4e3d74d00e21d2bfa81a39f43cb1c79fc727fdb89b8ab92b14f4925e77",
+    "status": "valid",
     "stratum": "A:fail:margin_larger",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 475,
+    "truncated": false,
     "verifier_class": "fail"
    },
    {
-    "config_hash": "87763084451fcfb7e4e0b54f4775fe1fcd9c3a622c7dec50371c790001996735",
+    "config_hash": "61d9d0f3d42d65885d8d87cbc6699fea877586d4afdbc8d35ad29b09e592b569",
     "instrument": "A",
     "item_id": "gemma-3n-e2b-it:ladder:A:1:art-and-design-47",
-    "justification": null,
-    "label": null,
+    "justification": "No \u201chowever\u201d present.",
+    "label": "fail",
     "margin": 1,
-    "prompt_hash": "7d7c53d066d30c7e3e04f6237c49ca75f942c944316c55502b23c2c10070a870",
-    "status": "invalid_output",
+    "prompt_hash": "0a454ff0ed116395a14b3eacd3dbdf589310ed850c2a4acf9589e0428127f9f9",
+    "status": "valid",
     "stratum": "A:fail:margin_one",
-    "tokens": 2048,
-    "truncated": true,
+    "tokens": 435,
+    "truncated": false,
     "verifier_class": "fail"
    }
   ]
@@ -229,21 +228,37 @@
   "note": "agreement with the deterministic VERIFIER is reported for every condition but is not a selection criterion: \u00a710.4's fourth criterion is agreement with HUMAN labels. Selecting the judge that best matches the verifier would make the held-out evaluation circular.",
   "steps": [],
   "surviving_after_criteria_1_to_3": [
-   "high"
+   "v4prompt-high"
   ],
   "verifier_agreement_by_condition": {
-   "high": {
+   "v4prompt-high": {
+    "A:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 2
+    },
     "A:fail:margin_one": {
      "agreement": 1.0,
-     "n": 1
+     "n": 2
     },
     "A:pass": {
      "agreement": 1.0,
      "n": 1
     },
+    "B:fail:margin_larger": {
+     "agreement": 1.0,
+     "n": 1
+    },
+    "B:fail:margin_one": {
+     "agreement": 1.0,
+     "n": 1
+    },
+    "B:pass": {
+     "agreement": 1.0,
+     "n": 1
+    },
     "overall": {
      "agreement": 1.0,
-     "n": 2
+     "n": 8
     }
    }
   }

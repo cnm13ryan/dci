@@ -114,10 +114,11 @@ A non-confirmatory FORM x STEM screen (13,392 rows, protocol hash
 families reach the condition-1 ∧ condition-6 conjunction on three of four
 models, with bootstrap P(>=3) of 0.41-0.88 against 0.000-0.001 for the
 registered pool, and the result is insensitive to the non-vacuity threshold.
-**STEM works for its stated purpose but is not adoptable**: a uniform
+**STEM works for its stated purpose but costs a replication**: a uniform
 answer-length instruction removes B-solo vacuity and makes the raw and
-length-restricted `D(B<-A)` converge, but drives **both Qwen replications to
-`FOCAL_RANGE_EXHAUSTED`**.
+length-restricted `D(B<-A)` converge, but drives Qwen replications to
+`FOCAL_RANGE_EXHAUSTED` on the registered focal grid. That screen read the
+effect as terminating *both* Qwens; §4d corrects it to one.
 
 Nothing registered changed. Two amendment drafts sit in `user-notes/`, neither
 adopted; Amendment B (reference form) is supported and blocked on
@@ -125,6 +126,31 @@ calibration-set confirmation, Amendment A (prompt stem) is blocked on the focal
 grid. Full report: `dci1/reports/fs_screen_v4/REPORT.md`.
 
 Gate 1 remains the binding constraint on everything downstream.
+
+### 4d. The focal grid, and Gate 1's §10.2 evidence (2026-08-20)
+
+A second non-confirmatory screen (B-grid, 2,112 rows, protocol hash
+`6a63ba78...`) measured B's solo curve under the floored stem at m in
+{7,...,12}. **An honest focal severity exists at m <= 12 on all four models**,
+but the §1.4 verdict is **MARGINAL**: qwen3-4b-instruct-2507's only two in-band
+rungs are both 0.667, within one clustered standard error of the band floor, so
+a fresh-topic confirmation is required before any grid amendment.
+
+It also **corrects §4c**. On an independently seeded redraw the floored stem
+terminates qwen3-4b decisively (0.375 against a 0.60 floor, 2.3 SE, agreeing
+with the earlier screen to within 0.042 at every registered rung) but
+qwen3-4b-instruct-2507 does **not** terminate: 0.542 in the FORM x STEM draw,
+0.667 here. The terminal-status call flipped between two single draws on the
+same 24 topics. Two further quantities on that model sit on band edges under the
+stem. Report: `dci1/reports/bgrid_screen_v4/REPORT.md`. Amendment C drafted, not
+adopted; `FOCAL_GRID` unchanged.
+
+Separately, **§10.2 is now met for A and B**. Three-process determinism, the
+frozen boundary suites (48 A cases, 45 B cases), the prose-only reimplementation
+and the carry-over record all pass over 13,953 distinct genuine responses.
+C4 and C5 are complete. Gate 1 still cannot be approved: the family verifiers
+have no §10.2 evidence and cannot get any until the reference pool is final.
+Report: `dci1/reports/gate1_v4/REPORT.md`.
 
 ## 5. Provisional, superseded, broken, unresolved
 

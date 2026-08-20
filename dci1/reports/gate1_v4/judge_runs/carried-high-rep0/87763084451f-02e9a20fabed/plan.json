@@ -1,7 +1,7 @@
 {
   "answer_tokens": 2048,
   "chat_template_kwargs": {
-    "reasoning_effort": "medium"
+    "reasoning_effort": "high"
   },
   "chunk_size": 1,
   "cpu_offload_gb": 0.0,
@@ -11,7 +11,7 @@
   "dtype": "bfloat16",
   "enforce_eager": true,
   "engine_seed": 20260819,
-  "expected_rows": 8,
+  "expected_rows": 48,
   "generation_ceiling": 2048,
   "gpu_memory_utilization": 0.85,
   "limit_mm_per_prompt": null,
@@ -30,7 +30,7 @@
   "tensor_parallel_size": 1,
   "think_close": "",
   "think_open": "",
-  "thinking_policy": "medium",
+  "thinking_policy": "high",
   "top_k": 0,
   "top_p": 0.9,
   "trust_remote_code": false
