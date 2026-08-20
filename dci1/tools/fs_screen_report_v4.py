@@ -103,22 +103,41 @@ def main() -> int:
     # ------------------------------------------------------------- B side
     out("\n## B-side: vacuity and D(B←A) at the fixture severities\n")
     out("| model | stem | B-solo compliance | vacuous share of B passes | "
-        "B-solo med words | A+B med words | D(B←A) raw | D(B←A) ≥20w only |")
+        "B-solo med words | A+B med words | D(B←A) raw | **D(B←A) §17.4 "
+        "forced** | D(B←A) ≥20w only |")
     out("|---|---|---:|---:|---:|---:|---:|---:|")
     for model in an.MODELS:
         for stem in pl.STEM_LEVELS:
             b = an.b_side(data[model], stem)
             if not b.get("available"):
-                out(f"| {an.SHORT[model]} | {stem} | — | — | — | — | — | — |")
+                out(f"| {an.SHORT[model]} | {stem} | — | — | — | — | — | — | — |")
                 continue
             out(f"| {an.SHORT[model]} | {stem} | {b['b_solo_compliance']:.3f} | "
                 f"**{b['b_solo_vacuous_share_of_passes']:.3f}** | "
                 f"{b['b_solo_median_words']:.0f} | "
                 f"{b['composed_median_words']:.0f} | "
-                f"{b['D_B_from_A_raw']:+.3f} | {b['D_B_from_A_long_only']:+.3f} |")
-    out("\nThe ≥20-word column conditions on a post-treatment variable and is a "
-        "collider-adjusted sensitivity diagnostic, **not** a corrected estimate "
-        "of D(B←A).\n")
+                f"{b['D_B_from_A_raw']:+.3f} | "
+                f"**{b['D_B_from_A_forced']:+.3f}** | "
+                f"{b['D_B_from_A_long_only']:+.3f} |")
+    out("\nTwo different operations on the same vacuous passes, and only one "
+        "of them is registered.\n")
+    out("- **§17.4 forced** — every vacuous pass recomputed as a **failure**, "
+        "no row dropped, nothing conditioned on. This is the registered "
+        "partial-identification bound (§9.3 item 3), and §17.4 licenses a "
+        "claim only when it and the raw estimate license the *same* claim.\n")
+    out("- **≥20w only** — rows failing the non-vacuity predicate are "
+        "**dropped**, separately in each arm. That conditions on a "
+        "post-treatment variable and a collider. It is not a corrected "
+        "estimate of D(B←A) and must not be used as one.\n")
+    out("\nUnder the **current** stem the two disagree completely: on E2B the "
+        "raw +0.375 becomes **+0.000** when the bound is applied, and on both "
+        "Qwens the sign flips. Vacuous shares there run 0.389–**1.000**. Under "
+        "the **floored** stem raw and forced are *identical* on three of four "
+        "models and differ by 0.041 on the fourth, because vacuity falls to "
+        "0.000–0.167. This is an argument for Amendment A independent of the "
+        "reference pool and of the focal grid: without the stem, the "
+        "registered bound and the point estimate do not license the same "
+        "claim, so §17.4 reports the axis unresolved.\n")
 
     # ------------------------------------------------------- per severity
     out("\n## Per-severity readouts\n")

@@ -262,6 +262,14 @@ def b_side(rows: Sequence[dict], stem: str, *, threshold: int = 20
           if long_comp else float("nan"))
     passes = [t for t in topics if b_pass(solo[t])]
     vac = [t for t in passes if solo[t]["word_count"] < threshold]
+
+    def forced(row) -> float:
+        """SS17.4: a vacuous pass is recomputed as a failure. No row dropped."""
+        return 1.0 if (b_pass(row) and row["word_count"] >= threshold
+                       and not row["truncated"]) else 0.0
+
+    fs = stt.fmean(forced(solo[t]) for t in topics)
+    fc = stt.fmean(forced(composed[t]) for t in topics)
     return {
         "available": True, "stem": stem, "topics": len(topics),
         "b_solo_compliance": p_solo,
@@ -272,12 +280,18 @@ def b_side(rows: Sequence[dict], stem: str, *, threshold: int = 20
             [composed[t]["word_count"] for t in topics]),
         "p_b_given_composed": p_comp,
         "D_B_from_A_raw": p_solo - p_comp,
+        "D_B_from_A_forced": fs - fc,
+        "b_solo_forced": fs, "b_composed_forced": fc,
         "D_B_from_A_long_only": ps - pc,
         "n_long_solo": len(long_solo), "n_long_composed": len(long_comp),
         "collider_caveat": (
-            "the long-only figure conditions on word count, a post-treatment "
-            "variable and a collider. It is a sensitivity diagnostic, NOT a "
-            "corrected estimate of D(B<-A), and must not be used as one."),
+            "the long-only figure DROPS rows failing the non-vacuity "
+            "predicate in each arm separately, so it conditions on word "
+            "count, a post-treatment variable and a collider. It is NOT a "
+            "corrected estimate of D(B<-A) and must not be used as one. The "
+            "registered operation is D_B_from_A_forced beside it (SS17.4): "
+            "every vacuous pass recomputed as a failure, no row dropped, "
+            "nothing conditioned on."),
     }
 
 
