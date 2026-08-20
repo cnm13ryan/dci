@@ -257,3 +257,98 @@ candidate non-budget forms reach 0.41–0.88. A uniform answer-length stem remov
 B-solo vacuity (0.39–1.00 → 0.00–0.17) and makes the raw and length-restricted
 D(B←A) converge, but drives both Qwen models to `FOCAL_RANGE_EXHAUSTED`.
 Two amendments are drafted in `user-notes/` and **neither is adopted**.
+
+## 2026-08-20 — B-grid screen, and a correction to the FORM × STEM reading
+
+**What changed.** Nothing registered. A second non-confirmatory screen
+(`dci1/src/bgrid_screen_v4/`, evidence at `dci1/evidence/bgrid-screen-v4/`,
+protocol hash
+`6a63ba782db0de6e1c4d80763065dda7ced1279e3c8ddcc097c7119087f4fff2`) generated
+2,112 rows across the four registered models to measure B's solo curve under the
+floored stem at m ∈ {7,…,12}. Same standing as the FORM × STEM screen and the
+B+R pilot: design evidence, non-confirmatory, refused by the v4
+positive-admission guard, entering no v4 estimator.
+
+`m = 11` and `m = 12` are **screen-only**. `FOCAL_GRID` is unchanged at
+(7, 8, 9, 10); `Constraint("B", 11)` and `focal_wordings(11)` still raise, and
+`tests_v4/test_bgrid_screen_isolation.py` pins both. The screen's own renderer
+and scorer for the two extension rungs are proved byte-identical and
+verdict-identical to the registered ones on every registered rung.
+
+**Which results are affected.** One. The FORM × STEM screen reported that the
+floored stem drives **both** Qwen replications to `FOCAL_RANGE_EXHAUSTED` on the
+registered focal grid. That reading is **superseded for
+qwen3-4b-instruct-2507** and stands for qwen3-4b.
+
+| model | FORM × STEM, m = 10, floored | B-grid, m = 10, floored | registered-grid outcome |
+|---|---|---|---|
+| qwen3-4b | 0.333 | 0.375 | `FOCAL_RANGE_EXHAUSTED`, replicated, 2.3 SE below the floor |
+| qwen3-4b-instruct-2507 | 0.542 | 0.667 | **flips**: exhausted there, m\* = 10 here |
+
+Neither measurement is wrong. Both are single draws on the same 24 pre-screen
+topics under different seed roots, and the mean absolute rung-level gap between
+the two screens is 0.031–0.125. The FORM × STEM report flagged this specific
+call as marginal (0.54 against a 0.60 floor, ≈ 1.5 topics); it was. The
+FORM × STEM rows are **not** invalidated and are not corrected — the observation
+stands and the interpretation drawn from it does not.
+
+**Comparability.** B-grid rows are NOT comparable with registered v4 evidence
+and must never be pooled with it: different stage label, different seed root
+(202608210, domain `bgrid:gen:v1`), and in the floored arm a different prompt
+template. The current-stem B rungs at m = 7…10 are read from the registered
+§12.2 ladder screen without regeneration and reproduce it exactly.
+
+**What it found.** An honest focal severity exists at m ≤ 12 on all four models,
+but the frozen §1.4 rule returns **MARGINAL**, not PASS: qwen3-4b-instruct-2507's
+only two in-band rungs are both 0.667, within one clustered standard error of the
+band floor. The floored stem removes B-side vacuity on all four models (maximum
+vacuous share of passes 0.000–0.100) without being obeyed — the Qwens satisfy the
+60–120 word instruction only 29–38% of the time — and it re-anchors A on every
+model (n\* 4, 1, 1, 3 → 1, 2, 2, 5). Amendment C is drafted in `user-notes/` and
+**not adopted**.
+
+## 2026-08-20 — Gate 1: §10.2 evidence for A and B, and a defect in the carried judge prompt
+
+**What changed.** No registered code, constant or artifact. Three new tools
+(`dci1/tools/gate1_evidence_v4.py`, `gate1_readiness_v4.py`,
+`gate1_autorater_v4.py`) execute registered procedures and write to
+`dci1/reports/gate1_v4/`. Gate 1 is **not** approved, the §10.4 single-shot
+freeze and one-shot calibration are **not** claimed, the v4 final-check set is
+prepared but **not** sealed, and no labelling session was started.
+
+**Which results are affected.** None retroactively. §10.2 is now met for A's
+exact-count rule and B's word-length rule over 13,953 distinct genuine
+responses: three-process determinism 1.000, boundary suites 48 A cases and 45 B
+cases at 1.000, prose-only reimplementation 1.000, carry-over not refused (17
+symbols byte-identical to v3). The response pool is the pre-screen and pilot
+population, **not** the solo-calibration pool, which does not exist until Gate 2;
+the determinism and reimplementation lines must be re-run over that pool when it
+does.
+
+**A defect in a carried artifact.** The v3 judge prompt `gate1-judge/2.0.0` is
+carried byte-identically, and it does not survive v4's second instrument. Every
+registered B wording says "the answer" — "Every word in the answer must have at
+most 7 letters" — and after the prompt's trailing `Answer:` the judge reads that
+as binding on **its own reply**. Its reasoning transcript says so explicitly
+("we must ensure that the answer itself has at most 7 letters"). At high
+reasoning effort it then spends the whole 2,048-token cap composing a compliant
+reply and never reaches its verdict: **coverage 0.25, truncation 0.75**. At
+medium effort it does not truncate but still injects the constrained token into
+its own justification and emits labels that contradict their own stated reason.
+
+This does not invalidate any v3 number: v3's only instrument was the exact-count
+rule and its judging was done under the same prompt, so v3 remains internally
+consistent under its own conditions. It does mean the carried prompt cannot be
+inherited for v4. A v4 prompt version `gate1-judge-v4/1.0.0` is authored and
+measured against it as a paired condition; **neither is registered**, and the
+selection is recorded as §10.4 development evidence only.
+
+**A sharp edge in `dci1v4.stages.autorater.build_config`.** `CONFIG_FIELDS`
+does not include the rendered reasoning condition, and `build_config` keeps only
+declared fields. A caller passing `chat_template_kwargs` as a sibling of
+`decoding` has it silently dropped, so medium-effort and high-effort
+configurations — which demonstrably produce different judgments — hash
+identically and `assert_no_config_drift` cannot tell them apart. The v4 driver
+places it inside `decoding`, which is a declared field, and
+`tests_v4/test_gate1_autorater_config.py` pins both the workaround and the
+failure mode. **The registered helper was not modified.**

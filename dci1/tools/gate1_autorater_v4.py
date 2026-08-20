@@ -284,8 +284,11 @@ def run_condition(items: list[dict[str, Any]], condition: str, *, device: int,
             "prompt_hash": sha_text(prompt),
             "scientific_seed": 0, "user_prompt": prompt})
 
+    # The sample hash is in the path so a run over a different item set can
+    # never resume from a previous run's rows.jsonl.
+    sample_hash = sha_obj(sorted(i["item_id"] for i in items))[:12]
     run_dir = (RUNS / f"{condition}-rep{replicate}"
-               / config["config_hash"][:12])
+               / f"{config['config_hash'][:12]}-{sample_hash}")
     started = time.monotonic()
     outcome = run_backend(run_dir, plan, design_rows, device=device,
                           timeout_seconds=60 * 60 * 10)
@@ -391,14 +394,105 @@ def select(results: dict[str, dict], items: list[dict[str, Any]],
     }
 
 
+COND_DIR = OUT / "conditions"
+
+
+def emit_condition(condition: str, sample, *, device: int,
+                   repeat_items: int = 0) -> dict[str, Any]:
+    """Judge the whole sample once, then re-judge a prefix for repeatability.
+
+    §10.4 asks for "a development-phase repeatability check" and fixes no size.
+    Repeatability is a property of the execution path, not of the item set, so
+    it is established on a prefix rather than on the whole sample -- which is
+    what makes it affordable to measure it for the rejected conditions too,
+    instead of only for the surviving one.
+    """
+    runs = [run_condition(sample, condition, device=device, replicate=0)]
+    repeat = None
+    if repeat_items:
+        prefix = sample[:repeat_items]
+        second = run_condition(prefix, condition, device=device, replicate=1)
+        repeat = autorater.repeatability_check([
+            [runs[0]["judgments"].get(i["item_id"], "") for i in prefix],
+            [second["judgments"].get(i["item_id"], "") for i in prefix]])
+        repeat["items"] = len(prefix)
+        repeat["second_run"] = {k: second[k] for k in
+                                ("coverage", "status_counts",
+                                 "truncation_rate", "seconds", "run_dir")}
+        runs.append(second)
+    payload = {
+        "condition": condition,
+        "spec": dict(CONDITIONS[condition]),
+        "config": runs[0]["config"],
+        "replicates": [{k: run[k] for k in
+                        ("replicate", "items", "status_counts", "coverage",
+                         "truncated", "truncation_rate", "seconds",
+                         "seconds_per_item", "run_dir")} for run in runs],
+        "repeatability": repeat,
+        "judgments": runs[0]["judgments"],
+        "rows": runs[0]["rows"],
+        "sample_hash": sha_obj(sorted(i["item_id"] for i in sample)),
+    }
+    COND_DIR.mkdir(parents=True, exist_ok=True)
+    (COND_DIR / f"{condition}.json").write_text(
+        json.dumps(payload, indent=1, sort_keys=True) + "\n")
+    return payload
+
+
+def combine(sample) -> dict[str, Any]:
+    """Read every persisted condition and apply the §10.4 hierarchy."""
+    loaded = {}
+    for path in sorted(COND_DIR.glob("*.json")):
+        payload = json.loads(path.read_text())
+        if payload["sample_hash"] != sha_obj(sorted(i["item_id"]
+                                                    for i in sample)):
+            raise SystemExit(f"{path.name} was judged on a different sample")
+        loaded[payload["condition"]] = payload
+    if not loaded:
+        raise SystemExit("no condition artifacts in " + str(COND_DIR))
+    results = {k: {"condition": k, "config": v["config"],
+                   "judgments": v["judgments"], "rows": v["rows"],
+                   "items": v["replicates"][0]["items"],
+                   "status_counts": v["replicates"][0]["status_counts"],
+                   "coverage": v["replicates"][0]["coverage"],
+                   "truncated": v["replicates"][0]["truncated"],
+                   "truncation_rate": v["replicates"][0]["truncation_rate"],
+                   "seconds": v["replicates"][0]["seconds"],
+                   "seconds_per_item": v["replicates"][0]["seconds_per_item"],
+                   "run_dir": v["replicates"][0]["run_dir"]}
+               for k, v in loaded.items()}
+    repeat = {k: v["repeatability"] for k, v in loaded.items()
+              if v["repeatability"]}
+    reference = {i["item_id"]: i["verifier_class"] for i in sample}
+    names = sorted(results)
+    pairs = {}
+    for i, a in enumerate(names):
+        for b in names[i + 1:]:
+            pairs[f"{a} vs {b}"] = autorater.paired_comparison(
+                [i["item_id"] for i in sample], results[a]["judgments"],
+                results[b]["judgments"], reference)
+    return {"conditions": {k: {kk: v[kk] for kk in
+                               ("condition", "config", "items",
+                                "status_counts", "coverage", "truncated",
+                                "truncation_rate", "seconds",
+                                "seconds_per_item", "run_dir")}
+                           for k, v in results.items()},
+            "repeatability": repeat,
+            "paired_comparisons": pairs,
+            "selection": select(results, sample, repeat),
+            "judge_rows": {k: v["rows"] for k, v in results.items()}}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--items", type=int, default=120)
+    parser.add_argument("--items", type=int, default=48)
     parser.add_argument("--device", type=int, default=0)
+    parser.add_argument("--repeat-items", type=int, default=16,
+                        help="prefix size for the repeatability check; 0 skips")
     parser.add_argument("--probe", action="store_true",
-                        help="one condition, no repeatability run; timing only")
-    parser.add_argument("--conditions",
-                        default="carried-medium,v4prompt-medium")
+                        help="one replicate only; timing and truncation")
+    parser.add_argument("--conditions", default="")
+    parser.add_argument("--combine", action="store_true")
     args = parser.parse_args()
 
     items = build_items()
@@ -408,29 +502,23 @@ def main() -> int:
           f"calibration {len(split['calibration'])}  judging {len(sample)}",
           file=sys.stderr)
 
-    conditions = [c for c in args.conditions.split(",") if c]
-    results, repeat = {}, {}
-    for condition in conditions:
-        results[condition] = run_condition(sample, condition,
-                                           device=args.device)
-        print(f"{condition}: {results[condition]['seconds']}s "
-              f"({results[condition]['seconds_per_item']}s/item) "
-              f"coverage {results[condition]['coverage']:.3f}",
-              file=sys.stderr)
-    if not args.probe:
-        for condition in conditions:
-            second = run_condition(sample, condition, device=args.device,
-                                   replicate=1)
-            repeat[condition] = autorater.repeatability_check([
-                [results[condition]["judgments"].get(i["item_id"], "")
-                 for i in sample],
-                [second["judgments"].get(i["item_id"], "") for i in sample]])
-            repeat[condition]["second_run"] = {
-                k: second[k] for k in ("coverage", "status_counts",
-                                       "truncation_rate", "seconds")}
+    OUT.mkdir(parents=True, exist_ok=True)
+    if not args.combine:
+        for condition in [c for c in args.conditions.split(",") if c]:
+            result = emit_condition(
+                condition, sample, device=args.device,
+                repeat_items=0 if args.probe else args.repeat_items)
+            first = result["replicates"][0]
+            print(f"{condition}: {first['seconds']}s "
+                  f"({first['seconds_per_item']}s/item) coverage "
+                  f"{first['coverage']:.3f} truncation "
+                  f"{first['truncation_rate']:.3f}", file=sys.stderr)
+        return 0
 
+    combined = combine(sample)
     payload = {
-        "artifact": "§10.4 autorater pathway, development phase, A and B classes",
+        "artifact": ("§10.4 autorater pathway, development phase, A and B "
+                     "classes"),
         "classification": ("Gate 1 input evidence. Gate 1 is NOT approved. The "
                            "single-shot freeze and the one-shot calibration are "
                            "deliberately NOT claimed."),
@@ -446,12 +534,14 @@ def main() -> int:
                               "untouched for the real one-shot calibration"),
         },
         "canonical_verifier_hash": verifier_source_hash(),
+        "prompts": {k: {"version": k, "hash": sha_text(v)}
+                    for k, v in JUDGE_PROMPTS.items()},
         "pool": {
             "items": len(items),
             "source": "the registered §12.2 dense ladder screen, read only",
             "instruments": {"A": sum(1 for i in items if i["instrument"] == "A"),
                             "B": sum(1 for i in items if i["instrument"] == "B")},
-            "strata": {k: v for k, v in split["per_stratum"].items()},
+            "strata": dict(split["per_stratum"]),
             "split_hash": split["split_hash"],
             "development": len(split["development"]),
             "calibration": len(split["calibration"]),
@@ -462,34 +552,25 @@ def main() -> int:
             "derivation": ("deterministic round-robin over strata in item-id "
                            "order across the development half"),
             "hash": sha_obj(sorted(i["item_id"] for i in sample)),
+            "strata": {s: sum(1 for i in sample if stratum(i) == s)
+                       for s in sorted({stratum(i) for i in sample})},
         },
-        "conditions": {k: {kk: v[kk] for kk in
-                           ("condition", "config", "items", "status_counts",
-                            "coverage", "truncated", "truncation_rate",
-                            "seconds", "seconds_per_item", "run_dir")}
-                       for k, v in results.items()},
-        "repeatability": repeat,
-        "paired_comparison": (
-            autorater.paired_comparison(
-                [i["item_id"] for i in sample],
-                results[conditions[0]]["judgments"],
-                results[conditions[1]]["judgments"],
-                {i["item_id"]: i["verifier_class"] for i in sample})
-            if len(conditions) == 2 else None),
-        "selection": select(results, sample, repeat),
-        "judge_rows": {k: v["rows"] for k, v in results.items()},
+        **combined,
     }
-    OUT.mkdir(parents=True, exist_ok=True)
-    name = "section_10_4_probe.json" if args.probe else "section_10_4_development.json"
-    (OUT / name).write_text(json.dumps(payload, indent=1, sort_keys=True) + "\n")
-    print(json.dumps({"pool": payload["pool"],
-                      "conditions": {k: {"coverage": v["coverage"],
-                                         "truncation_rate": v["truncation_rate"],
-                                         "seconds_per_item": v["seconds_per_item"]}
-                                     for k, v in results.items()},
-                      "selection": payload["selection"]["surviving_after_criteria_1_to_3"]},
-                     indent=1))
-    print(f"written: {(OUT / name).relative_to(DCI1)}")
+    (OUT / "section_10_4_development.json").write_text(
+        json.dumps(payload, indent=1, sort_keys=True) + "\n")
+    print(json.dumps({
+        "conditions": {k: {"coverage": v["coverage"],
+                           "truncation_rate": v["truncation_rate"],
+                           "seconds_per_item": v["seconds_per_item"]}
+                       for k, v in payload["conditions"].items()},
+        "repeatability": {k: v["exactly_repeatable"]
+                          for k, v in payload["repeatability"].items()},
+        "selection_steps": [{s["criterion"]: s["surviving"]}
+                            for s in payload["selection"]["steps"]],
+        "surviving": payload["selection"]["surviving_after_criteria_1_to_3"],
+    }, indent=1))
+    print("written: reports/gate1_v4/section_10_4_development.json")
     return 0
 
 
