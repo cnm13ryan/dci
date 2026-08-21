@@ -28,8 +28,9 @@ from dci1v4r4.run.execute import (
 )
 from dci1v4r4.stages import gates, selection
 from dci1v4r4.topics import split_topics
+from dci1v4r4.stages.gates import select_focal_severity
 from dci1v4r4.verifiers.constraints import (
-    Constraint, FAMILIES, TARGET_GRID, focal_severities,
+    Constraint, FAMILIES, FOCAL_EXTENSION, TARGET_GRID, focal_severities,
 )
 
 __all__ = ["STAGE_CALIBRATION", "STAGE_HEADROOM", "calibration_cells",
@@ -64,6 +65,32 @@ def calibration_cells(topics: Sequence[dict[str, Any]],
                 cells.append(solo_cell(
                     topic, Constraint(family, q, reserve=True), index,
                     arm=FAMILIES[family].role, prefix="cal"))
+    return cells
+
+
+def focal_extension_cells(topics: Sequence[dict[str, Any]]) -> list[Cell]:
+    """§7.2's two rungs on the same 96 topics, and nothing else.
+
+    A second design rather than a wider `calibration_cells`, for a reason that
+    is about evidence and not tidiness: widening the registered design changes
+    every row identity in it, and `_reusable_rows` would then redraw all
+    17,280 registered generations in order to add 768. The topic order, the
+    §8.4 wording index, the arm and the cell-id prefix are the ones
+    `calibration_cells` uses, so each extension row has exactly the identity it
+    would have had inside a widened design --- same prompt, same scientific
+    seed --- and §12.3's union is measured on the same 96 topics the
+    registered pass used, which is what §12.3 requires of it.
+
+    Chance for m = 11 and m = 12 is *not* measured again: the registered pass
+    already scores both against its load-0 rows under §25, so the union reads
+    its present arm here and its absent arm there.
+    """
+    cells: list[Cell] = []
+    for position, topic in enumerate(topics):
+        index = position % C.N_WORDINGS
+        for m in FOCAL_EXTENSION:
+            cells.append(solo_cell(topic, Constraint("B", m, extended=True),
+                                   index, arm="B", prefix="cal"))
     return cells
 
 
@@ -104,8 +131,7 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
     """§12.3's selection and §12.4's adequacy, on the 96 calibration topics."""
     topics = split_topics()["solo"]
     shortlist = dict(regime_record["shortlist"])
-    extension = bool(regime_record.get("focal_extension_measured"))
-    cells = calibration_cells(topics, shortlist, focal_extension=extension)
+    cells = calibration_cells(topics, shortlist, focal_extension=False)
     run_dir = tree.backend_runs(C.STAGE_GATE2) / "calibration"
     absent = (tuple(Constraint("A", n) for n in TARGET_GRID)
               + tuple(Constraint("B", m, extended=True)
@@ -123,12 +149,33 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
                for n in TARGET_GRID}
     registered = {m: instance_rates(rows, kind="B", severity=m)["solo"]
                   for m in focal_severities()}
-    extended = ({m: instance_rates(rows, kind="B", severity=m)["solo"]
-                 for m in focal_severities(extended=True)}
-                if extension else None)
-    b_vacuity = max(instance_rates(rows, kind="B", severity=m)["vacuity"]
+
+    # §7.2's escalation, decided here and nowhere else. `focal_severities`
+    # says it: "only §12.3 sets it, and only when the registered grid supplies
+    # no eligible severity". The flag used to be read off the regime record,
+    # which no code path has ever written --- so a replication whose
+    # registered grid was exhausted could only ever return
+    # PENDING_FOCAL_EXTENSION, with no way forward. §12.3 registers the way
+    # forward: measure {11, 12} on the same 96 topics, 768 generations, and
+    # select over the union.
+    extended: dict[int, float] | None = None
+    extension_rows: list[dict[str, Any]] = []
+    if select_focal_severity(registered)["m_star"] is None:
+        extension_rows = generate_and_score(
+            model_key, focal_extension_cells(topics), stage=STAGE_CALIBRATION,
+            cap=regime_record["selected_cap"], draws=C.M_CAL, device=device,
+            run_dir=tree.backend_runs(C.STAGE_GATE2) / "focal_extension",
+            generate=generate)
+        union_rows = [*rows, *extension_rows]
+        extended = {m: instance_rates(union_rows, kind="B",
+                                      severity=m)["solo"]
+                    for m in FOCAL_EXTENSION}
+    extension = extended is not None
+    vacuity_rows = [*rows, *extension_rows]
+    b_vacuity = max(instance_rates(vacuity_rows, kind="B",
+                                   severity=m)["vacuity"]
                     for m in focal_severities(extended=extension))
-    graded = {kind: [r["scores"][0]["graded"] for r in rows
+    graded = {kind: [r["scores"][0]["graded"] for r in vacuity_rows
                      if r["scores"] and r["scores"][0]["kind"] == kind
                      and r["scores"][0]["present"]]
               for kind in ("A", "B")}
@@ -143,7 +190,7 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
         truncation_by_cell={})
     if payload.get("outcome") != "PASS":
         return {**payload, "model_key": model_key,
-                "calibration_rows": len(rows)}
+                "calibration_rows": len(rows) + len(extension_rows)}
 
     # §13.9's selection input, built here because it is a function of the same
     # solo rows and of nothing else. Building it in Gate 3 would mean reading
@@ -156,7 +203,8 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
         wording_caliper=_wording_caliper(shortlist, payload["n_star"]),
         witnesses=_witness_pass(shortlist))
     return {**payload, "model_key": model_key,
-            "calibration_rows": len(rows),
+            "calibration_rows": len(rows) + len(extension_rows),
+            "focal_extension_rows": len(extension_rows),
             "calibration_table": table,
             "reads_no_composed_cell": True}
 

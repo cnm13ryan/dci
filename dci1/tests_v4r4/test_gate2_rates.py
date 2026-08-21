@@ -117,3 +117,73 @@ def test_gate_2_asks_only_for_keys_this_helper_returns():
     assert read, "no instance_rates subscript found; the scan is stale"
     assert read <= returned, f"gates_run reads keys that do not exist: " \
                              f"{sorted(read - returned)}"
+
+
+# ------------------------------------------- §7.2's escalation, as §12.3 runs it
+def test_the_extension_design_matches_what_a_widened_design_would_build():
+    """The 768 extension rows must have the identity they would have had
+    inside `calibration_cells`, or the union is measured on a different
+    instrument than the registered pass."""
+    from dci1v4r4.run.gates_run import calibration_cells, focal_extension_cells
+    from dci1v4r4.topics import split_topics
+    from dci1v4r4.verifiers.constraints import FOCAL_EXTENSION
+
+    topics = split_topics()["solo"]
+    shortlist = {"RF1": (3,)}
+    widened = {c.cell_id: c for c in
+               calibration_cells(topics, shortlist, focal_extension=True)}
+    registered = {c.cell_id for c in
+                  calibration_cells(topics, shortlist, focal_extension=False)}
+    extension = focal_extension_cells(topics)
+
+    assert len(extension) == len(topics) * len(FOCAL_EXTENSION)
+    assert {c.cell_id for c in extension} == set(widened) - registered
+    for cell in extension:
+        twin = widened[cell.cell_id]
+        assert cell.prompt == twin.prompt          # same wording index
+        assert cell.prompt_hash == twin.prompt_hash
+        assert cell.arm == twin.arm
+        assert cell.wording_indices == twin.wording_indices
+
+
+def test_the_extension_carries_only_the_two_rungs_selection_may_use():
+    """`select_focal_severity` refuses an extended curve holding a registered
+    rung, so building it over all six would raise instead of escalating."""
+    from dci1v4r4.stages.gates import select_focal_severity
+    from dci1v4r4.verifiers.constraints import FOCAL_GRID, focal_severities
+
+    exhausted = {m: 0.10 for m in FOCAL_GRID}
+    assert select_focal_severity(exhausted)["m_star"] is None
+    assert select_focal_severity(exhausted)["extension_required"] is True
+
+    with pytest.raises(ProtocolError):
+        select_focal_severity(exhausted,
+                              {m: 0.8 for m in focal_severities(extended=True)})
+    chosen = select_focal_severity(exhausted, {11: 0.70, 12: 0.90})
+    assert chosen["m_star"] == 11
+    assert chosen["extension_measured"] is True
+
+
+def test_the_escalation_is_decided_by_gate_2_and_not_read_from_the_regime():
+    """The regime record has never carried this flag: three readers, no
+    producer. A replication whose registered grid was exhausted could only
+    return PENDING_FOCAL_EXTENSION for ever."""
+    import inspect
+
+    from dci1v4r4.run import gates_run
+
+    source = inspect.getsource(gates_run.run_gate2)
+    assert 'regime_record.get("focal_extension_measured")' not in source
+    assert "select_focal_severity(registered)" in source
+
+
+def test_the_freeze_reads_the_escalation_from_the_record_that_decides_it():
+    import inspect
+
+    from dci1v4r4.run import freeze_run
+    from dci1v4r4.stages.freeze import NEW_IN_V4R3
+
+    assert "focal_extension_measured" in NEW_IN_V4R3
+    source = inspect.getsource(freeze_run)
+    assert 'gate2.get("focal", {}).get("extension_measured", False)' in source
+    assert 'regime.get("focal_extension_measured"' not in source

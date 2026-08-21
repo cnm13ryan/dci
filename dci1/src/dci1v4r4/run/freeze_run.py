@@ -162,8 +162,13 @@ def assemble(*, model_key: str, manifest: Mapping[str, Any],
         "analysis_plan": manifest["estimands_and_families"],
         # ---- new in v4r3
         "stem_sentence": C.STEM_SENTENCE,
+        # §12.3 decides the escalation, so Gate 2's record is where it is
+        # decided and this reads it there. It used to read the regime record,
+        # which no code path writes, so the freeze would have recorded `false`
+        # for a replication that had escalated --- a frozen value contradicting
+        # the record it is supposed to freeze.
         "focal_extension_measured": bool(
-            regime.get("focal_extension_measured", False)),
+            gate2.get("focal", {}).get("extension_measured", False)),
         "candidate_family_vocabulary": _vocabulary(),
         "candidate_declared_range": {kind: list(declared_range(kind))
                                      for kind in FAMILIES},
