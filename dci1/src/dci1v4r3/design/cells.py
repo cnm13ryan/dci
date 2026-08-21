@@ -195,13 +195,22 @@ class Cell:
 
 
 def block_cells(block: Any, *, reduced: bool = False, class_arm: bool = True,
-                draws: int = C.M_DRAWS) -> list[Cell]:
+                spectrum: bool = True, draws: int = C.M_DRAWS) -> list[Cell]:
     """Materialise one block's cells.
 
     ``block`` needs ``block_id``, ``index`` and ``topic_id``.
+
+    ``spectrum`` is not decoration. §8.6 has three variants and the middle one
+    --- the core matrix intact, the spectrum arm dropped --- is the variant
+    §12.6's coverage failure produces, so it is the one a replication is most
+    likely to run. This function used to accept ``reduced`` and ``class_arm``
+    and silently materialise the spectrum whatever `cell_types` had been told,
+    which would have generated eighteen cells per block that the frozen design
+    does not contain.
     """
     out: list[Cell] = []
-    for t in cell_types(reduced=reduced, class_arm=class_arm):
+    for t in cell_types(reduced=reduced, class_arm=class_arm,
+                        spectrum=spectrum):
         if t.arm == "composed":
             ordered = tuple(sorted(t.slots, key=slot_order_key))
             w = dict(zip(ordered, wording_indices(block.index, 2)))
@@ -217,23 +226,26 @@ def block_cells(block: Any, *, reduced: bool = False, class_arm: bool = True,
 
 
 def design_cells(blocks: Sequence[Any], *, reduced: bool = False,
-                 class_arm: bool = True, draws: int = C.M_DRAWS,
+                 class_arm: bool = True, spectrum: bool = True,
+                 draws: int = C.M_DRAWS,
                  assert_allocation_over: int | None = None) -> list[Cell]:
     cells: list[Cell] = []
     for block in blocks:
         cells.extend(block_cells(block, reduced=reduced, class_arm=class_arm,
-                                 draws=draws))
+                                 spectrum=spectrum, draws=draws))
     keys = {(c.block_id, c.cell_id) for c in cells}
     if len(keys) != len(cells):
         raise ProtocolError("a (block, cell) pair appears twice in the plan")
     if assert_allocation_over is not None:
         assert_allocation(cells, blocks_expected=assert_allocation_over,
-                          reduced=reduced, class_arm=class_arm)
+                          reduced=reduced, class_arm=class_arm,
+                          spectrum=spectrum)
     return cells
 
 
 def assert_allocation(cells: Sequence[Cell], *, blocks_expected: int,
-                      reduced: bool = False, class_arm: bool = True) -> None:
+                      reduced: bool = False, class_arm: bool = True,
+                      spectrum: bool = True) -> None:
     """§8.4's executable coverage assertion.
 
     Refuses a plan containing a structural zero (a (cell, slot, wording)
@@ -257,7 +269,8 @@ def assert_allocation(cells: Sequence[Cell], *, blocks_expected: int,
             counts[key] = counts.get(key, 0) + 1
 
     expected_keys = set()
-    for t in cell_types(reduced=reduced, class_arm=class_arm):
+    for t in cell_types(reduced=reduced, class_arm=class_arm,
+                        spectrum=spectrum):
         for slot in t.slots:
             for w in range(C.N_WORDINGS):
                 expected_keys.add((t.cell_id, slot, w))
@@ -273,7 +286,8 @@ def assert_allocation(cells: Sequence[Cell], *, blocks_expected: int,
             f"§8.4 wording skew: expected {per_wording} blocks per wording; "
             f"got {[(k, counts[k]) for k in skew[:8]]}")
 
-    for t in cell_types(reduced=reduced, class_arm=class_arm):
+    for t in cell_types(reduced=reduced, class_arm=class_arm,
+                        spectrum=spectrum):
         if t.arm != "composed":
             continue
         got = order_counts.get(t.slots, 0)
@@ -281,3 +295,17 @@ def assert_allocation(cells: Sequence[Cell], *, blocks_expected: int,
             raise ProtocolError(
                 f"§8.4 requires both order variants of {t.cell_id} in every "
                 f"block: {t.slots} appears in {got} of {blocks_expected}")
+
+    # Last, because it is the least informative of the three and the only one
+    # that catches what the other two cannot: a plan whose cell types are all
+    # present at the right counts but belong to a *different* §8.6 variant.
+    # A full plan checked as no-spectrum passes coverage and skew --- every
+    # non-spectrum key is there --- and is caught only here.
+    expected = _expected_cell_count(reduced=reduced, class_arm=class_arm,
+                                    spectrum=spectrum)
+    per_block = len(cells) / blocks_expected if blocks_expected else 0
+    if per_block != expected:
+        raise ProtocolError(
+            f"§8.4: this variant has {expected} cells per block and the plan "
+            f"carries {per_block}; a plan with the wrong cell count is a plan "
+            f"for a different design")
