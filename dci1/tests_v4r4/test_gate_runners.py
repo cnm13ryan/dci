@@ -14,11 +14,11 @@ Two things worth having on the execution path rather than in prose:
 from __future__ import annotations
 
 import ast
-from dataclasses import dataclass
 from pathlib import Path
 
 from dci1v4r4.protocol import constants as C
 from dci1v4r4.run import gates_run
+from dci1v4r4.stages.selection import SelectionResult
 from dci1v4r4.topics import split_topics
 
 SRC = Path(__file__).resolve().parents[1] / "src" / "dci1v4r4"
@@ -62,27 +62,45 @@ def test_the_registered_calibration_size_is_the_ninety_six_topic_split():
 
 # ------------------------------------------------------- the design variant
 
-@dataclass
-class FakeSelection:
-    core_references: tuple
-    spectrum: tuple
+def _selection(references: tuple, spectrum: tuple) -> SelectionResult:
+    """The real Gate-3 result object, not a stand-in.
+
+    These three tests used to build a `FakeSelection` dataclass carrying
+    `core_references` as a plain attribute. `SelectionResult` has no such
+    attribute --- the admitted references live at `core["core_references"]` ---
+    so the fixture matched the `getattr(result, "core_references", ())` the
+    production code was making, the default fired on every real call, and
+    every replication was assigned the reduced design whatever Gate 3 had
+    selected. The fixture had encoded the defect as the expected behaviour,
+    and the tests could not have caught it. They use the certified object now.
+    """
+    return SelectionResult(
+        core={"design": "full" if len(references) >= C.N_CORE_REFERENCES
+              else "reduced",
+              "identification_statuses": [],
+              "core_references": [{"slot": slot, "family": "RF1",
+                                   "severity": index}
+                                  for index, slot in enumerate(references)]},
+        spectrum=[{"slot": slot, "family": "RF1", "severity": index}
+                  for index, slot in enumerate(spectrum)],
+        klass={})
 
 
 def test_three_references_and_a_spectrum_give_the_full_design():
-    result = FakeSelection(core_references=("R1", "R2", "R3"),
-                           spectrum=("R1-", "R1+", "R2-", "R2+", "R3-", "R3+"))
+    result = _selection(("R1", "R2", "R3"),
+                        ("R1-", "R1+", "R2-", "R2+", "R3-", "R3+"))
     assert gates_run.design_variant_for(result) == "full"
 
 
 def test_a_coverage_failure_keeps_the_core_matrix():
     """`Delta_R`, `Xi`, `Lambda` and the reciprocal matrix stay identified;
     only `delta_difficulty` does not."""
-    result = FakeSelection(core_references=("R1", "R2", "R3"), spectrum=())
+    result = _selection(("R1", "R2", "R3"), ())
     assert gates_run.design_variant_for(result) == "no_spectrum"
 
 
 def test_fewer_than_three_references_gives_the_reduced_design():
-    result = FakeSelection(core_references=("R1", "R2"), spectrum=())
+    result = _selection(("R1", "R2"), ())
     assert gates_run.design_variant_for(result) == "reduced"
 
 
@@ -93,14 +111,16 @@ def test_the_variant_rule_reads_nothing_that_could_be_an_outcome():
     func = next(n for n in ast.walk(source)
                 if isinstance(n, ast.FunctionDef)
                 and n.name == "design_variant_for")
-    # Only the fields it actually reads: the second argument of getattr, plus
-    # any attribute access. The docstring is prose and says "composed" on
-    # purpose, so collecting every string constant would test the comment.
+    # Attribute accesses, plus the constant of any subscript --- the admitted
+    # references are reached as `result.core["core_references"]`, so a scan
+    # that collected attributes alone would miss the field that matters. The
+    # docstring is prose and says "composed" on purpose, so collecting every
+    # string constant would test the comment instead of the code.
     read = {n.attr for n in ast.walk(func) if isinstance(n, ast.Attribute)}
-    read |= {n.args[1].value for n in ast.walk(func)
-             if isinstance(n, ast.Call)
-             and getattr(n.func, "id", "") == "getattr"
-             and isinstance(n.args[1], ast.Constant)}
+    read |= {n.slice.value for n in ast.walk(func)
+             if isinstance(n, ast.Subscript)
+             and isinstance(n.slice, ast.Constant)
+             and isinstance(n.slice.value, str)}
     assert "core_references" in read and "spectrum" in read
     for forbidden in ("b_with", "composed", "delta", "interference", "loss"):
         assert not any(forbidden in field for field in read), (forbidden, read)

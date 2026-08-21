@@ -246,10 +246,18 @@ def design_variant_for(result: Any) -> str:
     may. Fewer than three admitted core references gives the reduced design; a
     coverage failure withholds `delta_difficulty` and gives the no-spectrum
     design, which keeps `Delta_R`, `Xi`, `Lambda` and the reciprocal matrix.
+
+    Read off the attributes directly, so that a rename raises here instead of
+    being absorbed. This was `getattr(result, "core_references", ())`, and
+    `SelectionResult` holds the admitted references at `core["core_references"]`
+    --- there is no such attribute, so the default fired on every call and the
+    variant was `reduced` for every replication whatever Gate 3 had selected.
+    `gemma-3n-e2b-it` is what exposed it: three admitted core references, six
+    spectrum severities, `design` "full", and a variant that said reduced.
     """
-    if len(getattr(result, "core_references", ()) or ()) < C.N_CORE_REFERENCES:
+    if len(result.core["core_references"]) < C.N_CORE_REFERENCES:
         return "reduced"
-    if not getattr(result, "spectrum", None):
+    if not result.spectrum:
         return "no_spectrum"
     return "full"
 
