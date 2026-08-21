@@ -1,0 +1,10 @@
+{
+ "model": "qwen3-4b",
+ "stage": "GATE_2_REGIME",
+ "outcome": "PENDING_FOCAL_EXTENSION",
+ "status": null,
+ "n_star": 2,
+ "m_star": null,
+ "iota_a": null,
+ "calibration_rows": 16128
+}
