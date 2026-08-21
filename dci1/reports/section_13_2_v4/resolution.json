@@ -1,0 +1,104 @@
+{
+ "artifact": "\u00a713.2 admission-rule resolution",
+ "classification": "protocol interpretation, resolved from the registered text, the registered implementation and the registered \u00a712.2 records. Not an amendment: nothing registered changes, and no threshold, caliper, band or criterion moves.",
+ "implementation_basis": {
+  "gates.admit_family": "`pre = prescreen.get(q)` then `if pre is None: reasons.append(\"no pre-screen measurement\")` --- reject, not abstain",
+  "regime.assert_shortlist_is_measured": "added with this artifact; refuses to write a REGIME_SCREEN record whose shortlist names a rung the ladder curves do not carry, which puts the guarantee on the mandatory path rather than in a docstring",
+  "regime.shortlist": "skips a rung with no measured value, so the shortlist is a subset of the measured rungs by construction"
+ },
+ "per_model": {
+  "gemma-3n-e2b-it": {
+   "draws_per_cell": 1,
+   "every_registered_rung_measured": true,
+   "invariant_refusal": null,
+   "ladder_rungs_measured": 94,
+   "ladder_rungs_registered": 94,
+   "outcome": "PASS",
+   "record": "evidence/dci1-v4/gemma-3n-e2b-it/regime_screen.json",
+   "shortlist_max_per_family": 3,
+   "shortlist_written_before_gate2": true,
+   "shortlisted_rungs": 24,
+   "shortlisted_without_a_prescreen_value": []
+  },
+  "gemma-3n-e4b-it": {
+   "draws_per_cell": 1,
+   "every_registered_rung_measured": true,
+   "invariant_refusal": null,
+   "ladder_rungs_measured": 94,
+   "ladder_rungs_registered": 94,
+   "outcome": "PASS",
+   "record": "evidence/dci1-v4/gemma-3n-e4b-it/regime_screen.json",
+   "shortlist_max_per_family": 3,
+   "shortlist_written_before_gate2": true,
+   "shortlisted_rungs": 24,
+   "shortlisted_without_a_prescreen_value": []
+  },
+  "qwen3-4b": {
+   "draws_per_cell": 1,
+   "every_registered_rung_measured": true,
+   "invariant_refusal": null,
+   "ladder_rungs_measured": 94,
+   "ladder_rungs_registered": 94,
+   "outcome": "PASS",
+   "record": "evidence/dci1-v4/qwen3-4b/regime_screen.json",
+   "shortlist_max_per_family": 3,
+   "shortlist_written_before_gate2": true,
+   "shortlisted_rungs": 24,
+   "shortlisted_without_a_prescreen_value": []
+  },
+  "qwen3-4b-instruct-2507": {
+   "draws_per_cell": 1,
+   "every_registered_rung_measured": true,
+   "invariant_refusal": null,
+   "ladder_rungs_measured": 94,
+   "ladder_rungs_registered": 94,
+   "outcome": "PASS",
+   "record": "evidence/dci1-v4/qwen3-4b-instruct-2507/regime_screen.json",
+   "shortlist_max_per_family": 3,
+   "shortlist_written_before_gate2": true,
+   "shortlisted_rungs": 24,
+   "shortlisted_without_a_prescreen_value": []
+  }
+ },
+ "prior_statements_corrected": [
+  "dci1/reports/cal_screen_v4/REPORT.md \u00a76 called this a preregistration gap of the same kind as \u00a712.4's graded clause and reported abstain and reject as co-equal readings. It is not a gap. The screen met unmeasured rungs because it admitted rungs outside the \u00a712.2 shortlist and because its floored-stem pre-screen came from a screen that measured only some rungs --- both properties of the screen, not of the protocol.",
+  "dci1/reports/INVESTIGATION_2026-08-20.md named this reading the smallest remaining blocker. It is not a blocker."
+ ],
+ "question": "\u00a713.2 condition 2 checks the reference-minus-A distance on the disjoint 24 pre-screen topics. Two non-confirmatory screens reported that some rungs had no such measurement and that the protocol does not say whether an unmeasurable condition abstains or fails.",
+ "registered_disposition_executed": {
+  "abstain_is_not_in_the_registered_code": true,
+  "probe": "one rung of RF1 with every other condition satisfied; the only difference between the two runs is whether that rung has a pre-screen value",
+  "registered_disposition": "reject: a rung with no pre-screen measurement collects a rejection reason and is not admitted",
+  "with_a_prescreen_value": {
+   "admissible": true
+  },
+  "without_a_prescreen_value": {
+   "admissible": false,
+   "reasons": [
+    "no pre-screen measurement"
+   ]
+  }
+ },
+ "researcher_decision_required": false,
+ "resolution": "The case does not arise in the registered pipeline. \u00a712.2 measures all 94 reference rungs on the 24 pre-screen topics and writes the shortlist; \u00a712.3 measures only shortlisted severities on the 96 calibration topics; \u00a713.2 condition 1 is a caliper on that 96-topic measurement, so \u00a713.2's feasible set is a subset of \u00a712.2's shortlist and every member of it carries a pre-screen value. Condition 2 is always evaluable. Where the case is nevertheless constructed, the registered implementation rejects.",
+ "summary": {
+  "every_model_measured_all_94_rungs": true,
+  "every_shortlisted_rung_has_a_prescreen_value": true,
+  "invariant_holds_on_every_registered_record": true,
+  "registered_disposition": "reject",
+  "researcher_decision_required": false
+ },
+ "textual_basis": {
+  "\u00a712.2": "the pre-screen measures on the 24 pre-screen topics, one draw per cell: the full n grid for A, the full m grid for B, and all 94 reference ladder severities ... and produces the shortlist of at most three ladder severities per family",
+  "\u00a712.3": "on the 96 solo-calibration topics at M_cal = 4 ... the full n grid, the full m grid, and every shortlisted reference severity are measured",
+  "\u00a713.2 condition 1": "that absolute difference is at most 0.10 on the 96 solo-calibration topics",
+  "\u00a713.2 condition 2": "the same absolute difference is at most 0.15 on the disjoint 24 pre-screen topics"
+ },
+ "uniquely_supported": true,
+ "what_this_does_not_decide": [
+  "whether any amendment is adopted",
+  "which family or severity is admitted on any model",
+  "n*, m*, or any threshold",
+  "what happens under a prompt stem other than the registered one: a stem change is a change of experimental condition, so \u00a712.1, \u00a712.2, \u00a712.3 and \u00a713.2 are all re-measured under it (Amendment A \u00a75.1 says so itself). \u00a712.2 re-run under the new stem supplies condition 2's input exactly as it does now, so the resolution holds under any stem and is not an argument for or against one."
+ ]
+}

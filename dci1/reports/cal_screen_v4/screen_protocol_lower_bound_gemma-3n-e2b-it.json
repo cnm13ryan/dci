@@ -1,0 +1,56 @@
+{
+ "arm": "lower_bound",
+ "cells": 2304,
+ "classification": "NON-CONFIRMATORY DESIGN SCREEN",
+ "draws_per_cell": 4,
+ "families": [
+  "CL1",
+  "CL7",
+  "CL8"
+ ],
+ "ladders": {
+  "CL1": [
+   1,
+   2,
+   3,
+   4,
+   6,
+   8,
+   11,
+   15
+  ],
+  "CL7": [
+   10,
+   20,
+   30,
+   45,
+   60,
+   80,
+   100,
+   130
+  ],
+  "CL8": [
+   2,
+   3,
+   5,
+   7,
+   10,
+   14,
+   19,
+   25
+  ]
+ },
+ "model": "gemma-3n-e2b-it",
+ "producing_commit": "973f57d94028de3a273d08499fc56e3b73870566",
+ "question": "A is the only PRODUCTION constraint in the v4 pool; B and every reference, registered or candidate, is a budget. So a positive Delta_R is equally consistent with 'A is unusually damaging to B' and with 'a production constraint is damaging to a budget outcome, and A is the only one available'. The lower-bound families are the only candidates that share A's class. Does one of them clear \u00a713.2 on the calibration set, so that the class-matched contrast D(B<-A) against D(B<-CL) becomes estimable?",
+ "screen_protocol_hash": "161c33b03b55eae331a8a210e02cbe3b4646d01d81fc1fbd322277c5595c9414",
+ "seeds": {
+  "stage_label": "cal-screen-lowerbound"
+ },
+ "status": "NON-CONFIRMATORY DESIGN SCREEN, fourth arm. Not a registered \u00a712.3 record. Amendment B's recommended set is unchanged and nothing here is adopted.",
+ "stem": "floored",
+ "study_id": "dci1-cal-screen-v4",
+ "topics": "the 96 registered solo-calibration topics, unchanged",
+ "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "why_amendment_B_set_it_aside": "Amendment B \u00a76: a lower bound imposes a length FLOOR, pushing length up while B pushes it down. That objection was written for the current stem. Under the floored stem the stem already imposes a length floor on every cell, so the mirror-image confound is weaker; this arm measures it rather than assuming either way."
+}

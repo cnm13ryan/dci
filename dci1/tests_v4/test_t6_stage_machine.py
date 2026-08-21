@@ -10,6 +10,9 @@ terminal payload.
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
 from dci1v4.analysis.diagnostics import bounded
@@ -21,7 +24,9 @@ from dci1v4.errors import IntegrityError, ProtocolError, TerminalStatus
 from dci1v4.protocol import constants as C
 from dci1v4.stages import gates, regime
 from dci1v4.topics.split import split_topics
-from dci1v4.verifiers.constraints import FOCAL_GRID, TARGET_GRID
+from dci1v4.verifiers.constraints import (FOCAL_GRID,
+                                          REFERENCE_LADDERS,
+                                          TARGET_GRID)
 
 
 @pytest.fixture()
@@ -154,11 +159,16 @@ def test_the_ladder_screen_is_2544_cells_and_the_shortlist_precedes_gate2():
     cells = regime.ladder_screen_cells(split["prescreen"])
     assert len(cells) == (8 + 4 + 94) * 24 == 2544
     assert {c.draws for c in cells} == {C.LADDER_SCREEN_DRAWS}
-    table = regime.shortlist({("RF1", q): 0.5 + 0.04 * q for q in range(9)},
-                             a_compliance=0.70)
+    curve = {("RF1", q): 0.5 + 0.04 * q for q in range(9)}
+    table = regime.shortlist(curve, a_compliance=0.70)
     assert len(table["RF1"]) == C.LADDER_SHORTLIST_MAX
+    # The curves go into the record with the shortlist, not beside it: §13.2
+    # condition 2 reads them, so a record carrying one without the other is a
+    # record the registered pipeline cannot produce.
     payload = regime.regime_screen_payload(
-        cap={"selected_cap": 768}, ladder_curves={},
+        cap={"selected_cap": 768},
+        ladder_curves={"A": {}, "B": {},
+                       "families": {f"{f}:{q}": v for (f, q), v in curve.items()}},
         a_prescreen_compliance=0.70, shortlist_table=table,
         truncation_by_cell={}, screen_dir=".")
     assert payload["shortlist_written_before_gate2"] is True
@@ -310,3 +320,81 @@ def test_gate4_evaluates_each_cell_independently_and_ranks_nothing():
         gates.gate4_payload({"pair:A+B:c1_first": {"A": 0.42, "B": 0.99}})
     assert excinfo.value.status == "COMPOSED_HEADROOM_FAILURE"
     assert excinfo.value.record["composed_table"]
+
+
+# ------------------------------------------------- §13.2 condition 2's input
+#
+# §13.2 condition 2 checks the reference-minus-A distance on the disjoint 24
+# pre-screen topics, and its only input is the REGIME_SCREEN record. The
+# registered pipeline supplies it for free -- §12.2 measures all 94 rungs
+# there and §12.3 measures only the shortlist §12.2 wrote -- so an
+# unevaluable condition 2 is a symptom of the stages having been run out of
+# order, never a gap in the rule. These tests keep it that way.
+def test_a_shortlist_naming_an_unmeasured_rung_is_refused():
+    curves = {"families": {"RF1:0": 0.1, "RF1:1": 0.2}}
+    regime.assert_shortlist_is_measured(
+        curves, {"RF1": [{"severity": 0}, {"severity": 1}]})
+    with pytest.raises(ProtocolError) as error:
+        regime.assert_shortlist_is_measured(curves, {"RF1": [{"severity": 7}]})
+    assert "13.2 condition 2" in str(error.value)
+
+
+def test_a_shortlist_longer_than_three_is_refused():
+    curves = {"families": {f"RF1:{q}": 0.1 for q in range(4)}}
+    with pytest.raises(ProtocolError):
+        regime.assert_shortlist_is_measured(
+            curves, {"RF1": [{"severity": q} for q in range(4)]})
+
+
+def test_the_regime_record_cannot_be_written_without_that_guarantee(tmp_path):
+    kwargs = dict(cap={"selected_cap": 512},
+                  ladder_curves={"A": {}, "B": {}, "families": {"RF1:0": 0.5}},
+                  a_prescreen_compliance=0.5,
+                  truncation_by_cell={}, screen_dir=tmp_path)
+    payload = regime.regime_screen_payload(
+        shortlist_table={"RF1": [{"severity": 0}]}, **kwargs)
+    assert payload["shortlist_written_before_gate2"] is True
+    with pytest.raises(ProtocolError):
+        regime.regime_screen_payload(
+            shortlist_table={"RF1": [{"severity": 4}]}, **kwargs)
+
+
+def test_admit_family_rejects_a_rung_with_no_prescreen_value():
+    """The registered disposition is reject, not abstain.
+
+    Both runs are identical apart from the pre-screen value, so the reason
+    list isolates condition 2. A future change to abstain would be a change
+    to §13.2 and has to be visible as one.
+    """
+    ladder = REFERENCE_LADDERS["RF1"]
+    per_topic = [1.0] * 70 + [0.0] * 26
+    draws = ([1] * 280 + [0] * 104, [1] * 280 + [0] * 104)
+
+    def run(prescreen):
+        return gates.admit_family(
+            "RF1", n_star=4, calibration={q: per_topic for q in ladder},
+            a_calibration=list(per_topic), prescreen=prescreen,
+            a_prescreen=0.70, vacuity={q: 0.0 for q in ladder},
+            draw_level={q: draws for q in ladder})
+
+    present = run({q: 0.70 for q in ladder})
+    absent = run({q: 0.70 for q in ladder if q != 1})
+    assert next(c["admissible"] for c in present["candidates"]
+                if c["severity"] == 1) is True
+    rung = next(c for c in absent["candidates"] if c["severity"] == 1)
+    assert rung["admissible"] is False
+    assert rung["reasons"] == ["no pre-screen measurement"]
+
+
+@pytest.mark.parametrize("model", ["gemma-3n-e2b-it", "gemma-3n-e4b-it",
+                                   "qwen3-4b", "qwen3-4b-instruct-2507"])
+def test_every_registered_regime_record_satisfies_the_invariant(model):
+    path = (Path(__file__).resolve().parents[1] / "evidence" / "dci1-v4"
+            / model / "regime_screen.json")
+    if not path.exists():                      # evidence is machine-local
+        pytest.skip(f"{model}: no registered regime record on this machine")
+    record = json.loads(path.read_text())["payload"]
+    curves = record["ladder_screen"]["curves"]
+    assert len(curves["families"]) == sum(len(v)
+                                          for v in REFERENCE_LADDERS.values())
+    regime.assert_shortlist_is_measured(curves, record["shortlist"])

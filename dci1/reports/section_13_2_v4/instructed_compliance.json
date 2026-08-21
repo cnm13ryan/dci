@@ -1,0 +1,256 @@
+{
+ "artifact": "\u00a713.2's matching criterion read against \u00a725's accidental compliance",
+ "classification": "DERIVED / POST-HOC. Computed from artifacts that already exist. Uses no delivery loss, no composed contrast and no outcome; decides nothing.",
+ "consequence_for_Delta_R": "A reference whose instructed compliance is near zero is, for most items, not a binding second instruction, so D(B<-R_j) approaches the cost of composing B with an inert sentence. That biases Delta_R = D(B<-A) - mean_j D(B<-R_j) UPWARD. The screen's Delta_R is nevertheless small on every model, so the bias runs against the positive reading rather than producing it. This is a direction-of-bias statement, not a correction, and no estimate here is adjusted for it.",
+ "formula": "instructed = (solo - chance) / (1 - chance)",
+ "models": {
+  "gemma-3n-e2b-it": {
+   "A_accidental_is_zero": true,
+   "per_companion": {
+    "A": {
+     "accidental_compliance": 0.0,
+     "identity": [
+      "A",
+      7
+     ],
+     "instructed_compliance": 0.5625,
+     "solo_compliance": 0.5625
+    },
+    "B": {
+     "accidental_compliance": 0.008333333333333333,
+     "identity": [
+      "B",
+      10
+     ],
+     "instructed_compliance": 0.7605042016806722,
+     "solo_compliance": 0.7625
+    },
+    "R1": {
+     "accidental_compliance": 0.6166666666666667,
+     "identity": [
+      "CR6",
+      7
+     ],
+     "instructed_compliance": 0.07065217391304353,
+     "solo_compliance": 0.64375
+    },
+    "R2": {
+     "accidental_compliance": 0.5145833333333333,
+     "identity": [
+      "RF3",
+      4
+     ],
+     "instructed_compliance": 0.26609442060085853,
+     "solo_compliance": 0.64375
+    },
+    "R3": {
+     "accidental_compliance": 0.58125,
+     "identity": [
+      "RF2",
+      6
+     ],
+     "instructed_compliance": 0.03980099502487548,
+     "solo_compliance": 0.5979166666666667
+    }
+   },
+   "references_whose_instruction_is_anti_productive": [],
+   "references_within_0_10_of_A_on_instructed": [],
+   "references_within_0_10_of_A_on_solo": [
+    "R1",
+    "R2",
+    "R3"
+   ]
+  },
+  "gemma-3n-e4b-it": {
+   "A_accidental_is_zero": true,
+   "per_companion": {
+    "A": {
+     "accidental_compliance": 0.0,
+     "identity": [
+      "A",
+      6
+     ],
+     "instructed_compliance": 0.71875,
+     "solo_compliance": 0.71875
+    },
+    "B": {
+     "accidental_compliance": 0.0,
+     "identity": [
+      "B",
+      9
+     ],
+     "instructed_compliance": 0.7625,
+     "solo_compliance": 0.7625
+    },
+    "R1": {
+     "accidental_compliance": 0.6229166666666667,
+     "identity": [
+      "RF8",
+      8
+     ],
+     "instructed_compliance": 0.3204419889502763,
+     "solo_compliance": 0.74375
+    },
+    "R2": {
+     "accidental_compliance": 0.5541666666666667,
+     "identity": [
+      "RF3",
+      4
+     ],
+     "instructed_compliance": 0.42056074766355145,
+     "solo_compliance": 0.7416666666666667
+    },
+    "R3": {
+     "accidental_compliance": 0.76875,
+     "identity": [
+      "RF2",
+      8
+     ],
+     "instructed_compliance": -0.5495495495495496,
+     "solo_compliance": 0.6416666666666667
+    }
+   },
+   "references_whose_instruction_is_anti_productive": [
+    "R3"
+   ],
+   "references_within_0_10_of_A_on_instructed": [],
+   "references_within_0_10_of_A_on_solo": [
+    "R1",
+    "R2",
+    "R3"
+   ]
+  },
+  "qwen3-4b": {
+   "A_accidental_is_zero": true,
+   "per_companion": {
+    "A": {
+     "accidental_compliance": 0.0,
+     "identity": [
+      "A",
+      2
+     ],
+     "instructed_compliance": 0.7104166666666667,
+     "solo_compliance": 0.7104166666666667
+    },
+    "B": {
+     "accidental_compliance": 0.40625,
+     "identity": [
+      "B",
+      12
+     ],
+     "instructed_compliance": 0.6736842105263158,
+     "solo_compliance": 0.80625
+    },
+    "R1": {
+     "accidental_compliance": 0.5979166666666667,
+     "identity": [
+      "CR7",
+      44
+     ],
+     "instructed_compliance": 0.24870466321243517,
+     "solo_compliance": 0.6979166666666666
+    },
+    "R2": {
+     "accidental_compliance": 0.69375,
+     "identity": [
+      "CL8",
+      5
+     ],
+     "instructed_compliance": 0.14965986394557843,
+     "solo_compliance": 0.7395833333333334
+    },
+    "R3": {
+     "accidental_compliance": 0.0375,
+     "identity": [
+      "RF7",
+      24
+     ],
+     "instructed_compliance": 0.6255411255411255,
+     "solo_compliance": 0.6395833333333333
+    }
+   },
+   "references_whose_instruction_is_anti_productive": [],
+   "references_within_0_10_of_A_on_instructed": [
+    "R3"
+   ],
+   "references_within_0_10_of_A_on_solo": [
+    "R1",
+    "R2",
+    "R3"
+   ]
+  },
+  "qwen3-4b-instruct-2507": {
+   "A_accidental_is_zero": true,
+   "per_companion": {
+    "A": {
+     "accidental_compliance": 0.0,
+     "identity": [
+      "A",
+      5
+     ],
+     "instructed_compliance": 0.5916666666666667,
+     "solo_compliance": 0.5916666666666667
+    },
+    "B": {
+     "accidental_compliance": 0.0125,
+     "identity": [
+      "B",
+      10
+     ],
+     "instructed_compliance": 0.6919831223628692,
+     "solo_compliance": 0.6958333333333333
+    },
+    "R1": {
+     "accidental_compliance": 0.5229166666666667,
+     "identity": [
+      "CR7",
+      44
+     ],
+     "instructed_compliance": 0.20960698689956328,
+     "solo_compliance": 0.6229166666666667
+    },
+    "R2": {
+     "accidental_compliance": 0.8895833333333333,
+     "identity": [
+      "RF1",
+      5
+     ],
+     "instructed_compliance": -2.320754716981131,
+     "solo_compliance": 0.6333333333333333
+    },
+    "R3": {
+     "accidental_compliance": 0.025,
+     "identity": [
+      "RF7",
+      24
+     ],
+     "instructed_compliance": 0.6004273504273505,
+     "solo_compliance": 0.6104166666666667
+    }
+   },
+   "references_whose_instruction_is_anti_productive": [
+    "R2"
+   ],
+   "references_within_0_10_of_A_on_instructed": [
+    "R3"
+   ],
+   "references_within_0_10_of_A_on_solo": [
+    "R1",
+    "R2",
+    "R3"
+   ]
+  }
+ },
+ "source": {
+  "solo and accidental compliance": "reports/matrix_screen_v4/results.json (NON-CONFIRMATORY screen; the reference sets are the calibration screen's, not Gate 3's)",
+  "\u00a713.2": "matching caliper 0.10 on solo compliance",
+  "\u00a725": "accidental compliance measured in every cell where the constraint is absent, recorded and not fed into admission"
+ },
+ "structural_reading": "A's accidental compliance is 0.000 on all four models because an exact-count production constraint is essentially never satisfied by an unconstrained answer. Every registered reference family and B are prefix-closed budgets and are satisfied by chance often. So the \u00a713.2 caliper equates companions that differ in how much of their compliance the instruction produced, and the divergence tracks the production/budget divide rather than the model.",
+ "what_it_does_not_do": [
+  "it does not adjust, reweight or re-estimate any quantity",
+  "it does not propose a new matching criterion",
+  "it does not decide any amendment",
+  "it says nothing about Gate 3's reference set, which does not exist"
+ ]
+}

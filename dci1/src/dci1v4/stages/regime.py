@@ -22,7 +22,7 @@ nearest A's pre-screen solo compliance. **The shortlist is written before Gate
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 from dci1v4.design.cells import Cell, Constituent
 from dci1v4.design.prompts import prompt_hash, render
@@ -179,12 +179,48 @@ def shortlist(solo_compliance: dict[tuple[str, int], float],
     return out
 
 
+def assert_shortlist_is_measured(
+        ladder_curves: Mapping[str, Any],
+        shortlist_table: Mapping[str, Sequence[Mapping[str, Any]]]) -> None:
+    """Every shortlisted rung carries the pre-screen value §13.2 reads.
+
+    §13.2 condition 2 checks the reference-minus-A distance on the disjoint 24
+    pre-screen topics, and its only input is this record. The registered
+    pipeline supplies it for free: §12.2 measures **all 94 rungs** there, and
+    §12.3 measures only the shortlist §12.2 wrote, so §13.2's feasible set is a
+    subset of the rungs that already have a pre-screen value. That is why
+    ``gates.admit_family`` can treat a missing value as a rejection reason
+    without ever rejecting anything --- the branch is unreachable from a
+    record that satisfies this predicate.
+
+    It is asserted rather than assumed because the guarantee is a property of
+    running the stages in order, and a record assembled any other way would
+    hand §13.2 an unmeasurable condition and an interpretive question the
+    protocol never had to answer.
+    """
+    families = ladder_curves.get("families", {})
+    missing = [f"{family}:{rung['severity']}"
+               for family, rungs in shortlist_table.items()
+               for rung in rungs
+               if f"{family}:{rung['severity']}" not in families]
+    if missing:
+        raise ProtocolError(
+            "the §12.2 shortlist names rungs with no pre-screen measurement, "
+            f"so §13.2 condition 2 would be unevaluable for them: {missing}")
+    over = {family: len(rungs) for family, rungs in shortlist_table.items()
+            if len(rungs) > C.LADDER_SHORTLIST_MAX}
+    if over:
+        raise ProtocolError(f"§12.2 allows at most {C.LADDER_SHORTLIST_MAX} "
+                            f"severities per family; got {over}")
+
+
 def regime_screen_payload(*, cap: dict[str, Any],
                           ladder_curves: dict[str, Any],
                           a_prescreen_compliance: float,
                           shortlist_table: dict[str, list[dict[str, Any]]],
                           truncation_by_cell: dict[str, float],
                           screen_dir: Path) -> dict[str, Any]:
+    assert_shortlist_is_measured(ladder_curves, shortlist_table)
     return {
         "outcome": "PASS",
         "completion_cap": cap,

@@ -1,0 +1,31 @@
+{
+ "artifact": "\u00a76.2 reserved-topic-set audit",
+ "classification": "integrity audit over generated rows. Reads only; writes no evidence and approves nothing.",
+ "files_scanned": 75,
+ "note": "rows attributed to 'no-v4-topic' are the Gate 0 procedural pilot's fixed probes, which carry no v4 topic by design",
+ "offending_files": [],
+ "reserved_sets": {
+  "composed": {
+   "purpose": "Gate 4 composed-headroom validation (\u00a713.6)",
+   "rows_generated": 0,
+   "topics": 24
+  },
+  "confirmatory": {
+   "purpose": "the frozen confirmatory experiment",
+   "rows_generated": 0,
+   "topics": 384
+  },
+  "sequestered": {
+   "purpose": "a future uncontaminated rerun (\u00a76.2)",
+   "rows_generated": "not addressable: the sequestered text is hash-only and is absent from the split this audit reads",
+   "topics": 96
+  }
+ },
+ "rows_by_topic_set": {
+  "no-v4-topic": 1152,
+  "prescreen": 85488,
+  "solo": 199296
+ },
+ "rows_read": 285936,
+ "unspent": true
+}

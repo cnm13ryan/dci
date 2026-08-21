@@ -1,0 +1,1940 @@
+{
+ "classification": "DERIVED / POST-HOC re-analysis of closed v3 evidence",
+ "estimation": {
+  "draws": "all 16 cached draws enter each cell mean; no draw is selected, which is where this differs from the v3 registered selector",
+  "order": "a block-level factor in v3, so order strata are disjoint sets of blocks and the order contrast is unpaired",
+  "uncertainty": "block bootstrap, 10000 resamples, resampled within order stratum; percentile and studentised maximum-modulus simultaneous intervals",
+  "unit": "the block; every quantity is a mean of per-block contributions over the 384 confirmatory blocks"
+ },
+ "identification": {
+  "identified_on_the_confirmatory_topics": [
+   "D(A<-B)",
+   "D(A<-R_j)",
+   "Delta^A",
+   "Delta^A_j",
+   "companion uptake in the composed cell",
+   "joint success"
+  ],
+  "not_identified_from_these_rows": {
+   "D(B<-A)": "no B solo cell on the confirmatory topics",
+   "D(R_j<-A)": "no reference solo cell on the confirmatory topics",
+   "D(R_j<-B)": "no B+R_j cell exists in the v3 design at all",
+   "Delta_R": "needs D(B<-R_j), and no B+R_j cell exists",
+   "Lambda": "needs D(B<-A)",
+   "Xi": "needs the reference-on-reference cells, absent by design"
+  },
+  "why": "the v3 arms are AB, AR1, AR2, AR3, A and TOPIC. The swapped slot is the companion and the recorded outcome is A, so every identified loss is a loss of A. The B-side and reference-side losses need solo baselines on the same topics and v3 generated none."
+ },
+ "licenses_no_confirmatory_claim": true,
+ "models_without_confirmatory_data": {
+  ".locks": "terminated at Gate 2A with REFERENCE_POOL_MISMATCH; no confirmatory generation exists, which is non-identification and not a null",
+  "qwen3-4b": "terminated at Gate 2A with REFERENCE_POOL_MISMATCH; no confirmatory generation exists, which is non-identification and not a null",
+  "qwen3-4b-instruct-2507": "terminated at Gate 2A with REFERENCE_POOL_MISMATCH; no confirmatory generation exists, which is non-identification and not a null"
+ },
+ "produced_by": "dci1/tools/v3_reciprocal_reanalysis.py",
+ "results": {
+  "gemma-3n-e2b-it": {
+   "accidental_compliance": {
+    "mean_words": 331.5651041666667,
+    "rates": {
+     "B:7": 0.0,
+     "RF1:5": 0.08430989583333333,
+     "RF2:5": 0.04833984375,
+     "RF6:4": 0.0
+    },
+    "reading": "near zero at v3's operating length, so v3 compliance is delivery and not accident. It is not a length-free statement: the same constraints on a 23-word answer would show much higher accidental rates.",
+    "rows": 6144
+   },
+   "cross_check_against_prefreeze_C18": {
+    "absolute_difference": 1.3877787807814457e-17,
+    "agrees_to_1e_9": true,
+    "quantity": "Delta^A on all cached draws",
+    "recomputed_here": 0.06391059027777778,
+    "recorded_by_check_C18": 0.06391059027777779,
+    "source": "docs/v4_prefreeze/C18.json"
+   },
+   "cross_set_diagnostic": {
+    "L": {
+     "AB": {
+      "L_unpaired": 0.46826171875,
+      "composed_with_A_confirmatory_topics": 0.34423828125,
+      "constraint": "solo:B:7",
+      "solo_calibration_topics": 0.8125
+     },
+     "AR1": {
+      "L_unpaired": 0.34456380208333337,
+      "composed_with_A_confirmatory_topics": 0.52001953125,
+      "constraint": "solo:RF1:5",
+      "solo_calibration_topics": 0.8645833333333334
+     },
+     "AR2": {
+      "L_unpaired": 0.5603841145833334,
+      "composed_with_A_confirmatory_topics": 0.30419921875,
+      "constraint": "solo:RF2:5",
+      "solo_calibration_topics": 0.8645833333333334
+     },
+     "AR3": {
+      "L_unpaired": 0.84228515625,
+      "composed_with_A_confirmatory_topics": 0.022298177083333332,
+      "constraint": "solo:RF6:4",
+      "solo_calibration_topics": 0.8645833333333334
+     }
+    },
+    "L_B_minus_mean_L_R": -0.11414930555555558,
+    "L_B_minus_mean_L_R_reading": "the topic-set shift is common to both terms only under the assumption above; it does not cancel, because the solo terms are different constraints on the same shifted set. Reported as a diagnostic and as the correction to any earlier quotation of these numbers as D(B<-A) and D(Rbar<-A).",
+    "topic_set_shift_measured_on_A": {
+     "constraint": "A at n=5, same constraint, same estimator",
+     "reading": "the size of the assumption the L quantities below require: that this shift is the same for B and for each reference. It is measured for A only and is assumed, never shown, for the others.",
+     "shift": -0.04638671875,
+     "solo_on_384_confirmatory_topics": 0.6619466145833334,
+     "solo_on_96_calibration_topics": 0.7083333333333334
+    },
+    "what_this_is": "NOT a delivery loss. Each L below subtracts a composed rate measured on the 384 confirmatory topics from a solo rate measured on the 96 calibration topics. The two sets are disjoint and the contrast is unpaired, so L carries the topic-set shift as well as the companion effect."
+   },
+   "design": {
+    "arm_constraints": {
+     "AB": [
+      "B",
+      7
+     ],
+     "AR1": [
+      "RF1",
+      5
+     ],
+     "AR2": [
+      "RF2",
+      5
+     ],
+     "AR3": [
+      "RF6",
+      4
+     ]
+    },
+    "blocks": 384,
+    "n_star": [
+     5
+    ],
+    "rows": 36864,
+    "sha256": "f74402e83188da86f1b42f3c73b36b7f9737db4240c66757688cef391212982b",
+    "source": "evidence/dci1-v3/gemma-3n-e2b-it/confirmatory/cache.jsonl"
+   },
+   "gate2a_provenance": {
+    "draws_per_cell": 1,
+    "sha256": "a99e802ceac97bcb11936cb586db1e147863da6db7178e5c5f86775bcbafc6b7",
+    "source": "evidence/dci1-v3/gemma-3n-e2b-it/gate2a/cache.jsonl",
+    "topics": 96
+   },
+   "identified_same_topic": {
+    "by_order": {
+     "added_first": {
+      "D_A_from_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.0016276041666666667,
+        0.087890625
+       ],
+       "ci95_simultaneous": [
+        -0.017585275697727422,
+        0.1041738173643941
+       ],
+       "clustered_se": 0.02283406805958376,
+       "estimate": 0.043294270833333336
+      },
+      "D_A_from_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.055989583333333336,
+        0.022786458333333332
+       ],
+       "ci95_simultaneous": [
+        -0.0688398144094277,
+        0.03628773107609437
+       ],
+       "clustered_se": 0.019715073989001117,
+       "estimate": -0.016276041666666668
+      },
+      "D_A_from_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.011067708333333334,
+        0.06901041666666667
+       ],
+       "ci95_simultaneous": [
+        -0.025363053492589147,
+        0.08395680349258915
+       ],
+       "clustered_se": 0.02050127831840825,
+       "estimate": 0.029296875
+      },
+      "D_A_from_B": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.014322916666666666,
+        0.1005859375
+       ],
+       "ci95_simultaneous": [
+        -0.00063717257289337,
+        0.11587154757289336
+       ],
+       "clustered_se": 0.021849440386243445,
+       "estimate": 0.0576171875
+      },
+      "_family_size": 8,
+      "_resamples": 10000,
+      "_simultaneous_critical_value": 2.6661717207901905,
+      "delta_A": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.005316840277777776,
+        0.07313368055555557
+       ],
+       "ci95_simultaneous": [
+        -0.007312817927024637,
+        0.08500379014924686
+       ],
+       "clustered_se": 0.017312577310082455,
+       "estimate": 0.03884548611111111
+      },
+      "delta_A_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.030598958333333332,
+        0.058919270833333336
+       ],
+       "ci95_simultaneous": [
+        -0.04702154935094433,
+        0.07566738268427767
+       ],
+       "clustered_se": 0.02300844523226356,
+       "estimate": 0.014322916666666666
+      },
+      "delta_A_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.0361328125,
+        0.11197916666666667
+       ],
+       "ci95_simultaneous": [
+        0.022467969605325835,
+        0.1253184887280075
+       ],
+       "clustered_se": 0.0192880522887324,
+       "estimate": 0.07389322916666667
+      },
+      "delta_A_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.007486979166666667,
+        0.06510416666666667
+       ],
+       "ci95_simultaneous": [
+        -0.021207034604275525,
+        0.07784765960427553
+       ],
+       "clustered_se": 0.018576202994755635,
+       "estimate": 0.0283203125
+      }
+     },
+     "target_first": {
+      "D_A_from_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.08626302083333333,
+        0.1533203125
+       ],
+       "ci95_simultaneous": [
+        0.0749538013271843,
+        0.16462953200614905
+       ],
+       "clustered_se": 0.01702981603644092,
+       "estimate": 0.11979166666666667
+      },
+      "D_A_from_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.023111979166666668,
+        0.038736979166666664
+       ],
+       "ci95_simultaneous": [
+        -0.03397662364442927,
+        0.04960162364442927
+       ],
+       "clustered_se": 0.015871877097638154,
+       "estimate": 0.0078125
+      },
+      "D_A_from_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.220703125,
+        0.2942708333333333
+       ],
+       "ci95_simultaneous": [
+        0.20768469758632055,
+        0.3079403024136794
+       ],
+       "clustered_se": 0.019038980713123196,
+       "estimate": 0.2578125
+      },
+      "D_A_from_B": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.1787109375,
+        0.2565104166666667
+       ],
+       "ci95_simultaneous": [
+        0.16576143495800433,
+        0.269134398375329
+       ],
+       "clustered_se": 0.019630980832941444,
+       "estimate": 0.21744791666666666
+      },
+      "_family_size": 8,
+      "_resamples": 10000,
+      "_simultaneous_critical_value": 2.632903681609769,
+      "delta_A": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.0576171875,
+        0.1201171875
+       ],
+       "ci95_simultaneous": [
+        0.046958548705564304,
+        0.13099284018332463
+       ],
+       "clustered_se": 0.015958481896759205,
+       "estimate": 0.08897569444444446
+      },
+      "delta_A_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.060872395833333336,
+        0.13444010416666666
+       ],
+       "ci95_simultaneous": [
+        0.047896217219297064,
+        0.14741628278070293
+       ],
+       "clustered_se": 0.018899298568445706,
+       "estimate": 0.09765625
+      },
+      "delta_A_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.17643229166666666,
+        0.2431640625
+       ],
+       "ci95_simultaneous": [
+        0.16439383537744529,
+        0.25487699795588803
+       ],
+       "clustered_se": 0.017183150908718577,
+       "estimate": 0.20963541666666666
+      },
+      "delta_A_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        -0.07682291666666667,
+        -0.004231770833333333
+       ],
+       "ci95_simultaneous": [
+        -0.0899809617538441,
+        0.009251795087177418
+       ],
+       "clustered_se": 0.018844737377622215,
+       "estimate": -0.040364583333333336
+      }
+     }
+    },
+    "levels": {
+     "joint_success_AB": {
+      "blocks": 384,
+      "estimate": 0.1923828125,
+      "se": 0.011511988091667263
+     },
+     "joint_success_AR1": {
+      "blocks": 384,
+      "estimate": 0.32763671875,
+      "se": 0.014516909152055998
+     },
+     "joint_success_AR2": {
+      "blocks": 384,
+      "estimate": 0.21891276041666666,
+      "se": 0.013460797559122111
+     },
+     "joint_success_AR3": {
+      "blocks": 384,
+      "estimate": 0.012044270833333334,
+      "se": 0.0033389120670637524
+     },
+     "p_A_composed_with_AR1": {
+      "blocks": 384,
+      "estimate": 0.5804036458333334,
+      "se": 0.012522937080856516
+     },
+     "p_A_composed_with_AR2": {
+      "blocks": 384,
+      "estimate": 0.6661783854166666,
+      "se": 0.01051181863226431
+     },
+     "p_A_composed_with_AR3": {
+      "blocks": 384,
+      "estimate": 0.5183919270833334,
+      "se": 0.012490293708935491
+     },
+     "p_A_composed_with_B": {
+      "blocks": 384,
+      "estimate": 0.5244140625,
+      "se": 0.011079039017629974
+     },
+     "p_A_solo": {
+      "blocks": 384,
+      "estimate": 0.6619466145833334,
+      "se": 0.012345990471169209
+     },
+     "uptake_AR1": {
+      "blocks": 384,
+      "estimate": 0.52001953125,
+      "se": 0.018735206595875468
+     },
+     "uptake_AR2": {
+      "blocks": 384,
+      "estimate": 0.30419921875,
+      "se": 0.01739784893247416
+     },
+     "uptake_AR3": {
+      "blocks": 384,
+      "estimate": 0.022298177083333332,
+      "se": 0.005493227412939951
+     },
+     "uptake_B_in_AB": {
+      "blocks": 384,
+      "estimate": 0.34423828125,
+      "se": 0.017428164339816976
+     },
+     "uptake_contrast_B_minus_Rbar": {
+      "blocks": 384,
+      "estimate": 0.06206597222222222,
+      "se": 0.01968036808197536
+     }
+    },
+    "per_reference_simultaneous": {
+     "_family_size": 3,
+     "_resamples": 10000,
+     "_simultaneous_critical_value": 2.300722210703877,
+     "delta_A_AR1": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.02685546875,
+       0.0849609375
+      ],
+      "ci95_simultaneous": [
+       0.021432978178012138,
+       0.09054618848865453
+      ],
+      "clustered_se": 0.015019894620284925,
+      "estimate": 0.055989583333333336
+     },
+     "delta_A_AR2": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.11637369791666667,
+       0.16715494791666666
+      ],
+      "ci95_simultaneous": [
+       0.11103316559449666,
+       0.17249548023883665
+      ],
+      "clustered_se": 0.01335717853254791,
+      "estimate": 0.14176432291666666
+     },
+     "delta_A_AR3": {
+      "blocks": 384,
+      "ci95_percentile": [
+       -0.031901041666666664,
+       0.020345052083333332
+      ],
+      "ci95_simultaneous": [
+       -0.03668932083169161,
+       0.024645049998358273
+      ],
+      "clustered_se": 0.013329373390820052,
+      "estimate": -0.006022135416666667
+     }
+    },
+    "pooled": {
+     "D_A_from_AR1": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.05322265625,
+       0.10872395833333333
+      ],
+      "ci95_simultaneous": [
+       0.04576220962213283,
+       0.11732372787786717
+      ],
+      "clustered_se": 0.014357661039219859,
+      "estimate": 0.08154296875
+     },
+     "D_A_from_AR2": {
+      "blocks": 384,
+      "ci95_percentile": [
+       -0.029134114583333332,
+       0.020670572916666668
+      ],
+      "ci95_simultaneous": [
+       -0.03576555745550114,
+       0.027302015788834472
+      ],
+      "clustered_se": 0.012653488373072392,
+      "estimate": -0.004231770833333333
+     },
+     "D_A_from_AR3": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.11653645833333333,
+       0.17122395833333334
+      ],
+      "ci95_simultaneous": [
+       0.1058200207568842,
+       0.18128935424311582
+      ],
+      "clustered_se": 0.015141700951325618,
+      "estimate": 0.1435546875
+     },
+     "D_A_from_B": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.10888671875,
+       0.16585286458333334
+      ],
+      "ci95_simultaneous": [
+       0.099589934262295,
+       0.17547516990437168
+      ],
+      "clustered_se": 0.015225144991148321,
+      "estimate": 0.13753255208333334
+     },
+     "_family_size": 5,
+     "_resamples": 10000,
+     "_simultaneous_critical_value": 2.492102232398945,
+     "delta_A": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.04047309027777778,
+       0.08707682291666667
+      ],
+      "ci95_simultaneous": [
+       0.03443647867660758,
+       0.09338470187894797
+      ],
+      "clustered_se": 0.011827007422884837,
+      "estimate": 0.06391059027777778
+     }
+    }
+   },
+   "length_matched_delta_A": {
+    "bins_total": 6,
+    "bins_used": 6,
+    "by_bin": [
+     {
+      "bin": [
+       0,
+       60
+      ],
+      "delta_A_in_bin": -0.01849104561249948,
+      "n": {
+       "AB": 303,
+       "AR1": 292,
+       "AR2": 716,
+       "AR3": 52
+      },
+      "rates": {
+       "AB": 0.7491749174917491,
+       "AR1": 0.7328767123287672,
+       "AR2": 0.6899441340782123,
+       "AR3": 0.7692307692307693
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       60,
+       90
+      ],
+      "delta_A_in_bin": 0.08860722969310308,
+      "n": {
+       "AB": 942,
+       "AR1": 1029,
+       "AR2": 1049,
+       "AR3": 319
+      },
+      "rates": {
+       "AB": 0.6539278131634819,
+       "AR1": 0.6588921282798834,
+       "AR2": 0.7254528122020972,
+       "AR3": 0.8432601880877743
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       90,
+       120
+      ],
+      "delta_A_in_bin": 0.13193736186768945,
+      "n": {
+       "AB": 1498,
+       "AR1": 932,
+       "AR2": 771,
+       "AR3": 771
+      },
+      "rates": {
+       "AB": 0.548064085447263,
+       "AR1": 0.6158798283261803,
+       "AR2": 0.6809338521400778,
+       "AR3": 0.7431906614785992
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       120,
+       160
+      ],
+      "delta_A_in_bin": 0.15182779074620495,
+      "n": {
+       "AB": 1967,
+       "AR1": 914,
+       "AR2": 938,
+       "AR3": 1091
+      },
+      "rates": {
+       "AB": 0.47635993899339096,
+       "AR1": 0.587527352297593,
+       "AR2": 0.6801705756929638,
+       "AR3": 0.6168652612282309
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       160,
+       220
+      ],
+      "delta_A_in_bin": 0.10256345503381675,
+      "n": {
+       "AB": 1288,
+       "AR1": 1558,
+       "AR2": 1615,
+       "AR3": 2018
+      },
+      "rates": {
+       "AB": 0.4394409937888199,
+       "AR1": 0.5288831835686778,
+       "AR2": 0.6551083591331269,
+       "AR3": 0.44202180376610506
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       220,
+       null
+      ],
+      "delta_A_in_bin": 0.12178126480255946,
+      "n": {
+       "AB": 146,
+       "AR1": 1419,
+       "AR2": 1055,
+       "AR3": 1893
+      },
+      "rates": {
+       "AB": 0.3767123287671233,
+       "AR1": 0.5207892882311487,
+       "AR2": 0.5848341232227489,
+       "AR3": 0.3898573692551506
+      },
+      "thin": false
+     }
+    ],
+    "by_order": {
+     "added_first": {
+      "bins_total": 6,
+      "bins_used": 5,
+      "by_bin": [
+       {
+        "bin": [
+         0,
+         60
+        ],
+        "delta_A_in_bin": 0.005877670328862106,
+        "n": {
+         "AB": 258,
+         "AR1": 292,
+         "AR2": 716,
+         "AR3": 52
+        },
+        "rates": {
+         "AB": 0.7248062015503876,
+         "AR1": 0.7328767123287672,
+         "AR2": 0.6899441340782123,
+         "AR3": 0.7692307692307693
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         60,
+         90
+        ],
+        "delta_A_in_bin": 0.03642425020535711,
+        "n": {
+         "AB": 609,
+         "AR1": 1025,
+         "AR2": 1037,
+         "AR3": 316
+        },
+        "rates": {
+         "AB": 0.7044334975369458,
+         "AR1": 0.6575609756097561,
+         "AR2": 0.7232401157184185,
+         "AR3": 0.8417721518987342
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         90,
+         120
+        ],
+        "delta_A_in_bin": 0.0734106897111908,
+        "n": {
+         "AB": 846,
+         "AR1": 898,
+         "AR2": 658,
+         "AR3": 741
+        },
+        "rates": {
+         "AB": 0.5933806146572104,
+         "AR1": 0.6024498886414253,
+         "AR2": 0.648936170212766,
+         "AR3": 0.7489878542510121
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         120,
+         160
+        ],
+        "delta_A_in_bin": 0.044434219016384335,
+        "n": {
+         "AB": 926,
+         "AR1": 564,
+         "AR2": 400,
+         "AR3": 858
+        },
+        "rates": {
+         "AB": 0.550755939524838,
+         "AR1": 0.5478723404255319,
+         "AR2": 0.6025,
+         "AR3": 0.6351981351981352
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         160,
+         220
+        ],
+        "delta_A_in_bin": 0.03754795726111898,
+        "n": {
+         "AB": 419,
+         "AR1": 258,
+         "AR2": 238,
+         "AR3": 854
+        },
+        "rates": {
+         "AB": 0.45346062052505964,
+         "AR1": 0.43410852713178294,
+         "AR2": 0.5588235294117647,
+         "AR3": 0.48009367681498827
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         220,
+         null
+        ],
+        "n": {
+         "AB": 14,
+         "AR1": 35,
+         "AR2": 23,
+         "AR3": 251
+        },
+        "thin": true
+       }
+      ],
+      "length_matched_delta_A": 0.046658905074282886,
+      "mean_words": {
+       "AB": 114.8486328125,
+       "AR1": 103.38053385416667,
+       "AR2": 92.00227864583333,
+       "AR3": 144.9052734375
+      },
+      "raw_delta_A": 0.03884548611111116
+     },
+     "target_first": {
+      "bins_total": 6,
+      "bins_used": 4,
+      "by_bin": [
+       {
+        "bin": [
+         0,
+         60
+        ],
+        "n": {
+         "AB": 45,
+         "AR1": 0,
+         "AR2": 0,
+         "AR3": 0
+        },
+        "thin": true
+       },
+       {
+        "bin": [
+         60,
+         90
+        ],
+        "n": {
+         "AB": 333,
+         "AR1": 4,
+         "AR2": 12,
+         "AR3": 3
+        },
+        "thin": true
+       },
+       {
+        "bin": [
+         90,
+         120
+        ],
+        "delta_A_in_bin": 0.32335115380643803,
+        "n": {
+         "AB": 652,
+         "AR1": 34,
+         "AR2": 113,
+         "AR3": 30
+        },
+        "rates": {
+         "AB": 0.4892638036809816,
+         "AR1": 0.9705882352941176,
+         "AR2": 0.8672566371681416,
+         "AR3": 0.6
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         120,
+         160
+        ],
+        "delta_A_in_bin": 0.23605181992854785,
+        "n": {
+         "AB": 1041,
+         "AR1": 350,
+         "AR2": 538,
+         "AR3": 233
+        },
+        "rates": {
+         "AB": 0.4101825168107589,
+         "AR1": 0.6514285714285715,
+         "AR2": 0.7379182156133829,
+         "AR3": 0.5493562231759657
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         160,
+         220
+        ],
+        "delta_A_in_bin": 0.11182936930065784,
+        "n": {
+         "AB": 869,
+         "AR1": 1300,
+         "AR2": 1377,
+         "AR3": 1164
+        },
+        "rates": {
+         "AB": 0.4326812428078251,
+         "AR1": 0.5476923076923077,
+         "AR2": 0.6717501815541032,
+         "AR3": 0.41408934707903783
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         220,
+         null
+        ],
+        "delta_A_in_bin": 0.12351351617672635,
+        "n": {
+         "AB": 132,
+         "AR1": 1384,
+         "AR2": 1032,
+         "AR3": 1642
+        },
+        "rates": {
+         "AB": 0.3787878787878788,
+         "AR1": 0.5216763005780347,
+         "AR2": 0.5930232558139535,
+         "AR3": 0.392204628501827
+        },
+        "thin": false
+       }
+      ],
+      "length_matched_delta_A": 0.2115955467279196,
+      "mean_words": {
+       "AB": 140.93489583333334,
+       "AR1": 214.62565104166666,
+       "AR2": 201.1650390625,
+       "AR3": 223.59114583333334
+      },
+      "raw_delta_A": 0.08897569444444448
+     }
+    },
+    "collider_caveat": "length is a consequence of the companion (\u00a713.3) and \u00a722 forbids conditioning the primary estimand on it. This is a sub-population description, not a causal decomposition.",
+    "common_support": "6 of 6 bins carry at least 30 responses in all four arms",
+    "length_matched_delta_A": 0.11784414888844878,
+    "mean_words": {
+     "AB": 127.89176432291667,
+     "AR1": 159.00309244791666,
+     "AR2": 146.58365885416666,
+     "AR3": 184.24820963541666
+    },
+    "order_note": "the two configurations are reported separately because the length differential between the AB cell and the AR cells is itself order-dependent, and so is the contrast",
+    "raw_delta_A": 0.06391059027777779,
+    "weighting": "the AB cell's own length distribution"
+   },
+   "model": "gemma-3n-e2b-it",
+   "order_strata": {
+    "added_first": 192,
+    "target_first": 192
+   },
+   "references": {
+    "AR1": [
+     "RF1",
+     5
+    ],
+    "AR2": [
+     "RF2",
+     5
+    ],
+    "AR3": [
+     "RF6",
+     4
+    ]
+   },
+   "response_length_by_arm": {
+    "A": {
+     "blocks": 384,
+     "estimate": 273.1178385416667,
+     "se": 2.1590696631247295
+    },
+    "AB": {
+     "blocks": 384,
+     "estimate": 127.89176432291667,
+     "se": 1.8576911410099983
+    },
+    "AR1": {
+     "blocks": 384,
+     "estimate": 159.00309244791666,
+     "se": 3.3427914585330782
+    },
+    "AR2": {
+     "blocks": 384,
+     "estimate": 146.58365885416666,
+     "se": 3.414710706654969
+    },
+    "AR3": {
+     "blocks": 384,
+     "estimate": 184.24820963541666,
+     "se": 2.787343336933339
+    },
+    "TOPIC": {
+     "blocks": 384,
+     "estimate": 331.5651041666667,
+     "se": 1.8415210695333215
+    }
+   },
+   "vacuity_forced_delta_A": {
+    "change": -0.00048828125,
+    "raw_delta_A": 0.06391059027777779,
+    "reading": "the A-side composed cells are 111-167 mean words and essentially never vacuous, so the registered bound moves Delta^A by less than 0.002. The same bound applied to the B+R pilot's Delta removes 72-82% of it. That asymmetry is not incidental: it is what a length-monotone budget outcome does that an exact-count production outcome does not.",
+    "rows_by_arm": {
+     "AB": 6144,
+     "AR1": 6144,
+     "AR2": 6144,
+     "AR3": 6144
+    },
+    "vacuity_forced_delta_A": 0.06342230902777779,
+    "vacuous_passes_by_arm": {
+     "AR1": 4,
+     "AR2": 3,
+     "AR3": 2
+    }
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "accidental_compliance": {
+    "mean_words": 333.6043294270833,
+    "rates": {
+     "B:7": 0.0,
+     "RF2:2": 0.005045572916666667,
+     "RF4:4": 0.0,
+     "RF6:4": 0.0
+    },
+    "reading": "near zero at v3's operating length, so v3 compliance is delivery and not accident. It is not a length-free statement: the same constraints on a 23-word answer would show much higher accidental rates.",
+    "rows": 6144
+   },
+   "cross_check_against_prefreeze_C18": {
+    "absolute_difference": 1.3877787807814457e-17,
+    "agrees_to_1e_9": true,
+    "quantity": "Delta^A on all cached draws",
+    "recomputed_here": 0.07367621527777778,
+    "recorded_by_check_C18": 0.07367621527777779,
+    "source": "docs/v4_prefreeze/C18.json"
+   },
+   "cross_set_diagnostic": {
+    "L": {
+     "AB": {
+      "L_unpaired": 0.31608072916666663,
+      "composed_with_A_confirmatory_topics": 0.4443359375,
+      "constraint": "solo:B:7",
+      "solo_calibration_topics": 0.7604166666666666
+     },
+     "AR1": {
+      "L_unpaired": 0.72021484375,
+      "composed_with_A_confirmatory_topics": 0.06103515625,
+      "constraint": "solo:RF2:2",
+      "solo_calibration_topics": 0.78125
+     },
+     "AR2": {
+      "L_unpaired": 0.7392578125,
+      "composed_with_A_confirmatory_topics": 0.0419921875,
+      "constraint": "solo:RF6:4",
+      "solo_calibration_topics": 0.78125
+     },
+     "AR3": {
+      "L_unpaired": 0.7224934895833334,
+      "composed_with_A_confirmatory_topics": 0.07958984375,
+      "constraint": "solo:RF4:4",
+      "solo_calibration_topics": 0.8020833333333334
+     }
+    },
+    "L_B_minus_mean_L_R": -0.41124131944444453,
+    "L_B_minus_mean_L_R_reading": "the topic-set shift is common to both terms only under the assumption above; it does not cancel, because the solo terms are different constraints on the same shifted set. Reported as a diagnostic and as the correction to any earlier quotation of these numbers as D(B<-A) and D(Rbar<-A).",
+    "topic_set_shift_measured_on_A": {
+     "constraint": "A at n=7, same constraint, same estimator",
+     "reading": "the size of the assumption the L quantities below require: that this shift is the same for B and for each reference. It is measured for A only and is assumed, never shown, for the others.",
+     "shift": -0.10481770833333337,
+     "solo_on_384_confirmatory_topics": 0.5826822916666666,
+     "solo_on_96_calibration_topics": 0.6875
+    },
+    "what_this_is": "NOT a delivery loss. Each L below subtracts a composed rate measured on the 384 confirmatory topics from a solo rate measured on the 96 calibration topics. The two sets are disjoint and the contrast is unpaired, so L carries the topic-set shift as well as the companion effect."
+   },
+   "design": {
+    "arm_constraints": {
+     "AB": [
+      "B",
+      7
+     ],
+     "AR1": [
+      "RF2",
+      2
+     ],
+     "AR2": [
+      "RF6",
+      4
+     ],
+     "AR3": [
+      "RF4",
+      4
+     ]
+    },
+    "blocks": 384,
+    "n_star": [
+     7
+    ],
+    "rows": 36864,
+    "sha256": "5438abeb2b88e7963304b0a3e2d2ed0c820156c8c46731d1f19b8e3d040cf415",
+    "source": "evidence/dci1-v3/gemma-3n-e4b-it/confirmatory/cache.jsonl"
+   },
+   "gate2a_provenance": {
+    "draws_per_cell": 1,
+    "sha256": "868e7ec7be29dcab4e9275e794b1ef70babcd97ac3c37ed60c06700cf03a1909",
+    "source": "evidence/dci1-v3/gemma-3n-e4b-it/gate2a/cache.jsonl",
+    "topics": 96
+   },
+   "identified_same_topic": {
+    "by_order": {
+     "added_first": {
+      "D_A_from_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.08203125,
+        0.177734375
+       ],
+       "ci95_simultaneous": [
+        0.06507811531388198,
+        0.19338542635278472
+       ],
+       "clustered_se": 0.024436775901819138,
+       "estimate": 0.12923177083333334
+      },
+      "D_A_from_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.0771484375,
+        0.1611328125
+       ],
+       "ci95_simultaneous": [
+        0.06356260314600065,
+        0.1760207301873327
+       ],
+       "clustered_se": 0.02141821870161484,
+       "estimate": 0.11979166666666667
+      },
+      "D_A_from_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.0517578125,
+        0.14713541666666666
+       ],
+       "ci95_simultaneous": [
+        0.035315937099194034,
+        0.16194968790080597
+       ],
+       "clustered_se": 0.0241180378958105,
+       "estimate": 0.0986328125
+      },
+      "D_A_from_B": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.15494791666666666,
+        0.23990885416666666
+       ],
+       "ci95_simultaneous": [
+        0.14009128334632034,
+        0.25574204998701294
+       ],
+       "clustered_se": 0.022026273050140564,
+       "estimate": 0.19791666666666666
+      },
+      "_family_size": 8,
+      "_resamples": 10000,
+      "_simultaneous_critical_value": 2.6252913140917085,
+      "delta_A": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.04969618055555555,
+        0.11490885416666667
+       ],
+       "ci95_simultaneous": [
+        0.037524859734242744,
+        0.12653764026575726
+       ],
+       "clustered_se": 0.016952933957028484,
+       "estimate": 0.08203125
+      },
+      "delta_A_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.029947916666666668,
+        0.10611979166666667
+       ],
+       "ci95_simultaneous": [
+        0.01698285281210892,
+        0.12038693885455773
+       ],
+       "clustered_se": 0.019693830830774736,
+       "estimate": 0.06868489583333333
+      },
+      "delta_A_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.041015625,
+        0.1162109375
+       ],
+       "ci95_simultaneous": [
+        0.027174746492643967,
+        0.12907525350735605
+       ],
+       "clustered_se": 0.019407466605276022,
+       "estimate": 0.078125
+      },
+      "delta_A_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.058919270833333336,
+        0.13932291666666666
+       ],
+       "ci95_simultaneous": [
+        0.045144583590977214,
+        0.15342312474235614
+       ],
+       "clustered_se": 0.02062219544363991,
+       "estimate": 0.09928385416666667
+      }
+     },
+     "target_first": {
+      "D_A_from_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.046223958333333336,
+        0.11653645833333333
+       ],
+       "ci95_simultaneous": [
+        0.034549145208591175,
+        0.12951335479140882
+       ],
+       "clustered_se": 0.01790366132694078,
+       "estimate": 0.08203125
+      },
+      "D_A_from_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.072265625,
+        0.14192708333333334
+       ],
+       "ci95_simultaneous": [
+        0.06000638339806283,
+        0.15483736660193717
+       ],
+       "clustered_se": 0.01787854407509512,
+       "estimate": 0.107421875
+      },
+      "D_A_from_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.072265625,
+        0.14583333333333334
+       ],
+       "ci95_simultaneous": [
+        0.05968080584559222,
+        0.15972023582107445
+       ],
+       "clustered_se": 0.018860495775087346,
+       "estimate": 0.10970052083333333
+      },
+      "D_A_from_B": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.12858072916666666,
+        0.20182291666666666
+       ],
+       "ci95_simultaneous": [
+        0.11529941311676273,
+        0.21477871188323727
+       ],
+       "clustered_se": 0.01875489389087456,
+       "estimate": 0.1650390625
+      },
+      "_family_size": 8,
+      "_resamples": 10000,
+      "_simultaneous_critical_value": 2.6520890852621006,
+      "delta_A": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.03667534722222222,
+        0.09385850694444443
+       ],
+       "ci95_simultaneous": [
+        0.02728819094021307,
+        0.10335417017089804
+       ],
+       "clustered_se": 0.014340766238470363,
+       "estimate": 0.06532118055555555
+      },
+      "delta_A_AR1": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.048177083333333336,
+        0.11783854166666667
+       ],
+       "ci95_simultaneous": [
+        0.03644119316616582,
+        0.12957443183383419
+       ],
+       "clustered_se": 0.01755846724478793,
+       "estimate": 0.0830078125
+      },
+      "delta_A_AR2": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.028645833333333332,
+        0.08658854166666667
+       ],
+       "ci95_simultaneous": [
+        0.01814287717806415,
+        0.09709149782193585
+       ],
+       "clustered_se": 0.014884232411836455,
+       "estimate": 0.0576171875
+      },
+      "delta_A_AR3": {
+       "blocks": 192,
+       "ci95_percentile": [
+        0.021484375,
+        0.08919270833333333
+       ],
+       "ci95_simultaneous": [
+        0.010067807946071615,
+        0.10060927538726172
+       ],
+       "clustered_se": 0.01706983900811199,
+       "estimate": 0.055338541666666664
+      }
+     }
+    },
+    "levels": {
+     "joint_success_AB": {
+      "blocks": 384,
+      "estimate": 0.19156901041666666,
+      "se": 0.010831710015502274
+     },
+     "joint_success_AR1": {
+      "blocks": 384,
+      "estimate": 0.03173828125,
+      "se": 0.004784788513715711
+     },
+     "joint_success_AR2": {
+      "blocks": 384,
+      "estimate": 0.01708984375,
+      "se": 0.0036306331624815346
+     },
+     "joint_success_AR3": {
+      "blocks": 384,
+      "estimate": 0.055989583333333336,
+      "se": 0.006867775972758015
+     },
+     "p_A_composed_with_AR1": {
+      "blocks": 384,
+      "estimate": 0.47705078125,
+      "se": 0.012706887435696212
+     },
+     "p_A_composed_with_AR2": {
+      "blocks": 384,
+      "estimate": 0.4690755208333333,
+      "se": 0.011165703184886187
+     },
+     "p_A_composed_with_AR3": {
+      "blocks": 384,
+      "estimate": 0.478515625,
+      "se": 0.012588656690340589
+     },
+     "p_A_composed_with_B": {
+      "blocks": 384,
+      "estimate": 0.4012044270833333,
+      "se": 0.010337532322123436
+     },
+     "p_A_solo": {
+      "blocks": 384,
+      "estimate": 0.5826822916666666,
+      "se": 0.012413730736788134
+     },
+     "uptake_AR1": {
+      "blocks": 384,
+      "estimate": 0.06103515625,
+      "se": 0.007300723165727688
+     },
+     "uptake_AR2": {
+      "blocks": 384,
+      "estimate": 0.0419921875,
+      "se": 0.007253031648978456
+     },
+     "uptake_AR3": {
+      "blocks": 384,
+      "estimate": 0.07958984375,
+      "se": 0.009416228481005927
+     },
+     "uptake_B_in_AB": {
+      "blocks": 384,
+      "estimate": 0.4443359375,
+      "se": 0.018436394669715847
+     },
+     "uptake_contrast_B_minus_Rbar": {
+      "blocks": 384,
+      "estimate": 0.3834635416666667,
+      "se": 0.018132799727172785
+     }
+    },
+    "per_reference_simultaneous": {
+     "_family_size": 3,
+     "_resamples": 10000,
+     "_simultaneous_critical_value": 2.3130840355957853,
+     "delta_A_AR1": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.05078125,
+       0.10139973958333333
+      ],
+      "ci95_simultaneous": [
+       0.04535957404395191,
+       0.10633313428938143
+      ],
+      "clustered_se": 0.01318014376198927,
+      "estimate": 0.07584635416666667
+     },
+     "delta_A_AR2": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.04443359375,
+       0.09195963541666667
+      ],
+      "ci95_simultaneous": [
+       0.03959544190872204,
+       0.09614674559127796
+      ],
+      "clustered_se": 0.012224221604640036,
+      "estimate": 0.06787109375
+     },
+     "delta_A_AR3": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.051432291666666664,
+       0.10400390625
+      ],
+      "ci95_simultaneous": [
+       0.04628168076062181,
+       0.10834071507271154
+      ],
+      "clustered_se": 0.01341478159830563,
+      "estimate": 0.07731119791666667
+     }
+    },
+    "pooled": {
+     "D_A_from_AR1": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.07535807291666667,
+       0.1357421875
+      ],
+      "ci95_simultaneous": [
+       0.06770492084190403,
+       0.14355809999142932
+      ],
+      "clustered_se": 0.01517496270495389,
+      "estimate": 0.10563151041666667
+     },
+     "D_A_from_AR2": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.08610026041666667,
+       0.140625
+      ],
+      "ci95_simultaneous": [
+       0.07877891921374483,
+       0.14843462245292183
+      ],
+      "clustered_se": 0.013935114001724237,
+      "estimate": 0.11360677083333333
+     },
+     "D_A_from_AR3": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.07356770833333333,
+       0.13362630208333334
+      ],
+      "ci95_simultaneous": [
+       0.06594982870294817,
+       0.14238350463038518
+      ],
+      "clustered_se": 0.01529109517367734,
+      "estimate": 0.10416666666666667
+     },
+     "D_A_from_B": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.15315755208333334,
+       0.20947265625
+      ],
+      "ci95_simultaneous": [
+       0.14531282702762235,
+       0.21764290213904433
+      ],
+      "clustered_se": 0.014470140929738624,
+      "estimate": 0.18147786458333334
+     },
+     "_family_size": 5,
+     "_resamples": 10000,
+     "_simultaneous_critical_value": 2.4992871687507634,
+     "delta_A": {
+      "blocks": 384,
+      "ci95_percentile": [
+       0.051920572916666664,
+       0.09510633680555557
+      ],
+      "ci95_simultaneous": [
+       0.04594366392646517,
+       0.10140876662909037
+      ],
+      "clustered_se": 0.011096184423326739,
+      "estimate": 0.07367621527777778
+     }
+    }
+   },
+   "length_matched_delta_A": {
+    "bins_total": 6,
+    "bins_used": 6,
+    "by_bin": [
+     {
+      "bin": [
+       0,
+       60
+      ],
+      "delta_A_in_bin": 0.020221486761784924,
+      "n": {
+       "AB": 204,
+       "AR1": 190,
+       "AR2": 231,
+       "AR3": 922
+      },
+      "rates": {
+       "AB": 0.6715686274509803,
+       "AR1": 0.6842105263157895,
+       "AR2": 0.6753246753246753,
+       "AR3": 0.7158351409978309
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       60,
+       90
+      ],
+      "delta_A_in_bin": 0.033450873453752306,
+      "n": {
+       "AB": 955,
+       "AR1": 766,
+       "AR2": 922,
+       "AR3": 1048
+      },
+      "rates": {
+       "AB": 0.53717277486911,
+       "AR1": 0.5835509138381201,
+       "AR2": 0.5911062906724512,
+       "AR3": 0.5372137404580153
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       90,
+       120
+      ],
+      "delta_A_in_bin": 0.06626503908089793,
+      "n": {
+       "AB": 1154,
+       "AR1": 893,
+       "AR2": 1038,
+       "AR3": 570
+      },
+      "rates": {
+       "AB": 0.40814558058925476,
+       "AR1": 0.5128779395296752,
+       "AR2": 0.4980732177263969,
+       "AR3": 0.41228070175438597
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       120,
+       160
+      ],
+      "delta_A_in_bin": 0.05637887139702069,
+      "n": {
+       "AB": 1781,
+       "AR1": 785,
+       "AR2": 737,
+       "AR3": 370
+      },
+      "rates": {
+       "AB": 0.36833239752947783,
+       "AR1": 0.4764331210191083,
+       "AR2": 0.43283582089552236,
+       "AR3": 0.36486486486486486
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       160,
+       220
+      ],
+      "delta_A_in_bin": 0.07021445143606975,
+      "n": {
+       "AB": 1649,
+       "AR1": 1159,
+       "AR2": 1162,
+       "AR3": 901
+      },
+      "rates": {
+       "AB": 0.3329290479078229,
+       "AR1": 0.4201898188093184,
+       "AR2": 0.4018932874354561,
+       "AR3": 0.3873473917869034
+      },
+      "thin": false
+     },
+     {
+      "bin": [
+       220,
+       null
+      ],
+      "delta_A_in_bin": 0.08519065365093703,
+      "n": {
+       "AB": 401,
+       "AR1": 2351,
+       "AR2": 2054,
+       "AR3": 2333
+      },
+      "rates": {
+       "AB": 0.34663341645885287,
+       "AR1": 0.4402381965121225,
+       "AR2": 0.42745861733203505,
+       "AR3": 0.4277753964852122
+      },
+      "thin": false
+     }
+    ],
+    "by_order": {
+     "added_first": {
+      "bins_total": 6,
+      "bins_used": 5,
+      "by_bin": [
+       {
+        "bin": [
+         0,
+         60
+        ],
+        "delta_A_in_bin": 0.016663210659465744,
+        "n": {
+         "AB": 197,
+         "AR1": 190,
+         "AR2": 231,
+         "AR3": 922
+        },
+        "rates": {
+         "AB": 0.6751269035532995,
+         "AR1": 0.6842105263157895,
+         "AR2": 0.6753246753246753,
+         "AR3": 0.7158351409978309
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         60,
+         90
+        ],
+        "delta_A_in_bin": 0.04092822302156918,
+        "n": {
+         "AB": 863,
+         "AR1": 766,
+         "AR2": 922,
+         "AR3": 1047
+        },
+        "rates": {
+         "AB": 0.52954808806489,
+         "AR1": 0.5835509138381201,
+         "AR2": 0.5911062906724512,
+         "AR3": 0.5367717287488061
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         90,
+         120
+        ],
+        "delta_A_in_bin": 0.08482845916272841,
+        "n": {
+         "AB": 814,
+         "AR1": 876,
+         "AR2": 1024,
+         "AR3": 561
+        },
+        "rates": {
+         "AB": 0.3845208845208845,
+         "AR1": 0.5057077625570776,
+         "AR2": 0.494140625,
+         "AR3": 0.40819964349376114
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         120,
+         160
+        ],
+        "delta_A_in_bin": 0.058568099930615236,
+        "n": {
+         "AB": 833,
+         "AR1": 691,
+         "AR2": 617,
+         "AR3": 309
+        },
+        "rates": {
+         "AB": 0.3397358943577431,
+         "AR1": 0.4515195369030391,
+         "AR2": 0.4165316045380875,
+         "AR3": 0.3268608414239482
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         160,
+         220
+        ],
+        "delta_A_in_bin": -0.03217261550590911,
+        "n": {
+         "AB": 341,
+         "AR1": 415,
+         "AR2": 245,
+         "AR3": 163
+        },
+        "rates": {
+         "AB": 0.2844574780058651,
+         "AR1": 0.3156626506024096,
+         "AR2": 0.2571428571428571,
+         "AR3": 0.18404907975460122
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         220,
+         null
+        ],
+        "n": {
+         "AB": 24,
+         "AR1": 134,
+         "AR2": 33,
+         "AR3": 70
+        },
+        "thin": true
+       }
+      ],
+      "length_matched_delta_A": 0.04772652233618023,
+      "mean_words": {
+       "AB": 111.10091145833333,
+       "AR1": 117.85872395833333,
+       "AR2": 105.55598958333333,
+       "AR3": 87.41959635416667
+      },
+      "raw_delta_A": 0.08203125
+     },
+     "target_first": {
+      "bins_total": 6,
+      "bins_used": 3,
+      "by_bin": [
+       {
+        "bin": [
+         0,
+         60
+        ],
+        "n": {
+         "AB": 7,
+         "AR1": 0,
+         "AR2": 0,
+         "AR3": 0
+        },
+        "thin": true
+       },
+       {
+        "bin": [
+         60,
+         90
+        ],
+        "n": {
+         "AB": 92,
+         "AR1": 0,
+         "AR2": 0,
+         "AR3": 1
+        },
+        "thin": true
+       },
+       {
+        "bin": [
+         90,
+         120
+        ],
+        "n": {
+         "AB": 340,
+         "AR1": 17,
+         "AR2": 14,
+         "AR3": 9
+        },
+        "thin": true
+       },
+       {
+        "bin": [
+         120,
+         160
+        ],
+        "delta_A_in_bin": 0.18441281236555263,
+        "n": {
+         "AB": 948,
+         "AR1": 94,
+         "AR2": 120,
+         "AR3": 61
+        },
+        "rates": {
+         "AB": 0.39345991561181437,
+         "AR1": 0.6595744680851063,
+         "AR2": 0.5166666666666667,
+         "AR3": 0.5573770491803278
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         160,
+         220
+        ],
+        "delta_A_in_bin": 0.10487125498799399,
+        "n": {
+         "AB": 1308,
+         "AR1": 744,
+         "AR2": 917,
+         "AR3": 738
+        },
+        "rates": {
+         "AB": 0.345565749235474,
+         "AR1": 0.478494623655914,
+         "AR2": 0.440567066521265,
+         "AR3": 0.43224932249322495
+        },
+        "thin": false
+       },
+       {
+        "bin": [
+         220,
+         null
+        ],
+        "delta_A_in_bin": 0.08260547666248969,
+        "n": {
+         "AB": 377,
+         "AR1": 2217,
+         "AR2": 2021,
+         "AR3": 2263
+        },
+        "rates": {
+         "AB": 0.35809018567639256,
+         "AR1": 0.4510599909788002,
+         "AR2": 0.43443839683325086,
+         "AR3": 0.4365885992045957
+        },
+        "thin": false
+       }
+      ],
+      "length_matched_delta_A": 0.1303217669383208,
+      "mean_words": {
+       "AB": 167.04850260416666,
+       "AR1": 254.08658854166666,
+       "AR2": 243.61458333333334,
+       "AR3": 256.5882161458333
+      },
+      "raw_delta_A": 0.06532118055555558
+     }
+    },
+    "collider_caveat": "length is a consequence of the companion (\u00a713.3) and \u00a722 forbids conditioning the primary estimand on it. This is a sub-population description, not a causal decomposition.",
+    "common_support": "6 of 6 bins carry at least 30 responses in all four arms",
+    "length_matched_delta_A": 0.05906518148393431,
+    "mean_words": {
+     "AB": 139.07470703125,
+     "AR1": 185.97265625,
+     "AR2": 174.58528645833334,
+     "AR3": 172.00390625
+    },
+    "order_note": "the two configurations are reported separately because the length differential between the AB cell and the AR cells is itself order-dependent, and so is the contrast",
+    "raw_delta_A": 0.07367621527777779,
+    "weighting": "the AB cell's own length distribution"
+   },
+   "model": "gemma-3n-e4b-it",
+   "order_strata": {
+    "added_first": 192,
+    "target_first": 192
+   },
+   "references": {
+    "AR1": [
+     "RF2",
+     2
+    ],
+    "AR2": [
+     "RF6",
+     4
+    ],
+    "AR3": [
+     "RF4",
+     4
+    ]
+   },
+   "response_length_by_arm": {
+    "A": {
+     "blocks": 384,
+     "estimate": 326.5061848958333,
+     "se": 2.139558236347519
+    },
+    "AB": {
+     "blocks": 384,
+     "estimate": 139.07470703125,
+     "se": 2.1841416942150795
+    },
+    "AR1": {
+     "blocks": 384,
+     "estimate": 185.97265625,
+     "se": 4.147501340105298
+    },
+    "AR2": {
+     "blocks": 384,
+     "estimate": 174.58528645833334,
+     "se": 3.9580214089165198
+    },
+    "AR3": {
+     "blocks": 384,
+     "estimate": 172.00390625,
+     "se": 4.849236683620173
+    },
+    "TOPIC": {
+     "blocks": 384,
+     "estimate": 333.6043294270833,
+     "se": 1.777904114504466
+    }
+   },
+   "vacuity_forced_delta_A": {
+    "change": -0.001681857638888895,
+    "raw_delta_A": 0.07367621527777779,
+    "reading": "the A-side composed cells are 111-167 mean words and essentially never vacuous, so the registered bound moves Delta^A by less than 0.002. The same bound applied to the B+R pilot's Delta removes 72-82% of it. That asymmetry is not incidental: it is what a length-monotone budget outcome does that an exact-count production outcome does not.",
+    "rows_by_arm": {
+     "AB": 6144,
+     "AR1": 6144,
+     "AR2": 6144,
+     "AR3": 6144
+    },
+    "vacuity_forced_delta_A": 0.0719943576388889,
+    "vacuous_passes_by_arm": {
+     "AB": 2,
+     "AR1": 14,
+     "AR3": 23
+    }
+   }
+  }
+ }
+}

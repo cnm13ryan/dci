@@ -5,15 +5,30 @@
 ``dci1v4.verifiers`` and nothing from any DCI implementation, so it cannot
 inherit a defect from the primary source by construction; ``tests_v4`` asserts
 that emptiness of its import set. It is written against a different mechanism
-— compiled regular expressions rather than the primary's character loop — so
-an agreement of exactly 1.000 is evidence about the rule rather than about a
-shared line of code.
+— ``unicodedata`` category tests and grouped runs rather than the primary's
+``str.isalpha`` accumulator loop — so an agreement of exactly 1.000 is evidence
+about the rule rather than about a shared line of code.
 
 The prose it implements, transcribed:
 
 * §7.2 — "A word is a maximal run of alphabetic characters; suffix and letter
   tests use the lower-cased word; comma and upper-case counts read raw
   characters."
+
+**Segmentation, corrected 2026-08-20.** This module first read "alphabetic" as
+the regular-expression class ``[^\\W\\d_]`` --- a word character that is neither a
+decimal digit nor an underscore. That is not the alphabetic characters. It also
+admits every non-decimal numeric: 1,151 characters in categories ``No`` and
+``Nl``, among them the subscripts, superscripts, fractions and Roman numerals.
+The registered prose says alphabetic, and the primary agrees with the prose, so
+the defect was here and not there. It surfaced on a genuine generation, the
+text ``Answer: H2O`` with a subscript two, where the class ran ``H``, the
+subscript and ``O`` together into one word and RF3 --- at most q words with one
+letter --- then read 0 where the primary reads 2. Segmentation now consults
+``unicodedata.category``: Python defines ``str.isalpha`` as general category
+``Lm``, ``Lt``, ``Lu``, ``Ll`` or ``Lo``, so the category test is the same
+registered property reached by a route that shares no code with the primary's
+``ch.isalpha()`` accumulator loop.
 * §7.1 — A: "Use the word *however* exactly n times." B: "Every word in the
   answer must have at most m letters."
 * §7.2 table — RF1 begin with the letter b; RF2 end with the letters ing;
@@ -34,22 +49,26 @@ The prose it implements, transcribed:
 """
 from __future__ import annotations
 
-import re
-
-#: A maximal run of alphabetic characters. ``[^\W\d_]`` is the Unicode letter
-#: class: word characters that are neither digits nor underscore.
-_WORD = re.compile(r"[^\W\d_]+", re.UNICODE)
+import unicodedata
+from itertools import groupby
 
 TARGET = "however"
 MIN_WORDS_NON_VACUOUS = 20
 
 
+def _alphabetic(ch: str) -> bool:
+    """§7.2's "alphabetic": Unicode general category L (see the module note)."""
+    return unicodedata.category(ch).startswith("L")
+
+
 def words(text: str) -> list[str]:
-    return _WORD.findall(text)
+    """Maximal runs of alphabetic characters, grouped rather than scanned."""
+    return ["".join(run) for is_alpha, run in groupby(text, _alphabetic)
+            if is_alpha]
 
 
 def lower_words(text: str) -> list[str]:
-    return _WORD.findall(text.lower())
+    return words(text.lower())
 
 
 # ------------------------------------------------------------------ §9.2 S0-S3
