@@ -382,24 +382,36 @@ def test_a_drifted_study_wide_rule_fails_qualification_closed(tmp_path,
         registration.assert_manifest_matches_code(context)
 
 
-def test_no_v4_generation_has_touched_a_reserved_topic_set():
+def test_no_v4_generation_has_spent_a_topic_set_it_is_not_licensed_for():
     """§6.2 reserves the composed-validation, confirmatory and sequestered sets.
 
-    Four non-confirmatory screens have generated since those sets were drawn,
-    one of them on 120 blocks. Their source excludes the reserved sets; this
-    reads the rows they actually produced, so the guarantee does not rest on
-    the screens being what they say they are. Skips where the evidence tree is
-    absent, because it is machine-local.
+    The screens' source excludes the reserved sets; this reads the rows they
+    actually produced, so the guarantee does not rest on the screens being
+    what they say they are. Skips where the evidence tree is absent, because
+    it is machine-local.
+
+    The last assertion used to be `<= {prescreen, solo, no-v4-topic}` --- a
+    statement about how far the study had got, not about §6.2. §13.10 spends
+    the 24 composed-validation topics and is registered to; what §6.2 forbids
+    is a *stage other than Gate 4* touching them, which is what the audit now
+    decides. `confirmatory` belongs to CONFIRMATORY_GENERATION alone and
+    `sequestered` to nobody.
     """
     import sys
     tools = Path(__file__).resolve().parents[1] / "tools"
     sys.path.insert(0, str(tools))
-    from topic_reservation_audit_v4 import audit
+    from topic_reservation_audit_v4 import STAGE_PERMISSIONS, audit
 
     result = audit()
     if result["rows_read"] == 0:
         pytest.skip("no v4 rows on this machine")
     assert result["offending_files"] == []
     assert result["unspent"] is True
-    assert set(result["rows_by_topic_set"]) <= {"prescreen", "solo",
-                                                "no-v4-topic"}
+    spent = set(result["rows_by_topic_set"])
+    licensed = {name for sets in STAGE_PERMISSIONS.values() for name in sets}
+    assert spent <= {"prescreen", "solo", "no-v4-topic"} | licensed
+    assert "sequestered" not in spent
+    assert "sequestered" not in licensed
+    for line in result["licensed_reserved_spend"]:
+        assert "GATE_4_COMPOSED_HEADROOM" in line or \
+            "CONFIRMATORY_GENERATION" in line, line

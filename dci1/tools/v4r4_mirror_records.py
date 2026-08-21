@@ -29,7 +29,10 @@ from dci1v4r4.engine.paths import model_tree                     # noqa: E402
 from dci1v4r4.protocol import constants as C                     # noqa: E402
 from dci1v4r4.run.regime_screen import mirror_records            # noqa: E402
 
-STAGES = (C.STAGE_QUALIFIED, C.STAGE_GATE0, C.STAGE_REGIME, C.STAGE_GATE1)
+#: Every registered stage. The literal used to name the first four,
+#: which was the study's furthest stage when this tool was written;
+#: `C.STAGE_SEQUENCE` is the list that does not go stale.
+STAGES = C.STAGE_SEQUENCE
 
 
 def main() -> int:

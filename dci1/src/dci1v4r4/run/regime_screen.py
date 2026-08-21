@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from dci1v4.engine import fs, store
+from dci1v4.errors import IntegrityError
 from dci1v4.models.registry import get_model
 
 from dci1v4r4 import EVIDENCE_DIRNAME
@@ -56,17 +57,57 @@ CAP_SET_B_SEVERITY = min(focal_severities())   # m = 7
 
 __all__ = ["STAGE_CAP", "STAGE_LADDER", "cap_selection_cells", "ladder_cells",
            "select_cap", "difficulty_table_from_rows", "run_regime_screen",
-           "mirror_records"]
+           "mirror_records", "mirror_terminal_report"]
 
 
 def mirror_records(model_key: str, stage: str) -> None:
-    """Replicate one stage's signed records into the durable root."""
+    """Replicate one stage's signed records into the durable root.
+
+    **Path-faithful.** This used to flatten `<stage>/records/` into
+    `<durable>/<stage>/`, and `write_stage_record` also writes an *unsigned*
+    reader copy at `<stage>/<file>.json` --- so the signed record and the
+    reader copy were two different artifacts competing for one durable path.
+    A whole-tree replication then landed the reader copy on top of the signed
+    mirror and the durable copy of every stage record in the study silently
+    became the unsigned one. Nothing was lost, because the whole-tree
+    replication also wrote the signed record at its own relative path, but
+    "the durable copy of the signed record" had stopped meaning what it says.
+    The mirror now reproduces the evidence layout exactly, so one path is one
+    artifact.
+    """
     records = EVIDENCE / model_key / stage / "records"
-    durable = DCI1 / "durable_root" / EVIDENCE_DIRNAME / model_key / stage
+    durable = (DCI1 / "durable_root" / EVIDENCE_DIRNAME / model_key / stage
+               / "records")
     if not records.exists():
         return
     store.replicate(records, durable)
     store.assert_replicated(records, durable)
+
+
+def mirror_terminal_report(model_key: str) -> None:
+    """The terminal report is a result, and it needs a second copy too.
+
+    Nothing mirrored it. A replication that fails a registered gate produces
+    exactly one artifact saying so, signed, in a directory this repository
+    gitignores by design --- so the record of a terminal outcome was the only
+    class of v4r4 result living in a single copy. `gemma-3n-e2b-it` and
+    `qwen3-4b-instruct-2507` are what made that concrete: both stopped at
+    §13.10, and a `COMPOSED_HEADROOM_FAILURE` is the finding, not the absence
+    of one.
+    """
+    report = EVIDENCE / model_key / "terminal_report.json"
+    if not report.exists():
+        return
+    target = (DCI1 / "durable_root" / EVIDENCE_DIRNAME / model_key
+              / report.name)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    payload = report.read_bytes()
+    if not target.exists() or target.read_bytes() != payload:
+        target.write_bytes(payload)
+    if target.read_bytes() != payload:                     # pragma: no cover
+        raise IntegrityError(
+            f"{model_key}: the durable terminal report does not match the "
+            "evidence copy after writing it")
 
 
 def cap_selection_cells(topics: Sequence[dict[str, Any]]) -> list[Cell]:

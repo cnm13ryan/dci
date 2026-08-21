@@ -35,6 +35,10 @@ CRITICAL_SUFFIXES = (
     "gate3_references.json", "gate4_composed.json", "gate5_freeze.json",
     "confirmatory_manifest.json", "masked_result.json", "unmask_record.json",
     "unmasked_result.json", "scored.jsonl", "rows.jsonl",
+    # A replication that fails a registered gate produces exactly one signed
+    # artifact saying so, and that is a result. Two of v4r4's four stopped at
+    # §13.10, so this is not hypothetical.
+    "terminal_report.json",
 )
 
 

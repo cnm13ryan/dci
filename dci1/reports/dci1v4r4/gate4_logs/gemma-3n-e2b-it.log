@@ -1,0 +1,6 @@
+{
+ "model": "gemma-3n-e2b-it",
+ "stage": "GATE_4_COMPOSED_HEADROOM",
+ "outcome": "TERMINAL",
+ "status": "COMPOSED_HEADROOM_FAILURE"
+}

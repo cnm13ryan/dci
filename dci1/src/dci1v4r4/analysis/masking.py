@@ -284,13 +284,26 @@ def assert_mask_effective(observations: Sequence[Observation],
         "min_differing_share": min((sum(f) / len(f)
                                     for f in maskable.values()), default=None),
         "structurally_unmaskable": [list(k) for k in singleton],
+        "structurally_unmaskable_outcomes": sorted({k[0] for k in singleton}),
         "structurally_unmaskable_note": (
             "these (outcome, configuration) groups carry exactly one "
-            "companion because the spectrum and class arms pair with B alone, "
-            "so their companion label is not hidden and could not be. No "
-            "registered estimand reads them as an OUTCOME: F8 reads "
-            "D(B <- R_j+-) and F9 reads D(B <- CL), both of which have B as "
-            "the outcome and are masked among ten companions"),
+            "companion, because §8.1's spectrum and class arms pair with B "
+            "alone, so their companion label is not hidden and could not be. "
+            "Under the full and no-spectrum designs that costs nothing: the "
+            "singleton outcomes are the spectrum rungs and the class "
+            "companion, and no registered estimand reads them as an OUTCOME "
+            "-- F8 reads D(B <- R_j+-) and F9 reads D(B <- CL), both with B "
+            "as the outcome and masked among its many companions. Under "
+            "§8.6's REDUCED design it costs something and the cost is stated "
+            "rather than implied: B has exactly two companions (A and the "
+            "class companion) and is masked among them, while A and CL each "
+            "have only B, so D(A <- B) -- a registered reduced-design "
+            "estimand -- and any CL-as-outcome quantity are analysed with "
+            "their companion identity visible. The masked phase protects "
+            "D(B <- A), D(B <- CL) and Lambda on that design, and does not "
+            "protect the reciprocal direction. This sentence used to assert "
+            "the full-design case unconditionally, which is false for a "
+            "reduced replication"),
     }
 
 

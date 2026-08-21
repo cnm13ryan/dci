@@ -1,0 +1,827 @@
+{
+  "artifact_type": "v4r4-prefreeze-audit",
+  "bootstrap": {
+    "construction": "studentised maximum modulus",
+    "domain": "dci1v4r4:boot:v1",
+    "refit_per_replicate": true,
+    "resamples": 10000,
+    "root_seed": 202608241,
+    "unit": "block"
+  },
+  "can_freeze": true,
+  "claim_ladder": {
+    "class_sentence": "the reference pool is budget class and A is production class, so this excess is relative to budget-class companions matched on instructed compliance and is not an excess relative to companions of A's own structural class",
+    "levels": [
+      "L1",
+      "L2",
+      "L3a",
+      "L3b",
+      "L3c",
+      "L3d",
+      "L3e",
+      "L4",
+      "L5"
+    ],
+    "measurement_bases": [
+      "human_validated",
+      "autorater_calibration_approved",
+      "human_validation_unavailable",
+      "deterministic_measurement_validated"
+    ],
+    "scope_sentence": "the outcomes are verifier-defined and support no claim about compliance as an independent human would judge it",
+    "withheld": [
+      "L5"
+    ]
+  },
+  "confirmatory_budget": {
+    "per_model": {
+      "gemma-3n-e4b-it": 24576,
+      "qwen3-4b": 24576
+    },
+    "recomputed_from": "the signed GATE_3_REFERENCES design variant, the registered confirmatory topic split and C.M_DRAWS; no earlier estimate is carried",
+    "superseded_estimate": {
+      "value": 577536,
+      "why_it_no_longer_applies": "it assumed four replications on the 47-cell design; Gate 3 left one replication on that design and Gate 4 made it terminal"
+    },
+    "total": 49152
+  },
+  "design": {
+    "gemma-3n-e4b-it": {
+      "a_solo_compliance": 0.7265625,
+      "blocks": 384,
+      "cell_ids": [
+        "unconstrained",
+        "solo:A",
+        "solo:B",
+        "solo:CL",
+        "pair:A+B",
+        "pair:B+A",
+        "pair:B+CL",
+        "pair:CL+B"
+      ],
+      "cells_per_block_derived": 8,
+      "cells_per_block_recorded": 8,
+      "class_arm": true,
+      "class_companion": {
+        "constraint_class": "production",
+        "distance": 0.013565891472868241,
+        "family": "CL7",
+        "iota": 0.7083333333333334,
+        "severity": 80,
+        "slot": "CL"
+      },
+      "completion_cap": 512,
+      "confirmatory_generations": 24576,
+      "core_references": [],
+      "design": "reduced",
+      "design_and_variant_agree": true,
+      "design_variant": "reduced",
+      "estimands": {
+        "identified": [
+          "D(B<-A)",
+          "D(A<-B)",
+          "Lambda",
+          "Delta_class"
+        ],
+        "not_identified": [
+          "D(B<-R_j)",
+          "D(R_j<-B)",
+          "Delta_j",
+          "Delta_R",
+          "delta_difficulty",
+          "Xi"
+        ]
+      },
+      "focal_extension": [
+        11,
+        12
+      ],
+      "focal_extension_measured": false,
+      "focal_grid": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "gate4": {
+        "band": [
+          0.05,
+          0.95
+        ],
+        "cell_types_evaluated": 7,
+        "cells": 192,
+        "outcome": "PASS",
+        "rows": 768
+      },
+      "identification_statuses": [
+        "COMPANION_CLASS_NOT_MATCHED",
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+        "EXCESS_NOT_IDENTIFIED"
+      ],
+      "iota_a": 0.6947674418604651,
+      "m_draws": 8,
+      "m_star": 10,
+      "m_star_is_last_rung_measured": false,
+      "model_id": "google/gemma-3n-E4B-it",
+      "model_key": "gemma-3n-e4b-it",
+      "model_revision": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+      "n_star": 4,
+      "protocol_version": "4.0 revision 3",
+      "slot_map": {
+        "A": [
+          "A",
+          4
+        ],
+        "B": [
+          "B",
+          10
+        ],
+        "CL": [
+          "CL7",
+          80
+        ]
+      },
+      "slots_the_variant_uses": [
+        "A",
+        "B",
+        "CL"
+      ],
+      "spectrum": []
+    },
+    "qwen3-4b": {
+      "a_solo_compliance": 0.71875,
+      "blocks": 384,
+      "cell_ids": [
+        "unconstrained",
+        "solo:A",
+        "solo:B",
+        "solo:CL",
+        "pair:A+B",
+        "pair:B+A",
+        "pair:B+CL",
+        "pair:CL+B"
+      ],
+      "cells_per_block_derived": 8,
+      "cells_per_block_recorded": 8,
+      "class_arm": true,
+      "class_companion": {
+        "constraint_class": "production",
+        "distance": 0.006344958563535896,
+        "family": "CX1",
+        "iota": 0.6953125,
+        "severity": 4,
+        "slot": "CL"
+      },
+      "completion_cap": 512,
+      "confirmatory_generations": 24576,
+      "core_references": [
+        {
+          "distance": 0.012628255722178294,
+          "family": "RF11",
+          "feature_group": "vowel_initial",
+          "iota": 0.7142857142857142,
+          "severity": 21,
+          "slot": "R1"
+        },
+        {
+          "distance": 0.025427950366814556,
+          "family": "CR5",
+          "feature_group": "comma",
+          "iota": 0.6762295081967213,
+          "severity": 8,
+          "slot": "R2"
+        }
+      ],
+      "design": "reduced",
+      "design_and_variant_agree": true,
+      "design_variant": "reduced",
+      "estimands": {
+        "identified": [
+          "D(B<-A)",
+          "D(A<-B)",
+          "Lambda",
+          "Delta_class"
+        ],
+        "not_identified": [
+          "D(B<-R_j)",
+          "D(R_j<-B)",
+          "Delta_j",
+          "Delta_R",
+          "delta_difficulty",
+          "Xi"
+        ]
+      },
+      "focal_extension": [
+        11,
+        12
+      ],
+      "focal_extension_measured": true,
+      "focal_grid": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "gate4": {
+        "band": [
+          0.05,
+          0.95
+        ],
+        "cell_types_evaluated": 7,
+        "cells": 192,
+        "outcome": "PASS",
+        "rows": 768
+      },
+      "identification_statuses": [
+        "COMPANION_CLASS_NOT_MATCHED",
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+        "EXCESS_NOT_IDENTIFIED"
+      ],
+      "iota_a": 0.7016574585635359,
+      "m_draws": 8,
+      "m_star": 12,
+      "m_star_is_last_rung_measured": true,
+      "model_id": "Qwen/Qwen3-4B",
+      "model_key": "qwen3-4b",
+      "model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "n_star": 2,
+      "protocol_version": "4.0 revision 3",
+      "slot_map": {
+        "A": [
+          "A",
+          2
+        ],
+        "B": [
+          "B",
+          12
+        ],
+        "CL": [
+          "CX1",
+          4
+        ],
+        "R1": [
+          "RF11",
+          21
+        ],
+        "R2": [
+          "CR5",
+          8
+        ]
+      },
+      "slots_the_variant_uses": [
+        "A",
+        "B",
+        "CL"
+      ],
+      "spectrum": []
+    }
+  },
+  "hashes": {
+    "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+    "chat_template_hashes": {
+      "gemma-3n-e2b-it": "ac03dcb3b09726f1e50ac55ae58fc8d5930eadc3b3a12cb04286dc1d82ac8001",
+      "gemma-3n-e4b-it": "ac03dcb3b09726f1e50ac55ae58fc8d5930eadc3b3a12cb04286dc1d82ac8001",
+      "qwen3-4b": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "qwen3-4b-instruct-2507": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+    },
+    "dependency_digest": "3c621d7ce06232d73fa448003cc542191f03847a9e4f84479cb398a922cff607",
+    "dependency_files": {
+      "dci1/environments/backend/uv.lock": "d14291c77641ff4b3ced3596b909b64ad7ed77bd5e3e842f8aa8cd0ae624bc10",
+      "dci1/environments/backend/vendor/MANIFEST.sha256": "3ce41a2f090f7195ec1f24614f6d7771c398b51a2e03f265f575d819430f7e8c",
+      "dci1/requirements-frozen.txt": "67c7ed012f82dbe03d38bc6123bffec71f2565177dccfb286519a075e7ba3ed3",
+      "dci1/uv.lock": "e5251bba7d6819b35e11c485c741cbf0b1be4cf1ab08fd344cd2e1ecc90e9b66"
+    },
+    "environment_digest": "da10615acc741b32bba707a0470688e758c47379e26624c12222b3b854c64b98",
+    "gate1_hashes": {
+      "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+      "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+      "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+      "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+      "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+      "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+    },
+    "per_model": {
+      "gemma-3n-e4b-it": {
+        "calibration_table_hash": "bb4bc2ae3826f5ea0324ad6219b6622c958d66085ed9c8472f977a7a5808cf6b",
+        "stage_record_hashes": {
+          "GATE_0_APPARATUS": "b173bfd5c66fd276d0fbcf8340c86b2a37ed27ba70cfc45fa961d83f80a794a6",
+          "GATE_1_MEASUREMENT": "b8fad63c3ad2225b45f71f0cd9dc752dc02fcd15e0a3f10f12fec8cf24ef5f26",
+          "GATE_2_REGIME": "4b7780a6321f7cc2c01e23e6c0cb6e2232da5423ba8dd3e0efa06f0ed208e97a",
+          "GATE_3_REFERENCES": "eb9c20375cbb6f31da08135fc292d267f8707a12d21b8ca11cc690e340fbb3cf",
+          "GATE_4_COMPOSED_HEADROOM": "09c7a8c1dc5ba227abf1b581d44d774ff58e85ae833d5303c4f6a773d2332ab9",
+          "QUALIFIED": "91a5f3098d3ee6c972efaaa400851962e89f7af2000e93d959af42ebbf7d51ce",
+          "REGIME_SCREEN": "161f00815657803b9851c67286359ec82aa9b24e19bc48ee0e0dace24fe6e164"
+        }
+      },
+      "qwen3-4b": {
+        "calibration_table_hash": "280203f88b1414d946187a43a9c28bac13cb87287daad9cdcc4b630c7206e407",
+        "stage_record_hashes": {
+          "GATE_0_APPARATUS": "4daf567d47c76bc803c354590c9d96c50c6955e187828cfb9c6f3e967daa4a06",
+          "GATE_1_MEASUREMENT": "942fb80348c94ddc2b70e79701952a010e269f64d1c6b9de87c9e77d90670e10",
+          "GATE_2_REGIME": "e1587d19bf3b828a63e5587f3059009254c45522c0d918b3b497cfcc15cefb0b",
+          "GATE_3_REFERENCES": "5a36ee5b40a50ff2e31dd6c8ddc4d052eb11c0aab2e7f9f1df5a99bf6f9882ca",
+          "GATE_4_COMPOSED_HEADROOM": "435baf346b51dc838dedede3a7aeeb01d812001c331b8a8b6c0896168bc2adea",
+          "QUALIFIED": "f53fb81fb4d5ded49d0035597cd4df51e299dfd4974678382d37fe4a7d72b54a",
+          "REGIME_SCREEN": "0f4b4aa3acec5dc4daca61e5808fa60c671e70a974f039f3b9c211e303038d42"
+        }
+      }
+    },
+    "protocol_document_list": [
+      "user-notes/DCI1_preregistration_v4r4.md",
+      "user-notes/DCI1_v4r3_to_v4r4_changelog.md",
+      "dci1/DECISIONS_V4R4.md",
+      "user-notes/DCI1_preregistration_v4r3.md"
+    ],
+    "protocol_documents": {
+      "dci1/DECISIONS_V4R4.md": "201403256233c1aeb0304f08bbb1a77adbcc2d05e90c66b03ef68982cb966b66",
+      "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+      "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+      "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+    },
+    "protocol_hash": "63f558b62f500489a340fba8418afea2a05b706988af00ac636b68f33af0fe3b",
+    "registration_manifest_hash": "093cac952c4ac87885d7f60f9559a106f183cd16047e860573bcc2bea4db4b60",
+    "verifier_sources": {
+      "dci1v4/statistics.py": "db5eeb21d5296efab444d76e56a543e116cadf527c682431d4f0cca0c8014371",
+      "dci1v4/target.py": "aa221381cb6141e8d2d5f75e2695e109a6952035d724a8c5710b0fe8e43addf4",
+      "dci1v4/words.py": "edafc17e19711eb277af2a97d54ae553d14b330d87e2ab0c98373b65226ef726",
+      "dci1v4r4/compliance.py": "d01a7a05d16553726ab1c1f97b7461895a281a5140de74f933a0f8961e5cc8b2",
+      "dci1v4r4/constraints.py": "22e7da5391a8cb943e62b57bf15db7b1aaa8d18c42bdc93dcdad37cdea789440",
+      "dci1v4r4/statistics.py": "729c18c3737805371e911c67c0f1b5e37718f8e48d77c3ac37fc43b7c804b8fa",
+      "dci1v4r4/words.py": "ad0e21eb997069e966618adf699167d66d2121bca4a043f25b30a5799dec3c7d"
+    }
+  },
+  "integrity": {
+    "durability": {
+      "manifest_tracked_in_git": true,
+      "off_machine_copy": false,
+      "passed": true,
+      "roots_on_one_device": true,
+      "stated_limitation": "Both roots are local. This establishes that two filesystem copies agree and that a restore works when rehearsed; it does NOT establish off-machine durability, and no off-machine copy exists. Loss of this machine loses the raw evidence. What survives in version control is the manifest, the hashes, the producing commit and the reproduction commands, which make loss detectable and the run repeatable — not recoverable. Both roots are on ONE device, so device failure loses both copies at once."
+    },
+    "passed": true,
+    "per_model": {
+      "gemma-3n-e2b-it": {
+        "records": {
+          "GATE_0_APPARATUS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_1_MEASUREMENT": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_2_REGIME": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_3_REFERENCES": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "QUALIFIED": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "REGIME_SCREEN": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          }
+        },
+        "stage_reached": "GATE_3_REFERENCES",
+        "superseded_are_predecessors_of_nothing": true,
+        "superseded_records": [
+          "evidence/dci1v4r4/gemma-3n-e2b-it/superseded/7eb19472dfc4/GATE_3_REFERENCES/records/gate3_references.json"
+        ]
+      },
+      "gemma-3n-e4b-it": {
+        "records": {
+          "GATE_0_APPARATUS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_1_MEASUREMENT": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_2_REGIME": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_3_REFERENCES": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_4_COMPOSED_HEADROOM": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "QUALIFIED": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "REGIME_SCREEN": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          }
+        },
+        "stage_reached": "GATE_4_COMPOSED_HEADROOM",
+        "superseded_are_predecessors_of_nothing": true,
+        "superseded_records": [
+          "evidence/dci1v4r4/gemma-3n-e4b-it/superseded/7eb19472dfc4/GATE_3_REFERENCES/records/gate3_references.json"
+        ]
+      },
+      "qwen3-4b": {
+        "records": {
+          "GATE_0_APPARATUS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_1_MEASUREMENT": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_2_REGIME": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_3_REFERENCES": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_4_COMPOSED_HEADROOM": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "QUALIFIED": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "REGIME_SCREEN": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          }
+        },
+        "stage_reached": "GATE_4_COMPOSED_HEADROOM",
+        "superseded_are_predecessors_of_nothing": true,
+        "superseded_records": [
+          "evidence/dci1v4r4/qwen3-4b/superseded/7eb19472dfc4/GATE_3_REFERENCES/records/gate3_references.json"
+        ]
+      },
+      "qwen3-4b-instruct-2507": {
+        "records": {
+          "GATE_0_APPARATUS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_1_MEASUREMENT": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_2_REGIME": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "GATE_3_REFERENCES": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "QUALIFIED": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "REGIME_SCREEN": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          }
+        },
+        "stage_reached": "GATE_3_REFERENCES",
+        "superseded_are_predecessors_of_nothing": true,
+        "superseded_records": []
+      }
+    },
+    "problems": [],
+    "producing_commit": "bbe5b8f24fd3974a507ea509a24accb9176e2216",
+    "worktree_changed_paths": [
+      "M dci1/reports/dci1v4r4/lifecycle_integrity.json",
+      " M dci1/reports/section_13_2_v4/topic_reservation_audit.json",
+      " M dci1/src/dci1v4r4/analysis/masking.py",
+      " M dci1/src/dci1v4r4/run/regime_screen.py",
+      " M dci1/tests_v4/test_t12_provenance.py",
+      " M dci1/tests_v4r4/test_gate5_freeze_paths.py",
+      " M dci1/tools/topic_reservation_audit_v4.py",
+      " M dci1/tools/v4r4_lifecycle_integrity.py",
+      " M dci1/tools/v4r4_mirror_records.py",
+      "?? dci1/reports/dci1v4r4/durability.json",
+      "?? dci1/reports/dci1v4r4/prefreeze_audit.json",
+      "?? dci1/tools/v4r4_prefreeze_audit.py"
+    ],
+    "worktree_clean": false
+  },
+  "masking": {
+    "min_differing_fraction": 0.5,
+    "namespaces": [
+      "pilot_mask",
+      "confirmatory_mask"
+    ]
+  },
+  "population": {
+    "surviving": [
+      "gemma-3n-e4b-it",
+      "qwen3-4b"
+    ],
+    "terminal": {
+      "gemma-3n-e2b-it": {
+        "band": [
+          0.05,
+          0.95
+        ],
+        "criterion": "COMPOSED_HEADROOM_FAILURE",
+        "durable_terminal_copy": true,
+        "evidence": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+        "failures": [
+          {
+            "cell": "pair:B+R3",
+            "rate": 0.9583333333333334,
+            "slot": "B"
+          },
+          {
+            "cell": "pair:B+R3",
+            "rate": 0.96875,
+            "slot": "R3"
+          },
+          {
+            "cell": "pair:B+R3+",
+            "rate": 1.0,
+            "slot": "R3+"
+          },
+          {
+            "cell": "pair:R3++B",
+            "rate": 1.0,
+            "slot": "R3+"
+          },
+          {
+            "cell": "pair:R3+B",
+            "rate": 0.9583333333333334,
+            "slot": "R3"
+          }
+        ],
+        "gate": "GATE_4_COMPOSED_HEADROOM",
+        "stage_reached": "GATE_3_REFERENCES",
+        "status": "COMPOSED_HEADROOM_FAILURE",
+        "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+      },
+      "qwen3-4b-instruct-2507": {
+        "band": [
+          0.05,
+          0.95
+        ],
+        "criterion": "COMPOSED_HEADROOM_FAILURE",
+        "durable_terminal_copy": true,
+        "evidence": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+        "failures": [
+          {
+            "cell": "solo:CL",
+            "rate": 0.9895833333333334,
+            "slot": "CL"
+          }
+        ],
+        "gate": "GATE_4_COMPOSED_HEADROOM",
+        "stage_reached": "GATE_3_REFERENCES",
+        "status": "COMPOSED_HEADROOM_FAILURE",
+        "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+      }
+    }
+  },
+  "precision": {
+    "reduced": {
+      "all_applicable_met_at_worst_case": true,
+      "applicable_to_this_variant": [
+        "D",
+        "Lambda"
+      ],
+      "blocks": 384,
+      "m_draws": 8,
+      "note": "a projection, not a guarantee; an unfavourable realisation is reported as INSUFFICIENT_PRECISION at analysis time (§16.1). Delta_R and delta_difficulty carry preconditions that do not apply here because the reduced design does not identify them",
+      "preconditions": {
+        "D": 0.05,
+        "Delta_R": 0.05,
+        "Delta_j": 0.06,
+        "Lambda": 0.08,
+        "delta_difficulty": 0.05
+      },
+      "projection": {
+        "phi_alternate|k=1": {
+          "D": {
+            "half_width": 0.03368378767424075,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.03368378767424075,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.047636069361006964,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 1.96
+        },
+        "phi_alternate|k=4": {
+          "D": {
+            "half_width": 0.042807625876411376,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.042807625876411376,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.06053912508741441,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 2.4909
+        },
+        "phi_alternate|k=6": {
+          "D": {
+            "half_width": 0.04521532927088134,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.04521532927088134,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.06394413188204556,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 2.631
+        },
+        "phi_primary|k=1": {
+          "D": {
+            "half_width": 0.031197441635226014,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.031197441635226014,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.044119845071879694,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 1.96
+        },
+        "phi_primary|k=4": {
+          "D": {
+            "half_width": 0.03964780988223698,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.03964780988223698,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.05607047045384955,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 2.4909
+        },
+        "phi_primary|k=6": {
+          "D": {
+            "half_width": 0.04187779027667328,
+            "met": true,
+            "required": 0.05
+          },
+          "Delta_j": {
+            "half_width": 0.04187779027667328,
+            "met": true,
+            "required": 0.06
+          },
+          "Lambda": {
+            "half_width": 0.05922413897148748,
+            "met": true,
+            "required": 0.08
+          },
+          "sidak": 2.631
+        }
+      },
+      "v4r2_table_reproduces": {
+        "D": 0.047,
+        "Delta_R": 0.0422,
+        "Delta_j": 0.0496,
+        "Lambda": 0.0664
+      },
+      "variance_model": {
+        "p_one_minus_p": 0.215,
+        "phi": [
+          0.27,
+          0.37
+        ],
+        "rho": 0.5
+      }
+    }
+  },
+  "revision": "v4r4",
+  "topics": {
+    "confirmatory_untouched": true,
+    "development_sets": [
+      "prescreen",
+      "solo"
+    ],
+    "registered_sizes": {
+      "composed": 24,
+      "confirmatory": 384,
+      "prescreen": 24,
+      "sequestered": 96,
+      "solo": 96
+    },
+    "reserved_sets": [
+      "composed",
+      "confirmatory",
+      "sequestered"
+    ],
+    "reserved_sets_unspent": true,
+    "sequestered_are_hash_only": "the 72 sequestered topics exist to this repository as identities and content hashes only, so they cannot be spent by construction and cannot appear in this tally",
+    "sequestered_untouched": true,
+    "spent_by_stage": {
+      "v4r3-cap-selection-1024": {
+        "prescreen": 384,
+        "stage": "REGIME_SCREEN"
+      },
+      "v4r3-cap-selection-512": {
+        "prescreen": 384,
+        "stage": "REGIME_SCREEN"
+      },
+      "v4r3-cap-selection-768": {
+        "prescreen": 384,
+        "stage": "REGIME_SCREEN"
+      },
+      "v4r3-composed-headroom": {
+        "composed": 6816,
+        "stage": "GATE_4_COMPOSED_HEADROOM"
+      },
+      "v4r3-gate0-pilot": {
+        "prescreen": 9024,
+        "stage": "GATE_0_APPARATUS"
+      },
+      "v4r3-ladder-screen": {
+        "prescreen": 25824,
+        "stage": "REGIME_SCREEN"
+      },
+      "v4r3-solo-calibration": {
+        "solo": 63744,
+        "stage": "GATE_2_REGIME"
+      }
+    },
+    "split": {
+      "composed": 24,
+      "confirmatory": 384,
+      "prescreen": 24,
+      "solo": 96
+    },
+    "untouched": [
+      "confirmatory",
+      "sequestered"
+    ]
+  }
+}

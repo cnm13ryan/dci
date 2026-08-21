@@ -700,7 +700,9 @@ def _run_stage(args, stage: str, build, *, summary_keys=()) -> int:
         write_terminal_report,
     )
     from dci1v4r4.protocol import constants as C
-    from dci1v4r4.run.regime_screen import mirror_records
+    from dci1v4r4.run.regime_screen import (
+        mirror_records, mirror_terminal_report,
+    )
 
     context = registered_context()
     registration.load_manifest(context)
@@ -723,6 +725,10 @@ def _run_stage(args, stage: str, build, *, summary_keys=()) -> int:
                   "strongest_permissible_statement": C.TERMINAL_SENTENCE}
         record.setdefault("status", terminal.status)
         write_terminal_report(tree, record)
+        # A terminal report is a result, and `evidence/` is gitignored, so
+        # without this the record of a failed gate is the one class of v4r4
+        # artifact that lives in a single copy.
+        mirror_terminal_report(args.model)
         log_transition(tree, stage=stage, outcome="TERMINAL",
                        producing_commit=_commit(), environment_digest="-",
                        detail={"status": record.get("status")})
@@ -812,13 +818,28 @@ def cmd_gate5(args) -> int:
     records = {stage: _stage_payload(tree, stage)
                for stage in (C.STAGE_REGIME, C.STAGE_GATE2, C.STAGE_GATE3,
                              C.STAGE_GATE4)}
-    gate1_path = REPO / "reports" / "dci1v4r4" / "gate1_measurement.json"
-    gate1 = json.loads(gate1_path.read_text()) if gate1_path.exists() else None
+    # The Gate 1 basis comes from the model's own *signed* stage record. It
+    # used to be read from `reports/dci1v4r4/gate1_measurement.json` --- the
+    # name of the stage-record file, not of any report this study writes ---
+    # so the path never existed, the basis was always UNKNOWN, §33's D9 never
+    # closed and no replication could freeze.
+    gate1 = _stage_payload(tree, C.STAGE_GATE1)
     durable_path = REPO / "reports" / "dci1v4r4" / "durability.json"
     durability = (json.loads(durable_path.read_text())
                   if durable_path.exists() else None)
+    provenance_path = REPO / "reports" / "dci1v4r4" / "backend_provenance.json"
+    if not provenance_path.exists():
+        print(json.dumps({"outcome": "REFUSED", "model": args.model,
+                          "why": "§18.1 binds the chat template hash, the "
+                                 "hardware record and both dependency "
+                                 "digests; run tools/"
+                                 "v4r4_backend_provenance.py first",
+                          "missing": str(provenance_path)}, indent=1))
+        return 1
+    provenance = json.loads(provenance_path.read_text())
     record = run_freeze(args.model, manifest=manifest, records=records,
                         gate1=gate1, durability=durability,
+                        provenance=provenance,
                         producing_commit=_commit())
     out = REPO / "reports" / "dci1v4r4"
     out.mkdir(parents=True, exist_ok=True)

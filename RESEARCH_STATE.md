@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E), `CP4`/`CP7` are removed, and the study has executed QUALIFIED → GATE_0_APPARATUS → REGIME_SCREEN → **GATE_1 → GATE_2 → GATE_3, PASS on all four replications**. The full 47-cell design is identified on `gemma-3n-e2b-it` alone; the other three run §8.6's 8-cell reduced design. Gate 4 is next. §4m, §4n. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/gate1_decision.json` |
+| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. §4m, §4n, §4o. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/prefreeze_audit.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -1023,6 +1023,104 @@ composes two constraints in one prompt. **No freeze, no confirmatory
 generation, no estimand computed.**
 
 
+### 4o. v4r4 Gate 4: the composed-headroom predicate ends two replications, one of them the only full design (2026-08-22)
+
+**§13.10, run exactly as registered.** Every registered cell type of each
+replication's own design, on the 24 reserved composed-validation topics, at
+`M_CAL = 4`, each cell's compliance rate evaluated independently against
+`[0.05, 0.95]` for each of its constraints. 6,816 generations: 4,512 for the
+47-cell design and 768 for each 8-cell one. It is the first stage that composes
+two constraints in one prompt and the first that spends a reserved topic set.
+
+| model | design | cells | rows | outcome |
+|---|---|---:|---:|---|
+| `gemma-3n-e2b-it` | full | 1,128 | 4,512 | **TERMINAL — `COMPOSED_HEADROOM_FAILURE`** |
+| `gemma-3n-e4b-it` | reduced | 192 | 768 | PASS |
+| `qwen3-4b` | reduced | 192 | 768 | PASS |
+| `qwen3-4b-instruct-2507` | reduced | 192 | 768 | **TERMINAL — `COMPOSED_HEADROOM_FAILURE`** |
+
+**What failed, recomputed from the raw scored rows rather than read off the
+record.** Each rate below is 96 observations over 24 topics at M = 4, balanced,
+so the flat mean and the topic mean coincide.
+
+| model | cell | slot | rate |
+|---|---|---|---:|
+| `gemma-3n-e2b-it` | `pair:B+R3` | B | 0.9583 |
+| `gemma-3n-e2b-it` | `pair:B+R3` | R3 | 0.9688 |
+| `gemma-3n-e2b-it` | `pair:B+R3+` | R3+ | 1.0000 |
+| `gemma-3n-e2b-it` | `pair:R3++B` | R3+ | 1.0000 |
+| `gemma-3n-e2b-it` | `pair:R3+B` | R3 | 0.9583 |
+| `qwen3-4b-instruct-2507` | `solo:CL` | CL | 0.9896 |
+
+`R3` is `RF11:26` and `R3+` is `RF11:32` — the vowel-initial family, whose
+chance compliance is high, so its ι sat inside the eligibility band on the 96
+solo calibration topics (0.633 and 0.679) while its **raw** compliance on the
+composed set is at the ceiling. §13.10 checks the raw rate, and a constraint
+that is nearly always satisfied has no room to register interference.
+`qwen3-4b-instruct-2507`'s failure is one cell: its class companion `CL8:3` at
+0.9896 solo. Both are ceiling effects on a **companion**, not on an outcome
+constraint.
+
+**Nothing was revised in response, because §13.10 forbids it.** "Gate 4 runs
+after the spectrum and the class companion are already fixed, and its outcomes
+never revise them. A headroom failure is a terminal status for the replication,
+not an instruction to choose different rungs." No reference was replaced, no
+family added, no caliper widened, no rung re-chosen. Both terminal records are
+signed, mirrored, and carry the §28.3 sentence; every later stage is
+mechanically disabled for those two replications, and `assert_predecessor_passed`
+refuses Gate 5 on them by name.
+
+**The scientific consequence, stated plainly.** The difficulty spectrum was
+identified on one replication of four at Gate 3, and that replication is the one
+Gate 4 ended. **No surviving replication identifies a spectrum-dependent
+quantity.** The confirmatory study is two reduced-design replications —
+`gemma-3n-e4b-it` and `qwen3-4b` — estimating D(B←A), D(A←B), Λ and Δ_class.
+`delta_difficulty`, Ξ, Δ_R, Δ_j and every D(B←R_j) are `NOT_IDENTIFIED` for the
+study as a whole, not merely unresolved. §13.8 withholds L3a–L3e accordingly.
+
+**The confirmatory budget, recomputed from the signed records.** 8 cells/block ×
+384 blocks × M = 8 = **24,576 generations per replication, 49,152 in total**.
+The ~577k figure that appeared in earlier planning assumed four replications on
+the 47-cell design; neither the count nor the design survived Gates 3 and 4, and
+`reports/dci1v4r4/prefreeze_audit.json` records the superseded estimate beside
+the recomputed one rather than dropping it.
+
+**Precision, projected at the registered variance model.** T = 384, M = 8. At
+the worse φ = 0.37 and the largest registered Šidák constant (k = 6): D 0.0452
+against a 0.05 precondition, Λ 0.0639 against 0.08, Δ_j 0.0452 against 0.06.
+`Delta_R` and `delta_difficulty` carry preconditions that do not apply, because
+the surviving design does not identify them. The v4r2 §16.2 published row
+reproduces from the same formulas to four decimals, so the model has not
+drifted.
+
+**The masked phase protects less on this design, and now says so.** §8.6's
+8-cell block gives B exactly two companions (A and the class companion), so
+D(B←A), D(B←CL) and Λ are masked among two; A's and CL's only companion is B,
+so D(A←B) is analysed with its companion identity visible. §20-R4's stratified
+permutation already handled the arithmetic — an independent permutation would
+move a label with probability exactly 0.5 on this design and fail the mask's own
+effectiveness check about half the time by chance. The declaration that travels
+with every masked record asserted the full-design case unconditionally and was
+false here; it states both cases now.
+
+**Gate 4 also found the last of the reader-with-no-producer defects, and one of
+them is why there is a terminal record at all.** `stages/gates.py` declared its
+own `TerminalStatus`, unrelated to the class `_run_stage` catches, so a
+`COMPOSED_HEADROOM_FAILURE` would have escaped as an unhandled traceback with no
+terminal report written and no transition logged. It was fixed before Gate 4
+ran, on a path that had never executed, and two replications used it within the
+hour. Six further defects — five §18.1 fields with readers and no producer,
+§26's durability gate with no caller, and a durable-mirror path where two
+artifacts collided — are in `CHANGES_SCIENTIFIC.md` for 2026-08-22.
+
+**State.** `reports/dci1v4r4/prefreeze_audit.json` reconstructs the final design
+from signed records alone and reports `can_freeze: true`: signatures and durable
+mirrors verify on all 26 stage records, §26's durability gate passes with its
+stated single-device limitation, the confirmatory and sequestered topic sets are
+untouched, and the recomputed budget is 49,152. Gate 5 is next, for two
+replications.
+
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1075,9 +1173,9 @@ generation, no estimand computed.**
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: Gates 2, 3 and 4 of v4r4 executed for the first
-time and seven inherited defects of one class — a reader with no producer — moved
-what a v4r4 record says, in §4n. Before it: v4r3 closes at Gate 1, and v4r4
+whether old and new remain comparable. Most recent: Gates 2, 3, 4 and 5 of v4r4 executed for the
+first time and thirteen inherited defects, most of one class — a reader with no
+producer — moved what a v4r4 record says, in §4n and §4o. Before it: v4r3 closes at Gate 1, and v4r4
 adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
 
 ## 7. Where to look
