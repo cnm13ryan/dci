@@ -1,0 +1,101 @@
+{
+ "amendment": "R1, registered at commit f657de2 before any card was judged",
+ "approves": "nothing. Gate 1 is NOT approved",
+ "artifact": "\u00a710.4-R development phase, outcome",
+ "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "conditions_not_run": {
+  "v4r-high": {
+   "status": "NOT_RUN"
+  },
+  "v4r-low": {
+   "judged_result": null,
+   "note": "partial rows retained for provenance; no metrics were computed from them and none may be",
+   "retained": "reports/dci1v4r3/validator_runs/development-v4r-low-rep0",
+   "rows_generated": 58,
+   "status": "STARTED_THEN_STOPPED"
+  },
+  "v4r-medium-8k": {
+   "status": "NOT_RUN"
+  }
+ },
+ "conditions_run": {
+  "v4r-medium": {
+   "failed": [
+    "2 adequate output cap and absence of problematic truncation",
+    "3 valid parsing and coverage",
+    "4 specificity on faithful cards",
+    "5 sensitivity on mutated cards"
+   ],
+   "parse_validity": 0.6875,
+   "seconds_per_item": 68.57,
+   "sensitivity": {
+    "by_defect": {
+     "denominator_swap": {
+      "caught": 1,
+      "n": 1,
+      "sensitivity": 1.0
+     },
+     "inequality_flip": {
+      "caught": 8,
+      "n": 10,
+      "sensitivity": 0.8
+     },
+     "numerator_swap": {
+      "caught": 9,
+      "n": 9,
+      "sensitivity": 1.0
+     },
+     "off_by_one": {
+      "caught": 9,
+      "n": 9,
+      "sensitivity": 1.0
+     },
+     "segmentation_drift": {
+      "caught": 0,
+      "n": 1,
+      "sensitivity": 0.0
+     },
+     "vacuity_ignored": {
+      "caught": 0,
+      "n": 5,
+      "sensitivity": 0.0
+     }
+    },
+    "n": 35,
+    "value": 0.7714285714285715
+   },
+   "specificity": {
+    "n": 31,
+    "value": 0.6129032258064516
+   },
+   "truncation_pooled": 0.3125,
+   "verdict": "FAIL"
+  }
+ },
+ "consequence": "measurement_basis stays human_validation_unavailable. Gate 1 records MEASUREMENT_EVIDENCE_INSUFFICIENT. \u00a710.3 human validation is the remaining registered route and no independent annotator exists.",
+ "deterministic_scorer_unchanged": true,
+ "findings": {
+  "blind_to_vacuity": {
+   "numerator_swap": "9/9",
+   "off_by_one": "9/9",
+   "reading": "the planted-defect arm discriminates, so the blind spot is readable rather than noise. \u00a77.3's wordless-answer rule is exactly the construct question \u00a710.4 exists to check",
+   "vacuity_ignored_caught": 0,
+   "vacuity_ignored_n": 5
+  },
+  "the_judge_recounted": {
+   "faithful_cards_called_incorrect": 12,
+   "of_parsed_faithful": 31,
+   "on_instrument_A": 8,
+   "reading": "the prompt says 'Do not recount the answer yourself. Judge the method.' It recounted, disagreed with the verifier's count, and failed the card"
+  },
+  "truncation_unchanged": {
+   "reading": "amendment R1's diagnosis -- that the task set was arithmetic -- is not supported. Median output ~800 tokens against a 2,048 cap: the reasoning chain binds, not the enumeration",
+   "section_10_4R_v4r_medium": 0.3125,
+   "section_10_4_original_v4prompt_medium": 0.3194444444444444
+  }
+ },
+ "outcome": "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+ "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect",
+ "why_the_contingencies_were_not_completed": "Researcher decision of 2026-08-21, taken on the evidence below. Both registered contingencies address truncation. The v4r-medium run failed criteria 4 and 5 as well, and those two failures are behavioural rather than budgetary: the judge recounted the answer on A despite being instructed not to, and did not engage with the wordless-answer rule at all. A larger cap or a shorter reasoning chain does not address either. The contingencies remain registered and available; they were not tried, and this record says so rather than implying they were."
+}

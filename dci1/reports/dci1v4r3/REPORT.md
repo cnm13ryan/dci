@@ -384,6 +384,61 @@ cell mean, estimand or claim reads anything the validator produces, at any
 stage. §10.4's original evidence is retained: it judges a different question,
 it is the record of why R1 exists, and the two must never be pooled.
 
+### 7.2 What §10.4-R measured, and why the pathway is now the finding
+
+`v4r-medium`, 96 cards, 48 faithful and 48 carrying one planted defect, against
+thresholds registered at `f657de2` before any card was judged.
+
+| criterion | observed | threshold | |
+|---|---:|---:|---|
+| 2 truncation, pooled | 0.3125 | ≤ 0.10 | fail |
+| 3 parse validity | 0.6875 | ≥ 0.95 | fail |
+| 4 specificity, faithful cards | 0.613 (n = 31) | ≥ 0.90 | fail |
+| 5 sensitivity, mutated cards | 0.771 (n = 35) | ≥ 0.80 | fail |
+
+**Amendment R1's diagnosis was wrong, and this is the evidence.** R1 argued that
+§10.4 failed because the judging task was arithmetic, and replaced it with one
+that shows the arithmetic instead of requesting it. Truncation came back at
+**0.3125** against the original pathway's **0.319** at the same reasoning
+effort — unchanged. Median output is about 800 tokens against a 2,048 cap, so
+what binds is the reasoning chain the judge emits, not the enumeration the card
+removed. Recording this matters more than the amendment did.
+
+**The judge recounted anyway.** Twelve of the thirty-one parsed faithful cards
+were called incorrect, and **eight of those twelve are `A`**, every one
+justified *"Wrong count of however"*. The prompt says, in those words, *"Do not
+recount the answer yourself. Judge the method."* It recounted, disagreed with
+the verifier's count, and failed the card. That is §10.4's original failure
+relocated, not removed.
+
+**It is blind to the defect that matters most.** `vacuity_ignored`: **0 of 5**.
+Shown a wordless answer with a rate reported as satisfied, the judge calls the
+method correct and offers no justification. §7.3's wordless-answer rule — the
+empty string passes 94 of 94 count severities and none of the rate ones — is
+exactly the construct question §10.4 exists to check. Meanwhile `numerator_swap`
+is caught 9/9 and `off_by_one` 9/9, so the arm discriminates; the blind spot is
+readable rather than noise.
+
+**Without the planted-defect arm none of that would be visible.** The run would
+have reported agreement with the verifier on most items and told us nothing
+about whether the judge was doing the task at all.
+
+**The two registered contingencies were not completed.** `v4r-low` was started
+and stopped at 58 of 96 cards; its rows are retained for provenance and no
+metric was computed from them. `v4r-high` and the 8,192-token `v4r-medium-8k`
+were not run. Both address truncation, and criteria 4 and 5 failed for reasons a
+larger cap or a shorter reasoning chain does not touch. That is a researcher
+decision of 2026-08-21, recorded in `section_10_4R_outcome.json`, and the
+contingencies remain registered and available: they were not tried, and the
+record says so rather than implying they were.
+
+**Consequence.** `measurement_basis` stays `human_validation_unavailable`.
+§10.3 human validation is the remaining registered route, and no independent
+annotator exists. The honest reading is not "the amendment needs another turn of
+the crank" but that **an external LLM judge at this scale did not perform either
+version of the §10.4 task** — it would not do the arithmetic when asked, and it
+would not leave the arithmetic alone when asked.
+
 ---
 
 ## 8. What this stage does not say

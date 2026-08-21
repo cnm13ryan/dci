@@ -558,6 +558,39 @@ commit `f657de2`, before any card was judged.
 The original §10.4 evidence is retained. It is the record of why the amendment
 exists, it judges a different question, and the two must never be pooled.
 
+**§10.4-R ran, and failed four of five criteria — the amendment's own diagnosis
+was wrong.** On 96 cards (48 faithful, 48 with one planted defect) against
+thresholds registered before any card was judged: truncation **0.3125** against
+a 0.10 threshold, parse validity 0.688 against 0.95, specificity **0.613**
+against 0.90, sensitivity 0.771 against 0.80.
+
+Truncation is *unchanged* from the original pathway's 0.319 at the same
+reasoning effort. R1 argued the task was too much arithmetic; removing the
+arithmetic changed nothing, because what binds is the reasoning chain the judge
+emits — median output about 800 tokens against a 2,048 cap.
+
+Two things the planted-defect arm made visible that an agreement check would
+have hidden. **The judge recounted anyway**: twelve of thirty-one parsed
+faithful cards were called incorrect, eight of them `A`, each justified "Wrong
+count of however", against a prompt that says *do not recount, judge the
+method*. And it is **blind to the wordless-answer rule**: `vacuity_ignored`
+caught 0 of 5, with no justification offered, while `numerator_swap` and
+`off_by_one` were caught 9/9 each — so the arm discriminates and the blind spot
+is readable.
+
+The two registered contingencies were not completed: `v4r-low` was stopped at
+58 of 96 cards and no metric was computed from it, and `v4r-high` and the
+8,192-token `v4r-medium-8k` were not run. Both address truncation; criteria 4
+and 5 failed for reasons a larger cap does not touch. Researcher decision of
+2026-08-21, recorded in `dci1/reports/dci1v4r3/section_10_4R_outcome.json`.
+
+The strongest reading the evidence supports is not that the amendment needs
+another turn of the crank, but that **an external LLM judge at this scale
+performed neither version of the §10.4 task**: it would not do the arithmetic
+when asked, and would not leave it alone when asked. `measurement_basis` stays
+`human_validation_unavailable`; §10.3 remains the only untried registered
+route, and no independent annotator exists.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
