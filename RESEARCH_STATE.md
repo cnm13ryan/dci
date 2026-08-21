@@ -90,7 +90,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | v3 | closed. Two Gemma replications reached UNMASKED_ANALYSIS; both Qwen replications terminated at Gate 2A. `dci1/RESULTS_V3.md` |
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
-| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3; Gate 1 blocked only on §10.4's researcher approval. §4h, §4i. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/REPORT.md` |
+| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3. Gate 1 refuses: every §10.2 criterion passes, §10.4's original pathway failed its own criterion 2 and is replaced prospectively by §10.4-R (C26), and the researcher's approval is reserved after that. §4h, §4i, §4j. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/REPORT.md` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -507,6 +507,56 @@ for **4,920–6,048 generations per model**. Report:
 
 Nothing here licenses a claim about companion identity: no composed cell
 exists, and none may exist before Gate 1.
+
+### 4j. v4r3's repair pass: provenance, the stage machine, and §10.4-R (2026-08-21)
+
+An evidence audit of the v4r3 state found four defects, three of them the same
+shape — a rule the preregistration states in prose with nothing on the
+execution path enforcing it.
+
+- **The implementation was untracked**, so every v4r3 record named a producing
+  commit that did not contain `src/dci1v4r3` at all, and §18's
+  `tracked_implementation` and `clean_worktree` checks refused the study for
+  exactly that reason. Committed; qualification now **PASSES** and binds.
+- **There was no stage machine.** `STAGE_SEQUENCE` existed as a list of strings
+  and nothing read it. That is how the §12.2 regime screen came to run before
+  `QUALIFIED` and before `GATE_0_APPARATUS` — not by a decision, but because no
+  guard existed to refuse it. `dci1v4r3/engine/transitions.py` now enforces
+  in-order, once, terminal-is-terminal and §18.1's post-freeze rule against the
+  predecessor's verified hash and signature, and logs every *attempted*
+  transition including refusals. The existing screen evidence is recorded as
+  `ADOPTED_OUT_OF_ORDER`, which does not satisfy any later stage's predecessor
+  requirement: it is registered diagnostic evidence and the stage must be re-run
+  in order under the bound commit.
+- **§12.1's cap probe leaked a composed outcome.** The probe must generate
+  composed `A + B` prompts — the cap has to be adequate where the answer is
+  hardest to write — so 72 composed generations per replication went through the
+  shared scorer and their rows carry `passed` for both constituents. Nothing read
+  it and no record contained it, but `D(B ← A)` at `A:8 + B:7` was derivable from
+  stored evidence. The probe is now projected onto §12.1's three registered
+  fields before the cap decision sees it, a restricted durable artifact is what
+  later stages read, and the selection modules are checked by parsing rather
+  than by running that they cannot name the field at all.
+- **The analysis stack did not exist.** `spectrum.py` and `claims.py` had nothing
+  to feed them: no observation table, no estimators, no bootstrap, no masking.
+  All four are now implemented and Gate 0 walks the whole chain end to end.
+
+**§10.4 is replaced prospectively, not weakened.** Its original task asked the
+judge whether a response obeys a rule; for a rate predicate that is an
+enumeration, and the judge exhausted its 2,048-token cap doing arithmetic
+without reaching a verdict. §10.4-R (C26, `DECISIONS_V4R3.md` A5) asks instead
+whether the *operationalization* — segmentation convention, numerator,
+denominator, derived quantity, direction, threshold, verdict — faithfully
+implements the written instruction, with the arithmetic shown rather than
+requested. **The deterministic verifier remains the study's scorer throughout.**
+Half the judged cards carry one planted defect from a registered closed list of
+six, because a validator handed a correct derivation and asked whether it is
+correct can score perfectly by always agreeing; sensitivity has a registered
+floor per defect kind as well as overall. Every threshold was registered at
+commit `f657de2`, before any card was judged.
+
+The original §10.4 evidence is retained. It is the record of why the amendment
+exists, it judges a different question, and the two must never be pooled.
 
 ## 5. Provisional, superseded, broken, unresolved
 
