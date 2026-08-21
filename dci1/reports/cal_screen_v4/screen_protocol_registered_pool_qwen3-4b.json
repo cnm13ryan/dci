@@ -1,0 +1,181 @@
+{
+ "a_prescreen_anchor_floored": 0.7083333333333334,
+ "arm": "registered_pool",
+ "cells": 2304,
+ "classification": "NON-CONFIRMATORY DESIGN SCREEN",
+ "draws_per_cell": 4,
+ "model": "qwen3-4b",
+ "producing_commit": "abc39c94a6567fabb6d5e961007494255f56bf48",
+ "question": "under the floored stem, does the REGISTERED reference pool clear \u00a713.2 on the 96 solo-calibration topics at M_cal = 4? If it does, the pool's failure was a length artifact the stem already fixes and Amendment B is unnecessary, which preserves Gate 1's instrument freeze.",
+ "registered_values_untouched": {
+  "ladder_shortlist_max": 3,
+  "reference_caliper": 0.1,
+  "reference_ladders": {
+   "RF1": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "RF2": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "RF3": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "RF4": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "RF5": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "RF6": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "RF7": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+   ],
+   "RF8": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  "reference_vacuity_max": 0.1
+ },
+ "screen_protocol_hash": "10a4cd741c03f036df6cd27cd3b2685151f1918053a3a86975999e75fc15bf9d",
+ "seeds": {
+  "note": "a distinct stage label, so a pool row and a main-arm row at an identical prompt never share a seed",
+  "stage_label": "cal-screen-pool"
+ },
+ "shortlist": {
+  "RF1": [
+   4,
+   6,
+   8
+  ],
+  "RF2": [
+   2,
+   3,
+   4
+  ],
+  "RF3": [
+   0,
+   2,
+   4
+  ],
+  "RF4": [
+   4,
+   5,
+   6
+  ],
+  "RF5": [
+   0,
+   11,
+   12
+  ],
+  "RF6": [
+   0,
+   3,
+   6
+  ],
+  "RF7": [
+   22,
+   23,
+   24
+  ],
+  "RF8": [
+   6,
+   7,
+   8
+  ]
+ },
+ "shortlist_rule": "\u00a712.2 verbatim, at most 3 per family, nearest A on the floored pre-screen curve",
+ "status": "NON-CONFIRMATORY DESIGN SCREEN, second arm. Not a registered \u00a712.3 record.",
+ "stem": "floored",
+ "study_id": "dci1-cal-screen-v4",
+ "topics": "the 96 registered solo-calibration topics, unchanged",
+ "verifier_source_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "why_it_was_not_already_answered": "the FORM x STEM screen measured count x floored on 24 pre-screen topics at one draw and found exactly two families reaching the conjunction on all four models. Two is a near miss against a requirement of three, at one-family resolution on a sample its own report calls unstable. \u00a713.2 admits against the calibration set and that crossing has never been run."
+}

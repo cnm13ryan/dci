@@ -105,16 +105,45 @@ def test_the_two_implementations_use_different_mechanisms():
     """Agreement is evidence about the rule only if the code differs.
 
     The comparison is on the segmentation, which every instrument depends on:
-    the primary walks characters and accumulates runs, the independent one
-    matches a compiled Unicode-letter pattern.
+    the primary walks characters and accumulates runs against ``str.isalpha``,
+    the independent one groups runs against ``unicodedata.category``.
+
+    This test used to pin the independent side's pattern literal
+    ``[^\W\d_]+``. That class is not §7.2's "maximal run of alphabetic
+    characters": it also admits 1,151 non-decimal numerics in categories No
+    and Nl, and on the genuine generation ``Answer: H<subscript-two>O`` it
+    read one word where the primary reads three, taking RF3 with it. The
+    registered prose is the reference and the primary agrees with it, so the
+    fixture had encoded the defect as the expectation and correcting the code
+    required correcting the fixture.
     """
-    primary = (PACKAGE / "verifiers" / "words.py").read_text()
-    other = (PACKAGE / "verifiers" / "independent.py").read_text()
+    import inspect
+
+    from dci1v4.verifiers import words as primary_words
+    primary = inspect.getsource(primary_words.alpha_runs)
+    other = (inspect.getsource(independent.words)
+             + inspect.getsource(independent._alphabetic))
     assert "for ch in text" in primary and "runs.append" in primary
-    assert "re.compile" not in primary
-    assert "re.compile" in other and "findall" in other
-    assert "runs.append" not in other
-    assert independent._WORD.pattern == r"[^\W\d_]+"
+    assert "isalpha" in primary
+    assert "runs.append" not in other and "for ch in text" not in other
+    assert "unicodedata.category" in other and "groupby" in other
+    assert "isalpha" not in other
+
+
+def test_both_implementations_read_the_same_character_class():
+    """§7.2 says alphabetic. Both sides must mean the same thing by it.
+
+    Checked over the whole BMP plus the astral letter blocks rather than over
+    a hand-picked sample, because the defect this replaces lived in 1,151
+    characters that no natural response was likely to contain and one
+    eventually did.
+    """
+    from dci1v4.verifiers import words as primary_words
+    points = list(range(0x10000)) + list(range(0x10300, 0x10400))
+    disagreements = [hex(c) for c in points
+                     if bool(primary_words.alpha_runs(chr(c)))
+                     != bool(independent.words(chr(c)))]
+    assert disagreements == []
 
 
 def test_parse_independence_is_checked_on_signatures():

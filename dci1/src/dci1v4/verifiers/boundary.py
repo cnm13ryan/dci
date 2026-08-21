@@ -14,7 +14,7 @@ least forty cases covering the §24 enumeration. The suites split exactly as
   characters, combining marks, the soft hyphen, and sentence-boundary
   punctuation. Forty-eight cases in total.
 * **B-side and family suites, authored for v4 in full.** ``FOCAL_CASES`` is a
-  v4-authored corpus of forty-four texts carrying a hand-derived statistic for
+  v4-authored corpus of forty-five texts carrying a hand-derived statistic for
   the word-length rule and for each of the eight families, covering the §24
   word-length enumeration — empty output, single-token output, hyphenated and
   apostrophised forms, non-Latin script, digits and symbols adjacent to words,

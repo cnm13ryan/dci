@@ -1,0 +1,560 @@
+{
+ "a_and_b_recheck": {
+  "all_exactly_one": true,
+  "consequence": "reports/gate1_v4/section_10_2.json stands as written; nothing in it is invalidated",
+  "disagreements": [],
+  "instruments": 12,
+  "line": "A and B reimplementation, re-verified after the segmentation correction",
+  "minimum_agreement": 1.0,
+  "responses_including_suites": 14046,
+  "seconds": 12.5
+ },
+ "adversarial_corpus": {
+  "enumeration": "\u00a724, verbatim: for the word-length and budget constraints the enumerated cases are empty output, single-token output, hyphenated and apostrophised forms, non-Latin script, digits and symbols adjacent to words, and markdown emphasis",
+  "genuine_generations": 13953,
+  "line": "adversarial corpus",
+  "realised_incidence_in_genuine_generations": {
+   "apostrophised forms": {
+    "count": 4601,
+    "rate": 0.3297498745789436
+   },
+   "digits and symbols adjacent": {
+    "count": 227,
+    "rate": 0.016268902744929405
+   },
+   "empty output": {
+    "count": 0,
+    "rate": 0.0
+   },
+   "hyphenated forms": {
+    "count": 2547,
+    "rate": 0.18254138894861321
+   },
+   "markdown emphasis": {
+    "count": 4042,
+    "rate": 0.2896868057048663
+   },
+   "non-Latin script": {
+    "count": 15,
+    "rate": 0.0010750376263169211
+   },
+   "single-token output": {
+    "count": 295,
+    "rate": 0.021142406650899448
+   }
+  },
+  "shared_with_A_and_B": "the targeted corpus is the one built in verifiers/adversarial.py and already reported in section_10_2.json; \u00a724 gives the budget constraints the same enumeration as B"
+ },
+ "artifact": "\u00a710.2 verifier-correctness evidence for the eight registered reference families",
+ "boundary_suite": {
+  "budget_enumeration_covered": {
+   "apostrophised forms": [
+    "fc06"
+   ],
+   "digits and symbols adjacent": [
+    "fc09",
+    "fc29",
+    "fc43",
+    "fc45"
+   ],
+   "empty output": [
+    "fc01",
+    "fc02"
+   ],
+   "hyphenated forms": [
+    "fc05"
+   ],
+   "markdown emphasis": [
+    "fc10"
+   ],
+   "non-Latin script": [
+    "fc07",
+    "fc08",
+    "fc20"
+   ],
+   "single-token output": [
+    "fc03",
+    "fc04",
+    "fc31",
+    "fc34"
+   ]
+  },
+  "budget_enumeration_missing": [],
+  "failures": [],
+  "families": {
+   "RF1": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "initial-letter-b",
+    "family_feature_cases": [
+     "fc13",
+     "fc35"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 9
+   },
+   "RF2": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "suffix-ing",
+    "family_feature_cases": [
+     "fc14",
+     "fc28",
+     "fc37"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 9
+   },
+   "RF3": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "single-letter-words",
+    "family_feature_cases": [
+     "fc15",
+     "fc26"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 9
+   },
+   "RF4": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "doubled-letters",
+    "family_feature_cases": [
+     "fc11",
+     "fc12",
+     "fc27",
+     "fc41"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 7
+   },
+   "RF5": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "comma-budget",
+    "family_feature_cases": [
+     "fc36"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 13
+   },
+   "RF6": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "capitalisation",
+    "family_feature_cases": [
+     "fc17",
+     "fc40"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 13
+   },
+   "RF7": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "letter-a",
+    "family_feature_cases": [
+     "fc26",
+     "fc39"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 25
+   },
+   "RF8": {
+    "agreement": 1.0,
+    "authored_for_v4": 45,
+    "carried_from_v3": 0,
+    "cases": 45,
+    "family_feature": "suffix-y",
+    "family_feature_cases": [
+     "fc30",
+     "fc38"
+    ],
+    "meets_minimum": true,
+    "minimum_required": 40,
+    "rungs_checked": 9
+   }
+  },
+  "frozen_before": "qualification; the case texts and expected statistics are literals in verifiers/boundary.py and are inside the canonical verifier hash",
+  "label_vocabularies_differ": {
+   "apostrophised forms": {
+    "adversarial": "apostrophised-form",
+    "boundary_suite": "apostrophised-forms"
+   },
+   "digits and symbols adjacent": {
+    "adversarial": "digits-adjacent-to-words",
+    "boundary_suite": "digits-and-symbols-adjacent"
+   },
+   "hyphenated forms": {
+    "adversarial": "hyphenation",
+    "boundary_suite": "hyphenated-forms"
+   }
+  },
+  "line": "boundary suite",
+  "suite_hash": "c996a52ecbff834e04268d9b34001910cb246f59e65a4e9c208796f59550d44c"
+ },
+ "canonical_verifier_hash": "f5d4f7e74e757769ec43d7007b0121687fa4b5b388184e5ef32b171ea7580ee4",
+ "carry_over": {
+  "applies": false,
+  "line": "carry-over",
+  "rule": "\u00a710.2 confines carry-over to A; the family suites are authored for v4 in full"
+ },
+ "classification": "Gate 1 input evidence. Gate 1 is NOT approved by this artifact and remains unapproved.",
+ "determinism": {
+  "agreement": 1.0,
+  "all_batches_exactly_one": true,
+  "batches": 224,
+  "instruments": 94,
+  "line": "determinism",
+  "note": "batched by family and by text only to bound the subprocess payload; every response is covered by three separate processes at every one of the 94 rungs",
+  "processes_per_batch": 3,
+  "processes_total": 672,
+  "responses": 13953,
+  "seconds": 103.1,
+  "verdicts_per_process": 1311582
+ },
+ "independent_reimplementation": {
+  "agreement": {
+   "RF1@0": 1.0,
+   "RF1@1": 1.0,
+   "RF1@2": 1.0,
+   "RF1@3": 1.0,
+   "RF1@4": 1.0,
+   "RF1@5": 1.0,
+   "RF1@6": 1.0,
+   "RF1@7": 1.0,
+   "RF1@8": 1.0,
+   "RF2@0": 1.0,
+   "RF2@1": 1.0,
+   "RF2@2": 1.0,
+   "RF2@3": 1.0,
+   "RF2@4": 1.0,
+   "RF2@5": 1.0,
+   "RF2@6": 1.0,
+   "RF2@7": 1.0,
+   "RF2@8": 1.0,
+   "RF3@0": 1.0,
+   "RF3@1": 1.0,
+   "RF3@2": 1.0,
+   "RF3@3": 1.0,
+   "RF3@4": 1.0,
+   "RF3@5": 1.0,
+   "RF3@6": 1.0,
+   "RF3@7": 1.0,
+   "RF3@8": 1.0,
+   "RF4@0": 1.0,
+   "RF4@1": 1.0,
+   "RF4@2": 1.0,
+   "RF4@3": 1.0,
+   "RF4@4": 1.0,
+   "RF4@5": 1.0,
+   "RF4@6": 1.0,
+   "RF5@0": 1.0,
+   "RF5@1": 1.0,
+   "RF5@10": 1.0,
+   "RF5@11": 1.0,
+   "RF5@12": 1.0,
+   "RF5@2": 1.0,
+   "RF5@3": 1.0,
+   "RF5@4": 1.0,
+   "RF5@5": 1.0,
+   "RF5@6": 1.0,
+   "RF5@7": 1.0,
+   "RF5@8": 1.0,
+   "RF5@9": 1.0,
+   "RF6@0": 1.0,
+   "RF6@1": 1.0,
+   "RF6@10": 1.0,
+   "RF6@11": 1.0,
+   "RF6@12": 1.0,
+   "RF6@2": 1.0,
+   "RF6@3": 1.0,
+   "RF6@4": 1.0,
+   "RF6@5": 1.0,
+   "RF6@6": 1.0,
+   "RF6@7": 1.0,
+   "RF6@8": 1.0,
+   "RF6@9": 1.0,
+   "RF7@0": 1.0,
+   "RF7@1": 1.0,
+   "RF7@10": 1.0,
+   "RF7@11": 1.0,
+   "RF7@12": 1.0,
+   "RF7@13": 1.0,
+   "RF7@14": 1.0,
+   "RF7@15": 1.0,
+   "RF7@16": 1.0,
+   "RF7@17": 1.0,
+   "RF7@18": 1.0,
+   "RF7@19": 1.0,
+   "RF7@2": 1.0,
+   "RF7@20": 1.0,
+   "RF7@21": 1.0,
+   "RF7@22": 1.0,
+   "RF7@23": 1.0,
+   "RF7@24": 1.0,
+   "RF7@3": 1.0,
+   "RF7@4": 1.0,
+   "RF7@5": 1.0,
+   "RF7@6": 1.0,
+   "RF7@7": 1.0,
+   "RF7@8": 1.0,
+   "RF7@9": 1.0,
+   "RF8@0": 1.0,
+   "RF8@1": 1.0,
+   "RF8@2": 1.0,
+   "RF8@3": 1.0,
+   "RF8@4": 1.0,
+   "RF8@5": 1.0,
+   "RF8@6": 1.0,
+   "RF8@7": 1.0,
+   "RF8@8": 1.0
+  },
+  "all_exactly_one": true,
+  "disagreements": [],
+  "line": "independent reimplementation",
+  "minimum_agreement": 1.0,
+  "responses_including_suites": 14046,
+  "seconds": 80.1,
+  "source_material": "the registered prose of v4r2 \u00a77.2's family table and \u00a77.4's graded form only; the reimplementation imports nothing from dci1v4.verifiers"
+ },
+ "response_pool": {
+  "distinct_texts": 13953,
+  "is_smoke_run": false,
+  "limitation": "Gate 2 has not run, so no solo-calibration response exists. The \u00a710.2 determinism and reimplementation lines must be re-run over the calibration pool when it exists; this establishes them over every natural response that exists at Gate 1.",
+  "pool_hash": "ec0462a46d1f35113ee42f80fb3b930b4f5cbf4e8661224e47391d882e37eb0e",
+  "provenance": "the \u00a712.2 dense ladder screen, the three \u00a712.1 cap screens and the Gate 0 pilot, on all four registered models, read from evidence/dci1-v4 without regeneration",
+  "rows_read": 16128,
+  "sources": [
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e2b-it/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/gemma-3n-e4b-it/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/pilot/pilot-cap768/cache.jsonl",
+    "rows": 1200
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap1024/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap512/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/capscreen-cap768/cache.jsonl",
+    "rows": 96
+   },
+   {
+    "path": "evidence/dci1-v4/qwen3-4b-instruct-2507/prescreen/ladder-cap512/cache.jsonl",
+    "rows": 2544
+   }
+  ],
+  "texts_used": 13953
+ },
+ "scope": {
+  "families": [
+   "RF1",
+   "RF2",
+   "RF3",
+   "RF4",
+   "RF5",
+   "RF6",
+   "RF7",
+   "RF8"
+  ],
+  "instrument_count": 94,
+  "instruments": [
+   "RF1@0",
+   "RF1@1",
+   "RF1@2",
+   "RF1@3",
+   "RF1@4",
+   "RF1@5",
+   "RF1@6",
+   "RF1@7",
+   "RF1@8",
+   "RF2@0",
+   "RF2@1",
+   "RF2@2",
+   "RF2@3",
+   "RF2@4",
+   "RF2@5",
+   "RF2@6",
+   "RF2@7",
+   "RF2@8",
+   "RF3@0",
+   "RF3@1",
+   "RF3@2",
+   "RF3@3",
+   "RF3@4",
+   "RF3@5",
+   "RF3@6",
+   "RF3@7",
+   "RF3@8",
+   "RF4@0",
+   "RF4@1",
+   "RF4@2",
+   "RF4@3",
+   "RF4@4",
+   "RF4@5",
+   "RF4@6",
+   "RF5@0",
+   "RF5@1",
+   "RF5@2",
+   "RF5@3",
+   "RF5@4",
+   "RF5@5",
+   "RF5@6",
+   "RF5@7",
+   "RF5@8",
+   "RF5@9",
+   "RF5@10",
+   "RF5@11",
+   "RF5@12",
+   "RF6@0",
+   "RF6@1",
+   "RF6@2",
+   "RF6@3",
+   "RF6@4",
+   "RF6@5",
+   "RF6@6",
+   "RF6@7",
+   "RF6@8",
+   "RF6@9",
+   "RF6@10",
+   "RF6@11",
+   "RF6@12",
+   "RF7@0",
+   "RF7@1",
+   "RF7@2",
+   "RF7@3",
+   "RF7@4",
+   "RF7@5",
+   "RF7@6",
+   "RF7@7",
+   "RF7@8",
+   "RF7@9",
+   "RF7@10",
+   "RF7@11",
+   "RF7@12",
+   "RF7@13",
+   "RF7@14",
+   "RF7@15",
+   "RF7@16",
+   "RF7@17",
+   "RF7@18",
+   "RF7@19",
+   "RF7@20",
+   "RF7@21",
+   "RF7@22",
+   "RF7@23",
+   "RF7@24",
+   "RF8@0",
+   "RF8@1",
+   "RF8@2",
+   "RF8@3",
+   "RF8@4",
+   "RF8@5",
+   "RF8@6",
+   "RF8@7",
+   "RF8@8"
+  ],
+  "out_of_scope": "the three Amendment B candidate families, which are not registered and would need their own \u00a710.2 set if the amendment were adopted",
+  "why_not_blocked_on_the_pool": "RF1-RF8 are registered; Gate 3 can only admit from the pool it is given, and Amendment B adds families rather than removing these. The evidence is required under every disposition of the pool question."
+ },
+ "summary": {
+  "a_and_b_still_exactly_one": true,
+  "boundary_agreement_exactly_one": true,
+  "budget_enumeration_fully_covered": true,
+  "determinism_exactly_one": true,
+  "every_family_meets_the_forty_case_minimum": true,
+  "families_meet_10_2": true,
+  "reimplementation_exactly_one": true,
+  "still_outstanding_before_gate_1": [
+   "re-run determinism and reimplementation over the \u00a712.3 solo-calibration pool once Gate 2 produces one",
+   "\u00a710.2 for any family Amendment B adds, if it is adopted",
+   "\u00a710.4 judge selection and one-shot calibration",
+   "explicit researcher approval of the measurement basis"
+  ]
+ }
+}

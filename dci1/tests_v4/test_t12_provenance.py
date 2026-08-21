@@ -380,3 +380,26 @@ def test_a_drifted_study_wide_rule_fails_qualification_closed(tmp_path,
     monkeypatch.setattr(constants_module, "REFERENCE_CALIPER", 0.20)
     with pytest.raises(IntegrityError, match="no longer implements"):
         registration.assert_manifest_matches_code(context)
+
+
+def test_no_v4_generation_has_touched_a_reserved_topic_set():
+    """§6.2 reserves the composed-validation, confirmatory and sequestered sets.
+
+    Four non-confirmatory screens have generated since those sets were drawn,
+    one of them on 120 blocks. Their source excludes the reserved sets; this
+    reads the rows they actually produced, so the guarantee does not rest on
+    the screens being what they say they are. Skips where the evidence tree is
+    absent, because it is machine-local.
+    """
+    import sys
+    tools = Path(__file__).resolve().parents[1] / "tools"
+    sys.path.insert(0, str(tools))
+    from topic_reservation_audit_v4 import audit
+
+    result = audit()
+    if result["rows_read"] == 0:
+        pytest.skip("no v4 rows on this machine")
+    assert result["offending_files"] == []
+    assert result["unspent"] is True
+    assert set(result["rows_by_topic_set"]) <= {"prescreen", "solo",
+                                                "no-v4-topic"}
