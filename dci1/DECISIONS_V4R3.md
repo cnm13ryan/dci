@@ -455,3 +455,72 @@ a response seen here can no longer be labelled blind; `build` therefore excludes
 the 291 rows the §10.3 plan reserved before drawing. The first build overlapped
 on five of them and was rebuilt; the current card set at `ad0a2a55` overlaps on
 none. `--ignore-blind-sample` exists, says what it costs, and is off.
+
+## A11. The card audit found no defect, and found what §7.3 costs (2026-08-21)
+
+**Outcome.** 128 of 128 operationalization cards assessed **correct**; zero
+wrong, zero unsure. Bound to card set `ad0a2a55` and canonical verifier hash
+`41edc84c`. `reports/dci1v4r3/verifier_audit/report_Bryan.json`.
+
+**What that does and does not establish.** Measured rather than asserted: on
+the 128 cards, `numerator_swap` would have flipped 53 verdicts and visibly
+changed the matched-token list on all 53; `denominator_swap` 33, with the
+arithmetic line visibly different on all 33; `inequality_flip` 114 and
+`off_by_one` 37, both visible in the printed threshold and direction beside the
+verdict; `segmentation_drift` 2. So all five misreadings that discriminate on
+natural responses were on the displayed surface and were not objected to.
+`vacuity_ignored` discriminates on **no** natural response, which is the
+defect-sensitivity finding reappearing and the reason it can only be audited on
+designed cases.
+
+**The structural limit, stated plainly.** 1,741 tokens were listed as matched
+against 18,130 units in those responses. A defect that *includes* a wrong token
+is visible in the list; one that silently *omits* a qualifying token is not,
+because absence in a hundred-word answer is exactly the counting task the card
+format exists to avoid. The audit is strong against counting the wrong kind of
+thing and weak against counting too few of the right kind.
+
+**What it did surface.** Fourteen cards displayed bare `t` and `s` tokens
+inside matched lists — `vc-072` shows five of them in a `t_initial` count — and
+all fourteen were marked correct. That is §7.3 working as registered: *a word
+is a maximal run of alphabetic characters, Unicode general category L*, and an
+apostrophe is not category L, so `don't` is `don` and `t`, `It's` is `It` and
+`s`, and `well-known` is two words. **Not a defect.** The verifier implements
+the registered prose exactly, and §10.2's independent reimplementation agrees.
+
+**But its size was unknown, so it was measured.**
+`tools/v4r3_lexical_footprint.py`, read-only over the same 30,109 responses,
+against a *reader's word* in which one internal apostrophe or hyphen does not
+break a word — deliberately not one of §10.4-R2's six defects, because it is a
+different rule rather than a misreading of this one:
+
+| | |
+|---|---|
+| rate denominator inflated by | **1.67%** (42,146 of 2,524,851 words) |
+| verdicts that change | **230 of 20,928 = 1.10%**, band *detectable* |
+| worst numerator | `one_letter` **7.41%** |
+| worst families | `CR3` **7.94%** (shortlisted on 2 models), `RF3` **6.94%** (on 3) |
+| what it splits on | `'` 22,098 · `-` 15,392 · `’` 3,920 · `—` 283 |
+
+Detectable, below §11.8's smallest effect of interest, and concentrated in the
+one-letter families — which are the ones a fragment directly creates, since
+`don`+`t` manufactures a one-letter word that no reader sees. Two of those
+families are on live reference shortlists, so this is a live construct
+question and not an archival one.
+
+**Standing.** §10.5's third question — *does the deterministic rule validly
+operationalise the intended construct?* — which the preregistration bounds by
+§9.3 and §24 and states is **not resolved by this study**. Nothing is changed
+and nothing is proposed. What changes is that the registered choice now has a
+measured price attached, and a choice whose footprint is unknown is a choice
+nobody has actually made.
+
+**A defect in the diagnostic, caught by its own test.** The first
+implementation used a word-character class minus digits and underscore, which
+admits Unicode category No, so `H₂O` was one token where §7.3 gives `H` and
+`O`, and the difference would have been charged to the apostrophe rule.
+`test_the_two_readings_agree_where_no_joiner_occurs` caught it on §10.2's own
+boundary corpus. Rebuilt on `str.isalpha`, the same predicate the registered
+rule uses. The corrected run reproduces every figure above unchanged —
+subscripts are rare in real answers — so the numbers stood, but they now stand
+on something correct.

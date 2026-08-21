@@ -305,3 +305,61 @@ def test_a_stored_card_set_can_be_checked_against_its_hash():
     cards[0]["verdict"] = "SATISFIES" if cards[0]["verdict"] == "VIOLATES" \
         else "VIOLATES"
     assert sha_text(canonical_json(cards)) != digest
+
+
+# ------------------------------------------------- the §7.3 lexical footprint
+
+def _footprint():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "v4r3_lexical_footprint",
+        Path(__file__).resolve().parents[1] / "tools"
+        / "v4r3_lexical_footprint.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_reader_word_differs_from_the_registered_word_only_on_joiners():
+    """The scope claim the footprint diagnostic rests on.
+
+    If the two readings differed anywhere else, the measured footprint would
+    be attributing to apostrophes and hyphens something they did not cause.
+    """
+    footprint = _footprint()
+    from dci1v4r3.verifiers.words import alpha_runs
+    for text in AWKWARD:
+        if any(ch in text for ch in "'’-‐"):
+            continue
+        assert footprint.reader_words(text) == alpha_runs(text), repr(text)
+
+
+def test_the_reader_word_joins_the_forms_the_registered_word_splits():
+    footprint = _footprint()
+    from dci1v4r3.verifiers.words import alpha_runs
+    for text, joined in [("don't", ["don't"]),
+                         ("well-known", ["well-known"]),
+                         ("It's a state-of-the-art system",
+                          ["It's", "a", "state-of-the-art", "system"])]:
+        assert footprint.reader_words(text) == joined
+        assert len(alpha_runs(text)) > len(joined)
+
+
+@pytest.mark.parametrize("statistic_id", sorted(
+    s for s in GRANULARITY if s not in ("s0", "focal", "sentence")))
+def test_the_two_readings_agree_where_no_joiner_occurs(statistic_id):
+    """A numerator that moved on joiner-free text would be a different rule."""
+    footprint = _footprint()
+    if footprint.reader_statistic(statistic_id, "cot") is None:
+        pytest.skip("character-shaped numerator; the question does not apply")
+    for text in AWKWARD:
+        if any(ch in text for ch in "'’-‐"):
+            continue
+        assert footprint.reader_statistic(statistic_id, text) == \
+            STATISTICS[statistic_id](text), repr(text)
+
+
+def test_the_footprint_excludes_the_numerators_the_question_cannot_touch():
+    footprint = _footprint()
+    for statistic_id in ("comma", "semicolon", "capital_char", "sentence"):
+        assert footprint.reader_statistic(statistic_id, "a, b; C. d") is None

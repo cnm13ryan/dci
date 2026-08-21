@@ -674,6 +674,25 @@ both margin classes and five of the six misreadings — the sixth,
 `vacuity_ignored`, discriminates on no natural response at all. Output is a
 defect worklist, never an agreement rate; `DECISIONS_V4R3.md` A10.
 
+**The card audit ran, and the verifier came through it.** 128 of 128
+derivations assessed correct, zero wrong, zero unsure, at card set `ad0a2a55`.
+All five misreadings that discriminate on natural responses were on the
+displayed surface and none was objected to. Its structural limit is stated
+rather than glossed: 1,741 matched tokens against 18,130 units, so a wrongly
+*included* token is visible and a silently *omitted* one is not.
+
+**What it surfaced is a construct question, not a defect.** Fourteen cards
+showed bare `t` and `s` tokens inside matched lists, which is §7.3 working as
+registered — a word is a maximal run of Unicode category L, so `don't` is `don`
+and `t`. Measured against a reader's word
+(`dci1/reports/dci1v4r3/lexical_footprint.json`): the rate denominator inflates
+by **1.67%**, **1.10%** of verdicts change — *detectable*, below §11.8's
+smallest effect of interest — and it concentrates in the one-letter families
+`CR3` (7.9%) and `RF3` (6.9%), because `don`+`t` manufactures a one-letter word
+no reader sees. Both are on live reference shortlists. §10.5's third question,
+which the preregistration does not resolve; nothing is changed and nothing
+proposed. `DECISIONS_V4R3.md` A11.
+
 **Gate 1: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2 prerequisite passes at
 the R3 verifier hash `41edc84c` over all **584** instruments — three-process
 determinism 1.000, 164 boundary cases 1.000, independent reimplementation
