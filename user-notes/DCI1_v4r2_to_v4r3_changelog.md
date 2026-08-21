@@ -1051,6 +1051,59 @@ things drift silently.
 
 ---
 
+## C26. §10.4's judging task is replaced (amendment R1, 2026-08-21)
+
+**Post-adoption amendment.** C1–C25 were written before the first v4r3
+generation. This one is written after the §12.2 regime screen and after §10.4's
+development phase failed, and before Gate 1, freeze, or any composed cell. It
+is a **repair of an instrument**, not a change to a scientific rule, and it is
+registered here because the distinction has to be visible rather than asserted.
+
+**What changed.** §10.4 asked the judge whether a response obeys a rule. §10.4-R
+asks whether the *operationalization* — segmentation convention, numerator,
+denominator, derived quantity, predicate direction, threshold, verdict —
+faithfully implements the written instruction. The arithmetic is shown to the
+validator rather than requested from it.
+
+**Why.** The original task was arithmetic, and the judge exhausted its
+2,048-token cap performing it. Neither registered condition survived criterion 2
+on v4r3's pool: truncation 23/72 and 40/72 against 0/48 for the same
+configuration on v4r2's pool of $A$ and $B$ alone, rising monotonically with how
+much counting the rule demanded (0/12 on $A$, 12/12 on rate lower bounds). The
+diagnosis is in `dci1/reports/dci1v4r3/section_10_4_development.json`, which is
+retained.
+
+**Why this is the right repair and not merely the cheapest.** Raising the output
+cap would have been smaller, and it was considered. It does not address what
+§10.4 is *for*. §10.2 already shows two independent implementations agreeing at
+1.000; what agreement cannot show is that either implements the construct the
+prose describes, because both could share a misreading. Asking a judge to redo
+the arithmetic tests the judge; asking it to inspect the operationalization
+tests the thing §10.2 cannot reach. The cap increase remains the registered
+fallback if §10.4-R fails its own criteria.
+
+**What did not change.** The deterministic verifier is still the study's
+scorer — no compliance rate, cell mean, estimand or claim reads anything the
+validator produces. The split, the registry disjointness, the pinned revision,
+the hashed configuration, concurrency one, the repeatability check, the
+single-shot freeze, the append-only ledger, the sealed final-check set, and the
+requirement of explicit researcher approval are all carried unchanged.
+
+**What is new, and load-bearing.** Half the judged cards carry exactly one
+planted defect from a registered closed list of six. Without them the procedure
+would measure agreeableness: a validator handed a correct derivation and asked
+whether it is correct has an obvious cheap strategy. Sensitivity now has a
+prospectively registered floor, **per defect kind as well as overall**, so a
+validator blind to one whole class cannot pass by catching the others. Under
+the old design a validator that agreed with everything would have scored well
+on criterion 4; under this one it fails.
+
+**Comparability.** No v4r3 number moves. §10.4's development evidence stands as
+the record of a pathway that did not work, and is not comparable with §10.4-R's
+evidence — they judge different questions and the two must never be pooled.
+
+---
+
 ## Sequencing, and why the order is forced
 
 1. **Amendments must precede Gate 1.** C2, C15, C23 and C24 all change the
