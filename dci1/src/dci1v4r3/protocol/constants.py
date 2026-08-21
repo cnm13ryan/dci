@@ -328,7 +328,12 @@ GRADED_ROBUSTNESS_THRESHOLD = 0.99   # §15 F5
 CLAIM_LEVELS = ("L1", "L2", "L3a", "L3b", "L3c", "L3d", "L3e", "L4", "L5")
 WITHHELD_CLAIM_LEVELS = ("L5",)
 MEASUREMENT_BASES = ("human_validated", "autorater_calibration_approved",
-                     "human_validation_unavailable")
+                     "human_validation_unavailable",
+                     "deterministic_measurement_validated")
+#: §10.7-R5. Written by a Gate 1 that passed the deterministic-measurement
+#: architecture (A-E). It is **not** `human_validated`, so `SCOPE_SENTENCE`
+#: attaches under it permanently and no later stage may remove it.
+MEASUREMENT_BASIS_R5 = "deterministic_measurement_validated"
 SCOPE_SENTENCE = ("the outcomes are verifier-defined and support no claim "
                   "about compliance as an independent human would judge it")
 TERMINAL_SENTENCE = ("a terminal pre-confirmatory status carries no evidence "
@@ -386,6 +391,10 @@ TERMINAL_STATUSES = (
     "FOCAL_RANGE_EXHAUSTED", "GRID_RESOLUTION_INSUFFICIENT",
     "REGIME_NOT_FOUND", "COMPOSED_HEADROOM_FAILURE",
     "MEASUREMENT_NOT_ESTABLISHED", "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+    # §10.7-R5: the prose of a family does not pin down its predicate. A
+    # distinct status because it is a defect in the *specification*, which no
+    # amount of implementation evidence can repair.
+    "SPECIFICATION_AMBIGUOUS",
 )
 IDENTIFICATION_STATUSES = (
     "EXCESS_NOT_IDENTIFIED", "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",

@@ -1574,3 +1574,55 @@ topics at the same completion cap. `dci1/reports/dci1v4r3/expansion_diagnosis.js
 was computed against the pre-R3 library and remains the record of why R3 exists;
 its numbers are not comparable with a post-R3 coverage report and are not meant
 to be.
+
+## 2026-08-21 — v4r3: Gate 1's measurement criterion replaced (§10.7-R5)
+
+**What changed.** §18 stage 4 required *§10.2 for every verifier in the final
+instrument population, **plus §10.3 or §10.4***. Amendment §10.7-R5 replaces
+that with *§10.2 **plus §10.7-R5 A–E***: a specification audit, deterministic
+implementation validation, independent reimplementation, adversarial/boundary/
+**mutation** validation, and provenance/hash binding. Ten conditions, none of
+them a human or autorater agreement threshold. §10.3, §10.4, §10.4-R and
+§10.4-R2 are reclassified **supplementary/diagnostic** and are no longer
+mandatory Gate-1 prerequisites.
+
+A fourth measurement basis is registered, `deterministic_measurement_validated`,
+and a terminal status, `SPECIFICATION_AMBIGUOUS`. Two hashes are newly bound
+into the Gate-1 record: the specification audit and **every model-facing
+wording of the final population**, which §10.6 never covered because a wording
+cannot move the verifier hash. `run/analysis_run.py` now emits §10.5's scope
+sentence on every analysis record, which §10.5 always required and the code did
+not do.
+
+**Timing.** Adopted before Gate 2, before any freeze, and before any
+confirmatory generation: all four replications stood at `REGIME_SCREEN`, no
+`gate1_measurement.json` existed anywhere in the v4r3 tree, and no estimand had
+been computed. It is adopted **after** §10.4-R2 failed and because of what that
+failure showed, and §31's objection to exactly that is registered inside the
+amendment rather than argued away.
+
+**Which results are affected.** No stored number changes. No row is
+regenerated, no row is rescored, no threshold, caliper, candidate identity,
+seed, estimand, difficulty coordinate or verifier moves; the canonical verifier
+hash stays `41edc84c…`. What changes is which rule Gate 1 is decided under, and
+therefore what a Gate-1 record means. `reports/dci1v4r3/gate1_decision.json`
+records the decision under the **former** rule and is preserved unchanged and
+not described as having passed. §10.4-R2 stands **FAILED** under its own
+stopping rule; §10.3 stands unavailable; neither is described anywhere as
+having succeeded.
+
+**Comparability.** A Gate-1 record written under R5 is not comparable with a v3
+or v4r2 Gate-1 record: those rest on §10.2 plus a human or autorater pathway,
+and this one does not. Every claim under it carries §10.5's scope sentence
+permanently — *the outcomes are verifier-defined and support no claim about
+compliance as an independent human would judge it* — so no statement licensed
+under R5 is a statement about human-judged compliance. A later completed §10.3
+would supersede the basis rather than be blocked by it.
+
+**What the amended gate returned.** `SPECIFICATION_AMBIGUOUS`, failing
+condition 8 alone: two of the four wordings of `CP4` and `CP7` state the
+severity as a target and name no bound, so the prose does not distinguish the
+registered `>= q` from an `== q` reading. Gate 2 is not licensed. The finding
+and its two remediation paths are `dci1/DECISIONS_V4R3.md` A14;
+`dci1/reports/dci1v4r3/gate1_r5_decision.json`,
+`specification_audit.json`, `wording_review.json`, `mutation_validation.json`.

@@ -645,3 +645,97 @@ rests on its own stipulations. R5 does not deny that — it makes it the
 permanent, quoted caveat on every claim instead of a reason to stop. Whether
 that trade is acceptable is the researcher's judgement and not the agent's,
 which is why this subsection is a draft and why item 4 exists.
+
+---
+
+## A14. §10.7-R5 adopted, and what the amended Gate 1 returned (2026-08-21)
+
+**Adopted, prospectively, before Gate 2 and before any freeze.** The researcher
+authorised, in the session brief of 2026-08-21, a pre-freeze amendment
+replacing §10.3/§10.4 as mandatory Gate-1 criteria with a validation
+architecture matched to a deterministic instrument. It is registered as
+§10.7-R5 in `user-notes/DCI1_preregistration_v4r3.md`, and §18 stage 4 now
+reads *§10.2 plus §10.7-R5 A–E*. A13 above is superseded by it: A13 proposed a
+permissive fourth basis, and R5 instead replaces the criterion with a stronger
+one. A13 is left standing, unadopted, as the record of what was proposed first.
+
+**The state at adoption**, checked rather than recalled: all four replications
+at `REGIME_SCREEN`; no `gate1_measurement.json` anywhere in the v4r3 tree; no
+composed cell, no estimand, no mask, nothing unmasked.
+
+**The §31 objection is registered inside the amendment, not answered around
+it.** §31 says an amendment is never used to weaken a criterion to make a gate
+pass, and that a gate executed under v4r3 and failing gets the registered
+reading. This amendment is adopted after §10.4-R2 failed and because of what
+that failure showed. What is offered against the objection is checkable rather
+than rhetorical: **the amendment buys no stronger claim.** The basis it creates
+is not `human_validated`, so §10.5's scope sentence attaches permanently, and
+§10.5's question 2 — *can an independent human reproduce it?* — stays
+unanswered exactly as before. R5 changes whether the study executes, not what
+it may assert.
+
+**What is now required, and it is more than §10.2 was.** A specification audit
+whose recorded predicate is *executed* and must reproduce the verifier at every
+severity of every declared range; a wording review of all 2,336 model-facing
+wordings; mutation validation as a Gate-1 condition; and a second hash binding
+the wordings, which §10.6 never covered because a wording cannot move the
+verifier hash.
+
+**What the amended gate returned: `SPECIFICATION_AMBIGUOUS`.**
+`reports/dci1v4r3/gate1_r5_decision.json`, amendment hash `d50ac8d9`, at
+verifier hash `41edc84c` over 584 instruments. Nine of the ten conditions pass:
+
+| | |
+|---|---|
+| 1 specification complete | 32 families and forms, every field present |
+| 2 no unresolved reading | 0 ambiguous families; the recorded predicate reproduces the verifier on 100% of the boundary corpus and every constructed case, at every declared severity |
+| 3 determinism | 1.000, three processes, 584 instruments |
+| 4 independent reimplementation | 1.000, and the whole-Unicode segmenter differential holds |
+| 5 boundary and adversarial | 164 cases, 1.000, every §24 phenomenon covered |
+| 6 mutation sensitivity | every meaningful reading exhibited; 0 undetected, 0 contradictions |
+| 7 witnesses | 92,988 pairs, pass |
+| **8 wording review** | **FAILS: 120 wordings genuinely ambiguous** |
+| 9 hash binding | verifier `41edc84c`, wordings `0f8a162e` |
+| 10 provenance | four `REGIME_SCREEN` records verify, carry-over holds, reserved sets unspent |
+
+**The blocker, exactly.** Two of the four wordings of `CP4` and `CP7` state the
+severity as a **target and name no bound**:
+
+- *"Give {q} percent of words doubled letters."*
+- *"Make {q} percent of words carry doubled letters."*
+- *"Give {q} percent of words letter a."*
+- *"Make {q} percent of words carry letter a."*
+
+The registered predicate is `100·S/W >= q`. A reader cannot tell it from the
+reading that takes `q` as exact. The two readings agree at `q` and disagree on
+every answer past it — where the verifier records a **pass**. So the defect is
+a one-sided leniency: the instrument credits compliance to an answer that one
+available reading of the instruction calls non-compliant. It is a defect in the
+*treatment*, not in the verifier, and no amount of §10.2 evidence could have
+found it.
+
+The other 124 wordings name their direction. The `q = 1` plural mismatch —
+*"Exactly 1 semicolons must appear in your answer"* — is found in 45 wordings
+and classified **mechanically awkward but semantically unambiguous**: the
+numeral is what the verifier reads, and the mismatch is an artefact of
+rendering severity into a frozen template, which §7.5's severity-invariance
+requires. `A` is unaffected; its template already says *"exactly 1 time"*.
+
+**Two remediation paths, and the choice is the researcher's.** Under §10.7-R5
+A′ a defective wording is never silently fixed.
+
+1. **Correct the four wordings.** Registered prospectively, then every
+   measurement taken under them is invalidated and regenerated: **768 of the
+   28,512 regime-screen rows, 192 per model** — `CP4` and `CP7`, wording
+   indices 2 and 3, six rungs each. Coverage measured under the old wording is
+   not carried across.
+2. **Remove `CP4` and `CP7` from the frozen vocabulary.** §10.2 already
+   registers this move for a family that fails Gate 1: the family is removed
+   and §12.6's coverage criterion is re-evaluated on the table already
+   measured, with no new outcome information entering. Both are
+   **class-control** families, so only the §13.7 class slot is affected, and
+   `CL7`/`CL8` — also class control, also lower bound — pass the audit intact.
+   Cost: no regeneration.
+
+Neither is taken here. Gate 1 stands at `SPECIFICATION_AMBIGUOUS`, Gate 2 is
+not licensed, and no freeze occurs.

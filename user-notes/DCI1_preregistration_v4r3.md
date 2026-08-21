@@ -1568,6 +1568,12 @@ Every analysis record carries the measurement basis and, while the basis is not
 verifier-defined and support no claim about compliance as an independent human
 would judge it.*
 
+**Amendment R5 does not change this section.** It answers question 1 more
+thoroughly by adding the specification half, and it leaves question 2
+unanswered. The basis it creates,
+`deterministic_measurement_validated`, is not `human_validated`, so the scope
+sentence above attaches under it permanently and no later stage may remove it.
+
 ### 10.6 Verifier freeze and downstream binding
 
 The canonical verifier hash covers every source and configuration component that
@@ -1582,6 +1588,280 @@ confirmatory generation, scoring, resume and restart paths, analysis, unmasking,
 and report generation. The frozen hash is never silently updated; a semantic
 change requires explicit invalidation and recalibration. Historical rows remain
 auditable under their own recorded hash and are never treated as newly valid.
+
+### 10.7-R5 Deterministic-measurement validation (amendment R5, 2026-08-21)
+
+**Exactly what this replaces.** §18 stage 4 read: *§10.2 for every verifier in
+the final instrument population, **plus §10.3 or §10.4**; verifier hash
+frozen.* It now reads: *§10.2 for every verifier in the final instrument
+population, **plus §10.7-R5 A–E**; verifier hash frozen.* §10.3 and §10.4, with
+§10.4-R and §10.4-R2, are retained in full, are reclassified **supplementary /
+diagnostic** for this revision, and are no longer mandatory Gate-1
+prerequisites. Nothing about them is deleted, rewritten, or re-scored.
+
+**When this was adopted, and what had been seen.** Adopted 2026-08-21, before
+Gate 2 and before any freeze or confirmatory generation. All four replications
+stood at `REGIME_SCREEN`; no `gate1_measurement.json` existed anywhere in the
+v4r3 tree; no composed cell had been generated; no estimand had been computed;
+the mask had not been built and nothing had been unmasked. What *had* been seen
+was §10.2 complete over the final population, §10.4-R2's development half
+returning FAIL on registered criterion 5, and the §10.3 pathway standing at
+`HUMAN_VALIDATION_UNAVAILABLE` for want of an annotator independent of the
+design and analysis team. The scientific estimands were, and remain at
+adoption, unseen.
+
+**The §31 tension, recorded rather than resolved quietly.** §31 says an
+amendment is never used to weaken a criterion in order to make a gate pass, and
+its second consequence says that if a gate is executed under v4r3 and fails,
+the answer is the registered reading and not a further revision. This amendment
+is adopted *after* §10.4-R2 failed and *because* the accumulated evidence
+around that failure changed the researcher's view of what §10.3 and §10.4 were
+measuring. A reader is entitled to hold that §31 forbids it and that halting
+was the registered answer; that reading is recorded here as a live objection
+and is not argued away.
+
+What is offered against it is one fact, and it is checkable rather than
+rhetorical: **this amendment buys no stronger claim.** Under `human_validated`
+the study could have dropped §10.5's scope sentence. Under the basis R5 creates
+the scope sentence attaches permanently and unconditionally, at every rung, in
+every analysis record, and in the final report, and no later stage may remove
+it. The three questions of §10.5 stay separate and question 2 — *can an
+independent human reproduce it?* — stays **unanswered**, exactly as it was
+before the amendment. R5 therefore changes whether the study executes, not what
+the study may assert. A criterion whose removal cannot strengthen any claim is
+not a criterion that was standing between the study and a conclusion.
+
+**Why external agreement is the wrong mandatory criterion for these
+instruments.** For the registered constraints, compliance is a mechanically
+decidable property of the response string: exact counts, upper and lower
+bounds, percentages of a word denominator, segmentation, punctuation counts and
+word-length rules. The chain is *model response → deterministic verifier →
+compliance outcome*, and the verifier is the definition of the outcome, not an
+estimator of a latent human judgement. Against that construct the accumulated
+development evidence says:
+
+- the primary verifier and the prose-only independent reimplementation agree
+  exactly, on every counted statistic on every stored response and on the full
+  verdict vector over the declared sample;
+- three-process determinism is exact;
+- the boundary, Unicode, adversarial, witness and wording suites are extensive
+  and are frozen;
+- defect sensitivity shows that several implementation mistakes would move a
+  material share of labels, so the suites are testing something that could
+  fail;
+- human and LLM reviewers themselves make exactly the errors the deterministic
+  verifier exists to avoid — miscounting, denominator confusion, threshold
+  direction, off-by-one, and segmentation — and §10.4-R2's own failure is
+  attributable to a registered stipulation the deciding arm withheld rather
+  than to any inability to check the verifier;
+- some registered defects cannot be detected on natural responses at all,
+  because the discriminating case does not occur there; absence of natural
+  counterexamples is not agreement, and an agreement rate computed on natural
+  responses silently reports it as if it were.
+
+Therefore raw reviewer agreement is not an appropriate gold standard for these
+predicates. **This does not imply that deterministic code is automatically
+correct.** A deterministic verifier can implement the wrong predicate perfectly,
+and a prose instruction can fail to pin down which predicate was meant. Those
+are the two failure modes that matter, and A–E below are built to test them
+directly rather than through a proxy.
+
+#### The two questions the amended Gate 1 answers
+
+1. **Specification validity.** Does the written constraint correspond
+   unambiguously to the intended formal predicate?
+2. **Implementation validity.** Does the deterministic verifier correctly and
+   reproducibly implement that predicate?
+
+#### A. Specification audit
+
+For every distinct family and predicate form in the final instrument
+population, a specification record carries: the exact natural-language
+instruction templates as the model receives them; the full-prose rule
+statement; the counted statistic and what it counts; the segmentation
+convention; the numerator definition; the denominator definition, or the
+explicit statement that the form has none; the comparison operator; the
+threshold and severity interpretation; the zero-denominator and vacuity rule;
+the case-folding and Unicode behaviour; and the **exact formal predicate** in a
+machine-evaluable form.
+
+The audit is decided by deliberately constructed discriminating examples, never
+by statistical reviewer agreement. Each family carries constructed cases at
+$q-1$, $q$ and $q+1$; a zero statistic; an empty answer; a wordless answer; a
+punctuation boundary; a Unicode boundary; a case-folding boundary; and, where
+the form has one, a malformed delimiter. Each case records the registered
+verdict and the verdict each of the six alternative readings — `inequality_flip`,
+`off_by_one`, `numerator_swap`, `denominator_swap`, `segmentation_drift`,
+`vacuity_ignored` — would record.
+
+Three checks decide the audit, and all three are executable:
+
+1. **Completeness.** Every field above is present and non-empty for every
+   family and form in the final population.
+2. **Prose-to-predicate correspondence.** The recorded formal predicate,
+   evaluated by a generic evaluator that reads only the specification record,
+   reproduces the primary verifier's verdict on every constructed case and on
+   the entire frozen boundary corpus. The specification record is therefore
+   itself under test: a predicate that is merely described cannot pass, only
+   one that can be executed from what is written down.
+3. **Resolution of alternative readings.** For every alternative reading that
+   is *meaningful* for the form, the specification record names it, states
+   which reading is registered, and points at a constructed case that separates
+   them. A reading that cannot be meaningful for a form — a denominator swap in
+   a form with no denominator, a segmentation drift in a statistic that reads
+   raw characters — is recorded as *not applicable with its reason*, and
+   silence is never accepted for either.
+
+An unresolved ambiguity fails Gate 1. That is not softened anywhere in this
+amendment.
+
+#### A′. Model-facing wording review
+
+The wording a model receives is audited separately from implementation
+correctness, because a defect there is a defect in the treatment and not in the
+verifier. Every wording of every family at every severity of the declared range
+is classified as **mechanically awkward but semantically unambiguous**,
+**genuinely ambiguous**, or **misleading enough to require correction**. The
+singular/plural mismatch at $q = 1$ — *"Exactly 1 semicolons must appear in your
+answer"* and its analogues — is audited by name.
+
+Live prompt wording is never silently fixed. If a wording is judged
+scientifically defective and must change, the change is registered
+prospectively; every affected family and rung is identified; every downstream
+solo, regime and screen measurement that depended on that wording is invalidated
+and recorded as invalidated; and the necessary pre-confirmatory stages are
+rerun. **Coverage measured under one wording is never carried across a changed
+wording.** The wordings of the final population are hashed and that hash is
+bound into the Gate-1 record (E), so a wording change is detectable rather than
+asserted.
+
+#### B. Deterministic implementation validation
+
+§10.2 is retained unchanged and mandatory, over the **final** instrument
+population: cross-process determinism; canonical source hash; the frozen
+boundary suite; the adversarial and fuzz corpus; Unicode and segmentation
+differential checks; exact threshold cases; satisfiability and non-entailment
+witnesses; wording-equivalence checks; reproducibility on stored responses; and
+the carry-over record. Any disagreement between the primary and independent
+implementations is adjudicated **against the formal specification of A**, never
+by majority vote and never by which implementation is more convenient.
+
+#### C. Independent reimplementation
+
+The prose-only reimplementation of §10.2 remains mandatory and remains an
+instrument under test in its own right, including the whole-Unicode segmenter
+differential. Zero unexplained disagreement is required. An explained
+disagreement is one adjudicated under B against A's specification and recorded
+with its adjudication.
+
+#### D. Adversarial, boundary and mutation validation
+
+The adversarial corpus of §24 remains mandatory. **Mutation testing becomes an
+explicit Gate-1 requirement.** For each of the six registered defect classes,
+the evidence must show that the frozen suites and A's constructed cases contain
+at least one case that *discriminates* the registered reading from the
+defective one — that is, a case on which applying the defect changes the
+recorded verdict — for every family and form where that defect is meaningful.
+Sensitivity is reported by family and form.
+
+A defect that cannot occur for a particular form is not forced into it, but
+**this must be explicit**: the report names the family, the defect, and the
+reason it cannot occur, and an unexplained absence is a failure, not a pass.
+
+The defect-sensitivity analysis on observed natural responses is retained and is
+used **only** to establish practical consequence on real data. It is never read
+as semantic validation, and where it shows that a defect changes no natural
+label — as `vacuity_ignored` does — the correct reading is that the natural
+corpus cannot validate that convention, not that the convention was validated.
+
+#### E. Provenance and hash binding
+
+The Gate-1 record binds: the canonical verifier hash of §10.6; the hash of the
+frozen boundary suite; the hash of every model-facing wording in the final
+population; the hash of the specification audit; the hash of the mutation
+report; the amendment hash of this subsection; the producing commit; and the
+environment digest. Every downstream entry point re-verifies the verifier hash
+as §10.6 already requires, and additionally refuses on a wording-hash mismatch.
+
+#### The amended Gate-1 rule
+
+Gate 1 passes if and only if **all ten** of the following hold.
+
+1. Every family and form in the final instrument population carries a complete
+   formal specification record (A.1).
+2. The specification audit finds no unresolved prose-to-predicate ambiguity
+   (A.2 and A.3).
+3. The primary verifier is deterministic: three processes, agreement exactly
+   1.000.
+4. The independent reimplementation agrees exactly on the registered validation
+   corpus, with zero unexplained disagreement.
+5. Every required boundary, adversarial and Unicode test passes, and the
+   boundary corpus meets its registered minimum size.
+6. Mutation tests demonstrate sensitivity to every registered defect class
+   wherever that class is meaningful, with every non-applicability explained.
+7. The satisfiability and non-entailment witness requirements pass.
+8. The wording-equivalence requirements pass and the wording review records no
+   wording classified as requiring correction that has not been corrected and
+   its dependent evidence invalidated.
+9. The canonical verifier hash and the wording hash are bound correctly and
+   match the evidence they certify.
+10. Lifecycle and provenance integrity passes: the predecessor record verifies,
+    the carry-over record refuses on any mismatch, and reserved sets are unspent.
+
+**No human or autorater agreement threshold appears in this rule.** Reviewer
+evidence is carried in the record as a diagnostic and cannot cause a pass or a
+failure. Equally, reviewer evidence never overrides a formally specified
+deterministic predicate: a reviewer who miscounts, applies the wrong
+denominator or flips a threshold has produced a finding about the wording or
+about the reviewer, and the mechanism for acting on it is A′ or a registered
+verifier change under §10.2 and `CHANGES_SCIENTIFIC.md`, never a re-labelling
+of the outcome.
+
+#### The measurement basis this creates, and what it never licenses
+
+A Gate-1 pass under this rule writes `measurement_basis =
+deterministic_measurement_validated`. That basis is not `human_validated`,
+and §10.5's scope sentence therefore attaches to every analysis record, every
+claim at every rung, and the final report: *the outcomes are verifier-defined
+and support no claim about compliance as an independent human would judge it.*
+No later stage may remove it. The basis may never be upgraded except by new
+evidence of the kind §10.3 or §10.4 specifies, produced under those sections'
+own criteria.
+
+§10.5's three questions are unchanged and are still never aggregated. R5
+answers question 1 more thoroughly than §10.2 alone did, by adding the
+specification half. It does not answer question 2 and does not claim to. It
+does not touch question 3.
+
+#### Reclassification of the external-review sections
+
+§10.3, §10.4, §10.4-R and §10.4-R2, the 25 author-performed annotations, the
+frozen §10.3 sampling plan, and any future optional human check are
+**supplementary semantic diagnostics**. They may reveal confusing wording,
+undocumented assumptions, presentation problems and specification ambiguity,
+and a finding of that kind is actionable under A′ or under §10.2. They are
+preserved unchanged and remain readable under their own recorded hashes. Their
+recorded outcomes stand: §10.4-R2 **FAILED** and its stopping rule took effect;
+§10.3 stands **unavailable**. Neither is described anywhere as having succeeded,
+and a Gate-1 pass under this rule is never described as a retroactive pass of
+either.
+
+#### What would falsify this architecture
+
+An independent annotator, later, disagreeing with the verifier at a rate §10.3's
+bound would have rejected, on items where the disagreement is about the
+predicate rather than about arithmetic. R5 does not close that door: the frozen
+§10.3 plan stays unspent, and a completed §10.3 supersedes this basis rather
+than being blocked by it.
+
+#### Registered limitation
+
+The specification audit certifies each family at the audited severities and
+relies on the severity-invariance of the wordings and predicates that §7.5
+establishes; it does not re-audit every rung of every ladder independently. The
+prose-to-predicate check reads the same registered counting functions the
+verifier reads, so it tests the mapping from prose to predicate and not the
+counting functions themselves; those are covered by B, C and D.
 
 ---
 
@@ -2652,7 +2932,7 @@ decides whether that emission carries the status.
 | 1 | `QUALIFIED` | Clean tree, tracked implementation, resolved revisions, non-empty dependency manifest, schema-valid prompt plan, wording and witness suites pass for every registered pair, class labelling asserted, cache and durable store reachable, environment and commit hashable | `QUALIFICATION_FAILURE` |
 | 2 | `GATE_0_APPARATUS` | The procedural pilot of §19 | `APPARATUS_FAILURE` |
 | 3 | `REGIME_SCREEN` | Completion cap selected; dense ladder screen complete; §12.6's expansion run to its stopping rule and the **candidate vocabulary frozen**; pre-screen difficulty table and shortlist written before any Gate 2 generation | `RESPONSE_LENGTH_INCOMPATIBLE` |
-| 4 | `GATE_1_MEASUREMENT` | §10.2 for every verifier in the final instrument population, plus §10.3 or §10.4; verifier hash frozen | `MEASUREMENT_NOT_ESTABLISHED`, `MEASUREMENT_EVIDENCE_INSUFFICIENT` |
+| 4 | `GATE_1_MEASUREMENT` | §10.2 for every verifier in the final instrument population, plus **§10.7-R5 A–E**; verifier hash and wording hash frozen. *Superseded by amendment R5: the former requirement was §10.2 plus §10.3 or §10.4* | `MEASUREMENT_NOT_ESTABLISHED`, `MEASUREMENT_EVIDENCE_INSUFFICIENT`, `SPECIFICATION_AMBIGUOUS` |
 | 5 | `GATE_2_REGIME` | $n^*$ and $m^*$ selected inside their bands; §12.4 adequacy holds | `TARGET_RANGE_EXHAUSTED`, `FOCAL_RANGE_EXHAUSTED`, `GRID_RESOLUTION_INSUFFICIENT`, `REGIME_NOT_FOUND` |
 | 6 | `GATE_3_REFERENCES` | Three core families admitted under §13.4, each supplying a complete straddling triple under §13.6; class companion admitted or `CLASS_ARM_NOT_AVAILABLE` | Not terminal: sets `EXCESS_NOT_IDENTIFIED` and/or `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` and the reduced design of §8.6 |
 | 7 | `GATE_4_COMPOSED_HEADROOM` | Every registered cell type inside $[0.05, 0.95]$ on every constraint | `COMPOSED_HEADROOM_FAILURE` |
@@ -3152,6 +3432,18 @@ reported as a failure of the model or of the hypothesis.
 ---
 
 ## 29. Limitations and design trade-offs
+
+**No independent human reproduced the verifier, and the amendment that let the
+study proceed was adopted after the pathways to one had closed.** §10.7-R5
+replaces §10.3 and §10.4 as mandatory Gate-1 criteria with a deterministic
+validation architecture, and it was adopted after §10.4-R2 failed and after
+§10.3 was recorded unavailable. §31 can be read as forbidding that, and the
+objection is registered in R5 itself rather than argued away. What bounds the
+consequence is that the basis R5 creates is not `human_validated`: §10.5's
+scope sentence attaches to every claim permanently, so no statement this study
+makes is about compliance as an independent human would judge it. A reader who
+rejects the amendment should read every outcome as verifier-defined — which is
+what the scope sentence already says.
 
 **Load two only.** The construct memo's best-evidenced interaction quantity is
 three-place and requires a third scored constraint. This design cannot estimate

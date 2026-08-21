@@ -192,6 +192,19 @@ def _vacuity_forced_agrees(entry: Mapping[str, Any]) -> bool:
             == CL.delta_r_reading(forced)["levels"])
 
 
+def scope_sentence(measurement_basis: str) -> str | None:
+    """§10.5: every analysis record carries it while the basis is not
+    `human_validated`.
+
+    One function rather than a literal at each emission point, because §10.7-R5
+    makes the attachment permanent under the basis it creates and a second
+    copy of the condition is a second place it can drift. `human_validated` is
+    the only basis that drops it, and no other basis may be added to that
+    branch without amending §10.5.
+    """
+    return None if measurement_basis == "human_validated" else C.SCOPE_SENTENCE
+
+
 def _claims(entry: Mapping[str, Any], *, configuration: str,
             measurement_basis: str) -> dict[str, Any]:
     """§17.5's guarded emitter, applied to one configuration's intervals.
@@ -210,6 +223,7 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
     base = {"configuration": configuration, "outcome_position": position,
             "position_status": CL.position_status(position),
             "measurement_basis": measurement_basis,
+            "scope_sentence": scope_sentence(measurement_basis),
             "identified": {"Delta_R": delta_r is not None,
                            "Xi": xi is not None,
                            "delta_difficulty": delta_difficulty is not None},
@@ -341,5 +355,6 @@ def run_unmasked_analysis(model_key: str, tree: ModelTree, *,
             "analysis_code_hash": _code_hash(),
             "masked_artifact_hash": masked_record["masked_artifact_hash"],
             "measurement_basis": basis,
+            "scope_sentence": scope_sentence(basis),
             "result": result, "claims": ladder,
             "identical_computation_as_masked": True}
