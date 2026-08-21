@@ -1104,6 +1104,28 @@ evidence — they judge different questions and the two must never be pooled.
 
 ---
 
+## C29. §20's mask is drawn stratified (amendment R4, 2026-08-21)
+
+**What changed.** The number of blocks receiving a non-identity permutation is
+fixed at $\lceil N \cdot \max(0.5, 1 - 1/k) \rceil$ per (outcome,
+configuration) stratum, and which blocks they are is drawn uniformly without
+replacement. Full statement in §20-R4.
+
+**Why.** §8.6's reduced design gives $B$ two companions, so an independent
+uniform permutation moves a label with probability exactly 0.5 — which is
+`MASK_MIN_DIFFERING_FRACTION`. §20's own effectiveness check then fails about
+half the time by chance. Found by the synthetic walk of the post-freeze chain
+at 0.466 against 0.500.
+
+**What it does not change.** The criterion, what is permuted, the declarations,
+or the treatment of structurally unmaskable groups.
+
+**Affected results.** None: no confirmatory generation exists on any model and
+no mask has ever been built over one. The §19 pilot's mask cycle is rebuilt
+under the new construction whenever Gate 0 is re-run.
+
+---
+
 ## C28. §10.4's unit of validation becomes a microcase (amendment R2, 2026-08-21)
 
 **What changed.** §10.4-R asked an external judge to audit an operationalization

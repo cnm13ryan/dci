@@ -60,8 +60,20 @@ def _code_hash() -> str:
 
 def observation_table(rows: Sequence[Mapping[str, Any]], *, m_draws: int,
                       variant: str) -> ObservationTable:
+    """The §11.1 table, checked against the cells **this variant** requires.
+
+    The variant has to travel. §14.1's within-block check builds its expected
+    set from `cell_types`, and telling it only whether the design is reduced
+    left it demanding the six spectrum rungs of a replication that dropped
+    them --- 11,520 cells the frozen design does not contain, on the variant
+    §12.6's coverage failure produces.
+    """
+    from dci1v4r3.stages.confirmatory import DESIGN_VARIANTS
+
+    reduced, class_arm, spectrum = DESIGN_VARIANTS[variant]
     table = ObservationTable(build_observations(rows, m_draws=m_draws))
-    table.assert_within_block(reduced=(variant == "reduced"),
+    table.assert_within_block(reduced=reduced, class_arm=class_arm,
+                              spectrum=spectrum,
                               expected_blocks=C.N_BLOCKS)
     return table
 

@@ -73,8 +73,14 @@ def design_cells_for(topics: Sequence[Mapping[str, Any]],
                      slot_map: Mapping[str, Any], *, variant: str,
                      prefix: str, block_prefix: str,
                      block_index_of: Mapping[str, int] | None = None
-                     ) -> list[tuple[Cell, str]]:
-    """Every cell of the variant, on every topic, with its block id.
+                     ) -> list[tuple[Cell, str, str]]:
+    """Every cell of the variant, on every topic: (cell, block id, cell type).
+
+    Three values and not two, because the *design* cell id --- `pair:A+B`,
+    `solo:R1`, `unconstrained` --- is what §14.2's completeness rule counts,
+    and the execution cell id is a different string carrying the topic and the
+    constraint labels. Returning only the second meant the rule could not see
+    the identities it is stated over.
 
     ``block_index_of`` supplies §8.4's block index when the caller has a
     registered block numbering; otherwise the position in ``topics`` is used,
@@ -84,7 +90,7 @@ def design_cells_for(topics: Sequence[Mapping[str, Any]],
     assert_slot_map_usable(slot_map, variant)
     reduced, class_arm, spectrum = DESIGN_VARIANTS[variant]
     constraints = slot_constraints(slot_map)
-    out: list[tuple[Cell, str]] = []
+    out: list[tuple[Cell, str, str]] = []
     for position, topic in enumerate(topics):
         block = f"{block_prefix}-{topic['topic_id']}"
         index = (block_index_of[topic["topic_id"]]
@@ -93,12 +99,14 @@ def design_cells_for(topics: Sequence[Mapping[str, Any]],
                                     spectrum=spectrum):
             if cell_type.arm == "unconstrained":
                 out.append((unconstrained_cell(topic, arm="unconstrained",
-                                               prefix=prefix), block))
+                                               prefix=prefix), block,
+                            cell_type.cell_id))
             elif cell_type.arm == "solo":
                 slot = cell_type.slots[0]
                 w = wording_indices(index, 1)[0]
                 out.append((solo_cell(topic, constraints[slot], w,
-                                      arm="solo", prefix=prefix), block))
+                                      arm="solo", prefix=prefix), block,
+                            cell_type.cell_id))
             else:
                 first, second = cell_type.slots
                 # §8.4: the wording index follows the REGISTERED slot order,
@@ -110,19 +118,24 @@ def design_cells_for(topics: Sequence[Mapping[str, Any]],
                 out.append((composed_cell(
                     topic, constraints[first], constraints[second],
                     (pair[first], pair[second]), arm="composed",
-                    prefix=prefix), block))
+                    prefix=prefix), block, cell_type.cell_id))
     return out
 
 
 def attach_slots(rows: Sequence[Mapping[str, Any]],
                  block_of: Mapping[str, str],
-                 slot_map: Mapping[str, Any]) -> list[dict[str, Any]]:
+                 slot_map: Mapping[str, Any],
+                 design_cell_of: Mapping[str, str] | None = None
+                 ) -> list[dict[str, Any]]:
     """Give every scored constraint its design slot, and every row its block.
 
     The verifier records a constraint by kind and severity, which is what it
     scores. The analysis indexes by slot, because two slots may share a family
     --- `R1` and `R1+` are both one family at different severities --- and a
     contrast over kinds would silently merge them.
+
+    ``design_cell_of`` additionally attaches the design cell id, which is what
+    §14.2's completeness rule is stated over.
     """
     constraints = slot_constraints(slot_map)
     by_instance = {(c.kind, c.severity): slot
@@ -142,7 +155,14 @@ def attach_slots(rows: Sequence[Mapping[str, Any]],
         block = block_of.get(row["cell_id"])
         if block is None:
             raise IntegrityError(f"no block for cell {row['cell_id']}")
-        out.append({**row, "scores": scores, "block_id": block})
+        entry = {**row, "scores": scores, "block_id": block}
+        if design_cell_of is not None:
+            design_cell = design_cell_of.get(row["cell_id"])
+            if design_cell is None:
+                raise IntegrityError(
+                    f"no design cell type for {row['cell_id']}")
+            entry["design_cell_id"] = design_cell
+        out.append(entry)
     return out
 
 
