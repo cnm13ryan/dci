@@ -115,8 +115,8 @@
     "sha256": "dbc35f4cac92bbab310faca350d78762a0a930df8fa03eaa10b493998d5c4104"
    },
    "gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 97581,
-    "sha256": "79f6b7d31454fd3bdf949cc9a9ff381ee284989535d6e49d41f6e127b3d4d63d"
+    "bytes": 106521,
+    "sha256": "d3c752837f3fc272721fa8f5bcec328a9f83e1e19ecb05eca8b85e0e818a1327"
    },
    "gemma-3n-e2b-it/REGIME_SCREEN/regime_record.json": {
     "bytes": 97581,
@@ -271,8 +271,8 @@
     "sha256": "dbabdfb9251fe6e0a6f01133b4bcb5712924202485b99a68bb0184f95d57e3b3"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 124743,
-    "sha256": "35dc23fc09f8790f0e350ff797781eaaeb1f7ffa06f5f28ff1beb2622b8daf7f"
+    "bytes": 135863,
+    "sha256": "c0f76c9f903b207725000b20dc9178c46ded232cde897f00a40a95ed956fdfd9"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/regime_record.json": {
     "bytes": 124743,
@@ -431,8 +431,8 @@
     "sha256": "4fad269c0d04be7fae7e3a505d965ce586bc981d01ab5541292272a3f6f6a807"
    },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 126681,
-    "sha256": "93447253a9ce5449d4b7203b1de45f773d0f75a5ae76e24c8c3c7cf0a1fc2236"
+    "bytes": 137765,
+    "sha256": "b6a030ed09e1106848245e045abe1d88d1a353991656a190886cfe84b9c49222"
    },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/regime_record.json": {
     "bytes": 126681,
@@ -587,8 +587,8 @@
     "sha256": "0746ef6096afa4a0d77e397424071cb3110dde7efc3e1fd5c9b0b293e5cefc60"
    },
    "qwen3-4b/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 126293,
-    "sha256": "00e8745d9d291d9efd1e76167610f60b66da8b72749fc56adfd2f4effb6416d9"
+    "bytes": 137443,
+    "sha256": "54b1b68ff8216a5147d67dc2b0a91241e2dc193a30392230839d7175dc3472da"
    },
    "qwen3-4b/REGIME_SCREEN/regime_record.json": {
     "bytes": 126293,
@@ -610,7 +610,7 @@
   "root": "durable_root/dci1v4r3"
  },
  "evidence": {
-  "bytes": 106560321,
+  "bytes": 106602615,
   "files": 147,
   "index": {
    "gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
@@ -710,8 +710,8 @@
     "sha256": "dbc35f4cac92bbab310faca350d78762a0a930df8fa03eaa10b493998d5c4104"
    },
    "gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 97581,
-    "sha256": "79f6b7d31454fd3bdf949cc9a9ff381ee284989535d6e49d41f6e127b3d4d63d"
+    "bytes": 106521,
+    "sha256": "d3c752837f3fc272721fa8f5bcec328a9f83e1e19ecb05eca8b85e0e818a1327"
    },
    "gemma-3n-e2b-it/REGIME_SCREEN/regime_record.json": {
     "bytes": 97581,
@@ -866,8 +866,8 @@
     "sha256": "dbabdfb9251fe6e0a6f01133b4bcb5712924202485b99a68bb0184f95d57e3b3"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 124743,
-    "sha256": "35dc23fc09f8790f0e350ff797781eaaeb1f7ffa06f5f28ff1beb2622b8daf7f"
+    "bytes": 135863,
+    "sha256": "c0f76c9f903b207725000b20dc9178c46ded232cde897f00a40a95ed956fdfd9"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/regime_record.json": {
     "bytes": 124743,
@@ -1026,8 +1026,8 @@
     "sha256": "4fad269c0d04be7fae7e3a505d965ce586bc981d01ab5541292272a3f6f6a807"
    },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 126681,
-    "sha256": "93447253a9ce5449d4b7203b1de45f773d0f75a5ae76e24c8c3c7cf0a1fc2236"
+    "bytes": 137765,
+    "sha256": "b6a030ed09e1106848245e045abe1d88d1a353991656a190886cfe84b9c49222"
    },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/regime_record.json": {
     "bytes": 126681,
@@ -1182,8 +1182,8 @@
     "sha256": "0746ef6096afa4a0d77e397424071cb3110dde7efc3e1fd5c9b0b293e5cefc60"
    },
    "qwen3-4b/REGIME_SCREEN/records/regime_record.json": {
-    "bytes": 126293,
-    "sha256": "00e8745d9d291d9efd1e76167610f60b66da8b72749fc56adfd2f4effb6416d9"
+    "bytes": 137443,
+    "sha256": "54b1b68ff8216a5147d67dc2b0a91241e2dc193a30392230839d7175dc3472da"
    },
    "qwen3-4b/REGIME_SCREEN/regime_record.json": {
     "bytes": 126293,
