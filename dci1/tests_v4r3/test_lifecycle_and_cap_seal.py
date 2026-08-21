@@ -241,3 +241,71 @@ def test_the_regime_screen_restricts_the_probe_before_selecting_the_cap():
     assert "cap_probe.restrict(rows)" in source
     # and the old direct read of the raw rows is gone
     assert 'loads[row["load"]].append' not in source
+
+
+# ------------------------------------------------------------- supersession
+
+def test_superseding_retains_every_row_and_frees_the_stage_to_run_again(tree):
+    """A prospective amendment changes the code, and §18 then makes records
+    produced under the old code unusable as predecessors. Retiring them must
+    keep them readable, not delete them."""
+    from dci1v4r3.engine.transitions import supersede_stage_records
+
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    rows = tree.backend_runs(C.STAGE_QUALIFIED) / "ladder"
+    rows.mkdir(parents=True, exist_ok=True)
+    (rows / "scored.jsonl").write_text('{"row": 1}\n')
+
+    note = supersede_stage_records(
+        tree, [C.STAGE_QUALIFIED], reason="amendment R3 moved the verifier",
+        superseded_by_commit="a" * 40)
+
+    assert not tree.stage_record(C.STAGE_QUALIFIED).exists()
+    retained = Path(note["stages"][0]["retained_at"])
+    assert (retained / "backend_runs" / "ladder" / "scored.jsonl").read_text() \
+        == '{"row": 1}\n'
+    assert (retained / "records").exists()
+    # and the stage may now run again
+    assert_transition_legal(tree, C.STAGE_QUALIFIED)
+
+
+def test_supersession_is_logged_as_an_attempted_transition(tree):
+    from dci1v4r3.engine.transitions import supersede_stage_records
+
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="r",
+                            superseded_by_commit="b" * 40)
+    outcomes = [row["outcome"] for row in transition_rows(tree)]
+    assert "SUPERSEDED" in outcomes
+
+
+def test_superseding_twice_under_one_commit_refuses_rather_than_overwrites(tree):
+    from dci1v4r3.engine.transitions import supersede_stage_records
+
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="r",
+                            superseded_by_commit="c" * 40)
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    with pytest.raises(IntegrityError):
+        supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="r",
+                                superseded_by_commit="c" * 40)
+
+
+def test_supersession_refuses_after_the_freeze(tree):
+    """§18.1 forbids exactly this mutation, and superseding is the sharpest
+    form of it."""
+    from dci1v4r3.engine.transitions import supersede_stage_records
+
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    write_stage_record(tree, C.STAGE_GATE5, _payload(C.STAGE_GATE5))
+    with pytest.raises(IntegrityError):
+        supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="r",
+                                superseded_by_commit="d" * 40)
+
+
+def test_supersession_requires_a_reason_and_a_commit(tree):
+    from dci1v4r3.engine.transitions import supersede_stage_records
+
+    with pytest.raises(ProtocolError):
+        supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="",
+                                superseded_by_commit="e" * 40)

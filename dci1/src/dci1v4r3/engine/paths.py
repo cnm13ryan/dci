@@ -91,6 +91,17 @@ class ModelTree:
     def terminal_report(self) -> Path:
         return self.root / "terminal_report.json"
 
+    def superseded_dir(self, marker: str) -> Path:
+        """Where a superseded stage's whole directory is retained.
+
+        §26's artifact model carries a `superseded` state so that a record the
+        study no longer stands behind is *retained and marked* rather than
+        deleted or edited. `marker` identifies the supersession --- in
+        practice the first twelve characters of the commit that supersedes it
+        --- so two supersessions of the same stage never collide.
+        """
+        return self.root / "superseded" / marker
+
     @property
     def cap_probe_truncation(self) -> Path:
         """§12.1's restricted derived artifact. See ``stages/cap_probe.py``."""
