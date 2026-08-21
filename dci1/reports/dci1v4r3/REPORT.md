@@ -103,6 +103,47 @@ the bare minimum of three is unmet.
 
 ---
 
+### 3.1 What the expansion would have to reach (2026-08-21, later)
+
+`tools/v4r3_expansion_diagnosis.py` reads solo and chance compliance from the
+§12.2 screen --- no composed cell, no `D(B <- R)`, nothing §12.5 and §13.9
+forbid candidate construction to see --- and separates the two reasons C4 can
+fail, because they call for opposite repairs.
+
+| model | ι_A | groups with a well-formed family | groups straddling *jointly* | rungs below the band | above | chance-degenerate |
+|---|---:|---:|---|---:|---:|---:|
+| gemma-3n-e2b-it | 0.526 | **4** (C4 met) | 4 | 84 | 15 | 5 |
+| gemma-3n-e4b-it | 0.750 | 1 | 2 | 86 | 14 | 27 |
+| qwen3-4b | 0.750 | 3 | 3 | 77 | 9 | 36 |
+| qwen3-4b-instruct-2507 | 0.542 | 2 | 3 | 114 | 12 | 17 |
+
+**The vocabulary is not merely mis-shaped; it does not reach.** If the rungs
+existed on both sides of ι_A but were split between a count budget and a rate
+budget of the same feature group, the repair would be a family whose own ladder
+spans both sides. That happens exactly once --- `comma` on
+qwen3-4b-instruct-2507. Everywhere else the count of groups straddling
+*jointly* is barely above the count with a well-formed family, so a re-shaped
+ladder cannot close the gap.
+
+**What is actually missing is the productive region.** Between 77 and 114 rungs
+per model fall **below** the eligibility floor of ι = 0.10 — stating the
+constraint barely moves compliance above chance — against 9 to 15 above the
+0.95 ceiling. The declared library is dominated by instruments that do almost
+nothing when stated.
+
+So the expansion target is specific: **families whose instructed compliance
+lands in roughly ι ∈ (0.75, 0.95) on the models where ι_A is high, from feature
+groups not already covered.** Those are instructions a model follows reliably
+when told and rarely satisfies by accident. Making existing ladders denser
+where support already exists would not help, and neither would widening the
+band — which would admit the anti-productive instruments the coordinate finding
+in §4 exists to keep out.
+
+This diagnosis proposes no family and changes no criterion. C1–C7 and their
+values are untouched, and no candidate can be admitted without measurement.
+
+---
+
 ## 4. The coordinate, and the finding that matters most
 
 §13.3 registers **instructed compliance** ι = (solo − κ)/(1 − κ) as the
