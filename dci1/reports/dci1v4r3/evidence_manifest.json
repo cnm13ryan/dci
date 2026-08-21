@@ -16,8 +16,16 @@
   ]
  },
  "durable_mirror": {
-  "files": 147,
+  "files": 155,
   "index": {
+   "gemma-3n-e2b-it/QUALIFIED/qualification_record.json": {
+    "bytes": 2208,
+    "sha256": "e8ecfab31b2b3f006a6f28aca09686ab87124c4ab07ffaff4114c675a6175d7a"
+   },
+   "gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2577,
+    "sha256": "70e8c320a72b9e4f301f82e0c501e1b4de017aa63ba9eac6f978ae773b0a2f36"
+   },
    "gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 14623,
     "sha256": "f873ba97660980bb17d5b62763a23f10153b334ae46f442c96cb3dd5c8ce7bbe"
@@ -125,6 +133,14 @@
    "gemma-3n-e2b-it/cap_probe_truncation.json": {
     "bytes": 963,
     "sha256": "b61403769cca48c741c6b5f703ba80bbdb54abd91fc98f5270ff269521991828"
+   },
+   "gemma-3n-e4b-it/QUALIFIED/qualification_record.json": {
+    "bytes": 2208,
+    "sha256": "0309fee24d0d344211928402193e664bacf4f7006d63a2cd80e83fc62905a26b"
+   },
+   "gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2577,
+    "sha256": "20e72010db35622bd2d9477a15540af878dabd62891f111525a6f9f71df226d3"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 18123,
@@ -286,6 +302,14 @@
     "bytes": 64,
     "sha256": "4ec52a82fd4a1fb1ad3c0ad2e2e983a46acb6a0e32c2c7aac29c1a420105c53a"
    },
+   "qwen3-4b-instruct-2507/QUALIFIED/qualification_record.json": {
+    "bytes": 2215,
+    "sha256": "65de9e483b9f41ec35b685f161e56b00cc24c9bae8fde7e9a0521aaf951c1ca6"
+   },
+   "qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2584,
+    "sha256": "1c34923434f171e9f5573fe968fc9d6211f177dddead07887fc99a42f6588141"
+   },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 12606,
     "sha256": "a9588d8ecf3a96d4e575cedb986f0ccf5cafb4869c33a84dfaf3a512f419ca5b"
@@ -441,6 +465,14 @@
    "qwen3-4b-instruct-2507/cap_probe_truncation.json": {
     "bytes": 1004,
     "sha256": "5c3640fa2a30248a037ffcf247ba626cbef4bbd9fb5c05cfdc350783764eed23"
+   },
+   "qwen3-4b/QUALIFIED/qualification_record.json": {
+    "bytes": 2201,
+    "sha256": "e5e8075bd11a8ca76ca0cea05658ba1c3f02fb8e388291604ef89ff635657f47"
+   },
+   "qwen3-4b/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2570,
+    "sha256": "f00e37ac35fa6f562c26f9308bd21ebc909c1410bcf58a8e7120a43f6cc10522"
    },
    "qwen3-4b/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 12877,
@@ -610,9 +642,17 @@
   "root": "durable_root/dci1v4r3"
  },
  "evidence": {
-  "bytes": 106602615,
-  "files": 147,
+  "bytes": 106621755,
+  "files": 155,
   "index": {
+   "gemma-3n-e2b-it/QUALIFIED/qualification_record.json": {
+    "bytes": 2208,
+    "sha256": "e8ecfab31b2b3f006a6f28aca09686ab87124c4ab07ffaff4114c675a6175d7a"
+   },
+   "gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2577,
+    "sha256": "70e8c320a72b9e4f301f82e0c501e1b4de017aa63ba9eac6f978ae773b0a2f36"
+   },
    "gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 14623,
     "sha256": "f873ba97660980bb17d5b62763a23f10153b334ae46f442c96cb3dd5c8ce7bbe"
@@ -720,6 +760,14 @@
    "gemma-3n-e2b-it/cap_probe_truncation.json": {
     "bytes": 963,
     "sha256": "b61403769cca48c741c6b5f703ba80bbdb54abd91fc98f5270ff269521991828"
+   },
+   "gemma-3n-e4b-it/QUALIFIED/qualification_record.json": {
+    "bytes": 2208,
+    "sha256": "0309fee24d0d344211928402193e664bacf4f7006d63a2cd80e83fc62905a26b"
+   },
+   "gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2577,
+    "sha256": "20e72010db35622bd2d9477a15540af878dabd62891f111525a6f9f71df226d3"
    },
    "gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 18123,
@@ -881,6 +929,14 @@
     "bytes": 64,
     "sha256": "4ec52a82fd4a1fb1ad3c0ad2e2e983a46acb6a0e32c2c7aac29c1a420105c53a"
    },
+   "qwen3-4b-instruct-2507/QUALIFIED/qualification_record.json": {
+    "bytes": 2215,
+    "sha256": "65de9e483b9f41ec35b685f161e56b00cc24c9bae8fde7e9a0521aaf951c1ca6"
+   },
+   "qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2584,
+    "sha256": "1c34923434f171e9f5573fe968fc9d6211f177dddead07887fc99a42f6588141"
+   },
    "qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 12606,
     "sha256": "a9588d8ecf3a96d4e575cedb986f0ccf5cafb4869c33a84dfaf3a512f419ca5b"
@@ -1036,6 +1092,14 @@
    "qwen3-4b-instruct-2507/cap_probe_truncation.json": {
     "bytes": 1004,
     "sha256": "5c3640fa2a30248a037ffcf247ba626cbef4bbd9fb5c05cfdc350783764eed23"
+   },
+   "qwen3-4b/QUALIFIED/qualification_record.json": {
+    "bytes": 2201,
+    "sha256": "e5e8075bd11a8ca76ca0cea05658ba1c3f02fb8e388291604ef89ff635657f47"
+   },
+   "qwen3-4b/QUALIFIED/records/qualification_record.json": {
+    "bytes": 2570,
+    "sha256": "f00e37ac35fa6f562c26f9308bd21ebc909c1410bcf58a8e7120a43f6cc10522"
    },
    "qwen3-4b/REGIME_SCREEN/backend_runs/cap1024/backend.log": {
     "bytes": 12877,
