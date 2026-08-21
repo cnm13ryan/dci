@@ -257,3 +257,72 @@ reading is that this judge at this scale cannot be made into a semantic
 validator by changing the task. §10.3's human audit is then the only registered
 route left, and `HUMAN_VALIDATION_UNAVAILABLE` is a standing condition rather
 than a temporary one.
+
+## A8. §10.4-R2 failed, and Gate 1 is blocked on §10.3 alone (2026-08-21)
+
+**Outcome.** The R2 microcase audit ran its development half at the registered
+`mc-medium` configuration and returned **FAIL** on one registered criterion.
+Recorded in `dci1/reports/dci1v4r3/section_10_4R2_outcome.json`, bound to the
+case-set hash `14152535`, the split hash `e3b8fa1e`, the config hash
+`eb9da523` and the canonical verifier hash `41edc84c`.
+
+| # | Criterion | Threshold | Observed | |
+|---|---|---|---|---|
+| 2 | truncation, pooled / worst group | ≤ 0.10 / ≤ 0.20 | 0.0119 / 0.0294 | pass |
+| 3 | parse validity | ≥ 0.95 | 0.9881 | pass |
+| 4 | specificity | ≥ 0.90 | 0.9125 | pass |
+| 5 | sensitivity, overall | ≥ 0.80 | 0.8140 | pass |
+| 5 | sensitivity, per defect kind | ≥ 0.50 | `denominator_swap` 0.231 | **fail** |
+| 6 | repeatability | ≥ 0.95 | not measured | — |
+
+R1's diagnosis is vindicated on its own terms and the pathway still stops.
+Removing the reasoning chain fixed what it was meant to fix — truncation fell
+from 0.3125 to 0.0119 and parse validity rose from 0.6875 to 0.9881 — and the
+validator then failed on a different axis.
+
+**Why criterion 6 was not measured and the calibration half was not run.**
+Criterion 6 is conjunctive with 2–5, so a second replicate cannot turn this
+half's FAIL into a PASS; §10.4-R2 says the calibration half is not run until the
+development half passes. Neither omission is a discretionary shortcut and
+neither changes the outcome.
+
+**Why `mc-high` and `mc-low` were not run.** They are registered contingencies
+on §10.4's reasoning-effort axis, and they are not matched to this failure.
+Seven of the ten items deciding `denominator_swap` have answers with no words
+at all — `'   '`, `';;;'`, `',,,'` — so their verdict turns on §7.3's
+wordless-rate rule, which the instruction-only arm deliberately withholds;
+§10.4-R2 registers that withholding in terms, saying that judging a convention
+on the wording alone "would score the validator for failing to guess a
+convention". More reasoning cannot supply a convention the prompt does not
+state. The same cases in the conventions arm, which does state it, agree 9 of
+11. Running a contingency after seeing the failure, aimed at a failure mode it
+does not address, is seeking a better draw. The contingencies remain the
+researcher's to invoke.
+
+**An implementation note that does not change the verdict.** §10.4-R2 defines
+sensitivity as agreement on cases the verifier records as *not satisfied*. The
+overall figure is computed that way; the per-kind figure in
+`tools/gate1_microcase_v4r3.py` is computed over every parsed discriminating
+case in the deciding arm, satisfied ones included. Both readings are recorded
+in the outcome artifact. `denominator_swap` fails the floor under both — 0.231
+implemented, 0.200 as worded — and no other kind fails either. The run is left
+exactly as recorded; the computation should be corrected before any future
+R2-style run.
+
+**Consequence, registered in advance.** §10.4-R2: the LLM-validator pathway
+stops. §10.3's human semantic audit is the only remaining registered route to a
+measurement basis. Gate 1 refuses with `MEASUREMENT_EVIDENCE_INSUFFICIENT` and
+`measurement_basis = human_validation_unavailable`, and the refusal is logged
+against all four replications at commit `9a3c058`.
+
+**The 25 human annotations are not that route.** They are recorded as
+**human semantic evidence** and explicitly not as registered independent human
+validation. They fail §10.3 on four separate grounds — the annotator is the
+researcher, the unit is a microcase rather than a natural response, one packet
+of 25 is not min(150, N_c) per verifier class, and the one-sided 95% Wilson
+upper bound on disagreement is 0.2152 against 0.10, a bound 25 items cannot
+reach even at zero disagreements. They remain useful: 23/25, no UNSURE, over
+eight of the ten families §7.0-R3 added.
+
+**This decision approves nothing.** No measurement basis is written, no freeze
+occurs and no confirmatory generation begins.
