@@ -27,7 +27,7 @@ from dci1v4.errors import ProtocolError
 from dci1v4r3.engine.context import StudyContext
 from dci1v4r3.protocol import constants as C
 
-__all__ = ["STAGE_RECORD_FILES", "AUX_RECORD_FILES", "ModelTree",
+__all__ = ["SUPERSEDED_DIRNAME", "is_superseded", "current_files","STAGE_RECORD_FILES", "AUX_RECORD_FILES", "ModelTree",
            "model_tree", "required_records", "unexpected_stage_files"]
 
 #: Stage -> its §26 record filename inside ``<model>/<STAGE>/records/``.
@@ -123,6 +123,29 @@ class ModelTree:
 
     def mask_event_log(self, mask_namespace: str) -> Path:
         return self.mask_dir(mask_namespace) / "events.jsonl"
+
+
+#: The directory name a superseded stage is retained under.
+SUPERSEDED_DIRNAME = "superseded"
+
+
+def is_superseded(path: Path) -> bool:
+    """True for a file retained under a supersession.
+
+    Superseded rows are real generations and remain evidence --- the §6.2
+    topic-spend audit and the durability manifest both count them, because a
+    topic a retired run spent is still spent and a file the study holds is
+    still a file it must be able to restore. What they must never do is enter
+    a *current* pool: after a stage is re-run, a glob that reaches both copies
+    puts every response in twice, and a pool with duplicate identities has no
+    disjoint split.
+    """
+    return SUPERSEDED_DIRNAME in Path(path).parts
+
+
+def current_files(root: Path, pattern: str) -> list[Path]:
+    """Files matching ``pattern`` under ``root``, superseded ones excluded."""
+    return sorted(p for p in Path(root).rglob(pattern) if not is_superseded(p))
 
 
 def model_tree(context: StudyContext, model_key: str) -> ModelTree:

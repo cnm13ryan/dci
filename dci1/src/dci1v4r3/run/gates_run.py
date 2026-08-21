@@ -31,8 +31,9 @@ from dci1v4r3.verifiers.constraints import (
     Constraint, FAMILIES, TARGET_GRID, focal_severities,
 )
 
-__all__ = ["STAGE_CALIBRATION", "calibration_cells", "calibration_table",
-           "run_gate2", "run_gate3", "design_variant_for"]
+__all__ = ["STAGE_CALIBRATION", "STAGE_HEADROOM", "calibration_cells",
+           "calibration_table", "run_gate2", "run_gate3", "run_gate4",
+           "design_variant_for", "full_slot_map"]
 
 STAGE_CALIBRATION = "v4r3-solo-calibration"
 
@@ -138,9 +139,54 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
         b_chance=cell_rates(rows, kind="B",
                             severity=min(focal_severities()))["chance"],
         truncation_by_cell={})
+    if payload.get("outcome") != "PASS":
+        return {**payload, "model_key": model_key,
+                "calibration_rows": len(rows)}
+
+    # §13.9's selection input, built here because it is a function of the same
+    # solo rows and of nothing else. Building it in Gate 3 would mean reading
+    # Gate 2's rows again from disk after Gate 2 closed, and the table is the
+    # only thing Gate 3 needs from them.
+    table = calibration_table(
+        rows, shortlist,
+        prescreen={label: {"solo": entry["solo"], "chance": entry["chance"]}
+                   for label, entry in regime_record["difficulty_table"].items()},
+        wording_caliper=_wording_caliper(shortlist, payload["n_star"]),
+        witnesses=_witness_pass(shortlist))
     return {**payload, "model_key": model_key,
             "calibration_rows": len(rows),
+            "calibration_table": table,
             "reads_no_composed_cell": True}
+
+
+def _wording_caliper(shortlist: Mapping[str, Sequence[int]],
+                     n_star: int) -> dict[str, bool]:
+    """§13.4 condition 3, per shortlisted rung, against A at n*."""
+    from dci1v4r3.protocol.wordings import length_caliper_ok
+    return {f"{family}:{q}": length_caliper_ok(family, q, n_star)
+            for family, rungs in shortlist.items() for q in rungs}
+
+
+def _witness_pass(shortlist: Mapping[str, Sequence[int]]) -> dict[str, bool]:
+    """§7.5's witnesses, per shortlisted family.
+
+    The suite is discharged over the whole registered population at Gate 1 and
+    is re-derived here for exactly the families §12.3 shortlisted, so a family
+    that lost its witnesses between the two stages cannot be admitted on the
+    strength of an earlier run.
+    """
+    from dci1v4r3.verifiers.witnesses import realisable_pairs, run_witness_suite
+    families = set(shortlist)
+    pairs = [(a, b) for a, b in realisable_pairs()
+             if a.kind in families or b.kind in families]
+    report = run_witness_suite(pairs)
+    broken = {label.split("+")[0].split(":")[0]
+              for label in (report["joint_satisfiability_failures"]
+                            + report["non_entailment_failures"])}
+    broken |= {label.split("+")[1].split(":")[0]
+               for label in (report["joint_satisfiability_failures"]
+                             + report["non_entailment_failures"])}
+    return {family: family not in broken for family in families}
 
 
 def design_variant_for(result: Any) -> str:
@@ -161,9 +207,19 @@ def design_variant_for(result: Any) -> str:
 def run_gate3(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
               regime_record: Mapping, calibration: Sequence[Mapping[str, Any]]
               ) -> dict[str, Any]:
-    """§13.4, §13.6 and §13.7, from the solo calibration table alone."""
+    """§13.4, §13.6 and §13.7, from the solo calibration table alone.
+
+    Three quantities enter and all three come from a stage that has already
+    closed: `iota_A` and `A`'s solo compliance from Gate 2's own record, and
+    the disjoint pre-screen `iota_A` from the regime screen. §13.4 condition 2
+    is stated over the pre-screen value precisely so that admission does not
+    rest on the same measurement twice.
+    """
     rows = selection.load_calibration_table(calibration)
-    result = selection.select_all(rows, iota_a=gate2_record["iota_a"])
+    result = selection.select_all(
+        rows, iota_a=gate2_record["iota_a"],
+        prescreen_iota_a=regime_record["iota_a_prescreen"],
+        solo_compliance_a=gate2_record["a_solo_compliance"])
     payload = gates.gate3_payload(result)
     variant = design_variant_for(result)
     return {**payload, "model_key": model_key, "design_variant": variant,
@@ -171,3 +227,74 @@ def run_gate3(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
             "variant_rule": ("§8.6, decided by reference admission and "
                              "§12.6 coverage only; no composed effect exists "
                              "at this stage and none may be read")}
+
+
+# ------------------------------------------------------------------ Gate 4
+STAGE_HEADROOM = "v4r3-composed-headroom"
+
+
+def run_gate4(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
+              gate3_record: Mapping, regime_record: Mapping,
+              device: int = 0, generate=None) -> dict[str, Any]:
+    """§13.10: every registered cell type, on the 24 composed topics, M_cal.
+
+    A viability predicate and nothing else. It runs *after* Gate 3 has fixed
+    the spectrum and the class companion, and a failure is terminal for the
+    replication rather than an instruction to choose different rungs --- which
+    is why this function computes no contrast, ranks nothing, and hands
+    `gate4_payload` a table of per-cell per-slot rates with no ordering in it.
+    """
+    from dci1v4r3.run.design_run import (
+        absent_instances, attach_slots, design_cells_for,
+    )
+
+    slot_map = full_slot_map(gate2_record, gate3_record)
+    variant = gate3_record["design_variant"]
+    topics = split_topics()["composed"]
+    pairs = design_cells_for(topics, slot_map, variant=variant,
+                             prefix="headroom", block_prefix="headroom")
+    cells = [c for c, _ in pairs]
+    block_of = {c.cell_id: b for c, b in pairs}
+    run_dir = tree.backend_runs(C.STAGE_GATE4) / "headroom"
+    rows = generate_and_score(model_key, cells, stage=STAGE_HEADROOM,
+                              cap=regime_record["selected_cap"],
+                              draws=C.M_CAL, device=device, run_dir=run_dir,
+                              absent=absent_instances(slot_map),
+                              generate=generate)
+    rows = attach_slots(rows, block_of, slot_map)
+
+    # cell type -> slot -> compliance, over the stated constraints only.
+    tally: dict[str, dict[str, list[int]]] = {}
+    for row in rows:
+        cell_type = row["cell_id"].split(":", 2)[2]
+        for score in row["scores"]:
+            if not score["present"]:
+                continue
+            tally.setdefault(cell_type, {}).setdefault(
+                score["slot"], []).append(int(score["passed"]))
+    cell_rates = {cell: {slot: sum(v) / len(v) for slot, v in by_slot.items()}
+                  for cell, by_slot in tally.items()}
+    payload = gates.gate4_payload(cell_rates)
+    return {**payload, "model_key": model_key, "rows": len(rows),
+            "cells": len(cells), "design_variant": variant,
+            "topic_set": "composed", "draws": C.M_CAL,
+            "run_dir": str(run_dir)}
+
+
+def full_slot_map(gate2_record: Mapping, gate3_record: Mapping
+                  ) -> dict[str, tuple[str, int]]:
+    """§13's slot map plus the two outcome slots Gate 2 fixed.
+
+    Gate 3 decides the companions; `A` and `B` are not companions and are not
+    in its map. Every stage downstream needs all of them, and assembling that
+    union in one place is what stops Gate 4 and the confirmatory run from
+    disagreeing about which severity `A` is.
+    """
+    out: dict[str, tuple[str, int]] = {
+        "A": ("A", int(gate2_record["n_star"])),
+        "B": ("B", int(gate2_record["m_star"]))}
+    for slot, entry in dict(gate3_record["slot_map"]).items():
+        kind, severity = (entry["family"], entry["severity"]) \
+            if isinstance(entry, Mapping) else tuple(entry)
+        out[slot] = (kind, int(severity))
+    return out

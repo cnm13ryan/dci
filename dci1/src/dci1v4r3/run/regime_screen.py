@@ -55,7 +55,18 @@ CAP_SET_A_SEVERITY = max(TARGET_GRID)          # n = 8
 CAP_SET_B_SEVERITY = min(focal_severities())   # m = 7
 
 __all__ = ["STAGE_CAP", "STAGE_LADDER", "cap_selection_cells", "ladder_cells",
-           "select_cap", "difficulty_table_from_rows", "run_regime_screen"]
+           "select_cap", "difficulty_table_from_rows", "run_regime_screen",
+           "mirror_records"]
+
+
+def mirror_records(model_key: str, stage: str) -> None:
+    """Replicate one stage's signed records into the durable root."""
+    records = EVIDENCE / model_key / stage / "records"
+    durable = DCI1 / "durable_root" / EVIDENCE_DIRNAME / model_key / stage
+    if not records.exists():
+        return
+    store.replicate(records, durable)
+    store.assert_replicated(records, durable)
 
 
 def cap_selection_cells(topics: Sequence[dict[str, Any]]) -> list[Cell]:
@@ -170,21 +181,23 @@ def _library_rows(table: dict[str, dict[str, Any]], *, round_of: dict[str, int]
 
 
 def _mirror(model_key: str, out_dir: Path) -> None:
-    """§26: every stage record gets a durable copy the moment it is written.
+    """§26: the stage's records get a durable copy as soon as they exist.
 
     ``evidence/`` is gitignored by this repository's own design -- a run must
     never dirty the worktree -- so the durable mirror is not a convenience, it
-    is the only second copy the study has. Replicating at write time rather
-    than at the end of a session means an interrupted run still leaves one.
+    is the only second copy the study has.
+
+    It **replicates** ``records/`` and no longer writes into it. Writing the
+    record is what the stage machine now does, signed; doing both meant the
+    mirror created the canonical path first and the signed write then hit a
+    write-once refusal on a file the run had made itself. The rows survived
+    and the stage did not.
     """
     durable = (DCI1 / "durable_root" / EVIDENCE_DIRNAME / model_key
                / C.STAGE_REGIME)
     records = out_dir / "records"
-    records.mkdir(parents=True, exist_ok=True)
-    for name in ("regime_record.json",):
-        source = out_dir / name
-        if source.exists():
-            (records / name).write_bytes(source.read_bytes())
+    if not records.exists():
+        return
     store.replicate(records, durable)
     store.assert_replicated(records, durable)
 
@@ -234,8 +247,6 @@ def run_regime_screen(model_key: str, *, device: int, cap: int | None = None,
                       "status": "RESPONSE_LENGTH_INCOMPATIBLE",
                       "completion_cap": chosen,
                       "terminal_sentence": C.TERMINAL_SENTENCE}
-            fs.write_json(out_dir / "regime_record.json", record)
-            _mirror(model_key, out_dir)
             return record
         cap = chosen["selected_cap"]
     else:
@@ -316,6 +327,4 @@ def run_regime_screen(model_key: str, *, device: int, cap: int | None = None,
         "expansion": result,
         "rows_generated": len(all_rows),
     })
-    fs.write_json(out_dir / "regime_record.json", record)
-    _mirror(model_key, out_dir)
     return record

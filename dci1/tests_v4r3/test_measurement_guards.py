@@ -148,8 +148,13 @@ def test_an_unregistered_defect_kind_is_refused():
 
 
 def test_the_development_and_calibration_halves_are_disjoint():
+    """The pool is built from the ladder-screen rows on disk, so it is empty
+    between a supersession and the re-run that replaces it. Empty is a
+    checkout state and not a defect; overlapping never is."""
     module = _validator()
     items = module.V4R3.build_items()
+    if not items:
+        pytest.skip("no current §12.2 ladder-screen rows in this checkout")
     split = module.V4R3.split_pool(items)
     dev = {i["item_id"] for i in split["development"]}
     cal = {i["item_id"] for i in split["calibration"]}
@@ -160,6 +165,8 @@ def test_the_development_and_calibration_halves_are_disjoint():
 def test_a_development_sample_never_reaches_a_calibration_item():
     module = _validator()
     items = module.V4R3.build_items()
+    if not items:
+        pytest.skip("no current §12.2 ladder-screen rows in this checkout")
     split = module.V4R3.split_pool(items)
     cal = {i["item_id"] for i in split["calibration"]}
     sample = module.V4R3.subsample(split["development"], 96)

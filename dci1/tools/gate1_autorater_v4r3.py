@@ -51,6 +51,7 @@ from dci1v4.models.registry import get_judge                     # noqa: E402
 from dci1v4.protocol.hashing import sha_obj, sha_text            # noqa: E402
 from dci1v4.stages import autorater                              # noqa: E402
 from dci1v4r3 import CLASSIFICATION, EVIDENCE_DIRNAME            # noqa: E402
+from dci1v4r3.engine.paths import current_files                  # noqa: E402
 from dci1v4r3.protocol.wordings import wording                   # noqa: E402
 from dci1v4r3.verifiers import verifier_source_hash              # noqa: E402
 from dci1v4r3.verifiers.constraints import FAMILIES              # noqa: E402
@@ -102,7 +103,7 @@ def build_items() -> list[dict[str, Any]]:
     wording the model saw, never the verifier and never the verdict.
     """
     items: list[dict[str, Any]] = []
-    for path in sorted(EVIDENCE.rglob("scored.jsonl")):
+    for path in current_files(EVIDENCE, "scored.jsonl"):
         for line in path.read_text().splitlines():
             if not line.strip():
                 continue
