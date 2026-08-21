@@ -143,9 +143,10 @@ def _calibration_texts(limit: int | None = None) -> list[str]:
     them here is the registered use; no other set is touched.
     """
     from dci1v4r3 import EVIDENCE_DIRNAME
+    from dci1v4r3.engine.paths import current_files
     root = REPO / "evidence" / EVIDENCE_DIRNAME
     texts: list[str] = []
-    for path in sorted(root.rglob("scored.jsonl")):
+    for path in current_files(root, "scored.jsonl"):
         for line in path.read_text().splitlines():
             if line.strip():
                 texts.append(json.loads(line)["raw_response"])
@@ -211,7 +212,7 @@ def cmd_regime(args) -> int:
         write_terminal_report,
     )
     from dci1v4r3.protocol import constants as C
-    from dci1v4r3.run.regime_screen import run_regime_screen
+    from dci1v4r3.run.regime_screen import mirror_records, run_regime_screen
     context = registered_context()
     registration.load_manifest(context)      # §18 stage 1: fails closed
     tree = model_tree(context, args.model)
@@ -232,6 +233,7 @@ def cmd_regime(args) -> int:
                           "status": record.get("status")}, indent=1))
         return 1
     write_stage_record(tree, C.STAGE_REGIME, record)
+    mirror_records(args.model, C.STAGE_REGIME)
     log_transition(tree, stage=C.STAGE_REGIME, outcome=record["outcome"],
                    producing_commit=_commit(), environment_digest="-",
                    detail={"rows": record.get("rows_generated"),
@@ -273,7 +275,7 @@ def cmd_restart(args) -> int:
         return 2
     stages = order[order.index(args.from_stage):]
     out = {}
-    for model_key in MODEL_KEYS:
+    for model_key in ([args.model] if args.model else MODEL_KEYS):
         tree = model_tree(context, model_key)
         out[model_key] = supersede_stage_records(
             tree, stages, reason=args.reason,
@@ -343,6 +345,8 @@ def cmd_gate0(args) -> int:
                           "status": record.get("status")}, indent=1))
         return 1
     write_stage_record(tree, C.STAGE_GATE0, payload)
+    from dci1v4r3.run.regime_screen import mirror_records
+    mirror_records(args.model, C.STAGE_GATE0)
     log_transition(tree, stage=C.STAGE_GATE0, outcome="PASS",
                    producing_commit=_commit(), environment_digest="-",
                    detail={"cached_draws": payload["cached_draws"]})
@@ -350,6 +354,115 @@ def cmd_gate0(args) -> int:
                       "cached_draws": payload["cached_draws"],
                       "cells": payload["cells"]}, indent=1))
     return 0
+
+
+def _stage_payload(tree, stage):
+    from dci1v4r3.engine.transitions import read_stage_record
+    return read_stage_record(tree, stage)
+
+
+def _run_stage(args, stage: str, build, *, summary_keys=()) -> int:
+    """One stage, under the machine: legal, run, sign, mirror, log.
+
+    Every stage command in this tool goes through here, so the order --- check
+    the predecessor, then generate, then sign, then mirror, then log --- is the
+    same for all of them and a new stage cannot quietly skip a step.
+    """
+    from dci1v4.errors import TerminalStatus
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        assert_transition_legal, log_transition, write_stage_record,
+        write_terminal_report,
+    )
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.regime_screen import mirror_records
+
+    context = registered_context()
+    registration.load_manifest(context)
+    tree = model_tree(context, args.model)
+    assert_transition_legal(tree, stage)
+    try:
+        payload = build(tree, context)
+    except TerminalStatus as terminal:
+        record = {**terminal.record, "model_key": args.model, "gate": stage,
+                  "criterion": terminal.record.get("criterion",
+                                                   terminal.args[0]),
+                  "observed": terminal.record.get("observed",
+                                                  terminal.record),
+                  "producing_commit": _commit(),
+                  "strongest_permissible_statement": C.TERMINAL_SENTENCE}
+        record.setdefault("status", terminal.args[0])
+        write_terminal_report(tree, record)
+        log_transition(tree, stage=stage, outcome="TERMINAL",
+                       producing_commit=_commit(), environment_digest="-",
+                       detail={"status": record.get("status")})
+        print(json.dumps({"model": args.model, "stage": stage,
+                          "outcome": "TERMINAL",
+                          "status": record.get("status")}, indent=1))
+        return 1
+    if payload.get("outcome") != "PASS":
+        print(json.dumps({"model": args.model, "stage": stage,
+                          **{k: payload.get(k) for k in
+                             ("outcome", "status", *summary_keys)}}, indent=1))
+        return 1
+    write_stage_record(tree, stage, payload)
+    mirror_records(args.model, stage)
+    log_transition(tree, stage=stage, outcome="PASS",
+                   producing_commit=_commit(), environment_digest="-",
+                   detail={k: payload.get(k) for k in summary_keys})
+    print(json.dumps({"model": args.model, "stage": stage, "outcome": "PASS",
+                      **{k: payload.get(k) for k in summary_keys}},
+                     indent=1, default=str))
+    return 0
+
+
+def cmd_gate2(args) -> int:
+    """§12.3 and §12.4, on the 96 calibration topics."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.gates_run import run_gate2
+
+    def build(tree, context):
+        regime = _stage_payload(tree, C.STAGE_REGIME)
+        return run_gate2(args.model, tree, regime_record=regime,
+                         device=args.device)
+
+    return _run_stage(args, C.STAGE_GATE2, build,
+                      summary_keys=("n_star", "m_star", "iota_a",
+                                    "calibration_rows"))
+
+
+def cmd_gate3(args) -> int:
+    """§13.4, §13.6 and §13.7, from Gate 2's solo calibration table."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.gates_run import run_gate3
+
+    def build(tree, context):
+        gate2 = _stage_payload(tree, C.STAGE_GATE2)
+        regime = _stage_payload(tree, C.STAGE_REGIME)
+        return run_gate3(args.model, tree, gate2_record=gate2,
+                         regime_record=regime,
+                         calibration=gate2["calibration_table"])
+
+    return _run_stage(args, C.STAGE_GATE3, build,
+                      summary_keys=("design", "design_variant", "class_arm",
+                                    "core_references", "spectrum",
+                                    "identification_statuses"))
+
+
+def cmd_gate4(args) -> int:
+    """§13.10's viability predicate, on the 24 composed-validation topics."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.gates_run import run_gate4
+
+    def build(tree, context):
+        return run_gate4(args.model, tree,
+                         gate2_record=_stage_payload(tree, C.STAGE_GATE2),
+                         gate3_record=_stage_payload(tree, C.STAGE_GATE3),
+                         regime_record=_stage_payload(tree, C.STAGE_REGIME),
+                         device=args.device)
+
+    return _run_stage(args, C.STAGE_GATE4, build,
+                      summary_keys=("rows", "cells", "design_variant", "band"))
 
 
 def cmd_adopt_regime(args) -> int:
@@ -470,7 +583,14 @@ def main() -> int:
     restart = sub.add_parser("restart")
     restart.add_argument("--from", dest="from_stage", required=True)
     restart.add_argument("--reason", required=True)
+    restart.add_argument("--model", default=None, choices=sorted(MODEL_KEYS))
     restart.set_defaults(func=cmd_restart)
+    for name, func in (("gate2", cmd_gate2), ("gate3", cmd_gate3),
+                       ("gate4", cmd_gate4)):
+        cmd = sub.add_parser(name)
+        cmd.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
+        cmd.add_argument("--device", type=int, default=0)
+        cmd.set_defaults(func=func)
     sub.add_parser("adopt-regime").set_defaults(func=cmd_adopt_regime)
     sub.add_parser("seal-cap-probe").set_defaults(func=cmd_seal_cap_probe)
     args = parser.parse_args()
