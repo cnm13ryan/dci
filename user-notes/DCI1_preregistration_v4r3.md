@@ -1511,11 +1511,27 @@ relaxed. Specificity and sensitivity keep their §10.4-R meanings — the
 false-alarm side and the detection side — mapped onto the new unit.
 
 **The configuration.** Judge `gpt-oss-20b` at its registered revision,
-temperature 0, reasoning effort `medium`, output cap **8,192**. The cap is
-§10.4-R's own registered non-binding fallback and is used here from the first
-run rather than after a failure, because §10.4-R's truncation failure is
-already the reason to. `mc-high` and `mc-low` are registered contingencies on
-§10.4's reasoning-effort axis.
+temperature 0, reasoning effort `medium`, output cap **3,584**. `mc-high` and
+`mc-low` are registered contingencies on §10.4's reasoning-effort axis.
+
+The cap is *derived*, and the reason is a finding about §10.4-R rather than a
+preference. R1 registered 8,192 as its non-binding cap fallback and named it as
+the contingency for exactly the truncation failure it went on to suffer. **That
+contingency was never runnable.** The registered judge carries
+`max_model_len = 4096` and the backend passes the cap to vLLM as `max_tokens`,
+so a request for 8,192 new tokens does not fit the context the engine is built
+with. The first R2 attempt was configured at 8,192, produced zero judged rows,
+and is retained under
+`reports/dci1v4r3/microcase_runs/development-mc-medium-instruction_only-rep0/`
+as the evidence.
+
+So R2 takes the judge's own context less a registered 512-token headroom for
+the prompt, and asserts on every run that the longest prompt the case set
+produces fits inside that headroom — about 421 tokens against 512. The
+correction is recorded here rather than made quietly, because "a bigger cap
+would have fixed it" was the standing objection to §10.4-R's result, and the
+answer is that at the registered judge configuration a bigger cap was not
+available at all.
 
 **What is frozen before the held-out phase**: the microcase generator and its
 hash, the case set and both split hashes, both prompts and their hashes, the

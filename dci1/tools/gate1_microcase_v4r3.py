@@ -91,17 +91,56 @@ PROMPT_OF_ARM = {ARM_INSTRUCTION: "microcase/1.0.0",
 PARSER_VERSION = "microcase-parse/1.0.0"
 LABEL_MAPPING = {"YES": True, "NO": False}
 
-#: §10.4-R's registered non-binding cap, used here from the first run rather
-#: than as a fallback. R1 registered 8192 as the value far outside the range
-#: any judged item had used, and R1's own failure on truncation is the reason
-#: to start there. The value is carried, not chosen after seeing an R2 result.
-MICROCASE_CAP = 8192
+#: The largest cap the registered judge can actually run, and how it is got.
+#:
+#: §10.4-R registered 8,192 as its non-binding cap fallback and named it as the
+#: contingency for exactly the truncation failure it then suffered. **That
+#: contingency was never runnable.** The registered judge carries
+#: `max_model_len = 4096`, and vLLM is given `max_tokens` directly, so a
+#: request for 8,192 new tokens does not fit in the context the engine was
+#: built with. The first R2 attempt was configured at 8,192, produced zero
+#: judged rows, and is retained at
+#: `reports/dci1v4r3/microcase_runs/development-mc-medium-instruction_only-rep0/`
+#: as the evidence for that sentence.
+#:
+#: So the cap is *derived* rather than chosen: the judge's own context less a
+#: registered headroom for the prompt, asserted against the longest prompt the
+#: case set actually produces. A number that cannot silently exceed the engine
+#: is worth more here than a number that sounds generous.
+PROMPT_HEADROOM_TOKENS = 512
+
+
+def microcase_cap() -> int:
+    return get_judge("gpt-oss-20b").max_model_len - PROMPT_HEADROOM_TOKENS
+
+
+MICROCASE_CAP = microcase_cap()
 
 CONDITIONS = {
     "mc-medium": {"reasoning_effort": "medium", "cap": MICROCASE_CAP},
     "mc-high": {"reasoning_effort": "high", "cap": MICROCASE_CAP},
     "mc-low": {"reasoning_effort": "low", "cap": MICROCASE_CAP},
 }
+
+
+def assert_prompts_fit(cases: list[dict[str, Any]]) -> dict[str, int]:
+    """Every rendered prompt fits inside the registered headroom.
+
+    Characters over four is a deliberate over-estimate of tokens for English
+    prose; the point is a bound that fails loudly, not an exact count.
+    """
+    longest = 0
+    for case in cases:
+        for arm in (ARM_INSTRUCTION, ARM_CONVENTIONS):
+            longest = max(longest, len(render(case, arm)))
+        estimate = longest // 3
+    if estimate >= PROMPT_HEADROOM_TOKENS:
+        raise SystemExit(
+            f"the longest microcase prompt is about {estimate} tokens and the "
+            f"registered headroom is {PROMPT_HEADROOM_TOKENS}; the cap would "
+            "not fit the engine's context")
+    return {"longest_prompt_chars": longest, "estimated_tokens": estimate,
+            "headroom": PROMPT_HEADROOM_TOKENS, "cap": MICROCASE_CAP}
 
 #: §10.4-R's thresholds, carried unchanged. The unit of validation moved; what
 #: counts as an adequate validator did not, and R2 must not be easier to pass
@@ -433,6 +472,7 @@ def cmd_cases(args) -> int:
 
 def _run_phase(args, phase: str) -> dict[str, Any]:
     cases = _cases(phase)
+    fit = assert_prompts_fit(cases)
     results = [run_arm(cases, arm, args.condition, device=args.device,
                        replicate=args.replicate, phase=phase)
                for arm in (ARM_INSTRUCTION, ARM_CONVENTIONS)]
@@ -443,7 +483,7 @@ def _run_phase(args, phase: str) -> dict[str, Any]:
         "classification": CLASSIFICATION,
         "phase": phase, "condition": args.condition,
         "replicate": args.replicate,
-        "config": results[0]["config"],
+        "config": results[0]["config"], "prompt_fit": fit,
         "case_set_hash": case_set_hash(build_cases()),
         "split_hash": sha_obj(sorted(c["case_id"] for c in cases)),
         "arms": [{k: v for k, v in r.items() if k != "rows"} for r in results],
