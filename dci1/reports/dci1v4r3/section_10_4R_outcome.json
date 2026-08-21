@@ -3,6 +3,13 @@
  "approves": "nothing. Gate 1 is NOT approved",
  "artifact": "\u00a710.4-R development phase, outcome",
  "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+ "cap_contingency_was_never_runnable": {
+  "consequence": "the objection 'a bigger cap would have fixed the truncation' is not merely untried; at the registered judge configuration a bigger cap was not available. The reasoning effort contingencies (v4r-high, v4r-low) remain untried and runnable.",
+  "does_not_change": "any \u00a710.4-R rate. The v4r-medium outcome stands exactly as recorded.",
+  "evidence": "reports/dci1v4r3/microcase_runs/development-mc-medium-instruction_only-rep0/ --- an R2 attempt configured at 8192, 84 designed rows, 0 answered, every row TECHNICAL_FAILURE",
+  "finding": "\u00a710.4-R registered v4r-medium-8k, an output cap of 8192, as the contingency for its own truncation failure. The registered judge carries max_model_len = 4096 and the backend passes the cap to vLLM as max_tokens, so the request does not fit the engine's context and the condition produces no judged rows.",
+  "recorded_on": "2026-08-21"
+ },
  "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
  "conditions_not_run": {
   "v4r-high": {
