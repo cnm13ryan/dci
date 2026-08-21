@@ -1,0 +1,46 @@
+{
+  "artifact_type": "v4r4-post-freeze-delta",
+  "change": "§21's assert_generation_licensed asked for a freeze field named verifier_source_hash; §18.1 binds canonical_verifier_hash. The licence check refused every valid freeze record. Also: §21's assert_no_selective_rerun was documented and not called, and is now called",
+  "frozen_replications": [
+    "gemma-3n-e4b-it",
+    "qwen3-4b"
+  ],
+  "passed": true,
+  "per_model": {
+    "gemma-3n-e4b-it": {
+      "current_commit": "ebe7fe5b2311b54ba1e037a72026dffc00c401d3",
+      "expected_to_move": [
+        "producing_commit"
+      ],
+      "fields_compared": 66,
+      "fields_that_moved": {
+        "producing_commit": {
+          "recomputed": "3ea80ac15a734df7",
+          "sealed": "1af4cbf63c125e9b"
+        }
+      },
+      "scientific_state_unchanged": true,
+      "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
+      "sealed_record_still_verifies": true,
+      "unexpectedly_moved": []
+    },
+    "qwen3-4b": {
+      "current_commit": "ebe7fe5b2311b54ba1e037a72026dffc00c401d3",
+      "expected_to_move": [
+        "producing_commit"
+      ],
+      "fields_compared": 66,
+      "fields_that_moved": {
+        "producing_commit": {
+          "recomputed": "3ea80ac15a734df7",
+          "sealed": "1af4cbf63c125e9b"
+        }
+      },
+      "scientific_state_unchanged": true,
+      "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
+      "sealed_record_still_verifies": true,
+      "unexpectedly_moved": []
+    }
+  },
+  "why": "§18.1 forbids changing the scientific state after the freeze and the machinery refuses to supersede a passed GATE_5_FREEZE, so a defect found below the freeze is answered by showing that nothing the freeze bound moved -- not by re-freezing"
+}
