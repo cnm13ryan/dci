@@ -1,0 +1,22 @@
+{
+ "annotator": "Bryan",
+ "artifact_type": "v4r3-verifier-audit-report",
+ "assessed": 128,
+ "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "cards": 128,
+ "cards_hash": "ad0a2a553165ffbe3afc4aa28594c39e2ffac8fd99866e912a7c6f42c199a409",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "complete": true,
+ "correct": 128,
+ "generated_at": "2026-08-21T18:52:16+00:00",
+ "producing_commit": "1a159268c2c38fa6e1e005ea5ec40370dab30a1c",
+ "standing": "a verifier audit, not \u00a710.3. The verdict was visible before each assessment, so no figure here is a human-verifier agreement rate and none may be reported as one.",
+ "unsure": 0,
+ "unsure_cards": [],
+ "what_a_finding_costs": "changing a verifier changes the canonical hash, which every \u00a710.2 artifact, every stage record and all 30,144 stored verdicts are bound to. A confirmed defect is a CHANGES_SCIENTIFIC.md entry, a re-run of \u00a710.2's evidence, and a re-derivation of anything measured under the old hash.",
+ "worklist_by_component": {},
+ "worklist_by_form": {},
+ "worklist_by_numerator": {},
+ "wrong": 0,
+ "wrong_cards": []
+}

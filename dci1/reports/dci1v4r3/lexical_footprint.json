@@ -1,0 +1,275 @@
+{
+ "artifact_type": "v4r3-lexical-footprint",
+ "bands": {
+  "consequential_at_or_above": 0.1,
+  "detectable_at_or_above": 0.01,
+  "provenance": "diagnostic bands, NOT registered criteria; the upper line is \u00a711.8's smallest effect of interest. Carried from the defect-sensitivity diagnostic so the two read on one scale."
+ },
+ "by_family": {
+  "CL7": {
+   "change_rate": 0.0020833333333333333,
+   "changed": 2,
+   "n": 960
+  },
+  "CL8": {
+   "change_rate": 0.00390625,
+   "changed": 3,
+   "n": 768
+  },
+  "CP4": {
+   "change_rate": 0.00390625,
+   "changed": 3,
+   "n": 768
+  },
+  "CP7": {
+   "change_rate": 0.015625,
+   "changed": 12,
+   "n": 768
+  },
+  "CR1": {
+   "change_rate": 0.0078125,
+   "changed": 6,
+   "n": 768
+  },
+  "CR10": {
+   "change_rate": 0.006510416666666667,
+   "changed": 5,
+   "n": 768
+  },
+  "CR11": {
+   "change_rate": 0.016927083333333332,
+   "changed": 13,
+   "n": 768
+  },
+  "CR2": {
+   "change_rate": 0.0078125,
+   "changed": 6,
+   "n": 768
+  },
+  "CR3": {
+   "change_rate": 0.07942708333333333,
+   "changed": 61,
+   "n": 768
+  },
+  "CR4": {
+   "change_rate": 0.005208333333333333,
+   "changed": 4,
+   "n": 768
+  },
+  "CR6": {
+   "change_rate": 0.016927083333333332,
+   "changed": 13,
+   "n": 768
+  },
+  "CR7": {
+   "change_rate": 0.015625,
+   "changed": 12,
+   "n": 768
+  },
+  "CR8": {
+   "change_rate": 0.0078125,
+   "changed": 6,
+   "n": 768
+  },
+  "CR9": {
+   "change_rate": 0.013020833333333334,
+   "changed": 10,
+   "n": 768
+  },
+  "RF1": {
+   "change_rate": 0.0006944444444444445,
+   "changed": 1,
+   "n": 1440
+  },
+  "RF10": {
+   "change_rate": 0.0,
+   "changed": 0,
+   "n": 768
+  },
+  "RF11": {
+   "change_rate": 0.0,
+   "changed": 0,
+   "n": 768
+  },
+  "RF2": {
+   "change_rate": 0.0,
+   "changed": 0,
+   "n": 864
+  },
+  "RF3": {
+   "change_rate": 0.06944444444444445,
+   "changed": 60,
+   "n": 864
+  },
+  "RF4": {
+   "change_rate": 0.0,
+   "changed": 0,
+   "n": 672
+  },
+  "RF7": {
+   "change_rate": 0.0,
+   "changed": 0,
+   "n": 2976
+  },
+  "RF8": {
+   "change_rate": 0.006944444444444444,
+   "changed": 6,
+   "n": 864
+  },
+  "RF9": {
+   "change_rate": 0.009114583333333334,
+   "changed": 7,
+   "n": 768
+  }
+ },
+ "by_numerator": {
+  "b_initial": {
+   "band": "negligible",
+   "change_rate": 0.003170289855072464,
+   "changed": 7,
+   "n": 2208
+  },
+  "capital_word": {
+   "band": "detectable",
+   "change_rate": 0.016927083333333332,
+   "changed": 13,
+   "n": 768
+  },
+  "doubled_letter": {
+   "band": "negligible",
+   "change_rate": 0.003170289855072464,
+   "changed": 7,
+   "n": 2208
+  },
+  "ing_final": {
+   "band": "negligible",
+   "change_rate": 0.003676470588235294,
+   "changed": 6,
+   "n": 1632
+  },
+  "letter_a": {
+   "band": "negligible",
+   "change_rate": 0.004751461988304093,
+   "changed": 26,
+   "n": 5472
+  },
+  "one_letter": {
+   "band": "detectable",
+   "change_rate": 0.0741421568627451,
+   "changed": 121,
+   "n": 1632
+  },
+  "s_final": {
+   "band": "negligible",
+   "change_rate": 0.0032552083333333335,
+   "changed": 5,
+   "n": 1536
+  },
+  "t_initial": {
+   "band": "detectable",
+   "change_rate": 0.011067708333333334,
+   "changed": 17,
+   "n": 1536
+  },
+  "vowel_initial": {
+   "band": "negligible",
+   "change_rate": 0.008463541666666666,
+   "changed": 13,
+   "n": 1536
+  },
+  "y_final": {
+   "band": "negligible",
+   "change_rate": 0.00625,
+   "changed": 15,
+   "n": 2400
+  }
+ },
+ "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "computes_no_composed_estimand": true,
+ "excluded": {
+  "instruments": [
+   "A",
+   "B"
+  ],
+  "numerators": [
+   "comma",
+   "semicolon",
+   "capital_char",
+   "sentence"
+  ],
+  "why": "the first three read raw characters and cannot move; `sentence` is not a property of the word list. Reporting them as unchanged would imply the question applied.",
+  "why_those": "A's \u00a79.2 counter is registered fold-then-segment and is carried byte-identically from the closed v3 instrument; B is a max over runs, not a count."
+ },
+ "families_worst_first": [
+  "CR3",
+  "RF3",
+  "CR11",
+  "CR6",
+  "CP7",
+  "CR7",
+  "CR9",
+  "RF9",
+  "CR1",
+  "CR2",
+  "CR8",
+  "RF8",
+  "CR10",
+  "CR4",
+  "CL8",
+  "CP4",
+  "CL7",
+  "RF1",
+  "RF10",
+  "RF11",
+  "RF2",
+  "RF4",
+  "RF7"
+ ],
+ "generated_at": "2026-08-21T19:00:49+00:00",
+ "not_resolved_by_this_study": "\u00a710.5 question 3, construct validity, which the preregistration bounds by \u00a79.3 and \u00a724 and does not resolve",
+ "numerators_worst_first": [
+  "one_letter",
+  "capital_word",
+  "t_initial",
+  "vowel_initial",
+  "y_final",
+  "letter_a",
+  "ing_final",
+  "s_final",
+  "b_initial",
+  "doubled_letter"
+ ],
+ "producing_commit": "1a159268c2c38fa6e1e005ea5ec40370dab30a1c",
+ "purpose": "size the registered \u00a77.3 word against a reader's word. Read-only. Not a defect analysis: the verifier implements \u00a77.3 faithfully and this measures what \u00a77.3 costs.",
+ "reads": "load 0 and load 1 rows only; no composed cell enters",
+ "registered_rule": "a word is a maximal run of alphabetic characters, Unicode general category L (\u00a77.3), so an apostrophe and a hyphen both end a word",
+ "report_hash": "e9cbc105cb2789023127bef1d7e9af3a1b548c94d05d96958a5d0418a451c13e",
+ "responses": 30109,
+ "segmentation": {
+  "reader_words": 2482705,
+  "registered_words": 2524851,
+  "share_of_the_rate_denominator": 0.016692470169526834,
+  "what_it_splits_on": {
+   "'": 22098,
+   "''": 14,
+   "-": 15392,
+   "-'": 10,
+   "--": 283,
+   "---": 5,
+   "-----": 1,
+   "-\u2019": 9,
+   "\u2019": 3920
+  },
+  "words_added_by_the_registered_rule": 42146
+ },
+ "the_alternative": "a reader's word, in which one internal apostrophe or hyphen does not break a word. NOT one of \u00a710.4-R2's six registered defects, because it is not a misreading of the registered rule --- it is a different rule.",
+ "verdicts": {
+  "band": "detectable",
+  "canonical_pass_rate": 0.39172400611620795,
+  "change_rate": 0.01099006116207951,
+  "changed": 230,
+  "compared": 20928,
+  "reader_pass_rate": 0.3959288990825688
+ }
+}
