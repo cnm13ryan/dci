@@ -34,7 +34,8 @@ DCI1 = Path(__file__).resolve().parents[3]
 EVIDENCE = DCI1 / "evidence" / EVIDENCE_DIRNAME
 
 __all__ = ["Cell", "EVIDENCE", "solo_cell", "unconstrained_cell",
-           "design_rows", "generate_and_score", "cell_rates"]
+           "design_rows", "generate_and_score", "cell_rates",
+           "instance_rates"]
 
 
 @dataclass(frozen=True)
@@ -279,3 +280,32 @@ def cell_rates(rows: Iterable[dict[str, Any]], *, kind: str, severity: int,
             "median_words": float(words[len(words) // 2]),
             "n_topics": len(topics),
             "n_observations": sum(len(per_topic[t]) for t in topics)}
+
+
+def instance_rates(rows: Sequence[dict[str, Any]], *, kind: str,
+                   severity: int) -> dict[str, float]:
+    """Solo and chance for one instance, in §12.2's vocabulary.
+
+    ``cell_rates`` answers about one *cell*: either the rows where the
+    instruction was present, or the load-0 rows where the same verifier scored
+    the same responses without it having been stated. Every stage that reads a
+    difficulty coordinate wants the pair, under the names §12.2's table uses --
+    and the three call sites that assembled it by hand asked ``cell_rates``
+    for a ``"solo"``/``"chance"`` contract it has never had, without the
+    required ``present``. Neither had ever executed: v4r3 stopped at Gate 1.
+
+    ``run/regime_screen.difficulty_table_from_rows`` is the certified reading
+    of solo and chance --- it produced the §12.2 table Gate 1 and §12.6's
+    coverage read --- and this reproduces it exactly rather than restating it.
+    ``tests_v4r4/test_gate2_rates.py`` pins the two together, so they cannot
+    drift into two definitions of difficulty under one name.
+    """
+    rows = list(rows)                     # scanned twice; never a generator
+    solo = cell_rates(rows, kind=kind, severity=severity, present=True)
+    chance = cell_rates(rows, kind=kind, severity=severity, present=False)
+    return {"solo": solo["compliance"], "chance": chance["compliance"],
+            "vacuity": solo["vacuity"], "chance_vacuity": chance["vacuity"],
+            "graded_mean": solo["graded_mean"],
+            "median_words": solo["median_words"],
+            "truncation": solo["truncation"],
+            "n_topics": solo["n_topics"]}

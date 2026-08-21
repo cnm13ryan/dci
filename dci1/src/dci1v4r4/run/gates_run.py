@@ -23,7 +23,8 @@ from dci1v4.errors import ProtocolError
 from dci1v4r4.engine.paths import ModelTree
 from dci1v4r4.protocol import constants as C
 from dci1v4r4.run.execute import (
-    Cell, cell_rates, generate_and_score, solo_cell, unconstrained_cell,
+    Cell, generate_and_score, instance_rates, solo_cell,
+    unconstrained_cell,
 )
 from dci1v4r4.stages import gates, selection
 from dci1v4r4.topics import split_topics
@@ -76,7 +77,7 @@ def calibration_table(rows: Sequence[Mapping[str, Any]],
     for family, rungs in sorted(shortlist.items()):
         for q in rungs:
             label = f"{family}:{q}"
-            measured = cell_rates(rows, kind=family, severity=q)
+            measured = instance_rates(rows, kind=family, severity=q)
             pre = prescreen.get(label)
             if pre is None:
                 raise ProtocolError(
@@ -118,14 +119,14 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
     fs.write_json(tree.stage_dir(C.STAGE_GATE2) / "calibration_rows.json",
                   {"rows": len(rows), "run_dir": str(run_dir)})
 
-    a_curve = {n: cell_rates(rows, kind="A", severity=n)["solo"]
+    a_curve = {n: instance_rates(rows, kind="A", severity=n)["solo"]
                for n in TARGET_GRID}
-    registered = {m: cell_rates(rows, kind="B", severity=m)["solo"]
+    registered = {m: instance_rates(rows, kind="B", severity=m)["solo"]
                   for m in focal_severities()}
-    extended = ({m: cell_rates(rows, kind="B", severity=m)["solo"]
+    extended = ({m: instance_rates(rows, kind="B", severity=m)["solo"]
                  for m in focal_severities(extended=True)}
                 if extension else None)
-    b_vacuity = max(cell_rates(rows, kind="B", severity=m)["vacuity"]
+    b_vacuity = max(instance_rates(rows, kind="B", severity=m)["vacuity"]
                     for m in focal_severities(extended=extension))
     graded = {kind: [r["scores"][0]["graded"] for r in rows
                      if r["scores"] and r["scores"][0]["kind"] == kind
@@ -135,9 +136,10 @@ def run_gate2(model_key: str, tree: ModelTree, *, regime_record: Mapping,
         a_curve=a_curve, focal_registered_curve=registered,
         focal_extended_curve=extended, b_solo_vacuity=b_vacuity,
         graded_distributions=graded,
-        a_chance=cell_rates(rows, kind="A", severity=TARGET_GRID[0])["chance"],
-        b_chance=cell_rates(rows, kind="B",
-                            severity=min(focal_severities()))["chance"],
+        a_chance=instance_rates(rows, kind="A",
+                                severity=TARGET_GRID[0])["chance"],
+        b_chance=instance_rates(rows, kind="B",
+                                severity=min(focal_severities()))["chance"],
         truncation_by_cell={})
     if payload.get("outcome") != "PASS":
         return {**payload, "model_key": model_key,
@@ -273,9 +275,10 @@ def run_gate4(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
                 continue
             tally.setdefault(cell_type, {}).setdefault(
                 score["slot"], []).append(int(score["passed"]))
-    cell_rates = {cell: {slot: sum(v) / len(v) for slot, v in by_slot.items()}
-                  for cell, by_slot in tally.items()}
-    payload = gates.gate4_payload(cell_rates)
+    rates_by_cell = {cell: {slot: sum(v) / len(v)
+                            for slot, v in by_slot.items()}
+                     for cell, by_slot in tally.items()}
+    payload = gates.gate4_payload(rates_by_cell)
     return {**payload, "model_key": model_key, "rows": len(rows),
             "cells": len(cells), "design_variant": variant,
             "topic_set": "composed", "draws": C.M_CAL,
