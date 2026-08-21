@@ -1404,6 +1404,138 @@ phase returns `MEASUREMENT_EVIDENCE_INSUFFICIENT` and Gate 1 does not pass.
 A condition is never re-run to obtain a better result, and no threshold above
 may move after a card has been judged.
 
+### 10.4-R2 The microcase semantic audit (amendment R2, 2026-08-21)
+
+**Status.** Prospective. Registered before the tool was run and before any
+microcase was judged. It supersedes §10.4-R's *unit of validation* and nothing
+else: the six defect kinds are unchanged, the acceptance thresholds are carried
+unchanged, the deterministic verifier remains the study's only scorer, the
+judge registry stays disjoint from the study registry, the held-out half stays
+untouched until the development half passes, and evidence stays append-only.
+
+**Why.** §10.4-R ran on `v4r-medium` and failed four of five criteria:
+truncation 0.3125 against 0.10, parse validity 0.6875 against 0.95, specificity
+0.613 against 0.90, sensitivity 0.771 against 0.80. The planted-defect arm
+showed two things an agreement check would have hidden. The judge **recounted
+the response** although the prompt said, in those words, not to: eight of the
+twelve wrongly-failed faithful cards were justified *"Wrong count of
+however"*. And it was **blind to `vacuity_ignored`**, 0 of 5, with no
+justification offered, while catching `numerator_swap` and `off_by_one` 9 of 9
+each.
+
+R1's own diagnosis — that §10.4 failed because the task was arithmetic — was
+**wrong**, and the repaired pathway is the evidence: it reproduced 0.3125
+truncation against §10.4's own 0.319. What binds is the length of the reasoning
+chain, not the enumeration. So R2 removes the chain rather than the arithmetic.
+
+**The unit.** One microcase is an instruction of five to eight words and an
+answer of at most fourteen. The validator receives the instruction and the
+answer, and returns one word. It never receives the verifier's verdict, its
+derivation, its arithmetic, or any label — so agreement cannot be manufactured
+by agreeing, and the task cannot become tautological.
+
+**What makes the set informative.** Every case sits where a *defective* reading
+of the same instruction records a different verdict from the registered one.
+The six kinds are implemented as real alternative readings and not as
+descriptions:
+
+| Kind | The reading it stands for |
+|---|---|
+| `numerator_swap` | counts a registered sibling numerator instead |
+| `denominator_swap` | divides by characters of the answer rather than by words |
+| `inequality_flip` | reverses the comparison; for an exact count, reads *at least* |
+| `off_by_one` | shifts the threshold one step in the direction that changes verdicts |
+| `segmentation_drift` | segments after folding rather than before — **the actual composition error §10.2 found in the carried helper**, not a hypothetical one |
+| `vacuity_ignored` | treats a rate over zero words as satisfied, and an empty answer as satisfying a lower bound or an exact count |
+
+A validator that reads the instruction the way the verifier scores it agrees
+with the registered verdict on those cases. A validator whose reading coincides
+with a defect disagrees, and *which* cases it disagrees on says which defect.
+
+**Two arms, and why.** A five-word wording says nothing about whether
+`well-known` is one word or two, or about what a percentage means when there
+are no words. Judging `segmentation_drift` or `vacuity_ignored` on the wording
+alone would score the validator for failing to guess a convention.
+
+- The **instruction-only** arm shows the wording and the answer. It carries
+  `inequality_flip`, `off_by_one`, `numerator_swap` and `denominator_swap` —
+  every kind the instruction alone determines.
+- The **conventions** arm adds §7.3's registered lexical and rate rules,
+  stated identically for every case and therefore incapable of carrying
+  information about any one case's verdict. It carries `segmentation_drift`
+  and `vacuity_ignored`.
+
+Both arms run the same cases, the same parser and the same thresholds, and both
+are reported. A disagreement the instruction-only arm shows and the conventions
+arm resolves is a fact about the **wording**, not about the verifier, and is
+recorded as one.
+
+**The case set.** A candidate pool is generated over all thirty families: the
+three-point threshold sweep in each family's own units, plus twenty-two
+registered phenomenon answers — case-folding split, hyphenated and
+apostrophised forms, capitalisation, adjacent punctuation, empty and wordless
+answers, single-word answers, terminator runs and unterminated tails. The
+severity is the **smallest declared severity of the family that is at least
+one**, so every answer is short enough to take in at a glance; `CL7`'s median
+rung is sixty, and a sixty-word answer is the counting task this amendment
+exists to remove. Answers over fourteen words are dropped from the pool rather
+than shortened.
+
+A registered selection rule then takes 160 cases from the pool. It reads only
+which defects a case separates, what the registered verdict is, and which
+family it belongs to — never a validator's answer, because none exists when it
+runs. Scarcest defect kind first, verdicts alternating, families spread. The
+result is **80 satisfied and 80 not satisfied**, all thirty families, every
+defect kind above the four-item floor in both halves. The balance is load
+bearing: with the halves equal, a validator that answers *yes* to everything
+scores one on specificity and zero on sensitivity, and fails.
+
+**The split.** Development and calibration by hash of the case identifier and
+nothing else, so the split cannot depend on a case's family, difficulty or
+verdict. The calibration half is not run until the development half passes.
+
+**Criteria.** §10.4-R's, carried unchanged, over the new unit:
+
+| # | Criterion | Threshold |
+|---|---|---|
+| 2 | truncation, pooled / per group | ≤ 0.10 / ≤ 0.20 |
+| 3 | parse validity | ≥ 0.95 |
+| 4 | specificity — agreement on cases the verifier records as **satisfied** | ≥ 0.90 |
+| 5 | sensitivity — agreement on cases the verifier records as **not satisfied** | ≥ 0.80 |
+| 5 | sensitivity per defect kind with ≥ 4 items, in the arm that decides it | ≥ 0.50 |
+| 6 | repeatability across two replicates of one frozen configuration | ≥ 0.95 |
+
+Criterion 6 is new, and it is new because the unit is now small enough that a
+stable answer is a reasonable thing to require. No carried threshold is
+relaxed. Specificity and sensitivity keep their §10.4-R meanings — the
+false-alarm side and the detection side — mapped onto the new unit.
+
+**The configuration.** Judge `gpt-oss-20b` at its registered revision,
+temperature 0, reasoning effort `medium`, output cap **8,192**. The cap is
+§10.4-R's own registered non-binding fallback and is used here from the first
+run rather than after a failure, because §10.4-R's truncation failure is
+already the reason to. `mc-high` and `mc-low` are registered contingencies on
+§10.4's reasoning-effort axis.
+
+**What is frozen before the held-out phase**: the microcase generator and its
+hash, the case set and both split hashes, both prompts and their hashes, the
+parser version, the judge model and revision, the reasoning configuration, the
+output cap, and the thresholds.
+
+**If it fails.** The LLM-validator pathway **stops**. It is not prompt-tuned,
+and no threshold moves. §10.3's human semantic audit is then the only
+remaining registered route to a measurement basis, and the replication records
+`HUMAN_VALIDATION_UNAVAILABLE` until a person completes one. Gate 1 does not
+pass, no freeze occurs, and no confirmatory generation begins. That is a
+registered outcome and not a fallback to be avoided.
+
+**One limitation, registered rather than discovered.** Every case audits its
+family at the bottom of its declared range. The predicate and the wording are
+severity-invariant by construction (§7.5), so the reading being validated does
+not depend on where in the range the rung sits — but this audit assumes that
+rather than demonstrating it.
+
+
 ### 10.5 Measurement scope, recorded verbatim
 
 Three questions are kept separate and never aggregated.

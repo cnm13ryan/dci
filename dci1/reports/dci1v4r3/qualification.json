@@ -1,6 +1,6 @@
 {
   "artifact_type": "qualification_record",
-  "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+  "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
   "checks": [
     {
       "check": "clean_worktree",
@@ -12,7 +12,7 @@
     },
     {
       "check": "commit_hashable",
-      "detail": "409b9961ee08238850a3a9cd7ff5b79c1b6ac77e",
+      "detail": "161870b8cb507b146105d4a2a650794a70d8806c",
       "passed": true
     },
     {
@@ -50,22 +50,22 @@
     {
       "check": "wording_suite",
       "detail": {
-        "instruments": 348,
-        "verdicts_checked": 27840
+        "instruments": 584,
+        "verdicts_checked": 46720
       },
       "passed": true
     },
     {
       "check": "witness_suite",
       "detail": {
-        "pairs": 25337
+        "pairs": 92988
       },
       "passed": true
     },
     {
       "check": "class_labelling",
       "detail": {
-        "families": 20
+        "families": 30
       },
       "passed": true
     },
@@ -77,15 +77,15 @@
     {
       "check": "environment_hashable",
       "detail": {
-        "python_executable": "/home/cnm13ryan/git/dci/dci1/.venv/bin/python",
+        "python_executable": "/home/cnm13ryan/git/dci/.venv/bin/python3",
         "python_version": "3.13.12"
       },
       "passed": true
     }
   ],
-  "instrument_population": 348,
+  "instrument_population": 584,
   "outcome": "PASS",
-  "producing_commit": "409b9961ee08238850a3a9cd7ff5b79c1b6ac77e",
+  "producing_commit": "161870b8cb507b146105d4a2a650794a70d8806c",
   "reads_no_behavioural_rate": true,
   "stage": "QUALIFIED"
 }

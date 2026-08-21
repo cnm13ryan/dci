@@ -25,6 +25,16 @@ __all__ = ["topic_membership", "audit_rows", "audit_evidence_tree",
            "assert_reserved_sets_unspent", "resolve_stage",
            "STAGE_PERMISSIONS", "STAGE_LABEL_PREFIXES"]
 
+def _stage_labels() -> tuple[str, str, str, str]:
+    """The labels the runners actually emit, read from the runners."""
+    from dci1v4r3.run.gates_run import STAGE_CALIBRATION
+    from dci1v4r3.run.pilot_run import STAGE_PILOT
+    from dci1v4r3.run.regime_screen import STAGE_CAP, STAGE_LADDER
+    return STAGE_PILOT, STAGE_CAP, STAGE_LADDER, STAGE_CALIBRATION
+
+
+_PILOT_LABEL, _CAP_LABEL, _LADDER_LABEL, _CALIBRATION_LABEL = _stage_labels()
+
 #: Which registered stage may touch which sets.
 STAGE_PERMISSIONS: dict[str, tuple[str, ...]] = {
     C.STAGE_GATE0: ("prescreen",),
@@ -41,11 +51,18 @@ STAGE_PERMISSIONS: dict[str, tuple[str, ...]] = {
 #: by equality. An unresolved label is reported by name and held to the
 #: development sets, so a mislabelled confirmatory run cannot pass by having a
 #: name the table does not recognise.
+#: The prefixes are **imported from the runners that emit them**, not restated.
+#: `v4r3-pilot` was restated here and the runner emits `v4r3-gate0-pilot`, so
+#: the first Gate 0 pilot this study ever ran produced 4,512 rows the audit
+#: could not place --- and the audit did the right thing, holding an
+#: unrecognised label to the development sets and refusing. It refused
+#: correctly, but on a name rather than on a topic, and a guard that can be
+#: defeated by renaming a stage is a guard about spelling.
 STAGE_LABEL_PREFIXES: dict[str, str] = {
-    "v4r3-pilot": C.STAGE_GATE0,
-    "v4r3-cap-selection": C.STAGE_REGIME,
-    "v4r3-ladder-screen": C.STAGE_REGIME,
-    "v4r3-solo-calibration": C.STAGE_GATE2,
+    _PILOT_LABEL: C.STAGE_GATE0,
+    _CAP_LABEL: C.STAGE_REGIME,
+    _LADDER_LABEL: C.STAGE_REGIME,
+    _CALIBRATION_LABEL: C.STAGE_GATE2,
     "v4r3-composed-headroom": C.STAGE_GATE4,
     "v4r3-confirmatory": C.STAGE_CONFIRMATORY,
 }

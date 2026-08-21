@@ -1104,6 +1104,42 @@ evidence — they judge different questions and the two must never be pooled.
 
 ---
 
+## C28. §10.4's unit of validation becomes a microcase (amendment R2, 2026-08-21)
+
+**What changed.** §10.4-R asked an external judge to audit an operationalization
+card on a real experimental response. §10.4-R2 asks it whether a short answer
+satisfies a short instruction — one wording of five to eight words, one answer
+of at most fourteen, one word back. Full statement in §10.4-R2.
+
+**Why.** §10.4-R failed four of five criteria and its planted-defect arm said
+why: the judge recounted the response although told not to, and was blind to
+`vacuity_ignored` (0/5) while catching `numerator_swap` and `off_by_one` (9/9
+each). R1's diagnosis — "the task failed because it was arithmetic" — was wrong,
+and the repaired pathway is the evidence: 0.3125 truncation against §10.4's own
+0.319. The binding constraint is the reasoning chain, not the enumeration.
+
+**What is carried unchanged.** The six defect kinds; the acceptance thresholds
+for criteria 2 to 5; the deterministic verifier as the study's only scorer; the
+disjoint judge registry; the held-out discipline; append-only evidence. Nothing
+is relaxed because R1 failed.
+
+**What is added.** A repeatability criterion (≥ 0.95 across two replicates of
+one frozen configuration), and two arms — instruction-only, and instruction
+plus §7.3's registered conventions — because two of the six kinds are not
+determined by a five-word wording and scoring the validator for failing to
+guess a convention would not be an audit.
+
+**Affected results.** §10.4-R's `v4r-medium` outcome stands as recorded, and
+`section_10_4R_outcome.json` remains the record of it. R2 does not reinterpret
+it; R2 exists because of it.
+
+**Comparability.** The two pathways measure different things and their rates are
+not comparable. `specificity` and `sensitivity` keep their meanings — the
+false-alarm side and the detection side — but the population they are computed
+over is a set of microcases and not a set of operationalization cards.
+
+---
+
 ## C27. The candidate library gains six numerators and a fifth form (amendment R3, 2026-08-21)
 
 **What changed.** §7.0's grammar goes from nine counted statistics, eight

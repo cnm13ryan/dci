@@ -284,3 +284,18 @@ def test_a_dirty_worktree_is_a_qualification_failure_and_says_why():
     checks = {r["check"]: r for r in run_checks(registered_context())}
     detail = checks["clean_worktree"]["detail"]
     assert "provenance" in detail["why_it_matters"]
+
+
+def test_the_audit_resolves_every_label_the_runners_actually_emit():
+    """A guard that can be defeated by renaming a stage is a guard about
+    spelling. `v4r3-pilot` was restated in the audit table and the runner emits
+    `v4r3-gate0-pilot`, so the first Gate 0 pilot the study ever ran produced
+    4,512 rows the audit could not place."""
+    from dci1v4r3.run.gates_run import STAGE_CALIBRATION
+    from dci1v4r3.run.pilot_run import STAGE_PILOT
+    from dci1v4r3.run.regime_screen import STAGE_CAP, STAGE_LADDER
+    from dci1v4r3.stages.audit import resolve_stage
+
+    for label in (STAGE_PILOT, STAGE_CAP, STAGE_LADDER, STAGE_CALIBRATION):
+        assert resolve_stage(label) is not None, label
+        assert resolve_stage(f"{label}-r1") == resolve_stage(label)
