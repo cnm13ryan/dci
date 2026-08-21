@@ -1111,6 +1111,101 @@ A reserved final-check set is sealed at Gate 1, its hash recorded, and opened at
 most once after every autorater choice is frozen. It is never used for tuning
 and is never rerun to obtain a better result.
 
+### 10.4-R Autorater-assisted validation, revised (amendment R1, 2026-08-21)
+
+**Standing.** This subsection **supersedes the judging task of §10.4** and
+nothing else. The split rule, the registry disjointness, the pinned revision,
+the hashed configuration, serialised execution at concurrency one, the
+repeatability check, the single-shot signed freeze, the append-only calibration
+ledger, the sealed final-check set, and the requirement of explicit researcher
+approval before `measurement_basis = autorater_calibration_approved` are all
+carried unchanged. §10.4's evidence is retained, not deleted: it is the record
+of why this amendment exists.
+
+**Why the original task could not run.** §10.4 handed the judge a rule and a
+response and asked whether the response obeys the rule. For a rate predicate
+over a hundred-word answer that is an enumeration — every word classified,
+counted, divided — and the judge exhausted its 2,048-token output cap doing the
+arithmetic without reaching a verdict. On v4r3's 22,968-item pool neither
+registered condition survived criterion 2: truncation 23/72 and 40/72, against
+0/48 for the same configuration on v4r2's pool of $A$ and $B$ alone. Truncation
+rose monotonically with how much counting the rule demanded — 0/12 on $A$,
+4/12 on $B$, 6/12 on count budgets, 8/12 on count lower bounds, 9/12 on rate
+budgets, 12/12 on rate lower bounds. The failure is not the judge's competence
+at the scientific question. It is that the task set was arithmetic.
+
+**What the validator judges instead.** §10.2 establishes deterministically, at
+agreement 1.000 over 24,352 responses and 522,000 verdict vectors, that two
+independent implementations compute the same verdict. What agreement between
+two implementations cannot establish is that either implements *the construct
+the prose describes*; both could share a misreading. That is the gap an
+external validator can close, and closing it requires no arithmetic.
+
+The unit of validation is the **operationalization card**: the instruction as
+the model received it; the answer; the registered segmentation convention; the
+numerator and what it counts; the denominator and what it counts; the derived
+quantity with its arithmetic shown; the predicate form, direction and
+threshold; and the recorded verdict. The validator is asked whether that chain
+faithfully implements the written instruction — specifically whether the
+operationalization matches the instruction, whether numerator and denominator
+are the semantically appropriate ones, whether the shown calculation is
+consistent with the answer, and whether the verdict follows from the registered
+rule. **The arithmetic is shown, not requested.**
+
+**The deterministic verifier remains the scorer.** No compliance rate, cell
+mean, estimand or claim reads anything the validator produces, at any stage.
+The validator is an instrument for validating the operationalization, and
+§10.4-R changes nothing about how a generation is scored.
+
+**Why a faithfulness check alone would be uninformative, and what prevents it.**
+Handing a validator a correct derivation and asking whether it is correct
+measures agreeableness. Half the judged items therefore carry exactly one
+planted defect drawn from a registered closed list, each a way the
+operationalization could depart from the prose while remaining superficially
+plausible:
+
+| defect | what it changes |
+|---|---|
+| `denominator_swap` | counts characters where the rule counts words |
+| `inequality_flip` | states the opposite inequality to the instruction |
+| `off_by_one` | moves the threshold by one, everything else correct |
+| `segmentation_drift` | segments on whitespace, so punctuation joins its word |
+| `numerator_swap` | keeps the instruction, counts a different statistic |
+| `vacuity_ignored` | reports a rate on a wordless answer as satisfied |
+
+Faithful and mutated cards are rendered identically; neither the defect kind
+nor the word "faithful" appears in what the validator reads.
+
+**Registered acceptance criteria and their thresholds.** Selection uses the
+§10.4 hierarchy with criteria 4 and 5 replacing "agreement with human labels",
+which remains unavailable. All thresholds below are registered **before any
+card is judged**; the commit that introduces this subsection precedes the first
+run of the repaired pathway, and that ordering is the evidence.
+
+1. **Valid deterministic execution.** Two independent runs of a condition over
+   the same items agree on every parsed label; concurrency one.
+2. **Adequate output cap and absence of problematic truncation.** Truncation at
+   most $0.10$ over all judged items **and at most $0.20$ within every
+   instrument group.** The group clause is registered because the pooled rate
+   is what concealed the original failure's shape.
+3. **Valid parsing and coverage.** Parse validity at least $0.95$; every
+   instrument group and every applicable defect kind represented.
+4. **Specificity.** On faithful cards, FAITHFUL at rate at least $0.90$.
+5. **Sensitivity.** On mutated cards, UNFAITHFUL at rate at least $0.80$
+   overall, and at least $0.50$ within every registered defect kind carrying at
+   least four judged items. The per-kind floor is registered so that a
+   validator blind to one whole class of defect cannot pass by catching the
+   others.
+6. **The lower-cost setting** when two conditions are practically
+   indistinguishable, defined as differing by at most $0.05$ on both
+   specificity and sensitivity.
+
+Criteria 2–5 are evaluated on the development half, and again, once, on the
+untouched calibration half after the configuration is frozen. Failure at either
+phase returns `MEASUREMENT_EVIDENCE_INSUFFICIENT` and Gate 1 does not pass.
+A condition is never re-run to obtain a better result, and no threshold above
+may move after a card has been judged.
+
 ### 10.5 Measurement scope, recorded verbatim
 
 Three questions are kept separate and never aggregated.

@@ -140,3 +140,49 @@ The stopping rule is the §12.6 identification-coverage criterion, whose seven
 conditions and their values are registered before any measurement. Failure is
 `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` at design time, which is a registered
 outcome and not a fallback to be avoided.
+
+## A5 — §10.4's judging task is replaced, its thresholds set before judging (2026-08-21)
+
+The researcher authorised, in the session brief of 2026-08-21, a prospective
+repair of §10.4 before freeze, preferring a validator that checks whether the
+deterministic operationalization faithfully implements the written constraint
+over one that forces an LLM to reproduce long exact counts, and naming a larger
+output cap as the acceptable smaller alternative. §10.4-R is that repair; C26
+records it; the retained §10.4 evidence records why it was needed.
+
+**The deterministic verifier is unchanged and remains the study's scorer.** This
+decision touches an instrument used to validate the operationalization, not the
+operationalization itself and not any scoring path.
+
+**The thresholds, registered here before any card was judged.** The ordering is
+not asserted; the commit introducing §10.4-R and this entry precedes the first
+run of the repaired pathway, and the two are separately hashed.
+
+| # | Criterion | Threshold |
+|---|---|---|
+| 1 | valid deterministic execution | two runs agree on every parsed label |
+| 2 | truncation, pooled | ≤ 0.10 |
+| 2 | truncation, per instrument group | ≤ 0.20 |
+| 3 | parse validity | ≥ 0.95 |
+| 4 | specificity on faithful cards | ≥ 0.90 |
+| 5 | sensitivity on mutated cards, overall | ≥ 0.80 |
+| 5 | sensitivity, per defect kind with ≥ 4 items | ≥ 0.50 |
+| 6 | practically indistinguishable, for the cost tie-break | ≤ 0.05 on both |
+
+**Why criterion 5 exists and why it is per-kind.** A validator handed a correct
+derivation and asked whether it is correct can score perfectly by always
+agreeing. The planted-defect arm is what makes the procedure informative, and
+the per-kind floor is what stops a validator that is blind to one whole class of
+defect from passing on the strength of the others. Under §10.4's design such a
+validator would have scored well on criterion 4.
+
+**What this decision does not do.** It does not approve the measurement basis.
+`measurement_basis = autorater_calibration_approved` may be written only after
+criteria 1–5 pass on the development half **and** once on the untouched
+calibration half, and it is written under the researcher's explicit
+authorisation recorded in the approval artifact, never because the study needs
+to continue.
+
+This closes no registered §33 decision. It is an amendment to an instrument,
+registered as C26 and as §10.4-R, and the open decisions D2, D3, D5 and D8–D14
+stand exactly as they did.
