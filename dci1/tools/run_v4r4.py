@@ -156,19 +156,27 @@ def cmd_qualify(args) -> int:
     from dci1v4r4.engine.paths import model_tree
     from dci1v4r4.engine.transitions import write_stage_record
     from dci1v4r4.protocol import constants as C
+    from dci1v4r4.run.regime_screen import mirror_records
 
     written = []
     for model_key in MODEL_KEYS:
         tree = model_tree(context, model_key)
-        if tree.stage_record(C.STAGE_QUALIFIED).exists():
-            continue
-        write_stage_record(tree, C.STAGE_QUALIFIED,
-                           {**record, "model_key": model_key,
-                            "scope": "study-wide; the same record is written "
-                                     "to every replication tree"})
-        written.append(model_key)
+        if not tree.stage_record(C.STAGE_QUALIFIED).exists():
+            write_stage_record(tree, C.STAGE_QUALIFIED,
+                               {**record, "model_key": model_key,
+                                "scope": "study-wide; the same record is "
+                                         "written to every replication tree"})
+            written.append(model_key)
+        # Outside the write-once branch on purpose. `evidence/` is gitignored,
+        # so an unmirrored record has exactly one copy; this command used to
+        # skip mirroring entirely, and the four qualification records were the
+        # only signed records in the study with no durable copy. Mirroring is
+        # idempotent and byte-verified, so doing it every time is free.
+        mirror_records(model_key, C.STAGE_QUALIFIED)
     print(json.dumps({"outcome": record["outcome"],
-                      "stage_records_written": written}, indent=1))
+                      "stage_records_written": written,
+                      "durable_mirror": "verified for every replication"},
+                     indent=1))
     return 0
 
 

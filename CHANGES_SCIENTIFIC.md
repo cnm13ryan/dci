@@ -151,6 +151,28 @@ are byte-identical — and that the verifier, wordings, specification, mutation
 and measurement-rule hashes did not move with it. A citation of `1e7a7b2d`
 resolves through that file.
 
+**8. The durable-mirror check was failing open, and four signed records had
+one copy — provenance identifiers.** Assembling the Gate-1 checkpoint exposed a
+defect in the integrity tool, inherited in shape from v4r3.
+`mirror_records` replicates the contents of `<stage>/records/` into
+`<durable>/<stage>/`, so the durable copy sits one level shallower than the
+live one; the checker looked for a `records/` component that never exists,
+reported `durable_present: false` on all 16 records, and then forgave itself —
+the clause was `if durable.exists() and not mirrored`, so a *missing* mirror
+raised no problem. Check 3 compared **zero bytes** while the report said
+`passed: true`. Separately, §18 stage 1's qualification command never called
+`mirror_records` at all, so the four `QUALIFIED` records existed only under
+gitignored `evidence/`.
+**Affected results:** no number, no payload byte and no signature. The checker
+now compares the right path and **fails closed**; `cmd_qualify` mirrors on
+every run outside its write-once branch; `tools/v4r4_mirror_records.py`
+replicated the four missing records through `store.replicate` and
+`store.assert_replicated`, which verify every byte and rewrite nothing that
+already matched. Two test assertions now require `durable_present` and
+`durable_mirror_matches` on every record. The same shape exists in v4r3's
+durable tree, which is preserved as it stands and not repaired: v4r3 is closed,
+and its records are historical evidence rather than a live second copy.
+
 ---
 
 ## 2026-08-21 — v4r3: §10.4-R2's outcome, and four stage records re-sealed

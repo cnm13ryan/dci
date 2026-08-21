@@ -58,8 +58,8 @@
       "records": {
         "GATE_0_APPARATUS": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
           "producing_commit": null,
@@ -72,8 +72,8 @@
         },
         "GATE_1_MEASUREMENT": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
           "producing_commit": null,
@@ -86,8 +86,8 @@
         },
         "QUALIFIED": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json",
           "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
@@ -100,8 +100,8 @@
         },
         "REGIME_SCREEN": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json",
           "producing_commit": null,
@@ -156,8 +156,8 @@
       "records": {
         "GATE_0_APPARATUS": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
           "producing_commit": null,
@@ -170,8 +170,8 @@
         },
         "GATE_1_MEASUREMENT": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
           "producing_commit": null,
@@ -184,8 +184,8 @@
         },
         "QUALIFIED": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json",
           "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
@@ -198,8 +198,8 @@
         },
         "REGIME_SCREEN": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json",
           "producing_commit": null,
@@ -254,8 +254,8 @@
       "records": {
         "GATE_0_APPARATUS": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/records/gate0_apparatus.json",
           "producing_commit": null,
@@ -268,8 +268,8 @@
         },
         "GATE_1_MEASUREMENT": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b/GATE_1_MEASUREMENT/records/gate1_measurement.json",
           "producing_commit": null,
@@ -282,8 +282,8 @@
         },
         "QUALIFIED": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b/QUALIFIED/records/qualification_record.json",
           "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
@@ -296,8 +296,8 @@
         },
         "REGIME_SCREEN": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/records/regime_record.json",
           "producing_commit": null,
@@ -352,8 +352,8 @@
       "records": {
         "GATE_0_APPARATUS": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/records/gate0_apparatus.json",
           "producing_commit": null,
@@ -366,8 +366,8 @@
         },
         "GATE_1_MEASUREMENT": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_1_MEASUREMENT/records/gate1_measurement.json",
           "producing_commit": null,
@@ -380,8 +380,8 @@
         },
         "QUALIFIED": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json",
           "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
@@ -394,8 +394,8 @@
         },
         "REGIME_SCREEN": {
           "content_hash_recomputes": true,
-          "durable_mirror_matches": false,
-          "durable_present": false,
+          "durable_mirror_matches": true,
+          "durable_present": true,
           "outcome": "PASS",
           "path": "evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json",
           "producing_commit": null,
@@ -428,9 +428,9 @@
   "problems": [],
   "study_id": "dci1v4r4",
   "working_tree": {
-    "changed_paths": 20,
+    "changed_paths": 4,
     "clean": false,
-    "head": "d11e41c7104775890cf7420062c02531ffa33966",
+    "head": "051728751874700a239745cf3b0838c2ba204b84",
     "protocol_position": "§18 stage 1 checks `clean_worktree` and fails closed on it. Reports are written after qualification by design, so a dirty tree here is expected and is not a finding; a dirty tree at qualification is"
   }
 }

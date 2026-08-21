@@ -83,7 +83,13 @@ def _per_model(context, model_key: str) -> dict[str, Any]:
         recomputes = sha_obj(payload) == signed.get("record_hash", sha_obj(payload))
         reader = tree.stage_record_reader_copy(stage)
         reader_matches = reader.exists() and fs.read_json(reader) == payload
-        durable = tree.durable / stage / "records" / STAGE_RECORD_FILES[stage]
+        # `mirror_records` replicates the *contents* of `<stage>/records/`
+        # into `<durable>/<stage>/`, so the durable copy sits one level
+        # shallower than the live one. Looking for a `records/` component here
+        # found nothing on every record and reported it as "not present",
+        # which the fail-open clause below then forgave: check 3 compared no
+        # bytes at all. Both halves are fixed.
+        durable = tree.durable / stage / STAGE_RECORD_FILES[stage]
         mirrored = durable.exists() and sha_file(durable) == sha_file(path)
         own_study = True
         try:
@@ -115,8 +121,14 @@ def _per_model(context, model_key: str) -> dict[str, Any]:
                     "write_once_enforced"):
             if not entry[key]:
                 problems.append(f"{model_key}:{stage}:{key}")
-        if durable.exists() and not mirrored:
-            problems.append(f"{model_key}:{stage}:durable_mirror_matches")
+        # Fails closed. `evidence/` is gitignored, so a stage whose durable
+        # copy is missing has exactly one copy of its signed record, and a
+        # licensing check that shrugs at that is not a check.
+        if not mirrored:
+            problems.append(
+                f"{model_key}:{stage}:"
+                + ("durable_mirror_matches" if durable.exists()
+                   else "durable_present"))
         records[stage] = entry
 
     ordering: dict[str, Any] = {}

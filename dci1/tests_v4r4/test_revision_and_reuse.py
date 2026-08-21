@@ -403,6 +403,14 @@ def test_the_lifecycle_integrity_report_passes_and_licenses_gate_2():
             assert record["reader_copy_matches"], (model_key, stage)
             assert record["write_once_enforced"], (model_key, stage)
             assert record["producing_commit"] or stage != C.STAGE_QUALIFIED
+            # `evidence/` is gitignored, so the durable copy is the study's
+            # only second copy of a signed record. The check that compares
+            # them looked one directory too deep and then forgave itself for
+            # finding nothing, so it compared no bytes on any record while
+            # reporting `passed`. Both properties are asserted here, and
+            # `durable_present` is the one that would have caught it.
+            assert record["durable_present"], (model_key, stage)
+            assert record["durable_mirror_matches"], (model_key, stage)
 
 
 def test_every_gate_1_record_carries_the_deterministic_basis_and_its_scope():
