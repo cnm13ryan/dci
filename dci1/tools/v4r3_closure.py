@@ -145,19 +145,15 @@ def main() -> int:
                             "v4r3 stage record satisfies a v4r4 predecessor "
                             "check",
         },
+        # Keyed by path from the repository root, so a later check can find
+        # the file it is being asked to compare against.
         "source_hashes": {
-            "reports/dci1v4r3/gate1_decision.json":
-                sha_file(REPORTS / "gate1_decision.json"),
-            "reports/dci1v4r3/gate1_outcome.json":
-                sha_file(REPORTS / "gate1_outcome.json"),
-            "reports/dci1v4r3/gate1_evidence.json":
-                sha_file(REPORTS / "gate1_evidence.json"),
-            "reports/dci1v4r3/section_10_4R2_outcome.json":
-                sha_file(REPORTS / "section_10_4R2_outcome.json"),
-            "reports/dci1v4r3/section_10_4R_outcome.json":
-                sha_file(REPORTS / "section_10_4R_outcome.json"),
-            "reports/dci1v4r3/validator_diagnosis.json":
-                sha_file(REPORTS / "validator_diagnosis.json"),
+            str((REPORTS / name).relative_to(REPO)): sha_file(REPORTS / name)
+            for name in ("gate1_decision.json", "gate1_outcome.json",
+                         "gate1_evidence.json",
+                         "section_10_4R2_outcome.json",
+                         "section_10_4R_outcome.json",
+                         "validator_diagnosis.json")
         },
         "producing_commit": subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,

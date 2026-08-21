@@ -13,7 +13,7 @@
   "artifact_type": "v4r3-closure-record",
   "closed_at_stage": "GATE_1_MEASUREMENT",
   "closed_on": "2026-08-21",
-  "closure_hash": "6d0a403978ba4357a9329bed52dd2f12c5af05232d7fc08b2a947d141168ba49",
+  "closure_hash": "930720a0945e06dd960a877cc1cb23ff9af4ef7048e9456525d18958b7f1b264",
   "criterion_in_force_at_the_time": "§18 stage 4: §10.2 for every verifier in the final instrument population, plus §10.3 or §10.4; verifier hash frozen",
   "every_downstream_artifact_absent": true,
   "preserved": {
@@ -24,7 +24,7 @@
     "rule": "nothing under these paths is modified by the closure or by the revision that follows it",
     "source": "dci1/src/dci1v4r3, dci1/tests_v4r3"
   },
-  "producing_commit": "b545c72a0098e27789fa0a2088c54011bc9b98b9",
+  "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
   "revision": "v4r3",
   "section_10_4R2": {
     "artifact": "reports/dci1v4r3/section_10_4R2_outcome.json",
@@ -32,12 +32,12 @@
     "outcome": "FAIL"
   },
   "source_hashes": {
-    "reports/dci1v4r3/gate1_decision.json": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
-    "reports/dci1v4r3/gate1_evidence.json": "ba9a8a0e1b1d274e7fdc3f968d259bf03096620ecc7fbaf99dbdf45c3fd3c046",
-    "reports/dci1v4r3/gate1_outcome.json": "26d2c0308e68730ae5663649a6b976f1db31d580b216461402f4005a63311bd9",
-    "reports/dci1v4r3/section_10_4R2_outcome.json": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
-    "reports/dci1v4r3/section_10_4R_outcome.json": "e9cd131a7fb763aa7c0c60daff9c2c590bd9421b8c0911d473cbe334362fc671",
-    "reports/dci1v4r3/validator_diagnosis.json": "7ff014a267dabbf27cdec28a0a14a5ce66cdaddaec8769fdab4e297225eec87a"
+    "dci1/reports/dci1v4r3/gate1_decision.json": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
+    "dci1/reports/dci1v4r3/gate1_evidence.json": "ba9a8a0e1b1d274e7fdc3f968d259bf03096620ecc7fbaf99dbdf45c3fd3c046",
+    "dci1/reports/dci1v4r3/gate1_outcome.json": "26d2c0308e68730ae5663649a6b976f1db31d580b216461402f4005a63311bd9",
+    "dci1/reports/dci1v4r3/section_10_4R2_outcome.json": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
+    "dci1/reports/dci1v4r3/section_10_4R_outcome.json": "e9cd131a7fb763aa7c0c60daff9c2c590bd9421b8c0911d473cbe334362fc671",
+    "dci1/reports/dci1v4r3/validator_diagnosis.json": "7ff014a267dabbf27cdec28a0a14a5ce66cdaddaec8769fdab4e297225eec87a"
   },
   "stage_records": {
     "gemma-3n-e2b-it": {

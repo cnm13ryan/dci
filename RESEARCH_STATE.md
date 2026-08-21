@@ -3,7 +3,7 @@
 The 10-minute orientation. Everything here points at something else; primary
 numbers live in the reports and the generated artifacts, not in this file.
 
-Last reviewed: 2026-08-20.
+Last reviewed: 2026-08-21.
 
 ---
 
@@ -90,7 +90,8 @@ its own evidence tree. It does not share code with `src/dci/` or
 | v3 | closed. Two Gemma replications reached UNMASKED_ANALYSIS; both Qwen replications terminated at Gate 2A. `dci1/RESULTS_V3.md` |
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
-| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3; §7.0-R3 (C27) restores coverage on all four models at round zero. Gate 1's criterion was **amended before Gate 2** by §10.7-R5, which replaces §10.3/§10.4 with a deterministic-measurement architecture and reclassifies them as diagnostics. Under the amended rule Gate 1 returns **`SPECIFICATION_AMBIGUOUS`**: nine of ten conditions pass and four `CP4`/`CP7` wordings state their severity as a target with no bound. §4h, §4i, §4j, §4k, §4l. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/gate1_r5_decision.json` |
+| **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
+| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E), `CP4`/`CP7` are removed, and the study has executed QUALIFIED → GATE_0_APPARATUS → REGIME_SCREEN → **`GATE_1_MEASUREMENT` PASS on all four replications**. Gate 2 onward is licensed and not yet run. §4m. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/gate1_decision.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -98,10 +99,13 @@ compliance rather than to B on solo failure, and makes instruction order a
 cell-level factor. It is a different protocol: v3 and v4 numbers are not
 comparable and are never compared. Nine registered open decisions (V1 to V9)
 and seven pre-freeze checks remain open; the freeze and confirmatory generation
-are implemented and deliberately not executed. **v4r3 (§4h, §4i) supersedes
-v4r2 as the live protocol line**: it was adopted and registered on 2026-08-21
-and has been executed through the regime screen. The two are structurally
-prevented from reading each other's artifacts, and no v4r2 record was edited.
+are implemented and deliberately not executed. **v4r4 (§4m) is the live
+protocol line**; it supersedes v4r3, which superseded v4r2. Each was adopted
+and registered on 2026-08-21, and each is structurally prevented from reading
+the others' artifacts: `dci1v4r4.engine.context.foreign_roots` names v4r3's
+evidence, durable and source trees, and `assert_own_study` refuses a stage
+record whose `study_id` is another revision's. No v4r2 and no v4r3 record was
+edited by any of it.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
@@ -762,6 +766,166 @@ registered removal rule at no regeneration cost — both are class-control
 families and `CL7`/`CL8` pass intact. `DECISIONS_V4R3.md` A14,
 `dci1/reports/dci1v4r3/gate1_r5_decision.json`.
 
+### 4m. v4r4: v4r3 closes at Gate 1, and a revision whose Gate 1 is deterministic passes it (2026-08-21)
+
+**v4r3 is closed, not rescued.** Its registered §18 stage 4 required §10.2 plus
+§10.3 or §10.4. §10.3 had no independent annotator; §10.4, §10.4-R and §10.4-R2
+each failed their own registered criteria. Under §10.7-R5, adopted as an
+amendment inside v4r3, the gate then blocked on a wording (§4l). The terminal
+state is `GATE_1_MEASUREMENT` / `MEASUREMENT_EVIDENCE_INSUFFICIENT`, and it
+stands: `dci1/reports/dci1v4r3/closure.json` records it, hashes the six reports
+it rests on and the 22 stage records, and edits nothing —
+`closure_hash 930720a0`. No v4r3 file was rewritten to reach v4r4, and a v4r3
+stage record cannot satisfy a v4r4 predecessor check: `assert_own_study` raises
+on the `study_id`, and the refusal is performed rather than asserted in
+`dci1/reports/dci1v4r4/lifecycle_integrity.json`.
+
+**v4r4 is a prospective revision, and §31's designation test is what makes it
+one**: a pre-freeze change to an unfrozen protocol with no confirmatory data is
+a revision. `user-notes/DCI1_preregistration_v4r4.md` incorporates v4r3's by
+reference and changes four things, enumerated in
+`user-notes/DCI1_v4r3_to_v4r4_changelog.md` and machine-readable in
+`dci1v4r4.protocol.revision.DIFFERENCES`:
+
+- **R4-1 — Gate 1's criterion is deterministic by construction.** §18 stage 4
+  is §10.2 plus **§10.7 A–E**: specification validity, implementation validity,
+  independent reimplementation, adversarial/boundary/**mutation** validation,
+  provenance binding. Ten conditions, none a reviewer-agreement threshold.
+  §10.3/§10.4 artifacts travel as labelled diagnostics that can move no gate in
+  either direction; `gate1_payload` refuses `human_validated`,
+  `autorater_calibration_approved` and `human_validation_unavailable` *before*
+  it reads any evidence.
+- **R4-2 — `CP4` and `CP7` are removed** under §10.2's registered removal rule,
+  taking the vocabulary from 30 families to **28** and the instrument
+  population from 584 to **524**.
+- **R4-3 — the prose-to-predicate invariant (§10.7 A′)** is a Gate-1 condition:
+  every model-facing wording must expose the comparison direction of the
+  predicate that scores it, by naming an operator from a registered lexicon or
+  by a construction registered as entailing one. A target quantity with no
+  operator fails.
+- **R4-4 — evidence crosses the revision boundary only through a ledger**
+  (§26-R4), and the measurement basis v4r4 can write is
+  `deterministic_measurement_validated`.
+
+**What the revision does not buy.** The basis is not `human_validated`, so
+§10.5's scope sentence attaches permanently to every analysis record under it:
+*the outcomes are verifier-defined and support no claim about compliance as an
+independent human would judge it.* §10.5's second question — would an
+independent human reproduce these verdicts? — is exactly as unanswered in v4r4
+as in v4r3. R4-1 changes whether the study executes, not what it may assert,
+and §31-R4 registers the objection rather than answering around it.
+
+**`CP4`/`CP7` were resolved before Gate 1 ran and without reading a composed
+outcome.** The analysis reads only the §12.2 pre-screen difficulty table on the
+four regime records — solo compliance, chance compliance, solo vacuity. §12.6's
+C1–C6 read rows whose role is `reference` and both families are
+`class_control`, so removal *cannot* move them; that is a property of the
+criterion, and the run confirms it rather than resting on it. C7 holds on all
+four models, ι_A moves on none, and `no_condition_changed_on_any_model` is
+true. The alternative remedy — reword and regenerate — would have cost 1,536
+generations, which is recorded because a reader is entitled to see it and
+explicitly did not enter the decision.
+`dci1/reports/dci1v4r4/cp4_cp7_analysis.json`, `DECISIONS_V4R4.md` B3.
+
+**Gate 1 returns PASS on all four replications**, with all ten conditions met.
+`dci1/reports/dci1v4r4/gate1_decision.json`, decision hash `df630dec`:
+
+- **determinism** 1.000 across 3 processes over 400 responses and 524
+  instruments, identical digests;
+- **independent reimplementation** agrees exactly — `per_instrument_min` 1.000
+  over **628,800 verdicts** on 36,164 responses, with 650,952 per-response
+  statistic comparisons and a segmenter differential over the whole
+  1,114,112-codepoint space (one case-folding splitter, `U+0130`, and it is
+  named);
+- **boundary/adversarial/Unicode** 164 cases, 85,936 verdicts, zero failures;
+  **witnesses** 92,148 satisfiability and non-entailment pairs;
+- **specification audit** 30 kinds — the 28 families plus A and B — across
+  5 predicate forms complete, the recorded
+  predicate executed and reproducing the verifier at every declared severity,
+  0 ambiguous, 0 uncovered;
+- **mutation validation** exhibits a separating case for every meaningful
+  reading of every family: `inequality_flip`, `numerator_swap` and `off_by_one`
+  30/30; `segmentation_drift` 22/22; `vacuity_ignored` 17/17;
+  `denominator_swap` 12/12 — **0 undetected, 0 contradictions**, and every
+  non-applicability carries a mechanical reason;
+- **wordings** 2,141 classified: 2,040 explicit, 56 by the one registered
+  construction, 45 awkward-but-unambiguous (the `q = 1` plural, §4k), **0
+  genuinely ambiguous and 0 requiring correction**;
+- **hashes bind**: verifier `09f0675c`, wordings `b9b258c5`, specification
+  `1704ddc3`, mutation `a91f6220`, protocol `1e7a7b2d`;
+- **provenance** verifies on all four models — predecessor `REGIME_SCREEN`,
+  signature verified, reserved sets unspent, no prior Gate-1 record.
+
+**Evidence is carried, and every derived quantity is recomputed.** The pilot
+and regime-screen *generations* cross from v4r3 as
+`RECOMPUTED_FROM_EXISTING_RAW_DATA`; verdicts, the §12.2 table, coverage and
+the shortlist are computed again under v4r4's verifier hash. The two invariants
+that could have made that illegitimate are measured, not asserted: both
+packages' predicates agree on **85,936** verdicts, and **42,240** constraint
+sentences stored on carried rows are byte-identical to the wordings v4r4
+renders. Six v4r3 artifacts are `HISTORICAL_ONLY`, two `NOT_APPLICABLE`, and
+**nothing is `INVALIDATED_AND_REGENERATED`** — because R4-2 removed the two
+families rather than rewording them, so v4r4 declares no instrument their rows
+could score. `dci1/reports/dci1v4r4/evidence_reuse_ledger.json`, hash
+`f68f528f`.
+
+**Coverage holds on all four models at round zero**, no expansion:
+
+| model | ι_A | eligible reference rungs | families | C4 groups | nearest class candidate |
+|---|---|---|---|---|---|
+| gemma-3n-e2b-it | 0.5556 | 67 | 18 | 4 | `CX1:1` |
+| gemma-3n-e4b-it | 0.6667 | 69 | 18 | 5 | `CL7:80` |
+| qwen3-4b | 0.7500 | 73 | 18 | 4 | `CX1:5` |
+| qwen3-4b-instruct-2507 | 0.6250 | 46 | 17 | 4 | `CL7:45` |
+
+`dci1/reports/dci1v4r4/coverage.json`.
+
+**Two researcher decisions were taken on the record and neither moved a
+threshold.** **B6** accepts the requirement-verb construction, so *"Your answer
+needs {q} words with letter a"* reads as `≥ q` and the 1,536 rows behind
+`CL7`/`CL8`'s fourth templates are not regenerated; the derivation and every
+affected wording are in `wording_review.json` because this is the class of
+finding a reader should be able to disagree with. **B7** declines to invoke
+§12.6's registered candidate expansion: C4 passes as registered, and widening
+the pool because a passing solution has no spare margin would be an adaptive
+choice made after seeing a coverage result.
+
+**The limitation B7 preserves instead.** C4 is identified but **fragile on
+three models**: `gemma-3n-e2b-it`, `qwen3-4b` and `qwen3-4b-instruct-2507`
+satisfy it with exactly four well-formed straddling feature groups, so every
+one is load-bearing and there is no leave-one-family-out margin.
+`gemma-3n-e4b-it` has five and is robust. The same sweep on v4r3's 30-family
+population returns the same families, so R4-2 did not cause it — it is a
+property of the reference pool the study has had since §7.0-R3. Any Gate-3 or
+Gate-4 result on those three models is conditional on all four groups holding.
+
+**Three further limitations, recorded on the artifacts themselves.** A carried
+Gate 0 runs every §19 check under v4r4's code except the backend call itself,
+and the stage record says so. Carried rows are reproducible from v4r3's seed
+schedule, not v4r4's, because the seed domain carries the study id; every carry
+note counts the divergence. And nine adversarial corpus classes — zero-width,
+soft hyphen, combining mark and six others — are exercised by the frozen corpus
+but never observed in a real generation, so their verifier behaviour is tested
+and not sampled.
+
+**One consequence of taking B6 and B7 after the gate.** `DECISIONS_V4R4.md` is
+a protocol document, so entering them moved the protocol hash away from the
+`1e7a7b2d` Gate 1 sealed. That is the binding working, and it is recorded
+rather than absorbed: no record was rewritten and no gate re-run.
+`dci1/reports/dci1v4r4/register_amendment.json` carries both protocol hashes,
+shows the register was the **only** document that moved, and shows that the
+verifier, wordings, specification, mutation and measurement-rule hashes are
+byte-identical to what the gate certified.
+
+**State.** `dci1/evidence/dci1v4r4/` holds four signed records per model
+through `GATE_1_MEASUREMENT`, mirrored to `dci1/durable_root/`; lifecycle
+integrity passes with `problems: []`, and the integer-key canonicalisation
+defect that broke v4r3's regime signatures (§4j) is reconstructed and shown
+fixed. **No freeze, no confirmatory generation, no estimand computed.** Gate 2
+is licensed and is the next stage: 62,976 calibration generations across the
+four replications, on the 96 solo topics. `dci1/reports/dci1v4r4/`,
+`dci1/DECISIONS_V4R4.md`.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -772,16 +936,31 @@ families and `CL7`/`CL8` pass intact. `DECISIONS_V4R3.md` A14,
 - **Void.** The anti-splice intervention failed its own manipulation check
   (`ANTI_SPLICE_MANIPULATION_FAILED`). A failed manipulation check voids an
   estimate; it does not weaken it into a null.
-- **Blocked.** DCI-1 v4r3 stands at `SPECIFICATION_AMBIGUOUS` under the
-  amended Gate 1 (§10.7-R5). Nine of ten conditions pass; four `CP4`/`CP7`
-  wordings state their severity as a target and name no bound, so the prose
-  does not pin down the registered `>= q`. Everything from Gate 2 onward waits
-  on the researcher choosing between correcting the wordings (and regenerating
-  768 screen rows) and removing the two class-control families. §4l.
+- **Closed, and preserved.** DCI-1 v4r3 is terminal at `GATE_1_MEASUREMENT`
+  with `MEASUREMENT_EVIDENCE_INSUFFICIENT`. Its registered criterion asked
+  whether external reviewers reproduce the verifier and neither pathway
+  established that; the later §10.7-R5 amendment then blocked on a `CP4`/`CP7`
+  wording. Both records stand, neither pathway is described as having
+  succeeded, and nothing under v4r3's source, test, evidence, durable or report
+  trees was edited to reach v4r4. `dci1/reports/dci1v4r3/closure.json`. §4l,
+  §4m.
 - **Superseded, and preserved.** The earlier `GATE_1_BLOCKED_MEASUREMENT`
   decision was correct under the rule then in force — §10.2 plus §10.3 or
-  §10.4, neither of which completed. §10.7-R5 changes the rule, not that
-  record, and does not describe either pathway as having succeeded. §4k, §4l.
+  §10.4, neither of which completed. §10.7-R5 changed the rule, not that
+  record, and v4r4 changes it again prospectively; neither describes either
+  pathway as having succeeded. §4k, §4l, §4m.
+- **Live, and limiting.** Under v4r4, §12.6's C4 is met on all four models but
+  with **no leave-one-family-out margin on three of them** — exactly four
+  well-formed straddling feature groups, every one load-bearing. Inherited from
+  v4r3's reference pool, not created by removing `CP4`/`CP7`. The registered
+  expansion is deliberately not invoked (`DECISIONS_V4R4.md` B7), so any
+  Gate-3 or Gate-4 result on those three models is conditional on all four
+  groups holding. §4m.
+- **Unanswered, permanently scoped.** v4r4's measurement basis is
+  `deterministic_measurement_validated`, never `human_validated`. §10.5's scope
+  sentence therefore attaches to every analysis record: the outcomes are
+  verifier-defined and support no claim about compliance as an independent
+  human would judge it. §4m.
 - **Blocked.** The five-checkpoint vLLM TP=2 qualification gate passed 0/5, for
   three unrelated reasons (`ROOT_CAUSE_ANALYSIS.md`). The Transformers-vs-vLLM
   backend confound on the transport question is therefore unresolved.
@@ -799,9 +978,8 @@ families and `CL7`/`CL8` pass intact. `DECISIONS_V4R3.md` A14,
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: §10.7-R5, which replaces
-Gate 1's measurement criterion and reclassifies §10.3 and §10.4 as
-diagnostics, in §4l.
+whether old and new remain comparable. Most recent: v4r3 closes at Gate 1, and
+v4r4 adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
 
 ## 7. Where to look
 
@@ -815,11 +993,13 @@ diagnostics, in §4l.
 | what was actually covered | `exploratory/EXPERIMENT_COVERAGE_MATRIX.md` (rebuilt from run configs) |
 | the confirmatory protocol | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
 | the frozen Stage 2 decisions | `src/dci/v19/stage2_frozen.json`, `docs/v19_stage2_specification_amendments.md` |
-| the live DCI-1 protocol | `user-notes/DCI1_preregistration_v4r3.md` |
-| what v4r3 changed and why | `user-notes/DCI1_v4r2_to_v4r3_changelog.md` (C1–C25) |
-| the v4r3 adoption record and its open decisions | `dci1/DECISIONS_V4R3.md` |
-| what v4r3 has measured so far | `dci1/reports/dci1v4r3/REPORT.md` |
-| the v4r3 implementation and how to run it | `dci1/src/dci1v4r3/README.md` |
+| the live DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
+| what v4r4 changed and why | `user-notes/DCI1_v4r3_to_v4r4_changelog.md` (R4-1–R4-7) |
+| the v4r4 decisions register | `dci1/DECISIONS_V4R4.md` (B0–B7, E0–E7) |
+| what v4r4 has measured so far | `dci1/reports/dci1v4r4/` — `gate1_decision.json`, `coverage.json`, `evidence_reuse_ledger.json`, `lifecycle_integrity.json` |
+| why v4r3 stopped, and what it left | `dci1/reports/dci1v4r3/closure.json`, `dci1/reports/dci1v4r3/REPORT.md` |
+| the superseded v4r3 protocol and register | `user-notes/DCI1_preregistration_v4r3.md`, `dci1/DECISIONS_V4R3.md` |
+| the v4r3 implementation, preserved | `dci1/src/dci1v4r3/README.md` |
 
 ## 8. Keeping this file honest
 

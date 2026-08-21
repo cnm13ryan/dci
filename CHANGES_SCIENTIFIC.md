@@ -13,7 +13,147 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-21 (latest) — v4r3: §10.4-R2's outcome, and four stage records re-sealed
+## 2026-08-21 (latest) — v4r3 closes at Gate 1; v4r4 adopts a deterministic Gate 1, removes CP4/CP7, and passes
+
+**Scope.** A protocol revision, taken prospectively, before Gate 2 and before
+any freeze, with no confirmatory data in existence and no DCI estimand — ΔR,
+δ_difficulty, Ξ — ever computed under either revision. Nothing in v2, v3, v4r2
+or v4r3 is edited, recomputed or reinterpreted. `dci1/DECISIONS_V4R4.md` B0–B7,
+`user-notes/DCI1_v4r3_to_v4r4_changelog.md`, `RESEARCH_STATE.md` §4m.
+
+**0. v4r3 is closed at its own criterion — no result moves.** Terminal state
+`GATE_1_MEASUREMENT` / `MEASUREMENT_EVIDENCE_INSUFFICIENT`, under §18 stage 4
+as registered at the time: §10.2 plus §10.3 or §10.4. §10.3 had no independent
+annotator; §10.4, §10.4-R and §10.4-R2 each failed their own criteria; the
+§10.7-R5 amendment then blocked on a wording. `closure.json` records that
+state, hashes the six reports and 22 stage records it rests on, and writes one
+new file without editing any. **Affected results:** none. v4r3's Gate-1 refusal
+is not converted into a pass by anything below, and neither reviewer pathway is
+described as having succeeded.
+
+**1. Gate 1's measurement criterion, in v4r4, is deterministic by construction
+— measurement basis.** R4-1. §18 stage 4 is §10.2 plus **§10.7 A–E**:
+specification validity, implementation validity, independent reimplementation,
+adversarial/boundary/**mutation** validation, provenance binding. Ten
+conditions, none a reviewer-agreement threshold, and `gate1_payload` refuses
+`human_validated`, `autorater_calibration_approved` and
+`human_validation_unavailable` before it reads any evidence. §10.3/§10.4
+artifacts travel as labelled supplementary diagnostics.
+**Affected results:** what the study may *assert* is unchanged. The basis v4r4
+can write is `deterministic_measurement_validated`, which is not
+`human_validated`, so §10.5's scope sentence attaches permanently: the outcomes
+are verifier-defined. §10.5's second question — would an independent human
+reproduce these verdicts? — is exactly as unanswered as it was. **Old and new
+are not comparable as measurement bases and must never be pooled**; §31-R4
+registers the objection that an amendment must not weaken a criterion to make a
+gate pass, and the counter it offers is checkable rather than rhetorical.
+
+**2. `CP4` and `CP7` are removed from the candidate population — instruments,
+wordings, coverage.** R4-2, decided as B3. Four wordings — *"Give {q} percent
+of words doubled letters"*, *"Make {q} percent of words carry letter a"* and
+their pairs — state the severity as a target and name no bound, so the prose
+does not distinguish the registered `100·S/W ≥ q` from an `== q` reading. The
+two agree at `q` and disagree on every answer past it, where the verifier
+records a pass: a one-sided leniency in the *treatment*. The families are
+removed under §10.2's registered removal rule. Vocabulary 30 → **28**
+families; instrument population 584 → **524**; the `rate_lower_bound` predicate
+form leaves the study, and the class arm becomes {count lower bound, exact
+count}. The **canonical verifier hash therefore moves**, `41edc84c` →
+`09f0675c`, and §10.6 forbids carrying the old one forward on the grounds that
+behaviour looks unchanged — so the behavioural equivalence is *measured*: both
+revisions' predicates over 524 instruments × 164 frozen cases, **85,936
+verdicts, zero disagreements**.
+**Affected results:** every v4r3 row generated under a `CP4` or `CP7`
+instrument. Those rows are real generations and real v4r3 evidence; they are
+classified `HISTORICAL_ONLY` and are evidence about nothing v4r4 measures. No
+v4r4 coverage condition changed on any model — C1–C6 read `reference`-role rows
+and both families are `class_control`, which is a property of §12.6's criterion
+and is separately confirmed by the run; C7 holds on all four; ι_A moves on
+none. The decision read only the §12.2 pre-screen difficulty table and **no
+composed outcome**. `dci1/reports/dci1v4r4/cp4_cp7_analysis.json`.
+
+**3. A prose-to-predicate invariant becomes a Gate-1 condition — instruction
+wordings.** R4-3, §10.7 A′, decided as B4 and confirmed as B6. Every
+model-facing wording must expose the comparison direction of the predicate that
+scores it, by naming an operator from the registered direction lexicon
+(`at most`/`no more than`/…; `at least`/`no fewer than`/…; `exactly`) or by a
+construction registered as entailing one and admissible for that operator. A
+target quantity with no operator fails the gate. **One construction is
+registered**, the requirement verb: *needs {q}* is a necessity operator, so
+`necessary(S = q)` and `S ≥ q` select the same answers, and it is admissible
+for `≥` alone. 56 wordings rely on it — `CL7`'s and `CL8`'s fourth templates at
+28 severities each — and B6 accepts it, so those rows are **not** regenerated;
+the alternative branch would have cost 1,536 generations.
+**Affected results:** none, in either direction. No live wording is changed, so
+no measurement taken under one is invalidated. The `q = 1` plural mismatch
+(*"Exactly 1 semicolons…"*, 45 wordings) is classified awkward-but-unambiguous
+and does not block, unchanged from §4k. The **wording hash is new**,
+`b9b258c5`, because the removed families' templates left the file.
+
+**4. Evidence crosses the revision boundary only through a ledger — admission
+rules.** R4-4/R4-6, §26-R4, decided as B5. Pilot and regime-screen
+*generations* carry as `RECOMPUTED_FROM_EXISTING_RAW_DATA`: the model at its
+pinned revision, the decoding configuration and the rendered prompt determine a
+generation, and none of those changed. Every derived quantity — verdict,
+compliance, vacuity, the §12.2 table, §12.6 coverage, §12.3's shortlist — is
+computed again under v4r4's verifier hash. Reuse requires all seven invariants
+to hold, and the two that could have been assumed are measured instead: the
+85,936-verdict semantic comparison above, and **42,240 constraint sentences**
+stored on carried rows checked byte-identical to the wordings v4r4 renders, 0
+mismatched, 0 unparsed. Six v4r3 artifacts are `HISTORICAL_ONLY`, two
+`NOT_APPLICABLE`, and **nothing is `INVALIDATED_AND_REGENERATED`**.
+**Affected results:** v4r4's Gate 0 and regime screen are the same generations
+v4r3 drew, scored under a different verifier hash and reported under a
+different study id, and the ledger says so on its face rather than presenting
+them as native. Two consequences are counted, not hidden: v4r4's seed domain
+carries its study id, so carried rows are reproducible from v4r3's seed
+schedule and not v4r4's; and a carried Gate 0 exercises every §19 check except
+the backend call itself, which the stage record names.
+`dci1/reports/dci1v4r4/evidence_reuse_ledger.json`.
+
+**5. Gate 1 passes on all four replications — gate status.** All ten conditions
+met. Determinism 1.000 over 3 processes; independent reimplementation exact at
+`per_instrument_min` 1.000 across **628,800 verdicts** on 36,164 responses, with
+a segmenter differential over all 1,114,112 codepoints; 164 boundary/adversarial
+cases and 92,148 witness pairs pass; the specification audit covers 30 kinds
+across 5 forms with 0 ambiguous; mutation validation separates every meaningful
+reading with **0 undetected and 0 contradictions**; 0 wordings block. Hashes
+bind: verifier `09f0675c`, wordings `b9b258c5`, specification `1704ddc3`,
+mutation `a91f6220`, protocol `1e7a7b2d`, decision `df630dec`.
+**Affected results:** this licenses Gate 2 and nothing else. It is not a claim
+that human readers agree with the verifier, and the scope sentence in item 1
+stands over everything downstream of it.
+`dci1/reports/dci1v4r4/gate1_decision.json`.
+
+**6. A coverage limitation is recorded rather than repaired — candidate
+population.** B7 closes E5 by **declining** §12.6's registered candidate
+expansion. C4 is met on all four models, but three of them —
+`gemma-3n-e2b-it`, `qwen3-4b`, `qwen3-4b-instruct-2507` — meet it with exactly
+four well-formed straddling feature groups, so every one is load-bearing and
+there is no leave-one-family-out margin.
+**Affected results:** any Gate-3 or Gate-4 result on those three models is
+conditional on all four of its straddling groups holding, and that
+conditionality travels with the result. The fragility is **inherited**: the
+same sweep on v4r3's 30-family population returns the same families, so R4-2
+did not cause it. Expanding the pool after seeing a coverage result would have
+been an adaptive design choice, which is what §12.6's expansion rule exists to
+keep out of the study's discretion. `dci1/reports/dci1v4r4/coverage.json`.
+
+**7. The protocol hash moves after Gate 1, and the delta is resolvable —
+provenance identifiers.** B6 and B7 were entered in the decisions register
+after Gate 1 returned PASS and before Gate 2 began. The register is a protocol
+document, so `protocol_hash` moved `1e7a7b2d` → `63f558b6`.
+**Affected results:** no measurement and no payload byte. No Gate-1 record was
+rewritten and no gate was re-run; the sealed records still name the old hashes
+and still verify. `dci1/reports/dci1v4r4/register_amendment.json` proves the
+delta is confined to `DECISIONS_V4R4.md` — the other three protocol documents
+are byte-identical — and that the verifier, wordings, specification, mutation
+and measurement-rule hashes did not move with it. A citation of `1e7a7b2d`
+resolves through that file.
+
+---
+
+## 2026-08-21 — v4r3: §10.4-R2's outcome, and four stage records re-sealed
 
 **Scope.** No v4r3 measurement moves. One class of record identifier does.
 
