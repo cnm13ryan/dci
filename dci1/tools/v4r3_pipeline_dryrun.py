@@ -138,6 +138,11 @@ def walk(variant: str, *, resamples: int, root: Path) -> dict[str, Any]:
                               for cfg, entry in final["result"].items()},
         "spectrum_present": {cfg: "spectrum" in entry
                              for cfg, entry in final["result"].items()},
+        "claims": {cfg: [s.get("claim_level") for s in c["statements"]]
+                   for cfg, c in final["claims"].items()},
+        "claims_emitted": {cfg: sum(1 for s in c["statements"]
+                                    if s.get("emitted"))
+                           for cfg, c in final["claims"].items()},
         "seconds": round(time.monotonic() - started, 1)}
     return {"variant": variant, "outcome": "PASS", "stages": stages}
 

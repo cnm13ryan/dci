@@ -21,7 +21,6 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from dci1v4.engine import fs
 from dci1v4.errors import IntegrityError
 from dci1v4.protocol.hashing import canonical_json, sha_text
 
@@ -146,6 +145,104 @@ def _masked_observations(observations, masked):
     return out
 
 
+
+# ------------------------------------------------------------- the ladder
+
+def _interval(entry: Mapping[str, Any], family: str, member: str
+              ) -> CL.Interval | None:
+    """One simultaneous interval, or None when the design does not identify it.
+
+    None and not a zero: `delta_r_reading` compares an interval against two
+    registered thresholds, and a fabricated zero interval would read as `L3c`
+    --- a claim that the excess is below the generic threshold --- on a design
+    that never estimated the excess at all.
+    """
+    members = ((entry.get("families") or {}).get(family) or {}).get("members")
+    if not members or member not in members:
+        return None
+    found = members[member]
+    lower, upper = found["simultaneous"]
+    return CL.Interval(member=member, estimate=found["estimate"],
+                       lower=lower, upper=upper)
+
+
+def _heterogeneity_disagrees(entry: Mapping[str, Any]) -> bool:
+    """§17: do the three per-reference excesses agree on one side?"""
+    threshold = C.DELTA_R_GENERIC_THRESHOLD
+    intervals = [_interval(entry, C.PRIMARY_FAMILY, f"Delta_{j}")
+                 for j in (1, 2, 3)]
+    present = [i for i in intervals if i is not None]
+    if len(present) < 3:
+        return False
+    above = all(i.lower > threshold for i in present)
+    below = all(i.upper < threshold for i in present)
+    return not (above or below)
+
+
+def _vacuity_forced_agrees(entry: Mapping[str, Any]) -> bool:
+    """§17.4: the primary and the vacuity-forced recomputation license the
+    same claim, or no claim is licensed."""
+    primary = _interval(entry, C.PRIMARY_FAMILY, "Delta_R")
+    forced = _interval(entry, C.PRIMARY_FAMILY, "Delta_R|vacuity_forced")
+    if primary is None or forced is None:
+        return True
+    forced = CL.Interval("Delta_R", forced.estimate, forced.lower,
+                         forced.upper)
+    return (CL.delta_r_reading(primary)["levels"]
+            == CL.delta_r_reading(forced)["levels"])
+
+
+def _claims(entry: Mapping[str, Any], *, configuration: str,
+            measurement_basis: str) -> dict[str, Any]:
+    """§17.5's guarded emitter, applied to one configuration's intervals.
+
+    Nothing here chooses a reading. `analysis.claims` holds the lookup, it was
+    fixed before any number existed, and this function's whole job is to hand
+    it the intervals the registered analysis produced and to say plainly when
+    the design did not produce one.
+    """
+    position = 1 if configuration == C.OUTCOME_FIRST else 2
+    support = (entry.get("spectrum") or {}).get("support") or {"holds": False}
+    delta_r = _interval(entry, C.PRIMARY_FAMILY, "Delta_R")
+    xi = _interval(entry, C.PRIMARY_FAMILY, "Xi")
+    delta_difficulty = _interval(entry, C.PRIMARY_FAMILY, "delta_difficulty")
+
+    base = {"configuration": configuration, "outcome_position": position,
+            "position_status": CL.position_status(position),
+            "measurement_basis": measurement_basis,
+            "identified": {"Delta_R": delta_r is not None,
+                           "Xi": xi is not None,
+                           "delta_difficulty": delta_difficulty is not None},
+            "support": support}
+    if delta_r is None or xi is None:
+        return {**base, "statements": [{
+            "claim_level": "L3", "configuration": configuration,
+            "family": C.PRIMARY_FAMILY, "interval_type": "simultaneous",
+            "identification_status": ["COMPANION_CLASS_NOT_MATCHED",
+                                      "EXCESS_NOT_IDENTIFIED"],
+            "measurement_basis": measurement_basis,
+            "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+            "outcome_position": position, "emitted": False,
+            "reason": ("§8.6's design in force does not estimate "
+                       + ("Delta_R" if delta_r is None else "Xi")
+                       + ", so no L3 sub-level about the excess is "
+                         "reachable")}]}
+    if delta_difficulty is None:
+        # §13.8's support gate short-circuits before the interval is read, so
+        # the placeholder's numbers are never compared against anything; the
+        # `identified` flag above is what a reader is meant to see.
+        delta_difficulty = CL.Interval("delta_difficulty", 0.0, 0.0, 0.0)
+        support = {"holds": False, "reason":
+                   "the design in force carries no spectrum arm"}
+    return {**base, "statements": CL.emit_l3(
+        configuration=configuration, outcome_position=position,
+        measurement_basis=measurement_basis, delta_r=delta_r,
+        delta_difficulty=delta_difficulty, xi=xi, support=support,
+        references_identified=True,
+        heterogeneity_disagrees=_heterogeneity_disagrees(entry),
+        vacuity_forced_agrees=_vacuity_forced_agrees(entry))}
+
+
 def run_masked_analysis(model_key: str, tree: ModelTree, *,
                         freeze_record: Mapping[str, Any],
                         rows: Sequence[Mapping[str, Any]],
@@ -232,11 +329,17 @@ def run_unmasked_analysis(model_key: str, tree: ModelTree, *,
             "the analysis code has changed since the masked artifact was "
             "sealed; an unmasked analysis under different code is not the "
             "analysis the mask protected")
+    basis = str(freeze_record.get("gate1_measurement_basis", "UNKNOWN"))
+    ladder = {configuration: _claims(entry, configuration=configuration,
+                                     measurement_basis=basis)
+              for configuration, entry in result.items()}
+    CL.assert_no_l5_emitter(vars(CL))
     return {"outcome": "PASS", "stage": C.STAGE_UNMASKED_ANALYSIS,
             "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_UNMASKED_ANALYSIS],
             "model_key": model_key, "design_variant": variant,
             "blocks": len(table.blocks), "resamples": resamples,
             "analysis_code_hash": _code_hash(),
             "masked_artifact_hash": masked_record["masked_artifact_hash"],
-            "result": result,
+            "measurement_basis": basis,
+            "result": result, "claims": ladder,
             "identical_computation_as_masked": True}
