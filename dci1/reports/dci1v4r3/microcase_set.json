@@ -4,7 +4,7 @@
   "with_conventions": "and \u00a77.3's registered lexical and rate rules, constant across every case"
  },
  "artifact_type": "v4r3-microcase-set",
- "case_set_hash": "049aa70a8b335203ee268ed51f12a6f32e90fb79c9dcc9aafea170d293a88342",
+ "case_set_hash": "141525355353ed04789af15f317f8a8f2750a353bd2108b2178bde6e7509b73b",
  "cases": [
   {
    "case_id": "mc-cl7-00-f54ca92e",
@@ -28,55 +28,6 @@
    "statistic_id": "letter_a",
    "text": "car car car car point clue form step field cloud",
    "wording_index": 0
-  },
-  {
-   "case_id": "mc-cl7-01-9b648c12",
-   "correct": true,
-   "covers": "exact-threshold",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": false,
-    "off_by_one": false,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip",
-    "off_by_one"
-   ],
-   "form": "count_lower_bound",
-   "instruction": "Include at least 5 words with letter a.",
-   "kind": "CL7",
-   "severity": 5,
-   "statistic_id": "letter_a",
-   "text": "car car car car car point clue form step field cloud",
-   "wording_index": 1
-  },
-  {
-   "case_id": "mc-cl7-02-4637d443",
-   "correct": true,
-   "covers": "threshold-plus-one",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": false,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "count_lower_bound",
-   "instruction": "Use 5 or more words containing letter a.",
-   "kind": "CL7",
-   "severity": 5,
-   "statistic_id": "letter_a",
-   "text": "car car car car car car point clue form step field cloud",
-   "wording_index": 2
   },
   {
    "case_id": "mc-cl7-03-00c9d053",
@@ -146,6 +97,54 @@
    "statistic_id": "letter_a",
    "text": "\u0130\u0130 point",
    "wording_index": 1
+  },
+  {
+   "case_id": "mc-cl7-15-d349f1b9",
+   "correct": false,
+   "covers": "empty-output",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "instruction": "Your answer needs 5 words with letter a.",
+   "kind": "CL7",
+   "severity": 5,
+   "statistic_id": "letter_a",
+   "text": "",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cl7-16-d587656f",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "instruction": "At least 5 words must contain letter a.",
+   "kind": "CL7",
+   "severity": 5,
+   "statistic_id": "letter_a",
+   "text": "   ",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cl8-00-d3c3c4e7",
@@ -243,51 +242,52 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-cl8-04-d0d0d417",
+   "case_id": "mc-cl8-15-d8a8b32e",
    "correct": false,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "count_lower_bound",
-   "instruction": "At least 1 words must end with y.",
-   "kind": "CL8",
-   "severity": 1,
-   "statistic_id": "y_final",
-   "text": "\u0130stanbul is one word",
-   "wording_index": 0
-  },
-  {
-   "case_id": "mc-cl8-05-9e6e393d",
-   "correct": false,
-   "covers": "case-folding-split;repeated",
+   "covers": "empty-output",
    "defect_verdicts": {
     "denominator_swap": false,
     "inequality_flip": true,
     "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "inequality_flip"
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "count_lower_bound",
-   "instruction": "Include at least 1 words ending with y.",
+   "instruction": "Your answer needs 1 words ending with y.",
    "kind": "CL8",
    "severity": 1,
    "statistic_id": "y_final",
-   "text": "\u0130\u0130 point",
-   "wording_index": 1
+   "text": "",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cl8-16-9b308904",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "count_lower_bound",
+   "instruction": "At least 1 words must end with y.",
+   "kind": "CL8",
+   "severity": 1,
+   "statistic_id": "y_final",
+   "text": "   ",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cp4-00-d416b18d",
@@ -384,29 +384,6 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-cp4-04-060d839c",
-   "correct": false,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": false,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_lower_bound",
-   "instruction": "Words with doubled letters: at least 2 percent.",
-   "kind": "CP4",
-   "severity": 2,
-   "statistic_id": "doubled_letter",
-   "text": "\u0130stanbul is one word",
-   "wording_index": 0
-  },
-  {
    "case_id": "mc-cp4-07-27eb33db",
    "correct": true,
    "covers": "hyphenated-form",
@@ -429,29 +406,6 @@
    "statistic_id": "doubled_letter",
    "text": "well-known form",
    "wording_index": 3
-  },
-  {
-   "case_id": "mc-cp7-00-dfdef911",
-   "correct": false,
-   "covers": "threshold-minus-one;rate",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": false,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_lower_bound",
-   "instruction": "Words with letter a: at least 20 percent.",
-   "kind": "CP7",
-   "severity": 20,
-   "statistic_id": "letter_a",
-   "text": "car point clue form step field cloud north guide point",
-   "wording_index": 0
   },
   {
    "case_id": "mc-cp7-01-9b373865",
@@ -577,52 +531,52 @@
    "wording_index": 0
   },
   {
-   "case_id": "mc-cr1-02-1e5a81fd",
-   "correct": false,
-   "covers": "threshold-plus-one;rate",
+   "case_id": "mc-cp7-09-c438ad23",
+   "correct": true,
+   "covers": "apostrophised-form",
    "defect_verdicts": {
     "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Keep words beginning with b to 1 percent.",
-   "kind": "CR1",
-   "severity": 1,
-   "statistic_id": "b_initial",
-   "text": "bold point clue form step field cloud north guide point",
-   "wording_index": 2
-  },
-  {
-   "case_id": "mc-cr1-15-85492bae",
-   "correct": false,
-   "covers": "empty-output",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
+    "inequality_flip": false,
     "numerator_swap": false,
-    "off_by_one": false,
-    "segmentation_drift": false,
+    "off_by_one": true,
+    "segmentation_drift": true,
     "vacuity_ignored": true
    },
    "discriminates": [
-    "inequality_flip",
-    "vacuity_ignored"
+    "numerator_swap",
+    "denominator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_lower_bound",
+   "instruction": "At least 20 percent of words have letter a.",
+   "kind": "CP7",
+   "severity": 20,
+   "statistic_id": "letter_a",
+   "text": "cats' toys",
+   "wording_index": 1
+  },
+  {
+   "case_id": "mc-cr1-00-922d37b2",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip"
    ],
    "form": "rate_budget",
-   "instruction": "Limit words beginning with b to 1 percent.",
+   "instruction": "Words beginning with b: at most 1 percent.",
    "kind": "CR1",
    "severity": 1,
    "statistic_id": "b_initial",
-   "text": "",
-   "wording_index": 3
+   "text": "point clue form step field cloud north guide point clue",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr1-16-9f5e45ab",
@@ -725,29 +679,6 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-cr10-00-17f64f6f",
-   "correct": true,
-   "covers": "threshold-minus-one;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Words ending with s: at most 1 percent.",
-   "kind": "CR10",
-   "severity": 1,
-   "statistic_id": "s_final",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 0
-  },
-  {
    "case_id": "mc-cr10-02-687ce5bf",
    "correct": false,
    "covers": "threshold-plus-one;rate",
@@ -770,54 +701,6 @@
    "statistic_id": "s_final",
    "text": "clues point clue form step field cloud north guide point",
    "wording_index": 2
-  },
-  {
-   "case_id": "mc-cr10-04-a70a6ea4",
-   "correct": false,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Words ending with s: at most 1 percent.",
-   "kind": "CR10",
-   "severity": 1,
-   "statistic_id": "s_final",
-   "text": "\u0130stanbul is one word",
-   "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr10-09-7fb2966c",
-   "correct": false,
-   "covers": "apostrophised-form",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 1 percent of words end with s.",
-   "kind": "CR10",
-   "severity": 1,
-   "statistic_id": "s_final",
-   "text": "cats' toys",
-   "wording_index": 1
   },
   {
    "case_id": "mc-cr10-16-1a888fed",
@@ -870,6 +753,56 @@
    "wording_index": 1
   },
   {
+   "case_id": "mc-cr10-18-d309bdd4",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Keep words ending with s to 1 percent.",
+   "kind": "CR10",
+   "severity": 1,
+   "statistic_id": "s_final",
+   "text": ";;;",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-cr10-19-796b0a6d",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Limit words ending with s to 1 percent.",
+   "kind": "CR10",
+   "severity": 1,
+   "statistic_id": "s_final",
+   "text": "...",
+   "wording_index": 3
+  },
+  {
    "case_id": "mc-cr11-00-7fa77f17",
    "correct": true,
    "covers": "threshold-minus-one;rate",
@@ -891,29 +824,6 @@
    "statistic_id": "vowel_initial",
    "text": "point clue form step field cloud north guide point clue",
    "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr11-01-d35d1dd8",
-   "correct": true,
-   "covers": "exact-threshold;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 2 percent of words begin with vowels.",
-   "kind": "CR11",
-   "severity": 2,
-   "statistic_id": "vowel_initial",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 1
   },
   {
    "case_id": "mc-cr11-02-a3798dff",
@@ -941,218 +851,200 @@
    "wording_index": 2
   },
   {
-   "case_id": "mc-cr11-03-09c65f82",
+   "case_id": "mc-cr11-16-d7a16ded",
    "correct": false,
-   "covers": "case-folding-split",
+   "covers": "empty-output;whitespace",
    "defect_verdicts": {
-    "denominator_swap": false,
+    "denominator_swap": true,
     "inequality_flip": true,
     "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Limit words beginning with vowels to 2 percent.",
-   "kind": "CR11",
-   "severity": 2,
-   "statistic_id": "vowel_initial",
-   "text": "\u0130stanbul",
-   "wording_index": 3
-  },
-  {
-   "case_id": "mc-cr11-04-2f5b5904",
-   "correct": false,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": false,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "inequality_flip"
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
    "instruction": "Words beginning with vowels: at most 2 percent.",
    "kind": "CR11",
    "severity": 2,
    "statistic_id": "vowel_initial",
-   "text": "\u0130stanbul is one word",
+   "text": "   ",
    "wording_index": 0
   },
   {
-   "case_id": "mc-cr11-09-f66196c3",
-   "correct": true,
-   "covers": "apostrophised-form",
+   "case_id": "mc-cr11-17-e446ed54",
+   "correct": false,
+   "covers": "wordless",
    "defect_verdicts": {
     "denominator_swap": true,
-    "inequality_flip": false,
+    "inequality_flip": true,
     "numerator_swap": false,
-    "off_by_one": true,
-    "segmentation_drift": true,
+    "off_by_one": false,
+    "segmentation_drift": false,
     "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
    "instruction": "At most 2 percent of words begin with vowels.",
    "kind": "CR11",
    "severity": 2,
    "statistic_id": "vowel_initial",
-   "text": "cats' toys",
+   "text": ",,,",
    "wording_index": 1
   },
   {
-   "case_id": "mc-cr12-00-7f2653a1",
+   "case_id": "mc-cr11-18-6cc25945",
    "correct": false,
-   "covers": "threshold-minus-one;rate",
+   "covers": "wordless;semicolons",
    "defect_verdicts": {
-    "denominator_swap": false,
+    "denominator_swap": true,
     "inequality_flip": true,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
-   "instruction": "Use at most 1 sentences per hundred words.",
-   "kind": "CR12",
-   "severity": 1,
-   "statistic_id": "sentence",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr12-01-a594e70e",
-   "correct": false,
-   "covers": "exact-threshold;rate",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 1 sentences per hundred words.",
-   "kind": "CR12",
-   "severity": 1,
-   "statistic_id": "sentence",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 1
-  },
-  {
-   "case_id": "mc-cr12-02-3b0783cf",
-   "correct": false,
-   "covers": "threshold-plus-one;rate",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Keep sentences to 1 per hundred words.",
-   "kind": "CR12",
-   "severity": 1,
-   "statistic_id": "sentence",
-   "text": "point. point clue form step field cloud north guide point",
+   "instruction": "Keep words beginning with vowels to 2 percent.",
+   "kind": "CR11",
+   "severity": 2,
+   "statistic_id": "vowel_initial",
+   "text": ";;;",
    "wording_index": 2
   },
   {
-   "case_id": "mc-cr12-03-60f31ef5",
+   "case_id": "mc-cr12-15-27853ef0",
    "correct": false,
-   "covers": "case-folding-split",
+   "covers": "empty-output",
    "defect_verdicts": {
     "denominator_swap": false,
     "inequality_flip": true,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
    "instruction": "Limit sentences to 1 per hundred words.",
    "kind": "CR12",
    "severity": 1,
    "statistic_id": "sentence",
-   "text": "\u0130stanbul",
+   "text": "",
    "wording_index": 3
   },
   {
-   "case_id": "mc-cr12-04-ef294590",
+   "case_id": "mc-cr12-16-d5fab8cd",
    "correct": false,
-   "covers": "case-folding-split;longer",
+   "covers": "empty-output;whitespace",
    "defect_verdicts": {
-    "denominator_swap": false,
+    "denominator_swap": true,
     "inequality_flip": true,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
    "instruction": "Use at most 1 sentences per hundred words.",
    "kind": "CR12",
    "severity": 1,
    "statistic_id": "sentence",
-   "text": "\u0130stanbul is one word",
+   "text": "   ",
    "wording_index": 0
   },
   {
-   "case_id": "mc-cr12-05-9620b20d",
+   "case_id": "mc-cr12-17-2008b102",
    "correct": false,
-   "covers": "case-folding-split;repeated",
+   "covers": "wordless",
    "defect_verdicts": {
     "denominator_swap": false,
     "inequality_flip": true,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "inequality_flip",
+    "vacuity_ignored"
    ],
    "form": "rate_budget",
    "instruction": "At most 1 sentences per hundred words.",
    "kind": "CR12",
    "severity": 1,
    "statistic_id": "sentence",
-   "text": "\u0130\u0130 point",
+   "text": ",,,",
    "wording_index": 1
+  },
+  {
+   "case_id": "mc-cr12-18-32eb4b8a",
+   "correct": false,
+   "covers": "wordless;semicolons",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Keep sentences to 1 per hundred words.",
+   "kind": "CR12",
+   "severity": 1,
+   "statistic_id": "sentence",
+   "text": ";;;",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-cr12-19-06488836",
+   "correct": false,
+   "covers": "wordless;terminators",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Limit sentences to 1 per hundred words.",
+   "kind": "CR12",
+   "severity": 1,
+   "statistic_id": "sentence",
+   "text": "...",
+   "wording_index": 3
   },
   {
    "case_id": "mc-cr2-00-635252f1",
@@ -1248,74 +1140,51 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-cr2-04-4cc26550",
-   "correct": true,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Words ending with ing: at most 1 percent.",
-   "kind": "CR2",
-   "severity": 1,
-   "statistic_id": "ing_final",
-   "text": "\u0130stanbul is one word",
-   "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr2-05-e97ac22f",
-   "correct": true,
-   "covers": "case-folding-split;repeated",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 1 percent of words end with ing.",
-   "kind": "CR2",
-   "severity": 1,
-   "statistic_id": "ing_final",
-   "text": "\u0130\u0130 point",
-   "wording_index": 1
-  },
-  {
-   "case_id": "mc-cr3-02-61da8c72",
+   "case_id": "mc-cr2-15-e5b23589",
    "correct": false,
-   "covers": "threshold-plus-one;rate",
+   "covers": "empty-output",
    "defect_verdicts": {
     "denominator_swap": false,
     "inequality_flip": true,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": false,
     "segmentation_drift": false,
-    "vacuity_ignored": false
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Limit words ending with ing to 1 percent.",
+   "kind": "CR2",
+   "severity": 1,
+   "statistic_id": "ing_final",
+   "text": "",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cr3-00-18204ca0",
+   "correct": true,
+   "covers": "threshold-minus-one;rate",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
     "inequality_flip"
    ],
    "form": "rate_budget",
-   "instruction": "Keep words of one letter to 1 percent.",
+   "instruction": "Words of one letter: at most 1 percent.",
    "kind": "CR3",
    "severity": 1,
    "statistic_id": "one_letter",
-   "text": "n point clue form step field cloud north guide point",
-   "wording_index": 2
+   "text": "point clue form step field cloud north guide point clue",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr3-03-db89122b",
@@ -1414,52 +1283,6 @@
    "wording_index": 2
   },
   {
-   "case_id": "mc-cr4-00-2153ee83",
-   "correct": true,
-   "covers": "threshold-minus-one;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Words with doubled letters: at most 2 percent.",
-   "kind": "CR4",
-   "severity": 2,
-   "statistic_id": "doubled_letter",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr4-01-cd56861a",
-   "correct": true,
-   "covers": "exact-threshold;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 2 percent of words have doubled letters.",
-   "kind": "CR4",
-   "severity": 2,
-   "statistic_id": "doubled_letter",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 1
-  },
-  {
    "case_id": "mc-cr4-02-c6b29f91",
    "correct": false,
    "covers": "threshold-plus-one;rate",
@@ -1483,29 +1306,6 @@
    "statistic_id": "doubled_letter",
    "text": "cell point clue form step field cloud north guide point",
    "wording_index": 2
-  },
-  {
-   "case_id": "mc-cr4-03-32e2584e",
-   "correct": true,
-   "covers": "case-folding-split",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Limit words with doubled letters to 2 percent.",
-   "kind": "CR4",
-   "severity": 2,
-   "statistic_id": "doubled_letter",
-   "text": "\u0130stanbul",
-   "wording_index": 3
   },
   {
    "case_id": "mc-cr4-07-64ff623e",
@@ -1532,49 +1332,75 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-cr5-00-d341bf15",
-   "correct": true,
-   "covers": "threshold-minus-one;rate",
+   "case_id": "mc-cr4-08-102e9691",
+   "correct": false,
+   "covers": "hyphenated-form;two",
    "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
+    "denominator_swap": false,
+    "inequality_flip": true,
     "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
    },
    "discriminates": [
+    "numerator_swap",
     "inequality_flip"
    ],
    "form": "rate_budget",
-   "instruction": "Use at most 1 commas per hundred words.",
-   "kind": "CR5",
-   "severity": 1,
-   "statistic_id": "comma",
-   "text": "point clue form step field cloud north guide point clue",
+   "instruction": "Words with doubled letters: at most 2 percent.",
+   "kind": "CR4",
+   "severity": 2,
+   "statistic_id": "doubled_letter",
+   "text": "co-operate well-known",
    "wording_index": 0
   },
   {
-   "case_id": "mc-cr5-01-2e45634e",
+   "case_id": "mc-cr4-10-ff539947",
    "correct": true,
-   "covers": "exact-threshold;rate",
+   "covers": "apostrophised-form;single",
    "defect_verdicts": {
     "denominator_swap": true,
     "inequality_flip": false,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": true,
     "segmentation_drift": true,
     "vacuity_ignored": true
    },
    "discriminates": [
+    "numerator_swap",
     "inequality_flip"
    ],
    "form": "rate_budget",
-   "instruction": "At most 1 commas per hundred words.",
-   "kind": "CR5",
-   "severity": 1,
-   "statistic_id": "comma",
-   "text": "point clue form step field cloud north guide point clue",
+   "instruction": "Keep words with doubled letters to 2 percent.",
+   "kind": "CR4",
+   "severity": 2,
+   "statistic_id": "doubled_letter",
+   "text": "step's",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-cr4-21-cfa4a4c5",
+   "correct": true,
+   "covers": "single-word-answer;one-letter",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "instruction": "At most 2 percent of words have doubled letters.",
+   "kind": "CR4",
+   "severity": 2,
+   "statistic_id": "doubled_letter",
+   "text": "n",
    "wording_index": 1
   },
   {
@@ -1602,29 +1428,6 @@
    "wording_index": 2
   },
   {
-   "case_id": "mc-cr5-03-8eb6a0f7",
-   "correct": true,
-   "covers": "case-folding-split",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Limit commas to 1 per hundred words.",
-   "kind": "CR5",
-   "severity": 1,
-   "statistic_id": "comma",
-   "text": "\u0130stanbul",
-   "wording_index": 3
-  },
-  {
    "case_id": "mc-cr5-13-a05aeaba",
    "correct": false,
    "covers": "adjacent-punctuation",
@@ -1647,6 +1450,79 @@
    "statistic_id": "comma",
    "text": "one,,two",
    "wording_index": 1
+  },
+  {
+   "case_id": "mc-cr5-14-dfd56a46",
+   "correct": true,
+   "covers": "adjacent-punctuation;semicolon",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "instruction": "Keep commas to 1 per hundred words.",
+   "kind": "CR5",
+   "severity": 1,
+   "statistic_id": "comma",
+   "text": "step;; clue",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-cr5-15-01ab659f",
+   "correct": false,
+   "covers": "empty-output",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Limit commas to 1 per hundred words.",
+   "kind": "CR5",
+   "severity": 1,
+   "statistic_id": "comma",
+   "text": "",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cr5-16-e3bfa9d7",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Use at most 1 commas per hundred words.",
+   "kind": "CR5",
+   "severity": 1,
+   "statistic_id": "comma",
+   "text": "   ",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr6-02-ca503d04",
@@ -1797,6 +1673,30 @@
    "wording_index": 3
   },
   {
+   "case_id": "mc-cr6-12-82d492b4",
+   "correct": false,
+   "covers": "capitalisation;shout",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": true,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "inequality_flip",
+    "segmentation_drift"
+   ],
+   "form": "rate_budget",
+   "instruction": "Words with capitals: at most 1 percent.",
+   "kind": "CR6",
+   "severity": 1,
+   "statistic_id": "capital_word",
+   "text": "THUS POINT",
+   "wording_index": 0
+  },
+  {
    "case_id": "mc-cr7-00-376a210e",
    "correct": true,
    "covers": "threshold-minus-one;rate",
@@ -1844,53 +1744,29 @@
    "wording_index": 1
   },
   {
-   "case_id": "mc-cr7-02-36c099e4",
+   "case_id": "mc-cr7-04-f28cc0d3",
    "correct": false,
-   "covers": "threshold-plus-one;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "denominator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Keep words with letter a to 20 percent.",
-   "kind": "CR7",
-   "severity": 20,
-   "statistic_id": "letter_a",
-   "text": "car car car point clue form step field cloud north",
-   "wording_index": 2
-  },
-  {
-   "case_id": "mc-cr7-03-2c02e6db",
-   "correct": false,
-   "covers": "case-folding-split",
+   "covers": "case-folding-split;longer",
    "defect_verdicts": {
     "denominator_swap": true,
     "inequality_flip": true,
     "numerator_swap": false,
     "off_by_one": false,
-    "segmentation_drift": false,
+    "segmentation_drift": true,
     "vacuity_ignored": false
    },
    "discriminates": [
     "denominator_swap",
-    "inequality_flip"
+    "inequality_flip",
+    "segmentation_drift"
    ],
    "form": "rate_budget",
-   "instruction": "Limit words with letter a to 20 percent.",
+   "instruction": "Words with letter a: at most 20 percent.",
    "kind": "CR7",
    "severity": 20,
    "statistic_id": "letter_a",
-   "text": "\u0130stanbul",
-   "wording_index": 3
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr7-05-4b2ca4f0",
@@ -1917,6 +1793,30 @@
    "wording_index": 1
   },
   {
+   "case_id": "mc-cr7-06-22466722",
+   "correct": true,
+   "covers": "case-folding-split;initial",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "numerator_swap",
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "instruction": "Keep words with letter a to 20 percent.",
+   "kind": "CR7",
+   "severity": 20,
+   "statistic_id": "letter_a",
+   "text": "\u0130ce clue",
+   "wording_index": 2
+  },
+  {
    "case_id": "mc-cr8-00-3b8cc75c",
    "correct": true,
    "covers": "threshold-minus-one;rate",
@@ -1938,29 +1838,6 @@
    "statistic_id": "y_final",
    "text": "point clue form step field cloud north guide point clue",
    "wording_index": 0
-  },
-  {
-   "case_id": "mc-cr8-01-3b5a9fdc",
-   "correct": true,
-   "covers": "exact-threshold;rate",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 1 percent of words end with y.",
-   "kind": "CR8",
-   "severity": 1,
-   "statistic_id": "y_final",
-   "text": "point clue form step field cloud north guide point clue",
-   "wording_index": 1
   },
   {
    "case_id": "mc-cr8-02-346c2a0b",
@@ -1987,27 +1864,28 @@
    "wording_index": 2
   },
   {
-   "case_id": "mc-cr8-03-844c3b8b",
+   "case_id": "mc-cr8-04-3a06aba5",
    "correct": true,
-   "covers": "case-folding-split",
+   "covers": "case-folding-split;longer",
    "defect_verdicts": {
     "denominator_swap": true,
     "inequality_flip": false,
-    "numerator_swap": true,
+    "numerator_swap": false,
     "off_by_one": true,
     "segmentation_drift": true,
     "vacuity_ignored": true
    },
    "discriminates": [
+    "numerator_swap",
     "inequality_flip"
    ],
    "form": "rate_budget",
-   "instruction": "Limit words ending with y to 1 percent.",
+   "instruction": "Words ending with y: at most 1 percent.",
    "kind": "CR8",
    "severity": 1,
    "statistic_id": "y_final",
-   "text": "\u0130stanbul",
-   "wording_index": 3
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr8-15-b12c7b30",
@@ -2032,6 +1910,31 @@
    "statistic_id": "y_final",
    "text": "",
    "wording_index": 3
+  },
+  {
+   "case_id": "mc-cr8-16-58ca3b26",
+   "correct": false,
+   "covers": "empty-output;whitespace",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "denominator_swap",
+    "inequality_flip",
+    "vacuity_ignored"
+   ],
+   "form": "rate_budget",
+   "instruction": "Words ending with y: at most 1 percent.",
+   "kind": "CR8",
+   "severity": 1,
+   "statistic_id": "y_final",
+   "text": "   ",
+   "wording_index": 0
   },
   {
    "case_id": "mc-cr9-00-9761d323",
@@ -2080,67 +1983,18 @@
    "wording_index": 1
   },
   {
-   "case_id": "mc-cr9-02-00fa8365",
-   "correct": false,
-   "covers": "threshold-plus-one;rate",
+   "case_id": "mc-cr9-03-f5c2360d",
+   "correct": true,
+   "covers": "case-folding-split",
    "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
+    "denominator_swap": true,
+    "inequality_flip": false,
     "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "Keep words beginning with t to 1 percent.",
-   "kind": "CR9",
-   "severity": 1,
-   "statistic_id": "t_initial",
-   "text": "top point clue form step field cloud north guide point",
-   "wording_index": 2
-  },
-  {
-   "case_id": "mc-cr9-09-ada95564",
-   "correct": false,
-   "covers": "apostrophised-form",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "rate_budget",
-   "instruction": "At most 1 percent of words begin with t.",
-   "kind": "CR9",
-   "severity": 1,
-   "statistic_id": "t_initial",
-   "text": "cats' toys",
-   "wording_index": 1
-  },
-  {
-   "case_id": "mc-cr9-11-e6f75990",
-   "correct": false,
-   "covers": "capitalisation",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
     "inequality_flip"
    ],
    "form": "rate_budget",
@@ -2148,8 +2002,54 @@
    "kind": "CR9",
    "severity": 1,
    "statistic_id": "t_initial",
-   "text": "Thus Point Clue",
+   "text": "\u0130stanbul",
    "wording_index": 3
+  },
+  {
+   "case_id": "mc-cr9-04-4857819e",
+   "correct": true,
+   "covers": "case-folding-split;longer",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "instruction": "Words beginning with t: at most 1 percent.",
+   "kind": "CR9",
+   "severity": 1,
+   "statistic_id": "t_initial",
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
+  },
+  {
+   "case_id": "mc-cr9-05-80a06942",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": true,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "rate_budget",
+   "instruction": "At most 1 percent of words begin with t.",
+   "kind": "CR9",
+   "severity": 1,
+   "statistic_id": "t_initial",
+   "text": "\u0130\u0130 point",
+   "wording_index": 1
   },
   {
    "case_id": "mc-cx1-00-9e9ebc6d",
@@ -2198,26 +2098,188 @@
    "wording_index": 1
   },
   {
-   "case_id": "mc-cx1-02-af896e62",
+   "case_id": "mc-cx1-03-a03af33f",
    "correct": false,
-   "covers": "threshold-plus-one",
+   "covers": "case-folding-split",
    "defect_verdicts": {
     "denominator_swap": false,
-    "inequality_flip": true,
+    "inequality_flip": false,
     "numerator_swap": false,
-    "off_by_one": false,
+    "off_by_one": true,
     "segmentation_drift": false,
     "vacuity_ignored": false
    },
    "discriminates": [
-    "inequality_flip"
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "The word thus must appear exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "\u0130stanbul",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cx1-04-c46b582f",
+   "correct": false,
+   "covers": "case-folding-split;longer",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Use the word thus exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
+  },
+  {
+   "case_id": "mc-cx1-05-98e5c451",
+   "correct": false,
+   "covers": "case-folding-split;repeated",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Your answer must contain thus exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "\u0130\u0130 point",
+   "wording_index": 1
+  },
+  {
+   "case_id": "mc-cx1-06-65d85fcd",
+   "correct": false,
+   "covers": "case-folding-split;initial",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
    ],
    "form": "exact_count",
    "instruction": "Include thus exactly 1 times in your answer.",
    "kind": "CX1",
    "severity": 1,
    "statistic_id": "marker_thus",
-   "text": "thus thus point clue form step field cloud",
+   "text": "\u0130ce clue",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-cx1-07-05a7dbd4",
+   "correct": false,
+   "covers": "hyphenated-form",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "The word thus must appear exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "well-known form",
+   "wording_index": 3
+  },
+  {
+   "case_id": "mc-cx1-08-3b5316eb",
+   "correct": false,
+   "covers": "hyphenated-form;two",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Use the word thus exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "co-operate well-known",
+   "wording_index": 0
+  },
+  {
+   "case_id": "mc-cx1-09-ee7fb3d2",
+   "correct": false,
+   "covers": "apostrophised-form",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "numerator_swap",
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Your answer must contain thus exactly 1 times.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "cats' toys",
+   "wording_index": 1
+  },
+  {
+   "case_id": "mc-cx1-10-e06d18bc",
+   "correct": false,
+   "covers": "apostrophised-form;single",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": false,
+    "numerator_swap": false,
+    "off_by_one": true,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Include thus exactly 1 times in your answer.",
+   "kind": "CX1",
+   "severity": 1,
+   "statistic_id": "marker_thus",
+   "text": "step's",
    "wording_index": 2
   },
   {
@@ -2290,6 +2352,53 @@
    "wording_index": 0
   },
   {
+   "case_id": "mc-cx2-01-5a43f4cc",
+   "correct": true,
+   "covers": "exact-threshold",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "numerator_swap",
+    "off_by_one"
+   ],
+   "form": "exact_count",
+   "instruction": "Use exactly 1 semicolon characters in your answer.",
+   "kind": "CX2",
+   "severity": 1,
+   "statistic_id": "semicolon",
+   "text": "point; point clue form step field cloud",
+   "wording_index": 1
+  },
+  {
+   "case_id": "mc-cx2-02-606f0274",
+   "correct": false,
+   "covers": "threshold-plus-one",
+   "defect_verdicts": {
+    "denominator_swap": false,
+    "inequality_flip": true,
+    "numerator_swap": false,
+    "off_by_one": false,
+    "segmentation_drift": false,
+    "vacuity_ignored": false
+   },
+   "discriminates": [
+    "inequality_flip"
+   ],
+   "form": "exact_count",
+   "instruction": "Exactly 1 semicolons must appear in your answer.",
+   "kind": "CX2",
+   "severity": 1,
+   "statistic_id": "semicolon",
+   "text": "point; clue; point clue form step field cloud",
+   "wording_index": 2
+  },
+  {
    "case_id": "mc-cx2-03-189c9f09",
    "correct": false,
    "covers": "case-folding-split",
@@ -2334,75 +2443,6 @@
    "statistic_id": "semicolon",
    "text": "\u0130stanbul is one word",
    "wording_index": 0
-  },
-  {
-   "case_id": "mc-cx2-05-5e095689",
-   "correct": false,
-   "covers": "case-folding-split;repeated",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": false,
-    "numerator_swap": false,
-    "off_by_one": true,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "off_by_one"
-   ],
-   "form": "exact_count",
-   "instruction": "Use exactly 1 semicolon characters in your answer.",
-   "kind": "CX2",
-   "severity": 1,
-   "statistic_id": "semicolon",
-   "text": "\u0130\u0130 point",
-   "wording_index": 1
-  },
-  {
-   "case_id": "mc-cx2-06-1e8aae29",
-   "correct": false,
-   "covers": "case-folding-split;initial",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": false,
-    "numerator_swap": false,
-    "off_by_one": true,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "off_by_one"
-   ],
-   "form": "exact_count",
-   "instruction": "Exactly 1 semicolons must appear in your answer.",
-   "kind": "CX2",
-   "severity": 1,
-   "statistic_id": "semicolon",
-   "text": "\u0130ce clue",
-   "wording_index": 2
-  },
-  {
-   "case_id": "mc-cx2-07-7710f38d",
-   "correct": false,
-   "covers": "hyphenated-form",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": false,
-    "numerator_swap": false,
-    "off_by_one": true,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "off_by_one"
-   ],
-   "form": "exact_count",
-   "instruction": "Include exactly 1 semicolon characters in your answer.",
-   "kind": "CX2",
-   "severity": 1,
-   "statistic_id": "semicolon",
-   "text": "well-known form",
-   "wording_index": 3
   },
   {
    "case_id": "mc-rf1-00-bb3c1fe4",
@@ -2452,30 +2492,6 @@
    "wording_index": 1
   },
   {
-   "case_id": "mc-rf1-02-5c4aaabc",
-   "correct": false,
-   "covers": "threshold-plus-one",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "count_budget",
-   "instruction": "No more than 1 words may start with b.",
-   "kind": "RF1",
-   "severity": 1,
-   "statistic_id": "b_initial",
-   "text": "bold bold point clue form step field cloud",
-   "wording_index": 2
-  },
-  {
    "case_id": "mc-rf1-03-7a6adf7c",
    "correct": true,
    "covers": "case-folding-split",
@@ -2522,9 +2538,9 @@
    "wording_index": 0
   },
   {
-   "case_id": "mc-rf10-00-24938ecb",
+   "case_id": "mc-rf1-05-e599ad42",
    "correct": true,
-   "covers": "threshold-minus-one",
+   "covers": "case-folding-split;repeated",
    "defect_verdicts": {
     "denominator_swap": true,
     "inequality_flip": false,
@@ -2537,12 +2553,12 @@
     "inequality_flip"
    ],
    "form": "count_budget",
-   "instruction": "At most 1 words may end with s.",
-   "kind": "RF10",
+   "instruction": "Use at most 1 words beginning with b.",
+   "kind": "RF1",
    "severity": 1,
-   "statistic_id": "s_final",
-   "text": "point clue form step field cloud",
-   "wording_index": 0
+   "statistic_id": "b_initial",
+   "text": "\u0130\u0130 point",
+   "wording_index": 1
   },
   {
    "case_id": "mc-rf10-01-c8709e10",
@@ -2593,51 +2609,76 @@
    "wording_index": 2
   },
   {
-   "case_id": "mc-rf10-03-ae277cd5",
+   "case_id": "mc-rf10-04-ea266438",
    "correct": true,
-   "covers": "case-folding-split",
+   "covers": "case-folding-split;longer",
    "defect_verdicts": {
     "denominator_swap": true,
     "inequality_flip": false,
     "numerator_swap": true,
-    "off_by_one": true,
+    "off_by_one": false,
     "segmentation_drift": true,
     "vacuity_ignored": true
    },
    "discriminates": [
-    "inequality_flip"
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "instruction": "At most 1 words may end with s.",
+   "kind": "RF10",
+   "severity": 1,
+   "statistic_id": "s_final",
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
+  },
+  {
+   "case_id": "mc-rf10-10-cc77994e",
+   "correct": true,
+   "covers": "apostrophised-form;single",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": false,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "instruction": "No more than 1 words may end in s.",
+   "kind": "RF10",
+   "severity": 1,
+   "statistic_id": "s_final",
+   "text": "step's",
+   "wording_index": 2
+  },
+  {
+   "case_id": "mc-rf10-11-15594dd9",
+   "correct": true,
+   "covers": "capitalisation",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": false,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
    ],
    "form": "count_budget",
    "instruction": "Limit words ending with s to 1.",
    "kind": "RF10",
    "severity": 1,
    "statistic_id": "s_final",
-   "text": "\u0130stanbul",
+   "text": "Thus Point Clue",
    "wording_index": 3
-  },
-  {
-   "case_id": "mc-rf10-09-b461cc99",
-   "correct": false,
-   "covers": "apostrophised-form",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "count_budget",
-   "instruction": "Use at most 1 words ending with s.",
-   "kind": "RF10",
-   "severity": 1,
-   "statistic_id": "s_final",
-   "text": "cats' toys",
-   "wording_index": 1
   },
   {
    "case_id": "mc-rf11-00-045c2bd7",
@@ -2808,30 +2849,6 @@
    "wording_index": 1
   },
   {
-   "case_id": "mc-rf12-02-59b53d86",
-   "correct": false,
-   "covers": "threshold-plus-one",
-   "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
-    "numerator_swap": true,
-    "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
-   },
-   "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
-   ],
-   "form": "count_budget",
-   "instruction": "No more than 1 sentences may appear.",
-   "kind": "RF12",
-   "severity": 1,
-   "statistic_id": "sentence",
-   "text": "point. clue. point clue form step field cloud",
-   "wording_index": 2
-  },
-  {
    "case_id": "mc-rf12-03-a66b6eea",
    "correct": true,
    "covers": "case-folding-split",
@@ -2856,28 +2873,52 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-rf12-22-335ef24d",
-   "correct": false,
-   "covers": "terminator-run",
+   "case_id": "mc-rf12-04-b7e769aa",
+   "correct": true,
+   "covers": "case-folding-split;longer",
    "defect_verdicts": {
-    "denominator_swap": false,
-    "inequality_flip": true,
+    "denominator_swap": true,
+    "inequality_flip": false,
     "numerator_swap": true,
     "off_by_one": false,
-    "segmentation_drift": false,
-    "vacuity_ignored": false
+    "segmentation_drift": true,
+    "vacuity_ignored": true
    },
    "discriminates": [
-    "numerator_swap",
-    "inequality_flip"
+    "inequality_flip",
+    "off_by_one"
    ],
    "form": "count_budget",
-   "instruction": "No more than 1 sentences may appear.",
+   "instruction": "Your answer may use at most 1 sentences.",
    "kind": "RF12",
    "severity": 1,
    "statistic_id": "sentence",
-   "text": "point... clue",
-   "wording_index": 2
+   "text": "\u0130stanbul is one word",
+   "wording_index": 0
+  },
+  {
+   "case_id": "mc-rf12-05-2baf0d82",
+   "correct": true,
+   "covers": "case-folding-split;repeated",
+   "defect_verdicts": {
+    "denominator_swap": true,
+    "inequality_flip": false,
+    "numerator_swap": true,
+    "off_by_one": false,
+    "segmentation_drift": true,
+    "vacuity_ignored": true
+   },
+   "discriminates": [
+    "inequality_flip",
+    "off_by_one"
+   ],
+   "form": "count_budget",
+   "instruction": "Your answer must have at most 1 sentences.",
+   "kind": "RF12",
+   "severity": 1,
+   "statistic_id": "sentence",
+   "text": "\u0130\u0130 point",
+   "wording_index": 1
   },
   {
    "case_id": "mc-rf2-00-d3d37e7f",
@@ -3681,29 +3722,6 @@
    "wording_index": 3
   },
   {
-   "case_id": "mc-rf8-04-0e7c02df",
-   "correct": true,
-   "covers": "case-folding-split;longer",
-   "defect_verdicts": {
-    "denominator_swap": true,
-    "inequality_flip": false,
-    "numerator_swap": true,
-    "off_by_one": true,
-    "segmentation_drift": true,
-    "vacuity_ignored": true
-   },
-   "discriminates": [
-    "inequality_flip"
-   ],
-   "form": "count_budget",
-   "instruction": "At most 1 words may end with y.",
-   "kind": "RF8",
-   "severity": 1,
-   "statistic_id": "y_final",
-   "text": "\u0130stanbul is one word",
-   "wording_index": 0
-  },
-  {
    "case_id": "mc-rf9-00-399b9a58",
    "correct": true,
    "covers": "threshold-minus-one",
@@ -3839,79 +3857,79 @@
   "RF8",
   "RF9"
  ],
- "generator_hash": "15db59978d402ad2fad884ff554de58ae891725a859c3637463cc4687de4cf4d",
+ "generator_hash": "2c82b709de3ee9edc616b32501e1fd5535244d24f32a36cffec5b5e56315503a",
  "split": {
   "calibration": {
-   "hash": "5ec17f3cd952680905991e3b9af210d5a901b894dda94046db664969ecd743d5",
-   "n": 80,
+   "hash": "921fd0bb3b48a9dff86771b575a06f6899e01c47e60911d465d033afab4b6c25",
+   "n": 76,
    "strata": {
     "by_form": {
-     "count_budget": 28,
+     "count_budget": 27,
      "count_lower_bound": 8,
-     "exact_count": 7,
-     "rate_budget": 32,
+     "exact_count": 8,
+     "rate_budget": 28,
      "rate_lower_bound": 5
     },
-    "cases": 80,
-    "correct_not_satisfied": 42,
-    "correct_satisfied": 38,
+    "cases": 76,
+    "correct_not_satisfied": 36,
+    "correct_satisfied": 40,
     "discriminating_by_defect": {
-     "denominator_swap": 9,
-     "inequality_flip": 74,
-     "numerator_swap": 25,
-     "off_by_one": 17,
-     "segmentation_drift": 5,
-     "vacuity_ignored": 5
+     "denominator_swap": 10,
+     "inequality_flip": 68,
+     "numerator_swap": 17,
+     "off_by_one": 21,
+     "segmentation_drift": 6,
+     "vacuity_ignored": 12
     },
-    "families": 29,
-    "satisfied_share": 0.475
+    "families": 30,
+    "satisfied_share": 0.5263157894736842
    }
   },
   "development": {
-   "hash": "60484ea13fe515760ad05aa637df829eb46a4c906399ba13ceca99f16aa2a244",
-   "n": 80,
+   "hash": "2e485a542555426e34004d5806f654e6a7016ad19595c336faa9ff0857945bce",
+   "n": 84,
    "strata": {
     "by_form": {
      "count_budget": 31,
      "count_lower_bound": 4,
-     "exact_count": 4,
+     "exact_count": 9,
      "rate_budget": 34,
-     "rate_lower_bound": 7
+     "rate_lower_bound": 6
     },
-    "cases": 80,
-    "correct_not_satisfied": 38,
-    "correct_satisfied": 42,
+    "cases": 84,
+    "correct_not_satisfied": 44,
+    "correct_satisfied": 40,
     "discriminating_by_defect": {
-     "denominator_swap": 7,
+     "denominator_swap": 14,
      "inequality_flip": 76,
-     "numerator_swap": 30,
-     "off_by_one": 13,
-     "segmentation_drift": 7,
-     "vacuity_ignored": 3
+     "numerator_swap": 25,
+     "off_by_one": 19,
+     "segmentation_drift": 8,
+     "vacuity_ignored": 13
     },
     "families": 30,
-    "satisfied_share": 0.525
+    "satisfied_share": 0.47619047619047616
    }
   }
  },
  "strata": {
   "by_form": {
-   "count_budget": 59,
+   "count_budget": 58,
    "count_lower_bound": 12,
-   "exact_count": 11,
-   "rate_budget": 66,
-   "rate_lower_bound": 12
+   "exact_count": 17,
+   "rate_budget": 62,
+   "rate_lower_bound": 11
   },
   "cases": 160,
   "correct_not_satisfied": 80,
   "correct_satisfied": 80,
   "discriminating_by_defect": {
-   "denominator_swap": 16,
-   "inequality_flip": 150,
-   "numerator_swap": 55,
-   "off_by_one": 30,
-   "segmentation_drift": 12,
-   "vacuity_ignored": 8
+   "denominator_swap": 24,
+   "inequality_flip": 144,
+   "numerator_swap": 42,
+   "off_by_one": 40,
+   "segmentation_drift": 14,
+   "vacuity_ignored": 25
   },
   "families": 30,
   "satisfied_share": 0.5
