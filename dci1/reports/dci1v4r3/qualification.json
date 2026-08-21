@@ -5,20 +5,20 @@
     {
       "check": "clean_worktree",
       "detail": {
-        "changed_paths": 46,
+        "changed_paths": 0,
         "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
       },
-      "passed": false
+      "passed": true
     },
     {
       "check": "commit_hashable",
-      "detail": "6954dd65530e34d8e6e866f2a512fbd9a99e51cb",
+      "detail": "c9db5c3db182a11eea206aadc5289799d3abadc6",
       "passed": true
     },
     {
       "check": "tracked_implementation",
-      "detail": "dci1/src/dci1v4r3 is not tracked",
-      "passed": false
+      "detail": "tracked",
+      "passed": true
     },
     {
       "check": "resolved_revisions",
@@ -83,30 +83,9 @@
       "passed": true
     }
   ],
-  "failed": [
-    "clean_worktree",
-    "tracked_implementation"
-  ],
   "instrument_population": 348,
-  "observed": [
-    {
-      "check": "clean_worktree",
-      "detail": {
-        "changed_paths": 46,
-        "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
-      },
-      "passed": false
-    },
-    {
-      "check": "tracked_implementation",
-      "detail": "dci1/src/dci1v4r3 is not tracked",
-      "passed": false
-    }
-  ],
-  "outcome": "TERMINAL",
-  "producing_commit": "6954dd65530e34d8e6e866f2a512fbd9a99e51cb",
+  "outcome": "PASS",
+  "producing_commit": "c9db5c3db182a11eea206aadc5289799d3abadc6",
   "reads_no_behavioural_rate": true,
-  "stage": "QUALIFIED",
-  "status": "QUALIFICATION_FAILURE",
-  "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+  "stage": "QUALIFIED"
 }
