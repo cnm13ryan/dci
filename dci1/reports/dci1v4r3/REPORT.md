@@ -251,31 +251,97 @@ which no agent may write.
 
 ---
 
-## 7. Stage order, and one provenance defect that is not fixed
+## 7. Stage order, provenance, and the repair pass (2026-08-21, later)
 
-**§18 stage 1 `QUALIFIED` returns `QUALIFICATION_FAILURE`, on two checks of
-eleven.** Nine pass — commit hashable, model revisions resolved, dependency
-manifest present, prompt plan schema-valid, wording suite, witness suite, class
-labelling, durable store reachable, environment hashable. The two that fail are
-`clean_worktree` and `tracked_implementation`, and they are the same failure
-seen twice: **the v4r3 implementation is uncommitted**, so every stage record
-written so far names a producing commit (`6954dd65`) that does not contain the
-code that produced it. That is a genuine provenance defect and it is repaired
-by a commit, which is the researcher's to make.
+An evidence audit found four defects. Three were the same shape --- a rule the
+preregistration states in prose with nothing on the execution path enforcing
+it --- and all four are now repaired.
 
-**§18 stage 2 `GATE_0_APPARATUS` has not run.** §19's procedural pilot needs
-the masking cycle, the durable restore path and the analysis pipeline running
-to a redacted result table — machinery this revision has not implemented,
-because none of it can execute before Gate 1 opens. It is a registered
-prerequisite for Gate 2 and it remains outstanding.
+**The implementation was uncommitted.** Every stage record named producing
+commit `6954dd65`, which did not contain `src/dci1v4r3` at all, and §18's
+`clean_worktree` and `tracked_implementation` refused the study for exactly
+that reason. Committed. §18 stage 1 now **PASSES** and binds to the commit that
+contains the code.
 
-**The regime screen therefore ran ahead of stages 1 and 2**, which is an
-ordering deviation and is recorded here rather than smoothed over. Its
-consequence is bounded and checkable: the screen touched development topics
-only (`topic_audit.json`), produced no confirmatory data, and every quantity it
-reports is re-derivable from the stored rows under the frozen verifier hash
-each row carries. What it does *not* have is a producing commit, and no
-argument repairs that — only a commit does.
+**There was no stage machine.** `STAGE_SEQUENCE` existed as a list of strings
+and nothing read it, which is how the §12.2 regime screen came to run before
+`QUALIFIED` and `GATE_0_APPARATUS` --- not by a decision, but because no guard
+existed to refuse it. `dci1v4r3/engine/transitions.py` now enforces in-order,
+once, terminal-is-terminal and §18.1's post-freeze rule against the
+predecessor's verified hash and signature, and logs every *attempted*
+transition including refusals.
+
+The existing screen evidence is recorded `ADOPTED_OUT_OF_ORDER`. Checked
+against real state, Gate 1 is refused for the right reason:
+
+    GATE_1_MEASUREMENT: REGIME_SCREEN recorded 'ADOPTED_OUT_OF_ORDER',
+    not PASS; GATE_1_MEASUREMENT may not run
+
+The rows are real, they remain registered diagnostic evidence, and every
+quantity in sections 1-6 is still re-derivable from them under the frozen
+verifier hash each row carries. What they cannot do is satisfy a predecessor
+requirement they were generated before the existence of. **The screen must be
+re-run in order under the bound commit before Gate 1 can rest on it**, using
+the same reserved development topics and the same registered procedure --- not
+to seek different rates, but because the ordering is part of what the record
+claims.
+
+**§12.1's cap probe leaked a composed outcome.** The probe generates composed
+`A + B` prompts by registered design --- a cap has to be adequate where the
+answer is hardest to write --- so 72 composed generations per replication went
+through the shared scorer and their rows carry `passed` for both constituents.
+Nothing read the field and no record contained it, so no reported value moves;
+but `D(B <- A)` at `A:8 + B:7` was derivable from stored evidence, and an
+unread field is a weaker guarantee than an unreachable one. The probe is now
+projected onto §12.1's three registered fields before the cap decision sees it,
+later stages read a restricted artifact, and the selection modules are checked
+by parsing rather than by running that they cannot name the field at all.
+
+**§18 stage 2 `GATE_0_APPARATUS` is now implemented and walked.** §19's pilot ---
+47 cells x 12 topics x M = 4 = 2,256 draws, all eight acceptance conditions,
+the mask cycle, byte mutation, durable restore, and a fully redacted result
+table carrying a fitted difficulty relation, a support diagnostic and a
+`delta_difficulty` row --- runs end to end on the CPU-only synthetic seam. It
+has not yet been run for record on a real model.
+
+**The durable mirror held six files.** Fifty-three critical artifacts, every
+raw and scored row among them, existed in one copy. `_mirror` had only ever
+replicated stage records. Both roots now hold 147 files and the durability gate
+passes --- with its limitation stated rather than implied: both roots are local
+and on one device, so this establishes that two copies agree and that a restore
+works, not off-machine durability.
+
+### 7.1 §10.4 is replaced prospectively (amendment R1, C26)
+
+§10.4's original task asked the judge whether a response obeys a rule. For a
+rate predicate that is an enumeration, and the judge exhausted its 2,048-token
+cap doing arithmetic without reaching a verdict. §10.4-R asks instead whether
+the deterministic *operationalization* --- segmentation convention, numerator,
+denominator, derived quantity, direction, threshold, verdict --- faithfully
+implements the written instruction, with the arithmetic **shown** rather than
+requested.
+
+This is not merely the cheaper repair, and raising the cap was considered and
+kept as the registered fallback. §10.2 already shows two independent
+implementations agreeing at 1.000 over 24,352 responses; what agreement cannot
+show is that either implements the construct the prose describes, since both
+could share a misreading. Asking a judge to redo the arithmetic tests the
+judge. Asking it to inspect the operationalization tests what §10.2 cannot
+reach.
+
+Half the judged cards carry one planted defect from a closed list of six ---
+`denominator_swap`, `inequality_flip`, `off_by_one`, `segmentation_drift`,
+`numerator_swap`, `vacuity_ignored` --- because a validator handed a correct
+derivation and asked whether it is correct can score perfectly by always
+agreeing. Sensitivity has a registered floor **per defect kind** as well as
+overall, so a validator blind to one whole class cannot pass on the strength of
+the others. Every threshold was registered at commit `f657de2`, before any card
+was judged.
+
+**The deterministic verifier remains the study's scorer.** No compliance rate,
+cell mean, estimand or claim reads anything the validator produces, at any
+stage. §10.4's original evidence is retained: it judges a different question,
+it is the record of why R1 exists, and the two must never be pooled.
 
 ---
 
