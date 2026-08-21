@@ -104,10 +104,63 @@ def verify() -> dict:
                 m for m in missing if m.endswith(CRITICAL))}
 
 
+def replicate_all() -> dict:
+    """Mirror the whole evidence tree, not only the stage records.
+
+    The mirror held six files -- the regime records -- while fifty-three
+    critical artifacts, every raw and scored row among them, existed in one
+    copy. A record mirror documents a result; an evidence mirror is the only
+    thing that can reproduce one, and `evidence/` is gitignored by design.
+    """
+    import shutil
+
+    copied = 0
+    for source in sorted(EVIDENCE.rglob("*")):
+        if not source.is_file():
+            continue
+        target = DURABLE / source.relative_to(EVIDENCE)
+        if target.exists() and sha256(target) == sha256(source):
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        copied += 1
+    return {"copied": copied, "durable_files": len(inventory(DURABLE))}
+
+
+def durability() -> dict:
+    """§26's pre-Gate-5 durability gate, with its limitation stated."""
+    import subprocess
+
+    from dci1v4r3.stages import durability as D
+
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", str(MANIFEST)],
+        cwd=DCI1, capture_output=True).returncode == 0
+    commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=DCI1,
+                            capture_output=True, text=True).stdout.strip()
+    return D.report(evidence=EVIDENCE, durable=DURABLE, manifest=MANIFEST,
+                    producing_commit=commit, manifest_tracked=tracked)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--replicate", action="store_true",
+                        help="mirror the whole evidence tree to durable_root")
+    parser.add_argument("--durability", action="store_true",
+                        help="the §26 pre-Gate-5 durability gate")
     args = parser.parse_args()
+    if args.replicate:
+        print(json.dumps(replicate_all(), indent=1))
+        return 0
+    if args.durability:
+        record = durability()
+        (DCI1 / "reports" / "dci1v4r3" / "durability.json").write_text(
+            json.dumps(record, indent=1, sort_keys=True) + "\n")
+        print(json.dumps({k: v for k, v in record.items()
+                          if k != "comparison"}, indent=1))
+        print(json.dumps(record["comparison"], indent=1))
+        return 0 if record["passed"] else 1
     if args.verify:
         print(json.dumps(verify(), indent=1))
         return 0
