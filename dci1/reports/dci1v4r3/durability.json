@@ -4,8 +4,8 @@
   "critical_diverged": [],
   "critical_files": 53,
   "critical_missing_from_mirror": [],
-  "durable_files": 147,
-  "evidence_files": 147,
+  "durable_files": 155,
+  "evidence_files": 155,
   "matched": true,
   "n_critical_diverged": 0,
   "n_critical_missing": 0
@@ -16,7 +16,7 @@
  "manifest_tracked_in_git": true,
  "off_machine_copy": false,
  "passed": true,
- "producing_commit": "7391e718ddcbcd5c458924d716361a485e7a5727",
+ "producing_commit": "71b1e09b74ae2ed46b07a93146f9fe98cbb27621",
  "restore_rehearsal": {
   "failures": [],
   "passed": true,
