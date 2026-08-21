@@ -16,7 +16,7 @@
  "manifest_tracked_in_git": true,
  "off_machine_copy": false,
  "passed": true,
- "producing_commit": "8890e3faa678132cf2435215d6e2e6f89eb4f312",
+ "producing_commit": "37e293578781b46c6c47de9f8fc3db6798534181",
  "restore_rehearsal": {
   "failures": [],
   "passed": true,
