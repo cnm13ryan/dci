@@ -33,6 +33,7 @@ from dci1v4r3.run.execute import (
     EVIDENCE, Cell, cell_rates, generate_and_score, solo_cell,
     unconstrained_cell,
 )
+from dci1v4r3.stages import cap_probe
 from dci1v4r3.stages import library as lib
 from dci1v4r3.stages import regime
 from dci1v4r3.topics import split_topics
@@ -207,19 +208,26 @@ def run_regime_screen(model_key: str, *, device: int, cap: int | None = None,
                 cap=candidate, draws=1, device=device,
                 run_dir=out_dir / "backend_runs" / f"cap{candidate}",
                 limit=limit, generate=generate)
-            loads = {0: [], 1: [], 2: []}
-            for row in rows:
-                loads[row["load"]].append(float(row["truncated"]))
-            truncation[candidate] = {
-                "unconstrained": sum(loads[0]) / max(len(loads[0]), 1),
-                "constrained": ((sum(loads[1]) + sum(loads[2]))
-                                / max(len(loads[1]) + len(loads[2]), 1)),
-                "n": len(rows)}
+            # §12.1's probe includes composed A+B prompts, so its scored rows
+            # carry per-constituent verdicts. Project them onto the three
+            # registered fields *here*, before anything else can see them:
+            # the cap decision must not be reachable from a composed outcome
+            # and neither must anything downstream of it (§12.5, §13.9).
+            truncation[candidate] = cap_probe.truncation_by_load(
+                cap_probe.restrict(rows))
         # Every cap is generated, not only those up to the first that
         # qualifies: §12.1 registers the whole table as the diagnostic, and a
         # loop that stopped early would report a cap as unmeasured rather than
         # as measured and not needed.
         chosen = select_cap(truncation)
+        # The restricted artifact is durable and is what a later stage reads;
+        # the raw probe rows stay in place for provenance and are never
+        # aggregated again.
+        fs.write_json(
+            EVIDENCE / model_key / "cap_probe_truncation.json",
+            cap_probe.cap_probe_artifact(
+                truncation, model_key=model_key,
+                selected_cap=chosen["selected_cap"]))
         if chosen["selected_cap"] is None:
             record = {"stage": C.STAGE_REGIME, "model_key": model_key,
                       "outcome": "TERMINAL",
