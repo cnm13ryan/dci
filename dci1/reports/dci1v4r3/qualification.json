@@ -5,14 +5,14 @@
     {
       "check": "clean_worktree",
       "detail": {
-        "changed_paths": 0,
+        "changed_paths": 5,
         "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
       },
-      "passed": true
+      "passed": false
     },
     {
       "check": "commit_hashable",
-      "detail": "c9db5c3db182a11eea206aadc5289799d3abadc6",
+      "detail": "63add47b61d622a377a3ad96d10cb7919820c67c",
       "passed": true
     },
     {
@@ -83,9 +83,24 @@
       "passed": true
     }
   ],
+  "failed": [
+    "clean_worktree"
+  ],
   "instrument_population": 348,
-  "outcome": "PASS",
-  "producing_commit": "c9db5c3db182a11eea206aadc5289799d3abadc6",
+  "observed": [
+    {
+      "check": "clean_worktree",
+      "detail": {
+        "changed_paths": 5,
+        "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
+      },
+      "passed": false
+    }
+  ],
+  "outcome": "TERMINAL",
+  "producing_commit": "63add47b61d622a377a3ad96d10cb7919820c67c",
   "reads_no_behavioural_rate": true,
-  "stage": "QUALIFIED"
+  "stage": "QUALIFIED",
+  "status": "QUALIFICATION_FAILURE",
+  "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
 }

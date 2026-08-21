@@ -139,4 +139,19 @@ INFO 08-21 12:40:12 [llm.py:343] Supported tasks: ['generate']
 Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:45<00:00, 45.92s/it, est. speed input: 11.37 toks/s, output: 16.70 toks/s]Processed prompts: 100%|██████████| 1/1 [00:45<00:00, 45.92s/it, est. speed input: 11.37 toks/s, output: 16.70 toks/s]Processed prompts: 100%|██████████| 1/1 [00:45<00:00, 45.92s/it, est. speed input: 11.37 toks/s, output: 16.70 toks/s]
   +1 rows (1 answered), 34/96 total
 Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1112.84it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [01:09<00:00, 69.09s/it, est. speed input: 7.76 toks/s, output: 16.72 toks/s]Processed prompts: 100%|██████████| 1/1 [01:09<00:00, 69.09s/it, est. speed input: 7.76 toks/s, output: 16.72 toks/s]Processed prompts: 100%|██████████| 1/1 [01:09<00:00, 69.09s/it, est. speed input: 7.76 toks/s, output: 16.72 toks/s]
+  +1 rows (1 answered), 35/96 total
+Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1160.89it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:37<00:00, 37.57s/it, est. speed input: 13.52 toks/s, output: 16.71 toks/s]Processed prompts: 100%|██████████| 1/1 [00:37<00:00, 37.57s/it, est. speed input: 13.52 toks/s, output: 16.71 toks/s]Processed prompts: 100%|██████████| 1/1 [00:37<00:00, 37.57s/it, est. speed input: 13.52 toks/s, output: 16.71 toks/s]
+  +1 rows (1 answered), 36/96 total
+Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1072.16it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [01:57<00:00, 117.16s/it, est. speed input: 4.81 toks/s, output: 16.73 toks/s]Processed prompts: 100%|██████████| 1/1 [01:57<00:00, 117.16s/it, est. speed input: 4.81 toks/s, output: 16.73 toks/s]Processed prompts: 100%|██████████| 1/1 [01:57<00:00, 117.16s/it, est. speed input: 4.81 toks/s, output: 16.73 toks/s]
+  +1 rows (1 answered), 37/96 total
+Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1045.44it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:16<00:00, 16.25s/it, est. speed input: 36.50 toks/s, output: 16.62 toks/s]Processed prompts: 100%|██████████| 1/1 [00:16<00:00, 16.25s/it, est. speed input: 36.50 toks/s, output: 16.62 toks/s]Processed prompts: 100%|██████████| 1/1 [00:16<00:00, 16.25s/it, est. speed input: 36.50 toks/s, output: 16.62 toks/s]
+  +1 rows (1 answered), 38/96 total
+Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1015.82it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [02:02<00:00, 122.23s/it, est. speed input: 4.81 toks/s, output: 16.71 toks/s]Processed prompts: 100%|██████████| 1/1 [02:02<00:00, 122.23s/it, est. speed input: 4.81 toks/s, output: 16.71 toks/s]Processed prompts: 100%|██████████| 1/1 [02:02<00:00, 122.23s/it, est. speed input: 4.81 toks/s, output: 16.71 toks/s]
+  +1 rows (1 answered), 39/96 total
+Adding requests:   0%|          | 0/1 [00:00<?, ?it/s]Adding requests: 100%|██████████| 1/1 [00:00<00:00, 1123.27it/s]
 Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
