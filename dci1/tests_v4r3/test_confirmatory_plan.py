@@ -138,3 +138,77 @@ def test_a_slot_the_freeze_did_not_bind_stops_the_plan():
     with pytest.raises(IntegrityError) as excinfo:
         X.confirmatory_plan(record)
     assert "slot map does not bind" in str(excinfo.value)
+
+
+# ------------------------------------------ the runners the plan feeds into
+
+def test_the_confirmatory_batches_partition_the_block_list_exactly_once():
+    """Batching is an operational convenience and must not be a selection: the
+    batches have to cover every block, in order, with no overlap."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.confirmatory_run import batches
+
+    for size in (1, 7, 16, 384, 500):
+        spans = batches(C.N_BLOCKS, size=size)
+        covered = [i for start, stop in spans for i in range(start, stop)]
+        assert covered == list(range(C.N_BLOCKS)), size
+
+
+def test_the_design_materialiser_refuses_a_slot_the_variant_needs():
+    from dci1v4.errors import IntegrityError
+    from dci1v4r3.run.design_run import assert_slot_map_usable
+
+    partial = {"A": ("A", 3), "B": ("B", 8), "R1": ("RF1", 4)}
+    with pytest.raises(IntegrityError):
+        assert_slot_map_usable(partial, "full")
+
+
+def test_two_slots_bound_to_one_instance_are_refused():
+    """A verdict is attributed to a slot by (kind, severity). Two slots on one
+    instance would make that attribution ambiguous and merge two companions."""
+    from dci1v4.errors import IntegrityError
+    from dci1v4r3.run.design_run import assert_slot_map_usable
+
+    collided = {"A": ("A", 3), "B": ("B", 8), "R1": ("RF1", 4),
+                "R2": ("RF1", 4), "R3": ("RF8", 5)}
+    with pytest.raises(IntegrityError):
+        assert_slot_map_usable(collided, "reduced")
+
+
+def test_gate4_and_the_confirmatory_run_build_cells_the_same_way():
+    """A headroom result about a cell the study never generates is a check of
+    something else, so both stages go through one materialiser."""
+    import ast
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parents[1] / "src" / "dci1v4r3" / "run"
+    for module in ("gates_run.py", "confirmatory_run.py"):
+        tree = ast.parse((src / module).read_text())
+        names = {a.name for n in ast.walk(tree)
+                 if isinstance(n, ast.ImportFrom) for a in n.names}
+        assert "design_cells_for" in names, module
+
+
+def test_the_freeze_leaves_an_unsourceable_field_unknown_rather_than_default():
+    from dci1v4r3.stages.freeze import FREEZE_FIELDS, build_freeze_record
+
+    record = build_freeze_record(n_star=3)
+    assert record["n_star"] == 3
+    assert all(record[f] == "UNKNOWN" for f in FREEZE_FIELDS if f != "n_star")
+
+
+def test_the_freeze_refuses_while_the_measurement_basis_is_unavailable():
+    from dci1v4r3.run.freeze_run import decision_record
+
+    unavailable = decision_record({"measurement_basis":
+                                   "HUMAN_VALIDATION_UNAVAILABLE"})
+    assert unavailable["D9"] == "UNKNOWN"
+    approved = decision_record({"measurement_basis":
+                                "autorater_calibration_approved"})
+    assert approved["D9"] != "UNKNOWN"
+
+
+def test_every_amendment_document_the_freeze_hashes_exists():
+    from dci1v4r3.run.freeze_run import amendment_hashes
+
+    assert all(v != "MISSING" for v in amendment_hashes().values())
