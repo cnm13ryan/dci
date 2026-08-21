@@ -3307,7 +3307,7 @@ study-wide freeze**, and none may be decided after any confirmatory generation.
 | D8 | The non-vacuity word threshold, registered at 20 and now stated to the model by the §8.5 stem | 20 words |
 | D9 | Whether an independent annotator will be available, which decides the measurement basis | Autorater pathway with `HUMAN_VALIDATION_UNAVAILABLE` |
 | D10 | Whether the class arm carries more than one production-class companion, which is what a class *claim* would require | One companion; `COMPANION_CLASS_NOT_MATCHED` stands and no class claim is made |
-| D14 | Whether the eight feature groups of §7.0 are the right partition. `capital_char` and `capital_word` are grouped because one entails the other at $q = 0$; no other pair of numerators was found to be nested. | Eight groups as registered; the witness suite is the check |
+| **D14** | Whether the feature groups of §7.0 are the right partition. `capital_char` and `capital_word` are grouped because one entails the other at $q = 0$; no other pair of numerators was found to be nested. **Amended by §7.0-R3**: thirteen groups, the six added statistics each its own. `t_initial` is not grouped with `b_initial` and `s_final` is not grouped with `y_final`, because no answer has a word beginning with both `b` and `t` or ending with both `y` and `s`, so neither budget constrains the other at any severity and §7.5's non-entailment obligation is satisfiable for the pair. | Thirteen groups as registered; the witness suite is the check, over all 92,988 realisable pairs |
 | D11 | Whether a second focal-like outcome constraint is added as an exploratory test of outcome-side specificity | Not added |
 
 **What none of these can fix.** The length account is not identified by any
