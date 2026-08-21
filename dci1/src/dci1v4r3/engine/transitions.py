@@ -44,7 +44,8 @@ __all__ = ["PREDECESSOR", "log_transition", "transition_rows",
            "terminal_status", "read_stage_record", "stage_reached",
            "assert_predecessor_passed", "assert_transition_legal",
            "assert_no_post_freeze_mutation", "write_stage_record",
-           "write_terminal_report", "adopt_out_of_order"]
+           "write_terminal_report", "adopt_out_of_order",
+           "supersede_stage_records"]
 
 #: stage -> the stage that must have PASSED before it may run.
 PREDECESSOR: dict[str, str | None] = {
@@ -246,3 +247,79 @@ def adopt_out_of_order(tree: ModelTree, stage: str, payload: dict[str, Any], *,
     path.parent.mkdir(parents=True, exist_ok=True)
     fs.write_json_once(path, signed)
     return path
+
+
+def supersede_stage_records(tree: ModelTree, stages: list[str], *,
+                            reason: str, superseded_by_commit: str,
+                            environment_digest: str = "") -> dict[str, Any]:
+    """Retire stage records so the lifecycle can be re-run under new code.
+
+    **Not an overwrite and not a deletion.** Each stage's whole directory ---
+    record, reader copy, backend runs, every generated row --- is *moved* to
+    `superseded/<commit>/<STAGE>/` in both roots and a `supersession.json` is
+    written beside it naming what was retired, why, and the commit that
+    supersedes it. The rows stay readable at the path the note gives, and the
+    transition log gains a `SUPERSEDED` row per stage, so the history reads as
+    "this was run, then retired" rather than as "this was never run".
+
+    This exists because a prospective amendment before the freeze changes what
+    the executable code *is*, and §18's own rule --- a record binds to its
+    producing commit --- then makes the earlier records unusable as
+    predecessors rather than merely stale. The alternative, carrying them
+    forward, would bind Gate 1 and everything after it to instruments that no
+    longer exist.
+
+    Refuses after the freeze: `assert_no_post_freeze_mutation` is the whole
+    point of §18.1 and superseding is exactly the mutation it forbids.
+    """
+    if not reason or not superseded_by_commit:
+        raise ProtocolError("superseding requires the reason and the commit "
+                            "that supersedes the records")
+    order = list(C.STAGE_SEQUENCE)
+    for stage in stages:
+        if stage not in order:
+            raise ProtocolError(f"{stage!r} is not a registered v4r3 stage")
+        assert_no_post_freeze_mutation(tree, stage)
+
+    marker = superseded_by_commit[:12]
+    moved: list[dict[str, Any]] = []
+    for stage in sorted(stages, key=order.index):
+        source = tree.stage_dir(stage)
+        if not source.exists():
+            continue
+        destination = tree.superseded_dir(marker) / stage
+        if destination.exists():
+            raise IntegrityError(
+                f"{tree.model_key}: {destination} already holds a superseded "
+                f"{stage}; a second supersession under the same commit would "
+                "overwrite retained evidence")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        source.rename(destination)
+        moved.append({"stage": stage, "retained_at": str(destination)})
+        durable_source = tree.durable / stage
+        if durable_source.exists():
+            durable_destination = (tree.durable / "superseded" / marker
+                                   / stage)
+            durable_destination.parent.mkdir(parents=True, exist_ok=True)
+            if not durable_destination.exists():
+                durable_source.rename(durable_destination)
+        log_transition(tree, stage=stage, outcome="SUPERSEDED",
+                       producing_commit=superseded_by_commit,
+                       environment_digest=environment_digest,
+                       detail={"reason": reason,
+                               "retained_at": str(destination)})
+
+    note = {"artifact_type": "v4r3-supersession-note",
+            "model_key": tree.model_key,
+            "superseded_by_commit": superseded_by_commit,
+            "reason": reason,
+            "timestamp": _now(),
+            "stages": moved,
+            "status": "superseded",
+            "consequence": "these records are retained as evidence of what "
+                           "was run and are not predecessors of anything; "
+                           "the stages are re-run under the commit named "
+                           "here"}
+    if moved:
+        fs.write_json(tree.superseded_dir(marker) / "supersession.json", note)
+    return note

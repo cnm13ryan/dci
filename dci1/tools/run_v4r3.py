@@ -204,11 +204,39 @@ def cmd_gate1(args) -> int:
 
 
 def cmd_regime(args) -> int:
+    """§12, under the stage machine: Gate 0 must have passed first."""
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        assert_transition_legal, log_transition, write_stage_record,
+        write_terminal_report,
+    )
+    from dci1v4r3.protocol import constants as C
     from dci1v4r3.run.regime_screen import run_regime_screen
     context = registered_context()
     registration.load_manifest(context)      # §18 stage 1: fails closed
+    tree = model_tree(context, args.model)
+    assert_transition_legal(tree, C.STAGE_REGIME)
     record = run_regime_screen(args.model, device=args.device, cap=args.cap,
                                limit=args.limit)
+    if record.get("outcome") == "TERMINAL":
+        write_terminal_report(tree, {
+            **record, "model_key": args.model, "gate": C.STAGE_REGIME,
+            "criterion": record.get("completion_cap", {}).get("criterion", ""),
+            "observed": record.get("completion_cap", {}).get("table", {}),
+            "producing_commit": _commit(),
+            "strongest_permissible_statement": C.TERMINAL_SENTENCE})
+        log_transition(tree, stage=C.STAGE_REGIME, outcome="TERMINAL",
+                       producing_commit=_commit(), environment_digest="-",
+                       detail={"status": record.get("status")})
+        print(json.dumps({"outcome": "TERMINAL",
+                          "status": record.get("status")}, indent=1))
+        return 1
+    write_stage_record(tree, C.STAGE_REGIME, record)
+    log_transition(tree, stage=C.STAGE_REGIME, outcome=record["outcome"],
+                   producing_commit=_commit(), environment_digest="-",
+                   detail={"rows": record.get("rows_generated"),
+                           "coverage_passed":
+                               record.get("expansion", {}).get("passed")})
     summary = {k: record[k] for k in
                ("outcome", "model_key", "selected_cap", "iota_a_prescreen")
                if k in record}
@@ -219,6 +247,39 @@ def cmd_regime(args) -> int:
         summary["statuses"] = record["expansion"]["statuses"]
         summary["rows"] = record["rows_generated"]
     print(json.dumps(summary, indent=1))
+    return 0
+
+
+def cmd_restart(args) -> int:
+    """Retire stage records from ``--from`` onward so they can be re-run.
+
+    A prospective amendment changes the executable code, and §18's own rule
+    --- a record binds to its producing commit --- then makes every record
+    produced under the earlier code unusable as a predecessor. Retiring them
+    is the registered way to say so: the directories move to
+    ``superseded/<commit>/``, keeping every generated row exactly where a
+    reader can still find it, and the transition log gains a SUPERSEDED row.
+    Nothing is deleted and nothing is edited.
+    """
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import supersede_stage_records
+    from dci1v4r3.protocol import constants as C
+
+    context = registered_context()
+    order = list(C.STAGE_SEQUENCE)
+    if args.from_stage not in order:
+        print(json.dumps({"error": f"{args.from_stage} is not a stage",
+                          "sequence": order}, indent=1))
+        return 2
+    stages = order[order.index(args.from_stage):]
+    out = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        out[model_key] = supersede_stage_records(
+            tree, stages, reason=args.reason,
+            superseded_by_commit=_commit())
+    print(json.dumps({"superseded_from": args.from_stage,
+                      "commit": _commit(), "models": out}, indent=1))
     return 0
 
 
@@ -406,6 +467,10 @@ def main() -> int:
     gate0.add_argument("--device", type=int, default=0)
     gate0.add_argument("--cap", type=int, default=512)
     gate0.set_defaults(func=cmd_gate0)
+    restart = sub.add_parser("restart")
+    restart.add_argument("--from", dest="from_stage", required=True)
+    restart.add_argument("--reason", required=True)
+    restart.set_defaults(func=cmd_restart)
     sub.add_parser("adopt-regime").set_defaults(func=cmd_adopt_regime)
     sub.add_parser("seal-cap-probe").set_defaults(func=cmd_seal_cap_probe)
     args = parser.parse_args()
