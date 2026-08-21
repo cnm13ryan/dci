@@ -2350,6 +2350,8 @@ and every decision rule of §17.6; the codebook; producing commit; clean-tree
 assertion; dependency and environment digests; hardware record; gate-record
 hashes; the Gate 1 measurement basis; and the complete analysis plan.
 
+Added with amendment R1 (2026-08-21, before freeze), each naming something the freeze must bind that the list above left implicit: the hash of every adopted amendment, so a reader can tell which version of §10.4 a result was measured under; the §20 masking rule together with the declarations that travel with it, including which quantities are computable only after unmasking; and the §26 durability record with its stated limitation, so the freeze says what the evidence chain actually guarantees rather than implying more.
+
 No scientific rule changes after the study-wide freeze. Any change creates a new
 protocol version. A model-specific frozen-field change after that model's
 confirmatory generation begins creates a new protocol version and leaves the
