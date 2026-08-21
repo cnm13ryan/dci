@@ -465,6 +465,123 @@ def cmd_gate4(args) -> int:
                       summary_keys=("rows", "cells", "design_variant", "band"))
 
 
+def cmd_gate5(args) -> int:
+    """§18.1's freeze: assemble from what is signed, then put it to the rule."""
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        assert_transition_legal, log_transition, write_stage_record,
+    )
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.freeze_run import run_freeze
+    from dci1v4r3.run.regime_screen import mirror_records
+
+    context = registered_context()
+    manifest = registration.load_manifest(context)
+    tree = model_tree(context, args.model)
+    assert_transition_legal(tree, C.STAGE_GATE5)
+    records = {stage: _stage_payload(tree, stage)
+               for stage in (C.STAGE_REGIME, C.STAGE_GATE2, C.STAGE_GATE3,
+                             C.STAGE_GATE4)}
+    gate1_path = REPO / "reports" / "dci1v4r3" / "gate1_measurement.json"
+    gate1 = json.loads(gate1_path.read_text()) if gate1_path.exists() else None
+    durable_path = REPO / "reports" / "dci1v4r3" / "durability.json"
+    durability = (json.loads(durable_path.read_text())
+                  if durable_path.exists() else None)
+    record = run_freeze(args.model, manifest=manifest, records=records,
+                        gate1=gate1, durability=durability,
+                        producing_commit=_commit())
+    out = REPO / "reports" / "dci1v4r3"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / f"freeze_{args.model}.json").write_text(
+        json.dumps(record, indent=1, sort_keys=True, default=str) + "\n")
+    if record.get("outcome") != "PASS":
+        log_transition(tree, stage=C.STAGE_GATE5, outcome="REFUSED",
+                       producing_commit=_commit(), environment_digest="-",
+                       detail={"missing": record.get("missing_fields"),
+                               "unclosed": record.get("unclosed_decisions")})
+        print(json.dumps({k: record.get(k) for k in
+                          ("model_key", "outcome", "missing_fields",
+                           "unclosed_decisions", "incomplete_checks")},
+                         indent=1))
+        return 1
+    write_stage_record(tree, C.STAGE_GATE5, record)
+    mirror_records(args.model, C.STAGE_GATE5)
+    log_transition(tree, stage=C.STAGE_GATE5, outcome="PASS",
+                   producing_commit=_commit(), environment_digest="-",
+                   detail={"design_variant": record["design_variant"]})
+    print(json.dumps({"model": args.model, "outcome": "PASS",
+                      "design_variant": record["design_variant"]}, indent=1))
+    return 0
+
+
+def cmd_confirmatory(args) -> int:
+    """§21's generation. Licensed by the freeze and by nothing else."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.confirmatory_run import run_confirmatory
+
+    def build(tree, context):
+        freeze = _stage_payload(tree, C.STAGE_GATE5)
+        return run_confirmatory(args.model, tree, freeze_record=freeze,
+                                device=args.device,
+                                batch_size=args.batch_blocks)
+
+    return _run_stage(args, C.STAGE_CONFIRMATORY, build,
+                      summary_keys=("rows", "blocks_generated",
+                                    "completeness"))
+
+
+def cmd_masked_analysis(args) -> int:
+    """§20 and §15: the masked view, analysed and sealed."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.analysis_run import run_masked_analysis
+    from dci1v4r3.run.confirmatory_run import collect_rows
+
+    def build(tree, context):
+        freeze = _stage_payload(tree, C.STAGE_GATE5)
+        _stage_payload(tree, C.STAGE_CONFIRMATORY)
+        return run_masked_analysis(args.model, tree, freeze_record=freeze,
+                                   rows=collect_rows(tree),
+                                   resamples=args.resamples)
+
+    return _run_stage(args, C.STAGE_MASKED_ANALYSIS, build,
+                      summary_keys=("masked_artifact_hash", "blocks",
+                                    "mask_effectiveness"))
+
+
+def cmd_unmask(args) -> int:
+    """§20's irreversible unmask, bound to the sealed masked artifact."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.analysis_run import run_unmasking
+
+    def build(tree, context):
+        masked = _stage_payload(tree, C.STAGE_MASKED_ANALYSIS)
+        return run_unmasking(args.model, tree, masked_record=masked)
+
+    return _run_stage(args, C.STAGE_UNMASKING,
+                      build, summary_keys=("mask_key_hash",
+                                           "masked_outputs_hash"))
+
+
+def cmd_final_analysis(args) -> int:
+    """§15 and §17: the fixed analysis, then the frozen claim ladder."""
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.analysis_run import run_unmasked_analysis
+    from dci1v4r3.run.confirmatory_run import collect_rows
+
+    def build(tree, context):
+        freeze = _stage_payload(tree, C.STAGE_GATE5)
+        masked = _stage_payload(tree, C.STAGE_MASKED_ANALYSIS)
+        _stage_payload(tree, C.STAGE_UNMASKING)
+        return run_unmasked_analysis(args.model, tree, freeze_record=freeze,
+                                     rows=collect_rows(tree),
+                                     masked_record=masked,
+                                     resamples=args.resamples)
+
+    return _run_stage(args, C.STAGE_UNMASKED_ANALYSIS, build,
+                      summary_keys=("blocks", "design_variant",
+                                    "analysis_code_hash"))
+
+
 def cmd_adopt_regime(args) -> int:
     """Record the existing §12.2 evidence as ADOPTED_OUT_OF_ORDER.
 
@@ -591,9 +708,29 @@ def main() -> int:
         cmd.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
         cmd.add_argument("--device", type=int, default=0)
         cmd.set_defaults(func=func)
+    gate5 = sub.add_parser("gate5")
+    gate5.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
+    gate5.set_defaults(func=cmd_gate5)
+    conf = sub.add_parser("confirmatory")
+    conf.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
+    conf.add_argument("--device", type=int, default=0)
+    conf.add_argument("--batch-blocks", type=int, default=16)
+    conf.set_defaults(func=cmd_confirmatory)
+    for name, func in (("masked-analysis", cmd_masked_analysis),
+                       ("final-analysis", cmd_final_analysis)):
+        cmd = sub.add_parser(name)
+        cmd.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
+        cmd.add_argument("--resamples", type=int, default=None)
+        cmd.set_defaults(func=func)
+    unmask = sub.add_parser("unmask")
+    unmask.add_argument("--model", required=True, choices=sorted(MODEL_KEYS))
+    unmask.set_defaults(func=cmd_unmask)
     sub.add_parser("adopt-regime").set_defaults(func=cmd_adopt_regime)
     sub.add_parser("seal-cap-probe").set_defaults(func=cmd_seal_cap_probe)
     args = parser.parse_args()
+    if getattr(args, "resamples", "absent") is None:
+        from dci1v4r3.protocol import constants as C
+        args.resamples = C.BOOTSTRAP_RESAMPLES
     return args.func(args)
 
 
