@@ -278,8 +278,11 @@ it reads any evidence.
   file. The integer-key canonicalisation defect that invalidated v4r3's four
   regime signatures is reconstructed here and shown fixed —
   `integer_key_canonicalisation.holds: true`, `wire_form_is_idempotent: true`.
-- **Durable mirror** matches byte for byte. `evidence/` is gitignored by
-  design, so the mirror is the study's only second copy.
+- **Durable mirror** matches byte for byte on all 16 records —
+  `durable_present` and `durable_mirror_matches` true for every one.
+  `evidence/` is gitignored by design, so the mirror is the study's only
+  second copy. **This check was broken when the checkpoint was first
+  assembled and is fixed here** — see below.
 - **Ordering**: every stage's `STAGE_SEQUENCE` predecessor has a verified PASS;
   three transitions logged per model.
 - **Write-once**: re-running a stage that has a record raises.
@@ -293,6 +296,37 @@ it reads any evidence.
   `clean_worktree` and fails closed *at qualification*; reports are written
   after qualification by design, so a dirty tree at report time is expected and
   is not a finding.
+
+### One check was found broken, and it was a licensing check
+
+Assembling this checkpoint exposed a defect in the integrity tool itself,
+inherited in shape from v4r3.
+
+- **The durable-mirror check looked one directory too deep.**
+  `mirror_records` replicates the *contents* of `<stage>/records/` into
+  `<durable>/<stage>/`, so the durable copy sits a level shallower than the
+  live one. The checker looked for a `records/` component that never exists,
+  and reported `durable_present: false` on all 16 records.
+- **It then forgave itself.** The clause was `if durable.exists() and not
+  mirrored`, so a *missing* durable copy raised no problem. Check 3 compared
+  **zero bytes** on every record while the report said `passed: true`.
+- **And one stage genuinely had no durable copy.** §18 stage 1's qualification
+  record is written by its own command, which never called `mirror_records`, so
+  the four `QUALIFIED` records were the only signed records in the study
+  existing in exactly one place — under a gitignored directory.
+
+All three are fixed. The checker now compares the right path and **fails
+closed** on a missing mirror; `cmd_qualify` mirrors on every run, outside its
+write-once branch, so a record that already exists still gets its second copy;
+`tools/v4r4_mirror_records.py` replicated the four missing records, verifying
+every byte through `store.replicate` and `store.assert_replicated`. Two
+assertions in `tests_v4r4/test_revision_and_reuse.py` now require
+`durable_present` and `durable_mirror_matches` on every record, so the
+fail-open cannot come back.
+
+**No record was modified.** Replication copies bytes and verifies them; the
+signatures, hashes and payloads are the ones Gate 1 wrote. What changed is that
+they now exist twice, as the protocol always intended.
 
 ### The register amendment
 
@@ -372,3 +406,29 @@ These are carried forward, not repaired.
 | protocol | `user-notes/DCI1_preregistration_v4r4.md` |
 | changelog | `user-notes/DCI1_v4r3_to_v4r4_changelog.md` |
 | decisions register | `dci1/DECISIONS_V4R4.md` |
+| the Gate-2 launcher | `dci1/tools/run_v4r4_gate2_dual_gpu.sh` |
+
+---
+
+## 10. Next stage
+
+Gate 2 (§12.3, §12.4) is licensed on all four replications:
+`assert_transition_legal(tree, GATE_2_REGIME)` returns legal for every model.
+It is the first v4r4 stage that cannot be carried — §12.3's calibration is a
+new measurement on the 96 solo topics, disjoint from the pre-screen set by
+design.
+
+| model | shortlist families | rungs | cells | generations |
+|---|---|---|---|---|
+| gemma-3n-e2b-it | 10 | 29 | 4,032 | 16,128 |
+| gemma-3n-e4b-it | 10 | 26 | 3,744 | 14,976 |
+| qwen3-4b | 9 | 29 | 4,032 | 16,128 |
+| qwen3-4b-instruct-2507 | 10 | 28 | 3,936 | 15,744 |
+| **total** | | | | **62,976** |
+
+Two lanes, one per RX 7900 XTX. `dci1v4.generation.backend` takes an exclusive
+non-blocking flock per device, so the lanes serialise within themselves and are
+independent of each other; a replication that fails stops neither lane, because
+per-model outcomes are independent (`DECISIONS_V4R4.md` E6). The launcher
+passes `--model` and `--device` and nothing else: every scientific parameter
+comes from the signed regime record and the registered constants.

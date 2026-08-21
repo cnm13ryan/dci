@@ -921,9 +921,16 @@ byte-identical to what the gate certified.
 through `GATE_1_MEASUREMENT`, mirrored to `dci1/durable_root/`; lifecycle
 integrity passes with `problems: []`, and the integer-key canonicalisation
 defect that broke v4r3's regime signatures (§4j) is reconstructed and shown
-fixed. **No freeze, no confirmatory generation, no estimand computed.** Gate 2
-is licensed and is the next stage: 62,976 calibration generations across the
-four replications, on the 96 solo topics. `dci1/reports/dci1v4r4/`,
+fixed. Assembling the checkpoint also exposed a defect in the integrity tool
+itself: the durable-mirror check looked one directory too deep, then forgave
+itself for finding nothing, so it compared zero bytes on all 16 records while
+reporting `passed`; and §18 stage 1's qualification command never mirrored at
+all, leaving four signed records with one copy under a gitignored directory.
+The checker now fails closed, `cmd_qualify` mirrors on every run, the four
+records were replicated byte-verified, and two tests hold it there. **No
+freeze, no confirmatory generation, no estimand computed.** Gate 2 is licensed
+and is the next stage: 62,976 calibration generations across the four
+replications, on the 96 solo topics. `dci1/reports/dci1v4r4/`,
 `dci1/DECISIONS_V4R4.md`.
 
 ## 5. Provisional, superseded, broken, unresolved
