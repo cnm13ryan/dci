@@ -186,3 +186,41 @@ to continue.
 This closes no registered §33 decision. It is an amendment to an instrument,
 registered as C26 and as §10.4-R, and the open decisions D2, D3, D5 and D8–D14
 stand exactly as they did.
+
+---
+
+## A6. The candidate library is extended (amendment R3, 2026-08-21)
+
+**Decision.** Adopt §7.0-R3: six added counted statistics, six added feature
+groups, a fifth predicate form (exact count, $S = q$), and ten added families —
+`RF9`–`RF12` and `CR9`–`CR12` as budget references, `CX1`–`CX2` as exact-count
+class controls. Registered as C27.
+
+**Authority.** The researcher's session brief of 2026-08-21, which directs the
+prospective expansion of the reference-candidate population so that the
+registered difficulty coordinate has adequate support around $A$, and which
+states the target region and the prohibition in the same breath: *do not widen
+calipers or change the difficulty coordinate because support fails*.
+
+**What the decision rests on.** The natural distribution of every candidate
+numerator on the §12.2 screen's unconstrained rows — 24 per model, the
+registered chance quantity — and nothing else. No solo compliance of any added
+family existed when this was registered, on any model.
+
+**The rule this decision refused to change.** §13.7 keeps every production
+family out of every reference slot. The brief asks for constructive obligations
+to be prioritised, and the strongest of them — an exact count of a marker word,
+which is $A$'s own predicate — is a production form. Admitting it as a
+*reference* would have made $\Delta_R$ a contrast across two constraint classes
+and $\Delta_{class}$ a contrast against a set that already contained its own
+class. So the constructive obligations are admitted to the **class arm**, where
+§7.4 already puts production forms, and the four added *reference* families are
+budgets over common numerators. The brief's aim is met in the arm the protocol
+registers for it; the admission rule is not weakened because coverage failed.
+
+**What would falsify the reasoning.** If the four added budget families turn
+out to sit below the eligibility floor like the round-0 pool, the diagnosis
+that "the numerators were too rare" was wrong, and the honest reading is that
+these models do not respond to *any* budget with graded compliance.
+`DIFFICULTY_SUPPORT_NOT_IDENTIFIED` then stands and §8.6's no-spectrum design
+runs. That outcome is registered and is not a fallback to be avoided.

@@ -40,6 +40,20 @@ ADOPTION = {
         "v4r2 §31 makes any pre-freeze change a revision; v4r2 was never "
         "frozen and produced no confirmatory data, so v4r3 is a revision and "
         "not a new protocol version",
+    "amendments": [
+        {"id": "R1", "section": "§10.4-R", "changelog": "C26",
+         "date": "2026-08-21",
+         "what": "the autorater's judging task is replaced by an "
+                 "operationalization audit with planted defects",
+         "registered_before": "any card was judged"},
+        {"id": "R3", "section": "§7.0-R3", "changelog": "C27",
+         "date": "2026-08-21",
+         "what": "six counted statistics, six feature groups, a fifth "
+                 "predicate form and ten families are added to the candidate "
+                 "library; no criterion, caliper or admission rule changes",
+         "registered_before": "any solo compliance of any added family was "
+                              "measured on any model"},
+    ],
     "withheld": [
         "any retrospective change to v4r2 or earlier evidence",
         "any weakening of a gate after observing a failure",

@@ -260,15 +260,26 @@ def test_the_canonical_hash_moves_when_a_family_is_added():
 
 
 def test_every_family_declares_a_class_consistent_with_its_predicate():
-    from dci1v4r3.verifiers.constraints import LOWER_BOUND_FORMS
+    """§7.5 and §13.7: the class follows the form, and the role follows the
+    class.
+
+    The rule the test is here for is the second half. §13.7 keeps every
+    production family out of every reference slot so that `Delta_R` is a
+    contrast *within* a class and `Delta_class` is the contrast *between*
+    classes. Before the R3 amendment there was one production form family,
+    the lower bounds, and the test named it directly; the amendment adds the
+    exact-count form, which is A's own predicate and is production for the
+    same reason A is. So the test now says what §13.7 says --- production
+    implies class arm, budget implies reference --- instead of naming the one
+    production form that existed when it was written.
+    """
     for kind, family in FAMILIES.items():
         assert family.constraint_class == family_class(kind)
-        if family.form in LOWER_BOUND_FORMS:
-            assert family.role == "class_control"
-            assert family.constraint_class == "production"
+        if family.constraint_class == "production":
+            assert family.role == "class_control", kind
         else:
             assert family.constraint_class == "budget"
-            assert family.role == "reference"
+            assert family.role == "reference", kind
     assert family_class("A") == "production"
     assert family_class("B") == "budget"
 

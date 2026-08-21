@@ -16,7 +16,7 @@ Three sources, kept separate because their evidential standing differs:
 * **``CARRIED_FOCAL_CASES``** — the forty-five v4-authored texts with their
   hand-derived statistic vectors, likewise read as data. They are v4 evidence
   and are carried into v4r3 only because a check re-derives every one of their
-  nine statistics under v4r3's corrected lexical rule and finds no change:
+  round-0 statistics under v4r3's corrected lexical rule and finds no change:
   none of the forty-five contains U+0130, which is the whole scope of the
   correction.
 * **``V4R3_CASES``** — forty texts authored for this revision, covering what
@@ -49,22 +49,46 @@ from dci1v4r3.verifiers.constraints import (
 from dci1v4r3.verifiers.statistics import (
     STATISTICS, focal_statistic, word_count,
 )
-from dci1v4r3.verifiers.constraints import STATISTIC_IDS
+from dci1v4r3.verifiers.constraints import (
+    R3_STATISTIC_IDS, STATISTIC_IDS,
+)
+from dci1v4r3.verifiers.boundary_r3 import R3_CASES, R3_STATS
+
+#: The nine numerators registered at round 0, in their registered order.
+_ROUND0_STATISTIC_IDS = tuple(k for k in STATISTIC_IDS
+                              if k not in R3_STATISTIC_IDS)
 
 __all__ = ["CARRIED_TARGET_CASES", "CARRIED_FOCAL_CASES", "V4R3_CASES",
+           "R3_AUTHORED_CASES",
            "ALL_CASES", "assert_carried_focal_cases_unchanged",
            "assert_coverage", "suite_hash", "evaluate_suites",
            "instrument_population"]
 
 
 def _case(case_id: str, text: str, covers: str, *, w: int, b: int,
-          stats: tuple[int, ...]) -> dict[str, Any]:
-    if len(stats) != len(STATISTIC_IDS):
-        raise ProtocolError(f"{case_id}: expected {len(STATISTIC_IDS)} "
-                            "statistics, one per registered numerator")
+          stats: tuple[int, ...], r3: tuple[int, ...] | None = None,
+          origin: str = "authored_v4r3") -> dict[str, Any]:
+    """One frozen case.
+
+    ``stats`` is the nine numerators registered at round 0, in their
+    registered order, and those numbers are the ones frozen before the R3
+    amendment and are unchanged by it. ``r3`` is the six numerators the
+    amendment adds; for a case authored before the amendment it comes from
+    ``R3_STATS`` and the case's own call site stays byte-identical, so a
+    reader can see at a glance which numbers are carried and which are new.
+    """
+    if len(stats) != len(_ROUND0_STATISTIC_IDS):
+        raise ProtocolError(f"{case_id}: expected "
+                            f"{len(_ROUND0_STATISTIC_IDS)} statistics, one "
+                            "per numerator registered at round 0")
+    extra = R3_STATS[case_id] if r3 is None else r3
+    if len(extra) != len(R3_STATISTIC_IDS):
+        raise ProtocolError(f"{case_id}: expected {len(R3_STATISTIC_IDS)} "
+                            "R3 statistics")
     return {"case_id": case_id, "text": text, "covers": covers,
-            "origin": "authored_v4r3", "word_count": w, "focal": b,
-            "stats": dict(zip(STATISTIC_IDS, stats))}
+            "origin": origin, "word_count": w, "focal": b,
+            "stats": {**dict(zip(_ROUND0_STATISTIC_IDS, stats)),
+                      **dict(zip(R3_STATISTIC_IDS, extra))}}
 
 
 CARRIED_TARGET_CASES: tuple[dict, ...] = tuple(
@@ -211,8 +235,15 @@ V4R3_CASES: tuple[dict, ...] = (
 )
 
 
+#: §7.0-R3's own cases, rebuilt through ``_case`` so they pass the same
+#: shape checks the authored v4r3 cases do.
+R3_AUTHORED_CASES: tuple[dict, ...] = tuple(
+    _case(c["case_id"], c["text"], c["covers"], w=c["word_count"],
+          b=c["focal"], stats=c["round0"], r3=c["r3"], origin=c["origin"])
+    for c in R3_CASES)
+
 ALL_CASES: tuple[dict, ...] = (CARRIED_TARGET_CASES + CARRIED_FOCAL_CASES
-                               + V4R3_CASES)
+                               + V4R3_CASES + R3_AUTHORED_CASES)
 
 #: §10.2's carry-over condition for the focal corpus, stated as a mapping from
 #: v4's family keys to v4r3's numerators. RF6 counts upper-case characters and
@@ -268,6 +299,15 @@ REQUIRED_COVERAGE = (
     "soft-hyphen", "truncated-mid-word", "markdown-emphasis",
     "non-decimal-numeric", "case-folding-split", "rate-straddle",
     "lower-bound", "non-vacuity-boundary",
+    # §7.0-R3's phenomena. Sentence segmentation brings three of its own, the
+    # exact-count form brings the three-point threshold sweep, and the two
+    # over-counts the sentence rule knowingly accepts are enumerated here so
+    # that "we knew" is checkable rather than asserted.
+    "sentence-boundary", "unterminated-tail", "terminator-run",
+    "abbreviation-overcount", "decimal-overcount", "exact-count",
+    "threshold-minus-one", "threshold-plus-one", "substring-not-word",
+    "vowel-initial", "y-is-not-a-vowel", "s-final", "t-initial",
+    "semicolon-run",
 )
 
 
@@ -291,6 +331,7 @@ def assert_coverage() -> dict[str, Any]:
             "carried_target": len(CARRIED_TARGET_CASES),
             "carried_focal": len(CARRIED_FOCAL_CASES),
             "authored_v4r3": len(V4R3_CASES),
+            "authored_r3": len(R3_AUTHORED_CASES),
             "instruments": len(instrument_population())}
 
 

@@ -79,9 +79,9 @@ def focal_wordings(m: int) -> tuple[str, str, str, str]:
     )
 
 
-#: The twelve families new in v4r3. The eight ``RF`` families are carried and
-#: are spliced in below rather than restated, so a divergence is impossible
-#: rather than merely tested for.
+#: The twelve families new in v4r3 and the ten added by §7.0-R3. The eight
+#: carried ``RF`` families are spliced in below rather than restated, so a
+#: divergence is impossible rather than merely tested for.
 _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     "CR1": (
         "Words beginning with b: at most {q} percent.",
@@ -154,6 +154,73 @@ _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
         "At least {q} percent of words have letter a.",
         "Give {q} percent of words letter a.",
         "Make {q} percent of words carry letter a.",
+    ),
+    # ---- §7.0-R3. The four budget families take RF1's and RF8's templates
+    # over a different letter, which is what makes them controls for those
+    # families rather than merely additional constraints: a wording difference
+    # cannot explain a difficulty difference when the wording is the same
+    # sentence with one letter changed.
+    "RF9": (
+        "At most {q} words may begin with t.",
+        "Use at most {q} words beginning with t.",
+        "No more than {q} words may start with t.",
+        "Limit words beginning with t to {q}.",
+    ),
+    "RF10": (
+        "At most {q} words may end with s.",
+        "Use at most {q} words ending with s.",
+        "No more than {q} words may end in s.",
+        "Limit words ending with s to {q}.",
+    ),
+    "RF11": (
+        "Words beginning with vowels: at most {q}.",
+        "At most {q} words may begin with vowels.",
+        "No more than {q} words may start with vowels.",
+        "Limit words beginning with vowels to {q}.",
+    ),
+    "RF12": (
+        "Your answer may use at most {q} sentences.",
+        "Your answer must have at most {q} sentences.",
+        "No more than {q} sentences may appear.",
+        "Do not write more than {q} sentences.",
+    ),
+    "CR9": (
+        "Words beginning with t: at most {q} percent.",
+        "At most {q} percent of words begin with t.",
+        "Keep words beginning with t to {q} percent.",
+        "Limit words beginning with t to {q} percent.",
+    ),
+    "CR10": (
+        "Words ending with s: at most {q} percent.",
+        "At most {q} percent of words end with s.",
+        "Keep words ending with s to {q} percent.",
+        "Limit words ending with s to {q} percent.",
+    ),
+    "CR11": (
+        "Words beginning with vowels: at most {q} percent.",
+        "At most {q} percent of words begin with vowels.",
+        "Keep words beginning with vowels to {q} percent.",
+        "Limit words beginning with vowels to {q} percent.",
+    ),
+    "CR12": (
+        "Use at most {q} sentences per hundred words.",
+        "At most {q} sentences per hundred words.",
+        "Keep sentences to {q} per hundred words.",
+        "Limit sentences to {q} per hundred words.",
+    ),
+    # ---- §7.4-R3. CX1 is A's four templates with A's marker replaced. The
+    # parallel is the point and is exact, word for word.
+    "CX1": (
+        "Use the word thus exactly {q} times.",
+        "Your answer must contain thus exactly {q} times.",
+        "Include thus exactly {q} times in your answer.",
+        "The word thus must appear exactly {q} times.",
+    ),
+    "CX2": (
+        "Your answer must use exactly {q} semicolons.",
+        "Use exactly {q} semicolon characters in your answer.",
+        "Exactly {q} semicolons must appear in your answer.",
+        "Include exactly {q} semicolon characters in your answer.",
     ),
 }
 
@@ -289,6 +356,19 @@ _REQUIRED_TOKENS: dict[str, tuple[tuple[str, ...], ...]] = {
             ("least", "give", "make")),
     "CP7": (("letter", "letters"), ("a",), ("percent",),
             ("least", "give", "make")),
+    # §7.0-R3. Each names the letter or the unit its verifier counts, and the
+    # two exact families additionally have to say "exactly", because that word
+    # is the whole difference between their rule and a budget's.
+    "RF9": (("t",), ("begin", "beginning", "start")),
+    "RF10": (("s",), ("end", "ending")),
+    "RF11": (("vowels",), ("begin", "beginning", "start")),
+    "RF12": (("sentences",),),
+    "CR9": (("t",), ("begin", "beginning"), ("percent",)),
+    "CR10": (("s",), ("end", "ending"), ("percent",)),
+    "CR11": (("vowels",), ("begin", "beginning"), ("percent",)),
+    "CR12": (("sentences",), ("hundred",), ("words",)),
+    "CX1": (("thus",), ("exactly",)),
+    "CX2": (("semicolons", "semicolon"), ("exactly",)),
 }
 
 

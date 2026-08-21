@@ -11,11 +11,11 @@ Three populations are kept distinct and are never confused:
 
 ``CANDIDATE LIBRARY``
     every (family, severity) the grammar of §7.0 declares: the round-0 ladders
-    plus the frozen reserves, 334 severities in 20 families. Development may
+    plus the frozen reserves, 570 severities in 30 families. Development may
     measure any of them on the §12.5 development topics.
 
 ``MEASURED VOCABULARY``
-    the severities §12.2 has actually measured for a model: the 190 round-0
+    the severities §12.2 has actually measured for a model: the 270 round-0
     rungs, plus whatever §12.6's expansion admitted. This is the population
     §12.3's shortlist ranks and §13's rules select from, and it is frozen at
     the end of the regime screen.

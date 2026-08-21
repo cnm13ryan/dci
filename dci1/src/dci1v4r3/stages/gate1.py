@@ -5,7 +5,7 @@ them, plus one of the two human-or-autorater pathways:
 
 1. **determinism** -- the same verdicts from three separate operating-system
    processes over every calibration response, agreement exactly 1.000;
-2. **boundary suites** -- 136 frozen cases, every one of the 348 registered
+2. **boundary suites** -- 164 frozen cases, every one of the 584 registered
    constraint instances, agreement exactly 1.000;
 3. **independent reimplementation** -- §10.2's prose-only implementation over
    the same population, agreement exactly 1.000, with a differential check
@@ -168,12 +168,12 @@ def reimplementation_report(texts: Sequence[str], *,
                             ) -> dict[str, Any]:
     """§10.2's independent-reimplementation evidence, in two tiers.
 
-    **Tier 1, every response**: the nine counted statistics, the word count,
+    **Tier 1, every response**: the fifteen counted statistics, the word count,
     the exact-count rule and B's statistic, in both implementations. This is
     where a text-reading defect can hide, and nothing is sampled.
 
     **Tier 2, a declared sample**: the full verdict vector -- pass, graded and
-    non-vacuity -- for all 348 registered instrument instances. Tier 2 is 348
+    non-vacuity -- for all 584 registered instrument instances. Tier 2 is 584
     times the work of tier 1 per response and can only disagree where tier 1
     does, or where the two implementations read the same statistic and apply a
     different predicate. The frozen boundary corpus is always inside the
@@ -223,7 +223,7 @@ def collect_evidence(calibration_texts: Sequence[str], *,
     """Every §10.2 artifact, in one record.
 
     ``determinism_sample`` bounds the three-process check, which is quadratic
-    in nothing but is 348 instruments wide; the *sample is declared on the
+    in nothing but is 584 instruments wide; the *sample is declared on the
     record*, so a reader sees what was covered rather than assuming it was
     everything. The reimplementation check runs on the full corpus.
     """

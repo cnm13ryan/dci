@@ -1489,3 +1489,35 @@ have been run before any composed cell was generated.
 **Affected documents.** `dci1/reports/ENDPOINT_2026-08-20.md` §5 and §6, where
 it is added as a researcher decision that — unlike the amendment decisions —
 is settleable from §25's registered measurement with no new generation.
+
+## 2026-08-21 — DCI-1 v4r3 amendment R3: the candidate library is extended
+
+**What changed.** §7.0's candidate grammar gains six counted statistics
+(`t_initial`, `s_final`, `vowel_initial`, `sentence`, `marker_thus`,
+`semicolon`), six feature groups, a fifth predicate form (exact count,
+`S == q`, production class) and ten families (`RF9`–`RF12`, `CR9`–`CR12`
+as budget references; `CX1`–`CX2` as exact-count class controls). Registered
+prospectively as `user-notes/DCI1_preregistration_v4r3.md` §7.0-R3 and changelog
+entry C27, before any solo compliance of any added family was measured.
+
+Two witness-construction inputs moved as a consequence and are part of the same
+change: the filler corpus (`topic` and `unit` carried the new `t_initial` and
+`vowel_initial` features) and two breaking words (`o` and `area`, both
+vowel-initial). Both are now checked by executable assertions rather than by
+inspection.
+
+**Which results are affected.** The canonical verifier hash moves from
+`1b90bfe9…` to the R3 hash, so the v4r3 registration manifest is superseded and
+re-signed, and the §10.2 declared instrument population goes from 348 to 584
+instances over 164 boundary cases. **The 348-instrument Gate 1 evidence does not
+cover the ten added families and is not claimed to**; the whole population is
+re-certified at the new hash.
+
+**Comparability.** Old and new stay comparable for every family that existed
+before: no row is regenerated, no row is rescored, and no statistic of the
+original nine numerators returns a different value on any text. The added
+families are measured in their own §12.2 screen on the same 24 development
+topics at the same completion cap. `dci1/reports/dci1v4r3/expansion_diagnosis.json`
+was computed against the pre-R3 library and remains the record of why R3 exists;
+its numbers are not comparable with a post-R3 coverage report and are not meant
+to be.

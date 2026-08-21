@@ -13,11 +13,14 @@ registered difficulty coordinate (§13.3). No estimand reads a chance
 observation as a treated one, and ``assert_no_chance_in_treated`` puts that on
 the mandatory path.
 
-**Four predicate forms.** Count budgets pass at ``S <= q``; rate budgets at
+**Five predicate forms.** Count budgets pass at ``S <= q``; rate budgets at
 ``100*S/W <= q``, and **a wordless answer has no rate and fails**, which is
 the property the rate form was added for; count lower bounds pass at
 ``S >= q``; rate lower bounds at ``100*S/W >= q``, and a wordless answer
-fails those too.
+fails those too. §7.0-R3 adds the exact form, which passes at ``S == q``,
+takes A's graded shape over its own numerator, and --- like A and like the
+lower bounds --- carries no word-count vacuity clause, because a rule that
+demands q occurrences of something cannot be satisfied by writing nothing.
 
 Vacuous passes stay passes (§9.3). A verifier-processing failure fails closed.
 """
@@ -30,8 +33,8 @@ from dci1v4.errors import InstrumentError
 from dci1v4.verifiers.target import s0_count
 
 from dci1v4r3.verifiers.constraints import (
-    FAMILIES, FORM_COUNT, FORM_LOWER_BOUND, FORM_RATE, FORM_RATE_LOWER_BOUND,
-    LOWER_BOUND_FORMS, Constraint,
+    FAMILIES, FORM_COUNT, FORM_EXACT, FORM_LOWER_BOUND, FORM_RATE,
+    FORM_RATE_LOWER_BOUND, LOWER_BOUND_FORMS, Constraint,
 )
 from dci1v4r3.verifiers.statistics import (
     alpha_runs, family_statistic, focal_statistic, word_count,
@@ -89,7 +92,7 @@ def _statistic(constraint: Constraint, text: str) -> int:
 
 
 def passes(constraint: Constraint, statistic: int, text: str) -> bool:
-    """§7.3's four predicate forms, and the two outcome rules."""
+    """§7.3's five predicate forms, and the two outcome rules."""
     q = constraint.severity
     if constraint.kind == "A":
         return statistic == q
@@ -98,6 +101,8 @@ def passes(constraint: Constraint, statistic: int, text: str) -> bool:
     form = FAMILIES[constraint.kind].form
     if form == FORM_COUNT:
         return statistic <= q
+    if form == FORM_EXACT:
+        return statistic == q
     if form == FORM_LOWER_BOUND:
         return statistic >= q
     if form in (FORM_RATE, FORM_RATE_LOWER_BOUND):
@@ -124,6 +129,10 @@ def graded(constraint: Constraint, statistic: int, text: str) -> float:
         over = sum(1 for w in words if len(w) > q)
         return 1.0 - over / len(words)
     form = FAMILIES[constraint.kind].form
+    if form == FORM_EXACT:
+        # A's shape (§7.6), over the family's own numerator. Registered
+        # severities are all at least one, so the division is total.
+        return max(0.0, 1.0 - abs(statistic - q) / q)
     if form == FORM_COUNT:
         return min(1.0, q / max(q, statistic)) if q > 0 else float(statistic == 0)
     if form == FORM_LOWER_BOUND:
@@ -157,7 +166,7 @@ def non_vacuous(constraint: Constraint, text: str, *, truncated: bool) -> bool:
     if constraint.kind == "A":
         return True
     if constraint.kind != "B" and \
-            FAMILIES[constraint.kind].form in LOWER_BOUND_FORMS:
+            FAMILIES[constraint.kind].form in LOWER_BOUND_FORMS + (FORM_EXACT,):
         return True
     return word_count(text) >= NON_VACUITY_MIN_WORDS
 
