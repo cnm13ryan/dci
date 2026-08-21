@@ -13,6 +13,49 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-21 (later) — v4r3 repair pass: §10.4 replaced, three guards added
+
+**Scope.** Prospective. No v4r3 number moves and nothing in v2, v3, v4r2 or the
+four v4r2 design screens is edited, reinterpreted or recomputed.
+
+**1. §10.4's judging task is replaced — measurement instrument.** Amendment R1,
+registered as §10.4-R and changelog C26, decided in `DECISIONS_V4R3.md` A5. The
+original task asked an LLM judge whether a response obeys a rule; for a rate
+predicate over a hundred-word answer that is an enumeration, and neither
+registered condition survived criterion 2 on v4r3's pool — truncation 23/72 and
+40/72 against 0/48 for the same configuration on v4r2's pool of A and B alone,
+rising monotonically with how much counting the rule demanded. §10.4-R asks
+whether the deterministic *operationalization* faithfully implements the written
+instruction, with the arithmetic shown rather than requested, and plants one
+defect from a registered closed list of six in half the cards so that
+sensitivity is measurable and the check is not a test of agreeableness.
+
+**The deterministic verifier is unchanged and remains the study's scorer.** No
+compliance rate, cell mean, estimand or claim reads anything the validator
+produces. Every threshold was registered at commit `f657de2` before any card was
+judged. §10.4's evidence is retained: it judges a different question and the two
+pathways must never be pooled.
+
+**2. §12.1's cap probe is sealed — provenance, no number affected.** The probe
+generates composed `A + B` prompts by registered design, and their scored rows
+carried per-constituent verdicts from which `D(B ← A)` at `A:8 + B:7` was
+derivable. No registered procedure read them and no record contained them, so no
+existing value changes; the probe is now projected onto §12.1's three registered
+fields before the cap decision, and later stages read a restricted artifact.
+
+**3. The stage machine now exists — governance.** `STAGE_SEQUENCE` was a list of
+strings nothing read, which is how the §12.2 regime screen ran before
+`QUALIFIED` and `GATE_0_APPARATUS`. The existing screen evidence is recorded
+`ADOPTED_OUT_OF_ORDER`; it remains registered diagnostic evidence, it does not
+satisfy any later stage's predecessor requirement, and the stage must be re-run
+in order under the bound producing commit before Gate 1 can rest on it.
+
+**4. The implementation is committed — provenance.** Every earlier v4r3 record
+named a producing commit that did not contain the code that produced it. §18
+stage 1 now passes and binds.
+
+---
+
 ## 2026-08-21 — DCI-1 v4r3 adopted, registered, and executed to the regime screen
 
 **Scope.** Prospective. Nothing in v2, v3, v4r2 or the four v4r2 design screens
@@ -27,7 +70,7 @@ all four models, so the boundary is v4r3 and not v5.
 
 Four changes below alter what a number means. The full account, with evidence
 and per-change classification, is
-`user-notes/DCI1_v4r2_to_v4r3_changelog.md` (C1–C24).
+`user-notes/DCI1_v4r2_to_v4r3_changelog.md` (C1–C26).
 
 **1. The lexical rule's composition order is corrected — measurement.**
 v4r2's `words_lower` lower-cases the whole response and then segments; §7.0's
