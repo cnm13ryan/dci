@@ -20,7 +20,8 @@ from dci1v4.errors import ProtocolError
 from dci1v4r4.protocol import constants as C
 
 __all__ = ["FREEZE_FIELDS", "V4R2_FREEZE_FIELDS", "NEW_IN_V4R3",
-           "OPEN_DECISIONS", "THRESHOLD_PROVENANCE", "check_completeness",
+           "NEW_IN_V4R4", "VARIANT_EXEMPTIONS", "OPEN_DECISIONS",
+           "THRESHOLD_PROVENANCE", "check_completeness",
            "build_freeze_record", "freeze"]
 
 #: v4r2 §18.1's fields, carried so that a reader can see what is inherited.
@@ -78,7 +79,37 @@ NEW_IN_V4R3 = (
                                         # with its stated limitation
 )
 
-FREEZE_FIELDS = V4R2_FREEZE_FIELDS + NEW_IN_V4R3
+#: What v4r4 adds. §8.6 registers three design variants and says the branch
+#: "is recorded in the freeze"; the freeze could not record two of them,
+#: because `core_references` and `spectrum_severities` are legitimately empty
+#: under the reduced design and `check_completeness` reads an empty list as a
+#: gap. Binding the identification statuses is what lets emptiness be a
+#: *decision* rather than a missing value --- see `VARIANT_EXEMPTIONS`.
+NEW_IN_V4R4 = (
+    "identification_statuses",           # §13.8, §28.2: what is NOT identified
+)
+
+FREEZE_FIELDS = V4R2_FREEZE_FIELDS + NEW_IN_V4R3 + NEW_IN_V4R4
+
+#: §8.6. design variant -> field -> the registered status that licenses the
+#: field being empty. A field may be empty **only** when the variant Gate 3
+#: recorded is one that does not identify it *and* the record carries the
+#: status §13.8 registers for that non-identification. Anything else is a gap.
+#:
+#: This is not a relaxation. Before it, a reduced replication could not freeze
+#: at all: `core_references: []` and `spectrum_severities: []` were reported as
+#: missing fields, so §8.6's registered branch was unreachable through §18.1.
+#: Three of v4r4's four replications run it.
+VARIANT_EXEMPTIONS: dict[str, dict[str, str]] = {
+    "full": {},
+    "no_spectrum": {
+        "spectrum_severities": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    },
+    "reduced": {
+        "core_references": "EXCESS_NOT_IDENTIFIED",
+        "spectrum_severities": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    },
+}
 
 #: §33. Every one is closed by recording the decision and its evidence in the
 #: signed manifest before study-wide freeze.
@@ -126,13 +157,32 @@ THRESHOLD_PROVENANCE: dict[str, str] = {
 }
 
 
+def _exempt(record: Mapping[str, Any], field: str) -> bool:
+    """§8.6: is this field empty because the design does not identify it?
+
+    Three things must all hold, and each is read off the record itself rather
+    than passed in: the record names a registered design variant; that variant
+    does not identify this field; and the record carries the §13.8 status for
+    that non-identification. A reduced replication that failed to record
+    `EXCESS_NOT_IDENTIFIED` is still incomplete, which is the point --- the
+    exemption is for a decision that was taken and written down, never for an
+    absence.
+    """
+    exemptions = VARIANT_EXEMPTIONS.get(record.get("design_variant") or "")
+    if not exemptions or field not in exemptions:
+        return False
+    return exemptions[field] in (record.get("identification_statuses") or ())
+
+
 def check_completeness(record: Mapping[str, Any], *,
                        decisions: Mapping[str, Any],
                        checks: Mapping[str, str] | None = None
                        ) -> dict[str, Any]:
     """Can this record be frozen? Every reason it cannot, listed."""
     missing = [f for f in FREEZE_FIELDS
-               if f not in record or record[f] in (None, "", [], {}, "UNKNOWN")]
+               if (f not in record
+                   or record[f] in (None, "", [], {}, "UNKNOWN"))
+               and not _exempt(record, f)]
     unclosed = [d for d in OPEN_DECISIONS
                 if d not in decisions or decisions[d] in (None, "", "UNKNOWN")]
     failing = sorted(k for k, v in (checks or {}).items() if v != "COMPLETE")
@@ -142,6 +192,10 @@ def check_completeness(record: Mapping[str, Any], *,
         "unclosed_decisions": unclosed,
         "incomplete_checks": failing,
         "fields_new_in_v4r3": list(NEW_IN_V4R3),
+        "fields_new_in_v4r4": list(NEW_IN_V4R4),
+        "design_variant": record.get("design_variant"),
+        "fields_not_identified_by_this_variant": sorted(
+            f for f in FREEZE_FIELDS if _exempt(record, f)),
     }
 
 

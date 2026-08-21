@@ -1,13 +1,23 @@
 {
  "artifact": "\u00a76.2 reserved-topic-set audit",
  "classification": "integrity audit over generated rows. Reads only; writes no evidence and approves nothing.",
- "files_scanned": 180,
+ "files_scanned": 209,
+ "licensed_reserved_spend": [
+  "evidence/dci1v4r4/gemma-3n-e2b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "evidence/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "evidence/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "durable_root/dci1v4r4/gemma-3n-e2b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "durable_root/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "durable_root/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)",
+  "durable_root/dci1v4r4/qwen3-4b-instruct-2507/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl: ['composed'] (licensed for GATE_4_COMPOSED_HEADROOM)"
+ ],
  "note": "rows attributed to 'no-v4-topic' are the Gate 0 procedural pilot's fixed probes, which carry no v4 topic by design",
  "offending_files": [],
  "reserved_sets": {
   "composed": {
    "purpose": "Gate 4 composed-headroom validation (\u00a713.6)",
-   "rows_generated": 0,
+   "rows_generated": 13632,
    "topics": 24
   },
   "confirmatory": {
@@ -22,10 +32,19 @@
   }
  },
  "rows_by_topic_set": {
+  "composed": 13632,
   "no-v4-topic": 1152,
-  "prescreen": 241296,
-  "solo": 263040
+  "prescreen": 269808,
+  "solo": 326784
  },
- "rows_read": 505488,
+ "rows_read": 611376,
+ "stage_permissions": {
+  "CONFIRMATORY_GENERATION": [
+   "confirmatory"
+  ],
+  "GATE_4_COMPOSED_HEADROOM": [
+   "composed"
+  ]
+ },
  "unspent": true
 }

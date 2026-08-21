@@ -83,13 +83,18 @@ def _per_model(context, model_key: str) -> dict[str, Any]:
         recomputes = sha_obj(payload) == signed.get("record_hash", sha_obj(payload))
         reader = tree.stage_record_reader_copy(stage)
         reader_matches = reader.exists() and fs.read_json(reader) == payload
-        # `mirror_records` replicates the *contents* of `<stage>/records/`
-        # into `<durable>/<stage>/`, so the durable copy sits one level
-        # shallower than the live one. Looking for a `records/` component here
-        # found nothing on every record and reported it as "not present",
-        # which the fail-open clause below then forgave: check 3 compared no
-        # bytes at all. Both halves are fixed.
-        durable = tree.durable / stage / STAGE_RECORD_FILES[stage]
+        # The durable mirror reproduces the evidence layout exactly, so this
+        # is the same relative path under the other root. Two earlier
+        # versions of this line were both wrong for the same underlying
+        # reason: `mirror_records` flattened `<stage>/records/` into
+        # `<durable>/<stage>/`, which is also where `write_stage_record` puts
+        # the *unsigned* reader copy --- two artifacts, one path. Looking for
+        # the `records/` component found nothing and the fail-open clause
+        # forgave it, so check 3 compared no bytes; pointing this at the
+        # flattened path then compared the right bytes until a whole-tree
+        # replication put the reader copy there. `mirror_records` is
+        # path-faithful now and this looks where the signed record is.
+        durable = tree.durable / stage / "records" / STAGE_RECORD_FILES[stage]
         mirrored = durable.exists() and sha_file(durable) == sha_file(path)
         own_study = True
         try:

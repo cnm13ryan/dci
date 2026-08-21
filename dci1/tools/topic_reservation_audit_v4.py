@@ -15,6 +15,14 @@ the screens being what they say they are.
 Every row is attributed by the question text that reaches the prompt, which is
 the only topic identifier a row carries.
 
+**A reserved set is reserved from every stage but its own.** This asked whether
+any reserved topic had been generated on at all, which was the right question
+while nothing had reached Gate 4 and the wrong one afterwards: §13.10 spends the
+24 composed-validation topics and is registered to do exactly that. The rule is
+per stage, so a row is an offence when the stage that owns its directory is not
+the stage §6.2 permits that set to. `sequestered` is in nobody's permission and
+`confirmatory` is CONFIRMATORY_GENERATION's alone.
+
 Usage:
   PYTHONPATH=src python tools/topic_reservation_audit_v4.py
 """
@@ -34,6 +42,28 @@ OUT = DCI1 / "reports" / "section_13_2_v4"
 RESERVED = ("composed", "confirmatory", "sequestered")
 
 
+#: §6.2's per-stage permission over the reserved sets, keyed by the stage
+#: directory a generation writes under. Absent from this table means: no
+#: reserved set at all. `sequestered` appears nowhere on purpose.
+STAGE_PERMISSIONS: dict[str, tuple[str, ...]] = {
+    "GATE_4_COMPOSED_HEADROOM": ("composed",),
+    "CONFIRMATORY_GENERATION": ("confirmatory",),
+}
+
+
+def _stage_of(path: Path) -> str | None:
+    """The stage directory this generation lives under, if any."""
+    for part in path.parts:
+        if part in STAGE_PERMISSIONS:
+            return part
+    return None
+
+
+def _permitted(path: Path) -> tuple[str, ...]:
+    stage = _stage_of(path)
+    return STAGE_PERMISSIONS.get(stage, ()) if stage else ()
+
+
 def audit() -> dict:
     split = split_topics()
     question_to_set = {t["question"]: name
@@ -44,6 +74,7 @@ def audit() -> dict:
     by_set: Counter[str] = Counter()
     files, rows_read = 0, 0
     offenders: list[str] = []
+    licensed: list[str] = []
     for root in (DCI1 / "evidence", DCI1 / "durable_root"):
         for path in sorted(root.rglob("rows.jsonl")):
             if "v4" not in str(path):
@@ -67,8 +98,13 @@ def audit() -> dict:
                 by_set[name or "no-v4-topic"] += 1
                 if name in RESERVED:
                     hit_here.add(name)
-            if hit_here:
-                offenders.append(f"{path.relative_to(DCI1)}: {sorted(hit_here)}")
+            unlicensed = sorted(hit_here - set(_permitted(path)))
+            if unlicensed:
+                offenders.append(f"{path.relative_to(DCI1)}: {unlicensed}")
+            elif hit_here:
+                licensed.append(
+                    f"{path.relative_to(DCI1)}: {sorted(hit_here)} "
+                    f"(licensed for {_stage_of(path) or 'unknown stage'})")
     return {
         "artifact": "§6.2 reserved-topic-set audit",
         "classification": ("integrity audit over generated rows. Reads only; "
@@ -89,6 +125,9 @@ def audit() -> dict:
                                               "from the split this audit reads"},
         },
         "offending_files": offenders,
+        "licensed_reserved_spend": licensed,
+        "stage_permissions": {k: list(v)
+                              for k, v in sorted(STAGE_PERMISSIONS.items())},
         "unspent": not offenders,
         "note": ("rows attributed to 'no-v4-topic' are the Gate 0 procedural "
                  "pilot's fixed probes, which carry no v4 topic by design"),

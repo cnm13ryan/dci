@@ -21,6 +21,7 @@ from typing import Any, Mapping
 from dci1v4.protocol.hashing import canonical_json, sha_text
 
 from dci1v4r4.protocol import constants as C
+from dci1v4r4.protocol.revision import PROTOCOL_DOCUMENTS
 from dci1v4r4.stages import freeze as F
 from dci1v4r4.verifiers import source_hashes, verifier_source_hash
 from dci1v4r4.verifiers.constraints import (
@@ -35,8 +36,17 @@ __all__ = ["AMENDMENT_DOCUMENTS", "amendment_hashes", "decision_record",
 
 #: §31: the documents an amendment lives in. Hashed into the freeze so that a
 #: post-freeze edit to any of them is visible as a hash that no longer matches.
-AMENDMENT_DOCUMENTS = (
-    "user-notes/DCI1_preregistration_v4r3.md",
+#:
+#: This listed only v4r3's three documents --- carried unchanged from the
+#: revision this module was written for --- so a v4r4 freeze would have bound
+#: the amendment history of the *superseded* revision and left its own
+#: preregistration, its own changelog and its own decision register unhashed.
+#: A post-freeze edit to `DECISIONS_V4R4.md` would have been invisible. The
+#: registered set is `revision.PROTOCOL_DOCUMENTS`, which is what
+#: `protocol_hash` already covers; v4r3's changelog and register are kept
+#: beside it because v4r4's preregistration incorporates v4r3's by reference
+#: and a reader needs the whole chain.
+AMENDMENT_DOCUMENTS = PROTOCOL_DOCUMENTS + (
     "user-notes/DCI1_v4r2_to_v4r3_changelog.md",
     "dci1/DECISIONS_V4R3.md",
 )
@@ -113,14 +123,26 @@ def assemble(*, model_key: str, manifest: Mapping[str, Any],
              gate3: Mapping[str, Any], gate4: Mapping[str, Any],
              gate1: Mapping[str, Any] | None,
              durability: Mapping[str, Any] | None,
-             producing_commit: str, environment_digest: str,
-             dependency_digest: str, hardware_record: Mapping[str, Any],
+             provenance: Mapping[str, Any],
+             producing_commit: str,
              gate_record_hashes: Mapping[str, str]) -> dict[str, Any]:
-    """One model's freeze record. Every value comes from a signed source."""
+    """One model's freeze record. Every value comes from a signed source.
+
+    `provenance` is `reports/dci1v4r4/backend_provenance.json`, which supplies
+    the three fields that used to have readers and no producer: the chat
+    template hash of the pinned revision, the hardware the generations came
+    off, and the dependency and environment digests of both interpreters.
+    They were `spec.get("chat_template_hash", "UNKNOWN")` against a manifest
+    field that has never existed, an empty dict, and the literal `"-"`.
+    """
     from dci1v4r4.run.gates_run import full_slot_map
 
     spec = next(m for m in manifest["models"] if m["model_key"] == model_key)
     slot_map = full_slot_map(gate2, gate3)
+    chat_template = provenance["chat_templates"][model_key]
+    hardware = provenance["hardware"][model_key]
+    dependency_digest = provenance["dependencies"]["dependency_digest"]
+    environment_digest = provenance["environment_digest"]
     fields: dict[str, Any] = {
         "protocol_version": manifest["protocol_version"],
         "model_repository": spec["model_id"],
@@ -131,7 +153,7 @@ def assemble(*, model_key: str, manifest: Mapping[str, Any],
         "m_star": gate2["m_star"],
         "wordings": manifest["constraints"]["wording_word_counts"],
         "topic_splits": manifest["topics"],
-        "chat_template_hash": spec.get("chat_template_hash", "UNKNOWN"),
+        "chat_template_hash": chat_template["chat_template_hash"],
         "verifier_sources": source_hashes(),
         "canonical_verifier_hash": verifier_source_hash(),
         "graded_score_definitions":
@@ -155,8 +177,15 @@ def assemble(*, model_key: str, manifest: Mapping[str, Any],
         "clean_tree_assertion": True,
         "dependency_digest": dependency_digest,
         "environment_digest": environment_digest,
-        "hardware_record": dict(hardware_record),
+        "hardware_record": dict(hardware),
         "gate_record_hashes": dict(gate_record_hashes),
+        # From the *signed* GATE_1_MEASUREMENT stage record. `cmd_gate5`
+        # used to read an unsigned report at
+        # `reports/dci1v4r4/gate1_measurement.json`, which is the name of the
+        # stage-record file and not of any report this study writes; the
+        # report is `gate1_decision.json`. The path never existed, so the
+        # basis was always `UNKNOWN`, §33's D9 never closed, and no
+        # replication could freeze.
         "gate1_measurement_basis": (gate1 or {}).get(
             "measurement_basis", "UNKNOWN"),
         "analysis_plan": manifest["estimands_and_families"],
@@ -196,6 +225,10 @@ def assemble(*, model_key: str, manifest: Mapping[str, Any],
                            or "CLASS_ARM_NOT_AVAILABLE",
         "class_match_caliper": C.CLASS_MATCH_CALIPER,
         "design_variant": gate3["design_variant"],
+        # §13.8 and §28.2: what this design does NOT identify, bound so that
+        # the emptiness of `core_references` or `spectrum_severities` under
+        # §8.6's reduced design is a recorded decision and not a gap.
+        "identification_statuses": list(gate3["identification_statuses"]),
         "support_rule": manifest["selection_rules"]["support_rule"],
         "calibration_table_hash": sha_text(
             canonical_json(gate2.get("calibration_table", []))),
@@ -235,22 +268,33 @@ def run_freeze(model_key: str, *, manifest: Mapping[str, Any],
                records: Mapping[str, Mapping[str, Any]],
                gate1: Mapping[str, Any] | None,
                durability: Mapping[str, Any] | None,
-               producing_commit: str, environment_digest: str = "-",
-               dependency_digest: str = "-",
-               hardware_record: Mapping[str, Any] | None = None
-               ) -> dict[str, Any]:
-    """Assemble, then put it to §18.1. Returns the record or the refusal."""
+               provenance: Mapping[str, Any],
+               producing_commit: str) -> dict[str, Any]:
+    """Assemble, then put it to §18.1. Returns the record or the refusal.
+
+    `environment_digest`, `dependency_digest` and `hardware_record` were
+    keyword arguments with the defaults `"-"`, `"-"` and `None`, and no caller
+    ever passed them. `"-"` is not empty, so `check_completeness` accepted it:
+    two of §18.1's provenance fields could have been frozen as a placeholder
+    and called complete. They come from `provenance` now and there is no
+    default to fall back to.
+
+    §26's `assert_durable_before_freeze` existed and had no caller. It is on
+    the path now: a freeze is what licenses the most expensive generation this
+    study makes, and starting one whose evidence has a single unverified copy
+    is how a study loses its own result.
+    """
+    from dci1v4r4.stages.durability import assert_durable_before_freeze
+
+    assert_durable_before_freeze(durability or {})
     gate_hashes = {stage: sha_text(canonical_json(payload))
                    for stage, payload in sorted(records.items())}
     record = assemble(
         model_key=model_key, manifest=manifest,
         regime=records[C.STAGE_REGIME], gate2=records[C.STAGE_GATE2],
         gate3=records[C.STAGE_GATE3], gate4=records[C.STAGE_GATE4],
-        gate1=gate1, durability=durability,
+        gate1=gate1, durability=durability, provenance=provenance,
         producing_commit=producing_commit,
-        environment_digest=environment_digest,
-        dependency_digest=dependency_digest,
-        hardware_record=hardware_record or {},
         gate_record_hashes=gate_hashes)
     decisions = decision_record(gate1)
     status = F.check_completeness(record, decisions=decisions)

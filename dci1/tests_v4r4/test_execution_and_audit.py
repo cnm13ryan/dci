@@ -99,15 +99,32 @@ def test_a_run_suffix_does_not_hide_a_stage_from_the_audit():
         audit.assert_reserved_sets_unspent(audit.audit_rows(rows))
 
 
-def test_the_generated_v4r3_rows_on_disk_spend_no_reserved_topic():
+def test_the_generated_rows_on_disk_spend_only_the_sets_their_stage_may():
+    """Every scored row in the tree, against §6.2's per-stage permission.
+
+    The second assertion used to be `set(tally) <= DEVELOPMENT_TOPIC_SETS`,
+    which was true while the study had not reached Gate 4 and became false the
+    moment it did --- §13.10 spends the 24 reserved composed-validation topics
+    and is registered to. The rule is per stage, so the test is now stated per
+    stage; `sequestered` is in nobody's permission and stays that way.
+    """
     root = Path(__file__).resolve().parents[1] / "evidence" / EVIDENCE_DIRNAME
     if not root.exists():                                   # pragma: no cover
-        pytest.skip("no v4r3 evidence in this checkout")
+        pytest.skip("no v4r4 evidence in this checkout")
     report = audit.assert_reserved_sets_unspent(
         audit.audit_evidence_tree(root))
     assert report["reserved_sets_unspent"]
-    for tally in report["by_stage"].values():
-        assert set(tally) <= set(C.DEVELOPMENT_TOPIC_SETS)
+    for label, tally in report["by_stage"].items():
+        stage = audit.resolve_stage(label)
+        allowed = audit.STAGE_PERMISSIONS.get(stage,
+                                              C.DEVELOPMENT_TOPIC_SETS)
+        assert set(tally) <= set(allowed), (label, sorted(tally))
+    spent = {name for tally in report["by_stage"].values() for name in tally}
+    assert "sequestered" not in spent
+    assert "confirmatory" not in spent or any(
+        audit.resolve_stage(label) == C.STAGE_CONFIRMATORY
+        for label, tally in report["by_stage"].items()
+        if "confirmatory" in tally)
 
 
 # ------------------------------------------------------ required failure 17

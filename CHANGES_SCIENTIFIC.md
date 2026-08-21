@@ -98,6 +98,78 @@ map — `qwen3-4b` carries `R1 = RF11:21` and `R2 = CR5:8` — which are scored 
 §25 chance verdicts and must be unambiguous too. **Affected results:** none;
 no current slot map has a collision, checked.
 
+**8. Gate 5 could not have passed on any replication, for six reasons.** §18.1
+binds every scientific degree of freedom and refuses while one is missing, and
+five of its fields had readers with no producer plus one rule that read *empty*
+as *missing*. `chat_template_hash` came from a registration-manifest field that
+has never existed — and it is not decorative, because the backend renders every
+prompt through `tokenizer.apply_chat_template`, so the template is part of the
+model-facing text; `hardware_record` was `{}` because `cmd_gate5` never passed
+one; `environment_digest` and `dependency_digest` defaulted to the literal
+`"-"`, which is not empty, so the completeness rule *accepted* it and two
+provenance fields could have frozen as a placeholder; `gate1_measurement_basis`
+was read from `reports/dci1v4r4/gate1_measurement.json`, which is the name of
+the stage-record file and not of any report this study writes, so the basis was
+always `UNKNOWN` and §33's D9 never closed. `tools/v4r4_backend_provenance.py`
+now produces the first three from the tokenizer of the pinned revision and from
+the backend's own provenance sidecars — the hardware the evidence came off, not
+the machine that runs the freeze — and the basis comes from the signed
+`GATE_1_MEASUREMENT` record. **Affected results:** none; no freeze existed.
+
+**9. §8.6's reduced design could not be recorded in the freeze.** §8.6 says the
+branch "is decided by the deterministic Gate 3 rule before any confirmatory
+generation and is recorded in the freeze", and `core_references` and
+`spectrum_severities` are legitimately empty under it — which
+`check_completeness` reported as missing fields. `VARIANT_EXEMPTIONS` now lets a
+field be empty **only** when the variant Gate 3 recorded does not identify it
+*and* the record carries the §13.8 status for that non-identification, and
+`identification_statuses` becomes a bound freeze field so the emptiness is a
+recorded decision rather than a gap. **Affected results:** the two replications
+that survive Gate 4 both run the reduced design, so without this the study could
+not freeze at all. No threshold, caliper or estimand changed.
+
+**10. §26's durability gate had no caller.** `assert_durable_before_freeze`
+existed, was tested, and nothing on the execution path called it, so the freeze
+recorded the durability report as a field without ever putting it to the rule.
+It is on `run_freeze` now. A terminal report is also `CRITICAL_SUFFIXES` now,
+and `_run_stage` mirrors it: a replication that fails a registered gate produces
+exactly one signed artifact saying so, and `evidence/` is gitignored, so that
+was the one class of v4r4 result living in a single copy. **Affected results:**
+none, and the gate passes.
+
+**11. The durable mirror had two artifacts competing for one path.**
+`write_stage_record` writes the signed record at `<stage>/records/<f>.json` and
+an unsigned reader copy at `<stage>/<f>.json`; `mirror_records` flattened the
+first into `<durable>/<stage>/<f>.json` — the second's relative path. A
+whole-tree replication then landed the reader copy on top of the signed mirror,
+and the durable copy of every stage record in the study silently became the
+unsigned one. Nothing was lost, because the same replication wrote the signed
+record at its own relative path, but the phrase "the durable copy of the signed
+record" had stopped meaning what it says. The mirror reproduces the evidence
+layout exactly now, so one path is one artifact. **Affected results:** none; the
+signed records themselves were never touched, and every mirror is byte-verified
+again.
+
+**12. §20's masking declaration asserted the full-design case unconditionally.**
+The note that travels into every masked record said that no registered estimand
+reads a singleton-companion slot as an OUTCOME. That is true of the 47-cell
+design and false of §8.6's 8-cell one, where `A`'s only companion is `B` and
+`D(A ← B)` is a registered reduced-design estimand. The note now states both
+cases: on the reduced design the masked phase protects `D(B ← A)`,
+`D(B ← CL)` and Λ, and does not protect the reciprocal direction.
+**Affected results:** no number moves; a false statement about what the mask
+protects would have travelled with every reduced-design masked artifact.
+
+**13. §6.2's reserved-set audit asked whether a reserved topic had been touched
+at all.** That was the right question while nothing had reached Gate 4 and the
+wrong one afterwards: §13.10 spends the 24 composed-validation topics and is
+registered to. `tools/topic_reservation_audit_v4.py` decides per stage now —
+`composed` is Gate 4's, `confirmatory` is the confirmatory generation's,
+`sequestered` is nobody's — and reports the licensed spend separately from the
+offences. **Affected results:** none. The guarantee is narrower and true rather
+than broader and about to become false; `sequestered` remains in no stage's
+permission.
+
 **Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
 is superseded or was never written. v4r3 and earlier are untouched: the
 `gates.py` of `dci1v4r3` still carries its own `TerminalStatus`, and that

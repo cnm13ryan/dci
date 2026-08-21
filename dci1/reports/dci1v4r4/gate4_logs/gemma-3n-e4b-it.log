@@ -1,0 +1,12 @@
+{
+ "model": "gemma-3n-e4b-it",
+ "stage": "GATE_4_COMPOSED_HEADROOM",
+ "outcome": "PASS",
+ "rows": 768,
+ "cells": 192,
+ "design_variant": "reduced",
+ "band": [
+  0.05,
+  0.95
+ ]
+}
