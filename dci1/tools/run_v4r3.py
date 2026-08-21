@@ -188,6 +188,38 @@ def cmd_regime(args) -> int:
     return 0
 
 
+def cmd_seal_cap_probe(args) -> int:
+    """Derive §12.1's restricted truncation artifact for every replication.
+
+    The regime record already carries the registered truncation table and
+    nothing else from the probe, so this reads that block rather than the raw
+    scored rows. It exists so the artifact a later stage consumes is a file
+    with no outcome-bearing field in it, not a projection some caller has to
+    remember to apply.
+    """
+    from dci1v4.engine import fs
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.stages import cap_probe
+
+    context = registered_context()
+    written = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        record_path = tree.stage_dir("REGIME_SCREEN") / "regime_record.json"
+        if not record_path.exists():
+            continue
+        record = fs.read_json(record_path)
+        cap = record.get("completion_cap", {})
+        table = {int(k): v for k, v in (cap.get("table") or {}).items()}
+        artifact = cap_probe.cap_probe_artifact(
+            table, model_key=model_key,
+            selected_cap=cap.get("selected_cap"))
+        fs.write_json(tree.cap_probe_truncation, artifact)
+        written[model_key] = str(tree.cap_probe_truncation)
+    print(json.dumps({"sealed": written}, indent=1))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -216,6 +248,7 @@ def main() -> int:
                                 "human_validated"))
     gate1.set_defaults(func=cmd_gate1)
     sub.add_parser("qualify").set_defaults(func=cmd_qualify)
+    sub.add_parser("seal-cap-probe").set_defaults(func=cmd_seal_cap_probe)
     args = parser.parse_args()
     return args.func(args)
 
