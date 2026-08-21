@@ -277,16 +277,16 @@
   "determinism": {
     "agreement": 1.0,
     "digests": [
-      "5d712654c3ac60f0f8fa9a8202386a621f27495dde7eed3ab1e0a5ee465f825f",
-      "5d712654c3ac60f0f8fa9a8202386a621f27495dde7eed3ab1e0a5ee465f825f",
-      "5d712654c3ac60f0f8fa9a8202386a621f27495dde7eed3ab1e0a5ee465f825f"
+      "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850",
+      "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850",
+      "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850"
     ],
     "instruments": 348,
     "processes": 3,
-    "responses": 800
+    "responses": 400
   },
   "determinism_sample": {
-    "n": 800,
+    "n": 400,
     "of": 24352,
     "rule": "the frozen boundary corpus plus the leading calibration responses"
   },
@@ -663,11 +663,11 @@
       "statistics_per_response": 12
     },
     "verdict_sample": {
-      "n": 1500,
+      "n": 1200,
       "of": 24352,
       "rule": "the frozen boundary corpus in full, then the leading calibration responses in stored order"
     },
-    "verdicts_checked": 522000
+    "verdicts_checked": 417600
   },
   "suites": {
     "agreement": 1.0,
