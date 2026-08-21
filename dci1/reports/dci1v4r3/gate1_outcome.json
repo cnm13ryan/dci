@@ -26,22 +26,22 @@
       "passed": true,
       "realised": {
         "counts": {
-          "adjacent_punctuation": 88,
-          "apostrophised": 7008,
-          "capitalisation": 16426,
+          "adjacent_punctuation": 228,
+          "apostrophised": 18144,
+          "capitalisation": 37322,
           "case_folding_split": 0,
           "combining_mark": 0,
           "empty": 0,
           "fullwidth": 0,
-          "hyphenated": 4482,
-          "markdown_emphasis": 319,
+          "hyphenated": 12148,
+          "markdown_emphasis": 1392,
           "non_breaking_space": 0,
-          "non_decimal_numeric": 0,
-          "non_latin_script": 25,
-          "repeated_word": 10,
+          "non_decimal_numeric": 1,
+          "non_latin_script": 73,
+          "repeated_word": 17,
           "single_word": 0,
           "soft_hyphen": 0,
-          "unicode_punctuation": 4263,
+          "unicode_punctuation": 8187,
           "wordless": 0,
           "zero_width": 0
         },
@@ -51,33 +51,32 @@
           "empty",
           "fullwidth",
           "non_breaking_space",
-          "non_decimal_numeric",
           "single_word",
           "soft_hyphen",
           "wordless",
           "zero_width"
         ],
         "rates": {
-          "adjacent_punctuation": 0.00535279805352798,
-          "apostrophised": 0.42627737226277373,
-          "capitalisation": 0.9991484184914842,
+          "adjacent_punctuation": 0.006074168797953964,
+          "apostrophised": 0.4833759590792839,
+          "capitalisation": 0.9942988064791134,
           "case_folding_split": 0.0,
           "combining_mark": 0.0,
           "empty": 0.0,
           "fullwidth": 0.0,
-          "hyphenated": 0.27262773722627737,
-          "markdown_emphasis": 0.01940389294403893,
+          "hyphenated": 0.3236359761295823,
+          "markdown_emphasis": 0.0370843989769821,
           "non_breaking_space": 0.0,
-          "non_decimal_numeric": 0.0,
-          "non_latin_script": 0.0015206812652068127,
-          "repeated_word": 0.0006082725060827251,
+          "non_decimal_numeric": 2.6641091219096334e-05,
+          "non_latin_script": 0.0019447996589940324,
+          "repeated_word": 0.0004528985507246377,
           "single_word": 0.0,
           "soft_hyphen": 0.0,
-          "unicode_punctuation": 0.2593065693430657,
+          "unicode_punctuation": 0.21811061381074168,
           "wordless": 0.0,
           "zero_width": 0.0
         },
-        "responses": 16440
+        "responses": 37536
       },
       "uncovered_by_corpus": []
     },
@@ -290,7 +289,7 @@
     },
     "determinism_sample": {
       "n": 400,
-      "of": 16604,
+      "of": 37700,
       "rule": "the frozen boundary corpus plus the leading calibration responses"
     },
     "reimplementation": {
@@ -299,7 +298,7 @@
       },
       "failures": [],
       "per_instrument_min": 1.0,
-      "responses": 16604,
+      "responses": 37700,
       "segmenter_differential": {
         "agreement": 1.0,
         "case_folding_splitters": [
@@ -310,14 +309,14 @@
       },
       "statistics_every_response": {
         "agreement": 1.0,
-        "comparisons": 298872,
+        "comparisons": 678600,
         "failures": [],
-        "responses": 16604,
+        "responses": 37700,
         "statistics_per_response": 18
       },
       "verdict_sample": {
         "n": 1200,
-        "of": 16604,
+        "of": 37700,
         "rule": "the frozen boundary corpus in full, then the leading calibration responses in stored order"
       },
       "verdicts_checked": 700800
@@ -343,19 +342,19 @@
     "topic_audit": {
       "by_stage": {
         "v4r3-cap-selection-1024": {
-          "prescreen": 768
+          "prescreen": 960
         },
         "v4r3-cap-selection-512": {
-          "prescreen": 768
+          "prescreen": 960
         },
         "v4r3-cap-selection-768": {
-          "prescreen": 768
+          "prescreen": 960
         },
         "v4r3-gate0-pilot": {
           "prescreen": 9024
         },
         "v4r3-ladder-screen": {
-          "prescreen": 40200
+          "prescreen": 60720
         },
         "v4r3-ladder-screen-r1": {
           "prescreen": 2664
@@ -380,7 +379,7 @@
         "v4r3-ladder-screen-r2": "REGIME_SCREEN"
       },
       "root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3",
-      "rows": 54912,
+      "rows": 76008,
       "topics_not_in_released_split": [],
       "unresolved_stage_labels": []
     },

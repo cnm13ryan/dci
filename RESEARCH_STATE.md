@@ -90,7 +90,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | v3 | closed. Two Gemma replications reached UNMASKED_ANALYSIS; both Qwen replications terminated at Gate 2A. `dci1/RESULTS_V3.md` |
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
-| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3. Gate 1 refuses: every §10.2 criterion passes, §10.4's original pathway failed its own criterion 2 and is replaced prospectively by §10.4-R (C26), and the researcher's approval is reserved after that. §4h, §4i, §4j. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/REPORT.md` |
+| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3; §7.0-R3 (C27) restores coverage on all four models at round zero. Gate 1 is `GATE_1_BLOCKED_MEASUREMENT`: every §10.2 criterion passes over 584 instruments, and **both** registered pathways are unavailable — §10.4-R2 (C28) failed its own criterion 5 and stops by rule, §10.3 has no independent annotator. §4h, §4i, §4j, §4k. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/gate1_decision.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -591,6 +591,76 @@ when asked, and would not leave it alone when asked. `measurement_basis` stays
 `human_validation_unavailable`; §10.3 remains the only untried registered
 route, and no independent annotator exists.
 
+### 4k. v4r3: R3 restores coverage, R2 fails, and Gate 1 is blocked on §10.3 alone (2026-08-21)
+
+Two amendments, both registered before the evidence they govern existed, and
+one of them worked.
+
+**§7.0-R3 (C27, DECISIONS A6) restored the difficulty coordinate's support.**
+Six counted statistics, six feature groups, a fifth predicate form and ten
+families join the candidate library; no criterion, caliper or admission rule
+moves. All four regime screens now pass §12.6's coverage criteria at **round
+zero** — ι_A of 0.556, 0.667, 0.750 and 0.625 — where before R3 the machine-checked
+counterfactual fails C4 on all four, with 3, 3, 3 and 1 well-formed straddling
+groups against 4 required. Leave-one-out shows C4 with **zero spare capacity**
+on three of the four, and `RF11` load-bearing on three.
+`dci1/reports/dci1v4r3/candidate_landscape.json`.
+
+**§10.4-R2 (C28, DECISIONS A7) failed its own criterion 5, and the
+LLM-validator pathway stops.** The microcase audit fixed what it set out to
+fix — truncation 0.3125 → 0.0119, parse validity 0.6875 → 0.9881, specificity
+0.613 → 0.9125, overall sensitivity 0.771 → 0.8140 — and then failed on a floor
+no earlier version had reached: per-kind sensitivity **0.231 on
+`denominator_swap`** against 0.50. Seven of the ten items that decide that kind
+have answers with no words at all, so their verdict turns on §7.3's
+wordless-rate rule, which the deciding arm deliberately withholds; the same
+cases in the conventions arm agree 9 of 11. The registered contingencies
+`mc-high` and `mc-low` were not run, because raising reasoning effort cannot
+supply a convention a prompt does not state, and the calibration half is
+untouched. `DECISIONS_V4R3.md` A8,
+`dci1/reports/dci1v4r3/section_10_4R2_outcome.json`.
+
+**Twenty-five human annotations exist and are not §10.3.** Blinded microcases
+over eight of the ten families R3 added, 23/25 agreement, no UNSURE, both
+disagreements at severity 1 and both coinciding with the `inequality_flip`
+reading; neither is a verifier implementation error — the primary and the
+independent reimplementation agree on both. They are **human semantic
+evidence**, not registered independent human validation: the annotator is the
+researcher, the unit is a microcase rather than a natural response, one packet
+is not min(150, N_c) per verifier class, and the Wilson bound is 0.2152 against
+0.10 — which 25 items cannot reach even at zero disagreements.
+
+**A defect-sensitivity diagnostic sizes each semantic choice.** Over 30,720
+real load-0 and load-1 responses and 27,840 stated verdicts per reading:
+`inequality_flip` changes 95.5%, `denominator_swap` 21.8% (rate shift +0.163),
+`numerator_swap` 32.8%, `off_by_one` 11.1% overall but **71% of exact-count
+verdicts**, `segmentation_drift` 1.5% — every single change in `CR6` — and
+`vacuity_ignored` **zero**. The last is the load-bearing one: natural-response
+agreement cannot validate the vacuity convention, because the case that would
+distinguish the readings does not occur. Absence of a natural counterexample is
+not a passed test, and it is very likely why §10.4-R's judge scored 0 of 5
+there. `dci1/reports/dci1v4r3/defect_sensitivity.json`.
+
+**A signing defect had made every transition out of `REGIME_SCREEN` illegal.**
+`canonical_json` sorts integer dict keys numerically and string keys
+lexicographically; §12.2's payload carries `completion_cap.table`, keyed by
+completion cap, so all four regime records failed `verify_signed` with no
+tampering anywhere. Gate 1 could not have written a stage record even had its
+measurement basis been licensed. Fixed on the writing path, the eight files
+re-sealed under proof, and a regression test added.
+`dci1/reports/dci1v4r3/record_signature_repair.json`.
+
+**Gate 1: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2 prerequisite passes at
+the R3 verifier hash `41edc84c` over all **584** instruments — three-process
+determinism 1.000, 164 boundary cases 1.000, independent reimplementation
+1.000 over 16,604 responses and 700,800 verdicts, one segmenter-differential
+splitter, 92,988 witness pairs, 46,720 wording verdicts, reserved sets unspent.
+Neither pathway §18 stage 4 requires has completed: §10.4 is closed by its own
+stopping rule and §10.3 has no independent annotator. **The single remaining
+blocker is §10.3 performed by someone independent of the design and analysis
+team.** It is not a governance block — a signature cannot be applied to a
+pathway whose criteria failed. `dci1/reports/dci1v4r3/gate1_decision.json`.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -601,6 +671,11 @@ route, and no independent annotator exists.
 - **Void.** The anti-splice intervention failed its own manipulation check
   (`ANTI_SPLICE_MANIPULATION_FAILED`). A failed manipulation check voids an
   estimate; it does not weaken it into a null.
+- **Blocked.** DCI-1 v4r3 stands at `GATE_1_BLOCKED_MEASUREMENT`. Both
+  registered measurement pathways are closed: §10.4-R2 failed its own criterion
+  5 and stops by rule, and §10.3 has never been performed by an annotator
+  independent of the design and analysis team. Everything from Gate 2 onward is
+  downstream of that one requirement. §4k.
 - **Blocked.** The five-checkpoint vLLM TP=2 qualification gate passed 0/5, for
   three unrelated reasons (`ROOT_CAUSE_ANALYSIS.md`). The Transformers-vs-vLLM
   backend confound on the transport question is therefore unresolved.
@@ -618,8 +693,8 @@ route, and no independent annotator exists.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: the v4r3 proposal recorded
-in §4h.
+whether old and new remain comparable. Most recent: §10.4-R2's failure and
+the four re-sealed regime records, in §4k.
 
 ## 7. Where to look
 

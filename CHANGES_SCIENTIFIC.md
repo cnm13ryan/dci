@@ -13,6 +13,59 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-21 (latest) — v4r3: §10.4-R2's outcome, and four stage records re-sealed
+
+**Scope.** No v4r3 measurement moves. One class of record identifier does.
+
+**1. §10.4-R2 failed and the autorater pathway stopped — measurement basis.**
+The microcase audit's development half returned FAIL on registered criterion 5:
+per-kind sensitivity 0.231 on `denominator_swap` against a floor of 0.50 set
+before any microcase was judged. Criteria 2, 3, 4 and overall 5 passed. By
+§10.4-R2's own stopping rule the LLM-validator pathway stops; the calibration
+half is untouched and `mc-high`/`mc-low` were not run, for reasons recorded in
+`DECISIONS_V4R3.md` A8 and `dci1/reports/dci1v4r3/section_10_4R2_outcome.json`.
+**Affected results:** none, because the validator never scored anything —
+§10.4-R2 keeps the deterministic verifier as the study's only scorer. What
+changes is the *available* measurement basis: `human_validation_unavailable`
+is now a standing condition and §10.3 is the only registered route left. Gate 1
+refuses, no freeze occurs, no confirmatory generation begins.
+
+**2. Four regime-screen stage records were re-sealed — provenance identifiers.**
+`canonical_json` sorts integer dict keys numerically and string keys
+lexicographically. §12.2's payload carries `completion_cap.table`, keyed by the
+completion caps 512, 768 and 1024, so the hash computed over the in-memory
+payload and the hash computed over the JSON it was written to differed, and
+`verify_signed` rejected all four v4r3 regime records. `assert_transition_legal`
+therefore refused every transition out of `REGIME_SCREEN`: Gate 1 could not have
+written a stage record even had its measurement basis been licensed.
+`dci1v4r3.engine.transitions.on_the_wire` now signs the wire form, and
+`write_stage_record` verifies what it just produced. `tools/v4r3_reseal_records.py`
+re-sealed the eight affected files (four records, two roots) after proving for
+each that the stored hash was exactly `sha_obj` of *that* payload with its
+numeric keys read back as integers — a proof an altered payload could not
+satisfy. **Affected results:** no number and no payload byte. The `record_hash`
+and `signature` of the four `REGIME_SCREEN` records changed; a citation of the
+old hash `6556a2d6` / `5e2f1a45` / `6c71cc79` / `75f5008e` now resolves through
+`dci1/reports/dci1v4r3/record_signature_repair.json`, which carries both. Old
+and new records are the same evidence.
+
+**3. A wording observation, recorded and not acted on — instruction wordings.**
+Sixteen of the twenty-four families that admit severity 1 carry at least one
+registered wording whose numeral and noun disagree in number: "Exactly 1
+semicolons", "Use the word thus exactly 1 times", "At most 1 words may begin
+with b". Six such rungs are eligible inside a §12.3 shortlist, and two of them —
+`CX1:1` and `CX2:1` — are the exact form, where the plural noun plausibly
+invites the *at least* reading rather than the exact one. `CX2:1` is the item
+one of the 25 human annotations disagreed on, and the human's label is exactly
+what the registered `inequality_flip` reading gives. A's carried template
+special-cases the singular (`"time" if n == 1 else "times"`); no family template
+does. **Affected results:** none yet. Changing a template changes the prompt
+text of live rungs and re-opens a coverage result that currently passes on all
+four models, so it is an amendment for the researcher and not a fix. Recorded
+in `dci1/reports/dci1v4r3/gate1_decision.json`.
+
+---
+
 ## 2026-08-21 (later) — v4r3 repair pass: §10.4 replaced, three guards added
 
 **Scope.** Prospective. No v4r3 number moves and nothing in v2, v3, v4r2 or the
