@@ -97,7 +97,27 @@ def cmd_qualify(args) -> int:
                                      if c["passed"]]}, indent=1))
         return 0
     fs.write_json(out / "qualification.json", record)
-    print(json.dumps({"outcome": record["outcome"]}, indent=1))
+    # §18 stage 1 is study-wide -- its checks are about the worktree, the
+    # environment and the instrument population, none of which is per-model --
+    # but the stage machine is per-replication, so each tree gets the same
+    # signed record. Without it GATE_0 has no predecessor to verify and the
+    # sequence could not start.
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import write_stage_record
+    from dci1v4r3.protocol import constants as C
+
+    written = []
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        if tree.stage_record(C.STAGE_QUALIFIED).exists():
+            continue
+        write_stage_record(tree, C.STAGE_QUALIFIED,
+                           {**record, "model_key": model_key,
+                            "scope": "study-wide; the same record is written "
+                                     "to every replication tree"})
+        written.append(model_key)
+    print(json.dumps({"outcome": record["outcome"],
+                      "stage_records_written": written}, indent=1))
     return 0
 
 
@@ -188,6 +208,124 @@ def cmd_regime(args) -> int:
     return 0
 
 
+def cmd_status(args) -> int:
+    """Where each replication stands in the registered stage sequence."""
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        stage_reached, terminal_status, transition_rows,
+    )
+    from dci1v4r3.protocol import constants as C
+
+    context = registered_context()
+    out = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        records = {}
+        for stage in C.STAGE_SEQUENCE:
+            path = tree.stage_record(stage)
+            if path.exists():
+                import json as _json
+                payload = _json.loads(path.read_text())
+                payload = payload.get("payload", payload)
+                records[stage] = payload.get("outcome")
+        out[model_key] = {
+            "reached": stage_reached(tree),
+            "terminal": terminal_status(tree),
+            "records": records,
+            "transitions": len(transition_rows(tree)),
+        }
+    print(json.dumps({"study": "dci1v4r3", "sequence": list(C.STAGE_SEQUENCE),
+                      "models": out}, indent=1))
+    return 0
+
+
+def cmd_gate0(args) -> int:
+    """§19's procedural pilot, under the stage machine."""
+    from dci1v4.errors import TerminalStatus
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        assert_transition_legal, log_transition, write_stage_record,
+        write_terminal_report,
+    )
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.pilot_run import run_pilot
+
+    context = registered_context()
+    registration.load_manifest(context)
+    tree = model_tree(context, args.model)
+    assert_transition_legal(tree, C.STAGE_GATE0)
+    try:
+        payload = run_pilot(args.model, tree, device=args.device,
+                            cap=args.cap)
+    except TerminalStatus as terminal:
+        record = {**terminal.record, "model_key": args.model,
+                  "producing_commit": _commit()}
+        write_terminal_report(tree, record)
+        log_transition(tree, stage=C.STAGE_GATE0, outcome="TERMINAL",
+                       producing_commit=_commit(), environment_digest="-",
+                       detail={"status": record.get("status")})
+        print(json.dumps({"outcome": "TERMINAL",
+                          "status": record.get("status")}, indent=1))
+        return 1
+    write_stage_record(tree, C.STAGE_GATE0, payload)
+    log_transition(tree, stage=C.STAGE_GATE0, outcome="PASS",
+                   producing_commit=_commit(), environment_digest="-",
+                   detail={"cached_draws": payload["cached_draws"]})
+    print(json.dumps({"outcome": payload["outcome"],
+                      "cached_draws": payload["cached_draws"],
+                      "cells": payload["cells"]}, indent=1))
+    return 0
+
+
+def cmd_adopt_regime(args) -> int:
+    """Record the existing §12.2 evidence as ADOPTED_OUT_OF_ORDER.
+
+    It was generated before the stage machine existed, so it cannot satisfy
+    Gate 1's predecessor requirement. Recording that is honest; letting it
+    count would not be.
+    """
+    from dci1v4.engine import fs
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import adopt_out_of_order
+    from dci1v4r3.protocol import constants as C
+
+    context = registered_context()
+    done = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        source = tree.stage_dir(C.STAGE_REGIME) / "regime_record.json"
+        if not source.exists():
+            continue
+        canonical = tree.stage_record(C.STAGE_REGIME)
+        if canonical.exists():
+            existing = fs.read_json(canonical)
+            if "signature" in existing:
+                continue                      # already a real stage record
+            # `_mirror` wrote an UNSIGNED byte copy of the reader file into
+            # the stage-record slot before the stage machine existed. It is a
+            # duplicate of `regime_record.json`, not raw evidence, and leaving
+            # it there would let `status` report a PASS the stage machine
+            # never granted. Replaced only after confirming it is that copy.
+            if canonical.read_bytes() != source.read_bytes():
+                raise SystemExit(
+                    f"{canonical} is not a byte copy of {source}; refusing to "
+                    f"replace it")
+            canonical.unlink()
+        payload = fs.read_json(source)
+        payload = {**payload,
+                   "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_REGIME]}
+        adopt_out_of_order(
+            tree, C.STAGE_REGIME, payload,
+            reason=("generated 2026-08-21 before dci1v4r3/engine/transitions "
+                    "existed; no guard could refuse an out-of-order stage"),
+            produced_before_commit="6954dd6")
+        done[model_key] = "ADOPTED_OUT_OF_ORDER"
+    print(json.dumps({"adopted": done,
+                      "consequence": "does not satisfy any later stage's "
+                                     "predecessor requirement"}, indent=1))
+    return 0
+
+
 def cmd_seal_cap_probe(args) -> int:
     """Derive §12.1's restricted truncation artifact for every replication.
 
@@ -248,6 +386,13 @@ def main() -> int:
                                 "human_validated"))
     gate1.set_defaults(func=cmd_gate1)
     sub.add_parser("qualify").set_defaults(func=cmd_qualify)
+    sub.add_parser("status").set_defaults(func=cmd_status)
+    gate0 = sub.add_parser("gate0")
+    gate0.add_argument("--model", required=True, choices=MODEL_KEYS)
+    gate0.add_argument("--device", type=int, default=0)
+    gate0.add_argument("--cap", type=int, default=512)
+    gate0.set_defaults(func=cmd_gate0)
+    sub.add_parser("adopt-regime").set_defaults(func=cmd_adopt_regime)
     sub.add_parser("seal-cap-probe").set_defaults(func=cmd_seal_cap_probe)
     args = parser.parse_args()
     return args.func(args)
