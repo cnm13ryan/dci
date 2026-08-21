@@ -108,6 +108,7 @@ def _per_model(record: dict[str, Any]) -> dict[str, Any]:
                 [r for r in rows if not r["added_by_r3"]]),
             "added_by_r3": _share(r3)},
         "counterfactual_without_r3": _without_r3(record, rows),
+        "leave_one_family_out": _leave_one_out(record, rows),
         "shortlist": record["shortlist"],
         "class_candidates_near_A": coverage["conditions"]["C7_class_matched"]
                                            ["observed"]["rungs"],
@@ -123,32 +124,64 @@ def _without_r3(record: dict[str, Any], rows: list[dict[str, Any]]
     Necessary, because coverage passing after R3 does not by itself show that
     R3 is why. The screen is a fresh measurement and iota_A moved with it, so
     a family that did not straddle the old value can straddle the new one
-    without anything having been added. This recomputes C4's own rule ---
-    straddling, at least three eligible rungs, span at least 0.40 --- over the
-    families that existed before the amendment, at the value this screen
-    measured, and reports the count beside the count with R3 included.
+    without anything having been added.
     """
-    iota_a = record["iota_a_prescreen"]
-    by_family: dict[str, list[dict[str, Any]]] = {}
-    for row in rows:
-        if row["added_by_r3"] or row["role"] != "reference" or not row["eligible"]:
-            continue
-        by_family.setdefault(row["family"], []).append(row)
-    groups = set()
-    for family, members in by_family.items():
-        values = sorted(r["iota"] for r in members)
-        below = [v for v in values if v < iota_a]
-        above = [v for v in values if v > iota_a]
-        if (below and above
-                and len(values) >= C.COVERAGE_MIN_RUNGS_PER_STRADDLING_FAMILY
-                and max(values) - min(values)
-                >= C.COVERAGE_MIN_WITHIN_FAMILY_SPAN):
-            groups.add(FAMILIES[family].feature_group)
+    groups = _well_formed_groups(rows, record["iota_a_prescreen"],
+                                 only_pre_r3=True)
     return {"well_formed_groups": sorted(groups),
             "n_well_formed_groups": len(groups),
             "c4_would_pass": len(groups) >= C.COVERAGE_MIN_STRADDLING_FAMILIES,
             "rule": "C4 recomputed over the pre-R3 families only, at the "
                     "iota_A this screen measured"}
+
+
+def _leave_one_out(record: dict[str, Any], rows: list[dict[str, Any]]
+                   ) -> dict[str, Any]:
+    """Which added families C4 could not do without.
+
+    Coverage passing is not the same as coverage being robust. If one added
+    family is load-bearing on three of four replications, the amendment bought
+    a margin of exactly one family, and a reader is entitled to know that
+    rather than to see four green ticks. C4's own rule is recomputed with each
+    admitted family removed in turn.
+    """
+    iota_a = record["iota_a_prescreen"]
+    admitted = sorted({r["family"] for r in rows
+                       if r["eligible"] and r["role"] == "reference"})
+    out: dict[str, Any] = {}
+    for held_out in admitted:
+        groups = _well_formed_groups(rows, iota_a, exclude={held_out})
+        if len(groups) < C.COVERAGE_MIN_STRADDLING_FAMILIES:
+            out[held_out] = {"c4_without_it": False,
+                             "groups_left": sorted(groups)}
+    return {"load_bearing": sorted(out),
+            "detail": out,
+            "margin": ("C4 has no spare family on this model"
+                       if out else
+                       "no single admitted family is load-bearing")}
+
+
+def _well_formed_groups(rows: list[dict[str, Any]], iota_a: float, *,
+                        exclude: set[str] = frozenset(),
+                        only_pre_r3: bool = False) -> set[str]:
+    """C4's own rule --- straddling, three eligible rungs, span 0.40 ---
+    over a chosen subset of the families."""
+    by_family: dict[str, list[dict[str, Any]]] = {}
+    for row in rows:
+        if (row["role"] != "reference" or not row["eligible"]
+                or row["family"] in exclude
+                or (only_pre_r3 and row["added_by_r3"])):
+            continue
+        by_family.setdefault(row["family"], []).append(row)
+    groups = set()
+    for family, members in by_family.items():
+        values = sorted(r["iota"] for r in members)
+        if (any(v < iota_a for v in values) and any(v > iota_a for v in values)
+                and len(values) >= C.COVERAGE_MIN_RUNGS_PER_STRADDLING_FAMILY
+                and max(values) - min(values)
+                >= C.COVERAGE_MIN_WITHIN_FAMILY_SPAN):
+            groups.add(FAMILIES[family].feature_group)
+    return groups
 
 
 def _share(rows: list[dict[str, Any]]) -> float | None:
@@ -197,6 +230,9 @@ def main() -> int:
               f"{counter['n_well_formed_groups']} "
               f"{counter['well_formed_groups']} -> C4 "
               f"{'PASSES' if counter['c4_would_pass'] else 'FAILS'}")
+        loo = entry["leave_one_family_out"]
+        print(f"    load-bearing families     : "
+              f"{loo['load_bearing'] or 'none'}")
         print(f"    class candidates near A   : "
               f"{entry['class_candidates_near_A']}")
         print()
