@@ -117,7 +117,13 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                 "composition": "segment first, then lower-case each word for "
                                "the suffix and letter tests",
                 "letters": "the characters of the word as written",
-                "raw_character_counts": ["comma", "capital_char"],
+                "raw_character_counts": ["comma", "capital_char",
+                                         "semicolon"],
+                "sentence_rule":
+                    "the maximal runs of . ! ? in the answer, plus one if any "
+                    "non-whitespace character follows the last run or if "
+                    "there is no run and the answer is not blank (§7.3-R3)",
+                "vowels": "a, e, i, o, u; y is not a vowel here (§7.3-R3)",
                 "A_exception":
                     "§9.2 registers S0 as lower-case-then-segment and A's "
                     "carried counting function implements exactly that",
@@ -139,6 +145,8 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                 "count_lower_bound": "min(1, count / q) for q > 0",
                 "rate_lower_bound": "min(1, rate / q) for q > 0; 0 for a "
                                     "wordless answer",
+                "exact_count": "max(0, 1 - |count - q| / q); A's shape over "
+                               "the family's own numerator (§7.6-R3)",
             },
             "non_vacuity_predicates": {
                 "A": "non-empty and not truncated",
@@ -149,6 +157,10 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                     "non-empty and not truncated; the rule already forces "
                     "length upward so a word-count clause would be "
                     "redundant rather than protective",
+                "exact_count_families":
+                    "non-empty and not truncated, as for A and for the same "
+                    "reason: a rule demanding q occurrences of a feature "
+                    "cannot be satisfied by writing nothing",
             },
             "determinism_processes": C.DETERMINISM_PROCESSES,
             "boundary_suite_min_cases": C.BOUNDARY_SUITE_MIN_CASES,

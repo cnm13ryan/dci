@@ -555,6 +555,204 @@ identity must not depend on case. $A$'s construct string, segmentation function
 and counting function stay byte-identical to the closed v3 instrument and its
 §10.2 carry-over survives.
 
+### 7.0-R3 The candidate library extended (amendment R3, 2026-08-21)
+
+**Status.** Prospective. Registered before any solo compliance of any family
+named here was measured on any model, and before the coverage criterion was
+recomputed against it. It supersedes the enumerations of §7.0 — the counted
+statistics, the feature groups, the predicate forms, the family table and the
+three population counts — and nothing else. Every threshold, caliper, band,
+criterion and admission rule in this document stands exactly as written.
+
+**Why.** §12.6 ran its two registered expansion rounds on all four
+replications. Coverage still fails: `C4` on three models and `C2` on one. The
+diagnosis is in `dci1/reports/dci1v4r3/expansion_diagnosis.json` and it is not
+a shortage of rungs. Of the reference rungs the ladder screen measured, 77 to
+114 per model fall **below** the eligibility floor and 9 to 15 above the
+ceiling; 5 to 36 more are chance-degenerate. Exactly one feature group on one
+model has its two sides split across two families. So re-shaping ladders inside
+the existing library cannot reach the missing region, because the existing
+library does not reach it at any severity.
+
+The reason is a property of the round-0 library rather than of the models. Its
+numerators are **rare in ordinary prose** — words beginning with `b`, words
+ending in `ing`, words with a doubled letter. A budget over a rare feature is
+impossible at its tight rungs and satisfied for free at its loose ones, and the
+window in between, where instructed compliance is informative, is narrow or
+empty. The four numerators added below are **common in ordinary prose**, so the
+window is wide before any model is asked to comply.
+
+**What was inspected to choose them, and what was not.** The natural
+distribution of every candidate numerator was measured on the §12.2 screen's
+**unconstrained rows only** — 24 responses per model, the registered chance
+quantity $P(\text{pass} \mid \text{nothing stated})$, which §12.5 names as
+development-permitted. The ladders below are placed against those
+distributions, so that no rung is chance-degenerate by construction. **No solo
+compliance, no $\iota$, no composed cell, no $D(B \leftarrow R)$, no
+$\Delta$ of any kind and no reciprocal quantity was inspected**, and none
+exists for any family named here.
+
+#### Six added counted statistics
+
+| Statistic | Rule, verbatim | Reads |
+|---|---|---|
+| `t_initial` | words whose first letter is `t` | the word list |
+| `s_final` | words whose last letter is `s` | the word list |
+| `vowel_initial` | words whose first letter is one of `a`, `e`, `i`, `o`, `u` | the word list |
+| `sentence` | the maximal runs of `.`, `!`, `?` in the answer, **plus one** if any non-whitespace character follows the last such run, or if there is no such run and the answer is not blank | raw characters |
+| `marker_thus` | words equal to `thus` | the word list |
+| `semicolon` | `;` characters | raw characters |
+
+The word list is §7.3's: segment first, then lower-case each word for the
+letter tests. `y` is **not** a vowel here, and the rule says so, because `y`
+already carries a family and a reader asked whether `yellow` begins with a
+vowel would not agree with themselves.
+
+The sentence rule's trailing clause is the whole of its difference from a
+terminator tally, and it is registered rather than convenient. Without it an
+answer with no full stop would have zero sentences and would pass a sentence
+budget at every severity for having written nothing the verifier could count —
+the vacuity failure §9.3 exists to prevent, prevented here inside the statistic.
+Two consequences are accepted and named in advance rather than discovered
+later: an abbreviation's full stop and a decimal point each terminate a
+sentence under this rule, so the statistic **over-counts** on such answers.
+Both have a frozen boundary case (`r306`, `r307`).
+
+#### Six added feature groups
+
+Each added statistic is its own group: `t_initial`, `s_final`,
+`vowel_initial`, `sentence`, `marker` (for `marker_thus`) and `semicolon`.
+Thirteen groups in all.
+
+`t_initial` is **not** grouped with `b_initial`, and `s_final` is not grouped
+with `y_final`. The group exists to name statistics that measure the same
+property and are therefore entailed at the edge of their ladders (§7.0). No
+answer has a word beginning with both `b` and `t`, or ending with both `y` and
+`s`, so neither budget constrains the other at any severity, and §7.5's
+non-entailment obligation is satisfiable for the pair — which is the test the
+grouping rule is stated over. The witness suite discharges it over all 92,988
+realisable pairs.
+
+#### A fifth predicate form
+
+| Form | Predicate | Class |
+|---|---|---|
+| exact count | $S = q$ | production |
+
+This is **$A$'s own predicate**. §7.5 asserts every family against the class
+its form implies, and `family_class("A")` already returns `production` for this
+predicate, so an exact-count family is a production family. §13.7 therefore
+admits it to the **class slot only** and to no reference or spectrum slot —
+unchanged, and now enforced twice: once on the declared role and once on the
+form.
+
+Graded score: $\max(0, 1 - |S - q| / q)$, $A$'s shape (§7.6) over the family's
+own numerator. Non-vacuity: non-empty and not truncated, as for $A$ and the
+lower bounds, because a rule demanding $q$ occurrences of a feature cannot be
+satisfied by writing nothing.
+
+#### Ten added families
+
+| Family | Statistic | Form | Role | Round-0 ladder | Reserve |
+|---|---|---|---|---|---|
+| `RF9` | `t_initial` | count budget | reference | 0,2,4,6,8,10,13,16 | 0–26 |
+| `RF10` | `s_final` | count budget | reference | 0,2,4,6,9,12,15,19 | 0–30 |
+| `RF11` | `vowel_initial` | count budget | reference | 0,4,8,12,16,21,26,32 | 0–48 |
+| `RF12` | `sentence` | count budget | reference | 1,2,3,4,5,6,7,8 | 1–12 |
+| `CR9` | `t_initial` | rate budget | reference | 1,2,4,6,8,10,12,15 | 1–20 |
+| `CR10` | `s_final` | rate budget | reference | 2,4,6,8,11,14,17,21 | 1–26 |
+| `CR11` | `vowel_initial` | rate budget | reference | 4,8,12,16,20,24,28,33 | 2–40 |
+| `CR12` | `sentence` | rate budget | reference | 1,2,3,4,5,6,8,10 | 1–14 |
+| `CX1` | `marker_thus` | exact count | class control | 1–8 | 1–8 |
+| `CX2` | `semicolon` | exact count | class control | 1,2,3,4,5,6,7,8 | 1–10 |
+
+`RF12`'s reserve starts at one and not at zero. No non-blank answer has zero
+sentences under the rule above, so `RF12` at $q = 0$ would be unsatisfiable by
+any answer a model could write, and an unsatisfiable rung is not a difficulty
+— it is a broken instrument.
+
+**`CX1` is $A$ with a different marker word.** Same predicate, same ladder,
+same four wording templates with one word changed. It exists because §29
+records this study's sharpest limitation — $A$ is an exact-count production
+constraint and every admissible reference is a budget — and a class companion
+built exactly the way $A$ is built is the tightest bound this design can put on
+how much of any measured excess is the *form* rather than the *identity*. It
+does not remove the limitation; it measures it.
+
+`however` is excluded from the marker vocabulary. A companion counting $A$'s
+own word would not be a companion.
+
+#### The four candidate classes considered and rejected
+
+Rejected prospectively, with the reason, so that the admitted set is a choice
+and not a survey of whatever happened to work:
+
+- **distinct-marker sets** ("use each of *thus*, *also* and *next* exactly
+  once") and **ordered markers**: severity would be the number of markers, so
+  each rung names *different words*. §7.5 requires wordings to be
+  severity-invariant — a rung's wording must be its family's wording with a
+  numeral changed — and a marker set cannot be. This is structural, not
+  stylistic: §12.6's expansion admits a reserve rung *without authoring
+  anything*, and that rests entirely on severity-invariance.
+- **paired-delimiter counts** (parenthetical or quoted spans): admissible only
+  if pairing is deterministic and robust. It is neither — an apostrophe and a
+  closing single quote are one character, quotes nest and are left unclosed,
+  and a truncated answer routinely ends mid-span. A verifier whose verdict
+  depends on how a generation was cut off is not measuring the construct.
+- **numbered or bulleted item counts**: §8.5's stem asks for a plain prose
+  answer of 60–120 words. A family that requires a list changes the genre of
+  the response, and every word-shaped numerator in the library — and $B$ — is
+  measured on a different kind of text as a result. The interference would be
+  with the task, not with $A$.
+- **positional anchors** ("begin the answer with a registered marker"):
+  severity has no natural ladder, and the obligation interacts with §8.5's stem
+  and with the in-stem-band diagnostic.
+
+**Paragraph counts** were measured on the unconstrained rows and are degenerate
+on two of the four models, which emit exactly one paragraph on every one of
+their 24 unconstrained responses. A budget over a statistic that is constant is
+not a difficulty ladder. Not admitted.
+
+#### What this amendment does not change
+
+- no criterion of §12.6 (`C1`–`C7`), no value in any of them;
+- not the eligibility band, the near caliper, the reference caliper, the class
+  caliper, the support rule, or the degeneracy ceiling;
+- not the difficulty coordinate, nor its secondary;
+- **not §13.7**: the reference and spectrum slots still refuse every production
+  family, so the reference set remains one class and $\Delta_R$ remains a
+  contrast within it;
+- not the wording length caliper — every wording added here is inside it, and
+  the check is run over the whole declared range;
+- not $A$, not $B$, not the topic split, not the seeds, not the design.
+
+#### The evidence this amendment owes, before it may be used
+
+The instrument population §10.2 must certify is the **declared range**, which
+this amendment takes from 348 instances to 584. So Gate 1 is owed, over the
+whole extended population and at the new canonical verifier hash: the boundary
+suites (now 164 frozen cases, with 28 authored for the phenomena these
+numerators and this form introduce), the prose-only reimplementation, the
+cross-process determinism check, the adversarial corpus, the wording-equivalence
+suite, and §7.5's satisfiability and non-entailment witnesses. **The earlier
+348-instrument evidence does not cover the added families and is not claimed
+to.**
+
+#### §12.6-R3 How the extended library is measured
+
+The ten added families have never had a round-0 measurement. They receive one:
+the §12.2 dense ladder screen, on the **same 24 development topics**, at the
+**same completion cap**, with the same single draw, generating only the added
+rungs. The existing rows are not regenerated and not rescored, and the round-0
+measurements of the twenty original families stand.
+
+Coverage is then recomputed by the unchanged §12.6 criterion over the union.
+§12.6's reserve expansion may then run **up to two rounds over the ten added
+families only**; the original twenty have spent theirs and are closed. If
+coverage still fails, `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` stands and §8.6's
+no-spectrum design runs, exactly as §12.6 already says.
+
+
 ### 7.3 The reference pool
 
 **Sixteen families, all budget class** — the eight registered count budgets and

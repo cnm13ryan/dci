@@ -265,7 +265,15 @@ def test_qualification_reads_no_behavioural_rate_and_lists_every_failure():
             1 for r in record["checks"] if not r["passed"])
         assert record["status"] == "QUALIFICATION_FAILURE"
     assert record["reads_no_behavioural_rate"] is True
-    assert record["instrument_population"] == 348
+    # The literal is here to catch a population that moves without anyone
+    # meaning it to, so it moves only with an amendment. §7.0-R3 took it from
+    # 348 to 584: six numerators, ten families, one predicate form, and the
+    # frozen reserves those families declare. The number is the *declared*
+    # range, so it is what §10.2 owes evidence for before qualification --- not
+    # what any round of expansion has admitted.
+    assert record["instrument_population"] == 584
+    from dci1v4r3.verifiers.boundary import instrument_population
+    assert record["instrument_population"] == len(instrument_population())
 
 
 def test_a_dirty_worktree_is_a_qualification_failure_and_says_why():

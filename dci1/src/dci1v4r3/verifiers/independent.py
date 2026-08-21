@@ -24,12 +24,24 @@ The specification, transcribed:
   is the letter count of the longest word, 0 for a response with no words; pass
   iff it is at most m.
 
-  The nine numerators, the four predicate forms, the twenty families, the graded
-  shapes and the non-vacuity floor are transcribed at their definitions below.
+  The registered numerators, the five predicate forms, the thirty families, the
+  graded shapes and the non-vacuity floor are transcribed at their definitions
+  below.
+
+  The R3 amendment adds six numerators and one form. Words beginning with t;
+  words ending with s; words beginning with a vowel, the vowels being a, e, i,
+  o and u; sentences, being the maximal runs of the characters . ! ? plus one
+  more if any non-whitespace character follows the last run or if there is no
+  run and the answer is not blank; occurrences of the word "thus" under the
+  same word rule as the other word tests; and semicolon characters of the raw
+  response. The added form is the exact count, "S == q", which takes A's graded
+  shape over the family's own numerator and, like A, carries no word-count
+  vacuity clause.
 """
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from collections import Counter
 from collections.abc import Callable, Sequence
@@ -57,6 +69,16 @@ FAMILY_SPEC: dict[str, tuple[str, str]] = {
     "CL8": ("y_final", "count_lower_bound"),
     "CP4": ("doubled_letter", "rate_lower_bound"),
     "CP7": ("letter_a", "rate_lower_bound"),
+    "RF9": ("t_initial", "count_budget"),
+    "RF10": ("s_final", "count_budget"),
+    "RF11": ("vowel_initial", "count_budget"),
+    "RF12": ("sentence", "count_budget"),
+    "CR9": ("t_initial", "rate_budget"),
+    "CR10": ("s_final", "rate_budget"),
+    "CR11": ("vowel_initial", "rate_budget"),
+    "CR12": ("sentence", "rate_budget"),
+    "CX1": ("marker_thus", "exact_count"),
+    "CX2": ("semicolon", "exact_count"),
 }
 
 _ASCII_UPPER = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -132,7 +154,7 @@ def focal_statistic(text: str) -> int:
     return max((len(word) for word in _runs(text)), default=0)
 
 
-# --- the nine counted statistics ----------------------------------------------------
+# --- the counted statistics ---------------------------------------------------------
 
 
 def _has_doubled_letter(word: str) -> bool:
@@ -144,6 +166,37 @@ def _is_upper(ch: str) -> bool:
     # capital_word is stated without an ASCII restriction, so category Lu is the
     # reading; inside a word (all category L) that coincides with str.isupper().
     return unicodedata.category(ch) == "Lu"
+
+
+_VOWELS = frozenset("aeiou")
+
+
+def _initials(text: str) -> Counter:
+    """Histogram of the first folded character of every word."""
+    return Counter(word[0] for word in lower_words(text) if word)
+
+
+def _finals(text: str) -> Counter:
+    """Histogram of the last folded character of every word."""
+    return Counter(word[-1] for word in lower_words(text) if word)
+
+
+def _sentences(text: str) -> int:
+    """The R3 rule: maximal runs of . ! ? plus one unterminated tail.
+
+    Written with `re.split` on the terminator class rather than by scanning
+    characters: splitting on the run pattern yields one field per sentence
+    boundary, so the tail is simply the last field and the question "is there
+    text after the final terminator" is "is the last field non-blank". The
+    leading fields are counted only when the split found any terminator at
+    all, which is what makes a blank response zero rather than one.
+    """
+    fields = re.split(r"[.!?]+", text)
+    terminators = len(fields) - 1
+    tail = 1 if fields[-1].strip() else 0
+    if terminators == 0:
+        return tail
+    return terminators + tail
 
 
 # One entry per registered numerator, each a direct transcription of its sentence.
@@ -159,6 +212,18 @@ _STATISTICS: dict[str, Callable[[str], int]] = {
     "capital_word": lambda t: sum(any(map(_is_upper, w)) for w in _runs(t)),
     "letter_a": lambda t: sum("a" in w for w in lower_words(t)),
     "y_final": lambda t: sum(w.endswith("y") for w in lower_words(t)),
+    # The six added by the R3 amendment, transcribed from its rule statements.
+    # The initial- and final-letter tallies go through one histogram of first
+    # and last characters rather than a per-word predicate, so a mistake in
+    # either would have to be a mistake in a shared histogram rather than a
+    # repeated slip.
+    "t_initial": lambda t: _initials(t)["t"],
+    "s_final": lambda t: _finals(t)["s"],
+    "vowel_initial": lambda t: sum(n for c, n in _initials(t).items()
+                                   if c in _VOWELS),
+    "sentence": _sentences,
+    "marker_thus": lambda t: Counter(lower_words(t))["thus"],
+    "semicolon": lambda t: Counter(t)[";"],
 }
 
 
@@ -187,6 +252,8 @@ def passes(kind: str, severity: int, text: str) -> bool:
     value = statistic(stat_id, text)
     if form == "count_budget":
         return value <= severity
+    if form == "exact_count":
+        return value == severity
     if form == "count_lower_bound":
         return value >= severity
     total = word_count(text)
@@ -211,6 +278,11 @@ def graded(kind: str, severity: int, text: str) -> float:
         return 1.0 - sum(length > severity for length in lengths) / len(lengths)
     stat_id, form = FAMILY_SPEC[kind]
     value = statistic(stat_id, text)
+    if form == "exact_count":
+        # The same shape A carries: distance from the target, normalised by it.
+        if severity == 0:
+            return 1.0 if value == 0 else 0.0
+        return max(0.0, 1.0 - abs(value - severity) / severity)
     if form == "count_budget":
         if severity == 0:
             return 1.0 if value == 0 else 0.0
@@ -240,5 +312,7 @@ def non_vacuous(kind: str, text: str, truncated: bool) -> bool:
     if kind == "B":
         return word_count(text) >= MIN_WORDS_NON_VACUOUS
     if FAMILY_SPEC[kind][1].endswith("lower_bound"):
+        return True
+    if FAMILY_SPEC[kind][1] == "exact_count":
         return True
     return word_count(text) >= MIN_WORDS_NON_VACUOUS

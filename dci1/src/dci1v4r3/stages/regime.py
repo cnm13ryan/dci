@@ -33,7 +33,7 @@ __all__ = ["ladder_screen_cell_count", "prescreen_difficulty_table",
 
 def ladder_screen_cell_count() -> int:
     """§12.2 round 0: one unconstrained cell, both grids including the
-    extension, and every round-0 ladder severity of all twenty families.
+    extension, and every round-0 ladder severity of all thirty families.
 
     §12.6's expansion adds rungs to this on top; the round-0 figure is what
     the plan costs before any coverage shortfall is known.

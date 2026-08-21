@@ -44,7 +44,9 @@ from dci1v4.verifiers.target import TARGET_WORD
 
 __all__ = ["TARGET_WORD", "TARGET_GRID", "FOCAL_GRID", "FOCAL_EXTENSION",
            "focal_severities", "FORM_COUNT", "FORM_RATE", "FORM_LOWER_BOUND",
-           "FORM_RATE_LOWER_BOUND", "FORMS", "RATE_FORMS", "LOWER_BOUND_FORMS",
+           "FORM_RATE_LOWER_BOUND", "FORM_EXACT", "FORMS", "RATE_FORMS",
+           "LOWER_BOUND_FORMS", "MARKER_WORDS", "R3_STATISTIC_IDS",
+           "R3_FAMILY_IDS",
            "CLASS_BUDGET", "CLASS_PRODUCTION", "STATISTIC_IDS", "Family",
            "FAMILIES", "REFERENCE_FAMILY_IDS", "CLASS_FAMILY_IDS",
            "FAMILY_IDS", "REFERENCE_LADDERS", "CLASS_LADDERS", "LADDERS",
@@ -53,7 +55,8 @@ __all__ = ["TARGET_WORD", "TARGET_GRID", "FOCAL_GRID", "FOCAL_EXTENSION",
            "KINDS", "Constraint", "registered_severities", "family_class",
            "family_form", "feature_group", "FEATURE_GROUPS",
            "FEATURE_GROUP_IDS", "assert_reference_slot_allowed",
-           "assert_ladder_within_reserve", "assert_no_redundant_rate_rung"]
+           "assert_ladder_within_reserve", "assert_no_redundant_rate_rung",
+           "assert_exact_form_is_class_arm"]
 
 # ------------------------------------------------------------- §7.1 outcomes
 TARGET_GRID = tuple(range(1, 9))            # A: n, unchanged from v4r2
@@ -78,8 +81,14 @@ FORM_COUNT = "count_budget"                  # S <= q
 FORM_RATE = "rate_budget"                    # 100 * S / W <= q
 FORM_LOWER_BOUND = "count_lower_bound"       # S >= q
 FORM_RATE_LOWER_BOUND = "rate_lower_bound"   # 100 * S / W >= q
+#: §7.0-R3. A's own predicate form, admitted to the family grammar so that the
+#: class arm can carry a companion built the way A is built. `S == q` is
+#: neither prefix-closed nor monotone upward: it is the one form a longer
+#: answer can overshoot and a shorter answer can undershoot.
+FORM_EXACT = "exact_count"                   # S == q
 
-FORMS = (FORM_COUNT, FORM_RATE, FORM_LOWER_BOUND, FORM_RATE_LOWER_BOUND)
+FORMS = (FORM_COUNT, FORM_RATE, FORM_LOWER_BOUND, FORM_RATE_LOWER_BOUND,
+         FORM_EXACT)
 RATE_FORMS = (FORM_RATE, FORM_RATE_LOWER_BOUND)
 LOWER_BOUND_FORMS = (FORM_LOWER_BOUND, FORM_RATE_LOWER_BOUND)
 
@@ -98,13 +107,28 @@ CLASS_PRODUCTION = "production"      # satisfied by doing more of something
 _FORM_CLASS = {FORM_COUNT: CLASS_BUDGET,
                FORM_RATE: CLASS_BUDGET,
                FORM_LOWER_BOUND: CLASS_PRODUCTION,
-               FORM_RATE_LOWER_BOUND: CLASS_PRODUCTION}
+               FORM_RATE_LOWER_BOUND: CLASS_PRODUCTION,
+               # §7.4-R3: `family_class("A")` already returns production for
+               # the same predicate, and a family may not declare a class its
+               # own form contradicts. So an exact-count family is a class-arm
+               # family, and §13.7 keeps it out of every reference slot.
+               FORM_EXACT: CLASS_PRODUCTION}
 
 #: §7.0's nine registered counted statistics. A family is one of these under
 #: one of the four forms; nothing else is a candidate family.
+#: §7.0-R3 adds six. The nine registered at round 0 are first, in their
+#: registered order, so every frozen structure indexed by position is
+#: extended rather than reordered.
+R3_STATISTIC_IDS = ("t_initial", "s_final", "vowel_initial", "sentence",
+                    "marker_thus", "semicolon")
 STATISTIC_IDS = ("b_initial", "ing_final", "one_letter", "doubled_letter",
                  "comma", "capital_char", "capital_word", "letter_a",
-                 "y_final")
+                 "y_final") + R3_STATISTIC_IDS
+
+#: §7.0-R3. The marker words an exact-count family may name. `however` is A's
+#: and is excluded: a companion that counted A's own word would not be a
+#: companion, it would be A under another name.
+MARKER_WORDS = {"marker_thus": "thus"}
 
 #: §7.0's **feature groups**: which statistics measure the same property of an
 #: answer. Two families in the same group never co-occur in a cell and never
@@ -122,6 +146,15 @@ FEATURE_GROUPS: dict[str, str] = {
     "one_letter": "one_letter", "doubled_letter": "doubled_letter",
     "comma": "comma", "capital_char": "capital", "capital_word": "capital",
     "letter_a": "letter_a", "y_final": "y_final",
+    # §7.0-R3. Six new properties, six new groups. `t_initial` is not grouped
+    # with `b_initial` and `s_final` is not grouped with `y_final`, because
+    # the group exists to name statistics that measure the same property and
+    # are therefore entailed at the edge of their ladders --- and no answer
+    # can have a word that begins with both b and t, so neither budget
+    # constrains the other at any severity.
+    "t_initial": "t_initial", "s_final": "s_final",
+    "vowel_initial": "vowel_initial", "sentence": "sentence",
+    "marker_thus": "marker", "semicolon": "semicolon",
 }
 assert set(FEATURE_GROUPS) == set(STATISTIC_IDS)
 FEATURE_GROUP_IDS = tuple(sorted(set(FEATURE_GROUPS.values())))
@@ -288,7 +321,70 @@ FAMILIES: dict[str, Family] = {
                   "class_control",
                   "At least q percent of words must contain the letter a.",
                   "RF7"),
+    # ---- §7.0-R3: four new counted statistics in both budget forms.
+    #
+    # Every one was chosen against the natural distribution measured on the
+    # §12.2 screen's *unconstrained* rows alone --- the registered chance
+    # quantity P(pass | nothing stated) --- and against nothing else. The
+    # round-0 library concentrates below the eligibility floor because its
+    # numerators are rare in ordinary prose: a budget over a rare feature is
+    # impossible at its tight rungs and satisfied for free at its loose ones,
+    # and the window between the two is where the difficulty coordinate is
+    # informative. These four numerators are common in ordinary prose, so the
+    # window is wide before any model is asked to comply.
+    "RF9": Family("RF9", "t_initial", FORM_COUNT, (0, 2, 4, 6, 8, 10, 13, 16),
+                  _seq(0, 26), "reference",
+                  "At most q words in the answer may begin with the letter t.",
+                  "new"),
+    "RF10": Family("RF10", "s_final", FORM_COUNT, (0, 2, 4, 6, 9, 12, 15, 19),
+                   _seq(0, 30), "reference",
+                   "At most q words in the answer may end with the letter s.",
+                   "new"),
+    "RF11": Family("RF11", "vowel_initial", FORM_COUNT,
+                   (0, 4, 8, 12, 16, 21, 26, 32), _seq(0, 48), "reference",
+                   "At most q words in the answer may begin with a vowel.",
+                   "new"),
+    "RF12": Family("RF12", "sentence", FORM_COUNT, (1, 2, 3, 4, 5, 6, 7, 8),
+                   _seq(1, 12), "reference",
+                   "The answer may contain at most q sentences.",
+                   "new"),
+    "CR9": Family("CR9", "t_initial", FORM_RATE, (1, 2, 4, 6, 8, 10, 12, 15),
+                  _seq(1, 20), "reference",
+                  "At most q percent of words may begin with the letter t.",
+                  "RF9"),
+    "CR10": Family("CR10", "s_final", FORM_RATE, (2, 4, 6, 8, 11, 14, 17, 21),
+                   _seq(1, 26), "reference",
+                   "At most q percent of words may end with the letter s.",
+                   "RF10"),
+    "CR11": Family("CR11", "vowel_initial", FORM_RATE,
+                   (4, 8, 12, 16, 20, 24, 28, 33), _seq(2, 40), "reference",
+                   "At most q percent of words may begin with a vowel.",
+                   "RF11"),
+    "CR12": Family("CR12", "sentence", FORM_RATE, (1, 2, 3, 4, 5, 6, 8, 10),
+                   _seq(1, 14), "reference",
+                   "The answer may contain at most q sentences per hundred "
+                   "words.",
+                   "RF12"),
+    # ---- §7.4-R3: the class arm gains A's own predicate form.
+    #
+    # CX1 is A's rule with A's ladder and A's four wording templates, over a
+    # different marker word. It exists because §29 records the study's
+    # sharpest limitation --- A is an exact-count production constraint and
+    # every admissible reference is a budget --- and a class companion built
+    # exactly the way A is built is the tightest available bound on how much
+    # of any measured excess is the form rather than the identity.
+    "CX1": Family("CX1", "marker_thus", FORM_EXACT, TARGET_GRID, TARGET_GRID,
+                  "class_control",
+                  "The answer must use the word thus exactly q times.",
+                  "new"),
+    "CX2": Family("CX2", "semicolon", FORM_EXACT, (1, 2, 3, 4, 5, 6, 7, 8),
+                  _seq(1, 10), "class_control",
+                  "The answer must contain exactly q semicolon characters.",
+                  "new"),
 }
+#: §7.0-R3's families, named so that carried and new evidence stay separable.
+R3_FAMILY_IDS = ("RF9", "RF10", "RF11", "RF12", "CR9", "CR10", "CR11", "CR12",
+                 "CX1", "CX2")
 
 REFERENCE_FAMILY_IDS = tuple(k for k, f in FAMILIES.items()
                              if f.role == "reference")
@@ -405,8 +501,26 @@ def assert_no_redundant_rate_rung() -> None:
                 "numerator and would be counted as an independent family")
 
 
+def assert_exact_form_is_class_arm() -> None:
+    """§7.4-R3, §13.7: an exact-count family may fill only the class slot.
+
+    `assert_reference_slot_allowed` already refuses on role, and this refuses
+    on form, so admitting an exact-count family to a reference slot would take
+    two independent edits rather than one mistake. The rule it protects is
+    registered and is not a consequence of any measurement: §13.7 keeps the
+    reference set one class so that `Delta_R` is a contrast within a class and
+    `Delta_class` is the contrast between classes.
+    """
+    for kind, family in FAMILIES.items():
+        if family.form is FORM_EXACT and family.role != "class_control":
+            raise InstrumentError(
+                f"{kind}: an exact-count family is production-class and "
+                "§13.7 admits it to the class arm only")
+
+
 assert_ladder_within_reserve()
 assert_no_redundant_rate_rung()
+assert_exact_form_is_class_arm()
 
 
 @dataclass(frozen=True)

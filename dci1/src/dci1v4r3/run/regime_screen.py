@@ -8,7 +8,7 @@ The stage does three things in order and writes one record:
 2. **§12.2 dense ladder screen.** At that cap, one draw per cell on the 24
    pre-screen topics: the unconstrained cell, A's full grid, B's grid
    including the conditional extension, and every round-0 ladder severity of
-   all twenty families. The unconstrained rows additionally carry a chance
+   all thirty families. The unconstrained rows additionally carry a chance
    verdict for every declared instance, which is where kappa comes from.
 3. **§12.6 candidate expansion.** The identification-coverage criterion is
    evaluated on that table; while it is short and rounds remain, the frozen

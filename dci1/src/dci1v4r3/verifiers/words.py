@@ -63,7 +63,13 @@ from __future__ import annotations
 from dci1v4.verifiers.words import alpha_runs
 
 __all__ = ["alpha_runs", "words_lower", "case_folding_splitters",
-           "assert_single_splitter"]
+           "assert_single_splitter", "SENTENCE_TERMINATORS", "sentence_units"]
+
+#: §7.3-R3. The three characters that end a sentence. Registered as a literal
+#: set rather than a Unicode category, because the category of a full stop is
+#: shared by characters that do not end a sentence and the construct is the
+#: ordinary written one.
+SENTENCE_TERMINATORS = ".!?"
 
 
 def words_lower(text: str) -> list[str]:
@@ -96,3 +102,40 @@ def assert_single_splitter() -> str:
             f"U+0130; it names {[hex(ord(c)) for c in found]}. §7.3's scope "
             "argument is stated over that enumeration and must be re-derived")
     return "İ"
+
+
+def sentence_units(text: str) -> int:
+    """§7.3-R3: the number of sentences in the answer.
+
+    The rule, in the words registered in §7.3-R3: *count the maximal runs of
+    the characters* ``.``, ``!`` *and* ``?`` *in the answer; if any character
+    that is not whitespace follows the last such run --- or if there is no such
+    run and the answer is not blank --- add one for the unterminated final
+    sentence.* A blank answer has no sentences.
+
+    The trailing clause is the whole reason this is not simply a terminator
+    count. A response that ends mid-clause, or a one-line answer with no full
+    stop, contains a sentence that a reader would count and a bare terminator
+    tally would not --- and a budget verifier that scored such an answer as
+    zero sentences would pass it at every severity for having written nothing
+    it could count. That is the vacuity failure §9.3 exists to prevent, and
+    here it is prevented in the statistic itself.
+
+    Runs are maximal, so ``...`` and ``?!`` each end one sentence rather than
+    three or two. Nothing here inspects word boundaries: a decimal point and an
+    abbreviation's full stop both terminate a sentence under this rule, which
+    is a known and registered over-count, stated in §7.3-R3 rather than
+    discovered later.
+    """
+    count, in_run, seen_since = 0, False, False
+    for ch in text:
+        if ch in SENTENCE_TERMINATORS:
+            if not in_run:
+                count += 1
+                in_run = True
+            seen_since = False
+        else:
+            in_run = False
+            if not ch.isspace():
+                seen_since = True
+    return count + (1 if seen_since else 0)

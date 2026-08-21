@@ -1104,6 +1104,48 @@ evidence — they judge different questions and the two must never be pooled.
 
 ---
 
+## C27. The candidate library gains six numerators and a fifth form (amendment R3, 2026-08-21)
+
+**What changed.** §7.0's grammar goes from nine counted statistics, eight
+feature groups, four predicate forms, twenty families and 334 declared
+severities to fifteen, thirteen, five, thirty and 570. The added families are
+`RF9`–`RF12` and `CR9`–`CR12` (budget references over `t_initial`, `s_final`,
+`vowel_initial` and `sentence`) and `CX1`–`CX2` (exact-count class controls
+over `marker_thus` and `semicolon`). Full statement in §7.0-R3.
+
+**Why.** §12.6 spent both registered expansion rounds on all four replications
+and coverage still fails — `C4` on three models, `C2` on one. The diagnosis is
+that the round-0 library's numerators are rare in ordinary prose, so their
+budgets are impossible at tight rungs and free at loose ones, leaving little
+between; 77–114 rungs per model sit below the eligibility floor. Expanding
+*within* the library cannot reach the missing region because the library does
+not reach it at any severity.
+
+**What it does not change.** No criterion, caliper, band or threshold moves.
+§13.7 in particular is untouched: the reference and spectrum slots still refuse
+every production family, so the reference set stays one class. The two
+exact-count families are class-arm families, where §7.4 already puts production
+forms.
+
+**Affected results.** The canonical verifier hash moves, so the registration
+manifest is superseded and re-signed and the §10.2 instrument population goes
+from 348 to 584. **The earlier 348-instrument Gate 1 evidence does not cover
+the ten added families**; the whole population is re-certified at the new hash.
+
+**Comparability.** The round-0 measurements of the original twenty families are
+unaffected — no existing row is regenerated or rescored, and the added families
+are measured in their own screen on the same 24 development topics at the same
+cap. The `expansion_diagnosis.json` figures were computed against the pre-R3
+library and remain the record of why R3 exists.
+
+**One risk, stated.** `CX1` is $A$ with a different marker word, and it is the
+strongest control this design has ever had for $A$'s constraint class. It is
+also, for that reason, the family most likely to change what a $\Delta_{class}$
+of any size means. It was registered before its solo compliance was measured on
+any model, and the registration says so.
+
+---
+
 ## Sequencing, and why the order is forced
 
 1. **Amendments must precede Gate 1.** C2, C15, C23 and C24 all change the
