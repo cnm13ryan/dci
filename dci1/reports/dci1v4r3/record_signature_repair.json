@@ -1,0 +1,153 @@
+{
+ "artifact_type": "v4r3-record-signature-repair",
+ "changes": "record_hash and signature only; no payload byte, and no reader copy",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "defect": "canonical_json sorts integer dict keys numerically and string dict keys lexicographically; a record signed over the in-memory payload and verified over the JSON it was written to therefore disagreed whenever the payload held an integer-keyed dict. \u00a712.2's completion_cap.table is the only such payload in v4r3.",
+ "fixed_in_code": "dci1v4r3.engine.transitions.on_the_wire, which signs the wire form so what is hashed is what is stored",
+ "generated_at": "2026-08-21T16:40:05+00:00",
+ "healthy": [
+  {
+   "hash_of_payload_as_stored": "f230e0f33b9042759a3247cf0ce449e9b35dc0dab03bae5dc69f7df6354a72d7",
+   "hash_of_payload_with_integer_keys": "f230e0f33b9042759a3247cf0ce449e9b35dc0dab03bae5dc69f7df6354a72d7",
+   "path": "evidence/dci1v4r3/gemma-3n-e2b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "stored_record_hash": "f230e0f33b9042759a3247cf0ce449e9b35dc0dab03bae5dc69f7df6354a72d7"
+  },
+  {
+   "hash_of_payload_as_stored": "089c3df4c74ea6b4103a946c11d41a8c889338b93bb9647842339b5d21ed0713",
+   "hash_of_payload_with_integer_keys": "089c3df4c74ea6b4103a946c11d41a8c889338b93bb9647842339b5d21ed0713",
+   "path": "evidence/dci1v4r3/gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json",
+   "stored_record_hash": "089c3df4c74ea6b4103a946c11d41a8c889338b93bb9647842339b5d21ed0713"
+  },
+  {
+   "hash_of_payload_as_stored": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e",
+   "hash_of_payload_with_integer_keys": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e",
+   "path": "evidence/dci1v4r3/gemma-3n-e4b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "stored_record_hash": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e"
+  },
+  {
+   "hash_of_payload_as_stored": "c48a419addaaf254e4dad634328f453a02a13ab38f1cd214953884f7a8c900e7",
+   "hash_of_payload_with_integer_keys": "c48a419addaaf254e4dad634328f453a02a13ab38f1cd214953884f7a8c900e7",
+   "path": "evidence/dci1v4r3/gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json",
+   "stored_record_hash": "c48a419addaaf254e4dad634328f453a02a13ab38f1cd214953884f7a8c900e7"
+  },
+  {
+   "hash_of_payload_as_stored": "d097d6881ac9394d3e39e7da11b717dd09fa017574b91d65fdf06da82b0113a0",
+   "hash_of_payload_with_integer_keys": "d097d6881ac9394d3e39e7da11b717dd09fa017574b91d65fdf06da82b0113a0",
+   "path": "evidence/dci1v4r3/qwen3-4b/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "stored_record_hash": "d097d6881ac9394d3e39e7da11b717dd09fa017574b91d65fdf06da82b0113a0"
+  },
+  {
+   "hash_of_payload_as_stored": "64260e7d63abdc43bb0b4737d9acc4be1aa56c6a2f0ab810bc717b22d2e73e07",
+   "hash_of_payload_with_integer_keys": "64260e7d63abdc43bb0b4737d9acc4be1aa56c6a2f0ab810bc717b22d2e73e07",
+   "path": "evidence/dci1v4r3/qwen3-4b/QUALIFIED/records/qualification_record.json",
+   "stored_record_hash": "64260e7d63abdc43bb0b4737d9acc4be1aa56c6a2f0ab810bc717b22d2e73e07"
+  },
+  {
+   "hash_of_payload_as_stored": "a432fe84558bf78e81e44f44c33d0f112c12ec3219872022e5c1ccbed01ff83b",
+   "hash_of_payload_with_integer_keys": "a432fe84558bf78e81e44f44c33d0f112c12ec3219872022e5c1ccbed01ff83b",
+   "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "stored_record_hash": "a432fe84558bf78e81e44f44c33d0f112c12ec3219872022e5c1ccbed01ff83b"
+  },
+  {
+   "hash_of_payload_as_stored": "a3397ec57336d5c0d6ab2775c1439f8503b9242872551b1c5f668479f6fb9927",
+   "hash_of_payload_with_integer_keys": "a3397ec57336d5c0d6ab2775c1439f8503b9242872551b1c5f668479f6fb9927",
+   "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json",
+   "stored_record_hash": "a3397ec57336d5c0d6ab2775c1439f8503b9242872551b1c5f668479f6fb9927"
+  },
+  {
+   "hash_of_payload_as_stored": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072",
+   "hash_of_payload_with_integer_keys": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072",
+   "path": "evidence/dci1v4r3/registration/registration_manifest.json",
+   "stored_record_hash": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072"
+  },
+  {
+   "hash_of_payload_as_stored": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449",
+   "hash_of_payload_with_integer_keys": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449",
+   "path": "evidence/dci1v4r3/registration/registration_manifest_superseded_70a44e487c5e.json",
+   "stored_record_hash": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449"
+  },
+  {
+   "hash_of_payload_as_stored": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26",
+   "hash_of_payload_with_integer_keys": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26",
+   "path": "evidence/dci1v4r3/registration/registration_manifest_superseded_95593375fc4d.json",
+   "stored_record_hash": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26"
+  },
+  {
+   "hash_of_payload_as_stored": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e",
+   "hash_of_payload_with_integer_keys": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e",
+   "path": "durable_root/dci1v4r3/gemma-3n-e4b-it/GATE_0_APPARATUS/gate0_apparatus.json",
+   "stored_record_hash": "baf6bedd7668ccefa92841b866e45c25e362bb39e8b783c1fec0facfe4d8fa8e"
+  },
+  {
+   "hash_of_payload_as_stored": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072",
+   "hash_of_payload_with_integer_keys": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072",
+   "path": "durable_root/dci1v4r3/registration/registration_manifest.json",
+   "stored_record_hash": "c91b20536f15b434a1da7bd0a9205032c824d2b52aa0c93fd731d09dc5729072"
+  },
+  {
+   "hash_of_payload_as_stored": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449",
+   "hash_of_payload_with_integer_keys": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449",
+   "path": "durable_root/dci1v4r3/registration/registration_manifest_superseded_70a44e487c5e.json",
+   "stored_record_hash": "8a0634c2f38f346cc572e727eaeae953aaeed99e6683c201fc7bb9912be1e449"
+  },
+  {
+   "hash_of_payload_as_stored": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26",
+   "hash_of_payload_with_integer_keys": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26",
+   "path": "durable_root/dci1v4r3/registration/registration_manifest_superseded_95593375fc4d.json",
+   "stored_record_hash": "d02f8775844b142976da3e915aa479480c0b17ca95f11ac78ebb3bb910421a26"
+  }
+ ],
+ "producing_commit": "bb37ea54bc202e2751d4bf1301a572401ddb6f95",
+ "proof": "for every repaired record the stored hash is exactly sha_obj of THIS payload with its numeric keys read back as integers, which an altered payload could not satisfy",
+ "repairable_not_applied": [],
+ "repaired": [
+  {
+   "hash_of_payload_as_stored": "bdf9d8fff179368ac8b1de89ecb76e6364720877fd8341fd99eb1daf01dc59fd",
+   "hash_of_payload_with_integer_keys": "6556a2d6a49eac7fa8d2d328b56b77fa4d1a125c47b0d3d9344af63724f87e54",
+   "path": "evidence/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json",
+   "stored_record_hash": "bdf9d8fff179368ac8b1de89ecb76e6364720877fd8341fd99eb1daf01dc59fd"
+  },
+  {
+   "hash_of_payload_as_stored": "4610e2df1334a34627ee73ea1b6d64a77f8ea8b60b381b8714944794471f6023",
+   "hash_of_payload_with_integer_keys": "5e2f1a45806e9c732319b6355a9f4d63e4d317468092929cdb921fd3041f630f",
+   "path": "evidence/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json",
+   "stored_record_hash": "4610e2df1334a34627ee73ea1b6d64a77f8ea8b60b381b8714944794471f6023"
+  },
+  {
+   "hash_of_payload_as_stored": "eed93820f6b96d9a714a7539099e4ed2afd5fa7b570e7b44d7edf87df24928ea",
+   "hash_of_payload_with_integer_keys": "6c71cc7935bc88f2103420edea2d4c9265773637239357465600b0425e5e4d5a",
+   "path": "evidence/dci1v4r3/qwen3-4b/REGIME_SCREEN/records/regime_record.json",
+   "stored_record_hash": "eed93820f6b96d9a714a7539099e4ed2afd5fa7b570e7b44d7edf87df24928ea"
+  },
+  {
+   "hash_of_payload_as_stored": "efc89fc8a1bd7a436e928fec8e5e310c450072d211300fda140f5419778de0e3",
+   "hash_of_payload_with_integer_keys": "75f5008eb5a908be76068d0f27dffe44f140be13714d13740c4cb967d71cd35a",
+   "path": "evidence/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json",
+   "stored_record_hash": "efc89fc8a1bd7a436e928fec8e5e310c450072d211300fda140f5419778de0e3"
+  },
+  {
+   "hash_of_payload_as_stored": "bdf9d8fff179368ac8b1de89ecb76e6364720877fd8341fd99eb1daf01dc59fd",
+   "hash_of_payload_with_integer_keys": "6556a2d6a49eac7fa8d2d328b56b77fa4d1a125c47b0d3d9344af63724f87e54",
+   "path": "durable_root/dci1v4r3/gemma-3n-e2b-it/REGIME_SCREEN/regime_record.json",
+   "stored_record_hash": "bdf9d8fff179368ac8b1de89ecb76e6364720877fd8341fd99eb1daf01dc59fd"
+  },
+  {
+   "hash_of_payload_as_stored": "4610e2df1334a34627ee73ea1b6d64a77f8ea8b60b381b8714944794471f6023",
+   "hash_of_payload_with_integer_keys": "5e2f1a45806e9c732319b6355a9f4d63e4d317468092929cdb921fd3041f630f",
+   "path": "durable_root/dci1v4r3/gemma-3n-e4b-it/REGIME_SCREEN/regime_record.json",
+   "stored_record_hash": "4610e2df1334a34627ee73ea1b6d64a77f8ea8b60b381b8714944794471f6023"
+  },
+  {
+   "hash_of_payload_as_stored": "eed93820f6b96d9a714a7539099e4ed2afd5fa7b570e7b44d7edf87df24928ea",
+   "hash_of_payload_with_integer_keys": "6c71cc7935bc88f2103420edea2d4c9265773637239357465600b0425e5e4d5a",
+   "path": "durable_root/dci1v4r3/qwen3-4b/REGIME_SCREEN/regime_record.json",
+   "stored_record_hash": "eed93820f6b96d9a714a7539099e4ed2afd5fa7b570e7b44d7edf87df24928ea"
+  },
+  {
+   "hash_of_payload_as_stored": "efc89fc8a1bd7a436e928fec8e5e310c450072d211300fda140f5419778de0e3",
+   "hash_of_payload_with_integer_keys": "75f5008eb5a908be76068d0f27dffe44f140be13714d13740c4cb967d71cd35a",
+   "path": "durable_root/dci1v4r3/qwen3-4b-instruct-2507/REGIME_SCREEN/regime_record.json",
+   "stored_record_hash": "efc89fc8a1bd7a436e928fec8e5e310c450072d211300fda140f5419778de0e3"
+  }
+ ]
+}
