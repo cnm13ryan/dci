@@ -55,9 +55,15 @@ def assert_generation_licensed(freeze_record: Mapping[str, Any] | None
         raise IntegrityError(
             f"the freeze record reports {freeze_record.get('outcome')!r}, not "
             f"PASS; generation is not licensed")
+    # `canonical_verifier_hash`, which is the name §18.1 registers and the
+    # name `freeze_run.assemble` writes. This list asked for
+    # `verifier_source_hash` --- the name of the *function* that computes it,
+    # and of no freeze field --- so `assert_generation_licensed` refused every
+    # valid freeze record and no confirmatory generation was licensable on any
+    # replication. The path had never run.
     missing = [field for field in
                ("design_variant", "slot_map", "blocks", "m_draws",
-                "completion_cap", "model_revision", "verifier_source_hash",
+                "completion_cap", "model_revision", "canonical_verifier_hash",
                 "producing_commit")
                if field not in freeze_record]
     if missing:
@@ -94,7 +100,7 @@ def confirmatory_plan(freeze_record: Mapping[str, Any]) -> dict[str, Any]:
         "slot_map": slot_map,
         "completion_cap": freeze["completion_cap"],
         "model_revision": freeze["model_revision"],
-        "verifier_source_hash": freeze["verifier_source_hash"],
+        "canonical_verifier_hash": freeze["canonical_verifier_hash"],
         "producing_commit": freeze["producing_commit"],
         "cell_ids": [t.cell_id for t in types],
         "row_identities": len(blocks) * len(types) * m,
@@ -155,7 +161,7 @@ def assert_plan_matches_freeze(plan: Mapping[str, Any],
     """Nothing the freeze bound may differ in the plan that runs."""
     drift = {field: (plan.get(field), freeze_record.get(field))
              for field in ("design_variant", "m_draws", "completion_cap",
-                           "model_revision", "verifier_source_hash",
+                           "model_revision", "canonical_verifier_hash",
                            "producing_commit")
              if plan.get(field) != freeze_record.get(field)}
     if drift:

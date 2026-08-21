@@ -19,13 +19,68 @@ SLOTS = {s: [s, 3] for s in C.REGISTERED_SLOT_ORDER}
 
 
 def freeze(variant="full", blocks=4, m=2, **over):
+    """A freeze record whose every field is a field §18.1 registers.
+
+    This fixture said `verifier_source_hash`, which is the name of the
+    *function* that computes the hash and of no freeze field --- and
+    `assert_generation_licensed` demanded the same non-existent name, so the
+    fixture matched the check rather than the record and the two agreed with
+    each other about a study neither could run. Every real freeze record was
+    refused. `test_the_fixture_names_only_fields_the_freeze_binds` is the
+    check that would have caught it.
+    """
     record = {
         "outcome": "PASS", "design_variant": variant,
         "slot_map": SLOTS, "blocks": [f"b{i}" for i in range(blocks)],
         "m_draws": m, "completion_cap": 512, "model_revision": "rev",
-        "verifier_source_hash": "v" * 64, "producing_commit": "c" * 40}
+        "canonical_verifier_hash": "v" * 64, "producing_commit": "c" * 40}
     record.update(over)
     return record
+
+
+def test_the_fixture_names_only_fields_the_freeze_binds():
+    from dci1v4r4.stages.freeze import FREEZE_FIELDS
+
+    bound = set(FREEZE_FIELDS)
+    # `outcome` and `blocks` are written beside the bound fields by
+    # `freeze_run`, and `slot_map` likewise; everything else the fixture
+    # claims must be something §18.1 actually binds.
+    beside = {"outcome", "blocks", "slot_map"}
+    assert set(freeze()) - beside <= bound, sorted(set(freeze()) - beside - bound)
+
+
+def test_a_freeze_record_the_study_really_wrote_licenses_generation():
+    """The end the fixture stands in for. Skips where the tree is absent."""
+    from dci1v4r4.engine.context import registered_context
+    from dci1v4r4.engine.paths import model_tree
+    from dci1v4r4.engine.transitions import read_stage_record
+
+    context = registered_context()
+    for model_key in ("gemma-3n-e4b-it", "qwen3-4b"):
+        tree = model_tree(context, model_key)
+        if not tree.stage_record(C.STAGE_GATE5).exists():   # pragma: no cover
+            pytest.skip("no frozen replication in this checkout")
+        record = read_stage_record(tree, C.STAGE_GATE5)
+        plan = X.confirmatory_plan(record)                  # must not raise
+        assert plan["generations"] == plan["blocks"] * \
+            plan["cells_per_block"] * plan["m_draws"]
+        assert plan["canonical_verifier_hash"] == \
+            record["canonical_verifier_hash"]
+
+
+def test_the_selective_rerun_guard_is_called_and_not_merely_documented():
+    import ast
+    from pathlib import Path as _Path
+
+    src = _Path(__file__).resolve().parents[1] / "src" / "dci1v4r4" / "run"
+    tree = ast.parse((src / "confirmatory_run.py").read_text())
+    func = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
+                and n.name == "run_confirmatory")
+    called = {n.func.attr for n in ast.walk(func)
+              if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)}
+    called |= {n.func.id for n in ast.walk(func)
+               if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)}
+    assert "assert_no_selective_rerun" in called
 
 
 def rows_for(record):
@@ -44,10 +99,10 @@ def test_no_freeze_means_no_generation():
 
 def test_a_freeze_missing_a_bound_field_does_not_license_generation():
     record = freeze()
-    del record["verifier_source_hash"]
+    del record["canonical_verifier_hash"]
     with pytest.raises(IntegrityError) as excinfo:
         X.assert_generation_licensed(record)
-    assert "verifier_source_hash" in str(excinfo.value)
+    assert "canonical_verifier_hash" in str(excinfo.value)
 
 
 def test_an_unregistered_design_variant_is_refused():

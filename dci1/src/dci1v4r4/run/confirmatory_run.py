@@ -132,7 +132,7 @@ def run_confirmatory(model_key: str, tree: ModelTree, *,
     CF.assert_plan_matches_freeze({**plan, **{
         k: freeze_record[k] for k in
         ("design_variant", "m_draws", "completion_cap", "model_revision",
-         "verifier_source_hash", "producing_commit")}}, freeze_record)
+         "canonical_verifier_hash", "producing_commit")}}, freeze_record)
     total = len(_confirmatory_blocks())
     done = 0
     for start, stop in batches(total, size=batch_size):
@@ -140,6 +140,14 @@ def run_confirmatory(model_key: str, tree: ModelTree, *,
                   stop=stop, device=device, generate=generate)
         done += stop - start
     rows = collect_rows(tree)
+    # §21's own guard, with §21's own message. `completeness` below refuses the
+    # same two conditions as part of a wider check, so the effect was already
+    # there; the guard the module docstring promised was not called, and a
+    # selective re-run deserves to be refused by the rule that names it.
+    CF.assert_no_selective_rerun(
+        freeze_record, [{"block_id": _block_key(r["block_id"]),
+                         "cell_id": r["design_cell_id"],
+                         "draw_index": r["draw_index"]} for r in rows])
     report = completeness(freeze_record, rows)
     if not report["complete"]:
         raise IntegrityError(
