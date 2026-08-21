@@ -1,0 +1,3090 @@
+{
+ "artifact_type": "v4r3-wording-review",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "component": "\u00a710.7-R5 A'",
+ "counts": {
+  "awkward_unambiguous": 101,
+  "genuinely_ambiguous": 120,
+  "requires_correction": 0
+ },
+ "criterion": "no wording is classified genuinely_ambiguous or requires_correction. An awkward-but-unambiguous wording does not block, and is recorded rather than fixed: changing a live wording invalidates every measurement taken under it (\u00a710.7-R5 A')",
+ "findings": [
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may begin with b.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words beginning with b.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may start with b.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF2",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may end with ing.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF2",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words ending with ing.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF2",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may end in ing.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF3",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may have one letter.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF3",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words of one letter.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF3",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may have one letter.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF4",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words contain a doubled letter.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF4",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words with a doubled letter.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF4",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words contain a doubled letter.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF5",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer may contain at most 1 commas.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF5",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 commas may appear.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF7",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words contain the letter a.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF7",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words containing the letter a.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF7",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words contain the letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may end with y.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words ending with y.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may end in y.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CR5",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 commas per hundred words.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CR5",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 commas per hundred words.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 5,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 5 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 10,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 10 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 15,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 15 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 20,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 20 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 25,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 25 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 30,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 30 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 35,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 35 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 40,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 40 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 45,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 45 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 50,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 50 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 55,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 55 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 60,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 60 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 65,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 65 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 70,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 70 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 75,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 75 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 80,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 80 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 85,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 85 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 90,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 90 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 95,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 95 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 100,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 100 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 105,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 105 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 110,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 110 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 115,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 115 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 120,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 120 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 125,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 125 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 130,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 130 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 135,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 135 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL7",
+   "severity": 140,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 140 words with letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CL8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At least 1 words must end with y.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CL8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Include at least 1 words ending with y.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 1,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 1 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CL8",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer needs 1 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 2,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 2 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 3,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 3 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 4,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 4 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 5,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 5 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 6,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 6 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 7,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 7 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 8,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 8 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 9,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 9 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 10,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 10 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 11,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 11 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 12,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 12 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 13,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 13 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 14,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 14 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 15,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 15 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 16,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 16 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 17,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 17 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 18,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 18 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 19,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 19 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 20,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 20 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 21,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 21 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 22,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 22 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 23,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 23 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 24,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 24 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 25,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 25 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 26,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 26 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 27,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 27 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "direction_implicit",
+   "kind": "CL8",
+   "severity": 28,
+   "why": "the wording states a requirement of q rather than a bound. On a lower-bound form the two agree: an answer that needs q of something has q of it when it has more, so every reading of the wording selects the registered predicate",
+   "wording": "Your answer needs 28 words ending with y.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 2,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 2 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 2,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 2 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 3,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 3 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 3,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 3 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 4,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 4 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 4,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 4 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 5,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 5 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 5,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 5 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 6,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 6 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 6,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 6 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 7,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 7 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 7,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 7 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 8,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 8 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 8,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 8 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 9,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 9 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 9,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 9 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 10,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 10 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 10,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 10 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 11,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 11 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 11,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 11 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 12,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 12 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 12,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 12 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 13,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 13 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 13,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 13 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 14,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 14 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 14,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 14 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 15,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 15 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 15,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 15 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 16,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 16 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 16,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 16 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 17,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 17 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 17,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 17 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 18,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 18 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 18,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 18 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 19,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 19 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 19,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 19 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 20 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 20 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 21,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 21 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 21,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 21 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 22 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 22 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 23,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 23 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 23,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 23 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 24 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 24 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 25,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 25 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 25,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 25 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 26 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 26 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 27,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 27 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 27,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 27 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 28 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 28 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 29,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 29 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 29,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 29 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 30 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 30 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 31,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 31 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 31,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 31 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 32 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 32 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 20 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 20 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 22 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 22 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 24 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 24 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 26 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 26 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 28 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 28 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 30 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 30 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 32 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 32 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 34,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 34 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 34,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 34 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 36,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 36 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 36,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 36 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 38,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 38 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 38,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 38 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 40,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 40 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 40,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 40 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 42,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 42 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 42,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 42 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 44,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 44 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 44,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 44 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 46,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 46 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 46,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 46 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 48,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 48 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 48,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 48 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 50,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 50 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 50,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 50 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 52,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 52 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 52,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 52 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 54,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 54 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 54,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 54 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 56,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 56 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 56,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 56 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 58,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 58 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 58,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 58 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 60,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 60 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 60,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 60 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 62,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 62 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 62,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 62 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 64,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 64 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 64,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 64 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 66,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 66 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 66,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 66 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 68,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 68 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 68,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 68 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 70,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 70 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 70,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 70 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 72,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 72 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 72,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 72 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 74,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 74 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 74,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 74 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 76,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 76 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 76,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 76 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF9",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may begin with t.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF9",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words beginning with t.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF9",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may start with t.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF10",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may end with s.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF10",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 words ending with s.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF10",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may end in s.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF11",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 words may begin with vowels.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF11",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 words may start with vowels.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer may use at most 1 sentences.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer must have at most 1 sentences.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "No more than 1 sentences may appear.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "RF12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Do not write more than 1 sentences.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CR12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use at most 1 sentences per hundred words.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CR12",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "At most 1 sentences per hundred words.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Use the word thus exactly 1 times.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer must contain thus exactly 1 times.",
+   "wording_index": 1
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Include thus exactly 1 times in your answer.",
+   "wording_index": 2
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX1",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "The word thus must appear exactly 1 times.",
+   "wording_index": 3
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX2",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Your answer must use exactly 1 semicolons.",
+   "wording_index": 0
+  },
+  {
+   "classification": "awkward_unambiguous",
+   "finding": "plural_noun_at_q_equals_one",
+   "kind": "CX2",
+   "severity": 1,
+   "why": "the numeral is 1 and the noun it governs is plural. The numeral is unambiguous and is what the verifier reads; the mismatch is a register artefact of rendering severity as a numeral in a frozen template, which \u00a77.5's severity-invariance requires",
+   "wording": "Exactly 1 semicolons must appear in your answer.",
+   "wording_index": 2
+  }
+ ],
+ "genuinely_ambiguous": [
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 2,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 2 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 2,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 2 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 3,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 3 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 3,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 3 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 4,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 4 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 4,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 4 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 5,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 5 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 5,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 5 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 6,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 6 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 6,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 6 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 7,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 7 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 7,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 7 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 8,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 8 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 8,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 8 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 9,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 9 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 9,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 9 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 10,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 10 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 10,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 10 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 11,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 11 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 11,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 11 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 12,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 12 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 12,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 12 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 13,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 13 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 13,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 13 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 14,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 14 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 14,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 14 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 15,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 15 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 15,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 15 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 16,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 16 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 16,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 16 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 17,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 17 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 17,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 17 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 18,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 18 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 18,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 18 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 19,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 19 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 19,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 19 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 20 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 20 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 21,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 21 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 21,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 21 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 22 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 22 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 23,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 23 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 23,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 23 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 24 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 24 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 25,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 25 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 25,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 25 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 26 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 26 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 27,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 27 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 27,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 27 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 28 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 28 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 29,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 29 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 29,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 29 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 30 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 30 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 31,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 31 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 31,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 31 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 32 percent of words doubled letters.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP4",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 32 percent of words carry doubled letters.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 20 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 20,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 20 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 22 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 22,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 22 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 24 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 24,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 24 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 26 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 26,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 26 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 28 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 28,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 28 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 30 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 30,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 30 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 32 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 32,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 32 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 34,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 34 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 34,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 34 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 36,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 36 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 36,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 36 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 38,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 38 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 38,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 38 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 40,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 40 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 40,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 40 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 42,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 42 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 42,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 42 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 44,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 44 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 44,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 44 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 46,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 46 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 46,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 46 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 48,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 48 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 48,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 48 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 50,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 50 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 50,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 50 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 52,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 52 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 52,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 52 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 54,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 54 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 54,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 54 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 56,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 56 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 56,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 56 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 58,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 58 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 58,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 58 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 60,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 60 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 60,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 60 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 62,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 62 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 62,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 62 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 64,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 64 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 64,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 64 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 66,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 66 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 66,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 66 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 68,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 68 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 68,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 68 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 70,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 70 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 70,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 70 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 72,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 72 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 72,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 72 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 74,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 74 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 74,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 74 percent of words carry letter a.",
+   "wording_index": 3
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 76,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Give 76 percent of words letter a.",
+   "wording_index": 2
+  },
+  {
+   "classification": "genuinely_ambiguous",
+   "finding": "direction_not_named",
+   "kind": "CP7",
+   "severity": 76,
+   "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (>= q) from the reading that takes q as exact. Both readings call the same answers at q compliant, and they disagree on every answer past it -- which the verifier scores as a pass",
+   "wording": "Make 76 percent of words carry letter a.",
+   "wording_index": 3
+  }
+ ],
+ "instruments": 584,
+ "passed": false,
+ "producing_commit": "8feb30a4e496044f43de0d2e7c041c315a4eb360",
+ "requires_correction": [],
+ "wordings_checked": 2336,
+ "wordings_hash": "0f8a162ec9a8db34ed08f1a922b988b2685b1f561709e2fdbe6e6623b8dd65a5"
+}

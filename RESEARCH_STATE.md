@@ -90,7 +90,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | v3 | closed. Two Gemma replications reached UNMASKED_ANALYSIS; both Qwen replications terminated at Gate 2A. `dci1/RESULTS_V3.md` |
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
-| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3; §7.0-R3 (C27) restores coverage on all four models at round zero. Gate 1 is `GATE_1_BLOCKED_MEASUREMENT`: every §10.2 criterion passes over 584 instruments, and **both** registered pathways are unavailable — §10.4-R2 (C28) failed its own criterion 5 and stops by rule, §10.3 has no independent annotator. §4h, §4i, §4j, §4k. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/gate1_decision.json` |
+| **v4r3** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** Run through stage 3; §7.0-R3 (C27) restores coverage on all four models at round zero. Gate 1's criterion was **amended before Gate 2** by §10.7-R5, which replaces §10.3/§10.4 with a deterministic-measurement architecture and reclassifies them as diagnostics. Under the amended rule Gate 1 returns **`SPECIFICATION_AMBIGUOUS`**: nine of ten conditions pass and four `CP4`/`CP7` wordings state their severity as a target with no bound. §4h, §4i, §4j, §4k, §4l. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/gate1_r5_decision.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -693,16 +693,74 @@ no reader sees. Both are on live reference shortlists. §10.5's third question,
 which the preregistration does not resolve; nothing is changed and nothing
 proposed. `DECISIONS_V4R3.md` A11.
 
-**Gate 1: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2 prerequisite passes at
-the R3 verifier hash `41edc84c` over all **584** instruments — three-process
-determinism 1.000, 164 boundary cases 1.000, independent reimplementation
-1.000 over 16,604 responses and 700,800 verdicts, one segmenter-differential
-splitter, 92,988 witness pairs, 46,720 wording verdicts, reserved sets unspent.
-Neither pathway §18 stage 4 requires has completed: §10.4 is closed by its own
-stopping rule and §10.3 has no independent annotator. **The single remaining
-blocker is §10.3 performed by someone independent of the design and analysis
-team.** It is not a governance block — a signature cannot be applied to a
-pathway whose criteria failed. `dci1/reports/dci1v4r3/gate1_decision.json`.
+**Gate 1 under the original rule: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2
+prerequisite passes at the R3 verifier hash `41edc84c` over all **584**
+instruments — three-process determinism 1.000, 164 boundary cases 1.000,
+independent reimplementation 1.000 over 16,604 responses and 700,800 verdicts,
+one segmenter-differential splitter, 92,988 witness pairs, 46,720 wording
+verdicts, reserved sets unspent. Neither pathway §18 stage 4 then required had
+completed: §10.4 closed by its own stopping rule and §10.3 has no independent
+annotator. That record stands, unrewritten, at
+`dci1/reports/dci1v4r3/gate1_decision.json`. §10.7-R5 below changes the rule
+Gate 1 is decided under; it does not change what this one recorded.
+
+**Why the §10.4-R2 failure means less than it looked like.** R2 runs both arms
+over the same cases, and the conventions arm states §7.3's rules identically
+for every case, so it carries no per-case information. The arm difference is
+convention-access with judge, configuration and items held fixed. Agreement on
+answers containing words: 0.929 → 0.943 (+0.014). On answers containing **no
+words at all**: 0.231 → 0.692 (+0.462). The judge is not failing to count — the
+exact-count form, the most arithmetic-heavy, scored 1.000. It is failing to
+guess a stipulation. §10.4-R2 names that exact hazard and assigns
+`segmentation_drift` and `vacuity_ignored` to the conventions arm for it, then
+assigns `denominator_swap` to the instruction-only arm although 8 of its 14
+deciding items have wordless answers — and `denominator_swap` is the kind that
+failed criterion 5. This does **not** re-score R2, which failed under its
+registered arm assignment and stops. Only the interpretation changes.
+`DECISIONS_V4R3.md` A12, `dci1/reports/dci1v4r3/validator_diagnosis.json`.
+
+### 4l. §10.7-R5 replaces Gate 1's measurement criterion, and the amended gate fails on a wording
+
+**The amendment.** §18 stage 4 required *§10.2 plus §10.3 or §10.4*. It now
+requires *§10.2 plus §10.7-R5 A–E*: a specification audit, deterministic
+implementation validation, independent reimplementation, adversarial/boundary/
+**mutation** validation, and provenance/hash binding — ten conditions, none of
+them a reviewer-agreement threshold. §10.3, §10.4, §10.4-R and §10.4-R2 are
+reclassified **supplementary/diagnostic**; their outcomes stand and neither is
+described as having succeeded. Adopted before Gate 2, before any freeze, with
+all four replications at `REGIME_SCREEN` and no estimand computed.
+
+§31's objection — that an amendment is never used to weaken a criterion to make
+a gate pass — is registered inside the amendment rather than answered around
+it. What is offered against it is checkable: the basis R5 creates is not
+`human_validated`, so §10.5's scope sentence attaches permanently and question
+2, *can an independent human reproduce it?*, stays unanswered exactly as
+before. R5 changes whether the study executes, not what it may assert.
+
+**The amended gate returns `SPECIFICATION_AMBIGUOUS`.** Nine of ten conditions
+pass: 32 families and forms carry a complete specification whose **recorded
+predicate is executed** and reproduces the verifier at every severity of every
+declared range; mutation validation exhibits a separating case for every
+meaningful reading, with 0 undetected and 0 contradictions; the §10.2 evidence
+above satisfies conditions 3–5 and 7; the verifier hash `41edc84c` and the new
+wording hash `0f8a162e` bind; provenance verifies.
+
+Condition 8 fails. Two of the four wordings of `CP4` and `CP7` state the
+severity as a **target and name no bound** — *"Give {q} percent of words
+doubled letters"*, *"Make {q} percent of words carry letter a"* — so the prose
+does not distinguish the registered `>= q` from an `== q` reading. The two
+readings agree at `q` and disagree on every answer past it, where the verifier
+records a pass: a one-sided leniency in the *treatment*, which no amount of
+§10.2 evidence could have found. The other 124 wordings name their direction,
+and the `q = 1` plural mismatch (*"Exactly 1 semicolons…"*, 45 wordings) is
+classified awkward-but-unambiguous and does not block.
+
+Two remediation paths, neither taken here: correct the four wordings and
+regenerate the **768** regime-screen rows taken under them (192 per model, 2.7%
+of the screen), or remove `CP4` and `CP7` from the vocabulary under §10.2's
+registered removal rule at no regeneration cost — both are class-control
+families and `CL7`/`CL8` pass intact. `DECISIONS_V4R3.md` A14,
+`dci1/reports/dci1v4r3/gate1_r5_decision.json`.
 
 ## 5. Provisional, superseded, broken, unresolved
 
@@ -714,11 +772,16 @@ pathway whose criteria failed. `dci1/reports/dci1v4r3/gate1_decision.json`.
 - **Void.** The anti-splice intervention failed its own manipulation check
   (`ANTI_SPLICE_MANIPULATION_FAILED`). A failed manipulation check voids an
   estimate; it does not weaken it into a null.
-- **Blocked.** DCI-1 v4r3 stands at `GATE_1_BLOCKED_MEASUREMENT`. Both
-  registered measurement pathways are closed: §10.4-R2 failed its own criterion
-  5 and stops by rule, and §10.3 has never been performed by an annotator
-  independent of the design and analysis team. Everything from Gate 2 onward is
-  downstream of that one requirement. §4k.
+- **Blocked.** DCI-1 v4r3 stands at `SPECIFICATION_AMBIGUOUS` under the
+  amended Gate 1 (§10.7-R5). Nine of ten conditions pass; four `CP4`/`CP7`
+  wordings state their severity as a target and name no bound, so the prose
+  does not pin down the registered `>= q`. Everything from Gate 2 onward waits
+  on the researcher choosing between correcting the wordings (and regenerating
+  768 screen rows) and removing the two class-control families. §4l.
+- **Superseded, and preserved.** The earlier `GATE_1_BLOCKED_MEASUREMENT`
+  decision was correct under the rule then in force — §10.2 plus §10.3 or
+  §10.4, neither of which completed. §10.7-R5 changes the rule, not that
+  record, and does not describe either pathway as having succeeded. §4k, §4l.
 - **Blocked.** The five-checkpoint vLLM TP=2 qualification gate passed 0/5, for
   three unrelated reasons (`ROOT_CAUSE_ANALYSIS.md`). The Transformers-vs-vLLM
   backend confound on the transport question is therefore unresolved.
@@ -736,8 +799,9 @@ pathway whose criteria failed. `dci1/reports/dci1v4r3/gate1_decision.json`.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: §10.4-R2's failure and
-the four re-sealed regime records, in §4k.
+whether old and new remain comparable. Most recent: §10.7-R5, which replaces
+Gate 1's measurement criterion and reclassifies §10.3 and §10.4 as
+diagnostics, in §4l.
 
 ## 7. Where to look
 
