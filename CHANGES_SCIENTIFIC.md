@@ -13,10 +13,12 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-22 (latest) — Gates 2, 3 and 4 executed for the first time, and seven inherited defects moved what a v4r4 record says
+## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and fifteen inherited defects moved what a v4r4 record says
 
-**Scope.** Gate 2, Gate 3 and Gate 4 of v4r4 had never run under any codebase:
-v4r2 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Every
+**Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2
+stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Gates 2, 3,
+4 and 5, the confirmatory generation, the masked analysis, the unmask and the
+final analysis all executed here for the first time. Every
 defect below is *a reader with no producer* or its close relative — code
 reading a key, an attribute or an exception class that nothing on the executing
 path writes or raises. None of them changes a registered rule; each changes
@@ -169,6 +171,26 @@ registered to. `tools/topic_reservation_audit_v4.py` decides per stage now —
 offences. **Affected results:** none. The guarantee is narrower and true rather
 than broader and about to become false; `sequestered` remains in no stage's
 permission.
+
+**14. No confirmatory generation was licensable on any replication.** §21's one
+door, `assert_generation_licensed`, required a freeze field called
+`verifier_source_hash` — the name of the *function* that computes the hash, and
+of no field §18.1 registers; the freeze binds `canonical_verifier_hash`. Every
+valid freeze record was refused. The test fixture standing in for a freeze
+record carried the same non-existent name, so the fixture matched the check
+rather than the record and the two agreed with each other about a study neither
+could run. **This is the third fixture in this study to encode a defect as the
+expected behaviour** (after `FakeSelection` and the stale stage literals). Both
+sides now read the registered name, the fixture is checked against
+`FREEZE_FIELDS`, and a test licenses generation from a freeze record the study
+really wrote. **Affected results:** none; no confirmatory row existed.
+
+**15. §21's selective-rerun guard was documented and not called.**
+`assert_no_selective_rerun` refuses a row set that is not the plan's own —
+duplicated identities, or rows the plan does not contain. `confirmatory_run`'s
+docstring said it sees the union; nothing called it. The wider completeness
+check refuses the same two conditions, so the effect was there and the guard
+that names §21 was not; it is on the path now. **Affected results:** none.
 
 **Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
 is superseded or was never written. v4r3 and earlier are untouched: the
