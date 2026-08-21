@@ -30,12 +30,14 @@ attempt to write a record for a stage at or before the freeze.
 from __future__ import annotations
 
 import datetime as _dt
+import json
 from pathlib import Path
 from typing import Any
 
 from dci1v4.engine import fs
 from dci1v4.engine.signing import sign_payload, verify_signed
 from dci1v4.errors import IntegrityError, ProtocolError
+from dci1v4.protocol.hashing import canonical_json
 
 from dci1v4r3.engine.paths import ModelTree
 from dci1v4r3.protocol import constants as C
@@ -43,9 +45,9 @@ from dci1v4r3.protocol import constants as C
 __all__ = ["PREDECESSOR", "log_transition", "transition_rows",
            "terminal_status", "read_stage_record", "stage_reached",
            "assert_predecessor_passed", "assert_transition_legal",
-           "assert_no_post_freeze_mutation", "write_stage_record",
-           "write_terminal_report", "adopt_out_of_order",
-           "supersede_stage_records"]
+           "assert_no_post_freeze_mutation", "on_the_wire",
+           "write_stage_record", "write_terminal_report",
+           "adopt_out_of_order", "supersede_stage_records"]
 
 #: stage -> the stage that must have PASSED before it may run.
 PREDECESSOR: dict[str, str | None] = {
@@ -171,6 +173,28 @@ def assert_transition_legal(tree: ModelTree, stage: str) -> None:
     assert_predecessor_passed(tree, stage)
 
 
+def on_the_wire(payload: dict[str, Any]) -> dict[str, Any]:
+    """The payload as a reader will get it back, and what must be signed.
+
+    `canonical_json` sorts keys, and a Python dict keyed by integers sorts
+    them numerically -- `512, 768, 1024`. JSON has no integer keys, so a
+    reader gets `"512", "768", "1024"` and canonicalises them
+    lexicographically -- `"1024", "512", "768"`. The two orders hash
+    differently, so a record signed over the in-memory object and verified
+    over the file it was written to disagrees, with no tampering anywhere.
+
+    §12.2's regime record is the payload that has such a dict:
+    `completion_cap.table` is keyed by completion cap. All four of its v4r3
+    records were signed before this function existed and carry the
+    numerically-sorted hash; `tools/v4r3_reseal_records.py` proves that and
+    re-seals them without touching a byte of content.
+
+    Signing the wire form removes the class of defect rather than the
+    instance: whatever a payload holds, what is hashed is what is stored.
+    """
+    return json.loads(canonical_json(payload))
+
+
 def write_stage_record(tree: ModelTree, stage: str, payload: dict[str, Any]
                        ) -> Path:
     """Sign and write a stage record write-once, with a reader copy."""
@@ -182,7 +206,12 @@ def write_stage_record(tree: ModelTree, stage: str, payload: dict[str, Any]
         raise IntegrityError(
             f"artifact type {declared!r} disagrees with stage {stage!r}, "
             f"which requires {C.STAGE_ARTIFACT_TYPE[stage]!r}")
+    payload = on_the_wire(payload)
     signed = sign_payload(payload, tree.context.signing_key_path)
+    # The invariant this stage record exists to carry, checked on the path
+    # that writes it rather than left to the reader to discover.
+    verify_signed(signed, tree.context.signing_key_path,
+                  f"{tree.model_key}:{stage}:at-write")
     path = tree.stage_record(stage)
     path.parent.mkdir(parents=True, exist_ok=True)
     fs.write_json_once(path, signed)

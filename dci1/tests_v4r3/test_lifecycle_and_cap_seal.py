@@ -16,12 +16,12 @@ protocol states in prose with nothing on the execution path enforcing it.
 from __future__ import annotations
 
 import ast
+import json
 from pathlib import Path
 
 import pytest
 
 from dci1v4.errors import IntegrityError, ProtocolError
-
 from dci1v4r3.engine.context import synthetic_context
 from dci1v4r3.engine.paths import model_tree, required_records
 from dci1v4r3.engine.transitions import (
@@ -309,3 +309,40 @@ def test_supersession_requires_a_reason_and_a_commit(tree):
     with pytest.raises(ProtocolError):
         supersede_stage_records(tree, [C.STAGE_QUALIFIED], reason="",
                                 superseded_by_commit="e" * 40)
+
+
+# ------------------------------------------- the integer-key signing defect
+
+def test_a_record_holding_an_integer_keyed_dict_still_verifies(tree):
+    """The defect that made all four v4r3 regime records unverifiable.
+
+    `canonical_json` sorts integer keys numerically and string keys
+    lexicographically. §12.2's payload carries `completion_cap.table`, keyed
+    by the completion caps 512, 768 and 1024, so the hash computed over the
+    in-memory object and the hash computed over the JSON it was written to
+    disagreed --- and `assert_transition_legal` refused every transition out
+    of `REGIME_SCREEN` with no tampering anywhere. A record that cannot be
+    verified after a round trip is not a signed record.
+    """
+    write_stage_record(tree, C.STAGE_QUALIFIED, _payload(C.STAGE_QUALIFIED))
+    payload = {**_payload(C.STAGE_GATE0),
+               "completion_cap": {"table": {512: "a", 768: "b", 1024: "c"}}}
+    write_stage_record(tree, C.STAGE_GATE0, payload)
+    # Reads the record back off disk and verifies hash and signature.
+    read_stage_record(tree, C.STAGE_GATE0)
+    assert_transition_legal(tree, C.STAGE_REGIME)
+
+
+def test_what_is_signed_is_what_is_stored(tree):
+    """`on_the_wire` is idempotent and is what the record carries."""
+    from dci1v4.protocol.hashing import sha_obj
+    from dci1v4r3.engine.transitions import on_the_wire
+
+    payload = {**_payload(C.STAGE_QUALIFIED), "table": {2: [1.5, None], 10: {}}}
+    wire = on_the_wire(payload)
+    assert on_the_wire(wire) == wire
+    assert sha_obj(wire) == sha_obj(on_the_wire(wire))
+    path = write_stage_record(tree, C.STAGE_QUALIFIED, payload)
+    record = json.loads(path.read_text())
+    assert record["payload"] == wire
+    assert sha_obj(record["payload"]) == record["record_hash"]
