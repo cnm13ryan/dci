@@ -524,3 +524,124 @@ boundary corpus. Rebuilt on `str.isalpha`, the same predicate the registered
 rule uses. The corrected run reproduces every figure above unchanged —
 subscripts are rare in real answers — so the numbers stood, but they now stand
 on something correct.
+
+## A12. Why the R2 failure means less than it looked like (2026-08-21)
+
+**Finding.** R2 runs both arms over the same cases, and the conventions arm
+states §7.3's rules identically for every case, so it carries no per-case
+information. The arm difference is therefore convention-access with judge,
+configuration and items held fixed. `reports/dci1v4r3/validator_diagnosis.json`.
+
+| cases | instruction only | + conventions | lift |
+|---|---|---|---|
+| answer contains words (n=70) | 0.929 | 0.943 | **+0.014** |
+| answer contains no words (n=14) | 0.231 | 0.692 | **+0.462** |
+
+The judge is not failing to count. On the exact-count form — the most
+arithmetic-heavy — it scored **1.000**, and on cases making it enumerate nine
+or more words, 0.929. R1's diagnosis that §10.4 failed because the task was
+arithmetic is not what R2's failure is either.
+
+What it is failing to do is **guess a stipulation**: what a percentage means
+when there is nothing to take a percentage of. A stipulation cannot be
+independently reproduced, only communicated — so agreement on such an item
+measures whether the validator was told, not whether the definition is sound.
+
+**The contradiction inside §10.4-R2.** The amendment names that exact hazard —
+*"A five-word wording says nothing about ... what a percentage means when there
+are no words. Judging `segmentation_drift` or `vacuity_ignored` on the wording
+alone would score the validator for failing to guess a convention"* — and
+assigns those two kinds to the conventions arm for it. It then assigns
+**`denominator_swap` to the instruction-only arm, although 8 of its 14 deciding
+items have wordless answers** (`'   '`, `';;;'`, `'...'`, `',,,'`). The judge
+scored **0 of 7** parsed on those, 0.231 overall on the kind, and **0.714** on
+the same cases in the arm that states the convention. `denominator_swap` is the
+kind that failed criterion 5.
+
+So the arm assignment contradicts the amendment's own stated principle, and
+that contradiction is what failed the gate.
+
+**This does not re-score R2, and nothing here may be substituted for a number
+there.** R2 was judged under its registered arm assignment and **FAILED**;
+§10.4-R2's stopping rule takes effect on that failure; re-running with a
+corrected assignment after seeing the result is exactly the iterative tuning
+the researcher's brief prohibits in terms. Only the interpretation changes, and
+that is a different thing from the verdict.
+
+**Bearing on Gate 1: none by itself.** The registered rule is §10.2 plus §10.3
+or §10.4. Neither has completed successfully. This changes what the §10.4
+failure *means*, not whether it occurred.
+
+---
+
+## A13 (PROPOSED, NOT ADOPTED). §10.7-R5, a verifier-defined measurement basis
+
+**Status: DRAFT. Not registered, not adopted, not enacted.** No artifact writes
+it, Gate 1 has not been re-run against it, and it requires the researcher's
+explicit authorization before any of that. It is recorded here so the proposal
+is legible and dated before any Gate-2 or later outcome has been observed.
+
+**The situation it addresses.** Both registered Gate-1 validation pathways are
+exhausted, each for a reason the protocol itself supplies:
+
+- **§10.4 stopped by its own rule.** R2 failed criterion 5 and §10.4-R2 states
+  that on failure the LLM-validator pathway stops, is not prompt-tuned, and no
+  threshold moves. A12 shows the failure is attributable to a convention the
+  deciding arm withheld, which makes the stop *better founded*, not worse.
+- **§10.3 has no independent annotator**, and the study cannot manufacture one.
+  §10.3 says in terms that author-performed labels are never independent
+  validation, so A9's frozen 300-item plan cannot satisfy it however it scores.
+
+§10.3 already registers `HUMAN_VALIDATION_UNAVAILABLE` as a standing condition
+and §10.5 already builds the scope sentence for exactly that world — *the
+outcomes are verifier-defined and support no claim about compliance as an
+independent human would judge it*. The study is therefore designed to **report**
+under this basis, but §18 stage 4 requires one of the two pathways to have
+completed, so it halts before reaching the machinery built for it.
+
+**What R5 would add.** A fourth measurement basis, `verifier_defined`,
+admissible at Gate 1 when and only when all four hold:
+
+1. every §10.2 criterion passes over the final instrument population — true at
+   `41edc84c` over 584 instruments, agreement 1.000 on three-process
+   determinism, 164 boundary cases, and an independent reimplementation over
+   16,604 responses and 700,800 verdicts;
+2. §10.3 is recorded unavailable with its reason;
+3. §10.4 is recorded terminated under its own stopping rule, with the failing
+   criterion and its observed value;
+4. the researcher records explicit authorization naming this subsection.
+
+**What it would forbid, permanently and unconditionally.** §10.5's scope
+sentence attaches to every analysis record, every claim at every rung, and the
+final report, and no later stage may remove it. No claim about compliance as an
+independent human would judge it. No statement that the instrument was
+human-validated or autorater-validated. No upgrade of the basis without new
+evidence of the kind §10.3 or §10.4 specifies.
+
+**What it would not change.** No threshold, no caliper, no candidate identity,
+no reference, no difficulty coordinate, no estimand, no design, no seed, no
+verifier, and no stored number. It changes which basis Gate 1 will accept and
+nothing else.
+
+**The evidence the reasoning rests on.**
+
+| | |
+|---|---|
+| §10.2, final population | agreement 1.000 on every component, 584 instruments |
+| card audit (A11) | 128/128 derivations correct; 5 of 6 misreadings on the displayed surface |
+| v3 forensics E8 | verifier **56/56** against human labels; judges 40/56 to 55/56 |
+| validator diagnosis (A12) | the R2 failure is convention-access, not competence |
+| defect sensitivity | `vacuity_ignored` changes 0 of 27,840 verdicts, so no natural-response audit could ever validate that convention |
+| lexical footprint (A11) | §7.3's registered word costs 1.10% of verdicts — detectable, below the smallest effect of interest |
+
+**What would falsify the reasoning.** An independent annotator, later,
+disagreeing with the verifier at a rate the §10.3 bound would have rejected. R5
+does not close that door: A9's plan stays frozen at `08a9cbbf` and unspent, and
+a completed §10.3 would supersede this basis rather than be blocked by it.
+
+**The honest objection, stated rather than answered.** A study that cannot
+validate its instrument against any external reader is a study whose construct
+rests on its own stipulations. R5 does not deny that — it makes it the
+permanent, quoted caveat on every claim instead of a reason to stop. Whether
+that trade is acceptable is the researcher's judgement and not the agent's,
+which is why this subsection is a draft and why item 4 exists.
