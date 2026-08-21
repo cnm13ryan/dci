@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 
 from dci1v4.engine import fs
-from dci1v4.errors import ProtocolError
+from dci1v4.errors import IntegrityError, ProtocolError
 
 from dci1v4r4.engine.paths import ModelTree
 from dci1v4r4.protocol import constants as C
@@ -35,7 +35,8 @@ from dci1v4r4.verifiers.constraints import (
 
 __all__ = ["STAGE_CALIBRATION", "STAGE_HEADROOM", "calibration_cells",
            "calibration_table", "run_gate2", "run_gate3", "run_gate4",
-           "design_variant_for", "full_slot_map"]
+           "design_variant_for", "full_slot_map",
+           "headroom_table_shape", "assert_headroom_table_complete"]
 
 STAGE_CALIBRATION = "v4r3-solo-calibration"
 
@@ -334,11 +335,55 @@ def run_gate4(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
     rates_by_cell = {cell: {slot: sum(v) / len(v)
                             for slot, v in by_slot.items()}
                      for cell, by_slot in tally.items()}
+    assert_headroom_table_complete(rates_by_cell, variant)
     payload = gates.gate4_payload(rates_by_cell)
     return {**payload, "model_key": model_key, "rows": len(rows),
             "cells": len(cells), "design_variant": variant,
             "topic_set": "composed", "draws": C.M_CAL,
             "run_dir": str(run_dir)}
+
+
+def headroom_table_shape(variant: str) -> dict[str, set[str]]:
+    """design cell id -> the slots §13.10 evaluates for that cell.
+
+    The unconstrained cell states no constraint and so contributes no rate;
+    every other cell of the variant owes one rate per slot it states.
+    """
+    from dci1v4r4.design.cells import cell_types
+    from dci1v4r4.stages.confirmatory import DESIGN_VARIANTS
+
+    reduced, class_arm, spectrum = DESIGN_VARIANTS[variant]
+    return {t.cell_id: set(t.slots)
+            for t in cell_types(reduced=reduced, class_arm=class_arm,
+                                spectrum=spectrum) if t.arm != "unconstrained"}
+
+
+def assert_headroom_table_complete(table: Mapping[str, Mapping[str, float]],
+                                   variant: str) -> None:
+    """§13.10 evaluates *every* registered cell type, so the table holds them.
+
+    `gate4_payload` reports the failures among the rates it is handed. A table
+    that lost a cell type --- a backend pass that dropped rows, a cell whose
+    verdicts all came back absent --- therefore reports no failure for it, and
+    an empty table passes the gate outright. The predicate cannot see the
+    absence; this can, because it knows the design the cells were built from.
+    """
+    expected = headroom_table_shape(variant)
+    observed = {cell: set(by_slot) for cell, by_slot in table.items()}
+    if observed == expected:
+        return
+    missing_cells = sorted(set(expected) - set(observed))
+    extra_cells = sorted(set(observed) - set(expected))
+    wrong_slots = {cell: {"expected": sorted(expected[cell]),
+                          "observed": sorted(observed[cell])}
+                   for cell in sorted(set(expected) & set(observed))
+                   if expected[cell] != observed[cell]}
+    raise IntegrityError(
+        f"§13.10 evaluates every registered cell type of the {variant} "
+        f"design and this table does not hold them: missing {missing_cells}, "
+        f"unexpected {extra_cells}, wrong slots {wrong_slots}. A gate that "
+        "reported PASS on this table would be reporting on evidence it never "
+        "saw")
 
 
 def full_slot_map(gate2_record: Mapping, gate3_record: Mapping

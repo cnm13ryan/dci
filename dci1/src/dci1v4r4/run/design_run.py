@@ -138,8 +138,22 @@ def attach_slots(rows: Sequence[Mapping[str, Any]],
     §14.2's completeness rule is stated over.
     """
     constraints = slot_constraints(slot_map)
-    by_instance = {(c.kind, c.severity): slot
-                   for slot, c in constraints.items()}
+    # Built as a loop rather than a comprehension because a comprehension
+    # would let a second slot bound to the same instance overwrite the first,
+    # and every verdict for that instance would then be attributed to one of
+    # the two. `assert_slot_map_usable` checks uniqueness across the slots the
+    # *variant needs*; a reduced replication whose Gate 3 admitted references
+    # it cannot use still carries them in the map, so they are scored here as
+    # §25 chance verdicts and must be unambiguous too.
+    by_instance: dict[tuple[str, int], str] = {}
+    for slot, c in constraints.items():
+        key = (c.kind, c.severity)
+        if key in by_instance:
+            raise IntegrityError(
+                f"slots {by_instance[key]} and {slot} are both bound to "
+                f"{key[0]}:{key[1]}; a scored verdict could not be attributed "
+                "to one of them and the two companions would merge")
+        by_instance[key] = slot
     out: list[dict[str, Any]] = []
     for row in rows:
         scores = []

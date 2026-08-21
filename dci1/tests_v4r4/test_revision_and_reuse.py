@@ -396,7 +396,19 @@ def test_the_lifecycle_integrity_report_passes_and_licenses_gate_2():
     assert report["foreign_record_refused"]["holds"] is True
     assert report["gate_2_may_run"] is True
     for model_key, entry in report["models"].items():
-        assert entry["furthest_stage"] == C.STAGE_GATE1, model_key
+        # The literal used to be `STAGE_GATE1`, which was the furthest stage
+        # the study had reached on the day this test was written. That is a
+        # date, not an invariant: the assertion fired the moment Gate 2 passed.
+        # What the report owes is that the furthest stage is registered, that
+        # it is at least Gate 1 --- no replication may be further along than
+        # the gate that certified the instrument --- and that every stage up
+        # to it verifies, which the loop below is.
+        furthest = entry["furthest_stage"]
+        assert furthest in C.STAGE_SEQUENCE, (model_key, furthest)
+        assert C.STAGE_SEQUENCE.index(furthest) \
+            >= C.STAGE_SEQUENCE.index(C.STAGE_GATE1), model_key
+        assert set(entry["records"]) == set(
+            C.STAGE_SEQUENCE[:C.STAGE_SEQUENCE.index(furthest) + 1]), model_key
         for stage, record in entry["records"].items():
             assert record["study_id"] == "dci1v4r4", (model_key, stage)
             assert record["round_trips"], (model_key, stage)

@@ -22,6 +22,7 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
+from dci1v4.errors import TerminalStatus as _DriverTerminal
 
 from dci1v4r4.protocol import constants as C
 from dci1v4r4.verifiers.constraints import FOCAL_EXTENSION, focal_severities
@@ -31,17 +32,32 @@ __all__ = ["TerminalStatus", "tie_key", "select_severity",
            "gate3_payload", "gate4_payload"]
 
 
-class TerminalStatus(Exception):
-    """A registered terminal outcome, raised as a value and written once."""
+class TerminalStatus(_DriverTerminal):
+    """A registered terminal outcome, raised as a value and written once.
+
+    **It subclasses the exception the stage driver catches.** It used to
+    derive from `Exception` directly, and `tools/run_v4r4.py::_run_stage` ---
+    the handler for Gates 2, 3 and 4 --- catches `dci1v4.errors.TerminalStatus`.
+    The two were unrelated classes sharing a name, so a `REGIME_NOT_FOUND`,
+    a `FOCAL_RANGE_EXHAUSTED` or a `COMPOSED_HEADROOM_FAILURE` would have
+    escaped the handler as an unhandled traceback: no terminal report, no
+    logged transition, and a replication that had failed a registered gate
+    with nothing on disk saying so. The branch had never executed, because no
+    v4r4 gate has ever gone terminal.
+
+    `status` travels in the record as well as on the exception, so a reader
+    that reconstructs the record from the file alone still finds it.
+    """
 
     def __init__(self, status: str, detail: Mapping[str, Any]):
         if status not in C.TERMINAL_STATUSES:
             raise ProtocolError(f"{status!r} is not a registered terminal "
                                 "status")
-        super().__init__(status)
-        self.status = status
-        self.detail = dict(detail)
-        self.detail["terminal_sentence"] = C.TERMINAL_SENTENCE
+        record = {**dict(detail), "status": status,
+                  "terminal_sentence": C.TERMINAL_SENTENCE}
+        super().__init__(status, record)
+        #: the v4r3 name for the same object, kept so existing readers hold.
+        self.detail = self.record
 
 
 def tie_key(value: float) -> float:

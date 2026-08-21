@@ -3,7 +3,7 @@
  "stage": "GATE_3_REFERENCES",
  "outcome": "PASS",
  "design": "full",
- "design_variant": "reduced",
+ "design_variant": "full",
  "class_arm": true,
  "core_references": [
   {
