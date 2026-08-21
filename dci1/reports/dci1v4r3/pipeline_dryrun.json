@@ -5,7 +5,7 @@
  "disclaimer": "SYNTHETIC. Every generation in this walk comes from dci1v4.generation.synthetic and is a function of the scientific seed alone. No rate, interval or claim here is evidence about any model. The walk exists to make the post-freeze code fail on a laptop rather than after a study's worth of generations.",
  "m_draws": 8,
  "passed": true,
- "resamples": 200,
+ "resamples": 100,
  "results": [
   {
    "outcome": "PASS",
@@ -17,7 +17,7 @@
      "seconds": 10.6
     },
     "MASKED_ANALYSIS": {
-     "artifact_hash": "8200768ee0d67e5c",
+     "artifact_hash": "6396e1bed8cb5209",
      "blocks": 384,
      "families": {
       "outcome_first": [
@@ -44,7 +44,7 @@
       ]
      },
      "maskable_groups": 10,
-     "seconds": 1.5,
+     "seconds": 1.3,
      "spectrum_fit_ran": false,
      "structurally_unmaskable": [
       [
@@ -106,6 +106,20 @@
      ]
     },
     "UNMASKED_ANALYSIS": {
+     "claims": {
+      "outcome_first": [
+       "L3c",
+       "L3e"
+      ],
+      "outcome_second": [
+       "L3c",
+       "L3e"
+      ]
+     },
+     "claims_emitted": {
+      "outcome_first": 2,
+      "outcome_second": 2
+     },
      "families": {
       "outcome_first": [
        "F1",
@@ -250,15 +264,15 @@
       "outcome_first": 37,
       "outcome_second": 37
      },
-     "seconds": 1.7,
+     "seconds": 1.2,
      "spectrum_present": {
       "outcome_first": true,
       "outcome_second": true
      }
     },
     "UNMASKING": {
-     "bound_to": "8200768ee0d67e5c",
-     "mask_key_hash": "48471699221819c0"
+     "bound_to": "6396e1bed8cb5209",
+     "mask_key_hash": "83c3a61561675e83"
     }
    },
    "variant": "full"
@@ -270,10 +284,10 @@
      "blocks": 384,
      "complete": true,
      "rows": 89088,
-     "seconds": 6.3
+     "seconds": 6.5
     },
     "MASKED_ANALYSIS": {
-     "artifact_hash": "4f12fa7ff678995d",
+     "artifact_hash": "2bce43d6aab1ab95",
      "blocks": 384,
      "families": {
       "outcome_first": [
@@ -298,7 +312,7 @@
       ]
      },
      "maskable_groups": 10,
-     "seconds": 0.9,
+     "seconds": 0.8,
      "spectrum_fit_ran": false,
      "structurally_unmaskable": [
       [
@@ -312,6 +326,18 @@
      ]
     },
     "UNMASKED_ANALYSIS": {
+     "claims": {
+      "outcome_first": [
+       "L3c"
+      ],
+      "outcome_second": [
+       "L3c"
+      ]
+     },
+     "claims_emitted": {
+      "outcome_first": 1,
+      "outcome_second": 1
+     },
      "families": {
       "outcome_first": [
        "F1",
@@ -420,15 +446,15 @@
       "outcome_first": 30,
       "outcome_second": 30
      },
-     "seconds": 0.6,
+     "seconds": 0.5,
      "spectrum_present": {
       "outcome_first": false,
       "outcome_second": false
      }
     },
     "UNMASKING": {
-     "bound_to": "4f12fa7ff678995d",
-     "mask_key_hash": "ad41c777e57d23e2"
+     "bound_to": "2bce43d6aab1ab95",
+     "mask_key_hash": "780fe7df657ef0e7"
     }
    },
    "variant": "no_spectrum"
@@ -443,7 +469,7 @@
      "seconds": 1.8
     },
     "MASKED_ANALYSIS": {
-     "artifact_hash": "44f6e9f25d35424d",
+     "artifact_hash": "1a9d9d38e0fe7642",
      "blocks": 384,
      "families": {
       "outcome_first": [
@@ -482,6 +508,18 @@
      ]
     },
     "UNMASKED_ANALYSIS": {
+     "claims": {
+      "outcome_first": [
+       "L3"
+      ],
+      "outcome_second": [
+       "L3"
+      ]
+     },
+     "claims_emitted": {
+      "outcome_first": 0,
+      "outcome_second": 0
+     },
      "families": {
       "outcome_first": [
        "F1",
@@ -528,15 +566,15 @@
       "outcome_first": 9,
       "outcome_second": 9
      },
-     "seconds": 0.2,
+     "seconds": 0.1,
      "spectrum_present": {
       "outcome_first": false,
       "outcome_second": false
      }
     },
     "UNMASKING": {
-     "bound_to": "44f6e9f25d35424d",
-     "mask_key_hash": "7c94d7f2ee0e68ef"
+     "bound_to": "1a9d9d38e0fe7642",
+     "mask_key_hash": "afb5c5114bea8a99"
     }
    },
    "variant": "reduced"

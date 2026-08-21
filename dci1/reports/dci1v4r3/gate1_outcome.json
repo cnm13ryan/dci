@@ -3,45 +3,45 @@
   "evidence": {
     "adversarial": {
       "corpus_coverage": {
-        "adjacent_punctuation": 5,
-        "apostrophised": 3,
-        "capitalisation": 55,
-        "case_folding_split": 2,
+        "adjacent_punctuation": 6,
+        "apostrophised": 4,
+        "capitalisation": 66,
+        "case_folding_split": 3,
         "combining_mark": 2,
-        "empty": 4,
+        "empty": 6,
         "fullwidth": 1,
         "hyphenated": 2,
         "markdown_emphasis": 3,
         "non_breaking_space": 2,
         "non_decimal_numeric": 1,
         "non_latin_script": 8,
-        "repeated_word": 24,
-        "single_word": 21,
+        "repeated_word": 28,
+        "single_word": 23,
         "soft_hyphen": 2,
         "unicode_punctuation": 2,
-        "wordless": 2,
+        "wordless": 3,
         "zero_width": 4
       },
-      "corpus_size": 136,
+      "corpus_size": 164,
       "passed": true,
       "realised": {
         "counts": {
-          "adjacent_punctuation": 235,
-          "apostrophised": 11736,
-          "capitalisation": 23999,
+          "adjacent_punctuation": 88,
+          "apostrophised": 7008,
+          "capitalisation": 16426,
           "case_folding_split": 0,
           "combining_mark": 0,
           "empty": 0,
           "fullwidth": 0,
-          "hyphenated": 9198,
-          "markdown_emphasis": 1166,
+          "hyphenated": 4482,
+          "markdown_emphasis": 319,
           "non_breaking_space": 0,
-          "non_decimal_numeric": 1,
-          "non_latin_script": 49,
+          "non_decimal_numeric": 0,
+          "non_latin_script": 25,
           "repeated_word": 10,
           "single_word": 0,
           "soft_hyphen": 0,
-          "unicode_punctuation": 6273,
+          "unicode_punctuation": 4263,
           "wordless": 0,
           "zero_width": 0
         },
@@ -51,36 +51,37 @@
           "empty",
           "fullwidth",
           "non_breaking_space",
+          "non_decimal_numeric",
           "single_word",
           "soft_hyphen",
           "wordless",
           "zero_width"
         ],
         "rates": {
-          "adjacent_punctuation": 0.009704327717211761,
-          "apostrophised": 0.4846382556987116,
-          "capitalisation": 0.991038982490915,
+          "adjacent_punctuation": 0.00535279805352798,
+          "apostrophised": 0.42627737226277373,
+          "capitalisation": 0.9991484184914842,
           "case_folding_split": 0.0,
           "combining_mark": 0.0,
           "empty": 0.0,
           "fullwidth": 0.0,
-          "hyphenated": 0.3798315163528246,
-          "markdown_emphasis": 0.048149983481995375,
+          "hyphenated": 0.27262773722627737,
+          "markdown_emphasis": 0.01940389294403893,
           "non_breaking_space": 0.0,
-          "non_decimal_numeric": 4.1295011562603234e-05,
-          "non_latin_script": 0.0020234555665675585,
-          "repeated_word": 0.0004129501156260324,
+          "non_decimal_numeric": 0.0,
+          "non_latin_script": 0.0015206812652068127,
+          "repeated_word": 0.0006082725060827251,
           "single_word": 0.0,
           "soft_hyphen": 0.0,
-          "unicode_punctuation": 0.2590436075322101,
+          "unicode_punctuation": 0.2593065693430657,
           "wordless": 0.0,
           "zero_width": 0.0
         },
-        "responses": 24216
+        "responses": 16440
       },
       "uncovered_by_corpus": []
     },
-    "boundary_suite_hash": "65e47257782e15f9dcb4f0cc12615d52c6a265828e06c64607f0787d2810ab05",
+    "boundary_suite_hash": "1794d55f6e86c6b1996c122131b554c3b45a2b7fa87861a6981f1a97ff2ef55b",
     "carryover": {
       "a_carry_over_argument": "§9.2 registers S0 as lower-case-then-segment and the carried counting function implements exactly that, so §7.0's correction to the family word list does not touch A's instrument",
       "a_carry_over_survives": true,
@@ -279,17 +280,17 @@
     "determinism": {
       "agreement": 1.0,
       "digests": [
-        "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850",
-        "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850",
-        "c30d0aef60c5e2db6db795b33d7a1f8b45925bb22270a6c70565b86872121850"
+        "926183b006c9f60c0dc46494218fd1a661773a22feafc96cb0e20f452806fe21",
+        "926183b006c9f60c0dc46494218fd1a661773a22feafc96cb0e20f452806fe21",
+        "926183b006c9f60c0dc46494218fd1a661773a22feafc96cb0e20f452806fe21"
       ],
-      "instruments": 348,
+      "instruments": 584,
       "processes": 3,
       "responses": 400
     },
     "determinism_sample": {
       "n": 400,
-      "of": 24352,
+      "of": 16604,
       "rule": "the frozen boundary corpus plus the leading calibration responses"
     },
     "reimplementation": {
@@ -298,7 +299,7 @@
       },
       "failures": [],
       "per_instrument_min": 1.0,
-      "responses": 24352,
+      "responses": 16604,
       "segmenter_differential": {
         "agreement": 1.0,
         "case_folding_splitters": [
@@ -309,48 +310,52 @@
       },
       "statistics_every_response": {
         "agreement": 1.0,
-        "comparisons": 292224,
+        "comparisons": 298872,
         "failures": [],
-        "responses": 24352,
-        "statistics_per_response": 12
+        "responses": 16604,
+        "statistics_per_response": 18
       },
       "verdict_sample": {
         "n": 1200,
-        "of": 24352,
+        "of": 16604,
         "rule": "the frozen boundary corpus in full, then the leading calibration responses in stored order"
       },
-      "verdicts_checked": 417600
+      "verdicts_checked": 700800
     },
     "suites": {
       "agreement": 1.0,
+      "authored_r3": 28,
       "authored_v4r3": 43,
       "carried_focal": 45,
       "carried_target": 48,
-      "cases": 136,
-      "checked": 574,
+      "cases": 164,
+      "checked": 1280,
       "failures": [],
-      "instruments": 348,
-      "labels": 95,
-      "suite_hash": "65e47257782e15f9dcb4f0cc12615d52c6a265828e06c64607f0787d2810ab05",
+      "instruments": 584,
+      "labels": 112,
+      "suite_hash": "1794d55f6e86c6b1996c122131b554c3b45a2b7fa87861a6981f1a97ff2ef55b",
       "verdicts": {
-        "fail": 19697,
-        "pass": 27631,
-        "vacuous_pass": 25189
+        "fail": 33566,
+        "pass": 62210,
+        "vacuous_pass": 58445
       }
     },
     "topic_audit": {
       "by_stage": {
         "v4r3-cap-selection-1024": {
-          "prescreen": 384
+          "prescreen": 768
         },
         "v4r3-cap-selection-512": {
-          "prescreen": 384
+          "prescreen": 768
         },
         "v4r3-cap-selection-768": {
-          "prescreen": 384
+          "prescreen": 768
+        },
+        "v4r3-gate0-pilot": {
+          "prescreen": 9024
         },
         "v4r3-ladder-screen": {
-          "prescreen": 19680
+          "prescreen": 40200
         },
         "v4r3-ladder-screen-r1": {
           "prescreen": 2664
@@ -369,20 +374,21 @@
         "v4r3-cap-selection-1024": "REGIME_SCREEN",
         "v4r3-cap-selection-512": "REGIME_SCREEN",
         "v4r3-cap-selection-768": "REGIME_SCREEN",
+        "v4r3-gate0-pilot": "GATE_0_APPARATUS",
         "v4r3-ladder-screen": "REGIME_SCREEN",
         "v4r3-ladder-screen-r1": "REGIME_SCREEN",
         "v4r3-ladder-screen-r2": "REGIME_SCREEN"
       },
       "root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3",
-      "rows": 24216,
+      "rows": 54912,
       "topics_not_in_released_split": [],
       "unresolved_stage_labels": []
     },
-    "verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+    "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
     "witnesses": {
       "joint_satisfiability_failures": [],
       "non_entailment_failures": [],
-      "pairs": 25337,
+      "pairs": 92988,
       "passed": true
     },
     "wordings": {
@@ -392,6 +398,9 @@
         "CP4": 31,
         "CP7": 29,
         "CR1": 14,
+        "CR10": 26,
+        "CR11": 39,
+        "CR12": 14,
         "CR2": 14,
         "CR3": 14,
         "CR4": 19,
@@ -399,20 +408,27 @@
         "CR6": 16,
         "CR7": 19,
         "CR8": 14,
+        "CR9": 20,
+        "CX1": 8,
+        "CX2": 10,
         "RF1": 9,
+        "RF10": 31,
+        "RF11": 49,
+        "RF12": 12,
         "RF2": 9,
         "RF3": 9,
         "RF4": 7,
         "RF5": 13,
         "RF6": 13,
         "RF7": 25,
-        "RF8": 9
+        "RF8": 9,
+        "RF9": 27
       },
       "disagreements": [],
-      "instruments": 348,
+      "instruments": 584,
       "passed": true,
       "responses": 20,
-      "verdicts_checked": 27840,
+      "verdicts_checked": 46720,
       "wording_word_counts": {
         "A:0": 6,
         "A:1": 7,
@@ -438,6 +454,18 @@
         "CP7:1": 8,
         "CP7:2": 6,
         "CP7:3": 7,
+        "CR10:0": 7,
+        "CR10:1": 8,
+        "CR10:2": 7,
+        "CR10:3": 7,
+        "CR11:0": 7,
+        "CR11:1": 8,
+        "CR11:2": 7,
+        "CR11:3": 7,
+        "CR12:0": 7,
+        "CR12:1": 6,
+        "CR12:2": 6,
+        "CR12:3": 6,
         "CR1:0": 7,
         "CR1:1": 8,
         "CR1:2": 7,
@@ -470,6 +498,30 @@
         "CR8:1": 8,
         "CR8:2": 7,
         "CR8:3": 7,
+        "CR9:0": 7,
+        "CR9:1": 8,
+        "CR9:2": 7,
+        "CR9:3": 7,
+        "CX1:0": 6,
+        "CX1:1": 7,
+        "CX1:2": 7,
+        "CX1:3": 7,
+        "CX2:0": 6,
+        "CX2:1": 7,
+        "CX2:2": 7,
+        "CX2:3": 7,
+        "RF10:0": 7,
+        "RF10:1": 7,
+        "RF10:2": 8,
+        "RF10:3": 6,
+        "RF11:0": 6,
+        "RF11:1": 7,
+        "RF11:2": 8,
+        "RF11:3": 6,
+        "RF12:0": 7,
+        "RF12:1": 7,
+        "RF12:2": 6,
+        "RF12:3": 6,
         "RF1:0": 7,
         "RF1:1": 7,
         "RF1:2": 8,
@@ -501,7 +553,11 @@
         "RF8:0": 7,
         "RF8:1": 7,
         "RF8:2": 8,
-        "RF8:3": 6
+        "RF8:3": 6,
+        "RF9:0": 7,
+        "RF9:1": 7,
+        "RF9:2": 8,
+        "RF9:3": 6
       }
     }
   },

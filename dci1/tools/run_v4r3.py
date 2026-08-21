@@ -194,14 +194,60 @@ def cmd_gate1(args) -> int:
         print(json.dumps({"outcome": "REFUSED",
                           "status": terminal.status,
                           "observed": terminal.record.get("observed"),
+                          "per_model": _gate1_record_per_model(context, None),
                           "evidence": str(out / "gate1_evidence.json")},
                          indent=1))
         return 0
     fs.write_json(out / "gate1_outcome.json", record)
     print(json.dumps({"outcome": record["outcome"],
-                      "measurement_basis": record["measurement_basis"]},
+                      "measurement_basis": record["measurement_basis"],
+                      "per_model": _gate1_record_per_model(context, record)},
                      indent=1))
     return 0
+
+
+def _gate1_record_per_model(context, record) -> dict[str, str]:
+    """§10.2's evidence is study-wide; §18's record is not.
+
+    The instrument population, the boundary suites and the reimplementation
+    are one body of evidence about one verifier hash, so they are collected
+    once. The *stage* is per replication, because §18's machine is, so a
+    passing gate writes one signed record per model that has reached it and a
+    refusing gate logs the refusal against each of them --- an attempted
+    transition that was refused is exactly what §18's log exists to show.
+    """
+    from dci1v4r3.engine.paths import model_tree
+    from dci1v4r3.engine.transitions import (
+        assert_transition_legal, log_transition, write_stage_record,
+    )
+    from dci1v4r3.protocol import constants as C
+    from dci1v4r3.run.regime_screen import mirror_records
+
+    out: dict[str, str] = {}
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        try:
+            assert_transition_legal(tree, C.STAGE_GATE1)
+        except Exception as refusal:
+            out[model_key] = f"NOT_ELIGIBLE: {type(refusal).__name__}"
+            continue
+        if record is None:
+            log_transition(tree, stage=C.STAGE_GATE1, outcome="REFUSED",
+                           producing_commit=_commit(),
+                           environment_digest="-",
+                           detail={"status": "MEASUREMENT_EVIDENCE_"
+                                             "INSUFFICIENT"})
+            out[model_key] = "REFUSED"
+            continue
+        write_stage_record(tree, C.STAGE_GATE1, {**record,
+                                                 "model_key": model_key})
+        mirror_records(model_key, C.STAGE_GATE1)
+        log_transition(tree, stage=C.STAGE_GATE1, outcome="PASS",
+                       producing_commit=_commit(), environment_digest="-",
+                       detail={"measurement_basis":
+                               record["measurement_basis"]})
+        out[model_key] = "PASS"
+    return out
 
 
 def cmd_regime(args) -> int:
