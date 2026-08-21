@@ -13,7 +13,99 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-21 (latest) — v4r3 closes at Gate 1; v4r4 adopts a deterministic Gate 1, removes CP4/CP7, and passes
+## 2026-08-22 (latest) — Gates 2, 3 and 4 executed for the first time, and seven inherited defects moved what a v4r4 record says
+
+**Scope.** Gate 2, Gate 3 and Gate 4 of v4r4 had never run under any codebase:
+v4r2 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Every
+defect below is *a reader with no producer* or its close relative — code
+reading a key, an attribute or an exception class that nothing on the executing
+path writes or raises. None of them changes a registered rule; each changes
+whether the registered rule was actually applied. No confirmatory data exists
+under any revision, and no DCI estimand has been computed.
+
+**1. Gate 2 read a `cell_rates` contract that has never existed.** Seven call
+sites asked `cell_rates(...)` for `["solo"]` and `["chance"]` — keys it does
+not return — and called it without its required `present=` argument. Gate 2
+crashed on `gemma-3n-e2b-it` *after* all 16,128 calibration generations. The
+repair adds `run/execute.instance_rates`, which mirrors the certified
+`run/regime_screen.difficulty_table_from_rows`: the present cell and the
+absent cell of one instance, with the topic as the averaging unit.
+**Affected results:** none existed. Gate 2 could not previously produce a
+record at all.
+
+**2. §12.3's focal escalation had three readers and no producer.**
+`focal_extension_measured` was read by the freeze, by the regime report and by
+`focal_severities`, and no code path wrote it. §7.2's extension — B at m = 11
+and m = 12, measured only when the registered grid supplies no eligible
+severity — was therefore unreachable, and a replication needing it would have
+recorded `FOCAL_RANGE_EXHAUSTED` instead. `run_gate2` now decides the
+escalation from `select_focal_severity` over the registered grid, measures the
+two extension rungs into a separate run directory so the banked registered rows
+survive, and takes the union. **Affected results:** `qwen3-4b` is the
+replication that needed it. Its registered grid tops out at m = 10 with solo
+compliance 0.411, below `FOCAL_BAND`; the extension gives 11 → 0.659 and
+12 → 0.742, and m\* = 12 was selected. Without the fix that replication would
+have been terminal at Gate 2 on a rung §7.2 registers.
+
+**3. The extended focal curve was built over all six severities.**
+`select_focal_severity` raises on a curve containing a registered rung, so the
+first escalation implementation refused itself. The union is now formed over
+`FOCAL_EXTENSION` only. **Affected results:** none; caught before any record
+was written.
+
+**4. `design_variant_for` forced every replication to the reduced design.** It
+read `getattr(result, "core_references", ())` and `SelectionResult` holds the
+admitted references at `core["core_references"]`, so the default fired on every
+call. §8.6 acts on the *variant*, so `gemma-3n-e2b-it` — three admitted core
+references, six spectrum severities, `design` "full" — was assigned an 8-cell
+design that estimates neither `delta_difficulty` nor Ξ. **Affected results:**
+the first four Gate-3 records, superseded through the registered restart
+mechanism at 7eb1947 and retained under
+`evidence/dci1v4r4/<model>/superseded/7eb19472dfc4/`. The re-run records are
+the current ones. The fixture that should have caught this had encoded the
+defect as expected behaviour — `FakeSelection` carried `core_references` as a
+plain attribute, matching the `getattr` call rather than the certified object —
+and is repaired to use `SelectionResult`.
+
+**5. A gate terminal could not be caught by the driver that runs the gate.**
+`stages/gates.py` declared its own `TerminalStatus(Exception)`, unrelated to
+`dci1v4.errors.TerminalStatus`, which is what `tools/run_v4r4.py::_run_stage`
+catches. A `REGIME_NOT_FOUND`, a `FOCAL_RANGE_EXHAUSTED` or a
+`COMPOSED_HEADROOM_FAILURE` would have escaped as an unhandled traceback: no
+terminal report written, no transition logged, and a replication that had
+failed a registered gate with nothing on disk saying so. The class now
+subclasses the one the driver catches, carries `status` inside the record as
+well as on the exception, and `_run_stage` reads `terminal.status` rather than
+`args[0]`, which the two classes fill differently. **Affected results:** none —
+no v4r4 gate has gone terminal. The consequence would have been a *missing*
+terminal record, never a false PASS.
+
+**6. Gate 4's band table could pass on cells it never saw.** §13.10 evaluates
+every registered cell type against [0.05, 0.95]; `gate4_payload` reports the
+failures among the rates it is *handed*, so a table that lost a cell type
+reports no failure for it and an empty table passes outright.
+`run_gate4` now checks the table's shape against the design the cells were
+built from, before the predicate runs. **Affected results:** none; added
+before Gate 4 was ever run.
+
+**7. Two slots bound to one instance could merge silently.**
+`design_run.attach_slots` built its instance→slot index as a dict
+comprehension, so a second slot bound to the same (family, severity) replaced
+the first and every verdict for that instance was attributed to one of the two.
+`assert_slot_map_usable` checks uniqueness only across the slots the *variant
+needs*, and a reduced replication carries admitted-but-unused references in its
+map — `qwen3-4b` carries `R1 = RF11:21` and `R2 = CR5:8` — which are scored as
+§25 chance verdicts and must be unambiguous too. **Affected results:** none;
+no current slot map has a collision, checked.
+
+**Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
+is superseded or was never written. v4r3 and earlier are untouched: the
+`gates.py` of `dci1v4r3` still carries its own `TerminalStatus`, and that
+revision is closed.
+
+---
+
+## 2026-08-21 — v4r3 closes at Gate 1; v4r4 adopts a deterministic Gate 1, removes CP4/CP7, and passes
 
 **Scope.** A protocol revision, taken prospectively, before Gate 2 and before
 any freeze, with no confirmatory data in existence and no DCI estimand — ΔR,

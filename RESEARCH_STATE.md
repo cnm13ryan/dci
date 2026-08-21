@@ -3,7 +3,7 @@
 The 10-minute orientation. Everything here points at something else; primary
 numbers live in the reports and the generated artifacts, not in this file.
 
-Last reviewed: 2026-08-21.
+Last reviewed: 2026-08-22.
 
 ---
 
@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E), `CP4`/`CP7` are removed, and the study has executed QUALIFIED → GATE_0_APPARATUS → REGIME_SCREEN → **`GATE_1_MEASUREMENT` PASS on all four replications**. Gate 2 onward is licensed and not yet run. §4m. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/gate1_decision.json` |
+| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E), `CP4`/`CP7` are removed, and the study has executed QUALIFIED → GATE_0_APPARATUS → REGIME_SCREEN → **GATE_1 → GATE_2 → GATE_3, PASS on all four replications**. The full 47-cell design is identified on `gemma-3n-e2b-it` alone; the other three run §8.6's 8-cell reduced design. Gate 4 is next. §4m, §4n. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/gate1_decision.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -933,6 +933,96 @@ and is the next stage: 62,976 calibration generations across the four
 replications, on the 96 solo topics. `dci1/reports/dci1v4r4/`,
 `dci1/DECISIONS_V4R4.md`.
 
+### 4n. v4r4 Gates 2 and 3: all four replications pass, and the spectrum is identified on one (2026-08-22)
+
+**What ran.** 62,976 registered calibration generations plus 768 from §7.2's
+conditional extension, on the 96 solo topics at `M_CAL = 4`, across both RX
+7900 XTXs as two independent TP=1 lanes. Then §13's selection, which reads that
+table and nothing composed.
+
+| model | n\* | m\* | ι_A | calibration rows | §7.2 extension |
+|---|---:|---:|---:|---:|---|
+| `gemma-3n-e2b-it` | 1 | 10 | 0.574 | 16,128 | no |
+| `gemma-3n-e4b-it` | 4 | 10 | 0.695 | 14,976 | no |
+| `qwen3-4b` | 2 | **12** | 0.702 | 16,896 | **yes** |
+| `qwen3-4b-instruct-2507` | 5 | 10 | 0.596 | 15,744 | no |
+
+| model | design | cells/block | core refs | spectrum | statuses beyond `COMPANION_CLASS_NOT_MATCHED` |
+|---|---|---:|---:|---:|---|
+| `gemma-3n-e2b-it` | **full** | 47 | 3 | 6 | — |
+| `gemma-3n-e4b-it` | reduced | 8 | 0 | 0 | `EXCESS_NOT_IDENTIFIED`, `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` |
+| `qwen3-4b` | reduced | 8 | 2 | 0 | both |
+| `qwen3-4b-instruct-2507` | reduced | 8 | 0 | 0 | both |
+
+`gemma-3n-e2b-it`'s three references are `RF9:10` (t_initial), `CR5:2` (comma)
+and `RF11:26` (vowel_initial), each straddling A with a spectrum pair.
+
+**The difficulty spectrum is identified on one replication of four, which is
+what the v4r3 screen found at screen scale (§4i).** The unifying cause is
+**local sparsity of the eligible reference pool immediately above ι_A**, and it
+arrives by three different routes:
+
+- `gemma-3n-e4b-it` — the rungs nearest ι_A carry high chance compliance, so
+  they match A on ι and miss it on raw solo compliance. `RF9:13` sits at
+  ι 0.704 against A's 0.695 with solo 0.857 against A's 0.727, and §13.4's
+  Newcombe interval `[0.148, 0.343]` does not intersect ±0.05. The one admitted
+  family then cannot straddle. `RF11:26` was a near-exact ι match (0.699) and
+  failed §13.4 condition 2 at pre-screen distance 0.197 > 0.15.
+- `qwen3-4b` — `RF11` and `CR5` are both admitted and both straddle, and §13.4
+  wants three *feature groups*. `RF2:6` is the near miss: ι 0.696 against
+  A's 0.702, solo 0.945 against A's 0.719.
+- `qwen3-4b-instruct-2507` — a gap in the ladder. Its 16 eligible rungs run
+  0.122 → 0.592 and then jump to 0.722, so nothing lies within the 0.10 caliper
+  above ι_A = 0.596; `RF7` is admitted at 0.592 and its other eligible rungs
+  (0.365, 0.426, 0.464) are all below A, so it cannot straddle.
+
+**Coverage passed at pre-screen and did not survive re-measurement.** §12.6's
+C1–C7 are assessed on the 24-topic pre-screen; §13.4 admits on the 96-topic
+calibration split. Three of four models met C1–C6 at pre-screen and then failed
+to yield three straddling families on the larger, disjoint sample. That is the
+C4 zero-margin finding of `DECISIONS_V4R4.md` B7 arriving one stage later with
+teeth, and no threshold was moved in response — §12.6's registered expansion
+was not invoked and no caliper was widened.
+
+**`qwen3-4b` sits on the last rung of the extended focal grid.** m\* = 12 is
+the maximum of `FOCAL_GRID + FOCAL_EXTENSION`. Its B curve is
+{7: 0.031, 8: 0.107, 9: 0.245, 10: 0.411, 11: 0.659, 12: 0.742}, so 11 and 12
+are the only rungs inside `FOCAL_BAND = (0.60, 0.95)`. Had B:12 also fallen
+below the band the replication would have recorded `FOCAL_RANGE_EXHAUSTED`.
+There is no headroom above the selected severity on that model.
+
+**Executing these stages for the first time found seven defects, all of one
+class.** A reader with no producer: code reading a key, an attribute or an
+exception class that nothing on the path actually writes or raises. Gate 2
+asked `cell_rates` for keys it does not return and crashed after 16,128
+generations; §7.2's escalation flag had three readers and no writer, so the
+extension was unreachable and `qwen3-4b` would have gone terminal on a rung the
+protocol registers; `design_variant_for` read an attribute `SelectionResult`
+does not have and assigned every replication the reduced design whatever Gate 3
+had selected; and `stages/gates.py` declared its own `TerminalStatus`, unrelated
+to the one the stage driver catches, so a Gate 2, 3 or 4 terminal would have
+escaped as a traceback with no terminal record written. The first four Gate-3
+records were superseded through the registered restart mechanism at `7eb1947`
+and are retained at `evidence/dci1v4r4/<model>/superseded/7eb19472dfc4/`; they
+are predecessors of nothing. `CHANGES_SCIENTIFIC.md`, 2026-08-22.
+
+**One test fixture had encoded a defect as the expected behaviour.**
+`FakeSelection` carried `core_references` as a plain attribute, which is what
+the `getattr` call wanted and not what `SelectionResult` has, so three tests
+asserted the wrong variant and passed. Repaired to use the certified object.
+
+**State.** Six signed records per model through `GATE_3_REFERENCES`, mirrored
+byte-for-byte to `dci1/durable_root/`; lifecycle integrity passes with
+`problems: []`; the four Gate-3 records reproduce exactly under the current code
+from their sealed Gate-2 inputs. The reserved topic sets — composed,
+confirmatory, sequestered — are still unspent, audited over every `rows.jsonl`
+in both roots. Gate 4 is next: §13.10's composed-headroom predicate on the 24
+reserved composed topics at `M_CAL = 4`, 4,512 generations for the full design
+and 768 for each reduced one, 6,816 in total. It is the first stage that
+composes two constraints in one prompt. **No freeze, no confirmatory
+generation, no estimand computed.**
+
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -985,8 +1075,10 @@ replications, on the 96 solo topics. `dci1/reports/dci1v4r4/`,
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: v4r3 closes at Gate 1, and
-v4r4 adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
+whether old and new remain comparable. Most recent: Gates 2, 3 and 4 of v4r4 executed for the first
+time and seven inherited defects of one class — a reader with no producer — moved
+what a v4r4 record says, in §4n. Before it: v4r3 closes at Gate 1, and v4r4
+adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
 
 ## 7. Where to look
 

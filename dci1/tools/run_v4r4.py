@@ -709,14 +709,19 @@ def _run_stage(args, stage: str, build, *, summary_keys=()) -> int:
     try:
         payload = build(tree, context)
     except TerminalStatus as terminal:
+        # `terminal.status`, not `terminal.args[0]`: the two subclasses of
+        # `TerminalStatus` in this codebase put different things in `args` ---
+        # one the bare status, the other "STATUS: replication stops" --- and
+        # `write_terminal_report` refuses a status that is not registered.
+        # Both define `.status`.
         record = {**terminal.record, "model_key": args.model, "gate": stage,
                   "criterion": terminal.record.get("criterion",
-                                                   terminal.args[0]),
+                                                   terminal.status),
                   "observed": terminal.record.get("observed",
                                                   terminal.record),
                   "producing_commit": _commit(),
                   "strongest_permissible_statement": C.TERMINAL_SENTENCE}
-        record.setdefault("status", terminal.args[0])
+        record.setdefault("status", terminal.status)
         write_terminal_report(tree, record)
         log_transition(tree, stage=stage, outcome="TERMINAL",
                        producing_commit=_commit(), environment_digest="-",
