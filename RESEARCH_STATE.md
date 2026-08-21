@@ -661,6 +661,19 @@ zero disagreements. It is
 measurement basis; `DECISIONS_V4R3.md` A9 records the six choices §10.3 leaves
 open and how each was fixed before the first item was drawn.
 
+**And a faster route to trusting the verifier itself.**
+`tools/v4r3_verifier_audit.py` builds 128 §10.4-R operationalization cards —
+the instruction, the answer, the word list, *the tokens the numerator matched*,
+the arithmetic, the predicate, the verdict, and what each of the six registered
+misreadings would have recorded. The question is "did this count the right
+things?", answerable in seconds, rather than "what is the right label?", which
+means counting a hundred words by hand. The matched tokens are decided by the
+registered statistic itself and the decomposition declares itself unfaithful
+rather than guess. It covers all 32 numerator-and-form pairs, eight phenomena,
+both margin classes and five of the six misreadings — the sixth,
+`vacuity_ignored`, discriminates on no natural response at all. Output is a
+defect worklist, never an agreement rate; `DECISIONS_V4R3.md` A10.
+
 **Gate 1: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2 prerequisite passes at
 the R3 verifier hash `41edc84c` over all **584** instruments — three-process
 determinism 1.000, 164 boundary cases 1.000, independent reimplementation

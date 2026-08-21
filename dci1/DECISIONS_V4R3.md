@@ -396,3 +396,62 @@ whose membership hash has moved; to seal an incomplete batch; to accept a row
 for a sealed batch; to print agreement before every batch is sealed, unless
 `--reveal-early` is passed deliberately. `cmd_review` never opens the answer
 key, which a test asserts by walking the call graph rather than by comment.
+
+## A10. The verifier gets audited by reading its derivations, not by re-labelling (2026-08-21)
+
+**Decision.** Build the operationalization-card audit and treat it as the
+primary route to trusting the deterministic verifier.
+`src/dci1v4r3/stages/verifier_audit.py` and `tools/v4r3_verifier_audit.py`.
+
+**Why, and what it replaces.** A9's §10.3 workflow asks a person to label a
+hundred-word response blind, which means counting qualifying words by hand.
+That is the same arithmetic task §10.4 handed a judge, and §10.4-R's own
+diagnosis of why it failed applies to a human too: the counting swamps the
+judgment. §10.3's blind unit is the right unit for *measuring agreement*; it is
+the wrong unit for *finding defects*, because 280 correct verdicts carry no
+information about whether the verifier is right and only the disagreements do.
+
+So the audit asks a different question — **did this program count the right
+things?** — over §10.4-R's registered unit, the operationalization card, with
+the arithmetic shown rather than requested. R1 built that card for an LLM. A
+person is the reader it was always better suited to.
+
+**The decomposition cannot drift from the verifier.** Each card lists the
+tokens the numerator matched, and a token is matched when *the registered
+counting function itself*, given that token alone, returns one. Nothing
+re-implements a predicate. `decompose` then checks that the per-unit probes sum
+to the whole-text count and declares itself `faithful: false` when they do not,
+so a card either shows a decomposition the verifier agrees with or says it
+cannot. A test reaches that branch deliberately, with a pair-counting statistic
+that no per-unit probe can reproduce.
+
+**Selection.** Coverage-greedy per family over a seeded candidate cap: 128
+cards over all 32 families, covering all 32 numerator-and-form pairs, the eight
+phenomena the responses actually exhibit, both margin classes, and five of the
+six registered misreadings. The sixth, `vacuity_ignored`, discriminates on no
+natural response at all — which is the defect-sensitivity finding reappearing,
+and the reason it must be audited on designed cases rather than natural ones.
+Membership does not change when every recorded verdict is flipped, which a test
+asserts.
+
+**Standing, and the boundary that matters.** This is a **verifier audit and not
+§10.3**. The verdict is visible before the assessment, so nothing it produces
+is a human-verifier agreement rate; a test forbids the tool from emitting a
+field called `agreement`, a Wilson bound, or a measurement basis, because a
+reader who finds `"agreement": 0.94` in an artifact will quote it whatever the
+prose beside it says. Its output is a **defect worklist** — cards where a
+person read the derivation and named the component that counted wrongly.
+
+**What a finding costs, stated up front.** Changing a verifier moves the
+canonical hash that every §10.2 artifact, every stage record and all 30,144
+stored verdicts are bound to. A confirmed defect is a `CHANGES_SCIENTIFIC.md`
+entry, a re-run of §10.2's evidence, and a re-derivation of everything measured
+under the old hash. That is the right price and it is the reason to find
+defects now, before Gate 5, rather than after.
+
+**A9 is not withdrawn, and the card audit does not spoil it.** The blinded
+§10.3 plan stays frozen at `08a9cbbf` and unspent. A card shows the verdict, so
+a response seen here can no longer be labelled blind; `build` therefore excludes
+the 291 rows the §10.3 plan reserved before drawing. The first build overlapped
+on five of them and was rebuilt; the current card set at `ad0a2a55` overlaps on
+none. `--ignore-blind-sample` exists, says what it costs, and is off.
