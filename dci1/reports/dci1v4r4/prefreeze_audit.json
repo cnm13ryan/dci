@@ -526,20 +526,9 @@
       }
     },
     "problems": [],
-    "producing_commit": "bbe5b8f24fd3974a507ea509a24accb9176e2216",
+    "producing_commit": "8890e3faa678132cf2435215d6e2e6f89eb4f312",
     "worktree_changed_paths": [
-      "M dci1/reports/dci1v4r4/lifecycle_integrity.json",
-      " M dci1/reports/section_13_2_v4/topic_reservation_audit.json",
-      " M dci1/src/dci1v4r4/analysis/masking.py",
-      " M dci1/src/dci1v4r4/run/regime_screen.py",
-      " M dci1/tests_v4/test_t12_provenance.py",
-      " M dci1/tests_v4r4/test_gate5_freeze_paths.py",
-      " M dci1/tools/topic_reservation_audit_v4.py",
-      " M dci1/tools/v4r4_lifecycle_integrity.py",
-      " M dci1/tools/v4r4_mirror_records.py",
-      "?? dci1/reports/dci1v4r4/durability.json",
-      "?? dci1/reports/dci1v4r4/prefreeze_audit.json",
-      "?? dci1/tools/v4r4_prefreeze_audit.py"
+      "M dci1/reports/dci1v4r4/durability.json"
     ],
     "worktree_clean": false
   },
