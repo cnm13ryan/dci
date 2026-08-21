@@ -13,6 +13,276 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-21 — DCI-1 v4r3 adopted, registered, and executed to the regime screen
+
+**Scope.** Prospective. Nothing in v2, v3, v4r2 or the four v4r2 design screens
+is edited, reinterpreted or recomputed. v4r2 produced no confirmatory estimate
+of any quantity, so no confirmatory result is affected by anything below.
+
+**Adoption.** The researcher adopted DCI-1 v4 revision 3 on 2026-08-21
+(`dci1/DECISIONS_V4R3.md` A0), and every study-wide rule is bound into a signed
+manifest at `dci1/evidence/dci1v4r3/registration/`. v4r2 §31 makes a pre-freeze
+change a revision, and v4r2 was never frozen and stands at `REGIME_SCREEN` on
+all four models, so the boundary is v4r3 and not v5.
+
+Four changes below alter what a number means. The full account, with evidence
+and per-change classification, is
+`user-notes/DCI1_v4r2_to_v4r3_changelog.md` (C1–C24).
+
+**1. The lexical rule's composition order is corrected — measurement.**
+v4r2's `words_lower` lower-cases the whole response and then segments; §7.0's
+prose segments the answer and lower-cases each word for the suffix and letter
+tests. §10.2's independent reimplementation, written from the prose by a
+process that read no primary source, disagreed with the primary on the
+`one_letter` statistic, and §10.2 adjudicates against the prose.
+
+Scope, enumerated executably over the whole Unicode range: **exactly one
+character** differs. `İ` (U+0130) lower-cases to `i` plus U+0307 COMBINING DOT
+ABOVE, which is not alphabetic, so folding first splits the word — `İstanbul`
+becomes two words of one and seven letters, and B at m = 7 would pass an answer
+containing an eight-letter word. **Realised frequency in the 285,936 rows every
+v4-era process has generated: zero.** No historical number moves;
+`dci1v4r3.verifiers.statistics.assert_agrees_with_v4r2` states the equivalence
+executably rather than claiming it.
+
+**A is untouched and its v3 carry-over survives.** §9.2 registers S0 as
+lower-case-then-segment in its own words, and the carried counting function
+implements exactly that.
+
+**2. The candidate reference population is rebuilt — design and measurement.**
+Eight count-budget families over 94 severities become a registered *grammar*:
+nine counted statistics × four predicate forms, 20 families, 190 severities
+measured at round 0 and **334 in the declared candidate library**. The
+canonical verifier hash changes and Gate 1's instrument population becomes 348
+constraint instances over the whole declared range.
+
+**3. Feature groups, and three references that measure three things — design.**
+§7.5's witness suite, run over every pair of distinct families at every declared
+severity, failed non-entailment **1,748 times in two structural shapes**: a
+count budget at q = 0 entails the rate budget of the same numerator at every q,
+and RF6 at q = 0 entails every CR6 severity. For such a pair no response
+satisfies the first and fails the second, so the obligation is unsatisfiable
+rather than unmet. §7.0 now registers eight **feature groups** and §13.4 admits
+three core references from three different *groups*, not three different
+families. 25,337 realisable pairs; all discharged.
+
+**4. The allocation is 384 blocks at M = 8, not 408 at M = 4 — design.**
+An earlier v4r3 draft moved the topic split to 34/6 per area so that 408 blocks
+would meet every §16.2 precision precondition at M = 4. **That allocation is not
+executable**: the released bank holds 528 questions and the other 96 exist only
+as identities and content hashes, so the extra confirmatory topics could only
+come from text no v4-era process can read. With the block count fixed at 384, M
+is the only lever. 384 blocks at M = 8 meets every precondition under both φ
+settings, **carries v4r2's topic split unchanged**, and keeps the sequestered
+set at 96. Cost: 144,384 generations per model, 577,536 across four.
+
+**5. §8.6 gains a third design variant — design.** A coverage failure withholds
+`delta_difficulty` and nothing else, so a model with three admitted core
+references but failed coverage runs a **29-cell no-spectrum** design rather
+than the 8-cell reduced one. Routing it to the reduced design would discard six
+identified primary estimands because a seventh is unavailable.
+
+**Execution.** Registration, qualification, the stage-3 regime screen and
+Gate 1's §10.2 evidence are executed under the signed manifest, on the
+registered pre-screen topics only. No composed cell has been generated and no
+gate after stage 3 has been run.
+
+**§10.4's development phase changes what blocks Gate 1.** Run on v4r3's own
+22,968-item pool, **neither registered judging condition survives §10.4's
+criterion 2**: truncation 23/72 and 40/72, where the same configuration
+truncated 0 of 48 on the v4r2 pool of A and B alone. Truncation is absent on
+the outcome constraints and rises with the counting a rule demands, reaching
+12/12 on rate lower bounds — the judge exhausts its 2,048-token cap enumerating
+words to evaluate a rate. So §10.4 is not merely awaiting a signature: it has
+an unmet criterion whose cause is the instrument population this revision
+registered. The single-shot freeze and the one-shot calibration remain
+unclaimed and the held-out half is hashed and never judged.
+
+**One event worth recording.** The §10.6 verifier binding fired during
+development: a hashed module was edited while the ladder screen was generating,
+and the stage refused to place 4,920 rows rather than scoring them under a hash
+that had moved. No row was mixed; the stage was re-run under a settled hash,
+and the raw generations were reused only after an identity check on row id,
+prompt hash and seed.
+
+---
+
+## 2026-08-21 — five reported quantities were misdescribed in the v4 summaries; corrected
+
+**No artifact, estimate, verifier, threshold or code path changed.** Every
+number below was already recorded correctly in the producing artifact. What was
+wrong was the prose that summarised it, in documents that other documents then
+quoted. Corrected in place, with the correction recorded here rather than
+silently.
+
+**1. B's solo vacuity range under the registered prompt.** Reported as
+`0.208–0.659` in `RESEARCH_STATE.md` §4e/§4g, `ENDPOINT_2026-08-20.md` §1/§9,
+`INVESTIGATION_2026-08-20.md`, this file, `DCI1_v4r2_to_v4r3_changelog.md` C1
+and `DCI1_preregistration_v4r3.md` §2.3(a). Recomputed from
+`cal_screen_v4/results.json:regime_adequacy_by_rung` over all 24 rungs on all
+four models: **minimum 0.2083, maximum 0.8698**. `0.208–0.659` is the range of
+the four **per-model minima** (0.339 / 0.208 / 0.312 / 0.659), which is what the
+**min** column of `cal_screen_v4/REPORT.md` correctly reports; the summaries
+transcribed that column as a range of values. The finding is unaffected and
+slightly strengthened — no rung on either grid passes the 0.10 ceiling on any
+model, and the true margin is 2× to 8.7× rather than 2× to 6×.
+
+**2. "Intervals disjoint" on E2B.** `RESEARCH_STATE.md` §4f, `ENDPOINT` §5 and
+§6, and this file's `focal_losses` entry stated that `D(B←CR6:7)` and `D(B←A)`
+have disjoint intervals. They overlap on both scales — percentile
+[+0.121, +0.207] against [+0.031, +0.143], simultaneous [+0.113, +0.216] against
+[+0.016, +0.157]. The claim itself is correct and is carried by the registered
+**paired** estimator, which is the right one: `Δ_1 = D(B←A) − D(B←CR6:7)` =
+**−0.078, simultaneous [−0.134, −0.023]**, entirely below zero. Comparing two
+marginal intervals is not a test of their difference and the wording is
+withdrawn. On E4B the corresponding `Δ_3` = +0.022 [−0.044, +0.088] includes
+zero, so no reference out-damages A there.
+
+**3. "Under the mean reading nothing runs on any model under any stem."**
+Stated in `RESEARCH_STATE.md` §4e and `INVESTIGATION` §7. Contradicted by
+`cal_screen_v4/results.json`: qwen3-4b-instruct-2507 at m = 10 under the floored
+stem has `feasible_mean_reading = true`, and `cal_screen_v4/REPORT.md` says so
+itself — *"m = 10 is the only rung on any model feasible under both readings of
+the graded clause"*. Corrected to: nothing runs on three of four models under
+either stem, with that one exception; under the registered stem nothing is
+feasible under either reading anywhere, because §12.4 fails on vacuity first.
+This matters because it changes the framing of the §12.4 researcher decision.
+
+**4. The matrix screen's reference sets were not admitted by the registered
+§13.2.** Their disposition is *"conditions 1 and 3-6 as registered on the 96
+calibration topics; condition 2 with its registered one-draw §12.2 input,
+applied where that input exists"*. The summaries quoted `Δ_R` without it. Two
+sensitivities in the same artifact are load-bearing: under
+`strict_registered_precision` E2B admits five families and **RF2, one of the
+three actually used, is not among them**; under `sensitivity_condition_2_at_M_cal`
+E2B admits only `CL7, CL8, CR4`, all production-class, which would make `Δ_R` a
+contrast between production companions. Condition 2's own input has a median
+paired SE of 0.104 at one draw against a 0.15 caliper. Scope notes added to
+`RESEARCH_STATE.md` §4f and `ENDPOINT` §5.
+
+**5. Two interval conventions circulated for the same estimands.**
+`RESEARCH_STATE.md` §4f quotes **percentile** intervals, `ENDPOINT` §5
+**simultaneous** ones. Both are in `results.json` and both labels were honest,
+but E2B's `Δ_R` **excludes zero on one and includes it on the other**
+([+0.009, +0.087] against [−0.002, +0.098]) and §4f carried no label. Both
+sections now state their convention and say that the simultaneous scale — the
+one the registered rules apply to — governs where they disagree.
+
+**Which results are affected.** None. No estimate, interval, artifact or
+verdict moves; `reports/matrix_screen_v4/results.json` was regenerated and
+diffed key-by-key against its predecessor with **0 values changed, 0 keys added,
+0 keys removed**. Old and new remain fully comparable. What changes is what the
+summaries say the artifacts contain.
+
+**One code change, numerically inert.** `matrix_screen_v4/analysis.py` now
+routes both the V5 difficulty line and the length line through a named
+`fit_points()` helper instead of two inline comprehensions, so the invariant
+that A (and the production-class companion) are excluded from a line used to
+predict A lives on the execution path. The regression test that guarded it was
+a source-text assertion counting a string literal; it is replaced by a
+behavioural test that gives A extreme leverage, perturbs A's own delivery loss
+across four orders of magnitude, and asserts the fitted line does not move.
+`dci1` suite: 408 passed.
+
+---
+
+## 2026-08-21 — DCI-1 v4 revision 3: a hybrid difficulty-spectrum design, proposed
+
+**Status: PROPOSED, NOT ADOPTED.** No registered v4r2 constant, verifier, grid,
+ladder, wording, threshold or evidence record has been changed. The new
+protocol lives in `user-notes/DCI1_preregistration_v4r3.md` and its executable
+form in `dci1/src/dci1v4r3/`, a sibling package that `dci1v4` neither imports
+nor can read. Adoption is decision **D0** of §33 and is the researcher's.
+
+**Why a revision and not v5.** v4r2 §31: *"Before study-wide freeze, any change
+is a revision of this document."* v4r2 was never registered, never frozen and
+produced **no confirmatory data** — all four replications stand at
+`REGIME_SCREEN` and no model has run Gate 1 or Gate 2. So the change is a
+revision, exactly as v4r1 → v4r2 was, for the same reason.
+
+**What changed, and on what evidence.** Twenty-one changes, each with its
+evidence, classification and effect on interpretation, in
+`user-notes/DCI1_v4r2_to_v4r3_changelog.md`. The four that move the science:
+
+- **The prompt carries a uniform answer-length sentence** (§8.5). v4r2's §9.3
+  registered a 20-word non-vacuity threshold on the reasoning that the topic
+  space asks for 60–120 word answers, and its prompts never said so. On the
+  registered calibration sample B's solo vacuity is at least 0.208, and up to
+  0.870, at every focal severity on all four models against a 0.10 maximum, and 0.000–0.060 under the
+  stem. `reports/cal_screen_v4/`, `reports/fs_screen_v4/`.
+
+- **The difficulty coordinate becomes instructed compliance**,
+  `(solo − chance)/(1 − chance)`, with raw solo compliance demoted to a
+  registered secondary coordinate (§13.3). A is an exact-count production
+  constraint whose chance rate is **0.000**; every count budget is prefix-closed
+  and its matched rungs run 0.52–0.89. Twelve of twelve references in the matrix
+  screen are matched to A on raw solo compliance and **two of twelve** on
+  instructed compliance, and two are anti-productive.
+  `reports/section_13_2_v4/instructed_compliance.json`. This is the **harder**
+  criterion: it moves twelve of twelve previously matched companions out of the
+  caliper and makes the reduced design more likely, not less.
+
+- **A difficulty spectrum and `delta_difficulty`** (§11.7, §13.6). Each of the
+  three core reference families supplies two further severities, one strictly
+  harder than A and one strictly easier, and A's loss is differenced against a
+  family-aware line fitted on the nine non-A companions with **A excluded**.
+  This closes v4r2 §33's registered open decision **V5** in favour of both
+  matching and spanning, at linear rather than quadratic cost: a spectrum
+  companion pairs with B alone.
+
+- **Ξ is promoted to the primary family and gates the wording of every L3
+  statement** (§3.2, §11.6). In `reports/matrix_screen_v4/` the two largest Δ_R
+  values in the study sit beside Ξ = −0.036 and −0.009 — A damaging the
+  references about as much as it damages B. A quantity that decides how a claim
+  reads belongs in the family the claim reads.
+
+**Two v4r2 defects resolved.** §12.4's graded clause is read as a **share**: the
+mean reading declares degenerate exactly the severities §12.3 declares eligible,
+on every model under every prompt, and a clause that contradicts its own
+neighbour is a defect rather than a reading. §33 D3 asks the researcher to
+confirm it, and §12.4 states plainly that it is also the reading under which the
+study can run. The focal grid **escalates** to m ∈ {11, 12} only when the
+registered grid supplies no eligible severity, because a flat extension moves
+m\* on a model whose registered grid already works.
+
+**A registered limitation made explicit rather than discovered.** The reference
+pool is budget class throughout and A is production class, so
+`COMPANION_CLASS_NOT_MATCHED` attaches to **every** L3 statement with a fixed
+sentence, and a one-companion class arm bounds how much that could matter
+without estimating it. In the matrix screen a production-class companion cost B
++0.601 and +0.632 where A cost +0.086 and +0.228.
+
+**Which results are affected.** **None.** v4r2 produced no confirmatory
+estimate of any quantity, and every screen number stands as recorded. What
+changes is what the design would measure. v4r2 rows and v4r3 rows are never
+comparable and are structurally prevented from meeting: `STUDY_ID` is
+`dci1v4r3`, deliberately hyphen-free, because `dci1v4`'s admission guard tests
+`startswith("dci1-v4")` and `"dci1-v4r3"` would have passed it.
+
+**Allocation.** 47 cells per block, 408 blocks, M = 4: **76,704 generations per
+model and 306,816 across four**, against v4r2's 38,400 and 153,600. The binding
+member is `D` at φ = 0.37, which fails its 0.05 precondition at 384 blocks once
+the primary family carries six members. The sequestered set falls from 96 topics
+to 72 because a 624-question bank cannot supply both.
+`dci1/tools/allocation_v4r3.py` reproduces v4r2's published §16.2 row exactly
+under an executable assertion, so the only thing that changed in the new row is
+the estimand set.
+
+**Safeguards.** `dci1/tests_v4r3/` — 127 tests, all passing, mapped to the
+failure modes a spectrum design makes possible: a fit through the point it
+predicts, an extrapolated residual reported as a measurement, a bootstrap that
+does not refit, a selection rule that can see a composed outcome, a family
+bypassing Gate 1, a freeze that does not bind a new rule, and a prose number the
+code does not produce. The last of those caught a real disagreement during the
+dry run — the preregistration said 45 calibration cells where the shortlist caps
+give 41 — and the preregistration was corrected.
+
+**Artifacts.** `user-notes/DCI1_preregistration_v4r3.md` (2,523 lines),
+`user-notes/DCI1_v4r2_to_v4r3_changelog.md`, `dci1/src/dci1v4r3/`,
+`dci1/tests_v4r3/`, `dci1/tools/{allocation_v4r3,dry_run_v4r3}.py`,
+`dci1/reports/{v4r3_change_map.md,allocation_v4r3.json,v4r3_dry_run.json}`.
+Full `dci1` suite: **831 pass**, against a 705 baseline, 76 s.
+
 ## 2026-08-19 — DCI-1 v4: a fresh study, and two findings that move v4r2's own numbers
 
 **What changed.** A complete implementation of `DCI1_preregistration_v4r2.md`
@@ -404,6 +674,173 @@ reported wherever the quantity appears.
 `dci-79` on the 96-topic calibration screen; the contradiction-with-§12.3
 framing and the A-side characterisation are from this session's B-grid rows.
 Both are cross-checked on independent samples.
+
+## 2026-08-20 — v3 re-analysis: what the confirmatory rows identify, and a correction to a quantity quoted from them
+
+**What changed.** Nothing registered, and nothing in the v3 evidence tree. A
+read-only re-analysis (`dci1/tools/v3_reciprocal_reanalysis.py`, results at
+`dci1/reports/v3_reanalysis/`) recomputes from the closed v3 confirmatory and
+Gate 2A caches. v3 remains closed and `dci1/RESULTS_V3.md` stands.
+
+**What it establishes, and why it belongs here.** The v3 confirmatory design
+carries `A`, `AB`, `AR1`, `AR2`, `AR3` and `TOPIC` on the same 384 blocks and
+**no solo cell for B or for any reference**. So `D(A←B)`, `D(A←R_j)`, `Δ^A`,
+`Δ^A_j`, companion uptake and joint success are identified with same-topic
+pairing, and `D(B←A)`, `D(R_j←A)`, `D(R_j←B)`, `Λ`, `Δ_R` and `Ξ` are **not
+identified from these rows at all** — each needs a solo baseline on the
+confirmatory topics that v3 never generated. That is a rule about which data an
+analysis may read, which is why it is recorded here rather than only in a
+report.
+
+**Which results are affected.** One. `dci1/reports/companion_identity_review.md`
+(2026-08-20, same day, earlier) quotes
+
+| model | "D(B←A)" | "D(R̄←A)" |
+|---|---:|---:|
+| E2B | 0.468 | 0.582 |
+| E4B | 0.316 | 0.727 |
+
+Those numbers are arithmetically reproduced by the new tool and they are **not
+delivery losses**: each subtracts a composed rate measured on the 384
+confirmatory topics from a solo rate measured on the 96 Gate 2A calibration
+topics. The sets are disjoint and the contrast is unpaired. They are re-labelled
+as an unpaired cross-set diagnostic and may not be quoted as `D(B←A)` or
+`D(R̄←A)`. The topic-set shift is now measured for the one constraint that
+exists on both sets — A at n\*, same estimator — at **−0.046 (E2B)** and
+**−0.105 (E4B)**, so the qualitative reading survives a shift of that size; the
+larger confound is that on E4B the references are satisfied in 4–8% of composed
+responses, so their loss sits near its ceiling by construction.
+
+**What is added.** Block bootstrap over the 384 confirmatory blocks, 10,000
+resamples, resampled within order stratum; studentised maximum-modulus
+simultaneous intervals over the three per-reference contrasts; the order
+stratification; the uptake and joint-success tables; and the response-length
+record. Check `C18` recorded point estimates only, and this reproduces its Δ^A
+to 1.4 × 10⁻¹⁷ on both Gemmas, which fixes the provenance.
+
+Δ^A = **+0.0639 [+0.0405, +0.0871]** (E2B) and **+0.0737 [+0.0519, +0.0951]**
+(E4B) on all 16 draws — positive, excluding zero, and **below the 0.10
+generic-load threshold** on both. On E2B the three per-reference components are
++0.056, +0.142 and −0.006, so the §13.4 heterogeneity qualifier fires; on E4B
+they agree within 0.010. On E2B `D(A←B)` is +0.058 in one order and +0.217 in
+the other.
+
+**And a retrospective finding about v3's own reference admission.** v3
+registered no non-vacuity predicate; §9.3's twenty-word threshold is a v4
+registration. Applying it to v3's Gate 2A solo cells as a re-description:
+**A's solo cell has a vacuous-pass rate of 0.000 at 269–323 mean words, and
+every admitted reference has 0.43–0.90 at 9–30 mean words** (E2B RF3:5 is 0.823
+at 14 words; E4B RF3:5 is 0.896 at 9 words). v3's §18 rule matched references to
+B within 0.10 on solo failure, and on both models that matching was performed on
+quantities in which a majority of the passes were the model declining to answer.
+It explains what `RESULTS_V3.md` flagged without explaining — the admitted
+references were satisfied in 2–8% of composed responses on E4B. Applying §17.4
+to the pilot's reciprocal losses says the same thing from the other side: five
+of six `D(R_j←B)` become strongly negative once vacuous passes are recoded.
+**No v3 row or verdict is invalidated**: v3 was internally consistent under its
+own rules, and its rules contained no vacuity gate. What this shows is that
+v4's §9.3 predicate and §12.4 ceiling answer a defect that was already present
+and already load-bearing.
+
+**Δ^A survives the registered §17.4 vacuity bound.** Recomputed with every
+vacuous pass forced to a failure, it is +0.0634 and +0.0720 against +0.0639 and
++0.0737 — a change of −0.0005 and −0.0017, on 9 and 39 vacuous passes in 24,576
+composed rows. The same bound removes 72–82% of the B+R pilot's Δ. The asymmetry
+is what a length-monotone budget outcome does that an exact-count production
+outcome does not.
+
+**And the length differential is order-dependent, which the pooled number
+hides.** In the `added_first` configuration the `AB` and `AR̄` cells differ by
+two to seven mean words and the length-matched Δ^A is **+0.047 on both models**
+— the cleanest estimate these rows contain, and squarely in the generic-load
+region. In `target_first` the references run 50–70 words longer, longer answers
+make the exact-count constraint harder, and matching therefore *raises* the
+estimate to +0.212 and +0.130 on four and three supported bins. Δ^A, the length
+differential and the order are one entangled system on this design.
+
+**Comparability.** Δ^A on all cached draws is **not** the v3 registered
+`pooled_swap_effect`, which selected one draw of sixteen under the v3 selector
+and is −0.0095 on E2B. Both are correct under their own rule and C18 records the
+distinction. Nothing here is comparable with v4, which is a different protocol.
+
+## 2026-08-20 — the B+R pilot's Δ is near-collinear with response length
+
+**What changed.** Nothing registered, and nothing in the pilot's or v3's
+evidence trees. A read-only re-analysis (`dci1/tools/pilot_length_channel.py`,
+results at `dci1/reports/pilot_reanalysis/`) recomputes from
+`evidence/br-pilot-v4/<model>/cache.jsonl` and the v3 confirmatory `AB` rows.
+
+**Which results are affected.** The B+R pilot's headline, and with it the
+support for promoting `Δ_R` to a primary estimand in v4r2 §11.3. The pilot
+reports Δ = +0.343 (E2B) and +0.375 (E4B), classified `H1_PAIR_SPECIFIC`. **The
+rows are not invalidated and the estimate is not withdrawn.** What changes is
+what it can be read as evidence for.
+
+**Three findings, in order.**
+
+1. **Vacuity, on the registered bound, carries most of it.** §17.4 registers
+   the partial-identification recomputation — every vacuous pass forced to a
+   failure, no row dropped, nothing conditioned on. Under it Δ is **+0.0950**
+   (E2B) and **+0.0678** (E4B) against +0.3433 and +0.3751 as reported: **both
+   below the 0.10 generic-load threshold**. `P(B|A)` does not move — the A+B
+   responses average 128–139 words and are never vacuous — while `P(B|R̄)` falls
+   from 0.688 to 0.439 and 0.819 to 0.512, because 36% of the pilot's B+R
+   responses are under twenty words. The *restriction* to ≥ 20 words gives the
+   opposite answer (+0.3484, +0.3599), and §9.3 says why it is not the
+   protocol's answer: removing vacuous passes "would condition on a consequence
+   of the treatment". The restriction is a collider-conditioned sub-population;
+   the forcing is the registered bound. **And §17.4's last sentence settles the
+   disposition**: "a claim is licensed only when the primary and the
+   vacuity-forced recomputation license the same claim; otherwise the axis is
+   reported unresolved with both bounds". +0.343 would support pair-specific and
+   +0.095 supports generic load, so by the registered rule the pilot's Δ axis is
+   **unresolved**, with both bounds reported — a stronger and more
+   protocol-faithful disposition than either "it is a vacuity artifact" or "it
+   survives".
+2. **The two cells differ five-fold in response length.** The pilot's B+R̄
+   generations average 24.8 words (median 23); the v3 `AB` rows its P(B|A) term
+   comes from average 127.9 and 139.1 (median 126, 137). B at m\* = 7 is a
+   max-word-length budget, so its difficulty rises with word count. Within
+   word-count bins the identity contrast disappears: weighted over bins with at
+   least twenty responses in both cells, the gap is **−0.057** (E2B) and
+   **−0.003** (E4B).
+3. **The two cells are nearly separated on the mediator.** Only two of six bins
+   carry twenty responses in both, holding 9.1% of the A+B rows and 28.3% of the
+   B+R rows (E2B); 7.8% and 30.6% (E4B). So the length-adjusted contrast is
+   weakly identified and the raw contrast largely compares two disjoint length
+   regimes. Response length is a consequence of the companion (§13.3) and §22
+   registers it as a mediator the primary estimand is never conditioned on;
+   these are sub-population comparisons and not a causal decomposition.
+
+**The pilot declared the cross-set structure and defended it by topic-set
+exchangeability** (`protocol.json`, `reused_baselines.cross_set_note`). The
+finding is that the declared defence does not reach the mediator: exchangeable
+topics do not buy comparable response lengths.
+
+**Two confounds, and only one survives into v4.** The *source* confound — Δ's
+two terms coming from two studies — v4 eliminates by construction, because §8.1
+puts A+B and B+R_j on every block. The *class* confound does not go away: every
+registered reference family and B are `S ≤ q` budgets whose pass sets are
+downward-closed under prefix, and A is the only production constraint in the
+pool. A budget companion helps a budget outcome by letting length collapse, so
+`Δ_R` as registered measures A's damage plus the control's help, with the second
+term structurally non-positive in expectation. The pilot's own numbers show it:
+`D_B_from_Rbar` = **−0.059** on E4B, `D_B_from_RF6@4` = −0.167, and reciprocally
+`D_RF1@5_from_B` = −0.063 and `D_RF2@5_from_B` = −0.115.
+
+**Comparability.** Everything above is a re-description of the same rows under
+the same verifier hash `2059509d…`; no verdict was recomputed under a different
+rule. The pilot's own estimates stand as recorded and are not superseded — they
+are qualified. A future citation of Δ = +0.34 without the length qualification
+is a misreading of the record, not of the number.
+
+**A related figure that moves in the other direction.** On the A side, within v3
+and on the same 384 blocks, the arms separate on length by only 1.15–1.44×
+(E2B) and 1.24–1.34× (E4B), all six word-count bins carry at least thirty
+responses in all four arms, and Δ^A **survives** length matching: +0.064 raw
+against +0.118 matched (E2B), +0.074 against +0.059 (E4B). See the same-day
+entry on the v3 re-analysis.
+
 ---
 
 ## 2026-08-20 — the screen's witness constructor reported construction failures as entailment claims
@@ -462,6 +899,91 @@ selection. Independently recomputed here as 4,910 pairs in 45 kind-pair classes,
 3,750 of them reference × reference, and confirmed against the signed stage-1
 `qualification.json` of all four models, each recording
 `pairs=4910, kind_pairs=45, witnesses_verified=true`.
+
+## 2026-08-20 — the Gate-2 calibration screen: the registered prompt cannot start, and the registered reference pool was length-falsified
+
+**What changed.** Nothing registered. A third non-confirmatory screen
+(`dci1/src/cal_screen_v4/`, evidence at `dci1/evidence/cal-screen-v4/`, main-arm
+protocol hash `fd49e5d4…` with per-model hashes for the three later arms) ran
+the §12.3, §12.4 and §13.2 procedures on the **registered calibration sample** —
+the 96 solo-calibration topics at the registered M_cal = 4 — which is the sample
+§13.2 admits against and which no earlier screen had used. Same standing as the
+FORM × STEM, B-grid and B+R work: design evidence, non-confirmatory, refused by
+the v4 positive-admission guard, entering no v4 estimator.
+
+The registered code does the deciding. `cal_screen_v4/admission.py` runs §13.2
+and is required to reproduce `dci1v4.stages.gates.admit_family` byte for byte,
+reason strings included, over a constructed input on RF1;
+`dci1v4.stages.gates.select_severity` performs §12.3 selection itself. The
+`current`-stem arm renders through `dci1v4.design.prompts.render`, asserted
+byte-identical at zero, one and two constraints, so §12.4's finding is a
+statement about the registered design and not about a lookalike.
+
+**Which results are affected.**
+
+1. **§12.4 regime adequacy, on the registered basis.** B's realised solo vacuity
+   rate under the **registered prompt** is **at least 0.208, and up to 0.870**,
+   at **every** rung of m ∈ {7,…,12} on **all four** models, against a maximum
+   of 0.10. (Per-model minima 0.339 / 0.208 / 0.312 / 0.659.) There is no m
+   that could pass. Every replication returns `REGIME_NOT_FOUND` before any
+   reference question is reached. Under a uniform 60–120 word instruction the
+   same cells are 0.000–0.060 and every rung passes. This replicates the B-grid
+   screen's 24-topic reading on the sample the gate is actually evaluated on.
+2. **The registered reference pool is not falsified — it was length-falsified.**
+   Under the floored stem, on the calibration set, registered families clear
+   §13.2 conditions 1 and 6 simultaneously on every model, with solo vacuity of
+   0.000 at essentially every rung, against 0 of 64 under the current stem.
+   Counting families with a rung clearing conditions 1 and 6 at the same
+   severity: **E2B 3 (RF2, RF3, RF8), E4B 4 (RF2, RF3, RF6, RF8), qwen3-4b 1
+   (RF7), qwen3-4b-instruct-2507 4 (RF1, RF2, RF3, RF7)**. Three of four models
+   reach the §13.2 requirement of three **from the registered pool alone**, so
+   **Amendment B is unnecessary on those three** — and with it the canonical
+   verifier hash change, the Gate 1 instrument re-freeze, the boundary-suite
+   extension and the §5a witness obligation. Amendment B §1's argument that the
+   pool "crosses A's compliance level *only* through the vacuity channel" is
+   true under the current stem and false under the floored one.
+3. **Amendment C should be per-model, not global.** Under the floored stem the
+   registered focal grid supplies an in-band m\* on three of four models — E2B
+   m = 10, E4B m = 9, qwen3-4b-instruct-2507 m = 10 — and only qwen3-4b returns
+   `FOCAL_RANGE_EXHAUSTED`. On qwen3-4b-instruct-2507 a global extension is
+   actively harmful: §12.3 moves m\* from 10 to 11, and 10 is the only rung on
+   any model feasible under both readings of §12.4's graded clause. Recorded as
+   a superseding note in `user-notes/DCI1_v4_amendment_C_focal_grid.md`.
+4. **§13.2 condition 2 decides substantially on noise.** Its input is a §12.2
+   measurement — 24 topics at one draw — and the median paired standard error of
+   the quantity it bounds at 0.15 is **0.10–0.12** on the FORM × STEM screen's
+   own floored rows, so a truly matched reference is rejected about a fifth of
+   the time. On qwen3-4b it rejects CR4:13 and CR6:10, whose calibration-set
+   distances from A are −0.042 and −0.013. Four dispositions are computed and
+   all four reported: as registered; applied only where an input exists;
+   with the input measured at M_cal on the same 24 topics; and switched off as a
+   §23-style sensitivity. **No reference decision rests on the last one.**
+   Measuring condition 2's input at M_cal moves A's pre-screen anchor by −0.114,
+   +0.136, +0.156 and −0.073 across the four models and swings the
+   admitted-family count **7 → 3, 5 → 6, 3 → 5, 7 → 4**. On qwen3-4b the M_cal
+   count equals the condition-2-off count exactly. The criterion is moving
+   because its reference point is moving, in both directions, on a quantity
+   whose single-draw standard error is about 0.10 against a caliper of 0.15.
+   The matrix screen uses the **registered-precision** disposition, not the
+   better-measured one: §12.2 registers one draw, and letting a screen-invented
+   precision upgrade choose the design would be the screen deciding a protocol
+   question.
+5. **Response length.** Under the floored stem the solo cells of A, B, the
+   candidates and the registered pool sit within a factor of ~1.5 of each other
+   in median words, against the 5.1–5.6× separation in the B+R pilot's Δ. The
+   stem is therefore what puts the two cells whose difference is Δ_R into a
+   common length regime — see the same-day entry on the pilot.
+
+**Comparability.** Screen rows are NOT comparable with registered v4 evidence and
+must never be pooled with it: a different seed root (202608220, domain
+`calscreen:gen:v1`, a distinct stage label per arm) and, in every arm but one, a
+different prompt template. The `current`-stem B cells are byte-identical in
+construction to the registered ones, which is what licenses the §12.4 reading.
+
+**What is not adopted.** Nothing. Amendments A, B and C remain drafts; the
+registered pool, ladders, calipers, grids, bands and thresholds are unchanged,
+and a test asserts it.
+
 ---
 
 ## 2026-08-20 — the screens now report the registered §17.4 vacuity bound, not only the restriction
@@ -529,3 +1051,398 @@ generic load (< 0.10), so under §17.4 the correct disposition is **the axis
 reported unresolved with both bounds**, not either reading alone. The earlier
 `CHANGES_SCIENTIFIC.md` characterisation "Δ is not a vacuity artifact (holds at
 ≥20 words)" rested on the restriction and should not be quoted.
+
+## 2026-08-20 — the pairwise-matrix screen: Δ_R, Ξ, the reciprocal losses and the companion-difficulty relation, estimated for the first time
+
+**What changed.** Nothing registered. A fourth non-confirmatory screen
+(`dci1/src/matrix_screen_v4/`, evidence at `dci1/evidence/matrix-screen-v4/`,
+per-model protocol hashes in `dci1/reports/matrix_screen_v4/`) ran the
+registered §8.1 cell set — five solo cells and ten unordered pairs in both
+orders — plus a V5 difficulty-spanning arm, a production-class companion arm and
+the §25 unconstrained cell, on 120 blocks at the registered M = 4 under the
+floored stem. Same standing as every other screen: design evidence,
+non-confirmatory, refused by the positive-admission guard, entering no v4
+estimator.
+
+**Why it is here.** Four quantities that bear directly on the scientific
+question had never been estimated in this constraint vocabulary by any stage of
+this study: `Δ_R`, `Ξ`, `D(R_j←A)` and the companion-difficulty → `D(B←companion)`
+relation. Check C12 records the last-but-one as `BLOCKED`; the FORM × STEM report
+says the same from the other side. The B+R pilot has `D(R_j←B)` and no
+reference-on-reference cell; v3 has neither.
+
+**The topic decision, recorded because it touches §6.2.** 120 blocks: the 24
+pre-screen topics and the 96 solo-calibration topics. The 24
+composed-validation topics are **excluded** — §13.6 evaluates every registered
+composed cell type on exactly those topics at exactly this M_cal, and generating
+composed cells there first would make Gate 4 a check of cells it had already
+seen. Using solo(96) for composed cells is outside §6.2's literal wording; the
+frozen protocol records the basis in full, including that the researcher's
+ratification reached this session **relayed by a peer session rather than
+directly**. Every quantity is also reported on the 24 pre-screen blocks alone,
+which are disjoint from the 96 the reference severities were selected on and
+need no ratification.
+
+**The safeguard.** The reference set, n\*, m\*, the spanning rungs and the class
+companion are inputs to this screen and outputs of the calibration screen, hashed
+into the frozen protocol before generation, with an explicit bar on revising any
+of them on this screen's evidence (§13.3).
+
+**What it cannot support.** No L1, L2 or L3 statement: §17.3's precision
+preconditions need 384 blocks. At 120 blocks Δ_R's projected half-width is
+0.059–0.063 against a precondition of 0.05, and **Ξ's is 0.111–0.116 against
+thresholds of 0.10 and 0.25** — it can show sign and rough size and cannot
+settle outcome specificity. (Achieved half-widths came in at roughly half the
+projection — 0.032–0.045 for Δ_R, 0.037–0.055 for Ξ — because measured
+intra-block ρ is 0.53–0.69 against the 0.5 assumed. Δ_R therefore *meets*
+§17.3's 0.05 width precondition numerically. This changes nothing: the
+preconditions are conjunctive with 384 confirmatory blocks, an approved Gate 1
+and a frozen verifier hash, none of which exist. Recorded so the pre-stated
+projection is not quoted as the achieved precision.) The reference set is provisional: if Gate 3 later
+admits different families, every per-reference number here is about constraints
+that are not in the study.
+
+**What it found.** 64,800 generations, 10,000-resample block bootstrap, readings
+fixed in `dci1/reports/matrix_screen_v4/REPORT.md` §7b before any cell was
+scored.
+
+- **Δ_R is small and, for the first time in this study, resolved.** +0.048
+  [+0.009, +0.087] on E2B, +0.101 [+0.056, +0.146] on E4B, +0.011
+  [−0.020, +0.044] on qwen3-4b, −0.024 [−0.067, +0.019] on
+  qwen3-4b-instruct-2507. Three of four lie entirely within the ±0.10
+  equivalence band; E4B spans the 0.10 generic-load threshold and is
+  **unresolved at the achieved precision**. None approaches 0.25.
+- **§17.4 licenses the reading rather than voiding it.** Compliance and
+  vacuity-forced Δ_R agree on all four models (+0.048, +0.101, +0.007, −0.053),
+  landing in the same §7b row, because floored-stem calibration vacuity runs
+  0.000–0.060. This is the first axis in the study to satisfy §17.4's
+  agreement rule; under the *registered* stem the FORM × STEM screen failed it.
+- **Constraint class dominates companion identity.** A production-class
+  companion costs B **+0.601** (E2B, CL7:80) and **+0.632** (E4B, CL8:25) of its
+  compliance where A costs +0.086 and +0.228, so Δ_class is **−0.515** and
+  **−0.404**: A is the *gentler* production companion by five- to seven-fold.
+  On qwen3-4b-instruct-2507 Δ_class is +0.087 [+0.046, +0.130], inside the
+  equivalence band. qwen3-4b has no class arm (its Δ_R₂ is the class contrast).
+- **A's excess over the companion-difficulty line is a length effect.** Residual
+  from the difficulty line +0.055 and +0.098 on the Gemmas; refit on the length
+  shift each companion induces and A's residual is **−0.010, +0.010, −0.006,
+  +0.008** — within ±0.010 on all four models. Reached independently of, and
+  agreeing with, the B+R pilot re-analysis entry above. Length is reported
+  beside the estimand and never inside it (§22).
+- **Ξ does not support pair specificity.** −0.036 (E2B) and −0.009 (E4B): §7b's
+  "A damages the references about as much as it damages B" row, an A-general /
+  constraint-class reading. Positive on the Qwens (+0.131, +0.090) only because
+  A *improves* reference compliance there (D(R̄←A) = −0.095, −0.180) while
+  D(B←A) is itself negative (−0.039, −0.095). §25 accidental compliance is
+  0.52–0.89 for the references against 0.000 for A, so the reference side is
+  near-ceiling.
+- **New and unregistered: a focal-position effect larger than the identity
+  effect.** B loses **0.288** (E2B) and **0.350** (E4B) of its compliance purely
+  by being stated second; A shows none (|effect| ≤ 0.063). Consequently Δ_R
+  computed within a single order configuration **changes sign on all four
+  models** (E2B +0.326 vs −0.231; E4B +0.450 vs −0.249), because §8.4's
+  registered order puts the focal constraint in different positions in the
+  A-cell and the R-cells. Pooled Δ_R balances this; a single-order Δ_R does not.
+
+**Which results this affects, and comparability.** No existing number changes.
+Nothing registered is amended. The entry records four quantities estimated for
+the first time and one channel — focal position — that no prior stage of this
+study measured or controlled for. Prior single-order or order-unbalanced
+estimates in this constraint vocabulary are **not comparable** to a pooled Δ_R
+and should not be read as identity effects; §8.1 already mandates both orders
+for the confirmatory design, and this screen is the evidence for why that
+requirement is load-bearing rather than precautionary.
+
+**Provenance.** `dci1/src/matrix_screen_v4/`, rows at
+`dci1/evidence/matrix-screen-v4/`, per-model protocol hashes frozen before
+generation (E2B `54d5d61c60b2…`, E4B `ba2b12d82497…`, qwen3-4b `78733f69c99a…`,
+qwen3-4b-instruct-2507 `931cae4a5935…`), analysis in
+`dci1/reports/matrix_screen_v4/results.json`, report in the sibling `REPORT.md`.
+
+## 2026-08-20 — the matrix screen's V5 and length lines were fitted through A, and A's length residual is not identified at all
+
+**What changed.** `dci1/src/matrix_screen_v4/analysis.py`. Both the V5
+companion-difficulty line and the response-length line were fitted on the
+companions with `arm in ("matched", "spanning")` — a set that **includes A** —
+and the resulting line was then used to predict A and report A's residual from
+it. The keys were even named `line_fitted_on_non_A_companions`, which was
+false. Both fits now exclude A, the key is
+`line_fitted_on_budget_companions_excluding_A`, and each result carries a new
+`A_within_support_of_fit` block recording whether A's predictor value lies
+inside the range the line was actually fitted over.
+
+**Why it matters.** Predicting a point from a fit containing that point is
+circular, and the bias is not small when the point carries leverage. A is the
+only companion in the pool that substantially changes response length, so on the
+length line A was the sole point in its region and the line was effectively
+pinned to it.
+
+**Which numbers change.** Only the two residuals. Every estimand — `D(B←A)`,
+`D(B←R_j)`, `Δ_R`, `Δ_j`, `Ξ`, `Λ`, the reciprocal losses, `Δ_class`, the order
+contrasts, both scales, all configurations — is **numerically unchanged**,
+verified by diffing the full artifact before and after: maximum absolute change
+across every pre-existing estimand is **0.0**.
+
+| residual | as first reported (A in the fit) | corrected (A excluded) | identified? |
+|---|---|---|---|
+| difficulty, E2B | +0.055 | **+0.067** | yes — A at 0.562 inside [0.335, 0.735] |
+| difficulty, E4B | +0.098 | **+0.118** | yes — A at 0.719 inside [0.531, 0.838] |
+| difficulty, qwen3-4b | −0.042 | **−0.050** | yes |
+| difficulty, qwen3-4b-instruct-2507 | −0.040 | **−0.048** | yes |
+| length, E2B | −0.010 | −0.117 | **NO** — others [−9, −1], A **+15** |
+| length, E4B | +0.010 | +0.126 | **NO** — others [−8, −3], A **+8** |
+| length, qwen3-4b | −0.006 | −0.012 | **NO** — others [−5, +4], A **−8** |
+| length, qwen3-4b-instruct-2507 | +0.008 | +0.024 | **NO** — others [−10, −1], A **−16** |
+
+**Consequence for the reading, and a retraction.** The entry above
+("the pairwise-matrix screen…") stated: "**A's excess over the
+companion-difficulty line is a length effect** … refit on the length shift each
+companion induces and A's residual is within ±0.010 on all four models." That
+sentence is **withdrawn**. It was an artefact of A's presence in its own fit.
+Two corrected statements replace it:
+
+1. **The difficulty residual is identified and larger than first reported.** A
+   sits above the difficulty line by +0.067 (E2B) and **+0.118** (E4B) — the
+   latter above the 0.10 generic-load threshold — and below it on both Qwens.
+   Companion difficulty alone does not account for A on the Gemmas.
+2. **The length account is neither confirmed nor refuted — it is
+   unidentified.** A's length shift lies outside the range spanned by every
+   other companion on all four models, so the line extrapolates to A. Companion
+   identity and length shift are **collinear across this companion set**, which
+   is the same collinearity the B+R pilot showed between its two arms, now shown
+   to hold *within* the matrix design. Separating them requires a companion
+   matched to A on length shift; the pool contains none.
+
+**Comparability.** No prior result is invalidated: the affected quantities were
+first reported in this session's entry above and nowhere else, and no registered
+artifact carries them. `dci1/reports/matrix_screen_v4/REPORT.md` §9.3 and §10,
+`RESEARCH_STATE.md` §4f and `dci1/reports/INVESTIGATION_2026-08-20.md` are
+corrected in place and each records the supersession.
+
+**Additive at the same time, not a correction.** `D(B←R_j)` — the focal loss
+against each reference separately — was computed per block but belonged to no
+multiplicity family, so it was never bootstrapped onto the artifact. It is now
+reported as the `focal_losses` family. It shows that on E2B an **admitted
+registered-pool reference out-damages A**: the paired swap
+`Δ_1 = D(B←A) − D(B←CR6:7)` is **−0.078, simultaneous [−0.134, −0.023]**,
+entirely below zero, with `D(B←CR6:7)` = +0.165 against `D(B←A)` = +0.086. The
+two marginal intervals overlap, so the paired contrast is the estimator that
+carries this; on E4B `D(B←RF2:8)` = +0.206 against +0.228, paired
+Δ_3 = +0.022 [−0.044, +0.088], which includes zero. Adding this family
+changes no existing interval, because those members previously sat in no family
+at all.
+
+**Safeguards.** Three tests in
+`dci1/tests_v4/test_cal_and_matrix_screen_isolation.py` (now 28) pin the
+invariants: both fits must drop A, the old misleading key must not reappear,
+`_within_support` must report non-identification, and `focal_losses` must name
+quantities the estimator actually produces.
+
+## 2026-08-20 — whether the registered reference pool supplies three references depends on a §13.2 reading the protocol does not fix
+
+**What changed.** Nothing in code or evidence. A qualification to the
+calibration-screen entry above, which reported that "three of four models reach
+the §13.2 requirement of three **from the registered pool alone**, so **Amendment
+B is unnecessary on those three**".
+
+**The gap.** That count is of families clearing §13.2 **conditions 1 and 6**.
+Conditions 1 and 6 are two of six, and most of the qualifying rungs have **no
+§12.2 pre-screen measurement at all**, so condition 2 — the disjoint 24-topic
+confirmation — cannot be evaluated on them. §13.2 does not say whether a
+condition that cannot be evaluated abstains or fails, and the answer decides the
+conclusion:
+
+| disposition on an unmeasurable condition 2 | E2B | E4B | qwen3-4b | qwen3-4b-instruct-2507 | three from the registered pool? |
+|---|---:|---:|---:|---:|---|
+| **abstain** — apply condition 2 only where its input exists | 3 | 4 | 1 | 4 | three of four models |
+| **reject** — an unmeasurable condition fails | 1 | 2 | 1 | 2 | **no model** |
+
+Under abstain the earlier statement holds as written. Under reject the
+registered pool reaches three on no model and **Amendment B is necessary
+everywhere**. Both dispositions were computed by the screen and both are on the
+artifact — the abstain result at `matrix_reference_set.admitted_families` and
+the reject result at `matrix_reference_set.strict_registered_precision`. The
+matrix screen declares abstain in its frozen protocol and reports reject beside
+it. Neither is a claim.
+
+**Status.** This is a **preregistration ambiguity of the same kind as §12.4's
+graded clause**, and it is a researcher decision, not a measurement. Recorded
+so the "Amendment B is unnecessary" reading is never quoted without the
+disposition it depends on.
+
+**A structural fact that does not depend on the reading.** Three references
+exist on every model under every disposition — the enlarged pool admits 5, 3, 3
+and 5 families. But on **E4B and qwen3-4b the third slot can only be filled by a
+lower-bound (production-class) family**. On those two models the
+constraint-class confound therefore moves *inside* the reference set rather than
+sitting beside it as a control, and `Δ_R` on qwen3-4b is consequently a mean over
+one production and two budget companions. The matrix screen records this on its
+frozen protocol and repeats it wherever qwen3-4b's `Δ_R` appears.
+
+**Affected documents.** `dci1/reports/cal_screen_v4/REPORT.md` and
+`RESEARCH_STATE.md` §4e now carry both dispositions. The earlier entry stands as
+written and is qualified here rather than edited.
+
+
+---
+
+## 2026-08-20 — §13.2 is not ambiguous; the withdrawal of the entry above
+
+**What changed.** `dci1/src/dci1v4/stages/regime.py` gains
+`assert_shortlist_is_measured`, called by `regime_screen_payload`. Five tests in
+`tests_v4/test_t6_stage_machine.py`; one fixture corrected. No threshold,
+caliper, band, criterion, ladder, wording or grid moves, and the canonical
+verifier hash is unchanged at `f5d4f7e74e757769ec43d7007b012168…`. New
+artifacts: `dci1/reports/section_13_2_v4/{REPORT.md,resolution.json}`.
+
+**The withdrawal.** The entry above says §13.2 "does not say whether a condition
+that cannot be evaluated abstains or fails" and calls it a preregistration
+ambiguity and a researcher decision. **That is wrong and is withdrawn.** So is
+`dci1/reports/INVESTIGATION_2026-08-20.md`'s statement that this reading is the
+study's smallest remaining blocker.
+
+**Why.** §13.2's feasible set is a subset of §12.2's shortlist, and every member
+of that shortlist has a pre-screen value by construction:
+
+- §12.2 measures **all 94 reference rungs** — and A's full *n* grid — on the 24
+  pre-screen topics, then writes the shortlist of at most three per family;
+- §12.3 measures **only shortlisted severities** on the 96 calibration topics;
+- §13.2 condition 1 is a caliper on that 96-topic measurement, so a rung §12.3
+  never measured cannot be a §13.2 candidate at all.
+
+Condition 2 therefore always has its input. Verified on the four registered
+`REGIME_SCREEN` records: 94 of 94 rungs measured on every model, 24 shortlisted
+rungs on every model, **none** without a pre-screen value. Where the case is
+constructed anyway, `gates.admit_family` already fixes it — a missing value
+yields the rejection reason `"no pre-screen measurement"`, executed and recorded
+in `resolution.json`. **Abstain is not a reading of §13.2; it was invented by
+the screens for their own use.**
+
+**Why the screens met the case.** Both reasons are properties of the screens.
+They ran §13.2 over rungs outside the §12.2 shortlist, and their floored-stem
+pre-screen came from the FORM × STEM screen, which measured only some rungs
+under that stem. Neither is a property of the protocol.
+
+**Comparability.** The screen tables headed *abstain* and *reject* are unchanged
+and remain valid as what they are — §13.2 run over a rung set the registered
+pipeline would not present to it. They are not two readings of the registered
+rule, and neither count is the registered pool's admission result. **The
+registered §13.2 has not been run on any model, because Gate 2 has not run.**
+
+**Neutral between the stems.** A stem change re-measures §12.1, §12.2, §12.3 and
+§13.2 — Amendment A's own §5.1 says so — and §12.2 re-run under any stem
+supplies condition 2's input for all 94 rungs exactly as it does now. This
+resolution is therefore not an argument for or against Amendment A.
+
+**Affected documents.** `dci1/reports/cal_screen_v4/REPORT.md` §6,
+`dci1/reports/INVESTIGATION_2026-08-20.md`, `RESEARCH_STATE.md` §4e.
+
+---
+
+## 2026-08-20 — the prose-only reimplementation segmented on the wrong character class
+
+**What changed.** `dci1/src/dci1v4/verifiers/independent.py` — the §10.2
+independent reimplementation — replaces the regular-expression class
+`[^\W\d_]+` with a `unicodedata.category` test. Test
+`test_the_two_implementations_use_different_mechanisms` corrected;
+`test_both_implementations_read_the_same_character_class` added, comparing the
+two segmentations over the whole BMP plus the astral letter blocks.
+
+**The defect.** §7.2 registers "a word is a maximal run of **alphabetic**
+characters". `[^\W\d_]` is not that class: it is a word character that is
+neither a decimal digit nor an underscore, and it additionally admits **1,151
+characters in Unicode categories No and Nl** — subscripts, superscripts,
+fractions, Roman numerals. The primary (`verifiers/words.py`, `ch.isalpha()`)
+agrees with the registered prose, so **the defect was in the validation
+instrument and not in the instrument under study**.
+
+**How it surfaced.** Extending the §10.2 evidence from A and B to the eight
+registered families. On the genuine generation `Answer: H₂O` the faulty class
+ran `H`, the subscript two and `O` into one word, so **RF3** — at most *q* words
+with one letter — read 0 where the primary reads 2. The disagreement is
+invisible on A (the target is a fixed string) and on B (the longest word is 6
+letters either way at every registered *m*), which is why 14,046 texts at
+twelve A-and-B instruments had reported agreement exactly 1.000.
+
+**What is affected, and what is not.**
+
+- **No stored verdict changes.** `independent.py` is outside `SEMANTIC_MODULES`,
+  the canonical verifier hash is unchanged, and no execution path lets the
+  reimplementation reach a stored verdict (§10.1 invariant 3).
+- **No existing estimate changes.** Every screen, pilot and v3 number was
+  produced by the primary.
+- **The A-and-B §10.2 line is re-verified, not invalidated.** Re-run under the
+  corrected module over the same 14,046 texts: agreement exactly 1.000 on all
+  twelve instruments, no disagreements. `reports/gate1_v4/section_10_2.json`
+  stands as written.
+- **The independence argument is preserved.** The primary walks characters
+  against `str.isalpha`; the reimplementation groups runs against
+  `unicodedata.category`. Python defines `str.isalpha` as general category Lm,
+  Lt, Lu, Ll or Lo, so the two reach the same registered property by routes that
+  share no code, and a test now checks they agree character by character rather
+  than pinning a pattern literal.
+
+**A fixture had encoded the defect as the expectation.**
+`test_the_two_implementations_use_different_mechanisms` asserted
+`independent._WORD.pattern == r"[^\W\d_]+"`. The registered prose is the
+reference and the primary agrees with it, so correcting the code required
+correcting the fixture. That is recorded here rather than done silently.
+
+**Construct note, unresolved and out of scope.** Whether splitting `H₂O` into
+`H` and `O` is the right operationalisation of "word" is §10.5's third question,
+which §9.3 and §24 bound and this study does not resolve. What is settled here
+is only that both implementations now compute the rule §7.2 registers.
+
+---
+
+## 2026-08-20 — §13.2's caliper matches on raw solo compliance; §25 already measured why that is not comparable
+
+**What changed.** Nothing in code, evidence or any estimate. A derived analysis
+over artifacts that already exist:
+`dci1/reports/section_13_2_v4/instructed_compliance.json`, produced by
+`dci1/tools/instructed_compliance_v4.py`.
+
+**The observation.** §13.1 says the reference estimates "what would composing B
+with a **comparable** non-A companion have cost", and §13.2 operationalises
+comparable as raw solo compliance within 0.10 of A's. §25 separately measures
+the rate at which an answer carrying **no constraint at all** satisfies each
+constraint by chance, records it, and does not feed it into admission. Netting
+the second out of the first, `(solo − chance)/(1 − chance)`, on the pairwise
+matrix screen's own reference sets:
+
+| model | A solo → instructed | R₁ | R₂ | R₃ |
+|---|---|---|---|---|
+| E2B | 0.562 → **0.562** | 0.644 → 0.071 | 0.644 → 0.266 | 0.598 → 0.040 |
+| E4B | 0.719 → **0.719** | 0.744 → 0.320 | 0.742 → 0.421 | 0.642 → **−0.550** |
+| Qwen3-4B | 0.710 → **0.710** | 0.698 → 0.249 | 0.740 → 0.150 | 0.640 → 0.626 |
+| Qwen3-4B-Inst | 0.592 → **0.592** | 0.623 → 0.210 | 0.633 → **−2.321** | 0.610 → 0.600 |
+
+**Twelve of twelve references are matched to A on solo compliance; two of twelve
+on instructed compliance; two are anti-productive**, meaning stating the
+constraint makes the model satisfy it less often than not stating it.
+
+**Why it is structural.** A is an exact-count production constraint, so an
+unconstrained answer essentially never satisfies it and A's chance rate is
+0.000 on all four models. B and all eight registered families are prefix-closed
+`S ≤ q` budgets and are satisfied by chance often. The caliper therefore equates
+companions that differ in how much of their compliance the instruction produced,
+and the divergence tracks the production/budget divide rather than the model.
+This is the same prefix-closure asymmetry already on the record, now measured on
+the matching criterion itself.
+
+**Direction of bias, and it is the conservative direction.** A reference whose
+instructed compliance is near zero is, for most items, not a binding second
+instruction, so `D(B←R_j)` approaches the cost of composing B with an inert
+sentence and `Δ_R` is biased **upward**. The screen's `Δ_R` is small on every
+model regardless, so the bias runs against the positive reading rather than
+producing it.
+
+**What this is not.** No quantity is adjusted, reweighted or re-estimated; no
+new matching criterion is proposed; no amendment is decided. The reference sets
+above are the calibration screen's, not Gate 3's, and Gate 3 has not run. The
+analysis reads no delivery loss, no composed contrast and no outcome, and could
+have been run before any composed cell was generated.
+
+**Affected documents.** `dci1/reports/ENDPOINT_2026-08-20.md` §5 and §6, where
+it is added as a researcher decision that — unlike the amendment decisions —
+is settleable from §25's registered measurement with no new generation.
