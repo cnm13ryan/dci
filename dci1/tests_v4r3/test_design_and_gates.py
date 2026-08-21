@@ -286,3 +286,30 @@ def test_the_ranking_puts_a_straddling_family_above_a_closer_one_that_cannot():
     ranked = R.family_ranking(table, iota_a=0.60)
     assert ranked[0]["family"] == "RF2"
     assert ranked[0]["straddles"] and not ranked[1]["straddles"]
+
+
+def test_the_no_spectrum_variant_materialises_without_the_spectrum():
+    """§8.6's middle variant is the one §12.6's coverage failure produces, so
+    it is the one a replication is most likely to run. `block_cells` used to
+    accept `reduced` and `class_arm` only and materialise the spectrum
+    whatever `cell_types` had been told --- eighteen cells a block the frozen
+    design does not contain."""
+    plan = D.design_cells(blocks(8), spectrum=False, assert_allocation_over=8)
+    assert len(plan) // 8 == C.N_CELLS_NO_SPECTRUM
+    assert not any(slot in C.SPECTRUM_SLOTS for cell in plan
+                   for slot in cell.slots)
+
+
+def test_the_allocation_check_refuses_a_plan_with_the_wrong_cell_count():
+    """A plan for the wrong variant is a plan for a different design."""
+    plan = D.design_cells(blocks(8))                       # full: 47 a block
+    with pytest.raises(ProtocolError):
+        D.assert_allocation(plan, blocks_expected=8, spectrum=False)
+
+
+def test_every_variant_round_trips_through_the_allocation_check():
+    for kwargs, expected in (({}, C.N_CELLS_FULL),
+                             ({"spectrum": False}, C.N_CELLS_NO_SPECTRUM),
+                             ({"reduced": True}, C.N_CELLS_REDUCED_WITH_CLASS)):
+        plan = D.design_cells(blocks(8), assert_allocation_over=8, **kwargs)
+        assert len(plan) // 8 == expected, kwargs
