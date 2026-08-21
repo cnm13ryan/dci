@@ -526,11 +526,9 @@
       }
     },
     "problems": [],
-    "producing_commit": "8890e3faa678132cf2435215d6e2e6f89eb4f312",
-    "worktree_changed_paths": [
-      "M dci1/reports/dci1v4r4/durability.json"
-    ],
-    "worktree_clean": false
+    "producing_commit": "2de0d8ea7e448adeec159aae7b1935f75f933ec9",
+    "worktree_changed_paths": [],
+    "worktree_clean": true
   },
   "masking": {
     "min_differing_fraction": 0.5,
