@@ -1,6 +1,15 @@
 # DCI-1 — isolated confirmatory study module
 
-> **This module now holds two protocol versions.** The v2 implementation
+> **The live protocol line is v4 revision 3** (`src/dci1v4r3`), adopted and
+> registered on 2026-08-21 (`DECISIONS_V4R3.md`), **not frozen**, with no
+> confirmatory data. It has been executed through the stage-3 regime screen on
+> all four models; Gate 1's every measurement criterion passes and the gate is
+> blocked on §10.4's researcher approval alone. Start at
+> `reports/dci1v4r3/REPORT.md` and `src/dci1v4r3/README.md`. v4 revision 2
+> (`src/dci1v4`) is superseded in full, unfrozen, and retained unmodified as a
+> design record.
+>
+> **This module also holds three earlier protocol versions.** The v2 implementation
 > (`src/dci1`, below) is **closed**: all four model replications reached
 > preregistered terminal outcomes with zero confirmatory generations. The
 > **v3** study (`src/dci1v3`) is also **complete** (2026-08-19): both

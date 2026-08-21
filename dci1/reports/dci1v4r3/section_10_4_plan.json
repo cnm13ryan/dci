@@ -1,0 +1,138 @@
+{
+  "approves": "nothing. Gate 1 is NOT approved and cannot be approved by this tool",
+  "artifact": "§10.4 autorater pathway, v4r3, development phase",
+  "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+  "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+  "judged_subsample": {
+    "derivation": "deterministic round-robin over strata in item-id order across the development half",
+    "hash": "cd850d3475aac55879bc11160ea861ba56b00cff623a5969419ab3b7a9286461",
+    "n": 72,
+    "strata": {
+      "A:fail:margin_larger": 4,
+      "A:fail:margin_one": 4,
+      "A:pass": 4,
+      "B:fail:margin_larger": 4,
+      "B:fail:margin_one": 4,
+      "B:pass": 4,
+      "count_budget:fail:margin_larger": 4,
+      "count_budget:fail:margin_one": 4,
+      "count_budget:pass": 4,
+      "count_lower_bound:fail:margin_larger": 4,
+      "count_lower_bound:fail:margin_one": 4,
+      "count_lower_bound:pass": 4,
+      "rate_budget:fail:margin_larger": 4,
+      "rate_budget:fail:margin_one": 4,
+      "rate_budget:pass": 4,
+      "rate_lower_bound:fail:margin_larger": 4,
+      "rate_lower_bound:fail:margin_one": 4,
+      "rate_lower_bound:pass": 4
+    }
+  },
+  "not_claimed": {
+    "autorater_calibration": "one-shot; not claimed",
+    "autorater_freeze": "single-shot; not claimed",
+    "held_out_half": "derived and hashed, never judged",
+    "researcher_approval": "reserved to the researcher (§10.4)"
+  },
+  "pool": {
+    "calibration": 11489,
+    "development": 11479,
+    "disjoint": true,
+    "items": 22968,
+    "source": "the registered v4r3 §12.2 ladder screen, read only",
+    "split_hash": "f91515c3679c6a7be9d7a6c28bee9ca5febedea387a1e712e7cb3f990733f042",
+    "strata": {
+      "A:fail:margin_larger": {
+        "calibration": 44,
+        "development": 43,
+        "n": 87
+      },
+      "A:fail:margin_one": {
+        "calibration": 97,
+        "development": 97,
+        "n": 194
+      },
+      "A:pass": {
+        "calibration": 244,
+        "development": 243,
+        "n": 487
+      },
+      "B:fail:margin_larger": {
+        "calibration": 73,
+        "development": 72,
+        "n": 145
+      },
+      "B:fail:margin_one": {
+        "calibration": 45,
+        "development": 45,
+        "n": 90
+      },
+      "B:pass": {
+        "calibration": 171,
+        "development": 170,
+        "n": 341
+      },
+      "count_budget:fail:margin_larger": {
+        "calibration": 2192,
+        "development": 2192,
+        "n": 4384
+      },
+      "count_budget:fail:margin_one": {
+        "calibration": 250,
+        "development": 249,
+        "n": 499
+      },
+      "count_budget:pass": {
+        "calibration": 2071,
+        "development": 2070,
+        "n": 4141
+      },
+      "count_lower_bound:fail:margin_larger": {
+        "calibration": 353,
+        "development": 353,
+        "n": 706
+      },
+      "count_lower_bound:fail:margin_one": {
+        "calibration": 29,
+        "development": 28,
+        "n": 57
+      },
+      "count_lower_bound:pass": {
+        "calibration": 795,
+        "development": 794,
+        "n": 1589
+      },
+      "rate_budget:fail:margin_larger": {
+        "calibration": 1465,
+        "development": 1465,
+        "n": 2930
+      },
+      "rate_budget:fail:margin_one": {
+        "calibration": 347,
+        "development": 346,
+        "n": 693
+      },
+      "rate_budget:pass": {
+        "calibration": 2257,
+        "development": 2256,
+        "n": 4513
+      },
+      "rate_lower_bound:fail:margin_larger": {
+        "calibration": 402,
+        "development": 402,
+        "n": 804
+      },
+      "rate_lower_bound:fail:margin_one": {
+        "calibration": 24,
+        "development": 24,
+        "n": 48
+      },
+      "rate_lower_bound:pass": {
+        "calibration": 630,
+        "development": 630,
+        "n": 1260
+      }
+    }
+  },
+  "scope": "strata are predicate form × verifier class × fail margin; per-family coverage is not claimed"
+}

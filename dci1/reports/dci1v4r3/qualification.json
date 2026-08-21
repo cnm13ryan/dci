@@ -1,0 +1,112 @@
+{
+  "artifact_type": "qualification_record",
+  "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+  "checks": [
+    {
+      "check": "clean_worktree",
+      "detail": {
+        "changed_paths": 46,
+        "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
+      },
+      "passed": false
+    },
+    {
+      "check": "commit_hashable",
+      "detail": "6954dd65530e34d8e6e866f2a512fbd9a99e51cb",
+      "passed": true
+    },
+    {
+      "check": "tracked_implementation",
+      "detail": "dci1/src/dci1v4r3 is not tracked",
+      "passed": false
+    },
+    {
+      "check": "resolved_revisions",
+      "detail": {
+        "gemma-3n-e2b-it": true,
+        "gemma-3n-e4b-it": true,
+        "qwen3-4b": true,
+        "qwen3-4b-instruct-2507": true
+      },
+      "passed": true
+    },
+    {
+      "check": "dependency_manifest",
+      "detail": "dci1/uv.lock",
+      "passed": true
+    },
+    {
+      "check": "prompt_plan_schema",
+      "detail": {
+        "loads": [
+          0,
+          1,
+          2
+        ],
+        "stem": "Answer in 60 to 120 words."
+      },
+      "passed": true
+    },
+    {
+      "check": "wording_suite",
+      "detail": {
+        "instruments": 348,
+        "verdicts_checked": 27840
+      },
+      "passed": true
+    },
+    {
+      "check": "witness_suite",
+      "detail": {
+        "pairs": 25337
+      },
+      "passed": true
+    },
+    {
+      "check": "class_labelling",
+      "detail": {
+        "families": 20
+      },
+      "passed": true
+    },
+    {
+      "check": "durable_store_reachable",
+      "detail": "/home/cnm13ryan/git/dci/dci1/durable_root",
+      "passed": true
+    },
+    {
+      "check": "environment_hashable",
+      "detail": {
+        "python_executable": "/home/cnm13ryan/git/dci/dci1/.venv/bin/python",
+        "python_version": "3.13.12"
+      },
+      "passed": true
+    }
+  ],
+  "failed": [
+    "clean_worktree",
+    "tracked_implementation"
+  ],
+  "instrument_population": 348,
+  "observed": [
+    {
+      "check": "clean_worktree",
+      "detail": {
+        "changed_paths": 46,
+        "why_it_matters": "a run whose producing commit does not contain the code that produced it has no provenance"
+      },
+      "passed": false
+    },
+    {
+      "check": "tracked_implementation",
+      "detail": "dci1/src/dci1v4r3 is not tracked",
+      "passed": false
+    }
+  ],
+  "outcome": "TERMINAL",
+  "producing_commit": "6954dd65530e34d8e6e866f2a512fbd9a99e51cb",
+  "reads_no_behavioural_rate": true,
+  "stage": "QUALIFIED",
+  "status": "QUALIFICATION_FAILURE",
+  "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+}

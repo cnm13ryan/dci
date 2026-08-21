@@ -1,0 +1,276 @@
+{
+  "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+  "study_id": "dci1v4r3",
+  "disclaimer": "SYNTHETIC. Every rate in this file is fabricated by tools/dry_run_v4r3.py to exercise the registered chain. It is not evidence about any model, and no v4r3 estimand is identified by it.",
+  "generations": 0,
+  "canonical_verifier_hash": "1b90bfe9c2bf1436f1c840e053b1f9843ddc7c54b89f02d2668da517a5518947",
+  "s12_2": {
+    "cells_per_topic": 205,
+    "generations": 4920,
+    "instances_measured": 204,
+    "iota_a_prescreen": 0.72
+  },
+  "s12_3": {
+    "shortlist": {
+      "RF7": [
+        13,
+        18,
+        19,
+        23
+      ],
+      "RF2": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "RF5": [
+        7,
+        8,
+        9,
+        12
+      ],
+      "RF6": [
+        7,
+        9,
+        10,
+        12
+      ],
+      "RF1": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "CR8": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "CL7": [
+        80,
+        100
+      ],
+      "CL8": [
+        14,
+        19
+      ],
+      "CP4": [
+        18,
+        22
+      ],
+      "CP7": [
+        50,
+        56
+      ]
+    },
+    "reference_families": 6,
+    "class_families": 4,
+    "cells": 45,
+    "generations": 17280
+  },
+  "gate2": {
+    "outcome": "PASS",
+    "n_star": 2,
+    "m_star": 10,
+    "iota_a": 0.72,
+    "iota_b": 0.5942028985507246,
+    "graded_clause_reading": "share"
+  },
+  "gate3": {
+    "design": "full",
+    "cells_per_block": 47,
+    "class_arm": true,
+    "core_references": [
+      {
+        "slot": "R1",
+        "family": "RF7",
+        "severity": 18,
+        "iota": 0.7241818181818181,
+        "distance": 0.0041818181818181754,
+        "feature_group": "letter_a"
+      },
+      {
+        "slot": "R2",
+        "family": "RF2",
+        "severity": 6,
+        "iota": 0.7149090909090907,
+        "distance": 0.005090909090909257,
+        "feature_group": "ing_final"
+      },
+      {
+        "slot": "R3",
+        "family": "RF5",
+        "severity": 9,
+        "iota": 0.7281818181818182,
+        "distance": 0.008181818181818179,
+        "feature_group": "comma"
+      }
+    ],
+    "spectrum": [
+      {
+        "slot": "R1-",
+        "family": "RF7",
+        "severity": 13,
+        "iota": 0.49054545454545445,
+        "target": 0.52,
+        "side": "lower"
+      },
+      {
+        "slot": "R1+",
+        "family": "RF7",
+        "severity": 23,
+        "iota": 0.9069090909090908,
+        "target": 0.9199999999999999,
+        "side": "upper"
+      },
+      {
+        "slot": "R2-",
+        "family": "RF2",
+        "severity": 5,
+        "iota": 0.5569090909090908,
+        "target": 0.52,
+        "side": "lower"
+      },
+      {
+        "slot": "R2+",
+        "family": "RF2",
+        "severity": 7,
+        "iota": 0.8087272727272727,
+        "target": 0.9199999999999999,
+        "side": "upper"
+      },
+      {
+        "slot": "R3-",
+        "family": "RF5",
+        "severity": 7,
+        "iota": 0.5345454545454544,
+        "target": 0.52,
+        "side": "lower"
+      },
+      {
+        "slot": "R3+",
+        "family": "RF5",
+        "severity": 12,
+        "iota": 0.9367272727272724,
+        "target": 0.9199999999999999,
+        "side": "upper"
+      }
+    ],
+    "identification_statuses": [
+      "COMPANION_CLASS_NOT_MATCHED"
+    ]
+  },
+  "cell_plan": {
+    "cells_per_block": 47,
+    "blocks": 384,
+    "M": 8,
+    "generations_per_model": 144384,
+    "generations_four_models": 577536
+  },
+  "spectrum": {
+    "fit_points": 9,
+    "delta_difficulty": 0.0911061422075478,
+    "bootstrap_se": 0.0014546200843787353,
+    "ci95_percentile": [
+      0.0880814079403413,
+      0.09398700115457198
+    ],
+    "slope": -0.07753106914785393,
+    "support_holds": true,
+    "support_bootstrap_share": 1.0,
+    "refit_per_replicate": true,
+    "identification_statuses": []
+  },
+  "joint_reading": {
+    "levels": [
+      "L3d"
+    ],
+    "markers": [
+      "INDETERMINATE@0.10"
+    ],
+    "identification_statuses": [
+      "A_GENERAL_NOT_EXCLUDED",
+      "COMPANION_CLASS_NOT_MATCHED"
+    ],
+    "row": "partially resolved",
+    "wording": "the excess is not distinguishable from A being generally disruptive as a companion"
+  },
+  "gate5": {
+    "can_freeze": false,
+    "missing_fields": [
+      "model_repository",
+      "model_revision",
+      "prompt_template",
+      "completion_cap",
+      "n_star",
+      "m_star",
+      "wordings",
+      "topic_splits",
+      "chat_template_hash",
+      "verifier_sources",
+      "canonical_verifier_hash",
+      "graded_score_definitions",
+      "non_vacuity_predicates",
+      "decoding_settings",
+      "m_draws",
+      "block_count",
+      "variance_reestimate",
+      "seed_rules",
+      "family_declarations",
+      "thresholds_and_regions",
+      "precision_preconditions",
+      "claim_ladder",
+      "codebook",
+      "producing_commit",
+      "clean_tree_assertion",
+      "dependency_digest",
+      "environment_digest",
+      "hardware_record",
+      "gate_record_hashes",
+      "gate1_measurement_basis",
+      "analysis_plan",
+      "focal_extension_measured",
+      "candidate_family_vocabulary",
+      "candidate_declared_range",
+      "measured_vocabulary",
+      "expansion_rule",
+      "coverage_criterion",
+      "coverage_report",
+      "lexical_rule",
+      "family_class_labels",
+      "chance_compliance_definition",
+      "eligibility_band",
+      "core_reference_selection_rule",
+      "spectrum_selection_rule",
+      "class_admission_rule",
+      "class_companion",
+      "class_match_caliper",
+      "design_variant",
+      "support_rule",
+      "calibration_table_hash",
+      "difficulty_model_form",
+      "bootstrap_refit_algorithm",
+      "joint_reading_table",
+      "order_and_wording_allocation"
+    ],
+    "unclosed_decisions": [
+      "D0",
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10",
+      "D11",
+      "D12",
+      "D13",
+      "D14"
+    ]
+  }
+}
