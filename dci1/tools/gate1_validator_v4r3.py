@@ -85,10 +85,34 @@ PARSER_VERSION = "opcheck-parse/1.0.0"
 LABEL_MAPPING = {"CORRECT": "faithful", "INCORRECT": "defective"}
 VALIDATOR_CAP = 2048
 
+#: §10.4-R's registered fallback cap. Chosen to be **non-binding** rather than
+#: tuned: the observed median generated length at medium effort is about 800
+#: tokens against a 2,048 cap, so 8,192 puts the cap far outside the range any
+#: judged item has used. It is not chosen by trying values until a threshold
+#: passes, and the number was fixed before the larger-cap conditions ran.
+VALIDATOR_CAP_LARGE = 8192
+
+#: One condition is one hashed configuration. Two axes, both registered by
+#: §10.4: the prompt version and the rendered reasoning effort — plus the
+#: output cap, which §10.4-R names as the fallback when truncation binds and
+#: which enters the configuration hash.
 CONDITIONS = {
-    "v4r-medium": {"prompt": "opcheck/1.0.0", "reasoning_effort": "medium"},
-    "v4r-high": {"prompt": "opcheck/1.0.0", "reasoning_effort": "high"},
+    "v4r-medium": {"prompt": "opcheck/1.0.0", "reasoning_effort": "medium",
+                   "cap": VALIDATOR_CAP},
+    "v4r-high": {"prompt": "opcheck/1.0.0", "reasoning_effort": "high",
+                 "cap": VALIDATOR_CAP},
+    # The two registered contingencies. `low` is a point on §10.4's own
+    # reasoning-effort axis and the hierarchy's step 6 already prefers the
+    # lower-cost setting; `medium-8k` is §10.4-R's named cap fallback.
+    "v4r-low": {"prompt": "opcheck/1.0.0", "reasoning_effort": "low",
+                "cap": VALIDATOR_CAP},
+    "v4r-medium-8k": {"prompt": "opcheck/1.0.0", "reasoning_effort": "medium",
+                      "cap": VALIDATOR_CAP_LARGE},
 }
+
+
+def cap_of(condition: str) -> int:
+    return CONDITIONS[condition].get("cap", VALIDATOR_CAP)
 
 #: §10.4-R, registered at f657de2 before any card was judged.
 THRESHOLDS = {
@@ -190,11 +214,11 @@ def validator_config(condition: str) -> dict[str, Any]:
         prompt_hash=sha_text(VALIDATOR_PROMPTS[spec["prompt"]]),
         parser_version=PARSER_VERSION,
         label_mapping=dict(LABEL_MAPPING),
-        decoding={"policy": "greedy", "max_new_tokens": VALIDATOR_CAP,
+        decoding={"policy": "greedy", "max_new_tokens": cap_of(condition),
                   "skip_special_tokens": False,
                   "chat_template_kwargs":
                       {"reasoning_effort": spec["reasoning_effort"]}},
-        output_cap=VALIDATOR_CAP,
+        output_cap=cap_of(condition),
         execution_concurrency=1, execution_mode="serialised")
 
 
@@ -205,7 +229,7 @@ def run_condition(cards: list[dict[str, Any]], condition: str, *, device: int,
     config = validator_config(condition)
     spec = get_judge(config["judge_model_key"])
     plan = build_plan(spec, stage="v4r3-gate1-opcheck",
-                      max_new_tokens=VALIDATOR_CAP, temperature=0.0,
+                      max_new_tokens=cap_of(condition), temperature=0.0,
                       skip_special_tokens=False, serialised=True)
     effort = CONDITIONS[condition]["reasoning_effort"]
     plan["chat_template_kwargs"] = {"reasoning_effort": effort}
