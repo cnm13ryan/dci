@@ -224,3 +224,36 @@ that "the numerators were too rare" was wrong, and the honest reading is that
 these models do not respond to *any* budget with graded compliance.
 `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` then stands and §8.6's no-spectrum design
 runs. That outcome is registered and is not a fallback to be avoided.
+
+
+---
+
+## A7. The semantic validator becomes a microcase audit (amendment R2, 2026-08-21)
+
+**Decision.** Adopt §10.4-R2. Registered as C28, before the tool was run and
+before any microcase was judged.
+
+**Authority.** The researcher's session brief of 2026-08-21, which directs a
+prospective amendment R2 registered before any R2 validation outcome is
+collected, names the microcase design, and states the stopping rule: *if the
+validator still cannot satisfy the registered semantic-validation criteria on
+tiny discriminating cases, stop the LLM-validator pathway rather than
+iteratively prompt-tuning it.*
+
+**Thresholds.** §10.4-R's, carried unchanged. Criterion 6, repeatability at
+0.95, is added rather than substituted, so R2 is strictly harder to pass than
+the pathway it replaces on every axis the two share.
+
+**What this decision does not do.** It does not approve the measurement basis.
+`measurement_basis = autorater_calibration_approved` may be written only after
+the criteria pass on the development half **and** once on the untouched
+calibration half, and only under the researcher's explicit authorisation
+recorded in the approval artifact — never because the study needs to continue.
+
+**What would falsify the reasoning.** If R2 fails on truncation again at a cap
+of 8,192 with an answer of fourteen words and a one-word reply, then the length
+of the reasoning chain was not the binding constraint either, and the honest
+reading is that this judge at this scale cannot be made into a semantic
+validator by changing the task. §10.3's human audit is then the only registered
+route left, and `HUMAN_VALIDATION_UNAVAILABLE` is a standing condition rather
+than a temporary one.
