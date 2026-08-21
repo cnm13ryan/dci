@@ -1,20 +1,9 @@
-Traceback (most recent call last):
-  File "/home/cnm13ryan/git/dci/dci1/tools/run_v4r4.py", line 1066, in <module>
-    sys.exit(main())
-             ~~~~^^
-  File "/home/cnm13ryan/git/dci/dci1/tools/run_v4r4.py", line 1062, in main
-    return args.func(args)
-           ~~~~~~~~~^^^^^^
-  File "/home/cnm13ryan/git/dci/dci1/tools/run_v4r4.py", line 754, in cmd_gate2
-    return _run_stage(args, C.STAGE_GATE2, build,
-                      summary_keys=("n_star", "m_star", "iota_a",
-                                    "calibration_rows"))
-  File "/home/cnm13ryan/git/dci/dci1/tools/run_v4r4.py", line 710, in _run_stage
-    payload = build(tree, context)
-  File "/home/cnm13ryan/git/dci/dci1/tools/run_v4r4.py", line 751, in build
-    return run_gate2(args.model, tree, regime_record=regime,
-                     device=args.device)
-  File "/home/cnm13ryan/git/dci/dci1/src/dci1v4r4/run/gates_run.py", line 121, in run_gate2
-    False)),
-    
-TypeError: cell_rates() missing 1 required keyword-only argument: 'present'
+{
+ "model": "gemma-3n-e4b-it",
+ "stage": "GATE_2_REGIME",
+ "outcome": "PASS",
+ "n_star": 4,
+ "m_star": 10,
+ "iota_a": 0.6947674418604651,
+ "calibration_rows": 14976
+}

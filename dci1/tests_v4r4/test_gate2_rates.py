@@ -187,3 +187,49 @@ def test_the_freeze_reads_the_escalation_from_the_record_that_decides_it():
     source = inspect.getsource(freeze_run)
     assert 'gate2.get("focal", {}).get("extension_measured", False)' in source
     assert 'regime.get("focal_extension_measured"' not in source
+
+
+# ---------------------------------------------- §8.6's variant, and the mask
+def _selection(n_core: int, n_spectrum: int):
+    from dci1v4r4.stages.selection import SelectionResult
+    return SelectionResult(
+        core={"design": "full" if n_core >= 3 else "reduced",
+              "identification_statuses": [],
+              "core_references": [{"slot": f"R{i}", "family": "RF1",
+                                   "severity": i} for i in range(n_core)]},
+        spectrum=[{"slot": f"S{i}", "family": "RF1", "severity": i}
+                  for i in range(n_spectrum)],
+        klass={})
+
+
+def test_the_variant_never_contradicts_the_design_it_refines():
+    """`design` is full/reduced and the variant refines it into three. A
+    'full' design reported as a 'reduced' variant is the defect's signature."""
+    from dci1v4r4.run.gates_run import design_variant_for
+
+    for n_core, n_spectrum in ((0, 0), (2, 3), (3, 0), (3, 6), (4, 6)):
+        result = _selection(n_core, n_spectrum)
+        variant = design_variant_for(result)
+        if result.design == "full":
+            assert variant in ("full", "no_spectrum"), (n_core, n_spectrum)
+        else:
+            assert variant == "reduced", (n_core, n_spectrum)
+
+
+def test_the_variant_helper_raises_rather_than_defaulting_on_a_rename():
+    """The whole defect class in one assertion: no silent default.
+
+    Checked over the body rather than the source, because the docstring names
+    the call it replaced and would otherwise match itself.
+    """
+    import ast
+    import inspect
+    import textwrap
+
+    from dci1v4r4.run import gates_run
+
+    body = ast.parse(textwrap.dedent(
+        inspect.getsource(gates_run.design_variant_for))).body[0]
+    calls = [node.func.id for node in ast.walk(body)
+             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)]
+    assert "getattr" not in calls
