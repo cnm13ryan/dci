@@ -628,7 +628,8 @@ independent reimplementation agree on both. They are **human semantic
 evidence**, not registered independent human validation: the annotator is the
 researcher, the unit is a microcase rather than a natural response, one packet
 is not min(150, N_c) per verifier class, and the Wilson bound is 0.2152 against
-0.10 — which 25 items cannot reach even at zero disagreements.
+0.10. Twenty-five items clear 0.10 only at zero disagreements (0.0977, against
+0.1013 at twenty-four), so the two disagreements are what fail it.
 
 **A defect-sensitivity diagnostic sizes each semantic choice.** Over 30,720
 real load-0 and load-1 responses and 27,840 stated verdicts per reading:
@@ -649,6 +650,16 @@ tampering anywhere. Gate 1 could not have written a stage record even had its
 measurement basis been licensed. Fixed on the writing path, the eight files
 re-sealed under proof, and a regression test added.
 `dci1/reports/dci1v4r3/record_signature_repair.json`.
+
+**A §10.3-shaped audit now exists for the author to run.**
+`tools/v4r3_human_audit.py` freezes 300 natural responses into 12 blinded
+batches of 25 — 150 pass, 75 fail-at-margin-one, 75 fail-at-larger-margin,
+seeded round-robin over 212 distinct instruments, all four models and all six
+predicate forms, plan hash `08a9cbbf`. All three §10.3 bounds are reachable at
+zero disagreements. It is
+`author_performed_human_validation` by construction and cannot write a
+measurement basis; `DECISIONS_V4R3.md` A9 records the six choices §10.3 leaves
+open and how each was fixed before the first item was drawn.
 
 **Gate 1: `GATE_1_BLOCKED_MEASUREMENT`.** Every §10.2 prerequisite passes at
 the R3 verifier hash `41edc84c` over all **584** instruments — three-process

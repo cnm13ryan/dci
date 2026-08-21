@@ -139,7 +139,7 @@
   }
  ],
  "gate": "GATE_1_MEASUREMENT",
- "generated_at": "2026-08-21T16:47:49+00:00",
+ "generated_at": "2026-08-21T17:18:39+00:00",
  "human_annotations": {
   "agreed": 23,
   "agreement": 0.92,
@@ -319,7 +319,7 @@
    "independence --- \u00a710.3 requires an annotator independent of the design and analysis team and says in terms that author-performed labels are never described as independent validation",
    "unit --- \u00a710.3's sample is natural responses; these are microcases of at most fourteen words",
    "size and stratification --- \u00a710.3 requires min(150, N_c) per verifier class with the fail class split by realised margin; this is one packet of 25",
-   "criterion --- the one-sided 95% Wilson upper bound on disagreement is 0.2152 against a threshold of 0.10, and at 25 items the bound cannot reach 0.10 even at zero disagreements"
+   "criterion --- the one-sided 95% Wilson upper bound on disagreement is 0.2152 against a threshold of 0.10. At 25 items the bound clears 0.10 only at zero disagreements (0.0977, which is why 25 rather than 24), so it is the two disagreements that fail it and not the sample size"
   ],
   "families_covered": [
    "CR10",
@@ -363,7 +363,7 @@
   }
  },
  "objective_10_2_prerequisites_all_satisfied": true,
- "producing_commit": "9a3c0589b18f5b156adfd0719e20a40d67d1a668",
+ "producing_commit": "d33551b3f635565aac2be086adefb49650e825d2",
  "r2": {
   "artifact": "reports/dci1v4r3/section_10_4R2_outcome.json",
   "failed": [

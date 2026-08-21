@@ -320,9 +320,79 @@ against all four replications at commit `9a3c058`.
 validation. They fail §10.3 on four separate grounds — the annotator is the
 researcher, the unit is a microcase rather than a natural response, one packet
 of 25 is not min(150, N_c) per verifier class, and the one-sided 95% Wilson
-upper bound on disagreement is 0.2152 against 0.10, a bound 25 items cannot
-reach even at zero disagreements. They remain useful: 23/25, no UNSURE, over
-eight of the ten families §7.0-R3 added.
+upper bound on disagreement is 0.2152 against 0.10. At 25 items that bound
+clears 0.10 only at zero disagreements — `wilson_upper(0, 25) = 0.0977` against
+`0.1013` at 24, which is why the packet was 25 — so it is the two disagreements
+that fail the criterion, not the sample size. They remain useful: 23/25, no
+UNSURE, over eight of the ten families §7.0-R3 added.
 
 **This decision approves nothing.** No measurement basis is written, no freeze
 occurs and no confirmatory generation begins.
+
+## A9. A §10.3-shaped audit the author can run, and what it can and cannot be (2026-08-21)
+
+**Decision.** Build the §10.3 audit workflow and run it, on the researcher's
+own labels, with its standing fixed in advance as
+`author_performed_human_validation`. `src/dci1v4r3/stages/human_audit.py` holds
+the rule; `tools/v4r3_human_audit.py` is the workflow.
+
+**Standing, decided before the first item is drawn.** §10.3 requires an
+annotator independent of the design and analysis team, and says in terms that
+author-performed labels are never described as independent validation. This
+audit therefore **cannot** write `measurement_basis = human_validated` however
+well it scores, and the module offers no way to write one: `agreement_report`
+carries `satisfies_section_10_3: false` unconditionally. What it can do is
+answer, for the first time on natural responses across the whole R3 instrument
+population, whether a person reads these instructions the way the verifier
+scores them — which is the question §10.2 cannot reach and §10.4-R2 failed to.
+
+**The registered rule, reconstructed.** Verifier classes `("pass", "fail")`;
+the fail class split by whether the realised margin is exactly one; size
+`min(150, N_c)` per class; stratified per instrument; the one-sided 95% Wilson
+upper bound on disagreement at most 0.10 in each; natural responses; a
+tool-assisted protocol in which the annotator marks and the interface tallies
+*their own marks*, with no automatic detection, highlighting, counting or
+normalisation, and no arm, model label, companion, verdict or other annotator's
+work visible. Every constant is imported from `dci1v4r3.protocol.constants` and
+the estimator is `dci1v4.analysis.intervals.wilson_upper_bound`, the certified
+one §10.3 names. Nothing is restated and nothing is re-derived.
+
+**Six choices §10.3 leaves open, fixed prospectively and recorded in the plan.**
+
+1. *Allocation across instruments* — seeded round-robin, one item per
+   instrument per pass. Every instrument contributes before any contributes
+   twice, and the draw cannot be steered.
+2. *The fail quota across margin strata* — split evenly, subject to
+   availability, so both required bounds are reachable by construction. The
+   class total stays at 150; this is stratification, not inflation.
+3. *"Realised margin" beyond the exact-count rule* — the smallest change in
+   the numerator that flips the verdict. Reduces to `|S − q|` on every count
+   form; undefined, hence `margin_larger`, where no numerator change can flip
+   it, which is a wordless answer under a rate predicate.
+4. *What counts as a natural response* — a verdict on a constraint the prompt
+   **stated**, on a load-0 or load-1 row. Chance verdicts are excluded because
+   the model was never asked. Load 2 never enters, so no composed cell is read.
+5. *UNSURE* — offered, and counted **as a disagreement**, which is the
+   direction that cannot manufacture a pass. The excluding-UNSURE figure is
+   reported beside it and is never the criterion.
+6. *The reading of the sample size* — `per_class`, `min(150, N_c)` per verifier
+   class stratified across instruments, because §10.3's criterion sentence says
+   "in each verifier class" and evaluates three bounds. That is **300 items in
+   12 batches of 25**. The `per_instrument` reading, which `gate1_readiness_v4.py`
+   assumed, is available behind a flag and is **28,801 items** on the current
+   tree. The reading is recorded in the plan artifact.
+
+**Realised plan.** Pool 30,144 stated verdicts; population 13,658 pass / 2,594
+fail-margin-one / 13,892 fail-margin-larger; quota 150 / 75 / 75. The 300 items
+span **212 distinct instruments**, all four models (86 / 76 / 70 / 68) and all
+six predicate forms — 130 count budgets, 99 rate budgets, 30 exact counts, 19
+count lower bounds, 16 rate lower bounds, 6 focal. All three bounds are
+reachable at zero disagreements. Frozen at plan hash `08a9cbbf` before any item
+was shown; each batch additionally carries its own membership hash, which is a
+pure function of the drawn rows and so is reproducible from the sample alone.
+
+**What the workflow refuses.** To re-plan once any label exists; to show a batch
+whose membership hash has moved; to seal an incomplete batch; to accept a row
+for a sealed batch; to print agreement before every batch is sealed, unless
+`--reveal-early` is passed deliberately. `cmd_review` never opens the answer
+key, which a test asserts by walking the call graph rather than by comment.

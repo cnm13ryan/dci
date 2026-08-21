@@ -115,7 +115,7 @@
   "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
  },
  "consequence": "\u00a710.4-R2: the LLM-validator pathway stops. It is not prompt-tuned and no threshold moves. \u00a710.3's human semantic audit is the only remaining registered route to a measurement basis, and the replication records HUMAN_VALIDATION_UNAVAILABLE until an independent annotator completes one.",
- "generated_at": "2026-08-21T16:47:49+00:00",
+ "generated_at": "2026-08-21T17:18:39+00:00",
  "outcome": "FAIL",
  "per_kind_sensitivity_under_both_readings": {
   "denominator_swap": {
@@ -404,7 +404,7 @@
    "why": "criterion 6 is conjunctive with criteria 2 to 5, so a replicate cannot turn this development half's FAIL into a PASS. \u00a710.4-R2's stopping rule takes effect at the criterion-5 failure and a second replicate of a condition that has already failed has no registered role."
   }
  },
- "producing_commit": "9a3c0589b18f5b156adfd0719e20a40d67d1a668",
+ "producing_commit": "d33551b3f635565aac2be086adefb49650e825d2",
  "prompt_fit": {
   "cap": 3584,
   "estimated_tokens": 421,

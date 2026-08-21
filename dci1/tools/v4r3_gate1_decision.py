@@ -320,8 +320,10 @@ def human_evidence() -> dict[str, Any]:
             "verifier class with the fail class split by realised margin; "
             "this is one packet of 25",
             "criterion --- the one-sided 95% Wilson upper bound on "
-            "disagreement is 0.2152 against a threshold of 0.10, and at 25 "
-            "items the bound cannot reach 0.10 even at zero disagreements",
+            "disagreement is 0.2152 against a threshold of 0.10. At 25 items "
+            "the bound clears 0.10 only at zero disagreements (0.0977, which "
+            "is why 25 rather than 24), so it is the two disagreements that "
+            "fail it and not the sample size",
         ],
     }
 
