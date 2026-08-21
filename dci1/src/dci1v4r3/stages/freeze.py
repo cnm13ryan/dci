@@ -69,6 +69,13 @@ NEW_IN_V4R3 = (
     "joint_reading_table",              # §17.6
     "graded_clause_reading",            # §12.4
     "order_and_wording_allocation",     # §8.4
+    # Added 2026-08-21 with amendment R1, before freeze. Each names something
+    # the freeze must bind that the original list left implicit.
+    "amendment_hashes",                 # §31: R1 and any successor, by hash
+    "masking_rule",                     # §20: what is permuted, and the
+                                        # declarations that travel with it
+    "durability_record",                # §26: the pre-freeze durability gate,
+                                        # with its stated limitation
 )
 
 FREEZE_FIELDS = V4R2_FREEZE_FIELDS + NEW_IN_V4R3
