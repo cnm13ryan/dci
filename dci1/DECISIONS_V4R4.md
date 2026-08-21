@@ -213,6 +213,96 @@ observation table, the redacted structural analysis, the masking cycle,
 cache-deletion-and-durable-restore, the byte-mutation refusal — under v4r4's
 code, in v4r4's tree. The stage record says so on its face. This closes **E4**.
 
+## B6 and B7 were entered after Gate 1 passed, and the register hash moves
+
+Both close decisions this register had left open (E3, E5). Both were taken by
+the researcher on 2026-08-21, **after** v4r4's Gate 1 returned PASS and
+**before** Gate 2 began. Neither changes a rule Gate 1 applied: B6 ratifies a
+classification the specification module already produced when the gate ran, and
+B7 declines to invoke an option, leaving thresholds, candidate families and the
+frozen reserve exactly as the gate saw them.
+
+This file is a protocol document, so adding them moves the protocol hash. That
+is the binding working, not a defect, and it is recorded rather than absorbed:
+Gate 1's record binds `protocol_hash 1e7a7b2d` over the register at
+`2ef65124`, and it carries the per-document hash table, so the delta is
+resolvable to the byte. `dci1/reports/dci1v4r4/register_amendment.json` carries
+both protocol hashes, both register hashes, the proof that the other three
+protocol documents are byte-identical, and the proof that no measurement hash —
+verifier, wordings, specification, mutation, measurement-rule — moved at all.
+**No Gate-1 record was rewritten, and no gate was re-run.**
+
+---
+
+## B6 — the requirement-verb construction stands, and `CL7`/`CL8` are not regenerated (2026-08-21)
+
+Closes **E3**, the decision B4 raised and left to the researcher. Registered
+against §10.7 A′. Artifact: `dci1/reports/dci1v4r4/wording_review.json`, whose
+`unambiguous_documented` list is the 56 wordings this turns on.
+
+**The judgement.** *"Your answer needs {q} words with letter a."* is read as a
+minimum requirement — the registered `≥ q` — and the `requirement_verb`
+construction that licenses it stays registered and admissible for `≥` alone.
+
+**Why it is different from the wordings B3 removed.** *Give {q} percent of
+words letter a* names a production verb whose object is a quantity. It asserts
+that `q` be produced and says nothing about `q + 1`, so `≥ q` and `== q` both
+survive it and the prose selects neither: that is a comparison direction the
+wording does not state. *Needs* is a necessity operator over the counted
+feature. An answer that needs `q` still needs `q` when it has more, so
+`necessary(S = q)` and `S ≥ q` select the same answers, and the `== q` reading
+would require the verb to forbid a further occurrence, which *need* cannot do —
+*"needs at most"* is a contradiction in English, not a redundancy. The
+distinction is lexical and it is checkable in the artifact, where the
+derivation travels attached to every wording that relies on it.
+
+**Consequence.** No row is invalidated. The 1,536 generations B4 costed as the
+price of the other branch are not spent, and the 56 wordings keep the
+`unambiguous_documented` classification they were given before the gate ran —
+this decision confirms a classification already recorded, it does not change
+one. A reader who disagrees can find every affected wording, its severity and
+the derivation in one file, which is why they were reported in full.
+
+**What it does not do.** It registers no second construction. `DIRECTION_LEXICON`
+and `DOCUMENTED_CONSTRUCTIONS` are unchanged, `assert_direction_lexicon_is_exhaustive`
+still runs on the mandatory path, and any future wording that names no operator
+and matches no registered construction still blocks Gate 1.
+
+## B7 — C4's thin margin is a recorded limitation, not a trigger for expansion (2026-08-21)
+
+Closes **E5**. Artifacts: `dci1/reports/dci1v4r4/coverage.json`
+(`leave_one_family_out`, per model) and `cp4_cp7_analysis.json`
+(`leave_one_family_out_finding`).
+
+**The decision: §12.6's registered candidate expansion is not invoked.** C4 is
+met on all four replications under the criterion as registered. Expanding the
+candidate population because a passing solution has no spare margin would be an
+adaptive design choice made after seeing a coverage result, which is exactly
+the move §12.6's expansion rule exists to keep out of the study's discretion.
+Thresholds, candidate families and the frozen reserve are all untouched, and
+none of them may move before Gate 2.
+
+**The limitation, recorded and carried forward:**
+
+> C4 is identified but fragile on three models. `gemma-3n-e2b-it`, `qwen3-4b`
+> and `qwen3-4b-instruct-2507` satisfy C4 with **exactly four** well-formed
+> straddling feature groups, so every one of them is load-bearing and there is
+> no leave-one-family-out margin. `gemma-3n-e4b-it` has five and is robust.
+> Load-bearing families: `CR5`, `RF11`, `RF8` (e2b); `CR5`, `RF11`, `RF3`,
+> `RF6` (qwen3-4b); `RF10`, `RF11`, `RF8`, `RF9` (qwen3-4b-instruct).
+
+**It is inherited, not introduced.** The same sweep run on v4r3's 30-family
+population returns the same load-bearing families, so B3's removal of `CP4` and
+`CP7` did not cause it: `leave_one_family_out_is_unchanged_by_the_removal` is
+true in the artifact. It is a property of the reference pool the study has had
+since §7.0-R3.
+
+**What it means for anything downstream.** Any Gate-3 or Gate-4 result on the
+three fragile models is conditional on all four of its straddling groups
+holding, and that conditionality travels with the result rather than being
+re-litigated later. The expansion remains available; invoking it would be a new
+decision, prospectively registered, with its own record.
+
 ---
 
 ## E — the registered open decisions and their standing
@@ -222,9 +312,9 @@ code, in v4r4's tree. The stage record says so on its face. This closes **E4**.
 | E0 | Adopt v4r4 as a revision, closing v4r3 at Gate 1 | **CLOSED** by B0 and B1 |
 | E1 | Gate 1's measurement criterion | **CLOSED** by B2: §10.2 plus §10.7 A–E |
 | E2 | CP4/CP7: remove or reword | **CLOSED** by B3: removed under §10.2's removal rule |
-| E3 | Whether the requirement-verb construction is unambiguous enough for `CL7[3]` and `CL8[3]` | **OPEN — the researcher's.** Accepting it costs nothing; rejecting it costs 1,536 regenerations and a prospective wording registration |
+| E3 | Whether the requirement-verb construction is unambiguous enough for `CL7[3]` and `CL8[3]` | **CLOSED** by B6: accepted, read as `≥ q`; no row regenerated |
 | E4 | Whether a carried Gate 0 satisfies §19 | **CLOSED** by B5: yes for every check except the backend call, which the record names |
-| E5 | Whether §12.6's C4 margin is thin enough to invoke the registered expansion | **OPEN.** Three of four models satisfy C4 with exactly four straddling feature groups. Inherited from v4r3, not created by B3 |
+| E5 | Whether §12.6's C4 margin is thin enough to invoke the registered expansion | **CLOSED** by B7: not invoked. The zero margin on three models is carried as a recorded robustness limitation |
 | E6 | Models carried to confirmation | open; four registered, per-model outcomes independent |
 | E7 | Confirmatory compute budget | carried from `DECISIONS_V4R3.md` A1: 384 blocks at M = 8 |
 

@@ -44,9 +44,10 @@ from dci1v4r4.stages.mutation import (
 from dci1v4r4.stages import specification as specification_module
 from dci1v4r4.stages.specification import (
     SPEC_CASE_KINDS, SPEC_FIELDS, WORDING_CLASSES, applicability,
-    audit_family, audit_severity, constraint, evaluate_specification, form_of,
-    reading_verdict, run_specification_audit, spec_cases, specification,
-    statistic_id_of, wording_review, wordings_hash,
+    audit_family, audit_severity, classify_wording, constraint,
+    evaluate_specification, form_of, reading_verdict,
+    run_specification_audit, spec_cases, specification, statistic_id_of,
+    unmatched_wordings, wording_review, wordings_hash,
 )
 from dci1v4r4.verifiers import verifier_source_hash
 from dci1v4r4.verifiers.boundary import ALL_CASES, instrument_population
@@ -428,12 +429,49 @@ def test_changing_a_model_facing_wording_invalidates_dependent_evidence(
 
 
 def test_a_genuinely_ambiguous_wording_blocks_the_gate(evidence, r5_evidence):
-    """A' is a Gate-1 condition, not a note. This is also the live finding."""
+    """A' is a Gate-1 condition, not a note.
+
+    v4r3's population contained such a wording and this test simply ran the
+    gate. v4r4's does not --- §7.0-R4 removed the two families carrying one ---
+    so the finding has to be injected, and the injection is the v4r3 wording
+    verbatim. If the gate ever stops blocking on it, this fails.
+    """
+    blocking = classify_wording("CL7", 20, 3,
+                                "Give 20 percent of words letter a.")
+    assert blocking["classification"] == "genuinely_ambiguous"
+    ambiguous = {**r5_evidence,
+                 "wording_review": {**r5_evidence["wording_review"],
+                                    "genuinely_ambiguous": [blocking],
+                                    "passed": False}}
     with pytest.raises(TerminalStatus) as raised:
-        gate1_payload(evidence=evidence, specification_evidence=r5_evidence,
-                         provenance=dict(GOOD_PROVENANCE))
+        gate1_payload(evidence=evidence, specification_evidence=ambiguous,
+                      provenance=dict(GOOD_PROVENANCE))
     assert raised.value.status == "SPECIFICATION_AMBIGUOUS"
     assert 8 in raised.value.record["failed_conditions"]
+
+
+def test_a_wording_requiring_correction_blocks_the_gate(evidence,
+                                                        r5_evidence):
+    wrong = classify_wording("CL7", 20, 0, "At most 20 words may have a.")
+    assert wrong["classification"] == "requires_correction"
+    broken = {**r5_evidence,
+              "wording_review": {**r5_evidence["wording_review"],
+                                 "requires_correction": [wrong],
+                                 "passed": False}}
+    with pytest.raises(TerminalStatus) as raised:
+        gate1_payload(evidence=evidence, specification_evidence=broken,
+                      provenance=dict(GOOD_PROVENANCE))
+    assert raised.value.status == "SPECIFICATION_AMBIGUOUS"
+    assert 8 in raised.value.record["failed_conditions"]
+
+
+def test_the_live_population_carries_no_blocking_wording(r5_evidence):
+    """The v4r3 blocker is gone, and the gate is what says so."""
+    review = r5_evidence["wording_review"]
+    assert review["genuinely_ambiguous"] == []
+    assert review["requires_correction"] == []
+    assert review["passed"] is True
+    assert unmatched_wordings() == []
 
 
 def test_the_wording_review_covers_every_instrument_and_classifies_all_of_it():

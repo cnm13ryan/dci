@@ -26,6 +26,7 @@ from pathlib import Path
 import pytest
 
 from dci1v4.errors import IntegrityError, ProtocolError
+from dci1v4.models.registry import MODEL_KEYS
 
 from dci1v4r4 import (
     FOREIGN_STUDY_PREFIXES, STUDY_ID, SUPERSEDES, SUPERSEDES_TERMINAL_STATUS,
@@ -38,8 +39,8 @@ from dci1v4r4.engine.transitions import (
 )
 from dci1v4r4.protocol import constants as C
 from dci1v4r4.protocol.revision import (
-    DIFFERENCES, INHERITED_UNCHANGED, PROTOCOL_DOCUMENTS, protocol_hash,
-    revision_record,
+    DIFFERENCES, INHERITED_UNCHANGED, PROTOCOL_DOCUMENTS, document_hashes,
+    protocol_hash, revision_record,
 )
 from dci1v4r4.stages.gate1 import gate1_payload
 from dci1v4r4.stages.reuse import (
@@ -376,3 +377,124 @@ def test_gate_1_refuses_to_write_a_reviewer_basis_before_reading_evidence():
         with pytest.raises(ProtocolError):
             gate1_payload(evidence={}, specification_evidence={},
                           provenance={}, measurement_basis=basis)
+
+
+# ----------------------------------- the lifecycle machinery, as it stands
+def _artifact(name: str):
+    path = DCI1 / "reports" / "dci1v4r4" / name
+    if not path.exists():                                # pragma: no cover
+        pytest.skip(f"{name} has not been produced in this tree")
+    return json.loads(path.read_text())
+
+
+def test_the_lifecycle_integrity_report_passes_and_licenses_gate_2():
+    report = _artifact("lifecycle_integrity.json")
+    assert report["problems"] == []
+    assert report["passed"] is True
+    assert report["integer_key_canonicalisation"]["holds"] is True
+    assert report["historical_evidence_untouched"]["holds"] is True
+    assert report["foreign_record_refused"]["holds"] is True
+    assert report["gate_2_may_run"] is True
+    for model_key, entry in report["models"].items():
+        assert entry["furthest_stage"] == C.STAGE_GATE1, model_key
+        for stage, record in entry["records"].items():
+            assert record["study_id"] == "dci1v4r4", (model_key, stage)
+            assert record["round_trips"], (model_key, stage)
+            assert record["reader_copy_matches"], (model_key, stage)
+            assert record["write_once_enforced"], (model_key, stage)
+            assert record["producing_commit"] or stage != C.STAGE_QUALIFIED
+
+
+def test_every_gate_1_record_carries_the_deterministic_basis_and_its_scope():
+    report = _artifact("gate1_decision.json")
+    assert report["outcome"] == "PASS"
+    assert report["measurement_basis"] == C.MEASUREMENT_BASIS
+    assert report["measurement_basis"] != "human_validated"
+    assert report["scope_sentence"] == C.SCOPE_SENTENCE
+    assert report["instruments"] == 524
+    assert report["canonical_verifier_hash"] == verifier_source_hash()
+    # The reviewer evidence travels, labelled, and keeps its own outcomes.
+    diagnostics = report["supplementary_diagnostics"]
+    assert "SUPPLEMENTARY" in diagnostics["role"]
+    assert "FAILED" in diagnostics["section_10_4R2"]["what_it_is"]
+    assert "not independent validation" in \
+        diagnostics["section_10_3"]["what_it_is"]
+
+
+def test_the_reuse_ledger_carries_only_what_the_invariants_allow():
+    ledger = _artifact("evidence_reuse_ledger.json")
+    assert ledger["counts"]["INVALIDATED_AND_REGENERATED"] == 0
+    assert ledger["invariant_findings"]["verifier_semantics"]["holds"]
+    assert ledger["invariant_findings"]["model_facing_prompt"]["holds"]
+    for entry in ledger["entries"]:
+        assert entry["classification"] in REUSE_CLASSES
+        if entry["classification"] in CARRYING_CLASSES:
+            assert entry["satisfies"]
+            assert set(entry["invariants"]) == set(REUSE_INVARIANTS)
+
+
+def test_the_coverage_report_holds_on_every_replication():
+    coverage = _artifact("coverage.json")
+    assert coverage["every_model_passes"] is True
+    assert coverage["identification_status"] is None
+    for model_key, entry in coverage["models"].items():
+        assert entry["study_id"] == "dci1v4r4", model_key
+        decisive = {k: v["met"] for k, v in entry["coverage"]["conditions"].items()
+                    if k != "C7_class_matched"}
+        assert all(decisive.values()), (model_key, decisive)
+        # C7 is not terminal, and the report says which it is either way.
+        assert "terminal" in entry["coverage"]["conditions"]["C7_class_matched"]
+
+
+def test_the_cp4_cp7_decision_read_no_composed_outcome():
+    decision = _artifact("cp4_cp7_analysis.json")
+    assert decision["reads_no_composed_outcome"] is True
+    assert decision["decision"] == "REMOVE_CP4_AND_CP7"
+    assert decision["every_coverage_condition_holds_without_them"] is True
+    assert decision["no_condition_changed_on_any_model"] is True
+    # The fragility it found is inherited, not introduced, and it says so.
+    assert decision["leave_one_family_out_is_unchanged_by_the_removal"] is True
+
+
+def test_the_register_amendment_is_confined_to_the_register():
+    """B6 and B7 were entered after Gate 1 sealed the protocol hash.
+
+    That is legitimate --- they were taken before Gate 2 and neither changes a
+    rule Gate 1 applied --- but it must not be silent. The amendment record
+    resolves the delta, and this asserts the two properties that make it an
+    amendment rather than a re-seal: only the decisions register moved, and no
+    measurement hash moved with it.
+    """
+    amendment = _artifact("register_amendment.json")
+    assert amendment["problems"] == []
+    assert amendment["passed"] is True
+    assert amendment["protocol_hash"]["moved"] is True
+    assert list(amendment["documents"]["moved"]) == ["dci1/DECISIONS_V4R4.md"]
+    assert amendment["measurement_hashes"]["moved"] == {}
+    assert amendment["measurement_hashes"]["holds"] is True
+    # The three documents that carry the science are untouched, and the
+    # register's live bytes are what the amendment says they are.
+    now = document_hashes()
+    for relative in amendment["documents"]["unchanged"]:
+        sealed = amendment["sealed_by_gate1"][
+            "gemma-3n-e2b-it"]["documents"][relative]
+        assert now[relative] == sealed, relative
+    assert now["dci1/DECISIONS_V4R4.md"] == \
+        amendment["documents"]["moved"]["dci1/DECISIONS_V4R4.md"]["now"]
+
+
+def test_the_sealed_gate_1_records_were_not_rewritten_by_the_amendment():
+    """Whatever the register does, the gate's own record stands as written."""
+    amendment = _artifact("register_amendment.json")
+    sealed = amendment["sealed_by_gate1"]
+    assert set(sealed) == set(MODEL_KEYS)
+    one = sealed["gemma-3n-e2b-it"]
+    for model_key, entry in sealed.items():
+        assert entry["outcome"] == "PASS", model_key
+        assert entry["protocol_hash"] == one["protocol_hash"], model_key
+        assert entry["documents"] == one["documents"], model_key
+    # The sealed protocol hash is the superseded one, not today's.
+    assert one["protocol_hash"] != protocol_hash()
+    assert one["protocol_hash"] == amendment["protocol_hash"]["sealed_by_gate1"]
+    # ... and the instrument the gate certified is still the live one.
+    assert one["canonical_verifier_hash"] == verifier_source_hash()

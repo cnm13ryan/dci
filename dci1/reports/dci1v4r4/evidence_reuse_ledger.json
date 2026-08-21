@@ -1,0 +1,1068 @@
+{
+  "artifact_type": "v4r4-evidence-reuse-ledger",
+  "by_class": {
+    "HISTORICAL_ONLY": [
+      {
+        "artifact": "v4r3 QUALIFIED record",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "§18 stage 1 checks this worktree, this environment and this instrument population. All three moved: the population is 524 rather than 584 and the canonical verifier hash is new. v4r4 runs its own",
+        "satisfies": null,
+        "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/QUALIFIED",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "v4r3 Gate-1 decision under the former rule (gate1_decision.json, gate1_outcome.json, gate1_evidence.json)",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "v4r3's Gate 1 refused with MEASUREMENT_EVIDENCE_INSUFFICIENT under §18 stage 4 as it stood. The record is preserved unmodified and is not re-read by v4r4's rule. It is not a v4r4 predecessor and it is not described as having passed",
+        "satisfies": null,
+        "source_hash": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3/gate1_decision.json",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "§10.3 plan, §10.4, §10.4-R and §10.4-R2 reviewer evidence, and the validator diagnosis",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "preserved and reclassified as SUPPLEMENTARY / DIAGNOSTIC. §10.4-R2 FAILED its own criterion 5 and stopped by rule; §10.3 had no independent annotator. Both keep their recorded outcomes, both travel with v4r4's Gate-1 record under `supplementary_diagnostics`, and neither is read by the criterion in either direction",
+        "satisfies": null,
+        "source_hash": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "natural-response defect sensitivity (defect_sensitivity.json)",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "a consequence measurement on 30,720 real screen responses: what each registered defect would cost on natural data. It establishes practical consequence and never semantic correctness, and v4r4's mutation validation is computed natively over the constructed corpus rather than carried",
+        "satisfies": null,
+        "source_hash": "e71daabfc19b572b6503f41cab333a8408806d276176f366c444eee290560b2d",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3/defect_sensitivity.json",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "CP4 and CP7 generated rows, four replications",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "real generations and real v4r3 evidence. §7.0-R4 removed the two families, so v4r4 declares no instrument these rows could score and none of them enters this study's difficulty table. They are neither invalidated nor regenerated: there is nothing in v4r4 for them to be evidence about",
+        "satisfies": null,
+        "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/REGIME_SCREEN",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "v4r3 registration manifest",
+        "classification": "HISTORICAL_ONLY",
+        "invariants": {},
+        "reason": "a manifest binds a protocol revision to a producing commit and an instrument population. v4r4 issues its own",
+        "satisfies": null,
+        "source_hash": "2b58015d6ee0e8f8f4c07cdec815f5633456d9268c49e48f999860f0eaed899d",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/registration",
+        "source_study": "dci1v4r3"
+      }
+    ],
+    "INVALIDATED_AND_REGENERATED": [],
+    "NOT_APPLICABLE": [
+      {
+        "artifact": "§10.2 boundary suites, adversarial corpus, witnesses, wording-equivalence suite, carry-over record",
+        "classification": "NOT_APPLICABLE",
+        "invariants": {},
+        "reason": "these are computed from this package's own modules every time they are read, so there is nothing to carry. They are re-derived natively under v4r4's canonical hash",
+        "satisfies": null,
+        "source_hash": "n/a",
+        "source_path": "(computed from source, not stored)",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "Gate 2, Gate 3, Gate 4, the freeze, confirmatory generation, masking and analysis",
+        "classification": "NOT_APPLICABLE",
+        "invariants": {},
+        "reason": "v4r3 never reached any of them. It terminated at Gate 1, so no composed cell, no estimand and no masked or unmasked result exists in either revision",
+        "satisfies": null,
+        "source_hash": "n/a",
+        "source_path": "(absent)",
+        "source_study": "dci1v4r3"
+      }
+    ],
+    "RECOMPUTED_FROM_EXISTING_RAW_DATA": [
+      {
+        "artifact": "v4r3 REGIME_SCREEN generations, four replications",
+        "classification": "RECOMPUTED_FROM_EXISTING_RAW_DATA",
+        "invariants": {
+          "decoding_configuration": {
+            "completion_caps_seen": [],
+            "holds": true,
+            "note": "the decoding configuration is built by `dci1v4.engine.backend.build_plan` from the model spec and the completion cap, and neither the builder nor the spec is touched by this revision",
+            "registered_caps": [
+              512,
+              768,
+              1024
+            ],
+            "stages_seen": [
+              "v4r3-cap-selection-1024",
+              "v4r3-cap-selection-512",
+              "v4r3-cap-selection-768",
+              "v4r3-gate0-pilot",
+              "v4r3-ladder-screen"
+            ]
+          },
+          "instrument_identity": {
+            "holds": true,
+            "note": "every v4r4 instrument is a v4r3 instrument; v4r4's population is a strict subset, so no carried row scores an instrument v4r3 never declared"
+          },
+          "model_and_revision": {
+            "holds": true,
+            "note": "the pinned revision is the model's identity; a row from another revision is a row from another model",
+            "observed_on_rows": {
+              "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+              "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+              "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+              "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+            },
+            "registered": {
+              "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+              "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+              "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+              "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+            }
+          },
+          "model_facing_prompt": {
+            "constraint_lines_checked": 42240,
+            "criterion": "every constraint sentence stored on a carried row is byte-identical to the wording this revision renders for that instrument at that wording index",
+            "holds": true,
+            "mismatched": [],
+            "n_mismatched": 0,
+            "n_unparsed": 0,
+            "runs": [
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+              }
+            ],
+            "unparsed_rows": []
+          },
+          "sampling_regime": {
+            "draw_indices_present": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "draws_per_cell_registered": {
+              "ladder_screen": 1,
+              "pilot": 4
+            },
+            "holds": true,
+            "note": "§12.2 registers one draw per pre-screen cell and §19 registers four per pilot cell. Neither number changed, so a carried row is a draw this revision would have taken"
+          },
+          "severity": {
+            "holds": true,
+            "note": "no ladder and no reserve moved. §7.0-R4 removed two families; it changed no severity of any family that remains"
+          },
+          "verifier_semantics": {
+            "corpus": 164,
+            "criterion": "every instrument in v4r4's population is also declared in v4r3's, and the two packages' compliance predicates return the same verdict on every case of the frozen boundary corpus",
+            "disagreements": [],
+            "holds": true,
+            "instruments": 524,
+            "instruments_not_declared_in_v4r3": [],
+            "verdicts_compared": 85936
+          }
+        },
+        "reason": "the model, its pinned revision, the decoding configuration and every model-facing prompt are unchanged for the 28 families this revision carries. The generations are what was expensive; every verdict, the difficulty table, §12.6's coverage and §12.3's shortlist are recomputed here under this revision's verifier hash",
+        "satisfies": "§18 stage 3 (REGIME_SCREEN) and the pre-screen table §12.6 and §13.4 read",
+        "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/REGIME_SCREEN",
+        "source_study": "dci1v4r3"
+      },
+      {
+        "artifact": "v4r3 GATE_0_APPARATUS pilot generations, four replications",
+        "classification": "RECOMPUTED_FROM_EXISTING_RAW_DATA",
+        "invariants": {
+          "decoding_configuration": {
+            "completion_caps_seen": [],
+            "holds": true,
+            "note": "the decoding configuration is built by `dci1v4.engine.backend.build_plan` from the model spec and the completion cap, and neither the builder nor the spec is touched by this revision",
+            "registered_caps": [
+              512,
+              768,
+              1024
+            ],
+            "stages_seen": [
+              "v4r3-cap-selection-1024",
+              "v4r3-cap-selection-512",
+              "v4r3-cap-selection-768",
+              "v4r3-gate0-pilot",
+              "v4r3-ladder-screen"
+            ]
+          },
+          "instrument_identity": {
+            "holds": true,
+            "note": "every v4r4 instrument is a v4r3 instrument; v4r4's population is a strict subset, so no carried row scores an instrument v4r3 never declared"
+          },
+          "model_and_revision": {
+            "holds": true,
+            "note": "the pinned revision is the model's identity; a row from another revision is a row from another model",
+            "observed_on_rows": {
+              "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+              "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+              "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+              "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+            },
+            "registered": {
+              "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+              "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+              "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+              "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+            }
+          },
+          "model_facing_prompt": {
+            "constraint_lines_checked": 42240,
+            "criterion": "every constraint sentence stored on a carried row is byte-identical to the wording this revision renders for that instrument at that wording index",
+            "holds": true,
+            "mismatched": [],
+            "n_mismatched": 0,
+            "n_unparsed": 0,
+            "runs": [
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder"
+              },
+              {
+                "lines_checked": 3840,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512"
+              },
+              {
+                "lines_checked": 96,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768"
+              },
+              {
+                "lines_checked": 6432,
+                "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+              }
+            ],
+            "unparsed_rows": []
+          },
+          "sampling_regime": {
+            "draw_indices_present": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "draws_per_cell_registered": {
+              "ladder_screen": 1,
+              "pilot": 4
+            },
+            "holds": true,
+            "note": "§12.2 registers one draw per pre-screen cell and §19 registers four per pilot cell. Neither number changed, so a carried row is a draw this revision would have taken"
+          },
+          "severity": {
+            "holds": true,
+            "note": "no ladder and no reserve moved. §7.0-R4 removed two families; it changed no severity of any family that remains"
+          },
+          "verifier_semantics": {
+            "corpus": 164,
+            "criterion": "every instrument in v4r4's population is also declared in v4r3's, and the two packages' compliance predicates return the same verdict on every case of the frozen boundary corpus",
+            "disagreements": [],
+            "holds": true,
+            "instruments": 524,
+            "instruments_not_declared_in_v4r3": [],
+            "verdicts_compared": 85936
+          }
+        },
+        "reason": "§19's pilot exercises the apparatus, not the model. Its fixtures are A, B, RF1, RF5, RF7 and CL7, all carried unchanged. Scoring, the observation table, the redacted structural analysis, the masking cycle, the cache-deletion-and-durable-restore and the byte-mutation refusal all run here, in this revision's tree. What a carried Gate 0 does not exercise is the backend call, and the stage record says so",
+        "satisfies": "§18 stage 2 (GATE_0_APPARATUS)",
+        "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+        "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/GATE_0_APPARATUS",
+        "source_study": "dci1v4r3"
+      }
+    ],
+    "REUSED_UNCHANGED": []
+  },
+  "carried_runs": [
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768",
+    "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+  ],
+  "carrying_classes": [
+    "REUSED_UNCHANGED",
+    "RECOMPUTED_FROM_EXISTING_RAW_DATA"
+  ],
+  "classes": [
+    "REUSED_UNCHANGED",
+    "RECOMPUTED_FROM_EXISTING_RAW_DATA",
+    "INVALIDATED_AND_REGENERATED",
+    "HISTORICAL_ONLY",
+    "NOT_APPLICABLE"
+  ],
+  "counts": {
+    "HISTORICAL_ONLY": 6,
+    "INVALIDATED_AND_REGENERATED": 0,
+    "NOT_APPLICABLE": 2,
+    "RECOMPUTED_FROM_EXISTING_RAW_DATA": 2,
+    "REUSED_UNCHANGED": 0
+  },
+  "entries": [
+    {
+      "artifact": "v4r3 REGIME_SCREEN generations, four replications",
+      "classification": "RECOMPUTED_FROM_EXISTING_RAW_DATA",
+      "invariants": {
+        "decoding_configuration": {
+          "completion_caps_seen": [],
+          "holds": true,
+          "note": "the decoding configuration is built by `dci1v4.engine.backend.build_plan` from the model spec and the completion cap, and neither the builder nor the spec is touched by this revision",
+          "registered_caps": [
+            512,
+            768,
+            1024
+          ],
+          "stages_seen": [
+            "v4r3-cap-selection-1024",
+            "v4r3-cap-selection-512",
+            "v4r3-cap-selection-768",
+            "v4r3-gate0-pilot",
+            "v4r3-ladder-screen"
+          ]
+        },
+        "instrument_identity": {
+          "holds": true,
+          "note": "every v4r4 instrument is a v4r3 instrument; v4r4's population is a strict subset, so no carried row scores an instrument v4r3 never declared"
+        },
+        "model_and_revision": {
+          "holds": true,
+          "note": "the pinned revision is the model's identity; a row from another revision is a row from another model",
+          "observed_on_rows": {
+            "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+            "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+            "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+          },
+          "registered": {
+            "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+            "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+            "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+          }
+        },
+        "model_facing_prompt": {
+          "constraint_lines_checked": 42240,
+          "criterion": "every constraint sentence stored on a carried row is byte-identical to the wording this revision renders for that instrument at that wording index",
+          "holds": true,
+          "mismatched": [],
+          "n_mismatched": 0,
+          "n_unparsed": 0,
+          "runs": [
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+            }
+          ],
+          "unparsed_rows": []
+        },
+        "sampling_regime": {
+          "draw_indices_present": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "draws_per_cell_registered": {
+            "ladder_screen": 1,
+            "pilot": 4
+          },
+          "holds": true,
+          "note": "§12.2 registers one draw per pre-screen cell and §19 registers four per pilot cell. Neither number changed, so a carried row is a draw this revision would have taken"
+        },
+        "severity": {
+          "holds": true,
+          "note": "no ladder and no reserve moved. §7.0-R4 removed two families; it changed no severity of any family that remains"
+        },
+        "verifier_semantics": {
+          "corpus": 164,
+          "criterion": "every instrument in v4r4's population is also declared in v4r3's, and the two packages' compliance predicates return the same verdict on every case of the frozen boundary corpus",
+          "disagreements": [],
+          "holds": true,
+          "instruments": 524,
+          "instruments_not_declared_in_v4r3": [],
+          "verdicts_compared": 85936
+        }
+      },
+      "reason": "the model, its pinned revision, the decoding configuration and every model-facing prompt are unchanged for the 28 families this revision carries. The generations are what was expensive; every verdict, the difficulty table, §12.6's coverage and §12.3's shortlist are recomputed here under this revision's verifier hash",
+      "satisfies": "§18 stage 3 (REGIME_SCREEN) and the pre-screen table §12.6 and §13.4 read",
+      "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/REGIME_SCREEN",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "v4r3 GATE_0_APPARATUS pilot generations, four replications",
+      "classification": "RECOMPUTED_FROM_EXISTING_RAW_DATA",
+      "invariants": {
+        "decoding_configuration": {
+          "completion_caps_seen": [],
+          "holds": true,
+          "note": "the decoding configuration is built by `dci1v4.engine.backend.build_plan` from the model spec and the completion cap, and neither the builder nor the spec is touched by this revision",
+          "registered_caps": [
+            512,
+            768,
+            1024
+          ],
+          "stages_seen": [
+            "v4r3-cap-selection-1024",
+            "v4r3-cap-selection-512",
+            "v4r3-cap-selection-768",
+            "v4r3-gate0-pilot",
+            "v4r3-ladder-screen"
+          ]
+        },
+        "instrument_identity": {
+          "holds": true,
+          "note": "every v4r4 instrument is a v4r3 instrument; v4r4's population is a strict subset, so no carried row scores an instrument v4r3 never declared"
+        },
+        "model_and_revision": {
+          "holds": true,
+          "note": "the pinned revision is the model's identity; a row from another revision is a row from another model",
+          "observed_on_rows": {
+            "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+            "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+            "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+          },
+          "registered": {
+            "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+            "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+            "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+          }
+        },
+        "model_facing_prompt": {
+          "constraint_lines_checked": 42240,
+          "criterion": "every constraint sentence stored on a carried row is byte-identical to the wording this revision renders for that instrument at that wording index",
+          "holds": true,
+          "mismatched": [],
+          "n_mismatched": 0,
+          "n_unparsed": 0,
+          "runs": [
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder"
+            },
+            {
+              "lines_checked": 3840,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512"
+            },
+            {
+              "lines_checked": 96,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768"
+            },
+            {
+              "lines_checked": 6432,
+              "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+            }
+          ],
+          "unparsed_rows": []
+        },
+        "sampling_regime": {
+          "draw_indices_present": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "draws_per_cell_registered": {
+            "ladder_screen": 1,
+            "pilot": 4
+          },
+          "holds": true,
+          "note": "§12.2 registers one draw per pre-screen cell and §19 registers four per pilot cell. Neither number changed, so a carried row is a draw this revision would have taken"
+        },
+        "severity": {
+          "holds": true,
+          "note": "no ladder and no reserve moved. §7.0-R4 removed two families; it changed no severity of any family that remains"
+        },
+        "verifier_semantics": {
+          "corpus": 164,
+          "criterion": "every instrument in v4r4's population is also declared in v4r3's, and the two packages' compliance predicates return the same verdict on every case of the frozen boundary corpus",
+          "disagreements": [],
+          "holds": true,
+          "instruments": 524,
+          "instruments_not_declared_in_v4r3": [],
+          "verdicts_compared": 85936
+        }
+      },
+      "reason": "§19's pilot exercises the apparatus, not the model. Its fixtures are A, B, RF1, RF5, RF7 and CL7, all carried unchanged. Scoring, the observation table, the redacted structural analysis, the masking cycle, the cache-deletion-and-durable-restore and the byte-mutation refusal all run here, in this revision's tree. What a carried Gate 0 does not exercise is the backend call, and the stage record says so",
+      "satisfies": "§18 stage 2 (GATE_0_APPARATUS)",
+      "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/GATE_0_APPARATUS",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "v4r3 QUALIFIED record",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "§18 stage 1 checks this worktree, this environment and this instrument population. All three moved: the population is 524 rather than 584 and the canonical verifier hash is new. v4r4 runs its own",
+      "satisfies": null,
+      "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/QUALIFIED",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "v4r3 Gate-1 decision under the former rule (gate1_decision.json, gate1_outcome.json, gate1_evidence.json)",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "v4r3's Gate 1 refused with MEASUREMENT_EVIDENCE_INSUFFICIENT under §18 stage 4 as it stood. The record is preserved unmodified and is not re-read by v4r4's rule. It is not a v4r4 predecessor and it is not described as having passed",
+      "satisfies": null,
+      "source_hash": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3/gate1_decision.json",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "§10.3 plan, §10.4, §10.4-R and §10.4-R2 reviewer evidence, and the validator diagnosis",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "preserved and reclassified as SUPPLEMENTARY / DIAGNOSTIC. §10.4-R2 FAILED its own criterion 5 and stopped by rule; §10.3 had no independent annotator. Both keep their recorded outcomes, both travel with v4r4's Gate-1 record under `supplementary_diagnostics`, and neither is read by the criterion in either direction",
+      "satisfies": null,
+      "source_hash": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "natural-response defect sensitivity (defect_sensitivity.json)",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "a consequence measurement on 30,720 real screen responses: what each registered defect would cost on natural data. It establishes practical consequence and never semantic correctness, and v4r4's mutation validation is computed natively over the constructed corpus rather than carried",
+      "satisfies": null,
+      "source_hash": "e71daabfc19b572b6503f41cab333a8408806d276176f366c444eee290560b2d",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/reports/dci1v4r3/defect_sensitivity.json",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "CP4 and CP7 generated rows, four replications",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "real generations and real v4r3 evidence. §7.0-R4 removed the two families, so v4r4 declares no instrument these rows could score and none of them enters this study's difficulty table. They are neither invalidated nor regenerated: there is nothing in v4r4 for them to be evidence about",
+      "satisfies": null,
+      "source_hash": "70fe4352361c1009a0a552bce8417fd0f86fe87847950491c1655a1187e4a764",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/<model>/REGIME_SCREEN",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "v4r3 registration manifest",
+      "classification": "HISTORICAL_ONLY",
+      "invariants": {},
+      "reason": "a manifest binds a protocol revision to a producing commit and an instrument population. v4r4 issues its own",
+      "satisfies": null,
+      "source_hash": "2b58015d6ee0e8f8f4c07cdec815f5633456d9268c49e48f999860f0eaed899d",
+      "source_path": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r3/registration",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "§10.2 boundary suites, adversarial corpus, witnesses, wording-equivalence suite, carry-over record",
+      "classification": "NOT_APPLICABLE",
+      "invariants": {},
+      "reason": "these are computed from this package's own modules every time they are read, so there is nothing to carry. They are re-derived natively under v4r4's canonical hash",
+      "satisfies": null,
+      "source_hash": "n/a",
+      "source_path": "(computed from source, not stored)",
+      "source_study": "dci1v4r3"
+    },
+    {
+      "artifact": "Gate 2, Gate 3, Gate 4, the freeze, confirmatory generation, masking and analysis",
+      "classification": "NOT_APPLICABLE",
+      "invariants": {},
+      "reason": "v4r3 never reached any of them. It terminated at Gate 1, so no composed cell, no estimand and no masked or unmasked result exists in either revision",
+      "satisfies": null,
+      "source_hash": "n/a",
+      "source_path": "(absent)",
+      "source_study": "dci1v4r3"
+    }
+  ],
+  "invariant_findings": {
+    "decoding_configuration": {
+      "completion_caps_seen": [],
+      "holds": true,
+      "note": "the decoding configuration is built by `dci1v4.engine.backend.build_plan` from the model spec and the completion cap, and neither the builder nor the spec is touched by this revision",
+      "registered_caps": [
+        512,
+        768,
+        1024
+      ],
+      "stages_seen": [
+        "v4r3-cap-selection-1024",
+        "v4r3-cap-selection-512",
+        "v4r3-cap-selection-768",
+        "v4r3-gate0-pilot",
+        "v4r3-ladder-screen"
+      ]
+    },
+    "instrument_identity": {
+      "holds": true,
+      "note": "every v4r4 instrument is a v4r3 instrument; v4r4's population is a strict subset, so no carried row scores an instrument v4r3 never declared"
+    },
+    "model_and_revision": {
+      "holds": true,
+      "note": "the pinned revision is the model's identity; a row from another revision is a row from another model",
+      "observed_on_rows": {
+        "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+        "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+        "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+        "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+      },
+      "registered": {
+        "gemma-3n-e2b-it": "5e092ebca197cdcd8d8b195040accf22693501bc",
+        "gemma-3n-e4b-it": "c1221e9c62e34a43ab7ffacd1be0ea71f126ef10",
+        "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+        "qwen3-4b-instruct-2507": "cdbee75f17c01a7cc42f958dc650907174af0554"
+      }
+    },
+    "model_facing_prompt": {
+      "constraint_lines_checked": 42240,
+      "criterion": "every constraint sentence stored on a carried row is byte-identical to the wording this revision renders for that instrument at that wording index",
+      "holds": true,
+      "mismatched": [],
+      "n_mismatched": 0,
+      "n_unparsed": 0,
+      "runs": [
+        {
+          "lines_checked": 3840,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768"
+        },
+        {
+          "lines_checked": 6432,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+        },
+        {
+          "lines_checked": 3840,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768"
+        },
+        {
+          "lines_checked": 6432,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder"
+        },
+        {
+          "lines_checked": 3840,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768"
+        },
+        {
+          "lines_checked": 6432,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder"
+        },
+        {
+          "lines_checked": 3840,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512"
+        },
+        {
+          "lines_checked": 96,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768"
+        },
+        {
+          "lines_checked": 6432,
+          "run_dir": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder"
+        }
+      ],
+      "unparsed_rows": []
+    },
+    "sampling_regime": {
+      "draw_indices_present": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "draws_per_cell_registered": {
+        "ladder_screen": 1,
+        "pilot": 4
+      },
+      "holds": true,
+      "note": "§12.2 registers one draw per pre-screen cell and §19 registers four per pilot cell. Neither number changed, so a carried row is a draw this revision would have taken"
+    },
+    "severity": {
+      "holds": true,
+      "note": "no ladder and no reserve moved. §7.0-R4 removed two families; it changed no severity of any family that remains"
+    },
+    "verifier_semantics": {
+      "corpus": 164,
+      "criterion": "every instrument in v4r4's population is also declared in v4r3's, and the two packages' compliance predicates return the same verdict on every case of the frozen boundary corpus",
+      "disagreements": [],
+      "holds": true,
+      "instruments": 524,
+      "instruments_not_declared_in_v4r3": [],
+      "verdicts_compared": 85936
+    }
+  },
+  "invariants": [
+    "verifier_semantics",
+    "model_facing_prompt",
+    "instrument_identity",
+    "severity",
+    "sampling_regime",
+    "model_and_revision",
+    "decoding_configuration"
+  ],
+  "ledger_hash": "f68f528fcdbc871ba1f50d438b9b7473b241d19607984c0b649da1929ac42c33",
+  "nothing_is_regenerated_because": "the two families whose wordings failed §10.7 A' were removed under §10.2's removal rule rather than reworded, so no v4r4 instrument exists for their rows and no regeneration is owed. Their rows stay HISTORICAL_ONLY: real generations, real v4r3 evidence, and evidence about nothing v4r4 measures",
+  "producing_commit": null,
+  "removed_families": {
+    "CP4": {
+      "finding": "specification_ambiguity",
+      "form": "rate_lower_bound",
+      "role": "class_control",
+      "rule": "§10.2 removal rule, coverage re-evaluated under §12.6",
+      "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (100*S/W >= q) from the reading that takes q as exact; the two disagree on every answer past q, which the verifier scores as a pass",
+      "wordings": "Give {q} percent of words doubled letters. / Make {q} percent of words carry doubled letters."
+    },
+    "CP7": {
+      "finding": "specification_ambiguity",
+      "form": "rate_lower_bound",
+      "role": "class_control",
+      "rule": "§10.2 removal rule, coverage re-evaluated under §12.6",
+      "why": "the wording states q as a target and names no bound, so it does not distinguish the registered predicate (100*S/W >= q) from the reading that takes q as exact; the two disagree on every answer past q, which the verifier scores as a pass",
+      "wordings": "Give {q} percent of words letter a. / Make {q} percent of words carry letter a."
+    }
+  },
+  "rule": "an artifact may be carried only when every quantity that determines it is unchanged. Prompt identity and verifier semantics are measured against v4r3's own code and rows; the rest are read off the rows and compared with what v4r4 registers",
+  "source_study": "dci1v4r3"
+}

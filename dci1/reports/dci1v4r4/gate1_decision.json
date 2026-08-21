@@ -1,0 +1,1738 @@
+{
+  "adversarial": {
+    "corpus_coverage": {
+      "adjacent_punctuation": 6,
+      "apostrophised": 4,
+      "capitalisation": 66,
+      "case_folding_split": 3,
+      "combining_mark": 2,
+      "empty": 6,
+      "fullwidth": 1,
+      "hyphenated": 2,
+      "markdown_emphasis": 3,
+      "non_breaking_space": 2,
+      "non_decimal_numeric": 1,
+      "non_latin_script": 8,
+      "repeated_word": 28,
+      "single_word": 23,
+      "soft_hyphen": 2,
+      "unicode_punctuation": 2,
+      "wordless": 3,
+      "zero_width": 4
+    },
+    "corpus_size": 164,
+    "passed": true,
+    "realised": {
+      "counts": {
+        "adjacent_punctuation": 173,
+        "apostrophised": 17297,
+        "capitalisation": 35786,
+        "case_folding_split": 0,
+        "combining_mark": 0,
+        "empty": 0,
+        "fullwidth": 0,
+        "hyphenated": 11483,
+        "markdown_emphasis": 1104,
+        "non_breaking_space": 0,
+        "non_decimal_numeric": 1,
+        "non_latin_script": 73,
+        "repeated_word": 15,
+        "single_word": 0,
+        "soft_hyphen": 0,
+        "unicode_punctuation": 7620,
+        "wordless": 0,
+        "zero_width": 0
+      },
+      "never_observed": [
+        "case_folding_split",
+        "combining_mark",
+        "empty",
+        "fullwidth",
+        "non_breaking_space",
+        "single_word",
+        "soft_hyphen",
+        "wordless",
+        "zero_width"
+      ],
+      "rates": {
+        "adjacent_punctuation": 0.004805555555555556,
+        "apostrophised": 0.48047222222222224,
+        "capitalisation": 0.9940555555555556,
+        "case_folding_split": 0.0,
+        "combining_mark": 0.0,
+        "empty": 0.0,
+        "fullwidth": 0.0,
+        "hyphenated": 0.3189722222222222,
+        "markdown_emphasis": 0.030666666666666665,
+        "non_breaking_space": 0.0,
+        "non_decimal_numeric": 2.777777777777778e-05,
+        "non_latin_script": 0.0020277777777777777,
+        "repeated_word": 0.0004166666666666667,
+        "single_word": 0.0,
+        "soft_hyphen": 0.0,
+        "unicode_punctuation": 0.21166666666666667,
+        "wordless": 0.0,
+        "zero_width": 0.0
+      },
+      "responses": 36000
+    },
+    "uncovered_by_corpus": []
+  },
+  "artifact_type": "gate_record",
+  "boundary_suite_hash": "1794d55f6e86c6b1996c122131b554c3b45a2b7fa87861a6981f1a97ff2ef55b",
+  "calibration_responses": 36000,
+  "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+  "carryover": {
+    "a_carry_over_argument": "§9.2 registers S0 as lower-case-then-segment and the carried counting function implements exactly that, so §7.0's correction to the family word list does not touch A's instrument",
+    "a_carry_over_survives": true,
+    "carried_focal_cases": {
+      "cases": 45,
+      "statistics_checked": 405
+    },
+    "carried_symbol_hashes": {
+      "target.py:TARGET_WORD": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a",
+      "target.py:s0_count": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f",
+      "target.py:s1_count": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53",
+      "target.py:s2_count": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409",
+      "target.py:s3_count": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc",
+      "target.py:s3_preprocess": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e",
+      "words.py:alpha_runs": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea"
+    },
+    "carried_target_cases": 48,
+    "composition_equivalence": {
+      "checked": 48,
+      "skipped_containing_u0130": 0
+    },
+    "not_carried": {
+      "family_statistics": "the eight v4 counting functions read v4r2's word list; v4r3's read the corrected one. The equivalence on U+0130-free text is asserted executably rather than claimed",
+      "words_lower": "§7.0 corrects the composition order: segment the answer, then lower-case each word. v4r2 lower-cased the whole response first, which splits a word on U+0130"
+    },
+    "v3_to_v4r2": {
+      "boundary": {
+        "cases": 40,
+        "specification_bytes": 2855,
+        "v3_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd",
+        "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers/boundary.py",
+        "v4_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd"
+      },
+      "construct_string": "however",
+      "entries": [
+        {
+          "function": "alpha_runs",
+          "identical": true,
+          "module": "words.py",
+          "role": "carry_over",
+          "v3_module": "words.py",
+          "v3_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea",
+          "v4_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea"
+        },
+        {
+          "function": "words_lower",
+          "identical": true,
+          "module": "words.py",
+          "role": "carry_over",
+          "v3_module": "words.py",
+          "v3_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043",
+          "v4_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043"
+        },
+        {
+          "function": "TARGET_WORD",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a",
+          "v4_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a"
+        },
+        {
+          "function": "s0_count",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f",
+          "v4_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f"
+        },
+        {
+          "function": "s1_count",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53",
+          "v4_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53"
+        },
+        {
+          "function": "s2_count",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409",
+          "v4_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409"
+        },
+        {
+          "function": "s3_preprocess",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e",
+          "v4_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e"
+        },
+        {
+          "function": "s3_count",
+          "identical": true,
+          "module": "target.py",
+          "role": "carry_over",
+          "v3_module": "target.py",
+          "v3_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc",
+          "v4_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc"
+        },
+        {
+          "function": "focal_statistic",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b",
+          "v4_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b"
+        },
+        {
+          "function": "_rf1",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5",
+          "v4_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5"
+        },
+        {
+          "function": "_rf2",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6",
+          "v4_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6"
+        },
+        {
+          "function": "_rf3",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16",
+          "v4_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16"
+        },
+        {
+          "function": "_rf4",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c",
+          "v4_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c"
+        },
+        {
+          "function": "_rf5",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af",
+          "v4_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af"
+        },
+        {
+          "function": "_rf6",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37",
+          "v4_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37"
+        },
+        {
+          "function": "_rf7",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7",
+          "v4_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7"
+        },
+        {
+          "function": "_rf8",
+          "identical": true,
+          "module": "statistics.py",
+          "role": "compatibility",
+          "v3_module": "families.py",
+          "v3_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4",
+          "v4_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4"
+        }
+      ],
+      "provenance": "the v3 files are read as data for this comparison and are never imported, executed or modified",
+      "record_hash": "07d63316a0c1e36e7c0b31aad70fad71d95b947e7c1e21f54d6d2775beddeb8b",
+      "rule": "DCI1_preregistration_v4r2.md §10.2",
+      "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers"
+    }
+  },
+  "criterion": "§10.2 for every verifier in the final instrument population, plus §10.7 A-E",
+  "decision_hash": "df630decc5333430808a896bbb5487a6750e5335698e7d4841afd278b989c446",
+  "decision_hash_covers": "this file as written. The full audits are covered by specification_hash, mutation_hash and wordings_hash",
+  "determinism": {
+    "agreement": 1.0,
+    "digests": [
+      "208a9ba3cd1e2fa665d591c0aa7ba8e5a7c432018e1c4d620c8a272fb03dd1cc",
+      "208a9ba3cd1e2fa665d591c0aa7ba8e5a7c432018e1c4d620c8a272fb03dd1cc",
+      "208a9ba3cd1e2fa665d591c0aa7ba8e5a7c432018e1c4d620c8a272fb03dd1cc"
+    ],
+    "instruments": 524,
+    "processes": 3,
+    "responses": 400
+  },
+  "determinism_sample": {
+    "n": 400,
+    "of": 36164,
+    "rule": "the frozen boundary corpus plus the leading calibration responses"
+  },
+  "frozen_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+  "identification_statuses": [],
+  "instrument_population": 524,
+  "instruments": 524,
+  "measurement_basis": "deterministic_measurement_validated",
+  "measurement_rule": {
+    "components": {
+      "A": "specification validity: an executable formal specification per family and form, and a prose-to-predicate invariant over every model-facing wording",
+      "B": "implementation validity: determinism, frozen boundary suites, adversarial and Unicode corpora",
+      "C": "independent reimplementation from prose alone, exact agreement",
+      "D": "mutation validation: a discriminating case for every meaningful registered defect class, and a checked reason for every non-applicability",
+      "E": "provenance: verifier hash, wording hash, specification hash, mutation hash, lifecycle chain and producing commit"
+    },
+    "conditions": [
+      "1 every family and form carries a complete formal specification",
+      "2 no unresolved prose-to-predicate ambiguity",
+      "3 the primary verifier is deterministic",
+      "4 the independent reimplementation agrees exactly, zero unexplained disagreement",
+      "5 boundary, adversarial and Unicode tests pass and the boundary corpus meets its registered minimum",
+      "6 mutation tests show sensitivity to every meaningful defect class, with every non-applicability explained",
+      "7 satisfiability and non-entailment witnesses pass",
+      "8 wording equivalence passes and every model-facing wording exposes its comparison direction",
+      "9 the verifier hash and the wording hash are bound and match",
+      "10 lifecycle and provenance integrity passes"
+    ],
+    "criterion": "§10.2 for every verifier in the final instrument population, plus §10.7 A-E",
+    "measurement_basis": "deterministic_measurement_validated",
+    "no_reviewer_threshold": "no human or autorater agreement rate, sample size, Wilson interval, accuracy, repeatability or judge verdict appears in this rule, in either direction. Reviewer evidence is carried as a diagnostic and is never read by the criterion",
+    "revision": "v4r4",
+    "scope_sentence_attaches": true,
+    "section": "10.7",
+    "title": "Deterministic-measurement validation",
+    "what_this_does_not_establish": "that the verifier's verdicts are what an independent human would give. §10.5's second question is unanswered under this rule, the basis it writes is not human_validated, and the scope sentence attaches permanently because of that"
+  },
+  "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
+  "mutation_hash": "a91f6220c63149baadecddec1ce29dd403882f49cc5c9dec522796d324c054c1",
+  "mutation_validation": {
+    "audited_kinds": [
+      "A",
+      "B",
+      "CL7",
+      "CL8",
+      "CR1",
+      "CR10",
+      "CR11",
+      "CR12",
+      "CR2",
+      "CR3",
+      "CR4",
+      "CR5",
+      "CR6",
+      "CR7",
+      "CR8",
+      "CR9",
+      "CX1",
+      "CX2",
+      "RF1",
+      "RF10",
+      "RF11",
+      "RF12",
+      "RF2",
+      "RF3",
+      "RF4",
+      "RF5",
+      "RF6",
+      "RF7",
+      "RF8",
+      "RF9"
+    ],
+    "by_defect": {
+      "denominator_swap": {
+        "families_detected": 12,
+        "families_not_applicable": 18,
+        "families_where_meaningful": 12,
+        "not_applicable_kinds": [
+          "A",
+          "B",
+          "CL7",
+          "CL8",
+          "CX1",
+          "CX2",
+          "RF1",
+          "RF10",
+          "RF11",
+          "RF12",
+          "RF2",
+          "RF3",
+          "RF4",
+          "RF5",
+          "RF6",
+          "RF7",
+          "RF8",
+          "RF9"
+        ],
+        "reasons_for_non_applicability": [
+          "count_budget compares a count and has no denominator, so there is nothing to swap",
+          "count_lower_bound compares a count and has no denominator, so there is nothing to swap",
+          "exact_count compares a count and has no denominator, so there is nothing to swap",
+          "focal_budget compares a count and has no denominator, so there is nothing to swap"
+        ],
+        "undetected_kinds": []
+      },
+      "inequality_flip": {
+        "families_detected": 30,
+        "families_not_applicable": 0,
+        "families_where_meaningful": 30,
+        "not_applicable_kinds": [],
+        "reasons_for_non_applicability": [],
+        "undetected_kinds": []
+      },
+      "numerator_swap": {
+        "families_detected": 30,
+        "families_not_applicable": 0,
+        "families_where_meaningful": 30,
+        "not_applicable_kinds": [],
+        "reasons_for_non_applicability": [],
+        "undetected_kinds": []
+      },
+      "off_by_one": {
+        "families_detected": 30,
+        "families_not_applicable": 0,
+        "families_where_meaningful": 30,
+        "not_applicable_kinds": [],
+        "reasons_for_non_applicability": [],
+        "undetected_kinds": []
+      },
+      "segmentation_drift": {
+        "families_detected": 22,
+        "families_not_applicable": 8,
+        "families_where_meaningful": 22,
+        "not_applicable_kinds": [
+          "CL8",
+          "CX2",
+          "RF10",
+          "RF12",
+          "RF2",
+          "RF5",
+          "RF6",
+          "RF8"
+        ],
+        "reasons_for_non_applicability": [
+          "capital_char counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison",
+          "comma counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison",
+          "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'ing', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+          "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 's', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+          "folding before segmenting splits a word carrying U+0130 into a first piece ending in the folded i and a final piece carrying the original word's ending. A suffix test therefore matches the same words under either order: the extra piece can never end in 'y', and the piece that does keeps the ending it had. Registered as a non-separable reading and checked against the whole corpus rather than asserted",
+          "semicolon counts raw characters of the answer and exact_count has no word denominator, so no composition order can move either side of the comparison",
+          "sentence counts raw characters of the answer and count_budget has no word denominator, so no composition order can move either side of the comparison"
+        ],
+        "undetected_kinds": []
+      },
+      "vacuity_ignored": {
+        "families_detected": 17,
+        "families_not_applicable": 13,
+        "families_where_meaningful": 17,
+        "not_applicable_kinds": [
+          "B",
+          "RF1",
+          "RF10",
+          "RF11",
+          "RF12",
+          "RF2",
+          "RF3",
+          "RF4",
+          "RF5",
+          "RF6",
+          "RF7",
+          "RF8",
+          "RF9"
+        ],
+        "reasons_for_non_applicability": [
+          "count_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. §9.3's non-vacuity flag records that pass separately and is not part of the predicate",
+          "focal_budget is satisfied by an empty answer under the registered reading as well, so no verdict moves. §9.3's non-vacuity flag records that pass separately and is not part of the predicate"
+        ],
+        "undetected_kinds": []
+      }
+    },
+    "by_form": {
+      "count_budget": {
+        "detected": {
+          "denominator_swap": 0,
+          "inequality_flip": 12,
+          "numerator_swap": 12,
+          "off_by_one": 12,
+          "segmentation_drift": 6,
+          "vacuity_ignored": 0
+        },
+        "kinds": [
+          "RF1",
+          "RF10",
+          "RF11",
+          "RF12",
+          "RF2",
+          "RF3",
+          "RF4",
+          "RF5",
+          "RF6",
+          "RF7",
+          "RF8",
+          "RF9"
+        ],
+        "meaningful": {
+          "denominator_swap": 0,
+          "inequality_flip": 12,
+          "numerator_swap": 12,
+          "off_by_one": 12,
+          "segmentation_drift": 6,
+          "vacuity_ignored": 0
+        }
+      },
+      "count_lower_bound": {
+        "detected": {
+          "denominator_swap": 0,
+          "inequality_flip": 2,
+          "numerator_swap": 2,
+          "off_by_one": 2,
+          "segmentation_drift": 1,
+          "vacuity_ignored": 2
+        },
+        "kinds": [
+          "CL7",
+          "CL8"
+        ],
+        "meaningful": {
+          "denominator_swap": 0,
+          "inequality_flip": 2,
+          "numerator_swap": 2,
+          "off_by_one": 2,
+          "segmentation_drift": 1,
+          "vacuity_ignored": 2
+        }
+      },
+      "exact_count": {
+        "detected": {
+          "denominator_swap": 0,
+          "inequality_flip": 3,
+          "numerator_swap": 3,
+          "off_by_one": 3,
+          "segmentation_drift": 2,
+          "vacuity_ignored": 3
+        },
+        "kinds": [
+          "A",
+          "CX1",
+          "CX2"
+        ],
+        "meaningful": {
+          "denominator_swap": 0,
+          "inequality_flip": 3,
+          "numerator_swap": 3,
+          "off_by_one": 3,
+          "segmentation_drift": 2,
+          "vacuity_ignored": 3
+        }
+      },
+      "focal_budget": {
+        "detected": {
+          "denominator_swap": 0,
+          "inequality_flip": 1,
+          "numerator_swap": 1,
+          "off_by_one": 1,
+          "segmentation_drift": 1,
+          "vacuity_ignored": 0
+        },
+        "kinds": [
+          "B"
+        ],
+        "meaningful": {
+          "denominator_swap": 0,
+          "inequality_flip": 1,
+          "numerator_swap": 1,
+          "off_by_one": 1,
+          "segmentation_drift": 1,
+          "vacuity_ignored": 0
+        }
+      },
+      "rate_budget": {
+        "detected": {
+          "denominator_swap": 12,
+          "inequality_flip": 12,
+          "numerator_swap": 12,
+          "off_by_one": 12,
+          "segmentation_drift": 12,
+          "vacuity_ignored": 12
+        },
+        "kinds": [
+          "CR1",
+          "CR10",
+          "CR11",
+          "CR12",
+          "CR2",
+          "CR3",
+          "CR4",
+          "CR5",
+          "CR6",
+          "CR7",
+          "CR8",
+          "CR9"
+        ],
+        "meaningful": {
+          "denominator_swap": 12,
+          "inequality_flip": 12,
+          "numerator_swap": 12,
+          "off_by_one": 12,
+          "segmentation_drift": 12,
+          "vacuity_ignored": 12
+        }
+      }
+    },
+    "criterion": "every reading the applicability rule calls meaningful is exhibited by a discriminating case somewhere in the frozen suites or the constructed cases, at some declared severity; every reading it calls not meaningful discriminates nowhere, and its reason is recorded",
+    "defect_kinds": [
+      "numerator_swap",
+      "denominator_swap",
+      "inequality_flip",
+      "off_by_one",
+      "segmentation_drift",
+      "vacuity_ignored"
+    ],
+    "discrimination_cap": 40,
+    "families": {
+      "A": {
+        "contradictions": [],
+        "form": "exact_count",
+        "undetected": []
+      },
+      "B": {
+        "contradictions": [],
+        "form": "focal_budget",
+        "undetected": []
+      },
+      "CL7": {
+        "contradictions": [],
+        "form": "count_lower_bound",
+        "undetected": []
+      },
+      "CL8": {
+        "contradictions": [],
+        "form": "count_lower_bound",
+        "undetected": []
+      },
+      "CR1": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR10": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR11": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR12": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR2": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR3": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR4": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR5": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR6": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR7": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR8": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CR9": {
+        "contradictions": [],
+        "form": "rate_budget",
+        "undetected": []
+      },
+      "CX1": {
+        "contradictions": [],
+        "form": "exact_count",
+        "undetected": []
+      },
+      "CX2": {
+        "contradictions": [],
+        "form": "exact_count",
+        "undetected": []
+      },
+      "RF1": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF10": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF11": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF12": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF2": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF3": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF4": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF5": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF6": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF7": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF8": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      },
+      "RF9": {
+        "contradictions": [],
+        "form": "count_budget",
+        "undetected": []
+      }
+    },
+    "full_artifact": "reports/dci1v4r4/mutation_validation.json",
+    "kinds_with_a_contradiction": [],
+    "kinds_with_an_undetected_defect": [],
+    "passed": true,
+    "population_kinds": [
+      "A",
+      "B",
+      "CL7",
+      "CL8",
+      "CR1",
+      "CR10",
+      "CR11",
+      "CR12",
+      "CR2",
+      "CR3",
+      "CR4",
+      "CR5",
+      "CR6",
+      "CR7",
+      "CR8",
+      "CR9",
+      "CX1",
+      "CX2",
+      "RF1",
+      "RF10",
+      "RF11",
+      "RF12",
+      "RF2",
+      "RF3",
+      "RF4",
+      "RF5",
+      "RF6",
+      "RF7",
+      "RF8",
+      "RF9"
+    ],
+    "uncovered_kinds": [],
+    "what_this_does_not_measure": "practical consequence on real answers. A defect detected here may move no natural label, and one that moves many may be detected here by a single constructed case. The natural-response defect sensitivity is reported separately and is never read as semantic validation"
+  },
+  "outcome": "PASS",
+  "protocol_hash": "1e7a7b2dae58b429c8e558f9a1e0501631c240cfa749c3574fa7737a0dc111c1",
+  "provenance": {
+    "carry_over": {
+      "a_carry_over_argument": "§9.2 registers S0 as lower-case-then-segment and the carried counting function implements exactly that, so §7.0's correction to the family word list does not touch A's instrument",
+      "a_carry_over_survives": true,
+      "carried_focal_cases": {
+        "cases": 45,
+        "statistics_checked": 405
+      },
+      "carried_symbol_hashes": {
+        "target.py:TARGET_WORD": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a",
+        "target.py:s0_count": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f",
+        "target.py:s1_count": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53",
+        "target.py:s2_count": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409",
+        "target.py:s3_count": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc",
+        "target.py:s3_preprocess": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e",
+        "words.py:alpha_runs": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea"
+      },
+      "carried_target_cases": 48,
+      "composition_equivalence": {
+        "checked": 48,
+        "skipped_containing_u0130": 0
+      },
+      "not_carried": {
+        "family_statistics": "the eight v4 counting functions read v4r2's word list; v4r3's read the corrected one. The equivalence on U+0130-free text is asserted executably rather than claimed",
+        "words_lower": "§7.0 corrects the composition order: segment the answer, then lower-case each word. v4r2 lower-cased the whole response first, which splits a word on U+0130"
+      },
+      "v3_to_v4r2": {
+        "boundary": {
+          "cases": 40,
+          "specification_bytes": 2855,
+          "v3_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd",
+          "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers/boundary.py",
+          "v4_sha256": "5d1bb797165b47810c1286f4d85dc343e88a44be7cd6466de3ace1ed2ad667cd"
+        },
+        "construct_string": "however",
+        "entries": [
+          {
+            "function": "alpha_runs",
+            "identical": true,
+            "module": "words.py",
+            "role": "carry_over",
+            "v3_module": "words.py",
+            "v3_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea",
+            "v4_sha256": "20ec7170695411330562ba856aca3313411ecc503c310269c8039d6dc64181ea"
+          },
+          {
+            "function": "words_lower",
+            "identical": true,
+            "module": "words.py",
+            "role": "carry_over",
+            "v3_module": "words.py",
+            "v3_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043",
+            "v4_sha256": "ead3e1d34053d8fe85e951e20b76f2b0ac324896c9757648ca48c21e85345043"
+          },
+          {
+            "function": "TARGET_WORD",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a",
+            "v4_sha256": "77cc94b8a087c671a1540541946a2ea995e4e19a70e99f64a4f75e4391af1a6a"
+          },
+          {
+            "function": "s0_count",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f",
+            "v4_sha256": "066989e8eeb60865dd5184a28c81fed995af04d89b2a406cc294ab1fa8773b8f"
+          },
+          {
+            "function": "s1_count",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53",
+            "v4_sha256": "ecdcb1565f5c4bcf53a66fca409d58fbbabb98d932844afc7689ea556fb58f53"
+          },
+          {
+            "function": "s2_count",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409",
+            "v4_sha256": "265981cf4d32622761a549f214f6da4d7cd88ab478147eb1ffaa93f67c86d409"
+          },
+          {
+            "function": "s3_preprocess",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e",
+            "v4_sha256": "5b531dadbd2e777bdf862456b11160452ce7714e99840604d48b572d301bdf3e"
+          },
+          {
+            "function": "s3_count",
+            "identical": true,
+            "module": "target.py",
+            "role": "carry_over",
+            "v3_module": "target.py",
+            "v3_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc",
+            "v4_sha256": "d2e1b9b342daa828ab7c17d959e6cdb30493c54d0c3105bb88e603815cec4dbc"
+          },
+          {
+            "function": "focal_statistic",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b",
+            "v4_sha256": "a5ef7a31b7e0d7f9ca6d5e00e64ee29f785c5b85b69a786c356a7d129a33897b"
+          },
+          {
+            "function": "_rf1",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5",
+            "v4_sha256": "1613ea8ec05b54b350ebeb283ba4661757e6f23474181c324574e4a1da9f2cc5"
+          },
+          {
+            "function": "_rf2",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6",
+            "v4_sha256": "0a556e22f6be015f6e91b804d822b4f6aa3309ed984b1a7e6a11ba8a6a9922a6"
+          },
+          {
+            "function": "_rf3",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16",
+            "v4_sha256": "4a01857b5ab27202c5a8dfd949cdf82d7f4e9b07db9f01fb37753af31fea9e16"
+          },
+          {
+            "function": "_rf4",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c",
+            "v4_sha256": "a72654791f685b6423b40d7c04ef9c6a9cdcc1dbd7923f2a28414c9cdcd3f85c"
+          },
+          {
+            "function": "_rf5",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af",
+            "v4_sha256": "f70ee92300e8d46bb8a31e280c317890c505fdd3cb16e644f682ef1ef43a65af"
+          },
+          {
+            "function": "_rf6",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37",
+            "v4_sha256": "732b567b40d4830d59d317ebd47e890f7e26e195c309ed9709d9312f03c16d37"
+          },
+          {
+            "function": "_rf7",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7",
+            "v4_sha256": "16f8f7375e20f7c690f6edf1fb24599a8069ce214aefd51d7888a9ffb24b72b7"
+          },
+          {
+            "function": "_rf8",
+            "identical": true,
+            "module": "statistics.py",
+            "role": "compatibility",
+            "v3_module": "families.py",
+            "v3_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4",
+            "v4_sha256": "73229abfcad655d00a446c59d80d688dcbb54de386e5ac9769f92f7f2db5c9a4"
+          }
+        ],
+        "provenance": "the v3 files are read as data for this comparison and are never imported, executed or modified",
+        "record_hash": "07d63316a0c1e36e7c0b31aad70fad71d95b947e7c1e21f54d6d2775beddeb8b",
+        "rule": "DCI1_preregistration_v4r2.md §10.2",
+        "v3_source": "/home/cnm13ryan/git/dci/dci1/src/dci1v3/verifiers"
+      }
+    },
+    "carry_over_passed": true,
+    "direction_lexicon_exhaustive": true,
+    "no_gate1_record_exists_yet": true,
+    "per_model": {
+      "gemma-3n-e2b-it": {
+        "outcome": "PASS",
+        "predecessor": "REGIME_SCREEN",
+        "signature": "verified",
+        "study_id": "dci1v4r4"
+      },
+      "gemma-3n-e4b-it": {
+        "outcome": "PASS",
+        "predecessor": "REGIME_SCREEN",
+        "signature": "verified",
+        "study_id": "dci1v4r4"
+      },
+      "qwen3-4b": {
+        "outcome": "PASS",
+        "predecessor": "REGIME_SCREEN",
+        "signature": "verified",
+        "study_id": "dci1v4r4"
+      },
+      "qwen3-4b-instruct-2507": {
+        "outcome": "PASS",
+        "predecessor": "REGIME_SCREEN",
+        "signature": "verified",
+        "study_id": "dci1v4r4"
+      }
+    },
+    "predecessor_verified": true,
+    "producing_commit": "d11e41c7104775890cf7420062c02531ffa33966",
+    "reserved_sets_unspent": true,
+    "topic_audit": {
+      "by_stage": {
+        "v4r3-cap-selection-1024": {
+          "prescreen": 384
+        },
+        "v4r3-cap-selection-512": {
+          "prescreen": 384
+        },
+        "v4r3-cap-selection-768": {
+          "prescreen": 384
+        },
+        "v4r3-gate0-pilot": {
+          "prescreen": 9024
+        },
+        "v4r3-ladder-screen": {
+          "prescreen": 25824
+        }
+      },
+      "reserved": [
+        "composed",
+        "confirmatory",
+        "sequestered"
+      ],
+      "reserved_sets_unspent": true,
+      "resolved_stages": {
+        "v4r3-cap-selection-1024": "REGIME_SCREEN",
+        "v4r3-cap-selection-512": "REGIME_SCREEN",
+        "v4r3-cap-selection-768": "REGIME_SCREEN",
+        "v4r3-gate0-pilot": "GATE_0_APPARATUS",
+        "v4r3-ladder-screen": "REGIME_SCREEN"
+      },
+      "root": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v4r4",
+      "rows": 36000,
+      "topics_not_in_released_split": [],
+      "unresolved_stage_labels": []
+    }
+  },
+  "reimplementation": {
+    "agreement": {
+      "population": 1.0
+    },
+    "failures": [],
+    "per_instrument_min": 1.0,
+    "responses": 36164,
+    "segmenter_differential": {
+      "agreement": 1.0,
+      "case_folding_splitters": [
+        "0x130"
+      ],
+      "codepoints": 1114112,
+      "disagreements": []
+    },
+    "statistics_every_response": {
+      "agreement": 1.0,
+      "comparisons": 650952,
+      "failures": [],
+      "responses": 36164,
+      "statistics_per_response": 18
+    },
+    "verdict_sample": {
+      "n": 1200,
+      "of": 36164,
+      "rule": "the frozen boundary corpus in full, then the leading calibration responses in stored order"
+    },
+    "verdicts_checked": 628800
+  },
+  "revision": {
+    "classification": "DCI-1 PROTOCOL v4 REVISION 4 (ADOPTED, NOT FROZEN)",
+    "differences": [
+      {
+        "area": "Gate 1 measurement criterion",
+        "consequence": "reviewer agreement can move no v4r4 gate in either direction; §10.3/§10.4 artifacts are preserved as diagnostics",
+        "id": "R4-1",
+        "v4r3": "§18 stage 4: §10.2 for every verifier in the final instrument population, plus §10.3 (independent human validation) or §10.4 (autorater calibration approved by the researcher)",
+        "v4r4": "§18 stage 4: §10.2 for every verifier in the final instrument population, plus §10.7 A-E --- specification validity, implementation validity, independent reimplementation, adversarial/boundary/mutation validation, and provenance binding",
+        "why": "the study's constraints are mechanically decidable: the pipeline is model response -> deterministic verifier -> compliance outcome, and the verifier's output IS the outcome. There is no latent quantity an external rater estimates, so an agreement rate measures the rater. v4r3's development record shows what it measured: human and LLM reviewers introduced counting, arithmetic, segmentation, threshold and convention errors of exactly the kind the instrument exists to remove"
+      },
+      {
+        "area": "candidate population (§7.0-R4)",
+        "consequence": "no rate-lower-bound family remains; §12.6's C1-C6 read reference-role rows only and are unchanged by construction, and C7 keeps an eligible class rung within the §13.7 caliper on all four replications. The verifier hash, the wording hash and the instrument-population hash all move because of this",
+        "id": "R4-2",
+        "v4r3": "30 families, 584 declared instruments; the class arm is CL7, CL8, CP4, CP7, CX1, CX2",
+        "v4r4": "28 families, 524 declared instruments; the class arm is CL7, CL8, CX1, CX2",
+        "why": "CP4's and CP7's third and fourth model-facing wordings state the severity as a target and name no bound, while the registered predicate is a lower bound. The prose does not distinguish >= q from == q; the readings agree at q and disagree past it, where the verifier records a pass. That is a defect in the treatment, and it is not waivable"
+      },
+      {
+        "area": "prose-to-predicate invariant (§10.7 A')",
+        "consequence": "the rule is what removed CP4 and CP7; it also documents, with its derivation, the one construction two remaining wordings rely on",
+        "id": "R4-3",
+        "v4r3": "the wording review classified findings and recorded them; there was no registered rule that a wording must expose its comparison direction",
+        "v4r4": "every model-facing wording must name an operator from the registered direction lexicon, or match a construction registered as entailing one and admissible for that operator. A wording that gives only a target quantity fails specification validation",
+        "why": "an ambiguous instruction is a defect in the treatment, and §10.2 cannot see it: two implementations of the same predicate agree with each other whatever the prose says"
+      },
+      {
+        "area": "measurement basis",
+        "consequence": "SCOPE_SENTENCE attaches permanently; §10.5's second question is unanswered under v4r4 exactly as under v4r3",
+        "id": "R4-4",
+        "v4r3": "human_validated | autorater_calibration_approved | human_validation_unavailable",
+        "v4r4": "deterministic_measurement_validated, and Gate 1 refuses every reviewer-derived basis before it reads any evidence",
+        "why": "the basis names how validity was established. A record that said human_validated under this rule would be false"
+      },
+      {
+        "area": "stage records",
+        "consequence": "a v4r3 record produces an IntegrityError naming both study ids, rather than being silently absent",
+        "id": "R4-5",
+        "v4r3": "records carried stage, artifact type, outcome and content; study identity was implicit in the path and the signing key",
+        "v4r4": "every record carries study_id; write_stage_record stamps it and read_stage_record refuses a record from another study",
+        "why": "v4r4 runs beside a closed v4r3 whose signed QUALIFIED, GATE_0_APPARATUS and REGIME_SCREEN records exist on disk. None may satisfy a v4r4 predecessor check, and the guard belongs at the point of reading, where it still holds if a record is copied"
+      },
+      {
+        "area": "evidence reuse",
+        "consequence": "a v4r4 stage record that rests on v4r3 rows says so on its face rather than presenting them as newly generated",
+        "id": "R4-6",
+        "v4r3": "not applicable: v4r3 generated its own evidence",
+        "v4r4": "every artifact carried from v4r3 is classified in an explicit ledger (stages/reuse.py) as REUSED_UNCHANGED, RECOMPUTED_FROM_EXISTING_RAW_DATA, INVALIDATED_AND_REGENERATED, HISTORICAL_ONLY or NOT_APPLICABLE, with its source hash and the v4r4 criterion it satisfies",
+        "why": "reuse is only valid when every quantity that determines the evidence is unchanged. Naming the quantities and checking them is the difference between reuse and assumption"
+      },
+      {
+        "area": "N_CLASS_FAMILIES",
+        "consequence": "the value is 4 and is now true",
+        "id": "R4-7",
+        "v4r3": "the literal 4, while the pool held six class families",
+        "v4r4": "derived from CLASS_FAMILY_IDS",
+        "why": "the registration record it feeds described a pool it disagreed with"
+      }
+    ],
+    "documents": {
+      "dci1/DECISIONS_V4R4.md": "2ef65124f5154cd26caa3f2e15d051d3c1b4d8ce19be6fcbf8fd6ef924d11454",
+      "user-notes/DCI1_preregistration_v4r3.md": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+      "user-notes/DCI1_preregistration_v4r4.md": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+      "user-notes/DCI1_v4r3_to_v4r4_changelog.md": "37cd9d5c4b0214a878a4acf0e7b0050fcc2775648070d230ba1f0f14f8e930b7"
+    },
+    "inherited_unchanged": [
+      "the research question and the interference construct (§3)",
+      "the estimands: D, Delta_R, Delta_j, delta_difficulty, Xi, Lambda and the reciprocal matrix (§11)",
+      "the hypotheses and the claim ladder L1-L5, with L5 withheld (§3.2)",
+      "the four registered replications and their revisions (§5)",
+      "the difficulty coordinate: instructed compliance, with raw solo compliance reported beside it (§13.3)",
+      "the candidate-library grammar, its ladders, its frozen reserves and the expansion rule (§7.0, §12.6) --- minus the two families of R4-2",
+      "every registered threshold, caliper, band and precision precondition (§12, §13, §16, §11.8)",
+      "the topic bank, its five sets and the reservation rule (§6.2, §12.5)",
+      "the masking principle and the one-shot unmasking rule (§14, §17)",
+      "the confirmatory analysis plan, the bootstrap and the multiplicity correction (§15, §17)",
+      "the counting statistics, the segmentation convention and the compliance predicates (§7.3, §9.2) --- byte-identical",
+      "§10.2's evidence architecture in full: determinism, boundary suites, independent reimplementation, adversarial corpus, witnesses, carry-over"
+    ],
+    "preregistration": "user-notes/DCI1_preregistration_v4r4.md",
+    "revision": "v4r4",
+    "study_id": "dci1v4r4",
+    "supersedes": "dci1v4r3",
+    "supersedes_terminal_stage": "GATE_1_MEASUREMENT",
+    "supersedes_terminal_status": "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+    "supersession_is_not_a_retroactive_pass": "v4r3's Gate 1 record stands as written. v4r4 is a new revision evaluated from scratch, not a re-reading of v4r3's outcome"
+  },
+  "scope_sentence": "the outcomes are verifier-defined and support no claim about compliance as an independent human would judge it",
+  "scope_sentence_is_permanent": "the basis is not human_validated, so §10.5's scope sentence attaches to every analysis record, every claim at every rung and the final report, and no later stage removes it",
+  "sealed_final_check_set": null,
+  "specification_audit": {
+    "ambiguous_kinds": [],
+    "audited_kinds": [
+      "A",
+      "B",
+      "CL7",
+      "CL8",
+      "CR1",
+      "CR10",
+      "CR11",
+      "CR12",
+      "CR2",
+      "CR3",
+      "CR4",
+      "CR5",
+      "CR6",
+      "CR7",
+      "CR8",
+      "CR9",
+      "CX1",
+      "CX2",
+      "RF1",
+      "RF10",
+      "RF11",
+      "RF12",
+      "RF2",
+      "RF3",
+      "RF4",
+      "RF5",
+      "RF6",
+      "RF7",
+      "RF8",
+      "RF9"
+    ],
+    "boundary_corpus": 164,
+    "covered": true,
+    "criterion": "A.1 completeness, A.2 the recorded predicate reproduces the verifier at every declared severity on the whole boundary corpus and every constructed case, A.3 every meaningful alternative reading is separated by a constructed case",
+    "families": {
+      "A": {
+        "ambiguous": false,
+        "form": "exact_count",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "B": {
+        "ambiguous": false,
+        "form": "focal_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CL7": {
+        "ambiguous": false,
+        "form": "count_lower_bound",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CL8": {
+        "ambiguous": false,
+        "form": "count_lower_bound",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR1": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR10": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR11": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR12": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR2": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR3": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR4": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR5": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR6": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR7": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR8": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CR9": {
+        "ambiguous": false,
+        "form": "rate_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CX1": {
+        "ambiguous": false,
+        "form": "exact_count",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "CX2": {
+        "ambiguous": false,
+        "form": "exact_count",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF1": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF10": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF11": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF12": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF2": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF3": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF4": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF5": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF6": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF7": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF8": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      },
+      "RF9": {
+        "ambiguous": false,
+        "form": "count_budget",
+        "specification_complete": true,
+        "unresolved_readings": []
+      }
+    },
+    "forms": [
+      "count_budget",
+      "count_lower_bound",
+      "exact_count",
+      "focal_budget",
+      "rate_budget"
+    ],
+    "full_artifact": "reports/dci1v4r4/specification_audit.json",
+    "passed": true,
+    "population_kinds": [
+      "A",
+      "B",
+      "CL7",
+      "CL8",
+      "CR1",
+      "CR10",
+      "CR11",
+      "CR12",
+      "CR2",
+      "CR3",
+      "CR4",
+      "CR5",
+      "CR6",
+      "CR7",
+      "CR8",
+      "CR9",
+      "CX1",
+      "CX2",
+      "RF1",
+      "RF10",
+      "RF11",
+      "RF12",
+      "RF2",
+      "RF3",
+      "RF4",
+      "RF5",
+      "RF6",
+      "RF7",
+      "RF8",
+      "RF9"
+    ],
+    "uncovered_kinds": []
+  },
+  "specification_hash": "1704ddc3d126af0f1c9ec99d100fda0a20f0a5020818f8674a7055e0a748fd6c",
+  "stage": "GATE_1_MEASUREMENT",
+  "suites": {
+    "agreement": 1.0,
+    "authored_r3": 28,
+    "authored_v4r3": 43,
+    "carried_focal": 45,
+    "carried_target": 48,
+    "cases": 164,
+    "checked": 1280,
+    "failures": [],
+    "instruments": 524,
+    "labels": 112,
+    "suite_hash": "1794d55f6e86c6b1996c122131b554c3b45a2b7fa87861a6981f1a97ff2ef55b",
+    "verdicts": {
+      "fail": 26266,
+      "pass": 59670,
+      "vacuous_pass": 58445
+    }
+  },
+  "supplementary_diagnostics": {
+    "natural_response_defect_sensitivity": {
+      "hash": "e71daabfc19b572b6503f41cab333a8408806d276176f366c444eee290560b2d",
+      "path": "dci1/reports/dci1v4r3/defect_sensitivity.json",
+      "what_it_is": "what each registered defect would cost on real screen responses. A consequence measurement, never semantic validation"
+    },
+    "role": "SUPPLEMENTARY / DIAGNOSTIC. Preserved v4r3 evidence, reclassified rather than deleted. No number under this key is read by v4r4's Gate 1, in either direction",
+    "section_10_3": {
+      "hash": "420634f113942fb8eced2b4531507daa1c0fa9f0a9c0df0ae91bfc44319db53a",
+      "path": "dci1/reports/dci1v4r3/section_10_4_plan.json",
+      "what_it_is": "the independent-human pathway. No independent annotator was available and none could be obtained; author-performed labels are not independent validation"
+    },
+    "section_10_4": {
+      "hash": "352335aa651b4f833de93ef541870aff6fc515be9d1ade23fc5ad9b37a9af9cf",
+      "path": "dci1/reports/dci1v4r3/section_10_4_development.json",
+      "what_it_is": "the autorater pathway, first attempt"
+    },
+    "section_10_4R": {
+      "hash": "e9cd131a7fb763aa7c0c60daff9c2c590bd9421b8c0911d473cbe334362fc671",
+      "path": "dci1/reports/dci1v4r3/section_10_4R_outcome.json",
+      "what_it_is": "the repaired autorater task (operationalization audit)"
+    },
+    "section_10_4R2": {
+      "hash": "5ed7d5af16dcaebb9d850e9fb8d9a49a1c1585fb8b4d3c29bf750d547bc03d5b",
+      "path": "dci1/reports/dci1v4r3/section_10_4R2_outcome.json",
+      "what_it_is": "the microcase validator. FAILED its own criterion 5 and stopped by rule"
+    },
+    "source_study": "dci1v4r3",
+    "superseded_decision_under_the_former_rule": {
+      "hash": "17ef55cd441e0fb1a985b9f22d1efd3295407f669ec4c88b17c6210bffea2509",
+      "path": "dci1/reports/dci1v4r3/gate1_decision.json",
+      "what_it_is": "v4r3's Gate-1 decision under §18 stage 4 as it stood: MEASUREMENT_EVIDENCE_INSUFFICIENT. Preserved unmodified"
+    },
+    "validator_diagnosis": {
+      "hash": "7ff014a267dabbf27cdec28a0a14a5ce66cdaddaec8769fdab4e297225eec87a",
+      "path": "dci1/reports/dci1v4r3/validator_diagnosis.json",
+      "what_it_is": "why R2 failed: convention access, not competence"
+    }
+  },
+  "supplementary_diagnostics_are_not_a_criterion": "no number under this key was read by the rule. v4r3's §10.4-R2 FAILED under its own stopping rule and its §10.3 stands unavailable; a pass here is not a retroactive pass of either, and neither is described as having succeeded",
+  "verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+  "witnesses": {
+    "joint_satisfiability_failures": [],
+    "non_entailment_failures": [],
+    "pairs": 92148,
+    "passed": true
+  },
+  "wording_review": {
+    "blocking_classes_present": [],
+    "counts": {
+      "awkward_unambiguous": 45,
+      "genuinely_ambiguous": 0,
+      "requires_correction": 0,
+      "unambiguous_documented": 56,
+      "unambiguous_explicit": 2040
+    },
+    "criterion": "every model-facing wording exposes the comparison direction of the predicate that scores it, either by naming an operator from the registered direction lexicon or by a construction registered as entailing one and admissible for that operator. A wording that gives only a target quantity fails. An awkward-but-unambiguous wording does not block and is recorded rather than fixed: changing a live wording invalidates every measurement taken under it (§10.7 A')",
+    "direction_lexicon": {
+      "<=": [
+        "at most",
+        "no more than",
+        "not more than",
+        "more than",
+        "do not exceed",
+        "exceed",
+        "longer than",
+        "limit ",
+        "keep ",
+        "or fewer",
+        "or less"
+      ],
+      "==": [
+        "exactly"
+      ],
+      ">=": [
+        "at least",
+        "no fewer than",
+        "or more",
+        "minimum"
+      ]
+    },
+    "documented_constructions": {
+      "requirement_verb": {
+        "admissible_for": [
+          ">="
+        ],
+        "derivation": "a requirement verb is a necessity operator over the counted feature: an answer that needs q of something still needs q of it when it has more, so `necessary(S = q)` and `S >= q` select the same answers. The converse reading, `S == q`, would require the verb to forbid a further occurrence, and no requirement verb does: `needs at most` is a contradiction, not a redundancy",
+        "entails": ">="
+      }
+    },
+    "documented_constructions_used": [
+      "requirement_verb"
+    ],
+    "full_artifact": "reports/dci1v4r4/wording_review.json",
+    "genuinely_ambiguous": [],
+    "instruments": 524,
+    "passed": true,
+    "requires_correction": [],
+    "wordings_checked": 2096
+  },
+  "wordings": {
+    "caliper_feasible_severities": {
+      "CL7": 28,
+      "CL8": 28,
+      "CR1": 14,
+      "CR10": 26,
+      "CR11": 39,
+      "CR12": 14,
+      "CR2": 14,
+      "CR3": 14,
+      "CR4": 19,
+      "CR5": 14,
+      "CR6": 16,
+      "CR7": 19,
+      "CR8": 14,
+      "CR9": 20,
+      "CX1": 8,
+      "CX2": 10,
+      "RF1": 9,
+      "RF10": 31,
+      "RF11": 49,
+      "RF12": 12,
+      "RF2": 9,
+      "RF3": 9,
+      "RF4": 7,
+      "RF5": 13,
+      "RF6": 13,
+      "RF7": 25,
+      "RF8": 9,
+      "RF9": 27
+    },
+    "disagreements": [],
+    "instruments": 524,
+    "passed": true,
+    "responses": 20,
+    "verdicts_checked": 41920,
+    "wording_word_counts": {
+      "A:0": 6,
+      "A:1": 7,
+      "A:2": 7,
+      "A:3": 7,
+      "B:0": 10,
+      "B:1": 7,
+      "B:2": 8,
+      "B:3": 8,
+      "CL7:0": 7,
+      "CL7:1": 7,
+      "CL7:2": 7,
+      "CL7:3": 7,
+      "CL8:0": 7,
+      "CL8:1": 7,
+      "CL8:2": 7,
+      "CL8:3": 7,
+      "CR10:0": 7,
+      "CR10:1": 8,
+      "CR10:2": 7,
+      "CR10:3": 7,
+      "CR11:0": 7,
+      "CR11:1": 8,
+      "CR11:2": 7,
+      "CR11:3": 7,
+      "CR12:0": 7,
+      "CR12:1": 6,
+      "CR12:2": 6,
+      "CR12:3": 6,
+      "CR1:0": 7,
+      "CR1:1": 8,
+      "CR1:2": 7,
+      "CR1:3": 7,
+      "CR2:0": 7,
+      "CR2:1": 8,
+      "CR2:2": 7,
+      "CR2:3": 7,
+      "CR3:0": 7,
+      "CR3:1": 8,
+      "CR3:2": 7,
+      "CR3:3": 7,
+      "CR4:0": 7,
+      "CR4:1": 8,
+      "CR4:2": 7,
+      "CR4:3": 7,
+      "CR5:0": 7,
+      "CR5:1": 6,
+      "CR5:2": 6,
+      "CR5:3": 6,
+      "CR6:0": 6,
+      "CR6:1": 7,
+      "CR6:2": 6,
+      "CR6:3": 6,
+      "CR7:0": 7,
+      "CR7:1": 8,
+      "CR7:2": 7,
+      "CR7:3": 7,
+      "CR8:0": 7,
+      "CR8:1": 8,
+      "CR8:2": 7,
+      "CR8:3": 7,
+      "CR9:0": 7,
+      "CR9:1": 8,
+      "CR9:2": 7,
+      "CR9:3": 7,
+      "CX1:0": 6,
+      "CX1:1": 7,
+      "CX1:2": 7,
+      "CX1:3": 7,
+      "CX2:0": 6,
+      "CX2:1": 7,
+      "CX2:2": 7,
+      "CX2:3": 7,
+      "RF10:0": 7,
+      "RF10:1": 7,
+      "RF10:2": 8,
+      "RF10:3": 6,
+      "RF11:0": 6,
+      "RF11:1": 7,
+      "RF11:2": 8,
+      "RF11:3": 6,
+      "RF12:0": 7,
+      "RF12:1": 7,
+      "RF12:2": 6,
+      "RF12:3": 6,
+      "RF1:0": 7,
+      "RF1:1": 7,
+      "RF1:2": 8,
+      "RF1:3": 6,
+      "RF2:0": 7,
+      "RF2:1": 7,
+      "RF2:2": 8,
+      "RF2:3": 6,
+      "RF3:0": 7,
+      "RF3:1": 7,
+      "RF3:2": 8,
+      "RF3:3": 6,
+      "RF4:0": 7,
+      "RF4:1": 8,
+      "RF4:2": 8,
+      "RF4:3": 7,
+      "RF5:0": 5,
+      "RF5:1": 7,
+      "RF5:2": 6,
+      "RF5:3": 7,
+      "RF6:0": 7,
+      "RF6:1": 7,
+      "RF6:2": 7,
+      "RF6:3": 7,
+      "RF7:0": 7,
+      "RF7:1": 8,
+      "RF7:2": 8,
+      "RF7:3": 7,
+      "RF8:0": 7,
+      "RF8:1": 7,
+      "RF8:2": 8,
+      "RF8:3": 6,
+      "RF9:0": 7,
+      "RF9:1": 7,
+      "RF9:2": 8,
+      "RF9:3": 6
+    }
+  },
+  "wordings_hash": "b9b258c5cc8280402520184fdef00c9d3823c55ede72f434cb50344b548848f0"
+}
