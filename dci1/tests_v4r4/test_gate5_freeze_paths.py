@@ -208,3 +208,43 @@ def test_the_masking_declaration_does_not_claim_the_full_design_case():
             if isinstance(n, ast.Constant) and isinstance(n.value, str)}
     assert "structurally_unmaskable_outcomes" in keys
     assert masking.MASKED_PHASE_DECLARATIONS
+
+
+# ------------------------------------------ what a post-freeze defect may do
+
+def test_a_passed_freeze_cannot_be_superseded():
+    """§18.1's rule, enforced rather than stated.
+
+    `supersede_stage_records` calls `assert_no_post_freeze_mutation` on every
+    stage it is asked to retire, so `GATE_5_FREEZE` cannot be retired and
+    re-run under corrected code. A defect found *below* the freeze is
+    therefore answered by showing that nothing the freeze bound moved, which
+    is what `tools/v4r4_post_freeze_delta.py` does.
+    """
+    import ast
+
+    source = ast.parse((DCI1 / "src" / "dci1v4r4" / "engine"
+                        / "transitions.py").read_text())
+    func = next(n for n in ast.walk(source)
+                if isinstance(n, ast.FunctionDef)
+                and n.name == "supersede_stage_records")
+    called = {n.func.id for n in ast.walk(func)
+              if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)}
+    assert "assert_no_post_freeze_mutation" in called
+
+
+def test_the_post_freeze_delta_shows_no_frozen_value_moved():
+    """Skips where no replication is frozen in this checkout."""
+    path = DCI1 / "reports" / "dci1v4r4" / "post_freeze_delta.json"
+    if not path.exists():                                    # pragma: no cover
+        pytest.skip("no post-freeze delta in this tree")
+    import json
+
+    record = json.loads(path.read_text())
+    assert record["passed"] is True
+    assert record["frozen_replications"]
+    for model_key, entry in record["per_model"].items():
+        assert entry["unexpectedly_moved"] == [], model_key
+        assert set(entry["fields_that_moved"]) <= {"producing_commit"}, \
+            model_key
+        assert entry["fields_compared"] == len(F.FREEZE_FIELDS)
