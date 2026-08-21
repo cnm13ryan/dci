@@ -1,0 +1,190 @@
+{
+ "artifact_type": "v4r3-validator-diagnosis",
+ "bearing_on_gate_1": "none by itself. Gate 1's registered rule is \u00a710.2 plus \u00a710.3 or \u00a710.4, and neither pathway has completed successfully. This artifact changes what the \u00a710.4 failure means, not whether it occurred.",
+ "by_defect_kind": {
+  "denominator_swap": {
+   "deciding_items": 14,
+   "instruction_only": {
+    "agreed": 3,
+    "agreement": 0.23076923076923078,
+    "n": 14,
+    "parsed": 13
+   },
+   "lift": 0.4835164835164835,
+   "of_which_the_answer_has_no_words": 8,
+   "registered_arm": "instruction_only",
+   "with_conventions": {
+    "agreed": 10,
+    "agreement": 0.7142857142857143,
+    "n": 14,
+    "parsed": 14
+   },
+   "wordless_subset_in_its_registered_arm": {
+    "agreed": 0,
+    "agreement": 0.0,
+    "n": 8,
+    "parsed": 7
+   }
+  },
+  "inequality_flip": {
+   "deciding_items": 76,
+   "instruction_only": {
+    "agreed": 60,
+    "agreement": 0.8,
+    "n": 76,
+    "parsed": 75
+   },
+   "lift": 0.09333333333333327,
+   "of_which_the_answer_has_no_words": 14,
+   "registered_arm": "instruction_only",
+   "with_conventions": {
+    "agreed": 67,
+    "agreement": 0.8933333333333333,
+    "n": 76,
+    "parsed": 75
+   },
+   "wordless_subset_in_its_registered_arm": {
+    "agreed": 3,
+    "agreement": 0.23076923076923078,
+    "n": 14,
+    "parsed": 13
+   }
+  },
+  "numerator_swap": {
+   "deciding_items": 25,
+   "instruction_only": {
+    "agreed": 22,
+    "agreement": 0.88,
+    "n": 25,
+    "parsed": 25
+   },
+   "lift": 0.040000000000000036,
+   "of_which_the_answer_has_no_words": 1,
+   "registered_arm": "instruction_only",
+   "with_conventions": {
+    "agreed": 23,
+    "agreement": 0.92,
+    "n": 25,
+    "parsed": 25
+   },
+   "wordless_subset_in_its_registered_arm": {
+    "agreed": 1,
+    "agreement": 1.0,
+    "n": 1,
+    "parsed": 1
+   }
+  },
+  "off_by_one": {
+   "deciding_items": 19,
+   "instruction_only": {
+    "agreed": 19,
+    "agreement": 1.0,
+    "n": 19,
+    "parsed": 19
+   },
+   "lift": 0.0,
+   "of_which_the_answer_has_no_words": 0,
+   "registered_arm": "instruction_only",
+   "with_conventions": {
+    "agreed": 19,
+    "agreement": 1.0,
+    "n": 19,
+    "parsed": 19
+   },
+   "wordless_subset_in_its_registered_arm": null
+  },
+  "segmentation_drift": {
+   "deciding_items": 8,
+   "instruction_only": {
+    "agreed": 7,
+    "agreement": 0.875,
+    "n": 8,
+    "parsed": 8
+   },
+   "lift": 0.0,
+   "of_which_the_answer_has_no_words": 0,
+   "registered_arm": "with_conventions",
+   "with_conventions": {
+    "agreed": 7,
+    "agreement": 0.875,
+    "n": 8,
+    "parsed": 8
+   },
+   "wordless_subset_in_its_registered_arm": null
+  },
+  "vacuity_ignored": {
+   "deciding_items": 13,
+   "instruction_only": {
+    "agreed": 2,
+    "agreement": 0.16666666666666666,
+    "n": 13,
+    "parsed": 12
+   },
+   "lift": 0.5,
+   "of_which_the_answer_has_no_words": 13,
+   "registered_arm": "with_conventions",
+   "with_conventions": {
+    "agreed": 8,
+    "agreement": 0.6666666666666666,
+    "n": 13,
+    "parsed": 12
+   },
+   "wordless_subset_in_its_registered_arm": {
+    "agreed": 8,
+    "agreement": 0.6666666666666666,
+    "n": 13,
+    "parsed": 12
+   }
+  }
+ },
+ "canonical_verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074",
+ "case_set_hash": "141525355353ed04789af15f317f8a8f2750a353bd2108b2178bde6e7509b73b",
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "config_hash": "eb9da52301227ec7f481bc1028e1a6ba9f1e63a0b6dd74486ed4798289019bd4",
+ "contrast": {
+  "answer_has_no_words": {
+   "cases": 14,
+   "instruction_only": {
+    "agreed": 3,
+    "agreement": 0.23076923076923078,
+    "n": 14,
+    "parsed": 13
+   },
+   "lift": 0.4615384615384615,
+   "with_conventions": {
+    "agreed": 9,
+    "agreement": 0.6923076923076923,
+    "n": 14,
+    "parsed": 13
+   }
+  },
+  "answer_has_words": {
+   "cases": 70,
+   "instruction_only": {
+    "agreed": 65,
+    "agreement": 0.9285714285714286,
+    "n": 70,
+    "parsed": 70
+   },
+   "lift": 0.014285714285714235,
+   "with_conventions": {
+    "agreed": 66,
+    "agreement": 0.9428571428571428,
+    "n": 70,
+    "parsed": 70
+   }
+  }
+ },
+ "finding": {
+  "counting_is_not_the_binding_constraint": "agreement on cases whose answer contains words is 0.929 without the conventions, and the exact-count form --- the most arithmetic-heavy --- scored 1.000. R1's diagnosis that the task was arithmetic is not what this failure is.",
+  "the_arm_assignment_contradicts_the_amendment": "\u00a710.4-R2 names 'what a percentage means when there are no words' as the hazard and assigns segmentation_drift and vacuity_ignored to the conventions arm for it. It assigns denominator_swap to the instruction-only arm, although 8 of its 14 deciding items have wordless answers. That is the kind that failed criterion 5.",
+  "the_binding_constraint_is_a_stipulation": "agreement on wordless answers is 0.231 without the conventions and 0.692 with them. What a percentage means when there is nothing to take a percentage of is a registered stipulation, and a stipulation cannot be independently reproduced --- only communicated."
+ },
+ "generated_at": "2026-08-21T19:10:01+00:00",
+ "method": "R2 runs both arms over the same cases and the conventions arm states \u00a77.3's rules identically for every case, so it carries no per-case information. The arm difference is therefore convention-access with the judge, the configuration and the items all held fixed.",
+ "producing_commit": "ccc7f84b39977e3ee922471ba1a78555a08a4d63",
+ "question": "does \u00a710.4-R2's failure show that an external validator cannot check this verifier's semantics, or something narrower?",
+ "report_hash": "6607e5326fd6b430b3381e57e919256ff42ff7abfb125da5c042b91154c63c22",
+ "source_run": "reports/dci1v4r3/section_10_4R2_development_mc-medium_rep0.json",
+ "what_this_does_not_do": "it does not re-score R2 and no number here may be substituted for one there. R2 was judged under its registered arm assignment and FAILED; \u00a710.4-R2's stopping rule takes effect on that failure, and re-running with a corrected assignment after seeing the result is the iterative tuning the researcher's brief prohibits. Only the interpretation changes."
+}
