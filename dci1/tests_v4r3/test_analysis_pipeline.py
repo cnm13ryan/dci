@@ -281,3 +281,82 @@ def test_delta_difficulty_may_not_appear_in_a_masked_phase_result(analysis):
 def test_an_unregistered_mask_namespace_is_refused(table):
     with pytest.raises(ProtocolError):
         build_mask(table.observations, namespace="whatever", entropy=1)
+
+
+# ------------------------------------------------- §20-R4: the stratified mask
+
+def _observations_for(companions, blocks=384):
+    """Solo and composed observations for one outcome with `n` companions."""
+    from dci1v4r3.analysis.observations import Observation
+    out = []
+    for index in range(blocks):
+        block = f"b{index:03d}"
+        for companion in companions:
+            out.append(Observation(
+                block_id=block, cell_id=f"pair:B+{companion}", arm="composed",
+                outcome_slot="B", companion_slot=companion, position=1,
+                configuration="outcome_first", draws=8, compliance=0.5,
+                graded=0.5, vacuity=0.0, truncation=0.0,
+                non_vacuous_compliance=0.5, graded_threshold=0.5,
+                response_words=80.0, processing_failures=0))
+    return out
+
+
+def test_a_two_companion_group_meets_the_criterion_every_time():
+    """An independent uniform permutation moves a label with probability
+    1 - 1/k, which for k = 2 is the threshold exactly, so the check failed
+    about half the time on §8.6's reduced design."""
+    from dci1v4r3.analysis.masking import assert_mask_effective, build_mask
+
+    observations = _observations_for(("A", "CL"))
+    for entropy in range(25):
+        mask = build_mask(observations, namespace="pilot_mask",
+                          entropy=entropy)
+        report = assert_mask_effective(observations, mask)
+        assert report["min_differing_share"] >= 0.5, entropy
+
+
+def test_the_stratification_is_recorded_and_matches_the_group_size():
+    import math
+
+    from dci1v4r3.analysis.masking import build_mask
+    from dci1v4r3.protocol import constants as C
+
+    for companions in (("A", "CL"), ("A", "R1", "R2", "R3", "CL")):
+        observations = _observations_for(companions, blocks=384)
+        mask = build_mask(observations, namespace="pilot_mask", entropy=1)
+        entry = mask["stratification"]["B|outcome_first"]
+        target = max(C.MASK_MIN_DIFFERING_FRACTION,
+                     1.0 - 1.0 / len(companions))
+        assert entry["companions"] == len(companions)
+        assert entry["non_identity"] == math.ceil(384 * target)
+
+
+def test_a_moved_block_has_no_companion_left_in_place():
+    """A chosen block gets a permutation with no fixed point, so 'moved' is a
+    property of the block and not of one label in it."""
+    from dci1v4r3.analysis.masking import build_mask
+
+    companions = ("A", "R1", "R2", "R3", "CL")
+    observations = _observations_for(companions, blocks=64)
+    mask = build_mask(observations, namespace="pilot_mask", entropy=3)
+    by_block: dict[str, list[bool]] = {}
+    for obs in observations:
+        key = f"B|outcome_first|{obs.block_id}|{obs.companion_slot}"
+        by_block.setdefault(obs.block_id, []).append(
+            mask["mapping"][key] != obs.companion_slot)
+    for block, moved in by_block.items():
+        assert all(moved) or not any(moved), block
+
+
+def test_the_mask_is_still_unpredictable_from_registered_values_alone():
+    """Stratifying fixes how many blocks move, which is a constant anyone can
+    compute. It must not fix which."""
+    from dci1v4r3.analysis.masking import build_mask
+
+    observations = _observations_for(("A", "R1", "R2", "R3", "CL"), blocks=64)
+    first = build_mask(observations, namespace="pilot_mask", entropy=11)
+    second = build_mask(observations, namespace="pilot_mask", entropy=12)
+    assert first["mapping"] != second["mapping"]
+    assert (first["stratification"]["B|outcome_first"]["non_identity"]
+            == second["stratification"]["B|outcome_first"]["non_identity"])

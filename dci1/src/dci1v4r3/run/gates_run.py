@@ -253,20 +253,21 @@ def run_gate4(model_key: str, tree: ModelTree, *, gate2_record: Mapping,
     topics = split_topics()["composed"]
     pairs = design_cells_for(topics, slot_map, variant=variant,
                              prefix="headroom", block_prefix="headroom")
-    cells = [c for c, _ in pairs]
-    block_of = {c.cell_id: b for c, b in pairs}
+    cells = [c for c, _, _ in pairs]
+    block_of = {c.cell_id: b for c, b, _ in pairs}
+    design_cell_of = {c.cell_id: d for c, _, d in pairs}
     run_dir = tree.backend_runs(C.STAGE_GATE4) / "headroom"
     rows = generate_and_score(model_key, cells, stage=STAGE_HEADROOM,
                               cap=regime_record["selected_cap"],
                               draws=C.M_CAL, device=device, run_dir=run_dir,
                               absent=absent_instances(slot_map),
                               generate=generate)
-    rows = attach_slots(rows, block_of, slot_map)
+    rows = attach_slots(rows, block_of, slot_map, design_cell_of)
 
     # cell type -> slot -> compliance, over the stated constraints only.
     tally: dict[str, dict[str, list[int]]] = {}
     for row in rows:
-        cell_type = row["cell_id"].split(":", 2)[2]
+        cell_type = row["design_cell_id"]
         for score in row["scores"]:
             if not score["present"]:
                 continue

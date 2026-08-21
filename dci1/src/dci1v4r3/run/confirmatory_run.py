@@ -14,7 +14,8 @@ sees the union and refuses a row set that is not the plan's own.
 """
 from __future__ import annotations
 
-from typing import Any, Iterable, Mapping, Sequence
+import json
+from typing import Any, Mapping, Sequence
 
 from dci1v4.engine import fs
 from dci1v4.errors import IntegrityError
@@ -69,8 +70,9 @@ def run_batch(model_key: str, tree: ModelTree, *, freeze_record: Mapping,
     pairs = design_cells_for(blocks, slot_map, variant=variant,
                              prefix="conf", block_prefix="block",
                              block_index_of=index_of)
-    cells = [c for c, _ in pairs]
-    block_of = {c.cell_id: b for c, b in pairs}
+    cells = [c for c, _, _ in pairs]
+    block_of = {c.cell_id: b for c, b, _ in pairs}
+    design_cell_of = {c.cell_id: d for c, _, d in pairs}
     run_dir = (tree.backend_runs(C.STAGE_CONFIRMATORY)
                / f"blocks-{start:04d}-{stop:04d}")
     rows = generate_and_score(
@@ -78,7 +80,15 @@ def run_batch(model_key: str, tree: ModelTree, *, freeze_record: Mapping,
         cap=freeze_record["completion_cap"], draws=int(freeze_record["m_draws"]),
         device=device, run_dir=run_dir, absent=absent_instances(slot_map),
         generate=generate)
-    return attach_slots(rows, block_of, slot_map)
+    resolved = attach_slots(rows, block_of, slot_map, design_cell_of)
+    # The scored rows the backend seam writes carry neither the block nor the
+    # design cell type: both are attached here, above that seam. §14.2's
+    # completeness rule is stated over (block, cell type, draw), so a resume
+    # that re-read `scored.jsonl` would be reading rows the rule cannot see.
+    fs.atomic_write_text(
+        run_dir / "resolved.jsonl",
+        "".join(json.dumps(r, sort_keys=True) + "\n" for r in resolved))
+    return resolved
 
 
 def collect_rows(tree: ModelTree) -> list[dict[str, Any]]:
@@ -87,29 +97,30 @@ def collect_rows(tree: ModelTree) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     if not root.exists():
         return rows
-    for path in sorted(root.glob("blocks-*/scored.jsonl")):
+    for path in sorted(root.glob("blocks-*/resolved.jsonl")):
         rows.extend(fs.read_jsonl(path))
     return rows
 
 
-def _identity_rows(rows: Iterable[Mapping[str, Any]]
-                   ) -> list[dict[str, Any]]:
-    """The (block, cell, draw) view `missing_rows` compares against."""
-    out = []
-    for row in rows:
-        cell = row["cell_id"].split(":", 2)[2] if row["cell_id"].count(":") > 1 \
-            else row["cell_id"]
-        out.append({"block_id": row["block_id"], "cell_id": cell,
-                    "draw_index": row["draw_index"]})
-    return out
-
-
 def completeness(freeze_record: Mapping[str, Any],
                  rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """§14.2: complete means every registered identity, exactly once."""
-    plan_rows = [{"block_id": r["block_id"], "cell_id": r["cell_id"],
+    """§14.2: complete means every registered identity, exactly once.
+
+    The identity is (block, **design cell type**, draw). The execution cell id
+    carries the topic and the constraint labels and is a different string; a
+    completeness rule stated over it would be comparing the plan against
+    names the plan does not use.
+    """
+    plan_rows = [{"block_id": _block_key(r["block_id"]),
+                  "cell_id": r["design_cell_id"],
                   "draw_index": r["draw_index"]} for r in rows]
     return CF.missing_rows(freeze_record, plan_rows)
+
+
+def _block_key(block_id: str) -> str:
+    """The freeze names blocks by topic id; the runner prefixes them."""
+    return block_id[len("block-"):] if block_id.startswith("block-") \
+        else block_id
 
 
 def run_confirmatory(model_key: str, tree: ModelTree, *,

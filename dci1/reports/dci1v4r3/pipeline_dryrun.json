@@ -1,0 +1,546 @@
+{
+ "artifact_type": "v4r3-pipeline-dry-run",
+ "blocks": 384,
+ "classification": "DCI-1 PROTOCOL v4 REVISION 3 (ADOPTED, NOT FROZEN)",
+ "disclaimer": "SYNTHETIC. Every generation in this walk comes from dci1v4.generation.synthetic and is a function of the scientific seed alone. No rate, interval or claim here is evidence about any model. The walk exists to make the post-freeze code fail on a laptop rather than after a study's worth of generations.",
+ "m_draws": 8,
+ "passed": true,
+ "resamples": 200,
+ "results": [
+  {
+   "outcome": "PASS",
+   "stages": {
+    "CONFIRMATORY_GENERATION": {
+     "blocks": 384,
+     "complete": true,
+     "rows": 144384,
+     "seconds": 10.6
+    },
+    "MASKED_ANALYSIS": {
+     "artifact_hash": "8200768ee0d67e5c",
+     "blocks": 384,
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F8",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F8",
+       "F9"
+      ]
+     },
+     "maskable_groups": 10,
+     "seconds": 1.5,
+     "spectrum_fit_ran": false,
+     "structurally_unmaskable": [
+      [
+       "CL",
+       "outcome_first"
+      ],
+      [
+       "CL",
+       "outcome_second"
+      ],
+      [
+       "R1+",
+       "outcome_first"
+      ],
+      [
+       "R1+",
+       "outcome_second"
+      ],
+      [
+       "R1-",
+       "outcome_first"
+      ],
+      [
+       "R1-",
+       "outcome_second"
+      ],
+      [
+       "R2+",
+       "outcome_first"
+      ],
+      [
+       "R2+",
+       "outcome_second"
+      ],
+      [
+       "R2-",
+       "outcome_first"
+      ],
+      [
+       "R2-",
+       "outcome_second"
+      ],
+      [
+       "R3+",
+       "outcome_first"
+      ],
+      [
+       "R3+",
+       "outcome_second"
+      ],
+      [
+       "R3-",
+       "outcome_first"
+      ],
+      [
+       "R3-",
+       "outcome_second"
+      ]
+     ]
+    },
+    "UNMASKED_ANALYSIS": {
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F8",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F8",
+       "F9"
+      ]
+     },
+     "members": {
+      "outcome_first": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R1+)",
+       "D(B<-R1-)",
+       "D(B<-R2)",
+       "D(B<-R2+)",
+       "D(B<-R2-)",
+       "D(B<-R3)",
+       "D(B<-R3+)",
+       "D(B<-R3-)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "alpha_1",
+       "alpha_2",
+       "alpha_3",
+       "beta",
+       "delta_difficulty",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R1+)-vac(B solo)",
+       "vac(B|B+R1-)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R2+)-vac(B solo)",
+       "vac(B|B+R2-)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)",
+       "vac(B|B+R3+)-vac(B solo)",
+       "vac(B|B+R3-)-vac(B solo)"
+      ],
+      "outcome_second": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R1+)",
+       "D(B<-R1-)",
+       "D(B<-R2)",
+       "D(B<-R2+)",
+       "D(B<-R2-)",
+       "D(B<-R3)",
+       "D(B<-R3+)",
+       "D(B<-R3-)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "alpha_1",
+       "alpha_2",
+       "alpha_3",
+       "beta",
+       "delta_difficulty",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R1+)-vac(B solo)",
+       "vac(B|B+R1-)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R2+)-vac(B solo)",
+       "vac(B|B+R2-)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)",
+       "vac(B|B+R3+)-vac(B solo)",
+       "vac(B|B+R3-)-vac(B solo)"
+      ]
+     },
+     "precision_checked": {
+      "outcome_first": 37,
+      "outcome_second": 37
+     },
+     "seconds": 1.7,
+     "spectrum_present": {
+      "outcome_first": true,
+      "outcome_second": true
+     }
+    },
+    "UNMASKING": {
+     "bound_to": "8200768ee0d67e5c",
+     "mask_key_hash": "48471699221819c0"
+    }
+   },
+   "variant": "full"
+  },
+  {
+   "outcome": "PASS",
+   "stages": {
+    "CONFIRMATORY_GENERATION": {
+     "blocks": 384,
+     "complete": true,
+     "rows": 89088,
+     "seconds": 6.3
+    },
+    "MASKED_ANALYSIS": {
+     "artifact_hash": "4f12fa7ff678995d",
+     "blocks": 384,
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F9"
+      ]
+     },
+     "maskable_groups": 10,
+     "seconds": 0.9,
+     "spectrum_fit_ran": false,
+     "structurally_unmaskable": [
+      [
+       "CL",
+       "outcome_first"
+      ],
+      [
+       "CL",
+       "outcome_second"
+      ]
+     ]
+    },
+    "UNMASKED_ANALYSIS": {
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F2",
+       "F3",
+       "F4",
+       "F5",
+       "F6",
+       "F7",
+       "F9"
+      ]
+     },
+     "members": {
+      "outcome_first": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R2)",
+       "D(B<-R3)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)"
+      ],
+      "outcome_second": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R2)",
+       "D(B<-R3)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)"
+      ]
+     },
+     "precision_checked": {
+      "outcome_first": 30,
+      "outcome_second": 30
+     },
+     "seconds": 0.6,
+     "spectrum_present": {
+      "outcome_first": false,
+      "outcome_second": false
+     }
+    },
+    "UNMASKING": {
+     "bound_to": "4f12fa7ff678995d",
+     "mask_key_hash": "ad41c777e57d23e2"
+    }
+   },
+   "variant": "no_spectrum"
+  },
+  {
+   "outcome": "PASS",
+   "stages": {
+    "CONFIRMATORY_GENERATION": {
+     "blocks": 384,
+     "complete": true,
+     "rows": 24576,
+     "seconds": 1.8
+    },
+    "MASKED_ANALYSIS": {
+     "artifact_hash": "44f6e9f25d35424d",
+     "blocks": 384,
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F5",
+       "F6",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F5",
+       "F6",
+       "F9"
+      ]
+     },
+     "maskable_groups": 2,
+     "seconds": 0.2,
+     "spectrum_fit_ran": false,
+     "structurally_unmaskable": [
+      [
+       "A",
+       "outcome_first"
+      ],
+      [
+       "A",
+       "outcome_second"
+      ],
+      [
+       "CL",
+       "outcome_first"
+      ],
+      [
+       "CL",
+       "outcome_second"
+      ]
+     ]
+    },
+    "UNMASKED_ANALYSIS": {
+     "families": {
+      "outcome_first": [
+       "F1",
+       "F5",
+       "F6",
+       "F9"
+      ],
+      "outcome_second": [
+       "F1",
+       "F5",
+       "F6",
+       "F9"
+      ]
+     },
+     "members": {
+      "outcome_first": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)"
+      ],
+      "outcome_second": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "Delta_class",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "vac(B|B+A)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)"
+      ]
+     },
+     "precision_checked": {
+      "outcome_first": 9,
+      "outcome_second": 9
+     },
+     "seconds": 0.2,
+     "spectrum_present": {
+      "outcome_first": false,
+      "outcome_second": false
+     }
+    },
+    "UNMASKING": {
+     "bound_to": "44f6e9f25d35424d",
+     "mask_key_hash": "7c94d7f2ee0e68ef"
+    }
+   },
+   "variant": "reduced"
+  }
+ ],
+ "verifier_hash": "41edc84c8c1381c698aa3ea62265ef11ff1162993fa2f68d1245dbce10096074"
+}

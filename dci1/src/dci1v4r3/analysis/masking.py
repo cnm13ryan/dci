@@ -28,6 +28,7 @@ puts that on the execution path instead of in a comment.
 from __future__ import annotations
 
 import datetime as _dt
+import math
 import random
 from dataclasses import dataclass
 from pathlib import Path
@@ -105,6 +106,24 @@ def _now() -> str:
     return _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")
 
 
+def _non_identity_permutation(labels: Sequence[str],
+                              rng: random.Random) -> list[str]:
+    """A uniform permutation of ``labels`` that fixes none of them.
+
+    Rejection sampling, which is exact and terminates quickly: the share of
+    permutations of k elements with no fixed point is at least 1/3 for every
+    k >= 2, so the expected number of draws is under three.
+    """
+    ordered = list(labels)
+    if len(ordered) < 2:
+        return ordered
+    while True:
+        candidate = list(ordered)
+        rng.shuffle(candidate)
+        if all(a != b for a, b in zip(ordered, candidate)):
+            return candidate
+
+
 def build_mask(observations: Sequence[Observation], *, namespace: str,
                entropy: int | None = None) -> dict[str, Any]:
     """Permute the companion label within each (outcome, configuration, block).
@@ -113,6 +132,22 @@ def build_mask(observations: Sequence[Observation], *, namespace: str,
     analysis path can reconstruct the permutation from registered values.
     ``entropy`` exists for the §19 pilot and for tests, and a registered
     confirmatory mask never supplies it.
+
+    **Stratified, not independent, and the reason is arithmetic** (§20-R4). An
+    independent uniform permutation per block moves a given label with
+    probability ``1 - 1/k`` for a group of ``k`` companions. §8.6's reduced
+    design gives ``B`` exactly two companions, ``A`` and the class companion,
+    so ``1 - 1/k`` is **0.5** --- which is `MASK_MIN_DIFFERING_FRACTION`
+    exactly. The mask's own effectiveness check then fails about half the time
+    by chance, on a design that is otherwise perfectly maskable, and halts the
+    replication for a coin flip.
+
+    So the number of blocks that receive a non-identity permutation is fixed
+    at ``ceil(N * target)`` rather than left to the binomial, and *which*
+    blocks they are is drawn uniformly without replacement. Nothing about any
+    one block becomes predictable: an analyst learns how many blocks moved,
+    which is a registered constant, and not which. The criterion is unchanged
+    and is now met by construction instead of in expectation.
     """
     if namespace not in C.MASK_NAMESPACES:
         raise ProtocolError(f"{namespace!r} is not a registered mask "
@@ -125,16 +160,37 @@ def build_mask(observations: Sequence[Observation], *, namespace: str,
         if obs.companion_slot is None:
             continue
         key = (obs.outcome_slot, obs.configuration, obs.block_id)
-        groups.setdefault(key, []).append(obs.companion_slot)
+        entry = groups.setdefault(key, [])
+        if obs.companion_slot not in entry:
+            entry.append(obs.companion_slot)
+
+    # Blocks that share an (outcome, configuration) are one stratum: that is
+    # the unit `assert_mask_effective` measures over.
+    strata: dict[tuple[str, str], list[tuple[str, str, str]]] = {}
+    for key in sorted(groups):
+        strata.setdefault((key[0], key[1]), []).append(key)
 
     mapping: dict[str, str] = {}
-    for key, companions in sorted(groups.items()):
-        permuted = list(sorted(companions))
-        rng.shuffle(permuted)
-        for true_label, masked_label in zip(sorted(companions), permuted):
-            mapping[f"{key[0]}|{key[1]}|{key[2]}|{true_label}"] = masked_label
+    plan: dict[str, dict[str, Any]] = {}
+    for stratum, keys in sorted(strata.items()):
+        sizes = {len(groups[k]) for k in keys}
+        k = min(sizes)
+        target = (0.0 if k < 2
+                  else max(C.MASK_MIN_DIFFERING_FRACTION, 1.0 - 1.0 / k))
+        wanted = math.ceil(len(keys) * target)
+        moved = set(rng.sample(range(len(keys)), wanted)) if wanted else set()
+        plan["|".join(stratum)] = {"blocks": len(keys), "companions": k,
+                                   "target": target, "non_identity": wanted}
+        for index, key in enumerate(keys):
+            labels = sorted(groups[key])
+            permuted = (_non_identity_permutation(labels, rng)
+                        if index in moved else list(labels))
+            for true_label, masked_label in zip(labels, permuted):
+                mapping[f"{key[0]}|{key[1]}|{key[2]}|{true_label}"] = \
+                    masked_label
     return {"namespace": namespace, "seed": seed, "mapping": mapping,
             "groups": len(groups), "created": _now(),
+            "stratification": plan,
             "declarations": dict(MASKED_PHASE_DECLARATIONS),
             "mask_key_hash": sha_obj({"seed": seed, "mapping": mapping})}
 

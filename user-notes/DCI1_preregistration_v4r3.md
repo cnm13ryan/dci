@@ -2778,6 +2778,54 @@ both released.
 
 ---
 
+### 20-R4 The mask is stratified, not independent (amendment R4, 2026-08-21)
+
+**Status.** Prospective. Registered before any confirmatory generation exists,
+on any model. It changes how §20's permutation is *drawn* and changes nothing
+about what is permuted, what the effectiveness criterion is, or what the
+declarations say.
+
+**Why.** §20 requires the permuted label to differ from the true label in at
+least half the blocks of every maskable group, and
+`MASK_MIN_DIFFERING_FRACTION` is 0.5. Drawing an independent uniform
+permutation per block moves a given label with probability $1 - 1/k$ for a
+group of $k$ companions. §8.6's **reduced** design gives $B$ exactly two
+companions — $A$ and the class companion — so $1 - 1/k$ is 0.5, which is the
+threshold exactly. The check then fails about half the time by chance, on a
+design that is perfectly maskable, and halts the replication for a coin flip.
+
+This was found by walking the post-freeze chain on synthetic generations
+before running it on real ones
+(`dci1/reports/dci1v4r3/pipeline_dryrun.json`), at the realised value 0.466
+against the threshold 0.500 — about 1.3 standard errors low over 384 blocks,
+which is ordinary bad luck rather than a defect in the mask.
+
+**What changes.** Within each (outcome, configuration) stratum the *number* of
+blocks receiving a non-identity permutation is fixed at
+$\lceil N \cdot \max(0.5,\ 1 - 1/k) \rceil$ rather than left to the binomial,
+and *which* blocks they are is drawn uniformly without replacement. A block
+that is chosen receives a permutation drawn uniformly from those with no fixed
+point.
+
+**Why this does not weaken the mask.** An analyst learns how many blocks moved,
+which is a registered constant computable from $N$ and $k$ without seeing the
+mask at all. They learn nothing about *which*: the subset is uniform over all
+subsets of that size, and the permutation within a chosen block is uniform over
+the derangements. The criterion is unchanged at 0.5 and is now met by
+construction rather than in expectation, so a replication can no longer be
+halted by sampling noise in a check about sampling noise.
+
+**What it does not fix.** A group with one companion is still unmaskable and is
+still reported as `structurally_unmaskable`: a permutation of one element is
+the identity, and no draw changes that. A group with two companions is masked
+only in the aggregate sense — an analyst knows exactly half its blocks are
+swapped, and the protection is that they cannot tell which. That is weaker than
+the eleven-companion group of the full design, and it is stated here rather
+than left to be inferred from $k$.
+
+---
+
+
 ## 21. Analysis order
 
 1. Load confirmatory rows; reject any row outside the frozen plan by prompt
