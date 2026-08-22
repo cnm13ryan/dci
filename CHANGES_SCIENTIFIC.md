@@ -13,7 +13,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and sixteen inherited defects moved what a v4r4 record says
+## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and seventeen inherited defects moved what a v4r4 record says
 
 **Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2
 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Gates 2, 3,
@@ -213,6 +213,18 @@ frozen n\* and m\* — §12.3 selects them only from severities inside the
 registered bands — rather than defaulted. **Affected results:** none had been
 computed; the final analysis of both surviving replications rests on these
 emitters, and 17 tests state each licensing rule against §3.2's table.
+
+**17. §17.4's reporting half travelled with no statement.** The clause has two
+halves. The licensing half — a claim is licensed only when the primary and the
+vacuity-forced recomputation license the same claim — is item 16 above. The
+reporting half says the primary estimands "are reported with a fixed block
+stating that composition changed how often the outcome constraint could bind,
+and the F5 vacuity-forced recomputation is reported beside them as
+partial-identification bounds." `f6_gate` computed `binds` into the result
+table and nothing attached it to a statement. A binding gate now puts
+`C.VACUITY_QUALIFICATION_SENTENCE` and the F5 bounds on every emitted L1 and L2
+statement, and puts nothing there when it does not bind. **Affected results:**
+none had been computed.
 
 **Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
 is superseded or was never written. v4r3 and earlier are untouched: the

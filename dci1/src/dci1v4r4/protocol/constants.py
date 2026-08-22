@@ -371,6 +371,14 @@ CLASS_SENTENCE = (
     "compliance and is not an excess relative to companions of A's own "
     "structural class")
 
+#: §17.4, attached verbatim to every primary statement in a configuration
+#: where family F6's vacuity gate binds. The F5 vacuity-forced recomputation
+#: is reported beside it as partial-identification bounds.
+VACUITY_QUALIFICATION_SENTENCE = (
+    "composition changed how often the outcome constraint could bind, so the "
+    "primary estimand is reported with the F5 vacuity-forced recomputation "
+    "beside it as partial-identification bounds")
+
 # ------------------------------------------- §10.3, §10.4: DIAGNOSTIC ONLY
 #: Retained so that v4r3's preserved reviewer artifacts stay readable and so
 #: that a v4r4 diagnostic run reproduces their arithmetic. **No v4r4 gate
