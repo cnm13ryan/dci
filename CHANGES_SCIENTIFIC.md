@@ -13,7 +13,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and fifteen inherited defects moved what a v4r4 record says
+## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and sixteen inherited defects moved what a v4r4 record says
 
 **Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2
 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Gates 2, 3,
@@ -191,6 +191,28 @@ duplicated identities, or rows the plan does not contain. `confirmatory_run`'s
 docstring said it sees the union; nothing called it. The wider completeness
 check refuses the same two conditions, so the effect was there and the guard
 that names §21 was not; it is on the path now. **Affected results:** none.
+
+**16. Three of the five registered claim levels had no emitter, and the two
+surviving replications need exactly those.** §17.5 says "one guarded emitter
+exists per claim level"; `analysis/claims.py` held `emit_l3` alone, and
+`_claims` short-circuited to a single **non-emitted** L3 statement as soon as
+Δ_R or Ξ were unidentified. So a replication running §8.6's reduced design
+produced no claim of any kind — while §28's status table says of
+`EXCESS_NOT_IDENTIFIED` that "L1 and L2 proceed under the reduced design;
+L3a–L3c are withheld", and while the reduced design's identified estimand set is
+exactly L1's two members and L2's one. `emit_l1`, `emit_l2` and `emit_l4` now
+exist and implement §3.2's table verbatim: L1 needs the F1 simultaneous interval
+for the named D(c←g) to have a lower bound above 0 and the outcome constraint to
+have solo headroom; L2 needs Λ's interval to exclude 0 **and** L1 for both
+directions; L4 needs the same classification in every registered configuration.
+§17.3's `INSUFFICIENT_PRECISION` attaches as a status without suppressing a
+resolved direction, §17.4's vacuity-forced agreement is required before either
+level is licensed, and §11.4's `POSITION_CONFOUNDED` travels with every L1
+statement in the shifted configuration. `solo_headroom` is derived from the
+frozen n\* and m\* — §12.3 selects them only from severities inside the
+registered bands — rather than defaulted. **Affected results:** none had been
+computed; the final analysis of both surviving replications rests on these
+emitters, and 17 tests state each licensing rule against §3.2's table.
 
 **Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
 is superseded or was never written. v4r3 and earlier are untouched: the

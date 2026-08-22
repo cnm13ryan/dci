@@ -14,7 +14,7 @@ v4r2's, not easier.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
 
@@ -22,7 +22,8 @@ from dci1v4r4.protocol import constants as C
 
 __all__ = ["Interval", "ClaimError", "position_status", "delta_r_reading",
            "delta_difficulty_reading", "xi_gate", "joint_reading",
-           "emit_l3", "assert_no_l5_emitter", "LEVEL_MEMBERS",
+           "emit_l1", "emit_l2", "emit_l3", "emit_l4",
+           "assert_no_l5_emitter", "LEVEL_MEMBERS",
            "assert_statement_complete"]
 
 
@@ -296,6 +297,185 @@ def emit_l3(*, configuration: str, outcome_position: int,
             "reason": reading.get("reading", "no L3 sub-level is licensed"),
         })
     return statements
+
+
+def _direction_statuses(interval: Interval, outcome_position: int,
+                        extra: Sequence[str] = ()) -> list[str]:
+    """§17.3 and §11.4, as statuses on a direction statement.
+
+    A direction claim survives a half-width above the precondition --- §17.3
+    withholds equivalence and threshold statements and "still reports a
+    resolved direction if one exists" --- so `INSUFFICIENT_PRECISION` attaches
+    here rather than suppressing the statement.
+    """
+    statuses = list(extra) + position_status(outcome_position)
+    if not interval.meets_precondition():
+        statuses.append("INSUFFICIENT_PRECISION")
+    return sorted(set(statuses))
+
+
+def _vacuity_agrees(primary: Interval, forced: Interval | None,
+                    licensed: bool) -> bool:
+    """§17.4: the primary and the vacuity-forced recomputation must agree.
+
+    "A claim is licensed only when the primary and the vacuity-forced
+    recomputation license the same claim; otherwise the axis is reported
+    unresolved with both bounds." Agreement is on the *claim*, not on the
+    numbers, so it is the licensing predicate that is compared.
+    """
+    if forced is None:
+        return True
+    return licensed == forced.excludes_zero_from_below()
+
+
+def emit_l1(*, configuration: str, outcome_position: int,
+            measurement_basis: str, member: str, interval: Interval,
+            solo_headroom: bool,
+            identification_statuses: Sequence[str] = (),
+            vacuity_forced: Interval | None = None) -> dict[str, Any]:
+    """§3.2 L1: compositional delivery loss exists, for one named D(c <- g).
+
+    §17.5 registers one guarded emitter per level and this one did not exist.
+    `_claims` short-circuited to a single non-emitted L3 statement whenever
+    Delta_R or Xi were unidentified, so a replication running §8.6's reduced
+    design --- whose entire identified estimand set is L1 and L2 --- produced
+    no claim at all, while §28's status table says in terms that "L1 and L2
+    proceed under the reduced design". Both v4r4 replications that survive
+    Gate 4 run that design.
+    """
+    if member not in LEVEL_MEMBERS["L1"]:
+        raise ClaimError(f"{member} is not registered to L1; L1 names "
+                         f"{LEVEL_MEMBERS['L1']}")
+    licensed = interval.excludes_zero_from_below()
+    statuses = _direction_statuses(interval, outcome_position,
+                                   identification_statuses)
+    statement = {
+        "claim_level": "L1", "configuration": configuration,
+        "family": C.PRIMARY_FAMILY, "member": member,
+        "interval_type": "simultaneous",
+        "identification_status": statuses,
+        "measurement_basis": measurement_basis,
+        "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+        "outcome_position": outcome_position,
+        "interval": [interval.lower, interval.upper],
+        "estimate": interval.estimate,
+        "half_width": interval.half_width,
+        "class_sentence": C.CLASS_SENTENCE,
+    }
+    if not solo_headroom:
+        return {**statement, "emitted": False,
+                "reason": "§12: the outcome constraint has no solo headroom, "
+                          "so the L1 identification gate does not hold"}
+    if not _vacuity_agrees(interval, vacuity_forced, licensed):
+        return {**statement, "emitted": False,
+                "reason": "§17.4: the primary and the vacuity-forced "
+                          "recomputation do not license the same claim; the "
+                          "axis is unresolved with both bounds",
+                "vacuity_forced_interval": [vacuity_forced.lower,
+                                            vacuity_forced.upper]}
+    if not licensed:
+        return {**statement, "emitted": False,
+                "reason": f"the F1 simultaneous interval for {member} does "
+                          f"not have a lower bound above 0"}
+    assert_statement_complete(statement)
+    return {**statement, "emitted": True,
+            "statement": f"composing the two instructions costs {member} a "
+                         "delivery loss whose simultaneous interval lies "
+                         "wholly above zero"}
+
+
+def emit_l2(*, configuration: str, outcome_position: int,
+            measurement_basis: str, interval: Interval,
+            l1_licensed: Mapping[str, bool],
+            identification_statuses: Sequence[str] = (),
+            vacuity_forced: Interval | None = None) -> dict[str, Any]:
+    """§3.2 L2: the loss is directionally asymmetric.
+
+    Gate: L1's conditions for **both** `D(B<-A)` and `D(A<-B)`. Licensing: the
+    F1 simultaneous interval for Lambda excludes 0 --- from either side, since
+    asymmetry has a direction and the level is about its existence.
+    """
+    if interval.member not in LEVEL_MEMBERS["L2"]:
+        raise ClaimError(f"{interval.member} is not registered to L2; L2 "
+                         f"names {LEVEL_MEMBERS['L2']}")
+    excludes_zero = interval.lower > 0.0 or interval.upper < 0.0
+    statuses = _direction_statuses(interval, outcome_position,
+                                   identification_statuses)
+    statement = {
+        "claim_level": "L2", "configuration": configuration,
+        "family": C.PRIMARY_FAMILY, "member": interval.member,
+        "interval_type": "simultaneous",
+        "identification_status": statuses,
+        "measurement_basis": measurement_basis,
+        "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+        "outcome_position": outcome_position,
+        "interval": [interval.lower, interval.upper],
+        "estimate": interval.estimate,
+        "half_width": interval.half_width,
+        "class_sentence": C.CLASS_SENTENCE,
+        "l1_licensed": dict(l1_licensed),
+    }
+    missing = sorted(m for m in LEVEL_MEMBERS["L1"] if not l1_licensed.get(m))
+    if missing:
+        return {**statement, "emitted": False,
+                "reason": f"L2's gate is L1 for both directions and {missing} "
+                          "did not reach L1"}
+    if not _vacuity_agrees(interval, vacuity_forced, excludes_zero):
+        return {**statement, "emitted": False,
+                "reason": "§17.4: the primary and the vacuity-forced "
+                          "recomputation do not license the same claim; the "
+                          "axis is unresolved with both bounds",
+                "vacuity_forced_interval": [vacuity_forced.lower,
+                                            vacuity_forced.upper]}
+    if not excludes_zero:
+        return {**statement, "emitted": False,
+                "reason": "the F1 simultaneous interval for Lambda does not "
+                          "exclude 0"}
+    assert_statement_complete(statement)
+    direction = ("B <- A" if interval.estimate > 0 else "A <- B")
+    return {**statement, "emitted": True,
+            "statement": "the delivery loss is directionally asymmetric; the "
+                         f"larger loss is on {direction}"}
+
+
+def emit_l4(*, per_configuration: Mapping[str, Sequence[str]],
+            measurement_basis: str,
+            identification_statuses: Sequence[str] = ()) -> dict[str, Any]:
+    """§3.2 L4: the same L1/L2/L3 classification in every configuration.
+
+    Stated across configurations, so it is emitted once per replication rather
+    than once per configuration. `per_configuration` maps each registered
+    configuration to the levels it reached.
+    """
+    configurations = sorted(per_configuration)
+    reached = {k: sorted(set(v)) for k, v in per_configuration.items()}
+    statement = {
+        "claim_level": "L4", "configuration": "|".join(configurations),
+        "family": C.PRIMARY_FAMILY, "interval_type": "simultaneous",
+        "identification_status": sorted(set(identification_statuses)),
+        "measurement_basis": measurement_basis,
+        "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+        "outcome_position": 0,
+        "levels_by_configuration": reached,
+        "class_sentence": C.CLASS_SENTENCE,
+    }
+    if set(configurations) != set(C.CONFIGURATIONS):
+        return {**statement, "emitted": False,
+                "reason": "not every registered configuration was analysed, "
+                          "so replication across them cannot be read"}
+    values = list(reached.values())
+    if not values[0]:
+        return {**statement, "emitted": False,
+                "reason": "no configuration reached a level, so there is no "
+                          "classification to replicate"}
+    if any(v != values[0] for v in values[1:]):
+        return {**statement, "emitted": False,
+                "reason": "the configurations did not reach the same "
+                          "classification, so §3.2's L4 gate does not hold"}
+    assert_statement_complete(statement)
+    return {**statement, "emitted": True,
+            "statement": "the same classification holds in every registered "
+                         f"configuration: {values[0]}"}
 
 
 def assert_no_l5_emitter(namespace: Mapping[str, Any]) -> None:
