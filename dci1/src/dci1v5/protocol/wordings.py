@@ -43,7 +43,7 @@ __all__ = ["N_WORDINGS", "WORDING_LENGTH_TOLERANCE", "FAMILY_RULE_STATEMENTS",
            "wording", "wording_word_count", "length_caliper_ok",
            "caliper_table", "assert_severity_invariance",
            "assert_rule_vocabulary", "assert_caliper_feasible",
-           "assert_rf_wordings_are_carried"]
+           "assert_rf_wordings_are_carried", "wording_source_hash"]
 
 N_WORDINGS = 4
 WORDING_LENGTH_TOLERANCE = 0.20
@@ -474,3 +474,26 @@ def assert_rf_wordings_are_carried() -> None:
     for family, templates in _V4_FAMILY_TEMPLATES.items():
         if _TEMPLATES[family] != templates:
             raise ProtocolError(f"{family}'s wordings are not v4r2's")
+
+
+def wording_source_hash() -> str:
+    """The canonical v5 **wording** hash (§18 stage 5).
+
+    §18 freezes the verifier hash *and the wording hash* at Gate 1, and v4r4
+    froze only the first. The two are separate bindings because they can move
+    independently: a verifier change alters what a response is scored as, and
+    a wording change alters what the model was asked, and either one on its
+    own makes an earlier row incomparable. This covers the module that renders
+    every constraint line and the rule statements the manifest quotes, so a
+    silently edited template is a hash change at the next entry point rather
+    than a difference nobody can see in a row.
+    """
+    from pathlib import Path
+
+    from dci1v4.protocol.hashing import sha_file, sha_obj
+
+    here = Path(__file__).resolve().parent
+    return sha_obj({"dci1v5/protocol/wordings.py": sha_file(here /
+                                                            "wordings.py"),
+                    "family_rule_statements": sha_obj(
+                        dict(FAMILY_RULE_STATEMENTS))})

@@ -240,6 +240,22 @@ def load_calibration_table(rows: Iterable[Mapping[str, Any]], *,
                 f"unknown calibration fields {unknown}; the selection input "
                 "schema is closed so that a new column cannot smuggle in a "
                 "composed quantity under an unlisted name")
+        row = dict(row)
+        source = row.get("kappa_under_b_source")
+        if isinstance(source, Mapping):
+            # A record read back from disk carries the source as an object,
+            # not as a dataclass: §13.11 requires the *source* to travel with
+            # the value, so it has to survive the round trip through a signed
+            # JSON record. Rebuilding it here means the validation below runs
+            # on a reloaded table exactly as it does on a fresh one.
+            row["kappa_under_b_source"] = KappaUnderBSource(
+                load=int(source["load"]),
+                present=tuple(source["present"]),
+                candidate=source["candidate"],
+                model_key=source["model_key"],
+                m_star=int(source["m_star"]), split=source["split"],
+                n_topics=int(source["n_topics"]),
+                n_draws=int(source["n_draws"]))
         record = CalibrationRow(**row)
         if record.split != split:
             raise ProtocolError(

@@ -44,11 +44,9 @@ from __future__ import annotations
 
 from typing import Any, Mapping, Sequence
 
-from dci1v4.errors import ProtocolError
 
 from dci1v5.analysis.intervals import interval_intersects, wilson
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import decisions
 from dci1v5.stages.calibration_table import tie_key
 from dci1v5.stages.selection import restrictiveness_key
 from dci1v5.verifiers.constraints import (
@@ -265,7 +263,8 @@ def select_target(curve: Mapping[int, float]) -> dict[str, Any]:
 
 
 def assert_construct_floor(m_star: int, *,
-                           chance_compliance_at_m_star: float) -> dict[str, Any]:
+                           chance_compliance_at_m_star: float,
+                           **kwargs: Any) -> dict[str, Any]:
     """§34 D17: whether m* carries a construct-strength floor.
 
     §12.3 selects the focal severity whose *compliance* is nearest 0.80, over
@@ -275,30 +274,19 @@ def assert_construct_floor(m_star: int, *,
     instruction in ordinary English, and the focal band is defined on
     compliance rather than on construct strength.
 
-    Both branches exist and neither is reachable while D17 is open. The
-    standing proposal registers no floor and instead reports the realised m*,
-    B's chance compliance at m*, and B's whole curve, with §29 stating that a
-    high m* makes B a weak instrument on that model. **No threshold is
-    invented here**: the ``floor`` branch requires the researcher to supply
-    one when they close D17, and this call refuses rather than guessing.
+    The rule lives in ``stages/construct_strength.py`` --- the named
+    quantities, their provenance, the neighbour report and the floor
+    specification --- and this is the name §34 D17 registers as the blocked
+    call, kept so that the decision's ``blocks_calls`` entry and the function
+    a caller reaches for are the same string. **No threshold is invented in
+    either place**: the ``floor`` branch requires the researcher to supply
+    one when they close D17, and refuses rather than guessing.
     """
-    def _no_floor() -> dict[str, Any]:
-        return {"floor_registered": False, "m_star": m_star,
-                "chance_compliance_at_m_star": chance_compliance_at_m_star,
-                "reported": "the realised m*, B's chance compliance at m*, "
-                            "and B's whole curve",
-                "limitation": "a high m* makes B a weak instrument on this "
-                              "model (§29)"}
+    from dci1v5.stages import construct_strength
 
-    def _floor() -> dict[str, Any]:
-        raise ProtocolError(
-            "§34 D17 was closed at 'floor' and no threshold accompanies it. "
-            "A construct floor is a registered value with a derivation; this "
-            "implementation does not invent one, and the closure must supply "
-            "the threshold and the quantity it applies to")
-
-    return decisions.choice("D17", {"no_floor": _no_floor, "floor": _floor},
-                            where="stages.regime.assert_construct_floor")()
+    return construct_strength.assert_construct_floor(
+        m_star, chance_compliance_at_m_star=chance_compliance_at_m_star,
+        **kwargs)
 
 
 def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
@@ -334,7 +322,7 @@ def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
     near_groups = {r["feature_group"] for r in near}
 
     straddling_groups = set()
-    for family, entries in by_family.items():
+    for entries in by_family.values():
         fam_below = [e for e in entries
                      if tie_key(e["iota"]) < tie_key(iota_a)]
         fam_above = [e for e in entries

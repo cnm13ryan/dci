@@ -100,9 +100,15 @@ SPEC_FIELDS = (
 #: Which statistics read a word list, and which read raw characters. A
 #: composition-order drift can only move a word-grain numerator directly --- it
 #: moves a character-grain one only through a rate denominator.
+#: Word-grain numerators. The eight marker numerators are here rather than
+#: listed one by one: §7.6 registers them as one function with eight targets,
+#: so a ninth marker would have to change the registered vocabulary before it
+#: could reach this tuple.
+from dci1v5.verifiers.constraints import MARKER_WORDS as _MARKER_WORDS  # noqa: E402
+
 WORD_GRAIN = ("b_initial", "ing_final", "one_letter", "doubled_letter",
               "capital_word", "letter_a", "y_final", "t_initial", "s_final",
-              "vowel_initial", "marker_thus")
+              "vowel_initial") + tuple(sorted(_MARKER_WORDS))
 CHARACTER_GRAIN = ("comma", "semicolon", "capital_char", "sentence")
 
 #: Numerators that read the **end** of a word. The audit finds these to be
@@ -179,7 +185,8 @@ _NUMERATOR_PROSE = {
                      "here (§7.3-R3)",
     "sentence": "sentence units: maximal runs of . ! or ?, plus one for an "
                 "unterminated tail",
-    "marker_thus": "occurrences of the word thus",
+    **{statistic: f"occurrences of the word {word}"
+       for statistic, word in _MARKER_WORDS.items()},
     "semicolon": "semicolon characters in the raw answer",
     "s0": "occurrences of the target word however as a word",
     "focal": "the letter count of the longest word",

@@ -34,10 +34,45 @@ from dci1v4.errors import ProtocolError
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 
-__all__ = ["CheckResult", "CHECKLIST", "UNRESOLVED_REDTEAM_FINDINGS",
-           "run_prefreeze_audit", "PREFREEZE_AUDIT_FAILURE"]
+__all__ = ["CheckResult", "CHECKLIST", "DEFERRED_CHECKS",
+           "DECLARED_REFUSALS_KEY", "SELECTION_TOKENS",
+           "UNRESOLVED_REDTEAM_FINDINGS", "run_prefreeze_audit",
+           "PREFREEZE_AUDIT_FAILURE"]
 
 PREFREEZE_AUDIT_FAILURE = "PREFREEZE_AUDIT_FAILURE"
+
+#: §33 check 8 reads a Gate-4 record and refuses a **field** that names an
+#: outcome-driven selection. A record must also be able to *declare* that no
+#: such path exists, and the two are opposite facts that read the same to a
+#: name scan: the first Gate-4 runner carried
+#: ``no_substitution_after_failure`` --- the refusal, in prose --- and check 8
+#: flagged it as a substitution path.
+#:
+#: Every declaration of absence therefore lives under this one key, which the
+#: scan skips and which the check **requires**. Deleting the declaration now
+#: fails check 8; before, deleting it passed. A substitution field cannot hide
+#: by starting with ``no_``, because the exemption is one fixed key and not a
+#: name pattern.
+DECLARED_REFUSALS_KEY = "declared_refusals"
+
+#: The name fragments a Gate-4 field may not contain (§13.14's five refusals).
+SELECTION_TOKENS: tuple[str, ...] = ("replace", "substitut", "reselect",
+                                     "widen", "promote_backup")
+
+#: The one §33 check that reads an artifact produced **after** the freeze:
+#: 14 reads the final-report table, and no table exists at stage 12. It is
+#: recorded as unestablished there and is **mandatory at ``FINAL_REPORT``**,
+#: where what it reads exists --- see ``run/final_report_checks.py``.
+#:
+#: 15 is not deferred. It scans the v5 artifact texts, which exist from stage
+#: 1; an earlier revision passed ``artifact_texts=None`` and got UNRESOLVED
+#: every time, so ``prefreeze_run`` now supplies them and the check is
+#: discharged at stage 12, as §33 states. It runs again at ``FINAL_REPORT``
+#: over the report text that did not exist before.
+#:
+#: An UNRESOLVED verdict on any other check still blocks: "we did not
+#: establish this" is not "this is true".
+DEFERRED_CHECKS: tuple[int, ...] = (14,)
 
 #: The standing unresolved findings of
 #: ``dci1/reports/dci1v5/v5_prereg_redteam.md``, with the §34 decision each is
@@ -182,18 +217,35 @@ def _check_7() -> tuple[str, Any]:
 
 
 def _check_8(gate4: Mapping[str, Any] | None) -> tuple[str, Any]:
-    """Gate 4 introduces no outcome-based selection."""
+    """Gate 4 introduces no outcome-based selection.
+
+    Two things, not one. The record may carry no field that *names* a
+    selection --- scanned over every key except the declarations block --- and
+    it must carry §13.14's refusal in that block. A record that simply omitted
+    the declaration used to pass; it now fails, because "no field says
+    substitute" and "the record states that no substitution path exists" are
+    different facts and the audit is here for the second.
+    """
     if gate4 is None:
         return "UNRESOLVED", "no Gate-4 record supplied"
     if gate4.get("outcome") not in ("PASS", "COMPOSED_HEADROOM_FAILURE"):
         return "FAIL", ("Gate 4 may PASS or TERMINATE and nothing else; this "
                         f"record says {gate4.get('outcome')!r}")
-    forbidden = [k for k in gate4
-                 if any(t in k.lower() for t in ("replace", "substitut",
-                                                 "reselect", "widen"))]
+    forbidden = [k for k in gate4 if k != DECLARED_REFUSALS_KEY
+                 and any(t in k.lower() for t in SELECTION_TOKENS)]
     if forbidden:
         return "FAIL", {"gate4_carries": forbidden}
-    return "PASS", {"outcome": gate4.get("outcome")}
+    declared = gate4.get(DECLARED_REFUSALS_KEY)
+    if not isinstance(declared, Mapping):
+        return "FAIL", (f"the Gate-4 record carries no {DECLARED_REFUSALS_KEY}"
+                        " block, so §13.14's refusal is undeclared")
+    missing = [t for t in ("substitut", "select")
+               if not any(t in k.lower() for k in declared)]
+    if missing:
+        return "FAIL", {"declared": sorted(declared),
+                        "undeclared_refusals": missing}
+    return "PASS", {"outcome": gate4.get("outcome"),
+                    "declared_refusals": sorted(declared)}
 
 
 def _check_9() -> tuple[str, Any]:
@@ -344,28 +396,57 @@ def run_prefreeze_audit(*, repo_root: str = ".",
         results.append(CheckResult(number, check, where, verdict, detail))
 
     open_decisions = list(decisions.open_decisions())
-    unresolved_findings = sorted(UNRESOLVED_REDTEAM_FINDINGS)
-    failures = [r.as_dict() for r in results if r.verdict != "PASS"]
-    can_freeze = not failures and not open_decisions and not unresolved_findings
+    # A finding blocks while **its registered mitigation is still open**, and
+    # its mitigation is a §34 decision. R5 has none: §13.8 closes its second
+    # half and its first half is not closeable by a rule at all, so it is a
+    # permanent limitation of the design and is recorded as one. Treating the
+    # mere presence of a registered finding as a blocker made `can_freeze`
+    # unsatisfiable however the study went, which is a gate that cannot pass
+    # rather than a gate that is hard to pass.
+    blocking_findings = sorted(
+        k for k, v in UNRESOLVED_REDTEAM_FINDINGS.items()
+        if v["decision"] and not decisions.is_closed(v["decision"]))
+    permanent_limitations = sorted(
+        k for k, v in UNRESOLVED_REDTEAM_FINDINGS.items()
+        if not v["decision"])
+    failed = [r.as_dict() for r in results if r.verdict == "FAIL"]
+    unresolved = [r.as_dict() for r in results if r.verdict == "UNRESOLVED"]
+    # §33 checks 14 and 15 read the final report and the v5 artifact texts.
+    # Neither exists before the freeze, so requiring them here makes Gate 5
+    # unreachable for a reason §18 does not state. They are DEFERRED: recorded
+    # as unestablished now, and mandatory at FINAL_REPORT, where the artifacts
+    # they read exist.
+    deferred = [r for r in unresolved if r["n"] in DEFERRED_CHECKS]
+    blocking_unresolved = [r for r in unresolved
+                           if r["n"] not in DEFERRED_CHECKS]
+    can_freeze = (not failed and not blocking_unresolved
+                  and not open_decisions and not blocking_findings)
 
     return {
         "stage": C.STAGE_PREFREEZE_AUDIT,
         "checklist": [r.as_dict() for r in results],
         "n_checks": len(results),
         "n_passed": sum(1 for r in results if r.passed),
-        "failures": failures,
+        "failures": failed + blocking_unresolved,
+        "failed": failed,
+        "unresolved": unresolved,
+        "deferred_to_final_report": deferred,
+        "deferred_checks": list(DEFERRED_CHECKS),
         "open_decisions": open_decisions,
         "n_open_decisions": len(open_decisions),
         "unresolved_redteam_findings": {
-            k: UNRESOLVED_REDTEAM_FINDINGS[k] for k in unresolved_findings},
-        "n_unresolved_redteam_findings": len(unresolved_findings),
+            k: UNRESOLVED_REDTEAM_FINDINGS[k] for k in blocking_findings},
+        "n_unresolved_redteam_findings": len(blocking_findings),
+        "permanent_limitations": {
+            k: UNRESOLVED_REDTEAM_FINDINGS[k] for k in permanent_limitations},
         "can_freeze": can_freeze,
         "outcome": "PASS" if can_freeze else PREFREEZE_AUDIT_FAILURE,
         "reason": None if can_freeze else (
-            f"{len(failures)} checklist item(s) not passed, "
+            f"{len(failed)} checklist item(s) failed, "
+            f"{len(blocking_unresolved)} unestablished, "
             f"{len(open_decisions)} §34 decision(s) open, "
-            f"{len(unresolved_findings)} red-team finding(s) unresolved. "
-            "Gate 5 is unreachable: §18 makes this audit its registered "
-            "predecessor and a predecessor that did not record PASS stops "
-            "the successor"),
+            f"{len(blocking_findings)} red-team finding(s) whose mitigation "
+            "is still an open decision. Gate 5 is unreachable: §18 makes this "
+            "audit its registered predecessor and a predecessor that did not "
+            "record PASS stops the successor"),
     }

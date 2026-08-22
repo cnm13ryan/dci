@@ -108,6 +108,9 @@ def build_observations(rows: Iterable[dict[str, Any]], *, m_draws: int,
                 f"(§14.2)")
         first = members[0]
         slots = [s["slot"] for s in first["scores"]]
+        #: The constituents the prompt actually stated, in prompt order.
+        stated_slots = [s["slot"] for s in first["scores"]
+                        if s.get("present", True)]
         for slot in slots:
             scored = []
             for row in members:
@@ -118,22 +121,23 @@ def build_observations(rows: Iterable[dict[str, Any]], *, m_draws: int,
                              "passed": realised == entry["severity"]}
                 scored.append((entry, row))
             present = bool(scored[0][0].get("present", True))
-            if not present:
+            if not present or first["arm"] == "unconstrained":
                 # §9.1: a verdict on a constraint the prompt did not state.
                 # On the B-solo cell this is exactly kappa(c|B), which §13.6
-                # reads and which costs no generation. It has no companion and
-                # no position in §11.4's sense, because it was never stated.
-                position, companion, configuration = 1, None, None
-            elif first["arm"] == "unconstrained":
-                # §25's chance cell states nothing and is scored against every
-                # registered instrument, so its scores carry as many entries
-                # as there are instruments. None of them is a companion of
-                # another and none has a position in the §11.4 sense: the
-                # cell has no stated constraint to be first or second.
+                # reads and which costs no generation; on §25's load-0 cell it
+                # is the chance rate. Neither has a companion or a position in
+                # §11.4's sense, because neither was stated.
                 position, companion, configuration = 1, None, None
             else:
                 position = scored[0][0]["position"]
-                companion = next((s for s in slots if s != slot), None)
+                # The companion is the cell's **other stated constituent**,
+                # not the next label in the score list. Since §9.1 scores
+                # every registered instance on every row, that list holds one
+                # entry per instrument in the replication --- so reading the
+                # companion off it named an unstated instrument as the
+                # companion and collapsed distinct composed cells onto one
+                # index key.
+                companion = next((s for s in stated_slots if s != slot), None)
                 configuration = (None if companion is None
                                  else _POSITION_CONFIG[position])
             observations.append(Observation(
@@ -183,6 +187,18 @@ class ObservationTable:
         #: cell they were read from. This is where kappa(c|B) lives.
         self._absent: dict[tuple[str, str, str], Observation] = {}
         for obs in self.observations:
+            # §25's chance cell is tested FIRST, because by §9.1 its verdicts
+            # are absent verdicts too --- the load-0 prompt states nothing ---
+            # and testing `present` first sent every one of them into the
+            # kappa index, where they collided and where `chance()` could
+            # never find them. The two are different quantities read off
+            # different cells and the arm is what separates them.
+            if obs.arm == "unconstrained":
+                key = (obs.block_id, obs.outcome_slot)
+                if key in self._chance:
+                    raise IntegrityError(f"duplicate chance observation {key}")
+                self._chance[key] = obs
+                continue
             if not obs.present:
                 akey = (obs.block_id, obs.cell_id, obs.outcome_slot)
                 if akey in self._absent:
@@ -190,19 +206,12 @@ class ObservationTable:
                         f"duplicate chance-under-treatment observation {akey}")
                 self._absent[akey] = obs
                 continue
-            # §25's chance verdicts come from the load-0 cell, which is scored
-            # against every registered instrument while stating none of them.
-            # They are observations of the same slots as the solo cells and
-            # would collide with them in the same index -- and the collision
-            # is not a naming accident: p(c | nothing stated) and
-            # p(c | c stated) are different quantities and the difficulty
-            # coordinate is built from both.
-            if obs.arm == "unconstrained":
-                key = (obs.block_id, obs.outcome_slot)
-                if key in self._chance:
-                    raise IntegrityError(f"duplicate chance observation {key}")
-                self._chance[key] = obs
-                continue
+            # §25's chance verdicts are observations of the same slots as
+            # the solo cells and would collide with them in the same index ---
+            # and the collision is not a naming accident: p(c | nothing
+            # stated) and p(c | c stated) are different quantities and the
+            # difficulty coordinate is built from both. They are indexed
+            # above, before the presence test.
             if obs.companion_slot is None:
                 key = (obs.block_id, obs.outcome_slot)
                 if key in self._solo:

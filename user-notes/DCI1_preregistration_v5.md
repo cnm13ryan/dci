@@ -865,10 +865,16 @@ evidence covers the numerators and only the predicate form is new.
 
 **Tier 3 — twenty-six broad families**, carried from v4r4 unchanged with their
 ladders and reserves: `RF1`–`RF12`, `CR1`–`CR12`, `CL7`, `CL8`. Admissible to
-the spectrum and to the broad-class slot only. `CL7` and `CL8` are the two
-count lower bounds and are the only families admissible to the broad-class slot
-that are not budget class; §13.10 admits **budget class only**, so in practice
-they are spectrum-eligible and broad-class-ineligible, and the check is executable.
+the broad-class slot only. A spectrum rung is drawn from an admitted **core**
+reference's own family (§7.4, §13.12) and the fit of §11.8 is registered over
+three families of three severities, so no Tier-3 family can supply one; an
+earlier draft of this paragraph also admitted Tier 3 to the spectrum, which
+those three sections make unreachable, and the sentence is corrected rather
+than the rule. `CL7` and `CL8` are the two count lower bounds and are the only
+Tier-3 families that are not budget class; §13.10 admits **budget class only**
+to the broad-class slot, so they are admissible to no design slot at all. They
+remain in the instrument population §10.2 measures and in the candidate
+library §7 declares, and the check is executable.
 
 **Sizes.** 37 families; **326 round-0 severities**; **632 severities in the
 declared range**. With $A$'s eight and $B$'s ten, Gate 1's instrument

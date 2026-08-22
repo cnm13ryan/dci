@@ -46,7 +46,8 @@ __all__ = ["Interval", "ClaimError", "position_status", "delta_r_reading",
            "joint_reading", "tier_reading", "emit_l1", "emit_l2", "emit_l3",
            "emit_l4a", "emit_l4b", "assert_no_l5_emitter", "LEVEL_MEMBERS",
            "REQUIRED_FIELDS", "assert_statement_complete",
-           "l3c_requires_near_form"]
+           "l3c_requires_near_form", "l3c_disposition",
+           "precondition_key"]
 
 
 class ClaimError(ProtocolError):
@@ -110,12 +111,24 @@ class Interval:
         return self.half_width <= precondition
 
 
-def _precondition_key(member: str) -> str:
+def precondition_key(member: str) -> str:
+    """§16.2's row for a member. The table is by contrast *shape*.
+
+    ``D`` covers every delivery loss, ``Delta_j`` every per-reference excess,
+    and the two F11 rows §16.2 does not name are quoted at ``Ord_A``'s
+    precondition, which is what §16.2's note says is done.
+    """
     if member.startswith("Ord_"):
         return member if member in C.PRECISION_PRECONDITIONS else "Ord_A"
+    if member.startswith("Delta_") and member[6:].isdigit():
+        return "Delta_j"
     if member.startswith("D(") and "<-" in member:
         return "Delta_j" if member.startswith("D(B<-R") else "D"
     return member
+
+
+#: Kept as the private name the rest of this module already used.
+_precondition_key = precondition_key
 
 
 def position_status(outcome_position: int) -> list[str]:
@@ -280,6 +293,57 @@ def l3c_requires_near_form() -> bool:
     return decisions.choice("D18", {"not_a_precondition": False,
                                     "precondition": True},
                             where="analysis.claims.l3c_requires_near_form")
+
+
+def l3c_disposition(*, near_form_available: bool,
+                    delta_near: "Interval | None") -> dict[str, Any]:
+    """§34 D18 applied to one L3c that is otherwise licensed.
+
+    The two prospectively allowed modes, both constructed and neither
+    reachable while D18 is open:
+
+    * **precondition** --- the near-form arm is required before a strong L3c
+      may be emitted. L3c is withheld and reported as withheld, with
+      ``NEAR_FORM_ARM_NOT_AVAILABLE`` and the reason; nothing else about the
+      analysis changes and Delta_R is still reported with its interval.
+    * **not_a_precondition** --- L3c is emitted and **must** carry §17.6's
+      narrower same-form-only interpretation verbatim, because the core pool
+      is chosen to resemble A and an unqualified L3c would read as a general
+      refutation.
+
+    **The precondition is the arm's existence, not its verdict.** It is met
+    when the arm ran and produced a Delta_near interval. Requiring a
+    *classified* Delta_near instead would let the precision of a secondary
+    quantity decide whether a primary claim may be made, which is a different
+    rule and one no section registers.
+
+    The decision is consulted **only where the two modes differ** --- an L3c
+    with the arm present is emitted identically either way --- so a
+    replication that retained the near-form arm is not blocked by a decision
+    that would change nothing for it.
+    """
+    if near_form_available and delta_near is not None:
+        return {"emit": True, "mode": "arm_present",
+                "consulted_d18": False,
+                "statuses": [],
+                "qualifier": None}
+    required = l3c_requires_near_form()
+    if required:
+        return {"emit": False, "mode": "precondition",
+                "consulted_d18": True,
+                "statuses": ["NEAR_FORM_ARM_NOT_AVAILABLE"],
+                "reason": (
+                    "§34 D18 was closed at 'precondition': L3c is the source "
+                    "memo's refutation verdict and v5's core reference pool "
+                    "is same-form with A, so an L3c with no near-form "
+                    "comparison cannot distinguish 'A is not special' from "
+                    "'the excess is a property of the exact-count form'. "
+                    "Delta_R and its interval are still reported"),
+                "qualifier": None}
+    return {"emit": True, "mode": "not_a_precondition",
+            "consulted_d18": True,
+            "statuses": ["NEAR_FORM_ARM_NOT_AVAILABLE"],
+            "qualifier": C.L3C_WITHOUT_NEAR_FORM_SENTENCE}
 
 
 def joint_reading(*, delta_r: Interval, delta_difficulty: Interval,
@@ -571,9 +635,27 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
                             "axis is unresolved with both bounds")}]
 
     statements: list[dict[str, Any]] = []
+    withheld: list[dict[str, Any]] = []
     for level in reading["levels"]:
         if level in ("L3a", "L3b", "L3c") and not references_identified:
             continue
+        if level == "L3c":
+            disposition = l3c_disposition(
+                near_form_available=near_form_available,
+                delta_near=delta_near)
+            if not disposition["emit"]:
+                withheld.append({
+                    **_base_fields(level="L3c", configuration=configuration,
+                                   cell=cell,
+                                   outcome_position=outcome_position,
+                                   measurement_basis=measurement_basis,
+                                   statuses=sorted(set(
+                                       statuses + disposition["statuses"]))),
+                    "emitted": False, "markers": reading["markers"],
+                    "tier_reading": reading.get("tier_reading"),
+                    "d18_mode": disposition["mode"],
+                    "reason": disposition["reason"]})
+                continue
         statement = {
             **_base_fields(level=level, configuration=configuration,
                            cell=cell, outcome_position=outcome_position,
@@ -585,9 +667,11 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
             "markers": reading["markers"],
             "tier_reading": reading.get("tier_reading"),
         }
-        if level == "L3c" and not near_form_available:
-            statement["near_form_absent_sentence"] = \
-                C.L3C_WITHOUT_NEAR_FORM_SENTENCE
+        if level == "L3c":
+            statement["d18_mode"] = disposition["mode"]
+            if disposition["qualifier"]:
+                statement["near_form_absent_sentence"] = \
+                    disposition["qualifier"]
         if level in ("L3a", "L3b") and heterogeneity_disagrees:
             statement["heterogeneity_qualifier"] = (
                 "the three Delta_j intervals do not agree on one side of the "
@@ -598,6 +682,7 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
             statement["companion_difficulty_qualifier"] = gaps
         assert_statement_complete(statement)
         statements.append(statement)
+    statements.extend(withheld)
     if not statements:
         statements.append({
             **_base_fields(level="L3", configuration=configuration, cell=cell,
