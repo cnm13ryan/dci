@@ -19,20 +19,61 @@ list of researcher actions between here and a v5 that may measure anything.
 $ python3 -c "from dci1v5.stages.audit_prefreeze import run_prefreeze_audit
               a = run_prefreeze_audit(repo_root='..')
               print(a['outcome'], a['n_passed'], '/', a['n_checks'])"
-PREFREEZE_AUDIT_FAILURE 12 / 15
+PREFREEZE_AUDIT_FAILURE 13 / 15
 ```
 
-Twelve of §33's fifteen checks pass statically. Three return `UNRESOLVED`
-because they need a run that has not happened: check 8 needs a Gate-4 record,
-check 14 a final-report table, check 15 the v5 artifact texts. **An
-`UNRESOLVED` check is not a pass** — "we did not establish this" and "this is
-false" are different facts and neither licenses a freeze. Beside them the
-audit reports nineteen open decisions and five unresolved red-team findings,
-and `can_freeze` is `False`.
+Thirteen of §33's fifteen checks pass statically. Two return `UNRESOLVED`
+because they need a run that has not happened: check 8 needs a Gate-4 record
+and check 14 a final-report table. **An `UNRESOLVED` check is not a pass** —
+"we did not establish this" and "this is false" are different facts and
+neither licenses a freeze. Beside them the audit reports nineteen open
+decisions and four red-team findings whose registered mitigation is still an
+open decision, and `can_freeze` is `False`.
 
 Gate 5 is unreachable and needs no special rule: §18 makes `PREFREEZE_AUDIT`
 its registered predecessor, and `assert_predecessor_passed` refuses a
 successor whose predecessor did not record `PASS`.
+
+**Only check 14 is deferred.** It reads the final-report table and no table
+exists at stage 12, so it is recorded `DEFERRED_TO_FINAL_REPORT` and is
+mandatory at stage 18, where `run/final_report_checks.py` discharges it beside
+twelve traceability checks that only become checkable once the table exists.
+Check 15 is **not** deferred: it scans the v5 artifact texts, which exist from
+stage 1, and `reuse_ledger.collect_artifact_texts` supplies them.
+
+### The lifecycle has been walked end to end, with no model
+
+`dci1/tests_v5/synthetic_lifecycle.py` executes all eighteen stages in the
+`synthetic` namespace — study id `dci1v5-synthetic`, its own signing key, a
+temporary evidence root, an isolated repository at a clean synthetic producing
+commit — and writes eighteen signed records:
+
+| | Stage | What the walk establishes |
+|---|---|---|
+| 1 | `PROTOCOL_REGISTERED` | the manifest binds; refuses to sign while a decision is open |
+| 2 | `QUALIFIED` | all seventeen §19 checks, **none waived** |
+| 3 | `GATE_0_APPARATUS` | §19's pilot: every cell and draw once, a mutated byte refused, a durable restore, a mask cycle |
+| 4 | `REGIME_SCREEN` | cap selection, the §12.2 screen, retention, coverage, §12.7 priority |
+| 5 | `GATE_1_MEASUREMENT` | the verifier **and** wording hashes frozen; §10.2's five provenance facts |
+| 6 | `GATE_2_FOCAL_CALIBRATION` | n\*, m\*, both calibration splits, κ(R\|B) off the B-solo rows |
+| 7 | `GATE_2_5_CANDIDATE_QUALIFICATION` | the qualified pool with every candidate's earliest failing component |
+| 8 | `GATE_3A_REFERENCE_CALIBRATION` | the two split tables and §13.7's stability verdicts |
+| 9 | `GATE_3B_REFERENCE_SELECTION` | the four pools and the slot map |
+| 10 | `GATE_3C_IDENTIFICATION` | arms `base + core + spectrum`, 44 cells, support met, 3 Tier-1 core references |
+| 11 | `GATE_4_COMPOSED_HEADROOM` | every registered cell type on every slot, inside the band |
+| 12 | `PREFREEZE_AUDIT` | 26 artifact checks and §33's fifteen; `can_freeze` true |
+| 13 | `GATE_5_FREEZE` | every §18.1 field from a signed source |
+| 14 | `CONFIRMATORY_GENERATION` | the complete draw matrix: every (block, cell, draw) exactly once |
+| 15 | `MASKED_ANALYSIS` | the sealed masked artifact, §20's withheld members recorded by name |
+| 16 | `UNMASKING` | once; a second attempt is refused by the stage machine |
+| 17 | `UNMASKED_ANALYSIS` | every registered quantity with a status, `NOT_IDENTIFIED` never zero |
+| 18 | `FINAL_REPORT` | §31's table, every field traced, and stage 18's own thirteen checks |
+
+**This is engineering evidence only.** The fixtures are engineered to be
+satisfiable, which is what makes them useful for finding plumbing defects and
+useless as evidence about a model. It says the v5 execution plumbing has been
+exercised end to end on synthetic fixtures. It says nothing about whether v5's
+matching procedure will work prospectively on a real model.
 
 ---
 
@@ -93,12 +134,31 @@ table), `engine/{context,paths,transitions}.py`, `stages/freeze.py`.
 with the structural tier, and everything it did is in `stages/regime.py` under
 v5's rules.
 
-### Not written
+### The `run/` layer
 
-The `run/` layer — the CLI runners that drive a real evidence tree, generate
-rows and write signed stage records. Nothing above needs it to be checked, and
-writing it would produce the one thing this pass must not produce: a path that
-looks ready to spend model data. It is the first item of §5 below.
+Thirteen modules driving a real evidence tree, all eighteen stages on one
+driver — guard, verifier hash, compute, sign write-once, mirror, log — plus a
+CLI. `run/cli.assert_every_stage_has_a_runner()` is asserted at import, so §18
+gaining a stage without a runner is an import failure.
+
+| Module | Stages | What it does |
+|---|---|---|
+| `run/lifecycle.py` | all | the five-step driver, terminal statuses, durable mirroring, the transition log (refusals logged too) |
+| `run/contracts.py` | all | the producer/consumer contract: 95 fields over 17 artifacts, and the five defect classes it detects |
+| `run/execute.py` | generative | prompt cell → plan → generate → score → row identity, §9.1 asserted per row |
+| `run/registration_run.py` | 1 | plans without writing; refuses to build a payload while §34 is open |
+| `run/qualification_run.py` | 2, 3 | the seventeen checks and §19's pilot |
+| `run/regime_run.py` | 4, 5 | cap, screen, retention, coverage; Gate 1 freezes the verifier and wording hashes |
+| `run/gates_run.py` | 6–11 | Gate 2 through Gate 4, in four separated stages with four records |
+| `run/prefreeze_run.py` | 12 | 26 artifact checks over signed records, plus §33's checklist. **Nothing is waivable** |
+| `run/freeze_run.py` | 13 | every §18.1 field assembled from a signed source, and the downstream assertion against it |
+| `run/confirmatory_run.py` | 14 | the licensed design, batching, resume, completeness |
+| `run/analysis_run.py` | 15–18 | mask, unmask, estimate, report |
+| `run/final_report_checks.py` | 18 | §33's deferred check 14 and twelve traceability checks the table makes checkable |
+
+Nothing in it can run today: `PROTOCOL_REGISTERED` depends on all nineteen
+decisions and `assert_transition_legal` refuses a stage whose decisions are
+open, so every runner refuses at stage 1.
 
 ---
 
@@ -154,25 +214,33 @@ to.
 
 ## 5. The minimum ordered list before v5 may measure anything
 
-1. **Write the `run/` layer.** Stage runners over a real evidence tree,
-   signing, durable mirroring, cache and restore. Everything above is
-   exercised by it and nothing above needs it to be *checked*.
-2. **Author the 96 Calibration-B questions** (D3). §13.7 — v5's whole answer
+The `run/` layer, which was item 1 of this list, exists and has been exercised
+end to end (§1). Everything remaining is a researcher decision or missing
+study content — none of it is unfinished implementation.
+
+1. **Author the 96 Calibration-B questions** (D3). §13.7 — v5's whole answer
    to the winner's curse §12.2 measures — does not work without them. This is
    the largest non-compute prerequisite in the protocol.
-3. **Close D4** (the marker vocabulary), which the regime screen needs before
+2. **Close D4** (the marker vocabulary), which the regime screen needs before
    it measures a marker rung, and **D17** (the construct floor), which Gate 2
    needs.
+3. **Resolve U2**, §11.8's tier-indicator formulation. `open_items.py` holds
+   the four mathematically identified alternatives with what each estimates
+   and what each gives up; `fit_with_tier_indicator` fails closed until one is
+   adopted, and the registration manifest refuses to sign while it is open.
 4. **Close D6, D16 and D18**, which the red team's R16, R11 and R1 turn on.
    D18 is the one that decides whether v5 can emit the source memo's
    refutation verdict against a control pool chosen to resemble A.
 5. **Close D1** — the compute budget. If it drops the near-form arm, R1 loses
    its only mitigation, and D18 should then be closed at `precondition`.
 6. **Close the remaining decisions** and record every closure, with its
-   evidence, in the signed registration manifest.
-7. **Regenerate Gate 1 evidence over the 650-instrument population.** The long
+   evidence, in the signed registration manifest
+   (`protocol/manifest.sign_registration`, which calls `assert_signable`
+   before it creates any file or key).
+7. **Confirm P1**, §7.10's corrected Tier-3 sentence, at adoption.
+8. **Regenerate Gate 1 evidence over the 650-instrument population.** The long
    pole in wall-clock and it depends on no model.
-8. **Run §19's procedural pilot** on twelve pre-screen topics over the full
+9. **Run §19's procedural pilot** on twelve pre-screen topics over the full
    admitted cell plan, with the claim-ladder tests passing *before*
    qualification — §20's commitment device means an emitter defect found after
    the mask is sealed cannot be repaired, which is exactly what happened to
@@ -184,7 +252,9 @@ Only then does `PROTOCOL_REGISTERED` become reachable.
 
 ## 6. Tests
 
-`dci1/tests_v5/`, 225 tests, all passing, in about two seconds. The categories
+`dci1/tests_v5/`, **317 tests**, all passing: 292 in about two seconds and 25
+`slow` ones that share one eighteen-stage walk, in about three minutes. The
+categories
 the implementation prompt registers, and the file each is in:
 
 | | Category | File |
@@ -206,6 +276,15 @@ the implementation prompt registers, and the file each is in:
 | — | the library and §12's screen | `test_library_and_regime.py` |
 | — | selection end to end | `test_selection.py` |
 | — | §30's ledger and §31's table | `test_reuse_and_revision.py` |
+| — | specification questions as executable state | `test_open_items.py` |
+| — | §11.8's tier fit fails closed | `test_tier_fit.py` |
+| — | the topic bank and Calibration-B's absent content | `test_topics_calibration_b.py` |
+| — | the registration manifest and its five refusals | `test_manifest.py` |
+| — | D17's construct-strength interface | `test_construct_strength.py` |
+| — | the producer/consumer contract, statically | `test_run_contracts.py` |
+| — | the run layer refuses while §34 is open | `test_run_layer.py` |
+| — | §9.1's verdicts, indexed | `test_row_indexing.py` |
+| — | the eighteen-stage walk (`slow`) | `test_synthetic_lifecycle.py` |
 
 `tests_v4r4/` is unchanged and still passes 594 with 6 skips, including
 `test_l4_replication_defect.py`, which pins v4r4's sealed behaviour so that

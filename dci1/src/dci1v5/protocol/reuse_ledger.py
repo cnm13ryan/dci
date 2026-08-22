@@ -38,6 +38,7 @@ from dci1v5.protocol import constants as C
 __all__ = ["CLASSIFICATIONS", "LedgerEntry", "REGISTERED_ENTRIES",
            "build_ledger", "assert_not_estimand_input",
            "assert_no_validation_language", "FORBIDDEN_PHRASES",
+           "ARTIFACT_TEXT_GLOBS", "collect_artifact_texts",
            "ESTIMAND_ADMISSIBLE"]
 
 CLASSIFICATIONS = C.REUSE_CLASSIFICATIONS
@@ -201,6 +202,45 @@ def assert_not_estimand_input(classification: str, *, where: str) -> None:
             "DEVELOPMENT_EVIDENCE and RECOMPUTED_DIAGNOSTIC, and §14.2's "
             "admission guard is a positive rule: an input must prove it "
             "belongs to the v5 study tree")
+
+
+#: The v5 artifacts §33 check 15 scans. Naming them here gives the check a
+#: **producer**: an earlier revision left ``artifact_texts`` at ``None`` and
+#: the check reported UNRESOLVED at every stage that ran it, which is a check
+#: that never actually ran. These exist from stage 1 onward, so check 15 is
+#: discharged at ``PREFREEZE_AUDIT`` as §33 states, and re-run at
+#: ``FINAL_REPORT`` over the report text that did not exist before.
+ARTIFACT_TEXT_GLOBS: tuple[str, ...] = (
+    "user-notes/DCI1_preregistration_v5.md",
+    "user-notes/DCI1_v4r4_to_v5_changelog.md",
+    "dci1/reports/dci1v5/*.md",
+)
+
+
+def collect_artifact_texts(repo_root: Path | str = ".",
+                           extra: Mapping[str, str] | None = None
+                           ) -> dict[str, str]:
+    """Every v5 artifact text on disk, by repository-relative path.
+
+    A glob that matches nothing contributes nothing; a *named* file that is
+    absent is not silently skipped, because §33 check 15 scanning zero texts
+    and passing is exactly the failure mode this replaces.
+    """
+    root = Path(repo_root)
+    out: dict[str, str] = {}
+    for pattern in ARTIFACT_TEXT_GLOBS:
+        if "*" in pattern:
+            for path in sorted(root.glob(pattern)):
+                out[str(path.relative_to(root))] = path.read_text()
+            continue
+        path = root / pattern
+        if not path.is_file():
+            raise ProtocolError(
+                f"§33 check 15 scans {pattern} and it is not at {path}; a "
+                "text check that silently scans nothing is not a check")
+        out[pattern] = path.read_text()
+    out.update(extra or {})
+    return out
 
 
 def assert_no_validation_language(texts: Mapping[str, str] | Sequence[tuple],

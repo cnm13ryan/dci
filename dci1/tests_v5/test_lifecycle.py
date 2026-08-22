@@ -110,12 +110,63 @@ def test_the_prefreeze_audit_runs_fifteen_checks_and_blocks_the_freeze():
 
 
 def test_the_audit_surfaces_every_unresolved_redteam_finding():
+    """All five are surfaced; four block, and R5 is a permanent limitation.
+
+    A finding blocks while **its registered mitigation is still open**, and
+    the mitigation is a §34 decision. R5 has none --- §13.8 closes its second
+    half and its first half is not closeable by a rule --- so treating its
+    presence as a blocker would make ``can_freeze`` unsatisfiable however the
+    study went, which is a gate that cannot pass rather than a hard one.
+    """
+    from dci1v5.stages.audit_prefreeze import UNRESOLVED_REDTEAM_FINDINGS
+
     audit = run_prefreeze_audit(repo_root="..")
-    assert set(audit["unresolved_redteam_findings"]) == {"R1", "R5", "R11",
-                                                         "R14", "R16"}
-    assert audit["unresolved_redteam_findings"]["R5"]["closeable_by_rule"] \
-        is False
+    assert set(UNRESOLVED_REDTEAM_FINDINGS) == {"R1", "R5", "R11", "R14",
+                                                "R16"}
+    assert set(audit["unresolved_redteam_findings"]) == {"R1", "R11", "R14",
+                                                         "R16"}
+    assert set(audit["permanent_limitations"]) == {"R5"}
+    assert audit["permanent_limitations"]["R5"]["closeable_by_rule"] is False
     assert audit["unresolved_redteam_findings"]["R1"]["decision"] == "D18"
+
+
+def test_only_the_final_report_check_is_deferred():
+    """§33 check 14 reads a table that does not exist at stage 12.
+
+    Check 15 is **not** deferred. It scans the v5 artifact texts, which exist
+    from stage 1; an earlier revision passed none and got UNRESOLVED forever,
+    which is a check that never ran.
+    """
+    from dci1v5.stages.audit_prefreeze import DEFERRED_CHECKS
+
+    audit = run_prefreeze_audit(repo_root="..")
+    assert DEFERRED_CHECKS == (14,)
+    deferred = {c["n"] for c in audit["deferred_to_final_report"]}
+    assert deferred == {14}
+    assert all(c["verdict"] == "UNRESOLVED"
+               for c in audit["deferred_to_final_report"])
+    # And an unestablished check that is NOT deferred still blocks.
+    assert any(c["n"] == 8 for c in audit["checklist"])
+
+
+def test_check_15_has_a_producer_and_passes_over_the_real_artifacts():
+    """The v5 artifact texts, from the declaration the check itself owns."""
+    from dci1v5.protocol.reuse_ledger import collect_artifact_texts
+
+    texts = collect_artifact_texts("..")
+    assert len(texts) >= 3
+    audit = run_prefreeze_audit(repo_root="..", artifact_texts=texts)
+    check15 = next(c for c in audit["checklist"] if c["n"] == 15)
+    assert check15["verdict"] == "PASS"
+    assert check15["detail"]["scanned"] == len(texts)
+
+
+def test_a_named_artifact_that_is_absent_is_a_refusal_not_an_empty_scan():
+    from dci1v4.errors import ProtocolError
+    from dci1v5.protocol.reuse_ledger import collect_artifact_texts
+
+    with pytest.raises(ProtocolError, match="scans nothing is not a check"):
+        collect_artifact_texts("/nonexistent-repo-root")
 
 
 def test_one_failing_check_is_enough_to_block_the_freeze():
@@ -128,10 +179,19 @@ def test_one_failing_check_is_enough_to_block_the_freeze():
 
 
 def test_an_unresolved_check_is_not_a_pass():
+    """Called with nothing supplied, three checks cannot be established.
+
+    8 has no Gate-4 record, 14 has no final-report table and 15 has no texts.
+    Only 14 is *deferred*; the other two block, which is the point. The stage
+    runner supplies a Gate-4 record and the artifact texts, so on the real
+    path only 14 is left unestablished.
+    """
     audit = run_prefreeze_audit(repo_root="..")
     unresolved = [c for c in audit["checklist"] if c["verdict"] == "UNRESOLVED"]
     assert unresolved
     assert all(c["n"] in (8, 14, 15) for c in unresolved)
+    assert audit["can_freeze"] is False
+    assert {c["n"] for c in audit["failures"]} >= {8, 15}
 
 
 def test_terminal_statuses_include_the_two_new_ones():

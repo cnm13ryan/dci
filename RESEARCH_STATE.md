@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **drafted and implemented 2026-08-22; NOT adopted, no stage record, no topic authored, no instrument measured, no generation.** A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. §4q, §4r. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **drafted and implemented 2026-08-22; NOT adopted, no stage record, no topic authored, no instrument measured, no generation.** A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1286,14 +1286,72 @@ witness finds `CL7:125, 130, 135, 140` unreachable inside the 60–120 word stem
 band and nothing else in the library, which is the registered finding computed
 instead of asserted.
 
-**What is not written, deliberately.** The `run/` layer — the runners that
-drive a real evidence tree, generate rows and write signed stage records.
-Nothing above needs it to be checked, and writing it would produce the one
-thing this pass must not produce: a path that looks ready to spend model data.
 [`v5_implementation_status.md`](dci1/reports/dci1v5/v5_implementation_status.md)
 carries the ordered list of what a researcher must do before v5 may measure
 anything; [`v5_reconciliation.md`](dci1/reports/dci1v5/v5_reconciliation.md)
 classifies every document discrepancy the implementation found.
+
+### 4s. v5's execution plumbing exercised end to end, and eleven defects that only appear when a stage runs (2026-08-22)
+
+**Still not adopted, and nothing here is scientific evidence.** No v5 stage
+record exists under `dci1/evidence/dci1v5/`, no Calibration-B question has been
+authored, no v5 topic has been consumed, no model has generated a v5 response,
+and §34's nineteen decisions are all `UNRESOLVED`. What exists now is the
+`run/` layer — thirteen modules, all eighteen stages on one driver, plus a CLI
+— and an engineering harness that walks every stage with **no model**, in the
+`synthetic` namespace, under a temporary evidence root, against an isolated
+repository it builds and commits.
+
+The walk produces eighteen signed records: a design derived from an admitted
+arm set (`base + core + spectrum`, 44 cells, three Tier-1 core references), a
+complete confirmatory draw matrix, a sealed mask, a one-shot unmask, and a §31
+result table every field of which traces to a stage record and a hash. It is
+**engineering evidence only** — the fixtures are engineered to be satisfiable,
+which is what makes them useful for finding plumbing defects and useless as
+evidence about a model. The right sentence is *the v5 execution plumbing has
+been exercised end to end on synthetic fixtures*, and it says nothing about
+whether v5's matching procedure will work prospectively on a real model.
+
+**Eleven defects, nine of them in code that would have produced or read v5's
+numbers.** The four that would have changed a result:
+
+- **§9.1's absent verdicts carried no slot.** κ(R|B) — §13.6's whole input, and
+  the reason v5 scores every instance on every row — is indexed by slot, so it
+  was unreadable; and §25's load-0 cell, where every verdict is absent by §9.1,
+  collapsed onto one key per block, so the difficulty coordinate's chance term
+  could not be formed from real rows at all.
+- **`delta_difficulty` was registered and never computed.** §11.7 defines its
+  estimator, §17.2 its refit-per-replicate bootstrap, and `bootstrap_family`
+  already accepted the callable member for exactly this case. F1's simultaneous
+  critical value was therefore taken over **five members instead of six**, so
+  every F1 interval was narrower than §15 registers.
+- **§20 names `Delta_R` as not computable in the masked phase and the code
+  computed it**, so the masked record carried an estimate of the study's
+  primary quantity formed against permuted companions. The guard that was meant
+  to catch this read a key no estimate record has ever carried, so it had never
+  checked anything.
+- **§31's result table emitted six of its twenty-one fields**, and the bootstrap
+  computed the standard error and the marginal bounds and discarded them.
+
+Two rules were **unsatisfiable rather than strict** and were repaired: the
+pre-freeze audit's `can_freeze` could not be reached however the study went, and
+`producing_commit_clean` was waived in the synthetic namespace — which made
+provenance the one rule the integration test never exercised. The waiver is
+gone; the harness builds a real clean repository instead.
+
+The producer/consumer contract is now checked against the payloads a real walk
+produced, not only against the declaration:
+[`v5_producer_consumer.md`](dci1/reports/dci1v5/v5_producer_consumer.md) —
+**95 fields, 17 artifacts, 95 exercised, 0 defects**, regenerated by
+`dci1/tools/v5_producer_consumer.py`. `dci1/tests_v5/` holds 317 tests, all
+passing; `tests_v4r4/` is unchanged at 594 passed with 6 skips and
+`tools/v4r4_evidence_manifest.py --verify` reports `OK`.
+
+**What remains is researcher work, not implementation.** Authoring the 96
+Calibration-B questions (D3), closing D0–D18, and resolving U2 — §11.8's
+tier-indicator formulation, whose four mathematically identified alternatives
+are recorded in `protocol/open_items.py` and whose fit fails closed until one
+is adopted.
 
 ## 5. Provisional, superseded, broken, unresolved
 
@@ -1371,6 +1429,7 @@ and §4p.
 | the drafted successor, not adopted | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
 | what is still open in v5 | `dci1/reports/dci1v5/v5_prereg_redteam.md`, `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
+| every v5 field, its producer and its readers | `dci1/reports/dci1v5/v5_producer_consumer.md` |
 | what v5's implementation is, and what it cannot do | `dci1/src/dci1v5/`, `dci1/tests_v5/`, `dci1/reports/dci1v5/v5_implementation_status.md` |
 | every v5 document discrepancy and its classification | `dci1/reports/dci1v5/v5_reconciliation.md` |
 | what v4r4 changed and why | `user-notes/DCI1_v4r3_to_v4r4_changelog.md` (R4-1–R4-7) |

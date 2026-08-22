@@ -59,7 +59,7 @@ from dci1v4.verifiers.words import alpha_runs as _v4_alpha_runs
 
 from dci1v5.protocol.wordings import N_WORDINGS, wording
 from dci1v5.verifiers.compliance import passes
-from dci1v5.verifiers.constraints import (
+from dci1v5.verifiers.constraints import (MARKER_WORDS, 
     FAMILIES, FORM_COUNT, FORM_EXACT, FORM_LOWER_BOUND, FORM_RATE,
     FORM_RATE_LOWER_BOUND, Constraint, declared_range,
 )
@@ -207,8 +207,15 @@ def _drift_statistic(statistic_id: str, text: str) -> int:
         return sum(1 for w in words if w.endswith("s"))
     if statistic_id == "vowel_initial":
         return sum(1 for w in words if w[:1] in "aeiou")
-    if statistic_id == "marker_thus":
-        return sum(1 for w in words if w == "thus")
+    if statistic_id in MARKER_WORDS:
+        # All eight markers, from the registered vocabulary rather than one
+        # by one. v4r4 had a single marker family and this branch named its
+        # word; with eight of them, seven fell through to the raw-character
+        # return below and their drifted count came back **undrifted**, so no
+        # constructed case could separate the reading and §10.7 A recorded
+        # them ambiguous. Found by running the audit over v5's library.
+        target = MARKER_WORDS[statistic_id]
+        return sum(1 for w in words if w == target)
     if statistic_id == "capital_word":
         return sum(1 for w in words if any(c.isupper() for c in w))
     # comma, semicolon, capital_char and sentence read raw characters, which

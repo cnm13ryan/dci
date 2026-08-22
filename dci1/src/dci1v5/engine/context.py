@@ -113,9 +113,20 @@ def registered_context() -> StudyContext:
                         durable_root=DCI1_ROOT / "durable_root")
 
 
-def synthetic_context(root: Path) -> StudyContext:
+def synthetic_context(root: Path, *,
+                      repo_root: Path | str | None = None) -> StudyContext:
+    """The synthetic namespace, rooted at ``root``.
+
+    ``repo_root`` exists so an integration harness can point the production
+    provenance rules --- clean worktree, resolvable head commit, protocol
+    document hashes, the §30 ledger --- at an **isolated repository it built
+    and committed**, rather than at the developer's dirty worktree. The rules
+    then run unweakened: ``registered_context`` still names the real root and
+    no production caller passes this.
+    """
     root = Path(root)
     return StudyContext(namespace="synthetic", study_id=SYNTHETIC_STUDY_ID,
-                        repo_root=REPO_ROOT,
+                        repo_root=Path(repo_root) if repo_root is not None
+                        else REPO_ROOT,
                         evidence_root=root / "evidence",
                         durable_root=root / "durable")

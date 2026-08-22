@@ -162,3 +162,181 @@ replaces with the structural tier, and everything it did — §12.2's retention,
 `stages/regime.py` under v5's rules. Carrying a stale role-keyed module would
 be exactly the unexecuted downstream path with a latent contract defect that
 this repository has already been bitten by.
+
+---
+
+## 5. Defects found by executing the lifecycle
+
+Section 4 records what reading the documents found. This section records what
+**running** them found: eleven defects that only appear when a stage executes,
+in code that would have produced or read v5's numbers. None changes an existing
+result — there are no v5 results — and each would have changed a future one.
+
+Every entry is an **implementation defect** unless it says otherwise. The
+protocol text is right in all eleven; the code did not do what it says.
+
+### D1. §9.1's absent verdicts were written with no slot
+
+`run/execute.generate_and_score` built its `slot` lookup from the cell's
+*stated* constituents, so every verdict on an instrument the prompt did not
+state was written `slot: null`.
+
+Two things depend on that slot. κ(R|B) — §13.6's entire input, and the reason
+v5 scores every registered instance on every row — is indexed by slot, so it
+was unreadable through `ObservationTable`. And §25's load-0 cell states
+nothing, so by §9.1 **every** verdict on it is absent: all of them became one
+key per block and the chance rates collapsed.
+
+The slot now comes from the replication's slot map, which is the binding that
+defines what a slot is. An instance the map does not bind falls back to its own
+label, so no score is ever written without one.
+`tests_v5/test_row_indexing.py` pins both halves.
+
+### D2. `ObservationTable` tested presence before the arm
+
+A load-0 verdict is an absent verdict by §9.1 *and* a chance observation by
+§25. The two are different quantities read off different cells and the **arm**
+is what separates them; testing `present` first routed every chance
+observation into the κ index, where they collided. The difficulty coordinate is
+`(p_solo − κ)/(1 − κ)`, so nothing that reads chance could have been formed
+from real rows. The arm is now tested first.
+
+### D3. A composed cell's companion was the next label in the score list
+
+With §9.1 scoring every registered instrument on every row, that list holds one
+entry per instrument — so `next(s for s in slots if s != slot)` named an
+unstated instrument as the companion and collapsed distinct composed cells onto
+one index key. The companion is now the cell's other **stated** constituent.
+
+### D4. `delta_difficulty` was registered and never computed
+
+It is a member of F1 (§15), §11.7 defines its estimator, §17.2 defines its
+refit-per-replicate bootstrap, and `bootstrap_family` already accepted a
+callable member for exactly this case. Nothing built the `SpectrumInput` or
+called it.
+
+Two consequences, and the second is the one that matters: the quantity was
+absent from the analysis, and **F1's studentised maximum-modulus critical value
+was taken over five members instead of six**, so every F1 interval was narrower
+than §15 registers. `run/analysis_run.spectrum_inputs` now builds §11.7's nine
+points per configuration from the freeze's slot map, and the member is
+registered as the callable §17.2 requires.
+
+### D5. §20 names `Delta_R` as masked-phase non-computable and the code computed it
+
+`MASKED_PHASE_FORBIDDEN_MEMBERS` listed `delta_difficulty` and the fit's
+coefficients but not `Delta_R`, though §20's text names both: A's point is
+inside the permuted group, so a contrast of A against the reference set is a
+contrast against a set A may have been permuted into. The masked record
+therefore carried an estimate of the study's primary quantity formed against
+permuted companions — the one number the mask exists to withhold. Added, and
+the withheld members are now recorded on the masked record by name.
+
+### D6. `assert_delta_difficulty_not_masked` read a key no record carries
+
+It scanned `result["families"]`; an estimate record's shape is
+`configurations` / `cross_configuration`. The guard ran over an empty dict on
+every masked run and could not fail — a check on the execution path that was
+not checking anything. It now reads the record's own shape, including the
+interval families, and it is what keeps D5 fixed.
+
+### D7. §20's masked-view cleanliness rule was never applied
+
+`assert_masked_view_clean` existed and no caller invoked it. It is now on the
+path that writes the masked view, over the records it is about to write.
+
+### D8. `MASKED_VIEW_EXCLUDED_FIELDS` excluded `arm` — *corrected, with the argument*
+
+This one is a **narrowing of a v5 implementation constant**, not a defect in
+carried code, and it is recorded here because it is the only entry that
+relaxes anything.
+
+The masked analysis cannot build an observation table without separating §25's
+load-0 cell from a solo cell from a composed one, and `arm` is the field that
+says which. Excluding it made the masked stage unrunnable. It is also not
+companion-identifying: the permutation moves labels *within* an (outcome,
+configuration, block) group, and every composed member of such a group carries
+the same `arm`, so the field is constant across everything the mask could have
+swapped and narrows the true companion not at all. The integration test asserts
+that property over the **written artifact** rather than leaving it in prose.
+
+`cell_id` and the true `companion_slot` remain excluded; the cell's identity
+travels as a pseudonym hashed under the sealed mask key, so §9.1's absent
+verdicts stay indexable without their constituents appearing anywhere.
+
+### D9. §31's result table emitted six of its twenty-one fields
+
+`_intervals` computed the standard error and the marginal bounds and discarded
+them; `_report_rows` filled six fields; `assert_row_traceable` refused the
+table, which is the check working. Every §31 field is now filled from a signed
+record — the difficulty coordinate and the reference-pool tier from the freeze,
+the bounds and the standard error from the bootstrap, the cell counts from the
+confirmatory record, the variance decomposition from the freeze's
+`variance_reestimate` with its source named, and the achieved detectable effect
+as §16.3's reading of the realised simultaneous half-width, with that
+derivation travelling on the row rather than being asserted.
+
+`iota_a` and `solo_compliance_a` were declared in `run/contracts.py` as read by
+Gate 5 and were not read; they are now bound into the freeze.
+
+### D10. §33 check 8 read a declaration of absence as the thing it forbids
+
+The check scans a Gate-4 record for a field naming an outcome-driven selection.
+Gate 4 carried `no_substitution_after_failure` — §13.14's refusal, in prose —
+and the scan flagged it.
+
+Renaming the key would have left the check as weak as it was, so the check was
+**strengthened** instead: declarations of absence live in one
+`declared_refusals` block that the scan skips and that the check now
+*requires*. A record that simply omitted the refusal used to pass; it now
+fails.
+
+### D11. §33 check 15 had no producer and reported `UNRESOLVED` forever
+
+It scans the v5 artifact texts and every caller passed `None`, so it returned
+`UNRESOLVED` at every stage that ran it — a check that never ran.
+`reuse_ledger.collect_artifact_texts` now supplies them from a declaration the
+check itself owns, and refuses a named artifact that is absent rather than
+silently scanning nothing. Check 15 is therefore discharged at
+`PREFREEZE_AUDIT`, as §33 states.
+
+Only **check 14** is deferred, because it reads the final-report table and no
+table exists at stage 12. `run/final_report_checks.py` discharges it at
+`FINAL_REPORT` — over the numbers the audit record itself says were deferred,
+not over this module's constant — beside twelve traceability checks that only
+become checkable once the table exists.
+
+---
+
+## 6. Two rules that were unsatisfiable rather than hard
+
+### R1. `can_freeze` could not be reached however the study went
+
+`run_prefreeze_audit` required an empty `UNRESOLVED_REDTEAM_FINDINGS`, which is
+a static register that never empties, and §33 checks 14 and 15, which read
+artifacts that do not exist before the freeze. A gate that cannot pass is not a
+strict gate; it is a broken one, and the failure mode is that it gets waived.
+
+A finding now blocks while **its registered mitigation is still an open
+decision**, and its mitigation is a §34 decision. **R5 has none**: §13.8's
+realised-drift qualifier closes its second half and its first half — κ(R|B) is
+measured under B, so the reference set is a function of how each model writes
+under its own B at its own m\*, and Δ_R on two models is two differently
+constructed counterfactuals — is not closeable by a rule at all. It is recorded
+as a **permanent limitation** and reported separately from the blockers, so it
+cannot be quietly discharged by closing something.
+
+### R2. `producing_commit_clean` was waived in the synthetic namespace
+
+The rule is right: a run whose declared producing commit does not contain the
+code that produced it has no provenance. But a developer's worktree is dirty by
+construction, so the harness waived it — making provenance the one rule the
+integration test never exercised.
+
+The waiver is gone from production code entirely. The harness builds an
+**isolated repository** instead (`synthetic_lifecycle.synthetic_repo`): the v5
+source tree, the two documents §18 stage 1 binds by hash, the §30 ledger's
+sources, the lockfile and the v5 artifact texts, copied and committed, in about
+0.05 s. The production checks then run unmodified against a tree that genuinely
+satisfies them — `clean_worktree`, `commit_hashable`, `tracked_implementation`,
+`producing_commit_clean` and `protocol_hashes_agree`, none of them waived.

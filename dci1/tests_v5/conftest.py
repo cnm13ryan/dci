@@ -55,8 +55,12 @@ def synthetic_rows(arms: Sequence[str], *, blocks: int = 8,
                              {sl for t in types for sl in t.slots}]
                     for slot in sorted(slots):
                         rate = rates.get((slot, None, None), 0.02)
+                        # §9.1: the load-0 prompt states nothing, so every
+                        # verdict on it is an ABSENT verdict. An earlier
+                        # fixture marked them present, which is the one
+                        # convention the production scorer cannot produce.
                         scores.append(_score(slot, rng.random() < rate,
-                                             position=1))
+                                             position=1, present=False))
                 elif cell.arm == "solo":
                     slot = cell.slots[0]
                     rate = rates.get((slot, None, "solo"), 0.7)
@@ -118,3 +122,12 @@ def restore_decisions():
 
     yield decisions
     decisions.reopen_all_for_testing()
+
+
+@pytest.fixture
+def restore_open_items():
+    """Resolve a specification question inside a test, then restore it."""
+    from dci1v5.protocol import open_items
+
+    yield open_items
+    open_items.reopen_all_for_testing()

@@ -13,6 +13,129 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-22 — the v5 lifecycle executed end to end on synthetic fixtures, and eleven defects that only appear when a stage runs
+
+**Standing unchanged.** v5 is still **drafted, not adopted**. No v5 stage
+record exists under `dci1/evidence/dci1v5/`, no Calibration-B question has been
+authored, no v5 topic has been consumed, no model has generated a v5 response,
+and §34's nineteen decisions are all `UNRESOLVED`. No number anywhere in this
+repository moves. v4r4's evidence manifest verifies unchanged.
+
+[`dci1/reports/dci1v5/v5_implementation_status.md`](dci1/reports/dci1v5/v5_implementation_status.md) ·
+[`dci1/reports/dci1v5/v5_reconciliation.md`](dci1/reports/dci1v5/v5_reconciliation.md) ·
+[`dci1/reports/dci1v5/v5_producer_consumer.md`](dci1/reports/dci1v5/v5_producer_consumer.md)
+
+**What changed.** The `run/` layer now exists — eighteen stage runners on one
+driver — and an engineering harness walks all eighteen with no model, in the
+`synthetic` namespace, under a temporary evidence root. Walking it found
+eleven defects. **Nine of them are in code that would have produced or read
+v5's numbers**, which is why this is here and not in the commit log. None
+changes an existing result, because there are no v5 results; each would have
+changed a future one.
+
+**1. §9.1's absent verdicts were written with no slot.** `generate_and_score`
+labelled a score from the cell's *stated* constituents, so every verdict on an
+instrument the prompt did not state was written `slot: null`. Two consequences.
+κ(R|B) — §13.6's entire input, and the reason v5 scores every instance on every
+row — is indexed by slot and was therefore unreadable through
+`ObservationTable`. And §25's load-0 cell, where **every** verdict is absent by
+§9.1, produced one indistinguishable key per block, so its chance rates
+collapsed onto each other. The slot now comes from the replication's slot map,
+which is the binding that defines what a slot is; an instance the map does not
+bind falls back to its own label.
+
+**2. `ObservationTable` tested presence before the arm, so §25's chance
+observations were never indexed as chance.** A load-0 verdict is an absent
+verdict by §9.1 *and* a chance observation by §25; the two are different
+quantities read off different cells, and the arm is what separates them.
+Testing `present` first routed every one of them into the κ index. The
+difficulty coordinate is `(solo − chance)/(1 − chance)`, so nothing that reads
+chance could have been formed on real rows.
+
+**3. A composed cell's companion was read off the row's whole score list.**
+With §9.1 scoring every registered instrument on every row, that list holds one
+entry per instrument, so the "companion" became whichever instrument happened
+to sort first — naming an unstated instrument as the companion and collapsing
+distinct composed cells onto one index key. The companion is now the cell's
+other **stated** constituent.
+
+**4. `delta_difficulty` was registered and never computed.** It is a member of
+F1, §11.7 defines its estimator, §17.2 defines its refit-per-replicate
+bootstrap, and `bootstrap_family` already accepted a callable member for
+exactly this purpose — and nothing built the `SpectrumInput` or called it. Two
+consequences: the quantity was absent from the analysis, and F1's studentised
+maximum-modulus critical value was taken over **five members instead of six**,
+so every F1 interval was narrower than §15 registers.
+
+**5. §20 names `Delta_R` as not computable in the masked phase and the code
+computed it.** `MASKED_PHASE_FORBIDDEN_MEMBERS` listed `delta_difficulty` and
+the fit's coefficients but not `Delta_R`, so the masked record carried an
+estimate of the study's primary quantity formed against a permuted assignment
+of companions — the one number the mask exists to withhold. Added, and the
+withheld members are now recorded on the masked record by name.
+
+**6. `assert_delta_difficulty_not_masked` read a key no estimate record
+carries.** It scanned `result["families"]`; the record's shape is
+`configurations` / `cross_configuration`. The guard ran over an empty dict on
+every masked run and could not fail. It now reads the record's own shape,
+including the interval families, and it is what caught defect 5 staying fixed.
+
+**7. §20's masked-view cleanliness rule was never applied to the artifact.**
+`assert_masked_view_clean` existed and no caller invoked it. It is now on the
+path that writes the masked view.
+
+**8. `MASKED_VIEW_EXCLUDED_FIELDS` excluded `arm`, which is not
+companion-identifying, and the exclusion made the masked analysis
+unconstructable.** The mask permutes labels *within* an (outcome,
+configuration, block) group, and every composed member of such a group carries
+the same `arm`; the field is constant across everything the permutation could
+have swapped, so it narrows the true companion not at all. Meanwhile the masked
+analysis cannot tell §25's load-0 cell from a solo cell without it. `arm`,
+`present`, `draws` and `processing_failures` now travel with the masked view;
+`cell_id` and the true `companion_slot` do not, and the cell's identity is
+carried as a pseudonym derived under the sealed mask key. The integration test
+asserts the constancy property over the written artifact rather than leaving
+the argument in prose.
+
+**9. §31's result table emitted six of its twenty-one fields**, and
+`_intervals` computed the standard error and the marginal bounds and then
+discarded them. Every §31 field is now filled from a signed record: the
+difficulty coordinate and the reference-pool tier from the freeze, the bounds
+and the standard error from the bootstrap, the cell counts from the
+confirmatory record, the variance decomposition from the freeze's own
+`variance_reestimate` with its source named, and the achieved detectable
+effect as §16.3's reading of the realised simultaneous half-width, with the
+derivation travelling on the row. `iota_a` and `solo_compliance_a` were
+declared as read by Gate 5 and were not read; they are now bound.
+
+**10. §33 check 8 read a declaration of absence as the thing it forbids.** The
+check scans a Gate-4 record for a field naming an outcome-driven selection, and
+Gate 4 carried `no_substitution_after_failure` — §13.14's refusal, in prose.
+Declarations now live in one `declared_refusals` block that the scan skips and
+the check **requires**: omitting the refusal used to pass and now fails.
+
+**11. §33 check 15 had no producer and reported `UNRESOLVED` forever.** It
+scans the v5 artifact texts and every caller passed none. `collect_artifact_texts`
+now supplies them from a declaration the check itself owns, so check 15 is
+discharged at `PREFREEZE_AUDIT` as §33 states. Only check 14 — which reads the
+final-report table — is deferred, and `run/final_report_checks.py` discharges it
+at `FINAL_REPORT` along with twelve traceability checks that only become
+checkable once the table exists.
+
+**Comparability.** Nothing to compare: no v5 artifact existed before this pass
+and none exists after it that is not synthetic. v4r4 is untouched and
+`tools/v4r4_evidence_manifest.py --verify` reports `OK`, 0 missing, 0 changed.
+
+**What the synthetic walk does and does not say.** It says the v5 execution
+plumbing runs end to end: eighteen signed stage records, a design derived from
+an admitted arm set, a complete confirmatory draw matrix, a sealed mask, a
+one-shot unmask and a §31 table every field of which traces to a record. It
+says **nothing** about whether v5's matching procedure will work prospectively
+on a real model. The fixtures are engineered to be satisfiable; that is what
+makes them useful for finding plumbing defects and useless as evidence.
+
+---
+
 ## 2026-08-22 — DCI-1 v5 implemented in its own namespace, and three latent defects in carried code found by running it
 
 **Standing unchanged.** v5 is still **drafted, not adopted**. No v5 stage

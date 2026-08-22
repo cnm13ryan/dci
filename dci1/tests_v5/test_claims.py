@@ -76,16 +76,58 @@ def test_local_tier_disagreement_emits_neither():
     assert "LOCAL_TIER_DISAGREE" in out[0]["identification_status"]
 
 
-def test_l3c_without_the_near_form_arm_carries_the_fixed_sentence():
-    out = _l3(delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
-              delta_difficulty=claims.Interval("delta_difficulty", 0.00,
-                                               -0.04, 0.04),
-              delta_near=None, near_form_available=False)
+def _l3c_without_arm():
+    return _l3(delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
+               delta_difficulty=claims.Interval("delta_difficulty", 0.00,
+                                                -0.04, 0.04),
+               delta_near=None, near_form_available=False)
+
+
+def test_an_l3c_with_no_near_form_arm_refuses_while_d18_is_open():
+    """§34 D18 selects the behaviour, so the emitter may not choose one.
+
+    This is the case the two modes differ on. Before this was wired the
+    emitter attached §17.6's sentence unconditionally --- the standing
+    proposal executing as a default, which is the exact shape §34 exists to
+    stop.
+    """
+    with pytest.raises(decisions.DecisionOpenError):
+        _l3c_without_arm()
+
+
+def test_d18_mode_2_emits_l3c_with_the_narrower_interpretation(
+        restore_decisions):
+    restore_decisions.close("D18", "not_a_precondition", evidence="test",
+                            decided_by="test", decided_on="2026-08-22")
+    out = _l3c_without_arm()
     l3c = [s for s in out if s.get("claim_level") == "L3c" and s["emitted"]]
     assert l3c
+    assert l3c[0]["d18_mode"] == "not_a_precondition"
     assert l3c[0]["near_form_absent_sentence"] == \
         C.L3C_WITHOUT_NEAR_FORM_SENTENCE
     assert "NEAR_FORM_ARM_NOT_AVAILABLE" in l3c[0]["identification_status"]
+
+
+def test_d18_mode_1_withholds_l3c_and_says_why(restore_decisions):
+    restore_decisions.close("D18", "precondition", evidence="test",
+                            decided_by="test", decided_on="2026-08-22")
+    out = _l3c_without_arm()
+    assert not [s for s in out
+                if s.get("claim_level") == "L3c" and s["emitted"]]
+    withheld = [s for s in out if s.get("claim_level") == "L3c"]
+    assert withheld and withheld[0]["emitted"] is False
+    assert withheld[0]["d18_mode"] == "precondition"
+    assert "NEAR_FORM_ARM_NOT_AVAILABLE" in withheld[0][
+        "identification_status"]
+
+
+def test_l3c_with_the_arm_present_does_not_consult_d18():
+    """The decision is consulted only where the two modes differ."""
+    disposition = claims.l3c_disposition(
+        near_form_available=True,
+        delta_near=claims.Interval("Delta_near", 0.20, 0.14, 0.26))
+    assert disposition["emit"] is True
+    assert disposition["consulted_d18"] is False
 
 
 def test_whether_l3c_needs_the_near_form_arm_is_unresolved(restore_decisions):

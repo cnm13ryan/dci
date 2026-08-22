@@ -42,6 +42,7 @@ from typing import Mapping, Sequence
 from dci1v4.errors import ProtocolError
 
 from dci1v5.protocol import constants as C
+from dci1v5.protocol import open_items
 from dci1v5.stages.calibration_table import (
     instructed_compliance, tie_key,
 )
@@ -437,28 +438,76 @@ class TierFit:
     intercepts: dict[str, float]
     n_points: int
     residuals: dict[str, float]
+    #: The named formulation of open_items.U2 this fit was computed under.
+    #: Recorded on the object because two of them estimate different things.
+    formulation: str = ""
+
+
+def _tier_design_rows(points: Sequence[SpectrumPoint],
+                      indicator: Mapping[str, float],
+                      formulation: str) -> tuple[list[list[float]],
+                                                 list[str]]:
+    """The design matrix for one **named** formulation of §11.8's secondary.
+
+    Both admissible constructions are written here so that neither is a
+    default and a reader can see what the choice costs. ``A1`` --- a family
+    intercept for each of the six families --- is not constructed at all: it
+    is exactly singular, and building it to discover that at runtime would
+    invite a caller to reach for a pseudoinverse.
+    """
+    if formulation == "A2":
+        # alpha_f over the three CORE families; a Tier-2 point sits at the
+        # unweighted mean core intercept plus gamma.
+        families = sorted({p.family for p in points if not indicator[p.slot]})
+        if len(families) < 2:
+            raise ProtocolError(
+                "the secondary fit needs at least two core families to "
+                "define the intercepts gamma is measured against")
+        rows = []
+        for p in points:
+            if indicator[p.slot]:
+                row = [1.0 / len(families)] * len(families)
+            else:
+                row = [1.0 if p.family == f else 0.0 for f in families]
+            rows.append(row + [p.difficulty, indicator[p.slot]])
+        return rows, families
+    if formulation == "A4":
+        # one common intercept; beta then absorbs between-family level
+        # differences that the PRIMARY form removes deliberately.
+        return ([[1.0, p.difficulty, indicator[p.slot]] for p in points],
+                ["common"])
+    raise ProtocolError(
+        f"{formulation!r} is not a constructed formulation of §11.8's "
+        "secondary fit; open_items.U2 registers A1 (singular, never "
+        "constructed), A2, A3 (drops F8's gamma_tier and is not constructed) "
+        "and A4")
 
 
 def fit_with_tier_indicator(points: Sequence[SpectrumPoint],
-                            tiers: Mapping[str, int]) -> TierFit:
-    """§11.8's secondary fit over twelve points.
+                            tiers: Mapping[str, int],
+                            *, formulation: str | None = None) -> TierFit:
+    """§11.8's secondary fit over twelve points. **Fails closed today.**
 
     ``tiers`` maps slot -> structural tier. The indicator is 1 for Tier 2 and
     0 otherwise.
 
-    **One thing about the form is a reading and it is recorded as one.**
-    §11.8 writes the secondary as ``Y = alpha_f + beta*d + gamma*1[Tier 2]``
-    over twelve points and does not say what ``alpha_f`` is for the three
-    near-form controls. Giving each of them its own family intercept makes
-    ``gamma`` **exactly collinear** with the sum of those three dummies, and
-    the fit is then singular --- ``gamma`` identifies nothing. The one
-    identified reading is that ``alpha_f`` ranges over the three **core**
-    families and a Tier-2 point sits at the *average* core intercept plus
-    ``gamma``, so ``gamma`` is the tier's offset from the difficulty line the
-    core families define. That is what this implements, and the singular
-    alternative is refused by name rather than by a linear-algebra error.
+    **§11.8 does not identify this fit and this function does not choose one
+    for it.** The section writes ``Y = alpha_f + beta*d + gamma*1[Tier 2]``
+    over twelve points and never says what ``alpha_f`` is for the three
+    near-form controls. Give each of them a family intercept and ``gamma``
+    becomes exactly collinear with the sum of those three dummies: the normal
+    equations are singular and ``gamma`` has no unique least-squares value.
+    More than one repair is mathematically admissible and they estimate
+    different things --- ``protocol/open_items.py`` U2 carries all four with
+    what each changes --- so this raises ``OpenItemError`` until a researcher
+    resolves U2 and amends §11.8. It is **not** repaired here by a
+    pseudoinverse, a dropped column chosen from the observed data, a ridge
+    term or a silent reference coding, because each of those picks one of the
+    alternatives without saying so.
 
-    ``gamma`` is an F8 **secondary**. It licenses no claim.
+    ``gamma`` is an F8 **secondary** and licenses no claim, so the refusal
+    costs no claim level: the secondary is not reported and §18.1's rule for
+    a field a variant legitimately leaves empty applies.
     """
     if any(p.slot == "A" for p in points):
         raise ProtocolError("§11.8: A must not enter the fit that predicts A")
@@ -473,22 +522,16 @@ def fit_with_tier_indicator(points: Sequence[SpectrumPoint],
             "not identified. §11.8's secondary fit needs the near-form arm; "
             "without it the status is NEAR_FORM_ARM_NOT_AVAILABLE and the "
             "secondary is not reported")
-    core_families = sorted({p.family for p in points
-                            if indicator[p.slot] == 0.0})
-    if len(core_families) < 2:
-        raise ProtocolError(
-            "the secondary fit needs at least two core families to define "
-            "the intercepts gamma is measured against")
-
-    def _row(p: SpectrumPoint) -> list[float]:
-        if indicator[p.slot]:
-            # a Tier-2 point sits at the AVERAGE core intercept plus gamma
-            row = [1.0 / len(core_families)] * len(core_families)
-        else:
-            row = [1.0 if p.family == f else 0.0 for f in core_families]
-        return row + [p.difficulty, indicator[p.slot]]
-
-    design = [_row(p) for p in points]
+    chosen = formulation or open_items.assert_item_resolved(
+        "U2", where="analysis.spectrum.fit_with_tier_indicator")
+    if formulation is not None:
+        # An explicit formulation is a caller saying which construction it
+        # wants exercised. It still may not produce a v5 number while U2 is
+        # unresolved: the block is on the fit, not on the arithmetic.
+        open_items.assert_item_resolved(
+            "U2", where="analysis.spectrum.fit_with_tier_indicator"
+                        f" (formulation={formulation})")
+    design, columns = _tier_design_rows(points, indicator, chosen)
     k = len(design[0])
     xtx = [[sum(r[i] * r[j] for r in design) for j in range(k)]
            for i in range(k)]
@@ -510,13 +553,14 @@ def fit_with_tier_indicator(points: Sequence[SpectrumPoint],
                 xtx[row][j] -= factor * xtx[col][j]
             xty[row] -= factor * xty[col]
     beta = [xty[i] / xtx[i][i] for i in range(k)]
-    intercepts = {f: beta[i] for i, f in enumerate(core_families)}
+    intercepts = {f: beta[i] for i, f in enumerate(columns)}
     slope, gamma = beta[-2], beta[-1]
     mean_intercept = sum(intercepts.values()) / len(intercepts)
     residuals = {}
     for p in points:
         base = (mean_intercept + gamma if indicator[p.slot]
-                else intercepts[p.family])
+                else intercepts.get(p.family, mean_intercept))
         residuals[p.slot] = p.loss - (base + slope * p.difficulty)
     return TierFit(slope=slope, gamma=gamma, intercepts=intercepts,
-                   n_points=len(points), residuals=residuals)
+                   n_points=len(points), residuals=residuals,
+                   formulation=chosen)
