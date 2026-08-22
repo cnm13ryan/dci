@@ -1,0 +1,1745 @@
+{
+  "analysed": {
+    "gemma-3n-e4b-it": {
+      "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+      "blocks": 384,
+      "claims": [
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(B<-A)",
+          "outcome_position": 1,
+          "reason": "the F1 simultaneous interval for D(B<-A) does not have a lower bound above 0",
+          "statement": null
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_first",
+          "emitted": true,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(A<-B)",
+          "outcome_position": 1,
+          "reason": null,
+          "statement": "composing the two instructions costs D(A<-B) a delivery loss whose simultaneous interval lies wholly above zero"
+        },
+        {
+          "claim_level": "L2",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "Lambda",
+          "outcome_position": 1,
+          "reason": "L2's gate is L1 for both directions and ['D(B<-A)'] did not reach L1",
+          "statement": null
+        },
+        {
+          "claim_level": "L3",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": null,
+          "outcome_position": 1,
+          "reason": "§8.6's design in force does not estimate Delta_R, so no L3 sub-level about the excess is reachable",
+          "statement": null
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_second",
+          "emitted": true,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(B<-A)",
+          "outcome_position": 2,
+          "reason": null,
+          "statement": "composing the two instructions costs D(B<-A) a delivery loss whose simultaneous interval lies wholly above zero"
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(A<-B)",
+          "outcome_position": 2,
+          "reason": "the F1 simultaneous interval for D(A<-B) does not have a lower bound above 0",
+          "statement": null
+        },
+        {
+          "claim_level": "L2",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "Lambda",
+          "outcome_position": 2,
+          "reason": "L2's gate is L1 for both directions and ['D(A<-B)'] did not reach L1",
+          "statement": null
+        },
+        {
+          "claim_level": "L3",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": null,
+          "outcome_position": 2,
+          "reason": "§8.6's design in force does not estimate Delta_R, so no L3 sub-level about the excess is reachable",
+          "statement": null
+        }
+      ],
+      "completeness": {
+        "complete": true,
+        "duplicated": 0,
+        "expected": 24576,
+        "first_duplicated": [],
+        "first_missing": [],
+        "first_unexpected": [],
+        "missing": 0,
+        "present": 24576,
+        "unexpected": 0
+      },
+      "design_variant": "reduced",
+      "estimates": [
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3304166977691447,
+          "degenerate": false,
+          "estimand": "D(A<-B)",
+          "estimate": 0.11588541666666667,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.03875493740644098,
+          "marginal": [
+            0.08333333333333333,
+            0.14812011718749987
+          ],
+          "precision": {
+            "half_width": 0.03875493740644098,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.016630046224583014,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            0.07713047926022569,
+            0.15464035407310767
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3304166977691447,
+          "degenerate": false,
+          "estimand": "D(B<-A)",
+          "estimate": 0.006184895833333333,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.02438917785143578,
+          "marginal": [
+            -0.014322916666666666,
+            0.026692708333333332
+          ],
+          "precision": {
+            "half_width": 0.02438917785143578,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.010465586637266627,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.01820428201810245,
+            0.030574073684769113
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3304166977691447,
+          "degenerate": false,
+          "estimand": "Lambda",
+          "estimate": -0.10970052083333333,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.044921875000000014,
+          "marginal": [
+            -0.14778645833333334,
+            -0.072265625
+          ],
+          "precision": {
+            "half_width": 0.044921875000000014,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.01927632729502956,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.15462239583333334,
+            -0.06477864583333331
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.37434733214157,
+          "degenerate": false,
+          "estimand": "D(A<-B)|vacuity_forced",
+          "estimate": 0.11588541666666667,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03983738649465059,
+          "marginal": [
+            0.08333333333333333,
+            0.1494140625
+          ],
+          "precision": {
+            "half_width": 0.03983738649465059,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01677824720729414,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.07604803017201608,
+            0.15572280316131726
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.37434733214157,
+          "degenerate": false,
+          "estimand": "D(B<-A)|graded_0.99",
+          "estimate": -0.009765625,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.02543537698228859,
+          "marginal": [
+            -0.030598958333333332,
+            0.011067708333333334
+          ],
+          "precision": {
+            "half_width": 0.02543537698228859,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.010712576310116708,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.03520100198228859,
+            0.01566975198228859
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.37434733214157,
+          "degenerate": false,
+          "estimand": "D(B<-A)|vacuity_forced",
+          "estimate": 0.006184895833333333,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.024646499045504366,
+          "marginal": [
+            -0.013997395833333334,
+            0.026692708333333332
+          ],
+          "precision": {
+            "half_width": 0.024646499045504366,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01038032587392097,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.018461603212171034,
+            0.0308313948788377
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.37434733214157,
+          "degenerate": false,
+          "estimand": "Lambda|vacuity_forced",
+          "estimate": -0.10970052083333333,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.04622395833333333,
+          "marginal": [
+            -0.1484375,
+            -0.07161458333333333
+          ],
+          "precision": {
+            "half_width": 0.04622395833333333,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.01946806927006804,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.15592447916666666,
+            -0.0634765625
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 1.9859225749423024,
+          "degenerate": true,
+          "estimand": "vac(B|B+A)-vac(B solo)",
+          "estimate": 0.0,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.0,
+          "marginal": [
+            0.0,
+            0.0
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.0,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 1.9859225749423024,
+          "degenerate": false,
+          "estimand": "vac(B|B+CL)-vac(B solo)",
+          "estimate": 0.0003255208333333333,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.0006510416666666667,
+          "marginal": [
+            0.0,
+            0.0009765625
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.00032782832265531886,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.0003255208333333334,
+            0.0009765625
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.1426858352380096,
+          "degenerate": false,
+          "estimand": "D(B<-CL)",
+          "estimate": 0.31640625,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.037109375,
+          "marginal": [
+            0.2819010416666667,
+            0.3499348958333333
+          ],
+          "precision": {
+            "half_width": 0.037109375,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.017319092883198106,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.279296875,
+            0.353515625
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.1426858352380096,
+          "degenerate": false,
+          "estimand": "Delta_class",
+          "estimate": -0.3102213541666667,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.03959590685634296,
+          "marginal": [
+            -0.3463541666666667,
+            -0.2737630208333333
+          ],
+          "precision": {
+            "half_width": 0.03959590685634296,
+            "met": true,
+            "required": 0.06
+          },
+          "refit_per_replicate": false,
+          "se": 0.018479567188600304,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.34981726102300964,
+            -0.27062544731032373
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.315421041752626,
+          "degenerate": false,
+          "estimand": "D(A<-B)",
+          "estimate": -0.0322265625,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.041124206224151014,
+          "marginal": [
+            -0.06641438802083326,
+            0.0026041666666666665
+          ],
+          "precision": {
+            "half_width": 0.041124206224151014,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.017761005658401816,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.07335076872415101,
+            0.008897643724151014
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.315421041752626,
+          "degenerate": false,
+          "estimand": "D(B<-A)",
+          "estimate": 0.283203125,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.034706625866815256,
+          "marginal": [
+            0.2542317708333333,
+            0.3125
+          ],
+          "precision": {
+            "half_width": 0.034706625866815256,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.0149893368164887,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            0.24849649913318475,
+            0.3179097508668153
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.315421041752626,
+          "degenerate": false,
+          "estimand": "Lambda",
+          "estimate": 0.3154296875,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.055989583333333315,
+          "marginal": [
+            0.2672526041666667,
+            0.3629638671874999
+          ],
+          "precision": {
+            "half_width": 0.055989583333333315,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.024181167193225803,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            0.2594401041666667,
+            0.3714192708333333
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3837373460219187,
+          "degenerate": false,
+          "estimand": "D(A<-B)|vacuity_forced",
+          "estimate": -0.0322265625,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.04231770833333333,
+          "marginal": [
+            -0.06673177083333333,
+            0.0032552083333333335
+          ],
+          "precision": {
+            "half_width": 0.04231770833333333,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01775267245946996,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.07454427083333333,
+            0.010091145833333329
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3837373460219187,
+          "degenerate": false,
+          "estimand": "D(B<-A)|graded_0.99",
+          "estimate": 0.18619791666666666,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03529474581733956,
+          "marginal": [
+            0.15755208333333334,
+            0.21614583333333334
+          ],
+          "precision": {
+            "half_width": 0.03529474581733956,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.014806474327484494,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.15090317084932708,
+            0.22149266248400623
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3837373460219187,
+          "degenerate": false,
+          "estimand": "D(B<-A)|vacuity_forced",
+          "estimate": 0.283203125,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03545238084304443,
+          "marginal": [
+            0.2548828125,
+            0.3131510416666667
+          ],
+          "precision": {
+            "half_width": 0.03545238084304443,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.014872603687738021,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.24775074415695558,
+            0.3186555058430444
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3837373460219187,
+          "degenerate": false,
+          "estimand": "Lambda|vacuity_forced",
+          "estimate": 0.3154296875,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.057313519188599275,
+          "marginal": [
+            0.2669270833333333,
+            0.3619791666666667
+          ],
+          "precision": {
+            "half_width": 0.057313519188599275,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.02404355466605685,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.2581161683114007,
+            0.3727432066885993
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 0.0,
+          "degenerate": true,
+          "estimand": "vac(B|B+A)-vac(B solo)",
+          "estimate": 0.0,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.0,
+          "marginal": [
+            0.0,
+            0.0
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.0,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 0.0,
+          "degenerate": true,
+          "estimand": "vac(B|B+CL)-vac(B solo)",
+          "estimate": 0.0,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.0,
+          "marginal": [
+            0.0,
+            0.0
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.0,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.202642575877564,
+          "degenerate": false,
+          "estimand": "D(B<-CL)",
+          "estimate": 0.7945963541666666,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.032180991531469264,
+          "marginal": [
+            0.765625,
+            0.8229166666666666
+          ],
+          "precision": {
+            "half_width": 0.032180991531469264,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.014610174108092821,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.7624153626351974,
+            0.8267773456981359
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.202642575877564,
+          "degenerate": false,
+          "estimand": "Delta_class",
+          "estimate": -0.5113932291666666,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.038085937499999944,
+          "marginal": [
+            -0.5442708333333334,
+            -0.4775390625
+          ],
+          "precision": {
+            "half_width": 0.038085937499999944,
+            "met": true,
+            "required": 0.06
+          },
+          "refit_per_replicate": false,
+          "se": 0.01729102030311294,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.5494791666666665,
+            -0.4733072916666667
+          ]
+        }
+      ],
+      "f6_gate": {
+        "outcome_first": {
+          "applicable": true,
+          "binds": false,
+          "threshold": 0.05,
+          "worst_upper": 0.0009765625
+        },
+        "outcome_second": {
+          "applicable": true,
+          "binds": false,
+          "threshold": 0.05,
+          "worst_upper": 0.0
+        }
+      },
+      "focal_extension_measured": false,
+      "hashes": {
+        "calibration_table_hash": "bb4bc2ae3826f5ea0324ad6219b6622c958d66085ed9c8472f977a7a5808cf6b",
+        "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+        "chat_template_hash": "ac03dcb3b09726f1e50ac55ae58fc8d5930eadc3b3a12cb04286dc1d82ac8001",
+        "producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2"
+      },
+      "identical_computation_as_masked": true,
+      "identification_statuses": [
+        "COMPANION_CLASS_NOT_MATCHED",
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+        "EXCESS_NOT_IDENTIFIED"
+      ],
+      "l4_registered_reading": {
+        "agrees_with_the_emitted_field": false,
+        "classification_by_member": {
+          "F1:D(A<-B)": {
+            "outcome_first": "L1",
+            "outcome_second": null
+          },
+          "F1:D(B<-A)": {
+            "outcome_first": null,
+            "outcome_second": "L1"
+          },
+          "F1:Lambda": {
+            "outcome_first": null,
+            "outcome_second": null
+          }
+        },
+        "defect": "analysis.claims.emit_l4 compares the set of levels reached, not the level each named member reached. Where the members that reach a level swap places across configurations, the sets match and the emitted L4 says the result replicates when §3.2's per-member gate says it is configuration-dependent",
+        "emitted_by_the_analysis": true,
+        "licensed_by_the_registered_rule": false,
+        "members_differing_across_configurations": [
+          "F1:D(A<-B)",
+          "F1:D(B<-A)"
+        ],
+        "members_replicating": [],
+        "registered_reading": "Configuration dependence (§28.1): the quantity is configuration-dependent; the table is reported and no pooled scalar is quoted"
+      },
+      "m_draws": 8,
+      "m_star": 10,
+      "masking": {
+        "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+        "mask_effectiveness": {
+          "groups": 6,
+          "maskable_groups": 2,
+          "min_differing_share": 0.5,
+          "structurally_unmaskable": [
+            [
+              "A",
+              "outcome_first"
+            ],
+            [
+              "A",
+              "outcome_second"
+            ],
+            [
+              "CL",
+              "outcome_first"
+            ],
+            [
+              "CL",
+              "outcome_second"
+            ]
+          ],
+          "structurally_unmaskable_note": "these (outcome, configuration) groups carry exactly one companion, because §8.1's spectrum and class arms pair with B alone, so their companion label is not hidden and could not be. Under the full and no-spectrum designs that costs nothing: the singleton outcomes are the spectrum rungs and the class companion, and no registered estimand reads them as an OUTCOME -- F8 reads D(B <- R_j+-) and F9 reads D(B <- CL), both with B as the outcome and masked among its many companions. Under §8.6's REDUCED design it costs something and the cost is stated rather than implied: B has exactly two companions (A and the class companion) and is masked among them, while A and CL each have only B, so D(A <- B) -- a registered reduced-design estimand -- and any CL-as-outcome quantity are analysed with their companion identity visible. The masked phase protects D(B <- A), D(B <- CL) and Lambda on that design, and does not protect the reciprocal direction. This sentence used to assert the full-design case unconditionally, which is false for a reduced replication",
+          "structurally_unmaskable_outcomes": [
+            "A",
+            "CL"
+          ]
+        },
+        "mask_key_hash": "b2520830b59280de5b33507f1e42e20fca6145f8f5ebc9b96fcf705aee98fd6d",
+        "masked_artifact_hash": "6ca030d9d05e08c6548f979663da185b4e7a9b2616aa98753bce77ce8d276366",
+        "spectrum_fit_ran_masked": false
+      },
+      "measurement_basis": "deterministic_measurement_validated",
+      "model_key": "gemma-3n-e4b-it",
+      "n_star": 4,
+      "not_identified": [
+        "D(B<-R_j)",
+        "D(R_j<-B)",
+        "Delta_j",
+        "Delta_R",
+        "delta_difficulty",
+        "Xi"
+      ],
+      "not_identified_note": "these are registered quantities this design does not identify. They are not null results, not zero, and not missing by accident, and no post-hoc estimate of them exists",
+      "resamples": 10000,
+      "rows_generated": 24576,
+      "scope_sentence": "the outcomes are verifier-defined and support no claim about compliance as an independent human would judge it",
+      "slot_map": {
+        "A": [
+          "A",
+          4
+        ],
+        "B": [
+          "B",
+          10
+        ],
+        "CL": [
+          "CL7",
+          80
+        ]
+      },
+      "unmasking": {
+        "binds_the_sealed_artifact": true,
+        "mask_key_hash": "b2520830b59280de5b33507f1e42e20fca6145f8f5ebc9b96fcf705aee98fd6d",
+        "masked_outputs_hash": "6ca030d9d05e08c6548f979663da185b4e7a9b2616aa98753bce77ce8d276366"
+      }
+    },
+    "qwen3-4b": {
+      "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+      "blocks": 384,
+      "claims": [
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(B<-A)",
+          "outcome_position": 1,
+          "reason": "the F1 simultaneous interval for D(B<-A) does not have a lower bound above 0",
+          "statement": null
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_first",
+          "emitted": true,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(A<-B)",
+          "outcome_position": 1,
+          "reason": null,
+          "statement": "composing the two instructions costs D(A<-B) a delivery loss whose simultaneous interval lies wholly above zero"
+        },
+        {
+          "claim_level": "L2",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "Lambda",
+          "outcome_position": 1,
+          "reason": "L2's gate is L1 for both directions and ['D(B<-A)'] did not reach L1",
+          "statement": null
+        },
+        {
+          "claim_level": "L3",
+          "configuration": "outcome_first",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": null,
+          "outcome_position": 1,
+          "reason": "§8.6's design in force does not estimate Delta_R, so no L3 sub-level about the excess is reachable",
+          "statement": null
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(B<-A)",
+          "outcome_position": 2,
+          "reason": "the F1 simultaneous interval for D(B<-A) does not have a lower bound above 0",
+          "statement": null
+        },
+        {
+          "claim_level": "L1",
+          "configuration": "outcome_second",
+          "emitted": true,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "D(A<-B)",
+          "outcome_position": 2,
+          "reason": null,
+          "statement": "composing the two instructions costs D(A<-B) a delivery loss whose simultaneous interval lies wholly above zero"
+        },
+        {
+          "claim_level": "L2",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+            "EXCESS_NOT_IDENTIFIED",
+            "POSITION_CONFOUNDED"
+          ],
+          "interval_type": "simultaneous",
+          "member": "Lambda",
+          "outcome_position": 2,
+          "reason": "L2's gate is L1 for both directions and ['D(B<-A)'] did not reach L1",
+          "statement": null
+        },
+        {
+          "claim_level": "L3",
+          "configuration": "outcome_second",
+          "emitted": false,
+          "family": "F1",
+          "identification_status": [
+            "COMPANION_CLASS_NOT_MATCHED",
+            "EXCESS_NOT_IDENTIFIED"
+          ],
+          "interval_type": "simultaneous",
+          "member": null,
+          "outcome_position": 2,
+          "reason": "§8.6's design in force does not estimate Delta_R, so no L3 sub-level about the excess is reachable",
+          "statement": null
+        }
+      ],
+      "completeness": {
+        "complete": true,
+        "duplicated": 0,
+        "expected": 24576,
+        "first_duplicated": [],
+        "first_missing": [],
+        "first_unexpected": [],
+        "missing": 0,
+        "present": 24576,
+        "unexpected": 0
+      },
+      "design_variant": "reduced",
+      "estimates": [
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3254443972430767,
+          "degenerate": false,
+          "estimand": "D(A<-B)",
+          "estimate": 0.3919270833333333,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.0416078210281112,
+          "marginal": [
+            0.3564453125,
+            0.4264322916666667
+          ],
+          "precision": {
+            "half_width": 0.0416078210281112,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01789241706980361,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            0.35031926230522215,
+            0.4335349043614445
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3254443972430767,
+          "degenerate": false,
+          "estimand": "D(B<-A)",
+          "estimate": -0.12272135416666667,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.030888220604250623,
+          "marginal": [
+            -0.1494140625,
+            -0.09700520833333333
+          ],
+          "precision": {
+            "half_width": 0.030888220604250623,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.013282717333886829,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.1536095747709173,
+            -0.09183313356241604
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.3254443972430767,
+          "degenerate": false,
+          "estimand": "Lambda",
+          "estimate": -0.5146484375,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.05240885416666669,
+          "marginal": [
+            -0.5592447916666666,
+            -0.4703776041666667
+          ],
+          "precision": {
+            "half_width": 0.05240885416666669,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.022537134935928738,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.5670572916666667,
+            -0.4622395833333333
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.354741893228452,
+          "degenerate": false,
+          "estimand": "D(A<-B)|vacuity_forced",
+          "estimate": 0.3919270833333333,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.04249537392497579,
+          "marginal": [
+            0.3570963541666667,
+            0.427734375
+          ],
+          "precision": {
+            "half_width": 0.04249537392497579,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01804672267783575,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.34943170940835755,
+            0.4344224572583091
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.354741893228452,
+          "degenerate": false,
+          "estimand": "D(B<-A)|graded_0.99",
+          "estimate": -0.12239583333333333,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.031233770674944063,
+          "marginal": [
+            -0.14876302083333334,
+            -0.09700520833333333
+          ],
+          "precision": {
+            "half_width": 0.031233770674944063,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01326420138222505,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.15362960400827738,
+            -0.09116206265838926
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.354741893228452,
+          "degenerate": false,
+          "estimand": "D(B<-A)|vacuity_forced",
+          "estimate": -0.11295572916666667,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03125,
+          "marginal": [
+            -0.13932291666666666,
+            -0.08723958333333333
+          ],
+          "precision": {
+            "half_width": 0.03125,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.013271093570750089,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.14420572916666669,
+            -0.08170572916666667
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.354741893228452,
+          "degenerate": false,
+          "estimand": "Lambda|vacuity_forced",
+          "estimate": -0.5048828125,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.053859942650679796,
+          "marginal": [
+            -0.5501302083333334,
+            -0.4606119791666667
+          ],
+          "precision": {
+            "half_width": 0.053859942650679796,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.022872970836236965,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.5587427551506798,
+            -0.4510228698493202
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.2479890494119887,
+          "degenerate": false,
+          "estimand": "vac(B|B+A)-vac(B solo)",
+          "estimate": 0.009765625,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.008138020833333334,
+          "marginal": [
+            0.0029296875,
+            0.017252604166666668
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.0036201336636679854,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.001627604166666666,
+            0.017903645833333336
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.2479890494119887,
+          "degenerate": false,
+          "estimand": "vac(B|B+CL)-vac(B solo)",
+          "estimate": 0.12923177083333334,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.031184227289327376,
+          "marginal": [
+            0.1025390625,
+            0.15690104166666666
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.01387205480270658,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.09804754354400597,
+            0.16041599812266072
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.2257601492666024,
+          "degenerate": false,
+          "estimand": "D(B<-CL)",
+          "estimate": -0.13411458333333334,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.030598958333333315,
+          "marginal": [
+            -0.1611328125,
+            -0.107421875
+          ],
+          "precision": {
+            "half_width": 0.030598958333333315,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.013747644077200234,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.16471354166666666,
+            -0.10351562500000003
+          ]
+        },
+        {
+          "configuration": "outcome_first",
+          "critical_value": 2.2257601492666024,
+          "degenerate": false,
+          "estimand": "Delta_class",
+          "estimate": 0.011393229166666666,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.021979844432671376,
+          "marginal": [
+            -0.0078125,
+            0.030924479166666668
+          ],
+          "precision": {
+            "half_width": 0.021979844432671376,
+            "met": true,
+            "required": 0.06
+          },
+          "refit_per_replicate": false,
+          "se": 0.00987520800024829,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.01058661526600471,
+            0.03337307359933804
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.2840904525906174,
+          "degenerate": false,
+          "estimand": "D(A<-B)",
+          "estimate": 0.3291015625,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.045572916666666685,
+          "marginal": [
+            0.2897135416666667,
+            0.3681640625
+          ],
+          "precision": {
+            "half_width": 0.045572916666666685,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.019952325712398054,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            0.2835286458333333,
+            0.3746744791666667
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.2840904525906174,
+          "degenerate": false,
+          "estimand": "D(B<-A)",
+          "estimate": -0.012044270833333334,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.03296828391014039,
+          "marginal": [
+            -0.040364583333333336,
+            0.015950520833333332
+          ],
+          "precision": {
+            "half_width": 0.03296828391014039,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01443387842751487,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.04501255474347372,
+            0.020924013076807052
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.2840904525906174,
+          "degenerate": false,
+          "estimand": "Lambda",
+          "estimate": -0.3411458333333333,
+          "family": "F1",
+          "family_size": 3,
+          "half_width": 0.057734347867231126,
+          "marginal": [
+            -0.390625,
+            -0.2913411458333333
+          ],
+          "precision": {
+            "half_width": 0.057734347867231126,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.025276734466338133,
+          "sidak_reference": 2.3877378870708172,
+          "simultaneous": [
+            -0.39888018120056445,
+            -0.2834114854661022
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3280331345032828,
+          "degenerate": false,
+          "estimand": "D(A<-B)|vacuity_forced",
+          "estimate": 0.3291015625,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.04735821557430082,
+          "marginal": [
+            0.2900390625,
+            0.369140625
+          ],
+          "precision": {
+            "half_width": 0.04735821557430082,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.020342586569071893,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            0.2817433469256992,
+            0.3764597780743008
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3280331345032828,
+          "degenerate": false,
+          "estimand": "D(B<-A)|graded_0.99",
+          "estimate": -0.01171875,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03339254318213578,
+          "marginal": [
+            -0.039388020833333336,
+            0.016609700520833215
+          ],
+          "precision": {
+            "half_width": 0.03339254318213578,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.014343671783374565,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.04511129318213578,
+            0.021673793182135782
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3280331345032828,
+          "degenerate": false,
+          "estimand": "D(B<-A)|vacuity_forced",
+          "estimate": -0.013671875,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.03323315867203683,
+          "marginal": [
+            -0.041341145833333336,
+            0.014322916666666666
+          ],
+          "precision": {
+            "half_width": 0.03323315867203683,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01427520862117264,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.04690503367203683,
+            0.019561283672036828
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.3280331345032828,
+          "degenerate": false,
+          "estimand": "Lambda|vacuity_forced",
+          "estimate": -0.3427734375,
+          "family": "F5",
+          "family_size": 4,
+          "half_width": 0.05990700680604385,
+          "marginal": [
+            -0.3935546875,
+            -0.29296875
+          ],
+          "precision": {
+            "half_width": 0.05990700680604385,
+            "met": true,
+            "required": 0.08
+          },
+          "refit_per_replicate": false,
+          "se": 0.02573288408922316,
+          "sidak_reference": 2.4909151310191397,
+          "simultaneous": [
+            -0.4026804443060438,
+            -0.2828664306939562
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.2448585132402528,
+          "degenerate": false,
+          "estimand": "vac(B|B+A)-vac(B solo)",
+          "estimate": -0.0016276041666666667,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.00390625,
+          "marginal": [
+            -0.005533854166666667,
+            0.0009765625
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.0017400873939095952,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.005533854166666667,
+            0.002278645833333333
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.2448585132402528,
+          "degenerate": false,
+          "estimand": "vac(B|B+CL)-vac(B solo)",
+          "estimate": 0.0078125,
+          "family": "F6",
+          "family_size": 2,
+          "half_width": 0.007986483893227465,
+          "marginal": [
+            0.0009765625,
+            0.014973958333333334
+          ],
+          "precision": null,
+          "refit_per_replicate": false,
+          "se": 0.003557678065732387,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.00017398389322746503,
+            0.015798983893227467
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.202760241157212,
+          "degenerate": false,
+          "estimand": "D(B<-CL)",
+          "estimate": -0.050455729166666664,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.030933676761685527,
+          "marginal": [
+            -0.07813313802083326,
+            -0.023429361979166785
+          ],
+          "precision": {
+            "half_width": 0.030933676761685527,
+            "met": true,
+            "required": 0.05
+          },
+          "refit_per_replicate": false,
+          "se": 0.01404314286398897,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            -0.0813894059283522,
+            -0.019522052404981137
+          ]
+        },
+        {
+          "configuration": "outcome_second",
+          "critical_value": 2.202760241157212,
+          "degenerate": false,
+          "estimand": "Delta_class",
+          "estimate": 0.038411458333333336,
+          "family": "F9",
+          "family_size": 2,
+          "half_width": 0.029622395833333336,
+          "marginal": [
+            0.012044270833333334,
+            0.06510416666666667
+          ],
+          "precision": {
+            "half_width": 0.029622395833333336,
+            "met": true,
+            "required": 0.06
+          },
+          "refit_per_replicate": false,
+          "se": 0.013447852961869022,
+          "sidak_reference": 2.2364766445577895,
+          "simultaneous": [
+            0.0087890625,
+            0.06803385416666667
+          ]
+        }
+      ],
+      "f6_gate": {
+        "outcome_first": {
+          "applicable": true,
+          "binds": true,
+          "threshold": 0.05,
+          "worst_upper": 0.16041599812266072
+        },
+        "outcome_second": {
+          "applicable": true,
+          "binds": false,
+          "threshold": 0.05,
+          "worst_upper": 0.015798983893227467
+        }
+      },
+      "focal_extension_measured": true,
+      "hashes": {
+        "calibration_table_hash": "280203f88b1414d946187a43a9c28bac13cb87287daad9cdcc4b630c7206e407",
+        "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
+        "chat_template_hash": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+        "producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2"
+      },
+      "identical_computation_as_masked": true,
+      "identification_statuses": [
+        "COMPANION_CLASS_NOT_MATCHED",
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+        "EXCESS_NOT_IDENTIFIED"
+      ],
+      "l4_registered_reading": {
+        "agrees_with_the_emitted_field": true,
+        "classification_by_member": {
+          "F1:D(A<-B)": {
+            "outcome_first": "L1",
+            "outcome_second": "L1"
+          },
+          "F1:D(B<-A)": {
+            "outcome_first": null,
+            "outcome_second": null
+          },
+          "F1:Lambda": {
+            "outcome_first": null,
+            "outcome_second": null
+          }
+        },
+        "defect": null,
+        "emitted_by_the_analysis": true,
+        "licensed_by_the_registered_rule": true,
+        "members_differing_across_configurations": [],
+        "members_replicating": [
+          "F1:D(A<-B)"
+        ],
+        "registered_reading": "Replication (§28.1): the same classification in every registered configuration"
+      },
+      "m_draws": 8,
+      "m_star": 12,
+      "masking": {
+        "analysis_code_hash": "dffb5a861a497cc24e57017d4c97b4260dccb03dc29063fb3c02fca46bc7e9ca",
+        "mask_effectiveness": {
+          "groups": 6,
+          "maskable_groups": 2,
+          "min_differing_share": 0.5,
+          "structurally_unmaskable": [
+            [
+              "A",
+              "outcome_first"
+            ],
+            [
+              "A",
+              "outcome_second"
+            ],
+            [
+              "CL",
+              "outcome_first"
+            ],
+            [
+              "CL",
+              "outcome_second"
+            ]
+          ],
+          "structurally_unmaskable_note": "these (outcome, configuration) groups carry exactly one companion, because §8.1's spectrum and class arms pair with B alone, so their companion label is not hidden and could not be. Under the full and no-spectrum designs that costs nothing: the singleton outcomes are the spectrum rungs and the class companion, and no registered estimand reads them as an OUTCOME -- F8 reads D(B <- R_j+-) and F9 reads D(B <- CL), both with B as the outcome and masked among its many companions. Under §8.6's REDUCED design it costs something and the cost is stated rather than implied: B has exactly two companions (A and the class companion) and is masked among them, while A and CL each have only B, so D(A <- B) -- a registered reduced-design estimand -- and any CL-as-outcome quantity are analysed with their companion identity visible. The masked phase protects D(B <- A), D(B <- CL) and Lambda on that design, and does not protect the reciprocal direction. This sentence used to assert the full-design case unconditionally, which is false for a reduced replication",
+          "structurally_unmaskable_outcomes": [
+            "A",
+            "CL"
+          ]
+        },
+        "mask_key_hash": "26c74456ba7ae9a2d42644621592c73a4cf66e301671f45a19934ab797c210ac",
+        "masked_artifact_hash": "3368b8577891e87fca3985f5381c50e587329d448367e04cf2c293c364f3ac5e",
+        "spectrum_fit_ran_masked": false
+      },
+      "measurement_basis": "deterministic_measurement_validated",
+      "model_key": "qwen3-4b",
+      "n_star": 2,
+      "not_identified": [
+        "D(B<-R_j)",
+        "D(R_j<-B)",
+        "Delta_j",
+        "Delta_R",
+        "delta_difficulty",
+        "Xi"
+      ],
+      "not_identified_note": "these are registered quantities this design does not identify. They are not null results, not zero, and not missing by accident, and no post-hoc estimate of them exists",
+      "resamples": 10000,
+      "rows_generated": 24576,
+      "scope_sentence": "the outcomes are verifier-defined and support no claim about compliance as an independent human would judge it",
+      "slot_map": {
+        "A": [
+          "A",
+          2
+        ],
+        "B": [
+          "B",
+          12
+        ],
+        "CL": [
+          "CX1",
+          4
+        ],
+        "R1": [
+          "RF11",
+          21
+        ],
+        "R2": [
+          "CR5",
+          8
+        ]
+      },
+      "unmasking": {
+        "binds_the_sealed_artifact": true,
+        "mask_key_hash": "26c74456ba7ae9a2d42644621592c73a4cf66e301671f45a19934ab797c210ac",
+        "masked_outputs_hash": "3368b8577891e87fca3985f5381c50e587329d448367e04cf2c293c364f3ac5e"
+      }
+    }
+  },
+  "artifact_type": "v4r4-final-results",
+  "not_identified_by_some_replication": [
+    "D(B<-R_j)",
+    "D(R_j<-B)",
+    "Delta_R",
+    "Delta_j",
+    "Xi",
+    "delta_difficulty"
+  ],
+  "not_yet_analysed": {},
+  "revision": "v4r4",
+  "study_level_not_identified": [
+    "D(B<-R_j)",
+    "D(R_j<-B)",
+    "Delta_R",
+    "Delta_j",
+    "Xi",
+    "delta_difficulty"
+  ],
+  "terminal": {
+    "gemma-3n-e2b-it": {
+      "band": [
+        0.05,
+        0.95
+      ],
+      "failures": [
+        {
+          "cell": "pair:B+R3",
+          "rate": 0.9583333333333334,
+          "slot": "B"
+        },
+        {
+          "cell": "pair:B+R3",
+          "rate": 0.96875,
+          "slot": "R3"
+        },
+        {
+          "cell": "pair:B+R3+",
+          "rate": 1.0,
+          "slot": "R3+"
+        },
+        {
+          "cell": "pair:R3++B",
+          "rate": 1.0,
+          "slot": "R3+"
+        },
+        {
+          "cell": "pair:R3+B",
+          "rate": 0.9583333333333334,
+          "slot": "R3"
+        }
+      ],
+      "gate": "GATE_4_COMPOSED_HEADROOM",
+      "stage_reached": "GATE_3_REFERENCES",
+      "status": "COMPOSED_HEADROOM_FAILURE",
+      "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+    },
+    "qwen3-4b-instruct-2507": {
+      "band": [
+        0.05,
+        0.95
+      ],
+      "failures": [
+        {
+          "cell": "solo:CL",
+          "rate": 0.9895833333333334,
+          "slot": "CL"
+        }
+      ],
+      "gate": "GATE_4_COMPOSED_HEADROOM",
+      "stage_reached": "GATE_3_REFERENCES",
+      "status": "COMPOSED_HEADROOM_FAILURE",
+      "terminal_sentence": "a terminal pre-confirmatory status carries no evidence about the effect"
+    }
+  },
+  "variants_analysed": [
+    "reduced"
+  ]
+}

@@ -8,7 +8,7 @@
     "root_seed": 202608241,
     "unit": "block"
   },
-  "can_freeze": true,
+  "can_freeze": false,
   "claim_ladder": {
     "class_sentence": "the reference pool is budget class and A is production class, so this excess is relative to budget-class companions matched on instructed compliance and is not an excess relative to companions of A's own structural class",
     "levels": [
@@ -291,7 +291,7 @@
       "dci1/requirements-frozen.txt": "67c7ed012f82dbe03d38bc6123bffec71f2565177dccfb286519a075e7ba3ed3",
       "dci1/uv.lock": "e5251bba7d6819b35e11c485c741cbf0b1be4cf1ab08fd344cd2e1ecc90e9b66"
     },
-    "environment_digest": "da10615acc741b32bba707a0470688e758c47379e26624c12222b3b854c64b98",
+    "environment_digest": "befebc135f100edd3e52bdf03da5616f81d075a5bf1a82ecd0d174ef316d325e",
     "gate1_hashes": {
       "canonical_verifier_hash": "09f0675c3018485e95fbb0aca627f13a06739ef5cd83606f76cf9458143d416f",
       "measurement_rule_hash": "4f59182f07768257e27e2216343dba1608a203e5f2ba874c0254ce16b71839f4",
@@ -304,25 +304,35 @@
       "gemma-3n-e4b-it": {
         "calibration_table_hash": "bb4bc2ae3826f5ea0324ad6219b6622c958d66085ed9c8472f977a7a5808cf6b",
         "stage_record_hashes": {
+          "CONFIRMATORY_GENERATION": "c683dce0de7c50ab38ec34d5d8bccd41cc02e1819ea2c70d5f23ce354f99dbcc",
           "GATE_0_APPARATUS": "b173bfd5c66fd276d0fbcf8340c86b2a37ed27ba70cfc45fa961d83f80a794a6",
           "GATE_1_MEASUREMENT": "b8fad63c3ad2225b45f71f0cd9dc752dc02fcd15e0a3f10f12fec8cf24ef5f26",
           "GATE_2_REGIME": "4b7780a6321f7cc2c01e23e6c0cb6e2232da5423ba8dd3e0efa06f0ed208e97a",
           "GATE_3_REFERENCES": "eb9c20375cbb6f31da08135fc292d267f8707a12d21b8ca11cc690e340fbb3cf",
           "GATE_4_COMPOSED_HEADROOM": "09c7a8c1dc5ba227abf1b581d44d774ff58e85ae833d5303c4f6a773d2332ab9",
+          "GATE_5_FREEZE": "228abf8d79c474fe09e0f3eae2f5e889664ecb9b24a62cdd6860274a8f1a8fe5",
+          "MASKED_ANALYSIS": "b1c42c354b1b2d1f31d8931b49b78e9bb5d7d5b1ea8e2bc402af11c45a8f4903",
           "QUALIFIED": "91a5f3098d3ee6c972efaaa400851962e89f7af2000e93d959af42ebbf7d51ce",
-          "REGIME_SCREEN": "161f00815657803b9851c67286359ec82aa9b24e19bc48ee0e0dace24fe6e164"
+          "REGIME_SCREEN": "161f00815657803b9851c67286359ec82aa9b24e19bc48ee0e0dace24fe6e164",
+          "UNMASKED_ANALYSIS": "e2d4620d07d29fee863a2a765a5818d40878732810895bbcc0ab4fc26aa1462b",
+          "UNMASKING": "97bd9934c5923077027a605e27647dc123e83fede54110ffc35f702e71fec730"
         }
       },
       "qwen3-4b": {
         "calibration_table_hash": "280203f88b1414d946187a43a9c28bac13cb87287daad9cdcc4b630c7206e407",
         "stage_record_hashes": {
+          "CONFIRMATORY_GENERATION": "4a609393cea4f91e6e527f231d04dbfcfb70bbbccbde567acc05be997ebbb5bb",
           "GATE_0_APPARATUS": "4daf567d47c76bc803c354590c9d96c50c6955e187828cfb9c6f3e967daa4a06",
           "GATE_1_MEASUREMENT": "942fb80348c94ddc2b70e79701952a010e269f64d1c6b9de87c9e77d90670e10",
           "GATE_2_REGIME": "e1587d19bf3b828a63e5587f3059009254c45522c0d918b3b497cfcc15cefb0b",
           "GATE_3_REFERENCES": "5a36ee5b40a50ff2e31dd6c8ddc4d052eb11c0aab2e7f9f1df5a99bf6f9882ca",
           "GATE_4_COMPOSED_HEADROOM": "435baf346b51dc838dedede3a7aeeb01d812001c331b8a8b6c0896168bc2adea",
+          "GATE_5_FREEZE": "5533fdb6c43095270408de6d4781f6481a66e5a1bd195cdf0d7efc26fefdc566",
+          "MASKED_ANALYSIS": "19392f49892ea350a761666a94d4b63f3cf1ba07c5c855c00454e1dee4cdee9b",
           "QUALIFIED": "f53fb81fb4d5ded49d0035597cd4df51e299dfd4974678382d37fe4a7d72b54a",
-          "REGIME_SCREEN": "0f4b4aa3acec5dc4daca61e5808fa60c671e70a974f039f3b9c211e303038d42"
+          "REGIME_SCREEN": "0f4b4aa3acec5dc4daca61e5808fa60c671e70a974f039f3b9c211e303038d42",
+          "UNMASKED_ANALYSIS": "0586dfec72f2d349db5742906798a3881c308ff03251786eeec98a691dfb1d1b",
+          "UNMASKING": "ebfe9a38e8d12536ec94b2dc11e61e6612c00de60fa658d27bb48bb8cdfc1d4e"
         }
       }
     },
@@ -401,6 +411,11 @@
       },
       "gemma-3n-e4b-it": {
         "records": {
+          "CONFIRMATORY_GENERATION": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
           "GATE_0_APPARATUS": {
             "durable_mirror_matches": true,
             "outcome": "PASS",
@@ -426,6 +441,16 @@
             "outcome": "PASS",
             "signature_verifies": true
           },
+          "GATE_5_FREEZE": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "MASKED_ANALYSIS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
           "QUALIFIED": {
             "durable_mirror_matches": true,
             "outcome": "PASS",
@@ -435,9 +460,19 @@
             "durable_mirror_matches": true,
             "outcome": "PASS",
             "signature_verifies": true
+          },
+          "UNMASKED_ANALYSIS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "UNMASKING": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
           }
         },
-        "stage_reached": "GATE_4_COMPOSED_HEADROOM",
+        "stage_reached": "UNMASKED_ANALYSIS",
         "superseded_are_predecessors_of_nothing": true,
         "superseded_records": [
           "evidence/dci1v4r4/gemma-3n-e4b-it/superseded/7eb19472dfc4/GATE_3_REFERENCES/records/gate3_references.json"
@@ -445,6 +480,11 @@
       },
       "qwen3-4b": {
         "records": {
+          "CONFIRMATORY_GENERATION": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
           "GATE_0_APPARATUS": {
             "durable_mirror_matches": true,
             "outcome": "PASS",
@@ -470,6 +510,16 @@
             "outcome": "PASS",
             "signature_verifies": true
           },
+          "GATE_5_FREEZE": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "MASKED_ANALYSIS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
           "QUALIFIED": {
             "durable_mirror_matches": true,
             "outcome": "PASS",
@@ -479,9 +529,19 @@
             "durable_mirror_matches": true,
             "outcome": "PASS",
             "signature_verifies": true
+          },
+          "UNMASKED_ANALYSIS": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
+          },
+          "UNMASKING": {
+            "durable_mirror_matches": true,
+            "outcome": "PASS",
+            "signature_verifies": true
           }
         },
-        "stage_reached": "GATE_4_COMPOSED_HEADROOM",
+        "stage_reached": "UNMASKED_ANALYSIS",
         "superseded_are_predecessors_of_nothing": true,
         "superseded_records": [
           "evidence/dci1v4r4/qwen3-4b/superseded/7eb19472dfc4/GATE_3_REFERENCES/records/gate3_references.json"
@@ -526,9 +586,19 @@
       }
     },
     "problems": [],
-    "producing_commit": "2de0d8ea7e448adeec159aae7b1935f75f933ec9",
-    "worktree_changed_paths": [],
-    "worktree_clean": true
+    "producing_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
+    "worktree_changed_paths": [
+      "M dci1/reports/dci1v4r4/backend_provenance.json",
+      " M dci1/reports/dci1v4r4/confirmatory_driver.log",
+      " M dci1/reports/dci1v4r4/confirmatory_logs/gemma-3n-e4b-it.log",
+      " M dci1/reports/dci1v4r4/durability.json",
+      " M dci1/reports/dci1v4r4/evidence_manifest.json",
+      " M dci1/tools/v4r4_final_report.py",
+      "?? dci1/reports/dci1v4r4/confirmatory_logs/gemma-3n-e4b-it.status",
+      "?? dci1/reports/dci1v4r4/final_results.json",
+      "?? dci1/tests_v4r4/test_l4_replication_defect.py"
+    ],
+    "worktree_clean": false
   },
   "masking": {
     "min_differing_fraction": 0.5,
@@ -750,7 +820,7 @@
   },
   "revision": "v4r4",
   "topics": {
-    "confirmatory_untouched": true,
+    "confirmatory_untouched": false,
     "development_sets": [
       "prescreen",
       "solo"
@@ -787,6 +857,10 @@
         "composed": 6816,
         "stage": "GATE_4_COMPOSED_HEADROOM"
       },
+      "v4r3-confirmatory": {
+        "confirmatory": 49152,
+        "stage": "CONFIRMATORY_GENERATION"
+      },
       "v4r3-gate0-pilot": {
         "prescreen": 9024,
         "stage": "GATE_0_APPARATUS"
@@ -807,7 +881,6 @@
       "solo": 96
     },
     "untouched": [
-      "confirmatory",
       "sequestered"
     ]
   }

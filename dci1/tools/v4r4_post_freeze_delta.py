@@ -29,7 +29,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 DCI1 = Path(__file__).resolve().parents[1]
 REPO = DCI1.parent
@@ -57,6 +57,102 @@ DURABILITY = DCI1 / "reports" / "dci1v4r4" / "durability.json"
 #: which a later commit legitimately moves. Reported, never silently dropped.
 EXPECTED_TO_MOVE = ("producing_commit",)
 
+#: Three §18.1 fields *enumerate the evidence tree*, so they necessarily move
+#: as the study produces evidence: `hardware_record` lists the backend
+#: provenance sidecars it read, `environment_digest` hashes a record that
+#: contains it, and `durability_record` counts the files in both roots. A
+#: field that can only move is not evidence that the frozen science changed,
+#: and treating it as one trains a reader to ignore the alarm.
+#:
+#: They are **not** allowlisted. Each is re-compared on the part that would
+#: mean something --- the hardware the evidence came off, the environment
+#: minus that accreting sub-record, and whether durability still passed
+#: without a missing or diverged critical file. Only a move that survives
+#: that comparison stays unexpected, and the comparison is reported either
+#: way so the reader sees what was checked rather than what was excused.
+ACCRETIVE = ("hardware_record", "environment_digest", "durability_record")
+
+#: The keys of `hardware_record` that enumerate rather than describe.
+_HARDWARE_ENUMERATIONS = ("backend_runs", "hip_visible_devices_used")
+
+
+def _substantive_hardware(record: Any) -> Any:
+    if not isinstance(record, dict):
+        return record
+    return {k: v for k, v in record.items()
+            if k not in _HARDWARE_ENUMERATIONS}
+
+
+def _substantive_durability(record: Any) -> Any:
+    if not isinstance(record, dict):
+        return record
+    comparison = record.get("comparison") or {}
+    rehearsal = record.get("restore_rehearsal") or {}
+    return {
+        "passed": record.get("passed"),
+        "manifest_tracked_in_git": record.get("manifest_tracked_in_git"),
+        "roots_on_one_device": record.get("roots_on_one_device"),
+        "off_machine_copy": record.get("off_machine_copy"),
+        "restore_failures": rehearsal.get("failures"),
+        "n_critical_missing": comparison.get("n_critical_missing"),
+        "n_critical_diverged": comparison.get("n_critical_diverged"),
+        "critical_matched": comparison.get("matched"),
+    }
+
+
+def _accretion(field: str, sealed: Mapping[str, Any],
+               fresh: Mapping[str, Any]) -> dict[str, Any]:
+    """Did this field move only where it enumerates? Content, not digest."""
+    if field == "hardware_record":
+        before = _substantive_hardware(sealed.get(field))
+        after = _substantive_hardware(fresh.get(field))
+        what = ("the hardware the evidence came off, with the backend-sidecar "
+                "list and the visible-device list set aside as enumerations")
+    elif field == "durability_record":
+        before = _substantive_durability(sealed.get(field))
+        after = _substantive_durability(fresh.get(field))
+        what = ("whether §26's gate still passes with no critical artifact "
+                "missing from or diverged in the mirror")
+    elif field == "environment_digest":
+        # The digest hashes a record containing `hardware`, which accretes.
+        # Recompute it over the same record *without* that sub-record: the
+        # sealed-era provenance file is in git at the sealing commit.
+        before, after = _environment_minus_hardware()
+        what = ("the environment digest recomputed over the provenance "
+                "record with the accreting `hardware` sub-record removed")
+    else:
+        return {"checked": False}
+    same = canonical_json(before) == canonical_json(after)
+    return {"checked": True, "what_was_compared": what,
+            "substantively_unchanged": same,
+            "sealed": before, "recomputed": after}
+
+
+def _environment_minus_hardware() -> tuple[Any, Any]:
+    """The provenance record at the sealing commit, and now, minus hardware."""
+    current = json.loads(PROVENANCE.read_text())
+    sealing = subprocess.run(
+        ["git", "show", f"{_sealing_commit()}:"
+         f"dci1/reports/dci1v4r4/backend_provenance.json"],
+        cwd=REPO, capture_output=True, text=True)
+    if sealing.returncode != 0:
+        return ("SEALING_COMMIT_PROVENANCE_UNAVAILABLE", None)
+    def _strip(record: dict[str, Any]) -> str:
+        return sha_text(json.dumps(
+            {k: v for k, v in record.items()
+             if k not in ("environment_digest", "hardware")},
+            sort_keys=True))
+    return _strip(json.loads(sealing.stdout)), _strip(current)
+
+
+def _sealing_commit() -> str:
+    context = registered_context()
+    for model_key in MODEL_KEYS:
+        tree = model_tree(context, model_key)
+        if tree.stage_record(C.STAGE_GATE5).exists():
+            return read_stage_record(tree, C.STAGE_GATE5)["producing_commit"]
+    return "HEAD"
+
 
 def _commit() -> str:
     return subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO,
@@ -82,13 +178,19 @@ def compare(model_key: str) -> dict[str, Any]:
         if before != after:
             moved[field] = {"sealed": sha_text(before)[:16],
                             "recomputed": sha_text(after)[:16]}
-    unexpected = sorted(set(moved) - set(EXPECTED_TO_MOVE))
+    accretion = {field: _accretion(field, sealed, fresh)
+                 for field in moved if field in ACCRETIVE}
+    excused = {f for f, a in accretion.items()
+               if a.get("substantively_unchanged")}
+    unexpected = sorted(set(moved) - set(EXPECTED_TO_MOVE) - excused)
     return {
         "sealed_producing_commit": sealed["producing_commit"],
         "current_commit": _commit(),
         "fields_compared": len(F.FREEZE_FIELDS),
         "fields_that_moved": moved,
         "expected_to_move": list(EXPECTED_TO_MOVE),
+        "accretive_fields_re_compared": accretion,
+        "moved_only_where_they_enumerate": sorted(excused),
         "unexpectedly_moved": unexpected,
         "scientific_state_unchanged": not unexpected,
         "sealed_record_still_verifies": True,   # read_stage_record verified it

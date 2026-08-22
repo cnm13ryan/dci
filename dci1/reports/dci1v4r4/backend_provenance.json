@@ -48,7 +48,7 @@
       "dci1/uv.lock": "e5251bba7d6819b35e11c485c741cbf0b1be4cf1ab08fd344cd2e1ecc90e9b66"
     }
   },
-  "environment_digest": "da10615acc741b32bba707a0470688e758c47379e26624c12222b3b854c64b98",
+  "environment_digest": "befebc135f100edd3e52bdf03da5616f81d075a5bf1a82ecd0d174ef316d325e",
   "hardware": {
     "gemma-3n-e2b-it": {
       "backend_runs": [
@@ -84,6 +84,10 @@
     },
     "gemma-3n-e4b-it": {
       "backend_runs": [
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows_engine.json",
         "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
         "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
         "GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows_engine.json",
@@ -102,6 +106,7 @@
         "gfx1100"
       ],
       "hip_visible_devices_used": [
+        "0",
         "1"
       ],
       "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
@@ -115,6 +120,10 @@
     },
     "qwen3-4b": {
       "backend_runs": [
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows_engine.json",
+        "CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows_engine.json",
         "GATE_0_APPARATUS/backend_runs/pilot/rows_engine.json",
         "GATE_2_REGIME/backend_runs/calibration/rows_engine.json",
         "GATE_2_REGIME/backend_runs/focal_extension/rows_engine.json",
