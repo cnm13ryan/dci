@@ -199,3 +199,48 @@ def test_the_reduced_design_reaches_l1_and_l2_and_no_l3_sub_level():
     assert [s["claim_level"] for s in withheld] == ["L3"]
     assert ladder["identified"] == {"Delta_R": False, "Xi": False,
                                     "delta_difficulty": False}
+
+
+# ------------------------------------------------------- §17.4's other half
+
+def test_a_binding_vacuity_gate_travels_with_the_statement_it_qualifies():
+    """§17.4 has two halves and only the licensing one was implemented.
+
+    "Otherwise they are reported with a fixed block stating that composition
+    changed how often the outcome constraint could bind, and the F5
+    vacuity-forced recomputation is reported beside them as
+    partial-identification bounds." `f6_gate` computed `binds` into the result
+    table, where it travelled with no statement at all.
+    """
+    forced = I("D(B<-A)|vacuity_forced", 0.18, 0.08, 0.28)
+    bound = l1(I("D(B<-A)", 0.20, 0.11, 0.29), vacuity_forced=forced,
+               vacuity_gate_binds=True)
+    assert bound["emitted"] is True
+    assert bound["f6_vacuity_gate_binds"] is True
+    assert bound["vacuity_qualification"] == C.VACUITY_QUALIFICATION_SENTENCE
+    assert bound["partial_identification_bounds"] == [0.08, 0.28]
+
+    quiet = l1(I("D(B<-A)", 0.20, 0.11, 0.29), vacuity_forced=forced)
+    assert "f6_vacuity_gate_binds" not in quiet
+    assert "vacuity_qualification" not in quiet
+
+
+def test_the_vacuity_block_reaches_l2_as_well():
+    forced = I("Lambda|vacuity_forced", 0.14, 0.04, 0.24)
+    bound = l2(I("Lambda", 0.15, 0.05, 0.25), vacuity_forced=forced,
+               vacuity_gate_binds=True)
+    assert bound["emitted"] is True
+    assert bound["vacuity_qualification"] == C.VACUITY_QUALIFICATION_SENTENCE
+
+
+def test_the_runner_reads_the_gate_from_the_family_table():
+    import ast
+    from pathlib import Path as _Path
+
+    source = ast.parse((_Path(__file__).resolve().parents[1] / "src"
+                        / "dci1v4r4" / "run" / "analysis_run.py").read_text())
+    func = next(n for n in ast.walk(source) if isinstance(n, ast.FunctionDef)
+                and n.name == "_claims")
+    keys = {n.value for n in ast.walk(func)
+            if isinstance(n, ast.Constant) and isinstance(n.value, str)}
+    assert "f6_gate" in keys and "binds" in keys

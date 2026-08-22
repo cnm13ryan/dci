@@ -328,11 +328,33 @@ def _vacuity_agrees(primary: Interval, forced: Interval | None,
     return licensed == forced.excludes_zero_from_below()
 
 
+def _vacuity_qualification(vacuity_gate_binds: bool,
+                           forced: Interval | None) -> dict[str, Any]:
+    """§17.4's *reporting* half, which is separate from its licensing half.
+
+    "Otherwise they are reported with a fixed block stating that composition
+    changed how often the outcome constraint could bind, and the F5
+    vacuity-forced recomputation is reported beside them as
+    partial-identification bounds." The licensing half --- primary and forced
+    must license the same claim --- is `_vacuity_agrees`. The gate was
+    computed and reported in the result table and travelled with no statement.
+    """
+    if not vacuity_gate_binds:
+        return {}
+    out: dict[str, Any] = {
+        "vacuity_qualification": C.VACUITY_QUALIFICATION_SENTENCE,
+        "f6_vacuity_gate_binds": True}
+    if forced is not None:
+        out["partial_identification_bounds"] = [forced.lower, forced.upper]
+    return out
+
+
 def emit_l1(*, configuration: str, outcome_position: int,
             measurement_basis: str, member: str, interval: Interval,
             solo_headroom: bool,
             identification_statuses: Sequence[str] = (),
-            vacuity_forced: Interval | None = None) -> dict[str, Any]:
+            vacuity_forced: Interval | None = None,
+            vacuity_gate_binds: bool = False) -> dict[str, Any]:
     """§3.2 L1: compositional delivery loss exists, for one named D(c <- g).
 
     §17.5 registers one guarded emitter per level and this one did not exist.
@@ -361,6 +383,7 @@ def emit_l1(*, configuration: str, outcome_position: int,
         "estimate": interval.estimate,
         "half_width": interval.half_width,
         "class_sentence": C.CLASS_SENTENCE,
+        **_vacuity_qualification(vacuity_gate_binds, vacuity_forced),
     }
     if not solo_headroom:
         return {**statement, "emitted": False,
@@ -388,7 +411,8 @@ def emit_l2(*, configuration: str, outcome_position: int,
             measurement_basis: str, interval: Interval,
             l1_licensed: Mapping[str, bool],
             identification_statuses: Sequence[str] = (),
-            vacuity_forced: Interval | None = None) -> dict[str, Any]:
+            vacuity_forced: Interval | None = None,
+            vacuity_gate_binds: bool = False) -> dict[str, Any]:
     """§3.2 L2: the loss is directionally asymmetric.
 
     Gate: L1's conditions for **both** `D(B<-A)` and `D(A<-B)`. Licensing: the
@@ -414,6 +438,7 @@ def emit_l2(*, configuration: str, outcome_position: int,
         "half_width": interval.half_width,
         "class_sentence": C.CLASS_SENTENCE,
         "l1_licensed": dict(l1_licensed),
+        **_vacuity_qualification(vacuity_gate_binds, vacuity_forced),
     }
     missing = sorted(m for m in LEVEL_MEMBERS["L1"] if not l1_licensed.get(m))
     if missing:

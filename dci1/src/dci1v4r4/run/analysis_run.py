@@ -228,6 +228,10 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
     delta_r = _interval(entry, C.PRIMARY_FAMILY, "Delta_R")
     xi = _interval(entry, C.PRIMARY_FAMILY, "Xi")
     delta_difficulty = _interval(entry, C.PRIMARY_FAMILY, "delta_difficulty")
+    # §17.4's reporting half: when F6's gate binds, every primary statement
+    # carries the fixed block and the F5 partial-identification bounds. The
+    # gate was computed into the result table and travelled with no statement.
+    vacuity_binds = bool((entry.get("f6_gate") or {}).get("binds"))
 
     base = {"configuration": configuration, "outcome_position": position,
             "position_status": CL.position_status(position),
@@ -266,7 +270,8 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
             measurement_basis=measurement_basis, member=member,
             interval=interval, solo_headroom=solo_headroom,
             identification_statuses=identification_statuses,
-            vacuity_forced=_interval(entry, "F5", f"{member}|vacuity_forced"))
+            vacuity_forced=_interval(entry, "F5", f"{member}|vacuity_forced"),
+            vacuity_gate_binds=vacuity_binds)
         l1_licensed[member] = bool(statement["emitted"])
         statements.append(statement)
 
@@ -287,7 +292,8 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
             measurement_basis=measurement_basis, interval=lam,
             l1_licensed=l1_licensed,
             identification_statuses=identification_statuses,
-            vacuity_forced=_interval(entry, "F5", "Lambda|vacuity_forced")))
+            vacuity_forced=_interval(entry, "F5", "Lambda|vacuity_forced"),
+            vacuity_gate_binds=vacuity_binds))
 
     if delta_r is None or xi is None:
         return {**base, "l1_licensed": l1_licensed, "statements": statements + [{
