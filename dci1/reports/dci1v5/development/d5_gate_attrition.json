@@ -1,0 +1,561 @@
+{
+ "_status": "DEVELOPMENT ONLY \u2014 design fitting on completed v4r4 evidence; not preregistered, not confirmatory, not validation",
+ "class_control": {
+  "+ chance <= 0.75 and lift >= 0.20": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:1",
+     "CX1:4",
+     "CX2:1"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:5",
+     "CX1:7",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "marker",
+     "semicolon"
+    ],
+    "rungs": [
+     "CX1:4",
+     "CX1:5",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:45",
+     "CL8:10",
+     "CX1:7",
+     "CX1:8"
+    ]
+   }
+  },
+  "+ interaction gates (the full v5 stack)": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:1",
+     "CX1:4",
+     "CX2:1"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:5",
+     "CX1:7",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "marker",
+     "semicolon"
+    ],
+    "rungs": [
+     "CX1:4",
+     "CX1:5",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:45",
+     "CL8:10",
+     "CX1:7",
+     "CX1:8"
+    ]
+   }
+  },
+  "+ raw solo headroom CI in [0.10, 0.90]": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:1",
+     "CX1:4",
+     "CX2:1"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:5",
+     "CX1:7",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "marker",
+     "semicolon"
+    ],
+    "rungs": [
+     "CX1:4",
+     "CX1:5",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:45",
+     "CL8:10",
+     "CX1:7",
+     "CX1:8"
+    ]
+   }
+  },
+  "v4r4 rule (iota caliper and vacuity only)": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:1",
+     "CX1:4",
+     "CX2:1"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "semicolon",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:80",
+     "CL8:25",
+     "CX1:5",
+     "CX1:7",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CX1",
+     "CX2"
+    ],
+    "feature_groups": [
+     "marker",
+     "semicolon"
+    ],
+    "rungs": [
+     "CX1:4",
+     "CX1:5",
+     "CX2:2"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "CL7",
+     "CL8",
+     "CX1"
+    ],
+    "feature_groups": [
+     "letter_a",
+     "marker",
+     "y_final"
+    ],
+    "rungs": [
+     "CL7:45",
+     "CL8:3",
+     "CL8:10",
+     "CX1:7",
+     "CX1:8"
+    ]
+   }
+  }
+ },
+ "reference": {
+  "+ chance <= 0.75 and lift >= 0.20": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CR5",
+     "RF11",
+     "RF6",
+     "RF8",
+     "RF9"
+    ],
+    "feature_groups": [
+     "capital",
+     "comma",
+     "t_initial",
+     "vowel_initial",
+     "y_final"
+    ],
+    "rungs": [
+     "CR5:2",
+     "RF11:26",
+     "RF6:1",
+     "RF8:8",
+     "RF9:10",
+     "RF9:13"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "RF11",
+     "RF9"
+    ],
+    "feature_groups": [
+     "t_initial",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "RF11:26",
+     "RF9:13"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CR5",
+     "RF11"
+    ],
+    "feature_groups": [
+     "comma",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "CR5:6",
+     "CR5:8",
+     "RF11:21"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "RF7"
+    ],
+    "feature_groups": [
+     "letter_a"
+    ],
+    "rungs": [
+     "RF7:24"
+    ]
+   }
+  },
+  "+ interaction gates (the full v5 stack)": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CR5",
+     "RF6",
+     "RF9"
+    ],
+    "feature_groups": [
+     "capital",
+     "comma",
+     "t_initial"
+    ],
+    "rungs": [
+     "CR5:2",
+     "RF6:1",
+     "RF9:10",
+     "RF9:13"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [],
+    "feature_groups": [],
+    "rungs": []
+   },
+   "qwen3-4b": {
+    "families": [],
+    "feature_groups": [],
+    "rungs": []
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [],
+    "feature_groups": [],
+    "rungs": []
+   }
+  },
+  "+ raw solo headroom CI in [0.10, 0.90]": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CR5",
+     "RF11",
+     "RF6",
+     "RF8",
+     "RF9"
+    ],
+    "feature_groups": [
+     "capital",
+     "comma",
+     "t_initial",
+     "vowel_initial",
+     "y_final"
+    ],
+    "rungs": [
+     "CR5:2",
+     "RF11:26",
+     "RF6:1",
+     "RF8:8",
+     "RF9:10",
+     "RF9:13"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "RF11",
+     "RF9"
+    ],
+    "feature_groups": [
+     "t_initial",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "RF11:26",
+     "RF9:13"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CR5",
+     "RF11"
+    ],
+    "feature_groups": [
+     "comma",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "CR5:6",
+     "CR5:8",
+     "RF11:21"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "RF7"
+    ],
+    "feature_groups": [
+     "letter_a"
+    ],
+    "rungs": [
+     "RF7:24"
+    ]
+   }
+  },
+  "v4r4 rule (iota caliper and vacuity only)": {
+   "gemma-3n-e2b-it": {
+    "families": [
+     "CR5",
+     "RF11",
+     "RF3",
+     "RF6",
+     "RF8",
+     "RF9"
+    ],
+    "feature_groups": [
+     "capital",
+     "comma",
+     "one_letter",
+     "t_initial",
+     "vowel_initial",
+     "y_final"
+    ],
+    "rungs": [
+     "CR5:2",
+     "RF11:26",
+     "RF3:8",
+     "RF6:1",
+     "RF8:8",
+     "RF9:10",
+     "RF9:13",
+     "RF9:16"
+    ]
+   },
+   "gemma-3n-e4b-it": {
+    "families": [
+     "RF1",
+     "RF11",
+     "RF9"
+    ],
+    "feature_groups": [
+     "b_initial",
+     "t_initial",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "RF1:6",
+     "RF11:26",
+     "RF9:13"
+    ]
+   },
+   "qwen3-4b": {
+    "families": [
+     "CR5",
+     "RF11",
+     "RF2"
+    ],
+    "feature_groups": [
+     "comma",
+     "ing_final",
+     "vowel_initial"
+    ],
+    "rungs": [
+     "CR5:6",
+     "CR5:8",
+     "CR5:10",
+     "RF11:21",
+     "RF11:26",
+     "RF2:6"
+    ]
+   },
+   "qwen3-4b-instruct-2507": {
+    "families": [
+     "RF7"
+    ],
+    "feature_groups": [
+     "letter_a"
+    ],
+    "rungs": [
+     "RF7:24"
+    ]
+   }
+  }
+ }
+}

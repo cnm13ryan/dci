@@ -1,0 +1,528 @@
+{
+ "_what_this_is": "The proposed frozen reference-validity rule for DCI-1 v5, in machine-readable form. It is the executable statement of preregistration v5 sections 7, 9, 13 and 14. Every threshold carries the development analysis that chose it and the argument that fixes its value. Nothing here is fitted to a v5 observation, because none exists.",
+ "_status": "PROPOSED. Binding once the researcher adopts v5 and the registration manifest is signed. Until then it is a design document.",
+ "_provenance": {
+  "designed_after": "the completed DCI-1 v4r4 study, all four replications",
+  "development_evidence": "dci1/reports/dci1v5/development/*.json",
+  "development_producer": "dci1/tools/v5_reference_design_development.py",
+  "overfitting_declaration": "v5's matching rule was chosen because it separates v4r4's known Gate-4 failures from v4r4's known passes. That is design fitting. Retrospective performance on v4r4 is NOT prospective validation; v5 is the prospective test.",
+  "predecessor_protocol": "user-notes/DCI1_preregistration_v4r4.md",
+  "protocol": "user-notes/DCI1_preregistration_v5.md"
+ },
+ "difficulty_coordinate": {
+  "primary": "instructed_compliance",
+  "definition": "iota_c = (p_solo(c) - kappa(c)) / (1 - kappa(c))",
+  "secondary": "raw_solo_compliance",
+  "demotion_note": "v5 keeps iota as the difficulty coordinate and removes it as the sole admission coordinate. Sections V_headroom, V_chance, V_structure, V_interaction and V_stability all bind before V_difficulty is reached.",
+  "stability_finding": "d3_split_half_stability.json: at 48-topic halves the median |iota(A)-iota(B)| is 0.0644 pooled, 0.0439 for chance-free candidates and 0.1954 for candidates with kappa >= 0.75. iota inherits a 1/(1-kappa) variance amplification that raw solo compliance does not."
+ },
+ "structural_taxonomy": {
+  "_reference_point": "A is an exact count of a single fixed marker word: operator ==, statistic = occurrences of one word, no denominator, count not rate, lexical not structural, compliance does not scale with answer length, low natural frequency.",
+  "metadata_fields": [
+   "operator",
+   "statistic_type",
+   "count_or_rate",
+   "denominator",
+   "lexical_or_structural",
+   "length_dependence",
+   "production_burden",
+   "length_direction",
+   "natural_frequency_band",
+   "constraint_class",
+   "structural_tier",
+   "feature_group",
+   "discourse_role"
+  ],
+  "operator": [
+   "==",
+   "<=",
+   ">="
+  ],
+  "statistic_type": [
+   "marker_occurrence",
+   "word_property",
+   "punctuation_character",
+   "sentence_unit",
+   "answer_length"
+  ],
+  "length_dependence": {
+   "none": "the statistic's distribution is invariant to a proportional change in answer length",
+   "normalised": "the statistic is a rate with the word count as denominator, so a proportional length change cancels to first order",
+   "proportional": "the statistic scales roughly linearly with the word count"
+  },
+  "length_direction": {
+   "neutral": "satisfying the constraint neither lengthens nor shortens the answer materially",
+   "lengthens": "satisfying the constraint pushes the answer longer",
+   "shortens": "satisfying the constraint pushes the answer shorter"
+  },
+  "tiers": {
+   "1": {
+    "name": "same-form control",
+    "rule": "operator ==, statistic_type marker_occurrence, no denominator, count not rate, length_dependence none, length_direction neutral. Differs from A only in which marker word is counted and in the count.",
+    "example": "Use the word thus exactly q times.",
+    "eligible_slots": [
+     "core_reference",
+     "spectrum",
+     "class_same_form"
+    ]
+   },
+   "2": {
+    "name": "near-form control",
+    "rule": "operator ==, count not rate, no denominator, but a statistic_type other than marker_occurrence.",
+    "example": "The answer must contain exactly q semicolon characters.",
+    "eligible_slots": [
+     "core_reference",
+     "spectrum",
+     "near_form_control"
+    ]
+   },
+   "3": {
+    "name": "broad control",
+    "rule": "any other registered family: count budgets, rate budgets, count lower bounds, rate lower bounds.",
+    "eligible_slots": [
+     "spectrum",
+     "broad_class_control"
+    ]
+   }
+  },
+  "core_pool_tiers": [
+   1,
+   2
+  ],
+  "min_tier1_among_core_references": 2,
+  "spectrum_pool_tiers": "the tier of the spectrum rung's own core family; the spectrum is drawn from the same family as its core reference, so the tier is inherited and is not chosen",
+  "broad_class_control_tiers": [
+   3
+  ]
+ },
+ "validity_components": {
+  "_form": "V(R) = V_specification AND V_satisfiability AND V_headroom AND V_chance AND V_structure AND V_interaction AND V_stability AND V_difficulty. Evaluated lexicographically in that order; the first failing component is the recorded rejection reason and later components are not evaluated.",
+  "V_specification": {
+   "rule": "R's family and severity carry a complete Gate-1 specification record and pass the deterministic-measurement architecture A-E, carried unchanged from v4r4 section 10.7.",
+   "wording_length_caliper": 0.2,
+   "wording_direction_lexicon_required": true,
+   "parse_independence_required": true,
+   "changed_from_v4r4": false
+  },
+  "V_satisfiability": {
+   "formal_witness_required_against": [
+    "A at n_star",
+    "B at m_star",
+    "every other admitted reference at its admitted severity"
+   ],
+   "non_entailment_required": true,
+   "realistic_witness": {
+    "rule": "the joint witness against B at m_star must additionally lie inside the section 8.5 stem band",
+    "stem_band_words": [
+     60,
+     120
+    ],
+    "new_in_v5": true,
+    "why": "v4r4's witness obligation is formal: a machine-verified response satisfying both constraints. A formal witness certifies that a pair is not contradictory, not that it is satisfiable by a response of the length the task asks for. CL7's frozen reserve runs to 140, and `at least 130 words must contain the letter a` cannot be met by any answer of at most 120 words. The check is cheap and narrow and is NOT the main defence: CL7:80 is reachable and was reached at 0.609-0.662 under composition on gemma-3n-e4b-it, and V_interaction rather than this component is what measures that class of risk."
+   }
+  },
+  "V_headroom": {
+   "quantity": "p_solo(R), the raw solo compliance on the pooled calibration topics",
+   "rule": "the 95% Wilson interval for p_solo(R) must lie inside the admissible band",
+   "band": [
+    0.1,
+    0.9
+   ],
+   "interval_not_point": true,
+   "instruction_lift_min": 0.2,
+   "instruction_lift_definition": "H(R) = p_solo(R) - kappa(R)",
+   "solo_vacuity_max": 0.1,
+   "derivation": {
+    "band": "Gate 4 checks the raw rate of every registered cell against (0.05, 0.95). The band here is that band contracted by 0.05 on each side, and the contraction is applied to the interval rather than to the point estimate so that an imprecisely measured candidate cannot sit on the boundary.",
+    "instruction_lift_min": "A reference cannot lose more compliance under composition than stating it ever bought: D(R <- B) <= H(R). The registered smallest effect of interest is 0.10, so a reference with H < 0.20 cannot exhibit a reciprocal loss of two SESOI however the model behaves, and family F7's reciprocal estimands are bounded by construction rather than by the model."
+   },
+   "development_evidence": "d1_candidate_landscape.json. Six rungs across the four v4r4 replications sat inside the 0.10 iota caliper with raw solo compliance above 0.90; one of them, CL8:3 on qwen3-4b-instruct-2507 at p_solo 0.9740 and kappa 0.9323, was admitted and terminated the replication at Gate 4 on its own SOLO cell. The pooled share of measured candidates with H < 0.20 is 0.330."
+  },
+  "V_chance": {
+   "quantity": "kappa(R), chance compliance on the unconstrained cell of the same topics",
+   "point_max": 0.75,
+   "wilson_upper_max": 0.85,
+   "v4r4_value": 0.99,
+   "derivation": "iota's sampling variance carries a 1/(1-kappa) amplification. At kappa = 0.75 that factor is 4 and at kappa = 0.90 it is 10. The measured split-half |d iota| rises from 0.044 (kappa < 0.05) through 0.110 (0.25 <= kappa < 0.75) to 0.195 (kappa >= 0.75) at 48-topic halves. 0.75 is where the empirical instability reaches roughly three times the chance-free value while the amplification factor is still single digit.",
+   "development_evidence": "d3_split_half_stability.json by_chance_band; d1_candidate_landscape.json iota drift by chance band."
+  },
+  "V_structure": {
+   "rule": "R's structural tier must be admissible for the slot it is being considered for.",
+   "core_reference_tiers": [
+    1,
+    2
+   ],
+   "spectrum_tiers": [
+    1,
+    2,
+    3
+   ],
+   "broad_class_tiers": [
+    3
+   ],
+   "feature_group_diversity": "the core references come from three distinct feature groups, as in v4r4",
+   "marker_feature_groups": "each registered marker word is its own feature group. Two marker families are not related by entailment at any severity -- no answer's `thus` count constrains its `hence` count -- so section 7.5's non-entailment obligation is satisfiable for the pair, which is the criterion the grouping rule is stated over."
+  },
+  "V_interaction": {
+   "_what_it_prevents": "a reference that B's own response-distribution shift makes predictably trivial or predictably impossible, independently of anything the reference itself demands",
+   "primary_feature": {
+    "name": "kappa_under_B",
+    "symbol": "kappa(R | B)",
+    "definition": "P(R's verifier passes | B alone stated at m_star, R absent)",
+    "measured_on": "the B-solo calibration cells, scored on every candidate instance under section 9.1's presence rule",
+    "extra_generations": 0,
+    "reads_a_composed_cell": false,
+    "why_it_is_not_outcome_selection": "R is never stated in a B-solo prompt, so this is a chance verdict under a different load-one treatment. It reads no composed cell, no contrast between composed cells, and B's compliance in no cell. Delta_R's baseline is the B-solo compliance of B, which cancels in Delta_R; kappa(R|B) is B's response distribution scored by R's verifier and contains no information about B's own compliance under composition.",
+    "direction_of_any_residual_bias": "a reference that B makes trivial would have shown a small D(B <- R_j), which would have made mean_j D(B <- R_j) small and Delta_R LARGE. Excluding such references is conservative with respect to the pairwise hypothesis, not favourable to it."
+   },
+   "projection": {
+    "name": "projected_composed_compliance",
+    "formula": "p_hat(R | B+R) = kappa(R|B) + iota_R * (1 - kappa(R|B))",
+    "reading": "R's measured instructed compliance applied to the counterfactual chance baseline B induces, instead of to the unconstrained baseline. It is the definition of iota re-evaluated in the regime the reference will actually be used in.",
+    "admissible_band": [
+     0.1,
+     0.9
+    ],
+    "derivation": "Gate 4's band is (0.05, 0.95). The projection is a point prediction with error; the band is contracted by one registered projection-error allowance of 0.05 on each side. The allowance equals the section 16.2 precision precondition for D and is close to the realised median absolute projection error of 0.067.",
+    "development_evidence": "d4_interaction_projection.json. On gemma-3n-e2b-it, the one replication that reached Gate 4 with a full design, the projection was computed for 20 composed rate checks from pre-composition quantities alone. Median absolute error 0.067, mean 0.084, maximum 0.313. At a ceiling of 0.90 it caught 4 of 4 composed-headroom failures with 0 false alarms among 16 passing checks.",
+    "overfitting_caveat": "20 rate checks on one model. The 0.90 ceiling happens to sit inside the observed gap between the highest passing projection (0.8836) and the lowest failing one (0.9388). It is chosen from the band and the error allowance, not from the gap, and the coincidence is recorded rather than used as evidence.",
+    "robustness_note": "as kappa(R|B) approaches 1 the projection approaches 1 whatever iota is, so the projection is least sensitive to the transfer assumption exactly where the gate binds."
+   },
+   "secondary_feature": {
+    "name": "displacement",
+    "symbol": "Sigma(R|B) = kappa(R|B) - kappa(R)",
+    "abs_max": 0.25,
+    "why": "a signed two-sided measure of how far B moves the regime R's difficulty coordinate was measured in. It catches the floor direction, which the projection does not: CL7:30 on qwen3-4b moved from kappa 0.849 to kappa(R|B) 0.122, so its measured difficulty describes a response distribution B destroys.",
+    "development_evidence": "d2_kappa_under_b.json"
+   },
+   "generalisation_statement": "The rule names a property of the pair (statistic, focal constraint), never a family. It excludes any family whose verifier statistic has strong monotonic dependence on a response feature B predictably shifts, and it does so by measuring the shift rather than by naming the family. RF11 is excluded on gemma-3n-e2b-it because its vowel-initial count falls with answer length and B shortens answers; the same rule admits RF11 nowhere it would have been harmless and excludes no family by name."
+  },
+  "V_stability": {
+   "splits": [
+    "calibration_A",
+    "calibration_B"
+   ],
+   "split_size_topics": 96,
+   "split_draws": 4,
+   "disjoint": true,
+   "rule": [
+    "R must be independently admissible under V_headroom, V_chance, V_interaction and V_difficulty on Calibration-A and on Calibration-B, each evaluated on that split alone",
+    "the 95% percentile-bootstrap interval for iota_R(A) - iota_R(B), resampling topics within split, must lie wholly inside +/- 0.20",
+    "the 95% percentile-bootstrap interval for p_solo(R)(A) - p_solo(R)(B) must lie wholly inside +/- 0.20"
+   ],
+   "equivalence_bound": 0.2,
+   "bootstrap_resamples": 10000,
+   "why_an_equivalence_rule": "a threshold on the point difference rewards an imprecisely measured candidate, whose difference is small by luck as often as by stability. Requiring the interval to lie inside a bound penalises imprecision, which is the correct direction for a gate whose question is `can this candidate's coordinate be shown stable?`",
+   "derivation": "0.20 is twice the registered matching caliper. A coordinate that cannot be pinned to twice the caliper across two independent 96-topic splits cannot support matching at the caliper.",
+   "implied_precision_requirement": "the rule is satisfiable only when SE(iota) at 96 topics x 4 draws is about 0.07 or better. From d3, that holds for chance-free candidates (SE about 0.033) and fails for candidates with kappa near 0.75 (SE about 0.081). The chance ceiling and the stability rule therefore overlap, and the overlap is recorded rather than removed: they are justified differently, one on validity and one on precision.",
+   "development_evidence": "d3_split_half_stability.json. This is the exact quantity v4r4's pre-screen-to-calibration collapse would have been caught by: 50% to 100% of straddling families were lost between the two stages on all four replications, and the median pre-screen-to-calibration |d iota| of 0.071 is the same magnitude as the 0.10 caliper the survivors then had to clear."
+  },
+  "V_difficulty": {
+   "primary": {
+    "quantity": "|iota_R - iota_A| on the pooled 192-topic calibration",
+    "caliper": 0.1,
+    "in_standard_errors": 2.96,
+    "v4r4_value_and_se": "0.10 at 2.10 SE on 96 topics",
+    "note": "the caliper does not move. What moves is the sample it is evaluated on: doubling the calibration topics takes it from about two standard errors to about three, so selection at the caliper is less a selection on noise. Tightening the caliper instead would have moved in the wrong direction."
+   },
+   "newcombe": {
+    "rule": "the 95% Newcombe hybrid-score interval for the paired difference of the underlying solo compliance rates must intersect the region",
+    "region": 0.05
+   },
+   "secondary_coordinate_check": {
+    "quantity": "|p_solo(R) - p_solo(A)|",
+    "caliper": 0.15,
+    "new_in_v5": true,
+    "why": "raw solo compliance is not comparable across the production/budget divide, which is why v4r3 demoted it. v5's core pool is same-form and same-class as A by construction, so within the core pool the divide does not arise and the secondary coordinate is both meaningful and roughly 1.5 times more stable than iota. It is a check, never the selector."
+   },
+   "realised_drift_qualifier": {
+    "rule": "when a core reference's realised confirmatory kappa_under_b differs from its calibration value by more than 0.15, or its realised p_hat falls outside the V_interaction band, every L3 statement carries INTERACTION_ESTIMATE_DRIFTED naming the reference, both values and the realised composed rate",
+    "threshold": 0.15,
+    "terminal": false,
+    "why": "kappa_under_b is estimated on the calibration splits and used to admit a reference that is then composed on the confirmatory blocks. Without this the interaction gate has no realised check."
+   }
+  }
+ },
+ "tie_break": [
+  "smallest |iota_R - iota_A| on the pooled calibration",
+  "lower structural tier (Tier 1 before Tier 2)",
+  "registered feature-group order",
+  "less restrictive severity",
+  "family identifier"
+ ],
+ "support_requirements": {
+  "_why": "v4r4 calibrated to the minimum. Three of four replications finished with fewer than three core references, and the one that reached three had no spare.",
+  "min_structurally_eligible_families_before_calibration": 8,
+  "min_qualified_families_after_calibration": 5,
+  "n_core_references": 3,
+  "min_tier1_among_core_references": 2,
+  "min_feature_groups_among_core_references": 3,
+  "min_backup_families_frozen": 2,
+  "backups_may_be_substituted_after_gate_4": false,
+  "terminal_status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+  "development_evidence": "d5_gate_attrition.json. Applied to v4r4's own budget-class reference library the full v5 stack leaves 3, 0, 0 and 0 qualifying families on the four replications. Applied to v4r4's production-class pool -- the families v4r3 forbade to be references -- it leaves 4, 4, 2 and 3, unchanged from the v4r4 rule at every stage of the stack. The library, not the rule, is what has to change."
+ },
+ "candidate_library": {
+  "_thesis": "A chance-free exact count of a short marker word is simultaneously (i) same-form with A, (ii) free of the 1/(1-kappa) variance amplification, since iota equals raw solo compliance when kappa is 0, (iii) interaction-free with respect to B, since kappa(R|B) is 0 and the projection reduces to the solo measurement, and (iv) continuously tunable in difficulty through the count. No budget family over a word-shaped numerator has any of these properties against a maximum-word-length outcome constraint.",
+  "tier1_marker_families": {
+   "statistic": "occurrences of one fixed word, counted as whole alphabetic runs under the registered lexical rule",
+   "form": "exact_count",
+   "reserved_for_A": "however",
+   "registered_markers": [
+    {
+     "family": "MK1",
+     "marker": "thus",
+     "letters": 4,
+     "discourse_role": "consecutive",
+     "max_p_at_least_one": 0.057
+    },
+    {
+     "family": "MK2",
+     "marker": "hence",
+     "letters": 5,
+     "discourse_role": "consecutive",
+     "max_p_at_least_one": 0.0
+    },
+    {
+     "family": "MK3",
+     "marker": "though",
+     "letters": 6,
+     "discourse_role": "contrastive",
+     "max_p_at_least_one": 0.013
+    },
+    {
+     "family": "MK4",
+     "marker": "whereas",
+     "letters": 7,
+     "discourse_role": "contrastive",
+     "max_p_at_least_one": 0.013
+    },
+    {
+     "family": "MK5",
+     "marker": "indeed",
+     "letters": 6,
+     "discourse_role": "emphatic",
+     "max_p_at_least_one": 0.0
+    },
+    {
+     "family": "MK6",
+     "marker": "namely",
+     "letters": 6,
+     "discourse_role": "exemplifying",
+     "max_p_at_least_one": 0.0
+    },
+    {
+     "family": "MK7",
+     "marker": "instead",
+     "letters": 7,
+     "discourse_role": "substitutive",
+     "max_p_at_least_one": 0.021
+    },
+    {
+     "family": "MK8",
+     "marker": "overall",
+     "letters": 7,
+     "discourse_role": "summative",
+     "max_p_at_least_one": 0.112
+    }
+   ],
+   "length_rule": "every registered marker is at most 7 letters, so it is jointly satisfiable with B at every admissible severity m >= 7. `however` is 7 letters, which is why m >= 7 is required at all.",
+   "rejected_markers_and_why": {
+    "therefore": "9 letters; violates B at m in {7, 8}",
+    "moreover": "8 letters; violates B at m = 7",
+    "nonetheless": "11 letters; violates B at m <= 10",
+    "meanwhile": "9 letters; violates B at m in {7, 8}",
+    "also / then / next / yet / still": "high natural frequency; chance compliance is not near zero and the family loses the property the tier exists for",
+    "however": "A's own marker; a companion counting A's word would be A under another name"
+   },
+   "ladder": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "reserve": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "n_families": 8,
+   "development_evidence": "d6_marker_frequency.json for the vocabulary; and the one marker family v4r4 carried, CX1 over `thus`, has kappa 0.0000 and kappa(R|B) 0.0000 on all four replications, split-half |d iota| median 0.0381 -- the most stable predicate form in the whole v4r4 library -- and an iota ladder straddling iota_A on every model.",
+   "reserve_markers": [
+    {
+     "marker": "notably",
+     "letters": 7,
+     "discourse_role": "emphatic",
+     "max_p_at_least_one": 0.0
+    },
+    {
+     "marker": "albeit",
+     "letters": 6,
+     "discourse_role": "contrastive",
+     "max_p_at_least_one": 0.013
+    },
+    {
+     "marker": "besides",
+     "letters": 7,
+     "discourse_role": "additive",
+     "max_p_at_least_one": 0.0
+    }
+   ],
+   "selection_rules": {
+    "reserved_for_A": "however (7 letters, contrastive, max P 0.104)",
+    "length": "at most 7 letters, so jointly satisfiable with B at every m >= 7",
+    "natural_frequency": "P(at least one occurrence | unconstrained) <= 0.15 on every registered model, MEASURED on the predecessor study's development responses. The benchmark is A's own 0.104, not zero.",
+    "discourse_role": "declared per marker; the three core references must span at least two roles; REFERENCE_ROLE_NOT_MATCHED when none shares A's contrastive role"
+   },
+   "rejected_and_why": {
+    "finally": "measured max P 0.185, above the 0.15 ceiling",
+    "also": "measured max P 0.419",
+    "moreover / likewise": "8 letters",
+    "therefore / meanwhile / otherwise": "9 letters",
+    "conversely": "10 letters",
+    "nonetheless": "11 letters",
+    "yet / still / then / next / rather / further / equally / granted": "ADMISSIBLE on both measured rules; not registered because the vocabulary is capped at eight and these duplicate a discourse role already covered, or (yet, still) carry common non-connective senses",
+    "_correction": "an earlier draft rejected also, then, next, yet and still on an assertion of high natural frequency. The measurement supports that only for `also`; the other four are admissible and are excluded on a different, stated ground."
+   },
+   "reserve_note": "1..12 and not 1..10, on a measurement: CX1 over `thus` straddles iota_A at pre-screen on all four v4r4 replications but its eligible span is 0.375 on three of them against coverage condition C4's 0.40. Higher q is harder, so the reserve extends the span downward in iota, which is the deficient side; q = 0 is a prohibition with chance compliance near one and is not admissible."
+  },
+  "tier2_near_form_families": {
+   "form": "exact_count",
+   "statistics": [
+    "semicolon",
+    "comma_character",
+    "sentence"
+   ],
+   "n_families": 3,
+   "ladders": {
+    "semicolon": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "comma_character": [
+     2,
+     4,
+     6,
+     8,
+     10,
+     12,
+     14,
+     16
+    ],
+    "sentence": [
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ]
+   }
+  },
+  "tier3_broad_families": {
+   "carried_from_v4r4": true,
+   "families": [
+    "RF1",
+    "RF2",
+    "RF3",
+    "RF4",
+    "RF5",
+    "RF6",
+    "RF7",
+    "RF8",
+    "RF9",
+    "RF10",
+    "RF11",
+    "RF12",
+    "CR1",
+    "CR2",
+    "CR3",
+    "CR4",
+    "CR5",
+    "CR6",
+    "CR7",
+    "CR8",
+    "CR9",
+    "CR10",
+    "CR11",
+    "CR12",
+    "CL7",
+    "CL8"
+   ],
+   "eligible_slots": [
+    "spectrum",
+    "broad_class_control"
+   ],
+   "not_eligible_as_core_reference": true,
+   "why": "d5_gate_attrition.json: on v4r4's own measurements the full v5 stack leaves at most three of these families qualifying on one model and none on three. They remain in the library because the spectrum arm needs difficulty span and the broad-class arm needs a companion of a different form, and both tolerate what a core reference cannot."
+  }
+ },
+ "focal_operating_point": {
+  "target_grid": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "focal_grid": [
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "focal_extension": [
+   15,
+   16
+  ],
+  "v4r4_focal_grid": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "v4r4_focal_extension": [
+   11,
+   12
+  ],
+  "bracketing_rule": "the selected m_star must have both neighbouring severities m_star - 1 and m_star + 1 measured at calibration precision. Where the selected severity is at the top of the measured grid the registered extension is measured and selection re-runs over the union.",
+  "boundary_status": "OPERATING_POINT_AT_GRID_BOUNDARY",
+  "boundary_status_is_terminal": false,
+  "n_star_boundary_note": "A's construct has a floor at n = 1. n = 0 is a well-formed exact count but its chance compliance is the probability that an unconstrained answer contains no `however`, which is near 1, so it is chance-degenerate and is not admitted. Where n_star = 1 the bracketing rule cannot be met on the easy side and the record carries OPERATING_POINT_AT_GRID_BOUNDARY with that reason.",
+  "development_evidence": "d1_candidate_landscape.json and the v4r4 Gate-2 focal curves: m_star was the last measured rung on all four replications. qwen3-4b's B curve over m = 7..12 is 0.031, 0.107, 0.245, 0.411, 0.659, 0.742 against a focal band of (0.60, 0.95); had B:12 fallen short the replication would have recorded FOCAL_RANGE_EXHAUSTED with no information about where the band begins."
+ },
+ "what_this_spec_does_not_decide": [
+  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 33 leaves as a researcher decision",
+  "whether four models or fewer are registered",
+  "whether the 96 newly authored calibration topics are authored before or after the researcher adopts v5",
+  "any value that a v5 observation could move; there are none, because no v5 observation exists"
+ ]
+}
