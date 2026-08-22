@@ -213,7 +213,9 @@ def scope_sentence(measurement_basis: str) -> str | None:
 
 
 def _claims(entry: Mapping[str, Any], *, configuration: str,
-            measurement_basis: str) -> dict[str, Any]:
+            measurement_basis: str,
+            identification_statuses: Sequence[str] = (),
+            solo_headroom: bool = True) -> dict[str, Any]:
     """§17.5's guarded emitter, applied to one configuration's intervals.
 
     Nothing here chooses a reading. `analysis.claims` holds the lookup, it was
@@ -235,8 +237,60 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
                            "Xi": xi is not None,
                            "delta_difficulty": delta_difficulty is not None},
             "support": support}
+
+    # §17.5 registers one guarded emitter per level. L1 and L2 had none, and
+    # this function short-circuited to a single non-emitted L3 statement as
+    # soon as Delta_R or Xi were unidentified --- so a replication running
+    # §8.6's reduced design, whose entire identified estimand set is L1 and
+    # L2, produced no claim at all, while §28's status table says in terms
+    # that "L1 and L2 proceed under the reduced design". They are emitted
+    # first now, and the L3 branch below decides only about the excess.
+    statements: list[dict[str, Any]] = []
+    l1_licensed: dict[str, bool] = {}
+    for member in CL.LEVEL_MEMBERS["L1"]:
+        interval = _interval(entry, C.PRIMARY_FAMILY, member)
+        if interval is None:
+            l1_licensed[member] = False
+            statements.append({
+                "claim_level": "L1", "configuration": configuration,
+                "family": C.PRIMARY_FAMILY, "member": member,
+                "interval_type": "simultaneous",
+                "identification_status": ["COMPANION_CLASS_NOT_MATCHED"],
+                "measurement_basis": measurement_basis,
+                "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+                "outcome_position": position, "emitted": False,
+                "reason": f"the design in force does not estimate {member}"})
+            continue
+        statement = CL.emit_l1(
+            configuration=configuration, outcome_position=position,
+            measurement_basis=measurement_basis, member=member,
+            interval=interval, solo_headroom=solo_headroom,
+            identification_statuses=identification_statuses,
+            vacuity_forced=_interval(entry, "F5", f"{member}|vacuity_forced"))
+        l1_licensed[member] = bool(statement["emitted"])
+        statements.append(statement)
+
+    lam = _interval(entry, C.PRIMARY_FAMILY, "Lambda")
+    if lam is None:
+        statements.append({
+            "claim_level": "L2", "configuration": configuration,
+            "family": C.PRIMARY_FAMILY, "member": "Lambda",
+            "interval_type": "simultaneous",
+            "identification_status": ["COMPANION_CLASS_NOT_MATCHED"],
+            "measurement_basis": measurement_basis,
+            "difficulty_coordinate": C.DIFFICULTY_COORDINATE,
+            "outcome_position": position, "emitted": False,
+            "reason": "the design in force does not estimate Lambda"})
+    else:
+        statements.append(CL.emit_l2(
+            configuration=configuration, outcome_position=position,
+            measurement_basis=measurement_basis, interval=lam,
+            l1_licensed=l1_licensed,
+            identification_statuses=identification_statuses,
+            vacuity_forced=_interval(entry, "F5", "Lambda|vacuity_forced")))
+
     if delta_r is None or xi is None:
-        return {**base, "statements": [{
+        return {**base, "l1_licensed": l1_licensed, "statements": statements + [{
             "claim_level": "L3", "configuration": configuration,
             "family": C.PRIMARY_FAMILY, "interval_type": "simultaneous",
             "identification_status": ["COMPANION_CLASS_NOT_MATCHED",
@@ -255,13 +309,14 @@ def _claims(entry: Mapping[str, Any], *, configuration: str,
         delta_difficulty = CL.Interval("delta_difficulty", 0.0, 0.0, 0.0)
         support = {"holds": False, "reason":
                    "the design in force carries no spectrum arm"}
-    return {**base, "statements": CL.emit_l3(
-        configuration=configuration, outcome_position=position,
-        measurement_basis=measurement_basis, delta_r=delta_r,
-        delta_difficulty=delta_difficulty, xi=xi, support=support,
-        references_identified=True,
-        heterogeneity_disagrees=_heterogeneity_disagrees(entry),
-        vacuity_forced_agrees=_vacuity_forced_agrees(entry))}
+    return {**base, "l1_licensed": l1_licensed,
+            "statements": statements + CL.emit_l3(
+                configuration=configuration, outcome_position=position,
+                measurement_basis=measurement_basis, delta_r=delta_r,
+                delta_difficulty=delta_difficulty, xi=xi, support=support,
+                references_identified=True,
+                heterogeneity_disagrees=_heterogeneity_disagrees(entry),
+                vacuity_forced_agrees=_vacuity_forced_agrees(entry))}
 
 
 def run_masked_analysis(model_key: str, tree: ModelTree, *,
@@ -351,9 +406,27 @@ def run_unmasked_analysis(model_key: str, tree: ModelTree, *,
             "sealed; an unmasked analysis under different code is not the "
             "analysis the mask protected")
     basis = str(freeze_record.get("gate1_measurement_basis", "UNKNOWN"))
+    statuses = list(freeze_record.get("identification_statuses") or ())
+    # L1's identification gate is "c has solo headroom (§12)". §12.3 selects
+    # n* only from severities whose solo compliance lies inside [0.50, 0.85]
+    # and m* only from inside FOCAL_BAND, and §12.4's adequacy check is what
+    # Gate 2 passes on, so a freeze that names both is a freeze whose outcome
+    # constraints have solo headroom. Derived from the frozen values rather
+    # than defaulted to True.
+    headroom = bool(freeze_record.get("n_star")
+                    and freeze_record.get("m_star"))
     ladder = {configuration: _claims(entry, configuration=configuration,
-                                     measurement_basis=basis)
+                                     measurement_basis=basis,
+                                     identification_statuses=statuses,
+                                     solo_headroom=headroom)
               for configuration, entry in result.items()}
+    # §3.2 L4 is stated *across* configurations, so it is emitted once per
+    # replication rather than once per configuration.
+    ladder["L4"] = CL.emit_l4(
+        per_configuration={k: [s["claim_level"] for s in v["statements"]
+                               if s.get("emitted")]
+                           for k, v in ladder.items()},
+        measurement_basis=basis, identification_statuses=statuses)
     CL.assert_no_l5_emitter(vars(CL))
     return {"outcome": "PASS", "stage": C.STAGE_UNMASKED_ANALYSIS,
             "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_UNMASKED_ANALYSIS],
