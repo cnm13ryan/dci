@@ -1,4 +1,8 @@
 {
+  "already_generated": [
+    "gemma-3n-e4b-it",
+    "qwen3-4b"
+  ],
   "artifact_type": "v4r4-prefreeze-audit",
   "bootstrap": {
     "construction": "studentised maximum modulus",
@@ -586,17 +590,11 @@
       }
     },
     "problems": [],
-    "producing_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
+    "producing_commit": "b1ae6b929a9336c0928b44207b12bf28c941780a",
     "worktree_changed_paths": [
-      "M dci1/reports/dci1v4r4/backend_provenance.json",
-      " M dci1/reports/dci1v4r4/confirmatory_driver.log",
-      " M dci1/reports/dci1v4r4/confirmatory_logs/gemma-3n-e4b-it.log",
-      " M dci1/reports/dci1v4r4/durability.json",
-      " M dci1/reports/dci1v4r4/evidence_manifest.json",
-      " M dci1/tools/v4r4_final_report.py",
-      "?? dci1/reports/dci1v4r4/confirmatory_logs/gemma-3n-e4b-it.status",
-      "?? dci1/reports/dci1v4r4/final_results.json",
-      "?? dci1/tests_v4r4/test_l4_replication_defect.py"
+      "M dci1/reports/dci1v4r4/post_freeze_delta.json",
+      " M dci1/reports/dci1v4r4/prefreeze_audit.json",
+      " M dci1/tools/v4r4_prefreeze_audit.py"
     ],
     "worktree_clean": false
   },
@@ -819,6 +817,8 @@
     }
   },
   "revision": "v4r4",
+  "status": "ALREADY_FROZEN_AND_GENERATED",
+  "status_note": "the confirmatory topic set is spent because this study has already frozen and generated. `can_freeze` is false because a second freeze is not licensed, not because an audit condition failed; the audit that licensed the freeze is the one recorded at the sealing commit",
   "topics": {
     "confirmatory_untouched": false,
     "development_sets": [

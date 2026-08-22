@@ -85,7 +85,7 @@
           "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
         }
       },
-      "current_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
+      "current_commit": "b1ae6b929a9336c0928b44207b12bf28c941780a",
       "expected_to_move": [
         "producing_commit"
       ],
@@ -104,7 +104,7 @@
           "sealed": "75b241d73a2cfd48"
         },
         "producing_commit": {
-          "recomputed": "d11dceac90a43fbc",
+          "recomputed": "42ee6f0f9e7a8cae",
           "sealed": "1af4cbf63c125e9b"
         }
       },
@@ -196,7 +196,7 @@
           "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
         }
       },
-      "current_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
+      "current_commit": "b1ae6b929a9336c0928b44207b12bf28c941780a",
       "expected_to_move": [
         "producing_commit"
       ],
@@ -215,7 +215,7 @@
           "sealed": "18f2b91fb1b7c177"
         },
         "producing_commit": {
-          "recomputed": "d11dceac90a43fbc",
+          "recomputed": "42ee6f0f9e7a8cae",
           "sealed": "1af4cbf63c125e9b"
         }
       },
