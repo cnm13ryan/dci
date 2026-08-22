@@ -47,10 +47,17 @@ __all__ = ["ANALYSIS_MODULES", "observation_table", "family_of_slots",
 
 #: Everything whose edit would change a number. Hashed into both the masked
 #: seal and the unmask record.
+#:
+#: `run/analysis_run.py` is in the list because it decides *which* analysis
+#: runs --- both configurations, the bootstrap seed, whether the spectrum fit
+#: is built --- and an edit to `_analyse` would move every number while
+#: leaving a code hash that named only the estimators unchanged. It was
+#: outside the set, which made "everything whose edit would change a number"
+#: false of the module that says which numbers there are.
 ANALYSIS_MODULES = ("analysis/observations.py", "analysis/estimators.py",
                     "analysis/bootstrap.py", "analysis/spectrum.py",
                     "analysis/run.py", "analysis/claims.py",
-                    "analysis/masking.py")
+                    "analysis/masking.py", "run/analysis_run.py")
 
 
 def _code_hash() -> str:
@@ -357,4 +364,17 @@ def run_unmasked_analysis(model_key: str, tree: ModelTree, *,
             "measurement_basis": basis,
             "scope_sentence": scope_sentence(basis),
             "result": result, "claims": ladder,
-            "identical_computation_as_masked": True}
+            # Derived, not asserted. The masked phase calls `_analyse` with
+            # `spectrum=False` because A's point is inside the permuted group;
+            # the unmasked phase leaves the default. The two computations
+            # therefore coincide exactly when the variant is not "full", and
+            # on a full design the spectrum fit is the declared difference.
+            # This used to be the literal `True` on every path.
+            "identical_computation_as_masked": variant != "full",
+            "difference_from_the_masked_computation": (
+                "none: this design builds no spectrum input, so the masked "
+                "and unmasked calls are the same call"
+                if variant != "full" else
+                "the spectrum fit and delta_difficulty, which §20 declares "
+                "are not computable in the masked phase because A's point is "
+                "inside the permuted group")}

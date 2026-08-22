@@ -8,14 +8,14 @@
   "passed": true,
   "per_model": {
     "gemma-3n-e4b-it": {
-      "current_commit": "ebe7fe5b2311b54ba1e037a72026dffc00c401d3",
+      "current_commit": "ea1a47e889363171cc1a62ce5cf433fb52fdc464",
       "expected_to_move": [
         "producing_commit"
       ],
       "fields_compared": 66,
       "fields_that_moved": {
         "producing_commit": {
-          "recomputed": "3ea80ac15a734df7",
+          "recomputed": "2afa35057655856b",
           "sealed": "1af4cbf63c125e9b"
         }
       },
@@ -25,14 +25,14 @@
       "unexpectedly_moved": []
     },
     "qwen3-4b": {
-      "current_commit": "ebe7fe5b2311b54ba1e037a72026dffc00c401d3",
+      "current_commit": "ea1a47e889363171cc1a62ce5cf433fb52fdc464",
       "expected_to_move": [
         "producing_commit"
       ],
       "fields_compared": 66,
       "fields_that_moved": {
         "producing_commit": {
-          "recomputed": "3ea80ac15a734df7",
+          "recomputed": "2afa35057655856b",
           "sealed": "1af4cbf63c125e9b"
         }
       },

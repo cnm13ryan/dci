@@ -248,3 +248,39 @@ def test_the_post_freeze_delta_shows_no_frozen_value_moved():
         assert set(entry["fields_that_moved"]) <= {"producing_commit"}, \
             model_key
         assert entry["fields_compared"] == len(F.FREEZE_FIELDS)
+
+
+# --------------------------------------------------- what the code hash covers
+
+def test_the_analysis_code_hash_covers_the_module_that_decides_the_analysis():
+    """`run/analysis_run.py` chooses both configurations, the bootstrap seed
+    and whether the spectrum fit is built. It was outside the hashed set, so
+    an edit to `_analyse` would have moved every number under a code hash that
+    named only the estimators."""
+    from dci1v4r4.run.analysis_run import ANALYSIS_MODULES
+
+    assert "run/analysis_run.py" in ANALYSIS_MODULES
+    src = DCI1 / "src" / "dci1v4r4"
+    for name in ANALYSIS_MODULES:
+        assert (src / name).exists(), name
+
+
+def test_the_identical_computation_claim_is_derived_and_not_asserted():
+    """It was the literal `True` on every path, including the full design,
+    where §20 declares the spectrum fit as the difference."""
+    import ast
+
+    source = ast.parse((DCI1 / "src" / "dci1v4r4" / "run"
+                        / "analysis_run.py").read_text())
+    func = next(n for n in ast.walk(source)
+                if isinstance(n, ast.FunctionDef)
+                and n.name == "run_unmasked_analysis")
+    for node in ast.walk(func):
+        if not isinstance(node, ast.Dict):
+            continue
+        for key, value in zip(node.keys, node.values):
+            if isinstance(key, ast.Constant) and \
+                    key.value == "identical_computation_as_masked":
+                assert isinstance(value, ast.Compare), ast.dump(value)
+                return
+    raise AssertionError("the field is not built in run_unmasked_analysis")
