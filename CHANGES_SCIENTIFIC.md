@@ -13,7 +13,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and nineteen defects moved what a v4r4 record says
+## 2026-08-22 — the whole pipeline below Gate 1 executed for the first time, and nineteen defects moved what a v4r4 record says
 
 **Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2
 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Gates 2, 3,
@@ -485,7 +485,7 @@ in `dci1/reports/dci1v4r3/gate1_decision.json`.
 
 ---
 
-## 2026-08-21 (later) — v4r3 repair pass: §10.4 replaced, three guards added
+## 2026-08-21 — v4r3 repair pass: §10.4 replaced, three guards added
 
 **Scope.** Prospective. No v4r3 number moves and nothing in v2, v3, v4r2 or the
 four v4r2 design screens is edited, reinterpreted or recomputed.
