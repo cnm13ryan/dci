@@ -1,0 +1,322 @@
+{
+ "_provenance": "signed Gate-2 and REGIME_SCREEN records only",
+ "difficulty_coordinate": "instructed_compliance",
+ "focal_band": [
+  0.6,
+  0.95
+ ],
+ "focal_extension": [
+  11,
+  12
+ ],
+ "focal_grid": [
+  7,
+  8,
+  9,
+  10
+ ],
+ "models": {
+  "gemma-3n-e2b-it": {
+   "A_wording": "Use the word however exactly 1 time.",
+   "B_solo_compliance_curve_by_m": {
+    "10": 0.7994791666666666,
+    "7": 0.4296875,
+    "8": 0.5520833333333334,
+    "9": 0.6197916666666666
+   },
+   "B_wording": "Every word in the answer must have at most 10 letters.",
+   "a_anchor": {
+    "iota": 0.5555555555555555,
+    "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+    "severity": 1,
+    "solo": 0.6666666666666666
+   },
+   "a_chance_compliance": 0.1015625,
+   "a_solo_compliance": 0.6171875,
+   "b_chance_compliance": 0.0,
+   "b_solo_compliance": 0.7994791666666666,
+   "b_solo_vacuity": 0.0,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.0007787151200520093,
+    "family": "CX2",
+    "iota": 0.5731343283582089,
+    "severity": 1,
+    "slot": "CL"
+   },
+   "class_companion_wording": "Your answer must use exactly 1 semicolons.",
+   "completion_cap": 512,
+   "core_references": [
+    {
+     "distance": 0.03966646813579511,
+     "family": "RF9",
+     "feature_group": "t_initial",
+     "iota": 0.5342465753424658,
+     "severity": 10,
+     "slot": "R1",
+     "wording": "At most 10 words may begin with t."
+    },
+    {
+     "distance": 0.05794074242252245,
+     "family": "CR5",
+     "feature_group": "comma",
+     "iota": 0.6318537859007833,
+     "severity": 2,
+     "slot": "R2",
+     "wording": "Use at most 2 commas per hundred words."
+    },
+    {
+     "distance": 0.05911447945751891,
+     "family": "RF11",
+     "feature_group": "vowel_initial",
+     "iota": 0.6330275229357798,
+     "severity": 26,
+     "slot": "R3",
+     "wording": "Words beginning with vowels: at most 26."
+    }
+   ],
+   "design_variant": "full",
+   "focal_extension_measured": false,
+   "focal_grid_used": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "graded_clause_reading": "share",
+   "iota_a": 0.5739130434782609,
+   "iota_b": 0.7994791666666666,
+   "m_star": 10,
+   "m_star_is_last_measured_rung": true,
+   "n_star": 1,
+   "prescreen_iota_a": 0.5555555555555555,
+   "spectrum": [
+    {
+     "family": "RF9",
+     "iota": 0.431547619047619,
+     "severity": 8,
+     "side": "lower",
+     "slot": "R1-",
+     "target": 0.3739130434782609,
+     "wording": "At most 8 words may begin with t."
+    },
+    {
+     "family": "RF9",
+     "iota": 0.642512077294686,
+     "severity": 13,
+     "side": "upper",
+     "slot": "R1+",
+     "target": 0.7739130434782608,
+     "wording": "At most 13 words may begin with t."
+    },
+    {
+     "family": "CR5",
+     "iota": 0.35543766578249336,
+     "severity": 3,
+     "side": "lower",
+     "slot": "R2-",
+     "target": 0.3739130434782609,
+     "wording": "Use at most 3 commas per hundred words."
+    },
+    {
+     "family": "CR5",
+     "iota": 0.6822916666666666,
+     "severity": 1,
+     "side": "upper",
+     "slot": "R2+",
+     "target": 0.7739130434782608,
+     "wording": "Use at most 1 commas per hundred words."
+    },
+    {
+     "family": "RF11",
+     "iota": 0.3359580052493438,
+     "severity": 21,
+     "side": "lower",
+     "slot": "R3-",
+     "target": 0.3739130434782609,
+     "wording": "Words beginning with vowels: at most 21."
+    },
+    {
+     "family": "RF11",
+     "iota": 0.8544600938967137,
+     "severity": 32,
+     "side": "upper",
+     "slot": "R3+",
+     "target": 0.7739130434782608,
+     "wording": "Words beginning with vowels: at most 32."
+    }
+   ],
+   "truncation_by_cell_gate2": {}
+  },
+  "gemma-3n-e4b-it": {
+   "A_wording": "Use the word however exactly 4 times.",
+   "B_solo_compliance_curve_by_m": {
+    "10": 0.8489583333333334,
+    "7": 0.4557291666666667,
+    "8": 0.6276041666666666,
+    "9": 0.7291666666666666
+   },
+   "B_wording": "Every word in the answer must have at most 10 letters.",
+   "a_anchor": {
+    "iota": 0.6666666666666666,
+    "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+    "severity": 7,
+    "solo": 0.6666666666666666
+   },
+   "a_chance_compliance": 0.10416666666666667,
+   "a_solo_compliance": 0.7265625,
+   "b_chance_compliance": 0.0,
+   "b_solo_compliance": 0.8489583333333334,
+   "b_solo_vacuity": 0.0,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.013565891472868241,
+    "family": "CL7",
+    "iota": 0.7083333333333334,
+    "severity": 80,
+    "slot": "CL"
+   },
+   "class_companion_wording": "At least 80 words must contain letter a.",
+   "completion_cap": 512,
+   "core_references": [],
+   "design_variant": "reduced",
+   "focal_extension_measured": false,
+   "focal_grid_used": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "graded_clause_reading": "share",
+   "iota_a": 0.6947674418604651,
+   "iota_b": 0.8489583333333334,
+   "m_star": 10,
+   "m_star_is_last_measured_rung": true,
+   "n_star": 4,
+   "prescreen_iota_a": 0.6666666666666666,
+   "spectrum": [],
+   "truncation_by_cell_gate2": {}
+  },
+  "qwen3-4b": {
+   "A_wording": "Use the word however exactly 2 times.",
+   "B_solo_compliance_curve_by_m": {
+    "10": 0.4114583333333333,
+    "11": 0.6588541666666666,
+    "12": 0.7421875,
+    "7": 0.03125,
+    "8": 0.10677083333333333,
+    "9": 0.24479166666666666
+   },
+   "B_wording": "Every word in the answer must have at most 12 letters.",
+   "a_anchor": {
+    "iota": 0.75,
+    "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+    "severity": 2,
+    "solo": 0.75
+   },
+   "a_chance_compliance": 0.057291666666666664,
+   "a_solo_compliance": 0.71875,
+   "b_chance_compliance": 0.0,
+   "b_solo_compliance": 0.7421875,
+   "b_solo_vacuity": 0.005208333333333333,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.006344958563535896,
+    "family": "CX1",
+    "iota": 0.6953125,
+    "severity": 4,
+    "slot": "CL"
+   },
+   "class_companion_wording": "Use the word thus exactly 4 times.",
+   "completion_cap": 512,
+   "core_references": [
+    {
+     "distance": 0.012628255722178294,
+     "family": "RF11",
+     "feature_group": "vowel_initial",
+     "iota": 0.7142857142857142,
+     "severity": 21,
+     "slot": "R1",
+     "wording": "Words beginning with vowels: at most 21."
+    },
+    {
+     "distance": 0.025427950366814556,
+     "family": "CR5",
+     "feature_group": "comma",
+     "iota": 0.6762295081967213,
+     "severity": 8,
+     "slot": "R2",
+     "wording": "Use at most 8 commas per hundred words."
+    }
+   ],
+   "design_variant": "reduced",
+   "focal_extension_measured": true,
+   "focal_grid_used": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "graded_clause_reading": "share",
+   "iota_a": 0.7016574585635359,
+   "iota_b": 0.7421875,
+   "m_star": 12,
+   "m_star_is_last_measured_rung": true,
+   "n_star": 2,
+   "prescreen_iota_a": 0.75,
+   "spectrum": [],
+   "truncation_by_cell_gate2": {}
+  },
+  "qwen3-4b-instruct-2507": {
+   "A_wording": "Use the word however exactly 5 times.",
+   "B_solo_compliance_curve_by_m": {
+    "10": 0.6796875,
+    "7": 0.12760416666666666,
+    "8": 0.3046875,
+    "9": 0.4791666666666667
+   },
+   "B_wording": "Every word in the answer must have at most 10 letters.",
+   "a_anchor": {
+    "iota": 0.625,
+    "rule": "the A severity whose pre-screen solo compliance is nearest \u00a712.3's target aim; a pre-screen anchor only, never n*",
+    "severity": 5,
+    "solo": 0.625
+   },
+   "a_chance_compliance": 0.013020833333333334,
+   "a_solo_compliance": 0.6015625,
+   "b_chance_compliance": 0.0,
+   "b_solo_compliance": 0.6796875,
+   "b_solo_vacuity": 0.057291666666666664,
+   "class_companion": {
+    "constraint_class": "production",
+    "distance": 0.019078546783033112,
+    "family": "CL8",
+    "iota": 0.6153846153846162,
+    "severity": 3,
+    "slot": "CL"
+   },
+   "class_companion_wording": "At least 3 words must end with y.",
+   "completion_cap": 512,
+   "core_references": [],
+   "design_variant": "reduced",
+   "focal_extension_measured": false,
+   "focal_grid_used": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "graded_clause_reading": "share",
+   "iota_a": 0.5963060686015831,
+   "iota_b": 0.6796875,
+   "m_star": 10,
+   "m_star_is_last_measured_rung": true,
+   "n_star": 5,
+   "prescreen_iota_a": 0.625,
+   "spectrum": [],
+   "truncation_by_cell_gate2": {}
+  }
+ }
+}

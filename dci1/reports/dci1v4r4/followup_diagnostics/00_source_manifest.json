@@ -1,0 +1,1503 @@
+{
+ "_provenance": "POST-HOC DIAGNOSTIC manifest for the follow-up evidence package",
+ "items": [
+  {
+   "bytes": 2605,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/QUALIFIED/records/qualification_record.json",
+   "producing_stage": "QUALIFIED",
+   "record_hash": "f9ff595e841fb690a0c4112051908558265fd180296282a85c70175e4edb0bf6",
+   "sha256": "a1f8f37fe6ab0f5a8c82f8608cf0a6a2371ec6fadf471c7363c03c7aa0b5ba82",
+   "signature": "0db99b4a6b16abc0f82f9d1b82fa5787a45847c11ec94a6bfb9d67ef8e40413e",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 29502,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "producing_stage": "GATE_0_APPARATUS",
+   "record_hash": "7d2dd15c4149a0e2aa634fd3f4f8afffc193333f22553225bdfec30882b280d4",
+   "sha256": "b0d1e3b68d8a37fc274fa9caa4c6dd979903a7137c39ac8f54b8fdec9008dc0a",
+   "signature": "7904e3b81962a5adeabf3b35057588697f38e2773db0303ec54193466fdb9e5c",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 138761,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/records/regime_record.json",
+   "producing_stage": "REGIME_SCREEN",
+   "record_hash": "2257d3c35a81521cdb8bbc7675c45fa8362a8055fa9f553951e05f51518a571b",
+   "sha256": "c44f9313d28df59135c7a884e00457c7e2c751de019a00a2c644e4a234b16843",
+   "signature": "a57cb61e8e6bcfa227bab4499c287806e11d394db11572a832f34bc9256565c5",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1796615,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+   "producing_stage": "GATE_1_MEASUREMENT",
+   "record_hash": "40e2fd61a1ae51018526198709e7cff1370ab5798c9fe8cdc4a4593b91f44e86",
+   "sha256": "8a60023cccd80574c604fcda270801b83e8767bf8d737b00933eb5e639e72a84",
+   "signature": "ea43777260ba1fd1ea523b133e39176b02d65334086e1507377a2b3ff31b24ba",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 13877,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_2_REGIME/records/gate2_regime.json",
+   "producing_stage": "GATE_2_REGIME",
+   "record_hash": "d4765c3a5da0a032eb3508e583f82170907c71832bdb6808341ddbbc9291db63",
+   "sha256": "92bc995e181610828e0df1748c4c52e949609bd6dd331963dbec5ed7085fe846",
+   "signature": "d485dac61eea1e2be707b3a85e0d9bde889637a6caed9cb82c028cc4d53b6860",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 4538,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_3_REFERENCES/records/gate3_references.json",
+   "producing_stage": "GATE_3_REFERENCES",
+   "record_hash": "20347a5876f0b75197853207d269ca8c44b25cf49de683bf395ff59462031683",
+   "sha256": "28e77e2628ca907985b7151fd21a539ca6052792f5ce4ba2a09a183ea5fdd27e",
+   "signature": "92375d78867d61216e43a980433fac618b55e58b78a04800742b733f0eb2fc1d",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 9740,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/terminal_report.json",
+   "producing_stage": "TERMINAL",
+   "record_hash": "08d58fffb77c2b289e726ecf0ff92f728527bd29c9c3112ec10d67e0314e8e7d",
+   "sha256": "75aa04851387d314a52b0534f8bccac606db0b13cd67de9a7f2319aafbf1d857",
+   "signature": "ae09cd7b97d29211b65dc2074ffa444ea6411c8ac6d13ba9763bece5d2faea7f",
+   "status": "REGISTERED (signed terminal report)"
+  },
+  {
+   "bytes": 3995692,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "e2abab46a481f7484d3877d6c4f86e6c36d048a8db234125b63ba817a226eeac",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 31419371,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_2_REGIME/backend_runs/calibration/scored.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "b739705498e4edc6f5e94d3f35e398281ac46816ee719f346c7597e97d351c7b",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 8113959,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "a5c2c7a185d92f50edb8f517da9caad4e541f0da09367185c264b2625473d443",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 167122,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "8e22d7f4c5b696dc51d7106fdb7048ddab445bcf35a2e99240c35da7795a0b62",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 167884,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "fbe4efdfb969fc3a2a188406b54f4cbbc8d5ebb4f8d2cb328e9846862f9f545f",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 167124,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "746183431a2b18a90ac1983bd16b423ed8161a33dad1c57d8c5c3598f84c316a",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 13733493,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "29c7221e5a6a9dc561932b7baee0afba32acacdba09b970bc911384c5f66c5a3",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 4334079,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_0_APPARATUS/backend_runs/pilot/rows.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "637fc77209c17028940d850ca0bc652d7bb12c10f24e3e378ae8b23cf12daa33",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 35610751,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_2_REGIME/backend_runs/calibration/rows.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "fcf4ec3326b615ede6db917753bea589fd3224bf144f1df539bb2e2aea5ca02c",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 8754022,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "d4b78fddc12e0c50823385259a48365b002bf757c954e0b78c8fc76cfdb04aea",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 208848,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap1024/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "ee959066a364139ca44f2947e5de9ac2f7ff0d7c6b4abcf76e1b03fde62703de",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 210688,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap512/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "2093482ac54ac56de83ab1b13502578299e9ffbdc10ddc45157813ce3d851b42",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 209162,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/cap768/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "93acb5842dd1295313fc0f6511f023c9ea3dd23b607d5255418ae2c58e2f3d77",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 14891301,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "c60820dd8bc314128190b474036648a4d5444383484436b4bfde65294358aa9e",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 2605,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/QUALIFIED/records/qualification_record.json",
+   "producing_stage": "QUALIFIED",
+   "record_hash": "935cd92504bd40e93d950c5576ddb6d39b51988cb22cc7197d73609a254b29a9",
+   "sha256": "91a5f3098d3ee6c972efaaa400851962e89f7af2000e93d959af42ebbf7d51ce",
+   "signature": "88bff92d3a870538d3f02df08928cd60e766a8b4ce1c01baa35bf986be937f51",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 29610,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "producing_stage": "GATE_0_APPARATUS",
+   "record_hash": "f1dab7daa7cba61c5568bcc9a917096bc9aa79efbb52bb599b15df27d245b578",
+   "sha256": "b173bfd5c66fd276d0fbcf8340c86b2a37ed27ba70cfc45fa961d83f80a794a6",
+   "signature": "35af2b6eed3ddf30eee885860bfdeb2fe8694616bc1b0f091477e9df7491b4f8",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 137805,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/records/regime_record.json",
+   "producing_stage": "REGIME_SCREEN",
+   "record_hash": "53fd99e3e3461e8b07511b0d52aec5eecea1a1c084c3e14561bf4c289ffbc5a2",
+   "sha256": "161f00815657803b9851c67286359ec82aa9b24e19bc48ee0e0dace24fe6e164",
+   "signature": "63a30040975421dce562a4d34b2802a674561ffef4e92c91de13a8c06c1b9c99",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1796615,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+   "producing_stage": "GATE_1_MEASUREMENT",
+   "record_hash": "684ea3d50a37fa6ed830ccb6177e17d737b5bb5f9584f5a2648e625fa04225b6",
+   "sha256": "b8fad63c3ad2225b45f71f0cd9dc752dc02fcd15e0a3f10f12fec8cf24ef5f26",
+   "signature": "1fbcf155ea6f30c4abced071cd509b77fd6c45ceb4ae98b939d95af364545b06",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 12680,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_2_REGIME/records/gate2_regime.json",
+   "producing_stage": "GATE_2_REGIME",
+   "record_hash": "e28bd90fa64d5cc86a9a605564efded35b67a1554d79a5b67b521fc1085e576c",
+   "sha256": "4b7780a6321f7cc2c01e23e6c0cb6e2232da5423ba8dd3e0efa06f0ed208e97a",
+   "signature": "d3bb6ea69625b6f570cf7db4f6c6ca147d814d0a9616c89efeb0922cb934839f",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1430,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_3_REFERENCES/records/gate3_references.json",
+   "producing_stage": "GATE_3_REFERENCES",
+   "record_hash": "17e878f3f6af6e7026cb96f658a03c33d4cd44ef45e2a9f4800b9085cecfe215",
+   "sha256": "eb9c20375cbb6f31da08135fc292d267f8707a12d21b8ca11cc690e340fbb3cf",
+   "signature": "7117e76176e1ab0fd689fef6e5730e37f759f2befaa7e90b228430cf51fb250a",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1243,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/records/gate4_composed.json",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "record_hash": "fc84b5c6decc2e5a3980fdb28ca66a5d661cc3b732d2c90c90d6326bd87c8456",
+   "sha256": "09c7a8c1dc5ba227abf1b581d44d774ff58e85ae833d5303c4f6a773d2332ab9",
+   "signature": "b4b598d37a05d69f2d76e9d377855fe0a41f17843081c77c1dcac148b64fe73b",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 78222,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_5_FREEZE/records/gate5_freeze.json",
+   "producing_stage": "GATE_5_FREEZE",
+   "record_hash": "daf49b20354276c5abb1555e42600b5d1a18ae4f64406539e7497efabd98eb07",
+   "sha256": "228abf8d79c474fe09e0f3eae2f5e889664ecb9b24a62cdd6860274a8f1a8fe5",
+   "signature": "c4737ca996b6c7d0cfa674dbf7d3d1d39d7966df11d073a2244b857d8e5f5887",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1723,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/records/confirmatory_manifest.json",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "record_hash": "ca9cdb922e592f26af09d9598672e9d767ec08dda61b236240015feac4463e7a",
+   "sha256": "c683dce0de7c50ab38ec34d5d8bccd41cc02e1819ea2c70d5f23ce354f99dbcc",
+   "signature": "b6d50a097e7bea783e6318ed198c3dd82515cbc7f952eb39d3c67fc741c95260",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 18955,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/MASKED_ANALYSIS/records/masked_result.json",
+   "producing_stage": "MASKED_ANALYSIS",
+   "record_hash": "a02d1ecd569dcd75f4007e136679d5fc887173403e203d680737a27724599e7b",
+   "sha256": "b1c42c354b1b2d1f31d8931b49b78e9bb5d7d5b1ea8e2bc402af11c45a8f4903",
+   "signature": "4d3882b9fde835c8ce92c58b4099a708716212c319fd2c882eb146f553470c34",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 2186,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/UNMASKING/records/unmask_record.json",
+   "producing_stage": "UNMASKING",
+   "record_hash": "c0054ef3a965bf1cee8e7328bdb177530f0b5d30d11526a828f721b56ca90db1",
+   "sha256": "97bd9934c5923077027a605e27647dc123e83fede54110ffc35f702e71fec730",
+   "signature": "3a4c916cd6b96bb813a45ac585f82185508efd3e99c3464bceee6a648a253200",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 28581,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/UNMASKED_ANALYSIS/records/unmasked_result.json",
+   "producing_stage": "UNMASKED_ANALYSIS",
+   "record_hash": "1dbebbe2a02a1eedb5b3df7f77232ca516f71fda253bb7414ef0bd0e73a04372",
+   "sha256": "e2d4620d07d29fee863a2a765a5818d40878732810895bbcc0ab4fc26aa1462b",
+   "signature": "205bbd8e12747566e7a1504f3bd05d9e9261c3f893e8625d32eaad3ac99560d5",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 11593634,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "e298aa457eca3a951d84d2f7afbb046e6d6375ee3d0ac2e7869bc1004c25c2e5",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 11345352,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "7e820f9a88c9a373744b11fc66ce02a4697fa42b0709bd8f2611bf692711ba2a",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 11603909,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "1f1bb2a3ef21f8024bced0e87fba17a8e4d740b0448c939a360aa87965d75e33",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 11634184,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "5527b6b753e77a467e84e4e9ddd78462dcfb473e12cfaa51b13a608e929b2691",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 4016361,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "ed33c3b86105dd9ee484625c76dfdbe2425bd796303b739c108aa3ce30b11d14",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 29265936,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_2_REGIME/backend_runs/calibration/scored.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "d570730426601a28a8c11bde6f82ef4cf1ff1b1a16a4b97fbb3052363e560a52",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 1444163,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "44f72c5589cfd6bdd54391a53564867e1632bdb2603d6e4063f0d8e6ef1f3960",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 167441,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "02c95db2ff9cff917f041695b84c773c97ef21fbdd99a78f9f38a085fbc4c5c9",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 166985,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "784a2ce72d51465f812cac05b18e49ef8962a1241061b2326296f755e9472e3b",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 167755,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "0e67cc2e3fe645651706417a072fee426572e550333c8b3ee09c3847021dcba8",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 13786285,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "e7daa60cb46b6a67b1cd832ce8f2f1d7bc85f4c28f24e29e3e90a39413da853d",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 12141474,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "541f8f0caf7a6ec6b6b4c9b4ecf783c18ca500e5d99387186247146276fd1d1a",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 11856328,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "9a7c79bf2bb57aa347e800f62714b814efd24b916c2e8c9ebc1531fec7af6e73",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 12190661,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "a03b74b7dd35c6bd75a6ced4b25f4b2e648fe2a72d6721fe237772085e2a62a3",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 12220936,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "8bd9a311af22d1079070f33f5a0538e092489561a85bec5b2af64876d5fc4eb0",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 13661675,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "018b521c5c03603c11b40006fd1beaba43e70d499677c38ea7aba44ac99b4c1e",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 13376969,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "210e5c8192c14a0a11a148ca6695438d327c63c95ceeb7284426003d890746e4",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 13428525,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "1146e2e71cc8d0d9cc5163b2dce696c3fc9a4d39791a0364bcf30fbd4d657322",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 13477761,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "048e539317e1a473ed2332c9800586d4d49689a7cc37053eda7bf260b4f6a1a8",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 4373632,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_0_APPARATUS/backend_runs/pilot/rows.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "dfbb8f5cab82e4563f94a208a548e09f8d288b53ca043113ee762004ca4bf52e",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 33341698,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_2_REGIME/backend_runs/calibration/rows.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "5239c4830749c2ef5df795fe41972418307fe09e90dd64641bdd0e81545945ed",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 1672861,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "8ad237a22f9891ac3ec7cf5091e921fcc88b35cc8ce555de43f511386eb25eda",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 209698,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap1024/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "94e7a1e67fb63bda01fd5a5a44186d1797b1e70134117f18628f44b98485e630",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 208864,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap512/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "85620cae83fe1532e35a02dcce1db7ba83179409597d6f969ba9d25b7e0c05e0",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 210468,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/cap768/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "fe01ef7f8ebaf1c9b9557ce04ae3711f5c06342a1bdec4c06c23079952b2d0b6",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 15030153,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/gemma-3n-e4b-it/REGIME_SCREEN/backend_runs/ladder/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "d57852cfd445989046cad08009292dfff66a3eef69ba3981bba6a62d782a1eb1",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 2598,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/QUALIFIED/records/qualification_record.json",
+   "producing_stage": "QUALIFIED",
+   "record_hash": "ef668b0fd2007e9422ba78d7c7f73987ce39742875e0031fcc1c581fb4282600",
+   "sha256": "f53fb81fb4d5ded49d0035597cd4df51e299dfd4974678382d37fe4a7d72b54a",
+   "signature": "39cc3932dcad0c4d4654bd059b345120a66ac81cf2fc0689687226eababb12d2",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 29601,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "producing_stage": "GATE_0_APPARATUS",
+   "record_hash": "2b8435018b02942b14b5587e55af0976791a7e948d0d1b74ffbb2cc3312e6325",
+   "sha256": "4daf567d47c76bc803c354590c9d96c50c6955e187828cfb9c6f3e967daa4a06",
+   "signature": "4d9abc144af4dfd1ea414c8775788a458ae4cf8a91d23ef0fe72291a23b22bca",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 138779,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/records/regime_record.json",
+   "producing_stage": "REGIME_SCREEN",
+   "record_hash": "78f8c72d38c5084532f03f1c76d416aa218487a371a6db9a86a175bf102582a8",
+   "sha256": "0f4b4aa3acec5dc4daca61e5808fa60c671e70a974f039f3b9c211e303038d42",
+   "signature": "d08dd30a85419549c399dfd07e45c6f7050430c85ed7bd42fde9bb6f0eac0512",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1796608,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+   "producing_stage": "GATE_1_MEASUREMENT",
+   "record_hash": "b659981b84da5023605964d0c2bb3692c27f491d9dd65fda8ca2ca80e7509792",
+   "sha256": "942fb80348c94ddc2b70e79701952a010e269f64d1c6b9de87c9e77d90670e10",
+   "signature": "e0618cc0b7018b4bef416d80d2ab85b30cd3c0ddba7eb1f21b0a38ced5abe2d8",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 14198,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/records/gate2_regime.json",
+   "producing_stage": "GATE_2_REGIME",
+   "record_hash": "a950bb58f4dea991ad1ac64069d53cc20634e799aa2969d6582e2948082dfffa",
+   "sha256": "e1587d19bf3b828a63e5587f3059009254c45522c0d918b3b497cfcc15cefb0b",
+   "signature": "2804efd36a4bf76b6c587a170e297c7d25c41f602add55a1f91d3e4000a05278",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 2452,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_3_REFERENCES/records/gate3_references.json",
+   "producing_stage": "GATE_3_REFERENCES",
+   "record_hash": "a8a0bc2813ef7443f4c7186be96a2a52aa9bacffe568b4a947c1f4d607bcb4ac",
+   "sha256": "5a36ee5b40a50ff2e31dd6c8ddc4d052eb11c0aab2e7f9f1df5a99bf6f9882ca",
+   "signature": "8c85003f93d463937bd7c9467cc3246fc94e1c87d54f83f67eccb546cd983476",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1250,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/records/gate4_composed.json",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "record_hash": "c575abe36dcbb9f12dbc5c43d2937bbc0b96b79614542900fedaccdbbe3a8aeb",
+   "sha256": "435baf346b51dc838dedede3a7aeeb01d812001c331b8a8b6c0896168bc2adea",
+   "signature": "f04ce7f82fa5797defcca790433e8ee6dc678ba97e5b5c740e8d6278f7f92711",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 78568,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_5_FREEZE/records/gate5_freeze.json",
+   "producing_stage": "GATE_5_FREEZE",
+   "record_hash": "673b2bf095ee625bcb5dcc454dbe04e191e6940f2780dc983153ed88ce9b0f57",
+   "sha256": "5533fdb6c43095270408de6d4781f6481a66e5a1bd195cdf0d7efc26fefdc566",
+   "signature": "eff0104677b4ba26741c4b07df7f7394c1f5af387a394820476472fb090da49e",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1829,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/records/confirmatory_manifest.json",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "record_hash": "dd96e30e26d2371989b848431b33170ad3847ff5031685385d3ffbc1adfed2b0",
+   "sha256": "4a609393cea4f91e6e527f231d04dbfcfb70bbbccbde567acc05be997ebbb5bb",
+   "signature": "a7be1dcf2b9f3e944efc4e9f0d89d4828b9229c261d49f545c201ce768c6c180",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 19305,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/MASKED_ANALYSIS/records/masked_result.json",
+   "producing_stage": "MASKED_ANALYSIS",
+   "record_hash": "5f21738f936db719cb47ec5e8188578503fbfc3d7de31c88f7309b1e3f49268e",
+   "sha256": "19392f49892ea350a761666a94d4b63f3cf1ba07c5c855c00454e1dee4cdee9b",
+   "signature": "510a425bb3d4d3a2bc3e9b898ad1dfbb76dfe20cdb57695354e665b3b3c1bb89",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 2179,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/UNMASKING/records/unmask_record.json",
+   "producing_stage": "UNMASKING",
+   "record_hash": "80e2391744c9040bc28046b093839f06e665e2b142eb4caa2e865b9200495e57",
+   "sha256": "ebfe9a38e8d12536ec94b2dc11e61e6612c00de60fa658d27bb48bb8cdfc1d4e",
+   "signature": "70d88afb41008a905dcc93db80c9767348990b6b95a8ad9f1482409caa523b6b",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 30154,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/UNMASKED_ANALYSIS/records/unmasked_result.json",
+   "producing_stage": "UNMASKED_ANALYSIS",
+   "record_hash": "8de80e4eb032eee9e8900669437c00987dd194f971c64301fd6810fa63b3237c",
+   "sha256": "0586dfec72f2d349db5742906798a3881c308ff03251786eeec98a691dfb1d1b",
+   "signature": "c4b8da9085e939e038f2eee521de238edb376a46af76fe2eca9e111199bb39cb",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 9907229,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "9d2ed162d1a558b98917380b52407bf3e3c796ed5ad8a5f598fa115728bdd089",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 9778157,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "04968852fea3ae9c915609868f3089cee1492655303d014acb0784444a30a5b5",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 10139910,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "3cd57d5c6b222b3dc65f926e0333d0d94d95265d78beddff6dcc03f99758230d",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 10043834,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/scored.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "b1d8c66e63d588331142051710bd4ddb0e367ec0e7c4f90a7f9b0c93a388de5c",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 3498333,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "159573c3dbbb3f6cfd7b209f6ca5b3e0406ca5f37361fa367ddca450b27eb2ec",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 27280755,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/backend_runs/calibration/scored.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "2889c07245db690db406984659e7f504d1c8ca02fdf044b11cb4f495cf2f72b0",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 1090390,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/backend_runs/focal_extension/scored.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "9374ed481708d16470ee827706ff24bdec24fe2e1d4535acb54a27e408d96c20",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 1252189,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "2d1afcbacc3069e7785ad0ddafa9549f5e7aa80bdf9e631e21aede07f21db594",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 144364,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "b92a656d0790c63865bdbc50162bd7a484d7a6b4a3f89d7ac5b267923ab46a18",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 145371,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "60b9d5fa5f97290de946172f5e3cccebdbfc7fcbd1004bd2fc4d8ad7ab88f6b7",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 145904,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "5b22fc1dfa3a65800c2d4571c9164674832df4f8ad15fd616e489166e6951370",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 12264986,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "357072d2aa1094391c9c780cfaa7dfdfd1b235b483f80db9e5e1a65792cdd0a3",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 10476573,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "b05680bd353c4b2db292de834d8684ccab81ce2d178ca504a635101bdf5f765b",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 10310637,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "3643d43a77ef0c7ec3ae11fdccb2b5522a2130a162500533e5f27fc4d0de39b9",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 10748166,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "88a517ba5a3aaece61037e5c728c0b4b317f3c087d5f6a15b2a017d5269c5035",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 10652090,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/resolved.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "4cc5630df9e2d724e60433f33ed20222532eef360be1daa11148ffea38101676",
+   "status": "REGISTERED (resolved rows; the analysis input)"
+  },
+  {
+   "bytes": 9999586,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0000-0096/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "09652c5c8edad71d4bd7c32c9a82a9d3614ea353fccbab0138de1011501e394d",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 9950996,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0096-0192/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "6c80363c7e57fe1ba1c9f9926aac8f4419c09c4e539f97719344b818de2b9e72",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 10194362,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0192-0288/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "e759eaebeb5bea4e7fb69d92a05b335f1a0d2c82c95ab20a6598079a6cbec161",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 9995213,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/CONFIRMATORY_GENERATION/backend_runs/blocks-0288-0384/rows.jsonl",
+   "producing_stage": "CONFIRMATORY_GENERATION",
+   "sha256": "bad012f8643158930c9f1a7fe618038fa48e52c9b12560fd3dbe760e6ff6e6b3",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 3413491,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_0_APPARATUS/backend_runs/pilot/rows.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "2c3ad5ac63af76b1295fdd7e38e89b0ea0ace45e30b38dc945166b556d9f6dd3",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 28057215,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/backend_runs/calibration/rows.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "b214dc9ea5a4a61d4527ffe72036f506fc8c54a34bc89c3c956da295c24bb3bc",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 1227898,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_2_REGIME/backend_runs/focal_extension/rows.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "329062be77d322417ede1b1af02fab665e5058d5ece0b4c3d7cfd4a98efddabc",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 1251948,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "f80c91eb1bdb4746589df6d95555b1f2ce6c553e799d8098cfe0afe573a898ab",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 166997,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap1024/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "4822f294eb3b99328c135d540f268b653bbeb6bdfe8a56fb09fd03b1efded81a",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 169093,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap512/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "f6a013e763d1055b90b255066e7c92fbcc698c50a45c1eef9dbcd034f7786fd2",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 170113,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/cap768/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "df39025b7a7a67bae7ad493c98f0b221f1c8e287eb44c33325edf6fe4c7b2e9c",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 12148798,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b/REGIME_SCREEN/backend_runs/ladder/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "a0fa23579ef48c07ef3fcd5b6309a88dd78b1b4a43b92005c8cec43c093adcb5",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 2612,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/QUALIFIED/records/qualification_record.json",
+   "producing_stage": "QUALIFIED",
+   "record_hash": "5cec971f044db501b5b1b9db4afa18ec0b3e3ff0b1d879f48a2d8e2e753cb5c6",
+   "sha256": "805b4600ca6891d6070d87cf394d57268fee3a516609f30c6da4f12a92aa514f",
+   "signature": "00d2191d053c2bdd6d73971a9c4bca55c1e4bc26fd1fab91c09dc31d5979cef2",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 29706,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/records/gate0_apparatus.json",
+   "producing_stage": "GATE_0_APPARATUS",
+   "record_hash": "257a7e354ccc08962098a0280487c0d48fda3f334b34600c836e3bf88055f58e",
+   "sha256": "1bf42990ac9c311e5cf56d472db33a5618822eeddb7bb1a20425d79b11612043",
+   "signature": "11696bc007cd948074a06fe7e8fef0ad0f7d14c48fd53614dd93e4dae26df724",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 137685,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/records/regime_record.json",
+   "producing_stage": "REGIME_SCREEN",
+   "record_hash": "b0e3af38e56d46dcef32d31da47a8e9eae0a1b0bf38c18cacde508a91b2e31ad",
+   "sha256": "4f6bfc392993578fbf1be814bce46a5db9eb8727d00c0dcc80129d2e63736061",
+   "signature": "565358700aa26540d2d49b90e9e77d062efbce4b9e906fc446cc8c3d2b86d98e",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1796622,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+   "producing_stage": "GATE_1_MEASUREMENT",
+   "record_hash": "3b4d845a07fd0867283b7ba0da9d559dad4328f4d36a85e0884dfd1a5d942f03",
+   "sha256": "cb20d0bd9117c0640dc45a4d85e86f1d9ae67856a18d3c8132a6c0c99c14fe1b",
+   "signature": "623bdf1a8e45be856c9891c23fb9a95b09cac5c0efb8d0841ec4db4683ae8426",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 13619,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_2_REGIME/records/gate2_regime.json",
+   "producing_stage": "GATE_2_REGIME",
+   "record_hash": "1d8bdf252e7f9da8dd078c985dc3b37630577ec9a587dd13f6994f6ad9545809",
+   "sha256": "469c1de42fdc96ee6dc778412256005ac9b5c42ec3d3510435d105bec702e1cf",
+   "signature": "6868ccba6468b5de9c8172b0d136f927479e981d52633ef6f3a768baf3ec24d6",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 1435,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_3_REFERENCES/records/gate3_references.json",
+   "producing_stage": "GATE_3_REFERENCES",
+   "record_hash": "5eb2e16ab5fba2d781e12cbb34fe67ce849ed1aeab6e9210a23a08a73f3888fc",
+   "sha256": "42f0873c0e0d2c1e7cfd68b4bc5b88c92b12a956356f5dba0582941d7a396a40",
+   "signature": "8ad401e6d2e2f46391f5123fd1e0f501054d19bfc376fc564236abe757c3a4f3",
+   "status": "REGISTERED (signed stage record)"
+  },
+  {
+   "bytes": 2279,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/terminal_report.json",
+   "producing_stage": "TERMINAL",
+   "record_hash": "5f189b28ca6bfe39ace2bb7b0f1b05c38eb2567b78f8ebca05c584db850211b8",
+   "sha256": "0da402483d80e4ae5bdd27a2e7c4629900e2c1f3bd46659e5b62cb2391dbcdeb",
+   "signature": "b24b9abb19be3e097176b30d0b93f100dfb0aed6b90c932aa847d07350972b0c",
+   "status": "REGISTERED (signed terminal report)"
+  },
+  {
+   "bytes": 3684248,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot/scored.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "693e4ad7cfbc0072c30fd63c453e2e7cd5b9f517606df7e7831777565dfc8ecf",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 27435433,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_2_REGIME/backend_runs/calibration/scored.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "24e14d4980f78d8fc2d2a8e28d9c85da99e6e51d7a9df227f4cdff2da4362d49",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 1240259,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/scored.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "8f0ca832b0e832a3e67c65224c4cc6594d303e1e1869b9d81ba2ac85026c2bc6",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 150300,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "155b62007feaef3ce2acf3acd4c3620848c19899d9d512f1d9aafd8658f31930",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 148421,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "c6d6f9efe2ed977f0118091cb16eedd56434a6a5093c66bc6f55b30994496518",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 147946,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "83b26ef9af82281849211a100f7926b4c528d332f442a28509fd4839752b69a7",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 12782927,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder/scored.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "7c61c5e443046f0ea3f49a9951fd128137573bab963cc295a76c3c0290c165db",
+   "status": "REGISTERED (scored generation rows)"
+  },
+  {
+   "bytes": 3614783,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_0_APPARATUS/backend_runs/pilot/rows.jsonl",
+   "producing_stage": "GATE_0_APPARATUS",
+   "sha256": "c386327c37d4ad86dec99cc02fca8e8ad62472c2c836e105dc60fa5f76c39e29",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 27626875,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_2_REGIME/backend_runs/calibration/rows.jsonl",
+   "producing_stage": "GATE_2_REGIME",
+   "sha256": "ab289c2d07f426839967edcb50c16c6f029ea41f601c0f611e8f8a0cfc008ce2",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 1238842,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/GATE_4_COMPOSED_HEADROOM/backend_runs/headroom/rows.jsonl",
+   "producing_stage": "GATE_4_COMPOSED_HEADROOM",
+   "sha256": "19d388d3a896e51e3fba32557810ca954d4bab03f40be775336733105b0976fe",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 171311,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap1024/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "69b91845e3f2df4591bd6c7c7f8074a2d1a57a028d068ecbd804cf6963ae252d",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 167776,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap512/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "72458fa4762172e2804b95eff70e053249e88c935297a946649da401808c11e3",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 166789,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/cap768/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "34c4cdac75c125d2d756d133e8dd2312f9ab6797187ddcae10331cf06d7b80a0",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 12662181,
+   "exists": true,
+   "path": "dci1/evidence/dci1v4r4/qwen3-4b-instruct-2507/REGIME_SCREEN/backend_runs/ladder/rows.jsonl",
+   "producing_stage": "REGIME_SCREEN",
+   "sha256": "b8c8805452b61a88f16fb9ec892a4cd9d3bff909f6316193db6253500815b4a8",
+   "status": "REGISTERED (raw generation rows)"
+  },
+  {
+   "bytes": 56225,
+   "exists": true,
+   "note": "assembled from signed UNMASKED_ANALYSIS records",
+   "path": "dci1/reports/dci1v4r4/final_results.json",
+   "producing_stage": "reporting tool",
+   "sha256": "c8f3a2e3942e8f623a728083336a82926a652b23366c7306bd25f6aa2c9af8e6",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 28629,
+   "exists": true,
+   "note": "assembled from signed records",
+   "path": "dci1/reports/dci1v4r4/prefreeze_audit.json",
+   "producing_stage": "reporting tool",
+   "sha256": "a65c0e76525d2f0ec4bbddca58c5c27e6f927c259424eea5bf16b7800a673c9b",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 8754,
+   "exists": true,
+   "note": "re-assembles the freeze under current code",
+   "path": "dci1/reports/dci1v4r4/post_freeze_delta.json",
+   "producing_stage": "reporting tool",
+   "sha256": "fe0c982cbb4acec19f655c39175b2824efc6d85d0723a41e62414390722b7875",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 138003,
+   "exists": true,
+   "note": "content manifest of the evidence tree",
+   "path": "dci1/reports/dci1v4r4/evidence_manifest.json",
+   "producing_stage": "reporting tool",
+   "sha256": "515d76a2efcb50d23162d7f845ed445b4af25c8c351eada98a028752fc91eacb",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 1278,
+   "exists": true,
+   "note": "\u00a726 durability gate",
+   "path": "dci1/reports/dci1v4r4/durability.json",
+   "producing_stage": "reporting tool",
+   "sha256": "c79a712dc37394f78c3b5a92f5ace22c9d9446f6517c0cbcd718cb63ca45b33a",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 7665,
+   "exists": true,
+   "note": "\u00a718.1 provenance fields",
+   "path": "dci1/reports/dci1v4r4/backend_provenance.json",
+   "producing_stage": "reporting tool",
+   "sha256": "afb3a9dfd8efa2e6ef90c86f6d16f5ce9b528cbce94181db1ad2f4982353b10e",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 23183,
+   "exists": true,
+   "note": "prose report",
+   "path": "dci1/reports/dci1v4r4/EXECUTION_REPORT.md",
+   "producing_stage": "reporting tool",
+   "sha256": "756d7d1c1f1c96dd2bb86c742b83b415fcf5538f944e07d658046df9208e153b",
+   "status": "PRE-REGISTERED DIAGNOSTIC (derived artifact)"
+  },
+  {
+   "bytes": 42356,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/SCIENTIFIC_FOLLOWUP_EVIDENCE.md",
+   "producing_stage": "followup evidence gathering",
+   "sha256": "5709441380db5747cd16cb18033f3f9cf79c868ca33a1849c90b696811cc52d3",
+   "status": "POST-HOC DIAGNOSTIC (this report)"
+  },
+  {
+   "bytes": 49918,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/01_final_state.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "2413692dcc1252f93c2f1fbe4490324613189f2f7ad63899f354f33f5d01697f",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 106149,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/02_admission_landscape.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "32cecd06a5c7484d8639b8884012528d26a43650584c799f30564703b72f6b41",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 50535,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/03_gate4_anatomy.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "e4f8c1667221a9eff9aa2e08105adf4e5071fce41588d692f330ce0ec85a7644",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 11655,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/04_confirmatory_raw.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "ca9a928e516e2cb960c78634c05d20a307612601fc9f439deeb06d6e73d13c6a",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 21143,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/05_length_strategy.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "0a70af67e275b9378f7a00146ec485bdfee68a0efef0e8c129f979f5f0d65dfb",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 37987,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/06_effects_and_order.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "7ee2d122f80d4b55a30572bd68fb32fc2c80f1a659a38c5c731c44de3135dd19",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 8546,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/07_operating_points.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "05a25ebb30f0bd814ef1c446db5f6b8086f8d54df1080e57eb3bfb3a1fcb6c9f",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 60276,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/08_claim_ladder_audit.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "4f4bb57d1ad46aed09bbe65bc1d1b82bd8d51d76d16c3a696c7fe7e6bf07f719",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 37364,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/09_coverage_vs_calibration.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "8c8ce6735025452a7d1a22e330e3d97a88125df17eefb5345719d143b69435b4",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 45686,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/10_response_samples.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "66eb77769b1c9f39086613af19f7a55623cb1652a6f809a7d27c5fb5d63e1958",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 4540,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/11_crosscheck.json",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "1cb230330960256ecde08f23c52fefda6514088f58e418a065c79db227c3c493",
+   "status": "POST-HOC DIAGNOSTIC (produced by this task)"
+  },
+  {
+   "bytes": 5960,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_admission.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "3702ebb5ac63cbf67648ac12e00fd420a6239e30d50eadeafdc2dc39b6aea1cf",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 4638,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_confirmatory.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "fc1add1bbe41431bc8cbbd04522bdb57c098ea85dab12d2214d8d879bc5aa91d",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 4960,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_coverage.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "d72b8812e959d8cca3ae4bd7c0d57cbea4d9ced3b3ebfb95124166785ddd418a",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 5013,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_crosscheck.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "bce7834b28d403bf2a8d2e051f8c6cdcbdddcf98dcb77cdbddf34de932fe75d7",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 7791,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_effects.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "d165092827841d3befb2834744ba5f54c5c3383815c6f8fcc5e6ffb2c07ee35d",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 5952,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_gate4.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "86391740b4ea2c9c1815359488a2225440f3926e4d92b31822e9a0524c395912",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 7207,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_ladder.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "a1e262a8587867ef7f1f7d21248b6d9d60a35ef17e560f1bebb8166a131cd701",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 4366,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_length.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "ad369b827f6f4b82c68dba60a9a54eebda411ef5d3bbe947f3fc6f4383fdc1f7",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 5688,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_manifest.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "4f2af4da86f9fb8bd0d7af885a664556b704eed4b5226841f4cbdc41fab221f3",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 3005,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_operating.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "70c0244aae2b087b0a161ee5f98fd9acc0574ae729dc2f184a810222509dec2a",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 2504,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_samples.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "00aa965e0ed16593d870dbf87d7ae550731d5c7211b55e0a41456f341e33f6e2",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 3196,
+   "exists": true,
+   "path": "dci1/reports/dci1v4r4/followup_diagnostics/_state.py",
+   "producing_stage": "followup diagnostic script",
+   "sha256": "d0ad8024422b9e19306ac50a5526849967a8df9a75104e14a5d62d7190c9363d",
+   "status": "POST-HOC DIAGNOSTIC (script, produced by this task)"
+  },
+  {
+   "bytes": 20976,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/stages/selection.py",
+   "producing_stage": "source",
+   "sha256": "77e6a29fc7ef574a1a19cba20fbedec2d4922afb23a749eabd7f727d6267c2b1",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 13669,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/stages/gates.py",
+   "producing_stage": "source",
+   "sha256": "91ef4901147a51640e4d27f21ab114545be10753f575a99c034c4b4f554085d7",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 11670,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/stages/freeze.py",
+   "producing_stage": "source",
+   "sha256": "fc971b2e9447ad24bbc338f8f2f36e7b1da492998480fb1213ebc3bb872e5684",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 8916,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/stages/confirmatory.py",
+   "producing_stage": "source",
+   "sha256": "455e8e618987a279b94b795074cdff1c39f5e15243a56957a728fcec05469f92",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 9958,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/estimators.py",
+   "producing_stage": "source",
+   "sha256": "946e211a5d3790beb83b360163509279c00584223752dedebd5592fdea21e8de",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 14214,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/observations.py",
+   "producing_stage": "source",
+   "sha256": "2e49b0e1b2a1fcd24dda8791028acbe50a55b7469e4f5799609bbfe9ff7d55e5",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 23698,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/claims.py",
+   "producing_stage": "source",
+   "sha256": "a25809312274dd637d0b2218a57ee3d5406f90020fc2234ec7843cd4952f1135",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 16790,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/masking.py",
+   "producing_stage": "source",
+   "sha256": "9a5f798688630cdb7ef239682d93156953bd05a5630c1865e3b1574cdadd6ba5",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 8535,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/bootstrap.py",
+   "producing_stage": "source",
+   "sha256": "49c647153a1d4dc9e0831a0b33c58b4f40be37ad229f62066b04caa06f39a2ca",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 17719,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/spectrum.py",
+   "producing_stage": "source",
+   "sha256": "f6c7931fc183ea2a86224d0f5ce3fe89af7a7148dc6cedd92ff186d2ebb1b3cf",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 12261,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/analysis/run.py",
+   "producing_stage": "source",
+   "sha256": "8236e3b507ef201e7d521d96397df4e1815073515f18cd5da437c85697736336",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 23061,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/run/analysis_run.py",
+   "producing_stage": "source",
+   "sha256": "0f6d1bb4938a05fc1aec376f87d219c656190df328b7c66cbec80b99810ace6f",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 7794,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/run/confirmatory_run.py",
+   "producing_stage": "source",
+   "sha256": "f20501d0099b3035f1633b9037490f0ed74bc7c412471288f5d0246b9236a32e",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 15708,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/run/freeze_run.py",
+   "producing_stage": "source",
+   "sha256": "80f1036c776f83a1f1a965f91a6f45a06687756b48a4cd97c34925a6dc99d9a3",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 20201,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/run/gates_run.py",
+   "producing_stage": "source",
+   "sha256": "b65efb73bf245b9630cb63496a03c45e421f5cb2c656b7553d23fb7be56c9053",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 24415,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/protocol/constants.py",
+   "producing_stage": "source",
+   "sha256": "ced9b5411284aaade3adce26374ff3025393d83a3b6892f813098549da5ec9f2",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 18058,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/protocol/wordings.py",
+   "producing_stage": "source",
+   "sha256": "1ff1d2431133302f6b4eed854359feceaf23a75246e59acfb1d8223fd477c56e",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 13271,
+   "exists": true,
+   "path": "dci1/src/dci1v4r4/design/cells.py",
+   "producing_stage": "source",
+   "sha256": "c0436bc8efee1c61cb7a2fdf17269210a243ac555844bdc139af089a772ce39c",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 12822,
+   "exists": true,
+   "path": "dci1/tools/v4r4_final_report.py",
+   "producing_stage": "source",
+   "sha256": "40d2845405a920e446905c36351f85b954096f24cda3fe2287003292ed73d866",
+   "status": "SOURCE CODE (inspected)"
+  },
+  {
+   "bytes": 137769,
+   "exists": true,
+   "path": "user-notes/DCI1_preregistration_v4r1.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "ecf4fb6aeee55eea8cc70bed2ac7cf5d14a2c24117fe058d003139a26a558cfb",
+   "status": "PREREGISTRATION (inspected)"
+  },
+  {
+   "bytes": 96450,
+   "exists": true,
+   "path": "user-notes/DCI1_preregistration_v4r2.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "a90873bf3e18913c5d95ea351c157e58cd310b24850e0b3f2e74b1e364beeee3",
+   "status": "PREREGISTRATION (inspected)"
+  },
+  {
+   "bytes": 224257,
+   "exists": true,
+   "path": "user-notes/DCI1_preregistration_v4r3.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "e5f8f1b1b5f43fa9f8794949cabead07d59516eea1e9f8365a2296e2bc363b5e",
+   "status": "PREREGISTRATION (inspected)"
+  },
+  {
+   "bytes": 32437,
+   "exists": true,
+   "path": "user-notes/DCI1_preregistration_v4r4.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "dff51662fe498a69f7f406446e57901b4a7852724e33012ad3865a30a5bf8594",
+   "status": "PREREGISTRATION (inspected)"
+  },
+  {
+   "bytes": 128391,
+   "exists": true,
+   "path": "CHANGES_SCIENTIFIC.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "37f83aa29c892c9b72383a68e105f085d3d11462f9ddcc895e39a65d51b7a93a",
+   "status": "PREREGISTRATION (inspected)"
+  },
+  {
+   "bytes": 81227,
+   "exists": true,
+   "path": "RESEARCH_STATE.md",
+   "producing_stage": "preregistration / documentation",
+   "sha256": "11eae1d28317440761c7812d5becba421e8c43ceb86e306ec44bc0f0c4284e6d",
+   "status": "PREREGISTRATION (inspected)"
+  }
+ ],
+ "n_items": 176,
+ "status_legend": {
+  "POST-HOC DIAGNOSTIC": "produced by this follow-up task; never preregistered, never confirmatory",
+  "PRE-REGISTERED DIAGNOSTIC": "a derived artifact of the registered pipeline's own reporting tools",
+  "REGISTERED": "produced by a preregistered stage of v4r4",
+  "SOURCE CODE / PREREGISTRATION": "read, not produced"
+ }
+}

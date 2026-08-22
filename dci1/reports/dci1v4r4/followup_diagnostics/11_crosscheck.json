@@ -1,0 +1,203 @@
+{
+ "_provenance": "POST-HOC: every headline number in SCIENTIFIC_FOLLOWUP_EVIDENCE.md checked against the artifact it was read from",
+ "all_passed": true,
+ "checks": [
+  {
+   "check": "qwen3-4b registered D(A<-B)|outcome_first",
+   "detail": "record 0.391927 vs report 0.3919",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b registered D(B<-A)|outcome_first",
+   "detail": "record -0.122721 vs report -0.1227",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b registered Lambda|outcome_first",
+   "detail": "record -0.514648 vs report -0.5146",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b registered D(B<-CL)|outcome_first",
+   "detail": "record -0.134115 vs report -0.1341",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b registered Delta_class|outcome_second",
+   "detail": "record 0.038411 vs report 0.0384",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it registered D(A<-B)|outcome_first",
+   "detail": "record 0.115885 vs report 0.1159",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it registered D(B<-A)|outcome_second",
+   "detail": "record 0.283203 vs report 0.2832",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it registered D(B<-CL)|outcome_second",
+   "detail": "record 0.794596 vs report 0.7946",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it registered Delta_class|outcome_second",
+   "detail": "record -0.511393 vs report -0.5114",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b raw solo:A",
+   "detail": "0.719727 vs 0.7197",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b raw solo:B",
+   "detail": "0.779297 vs 0.7793",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b raw solo:CL",
+   "detail": "0.629232 vs 0.6292",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b raw B|B+CL|outcome_first",
+   "detail": "0.913411 vs 0.9134",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b raw B|B+CL|outcome_second",
+   "detail": "0.829753 vs 0.8298",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it raw solo:A",
+   "detail": "0.771810 vs 0.7718",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it raw solo:B",
+   "detail": "0.851237 vs 0.8512",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it raw solo:CL",
+   "detail": "0.715169 vs 0.7152",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it raw B|B+CL|outcome_second",
+   "detail": "0.056641 vs 0.0566",
+   "passed": true
+  },
+  {
+   "check": "e2b Gate-4 failures = 5",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen-instruct Gate-4 failures = 1",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "CL8:3 calibration solo 0.9740",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "CL8:3 calibration chance 0.9323",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "CL8:3 Gate-4 solo 0.9896",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e2b-it core references = 3",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b core references = 2",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it core references = 0",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b-instruct-2507 core references = 0",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e2b-it C4 straddling families = 7",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it C4 straddling families = 5",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b C4 straddling families = 4",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b-instruct-2507 C4 straddling families = 4",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "all four models passed C1-C7 at pre-screen",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "m* is the last measured rung on all four models",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b B curve at m=10 is 0.4115",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "e4b B curve at m=10 is 0.8490",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "e4b emitted L4 is invalidated by the per-member gate",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b emitted L4 agrees with the per-member gate",
+   "detail": "",
+   "passed": true
+  },
+  {
+   "check": "qwen3-4b: all 10 registered estimates reproduce from rows to 1e-9",
+   "detail": "10 estimands compared",
+   "passed": true
+  },
+  {
+   "check": "gemma-3n-e4b-it: all 10 registered estimates reproduce from rows to 1e-9",
+   "detail": "10 estimands compared",
+   "passed": true
+  }
+ ],
+ "n_checks": 39,
+ "n_passed": 39
+}
