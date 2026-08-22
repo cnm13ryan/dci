@@ -62,9 +62,9 @@
     "example": "Use the word thus exactly q times.",
     "eligible_slots": [
      "core_reference",
-     "spectrum",
-     "class_same_form"
-    ]
+     "spectrum"
+    ],
+    "slot_note": "the spectrum slot inherits the tier of its own core family, because section 13.12 draws both rungs from that same family"
    },
    "2": {
     "name": "near-form control",
@@ -80,9 +80,9 @@
     "name": "broad control",
     "rule": "any other registered family: count budgets, rate budgets, count lower bounds, rate lower bounds.",
     "eligible_slots": [
-     "spectrum",
      "broad_class_control"
-    ]
+    ],
+    "slot_note": "a Tier-3 family cannot reach a spectrum slot: section 13.12 draws a spectrum rung from an admitted CORE reference's own family and section 7.4 admits Tier 1 and Tier 2 to the core slot alone. Section 7.10's sentence admitting Tier 3 'to the spectrum' names a path no rule can exercise; it is recorded here rather than acted on."
    }
   },
   "core_pool_tiers": [
@@ -259,8 +259,10 @@
   "min_feature_groups_among_core_references": 3,
   "min_backup_families_frozen": 2,
   "backups_may_be_substituted_after_gate_4": false,
-  "terminal_status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
-  "development_evidence": "d5_gate_attrition.json. Applied to v4r4's own budget-class reference library the full v5 stack leaves 3, 0, 0 and 0 qualifying families on the four replications. Applied to v4r4's production-class pool -- the families v4r3 forbade to be references -- it leaves 4, 4, 2 and 3, unchanged from the v4r4 rule at every stage of the stack. The library, not the rule, is what has to change."
+  "development_evidence": "d5_gate_attrition.json. Applied to v4r4's own budget-class reference library the full v5 stack leaves 3, 0, 0 and 0 qualifying families on the four replications. Applied to v4r4's production-class pool -- the families v4r3 forbade to be references -- it leaves 4, 4, 2 and 3, unchanged from the v4r4 rule at every stage of the stack. The library, not the rule, is what has to change.",
+  "status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+  "status_when_unmet_is_terminal": false,
+  "status_when_unmet_note": "section 13.15 makes REFERENCE_SUPPORT_NOT_IDENTIFIED an IDENTIFICATION status and not a stage-terminal one, so a replication does not discard identified estimands for want of an unidentified one. Whether it should instead be terminal is open decision D6, and red-team finding R16 reads it the other way."
  },
  "candidate_library": {
   "_thesis": "A chance-free exact count of a short marker word is simultaneously (i) same-form with A, (ii) free of the 1/(1-kappa) variance amplification, since iota equals raw solo compliance when kappa is 0, (iii) interaction-free with respect to B, since kappa(R|B) is 0 and the projection reduces to the solo measurement, and (iv) continuously tunable in difficulty through the count. No budget family over a word-shaped numerator has any of these properties against a maximum-word-length outcome constraint.",
@@ -403,7 +405,7 @@
    "form": "exact_count",
    "statistics": [
     "semicolon",
-    "comma_character",
+    "comma",
     "sentence"
    ],
    "n_families": 3,
@@ -418,7 +420,7 @@
      7,
      8
     ],
-    "comma_character": [
+    "comma": [
      2,
      4,
      6,
@@ -438,7 +440,8 @@
      9,
      10
     ]
-   }
+   },
+   "statistic_naming_note": "the registered statistic identifiers are `semicolon`, `comma` and `sentence`; an earlier draft of this file called the second `comma_character`"
   },
   "tier3_broad_families": {
    "carried_from_v4r4": true,
@@ -520,9 +523,20 @@
   "development_evidence": "d1_candidate_landscape.json and the v4r4 Gate-2 focal curves: m_star was the last measured rung on all four replications. qwen3-4b's B curve over m = 7..12 is 0.031, 0.107, 0.245, 0.411, 0.659, 0.742 against a focal band of (0.60, 0.95); had B:12 fallen short the replication would have recorded FOCAL_RANGE_EXHAUSTED with no information about where the band begins."
  },
  "what_this_spec_does_not_decide": [
-  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 33 leaves as a researcher decision",
+  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 34 leaves as researcher decision D1",
   "whether four models or fewer are registered",
   "whether the 96 newly authored calibration topics are authored before or after the researcher adopts v5",
   "any value that a v5 observation could move; there are none, because no v5 observation exists"
- ]
+ ],
+ "_reconciled": {
+  "date": "2026-08-22",
+  "against": "the v5 implementation in dci1/src/dci1v5",
+  "what_changed": [
+   "section 33 -> section 34 for the open decisions",
+   "terminal_status_when_unmet renamed to status_when_unmet, with status_when_unmet_is_terminal false, because section 13.15 says so and D6 is the decision",
+   "the slot tables now match section 7.4: no `class_same_form` slot exists, and Tier 3 reaches no spectrum slot",
+   "the Tier-2 statistic `comma_character` renamed to `comma`"
+  ],
+  "what_did_not_change": "no threshold, no band, no count"
+ }
 }

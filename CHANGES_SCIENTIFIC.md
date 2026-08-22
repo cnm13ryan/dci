@@ -13,6 +13,91 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-22 — DCI-1 v5 implemented in its own namespace, and three latent defects in carried code found by running it
+
+**Standing unchanged.** v5 is still **drafted, not adopted**. No v5 stage
+record exists, no topic has been authored, no instrument has been measured,
+and no number in this repository moves. What changed is that the protocol now
+has an implementation — `dci1/src/dci1v5/`, `dci1/tests_v5/` — whose
+open-decision registry makes the draft state executable: §34's nineteen
+decisions are `UNRESOLVED`, `PROTOCOL_REGISTERED` depends on all of them, and
+no v5 stage can run.
+
+[`dci1/reports/dci1v5/v5_implementation_status.md`](dci1/reports/dci1v5/v5_implementation_status.md) ·
+[`dci1/reports/dci1v5/v5_reconciliation.md`](dci1/reports/dci1v5/v5_reconciliation.md)
+
+**Why this belongs here rather than in the commit log.** Three of the changes
+are to *carried* verifier machinery, and one of them is a defect that would
+have produced a scientific finding where there was a construction fault.
+
+**1. `joint_witness` satisfied only the first exact-count constraint of a
+pair, and built an exact sentence count as loose terminators.** Neither
+mattered in v4r4, whose library held one exact-count reference family (`CX1`)
+and no sentence-exact family. In v5 both are ordinary: a realisable pair can
+carry two exact counts, and `XC3` is an exact sentence count. Run unfixed over
+v5's population the carried suite reported **2,016 non-entailment failures**,
+every one of which was a witness the constructor built wrongly rather than a
+pair whose obligation cannot be discharged. Generalised, the suite discharges
+**20,332 realisable pairs with zero joint-satisfiability and zero
+non-entailment failures**. *Affected results: none.* v4r4's suite ran over
+v4r4's population, where the two paths are unreachable, and its Gate-1
+evidence stands.
+
+**2. §7.7's realistic-witness rule is narrower than the preregistration's two
+examples.** Computed over the whole declared range, `CL7:125`, `130`, `135`
+and `140` have no witness inside the 60–120 word stem band, and nothing else
+in the library does. §7.7 names `130` and `140`; `125` and `135` are reserve
+rungs of the same family and the general statement is unchanged. The check
+also required a padding rule that preserves sentence structure: appending
+filler after a full stop adds an unterminated tail, which §9.2 counts as one
+more sentence, so a witness for *exactly q sentences* padded naively becomes a
+witness for q + 1.
+
+**3. `assert_feature_words_are_specific` cannot hold unconditionally in v5.**
+v4r4 chose every witness-breaking word for orthogonality. v5's eight marker
+words are registered by §7.6 and their letters are what English makes them:
+`whereas` contains an `a` and ends in `s`, `indeed` and `overall` have doubled
+letters and are vowel-initial. None of that can be designed away without
+changing the vocabulary, and none of it can bite: every colliding numerator
+belongs to a Tier-3 family, and §7.4 with §13.10 keeps a Tier-3 companion
+beside B alone. The check is now scoped to pairs that can share a cell, asks
+`assert_pair_realisable` rather than assuming, and records every tolerated
+collateral feature with the reason.
+
+**Three under-specifications in the preregistration, one reading implemented
+each, all recorded.** §13.8's discourse-role spread does not say what a Tier-2
+member with no role contributes (implemented: `none` is not a role); §11.8's
+tier-indicator secondary fit is **singular** as written, because a family
+intercept per near-form control makes γ collinear (implemented: α ranges over
+the three core families and a Tier-2 point sits at their average plus γ); and
+§13.8's "less restrictive severity" is undefined for an exact count
+(implemented from §7.10's own statement that higher q is harder). None changes
+a decision rule; the second would have made an F8 secondary unidentified.
+
+**One protocol tension escalated and not edited.** §7.10 says Tier-3 families
+are admissible "to the spectrum and to the broad-class slot only", while §7.4
+and §13.12 make a Tier-3 spectrum rung unreachable — the spectrum inherits its
+core family's tier and the core pool is Tier 1/2. Operationally the two agree;
+the sentence names a path no rule can exercise. The implementation follows
+§7.4.
+
+**Eight stale documentation values corrected**, none of them a threshold, a
+band or a count: the changelog said fourteen open decisions where §34 lists
+nineteen; the spec file pointed at §33 for the open decisions, named a
+`terminal_status_when_unmet` that §13.15 says is an identification status,
+listed a `class_same_form` slot that does not exist, and called the `comma`
+statistic `comma_character`; and §7.6's list of registered marker statistics
+still named `marker_notably` and `marker_finally`, which §7.6's own rule 3 and
+§7.10's table contradict.
+
+**Affected results: none.** No v4r4 record, evidence file or source line is
+touched. v5 reads v4r4 *code* in exactly one place —
+`dci1v5/verifiers/carryover.py`, which runs both revisions' numerators over
+the frozen corpus and refuses on disagreement — and admits no v4r4 row
+anywhere.
+
+---
+
 ## 2026-08-22 — DCI-1 v5 drafted: the reference pool inverts class, and two v4r4 documentation values are corrected
 
 **Standing.** v5 is **drafted, not adopted**. No v5 stage record exists, no v5

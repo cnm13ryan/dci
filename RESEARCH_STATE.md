@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **drafted 2026-08-22, NOT adopted, no stage record, no topic authored, no instrument measured.** A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. §4q. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **drafted and implemented 2026-08-22; NOT adopted, no stage record, no topic authored, no instrument measured, no generation.** A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. §4q, §4r. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1238,6 +1238,63 @@ sharpest being that a same-form control pool may make L3c — the source memo's
 observing all of v4r4, which is design fitting; v5 is the prospective test and
 no artifact may call the retrospective analysis validation.
 
+
+### 4r. v5 implemented, and what running the carried code over a new library found (2026-08-22)
+
+**The protocol now has an implementation and it cannot run.** `dci1/src/dci1v5/`
+is a v5 namespace beside the closed v4r4 one; `dci1/tests_v5/` holds 225 tests
+that pass in about two seconds. `protocol/decisions.py` carries §34's
+**nineteen** open decisions as executable state, every one `UNRESOLVED`, and
+`engine/transitions.assert_transition_legal` refuses a stage whose decisions
+are open. `PROTOCOL_REGISTERED` depends on all nineteen, so no v5 stage can
+run — which is `REGISTRATION_INCOMPLETE`, and is the intended state.
+
+The pre-freeze audit is a **stage** in v5 where it was a tool in v4r4, and it
+is Gate 5's registered predecessor, so a failing audit makes the freeze
+unreachable with no special case. Run today it reports
+`PREFREEZE_AUDIT_FAILURE`: twelve of §33's fifteen checks pass statically,
+three return `UNRESOLVED` because they need a run that has not happened, and
+beside them sit nineteen open decisions and five unresolved red-team findings.
+
+**Where both branches of a researcher decision exist in the source.** D6
+(is `REFERENCE_SUPPORT_NOT_IDENTIFIED` terminal), D16 (which population
+Calibration-B measures), D17 (a construct floor for m\*), D18 (is the
+near-form arm a precondition of L3c), D3 (the 96 questions that do not exist)
+and D4 (the marker vocabulary) each reach a `decisions.choice(...)` that
+raises until the decision is closed. D17's `floor` branch refuses **even when
+closed**, because a construct floor is a registered value with a derivation
+and the implementation does not invent one.
+
+**Three latent defects in carried verifier code, found by running it over v5's
+library rather than by reading it.** The sharpest: `joint_witness` satisfied
+only the *first* exact-count constraint of a pair and built an exact sentence
+count as loose terminators followed by filler, which §9.2 counts as one
+sentence too many. Neither path is reachable in v4r4, whose library held one
+exact-count reference family and no sentence-exact family. Run unfixed over
+v5's population the carried suite reported **2,016 non-entailment failures**,
+every one a witness the constructor built wrongly rather than a pair whose
+obligation cannot be discharged. Generalised, it discharges **20,332
+realisable pairs with zero failures of either kind**. The other two are in
+[`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md); none affects a v4r4 result.
+
+**What the implementation measured rather than assumed.** The library computes
+to exactly §7.10's four counts — 37 families, 326 round-0 severities, 632
+declared, **650 instruments in 39 verifiers**. The carried numerators agree
+with v4r4's on **2,655 comparisons** over the frozen corpus. The boundary
+suite reproduces every frozen expectation over 2,076 checks. §7.7's realistic
+witness finds `CL7:125, 130, 135, 140` unreachable inside the 60–120 word stem
+band and nothing else in the library, which is the registered finding computed
+instead of asserted.
+
+**What is not written, deliberately.** The `run/` layer — the runners that
+drive a real evidence tree, generate rows and write signed stage records.
+Nothing above needs it to be checked, and writing it would produce the one
+thing this pass must not produce: a path that looks ready to spend model data.
+[`v5_implementation_status.md`](dci1/reports/dci1v5/v5_implementation_status.md)
+carries the ordered list of what a researcher must do before v5 may measure
+anything; [`v5_reconciliation.md`](dci1/reports/dci1v5/v5_reconciliation.md)
+classifies every document discrepancy the implementation found.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1313,7 +1370,9 @@ and §4p.
 | the completed DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
 | the drafted successor, not adopted | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
-| what is still open in v5 | `dci1/reports/dci1v5/v5_prereg_redteam.md`, `dci1/reports/dci1v5/v5_implementation_plan.md` |
+| what is still open in v5 | `dci1/reports/dci1v5/v5_prereg_redteam.md`, `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
+| what v5's implementation is, and what it cannot do | `dci1/src/dci1v5/`, `dci1/tests_v5/`, `dci1/reports/dci1v5/v5_implementation_status.md` |
+| every v5 document discrepancy and its classification | `dci1/reports/dci1v5/v5_reconciliation.md` |
 | what v4r4 changed and why | `user-notes/DCI1_v4r3_to_v4r4_changelog.md` (R4-1–R4-7) |
 | the v4r4 decisions register | `dci1/DECISIONS_V4R4.md` (B0–B7, E0–E7) |
 | what v4r4 measured, and its follow-up | `dci1/reports/dci1v4r4/` — `final_results.json`, `EXECUTION_REPORT.md`, `SCIENTIFIC_FOLLOWUP_EVIDENCE.md` |

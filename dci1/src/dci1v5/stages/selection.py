@@ -147,7 +147,7 @@ def admit_family(family: str, rows: Sequence[CalibrationRow], *, slot: str,
         return FamilyAdmission(family, False, None, None, None,
                                meta.structural_tier, meta.feature_group,
                                meta.discourse_role, tuple(verdicts))
-    best_validity, best_row = min(
+    _, best_row = min(
         passing,
         key=lambda pair: (tie_key(abs(pair[1].iota - iota_a)),
                           restrictiveness_key(family, pair[1].severity)))
@@ -580,7 +580,8 @@ def assert_no_backup_substitution(namespace: Mapping[str, Any]) -> None:
     """
     offenders = sorted(
         name for name in namespace
-        if any(token in name.lower()
+        if not name.startswith("assert_no_")   # the guard is not the offence
+        and any(token in name.lower()
                for token in ("substitute", "replace_reference",
                              "swap_reference", "promote_backup",
                              "backup_into"))) 
