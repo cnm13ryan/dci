@@ -61,7 +61,7 @@ def test_the_tier_one_reserve_runs_to_twelve_on_a_measurement():
 
 def test_no_exact_or_rate_ladder_carries_zero():
     K.assert_no_zero_rung()
-    for kind, family in K.FAMILIES.items():
+    for _kind, family in K.FAMILIES.items():
         if family.form in (K.FORM_EXACT, K.FORM_RATE):
             assert 0 not in family.reserve
 
@@ -217,17 +217,25 @@ def test_expansion_never_authors_outside_the_frozen_reserve():
     assert set(plan["admitted"].get("RF1", ())) <= set(K.RESERVES["RF1"])
 
 
-def test_the_calibration_b_bank_does_not_exist(restore_decisions):
+def test_the_calibration_b_bank_exists_and_still_has_to_pass(
+        restore_decisions):
+    """§34 D3 is closed and the work behind it was done.
+
+    The refusal path is still live: hand the entry point a bank that is not
+    96 verified questions and it refuses, which is what stops a closed
+    decision from standing in for the questions themselves.
+    """
     from dci1v5 import topics
 
-    assert topics.CALIBRATION_B_STATUS == "NOT_AUTHORED"
-    with pytest.raises(decisions.DecisionOpenError):
+    assert topics.calibration_b_status() == "AUTHORED"
+    assert len(topics.calibration_b_bank()) == 96
+    with pytest.raises(ProtocolError, match="96 questions"):
+        topics.calibration_b_bank([{"topic_id": "x", "area": "food",
+                                    "set": "calibration_b",
+                                    "question": "Why?"}])
+    restore_decisions.override_for_testing("D3", "author_after_adoption")
+    with pytest.raises(ProtocolError, match="author after adoption"):
         topics.calibration_b_bank()
-    restore_decisions.close("D3", "author_before_adoption", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    with pytest.raises(ProtocolError) as excinfo:
-        topics.calibration_b_bank()
-    assert "96 newly authored questions" in str(excinfo.value)
 
 
 def test_the_topic_bank_shape_is_720_in_six_sets():

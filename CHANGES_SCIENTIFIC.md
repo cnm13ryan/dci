@@ -13,6 +13,95 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-22 — four §34 decisions taken, and the 96 Calibration-B questions authored
+
+**Standing.** v5 is still **drafted, not adopted**. No v5 stage record exists
+under `dci1/evidence/dci1v5/`, no v5 topic has been consumed, no model has
+generated a v5 response, and the registration manifest still refuses to be
+signed. **What changed is that four of §34's nineteen decisions are now
+closed** — by the researcher, on the record — and two of them went against the
+preregistration's own standing proposal. No existing number moves, because
+there are none: nothing in this repository has ever produced a v5 observation.
+
+[`dci1/reports/dci1v5/researcher_decisions.json`](dci1/reports/dci1v5/researcher_decisions.json) ·
+[`dci1/reports/dci1v5/v5_adoption_checklist.md`](dci1/reports/dci1v5/v5_adoption_checklist.md)
+
+**D18 — the near-form arm is a precondition of the STRONG L3c.** Against the
+standing proposal. L3c now carries a registered `claim_scope`: `strong` — *no
+pair-specific excess*, the source memo's refutation verdict — requires the
+near-form arm to have run and produced a $\Delta_{\text{near}}$ interval;
+without the arm the scope is `same_form_only` and the statement licenses only
+*no excess relative to same-form exact-count companions*.
+`claims.assert_l3c_scope` checks the invariant on the built statement, so the
+strong conclusion is **unreachable** without the arm rather than qualified.
+A new identification status, `L3C_STRONG_CONCLUSION_WITHHELD`, records the
+absence on the record.
+
+*What it changes about the meaning of a future number:* an L3c emitted by a
+replication without the near-form arm was previously the memo's refutation
+verdict with a sentence attached. It is now a different, narrower claim with a
+different name. Nothing retrospective is affected — no v5 L3c has ever been
+emitted — but the 47-cell compute option in D1 is no longer a cheaper version
+of the same study, and `d1_arm_compute_decision.md` says so.
+
+**D16 — Calibration-B measures the complete carried population.** Against the
+standing proposal, which restricted it to Calibration-A's survivors. §13.7
+becomes a test of the candidate landscape's stability rather than a
+re-confirmation of a set already selected once. About 35,000 further
+generations per replication.
+
+*Consequence for the run layer:* at that volume an accidental repeat is
+expensive, so a row's reuse key is now its **complete scientific identity** —
+study, protocol identity, stage, decoding policy, model revision, topic,
+**split**, block, cell, constituents, wording, prompt and seed. The split is in
+the key explicitly, not by consequence of the prompts differing, so no
+Calibration-A generation can ever satisfy a Calibration-B row. Generation and
+scoring have separate keys: rescoring happens from the text on every pass, so a
+verifier change invalidates every verdict without regenerating a token. The
+previous key was (row id, prompt hash, seed), which would have reused across a
+changed completion cap, a changed model revision and a changed protocol
+identity.
+
+**D6 — an unbuildable reference set is an identification status, and the
+non-identification is irreversible.** As proposed, plus the half the proposal
+did not state. The reference-dependent estimand set is **derived** from §15's
+registered families by one rule (`protocol/identification.py`): 48 of the 70
+registered members, including $\Delta_R$, $\Xi$, $\delta_{\text{difficulty}}$,
+all of F2, F3, F4, F7, F8, the nine F6 contrasts against a reference and
+$\text{Ord}_{\bar R}$. The 22 that survive include $D(B{\leftarrow}A)$,
+$D(A{\leftarrow}B)$, $\Lambda$, $\Delta_{\text{near}}$ and
+$\Delta_{\text{broad}}$. Gate 3C writes the set, the freeze carries it, and
+`assert_not_rehabilitated` refuses four named paths — a later gate, a frozen
+backup, the broad-class control, and an observed composed outcome read as
+evidence the pool was adequate after all.
+
+*What this fixes:* `analysis_run._licensed` blocked five members under
+`REFERENCE_SUPPORT_NOT_IDENTIFIED`. The other 43 were attempted, produced no
+vector, and were recorded `not_computable` — "the design was never asked"
+rather than "§34 D6's verdict". The final report is now checked against the
+frozen set.
+
+**D3 — the 96 Calibration-B questions exist.**
+`dci1/src/dci1v5/topics/data/calibration_b_v5.json`: 96 questions, eight per
+subject area, deterministic ids, frozen ordering, content hash, disjoint from
+all five other topic sets in **both** id and question text. Authored on
+2026-08-22 — before any v5 Calibration-A measurement and before any v5
+selection outcome existed, so no question could have been written to be kind to
+a candidate that had already survived; `topics/calibration_b.PROVENANCE` states
+that in checkable terms. §13.7's two-split machinery is executable for the
+first time, and `load_bank()` now returns a complete bank.
+
+*A defect this exposed:* §6.2's one mechanically-checkable authoring rule — no
+form requirement in the question text — read `question["text"]`, and the schema
+field is `question`. It had been scanning the empty string for every topic in
+the bank and had never rejected anything.
+
+**Comparability.** Nothing to compare. No v5 observation exists, no v4r4 number
+is touched, and v4r4's evidence manifest verifies unchanged. The four closures
+change what *future* v5 numbers will mean, which is why they are here.
+
+---
+
 ## 2026-08-22 — the v5 lifecycle executed end to end on synthetic fixtures, and eleven defects that only appear when a stage runs
 
 **Standing unchanged.** v5 is still **drafted, not adopted**. No v5 stage

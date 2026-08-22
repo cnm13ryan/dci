@@ -1,4 +1,4 @@
-"""§6.2's topic bank: 720 questions, and the 96 that do not exist yet.
+"""§6.2's topic bank: 720 questions, including the 96 authored for v5.
 
 | Set | Per area | Total | Source | Permitted use |
 |---|---:|---:|---|---|
@@ -9,12 +9,18 @@
 | Confirmatory | 32 | 384 | v4 split, unchanged | the frozen confirmatory experiment |
 | Sequestered | 8 | 96 | v4 split, unchanged | a future uncontaminated rerun only |
 
-**Calibration-B does not exist.** §34 D3 is the decision and it is the largest
-non-compute prerequisite in the whole protocol: §13.7's stability rule ---
+**Calibration-B now exists** (§34 D3, taken 2026-08-22 at
+`author_before_adoption`; `topics/data/calibration_b_v5.json`). It was the
+largest non-compute prerequisite in the protocol: §13.7's stability rule ---
 v5's answer to the winner's curse §12.2 measures --- needs two disjoint
-96-topic sets, and v5 has one. ``calibration_b_bank`` refuses while D3 is
-open, and it refuses again if the bank it is handed is not 96 questions
-verified individually against §6.2's four authoring rules.
+96-topic sets and v5 had one.
+
+**Closing the decision did not do the work, and this module still says so.**
+``calibration_b_bank`` refuses a bank that is not 96 questions verified
+individually against §6.2's four authoring rules, whatever D3 says, and refuses
+outright while D3 is open or closed at `author_after_adoption`. The one
+mechanically checkable rule --- no form requirement in the question text --- is
+run on every load.
 
 **Calibration-A is not naive, and §6.2 says so.** Twenty-nine rungs per model
 of v4r4's library were measured on those topics and the researcher has seen
@@ -33,13 +39,21 @@ from dci1v5.protocol import decisions
 
 __all__ = ["SET_SIZES", "AUTHORING_RULES", "assert_bank_shape",
            "assert_authoring_rules", "calibration_b_bank",
-           "assert_sets_disjoint", "CALIBRATION_B_STATUS"]
+           "assert_sets_disjoint", "CALIBRATION_B_STATUS",
+           "calibration_b_status"]
 
 SET_SIZES = C.SET_SIZES
 AUTHORING_RULES = C.AUTHORING_RULES
 
-#: The one honest thing this module can say about Calibration-B today.
-CALIBRATION_B_STATUS = "NOT_AUTHORED"
+def calibration_b_status() -> str:
+    """Derived, never asserted --- see ``topics.bank.calibration_b_status``."""
+    from dci1v5.topics.bank import calibration_b_status as _status
+
+    return _status()
+
+
+#: The value at import. ``calibration_b_status()`` is the live one.
+CALIBRATION_B_STATUS = "AUTHORED"
 
 #: §6.2 rule 4: no wording that itself mentions any letter, word length, word
 #: shape, punctuation-count or capitalisation requirement. Fixed template text
@@ -101,7 +115,16 @@ def assert_authoring_rules(questions: Iterable[Mapping[str, Any]]
     questions = list(questions)
     offences: list[dict[str, Any]] = []
     for question in questions:
-        text = str(question.get("text", ""))
+        # §6.2's schema field is `question`; `text` is accepted so a caller
+        # holding a differently-shaped row is not silently exempted. Reading
+        # `text` alone --- which is what this did --- meant the one
+        # mechanically checkable rule scanned the empty string for every
+        # topic in the bank, so it had never rejected anything.
+        text = str(question.get("question") or question.get("text") or "")
+        if not text.strip():
+            offences.append({"topic_id": question.get("topic_id"),
+                             "no_question_text": True})
+            continue
         verified = question.get("authoring_rules_verified") or {}
         missing = [r for r in AUTHORING_RULES if not verified.get(r)]
         if missing:
@@ -126,36 +149,24 @@ def assert_authoring_rules(questions: Iterable[Mapping[str, Any]]
 
 def calibration_b_bank(questions: Sequence[Mapping[str, Any]] | None = None
                        ) -> tuple[Mapping[str, Any], ...]:
-    """§6.2's 96 newly authored questions. **They do not exist yet.**
+    """§6.2's 96 newly authored questions. **Authored; §34 D3 closed.**
 
-    §34 D3 gates adoption on them and this refuses while D3 is open. When D3
-    is closed the bank must still be 96 questions passing §6.2's four rules,
-    and this checks that too: closing a decision is not the same as doing the
-    work it names.
+    One rule, in one place: this delegates to
+    ``topics.bank.calibration_b_questions``, which is what ``load_bank``
+    already used. Two copies of "what a Calibration-B bank must satisfy" is
+    two places for the rule to drift, and this is the name §34 D3 registers
+    as its blocked call, so it is kept as the name and not as a second
+    implementation.
+
+    With no argument the authored bank is loaded from disk. It still passes
+    every check --- 96 questions, eight per area, all four authoring
+    verifications recorded, no form requirement in the text --- because
+    closing a decision is not the same as doing the work it names.
     """
-    def _author_before() -> tuple[Mapping[str, Any], ...]:
-        if questions is None:
-            raise ProtocolError(
-                "§34 D3 was closed at 'author before adoption' and no bank "
-                f"was supplied. §6.2 needs {C.N_CALIBRATION_B} newly authored "
-                "questions, eight per subject area, each verified "
-                "individually against the four authoring rules; §13.7's "
-                "stability rule --- v5's answer to the winner's curse §12.2 "
-                "measures --- does not work without them")
-        if len(questions) != C.N_CALIBRATION_B:
-            raise ProtocolError(
-                f"§6.2: Calibration-B is {C.N_CALIBRATION_B} questions and "
-                f"this bank is {len(questions)}")
-        assert_authoring_rules(questions)
-        return tuple(questions)
+    from dci1v5.topics.bank import calibration_b_questions
+    from dci1v5.topics.calibration_b import DATA_PATH, load_calibration_b
 
-    def _author_after() -> tuple[Mapping[str, Any], ...]:
-        raise ProtocolError(
-            "§34 D3 was closed at 'author after adoption'. Nothing downstream "
-            "of Gate 3A can run until the bank exists, and this function "
-            "returns no questions rather than an empty split that would look "
-            "like one")
-
-    return decisions.choice("D3", {"author_before_adoption": _author_before,
-                                   "author_after_adoption": _author_after},
-                            where="topics.calibration_b_bank")()
+    if questions is None and DATA_PATH.exists() and \
+            decisions.value_of("D3") == "author_before_adoption":
+        questions = load_calibration_b()
+    return tuple(calibration_b_questions(questions))

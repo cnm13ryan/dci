@@ -99,16 +99,17 @@ def test_the_bootstrap_is_deterministic_under_the_registered_seed():
     assert first == second
 
 
-def test_calibration_b_population_refuses_while_d16_is_open(restore_decisions):
-    with pytest.raises(decisions.DecisionOpenError):
-        S.calibration_b_population(["a", "b"], ["a"])
-    restore_decisions.close("D16", "a_survivors", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    assert S.calibration_b_population(["a", "b"], ["a"]) == ("a",)
-    restore_decisions.reopen_all_for_testing()
-    restore_decisions.close("D16", "complete_population", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
+def test_calibration_b_measures_the_complete_population(restore_decisions):
+    """§34 D16, closed at ``complete_population``.
+
+    The whole carried set is remeasured on Calibration-B, not only what
+    Calibration-A admitted --- so §13.7 tests the stability of the candidate
+    landscape rather than reconfirming a set already selected once (R11).
+    """
+    assert decisions.value_of("D16") == "complete_population"
     assert S.calibration_b_population(["a", "b"], ["a"]) == ("a", "b")
+    restore_decisions.override_for_testing("D16", "a_survivors")
+    assert S.calibration_b_population(["a", "b"], ["a"]) == ("a",)
 
 
 def test_the_split_admissibility_components_are_the_registered_four():

@@ -38,6 +38,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 from dci1v4.errors import ProtocolError
 from dci1v4.generation.backend import build_plan, run_backend
 from dci1v4.models.registry import get_model
+from dci1v4.protocol.hashing import sha_obj
 
 from dci1v5 import CLASSIFICATION, STUDY_ID
 from dci1v5.design.prompts import assert_stem_present, prompt_hash, render
@@ -50,7 +51,9 @@ from dci1v5.verifiers.constraints import Constraint
 
 __all__ = ["PromptCell", "prompt_cell", "absent_for", "design_rows",
            "generate_and_score", "cell_rates", "instance_rates",
-           "per_topic_compliance", "fake_backend", "assert_no_outcome_read"]
+           "per_topic_compliance", "fake_backend", "assert_no_outcome_read",
+           "DECODING_IDENTITY_FIELDS", "decoding_identity",
+           "generation_identity", "observation_identity", "reuse_report"]
 
 
 @dataclass(frozen=True)
@@ -127,62 +130,219 @@ def absent_for(cell: PromptCell, instances: Sequence[Constraint]
     return tuple(c for c in instances if c.label not in stated)
 
 
-def design_rows(cells: Sequence[PromptCell], *, stage: str, model_id: str
+#: Every field of the generation plan that changes what a model produces.
+#: A plan field outside this tuple is operational --- which GPU, how large a
+#: chunk, how long before a timeout --- and reusing a generation across a
+#: change in one of those is exactly what reuse is for.
+DECODING_IDENTITY_FIELDS: tuple[str, ...] = (
+    "model_id", "model_revision", "dtype", "quantization", "max_model_len",
+    "engine_seed", "temperature", "top_p", "top_k", "generation_ceiling",
+    "answer_tokens", "strategy", "reasoning_mode", "chat_template_kwargs",
+    "decoding_policy", "skip_special_tokens", "thinking_policy",
+)
+
+
+def decoding_identity(plan: Mapping[str, Any]) -> dict[str, Any]:
+    """The decoding-relevant projection of a plan.
+
+    A missing field is a **refusal**, not a skipped key: the whole point of
+    the projection is that everything that changes what the model writes is
+    in it, and a plan shape that has drifted would silently shrink it.
+    """
+    missing = [f for f in DECODING_IDENTITY_FIELDS if f not in plan]
+    if missing:
+        raise ProtocolError(
+            f"the generation plan is missing {missing}; a reuse key computed "
+            "over a plan whose decoding fields have moved would reuse rows "
+            "produced under a different experimental condition")
+    return {f: plan[f] for f in DECODING_IDENTITY_FIELDS}
+
+
+def generation_identity(cell: PromptCell, *, draw: int, stage: str,
+                        study_id: str, protocol_identity: Mapping[str, Any],
+                        decoding: Mapping[str, Any], seed: int) -> str:
+    """Everything that decides what text a row contains.
+
+    §34 D16 is closed at ``complete_population``: Calibration-B remeasures the
+    whole carried set, and the researcher accepts that cost while refusing
+    *accidental* repetition. So a stored generation may be reused --- and only
+    when every one of these agrees.
+
+    ``topic_split`` is in the key **explicitly**, not left to follow from the
+    prompt text. §6.2's two calibration sets are disjoint so their prompts
+    already differ, but "the splits happen to differ" is not the same
+    guarantee as "a row cannot be reused across splits", and §13.7's two
+    estimates are independent only if their rows are.
+    """
+    return sha_obj({
+        "study_id": study_id,
+        "protocol_identity": dict(protocol_identity),
+        "stage": stage,
+        "decoding": dict(decoding),
+        "topic_id": cell.topic_id,
+        "topic_split": cell.topic_split,
+        "block_id": cell.block_id,
+        "cell_id": cell.cell_id,
+        "arm": cell.arm,
+        "slots": list(cell.slots),
+        "constituents": [[c.kind, c.severity] for c in cell.present],
+        "wording_indices": list(cell.wording_indices),
+        "prompt_hash": cell.prompt_hash,
+        "draw_index": draw,
+        "scientific_seed": seed,
+    })
+
+
+def observation_identity(row_generation_identity: str, *,
+                         verifier_hash: str,
+                         instances: Sequence[Constraint]) -> str:
+    """The identity of the scored **observation**, not of the text.
+
+    Generation and scoring have different keys because they have different
+    inputs: a verifier change does not change what the model wrote, and every
+    row is rescored from its text on every pass, so a stored generation stays
+    reusable across one. What may never be reused across a verifier change is
+    the *verdict*, and this is the key that says so --- it is written on every
+    scored row and it moves when the verifier hash or §9.1's instance set
+    moves.
+    """
+    return sha_obj({"generation": row_generation_identity,
+                    "verifier_hash": verifier_hash,
+                    "instances": sorted(c.label for c in instances)})
+
+
+def design_rows(cells: Sequence[PromptCell], *, stage: str, model_id: str,
+                study_id: str = STUDY_ID,
+                protocol_identity: Mapping[str, Any] | None = None,
+                decoding: Mapping[str, Any] | None = None
                 ) -> list[dict[str, Any]]:
     """One row per (cell, draw). All draws are kept; none is selected."""
     rows: list[dict[str, Any]] = []
     for cell in cells:
         for draw in range(cell.draws):
+            seed = generation_seed(stage, model_id, cell.prompt_hash, draw)
             rows.append({
                 "cell_id": cell.cell_id, "block_id": cell.block_id,
                 "draw_index": draw,
                 "row_id": f"{cell.block_id}:{cell.cell_id}:{draw}",
                 "prompt_hash": cell.prompt_hash,
-                "scientific_seed": generation_seed(stage, model_id,
-                                                   cell.prompt_hash, draw),
+                "topic_id": cell.topic_id,
+                "topic_split": cell.topic_split,
+                "scientific_seed": seed,
+                "generation_identity": generation_identity(
+                    cell, draw=draw, stage=stage, study_id=study_id,
+                    protocol_identity=protocol_identity or {},
+                    decoding=decoding or {}, seed=seed),
                 "user_prompt": cell.prompt})
     ids = [r["row_id"] for r in rows]
     if len(set(ids)) != len(ids):
         raise ProtocolError(
             f"{stage}: the row plan repeats a row identity; every "
             "(block, cell, draw) is generated exactly once (§14.2)")
+    keys = [r["generation_identity"] for r in rows]
+    if len(set(keys)) != len(keys):
+        raise ProtocolError(
+            f"{stage}: two planned rows share a generation identity; a "
+            "duplicate key would make one scientific observation satisfy two "
+            "planned ones")
     return rows
 
 
 def _reusable_rows(run_dir: Path, wanted: Sequence[Mapping[str, Any]]
-                   ) -> list[dict[str, Any]] | None:
-    """The rows an interrupted run already produced, or None.
+                   ) -> tuple[list[dict[str, Any]] | None, dict[str, Any]]:
+    """The rows an earlier run already produced, or ``None``, and why.
 
-    §26 wants a restart to be cheap and a *silent* restart to be impossible.
-    A previous run's rows are reused only when the design it was given is the
-    one this call would give --- same row identities, same prompt hashes, same
-    scientific seeds, same count, same order. Anything else and the generation
-    is redone, because a partial match is how a study ends up with two
-    experimental conditions under one label.
+    §26 wants a restart to be cheap and a *silent* restart to be impossible,
+    and §34 D16's closure sharpens the first half: Calibration-B remeasures
+    the complete carried population, so the study will ask for a great many
+    rows and must not ask twice for the same one. A stored generation is
+    reused when its **generation identity** matches --- study, protocol
+    identity, stage, decoding policy, model revision, topic, split, block,
+    cell, constituents, wording, prompt and seed --- and on no weaker
+    agreement.
 
-    Reuse is safe across a verifier change and unsafe across a prompt or seed
-    change, which is exactly the distinction this draws: generation depends on
-    the prompt and the seed, and scoring is redone here from the text every
-    time.
+    Generation and scoring have different keys because they have different
+    inputs. A verifier change does not change what the model wrote, and every
+    row is rescored here from its text on every pass; so a verifier change
+    invalidates every **verdict** (the observation identity moves) without
+    forcing a single token to be regenerated. That is the distinction that
+    makes reuse both safe and worth having.
+
+    The second element is a report: it names the reason rather than returning
+    a bare ``None``, because "the design moved" and "there was nothing here"
+    are different facts and a run that silently regenerated is what §26 is
+    trying to make impossible.
     """
     design_path, rows_path = run_dir / "design.jsonl", run_dir / "rows.jsonl"
     if not (design_path.exists() and rows_path.exists()):
-        return None
+        return None, {"reused": False, "reason": "NO_PREVIOUS_RUN",
+                      "n_reused": 0, "n_wanted": len(wanted)}
     previous = [json.loads(line) for line in
                 design_path.read_text().splitlines() if line.strip()]
     if len(previous) != len(wanted):
-        return None
+        return None, {"reused": False, "reason": "ROW_COUNT_DIFFERS",
+                      "n_previous": len(previous), "n_wanted": len(wanted),
+                      "n_reused": 0}
     for old, new in zip(previous, wanted):
-        if (old.get("row_id"), old.get("prompt_hash"),
-                old.get("scientific_seed")) != (
-                new["row_id"], new["prompt_hash"], new["scientific_seed"]):
-            return None
+        stored = old.get("generation_identity")
+        if stored is None:
+            return None, {"reused": False,
+                          "reason": "PREVIOUS_RUN_HAS_NO_GENERATION_IDENTITY",
+                          "n_reused": 0, "n_wanted": len(wanted),
+                          "detail": "written before the identity was "
+                                    "recorded; regenerating rather than "
+                                    "assuming the conditions matched"}
+        if stored != new["generation_identity"]:
+            return None, {"reused": False, "reason": "IDENTITY_DIFFERS",
+                          "row_id": new["row_id"], "n_reused": 0,
+                          "n_wanted": len(wanted),
+                          "detail": _identity_difference(old, new)}
     produced = [json.loads(line) for line in
                 rows_path.read_text().splitlines() if line.strip()]
     by_id = {row.get("row_id"): row for row in produced}
     if set(by_id) != {row["row_id"] for row in wanted}:
-        return None
-    return [by_id[row["row_id"]] for row in wanted]
+        return None, {"reused": False, "reason": "INCOMPLETE_PREVIOUS_RUN",
+                      "n_produced": len(by_id), "n_wanted": len(wanted),
+                      "n_reused": 0}
+    return ([by_id[row["row_id"]] for row in wanted],
+            {"reused": True, "reason": "IDENTICAL_SCIENTIFIC_IDENTITY",
+             "n_reused": len(wanted), "n_wanted": len(wanted)})
+
+
+def _identity_difference(old: Mapping[str, Any],
+                         new: Mapping[str, Any]) -> dict[str, Any]:
+    """Which recorded field of the first differing row moved.
+
+    The identity is a hash, so a mismatch on its own says only "something".
+    The plain fields the design row also carries usually say what.
+    """
+    fields = ("topic_id", "topic_split", "prompt_hash", "scientific_seed",
+              "cell_id", "block_id")
+    moved = {f: [old.get(f), new.get(f)] for f in fields
+             if old.get(f) != new.get(f)}
+    return moved or {"note": "no recorded plain field differs; the identity "
+                             "covers decoding, model revision and protocol "
+                             "identity, which the design row does not repeat"}
+
+
+def reuse_report(run_dir: Path, cells: Sequence[PromptCell], *, stage: str,
+                 model_key: str, cap: int, study_id: str = STUDY_ID,
+                 protocol_identity: Mapping[str, Any] | None = None
+                 ) -> dict[str, Any]:
+    """Would this call reuse, and why? Generates nothing and writes nothing.
+
+    Exists so a runner --- or a researcher sizing §34 D16's complete-population
+    Calibration-B --- can ask what an execution would cost before paying it.
+    """
+    spec = get_model(model_key)
+    plan = build_plan(spec, stage=stage, max_new_tokens=cap)
+    rows = design_rows(cells, stage=stage, model_id=spec.model_id,
+                       study_id=study_id,
+                       protocol_identity=protocol_identity or {},
+                       decoding=decoding_identity(plan))
+    _, report = _reusable_rows(Path(run_dir), rows)
+    return {**report, "stage": stage, "model_key": model_key,
+            "n_rows": len(rows)}
 
 
 def fake_backend(responder: Callable[[Mapping[str, Any]], str]
@@ -219,6 +379,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
                        instances: Sequence[Constraint] = (),
                        slot_map: Mapping[str, Constraint] | None = None,
                        study_id: str = STUDY_ID,
+                       protocol_identity: Mapping[str, Any] | None = None,
                        limit: int | None = None,
                        generate: Callable[..., dict[str, Any]] | None = None
                        ) -> list[dict[str, Any]]:
@@ -242,15 +403,20 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
     """
     spec = get_model(model_key)
     frozen_hash = verifier_source_hash()
-    rows = design_rows(cells, stage=stage, model_id=spec.model_id)
-    if limit:
-        rows = rows[:limit]
     plan = build_plan(spec, stage=stage, max_new_tokens=cap)
     plan["chunk_size"] = 64
-    reused = _reusable_rows(run_dir, rows)
+    decoding = decoding_identity(plan)
+    rows = design_rows(cells, stage=stage, model_id=spec.model_id,
+                       study_id=study_id,
+                       protocol_identity=protocol_identity or {},
+                       decoding=decoding)
+    if limit:
+        rows = rows[:limit]
+    reused, reuse = _reusable_rows(run_dir, rows)
     if reused is not None:
         outcome: dict[str, Any] = {"rows": reused,
-                                   "provenance": {"resumed": True}}
+                                   "provenance": {"resumed": True,
+                                                  "reuse": dict(reuse)}}
     elif generate is None:
         outcome = run_backend(run_dir, plan, rows, device=device,
                               timeout_seconds=60 * 60 * 12)
@@ -303,6 +469,15 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
             "synthetic": generate is not None,
             "resumed": reused is not None,
             "verifier_hash": frozen_hash,
+            # Two keys, because generation and scoring have different inputs.
+            # The first says which stored text may satisfy this row; the
+            # second says which scored verdict may. A verifier change moves
+            # the second and leaves the first alone, which is what makes
+            # rescoring free and reuse honest (§26, §34 D16).
+            "generation_identity": row["generation_identity"],
+            "observation_identity": observation_identity(
+                row["generation_identity"], verifier_hash=frozen_hash,
+                instances=list(instances) or list(cell.present)),
             "scores": [
                 {"kind": s.kind, "severity": s.severity,
                  # Never null. A score with no slot cannot be indexed, and

@@ -46,11 +46,14 @@ from typing import Any, Iterable, Mapping, Sequence
 from dci1v4.errors import ProtocolError
 
 from dci1v5.protocol import constants as C
+from dci1v5.protocol import decisions
 
 __all__ = ["Cell", "CellType", "ARM_SLOTS", "normalise_arms", "slots_for",
            "cell_types", "cells_for", "n_cells_for", "block_cells",
            "design_cells", "assert_allocation", "wording_indices",
-           "slot_order_key", "arms_from_identification"]
+           "slot_order_key", "arms_from_identification",
+           "admitted_arms_from_decision", "d1_scale", "D1_ARM_SETS",
+           "D1_SCALE"]
 
 #: Which slots each arm contributes. The base arm is always present.
 ARM_SLOTS: dict[str, tuple[str, ...]] = {
@@ -83,6 +86,53 @@ def normalise_arms(arms: Iterable[str]) -> tuple[str, ...]:
             "reference's own family, so the spectrum arm cannot be admitted "
             "without the core arm")
     return tuple(a for a in C.ARMS if a in requested)
+
+
+#: §34 D1's four registered compute options, as the arm set each one runs.
+#: The near-form arm is **scientifically essential** under §34 D18's closure:
+#: without it no replication can emit the strong L3c conclusion, so the option
+#: that drops it is the option that gives up the study's refutation verdict.
+#: `reports/dci1v5/d1_arm_compute_decision.md` derives the cost of each.
+D1_ARM_SETS: dict[str, tuple[str, ...]] = {
+    "four_models_56_cells": C.ARMS,
+    # 47 = 56 - the 9 near-form cells. This is the option R1 names.
+    "four_models_47_cells": tuple(a for a in C.ARMS
+                                  if a != C.ARM_NEAR_FORM),
+    "two_models_56_cells": C.ARMS,
+    "384_blocks_m4": C.ARMS,
+}
+#: Per option, how many models and how many draws per cell. D1 selects a
+#: budget, and a budget is arms x models x blocks x draws; naming only the
+#: arms would leave three of the four factors to whoever wrote the runner.
+D1_SCALE: dict[str, dict[str, int]] = {
+    "four_models_56_cells": {"models": 4, "blocks": 384, "draws": 8},
+    "four_models_47_cells": {"models": 4, "blocks": 384, "draws": 8},
+    "two_models_56_cells": {"models": 2, "blocks": 384, "draws": 8},
+    "384_blocks_m4": {"models": 4, "blocks": 384, "draws": 4},
+}
+
+
+def admitted_arms_from_decision() -> tuple[str, ...]:
+    """§34 D1: the arm set the registered compute budget runs.
+
+    The **design-time** arm set, which is not the same thing as
+    ``arms_from_identification``: this is what the study registered it would
+    attempt, and that is what a replication's Gate-3 verdicts then narrow. A
+    replication cannot identify an arm the budget never ran, and it can fail
+    to identify one the budget did.
+
+    Every option exists here and none is reachable while D1 is open, so a
+    runner cannot get a default arm set by asking for one.
+    """
+    return decisions.choice(
+        "D1", {k: v for k, v in D1_ARM_SETS.items()},
+        where="design.cells.admitted_arms_from_decision")
+
+
+def d1_scale() -> dict[str, int]:
+    """§34 D1's models, blocks and draws. Refuses while D1 is open."""
+    return decisions.choice("D1", {k: dict(v) for k, v in D1_SCALE.items()},
+                            where="design.cells.d1_scale")
 
 
 def slots_for(arms: Sequence[str]) -> tuple[str, ...]:

@@ -89,7 +89,10 @@ UNRESOLVED_REDTEAM_FINDINGS: dict[str, dict[str, Any]] = {
     "R1": {"decision": "D18",
            "finding": "a same-form control pool may make L3c near-automatic, "
                       "and L3c is the source memo's refutation verdict",
-           "mitigation": "the near-form arm and §17.6's LOCAL_TIER_DISAGREE",
+           "mitigation": "the near-form arm, §17.6's LOCAL_TIER_DISAGREE, "
+                         "and --- since D18 was taken at 'precondition' --- "
+                         "the L3c scope: the strong conclusion is "
+                         "unreachable without the arm",
            "closeable_by_rule": True},
     "R5": {"decision": None,
            "finding": "kappa(R|B) is measured under B, so the reference set "
@@ -105,23 +108,32 @@ UNRESOLVED_REDTEAM_FINDINGS: dict[str, dict[str, Any]] = {
             "finding": "both calibration splits are development data and "
                        "Calibration-A is not naive; under §12.7 A screens and "
                        "B confirms, so 'independent' overstates it",
-            "mitigation": "§12.7 states the asymmetry in terms",
+            "mitigation": "D16 taken at 'complete_population' removes the "
+                          "screen-then-confirm asymmetry; Calibration-A's "
+                          "non-naivety is an accepted limitation that no "
+                          "decision closes and §6.2 declares",
             "closeable_by_rule": True},
     "R14": {"decision": "D17",
             "finding": "the focal grid extension trades construct strength "
                        "for band membership; m* = 13 is a real behavioural "
                        "constraint and a weak construct",
             "mitigation": "the realised m*, B's chance compliance at m* and "
-                          "B's whole curve are reported",
+                          "B's whole curve are reported; D17 is taken IN "
+                          "PRINCIPLE --- a floor shall exist --- and the "
+                          "quantity and threshold are open, so the finding "
+                          "is open with it",
             "closeable_by_rule": True},
     "R16": {"decision": "D6",
             "finding": "REFERENCE_SUPPORT_NOT_IDENTIFIED is an identification "
                        "status, so a replication that cannot identify its "
                        "primary counterfactual still spends a full "
                        "confirmatory budget",
-            "mitigation": "none registered; an execution-order rule would "
-                          "depend on a per-model gate outcome and §6.1's "
-                          "firewall forbids that",
+            "mitigation": "D6 taken at 'identification_status', with the "
+                          "non-identification irreversible and four "
+                          "rehabilitation paths refused by name. The "
+                          "resource-allocation cost is ACCEPTED: an "
+                          "execution-order rule would depend on a per-model "
+                          "gate outcome and §6.1's firewall forbids that",
             "closeable_by_rule": True},
 }
 

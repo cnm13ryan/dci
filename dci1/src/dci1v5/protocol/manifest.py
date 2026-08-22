@@ -43,12 +43,15 @@ from dci1v4.protocol.hashing import sha_obj
 
 from dci1v5 import (CLASSIFICATION, PREREGISTRATION, REFERENCE_DESIGN_SPEC,
                     STUDY_ID)
+from dci1v5.design import cells
 from dci1v5.engine.context import StudyContext
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import decisions, open_items, revision, seeds, taxonomy
+from dci1v5.protocol import (decisions, identification, open_items,
+                             revision, seeds, taxonomy)
 from dci1v5.protocol import wordings
 from dci1v5.protocol.wordings import wording_source_hash
 from dci1v5.stages.audit_prefreeze import UNRESOLVED_REDTEAM_FINDINGS
+from dci1v5.topics import calibration_b
 from dci1v5.topics.bank import TopicBank, load_bank
 from dci1v5.verifiers import verifier_source_hash
 from dci1v5.verifiers.constraints import FAMILIES, RESERVES
@@ -294,6 +297,12 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "authoring_rules": list(C.AUTHORING_RULES),
             "development_sets": list(C.DEVELOPMENT_TOPIC_SETS),
             "reserved_sets": list(C.RESERVED_TOPIC_SETS),
+            # §34 D3. The bank hash is already above; this is the claim that
+            # makes it worth having --- when it was authored, against what,
+            # and what had not happened yet. §13.7 is a stability test only
+            # if the second split is naive, and that is a fact about the
+            # authoring, not about the questions.
+            "calibration_b_provenance": calibration_b.provenance_record(),
         },
 
         # ------------------------------------------------------ §7, §10
@@ -360,6 +369,17 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "prompt_template": {"zero": C.PROMPT_ZERO, "one": C.PROMPT_ONE,
                                 "two": C.PROMPT_TWO},
             "stem_sentence": C.STEM_SENTENCE,
+            # §34 D1's four options, each as the arm set and the scale it
+            # runs, so the manifest binds what the budget IS rather than a
+            # label for it. The near-form arm is essential under D18's
+            # closure, which is why the 47-cell option is not a cheaper
+            # version of the same study.
+            "d1_options": {
+                name: {"arms": list(arms),
+                       "cells_per_block": cells.n_cells_for(arms),
+                       **cells.D1_SCALE[name]}
+                for name, arms in cells.D1_ARM_SETS.items()},
+            "d1_value": decisions.value_of("D1"),
         },
 
         # ----------------------------------------------------------- §13
@@ -438,6 +458,12 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
             "status_when_unmet_is_terminal": "§34 D6",
             "status_when_unmet_is_terminal_value": decisions.value_of("D6"),
+            # D6 closed at `identification_status`: the replication continues
+            # and the reference-dependent estimands are NOT_IDENTIFIED,
+            # irreversibly. The affected set is bound here so a reader of the
+            # signed manifest can see exactly which numbers a failed §13.15
+            # costs, before any replication runs.
+            "non_identification": identification.identification_payload(),
         },
 
         # ----------------------------------------------------------- §18
@@ -494,6 +520,13 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "l4a": "per named member (§17.7)",
             "l3c_near_form_precondition": "§34 D18",
             "l3c_near_form_precondition_value": decisions.value_of("D18"),
+            # D18 closed at `precondition`: L3c carries a scope and the
+            # strong scope --- the memo's refutation verdict --- requires the
+            # near-form arm to have run.
+            "l3c_scopes": list(C.L3C_SCOPES),
+            "l3c_strong_sentence": C.L3C_STRONG_SENTENCE,
+            "l3c_same_form_only_sentence": C.L3C_SAME_FORM_ONLY_SENTENCE,
+            "l3c_strong_requires_near_form_arm": True,
             "reference_pool_sentence": C.REFERENCE_POOL_SAME_FORM_SENTENCE,
             "class_sentence": C.CLASS_SENTENCE,
             "l3c_without_near_form_sentence":

@@ -5,10 +5,13 @@ v5's bank is v4's 528 released questions plus **96 newly authored ones**, eight
 per subject area, which are Calibration-B. §13.7 --- v5's whole answer to the
 winner's curse §12.2 measures --- estimates every selection quantity twice on
 two disjoint 96-topic sets and admits a candidate only when the two agree
-inside an equivalence bound. One set exists. The other is §34 D3 and is the
-largest non-compute prerequisite in the protocol.
+inside an equivalence bound. Both sets now exist: §34 D3 was taken on
+2026-08-22 and ``topics/calibration_b.py`` carries the content and its
+provenance.
 
-**This module is the infrastructure and not the content.** It can load a bank,
+**This module is still the infrastructure and not the content**, and it refuses
+a bank that does not satisfy §6.2 however the decision closed. It can load a
+bank,
 validate its schema, hash it, cut it into the six registered sets, allocate
 draws, bind a split identity into a calibration record and refuse every way
 the two calibration sets could be confused with one another. It authors
@@ -40,7 +43,8 @@ from dci1v4.topics.split import split_topics as _v4_split
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 
-__all__ = ["TOPIC_FIELDS", "CALIBRATION_B_STATUS", "CALIBRATION_SETS",
+__all__ = ["TOPIC_FIELDS", "CALIBRATION_B_STATUS", "calibration_b_status",
+           "CALIBRATION_SETS",
            "V4_SET_NAMES", "TopicBank", "assert_topic_schema",
            "topic_hash", "set_hash", "split_hash", "bank_hash",
            "load_bank", "calibration_b_questions", "assert_per_area",
@@ -55,8 +59,30 @@ __all__ = ["TOPIC_FIELDS", "CALIBRATION_B_STATUS", "CALIBRATION_SETS",
 #: "solo" now names a *cell*, not a topic set.
 TOPIC_FIELDS = ("topic_id", "area", "question", "set")
 
-#: What this module can honestly say about Calibration-B today.
-CALIBRATION_B_STATUS = "NOT_AUTHORED"
+def calibration_b_status() -> str:
+    """What can honestly be said about Calibration-B right now.
+
+    Three states, not two, because "the questions do not exist" and "the
+    questions exist and the decision to use them has not been taken" are
+    different facts and only the first is work nobody has done:
+
+    * ``NOT_AUTHORED`` --- the bank file is absent.
+    * ``AUTHORED_PENDING_D3`` --- the file is there and §34 D3 is open.
+    * ``AUTHORED`` --- the file is there and D3 is closed at
+      ``author_before_adoption``, so the questions may enter a study bank.
+    """
+    from dci1v5.topics.calibration_b import DATA_PATH
+
+    if not DATA_PATH.exists():
+        return "NOT_AUTHORED"
+    if decisions.value_of("D3") == "author_before_adoption":
+        return "AUTHORED"
+    return "AUTHORED_PENDING_D3"
+
+
+#: The value at import. ``calibration_b_status()`` is the live one --- the
+#: constant cannot see a decision closed later in the same process.
+CALIBRATION_B_STATUS = "AUTHORED"
 
 CALIBRATION_SETS = (C.CALIBRATION_A, C.CALIBRATION_B)
 
@@ -271,13 +297,14 @@ class TopicBank:
 def calibration_b_questions(
         questions: Sequence[Mapping[str, Any]] | None = None
 ) -> tuple[dict[str, Any], ...]:
-    """§6.2's 96 newly authored questions. **They do not exist yet.**
+    """§6.2's 96 newly authored questions, checked rather than trusted.
 
-    §34 D3 gates adoption on them and this refuses while D3 is open. When D3
-    is closed the bank must still be 96 questions, eight per area, each
-    carrying §6.2's four authoring verifications and passing the one rule
-    that is mechanically checkable --- because closing a decision is not the
-    same as doing the work it names.
+    §34 D3 gates adoption on them and this refuses while D3 is open. Now that
+    it is closed the bank must **still** be 96 questions, eight per area, each
+    carrying §6.2's four authoring verifications and passing the one rule that
+    is mechanically checkable --- because closing a decision is not the same
+    as doing the work it names, and this is the function that knows the
+    difference.
     """
     from dci1v5.topics import assert_authoring_rules
 
@@ -325,10 +352,12 @@ def load_bank(calibration_b: Sequence[Mapping[str, Any]] | None = None,
 
     ``calibration_b`` is passed through ``calibration_b_questions``, so a
     caller cannot get a complete bank while §34 D3 is open however good its
-    questions are. With none supplied the bank loads with an **empty**
-    Calibration-B and says so in ``calibration_b_status``: that is the honest
-    state today and it is what every stage before Gate 3A can legitimately
-    run on.
+    questions are. With none supplied the authored bank is loaded from disk
+    **when D3 permits it**, and otherwise the bank loads with an empty
+    Calibration-B and says so in ``calibration_b_status`` --- which is the
+    honest state whenever the questions do not exist or the decision to use
+    them has not been taken, and is what every stage before Gate 3A can
+    legitimately run on.
     """
     if v4_bank is not None:
         carried = _cut_supplied(v4_bank)
@@ -346,14 +375,18 @@ def load_bank(calibration_b: Sequence[Mapping[str, Any]] | None = None,
         name: tuple(sorted(carried.get(name, ()),
                            key=lambda t: t["topic_id"]))
         for name in C.TOPIC_SETS}
-    status = "NOT_AUTHORED"
+    status = calibration_b_status()
+    if calibration_b is None and status == "AUTHORED":
+        from dci1v5.topics.calibration_b import load_calibration_b
+
+        calibration_b = load_calibration_b()
     if calibration_b is not None:
         sets[C.CALIBRATION_B] = tuple(
             sorted(calibration_b_questions(calibration_b),
                    key=lambda t: t["topic_id"]))
         status = "AUTHORED"
     for name in C.TOPIC_SETS:
-        if name == C.CALIBRATION_B and status == "NOT_AUTHORED":
+        if name == C.CALIBRATION_B and status != "AUTHORED":
             continue
         if name == "sequestered" and not sets[name]:
             continue                       # opaque, never materialised

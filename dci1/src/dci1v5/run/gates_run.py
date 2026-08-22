@@ -39,7 +39,8 @@ from dci1v5.protocol import constants as C
 from dci1v5.run.execute import (fake_backend, generate_and_score,
                                 instance_rates, per_topic_compliance,
                                 prompt_cell)
-from dci1v5.run.lifecycle import StageOutcome, TerminalStatus, run_stage
+from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
+                                  protocol_identity, run_stage)
 from dci1v5.stages import audit_prefreeze
 from dci1v5.stages import construct_strength, interaction, regime as regime_stage
 from dci1v5.stages import qualification_gate, selection, stability, support
@@ -208,7 +209,9 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             device=device,
             run_dir=tree.backend_runs(C.STAGE_GATE2) / f"grid-{kind}",
             instances=instances, slot_map=slot_map,
-            study_id=tree.context.study_id, generate=generate)
+            study_id=tree.context.study_id,
+            protocol_identity=protocol_identity(tree, C.STAGE_GATE2),
+            generate=generate)
         grid_rows.extend(rows)
         for q in grid:
             rates = instance_rates(rows, kind=kind, severity=q)
@@ -258,7 +261,9 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             device=device,
             run_dir=tree.backend_runs(C.STAGE_GATE2) / "candidates",
             instances=tuple(non_outcome) + (b_star,), slot_map=slot_map,
-            study_id=tree.context.study_id, generate=generate)
+            study_id=tree.context.study_id,
+            protocol_identity=protocol_identity(tree, C.STAGE_GATE2),
+            generate=generate)
 
     b_solo_rows = [r for r in grid_rows
                    if r["cell_id"] == f"solo:{b_star.label}"]
@@ -714,7 +719,6 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
     statuses = sorted(set(report["identification_statuses"]))
     disposition = report["disposition"]
     if not report["support_met"]:
-        disposition = support.support_disposition(met=False)
         if disposition == "REFERENCE_SUPPORT_NOT_IDENTIFIED_TERMINAL":
             raise TerminalStatus(
                 "REFERENCE_SUPPORT_NOT_IDENTIFIED", gate=C.STAGE_GATE3C,
@@ -733,6 +737,12 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
         "m_star": gate3b_record["m_star"],
         "support": report,
         "support_disposition": disposition,
+        # §34 D6, closed at `identification_status`. Present and null when
+        # §13.15 was met: a reader of the record can tell "the support held"
+        # from "this record predates the decision", and every later stage
+        # reads the same key.
+        "non_identification": report["non_identification"],
+        "not_identified_members": list(report["not_identified_members"]),
         "admitted_arms": list(arms),
         "derived_cell_count": report["derived_cell_count"],
         "slots": list(slots_for(arms)),
@@ -851,6 +861,7 @@ def gate4_payload(tree: ModelTree, *, producing_commit: str,
         run_dir=tree.backend_runs(C.STAGE_GATE4) / "composed",
         instances=instances, slot_map=slot_map,
         study_id=tree.context.study_id,
+        protocol_identity=protocol_identity(tree, C.STAGE_GATE4),
         generate=generate)
     if len(rows) != expected_rows:
         raise ProtocolError(

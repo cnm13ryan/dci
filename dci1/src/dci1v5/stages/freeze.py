@@ -20,6 +20,12 @@ identification status §13 wrote at design time onto a signed record ---
 ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` the spectrum,
 ``NEAR_FORM_ARM_NOT_AVAILABLE`` the near-form controls,
 ``CLASS_ARM_NOT_AVAILABLE`` the broad-class companion.
+
+**§34 D6's non-identification is frozen here too.** The freeze carries Gate
+3C's ``non_identification`` block verbatim, so the estimand set a replication
+may no longer identify is part of the signed scientific state rather than a
+fact only the Gate-3C record remembers. Everything downstream reads it through
+``protocol/identification.assert_not_rehabilitated``.
 """
 from __future__ import annotations
 
@@ -48,6 +54,7 @@ REQUIRED_FIELDS: tuple[str, ...] = (
     "earliest_failing_components", "core_references", "spectrum_severities",
     "near_form_controls", "broad_class_control", "frozen_backup_families",
     "backups_never_substituted", "support_rule", "support_realised",
+    "non_identification",
     "admitted_arms", "derived_cell_count", "order_allocation",
     "wording_allocation", "topic_splits", "split_seed", "seed_rules",
     "m_draws", "n_blocks", "variance_reestimate", "verifier_sources",
@@ -75,6 +82,11 @@ EMPTIABLE_FIELDS: dict[str, tuple[str, ...]] = {
     "earliest_failing_components": (),
     "focal_extension_measured": (),
     "open_decisions": (),
+    # §34 D6. Null is the *normal* state --- §13.15 was met and nothing is
+    # unidentified --- so no status is required to explain the emptiness.
+    # What may not happen is the reverse: a record that is non-null here and
+    # a later stage that estimates one of the members it names.
+    "non_identification": (),
 }
 NEVER_EMPTY = tuple(f for f in REQUIRED_FIELDS if f not in EMPTIABLE_FIELDS)
 

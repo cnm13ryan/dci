@@ -1,0 +1,62 @@
+{
+  "_what": "The §34 decisions the researcher has actually closed, durably. `protocol/decisions.py` reads this file at import and applies every entry, so `value_of` returns what the researcher decided rather than what a module literal happened to say. The registration manifest binds this file's hash.",
+  "_not": "This is not the registration. §34 requires all nineteen closed before stage 1 can pass, and `manifest.signing_blockers` still refuses while any is open. A closure here is one decision taken, recorded, and reproducible.",
+  "_rules": [
+    "One entry per closed decision. A decision absent from this file is UNRESOLVED and every path that depends on it refuses.",
+    "value must be one of the decision's registered admissible_values.",
+    "evidence, decided_by and decided_on are required: §34 binds the decision AND its evidence.",
+    "A change to a recorded value is a §32 amendment, not an edit: record the supersession rather than overwriting the reason."
+  ],
+  "recorded_on": "2026-08-22",
+  "source": "the v5 adoption brief of 2026-08-22, in which the researcher took D3, D6, D16 and D18 and left the remainder open",
+  "closures": [
+    {
+      "id": "D3",
+      "value": "author_before_adoption",
+      "decided_by": "researcher, v5 adoption brief 2026-08-22",
+      "decided_on": "2026-08-22",
+      "evidence": "R24 records that authoring the 96 questions is a hard prerequisite and R11 that §13.7 is only a stability test if the second split is naive. The researcher directed that the bank be authored NOW, prospectively, and gave the reason: authoring after Calibration-A outcomes are known would let the second estimate agree with the first because it was written to. The bank is `dci1/src/dci1v5/topics/data/calibration_b_v5.json`; its provenance, hash and allocation are in `dci1v5.topics.calibration_b`.",
+      "consequences": [
+        "The bank hash enters the registration manifest; a manifest signed over a different bank is a different study.",
+        "`load_bank()` now returns a complete bank, so §13.7's two-split machinery is executable for the first time.",
+        "The three non-mechanical §6.2 authoring rules are recorded per question and remain the researcher's to confirm at adoption; the fourth is checked mechanically on every load."
+      ]
+    },
+    {
+      "id": "D6",
+      "value": "identification_status",
+      "decided_by": "researcher, v5 adoption brief 2026-08-22",
+      "decided_on": "2026-08-22",
+      "evidence": "R16 observes that three of four v4r4 replications spent a full confirmatory budget on a design that could not answer the primary question. The researcher accepts that cost rather than discarding the quantities that ARE identified: an unmet §13.15 support requirement continues the replication and marks the reference-dependent estimands NOT_IDENTIFIED, irreversibly, for that replication. D(B<-A), D(A<-B), Lambda, the F11 order contrasts, Delta_near and Delta_broad do not depend on the primary reference set and are estimated as usual.",
+      "consequences": [
+        "REFERENCE_SUPPORT_NOT_IDENTIFIED is an identification status and never a terminal status.",
+        "The non-identification is irreversible for the replication: no later gate, frozen backup, broad-class control or observed composed outcome may rehabilitate it. `protocol/identification.py` carries the affected estimand set and `assert_not_rehabilitated` refuses a later record that claims otherwise.",
+        "The affected set is exactly the reference-dependent estimands of §15's registered families, computed from FAMILY_MEMBERS rather than restated."
+      ]
+    },
+    {
+      "id": "D16",
+      "value": "complete_population",
+      "decided_by": "researcher, v5 adoption brief 2026-08-22",
+      "decided_on": "2026-08-22",
+      "evidence": "R11 observes that restricting Calibration-B to Calibration-A's survivors makes §13.7 a re-confirmation of an already-selected set rather than a test of the candidate landscape's stability, and that calling the two splits independent then overstates what the second buys. The researcher accepts the additional generation and measures the complete registered carried population on both splits.",
+      "consequences": [
+        "`stages.stability.calibration_b_population` returns the carried set, not the A-survivors.",
+        "The additional cost is accepted, but repeated identical measurement is not: a row whose complete scientific identity already exists is reused rather than regenerated (§26, `run/execute.py`).",
+        "Reuse never crosses the two calibration splits. The split is part of a row's scientific identity and §13.7's two estimates are independent only if their rows are."
+      ]
+    },
+    {
+      "id": "D18",
+      "value": "precondition",
+      "decided_by": "researcher, v5 adoption brief 2026-08-22",
+      "decided_on": "2026-08-22",
+      "evidence": "R1 observes that v5's core reference pool is same-form with A by construction, so Delta_R near zero is a plausible consequence of the DESIGN, and L3c is the source memo's refutation verdict. The researcher takes the strong version: the strong L3c conclusion --- no pair-specific excess --- requires the near-form arm. Same-form Tier-1 references alone justify only the narrower conclusion, no excess relative to same-form exact-count companions.",
+      "consequences": [
+        "L3c carries a registered claim_scope. `strong` requires the near-form arm to have run and produced a Delta_near interval; `same_form_only` is what the same-form pool alone licenses.",
+        "A replication without the near-form arm cannot emit the strong conclusion at all --- not as a qualified sentence, not as a footnote.",
+        "D1 inherits this: the near-form arm is scientifically essential to any design that keeps the strong L3c as a target."
+      ]
+    }
+  ]
+}

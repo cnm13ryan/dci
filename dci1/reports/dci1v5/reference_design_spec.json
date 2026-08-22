@@ -215,7 +215,14 @@
    "why_an_equivalence_rule": "a threshold on the point difference rewards an imprecisely measured candidate, whose difference is small by luck as often as by stability. Requiring the interval to lie inside a bound penalises imprecision, which is the correct direction for a gate whose question is `can this candidate's coordinate be shown stable?`",
    "derivation": "0.20 is twice the registered matching caliper. A coordinate that cannot be pinned to twice the caliper across two independent 96-topic splits cannot support matching at the caliper.",
    "implied_precision_requirement": "the rule is satisfiable only when SE(iota) at 96 topics x 4 draws is about 0.07 or better. From d3, that holds for chance-free candidates (SE about 0.033) and fails for candidates with kappa near 0.75 (SE about 0.081). The chance ceiling and the stability rule therefore overlap, and the overlap is recorded rather than removed: they are justified differently, one on validity and one on precision.",
-   "development_evidence": "d3_split_half_stability.json. This is the exact quantity v4r4's pre-screen-to-calibration collapse would have been caught by: 50% to 100% of straddling families were lost between the two stages on all four replications, and the median pre-screen-to-calibration |d iota| of 0.071 is the same magnitude as the 0.10 caliper the survivors then had to clear."
+   "development_evidence": "d3_split_half_stability.json. This is the exact quantity v4r4's pre-screen-to-calibration collapse would have been caught by: 50% to 100% of straddling families were lost between the two stages on all four replications, and the median pre-screen-to-calibration |d iota| of 0.071 is the same magnitude as the 0.10 caliper the survivors then had to clear.",
+   "calibration_b_population": {
+    "decision": "D16",
+    "value": "complete_population",
+    "taken_on": "2026-08-22",
+    "note": "both splits measure the complete carried set. The alternative -- restricting Calibration-B to Calibration-A's survivors -- changes no admission verdict, because condition 1 requires admissibility on both splits, but makes A a screen and B a confirmation rather than two measurements of the same population. Red-team finding R11 is resolved by the decision.",
+    "reuse": "a row whose complete scientific identity already exists is reused rather than regenerated; the split is part of that identity, so a Calibration-A row can never satisfy a Calibration-B one."
+   }
   },
   "V_difficulty": {
    "primary": {
@@ -262,7 +269,20 @@
   "development_evidence": "d5_gate_attrition.json. Applied to v4r4's own budget-class reference library the full v5 stack leaves 3, 0, 0 and 0 qualifying families on the four replications. Applied to v4r4's production-class pool -- the families v4r3 forbade to be references -- it leaves 4, 4, 2 and 3, unchanged from the v4r4 rule at every stage of the stack. The library, not the rule, is what has to change.",
   "status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
   "status_when_unmet_is_terminal": false,
-  "status_when_unmet_note": "section 13.15 makes REFERENCE_SUPPORT_NOT_IDENTIFIED an IDENTIFICATION status and not a stage-terminal one, so a replication does not discard identified estimands for want of an unidentified one. Whether it should instead be terminal is open decision D6, and red-team finding R16 reads it the other way."
+  "status_when_unmet_note": "section 13.15 makes REFERENCE_SUPPORT_NOT_IDENTIFIED an IDENTIFICATION status and not a stage-terminal one, so a replication does not discard identified estimands for want of an unidentified one. Open decision D6 was TAKEN at identification_status on 2026-08-22 (researcher_decisions.json); red-team finding R16, which read it the other way, is resolved by that decision.",
+  "status_when_unmet_is_irreversible": true,
+  "status_when_unmet_irreversibility": {
+   "decision": "D6",
+   "rule": "a member is reference-dependent when its name names a core reference, a spectrum rung or the reference mean, or when it is one of the aggregates computed from them",
+   "producer": "dci1v5.protocol.identification",
+   "rehabilitation_forbidden": [
+    "later_gate",
+    "frozen_backup",
+    "broad_class_substitution",
+    "observed_composed_outcome"
+   ],
+   "note": "the affected estimand set is derived from the registered multiplicity families, written onto the Gate-3C record, carried into the freeze, and asserted against by every later stage. An identification status a later stage could lift would be worse than a terminal one."
+  }
  },
  "candidate_library": {
   "_thesis": "A chance-free exact count of a short marker word is simultaneously (i) same-form with A, (ii) free of the 1/(1-kappa) variance amplification, since iota equals raw solo compliance when kappa is 0, (iii) interaction-free with respect to B, since kappa(R|B) is 0 and the projection reduces to the solo measurement, and (iv) continuously tunable in difficulty through the count. No budget family over a word-shaped numerator has any of these properties against a maximum-word-length outcome constraint.",
@@ -520,12 +540,19 @@
   "boundary_status": "OPERATING_POINT_AT_GRID_BOUNDARY",
   "boundary_status_is_terminal": false,
   "n_star_boundary_note": "A's construct has a floor at n = 1. n = 0 is a well-formed exact count but its chance compliance is the probability that an unconstrained answer contains no `however`, which is near 1, so it is chance-degenerate and is not admitted. Where n_star = 1 the bracketing rule cannot be met on the easy side and the record carries OPERATING_POINT_AT_GRID_BOUNDARY with that reason.",
-  "development_evidence": "d1_candidate_landscape.json and the v4r4 Gate-2 focal curves: m_star was the last measured rung on all four replications. qwen3-4b's B curve over m = 7..12 is 0.031, 0.107, 0.245, 0.411, 0.659, 0.742 against a focal band of (0.60, 0.95); had B:12 fallen short the replication would have recorded FOCAL_RANGE_EXHAUSTED with no information about where the band begins."
+  "development_evidence": "d1_candidate_landscape.json and the v4r4 Gate-2 focal curves: m_star was the last measured rung on all four replications. qwen3-4b's B curve over m = 7..12 is 0.031, 0.107, 0.245, 0.411, 0.659, 0.742 against a focal band of (0.60, 0.95); had B:12 fallen short the replication would have recorded FOCAL_RANGE_EXHAUSTED with no information about where the band begins.",
+  "construct_floor": {
+   "decision": "D17",
+   "status": "TAKEN IN PRINCIPLE, quantity and threshold OPEN",
+   "note": "the researcher has decided that a substantive construct floor shall exist. The quantity and the value are not chosen here and are not present in the implementation: stages.construct_strength.assert_construct_floor refuses a `floor` closure that arrives without a FloorSpec carrying the quantity, the value and the derivation.",
+   "recommendation": "reports/dci1v5/d17_b_strength_decision.md"
+  }
  },
  "what_this_spec_does_not_decide": [
-  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 34 leaves as researcher decision D1",
+  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 34 leaves as researcher decision D1; reports/dci1v5/d1_arm_compute_decision.md costs every registered option and recommends one",
   "whether four models or fewer are registered",
-  "whether the 96 newly authored calibration topics are authored before or after the researcher adopts v5",
+  "the Tier-1 marker vocabulary, which is D4; reports/dci1v5/d4_marker_audit.md audits all eight item by item",
+  "the construct-strength floor for B, which is D17; reports/dci1v5/d17_b_strength_decision.md recommends a quantity and a threshold",
   "any value that a v5 observation could move; there are none, because no v5 observation exists"
  ],
  "_reconciled": {

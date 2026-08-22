@@ -449,11 +449,20 @@ length, word shape, punctuation-count, or capitalisation requirement. Fixed
 template text identical in every cell — including the answer-length sentence of
 §8.5 — is not question text and is not restricted by the fourth rule.
 
+**The 96 exist.** They were authored on 2026-08-22 under §34 D3's standing
+proposal — *before adoption*, and before any v5 Calibration-A measurement or
+any v5 selection outcome existed, so no question could have been written to be
+kind to a candidate that had already survived. `dci1v5.topics.calibration_b`
+carries the bank, its hash and that provenance claim in a form a later reader
+can check; the fourth rule is verified mechanically on every load and the other
+three are recorded per question for the researcher to confirm at adoption. The
+bank is disjoint from all five other sets in both id and question text.
+
 | Set | Per area | Total | Source | Permitted use |
 |---|---:|---:|---|---|
 | Pre-screen | 2 | 24 | v4 split, unchanged | Completion-cap selection, high-recall regime screen, Gate 1 validation material |
 | **Calibration-A** | 8 | 96 | v4 solo-calibration split, unchanged | Solo, chance and counterfactual-chance quantities; one half of §13.7's stability rule |
-| **Calibration-B** | 8 | 96 | **newly authored for v5** | The same quantities, on disjoint topics; the other half |
+| **Calibration-B** | 8 | 96 | **newly authored for v5** (§34 D3, taken; `dci1/src/dci1v5/topics/data/calibration_b_v5.json`) | The same quantities, on disjoint topics; the other half |
 | Composed validation | 2 | 24 | v4 split, unchanged | Composed-headroom viability only (§13.14) |
 | Confirmatory | 32 | 384 | v4 split, unchanged | The frozen confirmatory experiment |
 | Sequestered | 8 | 96 | v4 split, unchanged | A future uncontaminated rerun only |
@@ -1810,29 +1819,42 @@ decides only which Tier-3 rungs are measured when the budget binds** — never
 admission, and never anything about Tier 1 or Tier 2. The cap, the priority and
 the realised list are recorded on the Gate-2 record.
 
-**Calibration-B measures only the candidates admissible on Calibration-A**,
-under $V_{\text{head}}$, $V_{\text{chance}}$, $V_{\text{inter}}$ and
-$V_{\text{diff}}$ evaluated on Calibration-A alone — plus $A$'s grid, $B$'s
-grid and the unconstrained cell, which both splits always measure in full.
+**Calibration-B measures the same complete carried set** (§34 D16, taken
+2026-08-22, against this document's original proposal). Both splits measure
+every Tier-1 and Tier-2 rung and the same capped Tier-3 selection, plus $A$'s
+grid, $B$'s grid and the unconstrained cell.
 
-**Why this asymmetry costs nothing.** §13.7 condition 1 requires a candidate to
-be independently admissible on **both** splits, so a candidate failing on
-Calibration-A is excluded whatever Calibration-B would have said. Restricting
-Calibration-B to A-survivors therefore changes no verdict, and it changes no
-pooled quantity that any admitted candidate's admission depends on. What it
-does change is that the two splits are not interchangeable in role: A screens
-and B confirms. That is stated rather than presented as symmetry, and it is the
-reason §13.7's stability rule is phrased as *admissible on both* rather than as
-a test of which split is right.
+**What the original restriction would have cost, and why it was refused.** The
+proposal was to measure on Calibration-B only the candidates already admissible
+on Calibration-A. §13.7 condition 1 requires admissibility on **both** splits,
+so no admission verdict would have changed — but the two splits would not have
+been interchangeable in role: A would screen and B would confirm. The red team
+(R11) reads that as making §13.7 a re-confirmation of a set already selected
+once rather than a test of the candidate landscape's stability, and holds that
+calling the two estimates independent overstates what the second buys. The
+researcher took the complete-population rule and accepted the generation.
 
-**Cost.** Calibration-A: at most $(1 + 8 + 8 + 112) \times 96 \times 4 =
-49{,}536$ generations, plus 768 if §7.2's extension is measured.
-Calibration-B: $(1 + 8 + 8 + k) \times 96 \times 4$ for $k$ A-survivors; on
-v4r4's measured admission rates $k$ is of order 10 to 25, giving about 10,000 to
-16,000. Pre-confirmatory generation per replication is therefore about 8,300
-for the dense screen, 60,000 to 66,000 for calibration, 288 for the cap
-selection and $56 \times 24 \times 4 = 5{,}376$ for Gate 4 — roughly 75,000
-against 172,032 confirmatory.
+**What is *not* accepted is repeated identical work.** A row whose complete
+scientific identity already exists — study, protocol identity, stage, decoding
+policy, model revision, topic, **split**, block, cell, constituents, wording,
+prompt and seed — is reused rather than regenerated (§26). The split is part of
+that identity explicitly and not by consequence: §6.2 makes the two calibration
+sets disjoint, so their prompts differ in practice, but *the prompts happen to
+differ* is a weaker guarantee than *a row cannot be reused across splits*, and
+§13.7's two estimates are independent only if their rows are. Scoring is redone
+from the text on every pass, so a verifier change invalidates every verdict
+without regenerating a token.
+
+**Cost.** Each split: at most $(1 + 8 + 8 + 112) \times 96 \times 4 =
+49{,}536$ generations, plus 768 if §7.2's extension is measured — about 99,000
+for the two together, against about 64,000 under the restriction that was
+refused, so the decision costs roughly 35,000 further generations per
+replication. Pre-confirmatory generation per replication is therefore about
+7,800 for the dense round-0 screen, 6,900 for the two focal grids, 86,000 for
+candidate calibration on both splits, 240 for §19's pilot and $56 \times 24
+\times 4 = 5{,}376$ for Gate 4 — about 101,000 against 172,032 confirmatory.
+`dci1/reports/dci1v5/development/d1_compute_budget.json` derives all of it from
+the constants, and `tools/v5_compute_budget.py` regenerates it.
 
 ---
 
@@ -2325,8 +2347,20 @@ $\Delta_{\text{broad}}$ — because $\Delta_R$ is unavailable — would discard
 identified estimands for want of an unidentified one. It cannot be silently
 bypassed: it is written at design time onto the Gate-3C record, it drops the
 core and spectrum arms from the cell plan, it withholds L3a–L3e, and it appears
-on every emitted statement of that replication. §34 D6 records the alternative
-— making it terminal — as a researcher decision this document does not take.
+on every emitted statement of that replication.
+
+**§34 D6 is taken, at `identification_status`, and the closure adds a second
+half: the non-identification is irreversible for the replication.** An
+identification status a later stage could quietly lift would be *worse* than a
+terminal one, because the replication would carry an `EXCESS_NOT_IDENTIFIED`
+label through Gate 4 and emerge with an excess estimate anyway. So the
+reference-dependent estimand set is derived from §15's families by one rule,
+Gate 3C writes it onto its record, the freeze carries it, and four
+rehabilitation paths are refused by name: a later gate passing, a frozen backup
+being substituted in, the broad-class control standing in for the core pool,
+and — the dangerous one — an observed composed outcome being read as evidence
+that the references were adequate after all, which is the observe-then-choose
+loop §30 forbids.
 
 **Where the thresholds of §13.4, §13.6, §13.7 and §13.15 came from.** All of
 them were chosen from the development analysis of the completed v4r4 study, in
@@ -2646,13 +2680,27 @@ identification gates of §3.2 hold.
 | upper < 0.10 | lower > 0.10 | The marker controls resemble $A$ unusually closely, which is what a same-form control is supposed to do; the near-form comparison is the informative one | **Neither.** `LOCAL_TIER_DISAGREE`; both reported |
 | any | arm not admitted | `NEAR_FORM_ARM_NOT_AVAILABLE`; the $\Delta_R$ reading stands alone with that status | L3a/L3b/L3c only |
 
-**An emitted L3c without the near-form arm carries a fixed sentence**, because
-L3c is the memo's refutation verdict and v5's core pool is chosen to resemble
-$A$: *the local excess is below the generic-load threshold against companions
-that share $A$'s predicate form, and no companion of a different form was
-available to test whether the absence is a property of the form rather than of
-$A$.* §34 D18 records whether the near-form arm should instead be a
-precondition of emitting L3c at all.
+**L3c carries a registered scope, and §34 D18 is taken.** L3c is the memo's
+refutation verdict and v5's core pool is chosen to resemble $A$, so the two
+conclusions a replication might draw are distinguished on the statement rather
+than by a sentence appended to one of them:
+
+* **`strong`** — *no pair-specific excess*. Requires the near-form arm to have
+  run and produced a $\Delta_{\text{near}}$ interval. **The precondition is the
+  arm's existence, not its verdict**: requiring a *classified*
+  $\Delta_{\text{near}}$ instead would let the precision of a secondary
+  quantity decide whether a primary conclusion may be drawn.
+* **`same_form_only`** — *no excess relative to same-form exact-count
+  companions*. What a same-form Tier-1 pool alone licenses. It carries
+  `NEAR_FORM_ARM_NOT_AVAILABLE`, `L3C_STRONG_CONCLUSION_WITHHELD`, and the
+  fixed sentence: *the local excess is below the generic-load threshold
+  against companions that share $A$'s predicate form, and no companion of a
+  different form was available to test whether the absence is a property of the
+  form rather than of $A$.*
+
+A replication without the near-form arm is **unable** to emit the strong
+conclusion, not merely required to qualify it, and the invariant is checked on
+the built statement rather than trusted from the emitter.
 
 **A disagreement is a result.** It is reported as one, with both quantities and
 the diagnostics that distinguish them, and it never resolves toward whichever
@@ -3532,6 +3580,23 @@ stage 1 can pass.** None may be decided after any v5 generation. **D15 to D18
 came from the pre-freeze red-team** (`dci1/reports/dci1v5/v5_prereg_redteam.md`)
 and D6 was reopened by it.
 
+**Four are now taken.** D3, D6, D16 and D18 were closed by the researcher on
+2026-08-22 and are recorded, with their evidence, in
+`dci1/reports/dci1v5/researcher_decisions.json`, which `protocol/decisions.py`
+reads at import and the registration manifest binds by hash. The standing
+proposals for those four are kept below **as history**: the "taken" column says
+what was decided, and two of the four went against the proposal.
+
+| # | Taken | Against the standing proposal? |
+|---|---|---|
+| **D3** | Author before adoption. The bank exists: 96 questions, `dci1/src/dci1v5/topics/data/calibration_b_v5.json` | no |
+| **D6** | Identification status, and **irreversible for the replication** | no |
+| **D16** | The **complete** carried population on both splits | **yes** — the proposal restricted Calibration-B to A-survivors |
+| **D18** | **Precondition of the strong conclusion.** A same-form pool alone licenses only the narrow L3c | **yes** — the proposal made it no precondition |
+
+The remaining fifteen are unchanged, and
+`dci1/reports/dci1v5/v5_adoption_checklist.md` states each as one question.
+
 | # | Open decision | This document's standing proposal |
 |---|---|---|
 | **D0** | **Whether to adopt v5 at all**, given that its matching rule is fitted to v4r4 and that §30 says so plainly | Adopt, with §30's declaration attached permanently |
@@ -3540,7 +3605,7 @@ and D6 was reopened by it.
 | **D3** | **Whether the 96 new Calibration-B questions are authored before adoption.** They must exist and be verified against §6.2's four rules before stage 1, and authoring them is the largest non-compute prerequisite | Author before adoption; the bank hash enters the registration manifest |
 | **D4** | **The Tier-1 marker vocabulary.** Eight are registered on three prospective rules (§7.6). A reader may hold that `namely`, `notably` or `overall` is not semantically neutral in an informational answer, or that eight is too many or too few | The eight of §7.10, with every rejection reason recorded |
 | **D5** | Whether a weighted composite validity score replaces the lexicographic conjunction | Lexicographic; no composite score, because the development data cannot fix weights that generalise |
-| **D6** | **Whether `REFERENCE_SUPPORT_NOT_IDENTIFIED` is terminal or an identification status.** §13.15 makes it an identification status so that a replication does not discard identified estimands for want of an unidentified one. A reader may prefer that a study which cannot identify its primary counterfactual should stop | Identification status, with §13.15's argument recorded |
+| **D6** | **Whether `REFERENCE_SUPPORT_NOT_IDENTIFIED` is terminal or an identification status.** §13.15 makes it an identification status so that a replication does not discard identified estimands for want of an unidentified one. A reader may prefer that a study which cannot identify its primary counterfactual should stop | **TAKEN: identification status.** The replication continues, and every reference-dependent estimand becomes `NOT_IDENTIFIED` **irreversibly for that replication** — no later gate, frozen backup, broad-class control or observed composed outcome may lift it. The affected set is derived from §15's families by one rule (`protocol/identification.py`) and is bound into the freeze |
 | **D7** | **The interaction-gate ceiling of 0.90.** Derived from Gate 4's band and a 0.05 error allowance, and coinciding with a gap observed on twenty rate checks on one model | 0.90, with the coincidence recorded and not used as evidence |
 | **D8** | **The chance ceiling of 0.75.** A stricter 0.50 costs a further family on two v4r4 models for no measured stability gain; a looser 0.90 is where the instability cliff is | 0.75 on the point, 0.85 on the Wilson upper bound |
 | **D9** | Whether an independent annotator will be available, which decides whether §10.3 can ever supersede §10.5's basis | Unavailable; `deterministic_measurement_validated` with the scope sentence attached permanently |
@@ -3551,9 +3616,9 @@ and D6 was reopened by it.
 | **D14** | Whether instructed compliance remains the difficulty coordinate now that the core pool is chance-free and $\iota$ equals raw compliance within it | $\iota$ remains primary, raw solo secondary, `DIFFICULTY_COORDINATE_DEPENDENT` on disagreement — because the spectrum and broad-class arms are not chance-free |
 
 | **D15** | **Whether the memo's 0.10 and 0.25 apply to a same-form $\Delta_R$.** §11.9 refuses to transfer 0.25 to $\delta_{\text{diff}}$ because it is a different quantity. v5's $\Delta_R$ is also not quite the quantity the memo contemplated: its reference pool is matched on form as well as difficulty. A consistent reader could hold that neither threshold transfers | Both transfer, on the ground that the memo defined them for the *shape* of the contrast — a focal loss under $A$ against the same loss under a matched companion — and that shape is unchanged. Recorded as contestable |
-| **D16** | **Whether Calibration-B measures the full carried set or only Calibration-A's survivors.** §12.7 restricts it, which changes no admission verdict and costs about 35,000 fewer generations per replication, at the price that the two splits are not exchangeable and §13.7's rule is "screen then confirm" rather than two independent measurements | Restrict, with §12.7's statement of the asymmetry. Measuring both in full is the alternative and it is purely a compute question |
+| **D16** | **Whether Calibration-B measures the full carried set or only Calibration-A's survivors.** §12.7 restricts it, which changes no admission verdict and costs about 35,000 fewer generations per replication, at the price that the two splits are not exchangeable and §13.7's rule is "screen then confirm" rather than two independent measurements | **TAKEN: the complete carried population, against this document's proposal.** §13.7 is then a test of the candidate landscape's stability rather than a re-confirmation of a set already selected once, which is what R11 says "independent" otherwise overstates. The extra generation is accepted; *accidental* repetition is not, and a row whose complete scientific identity already exists is reused rather than regenerated (§26). Reuse never crosses the two splits: the split is part of a row's identity |
 | **D17** | **Whether a construct floor is registered for $m^*$.** §12.3 selects the focal severity whose *compliance* is nearest 0.80, over a grid now reaching $m = 16$. On `qwen3-4b`'s v4r4 curve that points at $m^* = 13$ — *every word at most 13 letters* — which is a real behavioural constraint and a weak construct. The focal band is defined on compliance and nothing bounds how weak the instruction may become | No construct floor; the realised $m^*$, $B$'s chance compliance at $m^*$, and $B$'s whole curve are reported, and §29 states that a high $m^*$ makes $B$ a weak instrument on that model |
-| **D18** | **Whether the near-form arm is a precondition of emitting L3c.** L3c is the memo's refutation verdict, and v5's core pool is chosen to resemble $A$ closely enough that $\Delta_R \approx 0$ is a plausible consequence of the *design* rather than of $A$. The near-form arm is what distinguishes the two, and §34 D1 lists dropping it as a compute option | Not a precondition; L3c without the arm is emitted with `NEAR_FORM_ARM_NOT_AVAILABLE` and §17.6's fixed sentence. A researcher who accepts the red-team's R1 should make it a precondition, or close D1 so the arm is retained |
+| **D18** | **Whether the near-form arm is a precondition of emitting L3c.** L3c is the memo's refutation verdict, and v5's core pool is chosen to resemble $A$ closely enough that $\Delta_R \approx 0$ is a plausible consequence of the *design* rather than of $A$. The near-form arm is what distinguishes the two, and §34 D1 lists dropping it as a compute option | **TAKEN: a precondition of the STRONG conclusion, against this document's proposal.** L3c now carries a registered scope. `strong` — *no pair-specific excess*, the memo's refutation verdict — requires the near-form arm to have run and produced a $\Delta_{\text{near}}$ interval. Without the arm the scope is `same_form_only` and the statement is the narrower one a same-form Tier-1 pool licenses: *no excess relative to same-form exact-count companions*. The strong conclusion is **unreachable** without the arm, not merely qualified. D1 inherits this: the near-form arm is essential to any design that keeps the strong L3c as a target |
 
 **What none of these can fix.** The length account is not identified by any
 companion set this pool can produce (§29); a class claim needs a design this

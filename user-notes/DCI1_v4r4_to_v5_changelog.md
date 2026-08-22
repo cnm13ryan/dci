@@ -491,19 +491,56 @@ every difference.
 v5 §34 carries **nineteen** registered open decisions, D0 to D18, every one of
 which must be closed in the signed registration manifest before stage 1 can
 pass. D15 to D18 came from the pre-freeze red-team and D6 was reopened by it.
-The four that most change what v5 is:
 
-- **D1, the compute budget.** 688,128 confirmatory generations for four models
-  at 56 cells, against v4r4's registered 577,536 for a full design that never
-  ran. The alternatives and what each gives up are enumerated.
-- **D3, authoring the 96 Calibration-B questions.** Nothing in §13.7 works
-  without them.
-- **D4, the Tier-1 marker vocabulary.** Eight markers chosen on three rules,
-  two of them measured on the predecessor study's unconstrained development
-  responses. What is *not* measured is any marker's behaviour **as a
-  constraint**: seven of the eight families have no prior measurement on any
-  topic, so their difficulty coordinates are unknown until v5 measures them.
-- **D6, whether `REFERENCE_SUPPORT_NOT_IDENTIFIED` should be terminal.** v5
-  makes it an identification status so a replication does not discard
-  identified estimands for want of an unidentified one; a reader may
-  reasonably prefer that it stop the replication.
+### Four are taken (2026-08-22)
+
+Recorded with their evidence in
+`dci1/reports/dci1v5/researcher_decisions.json`, which `protocol/decisions.py`
+reads at import and the registration manifest binds by hash. **Two went against
+this document's standing proposal**, and those two change what v5 is:
+
+- **D18 — the near-form arm is a precondition of the *strong* L3c.** L3c now
+  carries a registered scope. `strong` — *no pair-specific excess*, the source
+  memo's refutation verdict — requires the near-form arm to have run;
+  `same_form_only` is what a same-form Tier-1 pool alone licenses, and it is
+  what a replication without the arm emits. The strong conclusion is
+  **unreachable** without the arm, which is the gate R1 asked for in place of a
+  qualifying sentence. **This is why the 47-cell compute option is no longer a
+  cheaper version of the same study.**
+- **D16 — Calibration-B measures the complete carried population**, not
+  Calibration-A's survivors. §13.7 becomes a test of the candidate landscape's
+  stability rather than a re-confirmation of an already-selected set, which is
+  what R11 says "independent" otherwise overstates. About 35,000 further
+  generations per replication, accepted. What is *not* accepted is accidental
+  repetition: a row whose complete scientific identity already exists is
+  reused, and the **split is part of that identity**, so no Calibration-A row
+  can ever satisfy a Calibration-B one.
+- **D6 — `REFERENCE_SUPPORT_NOT_IDENTIFIED` stays an identification status,
+  and the non-identification is irreversible.** A replication that cannot build
+  its reference set continues and keeps every estimand that does not need one;
+  the reference-dependent set is derived by one rule, frozen, and four
+  rehabilitation paths are refused by name — including an observed composed
+  outcome being read as evidence the pool was adequate after all, which is the
+  observe-then-choose loop §30 forbids.
+- **D3 — the 96 Calibration-B questions are authored.** They exist, at
+  `dci1/src/dci1v5/topics/data/calibration_b_v5.json`, authored before any v5
+  measurement or selection outcome existed, disjoint from all five other sets
+  in id and in text, hashed into the manifest.
+
+### Fifteen remain
+
+`dci1/reports/dci1v5/v5_adoption_checklist.md` states each as one question.
+Four have evidence-backed recommendations and no adopted value:
+
+- **D1, the compute budget** — `d1_arm_compute_decision.md` costs every
+  registered option from the code's own constants: 1,135,104 generations for
+  the recommended four models at 56 cells.
+- **D4, the Tier-1 marker vocabulary** — `d4_marker_audit.md` audits all eight
+  against the eight approval criteria. Five approve outright, `whereas`
+  approves with a note, and `though`, `namely` and `overall` each carry one
+  substantive judgement.
+- **D17, a construct floor for B** — taken *in principle*;
+  `d17_b_strength_decision.md` recommends $\kappa^{B}(m^{*}) \le 0.50$ on a
+  curve recomputed from v4r4's load-zero answers.
+- **U2, §11.8's singular secondary fit** — `u2_tier_model_decision.md`
+  recommends A2, demonstrated rather than argued.

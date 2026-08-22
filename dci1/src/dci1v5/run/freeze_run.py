@@ -35,7 +35,7 @@ from dci1v5.design.cells import n_cells_for
 from dci1v5.engine import transitions
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import decisions, seeds, wordings
+from dci1v5.protocol import decisions, identification, seeds, wordings
 from dci1v5.protocol.reuse_ledger import build_ledger
 from dci1v5.run.lifecycle import StageOutcome, run_stage
 from dci1v5.stages import freeze as freeze_stage
@@ -188,6 +188,10 @@ def assemble(tree: ModelTree, *, producing_commit: str,
         iota_a=gate3b["iota_a"],
         solo_compliance_a=gate2["solo_compliance_a"],
         support_realised=gate3c["support"],
+        # §34 D6, frozen: the estimand set this replication may not identify,
+        # carried from Gate 3C rather than recomputed, so the freeze and the
+        # gate cannot disagree about which numbers may still be produced.
+        non_identification=gate3c.get("non_identification"),
         admitted_arms=list(arms),
         derived_cell_count=gate3c["derived_cell_count"],
         order_allocation="order is a cell-level factor; every block runs both "
@@ -307,6 +311,12 @@ def assemble(tree: ModelTree, *, producing_commit: str,
     if gate4.get("failures"):
         raise ProtocolError(
             "§13.14: Gate 4 recorded failures and a freeze may not follow one")
+    # §34 D6: Gate 4 runs after Gate 3C, so it is the first place a
+    # non-identification could be lifted. It is checked here, at the freeze,
+    # because the freeze is what every later stage asserts against.
+    identification.assert_not_rehabilitated(
+        gate4, gate3c=gate3c.get("non_identification"),
+        where="§34 D6: GATE_4_COMPOSED_HEADROOM")
     return record
 
 
@@ -338,6 +348,7 @@ def freeze_payload(tree: ModelTree, *, producing_commit: str,
         "slot_map": dict(slot_map or {}),
         "admitted_arms": record["admitted_arms"],
         "identification_statuses": list(statuses),
+        "non_identification": record["non_identification"],
         "selected_cap": record["completion_cap"],
         "n_star": record["n_star"], "m_star": record["m_star"],
         "post_freeze_statement":

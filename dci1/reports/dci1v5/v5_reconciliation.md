@@ -340,3 +340,131 @@ sources, the lockfile and the v5 artifact texts, copied and committed, in about
 0.05 s. The production checks then run unmodified against a tree that genuinely
 satisfies them — `clean_worktree`, `commit_hashable`, `tracked_implementation`,
 `producing_commit_clean` and `protocol_hashes_agree`, none of them waived.
+
+---
+
+## 7. What the four researcher closures changed, and what they exposed
+
+Recorded here rather than in §1–§3 because none of these is a *discrepancy*:
+each is a researcher decision arriving and the implementation catching up.
+Where the closure exposed something the implementation had wrong, that is
+flagged as `IMPLEMENTATION_DEFECT` and fixed under §33's rules.
+
+### D18 — the strong L3c requires the near-form arm
+
+`STALE_DOCUMENTATION`, retroactively. §17.6 said an L3c emitted without the arm
+carries a fixed sentence; the code did that; and both were written before the
+decision existed. The closure makes the two conclusions **different claims**
+rather than one claim with a qualifier: `l3c_scope` is `strong` or
+`same_form_only`, the sentences differ, and `L3C_STRONG_CONCLUSION_WITHHELD` is
+a new registered identification status.
+
+**The `precondition` branch's meaning changed, and this is the one place a
+reader could be misled.** The pre-closure implementation read "precondition" as
+*withhold L3c entirely*. That is stricter than what the researcher chose. The
+researcher's words are explicit — a same-form pool "may only justify the
+narrower conclusion" — so the narrow conclusion is emitted and the strong one
+is unreachable. The withheld-entirely branch no longer exists in the source; it
+was never reachable, since D18 was open for the whole of its lifetime, and no
+record anywhere carries a statement produced by it.
+
+**Dead code removed.** `emit_l3` maintained a `withheld` list for L3c
+statements it never emitted. With every branch of `l3c_disposition` now
+emitting, the list was unreachable, so it is gone and
+`claims.assert_l3c_scope` is called on the built statement instead — which is
+the stronger check, because it also constrains a renderer that never consulted
+the emitter.
+
+### D16 — the complete population, and what that made load-bearing
+
+`IMPLEMENTATION_DEFECT` in the reuse rule, exposed rather than caused by the
+closure. `_reusable_rows` compared `(row_id, prompt_hash, scientific_seed)`.
+That is enough to catch a changed topic or a changed seed, and **not** enough
+to catch a changed completion cap, a changed model revision, a changed decoding
+policy or a changed protocol identity — each of which changes what the model
+writes and none of which is in a prompt hash. Under the standing proposal the
+volume was small enough that the gap was theoretical; the complete-population
+rule makes candidate calibration 86,016 generations per replication, and at
+that volume a wrong reuse is both likely and expensive.
+
+The key is now the row's complete scientific identity, and it is **two** keys,
+because generation and scoring have different inputs:
+
+* `generation_identity` — study, protocol identity, stage, decoding projection,
+  model revision, topic, **split**, block, cell, constituents, wording indices,
+  prompt hash, draw, seed. A stored generation may satisfy a planned row only
+  when every one of these agrees.
+* `observation_identity` — the above, plus the verifier hash and §9.1's
+  instance set. Written on every scored row.
+
+Splitting them is not an optimisation. Rows are rescored from their text on
+every pass, so a verifier change moves every *verdict* and regenerates nothing;
+merging the keys either way would cost a full regeneration for a verifier fix,
+or let a stale verdict survive one.
+
+**The split is in the key explicitly.** §6.2 makes the two calibration sets
+disjoint, so their prompts differ and a hash over the prompt would in practice
+never collide. "In practice never" is not the guarantee §13.7 needs, and
+`test_the_split_is_in_the_key_explicitly_and_not_by_luck` holds the topic, the
+prompt and the seed fixed and moves only the split.
+
+### D6 — irreversible, and the block that was five members wide
+
+`IMPLEMENTATION_DEFECT`. `analysis_run._licensed` blocked five members under
+`REFERENCE_SUPPORT_NOT_IDENTIFIED`: `Delta_R`, `Delta_1..3` and
+`delta_difficulty`. The registered families carry **48** reference-dependent
+members. The other 43 were attempted, returned no vector because the admitted
+design supplies no cell for them, and were recorded `not_computable` — which
+reads as *the design was never asked* rather than as *§34 D6's verdict*, and
+which the freeze and the final report could not be checked against.
+
+The set is now derived by one rule in `protocol/identification.py` — a member is
+reference-dependent when its name names a core reference, a spectrum rung or the
+reference mean, or when it is one of the aggregates computed from them — and the
+partition is asserted against `FAMILY_MEMBERS` by a test, so a family added
+later cannot fall between the two halves. 48 affected, 22 not; the 22 include
+$D(B{\leftarrow}A)$, $D(A{\leftarrow}B)$, $\Lambda$, $\Delta_{\text{near}}$ and
+$\Delta_{\text{broad}}$, which is exactly the set the closure exists to keep.
+
+One subtlety the rule had to get right: F6's contrasts are written
+`vac(B|B+R1)-vac(B solo)`, where the `|` is a conditional bar, and F5's are
+written `Delta_R|vacuity_forced`, where it separates a member from its variant.
+Splitting on `|` for both classified every F6 contrast against a reference as
+reference-free.
+
+### D3 — the bank, and the check that scanned nothing
+
+`IMPLEMENTATION_DEFECT`. §6.2's fourth authoring rule — no wording that itself
+mentions a letter, a word length, a punctuation count or a capitalisation
+requirement — is the one rule a machine can check, and
+`topics.assert_authoring_rules` read `question["text"]`. The schema field is
+`question`. It had been scanning the empty string for every topic in the bank
+since the function was written, so the only mechanically enforceable authoring
+rule had never rejected anything.
+
+Fixed to read `question`, with `text` still accepted so a differently-shaped
+row is not silently exempted, and a row with no question text at all is now an
+offence rather than a pass.
+
+**A second thing the authored bank exposed.** The first draft of the 96
+collided with the wider bank in three questions verbatim and about a dozen
+semantically — against **composed** and **confirmatory** topics, not against
+Calibration-A. §6.2's disjointness is over all six sets, and a Calibration-B
+question that repeats a confirmatory topic's text spends a reserved topic's
+content. `assert_sets_disjoint` caught the three verbatim collisions at load — the check
+working, on the first bank it had ever been given — and the semantic ones were
+found by a content-overlap scan and rewritten.
+`test_the_authored_bank_is_disjoint_from_every_other_set` now runs both the
+calibration-pair check and the all-sets one, because the first would have
+passed all three verbatim collisions: none of them was against Calibration-A.
+
+### D1 — the blocked call that did not exist
+
+`IMPLEMENTATION_DEFECT`. `decisions.py` named
+`design.cells.admitted_arms_from_decision` in D1's `blocks_calls`, and no such
+function existed. `decisions_blocking_call` would have answered for a name
+nobody could call, and the *design-time* arm set — what the study registered it
+would attempt, as distinct from what a replication's Gate-3 verdicts admit —
+had no producer at all. It exists now, with `d1_scale` beside it, because a
+budget is arms × models × blocks × draws and naming only the arms leaves three
+of the four factors to whoever writes the runner.

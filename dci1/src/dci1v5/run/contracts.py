@@ -153,6 +153,11 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3C, "identification_statuses", (G4, G5, UA, FR, PF)),
     _f(G3C, "support", (G5, FR, PF)),
     _f(G3C, "m_star", (G4, G5)),
+    # §34 D6, closed at `identification_status`. Null when §13.15 was met, and
+    # the key is present either way, so a reader can tell "the support held"
+    # from "this record predates the decision".
+    _f(G3C, "non_identification", (G5,)),
+    _f(G3C, "not_identified_members", (G5, PF)),
 
     # ------------------------------------------- GATE_4_COMPOSED_HEADROOM
     _f(G4, "headroom_table", (G5, PF)),
@@ -179,6 +184,11 @@ CONTRACT: tuple[Field, ...] = (
     _f(G5, "slot_map", (CONF,)),
     _f(G5, "admitted_arms", (CONF, UA, FR)),
     _f(G5, "identification_statuses", (UA, FR)),
+    # §34 D6's irreversibility: the frozen non-identification, which the
+    # unmasked analysis and the final report assert against rather than
+    # re-deriving. A later stage that offered an estimate for a member named
+    # here would be lifting a status the freeze bound.
+    _f(G5, "non_identification", (UA, FR)),
     _f(G5, "selected_cap", (CONF,)),
 
     # ------------------------------------------------ CONFIRMATORY_GENERATION

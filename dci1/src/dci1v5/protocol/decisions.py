@@ -28,24 +28,38 @@ times:
 
 **Closing a decision is a researcher act and it happens here, on the record.**
 ``close()`` requires the resolution, the evidence and who took it; it refuses
-a value the decision does not offer; and it is write-once per process. The
-signed registration manifest is what makes a closure durable, and
-``registration_payload()`` is what it binds.
+a value the decision does not offer; and it is write-once per process.
+
+**And it survives the process, because a closure that lives only in a running
+interpreter is not a decision anybody took.** ``RECORD_PATH`` is a committed
+file carrying every closure the researcher has actually made, with its
+evidence, who took it and when; this module reads it at import and applies it.
+So ``value_of("D18")`` answers with what the researcher decided, a test that
+reopens the registry restores *that* state rather than a blank one, and the
+registration manifest binds the record's hash beside the closures themselves.
+A decision absent from the record is ``UNRESOLVED`` and every path that
+depends on it still refuses.
 """
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, replace
+from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
+from dci1v4.protocol.hashing import sha_obj
 
 __all__ = ["UNRESOLVED", "Decision", "DecisionOpenError", "DECISIONS",
            "DECISION_IDS", "open_decisions", "closed_decisions", "is_closed",
            "value_of", "choice", "assert_decisions_closed",
            "assert_decisions_closed_for_stage", "assert_decisions_closed_for",
            "decisions_blocking_stage", "decisions_blocking_call", "close",
-           "reopen_all_for_testing", "registration_payload",
-           "REGISTRATION_INCOMPLETE"]
+           "reopen_all_for_testing", "override_for_testing",
+           "registration_payload",
+           "REGISTRATION_INCOMPLETE", "RECORD_PATH", "RECORD_RELPATH",
+           "recorded_closures", "apply_recorded_closures", "record_hash",
+           "record_payload", "non_adopted_alternatives"]
 
 #: The value every decision carries until a researcher closes it.
 UNRESOLVED = "UNRESOLVED"
@@ -402,18 +416,152 @@ def close(decision_id: str, value: Any, *, evidence: str, decided_by: str,
     return updated
 
 
+def override_for_testing(decision_id: str, value: Any) -> Decision:
+    """Force a decision to a value, bypassing write-once. **Tests only.**
+
+    It exists for one job: keeping the branch the researcher did *not* adopt
+    executed by a test rather than merely present in the source. A retained
+    alternative nobody runs rots, and the first time anyone needs it --- to
+    reproduce a historical replication, or to see what the refused option
+    would have done --- it does not work.
+
+    It cannot affect a run. A run's closures come from ``RECORD_PATH``, this
+    writes nothing to it, and ``reopen_all_for_testing`` puts the registry
+    back to what the record says.
+    """
+    decision = _get(decision_id)
+    if decision.admissible_values and value not in decision.admissible_values:
+        raise ProtocolError(
+            f"{decision_id} admits {decision.admissible_values}; got "
+            f"{value!r}")
+    DECISIONS[decision_id] = replace(
+        decision, value=value, evidence="OVERRIDDEN FOR A TEST",
+        decided_by="test", decided_on="test")
+    return DECISIONS[decision_id]
+
+
 def reopen_all_for_testing() -> None:
-    """Restore every decision to ``UNRESOLVED``.
+    """Restore the registry to **the recorded state**, not to a blank one.
 
     Exists so that a test can exercise a closed-decision path and leave the
-    module as it found it. It is **not** a way to un-decide anything in a
-    run: a real closure lives in the signed registration manifest, which this
-    function cannot reach, so re-running against that manifest restores the
-    closure.
+    module as it found it. What it found it in is the state ``RECORD_PATH``
+    describes: a decision the researcher has taken is taken, and a fixture
+    that reopened it would let a test assert behaviour the protocol no longer
+    admits. Decisions the record does not carry go back to ``UNRESOLVED``.
     """
     for key, decision in list(DECISIONS.items()):
         DECISIONS[key] = replace(decision, value=UNRESOLVED, evidence=None,
                                  decided_by=None, decided_on=None)
+    apply_recorded_closures()
+
+
+# ------------------------------------------------------ the durable record
+
+#: Repository-relative, so the manifest can name it and a reader can find it.
+RECORD_RELPATH = "dci1/reports/dci1v5/researcher_decisions.json"
+RECORD_PATH = Path(__file__).resolve().parents[3] / "reports" / "dci1v5" / \
+    "researcher_decisions.json"
+
+
+def _read_record(path: Path | str | None = None) -> dict[str, Any]:
+    path = Path(path) if path is not None else RECORD_PATH
+    if not path.exists():
+        return {"closures": [], "source": None, "recorded_on": None,
+                "path": str(path), "present": False}
+    payload = json.loads(path.read_text())
+    closures = payload.get("closures")
+    if not isinstance(closures, list):
+        raise ProtocolError(
+            f"{path}: the researcher-decision record must carry a "
+            "'closures' list; a record whose shape is wrong is not a record")
+    return {**payload, "path": str(path), "present": True}
+
+
+def recorded_closures(path: Path | str | None = None
+                      ) -> tuple[dict[str, Any], ...]:
+    """Every closure the record carries, validated but not yet applied."""
+    record = _read_record(path)
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for entry in record["closures"]:
+        for field in ("id", "value", "evidence", "decided_by", "decided_on"):
+            if not str(entry.get(field, "")).strip():
+                raise ProtocolError(
+                    f"{record['path']}: a recorded closure needs {field}; §34 "
+                    "binds the decision AND its evidence, and an entry "
+                    "missing one is a default with a filename on it")
+        decision = _get(entry["id"])
+        if entry["id"] in seen:
+            raise ProtocolError(
+                f"{record['path']}: {entry['id']} is recorded twice; a change "
+                "to a closed decision is a §32 amendment, not a second entry")
+        seen.add(entry["id"])
+        if decision.admissible_values and \
+                entry["value"] not in decision.admissible_values:
+            raise ProtocolError(
+                f"{record['path']}: {entry['id']} admits "
+                f"{decision.admissible_values} and the record says "
+                f"{entry['value']!r}")
+        out.append(dict(entry))
+    return tuple(out)
+
+
+def apply_recorded_closures(path: Path | str | None = None) -> tuple[str, ...]:
+    """Apply the record to the registry. Idempotent, and never a downgrade.
+
+    Re-applying an identical closure is a no-op rather than the write-once
+    refusal ``close`` raises, because importing this module twice is not a
+    researcher taking a decision twice. A record that *disagrees* with a
+    closure already in force is refused: that is an amendment and it does not
+    happen by a file changing under a running process.
+    """
+    applied: list[str] = []
+    for entry in recorded_closures(path):
+        current = _get(entry["id"])
+        if current.resolved:
+            if current.value != entry["value"]:
+                raise ProtocolError(
+                    f"{entry['id']} is in force at {current.value!r} and the "
+                    f"record says {entry['value']!r}; a change to a closed "
+                    "decision is a §32 amendment")
+            continue
+        close(entry["id"], entry["value"], evidence=entry["evidence"],
+              decided_by=entry["decided_by"], decided_on=entry["decided_on"])
+        applied.append(entry["id"])
+    return tuple(applied)
+
+
+def record_hash(path: Path | str | None = None) -> str | None:
+    """The record's content identity, for the registration manifest."""
+    record = _read_record(path)
+    if not record["present"]:
+        return None
+    return sha_obj({"path": RECORD_RELPATH, "closures": record["closures"]})
+
+
+def non_adopted_alternatives() -> dict[str, list[Any]]:
+    """Per closed decision, the branches the researcher did **not** take.
+
+    ``choice()`` still carries every branch, because a study has to be able
+    to show what it could have done. This names them as not-adopted so that
+    a reader of the manifest cannot mistake a retained branch for a live
+    scientific alternative.
+    """
+    return {k: [v for v in d.admissible_values if v != d.value]
+            for k, d in DECISIONS.items()
+            if d.resolved and d.admissible_values}
+
+
+def record_payload(path: Path | str | None = None) -> dict[str, Any]:
+    record = _read_record(path)
+    return {
+        "path": RECORD_RELPATH,
+        "present": record["present"],
+        "hash": record_hash(path),
+        "recorded_on": record.get("recorded_on"),
+        "source": record.get("source"),
+        "closed_here": [e["id"] for e in record["closures"]],
+    }
 
 
 def registration_payload() -> dict[str, Any]:
@@ -423,5 +571,13 @@ def registration_payload() -> dict[str, Any]:
         "n_decisions": len(DECISIONS),
         "all_closed": not open_decisions(),
         "open": list(open_decisions()),
+        "record": record_payload(),
+        "non_adopted_alternatives": non_adopted_alternatives(),
         "decisions": [d.as_dict() for d in DECISIONS.values()],
     }
+
+
+#: Applied at import: a closure the researcher recorded is in force, and a
+#: module that reported it open would be reporting a decision nobody may take
+#: again as one still to take.
+apply_recorded_closures()
