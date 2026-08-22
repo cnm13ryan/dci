@@ -667,8 +667,8 @@ disagreement between $\Delta_R$ and $\Delta_{\text{near}}$ means.
 ### 7.6 Counted statistics and feature groups
 
 **Registered counted statistics.** Eight marker occurrences —
-`marker_thus`, `marker_hence`, `marker_indeed`, `marker_namely`,
-`marker_notably`, `marker_overall`, `marker_instead`, `marker_finally` — and
+`marker_thus`, `marker_hence`, `marker_though`, `marker_whereas`,
+`marker_indeed`, `marker_namely`, `marker_instead`, `marker_overall` — and
 the fifteen carried from v4r4: `b_initial`, `ing_final`, `one_letter`,
 `doubled_letter`, `comma`, `capital_char`, `capital_word`, `letter_a`,
 `y_final`, `t_initial`, `s_final`, `vowel_initial`, `sentence`, `semicolon`,

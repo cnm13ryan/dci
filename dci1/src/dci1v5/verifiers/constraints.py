@@ -797,10 +797,8 @@ class Constraint:
 
 
 #: Re-exported so a caller need not reach into the taxonomy for a slot name.
-SLOT_CORE = SLOT_CORE
-SLOT_SPECTRUM = SLOT_SPECTRUM
-SLOT_NEAR_FORM = SLOT_NEAR_FORM
-SLOT_BROAD_CLASS = SLOT_BROAD_CLASS
+__all__ += ["SLOT_CORE", "SLOT_SPECTRUM", "SLOT_NEAR_FORM",
+            "SLOT_BROAD_CLASS"]
 
 
 def assert_marker_vocabulary_approved() -> tuple[str, ...]:

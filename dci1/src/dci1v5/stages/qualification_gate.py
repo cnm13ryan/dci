@@ -23,7 +23,7 @@ presence rule on rows Gate 2 already produced, which is what makes §13.6 free.
 """
 from __future__ import annotations
 
-from typing import Any, Mapping, Sequence
+from typing import Any, Sequence
 
 from dci1v5.protocol import constants as C
 from dci1v5.protocol.taxonomy import SLOT_CORE
@@ -45,8 +45,7 @@ def _slot_for(kind: str) -> str:
     most permissive slot its own tier admits, and §13.8/§13.9/§13.10 apply the
     slot-specific rule where the slot is actually being filled.
     """
-    from dci1v5.protocol.taxonomy import (SLOT_BROAD_CLASS, SLOT_NEAR_FORM,
-                                          TIER_1, TIER_2)
+    from dci1v5.protocol.taxonomy import (SLOT_BROAD_CLASS, TIER_1, TIER_2)
     tier = family_tier(kind)
     if tier in (TIER_1, TIER_2):
         return SLOT_CORE

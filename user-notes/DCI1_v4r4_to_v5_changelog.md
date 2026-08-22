@@ -488,17 +488,21 @@ every difference.
 
 ## 14. What is still open
 
-v5 §34 carries fourteen registered open decisions, every one of which must be
-closed in the signed registration manifest before stage 1 can pass. The four
-that most change what v5 is:
+v5 §34 carries **nineteen** registered open decisions, D0 to D18, every one of
+which must be closed in the signed registration manifest before stage 1 can
+pass. D15 to D18 came from the pre-freeze red-team and D6 was reopened by it.
+The four that most change what v5 is:
 
 - **D1, the compute budget.** 688,128 confirmatory generations for four models
   at 56 cells, against v4r4's registered 577,536 for a full design that never
   ran. The alternatives and what each gives up are enumerated.
 - **D3, authoring the 96 Calibration-B questions.** Nothing in §13.7 works
   without them.
-- **D4, the Tier-1 marker vocabulary.** Eight markers chosen on three
-  prospective rules, none of them measured on any model.
+- **D4, the Tier-1 marker vocabulary.** Eight markers chosen on three rules,
+  two of them measured on the predecessor study's unconstrained development
+  responses. What is *not* measured is any marker's behaviour **as a
+  constraint**: seven of the eight families have no prior measurement on any
+  topic, so their difficulty coordinates are unknown until v5 measures them.
 - **D6, whether `REFERENCE_SUPPORT_NOT_IDENTIFIED` should be terminal.** v5
   makes it an identification status so a replication does not discard
   identified estimands for want of an unidentified one; a reader may

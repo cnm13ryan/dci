@@ -46,10 +46,9 @@ from dci1v5.analysis.intervals import (
     interval_inside, interval_intersects, newcombe_interval, wilson,
 )
 from dci1v5.protocol import constants as C
-from dci1v5.protocol.taxonomy import assert_tier_admits_slot
 from dci1v5.stages.calibration_table import CalibrationRow, tie_key
 from dci1v5.stages.interaction import interaction_verdict
-from dci1v5.verifiers.constraints import CLASS_BUDGET, assert_slot_allowed
+from dci1v5.verifiers.constraints import assert_slot_allowed
 
 __all__ = ["ComponentResult", "ReferenceValidity", "VALIDITY_COMPONENTS",
            "GATE_2_5_COMPONENTS", "evaluate_validity",
@@ -480,7 +479,8 @@ def assert_no_composite_score(namespace: Mapping[str, Any]) -> None:
     """
     offenders = sorted(
         name for name in namespace
-        if any(token in name.lower()
+        if not name.startswith("assert_no_")   # the guard is not the offence
+        and any(token in name.lower()
                for token in ("composite_score", "weighted_validity",
                              "validity_score", "score_weights")))
     if offenders:

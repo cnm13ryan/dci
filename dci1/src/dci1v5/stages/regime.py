@@ -50,6 +50,7 @@ from dci1v5.analysis.intervals import interval_intersects, wilson
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 from dci1v5.stages.calibration_table import tie_key
+from dci1v5.stages.selection import restrictiveness_key
 from dci1v5.verifiers.constraints import (
     FAMILIES, LADDERS, RESERVES, focal_severities,
 )
@@ -421,14 +422,29 @@ def expansion_round(table: Sequence[Mapping[str, Any]], *, iota_a: float,
             continue
         below = [q for q, v in pairs if tie_key(v) < tie_key(iota_a)]
         above = [q for q, v in pairs if tie_key(v) > tie_key(iota_a)]
+        # Direction is by RESTRICTIVENESS, not by severity value: for a
+        # budget a larger q is looser, and for an exact count and a lower
+        # bound a smaller q is (§7.10, §13.8). Reading the raw severity would
+        # extend a marker ladder in the wrong direction, which is the
+        # deficient side §7.10 widened the reserve to reach.
+        def key(q: int, _family: str = family) -> int:
+            return restrictiveness_key(_family, q)
+
         if below and above:
-            lo, hi = max(below), min(above)
-            lo, hi = min(lo, hi), max(lo, hi)
-            picks = [q for q in reserve if lo < q < hi]
-        elif below:                       # everything easier than A: go harder
-            picks = [q for q in reserve if q > max(have)]
-        else:                             # everything harder: go easier
-            picks = [q for q in reserve if q < min(have)][::-1]
+            edges = sorted([max(below, key=key), min(above, key=key)],
+                           key=key)
+            lo_key, hi_key = key(edges[0]), key(edges[1])
+            picks = [q for q in reserve if lo_key < key(q) < hi_key]
+        elif below:
+            # every measured rung is HARDER than A (iota below): go easier,
+            # which is the less restrictive direction.
+            edge = min(key(q) for q in have)
+            picks = sorted((q for q in reserve if key(q) < edge), key=key,
+                           reverse=True)
+        else:
+            # every measured rung is EASIER than A: go harder.
+            edge = max(key(q) for q in have)
+            picks = sorted((q for q in reserve if key(q) > edge), key=key)
         picks = picks[:C.EXPANSION_MAX_RUNGS_PER_FAMILY_PER_ROUND]
         if picks:
             admitted[family] = sorted(picks)

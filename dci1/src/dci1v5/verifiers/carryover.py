@@ -53,7 +53,7 @@ from dci1v4.protocol.hashing import sha_text
 from dci1v5.protocol import wordings as _wordings
 from dci1v5.verifiers.boundary import ALL_CASES
 from dci1v5.verifiers.constraints import (
-    CARRIED_FROM_V4R4, Constraint, FAMILIES, NEW_STATISTIC_IDS, STATISTIC_IDS,
+    CARRIED_FROM_V4R4, NEW_STATISTIC_IDS, STATISTIC_IDS,
 )
 from dci1v5.verifiers.statistics import statistic_of
 
