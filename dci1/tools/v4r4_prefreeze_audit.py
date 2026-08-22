@@ -376,6 +376,16 @@ def main() -> int:
         "masking": registration.load_manifest(context)["masking"],
         "bootstrap": registration.load_manifest(context)["bootstrap"],
     }
+    # A replication that has already frozen and generated has *spent* the
+    # confirmatory topic set, so `confirmatory_untouched` goes false and
+    # `can_freeze` with it. That is the audit refusing to license a second
+    # freeze, not a pre-freeze condition failing --- and a bare `false` reads
+    # as the second. `status` says which it is, so re-running this after
+    # confirmation does not look like a failed audit.
+    already = [m for m in surviving
+               if model_tree(context, m).stage_record(
+                   C.STAGE_CONFIRMATORY).exists()]
+    record["already_generated"] = sorted(already)
     record["can_freeze"] = bool(
         surviving and record["integrity"]["passed"]
         and record["topics"]["reserved_sets_unspent"]
@@ -384,10 +394,33 @@ def main() -> int:
                 for p in record["precision"].values())
         and all(d["cells_per_block_recorded"] == d["cells_per_block_derived"]
                 for d in designs.values()))
+    record["status"] = (
+        "FREEZE_LICENSED" if record["can_freeze"] else
+        "ALREADY_FROZEN_AND_GENERATED" if (
+            record["already_generated"]
+            and record["integrity"]["passed"]
+            and record["topics"]["reserved_sets_unspent"]
+            and not record["topics"]["confirmatory_untouched"])
+        else "PRE_FREEZE_CONDITIONS_NOT_MET")
+    record["status_note"] = {
+        "FREEZE_LICENSED":
+            "every pre-freeze condition holds and no confirmatory topic is "
+            "spent",
+        "ALREADY_FROZEN_AND_GENERATED":
+            "the confirmatory topic set is spent because this study has "
+            "already frozen and generated. `can_freeze` is false because a "
+            "second freeze is not licensed, not because an audit condition "
+            "failed; the audit that licensed the freeze is the one recorded "
+            "at the sealing commit",
+        "PRE_FREEZE_CONDITIONS_NOT_MET":
+            "at least one pre-freeze condition does not hold; the fields "
+            "above say which",
+    }[record["status"]]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     fs.write_json(OUT, record)
     print(json.dumps({
         "written": str(OUT.relative_to(DCI1)),
+        "status": record["status"],
         "surviving": surviving,
         "terminal": {k: v["status"] for k, v in pop["terminal"].items()},
         "variants": {m: d["design_variant"] for m, d in designs.items()},
