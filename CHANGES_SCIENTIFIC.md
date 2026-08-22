@@ -13,7 +13,7 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
-## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and seventeen inherited defects moved what a v4r4 record says
+## 2026-08-22 (latest) — the whole pipeline below Gate 1 executed for the first time, and nineteen defects moved what a v4r4 record says
 
 **Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2
 stopped at Gate 2 under different code and v4r3 stopped at Gate 1. Gates 2, 3,
@@ -225,6 +225,43 @@ table and nothing attached it to a statement. A binding gate now puts
 `C.VACUITY_QUALIFICATION_SENTENCE` and the F5 bounds on every emitted L1 and L2
 statement, and puts nothing there when it does not bind. **Affected results:**
 none had been computed.
+
+**18. §3.2's L4 gate is per named member; `emit_l4` compares level sets.**
+§3.2 licenses L1 on "the named $D(c \\leftarrow g)$" and §28.1 pairs
+*Replication* with *Configuration dependence* — "**the quantity** is
+configuration-dependent" — so L4 asks whether each named member reached the
+same level in every configuration. `emit_l4` compares the set of levels any
+member reached, and `run/analysis_run.py` hands it a list of level names with
+the member identity already discarded, so the emitter cannot distinguish
+replication from a swap. **Affected results:** `gemma-3n-e4b-it`'s emitted L4.
+Both of its configurations reach L1, but `D(A←B)` reaches it in
+`outcome_first` only and `D(B←A)` in `outcome_second` only — each member's
+classification flips. **That record's `claims.L4` is invalidated; the
+registered reading is *Configuration dependence*.** `qwen3-4b` is unaffected:
+`D(A←B)` reaches L1 in both configurations, so the emitted and registered
+readings agree.
+
+**It is not repaired in this revision, and the protocol is the reason.**
+`run_unmasked_analysis` refuses an unmasked analysis under an
+`analysis_code_hash` differing from the masked seal, and §20 forbids
+regenerating a mask after semantic identities are known. Editing `emit_l4`
+would therefore either strand both replications or require a forbidden
+re-mask. `tools/v4r4_final_report.py` recomputes the registered per-member
+reading beside the emitted field as `l4_registered_reading`, and
+`tests_v4r4/test_l4_replication_defect.py` characterizes the sealed behaviour
+so a silent fix fails loudly. The correction belongs to the next revision.
+
+**19. The post-freeze delta reported provenance accretion as a scientific
+change.** Three §18.1 fields enumerate the evidence tree — `hardware_record`
+lists the backend provenance sidecars, `environment_digest` hashes a record
+containing it, and `durability_record` counts the files in both roots — so all
+three moved the moment confirmatory generation landed, and the delta reported
+`scientific_state_unchanged: false`. A field that can only move is not
+evidence that the frozen science changed, and a false alarm there trains a
+reader to ignore the real one. They are not allowlisted: each is now
+re-compared on the part that would mean something, and a move is excused only
+when that comparison finds it unchanged. All three are unchanged for both
+replications. **Affected results:** none; the freeze records never moved.
 
 **Comparability.** Every v4r4 record written before 7eb1947 at Gate 2 or later
 is superseded or was never written. v4r3 and earlier are untouched: the

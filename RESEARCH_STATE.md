@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v4r4** | **adopted and registered 2026-08-21, not frozen, no confirmatory data.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. §4m, §4n, §4o. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/prefreeze_audit.json` |
+| **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
 reciprocal delivery loss the primary estimand, matches references to A on solo
@@ -1119,6 +1119,68 @@ mirrors verify on all 26 stage records, §26's durability gate passes with its
 stated single-device limitation, the confirmatory and sequestered topic sets are
 untouched, and the recomputed budget is 49,152. Gate 5 is next, for two
 replications.
+
+
+### 4p. v4r4 confirmation: two replications freeze, generate, mask, unmask and analyse — and they disagree (2026-08-22)
+
+**Gate 5 froze both survivors at `450a049`**, binding all 66 §18.1 fields.
+Five of those fields had readers and no producer and accepted `"-"` as a
+value; `tools/v4r4_backend_provenance.py` now produces them from the backend's
+own sidecars. §8.6's reduced design could not freeze at all — three fields it
+legitimately leaves empty were read as missing — until `VARIANT_EXEMPTIONS`
+tied each exemption to a declared identification status. §26's durability gate,
+which had no caller, is now wired into `run_freeze`.
+
+**Confirmatory generation: 24,576 rows per replication, 49,152 in total.**
+Complete on both — zero missing, duplicated or out-of-plan identities, 3,072
+distinct prompts, 24,576 distinct scientific seeds, no empty output and no
+processing failure. Truncation 6 rows on `qwen3-4b` and 1 on
+`gemma-3n-e4b-it`. `assert_generation_licensed` had demanded a field §18.1 does
+not register, so no freeze could license any generation; the path had never
+run, and the test fixture carried the same non-existent name.
+
+**Masked → unmask → final, once each, under one analysis code hash.**
+`dffb5a86…` is sealed into both masked artifacts, which is what makes the two
+replications comparable. Every point estimate below was independently
+recomputed from raw `scored.jsonl` with no estimator and no bootstrap, and
+reproduced to four decimals.
+
+| | qwen3-4b, outcome_first | qwen3-4b, outcome_second | e4b, outcome_first | e4b, outcome_second |
+|---|---|---|---|---|
+| D(A←B) | **+0.392** | **+0.329** | **+0.116** | −0.032 |
+| D(B←A) | −0.123 | −0.012 | +0.006 | **+0.283** |
+| Λ | −0.515 | −0.341 | −0.110 | +0.315 |
+
+**The two replications disagree qualitatively.** On `qwen3-4b` the loss falls
+on A in both configurations and is large; B is undamaged and in `outcome_first`
+gains. On `gemma-3n-e4b-it` which constraint pays *flips with position* and Λ
+reverses sign. L1 is emitted somewhere in every configuration of both
+replications. L2 is withheld everywhere (its gate is L1 in both directions).
+L3 is unreachable — neither design estimates Δ_R.
+
+**A defect in the L4 emitter is recorded and deliberately not repaired.**
+§3.2 gates L4 per named member; `emit_l4` compares the set of levels any member
+reached, and is handed input with the member identity already discarded. For
+`gemma-3n-e4b-it` both configurations reach L1 while each member's
+classification flips, so the emitted L4 asserts replication for the replication
+that least replicates. **That field is invalidated; §28.1's *Configuration
+dependence* is the registered reading.** It is not repaired because
+`run_unmasked_analysis` refuses an unmasked analysis under a moved code hash
+and §20 forbids re-masking after unmasking — the commitment device worked and
+bound the author of the defect. `final_results.json` carries the registered
+per-member reading beside the emitted field; a characterization test pins the
+sealed behaviour so a silent fix fails loudly. See
+`CHANGES_SCIENTIFIC.md` items 18–19 and
+`dci1/reports/dci1v4r4/EXECUTION_REPORT.md` §8.3.
+
+**State.** Both replications complete through `UNMASKED_ANALYSIS`. Evidence:
+355 files, 769.7 MB, 155,712 scored rows, byte-identical in both roots, 149
+critical artifacts with none missing or diverged. The post-freeze delta
+compares all 66 fields under current code and reports
+`scientific_state_unchanged: true` for both. Six registered quantities — Δ_R,
+Δ_j, δ_difficulty, Ξ, D(B←R_j), D(R_j←B) — are `NOT_IDENTIFIED` study-wide and
+are listed by name rather than omitted. `dci1/reports/dci1v4r4/final_results.json`,
+`dci1/reports/dci1v4r4/EXECUTION_REPORT.md`.
 
 
 ## 5. Provisional, superseded, broken, unresolved

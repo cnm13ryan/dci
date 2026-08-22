@@ -1,3 +1,6 @@
 [gpu0] 2026-08-22T00:59:13+01:00 start confirmatory gemma-3n-e4b-it
 [gpu1] 2026-08-22T00:59:13+01:00 start confirmatory qwen3-4b
 [gpu1] 2026-08-22T01:22:04+01:00 done qwen3-4b exit=0
+[gpu0] 2026-08-22T02:15:13+01:00 done gemma-3n-e4b-it exit=0
+gemma-3n-e4b-it          exit=0
+qwen3-4b                 exit=0

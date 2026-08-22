@@ -2,10 +2,10 @@
  "artifact_type": "durability_report",
  "comparison": {
   "critical_diverged": [],
-  "critical_files": 111,
+  "critical_files": 149,
   "critical_missing_from_mirror": [],
-  "durable_files": 275,
-  "evidence_files": 275,
+  "durable_files": 355,
+  "evidence_files": 355,
   "matched": true,
   "n_critical_diverged": 0,
   "n_critical_missing": 0
@@ -16,7 +16,7 @@
  "manifest_tracked_in_git": true,
  "off_machine_copy": false,
  "passed": true,
- "producing_commit": "37e293578781b46c6c47de9f8fc3db6798534181",
+ "producing_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
  "restore_rehearsal": {
   "failures": [],
   "passed": true,

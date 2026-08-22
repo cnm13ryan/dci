@@ -8,34 +8,222 @@
   "passed": true,
   "per_model": {
     "gemma-3n-e4b-it": {
-      "current_commit": "ea1a47e889363171cc1a62ce5cf433fb52fdc464",
+      "accretive_fields_re_compared": {
+        "durability_record": {
+          "checked": true,
+          "recomputed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "sealed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "whether §26's gate still passes with no critical artifact missing from or diverged in the mirror"
+        },
+        "environment_digest": {
+          "checked": true,
+          "recomputed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "sealed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "substantively_unchanged": true,
+          "what_was_compared": "the environment digest recomputed over the provenance record with the accreting `hardware` sub-record removed"
+        },
+        "hardware_record": {
+          "checked": true,
+          "recomputed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "sealed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
+        }
+      },
+      "current_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
       "expected_to_move": [
         "producing_commit"
       ],
       "fields_compared": 66,
       "fields_that_moved": {
+        "durability_record": {
+          "recomputed": "f654f86670c307f3",
+          "sealed": "59c8cb90d03ff413"
+        },
+        "environment_digest": {
+          "recomputed": "24ade666d9717bcc",
+          "sealed": "473f96785e2842ce"
+        },
+        "hardware_record": {
+          "recomputed": "a6cd0e0cfb928d97",
+          "sealed": "75b241d73a2cfd48"
+        },
         "producing_commit": {
-          "recomputed": "2afa35057655856b",
+          "recomputed": "d11dceac90a43fbc",
           "sealed": "1af4cbf63c125e9b"
         }
       },
+      "moved_only_where_they_enumerate": [
+        "durability_record",
+        "environment_digest",
+        "hardware_record"
+      ],
       "scientific_state_unchanged": true,
       "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
       "sealed_record_still_verifies": true,
       "unexpectedly_moved": []
     },
     "qwen3-4b": {
-      "current_commit": "ea1a47e889363171cc1a62ce5cf433fb52fdc464",
+      "accretive_fields_re_compared": {
+        "durability_record": {
+          "checked": true,
+          "recomputed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "sealed": {
+            "critical_matched": true,
+            "manifest_tracked_in_git": true,
+            "n_critical_diverged": 0,
+            "n_critical_missing": 0,
+            "off_machine_copy": false,
+            "passed": true,
+            "restore_failures": [],
+            "roots_on_one_device": true
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "whether §26's gate still passes with no critical artifact missing from or diverged in the mirror"
+        },
+        "environment_digest": {
+          "checked": true,
+          "recomputed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "sealed": "749af053e0fcc173d4485f4031ef53a58b85215ab32881f1405a0d71272448f0",
+          "substantively_unchanged": true,
+          "what_was_compared": "the environment digest recomputed over the provenance record with the accreting `hardware` sub-record removed"
+        },
+        "hardware_record": {
+          "checked": true,
+          "recomputed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "sealed": {
+            "device_count_per_run": [
+              1
+            ],
+            "device_names": [
+              "Radeon RX 7900 XTX"
+            ],
+            "gcn_archs": [
+              "gfx1100"
+            ],
+            "note": "the hardware the evidence came off, read from the backend's own provenance sidecars, not the machine that ran the freeze",
+            "platform_class": "RocmPlatform",
+            "torch_hip": "7.2.26015-fc0010cf6a",
+            "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+            "total_vram_gib": [
+              23.98
+            ],
+            "vllm_version": "0.15.1"
+          },
+          "substantively_unchanged": true,
+          "what_was_compared": "the hardware the evidence came off, with the backend-sidecar list and the visible-device list set aside as enumerations"
+        }
+      },
+      "current_commit": "c147efbdabd1d449a0b05672485de86d0b2fa468",
       "expected_to_move": [
         "producing_commit"
       ],
       "fields_compared": 66,
       "fields_that_moved": {
+        "durability_record": {
+          "recomputed": "f654f86670c307f3",
+          "sealed": "59c8cb90d03ff413"
+        },
+        "environment_digest": {
+          "recomputed": "24ade666d9717bcc",
+          "sealed": "473f96785e2842ce"
+        },
+        "hardware_record": {
+          "recomputed": "45946ecd47561204",
+          "sealed": "18f2b91fb1b7c177"
+        },
         "producing_commit": {
-          "recomputed": "2afa35057655856b",
+          "recomputed": "d11dceac90a43fbc",
           "sealed": "1af4cbf63c125e9b"
         }
       },
+      "moved_only_where_they_enumerate": [
+        "durability_record",
+        "environment_digest",
+        "hardware_record"
+      ],
       "scientific_state_unchanged": true,
       "sealed_producing_commit": "450a0499e05fc780d20b8f3a8139a2879a8589c2",
       "sealed_record_still_verifies": true,

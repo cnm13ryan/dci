@@ -1,0 +1,18 @@
+{
+ "model": "gemma-3n-e4b-it",
+ "stage": "CONFIRMATORY_GENERATION",
+ "outcome": "PASS",
+ "rows": 24576,
+ "blocks_generated": 384,
+ "completeness": {
+  "expected": 24576,
+  "present": 24576,
+  "missing": 0,
+  "first_missing": [],
+  "duplicated": 0,
+  "first_duplicated": [],
+  "unexpected": 0,
+  "first_unexpected": [],
+  "complete": true
+ }
+}

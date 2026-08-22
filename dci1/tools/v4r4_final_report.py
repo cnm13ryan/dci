@@ -117,6 +117,7 @@ def replication(context, model_key: str) -> dict[str, Any]:
             "accident, and no post-hoc estimate of them exists",
         "estimates": _members(final["result"]),
         "claims": _claims(final["claims"]),
+        "l4_registered_reading": _l4_registered(final),
         "f6_gate": {k: v.get("f6_gate")
                     for k, v in sorted(final["result"].items())},
         "masking": {
@@ -141,6 +142,92 @@ def replication(context, model_key: str) -> dict[str, Any]:
             "chat_template_hash": freeze["chat_template_hash"],
             "producing_commit": freeze["producing_commit"],
         },
+    }
+
+
+#: §3.2 licenses **L1** on "the named $D(c \\leftarrow g)$", and §28.1 pairs
+#: *Replication* ("the same classification in every registered configuration")
+#: with *Configuration dependence* ("**the quantity** is configuration-
+#: dependent; the table is reported and no pooled scalar is quoted"). Both
+#: rows are about a named quantity, so L4's gate is per member.
+#:
+#: `analysis.claims.emit_l4` compares the *set* of levels any member reached,
+#: which the two rows do not distinguish when the members that reach a level
+#: swap places across configurations. That is a post-freeze implementation
+#: defect and it is **not repaired here**: `run_unmasked_analysis` refuses an
+#: unmasked analysis under code that differs from the masked seal, and §20
+#: forbids regenerating a mask after semantic identities are known, so the
+#: emitter cannot move for this study. What is recomputed here is the reading
+#: the registered rule gives, from the record's own per-member statements, so
+#: the emitted field and the registered field sit side by side and disagree
+#: visibly where they disagree.
+L4_DEFECT = ("analysis.claims.emit_l4 compares the set of levels reached, not "
+             "the level each named member reached. Where the members that "
+             "reach a level swap places across configurations, the sets match "
+             "and the emitted L4 says the result replicates when §3.2's "
+             "per-member gate says it is configuration-dependent")
+
+
+def _l4_registered(final: dict[str, Any]) -> dict[str, Any]:
+    """§3.2 L4 re-read per named member, from the record's own statements."""
+    per: dict[str, dict[str, Any]] = {}
+    for configuration, entry in sorted(final["claims"].items()):
+        if configuration == "L4":
+            continue
+        for s in entry.get("statements", []):
+            member = s.get("member")
+            if member is None:
+                continue
+            key = f"{s.get('family')}:{member}"
+            per.setdefault(key, {})[configuration] = (
+                s.get("claim_level") if s.get("emitted") else None)
+    differing = sorted(k for k, v in per.items() if len(set(v.values())) > 1)
+    reached = sorted(k for k, v in per.items()
+                     if len(set(v.values())) == 1 and next(iter(v.values())))
+    emitted = final["claims"].get("L4", {})
+    licensed = bool(reached) and not differing
+    return {
+        "emitted_by_the_analysis": emitted.get("emitted"),
+        "licensed_by_the_registered_rule": licensed,
+        "agrees_with_the_emitted_field": licensed == emitted.get("emitted"),
+        "classification_by_member": per,
+        "members_differing_across_configurations": differing,
+        "members_replicating": reached,
+        "registered_reading": (
+            "Replication (§28.1): the same classification in every registered "
+            "configuration" if licensed else
+            "Configuration dependence (§28.1): the quantity is configuration-"
+            "dependent; the table is reported and no pooled scalar is quoted"),
+        "defect": None if licensed == emitted.get("emitted") else L4_DEFECT,
+    }
+
+
+def _study_level(context, analysed: list[str]) -> dict[str, Any]:
+    """Which registered quantities the *study* does and does not identify.
+
+    A quantity is unidentified study-wide only when **no** surviving
+    replication identifies it --- the intersection, not the union. A union
+    would report `delta_difficulty` as study-level unidentified whenever any
+    one replication ran reduced, even with a full-design replication
+    estimating it, which is a different and false statement. Both are
+    reported because "some replication cannot see this" is also worth
+    knowing, and the two coincide only when every survivor shares a variant.
+    """
+    sets = [set(NOT_IDENTIFIED_BY_VARIANT[
+        read_stage_record(model_tree(context, m),
+                          C.STAGE_UNMASKED_ANALYSIS)["design_variant"]])
+        for m in analysed]
+    if not sets:
+        return {"study_level_not_identified": [],
+                "not_identified_by_some_replication": [],
+                "variants_analysed": []}
+    return {
+        "study_level_not_identified": sorted(set.intersection(*sets)),
+        "not_identified_by_some_replication": sorted(set.union(*sets)),
+        "variants_analysed": sorted({
+            read_stage_record(model_tree(context, m),
+                              C.STAGE_UNMASKED_ANALYSIS)["design_variant"]
+            for m in analysed}),
     }
 
 
@@ -170,11 +257,7 @@ def main() -> int:
         "analysed": {m: replication(context, m) for m in analysed},
         "terminal": terminal,
         "not_yet_analysed": incomplete,
-        "study_level_not_identified": sorted(
-            set().union(*[set(NOT_IDENTIFIED_BY_VARIANT[
-                read_stage_record(model_tree(context, m),
-                                  C.STAGE_UNMASKED_ANALYSIS)["design_variant"]])
-                for m in analysed]) if analysed else set()),
+        **_study_level(context, analysed),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     fs.write_json(OUT, record)
@@ -184,6 +267,8 @@ def main() -> int:
         "terminal": {k: v["status"] for k, v in terminal.items()},
         "not_yet_analysed": incomplete,
         "study_level_not_identified": record["study_level_not_identified"],
+        "not_identified_by_some_replication":
+            record["not_identified_by_some_replication"],
     }, indent=1))
     return 0
 

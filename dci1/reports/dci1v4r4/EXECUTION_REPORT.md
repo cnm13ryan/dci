@@ -143,24 +143,276 @@ only field that moved.
 
 ## 5. Confirmatory generation
 
-*(pending)*
+Licensed by the Gate 5 freeze at `450a049` and by nothing else.
+`assert_generation_licensed` is the only door, and until this revision it
+demanded a field named `verifier_source_hash` that §18.1 does not register and
+`freeze_run.assemble` does not write — so no freeze record could license any
+generation and the path had never run. It now reads `canonical_verifier_hash`,
+the name the freeze actually binds.
+
+Both survivors carry §8.6's **reduced** design: 8 cells per block, 384 blocks,
+`M_DRAWS = 8`.
+
+| | qwen3-4b | gemma-3n-e4b-it |
+|---|---|---|
+| Rows generated | 24,576 | 24,576 |
+| Distinct row identities | 24,576 | 24,576 |
+| Distinct prompts | 3,072 | 3,072 |
+| Distinct scientific seeds | 24,576 | 24,576 |
+| Missing / duplicated / unexpected | 0 / 0 / 0 | 0 / 0 / 0 |
+| `finish_reason = length` | 6 (0.0244%) | 1 (0.0041%) |
+| Empty final answers | 0 | 0 |
+| Processing failures | 0 | 0 |
+
+**49,152 confirmatory generations in total.** That figure is recomputed from
+the signed Gate 3 and Gate 4 records, not carried from planning: the earlier
+~577k estimate assumed four replications on the 47-cell full design, and Gate 3
+left one replication on that design while Gate 4 made it terminal.
+
+Generation ran in four shards of 96 blocks per model, on two GPUs in parallel.
+The batches partition the registered block list in registered order, every
+batch is generated whole, and completeness is evaluated over the union — so
+batching is not selection. `assert_no_selective_rerun` — which was documented
+and never called until this revision — now runs before the completeness check
+on every resume, and refuses a row set carrying a duplicated or out-of-plan
+identity.
+
+Each cell carries exactly one `prompt_hash` across its eight draws, every
+`row_id` is `{cell}:{draw}`, and no seed is reused. Nothing about companion
+identity or preliminary effect direction was inspected while generation ran.
 
 ## 6. Masked analysis
 
-*(pending)*
+Both replications: 10,000 bootstrap resamples, 384 blocks, `spectrum_fit_ran`
+false (a reduced design builds no spectrum input).
+
+§20-R4's stratified permutation fixes `ceil(N × MASK_MIN_DIFFERING_FRACTION)`
+non-identity blocks, because independent permutation over two companions moves
+a label with probability exactly 0.5 — the bound it was asked to clear. Both
+replications report a realised differing share of exactly 0.5 over 6 (outcome,
+configuration) groups, of which 2 are maskable.
+
+The remaining 4 groups are **structurally unmaskable**, and the note the
+analysis attaches to them was corrected during this run. It had asserted the
+full-design case unconditionally — that no registered estimand reads a
+singleton-companion outcome. Under §8.6's reduced design that is false: B has
+two companions and is masked among them, but A and CL each have only B, so
+`D(A←B)` — a registered reduced-design estimand, and the one that carries both
+replications' L1 — is analysed with its companion identity visible. The masked
+phase protects `D(B←A)`, `D(B←CL)` and `Λ` on this design and does not protect
+the reciprocal direction. That is now stated in the record rather than implied.
+
+Both masked artifacts were sealed under `analysis_code_hash`
+`dffb5a861a497cc2…`. The hash is identical across the two replications, which
+is what makes them comparable; the analysis code was held still between them
+for exactly that reason.
+
+| | masked artifact | mask key |
+|---|---|---|
+| qwen3-4b | `3368b857…` | sealed in record |
+| gemma-3n-e4b-it | `6ca030d9…` | `b2520830…` |
 
 ## 7. Unmasking
 
-*(pending)*
+Once per replication, after its masked artifact was complete, signed and
+mirrored byte-for-byte into the durable root. Each unmask record's
+`masked_outputs_hash` equals the artifact hash it was bound to, so the unmask
+names the sealed object and not a recomputation of it. No mask was regenerated
+at any point.
+
+`run_unmasked_analysis` refuses to run under an analysis code hash that differs
+from the masked seal: *"an unmasked analysis under different code is not the
+analysis the mask protected."* That guard held for both replications — and it
+is also the reason the defect in §8 below could not be repaired.
 
 ## 8. Final scientific results
 
-*(pending)*
+Two replications survive of four. Both are reduced-design, both met every
+applicable §16.2 precision precondition, and all point estimates below were
+**independently recomputed from raw `scored.jsonl` rows** — no estimator, no
+`ObservationTable`, no bootstrap — and reproduced to four decimals.
+
+### 8.1 qwen3-4b (n\* = 2, m\* = 12, focal extension used)
+
+| Estimand | outcome_first | outcome_second |
+|---|---|---|
+| D(A←B) | **+0.3919** [+0.3503, +0.4335] | **+0.3291** [+0.2835, +0.3747] |
+| D(B←A) | −0.1227 [−0.1536, −0.0918] | −0.0120 [−0.0450, +0.0209] |
+| Λ | −0.5146 [−0.5671, −0.4622] | −0.3411 [−0.3989, −0.2834] |
+| D(B←CL) | −0.1341 [−0.1647, −0.1035] | −0.0505 [−0.0814, −0.0195] |
+| Δ_class | +0.0114 [−0.0106, +0.0334] | +0.0384 [+0.0088, +0.0680] |
+
+Composing A with B costs A a large delivery loss in both configurations. B is
+not damaged by A; in `outcome_first` it *gains*. §17.4's vacuity gate binds in
+`outcome_first` (worst upper 0.1604, driven by `vac(B|B+CL) − vac(B solo)` =
++0.1292) and not in `outcome_second` (0.0158), so the F5 partial-identification
+block is attached to the first configuration only.
+
+**Ladder:** L1 emitted for D(A←B) in both configurations. L1 withheld for
+D(B←A) — its interval is not above zero. L2 withheld: its gate is L1 in *both*
+directions. L3 unreachable — the reduced design does not estimate Δ_R. L4
+emitted, and licensed under the registered per-member reading as well (§8.3).
+
+### 8.2 gemma-3n-e4b-it (n\* = 4, m\* = 10, no focal extension)
+
+| Estimand | outcome_first | outcome_second |
+|---|---|---|
+| D(A←B) | **+0.1159** [+0.0771, +0.1546] | −0.0322 [−0.0734, +0.0089] |
+| D(B←A) | +0.0062 [−0.0182, +0.0306] | **+0.2832** [+0.2485, +0.3179] |
+| Λ | −0.1097 [−0.1546, −0.0648] | +0.3154 [+0.2594, +0.3714] |
+| D(B←CL) | +0.3164 [+0.2793, +0.3535] | +0.7946 [+0.7624, +0.8268] |
+| Δ_class | −0.3102 [−0.3498, −0.2706] | −0.5114 [−0.5495, −0.4733] |
+
+Solo compliance: A 0.7718, B 0.8512, CL7 0.7152 — all with headroom. The
+vacuity gate does not bind in either configuration (worst upper 0.00098 and
+0.0), so no F5 block is attached.
+
+**The direction of the loss flips with position.** In `outcome_first` the
+constraint that loses is A; in `outcome_second` it is B, and by more. Λ reverses
+sign. This replication is *configuration-dependent*, and the registered
+consequence (§28.1) is that the table is reported and no pooled scalar is
+quoted.
+
+**Ladder:** L1 emitted for D(A←B) in `outcome_first` and for D(B←A) in
+`outcome_second`, each withheld in the other configuration. L2 withheld in both
+(its gate is L1 in both directions, and no configuration has both). L3
+unreachable.
+
+### 8.3 A post-freeze defect in the L4 emitter, recorded and not repaired
+
+§3.2 licenses L1 on **"the named** $D(c \leftarrow g)$**"**, and §28.1 pairs
+*Replication* — "the same classification in every registered configuration" —
+with *Configuration dependence* — "**the quantity** is configuration-dependent;
+the table is reported and no pooled scalar is quoted." Both rows are about a
+named quantity, so L4's gate is per member.
+
+`analysis.claims.emit_l4` compares the **set of levels any member reached**.
+`run/analysis_run.py` hands it `[s["claim_level"] for s in statements if
+emitted]`, with the member identity already discarded, so the emitter cannot
+see the difference even in principle.
+
+For gemma-3n-e4b-it both configurations reach L1, so the sets match and L4 is
+emitted — while every named member's classification *flips*. The emitted L4
+therefore asserts replication for the one replication that most clearly does
+not replicate. **gemma-3n-e4b-it's emitted L4 is invalidated.** The registered
+reading is *Configuration dependence*.
+
+qwen3-4b is unaffected: D(A←B) reaches L1 in both configurations, so the
+emitted and registered readings agree.
+
+**It is not repaired, and the protocol is why.** `run_unmasked_analysis`
+refuses an unmasked analysis under code that differs from the masked seal, and
+§20 forbids regenerating a mask once semantic identities are known. Correcting
+`emit_l4` would therefore either strand both replications — their unmasked
+analyses could never be recomputed — or require a mask regenerated after
+unmasking, which is prohibited outright. The commitment device worked as
+designed and it has bound the author of the defect. The correction belongs to
+the next revision.
+
+What is done instead: `tools/v4r4_final_report.py` recomputes the registered
+per-member reading from each record's own statements and writes it beside the
+emitted field as `l4_registered_reading`, with
+`agrees_with_the_emitted_field: false` for gemma-3n-e4b-it. A characterization
+test (`tests_v4r4/test_l4_replication_defect.py`) pins the sealed behaviour so
+that a silent "fix" — which would break both replications — fails loudly.
+
+### 8.4 What the study does and does not say
+
+**Says.** Composing two instructions imposes a delivery loss on at least one of
+them in every surviving replication and configuration, with simultaneous
+intervals wholly above zero. On qwen3-4b that loss falls on A in both
+configurations and is large. On gemma-3n-e4b-it which constraint pays depends
+on which one is asked first.
+
+**Does not say.** Nothing about *pair-specific* excess: Δ_R is not identified on
+either replication. Nothing about broader difficulty-response: δ_diff and Ξ are
+not identified on either. Nothing about A being generally disruptive versus
+specifically disruptive to B. Nothing about family or structural effects. And
+no claim rests on a non-significant interval: `D(B←A)`'s interval containing
+zero on qwen3-4b in `outcome_second` is unresolved direction, **not** evidence
+of no effect.
+
+**Model dependence** is observed but not estimated: two replications differ
+qualitatively, and two of four models never reached confirmation at all. With
+n = 2 the study reports the two tables and does not pool them.
 
 ## 9. Limitations
 
-*(pending)*
+**Reference-pool sparsity is the binding limitation of this revision.** §13.4
+admits a core reference only from a family supplying a straddling severity
+triple. Three of four models admitted none, so they run §8.6's reduced design,
+which carries `EXCESS_NOT_IDENTIFIED` and `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`
+from the freeze onward. Six registered quantities are **NOT_IDENTIFIED** for
+every surviving replication — `Δ_R`, `Δ_j`, `δ_difficulty`, `Ξ`, `D(B←R_j)`,
+`D(R_j←B)`. They are listed by name in `final_results.json` rather than omitted,
+because a reader who cannot see the absence cannot tell it from a null. No
+post-hoc estimate of any of them exists.
+
+**The only full-design replication did not survive Gate 4.** gemma-3n-e2b-it
+admitted three core references and was the sole replication identifying the
+difficulty spectrum. Gate 4 found five composed cells above the 0.95 headroom
+band on `RF11:26`/`RF11:32` (rates 0.9583–1.0000) and terminated it. §13.10 is
+explicit that a headroom failure is a terminal status and not an instruction to
+choose different rungs, and no rung was changed. **The consequence is that the
+difficulty-spectrum estimands are identified by no surviving replication.**
+
+**qwen3-4b's focal severity comes from the final focal-extension rung.**
+`focal_extension_measured` is true and m\* = 12 is the last rung the extension
+reached. Its Gate 2 selection therefore sits at the edge of the measured range
+rather than inside it, and there is no evidence about how the replication would
+behave at a rung beyond it.
+
+**Configuration confounding.** §11.4's position caveat attaches to every
+`outcome_second` statement as `POSITION_CONFOUNDED`: in that configuration the
+outcome constraint is also the second-mentioned constraint, and the design does
+not separate the two.
+
+**Two survivors of four.** qwen3-4b-instruct-2507 also terminated at Gate 4
+(`solo:CL` = CL8:3 at 0.9896). Neither terminal outcome was revisited.
+
+**Precision.** Every applicable precondition was met, so no estimand carries
+`INSUFFICIENT_PRECISION`. But precision preconditions bound half-widths, not
+inference across replications: nothing here supports an equivalence statement
+between the two survivors.
+
+**Durability is local.** Both roots sit on one device and no off-machine copy
+exists. What survives in version control is the manifest, the hashes, the
+producing commit and the reproduction commands — enough to make loss
+*detectable* and the run repeatable, not enough to make it recoverable.
+
+**The L4 defect of §8.3** is a limitation of this revision's analysis code, not
+of its data.
 
 ## 10. Artifacts and commits
 
-*(pending)*
+| Artifact | Path |
+|---|---|
+| Final results | `reports/dci1v4r4/final_results.json` |
+| Pre-freeze audit | `reports/dci1v4r4/prefreeze_audit.json` |
+| Post-freeze delta | `reports/dci1v4r4/post_freeze_delta.json` |
+| Backend provenance | `reports/dci1v4r4/backend_provenance.json` |
+| Evidence manifest | `reports/dci1v4r4/evidence_manifest.json` |
+| Durability record | `reports/dci1v4r4/durability.json` |
+| Signed stage records | `evidence/dci1v4r4/<model>/<STAGE>/records/` |
+| Durable mirrors | `durable_root/dci1v4r4/<model>/<STAGE>/records/` |
+| Superseded records | `durable_root/dci1v4r4/<model>/superseded/` |
+
+**Evidence tree:** 355 files, 769.7 MB, 155,712 scored rows, byte-identical in
+both roots. 149 critical artifacts, none missing from and none diverged in the
+mirror. Restore rehearsal 8/8.
+
+**Sealing commit** for both freezes: `450a0499e05fc780d20b8f3a8139a2879a8589c2`.
+The post-freeze delta re-assembles both freeze records under current code and
+compares all 66 §18.1 fields. Four moved; `producing_commit` is expected to,
+and `hardware_record`, `environment_digest` and `durability_record` enumerate
+the evidence tree and therefore move as evidence accrues. Each of the three was
+re-compared on its substantive content — the hardware the evidence came off,
+the environment digest recomputed without the accreting sub-record, and whether
+§26's gate still passes with no critical artifact missing or diverged — and all
+three are unchanged. `scientific_state_unchanged: true` for both replications.
+
+**Tests:** 1,649 passed, 10 skipped in the dci1 suite. Lint: 15 pre-existing
+E501 in files this work did not touch, none introduced.
+
+Superseded Gate-3 records remain in `durable_root/…/superseded/` as historical
+evidence and cannot satisfy predecessor checks.

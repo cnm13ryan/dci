@@ -245,9 +245,26 @@ def test_the_post_freeze_delta_shows_no_frozen_value_moved():
     assert record["frozen_replications"]
     for model_key, entry in record["per_model"].items():
         assert entry["unexpectedly_moved"] == [], model_key
-        assert set(entry["fields_that_moved"]) <= {"producing_commit"}, \
-            model_key
         assert entry["fields_compared"] == len(F.FREEZE_FIELDS)
+        # Every field that moved is either about the run rather than the
+        # science, or one of the three that *enumerate the evidence tree*
+        # and therefore move as the study produces evidence. This used to
+        # read `<= {"producing_commit"}`, which was true only because
+        # nothing had been generated yet: `hardware_record` lists the
+        # backend provenance sidecars, `environment_digest` hashes a
+        # record containing it, and `durability_record` counts the files
+        # in both roots, so all three moved the moment confirmatory
+        # generation landed. The assertion below is the stronger one --- a
+        # move is excused only when the tool re-compared the field on its
+        # substantive content and found it unchanged.
+        excused = set(entry["moved_only_where_they_enumerate"])
+        assert set(entry["fields_that_moved"]) <= (
+            {"producing_commit"} | excused), model_key
+        for field, check in entry["accretive_fields_re_compared"].items():
+            assert check["checked"] is True, (model_key, field)
+            if field in excused:
+                assert check["substantively_unchanged"] is True, (
+                    model_key, field)
 
 
 # --------------------------------------------------- what the code hash covers
