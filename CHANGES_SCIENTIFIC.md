@@ -13,6 +13,107 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-22 — DCI-1 v5 drafted: the reference pool inverts class, and two v4r4 documentation values are corrected
+
+**Standing.** v5 is **drafted, not adopted**. No v5 stage record exists, no v5
+topic has been authored, no v5 instrument has been measured, and no number in
+this repository moves because of it. It is here because it registers the
+disposition of every v4r4 quantity and because two corrections to existing
+artifacts fell out of drafting it.
+
+[`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md) ·
+[`user-notes/DCI1_v4r4_to_v5_changelog.md`](user-notes/DCI1_v4r4_to_v5_changelog.md) ·
+[`dci1/reports/dci1v5/`](dci1/reports/dci1v5/)
+
+**Why there is a v5.** v4r4 completed with two of four replications confirmed,
+both on the 8-cell reduced design, and every companion-specific estimand —
+`Δ_R`, `Δ_j`, `δ_difficulty`, `Ξ`, `D(B←R_j)`, `D(R_j←B)` — `NOT_IDENTIFIED`
+study-wide. The reference-construction procedure did not deliver a usable
+counterfactual on any surviving replication. v4r4 was frozen and produced
+confirmatory data, so under v4r3 §31 a scientific change creates a new protocol
+version.
+
+**1. The core reference pool inverts constraint class.** v4r3 §13.1 says the
+reference occupies A's slot and must resemble A; v4r3 §7.3 then forbids
+production families from the reference pool. v5 §7.5 resolves the contradiction
+in favour of §13.1: the core pool becomes exact counts of a short marker word —
+same predicate form as A, differing only in which word and how many — and
+v4r4's budget families move to the spectrum and broad-class arms. Measured
+justification, on v4r4's own library and measurements: applying v5's full
+validity stack leaves **3, 0, 0 and 0** qualifying families in the budget pool
+across the four replications and **4, 4, 2 and 3** in the production pool
+v4r3 excluded, unchanged at every stage of the stack
+([`d5_gate_attrition.json`](dci1/reports/dci1v5/development/d5_gate_attrition.json)).
+**Consequence for statements:** `COMPANION_CLASS_NOT_MATCHED` leaves every L3
+statement and narrows to the broad-class arm; `REFERENCE_POOL_SAME_FORM`
+replaces it and says the opposite thing — that v5's excess is relative to
+companions *very* like A.
+
+**2. A new pre-composition interaction gate, and the quantity it reads.**
+`κ(R|B)` is R's verifier run on responses written under B **alone**, where R is
+absent. Under §9.1's presence rule it costs zero extra generations. The gate is
+`0.10 ≤ κ(R|B) + ι_R(1−κ(R|B)) ≤ 0.90`. On `gemma-3n-e2b-it`, the one v4r4
+replication that composed a reference with B, the projection separated 4 of 4
+Gate-4 failures from 16 passing checks with no false alarm, median absolute
+error 0.067
+([`d4_interaction_projection.json`](dci1/reports/dci1v5/development/d4_interaction_projection.json)).
+**It reads no composed cell**: Δ_R reads `X_B` in the `B+R_j` cells and
+`κ(R|B)` reads `X_R` in the `B`-solo cell.
+
+**3. Raw compliance becomes an admission gate and ι is demoted.** v4r4 admitted
+on ι alone, bounded chance only at 0.99, and read no raw solo compliance before
+Gate 4 — which is why `CL8:3` at solo 0.9740 and chance 0.9323 was admitted as
+the closest eligible rung and terminated its replication on its own **solo**
+cell. v5 adds a Wilson-interval headroom band of [0.10, 0.90], an
+instruction-lift floor of 0.20 and a chance ceiling of 0.75, and evaluates ι
+**last** of eight lexicographic components.
+
+**4. Two calibration splits and a high-recall screen.** The pre-screen distance
+caliper is removed: measured pre-screen→calibration |Δι| has median 0.0709 and
+**35.7% of candidates move further than the whole width of the 0.10 caliper**
+they then have to clear. v5 doubles the calibration sample to 192 topics —
+taking the caliper from 2.10 to 2.96 standard errors without moving the number
+— and requires independent admissibility on two disjoint 96-topic splits
+([`d3_split_half_stability.json`](dci1/reports/dci1v5/development/d3_split_half_stability.json)).
+
+**5. Direct order estimands, and the L4 fix.** v4r4 registered no
+cross-configuration contrast, so its observed Λ sign reversal could not be
+tested and cannot be tested from its artifacts. v5 registers `Ord_A`, `Ord_B`,
+`Ord_Λ`, `Ord_R̄` and `Ord_CL` in a new family F11 licensing claim level L4b,
+with F1's membership unchanged so no primary interval widens. `emit_l4` becomes
+`emit_l4a`, comparing the classification of each **named member** rather than
+the set of levels reached, with three registered regression tests including
+v4r4's `gemma-3n-e4b-it` pattern. **v4r4's invalidated L4 field is not
+recomputed**; the fix is prospective.
+
+**6. Corrections to two existing documents, neither of which moves a number.**
+
+- [`dci1/reports/dci1v4r4/SCIENTIFIC_FOLLOWUP_EVIDENCE.md`](dci1/reports/dci1v4r4/SCIENTIFIC_FOLLOWUP_EVIDENCE.md)
+  §6 quotes `REFERENCE_CALIPER` 0.075 and `REFERENCE_PRESCREEN_CALIPER` 0.10.
+  The registered values in `dci1v4r4/protocol/constants.py` are **0.10** and
+  **0.15**, and that package's own machine-readable companion
+  `02_admission_landscape.json` records 0.10 and 0.15. The prose is wrong and
+  the artifact is right. **No admission verdict in that package is affected**,
+  because every verdict was produced by calling the registered selection
+  functions rather than by reapplying a quoted threshold.
+- `dci1v4r4/verifiers/constraints.py` documents `N_SEVERITIES` as 190 and
+  `N_DECLARED_SEVERITIES` as 334 against computed values of **254** and
+  **510**; `protocol/constants.py` comments `N_CONFIRMATORY # 408` and
+  `N_SEQUESTERED # 72` against computed **384** and **96**. The computed values
+  are what the code used and what every record carries. These are stale
+  v4r3-era comments and nothing reads them.
+
+**Affected results: none.** v4r4's estimates, records and terminal reports are
+unchanged and unreinterpreted. v5's own status is that five scientific degrees
+of freedom remain open
+([`v5_prereg_redteam.md`](dci1/reports/dci1v5/v5_prereg_redteam.md)) and
+nineteen registered decisions must be closed before its first stage can pass.
+
+**Development evidence is design fitting, not validation.** Every v5 threshold
+was chosen after observing the whole of v4r4, and
+[`reference_design_development.md`](dci1/reports/dci1v5/reference_design_development.md)
+§9 lists the nine things that analysis does not establish.
+
 ## 2026-08-22 — the whole pipeline below Gate 1 executed for the first time, and nineteen defects moved what a v4r4 record says
 
 **Scope.** Nothing below Gate 1 in v4r4 had ever run under any codebase: v4r2

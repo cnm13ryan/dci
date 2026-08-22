@@ -91,6 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
+| **v5** | **drafted 2026-08-22, NOT adopted, no stage record, no topic authored, no instrument measured.** A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. §4q. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1183,6 +1184,60 @@ are listed by name rather than omitted. `dci1/reports/dci1v4r4/final_results.jso
 `dci1/reports/dci1v4r4/EXECUTION_REPORT.md`.
 
 
+### 4q. v5: drafted, and what v4r4's failure was measured to be (2026-08-22)
+
+**v4r4 answered the compositional questions and did not reach the
+companion-specificity one.** Every companion-specific estimand — `Δ_R`, `Δ_j`,
+`δ_difficulty`, `Ξ`, `D(B←R_j)`, `D(R_j←B)` — is `NOT_IDENTIFIED` on both
+survivors, because both ran the 8-cell reduced design, and the one replication
+that obtained a full design was ended at Gate 4 before generating a
+confirmatory row. v5 is a standalone preregistration that rebuilds the
+reference-construction procedure. **It is drafted and not adopted**; nineteen
+registered decisions and five red-team findings are open.
+
+**Five failures, each measured rather than described**
+([`reference_design_development.md`](dci1/reports/dci1v5/reference_design_development.md)):
+
+| | Failure | The measurement |
+|---|---|---|
+| F1 | a point-estimate pre-screen used as a hard selector | pre-screen→calibration median \|Δι\| = 0.0709; **35.7% of candidates move further than the whole 0.10 caliper**; straddling support fell 7→3, 5→0, 4→2, 4→0 |
+| F2 | ι alone as the admission coordinate | six rungs sat inside the caliper with raw solo above 0.90; one at solo 0.9740 / chance 0.9323 terminated a replication **on its own solo cell** |
+| F3 | "production class" too coarse | two companions in one declared class gave Δ_class of +0.011 and −0.511 |
+| F4 | solo-matched controls made trivial by B | `RF11` went 0.635 solo → 0.969 composed; recomputed κ(R\|B) = 0.833 and 0.964 for the two failing rungs |
+| F5, F6 | support at the minimum; an operating-point grid that ends where the operating point is | three of four finished below three core references; **m\* was the last measured rung on all four** |
+
+**The finding that drives v5's library.** Applying v5's full validity stack to
+v4r4's own measurements leaves **3, 0, 0 and 0** qualifying families in the
+budget-class reference pool and **4, 4, 2 and 3** in the production-class pool
+v4r3's §7.3 forbade to be references — unchanged at every stage of the stack. A
+maximum-word-length outcome constraint systematically shifts every word-shaped
+budget numerator; an exact count of a short marker word is chance-free,
+interaction-free, same-form with A and tunable in difficulty. **v4r4's
+reference pool contradicted v4r3 §13.1's own rationale**, and v5 §7.5 resolves
+it in favour of §13.1.
+
+**The quantity that makes the interaction gate free.** `κ(R|B)` — R's verifier
+on responses written under B alone, R absent — costs no generations under
+§9.1's presence rule. On the one replication that composed a reference with B
+it separated 4 of 4 Gate-4 failures from 16 passing checks with no false alarm.
+v4r4's calibration scored load-one rows on the present instance only, so the
+quantity did not exist in its records and had to be recomputed; v5 makes the
+presence rule mandatory at every generative stage.
+
+**Two documentation corrections, neither moving a number.** The v4r4 follow-up
+report's §6 quotes caliper values (0.075, 0.10) that the code and that
+package's own machine-readable artifact contradict (0.10, 0.15); no admission
+verdict is affected, because every verdict called the registered selection
+functions. And four constants in `dci1v4r4` carry stale v4r3-era comments that
+disagree with their computed values. `CHANGES_SCIENTIFIC.md` records both.
+
+**Status.** Five red-team findings unresolved
+([`v5_prereg_redteam.md`](dci1/reports/dci1v5/v5_prereg_redteam.md)), the
+sharpest being that a same-form control pool may make L3c — the source memo's
+*refutation* verdict — near-automatic. Every v5 threshold was chosen after
+observing all of v4r4, which is design fitting; v5 is the prospective test and
+no artifact may call the retrospective analysis validation.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1235,10 +1290,13 @@ are listed by name rather than omitted. `dci1/reports/dci1v4r4/final_results.jso
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: Gates 2, 3, 4 and 5 of v4r4 executed for the
-first time and thirteen inherited defects, most of one class — a reader with no
-producer — moved what a v4r4 record says, in §4n and §4o. Before it: v4r3 closes at Gate 1, and v4r4
-adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
+whether old and new remain comparable. Most recent: DCI-1 v5 drafted — the core
+reference pool inverts to production class and same-form with A, a
+pre-composition interaction gate is added, and two v4r4 documentation values
+are corrected without moving a number — in §4q. Before it: the whole pipeline
+below Gate 1 executed for the first time and nineteen defects, most of one
+class — a reader with no producer — moved what a v4r4 record says, in §4n, §4o
+and §4p.
 
 ## 7. Where to look
 
@@ -1252,10 +1310,13 @@ adopts a deterministic Gate 1, removes `CP4`/`CP7` and passes it, in §4m.
 | what was actually covered | `exploratory/EXPERIMENT_COVERAGE_MATRIX.md` (rebuilt from run configs) |
 | the confirmatory protocol | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
 | the frozen Stage 2 decisions | `src/dci/v19/stage2_frozen.json`, `docs/v19_stage2_specification_amendments.md` |
-| the live DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
+| the completed DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
+| the drafted successor, not adopted | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
+| why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
+| what is still open in v5 | `dci1/reports/dci1v5/v5_prereg_redteam.md`, `dci1/reports/dci1v5/v5_implementation_plan.md` |
 | what v4r4 changed and why | `user-notes/DCI1_v4r3_to_v4r4_changelog.md` (R4-1–R4-7) |
 | the v4r4 decisions register | `dci1/DECISIONS_V4R4.md` (B0–B7, E0–E7) |
-| what v4r4 has measured so far | `dci1/reports/dci1v4r4/` — `gate1_decision.json`, `coverage.json`, `evidence_reuse_ledger.json`, `lifecycle_integrity.json` |
+| what v4r4 measured, and its follow-up | `dci1/reports/dci1v4r4/` — `final_results.json`, `EXECUTION_REPORT.md`, `SCIENTIFIC_FOLLOWUP_EVIDENCE.md` |
 | why v4r3 stopped, and what it left | `dci1/reports/dci1v4r3/closure.json`, `dci1/reports/dci1v4r3/REPORT.md` |
 | the superseded v4r3 protocol and register | `user-notes/DCI1_preregistration_v4r3.md`, `dci1/DECISIONS_V4R3.md` |
 | the v4r3 implementation, preserved | `dci1/src/dci1v4r3/README.md` |
