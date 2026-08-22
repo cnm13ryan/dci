@@ -39,7 +39,7 @@ from dci1v4.errors import ProtocolError
 
 from dci1v5.design.cells import arms_from_identification, n_cells_for
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import decisions
+from dci1v5.protocol import decisions, identification
 
 __all__ = ["support_disposition", "evaluate_support", "freeze_backups",
            "methodological_success"]
@@ -48,10 +48,12 @@ __all__ = ["support_disposition", "evaluate_support", "freeze_backups",
 def support_disposition(*, met: bool) -> str:
     """§34 D6: what an unmet support requirement does to the replication.
 
-    Both outcomes are expressible and neither is reachable while D6 is open.
-    ``identification_status`` keeps the replication running without the core
-    and spectrum arms; ``terminal`` stops it. Nothing else in this module
-    reads a standing proposal.
+    **Closed at ``identification_status``**: the replication continues and
+    every reference-dependent estimand becomes ``NOT_IDENTIFIED``, irreversibly
+    for that replication (``protocol/identification.py``). The ``terminal``
+    branch is retained and is **not** a live v5 alternative --- it is the
+    behaviour v5 did not adopt, kept so a reader can see what was refused and
+    so a historical replication that ran it stays reproducible.
     """
     if met:
         return "SUPPORTED"
@@ -84,9 +86,11 @@ def evaluate_support(*, model_key: str,
                      spectrum_identified: bool) -> dict[str, Any]:
     """§13.15's counts, the admitted arm set, and every identification status.
 
-    Returns a Gate-3C payload. It does **not** decide what an unmet
-    requirement does: ``disposition`` is left ``UNRESOLVED`` and the caller
-    reaches ``support_disposition``, which refuses while D6 is open.
+    Returns a Gate-3C payload carrying the D6 disposition and, when §13.15 is
+    unmet, the ``non_identification`` block naming the exact estimand set the
+    replication may no longer identify. That block is what
+    ``identification.assert_not_rehabilitated`` reads at the freeze, at the
+    analysis and at the final report, so the status cannot be lifted later.
     """
     core = list(selection.get("core_references", []))
     n_eligible = len(set(structurally_eligible_tier12_families))
@@ -142,6 +146,8 @@ def evaluate_support(*, model_key: str,
     if not class_available:
         statuses.append("CLASS_ARM_NOT_AVAILABLE")
 
+    non_identified = identification.non_identification(
+        model_key=model_key, support_met=met, failures=failures)
     return {
         "stage": C.STAGE_GATE3C, "model_key": model_key,
         "requirements": {
@@ -163,8 +169,11 @@ def evaluate_support(*, model_key: str,
             "frozen_backups": backups,
         },
         "support_met": met, "failures": failures,
-        "disposition": decisions.UNRESOLVED if not met else "SUPPORTED",
+        "disposition": support_disposition(met=met),
         "disposition_decision": "D6",
+        "non_identification": non_identified,
+        "not_identified_members": (list(non_identified["not_identified_members"])
+                                   if non_identified else []),
         "admitted_arms": list(arms),
         "derived_cell_count": n_cells_for(arms),
         "identification_statuses": sorted(set(statuses)),

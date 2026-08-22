@@ -47,7 +47,7 @@ __all__ = ["Interval", "ClaimError", "position_status", "delta_r_reading",
            "emit_l4a", "emit_l4b", "assert_no_l5_emitter", "LEVEL_MEMBERS",
            "REQUIRED_FIELDS", "assert_statement_complete",
            "l3c_requires_near_form", "l3c_disposition",
-           "precondition_key"]
+           "assert_l3c_scope", "precondition_key"]
 
 
 class ClaimError(ProtocolError):
@@ -277,7 +277,7 @@ def tier_reading(delta_r: Interval, delta_near: Interval | None
 
 
 def l3c_requires_near_form() -> bool:
-    """§34 D18: is the near-form arm a precondition of emitting L3c?
+    """§34 D18: is the near-form arm a precondition of the **strong** L3c?
 
     L3c is the source memo's refutation verdict --- *an upper bound below 0.10
     supports H2 and refutes the pairwise framing entirely* --- and v5's core
@@ -285,10 +285,14 @@ def l3c_requires_near_form() -> bool:
     plausible consequence of the **design**. The near-form arm is what
     distinguishes the two, and §34 D1 lists dropping it as a compute option.
 
-    Both branches exist and neither is reachable while D18 is open. The
-    standing proposal is *not a precondition*, with §17.6's fixed sentence
-    attached; a researcher who accepts R1 should make it one, or close D1 so
-    the arm is retained.
+    **Closed at ``precondition``.** The researcher took the strong version:
+    the strong conclusion --- *no pair-specific excess* --- requires the arm,
+    and a same-form Tier-1 pool alone licenses only the narrower statement
+    that there is no excess relative to same-form exact-count companions. The
+    ``not_a_precondition`` branch is retained and is **not** a live v5
+    alternative: under it a replication with no near-form arm emitted the
+    strong conclusion with §17.6's sentence attached as a qualifier, which is
+    exactly what R1 says a reader will not hear.
     """
     return decisions.choice("D18", {"not_a_precondition": False,
                                     "precondition": True},
@@ -299,51 +303,93 @@ def l3c_disposition(*, near_form_available: bool,
                     delta_near: "Interval | None") -> dict[str, Any]:
     """§34 D18 applied to one L3c that is otherwise licensed.
 
-    The two prospectively allowed modes, both constructed and neither
-    reachable while D18 is open:
+    **What the disposition returns is a SCOPE, not a permission.** §34 D18 is
+    closed at ``precondition`` and the researcher's words fix what that gates:
 
-    * **precondition** --- the near-form arm is required before a strong L3c
-      may be emitted. L3c is withheld and reported as withheld, with
-      ``NEAR_FORM_ARM_NOT_AVAILABLE`` and the reason; nothing else about the
-      analysis changes and Delta_R is still reported with its interval.
-    * **not_a_precondition** --- L3c is emitted and **must** carry §17.6's
-      narrower same-form-only interpretation verbatim, because the core pool
-      is chosen to resemble A and an unqualified L3c would read as a general
-      refutation.
+    > A strong L3c conclusion such as "no pair-specific excess" requires the
+    > near-form arm. Same-form Tier-1 references alone may only justify the
+    > narrower conclusion: no excess relative to same-form exact-count
+    > companions.
+
+    So the arm decides **which of two registered conclusions** is licensed,
+    and the scope travels on the statement:
+
+    * arm present --- scope ``strong``. The refutation verdict is available.
+    * arm absent, D18 at ``precondition`` --- scope ``same_form_only``. The
+      narrow conclusion is emitted, ``strong`` is unreachable, and the
+      statement says so in its own text rather than in a footnote.
+    * arm absent, D18 at ``not_a_precondition`` (**not adopted**) --- scope
+      ``strong`` with §17.6's sentence attached as a qualifier. Retained so
+      the branch v5 refused is visible, and reachable only by reopening D18.
 
     **The precondition is the arm's existence, not its verdict.** It is met
     when the arm ran and produced a Delta_near interval. Requiring a
     *classified* Delta_near instead would let the precision of a secondary
-    quantity decide whether a primary claim may be made, which is a different
-    rule and one no section registers.
+    quantity decide which conclusion may be drawn, which is a different rule
+    and one no section registers.
 
-    The decision is consulted **only where the two modes differ** --- an L3c
-    with the arm present is emitted identically either way --- so a
-    replication that retained the near-form arm is not blocked by a decision
-    that would change nothing for it.
+    The decision is consulted **only where the modes differ** --- an L3c with
+    the arm present is ``strong`` either way --- so a replication that
+    retained the near-form arm is not blocked by a decision that would change
+    nothing for it.
     """
     if near_form_available and delta_near is not None:
         return {"emit": True, "mode": "arm_present",
+                "scope": "strong",
                 "consulted_d18": False,
                 "statuses": [],
+                "scope_sentence": C.L3C_STRONG_SENTENCE,
                 "qualifier": None}
     required = l3c_requires_near_form()
     if required:
-        return {"emit": False, "mode": "precondition",
+        return {"emit": True, "mode": "precondition",
+                "scope": "same_form_only",
                 "consulted_d18": True,
-                "statuses": ["NEAR_FORM_ARM_NOT_AVAILABLE"],
+                "statuses": ["NEAR_FORM_ARM_NOT_AVAILABLE",
+                             "L3C_STRONG_CONCLUSION_WITHHELD"],
+                "scope_sentence": C.L3C_SAME_FORM_ONLY_SENTENCE,
                 "reason": (
                     "§34 D18 was closed at 'precondition': L3c is the source "
                     "memo's refutation verdict and v5's core reference pool "
                     "is same-form with A, so an L3c with no near-form "
                     "comparison cannot distinguish 'A is not special' from "
-                    "'the excess is a property of the exact-count form'. "
-                    "Delta_R and its interval are still reported"),
-                "qualifier": None}
+                    "'the excess is a property of the exact-count form'. The "
+                    "narrow conclusion is emitted, the strong one is not, and "
+                    "Delta_R is reported with its interval either way"),
+                "qualifier": C.L3C_WITHOUT_NEAR_FORM_SENTENCE}
     return {"emit": True, "mode": "not_a_precondition",
+            "scope": "strong",
             "consulted_d18": True,
             "statuses": ["NEAR_FORM_ARM_NOT_AVAILABLE"],
+            "scope_sentence": C.L3C_STRONG_SENTENCE,
             "qualifier": C.L3C_WITHOUT_NEAR_FORM_SENTENCE}
+
+
+def assert_l3c_scope(statement: Mapping[str, Any], *,
+                     near_form_available: bool, where: str) -> None:
+    """§34 D18's invariant: no strong L3c without the near-form arm.
+
+    Checked on the emitted statement rather than trusted from the emitter,
+    because the emitter is one call site and the freeze, the final report and
+    any future renderer are others. A study without the arm must be *unable*
+    to emit the strong conclusion, and this is where that is unable rather
+    than merely not done.
+    """
+    if statement.get("claim_level") != "L3c" or not statement.get("emitted"):
+        return
+    scope = statement.get("l3c_scope")
+    if scope not in C.L3C_SCOPES:
+        raise ClaimError(
+            f"{where}: an emitted L3c carries one of {C.L3C_SCOPES} and this "
+            f"one carries {scope!r}; §34 D18 makes the scope part of the "
+            "statement")
+    if scope == "strong" and not near_form_available and \
+            l3c_requires_near_form():
+        raise ClaimError(
+            f"{where}: a strong L3c --- the refutation verdict --- was "
+            "emitted with no near-form arm. §34 D18 is closed at "
+            "'precondition': the same-form pool licenses "
+            f"{C.L3C_SAME_FORM_ONLY_SENTENCE!r} and nothing stronger")
 
 
 def joint_reading(*, delta_r: Interval, delta_difficulty: Interval,
@@ -606,11 +652,13 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
     to companions that are *very* like A, and the reader must be told which
     limitation applies.
 
-    **An emitted L3c without the near-form arm carries a further fixed
-    sentence**, because L3c is the memo's refutation verdict and the pool is
-    chosen to resemble A. §34 D18 records whether the arm should instead be a
-    precondition; while D18 is open this emitter attaches the sentence and
-    does not decide the gate.
+    **An L3c carries a registered scope** (§34 D18, closed at
+    ``precondition``). With the near-form arm the scope is ``strong`` and the
+    statement is the memo's refutation verdict; without it the scope is
+    ``same_form_only`` and the statement is the narrower conclusion a
+    same-form pool licenses. ``assert_l3c_scope`` re-checks the invariant on
+    the built statement, so the strong conclusion is *unreachable* without the
+    arm rather than merely not produced here.
     """
     reading = joint_reading(delta_r=delta_r,
                             delta_difficulty=delta_difficulty, xi=xi,
@@ -635,7 +683,6 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
                             "axis is unresolved with both bounds")}]
 
     statements: list[dict[str, Any]] = []
-    withheld: list[dict[str, Any]] = []
     for level in reading["levels"]:
         if level in ("L3a", "L3b", "L3c") and not references_identified:
             continue
@@ -643,19 +690,6 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
             disposition = l3c_disposition(
                 near_form_available=near_form_available,
                 delta_near=delta_near)
-            if not disposition["emit"]:
-                withheld.append({
-                    **_base_fields(level="L3c", configuration=configuration,
-                                   cell=cell,
-                                   outcome_position=outcome_position,
-                                   measurement_basis=measurement_basis,
-                                   statuses=sorted(set(
-                                       statuses + disposition["statuses"]))),
-                    "emitted": False, "markers": reading["markers"],
-                    "tier_reading": reading.get("tier_reading"),
-                    "d18_mode": disposition["mode"],
-                    "reason": disposition["reason"]})
-                continue
         statement = {
             **_base_fields(level=level, configuration=configuration,
                            cell=cell, outcome_position=outcome_position,
@@ -669,6 +703,11 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
         }
         if level == "L3c":
             statement["d18_mode"] = disposition["mode"]
+            statement["l3c_scope"] = disposition["scope"]
+            statement["l3c_scope_sentence"] = disposition["scope_sentence"]
+            statement["identification_status"] = sorted(
+                set(statement["identification_status"])
+                | set(disposition["statuses"]))
             if disposition["qualifier"]:
                 statement["near_form_absent_sentence"] = \
                     disposition["qualifier"]
@@ -681,8 +720,11 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
         if gaps:
             statement["companion_difficulty_qualifier"] = gaps
         assert_statement_complete(statement)
+        if level == "L3c":
+            assert_l3c_scope(statement,
+                             near_form_available=near_form_available,
+                             where=f"emit_l3:{configuration}")
         statements.append(statement)
-    statements.extend(withheld)
     if not statements:
         statements.append({
             **_base_fields(level="L3", configuration=configuration, cell=cell,

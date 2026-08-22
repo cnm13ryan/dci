@@ -1,0 +1,373 @@
+{
+ "_classification": "DEVELOPMENT_EVIDENCE (\u00a730): a v4r4 measurement used to choose a v5 rule. Design fitting, not evidence that the rule generalises",
+ "_decision": "\u00a734 D17",
+ "_segmenter": "dci1v5.verifiers.statistics.alpha_runs, carried byte-identically from v3",
+ "_source": "{model}/GATE_2_REGIME/backend_runs/calibration",
+ "_what": "B's chance compliance, word-level bite and per-answer edit burden over the whole v5 focal grid, from v4r4's load-zero calibration answers",
+ "chance_compliance_across_models": {
+  "10": {
+   "max": 0.026,
+   "min": 0.0,
+   "spread": 0.026
+  },
+  "11": {
+   "max": 0.1094,
+   "min": 0.0547,
+   "spread": 0.0547
+  },
+  "12": {
+   "max": 0.3984,
+   "min": 0.2109,
+   "spread": 0.1875
+  },
+  "13": {
+   "max": 0.7318,
+   "min": 0.5859,
+   "spread": 0.1459
+  },
+  "14": {
+   "max": 0.8984,
+   "min": 0.8359,
+   "spread": 0.0625
+  },
+  "15": {
+   "max": 0.9714,
+   "min": 0.9557,
+   "spread": 0.0157
+  },
+  "16": {
+   "max": 0.9896,
+   "min": 0.9792,
+   "spread": 0.0104
+  },
+  "7": {
+   "max": 0.0,
+   "min": 0.0,
+   "spread": 0.0
+  },
+  "8": {
+   "max": 0.0,
+   "min": 0.0,
+   "spread": 0.0
+  },
+  "9": {
+   "max": 0.0078,
+   "min": 0.0,
+   "spread": 0.0078
+  }
+ },
+ "focal_band": [
+  0.6,
+  0.95
+ ],
+ "grid": [
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "models": {
+  "gemma-3n-e2b-it": {
+   "longest_word": {
+    "max": 17,
+    "median": 13.0,
+    "q90": 15
+   },
+   "median_words_per_answer": 107.0,
+   "n_answers": 384,
+   "per_m": {
+    "10": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.073,
+     "median_words_over_m": 8.0
+    },
+    "11": {
+     "chance_compliance": 0.0651,
+     "long_word_share": 0.0309,
+     "median_words_over_m": 3.0
+    },
+    "12": {
+     "chance_compliance": 0.2318,
+     "long_word_share": 0.0166,
+     "median_words_over_m": 1.0
+    },
+    "13": {
+     "chance_compliance": 0.6276,
+     "long_word_share": 0.0049,
+     "median_words_over_m": 0.0
+    },
+    "14": {
+     "chance_compliance": 0.8438,
+     "long_word_share": 0.002,
+     "median_words_over_m": 0.0
+    },
+    "15": {
+     "chance_compliance": 0.9714,
+     "long_word_share": 0.0003,
+     "median_words_over_m": 0.0
+    },
+    "16": {
+     "chance_compliance": 0.9896,
+     "long_word_share": 0.0001,
+     "median_words_over_m": 0.0
+    },
+    "7": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.2869,
+     "median_words_over_m": 31.0
+    },
+    "8": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.196,
+     "median_words_over_m": 21.0
+    },
+    "9": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.1284,
+     "median_words_over_m": 14.0
+    }
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "longest_word": {
+    "max": 18,
+    "median": 13.0,
+    "q90": 15
+   },
+   "median_words_per_answer": 107.0,
+   "n_answers": 384,
+   "per_m": {
+    "10": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.0744,
+     "median_words_over_m": 8.0
+    },
+    "11": {
+     "chance_compliance": 0.0547,
+     "long_word_share": 0.0329,
+     "median_words_over_m": 3.0
+    },
+    "12": {
+     "chance_compliance": 0.2109,
+     "long_word_share": 0.0172,
+     "median_words_over_m": 2.0
+    },
+    "13": {
+     "chance_compliance": 0.5859,
+     "long_word_share": 0.0056,
+     "median_words_over_m": 0.0
+    },
+    "14": {
+     "chance_compliance": 0.8359,
+     "long_word_share": 0.0019,
+     "median_words_over_m": 0.0
+    },
+    "15": {
+     "chance_compliance": 0.9557,
+     "long_word_share": 0.0005,
+     "median_words_over_m": 0.0
+    },
+    "16": {
+     "chance_compliance": 0.9792,
+     "long_word_share": 0.0002,
+     "median_words_over_m": 0.0
+    },
+    "7": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.2873,
+     "median_words_over_m": 31.0
+    },
+    "8": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.1952,
+     "median_words_over_m": 21.0
+    },
+    "9": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.129,
+     "median_words_over_m": 14.0
+    }
+   }
+  },
+  "qwen3-4b": {
+   "longest_word": {
+    "max": 18,
+    "median": 13.0,
+    "q90": 14
+   },
+   "median_words_per_answer": 83.0,
+   "n_answers": 384,
+   "per_m": {
+    "10": {
+     "chance_compliance": 0.026,
+     "long_word_share": 0.0659,
+     "median_words_over_m": 5.0
+    },
+    "11": {
+     "chance_compliance": 0.1094,
+     "long_word_share": 0.0312,
+     "median_words_over_m": 2.0
+    },
+    "12": {
+     "chance_compliance": 0.3984,
+     "long_word_share": 0.014,
+     "median_words_over_m": 1.0
+    },
+    "13": {
+     "chance_compliance": 0.7318,
+     "long_word_share": 0.0042,
+     "median_words_over_m": 0.0
+    },
+    "14": {
+     "chance_compliance": 0.8984,
+     "long_word_share": 0.0016,
+     "median_words_over_m": 0.0
+    },
+    "15": {
+     "chance_compliance": 0.9688,
+     "long_word_share": 0.0004,
+     "median_words_over_m": 0.0
+    },
+    "16": {
+     "chance_compliance": 0.9896,
+     "long_word_share": 0.0001,
+     "median_words_over_m": 0.0
+    },
+    "7": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.2642,
+     "median_words_over_m": 22.0
+    },
+    "8": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.1727,
+     "median_words_over_m": 14.0
+    },
+    "9": {
+     "chance_compliance": 0.0078,
+     "long_word_share": 0.1134,
+     "median_words_over_m": 9.5
+    }
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "longest_word": {
+    "max": 18,
+    "median": 13.0,
+    "q90": 15
+   },
+   "median_words_per_answer": 81.0,
+   "n_answers": 384,
+   "per_m": {
+    "10": {
+     "chance_compliance": 0.0052,
+     "long_word_share": 0.0743,
+     "median_words_over_m": 6.0
+    },
+    "11": {
+     "chance_compliance": 0.0859,
+     "long_word_share": 0.0359,
+     "median_words_over_m": 3.0
+    },
+    "12": {
+     "chance_compliance": 0.3047,
+     "long_word_share": 0.0173,
+     "median_words_over_m": 1.0
+    },
+    "13": {
+     "chance_compliance": 0.6797,
+     "long_word_share": 0.006,
+     "median_words_over_m": 0.0
+    },
+    "14": {
+     "chance_compliance": 0.8568,
+     "long_word_share": 0.0021,
+     "median_words_over_m": 0.0
+    },
+    "15": {
+     "chance_compliance": 0.9635,
+     "long_word_share": 0.0005,
+     "median_words_over_m": 0.0
+    },
+    "16": {
+     "chance_compliance": 0.9896,
+     "long_word_share": 0.0001,
+     "median_words_over_m": 0.0
+    },
+    "7": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.2983,
+     "median_words_over_m": 24.0
+    },
+    "8": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.1958,
+     "median_words_over_m": 16.0
+    },
+    "9": {
+     "chance_compliance": 0.0,
+     "long_word_share": 0.13,
+     "median_words_over_m": 10.5
+    }
+   }
+  }
+ },
+ "separations": [
+  {
+   "above": 8,
+   "below": 7,
+   "separation": 0.0
+  },
+  {
+   "above": 9,
+   "below": 8,
+   "separation": 0.0
+  },
+  {
+   "above": 10,
+   "below": 9,
+   "separation": -0.0078
+  },
+  {
+   "above": 11,
+   "below": 10,
+   "separation": 0.0287
+  },
+  {
+   "above": 12,
+   "below": 11,
+   "separation": 0.1015
+  },
+  {
+   "above": 13,
+   "below": 12,
+   "separation": 0.1875
+  },
+  {
+   "above": 14,
+   "below": 13,
+   "separation": 0.1041
+  },
+  {
+   "above": 15,
+   "below": 14,
+   "separation": 0.0573
+  },
+  {
+   "above": 16,
+   "below": 15,
+   "separation": 0.0078
+  }
+ ],
+ "widest_separation": {
+  "above": 13,
+  "below": 12,
+  "separation": 0.1875
+ }
+}

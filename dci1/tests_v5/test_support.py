@@ -5,7 +5,7 @@ import pytest
 
 from dci1v4.errors import ProtocolError
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import decisions
+from dci1v5.protocol import decisions, identification
 from dci1v5.stages import selection, support
 
 
@@ -93,13 +93,76 @@ def test_the_spectrum_can_drop_without_the_core_arm():
 
 def test_the_disposition_is_unresolved_while_d6_is_open(restore_decisions):
     out = _support(qualified_families=["MK1", "MK3", "MK6"])
-    assert out["disposition"] == decisions.UNRESOLVED
-    with pytest.raises(decisions.DecisionOpenError):
-        support.support_disposition(met=False)
-    restore_decisions.close("D6", "terminal", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
+    assert decisions.value_of("D6") == "identification_status"
+    assert out["disposition"] == "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+    assert out["terminal"] is False
+    assert support.support_disposition(met=True) == "SUPPORTED"
+
+    block = out["non_identification"]
+    assert block["irreversible"] is True
+    assert set(block["not_identified_members"]) == \
+        set(identification.AFFECTED_ESTIMANDS)
+    # The point of continuing: the primary quantity and the two arms that do
+    # not read the reference set are untouched.
+    for member in ("D(B<-A)", "D(A<-B)", "Lambda", "Delta_near",
+                   "Delta_broad"):
+        assert member not in block["not_identified_members"]
+    for member in ("Delta_R", "Delta_1", "Xi", "delta_difficulty",
+                   "D(R1<-B)", "Ord_Rbar", "gamma_tier"):
+        assert member in block["not_identified_members"]
+
+    restore_decisions.override_for_testing("D6", "terminal")
     assert support.support_disposition(met=False) == \
         "REFERENCE_SUPPORT_NOT_IDENTIFIED_TERMINAL"
+
+
+def test_the_non_identification_cannot_be_lifted_by_a_later_stage():
+    """§34 D6: irreversible for the replication, by name."""
+    out = _support(qualified_families=["MK1", "MK3", "MK6"])
+    block = out["non_identification"]
+    gate4 = {"headroom": {"Delta_R": {"estimate": 0.21, "lower": 0.1,
+                                      "upper": 0.3}}}
+    with pytest.raises(ProtocolError, match="Delta_R"):
+        identification.assert_not_rehabilitated(gate4, gate3c=block,
+                                                where="test")
+    # A later record that only touches identified members is fine.
+    identification.assert_not_rehabilitated(
+        {"headroom": {"D(B<-A)": {"estimate": 0.2, "lower": 0.1,
+                                  "upper": 0.3}}},
+        gate3c=block, where="test")
+    # And a record that declares itself reversible is refused outright.
+    with pytest.raises(ProtocolError, match="reversible"):
+        identification.assert_not_rehabilitated(
+            {}, gate3c={**block, "irreversible": False}, where="test")
+
+
+def test_a_31_shaped_result_row_is_caught_too():
+    """The final report's table is a list of rows, not a nested mapping.
+
+    `assert_not_rehabilitated` walks both shapes, because the freeze, the
+    analysis and the final report each offer a number in a different one and
+    a walker that knew only the first would pass the stage where the table
+    finally exists.
+    """
+    out = _support(qualified_families=["MK1", "MK3", "MK6"])
+    block = out["non_identification"]
+    table = {"results": [
+        {"member": "D(B<-A)", "estimate": 0.21, "simultaneous_lower": 0.1},
+        {"member": "Delta_R", "estimate": 0.02, "simultaneous_lower": -0.01}]}
+    with pytest.raises(ProtocolError, match="Delta_R"):
+        identification.assert_not_rehabilitated(table, gate3c=block,
+                                                where="test")
+    identification.assert_not_rehabilitated(
+        {"results": [table["results"][0]]}, gate3c=block, where="test")
+
+
+def test_every_registered_estimand_is_classified_once():
+    """The rule partitions §15's members; nothing falls between."""
+    registered = {m for members in C.FAMILY_MEMBERS.values() for m in members}
+    assert set(identification.AFFECTED_ESTIMANDS) | \
+        set(identification.UNAFFECTED_ESTIMANDS) == registered
+    assert not set(identification.AFFECTED_ESTIMANDS) & \
+        set(identification.UNAFFECTED_ESTIMANDS)
 
 
 def test_no_backup_substitution_function_exists():

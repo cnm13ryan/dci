@@ -150,20 +150,32 @@ def synthetic_repo(root: Path, *, source: Path | str | None = None
 SCREEN_FAMILIES = ("MK1", "MK2", "MK3", "MK4", "MK5", "XC1", "XC2",
                    "XC3", "RF1")
 
-#: The §34 closures this harness makes, all of them test-only.
+#: The §34 closures this harness makes, all of them test-only. **D6, D16 and
+#: D18 are not here**: the researcher has taken them and they are in force
+#: from ``reports/dci1v5/researcher_decisions.json``, so the synthetic walk
+#: runs the adopted protocol for those three rather than a harness value that
+#: happened to agree --- or, worse, one that did not.
+RESEARCHER_CLOSED = ("D6", "D16", "D18")
 TEST_CLOSURES: dict[str, Any] = {
     "D0": "adopt", "D1": "four_models_56_cells", "D2": "no_load_three",
     "D3": "author_before_adoption", "D4": "approve_eight",
-    "D5": "lexicographic", "D6": "identification_status", "D7": 0.90,
+    "D5": "lexicographic", "D7": 0.90,
     "D8": 0.75, "D9": "unavailable", "D10": "one_companion", "D11": "carry",
     "D12": "direction_and_sesoi_only", "D13": "primary_tier",
-    "D14": "iota_primary", "D15": "both_transfer", "D16": "a_survivors",
-    "D17": "no_floor", "D18": "not_a_precondition",
+    "D14": "iota_primary", "D15": "both_transfer",
+    "D17": "no_floor",
 }
+assert not set(TEST_CLOSURES) & set(RESEARCHER_CLOSED)
 
 
 def resolved_manifest() -> None:
     """Close every §34 decision and resolve U2, for this process only."""
+    still_open = [d for d in RESEARCHER_CLOSED if not decisions.is_closed(d)]
+    if still_open:
+        raise AssertionError(
+            f"{still_open} are researcher closures and the record does not "
+            "carry them; the harness will not supply a value for a decision "
+            "somebody was supposed to take")
     for decision_id, value in TEST_CLOSURES.items():
         if not decisions.is_closed(decision_id):
             decisions.close(

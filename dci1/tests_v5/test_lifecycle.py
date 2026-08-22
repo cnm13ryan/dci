@@ -13,6 +13,10 @@ from dci1v5.stages.audit_prefreeze import (
 )
 
 
+#: The §34 decisions the researcher has taken, from the committed record.
+CLOSED = {"D3", "D6", "D16", "D18"}
+
+
 def test_the_stage_sequence_is_the_registered_eighteen():
     assert len(C.STAGE_SEQUENCE) == 18
     assert C.STAGE_SEQUENCE[0] == C.STAGE_REGISTERED
@@ -45,21 +49,32 @@ def test_gate_2_5_needs_no_generation():
     assert C.STAGE_GATE2 in C.GENERATION_STAGES
 
 
-def test_protocol_registered_depends_on_every_open_decision():
+def test_protocol_registered_depends_on_every_decision_still_open():
+    """Stage 1 needs all nineteen; three are closed and sixteen are not."""
     blocking = decisions.decisions_blocking_stage(C.STAGE_REGISTERED)
-    assert set(blocking) == set(decisions.DECISION_IDS)
+    assert set(blocking) == set(decisions.DECISION_IDS) - CLOSED
+    assert set(decisions.closed_decisions()) == CLOSED
     with pytest.raises(decisions.DecisionOpenError):
         transitions.assert_decisions_permit(C.STAGE_REGISTERED)
 
 
 def test_no_v5_stage_can_run_today():
-    """The whole lifecycle is closed at stage 1 while §34 is open."""
+    """The whole lifecycle is closed at stage 1 while §34 is open.
+
+    Four stages no longer refuse *for their own reason*: D3 was the
+    qualification's only blocking decision, D16 was Gate 3A's, D6 was Gate
+    3C's and D18 was the unmasked analysis's, and all four are closed. None
+    of them can run, because stage 1 cannot --- but that is a different
+    refusal, from a different guard, with a different fix.
+    """
     with pytest.raises(decisions.DecisionOpenError):
         transitions.assert_decisions_permit(C.STAGE_REGISTERED)
-    for stage in (C.STAGE_QUALIFIED, C.STAGE_REGIME, C.STAGE_GATE2,
-                  C.STAGE_GATE3A, C.STAGE_GATE3C, C.STAGE_UNMASKED_ANALYSIS):
+    for stage in (C.STAGE_REGIME, C.STAGE_GATE2):
         with pytest.raises(decisions.DecisionOpenError):
             transitions.assert_decisions_permit(stage)
+    for stage in (C.STAGE_QUALIFIED, C.STAGE_GATE3A, C.STAGE_GATE3C,
+                  C.STAGE_UNMASKED_ANALYSIS):
+        transitions.assert_decisions_permit(stage)
 
 
 def test_a_stage_with_no_blocking_decision_is_permitted():
@@ -78,7 +93,29 @@ def test_closing_a_decision_unblocks_only_its_own_stages(restore_decisions):
 def test_the_decision_registry_is_the_registered_nineteen():
     assert len(decisions.DECISIONS) == 19
     assert decisions.DECISION_IDS == tuple(f"D{i}" for i in range(19))
-    assert len(decisions.open_decisions()) == 19
+    assert len(decisions.open_decisions()) == 19 - len(CLOSED)
+    assert set(decisions.closed_decisions()) == CLOSED
+
+
+def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
+    """§34 binds the decision AND its evidence, durably."""
+    recorded = {e["id"]: e for e in decisions.recorded_closures()}
+    assert set(recorded) == CLOSED
+    for entry in recorded.values():
+        assert entry["evidence"] and entry["decided_by"] and \
+            entry["decided_on"]
+    assert decisions.record_hash()
+    payload = decisions.registration_payload()
+    assert payload["record"]["hash"] == decisions.record_hash()
+    assert payload["record"]["path"] == decisions.RECORD_RELPATH
+    assert set(payload["non_adopted_alternatives"]) == CLOSED
+
+
+def test_the_record_and_a_closure_in_force_may_not_disagree(restore_decisions):
+    """A change to a closed decision is a §32 amendment, not a file edit."""
+    restore_decisions.override_for_testing("D18", "not_a_precondition")
+    with pytest.raises(ProtocolError, match="amendment"):
+        decisions.apply_recorded_closures()
 
 
 def test_a_decision_cannot_be_closed_without_its_evidence(restore_decisions):
@@ -97,7 +134,7 @@ def test_a_decision_cannot_be_closed_without_its_evidence(restore_decisions):
 
 def test_a_choice_must_supply_a_branch_for_every_admissible_value():
     with pytest.raises(ProtocolError):
-        decisions.choice("D6", {"identification_status": 1}, where="test")
+        decisions.choice("D7", {0.90: 1}, where="test")
 
 
 def test_the_prefreeze_audit_runs_fifteen_checks_and_blocks_the_freeze():
@@ -106,7 +143,7 @@ def test_the_prefreeze_audit_runs_fifteen_checks_and_blocks_the_freeze():
     assert audit["n_checks"] == 15
     assert audit["can_freeze"] is False
     assert audit["outcome"] == "PREFREEZE_AUDIT_FAILURE"
-    assert audit["n_open_decisions"] == 19
+    assert audit["n_open_decisions"] == 19 - len(CLOSED)
 
 
 def test_the_audit_surfaces_every_unresolved_redteam_finding():
@@ -123,11 +160,15 @@ def test_the_audit_surfaces_every_unresolved_redteam_finding():
     audit = run_prefreeze_audit(repo_root="..")
     assert set(UNRESOLVED_REDTEAM_FINDINGS) == {"R1", "R5", "R11", "R14",
                                                 "R16"}
-    assert set(audit["unresolved_redteam_findings"]) == {"R1", "R11", "R14",
-                                                         "R16"}
+    # R1, R11 and R16 were carried by D18, D16 and D6, and the researcher has
+    # taken all three: they stop blocking the freeze the moment the decision
+    # they name is closed, which is what "the mitigation IS the decision"
+    # means executably. R14 (D17) is the one still open.
+    assert set(audit["unresolved_redteam_findings"]) == {"R14"}
     assert set(audit["permanent_limitations"]) == {"R5"}
     assert audit["permanent_limitations"]["R5"]["closeable_by_rule"] is False
-    assert audit["unresolved_redteam_findings"]["R1"]["decision"] == "D18"
+    assert UNRESOLVED_REDTEAM_FINDINGS["R1"]["decision"] == "D18"
+    assert audit["unresolved_redteam_findings"]["R14"]["decision"] == "D17"
 
 
 def test_only_the_final_report_check_is_deferred():

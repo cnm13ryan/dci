@@ -21,7 +21,7 @@ not be described as registered until they are.**
 
 ## A. Identification and inference
 
-### R1 — the same-form control may make L3c near-automatic, and L3c is a memo verdict — **UNRESOLVED**
+### R1 — the same-form control may make L3c near-automatic, and L3c is a memo verdict — **RESOLVED BY DECISION (D18), one dependency remains**
 
 This is the sharpest objection to v5 and it is the mirror image of its central
 repair.
@@ -54,14 +54,23 @@ and §13.9's near-form arm with §17.6's `LOCAL_TIER_DISAGREE` table exists
 precisely so that a $\Delta_R \approx 0$ / $\Delta_{\text{near}} > 0.10$ pattern
 is **not** emitted as L3c but as a registered disagreement.
 
-**Why it is still unresolved.** The near-form arm is nine cells and §34 D1
-lists dropping it as a compute option. **If D1 drops the near-form arm, R1
-becomes an unmitigated bias toward L3c**, and the document should not permit
-that combination silently. §17.6 now requires an L3c emitted without the arm to
-carry a fixed sentence saying the absence was tested only against companions
-sharing $A$'s form, and **§34 D18** records whether the arm should instead be a
-precondition of emitting L3c at all. The finding stays **unresolved** because
-D18 is open and because a fixed sentence is a weaker remedy than a gate.
+**Resolved by decision, 2026-08-22.** §34 D18 was taken at `precondition`, and
+in its strong form: the strong L3c conclusion — *no pair-specific excess*, the
+memo's refutation verdict — **requires** the near-form arm. Without it the
+statement's registered scope is `same_form_only` and it licenses the narrower
+conclusion alone, *no excess relative to same-form exact-count companions*. The
+strong conclusion is unreachable, not qualified: `claims.assert_l3c_scope`
+checks the invariant on the built statement, so a renderer that never consulted
+the emitter cannot produce it either.
+
+That is the gate this finding asked for, in place of the fixed sentence it
+called a weaker remedy. **One dependency remains and it is a compute
+decision, not a mitigation gap:** §34 D1 still lists a 47-cell option that
+drops the near-form arm. Under D18's closure that option cannot emit the
+refutation verdict on any model — so R1 can no longer become an unmitigated
+bias toward L3c; it can only become a study that declines to make the claim.
+`d1_arm_compute_decision.md` costs the option at a 10.4% saving and recommends
+against it.
 
 ### R2 — the memo's 0.25 threshold is applied to a redefined quantity — registered, arguably inconsistent
 
@@ -224,7 +233,7 @@ with implementation detail is not evidence.
 four models cannot fix weights that generalise to an unseen candidate family —
 is the right one.
 
-### R11 — both calibration splits are development data, and Calibration-A is not naive — **UNRESOLVED**
+### R11 — both calibration splits are development data, and Calibration-A is not naive — **MITIGATED BY DECISION (D16); one half is an accepted limitation**
 
 §6.2 states it: 29 rungs per model of v4r4's library were measured on
 Calibration-A's topics and the researcher has seen those measurements. §12.7
@@ -238,12 +247,20 @@ under §12.7 they are not. The rule remains valuable — a candidate admissible 
 both splits at 96 topics each is better evidenced than one admissible once at
 96 — but "independent" overstates it.
 
-**Registered as §34 D16.** The standing proposal restricts Calibration-B, and
-§12.7 states the asymmetry in terms — *A screens and B confirms* — rather than
-presenting the two as interchangeable. Measuring both in full costs about
-35,000 further generations per replication and is purely a compute question.
-The finding stays **unresolved** because D16 is open, not because the document
-is silent.
+**§34 D16 was taken on 2026-08-22, at `complete_population`, against the
+standing proposal.** Both splits now measure the whole carried set, so the
+second asymmetry this finding names — *A screens and B confirms* — is gone:
+§13.7 tests the stability of the candidate landscape rather than re-confirming
+a set already selected once, and "independent" no longer overstates what the
+second estimate buys. The extra generation, about 35,000 per replication, is
+accepted; §12.7 carries the figure.
+
+**The first half is an accepted limitation and no decision closes it.**
+Calibration-A is not naive: 29 rungs per model of v4r4's library were measured
+on its topics and the researcher has seen those measurements. §6.2 declares it,
+§30's ledger records per family whether a prior measurement exists, and nothing
+about D16 changes it. A study that needed a naive Calibration-A would have to
+spend §6.2's sequestered eighth, which is reserved for an uncontaminated rerun.
 
 ---
 
@@ -267,7 +284,7 @@ derivation is post-hoc rationalisation has the sensitivity sweep in
 `d4_interaction_projection.json` to argue from: 0.85 costs two false alarms,
 0.95 misses two failures.
 
-### R14 — the focal grid extension trades construct strength for band membership — **UNRESOLVED**
+### R14 — the focal grid extension trades construct strength for band membership — **STILL OPEN (D17 taken in principle; the threshold is not)**
 
 v5 extends $B$'s grid to $m \in \{7,\dots,14\}$ with an extension to
 $\{15,16\}$, and §12.3 selects the rung whose solo compliance is nearest 0.80.
@@ -281,10 +298,26 @@ is close to a null instruction in ordinary English, and the focal band is
 defined on compliance rather than on construct strength. v4r4 already had this
 at $m = 12$ and v5 makes it more likely by extending further.
 
-**Registered as §34 D17.** The standing proposal registers no construct floor
-and instead reports the realised $m^*$, $B$'s chance compliance at $m^*$ and
-$B$'s whole curve, with §29 stating that a high $m^*$ makes $B$ a weak
-instrument on that model. The finding stays **unresolved** because D17 is open.
+**§34 D17 was taken *in principle* on 2026-08-22: v5 shall have a substantive
+construct floor for B. The quantity and the threshold are not chosen, and the
+finding stays open until they are.**
+
+The measurement this finding needed now exists —
+`development/d7_b_construct_strength.json`, B's chance-compliance curve over
+the whole grid, recomputed from v4r4's load-zero calibration answers — and it
+is sharper than the objection. $\kappa^{B}(m)$ is 0.000 on all four models at
+every $m \le 10$, which is why v4r4 recorded the quantity as useless; across
+v5's extension it runs 0.21–0.40 at $m = 12$ and **0.59–0.73 at $m = 13$**. At
+$m \ge 13$ the median natural answer already complies without changing a
+single word. So the finding is not a worry about what *might* happen at high
+$m^{*}$: it is a measurement of what does.
+
+`d17_b_strength_decision.md` compares five candidate rules, eliminates three on
+this evidence, and recommends $\kappa^{B}(m^{*}) \le 0.50$ — which admits
+every operating point v4r4 actually used (10, 10, 12, 10) and refuses the region
+the grid extension opened up. Nothing is installed: the implementation still
+carries no threshold, and `assert_construct_floor` refuses a `floor` closure
+that arrives without one.
 
 ### R15 — the realistic-witness rule is narrow, and its original justification was wrong — resolved, with a correction
 
@@ -296,7 +329,7 @@ contradict that**: on `gemma-3n-e4b-it` its composed compliance was 0.609 and
 at most 120 words. §7.7 now says this and says the rule is not the main
 defence. The error is recorded here rather than quietly removed.
 
-### R16 — `REFERENCE_SUPPORT_NOT_IDENTIFIED` is an identification status, not terminal — **UNRESOLVED**
+### R16 — `REFERENCE_SUPPORT_NOT_IDENTIFIED` is an identification status, not terminal — **ACCEPTED LIMITATION, by decision (D6)**
 
 §13.15 makes it non-terminal so that a replication does not discard identified
 estimands — $D$, $\Lambda$, the order contrasts, $\Delta_{\text{near}}$,
@@ -311,13 +344,24 @@ is the counterfactual, that spends its budget on replications which cannot
 identify it, has a resource-allocation problem that a status field does not
 fix.
 
-**Registered as §34 D6, and half the obvious remedy is deliberately not
-taken.** If the status stays non-terminal, an execution-order rule
-de-prioritising a replication that carries it would send compute to
-replications that can answer the question. The document does **not** register
-one, because that ordering would depend on a per-model gate outcome and §6.1's
-firewall says a scientific outcome from one replication never changes what
-another does. The tension is real and is recorded rather than resolved.
+**§34 D6 was taken at `identification_status` on 2026-08-22, and the
+resource-allocation cost this finding names is accepted rather than answered.**
+A replication that cannot build its reference set keeps its confirmatory budget
+and keeps every estimand that does not need one. What the closure adds is that
+the failure is **irreversible**: the reference-dependent estimand set is derived
+by one rule, written onto the Gate-3C record, carried into the freeze, and four
+rehabilitation paths are refused by name — a later gate passing, a frozen
+backup being substituted in, the broad-class control standing in, and an
+observed composed outcome being read as evidence the pool was adequate after
+all. That last is the observe-then-choose loop §30 forbids, and before this
+closure nothing in the code stopped it.
+
+**Half the obvious remedy is still deliberately not taken.** An execution-order
+rule de-prioritising a replication carrying the status would send compute to
+replications that can answer the question, and the document does **not**
+register one, because that ordering would depend on a per-model gate outcome
+and §6.1's firewall says a scientific outcome from one replication never
+changes what another does. That half of the tension is accepted, permanently.
 
 ---
 
@@ -405,22 +449,22 @@ Gate 3A.**
 
 | | Finding | Verdict |
 |---|---|---|
-| R1 | the same-form pool may make L3c near-automatic | **unresolved** |
+| R1 | the same-form pool may make L3c near-automatic | **resolved by decision** (D18: the strong L3c requires the near-form arm) |
 | R2 | the memo's 0.25 applied to a redefined $\Delta_R$ | registered |
 | R3 | an eight-rung marker ladder is marginal against C4's span | resolved; reserve widened to 1…12 |
 | R4 | $\text{Ord}_\Lambda$'s linear dependence | registered |
-| R5 | $\kappa^{B}$ is measured under $B$; no realised-drift qualifier | **unresolved** |
+| R5 | $\kappa^{B}$ is measured under $B$; no realised-drift qualifier | **accepted permanent limitation**; no decision closes it |
 | R6 | the projection's transfer assumption is untested at the floor | registered |
 | R7 | no composed outcome selects a control | resolved |
 | R8 | the frozen backups cannot be substituted | resolved |
 | R9 | the lexicographic order decides the reason, not the verdict | resolved |
 | R10 | no weighted score | resolved |
-| R11 | Calibration-A screens and Calibration-B confirms | **unresolved** |
+| R11 | Calibration-A screens and Calibration-B confirms | **mitigated by decision** (D16: complete population); Calibration-A's non-naivety is an accepted limitation |
 | R12 | every threshold is a literal | resolved |
 | R13 | the 0.90 ceiling sits in an observed gap | registered |
-| R14 | the focal extension trades construct strength for band membership | **unresolved** |
+| R14 | the focal extension trades construct strength for band membership | **still open**; D17 taken in principle, the threshold is not |
 | R15 | the realistic-witness rule's original justification was wrong | resolved |
-| R16 | `REFERENCE_SUPPORT_NOT_IDENTIFIED` is not terminal | **unresolved** |
+| R16 | `REFERENCE_SUPPORT_NOT_IDENTIFIED` is not terminal | **accepted limitation by decision** (D6: non-terminal and irreversible) |
 | R17 | the presence rule is now enforced and load-bearing | resolved |
 | R18 | v4r4's stale constant comments | resolved for v5 |
 | R19 | the v4r4 follow-up report's two caliper values | recorded |

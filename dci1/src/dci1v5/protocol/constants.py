@@ -41,7 +41,7 @@ SUBJECT_AREAS = (
 )
 N_AREAS = len(SUBJECT_AREAS)
 #: §6.2: the v4 bank of 624 plus 96 newly authored questions, 8 per area.
-#: The 96 are §34 D3 and do not exist yet.
+#: The 96 are §34 D3, taken 2026-08-22; see topics/calibration_b.py.
 TOPICS_PER_AREA = 60
 PRESCREEN_PER_AREA = 2
 CALIBRATION_A_PER_AREA = 8
@@ -424,10 +424,24 @@ CLASS_SENTENCE = (
     "the broad-class control is budget class where A is production, so this "
     "comparison bounds how much the companion's structural class could "
     "matter and does not estimate a class effect")
+#: §34 D18, closed at ``precondition``: L3c is emitted in one of two
+#: registered scopes and the scope is part of the statement, not a footnote
+#: on it. ``strong`` is the source memo's refutation verdict --- *no
+#: pair-specific excess* --- and it requires the near-form arm. ``same_form_
+#: only`` is what a same-form Tier-1 pool alone licenses.
+L3C_SCOPES = ("strong", "same_form_only")
+L3C_STRONG_SENTENCE = (
+    "the excess is below the pair-specific threshold against companions that "
+    "share A's predicate form AND against companions that share only its "
+    "operator, so the absence is not a property of the exact-count form")
+L3C_SAME_FORM_ONLY_SENTENCE = (
+    "no excess relative to same-form exact-count companions; this is not the "
+    "refutation verdict, which requires the near-form arm (§34 D18)")
 #: §17.6: an L3c emitted without the near-form arm carries this verbatim,
 #: because L3c is the source memo's refutation verdict and v5's core pool is
-#: chosen to resemble A. §34 D18 records whether the arm should instead be a
-#: precondition of emitting L3c at all.
+#: chosen to resemble A. It is the qualifier of the ``same_form_only`` scope,
+#: and under D18's non-adopted branch it was the *only* thing distinguishing
+#: an L3c with the arm from one without.
 L3C_WITHOUT_NEAR_FORM_SENTENCE = (
     "the local excess is below the generic-load threshold against companions "
     "that share A's predicate form, and no companion of a different form was "
@@ -514,6 +528,7 @@ IDENTIFICATION_STATUSES = (
     "NEAR_FORM_ARM_NOT_AVAILABLE", "CLASS_ARM_NOT_AVAILABLE",
     "CLASS_ARM_NOT_MATCHED", "OPERATING_POINT_AT_GRID_BOUNDARY",
     "POSITION_CONFOUNDED", "HUMAN_VALIDATION_UNAVAILABLE",
+    "L3C_STRONG_CONCLUSION_WITHHELD",
 )
 #: New in v5, named so a reader can see what the revision added.
 NEW_IDENTIFICATION_STATUSES = (
@@ -521,6 +536,10 @@ NEW_IDENTIFICATION_STATUSES = (
     "INTERACTION_ESTIMATE_DRIFTED", "REFERENCE_ROLE_NOT_MATCHED",
     "REFERENCE_POOL_SAME_FORM", "NEAR_FORM_ARM_NOT_AVAILABLE",
     "OPERATING_POINT_AT_GRID_BOUNDARY",
+    #: §34 D18's closure: a replication with no near-form arm records that
+    #: the strong L3c conclusion was not available to it, so the absence is
+    #: on the record rather than inferable from a missing statement.
+    "L3C_STRONG_CONCLUSION_WITHHELD",
 )
 assert set(NEW_IDENTIFICATION_STATUSES) <= set(IDENTIFICATION_STATUSES)
 RESULT_MARKERS = ("INSUFFICIENT_PRECISION", "INDETERMINATE")

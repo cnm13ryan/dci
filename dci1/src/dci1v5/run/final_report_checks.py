@@ -48,6 +48,9 @@ FINAL_REPORT_CHECKS: tuple[tuple[str, str, bool], ...] = (
      "every §33 item the pre-freeze audit deferred has a verdict here", True),
     ("estimates_trace_to_unmasked_analysis",
      "every reported estimate equals the unmasked record's own value", True),
+    ("no_irreversibly_unidentified_member_is_estimated",
+     "§34 D6: no reported row carries an estimate for a member Gate 3C "
+     "marked NOT_IDENTIFIED for want of reference support", True),
     ("identification_statuses_trace_to_the_freeze",
      "the reported statuses are the ones Gate 3C wrote and Gate 5 bound",
      True),
@@ -204,6 +207,24 @@ def final_report_checks(tree: ModelTree, report: Mapping[str, Any], *,
 
     freeze_record = load_freeze(tree)
     gate3c = transitions.read_stage_record(tree, C.STAGE_GATE3C)
+
+    # ------------------------------------------------------- §34 D6
+    # The last stage that could lift a Gate-3C non-identification, and the
+    # first at which the *table* exists to lift it in. `assert_not_
+    # rehabilitated` raises; here the verdict is recorded instead, because
+    # FINAL_REPORT has no successor to refuse and the failure has to land on
+    # the record itself.
+    frozen = freeze_record.get("non_identification") or \
+        gate3c.get("non_identification")
+    forbidden = set((frozen or {}).get("not_identified_members", ()))
+    offered = sorted({row["member"] for row in rows
+                      if row["member"] in forbidden
+                      and row.get("estimate") is not None})
+    add("no_irreversibly_unidentified_member_is_estimated", not offered,
+        {"frozen_members": len(forbidden), "offered": offered,
+         "decision": "D6",
+         "note": "null when §13.15 was met; the check is then vacuously "
+                 "satisfied and says so rather than being skipped"})
     reported = sorted(set(report.get("identification_statuses", ())))
     add("identification_statuses_trace_to_the_freeze",
         reported == sorted(set(freeze_record["identification_statuses"]))

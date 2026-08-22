@@ -17,18 +17,27 @@ list of researcher actions between here and a v5 that may measure anything.
 
 ```
 $ python3 -c "from dci1v5.stages.audit_prefreeze import run_prefreeze_audit
-              a = run_prefreeze_audit(repo_root='..')
+              from dci1v5.protocol.reuse_ledger import collect_artifact_texts
+              a = run_prefreeze_audit(repo_root='..',
+                                      artifact_texts=collect_artifact_texts('..'))
               print(a['outcome'], a['n_passed'], '/', a['n_checks'])"
 PREFREEZE_AUDIT_FAILURE 13 / 15
 ```
+
+`artifact_texts` is not optional decoration: with none supplied, check 15
+scans nothing and returns `UNRESOLVED`, and the audit reports 12 of 15. The
+stage runner (`run/prefreeze_run.py`) supplies them from
+`reuse_ledger.collect_artifact_texts`, which refuses a missing named file ---
+a text check that silently scans nothing is not a check.
 
 Thirteen of §33's fifteen checks pass statically. Two return `UNRESOLVED`
 because they need a run that has not happened: check 8 needs a Gate-4 record
 and check 14 a final-report table. **An `UNRESOLVED` check is not a pass** —
 "we did not establish this" and "this is false" are different facts and
-neither licenses a freeze. Beside them the audit reports nineteen open
-decisions and four red-team findings whose registered mitigation is still an
-open decision, and `can_freeze` is `False`.
+neither licenses a freeze. Beside them the audit reports **fifteen** open
+decisions --- four have been taken --- and **one** red-team finding whose
+registered mitigation is still an open decision (R14, on D17), and
+`can_freeze` is `False`.
 
 Gate 5 is unreachable and needs no special rule: §18 makes `PREFREEZE_AUDIT`
 its registered predecessor, and `assert_predecessor_passed` refuses a
@@ -37,7 +46,9 @@ successor whose predecessor did not record `PASS`.
 **Only check 14 is deferred.** It reads the final-report table and no table
 exists at stage 12, so it is recorded `DEFERRED_TO_FINAL_REPORT` and is
 mandatory at stage 18, where `run/final_report_checks.py` discharges it beside
-twelve traceability checks that only become checkable once the table exists.
+thirteen traceability checks that only become checkable once the table exists
+--- one of which is §34 D6's: no reported row may carry an estimate for a
+member Gate 3C marked `NOT_IDENTIFIED`.
 Check 15 is **not** deferred: it scans the v5 artifact texts, which exist from
 stage 1, and `reuse_ledger.collect_artifact_texts` supplies them.
 
@@ -98,7 +109,7 @@ matching procedure will work prospectively on a real model.
 | `verifiers/realistic_witness.py` | §7.7 | the stem-band obligation, with padding and trimming that preserve sentence structure |
 | `analysis/intervals.py` | §13.4, §13.7, §13.8 | Wilson, Newcombe, the percentile bootstrap over topics within split |
 | `engine/guards.py` | §14.2 | positive admission, in both directions |
-| `topics/__init__.py` | §6.2 | the bank's shape, the authoring rules, and the 96 questions that do not exist |
+| `topics/__init__.py`, `topics/calibration_b.py` | §6.2 | the bank's shape, the authoring rules, and the 96 authored Calibration-B questions with their provenance |
 
 ### Adapted from v4r4
 
@@ -177,17 +188,23 @@ open, so every runner refuses at stage 1.
 
 ---
 
-## 4. The nineteen open decisions, and what each blocks
+## 4. The nineteen decisions: four taken, fifteen open
+
+**Four are closed**, durably, in
+[`researcher_decisions.json`](researcher_decisions.json) — read at import by
+`protocol/decisions.py` and bound into the manifest by hash. A closed
+decision's blocked stages and calls are unblocked; every other row still
+refuses.
 
 | # | Decision | Blocks stage | Blocks call | Red team |
 |---|---|---|---|---|
 | **D0** | whether to adopt v5 at all | `PROTOCOL_REGISTERED` | — | — |
 | **D1** | the confirmatory compute budget | `PROTOCOL_REGISTERED` | `design.cells.admitted_arms_from_decision` | R1 |
 | **D2** | whether a load-three arm is added | `PROTOCOL_REGISTERED` | — | — |
-| **D3** | whether the 96 Calibration-B questions are authored before adoption | `PROTOCOL_REGISTERED`, `QUALIFIED` | `topics.calibration_b_bank` | — |
+| **D3** | **TAKEN**: author before adoption | — (closed) | — (closed) | — |
 | **D4** | the Tier-1 marker vocabulary | `PROTOCOL_REGISTERED`, `REGIME_SCREEN` | `constraints.assert_marker_vocabulary_approved` | — |
 | **D5** | weighted composite score vs the lexicographic conjunction | `PROTOCOL_REGISTERED` | — | — |
-| **D6** | is `REFERENCE_SUPPORT_NOT_IDENTIFIED` terminal? | `PROTOCOL_REGISTERED`, `GATE_3C_IDENTIFICATION` | `support.support_disposition` | **R16** |
+| **D6** | **TAKEN**: identification status, irreversible | — (closed) | — (closed) | **R16** |
 | **D7** | the interaction ceiling of 0.90 | `PROTOCOL_REGISTERED` | — | R13 |
 | **D8** | the chance ceiling of 0.75 | `PROTOCOL_REGISTERED` | — | — |
 | **D9** | whether an independent annotator will be available | `PROTOCOL_REGISTERED` | — | — |
@@ -197,9 +214,9 @@ open, so every runner refuses at stage 1.
 | **D13** | whether F11 is primary-tier | `PROTOCOL_REGISTERED` | — | — |
 | **D14** | whether ι remains the difficulty coordinate | `PROTOCOL_REGISTERED` | — | — |
 | **D15** | whether the memo's 0.10 and 0.25 apply to a same-form Δ_R | `PROTOCOL_REGISTERED` | — | R2 |
-| **D16** | which population Calibration-B measures | `PROTOCOL_REGISTERED`, `GATE_3A_REFERENCE_CALIBRATION` | `stability.calibration_b_population` | **R11** |
+| **D16** | **TAKEN**: complete population | — (closed) | — (closed) | **R11** |
 | **D17** | whether a construct floor is registered for m* | `PROTOCOL_REGISTERED`, `GATE_2_FOCAL_CALIBRATION` | `regime.assert_construct_floor` | **R14** |
-| **D18** | whether the near-form arm is a precondition of L3c | `PROTOCOL_REGISTERED`, `UNMASKED_ANALYSIS` | `claims.l3c_requires_near_form` | **R1** |
+| **D18** | **TAKEN**: precondition of the strong L3c | — (closed) | — (closed) | **R1** |
 
 `decisions.close(id, value, evidence=..., decided_by=..., decided_on=...)`
 requires all four arguments, refuses a value the decision does not offer, and
@@ -208,39 +225,69 @@ is write-once: a closure without evidence is a default with a signature on it.
 **D17's `floor` branch refuses even when closed**, because a construct floor
 is a registered value with a derivation and this implementation does not
 invent one — the closure must supply the threshold and the quantity it applies
-to.
+to. D17 has been taken *in principle* (a floor shall exist) and the quantity
+and value are open; [`d17_b_strength_decision.md`](d17_b_strength_decision.md)
+recommends one and installs nothing.
+
+**A closure is durable and it is not a module literal.**
+`decisions.RECORD_PATH` is a committed file carrying every closure with its
+evidence, who took it and when; the registry applies it at import, refuses a
+record that disagrees with a closure already in force (that is a §32
+amendment), and `reopen_all_for_testing` restores *that* state rather than a
+blank one. `override_for_testing` exists so the branch the researcher did not
+adopt stays executed by a test rather than merely present in the source; it
+writes nothing to the record and cannot reach a run.
+
+**Four decision packets await approval and none is adopted anywhere in the
+code**: [D1](d1_arm_compute_decision.md), [D4](d4_marker_audit.md),
+[D17](d17_b_strength_decision.md), [U2](u2_tier_model_decision.md).
+[`v5_adoption_checklist.md`](v5_adoption_checklist.md) states every remaining
+item as one question.
 
 ---
 
 ## 5. The minimum ordered list before v5 may measure anything
 
-The `run/` layer, which was item 1 of this list, exists and has been exercised
-end to end (§1). Everything remaining is a researcher decision or missing
-study content — none of it is unfinished implementation.
+Items 1 and 4 of the earlier version of this list are done. **Everything
+remaining is a researcher approval** — none of it is unfinished implementation
+and none of it is missing analysis.
 
-1. **Author the 96 Calibration-B questions** (D3). §13.7 — v5's whole answer
-   to the winner's curse §12.2 measures — does not work without them. This is
-   the largest non-compute prerequisite in the protocol.
-2. **Close D4** (the marker vocabulary), which the regime screen needs before
+**Done.**
+
+- ~~Author the 96 Calibration-B questions (D3).~~ Authored, audited, hashed,
+  committed: `src/dci1v5/topics/data/calibration_b_v5.json`, 96 questions,
+  eight per area, disjoint from all five other sets in id and in text.
+- ~~Close D6, D16 and D18.~~ Taken 2026-08-22; R1 is resolved by D18, R11
+  mitigated by D16, R16 an accepted limitation by D6.
+
+**Remaining, in order.**
+
+1. **Close D4** (the marker vocabulary), which the regime screen needs before
    it measures a marker rung, and **D17** (the construct floor), which Gate 2
-   needs.
-3. **Resolve U2**, §11.8's tier-indicator formulation. `open_items.py` holds
+   needs. Both have packets: [`d4_marker_audit.md`](d4_marker_audit.md) audits
+   all eight markers item by item and
+   [`d17_b_strength_decision.md`](d17_b_strength_decision.md) recommends a
+   quantity and a threshold on a recomputed curve.
+2. **Resolve U2**, §11.8's tier-indicator formulation. `open_items.py` holds
    the four mathematically identified alternatives with what each estimates
    and what each gives up; `fit_with_tier_indicator` fails closed until one is
-   adopted, and the registration manifest refuses to sign while it is open.
-4. **Close D6, D16 and D18**, which the red team's R16, R11 and R1 turn on.
-   D18 is the one that decides whether v5 can emit the source memo's
-   refutation verdict against a control pool chosen to resemble A.
-5. **Close D1** — the compute budget. If it drops the near-form arm, R1 loses
-   its only mitigation, and D18 should then be closed at `precondition`.
-6. **Close the remaining decisions** and record every closure, with its
-   evidence, in the signed registration manifest
+   adopted, and the registration manifest refuses while it is open.
+   [`u2_tier_model_decision.md`](u2_tier_model_decision.md) recommends A2 and
+   shows why the alternatives are not reparameterisations of each other.
+3. **Close D1** — the compute budget — and **D2** with it, since a load-three
+   arm changes the cell set.
+   [`d1_arm_compute_decision.md`](d1_arm_compute_decision.md) costs every
+   registered option from the code's own constants. Under D18's closure the
+   47-cell option cannot emit the strong L3c on any model, so it is a different
+   study rather than a cheaper one.
+4. **Close the remaining eleven** (D0, D5, D7–D15) and record every closure,
+   with its evidence, in the signed registration manifest
    (`protocol/manifest.sign_registration`, which calls `assert_signable`
    before it creates any file or key).
-7. **Confirm P1**, §7.10's corrected Tier-3 sentence, at adoption.
-8. **Regenerate Gate 1 evidence over the 650-instrument population.** The long
+5. **Confirm P1**, §7.10's corrected Tier-3 sentence, at adoption.
+6. **Regenerate Gate 1 evidence over the 650-instrument population.** The long
    pole in wall-clock and it depends on no model.
-9. **Run §19's procedural pilot** on twelve pre-screen topics over the full
+7. **Run §19's procedural pilot** on twelve pre-screen topics over the full
    admitted cell plan, with the claim-ladder tests passing *before*
    qualification — §20's commitment device means an emitter defect found after
    the mask is sealed cannot be repaired, which is exactly what happened to
@@ -252,7 +299,7 @@ Only then does `PROTOCOL_REGISTERED` become reachable.
 
 ## 6. Tests
 
-`dci1/tests_v5/`, **317 tests**, all passing: 292 in about two seconds and 25
+`dci1/tests_v5/`, **343 tests**, all passing: 318 in about two seconds and 25
 `slow` ones that share one eighteen-stage walk, in about three minutes. The
 categories
 the implementation prompt registers, and the file each is in:
@@ -277,9 +324,10 @@ the implementation prompt registers, and the file each is in:
 | — | selection end to end | `test_selection.py` |
 | — | §30's ledger and §31's table | `test_reuse_and_revision.py` |
 | — | specification questions as executable state | `test_open_items.py` |
-| — | §11.8's tier fit fails closed | `test_tier_fit.py` |
-| — | the topic bank and Calibration-B's absent content | `test_topics_calibration_b.py` |
-| — | the registration manifest and its five refusals | `test_manifest.py` |
+| — | §11.8's tier fit fails closed, and U2's comparison | `test_tier_fit.py` |
+| — | the topic bank, and the authored Calibration-B content | `test_topics_calibration_b.py` |
+| — | the registration manifest and its refusals | `test_manifest.py` |
+| — | §26/§34 D16's reuse key, seven ways it must move | `test_reuse_identity.py` |
 | — | D17's construct-strength interface | `test_construct_strength.py` |
 | — | the producer/consumer contract, statically | `test_run_contracts.py` |
 | — | the run layer refuses while §34 is open | `test_run_layer.py` |

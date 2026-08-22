@@ -6,6 +6,7 @@ import pytest
 from dci1v4.errors import ProtocolError
 
 from dci1v5.analysis.spectrum import SpectrumPoint, fit_with_tier_indicator
+from dci1v5.protocol import open_items
 from dci1v5.protocol.open_items import OpenItemError
 
 CORE = [
@@ -84,3 +85,85 @@ def test_a_excluded_from_the_fit_that_predicts_a():
             CORE + NEAR + [SpectrumPoint(slot="A", family="A",
                                          difficulty=0.4, loss=0.5)],
             TIERS | {"A": 1})
+
+
+# ------------------------- the evidence behind the U2 recommendation
+
+def _designed(core_spans, near_form, *, beta=0.30, gamma=0.08,
+              levels=(("R1", 0.10), ("R2", 0.16), ("R3", 0.22))):
+    """Twelve noiseless points from a known model.
+
+    Noiseless on purpose: the question is whether a formulation **recovers**
+    the parameters it names, and noise would only blur an answer that is
+    exact.
+    """
+    truth = dict(levels)
+    points, tiers = [], {}
+    for family, difficulties in core_spans.items():
+        for index, difficulty in enumerate(difficulties):
+            slot = (f"{family}-" if index == 0 else
+                    family if index == 1 else f"{family}+")
+            points.append(SpectrumPoint(
+                slot=slot, family=family, difficulty=difficulty,
+                loss=truth[family] + beta * difficulty))
+            tiers[slot] = 1
+    mean_alpha = sum(truth.values()) / len(truth)
+    for index, difficulty in enumerate(near_form):
+        slot = f"N{index + 1}"
+        points.append(SpectrumPoint(
+            slot=slot, family=f"NF{index + 1}", difficulty=difficulty,
+            loss=mean_alpha + gamma + beta * difficulty))
+        tiers[slot] = 2
+    return points, tiers
+
+
+#: Family level correlated with family difficulty. §13.8's caliper matches
+#: each reference to **A**, not the references to each other, so nothing in
+#: the protocol prevents this and it is the configuration to plan for.
+_CORRELATED = {"R1": [0.20, 0.30, 0.40], "R2": [0.45, 0.55, 0.65],
+               "R3": [0.70, 0.80, 0.90]}
+
+
+def test_a2_recovers_the_slope_and_a4_absorbs_family_levels(
+        restore_open_items):
+    """U2's decisive comparison, computed rather than argued.
+
+    A4 pools the intercepts, so between-family level differences have nowhere
+    to go but the slope --- and `beta` means something different in the
+    secondary than in the primary, which registers three family intercepts
+    precisely to remove them.
+    """
+    open_items.resolve("U2", "A2", resolved_by="test", resolved_on="test")
+    points, tiers = _designed(_CORRELATED, [0.40, 0.55, 0.70])
+    a2 = fit_with_tier_indicator(points, tiers, formulation="A2")
+    a4 = fit_with_tier_indicator(points, tiers, formulation="A4")
+    assert a2.slope == pytest.approx(0.30, abs=1e-6)
+    assert a2.gamma == pytest.approx(0.08, abs=1e-6)
+    assert a4.slope == pytest.approx(0.4875, abs=1e-3)     # 63% inflated
+    assert a4.gamma == pytest.approx(0.08, abs=1e-6)       # only here
+
+
+def test_a4s_gamma_depends_on_where_the_near_form_points_happen_to_sit(
+        restore_open_items):
+    """The reason A2 is recommended, and it is not a matter of taste.
+
+    Under A4 the Tier-2 offset is read against a pooled line whose slope is
+    wrong, so it moves with the near-form controls' position in difficulty ---
+    a quantity §13.9 selects on *closeness to A*, not on anything to do with
+    the tier. Across three placements of the same three controls, generated
+    from the same gamma = 0.08, A4 returns 0.024 to 0.134. A2 returns 0.08
+    every time.
+    """
+    open_items.resolve("U2", "A2", resolved_by="test", resolved_on="test")
+    placements = {"low": [0.20, 0.28, 0.36], "centre": [0.40, 0.55, 0.70],
+                  "high": [0.75, 0.83, 0.90]}
+    a2_gammas, a4_gammas = [], []
+    for near_form in placements.values():
+        points, tiers = _designed(_CORRELATED, near_form)
+        a2_gammas.append(fit_with_tier_indicator(
+            points, tiers, formulation="A2").gamma)
+        a4_gammas.append(fit_with_tier_indicator(
+            points, tiers, formulation="A4").gamma)
+    assert all(g == pytest.approx(0.08, abs=1e-6) for g in a2_gammas)
+    assert max(a4_gammas) / min(a4_gammas) > 5
+    assert min(a4_gammas) < 0.08 < max(a4_gammas)

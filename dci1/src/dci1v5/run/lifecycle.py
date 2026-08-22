@@ -40,6 +40,7 @@ from dci1v5.protocol import constants as C
 from dci1v5.verifiers import verifier_source_hash
 
 __all__ = ["TerminalStatus", "StageOutcome", "run_stage", "mirror_records",
+           "protocol_identity",
            "mirror_terminal_report", "now", "stage_input",
            "terminal_statuses_in_force"]
 
@@ -121,6 +122,34 @@ def mirror_terminal_report(tree: ModelTree) -> None:
     durable.mkdir(parents=True, exist_ok=True)
     durable.joinpath(tree.terminal_report.name).write_bytes(
         tree.terminal_report.read_bytes())
+
+
+def protocol_identity(tree: ModelTree, stage: str) -> dict[str, Any]:
+    """What "the same protocol" means for a row generated at ``stage``.
+
+    Part of a row's reuse key (``run/execute.py``): a stored generation may
+    satisfy a planned row only when the protocol that planned it is the same
+    protocol. Before the freeze that is the signed registration manifest; at
+    and after the freeze it is the freeze hash as well, because the freeze is
+    what binds the scientific state the confirmatory rows belong to.
+
+    A stage record that does not exist contributes ``None`` rather than being
+    skipped, so "no freeze yet" and "a different freeze" are different keys.
+    """
+    out: dict[str, Any] = {"study_id": tree.context.study_id, "stage": stage}
+    for name, source, field in (
+            ("registration", C.STAGE_REGISTERED, "manifest_hash"),
+            ("freeze", C.STAGE_GATE5, "freeze_hash")):
+        if source == C.STAGE_GATE5 and \
+                C.STAGE_SEQUENCE.index(stage) < \
+                C.STAGE_SEQUENCE.index(C.STAGE_GATE5):
+            out[name] = None
+            continue
+        if tree.stage_record(source).exists():
+            out[name] = transitions.read_stage_record(tree, source).get(field)
+        else:
+            out[name] = None
+    return out
 
 
 def stage_input(tree: ModelTree, stage: str) -> dict[str, Any]:

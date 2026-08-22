@@ -83,60 +83,69 @@ def _l3c_without_arm():
                delta_near=None, near_form_available=False)
 
 
-def test_an_l3c_with_no_near_form_arm_refuses_while_d18_is_open():
-    """§34 D18 selects the behaviour, so the emitter may not choose one.
+def test_d18_is_closed_at_precondition_and_the_record_says_so():
+    """§34 D18. The closure is durable, not a module literal."""
+    assert decisions.value_of("D18") == "precondition"
+    assert claims.l3c_requires_near_form() is True
+    entry = {e["id"]: e for e in decisions.recorded_closures()}["D18"]
+    assert entry["value"] == "precondition"
+    assert entry["evidence"] and entry["decided_by"] and entry["decided_on"]
 
-    This is the case the two modes differ on. Before this was wired the
-    emitter attached §17.6's sentence unconditionally --- the standing
-    proposal executing as a default, which is the exact shape §34 exists to
-    stop.
+
+def test_without_the_near_form_arm_only_the_narrow_l3c_is_licensed():
+    """§34 D18's strong version, as the researcher stated it.
+
+    L3c is still emitted --- a same-form Tier-1 pool licenses *something* ---
+    but what it licenses is the narrow conclusion, and the scope is a field on
+    the statement rather than a sentence appended to a strong one.
     """
-    with pytest.raises(decisions.DecisionOpenError):
-        _l3c_without_arm()
-
-
-def test_d18_mode_2_emits_l3c_with_the_narrower_interpretation(
-        restore_decisions):
-    restore_decisions.close("D18", "not_a_precondition", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
     out = _l3c_without_arm()
     l3c = [s for s in out if s.get("claim_level") == "L3c" and s["emitted"]]
     assert l3c
-    assert l3c[0]["d18_mode"] == "not_a_precondition"
+    assert l3c[0]["l3c_scope"] == "same_form_only"
+    assert l3c[0]["l3c_scope_sentence"] == C.L3C_SAME_FORM_ONLY_SENTENCE
+    assert l3c[0]["d18_mode"] == "precondition"
     assert l3c[0]["near_form_absent_sentence"] == \
         C.L3C_WITHOUT_NEAR_FORM_SENTENCE
-    assert "NEAR_FORM_ARM_NOT_AVAILABLE" in l3c[0]["identification_status"]
+    statuses = l3c[0]["identification_status"]
+    assert "NEAR_FORM_ARM_NOT_AVAILABLE" in statuses
+    assert "L3C_STRONG_CONCLUSION_WITHHELD" in statuses
 
 
-def test_d18_mode_1_withholds_l3c_and_says_why(restore_decisions):
-    restore_decisions.close("D18", "precondition", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    out = _l3c_without_arm()
-    assert not [s for s in out
-                if s.get("claim_level") == "L3c" and s["emitted"]]
-    withheld = [s for s in out if s.get("claim_level") == "L3c"]
-    assert withheld and withheld[0]["emitted"] is False
-    assert withheld[0]["d18_mode"] == "precondition"
-    assert "NEAR_FORM_ARM_NOT_AVAILABLE" in withheld[0][
-        "identification_status"]
+def test_the_strong_l3c_is_unreachable_without_the_arm():
+    """"Must be unable", not "does not". The check is on the statement."""
+    forged = {"claim_level": "L3c", "emitted": True, "l3c_scope": "strong"}
+    with pytest.raises(claims.ClaimError, match="refutation verdict"):
+        claims.assert_l3c_scope(forged, near_form_available=False,
+                                where="test")
+    claims.assert_l3c_scope(forged, near_form_available=True, where="test")
+    with pytest.raises(claims.ClaimError, match="scope"):
+        claims.assert_l3c_scope({"claim_level": "L3c", "emitted": True},
+                                near_form_available=True, where="test")
 
 
-def test_l3c_with_the_arm_present_does_not_consult_d18():
+def test_with_the_arm_the_scope_is_strong_and_d18_is_not_consulted():
     """The decision is consulted only where the two modes differ."""
     disposition = claims.l3c_disposition(
         near_form_available=True,
         delta_near=claims.Interval("Delta_near", 0.20, 0.14, 0.26))
-    assert disposition["emit"] is True
+    assert disposition["scope"] == "strong"
     assert disposition["consulted_d18"] is False
+    out = _l3(delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
+              delta_difficulty=claims.Interval("delta_difficulty", 0.00,
+                                               -0.04, 0.04),
+              delta_near=claims.Interval("Delta_near", 0.02, -0.01, 0.05),
+              near_form_available=True)
+    l3c = [s for s in out if s.get("claim_level") == "L3c" and s["emitted"]]
+    assert l3c and l3c[0]["l3c_scope"] == "strong"
 
 
-def test_whether_l3c_needs_the_near_form_arm_is_unresolved(restore_decisions):
-    """§34 D18. The standing proposal is not a decision."""
-    with pytest.raises(decisions.DecisionOpenError):
-        claims.l3c_requires_near_form()
-    restore_decisions.close("D18", "precondition", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    assert claims.l3c_requires_near_form() is True
+def test_the_branch_v5_refused_is_retained_and_is_not_reachable():
+    """§34 D18's non-adopted alternative, kept visible and kept inactive."""
+    assert decisions.non_adopted_alternatives()["D18"] == \
+        ["not_a_precondition"]
+    decisions.reopen_all_for_testing()
+    assert decisions.value_of("D18") == "precondition"
 
 
 def test_xi_gates_the_wording_and_not_the_emission():

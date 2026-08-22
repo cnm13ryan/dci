@@ -45,7 +45,7 @@ from dci1v5.analysis.observations import ObservationTable, build_observations
 from dci1v5.engine import transitions
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
-from dci1v5.protocol import seeds
+from dci1v5.protocol import identification, seeds
 from dci1v5.run.confirmatory_run import collect_rows
 from dci1v5.run import final_report_checks
 from dci1v5.run.freeze_run import load_freeze
@@ -84,16 +84,24 @@ def observation_table(rows: Sequence[Mapping[str, Any]], *, m_draws: int
 def _licensed(statuses: Sequence[str]) -> dict[str, str | None]:
     """Which estimand each identification status blocks.
 
-    The map is explicit rather than inferred so that a reader of the record
-    can see *why* a quantity was not computed, and so that adding a status
-    without deciding what it blocks is a visible omission.
+    Every entry carries the status that blocked it, so a reader of the record
+    can see *why* a quantity was not computed and adding a status without
+    deciding what it blocks stays a visible omission.
+
+    **``REFERENCE_SUPPORT_NOT_IDENTIFIED`` blocks the whole reference-dependent
+    set**, derived by ``protocol/identification.py``'s one rule rather than
+    listed here. An earlier revision named five members; the other forty-three
+    were attempted, returned no vector because the design supplies no cell for
+    them, and were recorded as ``not_computable`` --- which reads as a design
+    that was never asked rather than as §34 D6's irreversible verdict. The
+    difference matters because the freeze binds the D6 set and the final
+    report is checked against it.
     """
     blocked: dict[str, str] = {}
     statuses = set(statuses)
     if "REFERENCE_SUPPORT_NOT_IDENTIFIED" in statuses or \
             "EXCESS_NOT_IDENTIFIED" in statuses:
-        for member in ("Delta_R", "Delta_1", "Delta_2", "Delta_3",
-                       "delta_difficulty"):
+        for member in identification.AFFECTED_ESTIMANDS:
             blocked[member] = "REFERENCE_SUPPORT_NOT_IDENTIFIED"
     if "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in statuses:
         blocked["delta_difficulty"] = "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
@@ -565,6 +573,13 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
                              not in statuses)
     success = support_stage.methodological_success(
         freeze["support_realised"], gate4_passed=True)
+    # §34 D6: the last place an estimate could appear for a member Gate 3C
+    # marked NOT_IDENTIFIED. `_licensed` already blocks them, so this asserts
+    # the outcome of that rather than repeating it --- which is the point: a
+    # future estimator added beside `estimate_all` is checked too.
+    identification.assert_not_rehabilitated(
+        {"estimands": result}, gate3c=freeze_record.get("non_identification"),
+        where="§34 D6: UNMASKED_ANALYSIS")
     return {
         "stage": C.STAGE_UNMASKED_ANALYSIS,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_UNMASKED_ANALYSIS],

@@ -41,7 +41,8 @@ from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
 from dci1v5.run.execute import generate_and_score, prompt_cell
 from dci1v5.run.freeze_run import assert_matches_freeze, load_freeze
-from dci1v5.run.lifecycle import StageOutcome, run_stage
+from dci1v5.run.lifecycle import (StageOutcome, protocol_identity,
+                                  run_stage)
 from dci1v5.topics.bank import TopicBank, load_bank
 from dci1v5.verifiers import verifier_source_hash
 from dci1v5.verifiers.constraints import Constraint
@@ -129,6 +130,7 @@ def run_batch(tree: ModelTree, design: Mapping[str, Any], *,
         / f"blocks-{start:04d}-{stop:04d}",
         instances=instances, slot_map=design["slot_map"],
         study_id=tree.context.study_id,
+        protocol_identity=protocol_identity(tree, C.STAGE_CONFIRMATORY),
         generate=generate)
 
 

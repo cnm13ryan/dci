@@ -37,7 +37,8 @@ from dci1v5.protocol import constants as C
 from dci1v5.protocol.wordings import wording_source_hash
 from dci1v5.run.execute import (fake_backend, generate_and_score,
                                 instance_rates, prompt_cell)
-from dci1v5.run.lifecycle import StageOutcome, TerminalStatus, run_stage
+from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
+                                  protocol_identity, run_stage)
 from dci1v5.stages import gate1 as gate1_stage
 from dci1v5.stages import regime as regime_stage
 from dci1v5.stages import mutation, specification, verifier_audit
@@ -226,6 +227,7 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
             device=device, run_dir=tree.backend_runs(C.STAGE_REGIME)
             / f"cap-{cap}", instances=tuple(slot_map.values()),
             slot_map=slot_map, study_id=tree.context.study_id,
+            protocol_identity=protocol_identity(tree, C.STAGE_REGIME),
             generate=generate)
         truncation[cap] = (sum(1 for r in rows if r["truncated"])
                            / max(1, len(rows)))
@@ -249,7 +251,9 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
         tree.model_key, prompts, stage=C.STAGE_REGIME, cap=cap, device=device,
         run_dir=tree.backend_runs(C.STAGE_REGIME) / "ladder",
         instances=tuple(slot_map.values()), slot_map=slot_map,
-        study_id=tree.context.study_id, generate=generate)
+        study_id=tree.context.study_id,
+        protocol_identity=protocol_identity(tree, C.STAGE_REGIME),
+        generate=generate)
     table = difficulty_table(screen_rows, measured)
     by_label = {row["candidate"]: row for row in table}
 

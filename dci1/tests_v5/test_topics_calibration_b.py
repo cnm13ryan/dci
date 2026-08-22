@@ -1,4 +1,4 @@
-"""§6.2's bank, §13.7's two splits, and the 96 questions that do not exist."""
+"""§6.2's bank, §13.7's two splits, and the 96 questions now authored."""
 from __future__ import annotations
 
 import pytest
@@ -7,6 +7,7 @@ from dci1v4.errors import ProtocolError
 
 from dci1v5.protocol import constants as C
 from dci1v5.topics import bank as B
+from dci1v5.topics import calibration_b
 
 
 def _fixture_questions(n: int = C.N_CALIBRATION_B, *, area_size: int = 8
@@ -26,13 +27,22 @@ def _fixture_questions(n: int = C.N_CALIBRATION_B, *, area_size: int = 8
     return out[:n]
 
 
-def test_the_bank_loads_with_calibration_b_absent_and_says_so():
+def test_the_bank_is_complete_now_that_calibration_b_is_authored():
+    """§34 D3 closed at ``author_before_adoption``, and the bank exists."""
     loaded = B.load_bank()
-    assert loaded.calibration_b_status == "NOT_AUTHORED"
-    assert not loaded.complete
+    assert loaded.calibration_b_status == "AUTHORED"
+    assert loaded.complete
     assert len(loaded.topics(C.CALIBRATION_A)) == C.N_CALIBRATION_A
-    assert loaded.topics(C.CALIBRATION_B) == ()
-    assert loaded.hashes[C.CALIBRATION_B] is None
+    assert len(loaded.topics(C.CALIBRATION_B)) == C.N_CALIBRATION_B
+    assert loaded.hashes[C.CALIBRATION_B]
+
+
+def test_the_status_distinguishes_absent_from_undecided(restore_decisions):
+    """Three states, because two of them are different kinds of not-ready."""
+    assert B.calibration_b_status() == "AUTHORED"
+    restore_decisions.override_for_testing("D3", "author_after_adoption")
+    assert B.calibration_b_status() == "AUTHORED_PENDING_D3"
+    assert B.load_bank().topics(C.CALIBRATION_B) == ()
 
 
 def test_the_v4_solo_split_is_calibration_a_under_its_new_name():
@@ -42,16 +52,7 @@ def test_the_v4_solo_split_is_calibration_a_under_its_new_name():
                for t in loaded.topics(C.CALIBRATION_A))
 
 
-def test_calibration_b_refuses_while_d3_is_open():
-    from dci1v5.protocol import decisions
-
-    with pytest.raises(decisions.DecisionOpenError):
-        B.calibration_b_questions(_fixture_questions())
-
-
 def test_a_closed_d3_still_requires_the_work(restore_decisions):
-    restore_decisions.close("D3", "author_before_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
     with pytest.raises(ProtocolError, match="no bank was supplied"):
         B.calibration_b_questions(None)
     with pytest.raises(ProtocolError, match="96 questions"):
@@ -60,16 +61,13 @@ def test_a_closed_d3_still_requires_the_work(restore_decisions):
 
 
 def test_author_after_adoption_returns_no_questions(restore_decisions):
-    restore_decisions.close("D3", "author_after_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
+    restore_decisions.override_for_testing("D3", "author_after_adoption")
     with pytest.raises(ProtocolError, match="author after adoption"):
         B.calibration_b_questions(_fixture_questions())
 
 
-def test_the_two_calibration_splits_must_be_disjoint(restore_decisions):
+def test_the_two_calibration_splits_must_be_disjoint():
     """§13.7's precondition, and the failure that is silent everywhere else."""
-    restore_decisions.close("D3", "author_before_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
     loaded = B.load_bank(calibration_b=_fixture_questions())
     report = B.assert_calibration_sets_disjoint(
         {k: v for k, v in loaded.sets.items() if v})
@@ -82,9 +80,7 @@ def test_the_two_calibration_splits_must_be_disjoint(restore_decisions):
         B.load_bank(calibration_b=leaked)
 
 
-def test_a_duplicated_topic_id_is_refused(restore_decisions):
-    restore_decisions.close("D3", "author_before_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
+def test_a_duplicated_topic_id_is_refused():
     questions = _fixture_questions()
     borrowed = B.load_bank().topics(C.CALIBRATION_A)[0]
     questions[0] = {**questions[0], "topic_id": borrowed["topic_id"]}
@@ -92,9 +88,7 @@ def test_a_duplicated_topic_id_is_refused(restore_decisions):
         B.load_bank(calibration_b=questions)
 
 
-def test_per_area_allocation_is_enforced(restore_decisions):
-    restore_decisions.close("D3", "author_before_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
+def test_per_area_allocation_is_enforced():
     questions = _fixture_questions()
     questions[0] = {**questions[0], "area": questions[-1]["area"]}
     with pytest.raises(ProtocolError, match="per area"):
@@ -122,9 +116,7 @@ def test_rows_are_checked_against_the_bank_not_against_their_own_label():
                                    split=C.CALIBRATION_A, where="test")
 
 
-def test_a_pooled_table_may_not_be_presented_as_one_split(restore_decisions):
-    restore_decisions.close("D3", "author_before_adoption", evidence="t",
-                            decided_by="t", decided_on="t")
+def test_a_pooled_table_may_not_be_presented_as_one_split():
     loaded = B.load_bank(calibration_b=_fixture_questions())
     pooled = [{"topic_id": loaded.topics(C.CALIBRATION_A)[0]["topic_id"]},
               {"topic_id": loaded.topics(C.CALIBRATION_B)[0]["topic_id"]}]
@@ -143,9 +135,10 @@ def test_reserved_topics_may_not_be_spent_before_the_freeze():
         stage="REGIME_SCREEN")
 
 
-def test_a_calibration_binding_refuses_an_empty_split():
+def test_a_calibration_binding_refuses_an_empty_split(restore_decisions):
+    restore_decisions.override_for_testing("D3", "author_after_adoption")
     loaded = B.load_bank()
-    with pytest.raises(ProtocolError, match="NOT_AUTHORED"):
+    with pytest.raises(ProtocolError, match="AUTHORED_PENDING_D3"):
         B.calibration_binding(loaded, split=C.CALIBRATION_B)
 
 
@@ -161,3 +154,74 @@ def test_provenance_declares_that_calibration_a_is_not_naive():
     record = B.provenance(B.load_bank())
     assert record[C.CALIBRATION_A]["naive"] is False
     assert record[C.CALIBRATION_B]["decision"] == "§34 D3"
+
+
+# ------------------------------------------------ the authored bank itself
+
+def test_the_authored_bank_is_ninety_six_stratified_questions():
+    rows = calibration_b.load_calibration_b()
+    assert len(rows) == C.N_CALIBRATION_B
+    summary = calibration_b.allocation_summary()
+    assert set(summary["per_area"].values()) == {C.CALIBRATION_B_PER_AREA}
+    assert len(set(r["topic_id"] for r in rows)) == C.N_CALIBRATION_B
+    for row in rows:
+        B.assert_topic_schema(row, where="authored")
+        assert row["set"] == C.CALIBRATION_B
+
+
+def test_the_authored_bank_is_disjoint_from_every_other_set():
+    """Not only from Calibration-A: a reserved topic's text is spent too."""
+    loaded = B.load_bank()
+    report = B.assert_calibration_sets_disjoint(
+        {k: v for k, v in loaded.sets.items() if v})
+    assert report["disjoint"] and report["n_a"] == report["n_b"] == 96
+    B.assert_sets_disjoint({k: v for k, v in loaded.sets.items() if v})
+
+
+def test_the_authored_bank_carries_no_form_requirement_in_its_text():
+    """§6.2 rule 4, the one rule a machine can check.
+
+    It is checked over the ``question`` field. Reading ``text`` --- which is
+    what this did --- scanned the empty string for every topic in the bank,
+    so the rule had never rejected anything.
+    """
+    from dci1v5.topics import assert_authoring_rules
+
+    report = assert_authoring_rules(calibration_b.load_calibration_b())
+    assert report["questions"] == 96
+    with pytest.raises(ProtocolError, match="form_requirement_tokens"):
+        assert_authoring_rules([
+            {"topic_id": "x", "question": "How many letters does it use?",
+             "authoring_rules_verified": {r: True for r in
+                                          C.AUTHORING_RULES}}])
+
+
+def test_every_authored_question_records_all_four_verifications():
+    rows = calibration_b.load_calibration_b()
+    assert all(set(r["authoring_rules_verified"]) == set(C.AUTHORING_RULES)
+               for r in rows)
+    from dci1v5.topics import assert_authoring_rules
+
+    with pytest.raises(ProtocolError, match="unverified_rules"):
+        assert_authoring_rules(calibration_b.load_calibration_b(
+            verified=False))
+
+
+def test_the_bank_hash_is_stable_and_over_the_text():
+    first = calibration_b.calibration_b_bank_hash()
+    assert first == calibration_b.calibration_b_bank_hash()
+    rows = calibration_b.load_calibration_b(verified=False)
+    edited = [dict(r) for r in rows]
+    edited[0]["question"] += " (edited)"
+    assert B.set_hash(edited) != first
+
+
+def test_the_provenance_states_when_it_was_authored_and_against_what():
+    record = calibration_b.provenance_record()
+    assert record["decision"] == "§34 D3"
+    assert record["bank_hash"] == calibration_b.calibration_b_bank_hash()
+    assert record["authored_on"] == calibration_b.AUTHORED_ON
+    assert any("Calibration-A measurement" in s
+               for s in record["authored_before"])
+    assert any("compliance measurement" in s
+               for s in record["what_was_not_used"])

@@ -1,0 +1,402 @@
+{
+ "_classification": "DEVELOPMENT_EVIDENCE (\u00a730)",
+ "_frequency_source": "development/d6_marker_frequency.json, four v4r4 replications, unconstrained and B-solo cells",
+ "_what": "the measured and structural facts behind \u00a734 D4's audit; the verdicts are in d4_marker_audit.md",
+ "a_marker": "however",
+ "a_natural_rate_by_model": {
+  "gemma-3n-e2b-it": 0.1015625,
+  "gemma-3n-e4b-it": 0.10416666666666667,
+  "qwen3-4b": 0.057291666666666664,
+  "qwen3-4b-instruct-2507": 0.013020833333333334
+ },
+ "focal_grid": [
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "markers": [
+  {
+   "at_the_b_boundary_at": [],
+   "carried_from_v4r4": true,
+   "discourse_role": "consecutive",
+   "family": "MK1",
+   "form": "exact_count",
+   "letters": 4,
+   "marker": "thus",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0078125,
+    "qwen3-4b": 0.041666666666666664,
+    "qwen3-4b-instruct-2507": 0.057291666666666664
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.015625,
+    "gemma-3n-e4b-it": 0.0390625,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0078125
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.075,
+    "qwen3-4b": 0.727,
+    "qwen3-4b-instruct-2507": 4.4
+   },
+   "registered_max_natural_rate": 0.057,
+   "statistic_id": "marker_thus",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [],
+   "carried_from_v4r4": false,
+   "discourse_role": "consecutive",
+   "family": "MK2",
+   "form": "exact_count",
+   "letters": 5,
+   "marker": "hence",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0026041666666666665,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.005208333333333333
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "registered_max_natural_rate": 0.0,
+   "statistic_id": "marker_hence",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [],
+   "carried_from_v4r4": false,
+   "discourse_role": "contrastive",
+   "family": "MK3",
+   "form": "exact_count",
+   "letters": 6,
+   "marker": "though",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0078125,
+    "gemma-3n-e4b-it": 0.013020833333333334,
+    "qwen3-4b": 0.0026041666666666665,
+    "qwen3-4b-instruct-2507": 0.0026041666666666665
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.015625,
+    "gemma-3n-e4b-it": 0.018229166666666668,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.077,
+    "gemma-3n-e4b-it": 0.125,
+    "qwen3-4b": 0.045,
+    "qwen3-4b-instruct-2507": 0.2
+   },
+   "registered_max_natural_rate": 0.013,
+   "statistic_id": "marker_though",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [
+    7
+   ],
+   "carried_from_v4r4": false,
+   "discourse_role": "contrastive",
+   "family": "MK4",
+   "form": "exact_count",
+   "letters": 7,
+   "marker": "whereas",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.005208333333333333,
+    "qwen3-4b": 0.013020833333333334,
+    "qwen3-4b-instruct-2507": 0.013020833333333334
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.05,
+    "qwen3-4b": 0.227,
+    "qwen3-4b-instruct-2507": 1.0
+   },
+   "registered_max_natural_rate": 0.013,
+   "statistic_id": "marker_whereas",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [],
+   "carried_from_v4r4": false,
+   "discourse_role": "emphatic",
+   "family": "MK5",
+   "form": "exact_count",
+   "letters": 6,
+   "marker": "indeed",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "registered_max_natural_rate": 0.0,
+   "statistic_id": "marker_indeed",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [],
+   "carried_from_v4r4": false,
+   "discourse_role": "exemplifying",
+   "family": "MK6",
+   "form": "exact_count",
+   "letters": 6,
+   "marker": "namely",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.0,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "registered_max_natural_rate": 0.0,
+   "statistic_id": "marker_namely",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [
+    7
+   ],
+   "carried_from_v4r4": false,
+   "discourse_role": "substitutive",
+   "family": "MK7",
+   "form": "exact_count",
+   "letters": 7,
+   "marker": "instead",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.020833333333333332,
+    "gemma-3n-e4b-it": 0.020833333333333332,
+    "qwen3-4b": 0.010416666666666666,
+    "qwen3-4b-instruct-2507": 0.010416666666666666
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.0078125,
+    "gemma-3n-e4b-it": 0.0,
+    "qwen3-4b": 0.0,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.205,
+    "gemma-3n-e4b-it": 0.2,
+    "qwen3-4b": 0.182,
+    "qwen3-4b-instruct-2507": 0.8
+   },
+   "registered_max_natural_rate": 0.021,
+   "statistic_id": "marker_instead",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  },
+  {
+   "at_the_b_boundary_at": [
+    7
+   ],
+   "carried_from_v4r4": false,
+   "discourse_role": "summative",
+   "family": "MK8",
+   "form": "exact_count",
+   "letters": 7,
+   "marker": "overall",
+   "natural_rate_by_model": {
+    "gemma-3n-e2b-it": 0.07552083333333333,
+    "gemma-3n-e4b-it": 0.08072916666666667,
+    "qwen3-4b": 0.11197916666666667,
+    "qwen3-4b-instruct-2507": 0.07552083333333333
+   },
+   "rate_under_b_by_model": {
+    "gemma-3n-e2b-it": 0.010416666666666666,
+    "gemma-3n-e4b-it": 0.010416666666666666,
+    "qwen3-4b": 0.028645833333333332,
+    "qwen3-4b-instruct-2507": 0.0
+   },
+   "ratio_to_a_by_model": {
+    "gemma-3n-e2b-it": 0.744,
+    "gemma-3n-e4b-it": 0.775,
+    "qwen3-4b": 1.955,
+    "qwen3-4b-instruct-2507": 5.8
+   },
+   "registered_max_natural_rate": 0.112,
+   "statistic_id": "marker_overall",
+   "verifier_probes": {
+    "as_a_prefixed_substring": 0,
+    "as_a_suffixed_substring": 0,
+    "hyphenated_compound": 1,
+    "hyphenated_spelling": 0,
+    "inside_an_unrelated_word": 0,
+    "quoted": 1,
+    "sentence_initial_with_comma": 1,
+    "upper_case": 1
+   },
+   "violates_b_at": []
+  }
+ ],
+ "registered_rules": {
+  "excluded": "however",
+  "max_letters": 7,
+  "max_natural_rate": 0.15
+ },
+ "rejected": {
+  "also": "P(>=1 | unconstrained) = 0.419, above the 0.15 ceiling",
+  "conversely": "10 letters",
+  "equally": "admissible; not registered, duplicates the additive role",
+  "finally": "P(>=1 | unconstrained) = 0.185, above the 0.15 ceiling",
+  "further": "admissible; not registered, duplicates the additive role",
+  "granted": "admissible; not registered, vocabulary capped at eight",
+  "however": "A's own marker; a companion counting A's word would be A under another name",
+  "likewise": "8 letters",
+  "meanwhile": "9 letters",
+  "moreover": "8 letters, above the 7-letter structural ceiling",
+  "next": "admissible; not registered, duplicates the consecutive role",
+  "nonetheless": "11 letters",
+  "otherwise": "9 letters",
+  "rather": "admissible; not registered, duplicates the substitutive role",
+  "still": "admissible; not registered, common non-connective sense (`still water`)",
+  "then": "admissible; not registered, duplicates the consecutive role",
+  "therefore": "9 letters",
+  "yet": "admissible on both measured rules; not registered because the vocabulary is capped at eight and `yet` carries a common non-connective sense (`not yet`)"
+ },
+ "reserve": {
+  "albeit": {
+   "development_frequency_max": 0.013,
+   "discourse_role": "contrastive",
+   "letters": 6
+  },
+  "besides": {
+   "development_frequency_max": 0.0,
+   "discourse_role": "additive",
+   "letters": 7
+  },
+  "notably": {
+   "development_frequency_max": 0.0,
+   "discourse_role": "emphatic",
+   "letters": 7
+  }
+ },
+ "summary": {
+  "any_marker_violates_b_on_the_grid": false,
+  "every_marker_counts_where_it_appears": true,
+  "hyphen_splits_a_word": "a compound ending in the marker counts and a hyphenated spelling of the marker does not; \u00a79.2's convention, and A's own counter behaves the same way",
+  "n_discourse_roles": 6,
+  "n_markers": 8,
+  "no_substring_leaks": true
+ }
+}

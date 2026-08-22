@@ -53,7 +53,8 @@ from dci1v5.protocol import constants as C
 from dci1v5.protocol import taxonomy
 from dci1v5.protocol.wordings import wording
 from dci1v5.run.execute import fake_backend, generate_and_score, prompt_cell
-from dci1v5.run.lifecycle import StageOutcome, TerminalStatus, run_stage
+from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
+                                  protocol_identity, run_stage)
 from dci1v5.stages import selection as selection_stage
 from dci1v5.stages import validity as validity_stage
 from dci1v5.verifiers import verifier_source_hash
@@ -347,6 +348,7 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
         tree.model_key, prompt_cells, stage=C.STAGE_GATE0, cap=cap,
         device=device, run_dir=run_dir, instances=instances,
         slot_map=slot_map, study_id=tree.context.study_id,
+        protocol_identity=protocol_identity(tree, C.STAGE_GATE0),
         generate=generate or fake_backend(_pilot_responder))
 
     expected = len(prompt_cells) * C.PILOT_DRAWS

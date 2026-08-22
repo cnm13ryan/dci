@@ -48,8 +48,8 @@ def test_the_plan_command_writes_nothing_and_says_what_is_missing():
         repo_root=synthetic_context.__globals__["REPO_ROOT"])
     assert plan["can_register"] is False
     assert plan["failure_status"] == "REGISTRATION_INCOMPLETE"
-    assert plan["calibration_b_status"] == "NOT_AUTHORED"
-    assert len(plan["open_decisions"]) == 19
+    assert plan["calibration_b_status"] == "AUTHORED"
+    assert len(plan["open_decisions"]) == 15
     assert plan["blocking_specification_questions"] == ["U2"]
 
 
@@ -62,7 +62,7 @@ def test_a_refused_transition_is_logged(tmp_path):
         cli.RUNNERS[C.STAGE_REGISTERED](tree, producing_commit="0" * 40)
     rows = transitions.transition_rows(tree)
     assert rows and rows[-1]["outcome"] == "REFUSED"
-    assert len(rows[-1]["open_decisions"]) == 19
+    assert len(rows[-1]["open_decisions"]) == 15
 
 
 def test_no_post_gate4_substitution_path_exists():
@@ -74,14 +74,19 @@ def test_no_post_gate4_substitution_path_exists():
 
 
 def test_the_terminal_vocabulary_is_derived_from_d6(restore_decisions):
+    """D6 is closed at ``identification_status``, so the status is not one.
+
+    The `terminal` branch is exercised through the test-only override, which
+    is the only way to reach it: a run's closures come from the committed
+    record and the record says otherwise.
+    """
     assert "REFERENCE_SUPPORT_NOT_IDENTIFIED" not in \
         terminal_statuses_in_force()
     with pytest.raises(ProtocolError):
         TerminalStatus("REFERENCE_SUPPORT_NOT_IDENTIFIED", gate="x",
                        criterion="x", observed=None,
                        strongest_permissible_statement="x")
-    restore_decisions.close("D6", "terminal", evidence="t", decided_by="t",
-                            decided_on="t")
+    restore_decisions.override_for_testing("D6", "terminal")
     assert "REFERENCE_SUPPORT_NOT_IDENTIFIED" in terminal_statuses_in_force()
     raised = TerminalStatus("REFERENCE_SUPPORT_NOT_IDENTIFIED", gate="x",
                             criterion="x", observed=None,

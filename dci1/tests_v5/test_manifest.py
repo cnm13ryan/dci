@@ -19,21 +19,35 @@ def _manifest():
                                    repo_root=REPO)
 
 
-def test_the_manifest_refuses_and_names_all_five_reasons():
+def test_the_manifest_refuses_and_names_each_reason_separately():
+    """Four of the five now; the fifth was work, and the work is done.
+
+    ``MISSING_TOPIC_HASH`` is gone because §34 D3 closed and the 96
+    Calibration-B questions exist. That is the shape the five refusals were
+    built for: a reason disappears when somebody does the thing it names,
+    and the other four are untouched by it.
+    """
     kinds = {b["kind"] for b in manifest.signing_blockers()}
     assert kinds == {"OPEN_DECISION", "UNRESOLVED_SPECIFICATION",
-                     "MISSING_TOPIC_HASH", "CANDIDATE_POPULATION_UNAPPROVED",
+                     "CANDIDATE_POPULATION_UNAPPROVED",
                      "OPEN_RED_TEAM_FINDING"}
     with pytest.raises(manifest.Blocker):
         manifest.assert_signable()
 
 
+def test_a_missing_topic_hash_is_still_a_refusal(restore_decisions):
+    restore_decisions.override_for_testing("D3", "author_after_adoption")
+    by_kind = {b["kind"]: b for b in manifest.signing_blockers()}
+    assert by_kind["MISSING_TOPIC_HASH"]["calibration_b_status"] == \
+        "AUTHORED_PENDING_D3"
+
+
 def test_the_reasons_are_separate_because_they_need_different_actions():
     """'we have not decided' and 'the work is not done' are different facts."""
     by_kind = {b["kind"]: b for b in manifest.signing_blockers()}
-    assert by_kind["OPEN_DECISION"]["n"] == 19
-    assert by_kind["MISSING_TOPIC_HASH"]["calibration_b_status"] == \
-        "NOT_AUTHORED"
+    assert by_kind["OPEN_DECISION"]["n"] == 15
+    assert by_kind["CANDIDATE_POPULATION_UNAPPROVED"]["detail"]["decision"] \
+        == "D4"
     assert by_kind["UNRESOLVED_SPECIFICATION"]["detail"][0]["id"] == "U2"
 
 
@@ -49,7 +63,9 @@ def test_it_binds_every_thing_the_registration_must_bind():
     built = _manifest()
     assert built["protocol_hash"] and built["reference_design_spec_hash"]
     assert built["topics"]["calibration_a_hash"]
-    assert built["topics"]["calibration_b_hash"] is None
+    assert built["topics"]["calibration_b_hash"]
+    assert built["topics"]["calibration_b_provenance"]["bank_hash"] == \
+        built["topics"]["calibration_b_hash"]
     assert built["instruments"]["canonical_verifier_hash"]
     assert built["constraints"]["wording_hash"]
     assert len(built["models"]) >= 1

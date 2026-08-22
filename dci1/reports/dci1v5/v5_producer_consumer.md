@@ -18,8 +18,8 @@ the pipeline never put there.
 
 ## Summary
 
-- **95 fields** across **17 artifacts**, of which 92 are required.
-- **95 exercised** by the synthetic lifecycle; 0 not reached.
+- **98 fields** across **17 artifacts**, of which 95 are required.
+- **98 exercised** by the synthetic lifecycle; 0 not reached.
 - Defects: **0** (clean).
 - Stages walked: 18 of 18.
 
@@ -34,9 +34,9 @@ the pipeline never put there.
 | `GATE_2_FOCAL_CALIBRATION` | 9 | 9 | 9 |
 | `GATE_3A_REFERENCE_CALIBRATION` | 5 | 5 | 5 |
 | `GATE_3B_REFERENCE_SELECTION` | 3 | 3 | 3 |
-| `GATE_3C_IDENTIFICATION` | 6 | 6 | 6 |
+| `GATE_3C_IDENTIFICATION` | 8 | 8 | 8 |
 | `GATE_4_COMPOSED_HEADROOM` | 7 | 7 | 7 |
-| `GATE_5_FREEZE` | 9 | 9 | 9 |
+| `GATE_5_FREEZE` | 10 | 10 | 10 |
 | `MASKED_ANALYSIS` | 4 | 4 | 4 |
 | `PREFREEZE_AUDIT` | 3 | 3 | 3 |
 | `PROTOCOL_REGISTERED` | 12 | 12 | 12 |
@@ -109,6 +109,8 @@ the pipeline never put there.
 | `GATE_3C_IDENTIFICATION` | `identification_statuses` | `GATE_3C_IDENTIFICATION` | `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE`, `UNMASKED_ANALYSIS`, `FINAL_REPORT`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3C_IDENTIFICATION` | `support` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE`, `FINAL_REPORT`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3C_IDENTIFICATION` | `m_star` | `GATE_3C_IDENTIFICATION` | `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_3C_IDENTIFICATION` | `non_identification` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_3C_IDENTIFICATION` | `not_identified_members` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_4_COMPOSED_HEADROOM` | `headroom_table` | `GATE_4_COMPOSED_HEADROOM` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_4_COMPOSED_HEADROOM` | `admitted_arms` | `GATE_4_COMPOSED_HEADROOM` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_4_COMPOSED_HEADROOM` | `failures` | `GATE_4_COMPOSED_HEADROOM` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -127,6 +129,7 @@ the pipeline never put there.
 | `GATE_5_FREEZE` | `slot_map` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `admitted_arms` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION`, `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `identification_statuses` | `GATE_5_FREEZE` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_5_FREEZE` | `non_identification` | `GATE_5_FREEZE` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `selected_cap` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `CONFIRMATORY_GENERATION` | `rows_path` | `CONFIRMATORY_GENERATION` | `MASKED_ANALYSIS` | `CONFIRMATORY_GENERATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `CONFIRMATORY_GENERATION` | `n_rows` | `CONFIRMATORY_GENERATION` | `MASKED_ANALYSIS`, `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `CONFIRMATORY_GENERATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
