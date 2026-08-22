@@ -1,0 +1,1817 @@
+{
+ "_provenance": "REGIME_SCREEN coverage verdicts and Gate-2 calibration outcomes, both from signed records",
+ "calibration_scale": {
+  "draws_per_cell": 4,
+  "topics": 96
+ },
+ "coverage_thresholds": {
+  "COVERAGE_MIN_FAMILIES_PER_SIDE": 3,
+  "COVERAGE_MIN_NEAR_FAMILIES": 3,
+  "COVERAGE_MIN_RUNGS_PER_STRADDLING_FAMILY": 3,
+  "COVERAGE_MIN_STRADDLING_FAMILIES": 4,
+  "COVERAGE_MIN_WITHIN_FAMILY_SPAN": 0.4
+ },
+ "models": {
+  "gemma-3n-e2b-it": {
+   "calibration_admitted_families": [
+    "CR5",
+    "RF11",
+    "RF6",
+    "RF9"
+   ],
+   "calibration_straddling_families": [
+    "CR5",
+    "RF11",
+    "RF9"
+   ],
+   "collapse": {
+    "families_straddling_after_calibration": 3,
+    "families_straddling_at_prescreen_C4": 7,
+    "families_straddling_at_prescreen_near_set": 7,
+    "note": "the pre-screen ranks families at 24 topics x 1 draw; Gate 2 re-measures the shortlist at 96 topics x 4 draws. A family counted as straddling at pre-screen scale need not survive re-measurement.",
+    "required": 3
+   },
+   "design_variant": "full",
+   "iota_a_calibration": 0.5739130434782609,
+   "iota_a_prescreen": 0.5555555555555555,
+   "iota_a_shift_prescreen_to_calibration": 0.018357487922705418,
+   "n_calibration_straddling_families": 3,
+   "n_core_references_admitted": 3,
+   "n_prescreen_straddling_families_C4": 7,
+   "n_prescreen_straddling_families_near_set": 7,
+   "n_shortlisted_rungs": 29,
+   "prescreen_coverage_class_matched": true,
+   "prescreen_coverage_conditions": {
+    "C1_bracketed": {
+     "met": true,
+     "observed": {
+      "above": true,
+      "below": true
+     },
+     "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+    },
+    "C2_groups_per_side": {
+     "met": true,
+     "observed": {
+      "above": [
+       "capital",
+       "comma",
+       "one_letter",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ],
+      "below": [
+       "b_initial",
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+    },
+    "C3_near_density": {
+     "met": true,
+     "observed": {
+      "families": [
+       "capital",
+       "comma",
+       "letter_a",
+       "one_letter",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ],
+      "rungs": [
+       "RF3:4",
+       "RF3:5",
+       "RF3:6",
+       "RF3:7",
+       "RF6:1",
+       "RF7:23",
+       "RF8:6",
+       "CR5:1",
+       "CR5:2",
+       "CR5:4",
+       "RF9:10",
+       "RF9:13",
+       "RF9:16",
+       "RF11:26",
+       "RF12:6"
+      ]
+     },
+     "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+    },
+    "C4_straddling_families": {
+     "met": true,
+     "observed": {
+      "straddling": [
+       "CR3",
+       "CR5",
+       "RF11",
+       "RF3",
+       "RF6",
+       "RF8",
+       "RF9"
+      ],
+      "well_formed": [
+       "CR3",
+       "CR5",
+       "RF11",
+       "RF3",
+       "RF8"
+      ],
+      "well_formed_groups": [
+       "comma",
+       "one_letter",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+    },
+    "C5_total_points": {
+     "met": true,
+     "observed": {
+      "n": 67
+     },
+     "rule": "at least 12 eligible reference rungs in total"
+    },
+    "C6_shortlist_feasible": {
+     "met": true,
+     "observed": {
+      "families": [
+       "CR11",
+       "CR3",
+       "CR5",
+       "CR6",
+       "CR7",
+       "CR8",
+       "CR9",
+       "RF1",
+       "RF10",
+       "RF11",
+       "RF12",
+       "RF2",
+       "RF3",
+       "RF4",
+       "RF6",
+       "RF7",
+       "RF8",
+       "RF9"
+      ],
+      "groups": [
+       "b_initial",
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 6 eligible reference families, from at least 4 feature groups, so \u00a712.3's shortlist is not short before it starts"
+    },
+    "C7_class_matched": {
+     "met": true,
+     "observed": {
+      "rungs": [
+       "CL7:80",
+       "CL8:25",
+       "CX1:1",
+       "CX1:2",
+       "CX1:4",
+       "CX1:5",
+       "CX1:6",
+       "CX1:7",
+       "CX2:1"
+      ]
+     },
+     "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+     "terminal": false
+    }
+   },
+   "prescreen_family_ranking": [
+    {
+     "distance": 0.015873015873015928,
+     "family": "RF9",
+     "n_above": 2,
+     "n_below": 3,
+     "near": 16,
+     "near_iota": 0.5714285714285714,
+     "straddles": true
+    },
+    {
+     "distance": 0.02777777777777779,
+     "family": "RF3",
+     "n_above": 3,
+     "n_below": 5,
+     "near": 5,
+     "near_iota": 0.5833333333333333,
+     "straddles": true
+    },
+    {
+     "distance": 0.06944444444444453,
+     "family": "RF6",
+     "n_above": 1,
+     "n_below": 1,
+     "near": 1,
+     "near_iota": 0.625,
+     "straddles": true
+    },
+    {
+     "distance": 0.0793650793650793,
+     "family": "RF11",
+     "n_above": 1,
+     "n_below": 2,
+     "near": 26,
+     "near_iota": 0.47619047619047616,
+     "straddles": true
+    },
+    {
+     "distance": 0.10101010101010088,
+     "family": "RF8",
+     "n_above": 1,
+     "n_below": 6,
+     "near": 6,
+     "near_iota": 0.4545454545454546,
+     "straddles": true
+    },
+    {
+     "distance": 0.11111111111111116,
+     "family": "CR5",
+     "n_above": 2,
+     "n_below": 4,
+     "near": 2,
+     "near_iota": 0.6666666666666666,
+     "straddles": true
+    },
+    {
+     "distance": 0.19444444444444475,
+     "family": "CR3",
+     "n_above": 1,
+     "n_below": 3,
+     "near": 10,
+     "near_iota": 0.7500000000000002,
+     "straddles": true
+    },
+    {
+     "distance": 0.022222222222222032,
+     "family": "RF12",
+     "n_above": 0,
+     "n_below": 4,
+     "near": 6,
+     "near_iota": 0.5333333333333334,
+     "straddles": false
+    },
+    {
+     "distance": 0.13888888888888878,
+     "family": "RF7",
+     "n_above": 0,
+     "n_below": 10,
+     "near": 23,
+     "near_iota": 0.4166666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.22222222222222243,
+     "family": "RF1",
+     "n_above": 0,
+     "n_below": 5,
+     "near": 5,
+     "near_iota": 0.33333333333333304,
+     "straddles": false
+    },
+    {
+     "distance": 0.22222222222222215,
+     "family": "RF10",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 19,
+     "near_iota": 0.3333333333333333,
+     "straddles": false
+    },
+    {
+     "distance": 0.2555555555555554,
+     "family": "CR11",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 33,
+     "near_iota": 0.30000000000000004,
+     "straddles": false
+    },
+    {
+     "distance": 0.2923976608187133,
+     "family": "CR9",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 10,
+     "near_iota": 0.26315789473684215,
+     "straddles": false
+    },
+    {
+     "distance": 0.3472222222222221,
+     "family": "CR6",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 4,
+     "near_iota": 0.20833333333333334,
+     "straddles": false
+    },
+    {
+     "distance": 0.35555555555555546,
+     "family": "RF2",
+     "n_above": 0,
+     "n_below": 2,
+     "near": 5,
+     "near_iota": 0.2,
+     "straddles": false
+    },
+    {
+     "distance": 0.40555555555555545,
+     "family": "CR7",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 36,
+     "near_iota": 0.15000000000000002,
+     "straddles": false
+    },
+    {
+     "distance": 0.4251207729468598,
+     "family": "CR8",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 3,
+     "near_iota": 0.13043478260869565,
+     "straddles": false
+    },
+    {
+     "distance": 0.4251207729468598,
+     "family": "RF4",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 5,
+     "near_iota": 0.13043478260869565,
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR1",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR10",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR12",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR2",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR4",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "RF5",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    }
+   ],
+   "prescreen_straddling_families_C4_full_ladder": [
+    "CR3",
+    "CR5",
+    "RF11",
+    "RF3",
+    "RF6",
+    "RF8",
+    "RF9"
+   ],
+   "prescreen_straddling_families_near_set": [
+    "CR3",
+    "CR5",
+    "RF11",
+    "RF3",
+    "RF6",
+    "RF8",
+    "RF9"
+   ],
+   "shortlist_sent_to_calibration": {
+    "CL7": [
+     60,
+     80
+    ],
+    "CL8": [
+     19,
+     25
+    ],
+    "CR5": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "CX1": [
+     1,
+     4
+    ],
+    "CX2": [
+     1,
+     3
+    ],
+    "RF11": [
+     21,
+     26,
+     32
+    ],
+    "RF3": [
+     3,
+     5,
+     6,
+     8
+    ],
+    "RF6": [
+     1,
+     2
+    ],
+    "RF8": [
+     4,
+     5,
+     6,
+     8
+    ],
+    "RF9": [
+     8,
+     10,
+     13,
+     16
+    ]
+   }
+  },
+  "gemma-3n-e4b-it": {
+   "calibration_admitted_families": [
+    "RF9"
+   ],
+   "calibration_straddling_families": [],
+   "collapse": {
+    "families_straddling_after_calibration": 0,
+    "families_straddling_at_prescreen_C4": 5,
+    "families_straddling_at_prescreen_near_set": 3,
+    "note": "the pre-screen ranks families at 24 topics x 1 draw; Gate 2 re-measures the shortlist at 96 topics x 4 draws. A family counted as straddling at pre-screen scale need not survive re-measurement.",
+    "required": 3
+   },
+   "design_variant": "reduced",
+   "iota_a_calibration": 0.6947674418604651,
+   "iota_a_prescreen": 0.6666666666666666,
+   "iota_a_shift_prescreen_to_calibration": 0.0281007751937985,
+   "n_calibration_straddling_families": 0,
+   "n_core_references_admitted": 0,
+   "n_prescreen_straddling_families_C4": 5,
+   "n_prescreen_straddling_families_near_set": 3,
+   "n_shortlisted_rungs": 26,
+   "prescreen_coverage_class_matched": true,
+   "prescreen_coverage_conditions": {
+    "C1_bracketed": {
+     "met": true,
+     "observed": {
+      "above": true,
+      "below": true
+     },
+     "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+    },
+    "C2_groups_per_side": {
+     "met": true,
+     "observed": {
+      "above": [
+       "b_initial",
+       "capital",
+       "comma",
+       "one_letter",
+       "t_initial",
+       "vowel_initial"
+      ],
+      "below": [
+       "b_initial",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+    },
+    "C3_near_density": {
+     "met": true,
+     "observed": {
+      "families": [
+       "b_initial",
+       "capital",
+       "comma",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "y_final"
+      ],
+      "rungs": [
+       "RF1:2",
+       "RF1:6",
+       "RF3:8",
+       "RF5:11",
+       "RF6:2",
+       "RF8:6",
+       "CR3:8",
+       "CR5:6",
+       "RF9:8",
+       "RF9:10",
+       "RF9:13",
+       "RF10:19",
+       "RF12:4"
+      ]
+     },
+     "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+    },
+    "C4_straddling_families": {
+     "met": true,
+     "observed": {
+      "straddling": [
+       "CR5",
+       "RF1",
+       "RF11",
+       "RF3",
+       "RF9"
+      ],
+      "well_formed": [
+       "CR5",
+       "RF1",
+       "RF11",
+       "RF3",
+       "RF9"
+      ],
+      "well_formed_groups": [
+       "b_initial",
+       "comma",
+       "one_letter",
+       "t_initial",
+       "vowel_initial"
+      ]
+     },
+     "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+    },
+    "C5_total_points": {
+     "met": true,
+     "observed": {
+      "n": 69
+     },
+     "rule": "at least 12 eligible reference rungs in total"
+    },
+    "C6_shortlist_feasible": {
+     "met": true,
+     "observed": {
+      "families": [
+       "CR11",
+       "CR3",
+       "CR4",
+       "CR5",
+       "CR7",
+       "CR8",
+       "CR9",
+       "RF1",
+       "RF10",
+       "RF11",
+       "RF12",
+       "RF2",
+       "RF3",
+       "RF5",
+       "RF6",
+       "RF7",
+       "RF8",
+       "RF9"
+      ],
+      "groups": [
+       "b_initial",
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 6 eligible reference families, from at least 4 feature groups, so \u00a712.3's shortlist is not short before it starts"
+    },
+    "C7_class_matched": {
+     "met": true,
+     "observed": {
+      "rungs": [
+       "CL7:80",
+       "CL8:25",
+       "CX1:1",
+       "CX1:5",
+       "CX1:6",
+       "CX1:7",
+       "CX2:1"
+      ]
+     },
+     "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+     "terminal": false
+    }
+   },
+   "prescreen_family_ranking": [
+    {
+     "distance": 0.03921568627450989,
+     "family": "RF9",
+     "n_above": 1,
+     "n_below": 4,
+     "near": 10,
+     "near_iota": 0.7058823529411765,
+     "straddles": true
+    },
+    {
+     "distance": 0.13333333333333341,
+     "family": "CR5",
+     "n_above": 3,
+     "n_below": 2,
+     "near": 6,
+     "near_iota": 0.8,
+     "straddles": true
+    },
+    {
+     "distance": 0.19696969696969702,
+     "family": "RF11",
+     "n_above": 1,
+     "n_below": 2,
+     "near": 26,
+     "near_iota": 0.8636363636363636,
+     "straddles": true
+    },
+    {
+     "distance": 3.3306690738754696e-16,
+     "family": "CR3",
+     "n_above": 0,
+     "n_below": 0,
+     "near": 8,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 3.3306690738754696e-16,
+     "family": "RF1",
+     "n_above": 0,
+     "n_below": 6,
+     "near": 6,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 3.3306690738754696e-16,
+     "family": "RF3",
+     "n_above": 0,
+     "n_below": 7,
+     "near": 8,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 3.3306690738754696e-16,
+     "family": "RF5",
+     "n_above": 2,
+     "n_below": 0,
+     "near": 11,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.0,
+     "family": "RF6",
+     "n_above": 1,
+     "n_below": 0,
+     "near": 2,
+     "near_iota": 0.6666666666666666,
+     "straddles": false
+    },
+    {
+     "distance": 0.08333333333333326,
+     "family": "RF12",
+     "n_above": 0,
+     "n_below": 4,
+     "near": 4,
+     "near_iota": 0.5833333333333334,
+     "straddles": false
+    },
+    {
+     "distance": 0.10416666666666663,
+     "family": "RF8",
+     "n_above": 0,
+     "n_below": 6,
+     "near": 6,
+     "near_iota": 0.5625,
+     "straddles": false
+    },
+    {
+     "distance": 0.12121212121212122,
+     "family": "RF10",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 19,
+     "near_iota": 0.5454545454545454,
+     "straddles": false
+    },
+    {
+     "distance": 0.24999999999999994,
+     "family": "RF7",
+     "n_above": 0,
+     "n_below": 12,
+     "near": 24,
+     "near_iota": 0.4166666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.26666666666666666,
+     "family": "CR11",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 33,
+     "near_iota": 0.39999999999999997,
+     "straddles": false
+    },
+    {
+     "distance": 0.37499999999999994,
+     "family": "CR7",
+     "n_above": 0,
+     "n_below": 5,
+     "near": 32,
+     "near_iota": 0.2916666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.4444444444444443,
+     "family": "CR8",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 8,
+     "near_iota": 0.22222222222222232,
+     "straddles": false
+    },
+    {
+     "distance": 0.5128205128205128,
+     "family": "CR4",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 11,
+     "near_iota": 0.1538461538461538,
+     "straddles": false
+    },
+    {
+     "distance": 0.5238095238095237,
+     "family": "RF2",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 5,
+     "near_iota": 0.14285714285714285,
+     "straddles": false
+    },
+    {
+     "distance": 0.5666666666666667,
+     "family": "CR9",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 8,
+     "near_iota": 0.1,
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR1",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR10",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR12",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR2",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR6",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "RF4",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    }
+   ],
+   "prescreen_straddling_families_C4_full_ladder": [
+    "CR5",
+    "RF1",
+    "RF11",
+    "RF3",
+    "RF9"
+   ],
+   "prescreen_straddling_families_near_set": [
+    "CR5",
+    "RF11",
+    "RF9"
+   ],
+   "shortlist_sent_to_calibration": {
+    "CL7": [
+     80
+    ],
+    "CL8": [
+     25
+    ],
+    "CR3": [
+     8
+    ],
+    "CR5": [
+     4,
+     5,
+     6,
+     8
+    ],
+    "CX1": [
+     5,
+     7
+    ],
+    "CX2": [
+     1,
+     2
+    ],
+    "RF1": [
+     2,
+     4,
+     6,
+     7
+    ],
+    "RF11": [
+     16,
+     21,
+     26
+    ],
+    "RF3": [
+     3,
+     6,
+     7,
+     8
+    ],
+    "RF9": [
+     6,
+     8,
+     10,
+     13
+    ]
+   }
+  },
+  "qwen3-4b": {
+   "calibration_admitted_families": [
+    "CR5",
+    "RF11"
+   ],
+   "calibration_straddling_families": [
+    "CR5",
+    "RF11"
+   ],
+   "collapse": {
+    "families_straddling_after_calibration": 2,
+    "families_straddling_at_prescreen_C4": 4,
+    "families_straddling_at_prescreen_near_set": 3,
+    "note": "the pre-screen ranks families at 24 topics x 1 draw; Gate 2 re-measures the shortlist at 96 topics x 4 draws. A family counted as straddling at pre-screen scale need not survive re-measurement.",
+    "required": 3
+   },
+   "design_variant": "reduced",
+   "iota_a_calibration": 0.7016574585635359,
+   "iota_a_prescreen": 0.75,
+   "iota_a_shift_prescreen_to_calibration": -0.048342541436464104,
+   "n_calibration_straddling_families": 2,
+   "n_core_references_admitted": 2,
+   "n_prescreen_straddling_families_C4": 4,
+   "n_prescreen_straddling_families_near_set": 3,
+   "n_shortlisted_rungs": 29,
+   "prescreen_coverage_class_matched": true,
+   "prescreen_coverage_conditions": {
+    "C1_bracketed": {
+     "met": true,
+     "observed": {
+      "above": true,
+      "below": true
+     },
+     "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+    },
+    "C2_groups_per_side": {
+     "met": true,
+     "observed": {
+      "above": [
+       "capital",
+       "comma",
+       "one_letter",
+       "sentence",
+       "vowel_initial"
+      ],
+      "below": [
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+    },
+    "C3_near_density": {
+     "met": true,
+     "observed": {
+      "families": [
+       "comma",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "sentence",
+       "vowel_initial",
+       "y_final"
+      ],
+      "rungs": [
+       "RF2:3",
+       "RF2:6",
+       "RF3:4",
+       "RF5:1",
+       "RF5:2",
+       "RF5:4",
+       "RF7:24",
+       "RF8:7",
+       "CR5:6",
+       "CR5:8",
+       "CR5:10",
+       "CR7:52",
+       "RF11:16",
+       "RF11:21",
+       "RF11:26",
+       "RF12:1"
+      ]
+     },
+     "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+    },
+    "C4_straddling_families": {
+     "met": true,
+     "observed": {
+      "straddling": [
+       "CR5",
+       "RF11",
+       "RF3",
+       "RF6"
+      ],
+      "well_formed": [
+       "CR5",
+       "RF11",
+       "RF3",
+       "RF6"
+      ],
+      "well_formed_groups": [
+       "capital",
+       "comma",
+       "one_letter",
+       "vowel_initial"
+      ]
+     },
+     "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+    },
+    "C5_total_points": {
+     "met": true,
+     "observed": {
+      "n": 73
+     },
+     "rule": "at least 12 eligible reference rungs in total"
+    },
+    "C6_shortlist_feasible": {
+     "met": true,
+     "observed": {
+      "families": [
+       "CR11",
+       "CR2",
+       "CR3",
+       "CR4",
+       "CR5",
+       "CR7",
+       "CR8",
+       "RF10",
+       "RF11",
+       "RF12",
+       "RF2",
+       "RF3",
+       "RF4",
+       "RF5",
+       "RF6",
+       "RF7",
+       "RF8",
+       "RF9"
+      ],
+      "groups": [
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "sentence",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 6 eligible reference families, from at least 4 feature groups, so \u00a712.3's shortlist is not short before it starts"
+    },
+    "C7_class_matched": {
+     "met": true,
+     "observed": {
+      "rungs": [
+       "CX1:2",
+       "CX1:3",
+       "CX1:4",
+       "CX1:5",
+       "CX1:6",
+       "CX2:2"
+      ]
+     },
+     "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+     "terminal": false
+    }
+   },
+   "prescreen_family_ranking": [
+    {
+     "distance": 0.016666666666666607,
+     "family": "CR5",
+     "n_above": 2,
+     "n_below": 6,
+     "near": 8,
+     "near_iota": 0.7333333333333334,
+     "straddles": true
+    },
+    {
+     "distance": 0.0625,
+     "family": "RF11",
+     "n_above": 2,
+     "n_below": 3,
+     "near": 21,
+     "near_iota": 0.8125,
+     "straddles": true
+    },
+    {
+     "distance": 0.16666666666666663,
+     "family": "RF6",
+     "n_above": 1,
+     "n_below": 2,
+     "near": 1,
+     "near_iota": 0.9166666666666666,
+     "straddles": true
+    },
+    {
+     "distance": 2.220446049250313e-16,
+     "family": "RF3",
+     "n_above": 0,
+     "n_below": 5,
+     "near": 4,
+     "near_iota": 0.7500000000000002,
+     "straddles": false
+    },
+    {
+     "distance": 0.03571428571428592,
+     "family": "RF8",
+     "n_above": 0,
+     "n_below": 6,
+     "near": 7,
+     "near_iota": 0.7142857142857141,
+     "straddles": false
+    },
+    {
+     "distance": 0.05769230769230771,
+     "family": "RF2",
+     "n_above": 0,
+     "n_below": 6,
+     "near": 3,
+     "near_iota": 0.6923076923076923,
+     "straddles": false
+    },
+    {
+     "distance": 0.07608695652173914,
+     "family": "RF5",
+     "n_above": 6,
+     "n_below": 0,
+     "near": 2,
+     "near_iota": 0.8260869565217391,
+     "straddles": false
+    },
+    {
+     "distance": 0.08333333333333304,
+     "family": "CR7",
+     "n_above": 0,
+     "n_below": 4,
+     "near": 52,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.08333333333333337,
+     "family": "RF12",
+     "n_above": 1,
+     "n_below": 0,
+     "near": 1,
+     "near_iota": 0.8333333333333334,
+     "straddles": false
+    },
+    {
+     "distance": 0.08333333333333304,
+     "family": "RF9",
+     "n_above": 0,
+     "n_below": 5,
+     "near": 16,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.14130434782608692,
+     "family": "RF7",
+     "n_above": 0,
+     "n_below": 11,
+     "near": 24,
+     "near_iota": 0.6086956521739131,
+     "straddles": false
+    },
+    {
+     "distance": 0.25,
+     "family": "CR3",
+     "n_above": 0,
+     "n_below": 4,
+     "near": 4,
+     "near_iota": 0.5,
+     "straddles": false
+    },
+    {
+     "distance": 0.24999999999999933,
+     "family": "CR4",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 18,
+     "near_iota": 0.5000000000000007,
+     "straddles": false
+    },
+    {
+     "distance": 0.2794117647058823,
+     "family": "RF4",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 6,
+     "near_iota": 0.4705882352941177,
+     "straddles": false
+    },
+    {
+     "distance": 0.3815789473684211,
+     "family": "RF10",
+     "n_above": 0,
+     "n_below": 2,
+     "near": 12,
+     "near_iota": 0.3684210526315789,
+     "straddles": false
+    },
+    {
+     "distance": 0.5,
+     "family": "CR8",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 4,
+     "near_iota": 0.25,
+     "straddles": false
+    },
+    {
+     "distance": 0.5277777777777778,
+     "family": "CR11",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 24,
+     "near_iota": 0.22222222222222224,
+     "straddles": false
+    },
+    {
+     "distance": 0.6071428571428572,
+     "family": "CR2",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 4,
+     "near_iota": 0.14285714285714285,
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR1",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR10",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR12",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR6",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR9",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "RF1",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    }
+   ],
+   "prescreen_straddling_families_C4_full_ladder": [
+    "CR5",
+    "RF11",
+    "RF3",
+    "RF6"
+   ],
+   "prescreen_straddling_families_near_set": [
+    "CR5",
+    "RF11",
+    "RF6"
+   ],
+   "shortlist_sent_to_calibration": {
+    "CL7": [
+     30,
+     45
+    ],
+    "CR5": [
+     5,
+     6,
+     8,
+     10
+    ],
+    "CX1": [
+     4,
+     5
+    ],
+    "CX2": [
+     1,
+     2
+    ],
+    "RF11": [
+     12,
+     16,
+     21,
+     26
+    ],
+    "RF2": [
+     3,
+     4,
+     5,
+     6
+    ],
+    "RF3": [
+     1,
+     2,
+     4,
+     6
+    ],
+    "RF6": [
+     1,
+     2,
+     3
+    ],
+    "RF8": [
+     4,
+     5,
+     6,
+     7
+    ]
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "calibration_admitted_families": [
+    "RF7"
+   ],
+   "calibration_straddling_families": [],
+   "collapse": {
+    "families_straddling_after_calibration": 0,
+    "families_straddling_at_prescreen_C4": 4,
+    "families_straddling_at_prescreen_near_set": 4,
+    "note": "the pre-screen ranks families at 24 topics x 1 draw; Gate 2 re-measures the shortlist at 96 topics x 4 draws. A family counted as straddling at pre-screen scale need not survive re-measurement.",
+    "required": 3
+   },
+   "design_variant": "reduced",
+   "iota_a_calibration": 0.5963060686015831,
+   "iota_a_prescreen": 0.625,
+   "iota_a_shift_prescreen_to_calibration": -0.028693931398416916,
+   "n_calibration_straddling_families": 0,
+   "n_core_references_admitted": 0,
+   "n_prescreen_straddling_families_C4": 4,
+   "n_prescreen_straddling_families_near_set": 4,
+   "n_shortlisted_rungs": 28,
+   "prescreen_coverage_class_matched": true,
+   "prescreen_coverage_conditions": {
+    "C1_bracketed": {
+     "met": true,
+     "observed": {
+      "above": true,
+      "below": true
+     },
+     "rule": "an eligible reference rung strictly below iota_A and one strictly above"
+    },
+    "C2_groups_per_side": {
+     "met": true,
+     "observed": {
+      "above": [
+       "comma",
+       "one_letter",
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ],
+      "below": [
+       "b_initial",
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 3 eligible reference FEATURE GROUPS on each side of iota_A"
+    },
+    "C3_near_density": {
+     "met": true,
+     "observed": {
+      "families": [
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ],
+      "rungs": [
+       "RF7:22",
+       "RF7:24",
+       "RF8:7",
+       "RF8:8",
+       "CR3:6",
+       "RF9:10",
+       "RF10:19",
+       "RF11:16"
+      ]
+     },
+     "rule": "at least 6 eligible rungs within 0.15 of iota_A, from at least 3 feature groups"
+    },
+    "C4_straddling_families": {
+     "met": true,
+     "observed": {
+      "straddling": [
+       "RF10",
+       "RF11",
+       "RF8",
+       "RF9"
+      ],
+      "well_formed": [
+       "RF10",
+       "RF11",
+       "RF8",
+       "RF9"
+      ],
+      "well_formed_groups": [
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 4 reference families straddle iota_A with at least 3 eligible rungs spanning 0.40 in iota, from that many distinct feature groups"
+    },
+    "C5_total_points": {
+     "met": true,
+     "observed": {
+      "n": 46
+     },
+     "rule": "at least 12 eligible reference rungs in total"
+    },
+    "C6_shortlist_feasible": {
+     "met": true,
+     "observed": {
+      "families": [
+       "CR11",
+       "CR2",
+       "CR3",
+       "CR5",
+       "CR7",
+       "CR8",
+       "RF1",
+       "RF10",
+       "RF11",
+       "RF2",
+       "RF3",
+       "RF4",
+       "RF5",
+       "RF6",
+       "RF7",
+       "RF8",
+       "RF9"
+      ],
+      "groups": [
+       "b_initial",
+       "capital",
+       "comma",
+       "doubled_letter",
+       "ing_final",
+       "letter_a",
+       "one_letter",
+       "s_final",
+       "t_initial",
+       "vowel_initial",
+       "y_final"
+      ]
+     },
+     "rule": "at least 6 eligible reference families, from at least 4 feature groups, so \u00a712.3's shortlist is not short before it starts"
+    },
+    "C7_class_matched": {
+     "met": true,
+     "observed": {
+      "rungs": [
+       "CL7:45",
+       "CL8:3",
+       "CX1:6",
+       "CX1:7",
+       "CX1:8",
+       "CX2:2"
+      ]
+     },
+     "rule": "at least one eligible class rung within 0.15 of iota_A. NOT terminal: an unmatched class companion attaches COMPANION_CLASS_NOT_MATCHED and the study proceeds",
+     "terminal": false
+    }
+   },
+   "prescreen_family_ranking": [
+    {
+     "distance": 0.04166666666666696,
+     "family": "RF8",
+     "n_above": 1,
+     "n_below": 3,
+     "near": 8,
+     "near_iota": 0.666666666666667,
+     "straddles": true
+    },
+    {
+     "distance": 0.08333333333333337,
+     "family": "RF11",
+     "n_above": 2,
+     "n_below": 2,
+     "near": 16,
+     "near_iota": 0.5416666666666666,
+     "straddles": true
+    },
+    {
+     "distance": 0.12499999999999933,
+     "family": "RF10",
+     "n_above": 1,
+     "n_below": 2,
+     "near": 19,
+     "near_iota": 0.5000000000000007,
+     "straddles": true
+    },
+    {
+     "distance": 0.14423076923076916,
+     "family": "RF9",
+     "n_above": 2,
+     "n_below": 2,
+     "near": 10,
+     "near_iota": 0.7692307692307692,
+     "straddles": true
+    },
+    {
+     "distance": 0.04166666666666696,
+     "family": "CR3",
+     "n_above": 1,
+     "n_below": 0,
+     "near": 6,
+     "near_iota": 0.666666666666667,
+     "straddles": false
+    },
+    {
+     "distance": 0.04166666666666663,
+     "family": "RF7",
+     "n_above": 0,
+     "n_below": 9,
+     "near": 24,
+     "near_iota": 0.5833333333333334,
+     "straddles": false
+    },
+    {
+     "distance": 0.1875,
+     "family": "CR11",
+     "n_above": 0,
+     "n_below": 2,
+     "near": 28,
+     "near_iota": 0.4375,
+     "straddles": false
+    },
+    {
+     "distance": 0.26388888888888895,
+     "family": "RF5",
+     "n_above": 5,
+     "n_below": 0,
+     "near": 9,
+     "near_iota": 0.888888888888889,
+     "straddles": false
+    },
+    {
+     "distance": 0.29166666666666696,
+     "family": "CR7",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 48,
+     "near_iota": 0.33333333333333304,
+     "straddles": false
+    },
+    {
+     "distance": 0.29166666666666696,
+     "family": "RF2",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 7,
+     "near_iota": 0.33333333333333304,
+     "straddles": false
+    },
+    {
+     "distance": 0.29166666666666696,
+     "family": "RF3",
+     "n_above": 0,
+     "n_below": 2,
+     "near": 4,
+     "near_iota": 0.33333333333333304,
+     "straddles": false
+    },
+    {
+     "distance": 0.2916666666666667,
+     "family": "RF6",
+     "n_above": 0,
+     "n_below": 2,
+     "near": 0,
+     "near_iota": 0.3333333333333333,
+     "straddles": false
+    },
+    {
+     "distance": 0.3092105263157895,
+     "family": "CR5",
+     "n_above": 0,
+     "n_below": 3,
+     "near": 8,
+     "near_iota": 0.3157894736842105,
+     "straddles": false
+    },
+    {
+     "distance": 0.38970588235294124,
+     "family": "RF4",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 6,
+     "near_iota": 0.2352941176470588,
+     "straddles": false
+    },
+    {
+     "distance": 0.42500000000000004,
+     "family": "CR8",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 4,
+     "near_iota": 0.19999999999999998,
+     "straddles": false
+    },
+    {
+     "distance": 0.48214285714285715,
+     "family": "RF1",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 1,
+     "near_iota": 0.14285714285714285,
+     "straddles": false
+    },
+    {
+     "distance": 0.513888888888889,
+     "family": "CR2",
+     "n_above": 0,
+     "n_below": 1,
+     "near": 6,
+     "near_iota": 0.11111111111111101,
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR1",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR10",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR12",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR4",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR6",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "CR9",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    },
+    {
+     "distance": null,
+     "family": "RF12",
+     "near": null,
+     "reason": "no eligible rung at pre-screen",
+     "straddles": false
+    }
+   ],
+   "prescreen_straddling_families_C4_full_ladder": [
+    "RF10",
+    "RF11",
+    "RF8",
+    "RF9"
+   ],
+   "prescreen_straddling_families_near_set": [
+    "RF10",
+    "RF11",
+    "RF8",
+    "RF9"
+   ],
+   "shortlist_sent_to_calibration": {
+    "CL7": [
+     45,
+     60
+    ],
+    "CL8": [
+     3,
+     10
+    ],
+    "CR3": [
+     6
+    ],
+    "CX1": [
+     7,
+     8
+    ],
+    "CX2": [
+     1,
+     2
+    ],
+    "RF10": [
+     12,
+     15,
+     19
+    ],
+    "RF11": [
+     12,
+     16,
+     21,
+     26
+    ],
+    "RF7": [
+     21,
+     22,
+     23,
+     24
+    ],
+    "RF8": [
+     3,
+     4,
+     7,
+     8
+    ],
+    "RF9": [
+     6,
+     8,
+     10,
+     13
+    ]
+   }
+  }
+ },
+ "prescreen_scale": {
+  "draws_per_cell": 1,
+  "note": "\u00a712.2's pre-screen measures the complete registered ladder at one draw per rung",
+  "topics": 24
+ }
+}

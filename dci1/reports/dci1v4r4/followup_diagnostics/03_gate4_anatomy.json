@@ -1,0 +1,2004 @@
+{
+ "M_CAL": 4,
+ "_provenance": "POST-HOC DIAGNOSTIC; every rate is read from a signed record, none recomputed",
+ "band": [
+  0.05,
+  0.95
+ ],
+ "models": {
+  "gemma-3n-e2b-it": {
+   "cells": [
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.6041666666666666,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.625,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R1",
+     "composed_or_solo_rate": 0.6041666666666666,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R1",
+     "composed_or_solo_rate": 0.5104166666666666,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R2",
+     "composed_or_solo_rate": 0.59375,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R2",
+     "composed_or_solo_rate": 0.6354166666666666,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R3",
+     "composed_or_solo_rate": 0.6041666666666666,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+R3",
+     "composed_or_solo_rate": 0.4375,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.7395833333333334,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.84375,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.8229166666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.40625,
+     "constraint": "CX2:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1",
+     "composed_or_solo_rate": 0.9270833333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1",
+     "composed_or_solo_rate": 0.7395833333333334,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1+",
+     "composed_or_solo_rate": 0.9375,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1+",
+     "composed_or_solo_rate": 0.8125,
+     "constraint": "RF9:13",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1-",
+     "composed_or_solo_rate": 0.8958333333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R1-",
+     "composed_or_solo_rate": 0.59375,
+     "constraint": "RF9:8",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1-"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2",
+     "composed_or_solo_rate": 0.9166666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2",
+     "composed_or_solo_rate": 0.8020833333333334,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2+",
+     "composed_or_solo_rate": 0.8958333333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2+",
+     "composed_or_solo_rate": 0.8854166666666666,
+     "constraint": "CR5:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2-",
+     "composed_or_solo_rate": 0.9166666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R2-",
+     "composed_or_solo_rate": 0.71875,
+     "constraint": "CR5:3",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2-"
+    },
+    {
+     "above_band": true,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3",
+     "composed_or_solo_rate": 0.9583333333333334,
+     "constraint": "B:10",
+     "fails_band": true,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": true,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3",
+     "composed_or_solo_rate": 0.96875,
+     "constraint": "RF11:26",
+     "fails_band": true,
+     "position": 2,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3+",
+     "composed_or_solo_rate": 0.9270833333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": true,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3+",
+     "composed_or_solo_rate": 1.0,
+     "constraint": "RF11:32",
+     "fails_band": true,
+     "position": 2,
+     "slot": "R3+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3-",
+     "composed_or_solo_rate": 0.9270833333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+R3-",
+     "composed_or_solo_rate": 0.8229166666666666,
+     "constraint": "RF11:21",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R3-"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.6458333333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.4895833333333333,
+     "constraint": "CX2:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1++B",
+     "composed_or_solo_rate": 0.6875,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1++B",
+     "composed_or_solo_rate": 0.8541666666666666,
+     "constraint": "RF9:13",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+A",
+     "composed_or_solo_rate": 0.7708333333333334,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+A",
+     "composed_or_solo_rate": 0.71875,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+B",
+     "composed_or_solo_rate": 0.5208333333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+B",
+     "composed_or_solo_rate": 0.8125,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+R2",
+     "composed_or_solo_rate": 0.7083333333333334,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+R2",
+     "composed_or_solo_rate": 0.2708333333333333,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+R3",
+     "composed_or_solo_rate": 0.8541666666666666,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1+R3",
+     "composed_or_solo_rate": 0.7291666666666666,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1-+B",
+     "composed_or_solo_rate": 0.5416666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R1-+B",
+     "composed_or_solo_rate": 0.6666666666666666,
+     "constraint": "RF9:8",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R1-"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2++B",
+     "composed_or_solo_rate": 0.7395833333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2++B",
+     "composed_or_solo_rate": 0.71875,
+     "constraint": "CR5:1",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+A",
+     "composed_or_solo_rate": 0.65625,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+A",
+     "composed_or_solo_rate": 0.625,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+B",
+     "composed_or_solo_rate": 0.7604166666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+B",
+     "composed_or_solo_rate": 0.5729166666666666,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+R1",
+     "composed_or_solo_rate": 0.7083333333333334,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+R1",
+     "composed_or_solo_rate": 0.53125,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+R3",
+     "composed_or_solo_rate": 0.46875,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2+R3",
+     "composed_or_solo_rate": 0.5416666666666666,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2-+B",
+     "composed_or_solo_rate": 0.7291666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R2-+B",
+     "composed_or_solo_rate": 0.34375,
+     "constraint": "CR5:3",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R2-"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3++B",
+     "composed_or_solo_rate": 0.6041666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": true,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3++B",
+     "composed_or_solo_rate": 1.0,
+     "constraint": "RF11:32",
+     "fails_band": true,
+     "position": 1,
+     "slot": "R3+"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+A",
+     "composed_or_solo_rate": 0.7291666666666666,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+A",
+     "composed_or_solo_rate": 0.5625,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+B",
+     "composed_or_solo_rate": 0.7604166666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": true,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+B",
+     "composed_or_solo_rate": 0.9583333333333334,
+     "constraint": "RF11:26",
+     "fails_band": true,
+     "position": 1,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+R1",
+     "composed_or_solo_rate": 0.84375,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+R1",
+     "composed_or_solo_rate": 0.7395833333333334,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+R2",
+     "composed_or_solo_rate": 0.3125,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": 2,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3+R2",
+     "composed_or_solo_rate": 0.71875,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3-+B",
+     "composed_or_solo_rate": 0.6979166666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:R3-+B",
+     "composed_or_solo_rate": 0.7604166666666666,
+     "constraint": "RF11:21",
+     "fails_band": false,
+     "position": 1,
+     "slot": "R3-"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:A",
+     "composed_or_solo_rate": 0.6875,
+     "constraint": "A:1",
+     "fails_band": false,
+     "position": null,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:B",
+     "composed_or_solo_rate": 0.8333333333333334,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": null,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:CL",
+     "composed_or_solo_rate": 0.65625,
+     "constraint": "CX2:1",
+     "fails_band": false,
+     "position": null,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R1",
+     "composed_or_solo_rate": 0.7708333333333334,
+     "constraint": "RF9:10",
+     "fails_band": false,
+     "position": null,
+     "slot": "R1"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R1+",
+     "composed_or_solo_rate": 0.8333333333333334,
+     "constraint": "RF9:13",
+     "fails_band": false,
+     "position": null,
+     "slot": "R1+"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R1-",
+     "composed_or_solo_rate": 0.5520833333333334,
+     "constraint": "RF9:8",
+     "fails_band": false,
+     "position": null,
+     "slot": "R1-"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R2",
+     "composed_or_solo_rate": 0.6354166666666666,
+     "constraint": "CR5:2",
+     "fails_band": false,
+     "position": null,
+     "slot": "R2"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R2+",
+     "composed_or_solo_rate": 0.8125,
+     "constraint": "CR5:1",
+     "fails_band": false,
+     "position": null,
+     "slot": "R2+"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R2-",
+     "composed_or_solo_rate": 0.3333333333333333,
+     "constraint": "CR5:3",
+     "fails_band": false,
+     "position": null,
+     "slot": "R2-"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R3",
+     "composed_or_solo_rate": 0.6354166666666666,
+     "constraint": "RF11:26",
+     "fails_band": false,
+     "position": null,
+     "slot": "R3"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R3+",
+     "composed_or_solo_rate": 0.9375,
+     "constraint": "RF11:32",
+     "fails_band": false,
+     "position": null,
+     "slot": "R3+"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:R3-",
+     "composed_or_solo_rate": 0.3541666666666667,
+     "constraint": "RF11:21",
+     "fails_band": false,
+     "position": null,
+     "slot": "R3-"
+    }
+   ],
+   "companion_trajectories": {
+    "A": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "A:1",
+     "constraint_class": "production",
+     "family": "A",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.6041666666666666,
+      "pair:A+R1": 0.6041666666666666,
+      "pair:A+R2": 0.59375,
+      "pair:A+R3": 0.6041666666666666,
+      "pair:B+A": 0.7395833333333334,
+      "pair:R1+A": 0.7708333333333334,
+      "pair:R2+A": 0.65625,
+      "pair:R3+A": 0.7291666666666666
+     },
+     "gate4_solo_compliance": 0.6875,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 1
+    },
+    "B": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "B:10",
+     "constraint_class": "budget",
+     "family": "B",
+     "gate4_composed_cells_failing": [
+      "pair:B+R3"
+     ],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.625,
+      "pair:B+A": 0.84375,
+      "pair:B+CL": 0.8229166666666666,
+      "pair:B+R1": 0.9270833333333334,
+      "pair:B+R1+": 0.9375,
+      "pair:B+R1-": 0.8958333333333334,
+      "pair:B+R2": 0.9166666666666666,
+      "pair:B+R2+": 0.8958333333333334,
+      "pair:B+R2-": 0.9166666666666666,
+      "pair:B+R3": 0.9583333333333334,
+      "pair:B+R3+": 0.9270833333333334,
+      "pair:B+R3-": 0.9270833333333334,
+      "pair:CL+B": 0.6458333333333334,
+      "pair:R1++B": 0.6875,
+      "pair:R1+B": 0.5208333333333334,
+      "pair:R1-+B": 0.5416666666666666,
+      "pair:R2++B": 0.7395833333333334,
+      "pair:R2+B": 0.7604166666666666,
+      "pair:R2-+B": 0.7291666666666666,
+      "pair:R3++B": 0.6041666666666666,
+      "pair:R3+B": 0.7604166666666666,
+      "pair:R3-+B": 0.6979166666666666
+     },
+     "gate4_solo_compliance": 0.8333333333333334,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 10
+    },
+    "CL": {
+     "calibration_chance_compliance": 0.12760416666666666,
+     "calibration_iota": 0.5731343283582089,
+     "calibration_median_words": 96.0,
+     "calibration_solo_compliance": 0.6276041666666666,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CX2:1",
+     "constraint_class": "production",
+     "family": "CX2",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+CL": 0.40625,
+      "pair:CL+B": 0.4895833333333333
+     },
+     "gate4_solo_compliance": 0.65625,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.02864583333333337,
+     "prescreen_chance_compliance": 0.16666666666666666,
+     "prescreen_iota": 0.6,
+     "prescreen_solo_compliance": 0.6666666666666666,
+     "severity": 1
+    },
+    "R1": {
+     "calibration_chance_compliance": 0.23958333333333334,
+     "calibration_iota": 0.5342465753424658,
+     "calibration_median_words": 82.0,
+     "calibration_solo_compliance": 0.6458333333333334,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF9:10",
+     "constraint_class": "budget",
+     "family": "RF9",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+R1": 0.5104166666666666,
+      "pair:B+R1": 0.7395833333333334,
+      "pair:R1+A": 0.71875,
+      "pair:R1+B": 0.8125,
+      "pair:R1+R2": 0.7083333333333334,
+      "pair:R1+R3": 0.8541666666666666,
+      "pair:R2+R1": 0.7083333333333334,
+      "pair:R3+R1": 0.84375
+     },
+     "gate4_solo_compliance": 0.7708333333333334,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.125,
+     "prescreen_chance_compliance": 0.20833333333333334,
+     "prescreen_iota": 0.6315789473684211,
+     "prescreen_solo_compliance": 0.7083333333333334,
+     "severity": 10
+    },
+    "R1+": {
+     "calibration_chance_compliance": 0.4609375,
+     "calibration_iota": 0.642512077294686,
+     "calibration_median_words": 80.0,
+     "calibration_solo_compliance": 0.8072916666666666,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF9:13",
+     "constraint_class": "budget",
+     "family": "RF9",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+R1+": 0.8125,
+      "pair:R1++B": 0.8541666666666666
+     },
+     "gate4_solo_compliance": 0.8333333333333334,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.02604166666666674,
+     "prescreen_chance_compliance": 0.4583333333333333,
+     "prescreen_iota": 0.46153846153846156,
+     "prescreen_solo_compliance": 0.7083333333333334,
+     "severity": 13
+    },
+    "R1-": {
+     "calibration_chance_compliance": 0.125,
+     "calibration_iota": 0.431547619047619,
+     "calibration_median_words": 82.0,
+     "calibration_solo_compliance": 0.5026041666666666,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF9:8",
+     "constraint_class": "budget",
+     "family": "RF9",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+R1-": 0.59375,
+      "pair:R1-+B": 0.6666666666666666
+     },
+     "gate4_solo_compliance": 0.5520833333333334,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.04947916666666674,
+     "prescreen_chance_compliance": 0.16666666666666666,
+     "prescreen_iota": 0.3,
+     "prescreen_solo_compliance": 0.4166666666666667,
+     "severity": 8
+    },
+    "R2": {
+     "calibration_chance_compliance": 0.0026041666666666665,
+     "calibration_iota": 0.6318537859007833,
+     "calibration_median_words": 98.0,
+     "calibration_solo_compliance": 0.6328125,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CR5:2",
+     "constraint_class": "budget",
+     "family": "CR5",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+R2": 0.6354166666666666,
+      "pair:B+R2": 0.8020833333333334,
+      "pair:R1+R2": 0.2708333333333333,
+      "pair:R2+A": 0.625,
+      "pair:R2+B": 0.5729166666666666,
+      "pair:R2+R1": 0.53125,
+      "pair:R2+R3": 0.46875,
+      "pair:R3+R2": 0.3125
+     },
+     "gate4_solo_compliance": 0.6354166666666666,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.0026041666666666297,
+     "prescreen_chance_compliance": 0.0,
+     "prescreen_iota": 0.6666666666666666,
+     "prescreen_solo_compliance": 0.6666666666666666,
+     "severity": 2
+    },
+    "R2+": {
+     "calibration_chance_compliance": 0.0,
+     "calibration_iota": 0.6822916666666666,
+     "calibration_median_words": 98.0,
+     "calibration_solo_compliance": 0.6822916666666666,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CR5:1",
+     "constraint_class": "budget",
+     "family": "CR5",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+R2+": 0.8854166666666666,
+      "pair:R2++B": 0.71875
+     },
+     "gate4_solo_compliance": 0.8125,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.13020833333333337,
+     "prescreen_chance_compliance": 0.0,
+     "prescreen_iota": 0.6666666666666666,
+     "prescreen_solo_compliance": 0.6666666666666666,
+     "severity": 1
+    },
+    "R2-": {
+     "calibration_chance_compliance": 0.018229166666666668,
+     "calibration_iota": 0.35543766578249336,
+     "calibration_median_words": 100.0,
+     "calibration_solo_compliance": 0.3671875,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CR5:3",
+     "constraint_class": "budget",
+     "family": "CR5",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+R2-": 0.71875,
+      "pair:R2-+B": 0.34375
+     },
+     "gate4_solo_compliance": 0.3333333333333333,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": -0.033854166666666685,
+     "prescreen_chance_compliance": 0.0,
+     "prescreen_iota": 0.375,
+     "prescreen_solo_compliance": 0.375,
+     "severity": 3
+    },
+    "R3": {
+     "calibration_chance_compliance": 0.1484375,
+     "calibration_iota": 0.6330275229357798,
+     "calibration_median_words": 81.0,
+     "calibration_solo_compliance": 0.6875,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF11:26",
+     "constraint_class": "budget",
+     "family": "RF11",
+     "gate4_composed_cells_failing": [
+      "pair:B+R3",
+      "pair:R3+B"
+     ],
+     "gate4_composed_rates": {
+      "pair:A+R3": 0.4375,
+      "pair:B+R3": 0.96875,
+      "pair:R1+R3": 0.7291666666666666,
+      "pair:R2+R3": 0.5416666666666666,
+      "pair:R3+A": 0.5625,
+      "pair:R3+B": 0.9583333333333334,
+      "pair:R3+R1": 0.7395833333333334,
+      "pair:R3+R2": 0.71875
+     },
+     "gate4_solo_compliance": 0.6354166666666666,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": -0.05208333333333337,
+     "prescreen_chance_compliance": 0.125,
+     "prescreen_iota": 0.47619047619047616,
+     "prescreen_solo_compliance": 0.5416666666666666,
+     "severity": 26
+    },
+    "R3+": {
+     "calibration_chance_compliance": 0.4453125,
+     "calibration_iota": 0.8544600938967137,
+     "calibration_median_words": 81.0,
+     "calibration_solo_compliance": 0.9192708333333334,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF11:32",
+     "constraint_class": "budget",
+     "family": "RF11",
+     "gate4_composed_cells_failing": [
+      "pair:B+R3+",
+      "pair:R3++B"
+     ],
+     "gate4_composed_rates": {
+      "pair:B+R3+": 1.0,
+      "pair:R3++B": 1.0
+     },
+     "gate4_solo_compliance": 0.9375,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.01822916666666663,
+     "prescreen_chance_compliance": 0.2916666666666667,
+     "prescreen_iota": 0.9411764705882355,
+     "prescreen_solo_compliance": 0.9583333333333334,
+     "severity": 32
+    },
+    "R3-": {
+     "calibration_chance_compliance": 0.0078125,
+     "calibration_iota": 0.3359580052493438,
+     "calibration_median_words": 81.0,
+     "calibration_solo_compliance": 0.3411458333333333,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "RF11:21",
+     "constraint_class": "budget",
+     "family": "RF11",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+R3-": 0.8229166666666666,
+      "pair:R3-+B": 0.7604166666666666
+     },
+     "gate4_solo_compliance": 0.3541666666666667,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": 0.01302083333333337,
+     "prescreen_chance_compliance": 0.08333333333333333,
+     "prescreen_iota": 0.27272727272727276,
+     "prescreen_solo_compliance": 0.3333333333333333,
+     "severity": 21
+    }
+   },
+   "design_variant": "full",
+   "gate4_outcome": "TERMINAL",
+   "m_star": 10,
+   "n_cells_measured": 46,
+   "n_failing": 5,
+   "n_rate_checks": 80,
+   "n_star": 1,
+   "registered_failures": [
+    {
+     "cell": "pair:B+R3",
+     "rate": 0.9583333333333334,
+     "slot": "B"
+    },
+    {
+     "cell": "pair:B+R3",
+     "rate": 0.96875,
+     "slot": "R3"
+    },
+    {
+     "cell": "pair:B+R3+",
+     "rate": 1.0,
+     "slot": "R3+"
+    },
+    {
+     "cell": "pair:R3++B",
+     "rate": 1.0,
+     "slot": "R3+"
+    },
+    {
+     "cell": "pair:R3+B",
+     "rate": 0.9583333333333334,
+     "slot": "R3"
+    }
+   ],
+   "slot_map": {
+    "A": [
+     "A",
+     1
+    ],
+    "B": [
+     "B",
+     10
+    ],
+    "CL": [
+     "CX2",
+     1
+    ],
+    "R1": [
+     "RF9",
+     10
+    ],
+    "R1+": [
+     "RF9",
+     13
+    ],
+    "R1-": [
+     "RF9",
+     8
+    ],
+    "R2": [
+     "CR5",
+     2
+    ],
+    "R2+": [
+     "CR5",
+     1
+    ],
+    "R2-": [
+     "CR5",
+     3
+    ],
+    "R3": [
+     "RF11",
+     26
+    ],
+    "R3+": [
+     "RF11",
+     32
+    ],
+    "R3-": [
+     "RF11",
+     21
+    ]
+   },
+   "terminal_status": "COMPOSED_HEADROOM_FAILURE"
+  },
+  "gemma-3n-e4b-it": {
+   "cells": [
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.65625,
+     "constraint": "A:4",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.71875,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.7708333333333334,
+     "constraint": "A:4",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.8854166666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.5416666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.6666666666666666,
+     "constraint": "CL7:80",
+     "fails_band": false,
+     "position": 2,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.08333333333333333,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.6145833333333334,
+     "constraint": "CL7:80",
+     "fails_band": false,
+     "position": 1,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:A",
+     "composed_or_solo_rate": 0.65625,
+     "constraint": "A:4",
+     "fails_band": false,
+     "position": null,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:B",
+     "composed_or_solo_rate": 0.9375,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": null,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:CL",
+     "composed_or_solo_rate": 0.6666666666666666,
+     "constraint": "CL7:80",
+     "fails_band": false,
+     "position": null,
+     "slot": "CL"
+    }
+   ],
+   "companion_trajectories": {
+    "A": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "A:4",
+     "constraint_class": "production",
+     "family": "A",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.65625,
+      "pair:B+A": 0.7708333333333334
+     },
+     "gate4_solo_compliance": 0.65625,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 4
+    },
+    "B": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "B:10",
+     "constraint_class": "budget",
+     "family": "B",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.71875,
+      "pair:B+A": 0.8854166666666666,
+      "pair:B+CL": 0.5416666666666666,
+      "pair:CL+B": 0.08333333333333333
+     },
+     "gate4_solo_compliance": 0.9375,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 10
+    },
+    "CL": {
+     "calibration_chance_compliance": 0.0,
+     "calibration_iota": 0.7083333333333334,
+     "calibration_median_words": 127.0,
+     "calibration_solo_compliance": 0.7083333333333334,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CL7:80",
+     "constraint_class": "production",
+     "family": "CL7",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+CL": 0.6666666666666666,
+      "pair:CL+B": 0.6145833333333334
+     },
+     "gate4_solo_compliance": 0.6666666666666666,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": -0.04166666666666674,
+     "prescreen_chance_compliance": 0.0,
+     "prescreen_iota": 0.6666666666666666,
+     "prescreen_solo_compliance": 0.6666666666666666,
+     "severity": 80
+    }
+   },
+   "design_variant": "reduced",
+   "gate4_outcome": "PASS",
+   "m_star": 10,
+   "n_cells_measured": 7,
+   "n_failing": 0,
+   "n_rate_checks": 11,
+   "n_star": 4,
+   "registered_failures": [],
+   "slot_map": {
+    "A": [
+     "A",
+     4
+    ],
+    "B": [
+     "B",
+     10
+    ],
+    "CL": [
+     "CL7",
+     80
+    ]
+   },
+   "terminal_status": null
+  },
+  "qwen3-4b": {
+   "cells": [
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.2916666666666667,
+     "constraint": "A:2",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.8333333333333334,
+     "constraint": "B:12",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.3854166666666667,
+     "constraint": "A:2",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.9375,
+     "constraint": "B:12",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.9479166666666666,
+     "constraint": "B:12",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.3854166666666667,
+     "constraint": "CX1:4",
+     "fails_band": false,
+     "position": 2,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.8854166666666666,
+     "constraint": "B:12",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.3333333333333333,
+     "constraint": "CX1:4",
+     "fails_band": false,
+     "position": 1,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:A",
+     "composed_or_solo_rate": 0.7708333333333334,
+     "constraint": "A:2",
+     "fails_band": false,
+     "position": null,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:B",
+     "composed_or_solo_rate": 0.84375,
+     "constraint": "B:12",
+     "fails_band": false,
+     "position": null,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:CL",
+     "composed_or_solo_rate": 0.6666666666666666,
+     "constraint": "CX1:4",
+     "fails_band": false,
+     "position": null,
+     "slot": "CL"
+    }
+   ],
+   "companion_trajectories": {
+    "A": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "A:2",
+     "constraint_class": "production",
+     "family": "A",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.2916666666666667,
+      "pair:B+A": 0.3854166666666667
+     },
+     "gate4_solo_compliance": 0.7708333333333334,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 2
+    },
+    "B": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "B:12",
+     "constraint_class": "budget",
+     "family": "B",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.8333333333333334,
+      "pair:B+A": 0.9375,
+      "pair:B+CL": 0.9479166666666666,
+      "pair:CL+B": 0.8854166666666666
+     },
+     "gate4_solo_compliance": 0.84375,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 12
+    },
+    "CL": {
+     "calibration_chance_compliance": 0.0,
+     "calibration_iota": 0.6953125,
+     "calibration_median_words": 66.0,
+     "calibration_solo_compliance": 0.6953125,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CX1:4",
+     "constraint_class": "production",
+     "family": "CX1",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+CL": 0.3854166666666667,
+      "pair:CL+B": 0.3333333333333333
+     },
+     "gate4_solo_compliance": 0.6666666666666666,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": -0.02864583333333337,
+     "prescreen_chance_compliance": 0.0,
+     "prescreen_iota": 0.7083333333333334,
+     "prescreen_solo_compliance": 0.7083333333333334,
+     "severity": 4
+    },
+    "R1": {
+     "calibration_chance_compliance": 0.16145833333333334,
+     "calibration_iota": 0.7142857142857142,
+     "calibration_median_words": 60.0,
+     "calibration_solo_compliance": 0.7604166666666666,
+     "calibration_solo_vacuity": 0.0078125,
+     "constraint": "RF11:21",
+     "constraint_class": "budget",
+     "family": "RF11",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {},
+     "gate4_solo_compliance": null,
+     "gate4_solo_fails_band": null,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": 0.3333333333333333,
+     "prescreen_iota": 0.8125,
+     "prescreen_solo_compliance": 0.875,
+     "severity": 21
+    },
+    "R2": {
+     "calibration_chance_compliance": 0.3645833333333333,
+     "calibration_iota": 0.6762295081967213,
+     "calibration_median_words": 77.0,
+     "calibration_solo_compliance": 0.7942708333333334,
+     "calibration_solo_vacuity": 0.0,
+     "constraint": "CR5:8",
+     "constraint_class": "budget",
+     "family": "CR5",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {},
+     "gate4_solo_compliance": null,
+     "gate4_solo_fails_band": null,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": 0.375,
+     "prescreen_iota": 0.7333333333333334,
+     "prescreen_solo_compliance": 0.8333333333333334,
+     "severity": 8
+    }
+   },
+   "design_variant": "reduced",
+   "gate4_outcome": "PASS",
+   "m_star": 12,
+   "n_cells_measured": 7,
+   "n_failing": 0,
+   "n_rate_checks": 11,
+   "n_star": 2,
+   "registered_failures": [],
+   "slot_map": {
+    "A": [
+     "A",
+     2
+    ],
+    "B": [
+     "B",
+     12
+    ],
+    "CL": [
+     "CX1",
+     4
+    ],
+    "R1": [
+     "RF11",
+     21
+    ],
+    "R2": [
+     "CR5",
+     8
+    ]
+   },
+   "terminal_status": null
+  },
+  "qwen3-4b-instruct-2507": {
+   "cells": [
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.5833333333333334,
+     "constraint": "A:5",
+     "fails_band": false,
+     "position": 1,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:A+B",
+     "composed_or_solo_rate": 0.7916666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.5833333333333334,
+     "constraint": "A:5",
+     "fails_band": false,
+     "position": 2,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+A",
+     "composed_or_solo_rate": 0.78125,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.90625,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 1,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:B+CL",
+     "composed_or_solo_rate": 0.90625,
+     "constraint": "CL8:3",
+     "fails_band": false,
+     "position": 2,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.78125,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": 2,
+     "slot": "B"
+    },
+    {
+     "above_band": false,
+     "arm": "composed",
+     "below_band": false,
+     "cell": "pair:CL+B",
+     "composed_or_solo_rate": 0.9166666666666666,
+     "constraint": "CL8:3",
+     "fails_band": false,
+     "position": 1,
+     "slot": "CL"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:A",
+     "composed_or_solo_rate": 0.59375,
+     "constraint": "A:5",
+     "fails_band": false,
+     "position": null,
+     "slot": "A"
+    },
+    {
+     "above_band": false,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:B",
+     "composed_or_solo_rate": 0.6666666666666666,
+     "constraint": "B:10",
+     "fails_band": false,
+     "position": null,
+     "slot": "B"
+    },
+    {
+     "above_band": true,
+     "arm": "solo",
+     "below_band": false,
+     "cell": "solo:CL",
+     "composed_or_solo_rate": 0.9895833333333334,
+     "constraint": "CL8:3",
+     "fails_band": true,
+     "position": null,
+     "slot": "CL"
+    }
+   ],
+   "companion_trajectories": {
+    "A": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "A:5",
+     "constraint_class": "production",
+     "family": "A",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.5833333333333334,
+      "pair:B+A": 0.5833333333333334
+     },
+     "gate4_solo_compliance": 0.59375,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 5
+    },
+    "B": {
+     "calibration_chance_compliance": null,
+     "calibration_iota": null,
+     "calibration_median_words": null,
+     "calibration_solo_compliance": null,
+     "calibration_solo_vacuity": null,
+     "constraint": "B:10",
+     "constraint_class": "budget",
+     "family": "B",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:A+B": 0.7916666666666666,
+      "pair:B+A": 0.78125,
+      "pair:B+CL": 0.90625,
+      "pair:CL+B": 0.78125
+     },
+     "gate4_solo_compliance": 0.6666666666666666,
+     "gate4_solo_fails_band": false,
+     "gate4_solo_minus_calibration_solo": null,
+     "prescreen_chance_compliance": null,
+     "prescreen_iota": null,
+     "prescreen_solo_compliance": null,
+     "severity": 10
+    },
+    "CL": {
+     "calibration_chance_compliance": 0.9322916666666666,
+     "calibration_iota": 0.6153846153846162,
+     "calibration_median_words": 76.0,
+     "calibration_solo_compliance": 0.9739583333333334,
+     "calibration_solo_vacuity": 0.0026041666666666665,
+     "constraint": "CL8:3",
+     "constraint_class": "production",
+     "family": "CL8",
+     "gate4_composed_cells_failing": [],
+     "gate4_composed_rates": {
+      "pair:B+CL": 0.90625,
+      "pair:CL+B": 0.9166666666666666
+     },
+     "gate4_solo_compliance": 0.9895833333333334,
+     "gate4_solo_fails_band": true,
+     "gate4_solo_minus_calibration_solo": 0.015625,
+     "prescreen_chance_compliance": 0.8333333333333334,
+     "prescreen_iota": 0.49999999999999967,
+     "prescreen_solo_compliance": 0.9166666666666666,
+     "severity": 3
+    }
+   },
+   "design_variant": "reduced",
+   "gate4_outcome": "TERMINAL",
+   "m_star": 10,
+   "n_cells_measured": 7,
+   "n_failing": 1,
+   "n_rate_checks": 11,
+   "n_star": 5,
+   "registered_failures": [
+    {
+     "cell": "solo:CL",
+     "rate": 0.9895833333333334,
+     "slot": "CL"
+    }
+   ],
+   "slot_map": {
+    "A": [
+     "A",
+     5
+    ],
+    "B": [
+     "B",
+     10
+    ],
+    "CL": [
+     "CL8",
+     3
+    ]
+   },
+   "terminal_status": "COMPOSED_HEADROOM_FAILURE"
+  }
+ },
+ "n_composed_topics": 24
+}
