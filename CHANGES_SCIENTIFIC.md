@@ -13,6 +13,53 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-23 — v5 pre-data accounting amendment: the registered budget contradicted §19's pilot
+
+**Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A2**.
+Registration `70608e5d…` (commit `5e35ca6`) is superseded by
+`<new>` (commit `<new-commit>`), together with the `PROTOCOL_REGISTERED` and
+`QUALIFIED` records of all four replications — all retained, none deleted.
+**No v5 model response exists**, so nothing is invalidated: `QUALIFIED` reads
+no behavioural rate by construction (§19).
+
+**What was wrong.** `design/budget.py` costed §19's procedural pilot as
+`12 topics × 4 draws × 5` = 240. §19 registers the pilot as "the full 56-cell
+plan, both orders, and the registered wording allocation … with $M = 4$" —
+`12 × 4 × 56` = **2,688**. The literal `5` is the base arm's cell count: the
+term was written as though the whole calibration burden were arm-independent,
+which its other three terms are and the pilot is not.
+`run/qualification_run.pilot_payload` always built the full plan, so **the
+registered design was never wrong and the arithmetic over it was**.
+
+| Term | Registered | Corrected |
+|---|---:|---:|
+| §19 pilot, per model | 240 | **2,688** |
+| calibration, per model | 100,992 | **103,440** |
+| per model | 283,776 | **286,224** |
+| **study total** | **1,135,104** | **1,144,896** |
+
+*What it changes about the meaning of a number.* Nothing about any measured
+quantity — no arm, cell, block, draw, topic, severity, threshold, estimand or
+rule moves, and the D1 decision (`four_models_56_cells`) is untouched. What
+changes is the registered *cost*, upward by 0.86%, and the D1 packet's three
+non-adopted options are recosted with it. Their ranking does not change.
+
+**Two things tightened rather than merely fixed.** `calibration_burden` now
+takes the cell count, so the pilot term follows the arm set and the previous
+signature's blind spot is gone; and the pilot budget is now asserted in tests
+*against what the runner builds* rather than against a literal, so the two
+cannot drift apart again. The `supersede_registration` guard also moved: it
+refused any stage record past stage 1, which would have made this correction
+impossible after qualification. It now refuses at `GATE_0_APPARATUS`, the first
+stage that puts a model response on disk — the boundary it was reaching for.
+
+**Comparability.** v4r4 evidence untouched. The researcher-decision record
+moved from `a5ec3986…` to `b3fd9185…`: one derived `consequences` line of D1
+quoted the old total. Every closure's `value`, `decided_by`, `decided_on` and
+`evidence` is unchanged, as are U2 = A2 and P1 = confirmed.
+
+---
+
 ## 2026-08-23 — v5 pre-data engineering amendment: three defects that made the registered study unexecutable, and a superseded registration
 
 **Standing.** The registration signed at manifest
@@ -173,7 +220,7 @@ primary moves — sampling, reference selection, the arm set and every primary
 claim are unchanged, and $\gamma$ licenses no claim level.
 
 **D1 — the registered design: five arms, four models, 56 cells, 384 blocks,
-$M = 8$; 1,135,104 generations.** The near-form arm is now *registered* rather
+$M = 8$; 1,144,896 generations (1,135,104 as first registered; see the 2026-08-23 accounting amendment).** The near-form arm is now *registered* rather
 than merely permitted, so R1's only mitigation is in the design and the strong
 L3c is reachable. The budget derivation moved out of `tools/v5_compute_budget.py`
 into `dci1v5.design.budget`, because the manifest binds it and a manifest cannot

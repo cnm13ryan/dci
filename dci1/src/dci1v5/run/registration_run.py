@@ -134,6 +134,13 @@ def supersede_registration(context: Any, *, reason: str,
     registration with rows under it is not a re-registration, it is a
     discarded experiment, and §32 wants that said out loud rather than
     performed by a move.
+
+    The line is drawn at ``GATE_0_APPARATUS``, the first stage that generates.
+    ``PROTOCOL_REGISTERED`` and ``QUALIFIED`` produce no model response and no
+    behavioural rate --- qualification reads none by construction (§19) --- so
+    they are retained and re-run under the replacement rather than blocking
+    it. Everything from Gate 0 on carries generated text, or a quantity
+    derived from it, and refuses.
     """
     from dci1v4.engine import store
     from dci1v5.engine import transitions
@@ -143,40 +150,44 @@ def supersede_registration(context: Any, *, reason: str,
     existing = manifest_mod.load_manifest(context)
     old_hash = existing["manifest_hash"]
 
+    first_generating = C.STAGE_SEQUENCE.index(C.STAGE_GATE0)
+    pre_observation = C.STAGE_SEQUENCE[:first_generating]
     observed = []
     for key in model_keys:
         tree = model_tree(context, key)
-        for stage in C.STAGE_SEQUENCE[1:]:
+        for stage in C.STAGE_SEQUENCE[first_generating:]:
             if tree.stage_record(stage).exists():
                 observed.append(f"{key}:{stage}")
     if observed:
         raise IntegrityError(
-            f"registration {old_hash} already has stage records past "
-            f"stage 1 ({observed}). Superseding it would orphan signed "
-            "evidence; that is a discarded replication under §32 and must be "
-            "recorded as one, not resolved by retaining the manifest")
+            f"registration {old_hash} already has records for stages that "
+            f"generate or read generated text ({observed}). Superseding it "
+            "would orphan signed evidence; that is a discarded replication "
+            "under §32 and must be recorded as one, not resolved by "
+            "retaining the manifest")
 
-    retained: dict[str, Any] = {}
+    retained: dict[str, list[str]] = {}
     for key in model_keys:
         tree = model_tree(context, key)
-        source = tree.stage_dir(C.STAGE_REGISTERED)
-        if not source.exists():
-            continue
-        target = tree.superseded_dir(old_hash) / C.STAGE_REGISTERED
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(source), str(target))
-        durable_source = tree.durable / C.STAGE_REGISTERED
-        if durable_source.exists():
-            durable_target = (tree.durable / "superseded" / old_hash
-                              / C.STAGE_REGISTERED)
-            durable_target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(durable_source), str(durable_target))
-        retained[key] = str(target)
-        transitions.log_transition(
-            tree, stage=C.STAGE_REGISTERED, outcome="SUPERSEDED",
-            producing_commit=producing_commit, environment_digest="",
-            detail={"superseded_manifest": old_hash, "reason": reason,
-                    "retained_at": str(target)})
+        for stage in pre_observation:
+            source = tree.stage_dir(stage)
+            if not source.exists():
+                continue
+            target = tree.superseded_dir(old_hash) / stage
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(source), str(target))
+            durable_source = tree.durable / stage
+            if durable_source.exists():
+                durable_target = (tree.durable / "superseded" / old_hash
+                                  / stage)
+                durable_target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(durable_source), str(durable_target))
+            retained.setdefault(key, []).append(str(target))
+            transitions.log_transition(
+                tree, stage=stage, outcome="SUPERSEDED",
+                producing_commit=producing_commit, environment_digest="",
+                detail={"superseded_manifest": old_hash, "reason": reason,
+                        "retained_at": str(target)})
 
     keep = Path(context.registration_root) / "superseded" / old_hash
     keep.mkdir(parents=True, exist_ok=True)
@@ -191,6 +202,7 @@ def supersede_registration(context: Any, *, reason: str,
         "amendment": dict(amendment or {}),
         "new_producing_commit": producing_commit,
         "retained_stage_records": retained,
+        "retained_stages": list(pre_observation),
         "observations_under_it": 0,
         "superseded_at": now(),
     }

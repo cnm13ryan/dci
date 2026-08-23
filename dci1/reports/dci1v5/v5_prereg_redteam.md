@@ -464,7 +464,7 @@ v4r4 registered a 47-cell full design and ran none: both survivors ran 8 cells.
 v5's full design is 56 cells and 172,032 confirmatory generations per model,
 688,128 for four. §34 D1 is closed at `four_models_56_cells` and the whole
 registered budget — calibration, Gate 4, §8.3's greedy run and confirmatory —
-is **1,135,104** generations, derived in `dci1v5.design.budget`. **The
+is **1,144,896** generations, derived in `dci1v5.design.budget`. **The
 apparatus for the full design has been exercised only by v4r4's procedural
 pilot at $M = 4$ on twelve topics.** §19 requires the v5 pilot to run the full
 56-cell plan, which is the only pre-confirmatory evidence that the arm
