@@ -13,6 +13,66 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-23 — v5 preregistered-rule restoration: two registered rules were implemented and never invoked
+
+**Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A3**.
+Registration `b040b343…` is superseded, and with it the **behavioural chains of
+both gemma replications** — Gate 0, the regime screen and Gate 1 on each —
+which are **invalidated and retained**, not deleted. No Gate-2 record was ever
+written on any model, and no confirmatory row exists. Gate 2.5 has not begun,
+so §32's clause 3 is not engaged and the pre-freeze window is open.
+
+**Neither of these changes a registered rule. Both put one back on the
+execution path.**
+
+**V5-E6 — calibration measured a population §12.7 excludes.** Gate 2 built its
+candidate set from `regime_record["carried_set"]`. §12.2's screen is
+*high-recall by construction* and carries every structurally admissible rung;
+§12.7 says what calibration then measures — "all 88 Tier-1 and Tier-2 rungs …
+**plus at most 24 Tier-3 rungs**". `stages/regime.calibration_priority`
+computes exactly that, and `regime_run` records it on the regime record. Gate 2
+read its neighbour. On the real screen, on both gemmas: **326 rungs measured
+where 112 are registered**, and the **214 Tier-3 rungs §12.7 drops for budget**
+entered §13.7's calibration table.
+
+*What it changes about the meaning of a number.* Those 214 would have reached
+Gate 2.5's qualification and Gate 3B's selection — **the reference pool
+itself**, which is what $\Delta_R$ and $\Delta_j$ are differences against. Not
+a cost overrun. `assert_calibration_population` now checks the measured set
+against the cap on the mandatory path, because the wrong population is not
+malformed, merely larger, and every row in it verifies.
+
+**V5-E8 — §12.3's focal escalation had no caller.** `select_focal` asks for
+§7.2's {15, 16} when no severity is eligible **or** when the selection sits at
+the grid top and the bracketing rule cannot be met, signalling with
+`extension_required`. Gate 2 read only `selected`, giving two wrong outcomes:
+nothing eligible → `FOCAL_RANGE_EXHAUSTED` raised **without measuring the
+extension**, a registered terminal status emitted where the protocol says
+escalate; eligible at the grid top → `selected` is not `None`, so Gate 2
+**accepted m\* = 14 silently and §12.3's bracketing rule never ran**. Either
+way the grid extension to 16 — R14's objection, and the region D17's floor was
+derived to police — was unreachable in the registered lifecycle.
+
+*What it changes about the meaning of a number.* A `FOCAL_RANGE_EXHAUSTED` on
+the old path was not necessarily a finding about the model, and an $m^{*}$ at
+the grid top was not necessarily bracketed. No such record exists — Gate 2
+never completed — so nothing is retracted.
+
+**V5-E7 — the focal-grid budget term** costed one split's topics and omitted
+the unconstrained cell: 6,912 where Gate 2 generates 13,824. Code right, budget
+wrong, as in A2. Per-model calibration 103,440 → **110,352**; study total
+1,144,896 → **1,172,544**; §7.2's conditional extension named separately at
+1,536/model.
+
+**Comparability.** v4r4 untouched. The two gemma chains are discarded under
+§32 and retained under `superseded/b040b343…/` with an `invalidated.json` each,
+naming the stages and the row count. **No row from them is reused**: retention
+moves `backend_runs` off the path `_reusable_rows` reads, and that is asserted
+rather than assumed. All four replications restart from Gate 0 under the
+replacement registration.
+
+---
+
 ## 2026-08-23 — v5 pre-data accounting amendment: the registered budget contradicted §19's pilot
 
 **Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A2**.

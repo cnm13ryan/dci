@@ -23,7 +23,7 @@ from dci1v5.design.cells import D1_ARM_SETS, D1_SCALE, n_cells_for
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 from dci1v5.verifiers.constraints import (
-    FAMILIES, FAMILY_IDS, LADDERS, RESERVES, TARGET_GRID, focal_severities,
+    FOCAL_GRID, FAMILIES, FAMILY_IDS, LADDERS, RESERVES, TARGET_GRID, focal_severities,
     registered_severities)
 
 __all__ = ["library", "screen_rungs", "calibration_burden", "option",
@@ -80,17 +80,42 @@ def calibration_burden(cells: int) -> dict[str, Any]:
             "topics": C.N_PRESCREEN,
             "draws": C.LADDER_SCREEN_DRAWS,
             "rows": screen * C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS},
+        # §12.7: "plus A's grid, B's grid and the unconstrained cell", on the
+        # **pooled** calibration topics --- both splits, because §34 D16 makes
+        # Calibration-B measure the same set. This read one split's topic
+        # count and omitted the unconstrained cell, so it understated the two
+        # grids by half. `gates_run.gate2_payload` pools the two banks and
+        # appends the unconstrained cell to each grid, which is what §12.7
+        # registers; the budget was the side that disagreed.
         "focal_grids": {
             "a_rungs": len(TARGET_GRID),
-            "b_rungs": len(focal_severities(extended=True)),
-            "topics": C.N_CALIBRATION_A,
+            "b_rungs": len(FOCAL_GRID),
+            "b_rungs_with_extension": len(focal_severities(extended=True)),
+            "unconstrained_cell_per_grid": 1,
+            "topics": C.N_CALIBRATION_A + C.N_CALIBRATION_B,
+            "topics_are": "pooled: Calibration-A and Calibration-B together",
             "draws": C.M_CAL,
-            "rows": (len(TARGET_GRID) + len(focal_severities(extended=True)))
-            * C.N_CALIBRATION_A * C.M_CAL},
+            "rows": (len(TARGET_GRID) + 1 + len(FOCAL_GRID) + 1)
+            * (C.N_CALIBRATION_A + C.N_CALIBRATION_B) * C.M_CAL,
+            # §12.3 measures {15, 16} only when the registered grid finds no
+            # eligible severity, or when selection sits at the grid top. It is
+            # conditional and model-adaptive, so it is named rather than
+            # folded into a budget the study is expected to spend.
+            "conditional_extension_rows":
+                len(C.FOCAL_EXTENSION)
+                * (C.N_CALIBRATION_A + C.N_CALIBRATION_B) * C.M_CAL},
+        # §12.7's population: every Tier-1/2 rung plus at most 24 Tier-3. The
+        # figures were right; what was missing was anything asserting that the
+        # runner measured this set rather than the screen's carried set.
+        # `gates_run.assert_calibration_population` is now that assertion.
         "candidate_calibration": {
             "round": 0,
             "carried_rungs_tier12": carried,
             "tier3_cap": C.CALIBRATION_TIER3_CAP,
+            "population": carried + C.CALIBRATION_TIER3_CAP,
+            "population_is": "§12.7: all Tier-1/2 rungs + at most 24 Tier-3, "
+                             "NOT §12.2's carried set, which is high-recall "
+                             "and much larger",
             "rows_per_rung_per_split": per_rung_per_split,
             "splits": 2,
             "d16": "complete_population",

@@ -6,6 +6,8 @@
   "candidate_calibration": {
    "carried_rungs_tier12": 88,
    "d16": "complete_population",
+   "population": 112,
+   "population_is": "\u00a712.7: all Tier-1/2 rungs + at most 24 Tier-3, NOT \u00a712.2's carried set, which is high-recall and much larger",
    "round": 0,
    "rows_per_rung_per_split": 384,
    "rows_tier12_both_splits": 67584,
@@ -15,10 +17,14 @@
   },
   "focal_grids": {
    "a_rungs": 8,
-   "b_rungs": 10,
+   "b_rungs": 8,
+   "b_rungs_with_extension": 10,
+   "conditional_extension_rows": 1536,
    "draws": 4,
-   "rows": 6912,
-   "topics": 96
+   "rows": 13824,
+   "topics": 192,
+   "topics_are": "pooled: Calibration-A and Calibration-B together",
+   "unconstrained_cell_per_grid": 1
   },
   "ladder_screen": {
    "draws": 1,
@@ -73,13 +79,13 @@
    "draws_per_cell": 4,
    "models": 4,
    "per_model": {
-    "calibration": 103440,
+    "calibration": 110352,
     "confirmatory": 86016,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 200208
+    "total": 207120
    },
-   "total_generations": 800832
+   "total_generations": 828480
   },
   "four_models_47_cells": {
    "arms": [
@@ -93,13 +99,13 @@
    "draws_per_cell": 8,
    "models": 4,
    "per_model": {
-    "calibration": 103008,
+    "calibration": 109920,
     "confirmatory": 144384,
     "gate_4_composed_headroom": 4512,
     "greedy_sensitivity": 4512,
-    "total": 256416
+    "total": 263328
    },
-   "total_generations": 1025664
+   "total_generations": 1053312
   },
   "four_models_56_cells": {
    "arms": [
@@ -114,13 +120,13 @@
    "draws_per_cell": 8,
    "models": 4,
    "per_model": {
-    "calibration": 103440,
+    "calibration": 110352,
     "confirmatory": 172032,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 286224
+    "total": 293136
    },
-   "total_generations": 1144896
+   "total_generations": 1172544
   },
   "two_models_56_cells": {
    "arms": [
@@ -135,13 +141,13 @@
    "draws_per_cell": 8,
    "models": 2,
    "per_model": {
-    "calibration": 103440,
+    "calibration": 110352,
     "confirmatory": 172032,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 286224
+    "total": 293136
    },
-   "total_generations": 572448
+   "total_generations": 586272
   }
  },
  "removing_one_arm": {

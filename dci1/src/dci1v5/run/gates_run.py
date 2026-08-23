@@ -49,7 +49,8 @@ from dci1v5.stages.calibration_table import (instructed_compliance,
 from dci1v5.topics.bank import (TopicBank, calibration_binding, load_bank)
 from dci1v5.verifiers.constraints import FAMILIES, Constraint
 
-__all__ = ["assert_synthetic_only", "slot_map_from_record",
+__all__ = ["assert_synthetic_only", "assert_calibration_population",
+           "slot_map_from_record",
            "gate2_payload", "run_gate2", "gate2_5_payload", "run_gate2_5",
            "gate3a_payload", "run_gate3a", "gate3b_payload", "run_gate3b",
            "gate3c_payload", "run_gate3c", "gate4_payload", "run_gate4",
@@ -126,6 +127,32 @@ def assert_synthetic_only(tree: ModelTree, name: str, value: Any) -> None:
             "or gate accepts")
 
 
+def assert_calibration_population(priority: Mapping[str, Any],
+                                  measured: Sequence[Constraint]) -> None:
+    """§12.7: calibration measures the capped population and nothing else.
+
+    Asserted on the mandatory path rather than trusted, because the defect it
+    exists for was invisible: the wrong population is not malformed, it is
+    merely *larger*, every row in it verifies, and the stage passes. What
+    changes is which candidates reach §13.7, Gate 2.5 and reference
+    selection.
+    """
+    expected = len(priority["tier12"]) + len(priority["tier3_measured"])
+    if expected != len(measured):
+        raise ProtocolError(
+            f"§12.7: calibration must measure {expected} rungs "
+            f"({len(priority['tier12'])} Tier-1/2 + "
+            f"{len(priority['tier3_measured'])} Tier-3 under the cap of "
+            f"{priority['tier3_cap']}), not {len(measured)}. "
+            f"{len(priority['tier3_dropped_for_budget'])} Tier-3 rungs are "
+            "dropped for budget and may not be measured, qualified or "
+            "selected")
+    if priority["tier3_cap"] < len(priority["tier3_measured"]):
+        raise ProtocolError(
+            f"§12.7: {len(priority['tier3_measured'])} Tier-3 rungs exceed "
+            f"the registered cap of {priority['tier3_cap']}")
+
+
 def _constraints_from_labels(labels: Sequence[str]) -> list[Constraint]:
     """``"MK1:3"`` -> ``Constraint("MK1", 3)``, from the frozen carried set."""
     out: list[Constraint] = []
@@ -182,8 +209,21 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     generate = resolve_generate(tree, generate, _responder,
                                 where=C.STAGE_GATE2)
     cap = regime_record["selected_cap"]
-    candidates = _constraints_from_labels(regime_record["carried_set"])
+    # §12.7's calibration population, NOT the screen's carried set. §12.2 is
+    # high-recall by construction and carries every structurally admissible
+    # rung; §12.7 then says what calibration measures: "all 88 Tier-1 and
+    # Tier-2 rungs, which §12.2 rule 2 carries unconditionally, plus at most
+    # 24 Tier-3 rungs, ordered by ascending pre-screen |iota - iota_A| when
+    # more than 24 are carried". `regime.calibration_priority` computes that
+    # and the regime runner records it; this read used `carried_set` instead,
+    # so calibration measured all 326 carried rungs and the 214 Tier-3 rungs
+    # §12.7 drops for budget reached §13.7's table --- and from there Gate 2.5
+    # and reference selection. That is the reference pool, not a cost.
+    priority = regime_record["calibration_priority"]
+    measured = list(priority["tier12"]) + list(priority["tier3_measured"])
+    candidates = _constraints_from_labels(measured)
     non_outcome = [c for c in candidates if c.kind not in ("A", "B")]
+    assert_calibration_population(priority, non_outcome)
 
     grids = {"A": list(C.TARGET_GRID), "B": list(C.FOCAL_GRID)}
     curves: dict[str, dict[int, float]] = {"A": {}, "B": {}}
@@ -198,10 +238,15 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     load_zero_curves: dict[str, dict[int, float]] = {"A": {}, "B": {}}
     n_load_zero: dict[str, int] = {}
     grid_rows: list[dict[str, Any]] = []
-    for kind, grid in grids.items():
+
+    def measure_grid(kind: str, grid: Sequence[int], run_name: str
+                     ) -> list[dict[str, Any]]:
+        """One severity grid, with its unconstrained cell, on the pooled
+        calibration topics. Called again for §7.2's extension when §12.3
+        escalates, which is why it is a function and not the loop body."""
         slot_map = {f"{kind}{q}": Constraint(kind, q) for q in grid}
         cells: list[Any] = []
-        for block in _blocks(topics, f"g2{kind}"):
+        for block in _blocks(topics, f"g2{run_name}"):
             cells.append(_Cell(cell_id="unconstrained", arm="unconstrained",
                                block=block, slots=(), draws=C.M_CAL))
             for slot in slot_map:
@@ -217,7 +262,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         rows = generate_and_score(
             tree.model_key, prompts, stage=C.STAGE_GATE2, cap=cap,
             device=device,
-            run_dir=tree.backend_runs(C.STAGE_GATE2) / f"grid-{kind}",
+            run_dir=tree.backend_runs(C.STAGE_GATE2) / run_name,
             instances=instances, slot_map=slot_map,
             study_id=tree.context.study_id,
             protocol_identity=protocol_identity(tree, C.STAGE_GATE2),
@@ -230,9 +275,30 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             chance_curves[kind][q] = rates["chance"]
             load_zero_curves[kind][q] = rates["chance_unconstrained"]
             n_load_zero[kind] = rates["n_topics_unconstrained"]
+        return rows
+
+    for kind, grid in grids.items():
+        measure_grid(kind, grid, f"grid-{kind}")
 
     target = regime_stage.select_target(curves["A"])
     focal = regime_stage.select_focal(curves["B"])
+    # §7.2 / §12.3's escalation, which had no caller. `select_focal` measures
+    # the registered grid first and asks for {15, 16} only when it finds no
+    # eligible severity there, or when the selection sits at the grid top and
+    # the bracketing rule therefore cannot be met. It signals that by
+    # returning `extension_required` with `selected` None --- and this runner
+    # read only `selected`, so it raised FOCAL_RANGE_EXHAUSTED instead of
+    # escalating. A replication that §12.3 says should extend its grid was
+    # recorded terminal, which is a false scientific outcome, and it made the
+    # focal extension R14 objected to --- and D17's floor was designed
+    # around --- unreachable in the registered lifecycle.
+    extension_measured = False
+    if focal.get("extension_required"):
+        measure_grid("B", list(C.FOCAL_EXTENSION), "grid-B-extension")
+        extension_measured = True
+        focal = regime_stage.select_focal(
+            {q: curves["B"][q] for q in C.FOCAL_GRID},
+            {q: curves["B"][q] for q in C.FOCAL_EXTENSION})
     for result, status in ((target, "TARGET_RANGE_EXHAUSTED"),
                            (focal, "FOCAL_RANGE_EXHAUSTED")):
         if result.get("selected") is None:
@@ -302,6 +368,25 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "producing_commit": producing_commit,
         "n_star": n_star, "m_star": m_star,
         "target_selection": target, "focal_selection": focal,
+        # §7.2: whether {15, 16} were measured on this replication. §12.3
+        # measures them only on escalation, so this is model-adaptive and
+        # §6.1 lists it as such.
+        "focal_extension_measured": extension_measured,
+        "focal_grid_measured": (list(C.FOCAL_GRID) + list(C.FOCAL_EXTENSION)
+                                if extension_measured
+                                else list(C.FOCAL_GRID)),
+        # §12.7's calibration population, and what it excluded.
+        "calibration_population": {
+            "tier12": len(priority["tier12"]),
+            "tier3_measured": len(priority["tier3_measured"]),
+            "tier3_cap": priority["tier3_cap"],
+            "tier3_dropped_for_budget":
+                list(priority["tier3_dropped_for_budget"]),
+            "n_measured": len(non_outcome),
+            "carried_by_the_screen": len(regime_record["carried_set"]),
+            "rule": "§12.7: every Tier-1/2 rung plus at most 24 Tier-3, "
+                    "ordered by ascending pre-screen |iota - iota_A|; the "
+                    "screen's carried set is high-recall and larger"},
         "solo_curves": {k: {str(q): v for q, v in c.items()}
                         for k, c in curves.items()},
         "chance_curves": {k: {str(q): v for q, v in c.items()}

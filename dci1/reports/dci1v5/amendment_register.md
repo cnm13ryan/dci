@@ -98,7 +98,7 @@ time that has been possible.
 - every §34 closure and its evidence, D17's floor spec included;
 - U2 = A2 and P1 = confirmed;
 - the five arms, 56 cells, 384 blocks, $M = 8$, four models and the
-  1,144,896-generation budget (corrected by A2);
+  1,172,544-generation budget (corrected by A2, then A3);
 - the eight Tier-1 markers, their population hash and their four accepted
   limitations;
 - both calibration topic banks and the split identity;
@@ -219,3 +219,120 @@ is asserted rather than assumed. The supersession chain is
 **This amendment does not weaken a criterion to make a gate pass.** No gate had
 run. It corrects a cost figure upward and tightens the pilot's derivation so
 the budget and the runner cannot disagree again.
+
+---
+
+## A3 — preregistered-rule restoration (2026-08-23)
+
+**Author.** Researcher, on the V5-E6 report of 2026-08-23.
+
+**Timing, relative to every affected artifact.**
+
+| Artifact | State when the amendment was adopted |
+|---|---|
+| Registration manifest `b040b343…` (A2's) | signed, verified, **superseded** |
+| Stage 1–2, all four replications | PASS; retained, superseded |
+| `GATE_0_APPARATUS`, `REGIME_SCREEN`, `GATE_1_MEASUREMENT` on both gemmas | PASS; **invalidated and retained** |
+| `GATE_2_FOCAL_CALIBRATION` | **no record on any model** — halted mid-stage |
+| Gate 2.5 / §13 components | never begun, so §32's clause 3 is not engaged |
+| Confirmatory rows | none, on any model |
+| v4r4 evidence | untouched |
+
+§32's pre-freeze window is therefore still open, and this is a restoration of
+registered rules rather than a change to them: **every rule below was already
+in the preregistration and already implemented. None was on the execution
+path.**
+
+**V5-E6 — calibration measured a population §12.7 excludes.**
+`run/gates_run.gate2_payload` built the candidate set from
+`regime_record["carried_set"]`. §12.2 is *high-recall by construction* and
+carries every structurally admissible rung; §12.7 then says what calibration
+measures: "all 88 Tier-1 and Tier-2 rungs … **plus at most 24 Tier-3 rungs**,
+ordered by ascending pre-screen $\lvert\iota - \iota_A\rvert$".
+`stages/regime.calibration_priority` computes exactly that and
+`run/regime_run.py` **records it on the regime record**; Gate 2 read its
+neighbour. On the real screen, identical on both gemmas:
+
+| | |
+|---|---:|
+| Tier-1/2 rungs | 88 |
+| Tier-3 measured, cap 24 | 24 |
+| **§12.7 population** | **112** |
+| Tier-3 dropped for budget | 214 |
+| **what Gate 2 read** | **326** |
+
+**This is the reference pool, not a cost.** The 214 excluded rungs entered
+§13.7's calibration table, and from there Gate 2.5's qualification and Gate
+3B's selection. **Restored:** Gate 2 reads `calibration_priority`, and
+`assert_calibration_population` checks the measured set against the cap on the
+mandatory path — because the wrong population is not malformed, merely larger,
+and every row in it verifies.
+
+**V5-E8 — §12.3's focal escalation had no caller.**
+`stages/regime.select_focal` measures the registered grid, then asks for
+§7.2's {15, 16} when no severity is eligible **or when the selection sits at
+the grid top and the bracketing rule cannot be met**. It signals that with
+`extension_required`. Gate 2 read only `selected`, which produced two distinct
+wrong outcomes:
+
+* nothing eligible → `selected` is `None` → `FOCAL_RANGE_EXHAUSTED` was
+  raised **without measuring the extension**: a registered terminal status
+  emitted where the protocol says escalate. A false scientific finding.
+* eligible at the grid top → `selected` is the top rung and **not** `None` →
+  Gate 2 accepted it silently, and §12.3's bracketing rule was never applied.
+
+Either way the grid extension to 16 — R14's objection, and the region §34
+D17's floor was derived to police — was **unreachable in the registered
+lifecycle**. **Restored:** the escalation has a caller, the extension is
+measured when asked for, selection re-runs over the union, and
+`focal_extension_measured` and `focal_grid_measured` go on the Gate-2 record
+(§6.1 already lists the extension as model-adaptive).
+
+**V5-E7 — the focal-grid budget term.** It costed one split's topics and
+omitted the unconstrained cell, so it read 6,912 where Gate 2 generates
+13,824. §12.7 registers "A's grid, B's grid and the unconstrained cell" on
+both splits, and the code matched it. The conditional extension is now named
+separately (1,536 rows) rather than folded into a budget the study is expected
+to spend.
+
+| Term | A2 | A3 |
+|---|---:|---:|
+| focal grids | 6,912 | **13,824** |
+| candidate calibration | 86,016 | 86,016 (now *asserted* at 112 rungs) |
+| calibration, per model | 103,440 | **110,352** |
+| per model | 286,224 | **293,136** |
+| **study total** | 1,144,896 | **1,172,544** |
+| conditional focal extension | — | 1,536/model, only on escalation |
+
+**What it supersedes, and what it invalidates.** Manifest
+`b040b343f626f095dd8a352b6b0fab9b7db87b797d82c843831783550ab1d106` at commit
+`cd4b1b1c58fcee6a95db1bbfc22f8ac6170be4aa`, and with it the **behavioural
+chains of `gemma-3n-e2b-it` and `gemma-3n-e4b-it`** — Gate 0, the regime
+screen and Gate 1 on each. Those records are individually valid: none reads
+the calibration population. They are invalidated all the same, because the
+replication they belong to is being restarted and a chain half under one
+registration and half under another is not a replication anybody can audit.
+
+Everything is **retained, not deleted**, under
+`superseded/b040b343…/`, with an `invalidated.json` per replication naming the
+stages discarded and the row count that went with them.
+`supersede_registration` refuses a generated chain outright unless the
+researcher names it in `invalidating` with a reason: §32 calls this a
+discarded replication rather than a re-registration, and the difference has to
+be said rather than performed by a file move.
+
+**No row from the abandoned runs is reused.** Retention moves the whole tree,
+including `backend_runs`, off the path `run/execute._reusable_rows` reads, so
+a restarted stage cannot resume into a discarded one even by accident. That is
+asserted, not assumed.
+
+**What it leaves untouched.** Every §34 closure, U2 = A2, P1, the arms, cells,
+blocks, draws, models and revisions, the eight markers, both topic banks, the
+candidate library, every threshold including D17's floor, the estimands,
+multiplicity families, claim ladder, masking, seeds and selection rules. The
+decision record is unchanged in this amendment.
+
+**This amendment does not weaken a criterion to make a gate pass.** It adds
+one assertion and one escalation path, both of which make Gate 2 *harder* to
+pass than it was: a capped population, and a bracketing rule that now actually
+runs.
