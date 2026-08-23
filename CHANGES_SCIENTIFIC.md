@@ -13,6 +13,81 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-23 — v5 pre-data engineering amendment: three defects that made the registered study unexecutable, and a superseded registration
+
+**Standing.** The registration signed at manifest
+`2960a1fc44f036abd4729f7628095475018672adfac609bb2244a8763ba00ded` (producing
+commit `f895646`) is **superseded**. It is retained in full, not deleted:
+`dci1/evidence/dci1v5/registration/superseded/2960a1fc…/` holds the manifest
+and the supersession record, and each replication's stage-1 record is retained
+under its own `superseded/2960a1fc…/`. **No v5 observation existed under it and
+none exists now**, so nothing is invalidated and no number moves — the whole
+point of doing this before Stage 2 rather than after.
+
+**Why an entry at all.** None of the three touches a threshold, an estimand, an
+arm, a prompt, a wording, a verifier, a seed, a cap, a decoding policy, an
+estimator or a reference-selection rule. Every registered scientific value is
+byte-identical. They get an entry because the third one changes what a *row*
+records about its own provenance, and because superseding a signed registration
+is exactly the kind of event this file exists to make findable.
+
+**V5-E1 — three of four registered models could never enter `QUALIFIED`.**
+`run/registration_run.registration_payload` called
+`manifest.sign_registration` unconditionally, which does `write_json_once` on
+the **study-level** manifest, while `engine/transitions.assert_predecessor_passed`
+requires a **per-model** stage-1 record. So the second replication's Stage 1
+raised `IntegrityError` and `gemma-3n-e4b-it`, `qwen3-4b` and
+`qwen3-4b-instruct-2507` had no legal path into the lifecycle. Now
+`manifest.ensure_registration` signs on the first call and, on every later one,
+verifies the signature, **rebuilds the manifest from the running code and
+compares by hash**, and requires the same producing commit. D1's four-model
+design was unreachable in practice; it is reachable now.
+
+**V5-E2 — the pinned backend was unreachable for four of the five generating
+stages.** `GATE_0_APPARATUS`, `REGIME_SCREEN`, `GATE_2_FOCAL_CALIBRATION` and
+`GATE_4_COMPOSED_HEADROOM` each read `generate = generate or fake_backend(...)`.
+That is unconditional and admits no override — `run/execute.run_backend` was
+reachable only from `CONFIRMATORY_GENERATION` — and `run/cli.py`, the only
+production entry point, passes no `generate`. **The documented way to run Gate 0
+would have signed fabricated text into the registered evidence tree**, and
+nothing downstream refuses a synthetic row in the registered namespace.
+`execute.resolve_generate` now decides: in the registered namespace `generate`
+must be absent and resolves to the pinned backend, and an injected callable is
+refused outright; the deterministic stand-in is built only in the synthetic
+namespace. This is the guard `assert_synthetic_only` already applied to
+`topic_limit` and `block_limit`, extended to the larger substitution it had
+been left off.
+
+*What it changes about the meaning of a number.* Nothing retrospectively — no
+row exists. Prospectively it is the difference between a Gate 1, Gate 2 and
+Gate 4 measured on the registered model and one measured on a fixture.
+
+**V5-E3 — `synthetic` said how the runner was called, not what wrote the text.**
+`run/execute.py` stamped `"synthetic": generate is not None`. Combined with
+V5-E2 that made every row of those four stages synthetic *by definition*, and
+it also meant a real backend injected into one of them would produce rows
+stamped synthetic. The flag is now taken from the generator's own provenance,
+and `fake_backend` stamps each raw row so the flag survives a resumed run.
+`CLASSIFICATION` moved from `DCI-1 PROTOCOL v5 (DRAFTED, NOT ADOPTED, NOT
+FROZEN)` — which had not moved at adoption, so the first signed manifest
+carried a label contradicting its own adoption block — to `DCI-1 PROTOCOL v5
+(ADOPTED AND REGISTERED, NOT FROZEN)`. The old string is retained in
+`SUPERSEDED_CLASSIFICATIONS`, because records under the superseded registration
+carry it.
+
+**Comparability.** v4r4 evidence is untouched. The superseded registration and
+the new one bind identical scientific content; they differ in producing commit,
+in `classification`, and in the new one naming what it supersedes. Records under
+the superseded registration are retained and are *not* evidence for anything —
+there are none past stage 1.
+
+`dci1/tests_v5/test_amendment_pre_data.py` holds fifteen tests, one per failure
+mode, including a static check that no runner reintroduces the `or
+fake_backend(...)` shape and a four-model registration walk — the harness walks
+one model, which is why none of this was caught.
+
+---
+
 ## 2026-08-23 — v5 adopted: the remaining fifteen §34 decisions, U2, P1, and a construct floor whose denominator was wrong
 
 **Standing.** v5 is **adopted and registered**. All nineteen §34 decisions

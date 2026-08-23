@@ -5,31 +5,43 @@ registration manifest, binds §34's nineteen closures and their evidence into
 it, and writes the stage record that every later stage's predecessor check
 reads.
 
-**It cannot succeed today and that is the point.** Five separate things are
-not ready --- open decisions, an unresolved specification question, a missing
-topic-bank hash, an unapproved candidate population, and red-team findings
-whose mitigation is itself a decision --- and ``protocol/manifest.py`` reports
-each by name rather than collapsing them into one refusal. §18 stage 1's
-registered failure status is ``REGISTRATION_INCOMPLETE``.
+**It succeeds now**, and every refusal that used to stop it is still built:
+``protocol/manifest.signing_blockers`` reports open decisions, unresolved
+specification questions, missing topic-bank hashes, an unapproved candidate
+population, an unconfirmed item, an unspecified floor, an unpinned model
+revision and a non-derivable design --- each by name rather than collapsed
+into one. §18 stage 1's registered failure status is
+``REGISTRATION_INCOMPLETE``.
+
+**The manifest is study-level and the record is per model.** §6.1 fixes every
+study-wide rule before the first qualification, so the first replication signs
+and the other three verify --- see ``manifest.ensure_registration``. Signing
+on every call is what made three of the four registered models unregisterable.
 
 ``plan_registration`` produces the same report **without** attempting to sign,
-so a researcher can see exactly what adoption would bind and what stands in
-the way, without a call that could write anything.
+so a researcher can see exactly what adoption binds without a call that could
+write anything. ``supersede_registration`` is §32's path when a registration
+has to be replaced before any observation exists; it retains everything.
 """
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
-from dci1v4.engine import gitinfo
+from dci1v4.engine import fs, gitinfo
+from dci1v4.errors import IntegrityError
 
+from dci1v5 import STUDY_ID
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions, manifest, open_items
-from dci1v5.run.lifecycle import StageOutcome, TerminalStatus, run_stage
+from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus, now,
+                                  run_stage)
 from dci1v5.topics.bank import TopicBank, load_bank
 
-__all__ = ["plan_registration", "registration_payload", "run_registration"]
+__all__ = ["plan_registration", "registration_payload",
+           "supersede_registration", "run_registration"]
 
 
 def plan_registration(*, repo_root: Path | str = ".",
@@ -62,7 +74,8 @@ def plan_registration(*, repo_root: Path | str = ".",
 def registration_payload(tree: ModelTree, *, producing_commit: str,
                          adoption: Mapping[str, Any],
                          repo_root: Path | str = ".",
-                         bank: TopicBank | None = None) -> dict[str, Any]:
+                         bank: TopicBank | None = None,
+                         supersedes: str | None = None) -> dict[str, Any]:
     """The stage record. Raises ``REGISTRATION_INCOMPLETE`` when not ready."""
     bank = bank if bank is not None else load_bank()
     plan = plan_registration(repo_root=repo_root, bank=bank)
@@ -75,9 +88,9 @@ def registration_payload(tree: ModelTree, *, producing_commit: str,
                       "hashes present and the candidate population approved",
             observed=plan["blockers"],
             strongest_permissible_statement=C.TERMINAL_SENTENCE)
-    signed = manifest.sign_registration(
+    signed = manifest.ensure_registration(
         tree.context, producing_commit=producing_commit, adoption=adoption,
-        bank=bank, repo_root=repo_root)
+        bank=bank, repo_root=repo_root, supersedes=supersedes)
     return {
         "stage": C.STAGE_REGISTERED,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_REGISTERED],
@@ -96,19 +109,109 @@ def registration_payload(tree: ModelTree, *, producing_commit: str,
         "models": signed["models"],
         "measurement_basis": signed["measurement_basis"],
         "adoption": dict(adoption),
+        "supersedes": signed.get("supersedes"),
     }
+
+
+def supersede_registration(context: Any, *, reason: str,
+                           model_keys: Sequence[str],
+                           producing_commit: str,
+                           amendment: Mapping[str, Any] | None = None
+                           ) -> dict[str, Any]:
+    """§32: retain a registration and everything signed under it, so a
+    corrected one can be signed.
+
+    Nothing is deleted. The manifest and every replication's stage-1 record
+    move under ``superseded/<old manifest hash>/``, which
+    ``engine/paths.is_superseded`` already excludes from every *current* pool
+    while the durability audit still counts the files. A supersession record
+    naming the old hash, the reason and the new producing commit is written
+    beside them, and each replication's transition log gets a row --- an
+    evidence tree that changed shape with nothing in the log saying why is the
+    thing this exists to prevent.
+
+    This is admissible **only before any observation exists**. A superseded
+    registration with rows under it is not a re-registration, it is a
+    discarded experiment, and §32 wants that said out loud rather than
+    performed by a move.
+    """
+    from dci1v4.engine import store
+    from dci1v5.engine import transitions
+    from dci1v5.engine.paths import model_tree
+    from dci1v5.protocol import manifest as manifest_mod
+
+    existing = manifest_mod.load_manifest(context)
+    old_hash = existing["manifest_hash"]
+
+    observed = []
+    for key in model_keys:
+        tree = model_tree(context, key)
+        for stage in C.STAGE_SEQUENCE[1:]:
+            if tree.stage_record(stage).exists():
+                observed.append(f"{key}:{stage}")
+    if observed:
+        raise IntegrityError(
+            f"registration {old_hash} already has stage records past "
+            f"stage 1 ({observed}). Superseding it would orphan signed "
+            "evidence; that is a discarded replication under §32 and must be "
+            "recorded as one, not resolved by retaining the manifest")
+
+    retained: dict[str, Any] = {}
+    for key in model_keys:
+        tree = model_tree(context, key)
+        source = tree.stage_dir(C.STAGE_REGISTERED)
+        if not source.exists():
+            continue
+        target = tree.superseded_dir(old_hash) / C.STAGE_REGISTERED
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(source), str(target))
+        durable_source = tree.durable / C.STAGE_REGISTERED
+        if durable_source.exists():
+            durable_target = (tree.durable / "superseded" / old_hash
+                              / C.STAGE_REGISTERED)
+            durable_target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(durable_source), str(durable_target))
+        retained[key] = str(target)
+        transitions.log_transition(
+            tree, stage=C.STAGE_REGISTERED, outcome="SUPERSEDED",
+            producing_commit=producing_commit, environment_digest="",
+            detail={"superseded_manifest": old_hash, "reason": reason,
+                    "retained_at": str(target)})
+
+    keep = Path(context.registration_root) / "superseded" / old_hash
+    keep.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(context.registration_manifest),
+                str(keep / "registration_manifest.json"))
+    record = {
+        "superseded_manifest_hash": old_hash,
+        "superseded_producing_commit": existing["producing_commit"],
+        "superseded_protocol_version": existing["protocol_version"],
+        "superseded_classification": existing["classification"],
+        "reason": reason,
+        "amendment": dict(amendment or {}),
+        "new_producing_commit": producing_commit,
+        "retained_stage_records": retained,
+        "observations_under_it": 0,
+        "superseded_at": now(),
+    }
+    fs.write_json_once(keep / "supersession.json", record)
+    durable = (Path(context.durable_root) / STUDY_ID
+               / context.registration_root.name)
+    store.replicate(context.registration_root, durable)
+    return record
 
 
 def run_registration(tree: ModelTree, *, producing_commit: str | None = None,
                      adoption: Mapping[str, Any] | None = None,
                      repo_root: Path | str = ".",
                      environment_digest: str = "",
-                     bank: TopicBank | None = None) -> StageOutcome:
+                     bank: TopicBank | None = None,
+                     supersedes: str | None = None) -> StageOutcome:
     commit = producing_commit or gitinfo.head_commit(Path(repo_root))
     return run_stage(
         tree, C.STAGE_REGISTERED,
         compute=lambda _prev: registration_payload(
             tree, producing_commit=commit,
             adoption=dict(adoption or {"status": "DRAFT"}),
-            repo_root=repo_root, bank=bank),
+            repo_root=repo_root, bank=bank, supersedes=supersedes),
         producing_commit=commit, environment_digest=environment_digest)
