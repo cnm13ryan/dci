@@ -208,6 +208,14 @@ figure it quoted — and its hash moved from `a5ec3986…` to `b3fd9185…`
 accordingly. The `value`, `decided_by`, `decided_on` and `evidence` of every
 closure are unchanged, as are U2 = A2 and P1 = confirmed.
 
+**The replacement.** Manifest
+`b040b343f626f095dd8a352b6b0fab9b7db87b797d82c843831783550ab1d106`, producing
+commit `cd4b1b1c58fcee6a95db1bbfc22f8ac6170be4aa`, signed 2026-08-23, with
+`PROTOCOL_REGISTERED` and `QUALIFIED` re-run to PASS on all four replications.
+Its `design.d1_registered` equals what `dci1v5.design.budget` recomputes, which
+is asserted rather than assumed. The supersession chain is
+`2960a1fc…` → `70608e5d…` → `b040b343…`.
+
 **This amendment does not weaken a criterion to make a gate pass.** No gate had
 run. It corrects a cost figure upward and tightens the pilot's derivation so
 the budget and the runner cannot disagree again.

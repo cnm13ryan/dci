@@ -17,7 +17,8 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 **Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A2**.
 Registration `70608e5d…` (commit `5e35ca6`) is superseded by
-`<new>` (commit `<new-commit>`), together with the `PROTOCOL_REGISTERED` and
+`b040b343f626f095dd8a352b6b0fab9b7db87b797d82c843831783550ab1d106`
+(commit `cd4b1b1`), together with the `PROTOCOL_REGISTERED` and
 `QUALIFIED` records of all four replications — all retained, none deleted.
 **No v5 model response exists**, so nothing is invalidated: `QUALIFIED` reads
 no behavioural rate by construction (§19).
