@@ -1518,8 +1518,10 @@ The amendment changed no threshold, estimand, arm, prompt, wording, verifier,
 seed, cap, decoding policy or selection rule; every registered scientific value
 is byte-identical across it. Manifest
 `2960a1fc…` is **superseded and retained**, not deleted, together with the
-stage-1 record signed under it; the replacement names it. No observation
-existed under the superseded registration, so nothing is invalidated.
+stage-1 record signed under it. The replacement, `70608e5d…` at commit
+`5e35ca6`, names it and carries a stage-1 record for all four replications —
+the first time that has been possible. No observation existed under the
+superseded registration, so nothing is invalidated.
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) ·
 [`dci1/tests_v5/test_amendment_pre_data.py`](dci1/tests_v5/test_amendment_pre_data.py)
 

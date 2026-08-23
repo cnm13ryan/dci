@@ -17,7 +17,11 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 **Standing.** The registration signed at manifest
 `2960a1fc44f036abd4729f7628095475018672adfac609bb2244a8763ba00ded` (producing
-commit `f895646`) is **superseded**. It is retained in full, not deleted:
+commit `f895646`) is **superseded** by
+`70608e5d5880c6ed2b8bbea1379b47061f60ea3f0705c374d0df581bc39bda2c` (producing commit
+`5e35ca6`), which carries a stage-1 record for all four registered models —
+the first time that has been possible. The superseded one is retained in full,
+not deleted:
 `dci1/evidence/dci1v5/registration/superseded/2960a1fc…/` holds the manifest
 and the supersession record, and each replication's stage-1 record is retained
 under its own `superseded/2960a1fc…/`. **No v5 observation existed under it and
