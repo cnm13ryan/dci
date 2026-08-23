@@ -109,19 +109,28 @@ UNRESOLVED_REDTEAM_FINDINGS: dict[str, dict[str, Any]] = {
                        "Calibration-A is not naive; under §12.7 A screens and "
                        "B confirms, so 'independent' overstates it",
             "mitigation": "D16 taken at 'complete_population' removes the "
-                          "screen-then-confirm asymmetry; Calibration-A's "
-                          "non-naivety is an accepted limitation that no "
-                          "decision closes and §6.2 declares",
+                          "screen-then-confirm asymmetry --- both splits "
+                          "measure the complete registered candidate "
+                          "population; Calibration-A's non-naivety is an "
+                          "accepted limitation that no decision closes and "
+                          "§6.2 declares",
             "closeable_by_rule": True},
     "R14": {"decision": "D17",
             "finding": "the focal grid extension trades construct strength "
                        "for band membership; m* = 13 is a real behavioural "
                        "constraint and a weak construct",
-            "mitigation": "the realised m*, B's chance compliance at m* and "
-                          "B's whole curve are reported; D17 is taken IN "
-                          "PRINCIPLE --- a floor shall exist --- and the "
-                          "quantity and threshold are open, so the finding "
-                          "is open with it",
+            "mitigation": "D17 taken at 'floor': the registered "
+                          "construct-strength floor is kappa_B(m*) <= 0.50 "
+                          "on the point estimate, with the Wilson bound "
+                          "reported beside it and CONSTRUCT_FLOOR_MARGINAL "
+                          "recorded when the interval straddles it. A m* that "
+                          "fails the floor ends the replication at "
+                          "FOCAL_RANGE_EXHAUSTED before any confirmatory "
+                          "generation. The realised m*, B's chance compliance "
+                          "and the whole curve are still reported. What "
+                          "remains and is NOT closed by the rule: the "
+                          "threshold is fitted to four models of one "
+                          "predecessor study (DEVELOPMENT_EVIDENCE, §30)",
             "closeable_by_rule": True},
     "R16": {"decision": "D6",
             "finding": "REFERENCE_SUPPORT_NOT_IDENTIFIED is an identification "

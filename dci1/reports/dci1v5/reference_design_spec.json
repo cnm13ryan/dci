@@ -1,6 +1,6 @@
 {
  "_what_this_is": "The proposed frozen reference-validity rule for DCI-1 v5, in machine-readable form. It is the executable statement of preregistration v5 sections 7, 9, 13 and 14. Every threshold carries the development analysis that chose it and the argument that fixes its value. Nothing here is fitted to a v5 observation, because none exists.",
- "_status": "PROPOSED. Binding once the researcher adopts v5 and the registration manifest is signed. Until then it is a design document.",
+ "_status": "ADOPTED. §34's nineteen decisions are closed, U2 is resolved at A2, P1 is confirmed, and the registration manifest binds this file by hash. It is binding, and a change to it is a §32 amendment.",
  "_provenance": {
   "designed_after": "the completed DCI-1 v4r4 study, all four replications",
   "development_evidence": "dci1/reports/dci1v5/development/*.json",
@@ -543,17 +543,34 @@
   "development_evidence": "d1_candidate_landscape.json and the v4r4 Gate-2 focal curves: m_star was the last measured rung on all four replications. qwen3-4b's B curve over m = 7..12 is 0.031, 0.107, 0.245, 0.411, 0.659, 0.742 against a focal band of (0.60, 0.95); had B:12 fallen short the replication would have recorded FOCAL_RANGE_EXHAUSTED with no information about where the band begins.",
   "construct_floor": {
    "decision": "D17",
-   "status": "TAKEN IN PRINCIPLE, quantity and threshold OPEN",
-   "note": "the researcher has decided that a substantive construct floor shall exist. The quantity and the value are not chosen here and are not present in the implementation: stages.construct_strength.assert_construct_floor refuses a `floor` closure that arrives without a FloorSpec carrying the quantity, the value and the derivation.",
-   "recommendation": "reports/dci1v5/d17_b_strength_decision.md"
+   "status": "CLOSED at `floor` on 2026-08-23",
+   "quantity": "chance_compliance",
+   "formula": "kappa_B(m) = P(B passes | unconstrained)",
+   "direction": "lower_is_stronger",
+   "value": 0.5,
+   "rule": "a selected m_star is admissible only if kappa_B(m_star) <= 0.50",
+   "semantics": "point_estimate_refuses_wilson_reported",
+   "semantics_note": "the refusal reads the POINT estimate. The Wilson upper bound is reported beside it and CONSTRUCT_FLOOR_MARGINAL is recorded when the interval straddles the threshold --- the point-and-Wilson convention section 13.5 already uses for the reference chance ceiling and section 34 D8 for the chance ceiling. A ceiling read against a Wilson upper bound would be a stricter rule and the researcher did not register that one.",
+   "marginal_status": "CONSTRUCT_FLOOR_MARGINAL",
+   "denominator": "the LOAD-ZERO cells of the calibration splits. The registered `chance` rate averages every row where the severity was absent, which in Gate 2's focal grid includes the B-solo cells at the other seven severities --- answers written under a stated length budget. The threshold was derived from a curve measured on load-zero answers, and a threshold calibrated on one estimator and applied to another is a different rule wearing the same number. Both rates are computed; the Gate 2 record carries load_zero_chance_curves beside chance_curves.",
+   "failure_status": "FOCAL_RANGE_EXHAUSTED",
+   "cost": "on the development curve the floor admits m_star <= 12 and refuses m_star >= 13, so a model with no rung in 7..12 inside the compliance band ends before generating anything confirmatory. All four v4r4 operating points (10, 10, 12, 10) survive it: the floor excludes the region the grid extension opened and does not retrospectively invalidate the predecessor's severities.",
+   "derivation": "the widest separation in the measured curve: no development model's kappa_B falls between 0.398 (m=12) and 0.586 (m=13), a gap of 0.188 against a next-largest adjacent gap of 0.104, and any theta in [0.40, 0.58) separates the two rungs on all four models. 0.50 is the approximate midpoint.",
+   "recorded_coincidence": "0.50 is a round number that lands inside an observed gap. That is the same shape as the 0.90 interaction ceiling R13 objects to and it gets the same treatment: the coincidence is recorded, the derivation is the SEPARATION, and neither the roundness nor the gap is offered as support for the value.",
+   "evidence_class": "DEVELOPMENT_EVIDENCE (section 30)",
+   "limitation": "fitted to four models of one predecessor study on one task; a fifth model whose prose is shorter or plainer could sit anywhere on this curve.",
+   "where_it_lives": "the quantity, the value, the semantics and the derivation are fields of the D17 closure in reports/dci1v5/researcher_decisions.json. stages/construct_strength.py contains NO threshold and reads them through registered_floor().",
+   "rejected_candidates": {
+    "C2": "the same quantity read as a minimum; identical rule, different sign. Registered as a name, not a second rule",
+    "C3": "long_word_share: measures the same thing with worse resolution and at word-level granularity, where B's verdict is answer-level. Kept as a reported diagnostic",
+    "C4": "grid-position rule: detects selection by exhaustion, which is a real and adjacent problem, but under it extending the grid to 20 would make m_star = 16 admissible --- the exact substitution R14 objects to, sanctioned by the rule meant to stop it. The status is kept; it is not the floor",
+    "C5": "instruction lift: circular on this evidence, because over the region section 12.3 can select from it restates the compliance band it is meant to supplement"
+   },
+   "analysis": "reports/dci1v5/d17_b_strength_decision.md"
   }
  },
  "what_this_spec_does_not_decide": [
-  "the confirmatory compute allocation, which section 16 of the preregistration registers and section 34 leaves as researcher decision D1; reports/dci1v5/d1_arm_compute_decision.md costs every registered option and recommends one",
-  "whether four models or fewer are registered",
-  "the Tier-1 marker vocabulary, which is D4; reports/dci1v5/d4_marker_audit.md audits all eight item by item",
-  "the construct-strength floor for B, which is D17; reports/dci1v5/d17_b_strength_decision.md recommends a quantity and a threshold",
-  "any value that a v5 observation could move; there are none, because no v5 observation exists"
+  "any value that a v5 observation could move; there are none, because no v5 observation exists. Every researcher decision this file previously deferred --- D1's compute allocation and model count, D4's marker vocabulary, D17's construct floor --- is now closed and recorded in reports/dci1v5/researcher_decisions.json, and the values are bound into the signed registration manifest rather than left here."
  ],
  "_reconciled": {
   "date": "2026-08-22",

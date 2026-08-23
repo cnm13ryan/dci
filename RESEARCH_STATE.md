@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **drafted and implemented 2026-08-22; NOT adopted, no stage record, no instrument measured, no generation.** Four §34 decisions taken (D3, D6, D16, D18) and the 96 Calibration-B questions authored; fifteen decisions and one specification question remain, four with evidence-backed recommendations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s, §4t. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **ADOPTED AND REGISTERED 2026-08-23; no stage record, no instrument measured, no generation.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,135,104 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s, §4t, §4u. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1351,7 +1351,8 @@ passing; `tests_v4r4/` is unchanged at 594 passed with 6 skips and
 Calibration-B questions (D3), closing D0–D18, and resolving U2 — §11.8's
 tier-indicator formulation, whose four mathematically identified alternatives
 are recorded in `protocol/open_items.py` and whose fit fails closed until one
-is adopted. §4t is where that stopped being true of D3.
+is adopted. §4t is where that stopped being true of D3; §4u is where it stopped
+being true of the rest.
 
 ### 4t. Four §34 decisions taken, the Calibration-B bank authored, and what each remaining decision now asks (2026-08-22)
 
@@ -1408,11 +1409,81 @@ own constants.
 
 **Red team.** R1 is resolved by D18 and R11 mitigated by D16; R16 is an
 accepted limitation *by* D6, with the resource-allocation cost explicitly
-accepted; R5 remains a permanent limitation that no decision closes. R14 is the
-only one of the five still open, and it is open because D17's threshold is.
+accepted; R5 remains a permanent limitation that no decision closes. R14 was
+the only one of the five still open at this point, and it was open because
+D17's threshold was — §4u closes it.
 
 [`v5_adoption_checklist.md`](dci1/reports/dci1v5/v5_adoption_checklist.md)
 states every remaining item as one plain question.
+
+### 4u. v5 adopted and registered, and the estimator defect closing D17 surfaced (2026-08-23)
+
+**v5 is formally adopted. Still no v5 observation of anything.** All nineteen
+§34 decisions carry a value, U2 is resolved at A2, P1 is confirmed,
+`manifest.signing_blockers()` returns `[]`, and the registration manifest is
+signed from a clean commit into `dci1/evidence/dci1v5/`. No model has been
+loaded, no prompt generated, no calibration measurement taken, and no gate run
+on model output. Adoption fixes the rules; it does not start the study.
+
+**Three of the nineteen went against the preregistration's own standing
+proposal** — D16, D17 and D18 — which is the fact worth carrying, because a
+register on which every proposal survives is a register nobody read.
+
+- **D17 — a construct floor on $m^*$: $\kappa^{B}(m^{*}) \le 0.50$**, on the
+  **point** estimate, with the Wilson bound reported beside it and
+  `CONSTRUCT_FLOOR_MARGINAL` recorded when the interval straddles it. The
+  derivation is the widest separation in the measured curve: no development
+  model falls between 0.398 at $m = 12$ and 0.586 at $m = 13$, a gap of 0.188
+  against a next-largest of 0.104. An $m^*$ that satisfies §12.3's compliance
+  band and fails the floor ends the replication at `FOCAL_RANGE_EXHAUSTED`
+  before anything confirmatory is generated — the accepted cost. **The number
+  is not in the code**: it is a field of the D17 closure in
+  `researcher_decisions.json`, which `construct_strength.registered_floor()`
+  reads and the manifest binds by hash.
+- **D1 — all five arms, four models, 56 cells, 384 blocks, $M = 8$**, which is
+  **1,135,104** generations recomputed by `dci1v5.design.budget` from the
+  code's own constants rather than quoted. The near-form arm is registered
+  rather than merely permitted, so R1's only mitigation is in the design.
+- **D4 — all eight Tier-1 markers**, with four **accepted limitations**
+  recorded by name (`though`'s near-synonymy and two syntactic frames,
+  `namely`'s possible appositive interaction with word length, `overall`'s
+  natural rate, and the vocabulary-wide natural-rate spread) and a population
+  hash that makes a substitution detectable rather than merely forbidden.
+- **U2 — A2**: §11.8's $\alpha_f$ ranges over the three *core* families. A4
+  stays constructed and non-adopted, because the evidence for preferring A2 is
+  computed from it on every test run.
+
+**Closing D17 surfaced a real estimator defect, and it is the finding here.**
+The threshold was derived from $\kappa^{B}$ measured on **load-zero** answers.
+Gate 2's registered `chance` rate averages every row where the severity was
+*absent* — which in the focal grid includes the $B$-solo cells at the other
+seven severities, answers written under a stated length budget, which satisfy a
+looser budget far more often than an unconstrained answer does. On the
+synthetic fixture the two denominators differ by more than 0.4 at $m = 7$.
+Applying the threshold to that rate would have been a threshold calibrated on
+one estimator and applied to another, wearing the same number. Gate 2 now
+computes and records both (`load_zero_chance_curves` beside `chance_curves`);
+the floor reads the load-zero one, and every other chance quantity keeps the
+denominator it was defined with — §13.6's $\kappa(R \mid B)$ is deliberately
+measured *under* $B$. The synthetic harness had also been giving $\kappa^{B}$
+no curve at all, flat at 0.67 across every severity, which is a fixture that
+could not have exercised the floor either way.
+
+**Red team.** R1 is resolved by D18, R11 by D16, R14 by D17 and R16 by D6. R2
+and R13 are adopted *over* a recorded objection rather than answered by
+evidence, and the objection stays beside the value. **R5 is an accepted
+permanent limitation and is not resolved** — $\kappa^{B}$ is measured under
+$B$, so the reference set is a function of how each model writes under its own
+$B$ at its own $m^*$, no rule closes that, and it is why no cross-model scalar
+carries a claim.
+
+**Stage 1, `PROTOCOL_REGISTERED`, has run** — it is the stage that signs the
+manifest, and a registration written outside the stage machine would have no
+stage record and no transition-log entry. **Nothing after it has.** The next
+action is stage 2, `QUALIFIED`, which reads no behavioural rate; the first
+stage that generates a model response is stage 3, §19's procedural pilot
+(R22's mitigation), and Gate 1 over the 650-instrument population (R23's) is
+stage 5, reading the regime screen's own text.
 
 ## 5. Provisional, superseded, broken, unresolved
 
@@ -1487,12 +1558,12 @@ and §4p.
 | the confirmatory protocol | `README.md`, `docs/MIGRATION.md`, `docs/preregistration/` |
 | the frozen Stage 2 decisions | `src/dci/v19/stage2_frozen.json`, `docs/v19_stage2_specification_amendments.md` |
 | the completed DCI-1 protocol | `user-notes/DCI1_preregistration_v4r4.md` (incorporates v4r3's by reference) |
-| the drafted successor, not adopted | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
+| the adopted successor protocol | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
-| what is still open in v5, as one question each | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
-| what is still open in v5, in full | `dci1/reports/dci1v5/v5_prereg_redteam.md`, `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
-| which §34 decisions the researcher has taken, and on what evidence | `dci1/reports/dci1v5/researcher_decisions.json` |
-| the four decision packets awaiting approval | `dci1/reports/dci1v5/d1_arm_compute_decision.md`, `d4_marker_audit.md`, `d17_b_strength_decision.md`, `u2_tier_model_decision.md` |
+| what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
+| what remains a limitation rather than a decision | `dci1/reports/dci1v5/v5_prereg_redteam.md` (R5 above all), `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
+| every §34 closure, its value, its evidence and who took it | `dci1/reports/dci1v5/researcher_decisions.json` — including D17's floor spec and U2's and P1's resolutions |
+| the four decision packets, as adopted | `dci1/reports/dci1v5/d1_arm_compute_decision.md`, `d4_marker_audit.md`, `d17_b_strength_decision.md`, `u2_tier_model_decision.md` |
 | every v5 field, its producer and its readers | `dci1/reports/dci1v5/v5_producer_consumer.md` |
 | what v5's implementation is, and what it cannot do | `dci1/src/dci1v5/`, `dci1/tests_v5/`, `dci1/reports/dci1v5/v5_implementation_status.md` |
 | every v5 document discrepancy and its classification | `dci1/reports/dci1v5/v5_reconciliation.md` |

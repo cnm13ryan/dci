@@ -43,6 +43,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from dci1v4.errors import InstrumentError
+from dci1v4.protocol.hashing import sha_obj
 
 from dci1v5.protocol.taxonomy import (
     SLOT_BROAD_CLASS, SLOT_CORE, SLOT_NEAR_FORM, SLOT_SPECTRUM, TIER_1, TIER_2,
@@ -798,7 +799,8 @@ class Constraint:
 
 #: Re-exported so a caller need not reach into the taxonomy for a slot name.
 __all__ += ["SLOT_CORE", "SLOT_SPECTRUM", "SLOT_NEAR_FORM",
-            "SLOT_BROAD_CLASS"]
+            "SLOT_BROAD_CLASS", "D4_ACCEPTED_LIMITATIONS",
+            "marker_population", "marker_population_hash"]
 
 
 def assert_marker_vocabulary_approved() -> tuple[str, ...]:
@@ -808,8 +810,11 @@ def assert_marker_vocabulary_approved() -> tuple[str, ...]:
     satisfy §7.6's three rules. That is a different question from whether the
     researcher has approved them: a reader may hold that `namely`, `notably`
     or `overall` is not semantically neutral in an informational answer, or
-    that eight is too many or too few. This refuses until D4 is closed, and
+    that eight is too many or too few. This refused until D4 was closed, and
     §18 stage 4 calls it before the regime screen measures a marker rung.
+
+    D4 is closed at ``approve_eight``: all eight stand, with three recorded
+    limitations the researcher accepted rather than substituted for.
     """
     from dci1v5.protocol import decisions
 
@@ -820,3 +825,147 @@ def assert_marker_vocabulary_approved() -> tuple[str, ...]:
          "approve_with_substitution": tuple(MARKER_WORDS.values()),
          "reject": ()},
         where="verifiers.constraints.assert_marker_vocabulary_approved")
+
+
+#: §34 D4's closure accepted three item-level judgements and one property of
+#: the vocabulary as a whole. They are **accepted limitations, not open
+#: questions**: each was audited, none violates a registered §7.6 rule, and
+#: the researcher declined to substitute a reserve for any of them. They are
+#: registered here so a reader of an L3 statement sees them, which is where
+#: `d4_marker_audit.md` §3 says they belong.
+D4_ACCEPTED_LIMITATIONS: tuple[dict[str, str], ...] = (
+    {"family": "MK3", "word": "though", "criterion": "4 --- not semantically "
+                                                     "equivalent to A's word",
+     "limitation": "`though` is the closest single-word English contrastive "
+                   "to `however` and is very nearly interchangeable with it "
+                   "clause-finally. It also has two productive syntactic "
+                   "frames --- subordinating conjunction and concessive "
+                   "adverb --- which the exact-count verifier pools into one "
+                   "count, so one severity covers three different production "
+                   "burdens. No other registered marker has two frames.",
+     "accepted_because": "it is one of only two contrastive markers, and A's "
+                         "own declared role is contrastive; removing it risks "
+                         "§13.8's REFERENCE_ROLE_NOT_MATCHED. The reserve "
+                         "`albeit` would answer both concerns and is a §32 "
+                         "amendment, which the researcher did not make."},
+    {"family": "MK6", "word": "namely", "criterion": "8 --- no lexical "
+                                                     "feature that changes B",
+     "limitation": "`namely` is an appositive introducer, so forcing it q "
+                   "times plausibly raises the number of long words in the "
+                   "answer --- which would damage B through the words it "
+                   "drags in rather than through the composition mechanism "
+                   "Delta_R isolates. This is a HYPOTHESIS: `namely` occurs "
+                   "0 times in every unconstrained development answer, so "
+                   "there is no natural sample to test it on and no v4r4 cell "
+                   "ever instructed it.",
+     "accepted_because": "it is the only exemplifying marker, so dropping it "
+                         "loses the role rather than substituting for it. The "
+                         "hypothesis is testable prospectively at Gate 1 at "
+                         "no additional generation cost, by comparing the "
+                         "long-word share of solo answers containing `namely` "
+                         "against those that do not."},
+    {"family": "MK8", "word": "overall", "criterion": "3 --- sufficiently "
+                                                      "rare naturally",
+     "limitation": "0.076-0.112 natural rate, the least rare marker by a "
+                   "factor of two and the only one approaching A's own. It "
+                   "passes the registered absolute ceiling of 0.15, but on "
+                   "two of four development models it is 1.95x and 5.80x that "
+                   "model's own `however` rate. It is also the one marker "
+                   "with a live alternative spelling: *over-all* is not "
+                   "counted, because a hyphen splits a word under §9.2.",
+     "accepted_because": "the registered rule is the absolute ceiling and it "
+                         "is met. §11.2's kappa correction and §13.5's chance "
+                         "ceiling handle the statistical consequence. It is "
+                         "also the marker most like A on B's own lexical "
+                         "feature --- both seven letters --- which is a "
+                         "property a same-form control should have."},
+    {"family": "*", "word": "*", "criterion": "3 --- across the vocabulary",
+     "limitation": "the eight are not homogeneous in how unnatural the forced "
+                   "production is. Four are measured at exactly 0.000 on all "
+                   "four development models while A's own word occurs at "
+                   "1.3%-10.4%, so instructing A amplifies a habit the model "
+                   "already has and instructing MK2 or MK5 asks for something "
+                   "it never writes. If a Tier-1 control is harder than A "
+                   "simply because the model never writes the word, Delta_R "
+                   "measures that and not the pair-specific mechanism.",
+     "accepted_because": "no rule is violated --- §7.6's ceiling is an upper "
+                         "bound and zero is well inside it --- and §13.4's "
+                         "instruction-lift requirement and §13.8's difficulty "
+                         "caliper both operate on iota, which absorbs the "
+                         "level difference. The mechanism still differs, so "
+                         "it is reported alongside REFERENCE_POOL_SAME_FORM."},
+)
+
+
+def marker_population() -> dict[str, Any]:
+    """The frozen Tier-1 marker population §34 D4 approved.
+
+    Every field the manifest needs to say *which eight words this study
+    registered*: the family id, the word, the verifier's statistic id, the
+    declared discourse role, the registered severity ladder and its reserve.
+    A marker moves only by a §32 amendment, and the hash is what makes that
+    checkable rather than assertable.
+    """
+    from dci1v5.protocol import decisions
+
+    markers = []
+    for family_id, word in MARKER_WORDS.items():
+        kind = next(k for k, f in FAMILIES.items()
+                    if f.statistic_id == family_id)
+        family = FAMILIES[kind]
+        markers.append({
+            "family": kind,
+            "statistic_id": family.statistic_id,
+            "word": word,
+            "letters": len(word),
+            "form": family.form,
+            "constraint_class": family.constraint_class,
+            "structural_tier": family.structural_tier,
+            "discourse_role": family.metadata["discourse_role"],
+            "rule": family.rule,
+            "ladder": list(family.ladder),
+            "reserve": list(RESERVES.get(kind, ())),
+        })
+    markers.sort(key=lambda m: m["family"])
+    return {
+        "section": "§7.6, §7.10",
+        "decision": "D4",
+        "value": decisions.value_of("D4"),
+        "n_markers": len(markers),
+        "markers": markers,
+        "roles": sorted({m["discourse_role"] for m in markers}),
+        "structural_rule": (
+            f"every marker is at most {MARKER_MAX_LETTERS} letters, so no "
+            "marker can violate B at any admissible severity (the focal grid "
+            f"starts at m = {min(FOCAL_GRID)})"),
+        "natural_frequency_max": MARKER_NATURAL_FREQUENCY_MAX,
+        "same_operator_as_a": (
+            "all eight are exact_count families over a marker-occurrence "
+            "numerator, computed by one function with eight target strings; "
+            "the same function with `however` substituted is A's own"),
+        "accepted_limitations": [dict(x) for x in D4_ACCEPTED_LIMITATIONS],
+        "substitution": (
+            "§7.10's three reserves are admissible only by a registered §32 "
+            "amendment and only when a registered marker fails Gate 1. No "
+            "post-adoption substitution occurs without one"),
+        "audit": "dci1/reports/dci1v5/d4_marker_audit.md",
+        "population_hash": marker_population_hash(),
+    }
+
+
+def marker_population_hash() -> str:
+    """The content identity of the eight, over what makes them those eight."""
+    payload = []
+    for family_id, word in sorted(MARKER_WORDS.items()):
+        kind = next(k for k, f in FAMILIES.items()
+                    if f.statistic_id == family_id)
+        family = FAMILIES[kind]
+        payload.append({
+            "family": kind, "statistic_id": family.statistic_id,
+            "word": word, "form": family.form,
+            "discourse_role": family.metadata["discourse_role"],
+            "structural_tier": family.structural_tier,
+            "rule": family.rule, "ladder": list(family.ladder),
+            "reserve": list(RESERVES.get(kind, ())),
+        })
+    return sha_obj({"section": "§7.10", "markers": payload})

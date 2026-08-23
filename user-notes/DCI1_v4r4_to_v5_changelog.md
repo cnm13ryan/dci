@@ -486,13 +486,14 @@ every difference.
 
 ---
 
-## 14. What is still open
+## 14. What was decided, and what remains a limitation
 
-v5 §34 carries **nineteen** registered open decisions, D0 to D18, every one of
-which must be closed in the signed registration manifest before stage 1 can
+v5 §34 carried **nineteen** registered open decisions, D0 to D18, every one of
+which had to be closed in the signed registration manifest before stage 1 could
 pass. D15 to D18 came from the pre-freeze red-team and D6 was reopened by it.
+**All nineteen are now taken**, U2 is resolved at A2 and P1 is confirmed.
 
-### Four are taken (2026-08-22)
+### Four were taken first (2026-08-22)
 
 Recorded with their evidence in
 `dci1/reports/dci1v5/researcher_decisions.json`, which `protocol/decisions.py`
@@ -527,20 +528,62 @@ this document's standing proposal**, and those two change what v5 is:
   measurement or selection outcome existed, disjoint from all five other sets
   in id and in text, hashed into the manifest.
 
-### Fifteen remain
+### The remaining fifteen, U2 and P1 (2026-08-23)
 
-`dci1/reports/dci1v5/v5_adoption_checklist.md` states each as one question.
-Four have evidence-backed recommendations and no adopted value:
+`dci1/reports/dci1v5/v5_adoption_checklist.md` is the one-page record. Four had
+evidence-backed recommendations and all four were approved as recommended:
 
-- **D1, the compute budget** — `d1_arm_compute_decision.md` costs every
-  registered option from the code's own constants: 1,135,104 generations for
-  the recommended four models at 56 cells.
-- **D4, the Tier-1 marker vocabulary** — `d4_marker_audit.md` audits all eight
-  against the eight approval criteria. Five approve outright, `whereas`
-  approves with a note, and `though`, `namely` and `overall` each carry one
-  substantive judgement.
-- **D17, a construct floor for B** — taken *in principle*;
-  `d17_b_strength_decision.md` recommends $\kappa^{B}(m^{*}) \le 0.50$ on a
-  curve recomputed from v4r4's load-zero answers.
-- **U2, §11.8's singular secondary fit** — `u2_tier_model_decision.md`
-  recommends A2, demonstrated rather than argued.
+- **D1, the compute budget — `four_models_56_cells`.** All five arms, four
+  models, 56 cells, 384 blocks, $M = 8$: **1,135,104** generations, derived by
+  `dci1v5.design.budget` from the code's own constants and bound into the
+  manifest, so the figure the signature carries is one the code reproduces.
+  The near-form arm is *registered* rather than merely permitted, which is what
+  makes R1's mitigation part of the design.
+- **D4, the Tier-1 marker vocabulary — `approve_eight`.** All eight stand.
+  `though`, `namely` and `overall` each carried a judgement the rules do not
+  settle, and all three were kept as **accepted limitations**: they are
+  registered by name, bound into the manifest, and reported alongside
+  `REFERENCE_POOL_SAME_FORM` on every L3 statement, so "approved" cannot be
+  read as "no concern was found". A population hash over the eight makes a
+  substitution detectable rather than merely forbidden.
+- **D17, a construct floor for B — $\kappa^{B}(m^{*}) \le 0.50$**, on the
+  **point** estimate, with the Wilson bound reported beside it and
+  `CONSTRUCT_FLOOR_MARGINAL` when the interval straddles it. A selected $m^*$
+  that satisfies §12.3's compliance band and fails the floor ends the
+  replication at `FOCAL_RANGE_EXHAUSTED` before anything confirmatory is
+  generated. The threshold is a field of the closure record, not a constant in
+  the source. **Closing it exposed an estimator defect**: Gate 2's registered
+  chance rate averages every row where the severity was absent — including the
+  $B$-solo cells at other severities — while the threshold was derived on
+  load-zero answers. Both are now computed and recorded; the floor reads the
+  load-zero one and every other chance quantity is untouched.
+- **U2, §11.8's singular secondary fit — A2.** $\alpha_f$ over the three
+  **core** families; a Tier-2 point at the unweighted mean core intercept plus
+  $\gamma$. §11.8's sentence is amended to say so. A4 stays constructed and
+  non-adopted, because the evidence for preferring A2 is computed from it on
+  every test run.
+
+The other eleven — D0, D2, D5, D7–D15 — closed at this document's own standing
+proposal. **Two carry a recorded objection the closure does not answer**: R13
+against D7's 0.90 interaction ceiling, and R2 against D15's transfer of the
+memo's 0.10 and 0.25 to a same-form $\Delta_R$. Both objections are bound into
+the manifest beside the value. **P1** is confirmed: Tier 3 takes the
+broad-class role only and was *not* made spectrum-eligible.
+
+### What no decision closed
+
+**R5.** $\kappa^{B}$ is measured under $B$, so the reference set is a function
+of how each model writes under its own $B$ at its own $m^*$: the set is not
+exchangeable across models and neither is $\Delta_R$'s meaning. §13.8's
+`INTERACTION_ESTIMATE_DRIFTED` closes the second half of the finding; no rule
+closes the first. It is an **accepted permanent limitation**, reported
+separately from the blocking findings in every audit, and it is why no
+cross-model scalar carries a claim.
+
+**R22 and R23 are registered rather than resolved**, and they are what comes
+next: the full design has never been executed on any revision — §19's
+procedural pilot at stage 3 is the mitigation, and it is the first stage that
+generates a model response — and the Tier-1 pool has never been measured, which
+Gate 1 at stage 5 does, over the regime screen's own generated text. Stage 1
+has run, because it is the stage that signs the registration manifest; nothing
+after it has.

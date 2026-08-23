@@ -187,6 +187,15 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     grids = {"A": list(C.TARGET_GRID), "B": list(C.FOCAL_GRID)}
     curves: dict[str, dict[int, float]] = {"A": {}, "B": {}}
     chance_curves: dict[str, dict[int, float]] = {"A": {}, "B": {}}
+    # §34 D17's floor reads kappa_B on the **load-zero** cells only. The
+    # registered `chance` rate above averages every row where the severity was
+    # absent, which in this grid includes the B-solo cells at the other seven
+    # severities --- answers written under a stated length budget, which
+    # satisfy a looser budget far more often than an unconstrained answer
+    # does. Both are computed and both are recorded; the floor takes the one
+    # its threshold was derived from.
+    load_zero_curves: dict[str, dict[int, float]] = {"A": {}, "B": {}}
+    n_load_zero: dict[str, int] = {}
     grid_rows: list[dict[str, Any]] = []
     for kind, grid in grids.items():
         slot_map = {f"{kind}{q}": Constraint(kind, q) for q in grid}
@@ -214,9 +223,12 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             generate=generate)
         grid_rows.extend(rows)
         for q in grid:
-            rates = instance_rates(rows, kind=kind, severity=q)
+            rates = instance_rates(rows, kind=kind, severity=q,
+                                   unconstrained_arm="unconstrained")
             curves[kind][q] = rates["solo"]
             chance_curves[kind][q] = rates["chance"]
+            load_zero_curves[kind][q] = rates["chance_unconstrained"]
+            n_load_zero[kind] = rates["n_topics_unconstrained"]
 
     target = regime_stage.select_target(curves["A"])
     focal = regime_stage.select_focal(curves["B"])
@@ -231,9 +243,14 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                 strongest_permissible_statement=C.TERMINAL_SENTENCE)
     m_star, n_star = focal["selected"], target["selected"]
 
+    # The topic is the independent unit kappa_B was estimated over --- §13.7's
+    # topics, never the four draws within one --- and it is what the Wilson
+    # interval beside the verdict is computed from. The floor still refuses on
+    # the point.
     strength = construct_strength.assert_construct_floor(
-        m_star, chance_compliance_at_m_star=chance_curves["B"][m_star],
-        curve=chance_curves["B"], solo_curve=curves["B"], floor=floor)
+        m_star, chance_compliance_at_m_star=load_zero_curves["B"][m_star],
+        curve=load_zero_curves["B"], solo_curve=curves["B"],
+        n_topics=n_load_zero["B"], floor=floor)
     if strength.get("selection_refused"):
         raise TerminalStatus(
             strength["status"], gate=C.STAGE_GATE2,
@@ -288,6 +305,11 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                         for k, c in curves.items()},
         "chance_curves": {k: {str(q): v for q, v in c.items()}
                           for k, c in chance_curves.items()},
+        # The load-zero curve, recorded separately and named, so a reader can
+        # see which denominator §34 D17's floor was applied to.
+        "load_zero_chance_curves": {k: {str(q): v for q, v in c.items()}
+                                    for k, c in load_zero_curves.items()},
+        "n_topics_load_zero": dict(n_load_zero),
         "iota_a": instructed_compliance(curves["A"][n_star],
                                         chance_curves["A"][n_star]),
         "solo_compliance_a": curves["A"][n_star],

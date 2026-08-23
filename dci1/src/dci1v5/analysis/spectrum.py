@@ -50,7 +50,8 @@ from dci1v5.stages.calibration_table import (
 __all__ = ["SpectrumPoint", "DifficultyFit", "fit_difficulty_relation",
            "prediction_weights", "support_verdict", "SpectrumInput",
            "estimate", "assert_algebraic_forms_agree", "bootstrap_spectrum",
-           "TierFit", "fit_with_tier_indicator"]
+           "TierFit", "fit_with_tier_indicator", "adopted_formulation",
+           "assert_adopted_formulation"]
 
 
 @dataclass(frozen=True)
@@ -441,6 +442,11 @@ class TierFit:
     #: The named formulation of open_items.U2 this fit was computed under.
     #: Recorded on the object because two of them estimate different things.
     formulation: str = ""
+    #: Whether this is the formulation U2 was **resolved** at. A fit computed
+    #: under a non-adopted construction is a characterisation of what the
+    #: study did not register, and it says so on its own face rather than
+    #: relying on a reader to check the formulation string against the record.
+    adopted: bool = False
 
 
 def _tier_design_rows(points: Sequence[SpectrumPoint],
@@ -449,11 +455,15 @@ def _tier_design_rows(points: Sequence[SpectrumPoint],
                                                  list[str]]:
     """The design matrix for one **named** formulation of §11.8's secondary.
 
-    Both admissible constructions are written here so that neither is a
-    default and a reader can see what the choice costs. ``A1`` --- a family
-    intercept for each of the six families --- is not constructed at all: it
-    is exactly singular, and building it to discover that at runtime would
-    invite a caller to reach for a pseudoinverse.
+    Both constructions are written here so that a reader can see what the
+    choice cost. U2 resolved at A2, so A2 is what a caller who names nothing
+    gets --- but it is reached through the open-item registry, not by being
+    written into a signature, so the refusal is still there if the resolution
+    goes away. ``A1`` --- a family intercept for each of the six families ---
+    is not constructed at all: it is exactly singular, and building it to
+    discover that at runtime would invite a caller to reach for a
+    pseudoinverse. ``A3`` is not constructed either: it deletes F8's
+    registered ``gamma_tier``.
     """
     if formulation == "A2":
         # alpha_f over the three CORE families; a Tier-2 point sits at the
@@ -483,31 +493,67 @@ def _tier_design_rows(points: Sequence[SpectrumPoint],
         "and A4")
 
 
+def adopted_formulation() -> str:
+    """§11.8's registered secondary formulation, from U2's resolution.
+
+    Not a module literal: U2 is resolved in ``researcher_decisions.json`` and
+    read from there, so the construction the study registers and the
+    construction the code runs are the same fact rather than two facts that
+    have to be kept equal.
+    """
+    return open_items.assert_item_resolved(
+        "U2", where="analysis.spectrum.adopted_formulation")
+
+
+def assert_adopted_formulation(fit: TierFit, *, where: str) -> TierFit:
+    """Refuse a non-adopted construction on any reporting path.
+
+    U2 is resolved at A2. A1, A3 and A4 remain in the source --- A4
+    constructed, A1 refused by name, A3 never built --- because a study has to
+    be able to show what it did not register and because the U2 packet's
+    decisive comparison is computed from A4 on every test run. None of them
+    may reach a v5 result table, and this is the call that says so.
+    """
+    if not fit.adopted:
+        raise ProtocolError(
+            f"{where}: this fit was computed under formulation "
+            f"{fit.formulation!r} and §11.8's registered secondary is "
+            f"{adopted_formulation()!r} (open_items U2). A non-adopted "
+            "construction is a historical characterisation and estimates a "
+            "different quantity; it may not be reported as the study's "
+            "gamma_tier")
+    return fit
+
+
 def fit_with_tier_indicator(points: Sequence[SpectrumPoint],
                             tiers: Mapping[str, int],
                             *, formulation: str | None = None) -> TierFit:
-    """§11.8's secondary fit over twelve points. **Fails closed today.**
+    """§11.8's secondary fit over twelve points, under U2's adopted reading.
 
     ``tiers`` maps slot -> structural tier. The indicator is 1 for Tier 2 and
     0 otherwise.
 
-    **§11.8 does not identify this fit and this function does not choose one
-    for it.** The section writes ``Y = alpha_f + beta*d + gamma*1[Tier 2]``
-    over twelve points and never says what ``alpha_f`` is for the three
-    near-form controls. Give each of them a family intercept and ``gamma``
-    becomes exactly collinear with the sum of those three dummies: the normal
+    **§11.8 did not identify this fit and this function never chose one for
+    it.** The section writes ``Y = alpha_f + beta*d + gamma*1[Tier 2]`` over
+    twelve points and never said what ``alpha_f`` is for the three near-form
+    controls. Give each of them a family intercept and ``gamma`` becomes
+    exactly collinear with the sum of those three dummies: the normal
     equations are singular and ``gamma`` has no unique least-squares value.
     More than one repair is mathematically admissible and they estimate
     different things --- ``protocol/open_items.py`` U2 carries all four with
-    what each changes --- so this raises ``OpenItemError`` until a researcher
-    resolves U2 and amends §11.8. It is **not** repaired here by a
-    pseudoinverse, a dropped column chosen from the observed data, a ridge
-    term or a silent reference coding, because each of those picks one of the
-    alternatives without saying so.
+    what each changes --- so this refused until a researcher resolved U2.
 
-    ``gamma`` is an F8 **secondary** and licenses no claim, so the refusal
-    costs no claim level: the secondary is not reported and §18.1's rule for
-    a field a variant legitimately leaves empty applies.
+    **U2 is now resolved at A2**: ``alpha_f`` ranges over the three CORE
+    families and a Tier-2 point sits at the unweighted mean core intercept
+    plus ``gamma``. It was never repaired by a pseudoinverse, a dropped column
+    chosen from the observed data, a ridge term or a silent reference coding,
+    because each of those would have picked one of the alternatives without
+    saying so. Passing ``formulation`` explicitly still runs a named
+    construction, and the returned fit carries ``adopted=False`` when that
+    construction is not the registered one.
+
+    ``gamma`` is an F8 **secondary** and licenses no claim, so the amendment
+    §11.8 needed costs no claim level either way.
     """
     if any(p.slot == "A" for p in points):
         raise ProtocolError("§11.8: A must not enter the fit that predicts A")
@@ -563,4 +609,5 @@ def fit_with_tier_indicator(points: Sequence[SpectrumPoint],
         residuals[p.slot] = p.loss - (base + slope * p.difficulty)
     return TierFit(slope=slope, gamma=gamma, intercepts=intercepts,
                    n_points=len(points), residuals=residuals,
-                   formulation=chosen)
+                   formulation=chosen,
+                   adopted=chosen == adopted_formulation())

@@ -1,5 +1,8 @@
-"""The run layer: it exists, it is complete, and it cannot execute today."""
+"""The run layer: it exists, it is complete, and adoption unblocked it."""
 from __future__ import annotations
+
+import dataclasses
+from pathlib import Path
 
 import pytest
 
@@ -14,16 +17,28 @@ from dci1v5.run.gates_run import assert_no_substitution_path
 from dci1v5.run.lifecycle import TerminalStatus, terminal_statuses_in_force
 
 MODEL = "gemma-3n-e2b-it"
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _tree(tmp_path):
     return model_tree(synthetic_context(tmp_path), MODEL)
 
 
-def test_the_first_stage_refuses_while_a_decision_is_open(tmp_path):
+def test_the_first_stage_refuses_again_if_a_decision_reopens(tmp_path):
+    """§34's guard on stage 1, which needs all nineteen.
+
+    All nineteen are closed, so the refusal has to be provoked --- and a guard
+    nothing provokes is a guard that quietly stops working.
+    """
     tree = _tree(tmp_path)
-    with pytest.raises(decisions.DecisionOpenError):
-        cli.RUNNERS[C.STAGE_REGISTERED](tree, producing_commit="0" * 40)
+    held = decisions.DECISIONS["D13"]
+    decisions.DECISIONS["D13"] = dataclasses.replace(
+        held, value=decisions.UNRESOLVED)
+    try:
+        with pytest.raises(decisions.DecisionOpenError):
+            cli.RUNNERS[C.STAGE_REGISTERED](tree, producing_commit="0" * 40)
+    finally:
+        decisions.DECISIONS["D13"] = held
 
 
 def test_every_later_stage_refuses_too(tmp_path):
@@ -43,14 +58,21 @@ def test_every_later_stage_refuses_too(tmp_path):
             cli.RUNNERS[stage](tree, producing_commit="0" * 40)
 
 
-def test_the_plan_command_writes_nothing_and_says_what_is_missing():
-    plan = registration_run.plan_registration(
-        repo_root=synthetic_context.__globals__["REPO_ROOT"])
-    assert plan["can_register"] is False
-    assert plan["failure_status"] == "REGISTRATION_INCOMPLETE"
+def test_the_plan_command_writes_nothing_and_says_nothing_is_missing():
+    """It never signs, never creates a key and never touches a root.
+
+    That was its whole point while adoption was blocked, and it stays true
+    now that it is not: the plan reports readiness, and ``sign_registration``
+    is still the only path that writes one.
+    """
+    plan = registration_run.plan_registration(repo_root=REPO_ROOT)
+    assert plan["can_register"] is True
+    assert plan["failure_status"] is None
+    assert plan["blockers"] == []
     assert plan["calibration_b_status"] == "AUTHORED"
-    assert len(plan["open_decisions"]) == 15
-    assert plan["blocking_specification_questions"] == ["U2"]
+    assert plan["open_decisions"] == []
+    assert plan["blocking_specification_questions"] == []
+    assert "no manifest is built by this call" in plan["note"]
 
 
 def test_a_refused_transition_is_logged(tmp_path):
@@ -58,11 +80,17 @@ def test_a_refused_transition_is_logged(tmp_path):
 
     tree = _tree(tmp_path)
     tree.root.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(decisions.DecisionOpenError):
-        cli.RUNNERS[C.STAGE_REGISTERED](tree, producing_commit="0" * 40)
+    held = decisions.DECISIONS["D13"]
+    decisions.DECISIONS["D13"] = dataclasses.replace(
+        held, value=decisions.UNRESOLVED)
+    try:
+        with pytest.raises(decisions.DecisionOpenError):
+            cli.RUNNERS[C.STAGE_REGISTERED](tree, producing_commit="0" * 40)
+    finally:
+        decisions.DECISIONS["D13"] = held
     rows = transitions.transition_rows(tree)
     assert rows and rows[-1]["outcome"] == "REFUSED"
-    assert len(rows[-1]["open_decisions"]) == 15
+    assert rows[-1]["open_decisions"] == ["D13"]
 
 
 def test_no_post_gate4_substitution_path_exists():
