@@ -87,6 +87,12 @@ own `superseded/2960a1fc…/`. `engine/paths.is_superseded` excludes retained
 files from every current pool while the durability audit still counts them.
 The replacement manifest names the superseded one in its `supersedes` field.
 
+**The replacement.** Manifest
+`70608e5d5880c6ed2b8bbea1379b47061f60ea3f0705c374d0df581bc39bda2c`, producing
+commit `5e35ca687c52af86640f167fe145c20d52af36a9`, signed 2026-08-23 with a
+stage-1 record for **all four** registered replications — which is the first
+time that has been possible.
+
 **What it leaves untouched.** Everything the study measures or decides:
 
 - every §34 closure and its evidence, D17's floor spec included;
@@ -104,8 +110,26 @@ The replacement manifest names the superseded one in its `supersedes` field.
 - v4r4's evidence.
 
 Verified rather than asserted: the replacement manifest was diffed against the
-superseded one and the only fields that differ are `producing_commit`,
-`classification`, `supersedes` and `manifest_hash`.
+superseded one, leaf by leaf. **Seven fields differ and every other binding is
+byte-identical.**
+
+| Field | Why it moved |
+|---|---|
+| `classification` | V5-E3 — the label that had not moved at adoption |
+| `revision_changes.classification` | the same string, echoed by `revision_record()` |
+| `producing_commit` | `f895646` → `5e35ca6`, the amendment commit |
+| `protocol_hash` | §32 of the preregistration now names this register; a documentation edit, no scientific text changed |
+| `supersedes` | new; names `2960a1fc…` |
+| `adoption` | records the amendment's provenance beside the original approval |
+| `manifest_hash` | consequent on the six above |
+
+Byte-identical across the amendment: the models and their revisions, the design
+and budget, every threshold including D17's floor block, the decision record
+and its hash, the open-item resolutions, the marker population and its hash,
+both topic-bank hashes and the split identity, the candidate library, the
+estimands, the multiplicity families, the claim ladder, the masking
+specification, the seeds, the selection rules, the measurement basis, the reuse
+ledger and the red-team block.
 
 **This amendment does not weaken a criterion to make a gate pass.** No gate had
 run. It adds refusals — three of them — and removes none.

@@ -111,8 +111,11 @@ the registered lifecycle unexecutable as committed: three of the four models
 could never obtain a stage-1 record, the pinned backend was unreachable from
 four of the five generating stages, and a row's `synthetic` flag recorded how
 the runner was called rather than what wrote the text. The superseded
-registration is retained under `registration/superseded/2960a1fc…/`, the new
-one names it, and no registered scientific value differs between them. See
+registration is retained under `registration/superseded/2960a1fc…/`; the
+replacement is `70608e5d…`
+at commit `5e35ca6`, it names what it supersedes, and no registered scientific
+value differs between them. **All four replications now carry a stage-1
+record.** See
 [`CHANGES_SCIENTIFIC.md`](../../../CHANGES_SCIENTIFIC.md).
 
 The rest of §18 is untouched, one model at a time in §6.1's registered
