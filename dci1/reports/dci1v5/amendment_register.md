@@ -332,6 +332,14 @@ candidate library, every threshold including D17's floor, the estimands,
 multiplicity families, claim ladder, masking, seeds and selection rules. The
 decision record is unchanged in this amendment.
 
+**The replacement.** Manifest
+`d0485a6d39d0fcf8232f111d80ef570ccae75670c9e7cb3f54d2c008b9cad501`, producing
+commit `c94bffe3e7832c711e7f9c29870b26f243710e17`, signed 2026-08-23, with
+`PROTOCOL_REGISTERED` and `QUALIFIED` PASS on all four replications. The
+supersession chain is `2960a1fc…` → `70608e5d…` → `b040b343…` → `d0485a6d…`.
+**430,080 behavioural rows are retained and invalidated** (274,944 on
+`gemma-3n-e2b-it`, 155,136 on `gemma-3n-e4b-it`); the live path holds none.
+
 **This amendment does not weaken a criterion to make a gate pass.** It adds
 one assertion and one escalation path, both of which make Gate 2 *harder* to
 pass than it was: a capped population, and a bracketing rule that now actually

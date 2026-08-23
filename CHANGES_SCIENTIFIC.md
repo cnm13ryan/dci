@@ -16,7 +16,8 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 ## 2026-08-23 — v5 preregistered-rule restoration: two registered rules were implemented and never invoked
 
 **Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A3**.
-Registration `b040b343…` is superseded, and with it the **behavioural chains of
+Registration `b040b343…` is superseded by `d0485a6d39d0fcf8232f111d80ef570ccae75670c9e7cb3f54d2c008b9cad501`
+(commit `c94bffe`), and with it the **behavioural chains of
 both gemma replications** — Gate 0, the regime screen and Gate 1 on each —
 which are **invalidated and retained**, not deleted. No Gate-2 record was ever
 written on any model, and no confirmatory row exists. Gate 2.5 has not begun,
