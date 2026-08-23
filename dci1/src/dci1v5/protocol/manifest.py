@@ -699,8 +699,28 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "delta_difficulty": dict(C.DELTA_DIFFICULTY_THRESHOLDS),
             "order": dict(C.ORDER_THRESHOLDS),
             "composed_headroom_band": list(C.COMPOSED_HEADROOM_BAND),
-            "construct_floor": "§34 D17",
-            "construct_floor_value": decisions.value_of("D17"),
+            # §34 D17. Every other entry in this block is a number, and this
+            # one has to be too: `thresholds` is where a reader looks to see
+            # what value refuses what, and naming the *branch* --- "floor" ---
+            # while leaving the threshold in another file makes the one rule
+            # D17 registers the only one not readable here. The record still
+            # owns it; this is the same values, bound in the payload that
+            # carries every other threshold.
+            "construct_floor": {
+                "decision": "§34 D17",
+                "branch": decisions.value_of("D17"),
+                **({} if construct_strength.registered_floor() is None
+                   else construct_strength.registered_floor().as_dict()),
+                "measured_on": "the load-zero calibration cells --- NOT every "
+                               "row where the severity was absent, which in "
+                               "§12.3's focal grid includes the B-solo cells "
+                               "at the other severities",
+                "failure_status": "FOCAL_RANGE_EXHAUSTED",
+                "marginal_status": construct_strength.MARGINAL_STATUS,
+                "evidence_class": "DEVELOPMENT_EVIDENCE (§30): fitted to four "
+                                  "models of one predecessor study on one "
+                                  "task",
+            },
         },
         "precision_preconditions": dict(C.PRECISION_PRECONDITIONS),
         "reuse_ledger": {
