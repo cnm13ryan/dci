@@ -162,6 +162,33 @@ def test_it_binds_the_design_d1_actually_registered():
     assert registered == budget.registered_budget()
 
 
+def test_every_registered_threshold_is_a_value_and_not_a_branch_name():
+    """`thresholds` is where a reader looks for what value refuses what.
+
+    D17's entry named the *branch* — `"floor"` — and left the number in
+    another file, which made the one threshold D17 registers the only one not
+    readable in the block that carries every threshold. It is bound by value
+    now, and this is what stops it becoming a label again.
+    """
+    from dci1v5.stages import construct_strength as CS
+
+    thresholds = _manifest()["thresholds"]
+    floor = thresholds["construct_floor"]
+    assert floor["branch"] == "floor"
+    assert floor["quantity"] == "chance_compliance"
+    assert floor["value"] == 0.50
+    assert floor["direction"] == "lower_is_stronger"
+    assert floor["semantics"] == CS.POINT_REFUSES
+    assert floor["marginal_status"] == CS.MARGINAL_STATUS
+    assert floor["failure_status"] == "FOCAL_RANGE_EXHAUSTED"
+    assert "load-zero" in floor["measured_on"]
+    assert floor["derivation"] and floor["decided_by"] and floor["decided_on"]
+    # And no other entry in the block is a bare branch name either.
+    for name, value in thresholds.items():
+        assert not (isinstance(value, str) and value.isidentifier()), \
+            f"thresholds.{name} is a label, not a threshold"
+
+
 def test_it_binds_the_eight_markers_and_their_accepted_limitations():
     built = _manifest()["marker_population"]
     assert built["approval_status"] == "approve_eight"
