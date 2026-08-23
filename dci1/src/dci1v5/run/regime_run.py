@@ -35,8 +35,8 @@ from dci1v5.engine import transitions
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
 from dci1v5.protocol.wordings import wording_source_hash
-from dci1v5.run.execute import (fake_backend, generate_and_score,
-                                instance_rates, prompt_cell)
+from dci1v5.run.execute import (generate_and_score, instance_rates,
+                                prompt_cell, resolve_generate)
 from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
                                   protocol_identity, run_stage)
 from dci1v5.stages import gate1 as gate1_stage
@@ -213,7 +213,8 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
     prescreen = list(bank.topics("prescreen"))
     assert_no_reserved_topic_spent([t["topic_id"] for t in prescreen],
                                    bank.sets, stage=C.STAGE_REGIME)
-    generate = generate or fake_backend(_screen_responder)
+    generate = resolve_generate(tree, generate, _screen_responder,
+                                where=C.STAGE_REGIME)
 
     # --------------------------------------------------- §12.1 cap selection
     truncation: dict[int, float] = {}

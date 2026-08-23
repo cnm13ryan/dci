@@ -1,12 +1,13 @@
 """DCI-1 protocol v5: the rebuilt reference-construction procedure.
 
-**Status: DRAFT. Not adopted, not registered, not frozen.** No v5 stage
-record exists, no v5 topic has been authored, no v5 instrument has been
-measured, and no v5 generation exists. ``protocol/decisions.py`` carries the
-nineteen registered open decisions of preregistration §34; every one of them
-is ``UNRESOLVED`` and any stage that depends on one refuses to execute. A
-reader who meets only this module should take from it that the machinery
-below is implemented and that the science it implements has not been closed.
+**Status: ADOPTED AND REGISTERED, not frozen.** §34's nineteen decisions are
+closed, U2 is resolved at A2, P1 is confirmed, and the registration manifest
+is signed --- ``protocol/decisions.py`` and ``protocol/open_items.py`` read
+the committed researcher-decision record and refuse an amendment to it. What
+is *not* yet true is the freeze: §18 stage 13 binds a replication's own
+scientific state, and no replication has reached it. A reader who meets only
+this module should take from it that the rules are fixed and that no
+model-specific quantity has been frozen.
 
 **Why there is a v5.** v4r4 completed: two of four replications reached
 ``UNMASKED_ANALYSIS`` on the reduced design and two terminated at Gate 4 with
@@ -48,11 +49,21 @@ from __future__ import annotations
 #: earlier identifier: see the isolation note above.
 STUDY_ID = "dci1v5"
 
-#: What this package's artifacts are, for any reader that meets one. The
-#: word DRAFT is load-bearing: nothing here may be described as registered
-#: until §34's decisions are closed and the manifest is signed.
-CLASSIFICATION = "DCI-1 PROTOCOL v5 (DRAFTED, NOT ADOPTED, NOT FROZEN)"
-SUPERSEDED_CLASSIFICATIONS: tuple[str, ...] = ()
+#: What this package's artifacts are, for any reader that meets one. It moved
+#: at adoption, and the word FROZEN is what is still load-bearing: the rules
+#: are registered, but no replication's own state is bound until §18 stage 13.
+#:
+#: It did **not** move at adoption, which was the defect. ``PROTOCOL_VERSION``
+#: went to ``"5.0"`` while this string still said ``NOT ADOPTED``, so the first
+#: signed manifest carried a label contradicting its own adoption block and
+#: ``run/execute.py`` would have stamped that label on every row. The old value
+#: is retained below rather than deleted: it is what the superseded
+#: registration ``2960a1fc...`` was signed over, and a reader meeting a record
+#: from it needs to be able to recognise the string.
+CLASSIFICATION = "DCI-1 PROTOCOL v5 (ADOPTED AND REGISTERED, NOT FROZEN)"
+SUPERSEDED_CLASSIFICATIONS: tuple[str, ...] = (
+    "DCI-1 PROTOCOL v5 (DRAFTED, NOT ADOPTED, NOT FROZEN)",
+)
 
 #: The revision this one follows, and how it ended. v4r4 did **not**
 #: terminate: it completed, and that is why v5 is a new version rather than a

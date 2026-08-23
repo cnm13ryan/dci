@@ -52,7 +52,8 @@ from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import taxonomy
 from dci1v5.protocol.wordings import wording
-from dci1v5.run.execute import fake_backend, generate_and_score, prompt_cell
+from dci1v5.run.execute import (generate_and_score, prompt_cell,
+                                resolve_generate)
 from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
                                   protocol_identity, run_stage)
 from dci1v5.stages import selection as selection_stage
@@ -349,7 +350,8 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
         device=device, run_dir=run_dir, instances=instances,
         slot_map=slot_map, study_id=tree.context.study_id,
         protocol_identity=protocol_identity(tree, C.STAGE_GATE0),
-        generate=generate or fake_backend(_pilot_responder))
+        generate=resolve_generate(tree, generate, _pilot_responder,
+                                  where=C.STAGE_GATE0))
 
     expected = len(prompt_cells) * C.PILOT_DRAWS
     identities = [r["row_id"] for r in rows]

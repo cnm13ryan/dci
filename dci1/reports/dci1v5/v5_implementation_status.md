@@ -10,6 +10,15 @@ list of researcher actions between here and a v5 that may measure anything.
 > start the study. `protocol/decisions.py` and `protocol/open_items.py` both
 > read the committed record at import, so what the code does and what the
 > researcher decided are one fact rather than two that have to be kept equal.
+>
+> **The first registration was superseded on 2026-08-23**, before Stage 2 and
+> with no observation under it. The pre-execution sweep found three defects
+> that made the registered lifecycle unexecutable as committed — three of four
+> models could not obtain a stage-1 record, the pinned backend was unreachable
+> from four of the five generating stages, and a row's `synthetic` flag
+> recorded the call shape rather than what wrote the text. No registered
+> scientific value changed. See `CHANGES_SCIENTIFIC.md` and
+> `tests_v5/test_amendment_pre_data.py`.
 
 ---
 
@@ -342,9 +351,9 @@ Only then does `PROTOCOL_REGISTERED` become reachable.
 
 ## 6. Tests
 
-`dci1/tests_v5/`, **343 tests**, all passing: 318 in about two seconds and 25
-`slow` ones that share one eighteen-stage walk, in about three minutes. The
-categories
+`dci1/tests_v5/`, **379 tests**, all passing: the fast ones in about two
+seconds and 25 `slow` ones that share one eighteen-stage walk, in about three
+minutes. The categories
 the implementation prompt registers, and the file each is in:
 
 | | Category | File |
@@ -373,6 +382,7 @@ the implementation prompt registers, and the file each is in:
 | — | §26/§34 D16's reuse key, seven ways it must move | `test_reuse_identity.py` |
 | — | D17's construct-strength interface | `test_construct_strength.py` |
 | — | the producer/consumer contract, statically | `test_run_contracts.py` |
+| — | the pre-data amendment: three defects, one per failure mode | `test_amendment_pre_data.py` |
 | — | the run layer refuses while §34 is open | `test_run_layer.py` |
 | — | §9.1's verdicts, indexed | `test_row_indexing.py` |
 | — | the eighteen-stage walk (`slow`) | `test_synthetic_lifecycle.py` |

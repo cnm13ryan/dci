@@ -62,7 +62,7 @@ __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
            "REQUIRED_BINDINGS", "REGISTRATION_INCOMPLETE", "Blocker",
            "signing_blockers", "assert_signable", "build_manifest",
            "assert_no_model_adaptive_values", "document_hashes",
-           "sign_registration", "load_manifest"]
+           "sign_registration", "ensure_registration", "load_manifest"]
 
 #: Adopted. It said "5.0 DRAFT" while §34's nineteen decisions were open,
 #: because a version number is a claim about what the document fixes and a
@@ -312,7 +312,8 @@ def _candidate_library() -> dict[str, Any]:
 def build_manifest(context: StudyContext, *, producing_commit: str,
                    adoption: Mapping[str, Any],
                    bank: TopicBank | None = None,
-                   repo_root: Path | str = ".") -> dict[str, Any]:
+                   repo_root: Path | str = ".",
+                   supersedes: str | None = None) -> dict[str, Any]:
     """Every study-wide rule, as one signable payload.
 
     Assembled whether or not it is signable. A researcher deciding whether to
@@ -737,6 +738,13 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             f"the registration manifest is missing required binding(s) "
             f"{missing}; REQUIRED_BINDINGS is what §34 and §18.1 ask it to "
             "carry and the builder must produce every one")
+    if supersedes:
+        # Folded in *before* the hash. ``sign_registration`` used to attach it
+        # afterwards and rehash, which made a superseded manifest something
+        # ``build_manifest`` could not reproduce --- and reproducibility from
+        # the producing commit is exactly what ``ensure_registration`` checks
+        # when the second replication registers.
+        manifest["supersedes"] = supersedes
     assert_no_model_adaptive_values(manifest)
     manifest["manifest_hash"] = sha_obj(manifest)
     return manifest
@@ -779,14 +787,10 @@ def sign_registration(context: StudyContext, *, producing_commit: str,
     assert_signable(bank, where="sign_registration")
     manifest = build_manifest(context, producing_commit=producing_commit,
                               adoption=adoption, bank=bank,
-                              repo_root=repo_root)
+                              repo_root=repo_root, supersedes=supersedes)
     context.signing_key_path.parent.mkdir(parents=True, exist_ok=True)
     if not context.signing_key_path.exists():
         create_signing_key(context.signing_key_path)
-    if supersedes:
-        manifest["supersedes"] = supersedes
-        manifest["manifest_hash"] = sha_obj(
-            {k: v for k, v in manifest.items() if k != "manifest_hash"})
     context.registration_root.mkdir(parents=True, exist_ok=True)
     fs.write_json_once(context.registration_manifest,
                        sign_payload(manifest, context.signing_key_path))
@@ -795,6 +799,63 @@ def sign_registration(context: StudyContext, *, producing_commit: str,
     store.replicate(context.registration_root, durable)
     store.assert_replicated(context.registration_root, durable)
     return manifest
+
+
+def ensure_registration(context: StudyContext, *, producing_commit: str,
+                        adoption: Mapping[str, Any],
+                        bank: TopicBank | None = None,
+                        repo_root: Path | str = ".",
+                        supersedes: str | None = None) -> dict[str, Any]:
+    """The study-level manifest: signed by the first replication, verified by
+    the rest.
+
+    §6.1 fixes every study-wide rule **before the first qualification**, so
+    there is one manifest for the whole study --- but §18's stage record that
+    binds it is *per model*, because ``assert_predecessor_passed`` reads the
+    replication's own tree. Stage 1 therefore runs four times and must sign
+    exactly once.
+
+    It signed every time until the pre-data engineering amendment, and
+    ``write_json_once`` then refused the second replication --- so
+    ``gemma-3n-e4b-it``, ``qwen3-4b`` and ``qwen3-4b-instruct-2507`` could
+    never obtain a stage-1 record and could never legally enter ``QUALIFIED``.
+    Nothing caught it because the integration harness walks one model.
+
+    Verification here is not a formality. The existing manifest is
+    signature-checked, **rebuilt from the current code** and compared by hash,
+    and its producing commit must be the one this replication is registering
+    under. A second replication registering against a manifest the running
+    code no longer reproduces, or from a different commit, is not the same
+    registration and is refused rather than recorded.
+    """
+    bank = bank if bank is not None else load_bank()
+    path = Path(context.registration_manifest)
+    if not path.exists():
+        return sign_registration(context, producing_commit=producing_commit,
+                                 adoption=adoption, bank=bank,
+                                 repo_root=repo_root, supersedes=supersedes)
+    assert_signable(bank, where="ensure_registration")
+    existing = load_manifest(context)
+    if existing["producing_commit"] != producing_commit:
+        raise IntegrityError(
+            f"the signed registration was produced at "
+            f"{existing['producing_commit']} and this replication is "
+            f"registering at {producing_commit}. Every replication in a study "
+            "registers under one commit; a different one is a different "
+            "registration and needs §32's supersession, not a second record")
+    rebuilt = build_manifest(context,
+                             producing_commit=existing["producing_commit"],
+                             adoption=existing["adoption"], bank=bank,
+                             repo_root=repo_root,
+                             supersedes=existing.get("supersedes"))
+    if rebuilt["manifest_hash"] != existing["manifest_hash"]:
+        raise IntegrityError(
+            f"the signed registration manifest "
+            f"{existing['manifest_hash']} is not what this code now builds "
+            f"({rebuilt['manifest_hash']}); the study-wide rules moved after "
+            "registration, and a replication may not register against a "
+            "manifest its own code no longer reproduces")
+    return existing
 
 
 def load_manifest(context: StudyContext) -> dict[str, Any]:

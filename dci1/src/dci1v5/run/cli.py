@@ -7,10 +7,13 @@
 
 **Every command refuses before it does anything.** ``run`` goes through
 ``run/lifecycle.run_stage``, which asserts the transition --- order, once,
-predecessor passed, no open decision --- and logs the refusal. So today every
-``run`` command ends the same way, with ``REGISTRATION_INCOMPLETE`` and the
-list of decisions that are open, and that is the correct behaviour rather than
-a limitation of the CLI.
+predecessor passed, no open decision --- and logs the refusal.
+
+``run`` passes **no** generation callable, and that is deliberate: in the
+registered namespace ``execute.resolve_generate`` turns its absence into the
+pinned backend and refuses a substitute outright. Four runners used to read
+``generate or fake_backend(...)`` instead, so this command would have signed
+fabricated text into the registered evidence tree.
 
 ``plan`` and ``status`` and ``audit`` write nothing and are safe now: they are
 how a researcher sees what adoption would bind, how far a replication has got,

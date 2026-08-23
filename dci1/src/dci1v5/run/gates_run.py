@@ -36,7 +36,7 @@ from dci1v5.design.cells import (design_cells,
 from dci1v5.engine import transitions
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
-from dci1v5.run.execute import (fake_backend, generate_and_score,
+from dci1v5.run.execute import (generate_and_score, resolve_generate,
                                 instance_rates, per_topic_compliance,
                                 prompt_cell)
 from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
@@ -179,7 +179,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         per_split = max(1, topic_limit // 2)
         topics = (list(bank.topics(C.CALIBRATION_A))[:per_split]
                   + list(bank.topics(C.CALIBRATION_B))[:per_split])
-    generate = generate or fake_backend(_responder)
+    generate = resolve_generate(tree, generate, _responder,
+                                where=C.STAGE_GATE2)
     cap = regime_record["selected_cap"]
     candidates = _constraints_from_labels(regime_record["carried_set"])
     non_outcome = [c for c in candidates if c.kind not in ("A", "B")]
@@ -872,7 +873,8 @@ def gate4_payload(tree: ModelTree, *, producing_commit: str,
     topics = list(bank.topics("composed"))
     blocks = _blocks(topics, "g4")
     cells = design_cells(blocks, arms, draws=C.M_CAL)
-    generate = generate or fake_backend(_responder)
+    generate = resolve_generate(tree, generate, _responder,
+                                where=C.STAGE_GATE4)
     prompts = [prompt_cell(cell, _by_id(topics)[cell.topic_id],
                            slot_map=slot_map, topic_split="composed")
                for cell in cells]

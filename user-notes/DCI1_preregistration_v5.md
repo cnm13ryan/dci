@@ -3651,7 +3651,14 @@ pass.** Three consequences are made explicit.
 
 Amendments are recorded in a single append-only register carrying the amendment
 text, its timing relative to every affected artifact, what it supersedes, and
-what it leaves untouched.
+what it leaves untouched. The register is
+`dci1/reports/dci1v5/amendment_register.md`. Its first entry, **A1**, is the
+pre-data engineering amendment of 2026-08-23: three defects that made the
+registered lifecycle unexecutable — three of the four models could not obtain a
+stage-1 record, the pinned backend was unreachable from four of the five
+generating stages, and a row's `synthetic` flag recorded how the runner was
+called rather than what wrote the text. It supersedes registration manifest
+`2960a1fc…`, retains it, and changes no scientific quantity in this document.
 
 ---
 

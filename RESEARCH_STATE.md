@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **ADOPTED AND REGISTERED 2026-08-23; no stage record, no instrument measured, no generation.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,135,104 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s, §4t, §4u. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **ADOPTED AND REGISTERED 2026-08-23; no stage record, no instrument measured, no generation.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,135,104 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s, §4t, §4u, §4v. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1484,6 +1484,44 @@ action is stage 2, `QUALIFIED`, which reads no behavioural rate; the first
 stage that generates a model response is stage 3, §19's procedural pilot
 (R22's mitigation), and Gate 1 over the 650-instrument population (R23's) is
 stage 5, reading the regime screen's own text.
+
+### 4v. The registered study could not be executed as committed, and the registration was superseded before Stage 2 (2026-08-23)
+
+**Three defects, all found in the pre-execution sweep, none of them a
+scientific value.** The first registration was verified in full — signature,
+every hash, the manifest byte-reproducible from its producing commit — and then
+the sweep asked the question a verification does not: can the lifecycle
+actually run? It could not.
+
+- **Three of the four registered models had no legal path into the lifecycle.**
+  Stage 1's runner re-signed the *study-level* manifest on every call, and
+  `write_json_once` refused the second replication, while the predecessor check
+  demands a *per-model* stage-1 record. D1's four-model design was unreachable.
+- **The pinned backend was unreachable from four of the five generating
+  stages.** Gate 0, the regime screen, Gate 2 and Gate 4 each read
+  `generate or fake_backend(...)` — unconditional, no override — and the CLI
+  passes no generator. The documented way to run Gate 0 would have signed
+  fabricated text into the registered evidence tree, and nothing downstream
+  refuses a synthetic row in the registered namespace.
+- **A row's `synthetic` flag recorded how the runner was called**, not what
+  wrote the text, so those rows were synthetic by definition and a real backend
+  injected into one of them would still have been stamped synthetic.
+
+All three were invisible for one reason: the integration harness walks a single
+model and always injects its own generator, so neither the second registration
+nor the production generation path had ever executed. That is the general
+lesson — **an end-to-end harness that supplies the seam it is testing does not
+test the seam** — and it is why the amendment's tests include a four-model
+registration walk and a static check on the substitution shape.
+
+The amendment changed no threshold, estimand, arm, prompt, wording, verifier,
+seed, cap, decoding policy or selection rule; every registered scientific value
+is byte-identical across it. Manifest
+`2960a1fc…` is **superseded and retained**, not deleted, together with the
+stage-1 record signed under it; the replacement names it. No observation
+existed under the superseded registration, so nothing is invalidated.
+[`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) ·
+[`dci1/tests_v5/test_amendment_pre_data.py`](dci1/tests_v5/test_amendment_pre_data.py)
 
 ## 5. Provisional, superseded, broken, unresolved
 

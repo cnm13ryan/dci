@@ -101,8 +101,22 @@ on model output. Adoption fixes the rules; it does not start the study.
 
 Stage 1, `PROTOCOL_REGISTERED`, **has run**: it is the stage that signs the
 manifest, and signing it outside the stage machine would have produced a
-registration with no stage record and no transition-log entry. The rest of §18
-is untouched, one model at a time in §6.1's registered execution order:
+registration with no stage record and no transition-log entry.
+
+**It has run twice.** The first registration —
+`2960a1fc44f036abd4729f7628095475018672adfac609bb2244a8763ba00ded`, producing
+commit `f895646` — was superseded on 2026-08-23 by the pre-data engineering
+amendment, before Stage 2 and with no observation under it. Three defects made
+the registered lifecycle unexecutable as committed: three of the four models
+could never obtain a stage-1 record, the pinned backend was unreachable from
+four of the five generating stages, and a row's `synthetic` flag recorded how
+the runner was called rather than what wrote the text. The superseded
+registration is retained under `registration/superseded/2960a1fc…/`, the new
+one names it, and no registered scientific value differs between them. See
+[`CHANGES_SCIENTIFIC.md`](../../../CHANGES_SCIENTIFIC.md).
+
+The rest of §18 is untouched, one model at a time in §6.1's registered
+execution order:
 
 1. **Stage 2, `QUALIFIED`** — the next action. Non-scientific: it reads no
    behavioural rate. It checks the clean worktree, the resolved model
@@ -112,7 +126,9 @@ is untouched, one model at a time in §6.1's registered execution order:
 2. **Stage 3, `GATE_0_APPARATUS`** — §19's procedural pilot: the full 56-cell
    plan at $M = 4$ on twelve pre-screen topics, at fixture values that cannot
    become calibration evidence. R22's mitigation, and **the first stage that
-   generates model responses**.
+   generates model responses** — which, before the amendment, it could not
+   have done: it substituted a deterministic stand-in with no way to reach the
+   pinned backend.
 3. **Stage 4, `REGIME_SCREEN`**, then **stage 5, Gate 1** over the
    650-instrument population — R23's mitigation. Gate 1 reads the regime
    screen's own responses, so it is not reachable before a model runs.

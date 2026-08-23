@@ -51,7 +51,8 @@ from dci1v5.verifiers.constraints import Constraint
 
 __all__ = ["PromptCell", "prompt_cell", "absent_for", "design_rows",
            "generate_and_score", "cell_rates", "instance_rates",
-           "per_topic_compliance", "fake_backend", "assert_no_outcome_read",
+           "per_topic_compliance", "fake_backend", "resolve_generate",
+           "assert_no_outcome_read",
            "DECODING_IDENTITY_FIELDS", "decoding_identity",
            "generation_identity", "observation_identity", "reuse_report"]
 
@@ -360,9 +361,13 @@ def fake_backend(responder: Callable[[Mapping[str, Any]], str]
         out = []
         for row in rows:
             text = responder(row)
+            # Stamped on the **raw** row, which is what rows.jsonl stores, so
+            # a resumed run reads the flag back instead of inferring it from
+            # whether a callable was passed on the resuming call.
             out.append({"row_id": row["row_id"], "final_answer": text,
                         "answer_truncated": False,
                         "finish_reason": "stop",
+                        "synthetic": True,
                         "total_generated_tokens": len(text.split())})
         run_dir.mkdir(parents=True, exist_ok=True)
         (run_dir / "design.jsonl").write_text(
@@ -372,6 +377,51 @@ def fake_backend(responder: Callable[[Mapping[str, Any]], str]
         return {"rows": out, "provenance": {"synthetic": True,
                                             "plan": dict(plan)}}
     return _generate
+
+
+def resolve_generate(tree: Any, generate: Callable[..., dict[str, Any]] | None,
+                     responder: Callable[[Mapping[str, Any]], str], *,
+                     where: str) -> Callable[..., dict[str, Any]] | None:
+    """Who produces the text for this stage, and where a stand-in is allowed.
+
+    In the **registered** namespace there is exactly one admissible answer ---
+    the pinned backend --- so ``generate`` must be ``None`` and this returns
+    ``None``, which is what routes ``generate_and_score`` to ``run_backend``.
+    The deterministic stand-in is built only for the synthetic namespace.
+
+    This exists because the four runners that had a stand-in wrote
+    ``generate = generate or fake_backend(...)``. That is unconditional: it
+    substitutes in *every* namespace, and because the fallback is an ``or``
+    over ``None`` there was no argument a caller could pass to reach the real
+    backend at all. ``run_backend`` was unreachable from ``GATE_0_APPARATUS``,
+    ``REGIME_SCREEN``, ``GATE_2_FOCAL_CALIBRATION`` and
+    ``GATE_4_COMPOSED_HEADROOM`` --- four of the five runners that generate,
+    ``CONFIRMATORY_GENERATION`` being the only one wired to the real seam and
+    ``GATE_3A`` generating nothing of its own because it reads Gate 2's
+    calibration rows --- so the registered lifecycle could not produce a real
+    model response before the confirmatory stage, and the documented entry
+    point
+    (``run/cli.py``, which passes no ``generate``) would have signed fabricated
+    text into the registered evidence tree.
+
+    ``assert_synthetic_only`` already refused ``topic_limit`` and
+    ``block_limit`` on exactly this argument --- a knob that changes what was
+    measured belongs only where the study id says the result can never be
+    evidence. Substituting the generator is the larger version of that knob and
+    was the one left unguarded.
+    """
+    namespace = getattr(getattr(tree, "context", None), "namespace", None)
+    if namespace != "synthetic":
+        if generate is not None:
+            raise ProtocolError(
+                f"{where}: a generation callable was passed in the "
+                f"{namespace!r} namespace. The generative seam is the pinned "
+                "backend and is not substitutable in the run whose rows "
+                "become evidence; a stand-in is admissible only in the "
+                "synthetic namespace, whose study id no v5 estimator or gate "
+                "accepts")
+        return None
+    return generate if generate is not None else fake_backend(responder)
 
 
 def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
@@ -422,6 +472,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
                               timeout_seconds=60 * 60 * 12)
     else:
         outcome = generate(run_dir, plan, rows)
+    synthetic_run = bool(outcome.get("provenance", {}).get("synthetic"))
     if verifier_source_hash() != frozen_hash:
         raise ProtocolError(
             "§10.6: the canonical verifier hash moved while the stage was "
@@ -466,7 +517,12 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
             "model_key": model_key, "model_id": spec.model_id,
             "model_revision": spec.revision, "study_id": study_id,
             "classification": CLASSIFICATION, "stage": stage,
-            "synthetic": generate is not None,
+            # What produced this text, not how the runner was called. It read
+            # ``generate is not None`` until the pre-data engineering
+            # amendment, which made every row of the four runners that always
+            # passed a stand-in synthetic by definition --- and would have
+            # stamped a row synthetic even when a real backend produced it.
+            "synthetic": bool(raw.get("synthetic")) or synthetic_run,
             "resumed": reused is not None,
             "verifier_hash": frozen_hash,
             # Two keys, because generation and scoring have different inputs.
