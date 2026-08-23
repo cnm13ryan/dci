@@ -90,10 +90,10 @@ blocks, 24 composed-validation topics, and §8.3's 96-block greedy run:
 | Term | Generations | Driver |
 |---|---:|---|
 | §12.2 ladder screen | 7,824 | 326 round-0 rungs × 24 pre-screen topics × 1 draw |
-| §12.3 focal grids (A and B) | 6,912 | (8 + 10) rungs × 96 topics × 4 draws |
+| §12.3 focal grids (A and B) | 13,824 | (8+1 and 8+1) rungs × **192 pooled** topics × 4 draws; §7.2's extension is a further 1,536 only on escalation |
 | §13.7 candidate calibration, **both splits** | 86,016 | (88 Tier-1/2 rungs + 24 Tier-3) × 384 rows × **2 splits** |
 | §19 pilot | cells × 48 | 12 pre-screen topics × 4 draws, **on the full cell set** |
-| **calibration subtotal** | **103,440** at 56 cells | the first three terms are arm-independent; the pilot is not |
+| **calibration subtotal** | **110,352** at 56 cells | the first three terms are arm-independent; the pilot is not |
 | Gate 4 composed headroom | cells × 96 | 24 composed topics × 4 draws |
 | §8.3 greedy sensitivity | cells × 96 | 96 blocks × 1 draw |
 | confirmatory | cells × 3,072 | 384 blocks × 8 draws |
@@ -114,21 +114,29 @@ expensive.
 
 | Option | Arms | Cells | Models | Calibration/model | Confirmatory/model | Total/model | **Total** |
 |---|---|---:|---:|---:|---:|---:|---:|
-| **`four_models_56_cells`** | all five | 56 | 4 | 103,440 | 172,032 | 286,224 | **1,144,896** |
-| `four_models_47_cells` | no near-form | 47 | 4 | 103,008 | 144,384 | 256,416 | 1,025,664 |
-| `two_models_56_cells` | all five | 56 | 2 | 103,440 | 172,032 | 286,224 | 572,448 |
-| `384_blocks_m4` | all five | 56 | 4 | 103,440 | 86,016 | 200,208 | 800,832 |
+| **`four_models_56_cells`** | all five | 56 | 4 | 110,352 | 172,032 | 293,136 | **1,172,544** |
+| `four_models_47_cells` | no near-form | 47 | 4 | 109,920 | 144,384 | 263,328 | 1,053,312 |
+| `two_models_56_cells` | all five | 56 | 2 | 110,352 | 172,032 | 293,136 | 586,272 |
+| `384_blocks_m4` | all five | 56 | 4 | 110,352 | 86,016 | 207,120 | 828,480 |
 
-**These figures were corrected on 2026-08-23** by §32 amendment A2. The §19
-pilot term read `12 × 4 × 5` where §19 requires the full cell set, so every
-calibration subtotal above was 2,448 low at 56 cells and every total with it.
-The arms, cells, blocks, draws and models — the decision itself — did not
-change, and neither did the ranking in §6.
+**These figures were corrected on 2026-08-23** by §32 amendments **A2** and
+**A3**, in two passes over the same section of `design/budget.py`:
+
+* **A2** — the §19 pilot term read `12 × 4 × 5` where §19 requires the full
+  cell set, understating it by 2,448 per model at 56 cells.
+* **A3** — the §12.3 focal-grid term costed one split's 96 topics and omitted
+  the unconstrained cell, where §12.7 registers both grids **and** the
+  unconstrained cell on the pooled 192, understating it by 6,912 per model.
+  §7.2's conditional extension is now named separately rather than folded in.
+
+Both were the budget disagreeing with the design; the runner matched the
+preregistration in each case. The arms, cells, blocks, draws and models — the
+decision itself — did not change, and neither did the ranking in §6.
 
 ## 5. Recommended scientific configuration
 
 > **`four_models_56_cells`** — all five arms, four models, 384 blocks, 8 draws
-> per cell. **1,144,896 generations.**
+> per cell. **1,172,544 generations.**
 
 It is the only option that supports the claim set the study is registered to
 make. The three cheaper options each give something up, and §6 says what.
@@ -144,7 +152,7 @@ running out.
 
 ## 6. Lower-cost configurations, and what they give up
 
-### `four_models_47_cells` — saves 119,232 generations (10.4%)
+### `four_models_47_cells` — saves 119,232 generations (10.2%)
 **Gives up the strong L3c.** Under D18's closure this configuration cannot
 emit the refutation verdict on any model, cannot estimate
 $\Delta_{\text{near}}$, and cannot identify $\gamma_{\text{tier}}$. It also
@@ -153,7 +161,7 @@ the study's answer to its own third question.** Not recommended at any budget:
 if the money is not there for 56 cells it is not there for 47 either, and the
 saving is small precisely because the near-form arm is cheap.
 
-### `two_models_56_cells` — saves 572,448 generations (50%)
+### `two_models_56_cells` — saves 586,272 generations (50.0%)
 **Gives up cross-model replication, and only that.** Every estimand, every
 claim level and every arm survives; what does not survive is L4-style evidence
 about whether a finding holds beyond one model family. Two models means one
@@ -161,7 +169,7 @@ gemma and one qwen, which is the minimum that is not a single architecture.
 **This is the right economy if one is needed** — it is the only option that
 buys a large saving without changing what any single replication can conclude.
 
-### `384_blocks_m4` — saves 344,064 generations (30%)
+### `384_blocks_m4` — saves 344,064 generations (29.3%)
 **Gives up precision, and precision is gated.** Halving the draws per cell
 inflates every interval; §16.1's precision preconditions are registered, and a
 family that fails one has its claim withheld with `INSUFFICIENT_PRECISION`. So
@@ -185,8 +193,8 @@ branch for a live option.
 What the closure binds, all of it recomputed by `dci1v5.design.budget` from the
 constants rather than copied from this page: five arms, 56 cells per block,
 four models with their exact 40-character revisions, 384 blocks, $M = 8$,
-103,440 calibration and 172,032 confirmatory generations per model, 286,224 per
-model in total, **1,144,896** overall.
+110,352 calibration and 172,032 confirmatory generations per model, 293,136 per
+model in total, **1,172,544** overall.
 
 Two things this packet has **not** done. It has not converted generations into
 wall-clock: that depends on the completion cap §12.1 selects per model, on the

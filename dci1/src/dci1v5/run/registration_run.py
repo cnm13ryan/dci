@@ -116,7 +116,8 @@ def registration_payload(tree: ModelTree, *, producing_commit: str,
 def supersede_registration(context: Any, *, reason: str,
                            model_keys: Sequence[str],
                            producing_commit: str,
-                           amendment: Mapping[str, Any] | None = None
+                           amendment: Mapping[str, Any] | None = None,
+                           invalidating: Mapping[str, str] | None = None
                            ) -> dict[str, Any]:
     """§32: retain a registration and everything signed under it, so a
     corrected one can be signed.
@@ -141,6 +142,18 @@ def supersede_registration(context: Any, *, reason: str,
     they are retained and re-run under the replacement rather than blocking
     it. Everything from Gate 0 on carries generated text, or a quantity
     derived from it, and refuses.
+
+    ``invalidating`` is the researcher's explicit override, and the only way
+    past that refusal: a mapping of model key to the reason its behavioural
+    chain is being discarded. §32 calls this a discarded replication rather
+    than a re-registration, and the difference has to be *said*, so an
+    invalidated replication gets an ``invalidated.json`` naming every stage
+    discarded and how many generated rows went with it. Its whole tree ---
+    records and ``backend_runs`` alike --- moves under
+    ``superseded/<manifest>/``, which is what makes the rows unreachable to
+    ``run/execute._reusable_rows``: reuse reads ``tree.backend_runs(stage)``,
+    the *current* path, so a retained run cannot be resumed into a later one
+    by accident.
     """
     from dci1v4.engine import store
     from dci1v5.engine import transitions
@@ -152,8 +165,16 @@ def supersede_registration(context: Any, *, reason: str,
 
     first_generating = C.STAGE_SEQUENCE.index(C.STAGE_GATE0)
     pre_observation = C.STAGE_SEQUENCE[:first_generating]
+    invalidating = dict(invalidating or {})
+    unknown = sorted(set(invalidating) - set(model_keys))
+    if unknown:
+        raise IntegrityError(
+            f"cannot invalidate {unknown}: not among the replications being "
+            "superseded")
     observed = []
     for key in model_keys:
+        if key in invalidating:
+            continue
         tree = model_tree(context, key)
         for stage in C.STAGE_SEQUENCE[first_generating:]:
             if tree.stage_record(stage).exists():
@@ -163,13 +184,42 @@ def supersede_registration(context: Any, *, reason: str,
             f"registration {old_hash} already has records for stages that "
             f"generate or read generated text ({observed}). Superseding it "
             "would orphan signed evidence; that is a discarded replication "
-            "under §32 and must be recorded as one, not resolved by "
-            "retaining the manifest")
+            "under §32 and must be recorded as one --- name the replication "
+            "in `invalidating` with its reason, or do not supersede")
+
+    discarded: dict[str, Any] = {}
+    for key, why in invalidating.items():
+        tree = model_tree(context, key)
+        stages, rows = [], 0
+        for stage in C.STAGE_SEQUENCE:
+            if not tree.stage_dir(stage).exists():
+                continue
+            stages.append(stage)
+            for produced in tree.stage_dir(stage).rglob("rows.jsonl"):
+                rows += sum(1 for line in produced.open() if line.strip())
+        record = {
+            "model_key": key, "reason": why,
+            "superseded_manifest": old_hash,
+            "stages_discarded": stages,
+            "behavioural_rows_discarded": rows,
+            "reusable": False,
+            "why_not_reusable":
+                "retained under superseded/, which is not the path "
+                "run/execute._reusable_rows reads; and §32 treats a "
+                "discarded replication's rows as evidence of what was run, "
+                "not as input to what replaces it",
+            "discarded_at": now(),
+        }
+        discarded[key] = record
+        tree.superseded_dir(old_hash).mkdir(parents=True, exist_ok=True)
+        fs.write_json_once(
+            tree.superseded_dir(old_hash) / "invalidated.json", record)
 
     retained: dict[str, list[str]] = {}
     for key in model_keys:
         tree = model_tree(context, key)
-        for stage in pre_observation:
+        stages = (C.STAGE_SEQUENCE if key in invalidating else pre_observation)
+        for stage in stages:
             source = tree.stage_dir(stage)
             if not source.exists():
                 continue
@@ -203,7 +253,9 @@ def supersede_registration(context: Any, *, reason: str,
         "new_producing_commit": producing_commit,
         "retained_stage_records": retained,
         "retained_stages": list(pre_observation),
-        "observations_under_it": 0,
+        "invalidated": discarded,
+        "observations_under_it": sum(
+            d["behavioural_rows_discarded"] for d in discarded.values()),
         "superseded_at": now(),
     }
     fs.write_json_once(keep / "supersession.json", record)

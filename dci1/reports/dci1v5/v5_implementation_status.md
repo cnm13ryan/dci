@@ -293,7 +293,7 @@ that generates a model response.
 - ~~Resolve U2.~~ A2, and §11.8's sentence amended to name the three core
   families explicitly.
 - ~~Close D1 and D2.~~ `four_models_56_cells` and `no_load_three`: five arms,
-  four models, 56 cells, 384 blocks, $M = 8$, **1,144,896** generations
+  four models, 56 cells, 384 blocks, $M = 8$, **1,172,544** generations
   derived by `dci1v5.design.budget` from the code's own constants.
 - ~~Close the remaining eleven and confirm P1.~~ Each at the document's own
   standing proposal, with R13's and R2's objections recorded beside D7 and D15.

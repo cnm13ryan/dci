@@ -41,7 +41,7 @@ from dci1v5.protocol import constants as C
 from dci1v5.design import budget
 from dci1v5.design.cells import design_cells
 from dci1v5.protocol import manifest
-from dci1v5.run import registration_run
+from dci1v5.run import gates_run, registration_run
 from dci1v5.run.execute import (fake_backend, generate_and_score,
                                 prompt_cell, resolve_generate)
 from dci1v5.verifiers.constraints import Constraint
@@ -382,12 +382,10 @@ def test_the_pilot_budget_is_what_the_pilot_actually_builds():
     assert rows_the_runner_will_produce == C.PILOT_TOPICS * C.PILOT_DRAWS * 56
 
 
-def test_the_corrected_totals():
-    b = budget.registered_budget()
-    assert b["calibration"]["pilot"]["rows"] == 2688
-    assert b["per_model"]["calibration"] == 103_440
-    assert b["per_model"]["total"] == 286_224
-    assert b["total_generations"] == 1_144_896
+def test_the_corrected_pilot_term():
+    """A2's correction. The totals it implied moved again under A3, which
+    restored two more terms; `test_the_restored_totals` carries those."""
+    assert budget.registered_budget()["calibration"]["pilot"]["rows"] == 2688
 
 
 def test_the_pilot_term_follows_the_arm_set():
@@ -402,3 +400,192 @@ def test_the_pilot_term_follows_the_arm_set():
     assert full["cells_per_block"] == 56 and fewer["cells_per_block"] == 47
     assert (full["per_model"]["calibration"]
             - fewer["per_model"]["calibration"]) == (56 - 47) * 12 * 4
+
+
+# --------------------------------------------------------------- V5-E6
+
+def test_calibration_measures_the_registered_population_not_the_carried_set():
+    """§12.7 caps what calibration measures; §12.2 does not.
+
+    The screen is high-recall by construction and carries every structurally
+    admissible rung. §12.7 then says calibration measures "all 88 Tier-1 and
+    Tier-2 rungs ... plus at most 24 Tier-3 rungs". Gate 2 read the carried
+    set, so on the real regime record it measured 326 rungs where 112 are
+    registered, and the 214 Tier-3 rungs §12.7 drops for budget reached
+    §13.7's table --- and from there Gate 2.5 and reference selection.
+    """
+    priority = {"tier12": [f"tier12-{i}" for i in range(88)],
+                "tier3_measured": [f"t3-{i}" for i in range(24)],
+                "tier3_dropped_for_budget":
+                    [f"t3-{i}" for i in range(24, 238)],
+                "tier3_cap": 24}
+    ok = [Constraint("MK1", 3)] * 112
+    gates_run.assert_calibration_population(priority, ok)
+
+    carried_set_sized = [Constraint("MK1", 3)] * 326
+    with pytest.raises(ProtocolError, match="must measure 112 rungs"):
+        gates_run.assert_calibration_population(priority, carried_set_sized)
+
+
+def test_the_tier3_cap_is_enforced_not_assumed():
+    priority = {"tier12": [], "tier3_measured": [f"t3-{i}" for i in range(30)],
+                "tier3_dropped_for_budget": [], "tier3_cap": 24}
+    with pytest.raises(ProtocolError, match="exceed"):
+        gates_run.assert_calibration_population(
+            priority, [Constraint("MK1", 3)] * 30)
+
+
+def test_gate2_reads_the_priority_block_and_not_the_carried_set():
+    """A source check, because the two keys sit on the same record.
+
+    `calibration_priority` was computed, recorded and then ignored --- the
+    producer existed and the consumer read its neighbour.
+    """
+    source = (REPO_ROOT / "dci1" / "src" / "dci1v5" / "run"
+              / "gates_run.py").read_text()
+    body = source[source.index("def gate2_payload"):
+                  source.index("def gate2_5_payload")]
+    assert 'regime_record["calibration_priority"]' in body
+    built_from = body[body.index("priority = "):body.index("non_outcome = ")]
+    assert "carried_set" not in built_from, built_from
+    # It may still be *recorded*, so a reader can see what the screen carried
+    # and what §12.7 then excluded.
+    assert '"carried_by_the_screen"' in body
+
+
+# --------------------------------------------------------------- V5-E8
+
+def test_the_focal_extension_has_a_caller():
+    """§7.2/§12.3's escalation was implemented and never invoked.
+
+    `select_focal` returns `extension_required` with `selected` None when the
+    registered grid cannot bracket. Gate 2 read only `selected`, so it raised
+    FOCAL_RANGE_EXHAUSTED --- a registered terminal status --- where the
+    protocol says measure {15, 16} and re-select. A false terminal outcome is
+    worse than a crash: it is reported as a finding.
+    """
+    source = (REPO_ROOT / "dci1" / "src" / "dci1v5" / "run"
+              / "gates_run.py").read_text()
+    body = source[source.index("def gate2_payload"):
+                  source.index("def gate2_5_payload")]
+    assert "extension_required" in body
+    assert "FOCAL_EXTENSION" in body
+
+
+def test_select_focal_asks_for_the_extension_at_the_grid_top():
+    """The signal Gate 2 has to act on, pinned at its source."""
+    from dci1v5.stages import regime
+    at_top = {q: 0.10 for q in C.FOCAL_GRID}
+    at_top[C.FOCAL_GRID[-1]] = 0.80            # eligible, and the top rung
+    first = regime.select_focal(at_top)
+    assert first.get("extension_required") is True
+    # `selected` is NOT None here --- it is the top rung. That is why reading
+    # only `selected` was worse than a crash: Gate 2 accepted m* = 14 and the
+    # bracketing rule §12.3 registers was never applied.
+    assert first["selected"] == C.FOCAL_GRID[-1]
+    assert first["extension_measured"] is False
+
+    extended = regime.select_focal(
+        at_top, {q: 0.80 for q in C.FOCAL_EXTENSION})
+    assert extended["extension_measured"] is True
+
+    # And the other branch: nothing eligible at all.
+    none_eligible = {q: 0.02 for q in C.FOCAL_GRID}
+    empty = regime.select_focal(none_eligible)
+    assert empty["selected"] is None
+    assert empty.get("extension_required") is True
+
+
+# --------------------------------------------------------------- V5-E7
+
+def test_the_focal_grid_budget_is_what_gate2_generates():
+    """Two grids, each with its unconstrained cell, on the pooled topics.
+
+    The term used one split's topic count and omitted the unconstrained
+    cells, which happened to land within a factor of two of the truth and so
+    looked plausible.
+    """
+    fg = budget.registered_budget()["calibration"]["focal_grids"]
+    pooled = C.N_CALIBRATION_A + C.N_CALIBRATION_B
+    assert fg["topics"] == pooled == 192
+    assert fg["rows"] == (len(C.TARGET_GRID) + 1
+                          + len(C.FOCAL_GRID) + 1) * pooled * C.M_CAL
+    assert fg["rows"] == 13_824
+    # The extension is conditional and model-adaptive, so it is named and not
+    # folded into a budget the study is expected to spend.
+    assert fg["conditional_extension_rows"] == \
+        len(C.FOCAL_EXTENSION) * pooled * C.M_CAL
+
+
+def test_the_restored_totals():
+    b = budget.registered_budget()
+    assert b["calibration"]["candidate_calibration"]["population"] == 112
+    assert b["per_model"]["calibration"] == 110_352
+    assert b["per_model"]["total"] == 293_136
+    assert b["total_generations"] == 1_172_544
+
+
+def test_a_generated_chain_can_be_invalidated_only_by_naming_it(tmp_path):
+    """§32: a discarded replication has to be *said*, not performed by a move.
+
+    The guard refuses a supersession over generated evidence. `invalidating`
+    is the only way past it, it is per model, and it demands a reason.
+    """
+    ctx = _ctx(tmp_path)
+    _register(ctx, ALL_MODELS[0])
+    _fake_stage(ctx, ALL_MODELS[0], C.STAGE_QUALIFIED)
+    _fake_stage(ctx, ALL_MODELS[0], C.STAGE_GATE0)
+    old = manifest.load_manifest(ctx)["manifest_hash"]
+
+    with pytest.raises(IntegrityError, match="name the replication"):
+        registration_run.supersede_registration(
+            ctx, reason="t", model_keys=ALL_MODELS[:1], producing_commit=COMMIT)
+
+    with pytest.raises(IntegrityError, match="not among the replications"):
+        registration_run.supersede_registration(
+            ctx, reason="t", model_keys=ALL_MODELS[:1], producing_commit=COMMIT,
+            invalidating={"not-a-model": "why"})
+
+    record = registration_run.supersede_registration(
+        ctx, reason="t", model_keys=ALL_MODELS[:1], producing_commit=COMMIT,
+        invalidating={ALL_MODELS[0]: "measured an unregistered population"})
+
+    tree = model_tree(ctx, ALL_MODELS[0])
+    note = tree.superseded_dir(old) / "invalidated.json"
+    assert note.exists()
+    body = json.loads(note.read_text())
+    assert body["reason"] == "measured an unregistered population"
+    assert C.STAGE_GATE0 in body["stages_discarded"]
+    assert body["reusable"] is False
+    assert record["invalidated"][ALL_MODELS[0]]["model_key"] == ALL_MODELS[0]
+    # The whole chain moves, so nothing is left on the live path.
+    for stage in (C.STAGE_REGISTERED, C.STAGE_QUALIFIED, C.STAGE_GATE0):
+        assert not tree.stage_record(stage).exists()
+        assert (tree.superseded_dir(old) / stage).exists()
+
+
+def test_invalidated_rows_are_not_reachable_by_reuse(tmp_path):
+    """Reuse reads the *current* backend_runs path, so retention is enough.
+
+    This asserts the mechanism rather than trusting it: the rows still exist,
+    and the resumed run cannot see them.
+    """
+    ctx = _ctx(tmp_path)
+    _register(ctx, ALL_MODELS[0])
+    tree = model_tree(ctx, ALL_MODELS[0])
+    run_dir = tree.backend_runs(C.STAGE_GATE0) / "pilot"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "rows.jsonl").write_text('{"row_id": "r1"}\n')
+    _fake_stage(ctx, ALL_MODELS[0], C.STAGE_GATE0)
+    old = manifest.load_manifest(ctx)["manifest_hash"]
+
+    registration_run.supersede_registration(
+        ctx, reason="t", model_keys=ALL_MODELS[:1], producing_commit=COMMIT,
+        invalidating={ALL_MODELS[0]: "discarded"})
+
+    assert not (tree.backend_runs(C.STAGE_GATE0) / "pilot"
+                / "rows.jsonl").exists()
+    retained = (tree.superseded_dir(old) / C.STAGE_GATE0 / "backend_runs"
+                / "pilot" / "rows.jsonl")
+    assert retained.exists(), "the rows are preserved, not deleted"
+    assert is_superseded(retained)
