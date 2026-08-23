@@ -98,7 +98,7 @@ time that has been possible.
 - every §34 closure and its evidence, D17's floor spec included;
 - U2 = A2 and P1 = confirmed;
 - the five arms, 56 cells, 384 blocks, $M = 8$, four models and the
-  1,135,104-generation budget;
+  1,144,896-generation budget (corrected by A2);
 - the eight Tier-1 markers, their population hash and their four accepted
   limitations;
 - both calibration topic banks and the split identity;
@@ -133,3 +133,81 @@ ledger and the red-team block.
 
 **This amendment does not weaken a criterion to make a gate pass.** No gate had
 run. It adds refusals — three of them — and removes none.
+
+---
+
+## A2 — pre-data accounting amendment (2026-08-23)
+
+**Author.** Researcher, on the V5-E4 report of 2026-08-23.
+
+**Timing, relative to every affected artifact.**
+
+| Artifact | State when the amendment was adopted |
+|---|---|
+| Registration manifest `70608e5d…` (A1's) | signed, verified, **superseded by this amendment** |
+| Stage 1 `PROTOCOL_REGISTERED` | PASS on all four replications; records retained, superseded |
+| Stage 2 `QUALIFIED` | PASS on all four replications; records retained, superseded |
+| Stage 3 `GATE_0_APPARATUS` onward | **never run**, on any model |
+| v5 model responses | **none exist**, on any model, at any stage |
+| Gate 2.5 / §13 components | never begun, so §32's clause 3 is not engaged |
+| v4r4 evidence | untouched |
+
+Still a **pre-data** amendment: `QUALIFIED` reads no behavioural rate by
+construction (§19) and `PROTOCOL_REGISTERED` produces none, so no observation
+exists under the superseded registration.
+
+**Amendment text — V5-E4: the registered budget contradicted §19's design.**
+
+`design/budget.py`'s `calibration_burden` costed the §19 pilot as
+
+    C.PILOT_TOPICS * C.PILOT_DRAWS * 5          # 12 x 4 x 5 = 240
+
+where §19 registers "the full 56-cell plan, both orders, and the registered
+wording allocation, at fixture values that cannot become calibration evidence,
+with $M = 4$" — `12 x 4 x 56 = 2,688`. The literal `5` is the base arm's cell
+count; the term had been written as though calibration were entirely
+arm-independent, which the other three terms are and the pilot is not.
+
+`run/qualification_run.pilot_payload` always built the full plan from
+`design_cells(blocks, arms, draws=PILOT_DRAWS)`. **The registered design was
+never wrong; the arithmetic over it was.** Nothing executable read the figure —
+the pre-freeze `generation_budget` check recomputes only the confirmatory term
+— so this would have surfaced, if at all, as a 0.86% overrun nobody could
+explain.
+
+| Term | As registered | Corrected |
+|---|---:|---:|
+| §19 pilot, per model | 240 | **2,688** |
+| calibration, per model | 100,992 | **103,440** |
+| per model, total | 283,776 | **286,224** |
+| **study total** | **1,135,104** | **1,144,896** |
+
+`calibration_burden` now takes the cell count, so the pilot term follows the
+arm set and a design with fewer cells has a cheaper pilot — which the previous
+signature could not express. The three non-adopted D1 options are recosted with
+it; **the ranking in the D1 packet's §6 does not change**, and neither does the
+decision: five arms, 56 cells, 384 blocks, $M = 8$, four models.
+
+**What it supersedes.** Registration manifest
+`70608e5d5880c6ed2b8bbea1379b47061f60ea3f0705c374d0df581bc39bda2c`, producing
+commit `5e35ca687c52af86640f167fe145c20d52af36a9`, and the
+`PROTOCOL_REGISTERED` and `QUALIFIED` records of **all four** replications.
+All are retained under `superseded/70608e5d…/`, none deleted. The
+`supersede_registration` guard moved with this amendment: it refused any stage
+record past stage 1, which would have made this correction impossible after
+qualification; it now refuses at `GATE_0_APPARATUS`, the first stage that puts
+a model response on disk. That is the boundary the guard was reaching for —
+`QUALIFIED` carries no observation — and it is asserted in
+`tests_v5/test_amendment_pre_data.py` against `GENERATION_STAGES` rather than
+written as a number.
+
+**What it leaves untouched.** Every scientific quantity, exactly as A1 lists
+them, and additionally the D1 *decision* itself. The researcher-decision
+record's D1 entry changed in one derived `consequences` line — the budget
+figure it quoted — and its hash moved from `a5ec3986…` to `b3fd9185…`
+accordingly. The `value`, `decided_by`, `decided_on` and `evidence` of every
+closure are unchanged, as are U2 = A2 and P1 = confirmed.
+
+**This amendment does not weaken a criterion to make a gate pass.** No gate had
+run. It corrects a cost figure upward and tightens the pilot's derivation so
+the budget and the runner cannot disagree again.

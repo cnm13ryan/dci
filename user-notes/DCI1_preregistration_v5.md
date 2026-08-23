@@ -991,7 +991,7 @@ $56 \times 384 \times 8 = 172{,}032$ cached generations; across four models,
 **688,128** confirmatory. §16 gives the justification and the registered menu.
 **§34 D1 is closed at `four_models_56_cells`**, which is this design; the
 *whole* registered budget — calibration, Gate 4's composed headroom, §8.3's
-greedy sensitivity run and the confirmatory rows above — is **1,135,104**
+greedy sensitivity run and the confirmatory rows above — is **1,144,896**
 generations, derived in `dci1v5.design.budget` from these constants and bound
 into the registration manifest, so the figure the manifest carries is one the
 code reproduces rather than one a document asserts.
@@ -3521,7 +3521,7 @@ have a prior measurement on those topics and which do not.
 
 **The compute is large and the full design has never been executed.** v4r4
 registered a 47-cell full design and never ran one: both survivors ran 8 cells.
-v5's full design is 56 cells and 283,776 generations per model, of which
+v5's full design is 56 cells and 286,224 generations per model, of which
 172,032 are confirmatory. Whether four replications can be executed is a
 resource question, and §34 D1 answers it by registering four — but four is a
 *budget*, not a promise to finish: §6.1's execution order runs the models one
@@ -3707,7 +3707,7 @@ decided, and three of the nineteen went against the proposal.
 | # | Taken | Against the standing proposal? |
 |---|---|---|
 | **D0** | **Adopt.** §30's declaration attached permanently | no |
-| **D1** | **`four_models_56_cells`** — all five arms, four models, 384 blocks, $M = 8$. **1,135,104** generations | no |
+| **D1** | **`four_models_56_cells`** — all five arms, four models, 384 blocks, $M = 8$. **1,144,896** generations | no |
 | **D2** | No load-three arm | no |
 | **D3** | Author before adoption. The bank exists: 96 questions, `dci1/src/dci1v5/topics/data/calibration_b_v5.json` | no |
 | **D4** | **`approve_eight`.** All eight Tier-1 markers stand, with four recorded **accepted limitations** — `though`'s proximity to `however` and its two syntactic frames, `namely`'s possible appositive interaction with word length, `overall`'s natural rate, and the vocabulary-wide natural-rate spread | no |

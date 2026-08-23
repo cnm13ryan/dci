@@ -53,16 +53,21 @@ def screen_rungs() -> int:
     return sum(len(registered_severities(kind)) for kind in FAMILIES)
 
 
-def calibration_burden() -> dict[str, Any]:
+def calibration_burden(cells: int) -> dict[str, Any]:
     """§12.2's screen, §12.3's grids, §13.7's two splits and §19's pilot.
 
-    Per model, and **independent of the arm set**: nothing here runs a
-    composed cell. §34 D16 is closed at ``complete_population``, so both
-    splits measure the whole carried set and the candidate term is doubled
-    relative to the ``a_survivors`` proposal it replaced. That is the largest
-    single term in the pre-freeze budget and it is the cost the researcher
-    accepted to make §13.7 a test of the candidate landscape rather than a
-    re-confirmation of it.
+    Per model. Three of the four terms are **independent of the arm set** ---
+    nothing in them runs a composed cell --- and the fourth, §19's pilot, is
+    not: it runs the whole cell set, so it takes ``cells``. It was written as
+    if it were arm-independent, with a literal ``5`` where the cell count
+    belongs, which is how the budget came to disagree with §19.
+
+    §34 D16 is closed at ``complete_population``, so both splits measure the
+    whole carried set and the candidate term is doubled relative to the
+    ``a_survivors`` proposal it replaced. That is the largest single term in
+    the pre-freeze budget and it is the cost the researcher accepted to make
+    §13.7 a test of the candidate landscape rather than a re-confirmation of
+    it.
     """
     lib = library()
     carried = lib["tier_1"]["ladder_rungs"] + lib["tier_2"]["ladder_rungs"]
@@ -92,7 +97,17 @@ def calibration_burden() -> dict[str, Any]:
             "rows_tier12_both_splits": carried * per_rung_per_split * 2,
             "rows_tier3_both_splits":
                 C.CALIBRATION_TIER3_CAP * per_rung_per_split * 2},
-        "pilot": {"rows": C.PILOT_TOPICS * C.PILOT_DRAWS * 5},
+        # §19's pilot runs **the full cell set**, not one arm's worth: "the
+        # full 56-cell plan, both orders, and the registered wording
+        # allocation, at fixture values that cannot become calibration
+        # evidence, with M = 4". The multiplier was 5 --- the base arm's cell
+        # count --- which understated the term by 2,448 per model and the
+        # study by 9,792. `run/qualification_run.pilot_payload` always built
+        # the full plan, so this was the budget disagreeing with the design,
+        # never the design being wrong.
+        "pilot": {"rows": C.PILOT_TOPICS * C.PILOT_DRAWS * cells,
+                  "topics": C.PILOT_TOPICS, "draws": C.PILOT_DRAWS,
+                  "cells": cells},
     }
 
 
@@ -102,7 +117,7 @@ def option(name: str) -> dict[str, Any]:
     scale = D1_SCALE[name]
     cells = n_cells_for(arms)
     per_model_confirmatory = cells * scale["blocks"] * scale["draws"]
-    calibration = calibration_burden()
+    calibration = calibration_burden(cells)
     per_model_calibration = (
         calibration["ladder_screen"]["rows"]
         + calibration["focal_grids"]["rows"]
@@ -154,7 +169,7 @@ def registered_budget() -> dict[str, Any]:
                  "budget; §34 D1's registered order and not a cost "
                  "minimisation",
         "library": library(),
-        "calibration": calibration_burden(),
+        "calibration": calibration_burden(payload["cells_per_block"]),
         "cells_by_arm": dict(C.N_CELLS_BY_ARM),
         **payload,
     }

@@ -22,7 +22,7 @@ read.
 | | Question | Taken | Against? |
 |---|---|---|---|
 | **D0** | Adopt v5 at all, knowing its matching rule was fitted to v4r4? | **adopt** — §30's declaration attached permanently | no |
-| **D1** | Which arms, and how many models? | **`four_models_56_cells`** — all five arms, 4 models, 384 blocks, $M = 8$, **1,135,104** generations | no |
+| **D1** | Which arms, and how many models? | **`four_models_56_cells`** — all five arms, 4 models, 384 blocks, $M = 8$, **1,144,896** generations | no |
 | **D2** | Add a load-three arm so the memo's $\Gamma$ becomes estimable? | **no load-three arm**; §5's exclusion stands | no |
 | **D3** | Are the 96 Calibration-B questions authored before adoption? | **yes** — authored, audited, hashed, committed | no |
 | **D4** | Are these eight marker words the right eight? | **`approve_eight`** — all eight, with four accepted limitations recorded | no |
@@ -75,7 +75,7 @@ amendment rather than an edit.
 - the **four model replications** with their exact 40-character revisions,
   their thinking policies and their chat-template arguments (§6.1);
 - the **five arms**, 56 cells per block, 384 blocks, $M = 8$, and the
-  **1,135,104**-generation budget, recomputed from constants by
+  **1,144,896**-generation budget, recomputed from constants by
   `dci1v5.design.budget` rather than quoted;
 - the **eight Tier-1 markers** with their ids, words, discourse roles, verifier
   statistic ids, ladders, reserves, a **population hash**, and the four

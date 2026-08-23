@@ -38,6 +38,8 @@ import dci1v5
 from dci1v5.engine.context import registered_context, synthetic_context
 from dci1v5.engine.paths import is_superseded, model_tree
 from dci1v5.protocol import constants as C
+from dci1v5.design import budget
+from dci1v5.design.cells import design_cells
 from dci1v5.protocol import manifest
 from dci1v5.run import registration_run
 from dci1v5.run.execute import (fake_backend, generate_and_score,
@@ -51,6 +53,15 @@ ALL_MODELS = tuple(m.model_key for m in MODELS)
 
 def _ctx(tmp_path):
     return synthetic_context(tmp_path, repo_root=REPO_ROOT)
+
+
+def _fake_stage(ctx, model_key, stage):
+    """A record file where a stage's record goes. Only its existence matters
+    to the supersession guard, which is what is under test."""
+    path = model_tree(ctx, model_key).stage_record(stage)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("{}")
+    return path
 
 
 def _register(ctx, model_key, *, commit=COMMIT, **kwargs):
@@ -270,6 +281,7 @@ def test_supersession_retains_the_manifest_and_the_stage_records(tmp_path):
     ctx = _ctx(tmp_path)
     for key in ALL_MODELS[:2]:
         _register(ctx, key)
+        _fake_stage(ctx, key, C.STAGE_QUALIFIED)
     old = manifest.load_manifest(ctx)["manifest_hash"]
 
     record = registration_run.supersede_registration(
@@ -288,6 +300,10 @@ def test_supersession_retains_the_manifest_and_the_stage_records(tmp_path):
         assert (held / "records" / "registration_record.json").exists()
         assert is_superseded(held)
         assert not tree.stage_record(C.STAGE_REGISTERED).exists()
+        # QUALIFIED reads no behavioural rate, so it is retained and re-run
+        # rather than blocking the supersession.
+        assert (tree.superseded_dir(old) / C.STAGE_QUALIFIED).exists()
+        assert not tree.stage_record(C.STAGE_QUALIFIED).exists()
         outcomes = [json.loads(line)["outcome"]
                     for line in tree.transition_log.read_text().splitlines()
                     if line.strip()]
@@ -317,14 +333,72 @@ def test_a_superseded_registration_names_what_it_replaced(tmp_path):
 
 def test_supersession_is_refused_once_an_observation_exists(tmp_path):
     """Retaining a registration that has evidence under it would hide a
-    discarded replication behind a file move."""
+    discarded replication behind a file move.
+
+    The boundary is ``GATE_0_APPARATUS``: the first stage that puts a model
+    response on disk. Everything at or after it refuses.
+    """
     ctx = _ctx(tmp_path)
     _register(ctx, ALL_MODELS[0])
-    tree = model_tree(ctx, ALL_MODELS[0])
-    later = tree.stage_record(C.STAGE_QUALIFIED)
-    later.parent.mkdir(parents=True, exist_ok=True)
-    later.write_text("{}")
-    with pytest.raises(IntegrityError, match="past\nstage 1|past stage 1"):
+    _fake_stage(ctx, ALL_MODELS[0], C.STAGE_QUALIFIED)
+    _fake_stage(ctx, ALL_MODELS[0], C.STAGE_GATE0)
+    with pytest.raises(IntegrityError, match="generate or read generated"):
         registration_run.supersede_registration(
             ctx, reason="test", model_keys=ALL_MODELS[:1],
             producing_commit=COMMIT)
+
+
+def test_the_supersession_boundary_is_the_first_generating_stage():
+    """Stated once, so moving GATE_0 in the sequence moves the boundary."""
+    first = C.STAGE_SEQUENCE.index(C.STAGE_GATE0)
+    assert C.STAGE_SEQUENCE[:first] == (C.STAGE_REGISTERED, C.STAGE_QUALIFIED)
+    assert C.STAGE_GATE0 in C.GENERATION_STAGES
+    assert C.STAGE_QUALIFIED not in C.GENERATION_STAGES
+
+
+# --------------------------------------------------------------- V5-E4
+
+def test_the_pilot_budget_is_what_the_pilot_actually_builds():
+    """The budget said 240 and §19's pilot builds 2,688.
+
+    `budget.calibration_burden` multiplied the twelve pre-screen topics and
+    four draws by a literal ``5`` --- the base arm's cell count --- where §19
+    requires "the full 56-cell plan". The registered design was always right;
+    the arithmetic over it was not. This asserts the two against each other
+    rather than against a number, so neither can drift alone.
+    """
+    class _Block:
+        def __init__(self, index):
+            self.block_id, self.index = f"pilot-{index:02d}", index
+            self.topic_id = f"t{index}"
+
+    blocks = [_Block(i) for i in range(C.PILOT_TOPICS)]
+    built = design_cells(blocks, C.ARMS, draws=C.PILOT_DRAWS)
+    rows_the_runner_will_produce = len(built) * C.PILOT_DRAWS
+
+    registered = budget.registered_budget()
+    assert registered["calibration"]["pilot"]["rows"] == \
+        rows_the_runner_will_produce
+    assert rows_the_runner_will_produce == C.PILOT_TOPICS * C.PILOT_DRAWS * 56
+
+
+def test_the_corrected_totals():
+    b = budget.registered_budget()
+    assert b["calibration"]["pilot"]["rows"] == 2688
+    assert b["per_model"]["calibration"] == 103_440
+    assert b["per_model"]["total"] == 286_224
+    assert b["total_generations"] == 1_144_896
+
+
+def test_the_pilot_term_follows_the_arm_set():
+    """It was written as if arm-independent, which is how it went wrong.
+
+    The pilot runs the whole cell set, so a design with fewer cells has a
+    cheaper pilot --- and a budget that cannot see the arm set cannot say so.
+    """
+    options = budget.all_options()
+    full = options["four_models_56_cells"]
+    fewer = options["four_models_47_cells"]
+    assert full["cells_per_block"] == 56 and fewer["cells_per_block"] == 47
+    assert (full["per_model"]["calibration"]
+            - fewer["per_model"]["calibration"]) == (56 - 47) * 12 * 4

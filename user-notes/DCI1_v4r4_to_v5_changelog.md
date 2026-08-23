@@ -534,7 +534,7 @@ this document's standing proposal**, and those two change what v5 is:
 evidence-backed recommendations and all four were approved as recommended:
 
 - **D1, the compute budget — `four_models_56_cells`.** All five arms, four
-  models, 56 cells, 384 blocks, $M = 8$: **1,135,104** generations, derived by
+  models, 56 cells, 384 blocks, $M = 8$: **1,144,896** generations, derived by
   `dci1v5.design.budget` from the code's own constants and bound into the
   manifest, so the figure the signature carries is one the code reproduces.
   The near-form arm is *registered* rather than merely permitted, which is what

@@ -54,7 +54,7 @@ def build() -> dict[str, object]:
         "_units": "generations = prompt x draw; one generation is one "
                   "model response",
         "library": library(),
-        "calibration": calibration_burden(),
+        "calibration": calibration_burden(C.N_CELLS_FULL),
         "cells_by_arm": dict(C.N_CELLS_BY_ARM),
         "cells_full": C.N_CELLS_FULL,
         "removing_one_arm": marginal,
