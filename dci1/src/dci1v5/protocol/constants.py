@@ -528,7 +528,7 @@ IDENTIFICATION_STATUSES = (
     "NEAR_FORM_ARM_NOT_AVAILABLE", "CLASS_ARM_NOT_AVAILABLE",
     "CLASS_ARM_NOT_MATCHED", "OPERATING_POINT_AT_GRID_BOUNDARY",
     "POSITION_CONFOUNDED", "HUMAN_VALIDATION_UNAVAILABLE",
-    "L3C_STRONG_CONCLUSION_WITHHELD",
+    "L3C_STRONG_CONCLUSION_WITHHELD", "CONSTRUCT_FLOOR_MARGINAL",
 )
 #: New in v5, named so a reader can see what the revision added.
 NEW_IDENTIFICATION_STATUSES = (
@@ -540,6 +540,11 @@ NEW_IDENTIFICATION_STATUSES = (
     #: the strong L3c conclusion was not available to it, so the absence is
     #: on the record rather than inferable from a missing statement.
     "L3C_STRONG_CONCLUSION_WITHHELD",
+    #: §34 D17's closure: the floor refuses on the point estimate, so a m*
+    #: whose Wilson interval straddles the threshold was admitted --- or
+    #: refused --- on a difference the data does not resolve. Recorded, never
+    #: adjudicated silently.
+    "CONSTRUCT_FLOOR_MARGINAL",
 )
 assert set(NEW_IDENTIFICATION_STATUSES) <= set(IDENTIFICATION_STATUSES)
 RESULT_MARKERS = ("INSUFFICIENT_PRECISION", "INDETERMINATE")

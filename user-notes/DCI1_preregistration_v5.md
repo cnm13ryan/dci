@@ -858,7 +858,29 @@ six discourse roles including **two contrastive**, which is $A$'s own role;
 one, `further` and `equally` the additive one, and `yet` and `still` are
 contrastive but carry common non-connective senses — *not yet*, *still water* —
 which makes §7.7's semantic-neutrality audit harder to discharge. §34 D4
-records the vocabulary as a researcher decision.
+records the vocabulary as a researcher decision, and it is **closed at
+`approve_eight`**: all eight stand, audited item by item against eight criteria
+in `dci1/reports/dci1v5/d4_marker_audit.md`. No marker was rejected — none
+violates a §7.6 rule, none is mechanically entailed by the stem, none can
+violate $B$ at any admissible severity, and every verifier is deterministic and
+leak-free.
+
+Four **accepted limitations** are registered with the closure, because
+"approved" must not be readable as "no concern was found". They are reported
+alongside `REFERENCE_POOL_SAME_FORM` on every L3 statement.
+
+| | Accepted limitation |
+|---|---|
+| `though` (MK3) | the closest single-word English contrastive to `however`, very nearly interchangeable with it clause-finally; and the only marker with **two** productive syntactic frames — subordinating conjunction and concessive adverb — which the exact-count verifier pools into one count, so one severity covers different production burdens. Accepted because it is one of only two contrastive markers and $A$'s own role is contrastive; the reserve `albeit` would answer both concerns and using it is a §32 amendment |
+| `namely` (MK6) | an appositive introducer, so forcing it $q$ times plausibly raises the number of long words and would damage $B$ through the words it drags in rather than through the composition mechanism. A **hypothesis**: `namely` occurs 0 times in every unconstrained development answer, so there is no natural sample to test it on. Testable prospectively at Gate 1 at no extra generation cost. Accepted because it is the only exemplifying marker, so dropping it loses the role rather than substituting for it |
+| `overall` (MK8) | 0.076–0.112 natural rate, the least rare by a factor of two and the only one approaching $A$'s own; 1.95× and 5.80× that model's own `however` rate on two of four development models. It passes the **absolute** ceiling of 0.15, which is the registered rule. Also the one marker with a live alternative spelling — *over-all* is not counted, because a hyphen splits a word under §9.2 |
+| the vocabulary | the eight are not homogeneous in how unnatural the forced production is: four are 0.000 on all four development models while $A$'s word occurs at 1.3–10.4%. If a Tier-1 control is harder than $A$ simply because the model never writes the word, $\Delta_R$ measures that and not the pair-specific mechanism. §13.4's instruction lift and §13.8's caliper both operate on $\iota$, which absorbs the level difference; the mechanism still differs |
+
+The eight ids, words, discourse roles, verifier statistic ids, ladders and
+reserves are bound into the registration manifest with a **population hash**,
+so a substitution is detectable and not merely forbidden. §7.10's three
+reserves are admissible only by a registered §32 amendment and only when a
+registered marker fails Gate 1.
 
 **Tier 2 — three near-form families.**
 
@@ -879,7 +901,14 @@ reference's own family (§7.4, §13.12) and the fit of §11.8 is registered over
 three families of three severities, so no Tier-3 family can supply one; an
 earlier draft of this paragraph also admitted Tier 3 to the spectrum, which
 those three sections make unreachable, and the sentence is corrected rather
-than the rule. `CL7` and `CL8` are the two count lower bounds and are the only
+than the rule. **The correction is confirmed** (P1, at adoption on
+2026-08-23). Tier 1 and Tier 2 take the core, near-form and spectrum roles the
+adopted design gives them; Tier 3 takes the broad-class role only and does not
+become a core-family spectrum rung. Nothing executable changed and no verdict
+moves — under either reading the code admitted no Tier-3 spectrum rung, and
+`taxonomy.assert_tier_admits_slot` already required the core family's tier.
+Making Tier 3 *reachable* instead would amend the candidate population, §11.8's
+fit structure and the derived cell set, and it was not made. `CL7` and `CL8` are the two count lower bounds and are the only
 Tier-3 families that are not budget class; §13.10 admits **budget class only**
 to the broad-class slot, so they are admissible to no design slot at all. They
 remain in the instrument population §10.2 measures and in the candidate
@@ -959,8 +988,13 @@ is selected, discarded, or replaced. Blocks remain the only resampling unit.
 **384 confirmatory blocks.** Because order is within-block, every block enters
 both configurations. Per model with every arm admitted:
 $56 \times 384 \times 8 = 172{,}032$ cached generations; across four models,
-**688,128**. §16 gives the justification and the registered menu, and §34 D1
-records the compute decision.
+**688,128** confirmatory. §16 gives the justification and the registered menu.
+**§34 D1 is closed at `four_models_56_cells`**, which is this design; the
+*whole* registered budget — calibration, Gate 4's composed headroom, §8.3's
+greedy sensitivity run and the confirmatory rows above — is **1,135,104**
+generations, derived in `dci1v5.design.budget` from these constants and bound
+into the registration manifest, so the figure the manifest carries is one the
+code reproduces rather than one a document asserts.
 
 A sensitivity run repeats the composed cells on the first 96 confirmatory
 blocks at temperature 0 with one draw per cell, reported as a different
@@ -1566,6 +1600,54 @@ is reported with $\hat\gamma$ and its interval, as a **secondary** in family F8.
 It licenses no claim and is registered so that the tier's contribution is
 reported rather than absorbed silently into a residual.
 
+**$\alpha_f$ ranges over the three CORE families.** This sentence is the U2
+amendment, and it is not a clarification: as originally written the section
+said $\alpha_f$ over "families" without saying which families the twelve points
+span, and giving each near-form control its own intercept makes $\gamma$ exactly
+collinear with the sum of those three dummies — the design matrix is singular
+and $\hat\gamma$ has no unique least-squares value. Four repairs were
+admissible and they do **not** estimate the same $\gamma$, so the choice was a
+researcher decision and not a bug fix; it is recorded, with its evidence, in
+`dci1/reports/dci1v5/researcher_decisions.json` and analysed in
+`dci1/reports/dci1v5/u2_tier_model_decision.md`.
+
+The adopted formulation is **A2**: three intercepts, one per core family, and a
+Tier-2 point sits at the **unweighted mean core intercept plus $\gamma$**. The
+fit is then five parameters over twelve points and full rank, and $\gamma$ is
+*the Tier-2 offset from the difficulty line the three core families define, at
+equal weight over them*. Equal weighting is an assumption and is stated so it
+can be disagreed with — but it is the same convention the prediction at $\iota_A$
+above already uses, so the section acquires no second convention. F8's three
+family intercepts are these three, which is what the family list registers.
+
+Three formulations were not adopted. **A1** — a family intercept for each of
+the six families — is the singular one and is never constructed: building it
+and discovering the singularity at run time is what invites a pseudoinverse.
+**A3** — a shared Tier-2 intercept and no $\gamma$ — is identified but deletes
+`gamma_tier`, a registered F8 member, which is a §32 amendment to §15 for no
+gain in what is learned. **A4** — one common intercept — is identified, and it
+is the one that matters: a pooled intercept leaves the between-family level
+differences nowhere to go but $\beta$, which the primary form above removes
+deliberately with family intercepts, so $\beta$ would mean something different
+in the secondary than in the primary. On twelve noiseless points generated from
+$\beta = 0.300$ and $\gamma = 0.080$ with correlated family levels — a
+configuration §13.8 permits, because its caliper matches each reference to $A$
+and not the references to each other — A2 recovers both exactly, A4 inflates
+$\beta$ by 63%, and A4's $\hat\gamma$ moves from 0.024 to 0.134 with where the
+near-form controls happen to sit in difficulty, which is a quantity §13.9
+selects on closeness to $A$ rather than on anything to do with the tier. A4
+remains constructed and non-adopted: it computes the comparison above on every
+test run, and `analysis.spectrum.assert_adopted_formulation` refuses it on any
+reporting path.
+
+**Without the near-form arm $\gamma$ is not identified at all**, because the
+three near-form controls are the only Tier-2 points and the indicator does not
+vary. The status is `NEAR_FORM_ARM_NOT_AVAILABLE`. This is a second and
+independent reason the near-form arm is not free in §34 D1; the first is D18.
+Whatever the parameterisation, $\hat\gamma$ is estimated from three Tier-2
+points against nine Tier-1 points, so it is low precision, it licenses no claim
+level, and it is read as a diagnostic.
+
 **Why not a richer primary form.** With nine points and four parameters the fit
 has five residual degrees of freedom. A per-family slope would leave three, and
 a non-linear form would be fitted to three points per family.
@@ -1691,6 +1773,29 @@ count whose chance compliance is the probability that an unconstrained answer
 contains no *however*, which is near one, so it is chance-degenerate and is not
 in the grid. Where $n^* = 1$ the bracketing rule cannot be met on the easy side
 and the record carries `OPERATING_POINT_AT_GRID_BOUNDARY` with that reason.
+
+**The construct floor on $m^*$, from §34 D17.** The bands above are defined on
+*compliance*, which says nothing about whether $B$ is still the construct it is
+named after: 0.80 compliance at $m = 13$ is a real constraint on how a model
+writes, and *every word at most thirteen letters* is, as a construct, close to
+a null instruction in ordinary English. So a selected $m^*$ is admissible only
+if
+
+$$\kappa^{B}(m^{*}) \le 0.50,$$
+
+where $\kappa^{B}(m)$ is the share of **unconstrained** answers that already
+satisfy $B$ at $m$ — measured on the load-zero cells of the calibration splits,
+before any composition, and never on rows where some other length budget was
+stated. The refusal reads the **point estimate**; the Wilson upper bound is
+reported beside it and the replication records `CONSTRUCT_FLOOR_MARGINAL` when
+the interval straddles 0.50, which is the point-and-Wilson convention §13.5
+already uses for the reference chance ceiling. A selected $m^*$ that satisfies
+the compliance band and fails the floor ends the replication at
+`FOCAL_RANGE_EXHAUSTED` before anything confirmatory is generated. **That is
+the cost of the rule and it is accepted:** the study would rather report that
+no honest operating point exists for a model than report an effect measured
+against an instruction that does nothing. The whole $\kappa^{B}$ curve, the
+realised $m^*$ and its neighbours are reported whether or not the floor binds.
 
 $n^*$ and $m^*$ are selected on **raw solo compliance**, not on $\iota$,
 because the bands exist to give an outcome constraint room to fall under
@@ -2543,10 +2648,12 @@ the draw term exceeds the topic term at $M = 4$, so the part $M$ reduces is the
 larger part. Doubling $M$ costs generations and nothing scientific.
 
 **What v5's cell plan costs against v4r4's.** 56 cells against 47, a factor of
-1.19 per block. The added cells are the near-form arm's nine. §34 D1 records
-the compute decision, including the option of registering fewer than four
-models and the option of dropping the near-form arm, and states plainly which
-estimand each option gives up.
+1.19 per block. The added cells are the near-form arm's nine. §34 D1 is closed
+at **all five arms, four models, 56 cells**. The three cheaper options remain
+constructed and costed — fewer models, fewer draws, or dropping the near-form
+arm — and each records which estimand it gives up. Dropping the near-form arm
+saves 10.4% and gives up the **strong** L3c entirely, because D18 is closed at
+`precondition`; that option is therefore not a cheaper version of this study.
 
 ### 16.3 What the allocation would and would not resolve
 
@@ -3414,10 +3521,12 @@ have a prior measurement on those topics and which do not.
 
 **The compute is large and the full design has never been executed.** v4r4
 registered a 47-cell full design and never ran one: both survivors ran 8 cells.
-v5's full design is 56 cells and 172,032 generations per model. Whether four
-replications can be executed is a resource question and is §34 D1, not a
-scientific one, and a replication not executed is recorded `NOT_EXECUTED`
-rather than analysed.
+v5's full design is 56 cells and 283,776 generations per model, of which
+172,032 are confirmatory. Whether four replications can be executed is a
+resource question, and §34 D1 answers it by registering four — but four is a
+*budget*, not a promise to finish: §6.1's execution order runs the models one
+at a time and a replication not reached is recorded `NOT_EXECUTED` rather than
+analysed.
 
 **Interaction risk is measured against $B$ at $m^*$ only.** $\kappa^{B}$ is a
 property of the pair $(R,\ B\text{ at }m^*)$ on one model. No cross-model
@@ -3580,24 +3689,65 @@ stage 1 can pass.** None may be decided after any v5 generation. **D15 to D18
 came from the pre-freeze red-team** (`dci1/reports/dci1v5/v5_prereg_redteam.md`)
 and D6 was reopened by it.
 
-**Four are now taken.** D3, D6, D16 and D18 were closed by the researcher on
-2026-08-22 and are recorded, with their evidence, in
+**All nineteen are now taken.** Four — D3, D6, D16 and D18 — were closed on
+2026-08-22; the remaining fifteen on 2026-08-23. Every one is recorded, with
+its evidence, who took it and when, in
 `dci1/reports/dci1v5/researcher_decisions.json`, which `protocol/decisions.py`
 reads at import and the registration manifest binds by hash. The standing
-proposals for those four are kept below **as history**: the "taken" column says
-what was decided, and two of the four went against the proposal.
+proposals are kept below **as history**: the "taken" column says what was
+decided, and three of the nineteen went against the proposal.
 
 | # | Taken | Against the standing proposal? |
 |---|---|---|
+| **D0** | **Adopt.** §30's declaration attached permanently | no |
+| **D1** | **`four_models_56_cells`** — all five arms, four models, 384 blocks, $M = 8$. **1,135,104** generations | no |
+| **D2** | No load-three arm | no |
 | **D3** | Author before adoption. The bank exists: 96 questions, `dci1/src/dci1v5/topics/data/calibration_b_v5.json` | no |
+| **D4** | **`approve_eight`.** All eight Tier-1 markers stand, with four recorded **accepted limitations** — `though`'s proximity to `however` and its two syntactic frames, `namely`'s possible appositive interaction with word length, `overall`'s natural rate, and the vocabulary-wide natural-rate spread | no |
+| **D5** | Lexicographic | no |
 | **D6** | Identification status, and **irreversible for the replication** | no |
+| **D7** | 0.90, with R13's objection recorded and not answered by evidence | no |
+| **D8** | 0.75 on the point, 0.85 on the Wilson upper bound | no |
+| **D9** | Unavailable; the basis stays `deterministic_measurement_validated` | no |
+| **D10** | One broad-class companion; no class claim | no |
+| **D11** | Carry the v4 confirmatory topics, with §6.2's residual declared | no |
+| **D12** | Direction and the SESOI only | no |
+| **D13** | F11 is primary-tier, licensing L4b | no |
+| **D14** | $\iota$ primary, raw solo secondary | no |
+| **D15** | Both transfer, with R2's objection on the record | no |
 | **D16** | The **complete** carried population on both splits | **yes** — the proposal restricted Calibration-B to A-survivors |
+| **D17** | **`floor`: $\kappa^{B}(m^{*}) \le 0.50$**, on the **point** estimate, with the Wilson bound reported beside it and `CONSTRUCT_FLOOR_MARGINAL` recorded when the interval straddles it. A failing $m^{*}$ ends the replication at `FOCAL_RANGE_EXHAUSTED` before any confirmatory generation | **yes** — the proposal registered no floor |
 | **D18** | **Precondition of the strong conclusion.** A same-form pool alone licenses only the narrow L3c | **yes** — the proposal made it no precondition |
 
-The remaining fifteen are unchanged, and
-`dci1/reports/dci1v5/v5_adoption_checklist.md` states each as one question.
+**D17's floor lives in the record, not in the code.** The quantity, the value,
+the semantics and the derivation are fields of the D17 closure in
+`researcher_decisions.json`; `stages/construct_strength.py` contains **no
+threshold** and reads them. Changing the number that refuses an operating point
+is a §32 amendment to a committed file. The derivation is the widest separation
+in the measured $\kappa^{B}$ curve — no development model falls between 0.398
+at $m = 12$ and 0.586 at $m = 13$, a gap of 0.188 against a next-largest
+adjacent gap of 0.104 — and it is recorded that 0.50 is a round number inside
+an observed gap and that **the roundness is not offered as evidence for it**.
+The threshold is fitted to four models of one predecessor study
+(DEVELOPMENT_EVIDENCE, §30) and a fifth model could sit anywhere on the curve.
+`dci1/reports/dci1v5/d17_b_strength_decision.md` is the analysis; the four
+rejected candidate rules are constructed and costed there.
 
-| # | Open decision | This document's standing proposal |
+**$\kappa^{B}$ for the floor is measured on the load-zero cells alone.** The
+registered `chance` rate averages every row where the severity was not stated,
+which in Gate 2's focal grid includes the $B$-solo cells at the other seven
+severities — answers written under a stated length budget, which satisfy a
+looser budget far more often than an unconstrained answer does. The floor's
+threshold was derived from a curve measured on load-zero answers, and a
+threshold calibrated on one estimator and applied to another is a different
+rule wearing the same number. Both rates are computed and both are recorded on
+the Gate 2 record (`load_zero_chance_curves`); the floor reads the load-zero
+one. Every other chance quantity keeps the denominator it was defined with —
+§13.6's $\kappa(R \mid B)$ is deliberately measured *under* $B$.
+
+The standing proposals, as this document originally stated them:
+
+| # | Decision | This document's standing proposal |
 |---|---|---|
 | **D0** | **Whether to adopt v5 at all**, given that its matching rule is fitted to v4r4 and that §30 says so plainly | Adopt, with §30's declaration attached permanently |
 | **D1** | **The confirmatory compute budget.** Four models at 56 cells is 688,128 confirmatory generations, against v4r4's registered 577,536 for a design that never ran. Options: four models at 56 cells; four models at 47 cells, dropping the near-form arm and $\Delta_{\text{near}}$ with it; two models at 56 cells, halving the replication; 384 blocks at $M = 4$, which fails three precision preconditions under $\phi = 0.37$ | Four models at 56 cells, with the registered execution order of §6.1 and `NOT_EXECUTED` for any replication not reached |

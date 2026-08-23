@@ -295,6 +295,7 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
     marker_counts: dict[str, int] = {}
     max_letters: int | None = None
     semicolons = commas = sentences = None
+    violate_at: int | None = None
     for constraint in present:
         family = FAMILIES.get(constraint.kind)
         satisfy = _satisfies(row_id, constraint.label,
@@ -304,7 +305,16 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
                                         else constraint.severity + 1)
             continue
         if constraint.kind == "B":
-            max_letters = constraint.severity if satisfy else None
+            if satisfy:
+                max_letters = constraint.severity
+            else:
+                # B is stated and this row is scripted to fail it. That is a
+                # different thing from B being absent, and conflating them is
+                # what made kappa_B flat: an answer that has to violate
+                # `at most m letters` needs a word longer than m, while an
+                # answer nobody constrained needs whatever length it would
+                # naturally have had.
+                violate_at = constraint.severity
             continue
         if family is None:
             continue
@@ -323,7 +333,7 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
             sentences = (constraint.severity if satisfy
                          else constraint.severity + 1)
     return _render(row_id, marker_counts, max_letters, semicolons, commas,
-                   sentences)
+                   sentences, violate_at=violate_at)
 
 
 def _target_rate(constraint: Constraint) -> float:
@@ -354,9 +364,45 @@ def _clamp(rate: float) -> float:
     return max(0.22, min(0.78, rate))
 
 
+#: P(longest word <= m) for an answer nobody constrained, as a CDF over the
+#: focal grid and its extension. Shaped after the measured development curve
+#: in `reports/dci1v5/d17_b_strength_decision.md` --- flat and near zero over
+#: v4r4's grid, alive across v5's extension --- because §34 D17's floor reads
+#: exactly this quantity and a fixture with no curve cannot exercise it.
+#: These are fixture numbers, not measurements, and nothing reads them as
+#: evidence: what they buy is a harness in which the floor can both pass and
+#: refuse.
+_NATURAL_LENGTH_CDF: tuple[tuple[int, float], ...] = (
+    (9, 0.00), (10, 0.01), (11, 0.07), (12, 0.28), (13, 0.66),
+    (14, 0.86), (15, 0.96), (16, 0.99),
+)
+
+
+def _natural_longest(row_id: str) -> int:
+    """The longest word an unconstrained answer of this row would contain."""
+    u = _u(row_id, "natural-length")
+    for length, cdf in _NATURAL_LENGTH_CDF:
+        if u < cdf:
+            return length
+    return 17
+
+
+def _letters(n: int) -> str:
+    """A deterministic alphabetic token of exactly ``n`` letters.
+
+    The verifier counts letters, so what the token *says* does not matter ---
+    but it must not be a registered marker and must not contain a hyphen,
+    because §9.2 splits on one.
+    """
+    stem = "consideration"
+    if n <= len(stem):
+        return stem[:n]
+    return stem + "a" * (n - len(stem))
+
+
 def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
             semicolons: int | None, commas: int | None,
-            sentences: int | None) -> str:
+            sentences: int | None, *, violate_at: int | None = None) -> str:
     words: list[str] = []
     for marker, count in sorted(markers.items()):
         words.extend([marker] * count)
@@ -369,8 +415,15 @@ def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
     while len(words) < 70:
         words.append(pool[index % len(pool)])
         index += 1
-    if max_letters is None:
-        words.append("extraordinarily")
+    if violate_at is not None:
+        # Stated and scripted to fail: one word past the budget, so B's solo
+        # compliance is exactly the rate `_target_rate` asks for.
+        words.append(_letters(violate_at + 1))
+    elif max_letters is None:
+        # Not stated at all. This is the row kappa_B is measured on, so its
+        # longest word is drawn from the natural-length distribution rather
+        # than fixed --- a fixed one gives a step function and no curve.
+        words.append(_letters(_natural_longest(row_id)))
     text = " ".join(words)
     if commas:
         text = text.replace(" ", ", ", commas)

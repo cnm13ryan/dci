@@ -524,18 +524,34 @@ def assert_no_outcome_read(rows: Iterable[Mapping[str, Any]], *,
 
 
 def cell_rates(rows: Iterable[Mapping[str, Any]], *, kind: str, severity: int,
-               present: bool, split: str | None = None) -> dict[str, float]:
+               present: bool, split: str | None = None,
+               arm: str | None = None) -> dict[str, float]:
     """Topic-mean compliance, vacuity and length for one constraint instance.
 
     The topic is the unit: draws average within a topic first, then topics
     average, so a topic contributes once however many draws it carry. ``split``
     restricts to one calibration half, which is what §13.7 needs and what
     v4r4 had no way to ask for.
+
+    ``arm`` restricts the **denominator** to one kind of cell, and it exists
+    for a reason worth stating. ``present=False`` collects every row where the
+    instance was not stated --- and in Gate 2's focal grid that includes the
+    B-solo cells at the *other* seven severities, which are answers written
+    under a stated length budget. Averaged into a chance rate they inflate it,
+    because an answer written under `at most 13 letters` satisfies `at most 9`
+    far more often than an answer nobody constrained does. For most chance
+    quantities that denominator is the right one --- §13.6's kappa(R|B) is
+    deliberately measured under B. For §34 D17's construct floor it is not:
+    the floor's threshold was derived from a curve measured on load-zero
+    answers, and a threshold calibrated on one estimator and applied to
+    another is a different rule wearing the same number.
     """
     per_topic: dict[str, list[dict[str, Any]]] = {}
     label = f"{kind}:{severity}"
     for row in rows:
         if split is not None and row.get("topic_split") != split:
+            continue
+        if arm is not None and row.get("arm") != arm:
             continue
         for score in row["scores"]:
             if (f"{score['kind']}:{score['severity']}" == label
@@ -548,7 +564,8 @@ def cell_rates(rows: Iterable[Mapping[str, Any]], *, kind: str, severity: int,
                      "truncated": row["truncated"]})
     if not per_topic:
         raise ProtocolError(
-            f"no rows for {label} (present={present}, split={split})")
+            f"no rows for {label} (present={present}, split={split}, "
+            f"arm={arm})")
 
     def _mean(values):
         return sum(values) / len(values)
@@ -596,17 +613,32 @@ def per_topic_compliance(rows: Iterable[Mapping[str, Any]], *, kind: str,
 
 
 def instance_rates(rows: Sequence[Mapping[str, Any]], *, kind: str,
-                   severity: int, split: str | None = None) -> dict[str, float]:
-    """Solo and chance for one instance, in §12.2's vocabulary."""
+                   severity: int, split: str | None = None,
+                   unconstrained_arm: str | None = None) -> dict[str, float]:
+    """Solo and chance for one instance, in §12.2's vocabulary.
+
+    ``unconstrained_arm`` adds a second chance rate computed over that arm
+    alone --- the load-zero cells --- reported as ``chance_unconstrained``
+    beside the registered ``chance`` rather than replacing it. §34 D17's floor
+    reads the load-zero one; every other chance quantity keeps the denominator
+    it was defined with.
+    """
     rows = list(rows)
     solo = cell_rates(rows, kind=kind, severity=severity, present=True,
                       split=split)
     chance = cell_rates(rows, kind=kind, severity=severity, present=False,
                         split=split)
-    return {"solo": solo["compliance"], "chance": chance["compliance"],
-            "vacuity": solo["vacuity"], "chance_vacuity": chance["vacuity"],
-            "graded_mean": solo["graded_mean"],
-            "median_words": solo["median_words"],
-            "truncation": solo["truncation"],
-            "n_topics": solo["n_topics"],
-            "split": split}
+    out = {"solo": solo["compliance"], "chance": chance["compliance"],
+           "vacuity": solo["vacuity"], "chance_vacuity": chance["vacuity"],
+           "graded_mean": solo["graded_mean"],
+           "median_words": solo["median_words"],
+           "truncation": solo["truncation"],
+           "n_topics": solo["n_topics"],
+           "split": split}
+    if unconstrained_arm is not None:
+        load_zero = cell_rates(rows, kind=kind, severity=severity,
+                               present=False, split=split,
+                               arm=unconstrained_arm)
+        out["chance_unconstrained"] = load_zero["compliance"]
+        out["n_topics_unconstrained"] = load_zero["n_topics"]
+    return out

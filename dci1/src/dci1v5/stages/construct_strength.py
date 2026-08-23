@@ -31,12 +31,32 @@ from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
 
+from dci1v5.analysis.intervals import wilson
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 
 __all__ = ["ConstructQuantity", "QUANTITIES", "QUANTITY_IDS", "FloorSpec",
-           "construct_strength", "measure", "assert_construct_floor",
-           "grid_boundary_status"]
+           "FLOOR_SEMANTICS", "POINT_REFUSES", "MARGINAL_STATUS",
+           "registered_floor", "construct_strength", "measure",
+           "assert_construct_floor", "grid_boundary_status"]
+
+#: §34 D17's closure fixes **which number the refusal reads**. Point and
+#: interval are not two ways of writing one rule: a ceiling read against a
+#: Wilson upper bound is strictly harder to satisfy than the same ceiling read
+#: against the point, and on the 192 pooled calibration topics the two
+#: disagree over a band about 0.07 wide either side of 0.5 --- wide enough to
+#: change the verdict at rungs §12.3 actually selects. The registered
+#: semantics is therefore part of the floor and not a convention the caller
+#: supplies.
+POINT_REFUSES = "point_estimate_refuses_wilson_reported"
+FLOOR_SEMANTICS = (POINT_REFUSES,)
+
+#: What is recorded when the interval straddles the threshold: the point
+#: estimate decided, and the data did not resolve the comparison. §13.5 does
+#: the same for the reference chance ceiling, so the study carries one
+#: convention rather than two.
+MARGINAL_STATUS = "CONSTRUCT_FLOOR_MARGINAL"
+assert MARGINAL_STATUS in C.IDENTIFICATION_STATUSES
 
 
 @dataclass(frozen=True)
@@ -139,6 +159,8 @@ class FloorSpec:
     derivation: str
     decided_by: str
     decided_on: str
+    #: Which number the refusal reads. Registered, not supplied per call.
+    semantics: str = POINT_REFUSES
 
     def __post_init__(self) -> None:
         if self.quantity not in _BY_ID:
@@ -147,23 +169,81 @@ class FloorSpec:
                 f"quantity; registered: {QUANTITY_IDS}")
         if not isinstance(self.value, (int, float)):
             raise ProtocolError("a construct floor is a number")
+        if self.semantics not in FLOOR_SEMANTICS:
+            raise ProtocolError(
+                f"{self.semantics!r} is not a registered floor semantics; "
+                f"registered: {FLOOR_SEMANTICS}. Which number refuses is part "
+                "of the rule and a floor that leaves it open can be applied "
+                "two ways")
         for name in ("derivation", "decided_by", "decided_on"):
             if not str(getattr(self, name)).strip():
                 raise ProtocolError(
                     f"a registered construct floor requires {name}; a floor "
                     "without one is a threshold nobody chose")
 
+    @property
+    def direction(self) -> str:
+        return _BY_ID[self.quantity].direction
+
     def satisfied_by(self, value: float) -> bool:
-        quantity = _BY_ID[self.quantity]
-        if quantity.direction == "higher_is_stronger":
+        """The registered refusal, on the **point estimate**.
+
+        §34 D17 is closed at ``point_estimate_refuses_wilson_reported``: the
+        interval is reported beside the verdict and never replaces it. A
+        ceiling read against a Wilson upper bound would be a different and
+        stricter rule, and the researcher did not register that one.
+        """
+        if self.direction == "higher_is_stronger":
             return value >= self.value
         return value <= self.value
 
+    def marginal(self, interval: tuple[float, float] | None) -> bool:
+        """Whether the interval straddles the threshold.
+
+        Not a second verdict --- ``satisfied_by`` has already decided --- but
+        the record that it was decided on a difference this many observations
+        does not resolve.
+        """
+        if interval is None:
+            return False
+        low, high = interval
+        return low <= self.value <= high
+
     def as_dict(self) -> dict[str, Any]:
         return {"quantity": self.quantity, "value": self.value,
-                "direction": _BY_ID[self.quantity].direction,
+                "direction": self.direction, "semantics": self.semantics,
                 "derivation": self.derivation,
                 "decided_by": self.decided_by, "decided_on": self.decided_on}
+
+
+def registered_floor() -> FloorSpec | None:
+    """§34 D17's floor, from the researcher's own record.
+
+    ``None`` when D17 is open or closed at ``no_floor``. There is deliberately
+    **no literal threshold in this module**: the quantity, the value, the
+    semantics and the derivation come from ``researcher_decisions.json``, so
+    the number that refuses an operating point is the number a researcher
+    signed, and changing it is a §32 amendment to a committed file rather than
+    an edit to a line of code.
+    """
+    if not decisions.is_closed("D17") or decisions.value_of("D17") != "floor":
+        return None
+    spec = decisions.recorded_spec("D17")
+    if spec is None:
+        raise ProtocolError(
+            "§34 D17 is closed at 'floor' and the record carries no 'spec'. "
+            "A construct floor is a quantity, a value, a semantics and a "
+            "derivation; this implementation does not invent any of them")
+    try:
+        return FloorSpec(
+            quantity=spec["quantity"], value=spec["value"],
+            derivation=spec["derivation"], decided_by=spec["decided_by"],
+            decided_on=spec["decided_on"],
+            semantics=spec.get("semantics", POINT_REFUSES))
+    except KeyError as exc:
+        raise ProtocolError(
+            f"§34 D17's recorded floor spec is missing {exc}; a floor needs "
+            "the quantity, the value and the derivation") from exc
 
 
 def construct_strength(*, m: int, chance_compliance: float,
@@ -239,18 +319,24 @@ def assert_construct_floor(m_star: int, *, chance_compliance_at_m_star: float,
                            curve: Mapping[int, float] | None = None,
                            solo_curve: Mapping[int, float] | None = None,
                            long_word_share: Mapping[int, float] | None = None,
+                           n_topics: int | None = None,
                            floor: FloorSpec | None = None) -> dict[str, Any]:
     """§34 D17, as the one call that decides whether $m^*$ stands.
 
     Both branches exist and neither is reachable while D17 is open.
 
-    * ``no_floor`` --- the standing proposal. No selection is refused; the
-      realised $m^*$, B's chance compliance at $m^*$ and B's whole curve are
-      reported, and §29 states the limitation.
-    * ``floor`` --- a registered floor is applied. **The closure must supply
-      it**: this call refuses a ``floor`` branch with no ``FloorSpec``, and
-      refuses again if the spec's quantity cannot be computed from what was
-      measured. No threshold is invented here.
+    * ``no_floor`` --- the standing proposal, **not adopted**. No selection is
+      refused; the realised $m^*$, B's chance compliance at $m^*$ and B's
+      whole curve are reported, and §29 states the limitation.
+    * ``floor`` --- the registered floor is applied. It comes from the
+      researcher's record, not from this module and not from the caller:
+      ``floor`` defaults to ``registered_floor()`` and an explicit argument is
+      for tests and for reproducing a historical closure.
+
+    ``n_topics`` is the number of independent units kappa_B was estimated
+    over --- topics, never draws (§13.7). It is what the Wilson interval is
+    computed from. Omitting it is admissible and costs the marginality
+    record: the verdict is unchanged, because the verdict reads the point.
     """
     report = (measure(curve, m_star=m_star, solo_curve=solo_curve,
                       long_word_share=long_word_share)
@@ -267,32 +353,60 @@ def assert_construct_floor(m_star: int, *, chance_compliance_at_m_star: float,
                 "selection_refused": False}
 
     def _floor() -> dict[str, Any]:
-        if floor is None:
+        spec = floor if floor is not None else registered_floor()
+        if spec is None:
             raise ProtocolError(
                 "§34 D17 was closed at 'floor' and no FloorSpec accompanies "
                 "it. A construct floor is a registered value with a "
                 "derivation; this implementation does not invent one, and the "
                 "closure must supply the quantity, the value and the "
                 f"derivation. Registered quantities: {QUANTITY_IDS}")
-        measured = report["at_m_star"]["quantities"][floor.quantity]["value"]
+        measured = report["at_m_star"]["quantities"][spec.quantity]["value"]
         if measured is None:
             raise ProtocolError(
-                f"§34 D17's floor is registered on {floor.quantity!r} and "
+                f"§34 D17's floor is registered on {spec.quantity!r} and "
                 "that quantity was not measured at m*; a floor on an "
                 "unmeasured quantity refuses nothing and admits nothing")
-        satisfied = floor.satisfied_by(measured)
-        return {**report, "floor_registered": True, "floor": floor.as_dict(),
+        satisfied = spec.satisfied_by(measured)
+        interval = _floor_interval(spec, measured, n_topics)
+        marginal = spec.marginal(interval)
+        statuses = [MARGINAL_STATUS] if marginal else []
+        return {**report, "floor_registered": True, "floor": spec.as_dict(),
                 "measured": measured, "satisfied": satisfied,
                 "chance_compliance_at_m_star": chance_compliance_at_m_star,
+                "wilson": list(interval) if interval else None,
+                "n_topics": n_topics,
+                "marginal": marginal,
+                "statuses": sorted(set(report["statuses"]) | set(statuses)),
                 "selection_refused": not satisfied,
                 "status": None if satisfied else "FOCAL_RANGE_EXHAUSTED",
                 "reason": None if satisfied else (
                     f"m* = {m_star} satisfies §12.3's compliance band and "
                     f"fails the registered construct floor: "
-                    f"{floor.quantity} = {measured} against {floor.value}")}
+                    f"{spec.quantity} = {measured} against {spec.value}")}
 
     return decisions.choice("D17", {"no_floor": _no_floor, "floor": _floor},
                             where="stages.regime.assert_construct_floor")()
+
+
+def _floor_interval(spec: FloorSpec, measured: float, n_topics: int | None
+                    ) -> tuple[float, float] | None:
+    """The Wilson interval for the floor's quantity, where one is defined.
+
+    Only the two *proportions* have one. ``instruction_lift`` is a difference
+    of two proportions and ``grid_headroom`` is an integer, so a Wilson
+    interval on either would be a number with the right shape and no meaning;
+    the floor still refuses on the point, and the marginality record is simply
+    absent.
+    """
+    if n_topics is None or n_topics <= 0:
+        return None
+    if spec.quantity == "chance_compliance":
+        return wilson(measured, n_topics)
+    if spec.quantity == "chance_bite":
+        low, high = wilson(1.0 - measured, n_topics)
+        return (1.0 - high, 1.0 - low)
+    return None
 
 
 def candidate_report(curve: Mapping[int, float], *,

@@ -61,12 +61,27 @@ each of them its own family intercept makes `gamma` **exactly collinear** with
 the sum of those three dummies: the design matrix is singular and `gamma`
 identifies nothing.
 
-**Implemented:** `alpha_f` ranges over the three **core** families, and a
-Tier-2 point sits at the average core intercept plus `gamma`, so `gamma` is
-the tier's offset from the difficulty line the core families define.
-`analysis/spectrum.fit_with_tier_indicator` says this in its docstring and
-refuses the singular alternative by name. `gamma` is an F8 secondary and
-licenses no claim, so the reading changes no decision rule.
+**RESOLVED at A2 on 2026-08-23**, by the researcher, recorded in
+`researcher_decisions.json` under `open_items`. `alpha_f` ranges over the three
+**core** families, and a Tier-2 point sits at the unweighted mean core
+intercept plus `gamma`, so `gamma` is the tier's offset from the difficulty
+line the core families define, at equal weight over them. The fit is five
+parameters over twelve points and full rank.
+
+This was **not** an implementation reading that got ratified. It was recorded
+as `RESEARCHER_DECISION_REQUIRED` and `fit_with_tier_indicator` refused
+outright — including when a caller named a formulation explicitly — because the
+four repairs estimate different `gamma`s. It still refuses if the resolution
+goes away, rather than falling back to A2: `adopted_formulation()` reads the
+open-item registry, so adoption is a fact about the record and not a default in
+a signature. A1 is refused by name as singular; A3 is never constructed,
+because it deletes F8's registered `gamma_tier`; A4 is constructed and
+**non-adopted**, kept because the decisive comparison in
+`u2_tier_model_decision.md` is computed from it on every test run, and refused
+on any reporting path by `assert_adopted_formulation`. §11.8's sentence is
+amended to name the three core families explicitly, which is the amendment this
+entry recorded as outstanding. `gamma` is an F8 secondary and licenses no
+claim, so the resolution changes no decision rule.
 
 ### U3. "The less restrictive severity breaks an exact within-family tie"
 
@@ -101,10 +116,22 @@ no Tier-3 family can be one.
 the spectrum — so this changes no verdict, and the implementation follows §7.4
 and §13.12, which are the rules with an executable form
 (`assert_tier_admits_slot` requires the core family's tier for that slot).
-**It is escalated rather than fixed** because narrowing §7.10's sentence is a
-scientific edit and the researcher should make it, and because the sentence is
+It was escalated rather than fixed because narrowing §7.10's sentence is a
+scientific edit that the researcher should make, and because the sentence is
 the only place a reader would learn that a Tier-3 spectrum was ever
 contemplated.
+
+**CONFIRMED on 2026-08-23.** The researcher confirmed the corrected wording:
+Tier 1 and Tier 2 take the core, near-form and spectrum roles the adopted
+design gives them; Tier 3 takes the broad-class role only and does not become a
+core-family spectrum rung. Nothing executable changed and no verdict moved.
+Making Tier 3 *reachable* instead would amend the candidate population, §11.8's
+three-families-of-three fit structure and the derived cell set — a §32
+amendment — and it was not made. The consequence the corrected sentence owns
+stands: `CL7` and `CL8` are count lower bounds, §13.10 admits budget class to
+the broad-class slot only, and with the spectrum closed to Tier 3 they are
+admissible to no design slot. They remain in the instrument population §10.2
+measures.
 
 ---
 
@@ -343,7 +370,7 @@ satisfies them — `clean_worktree`, `commit_hashable`, `tracked_implementation`
 
 ---
 
-## 7. What the four researcher closures changed, and what they exposed
+## 7. What the first four researcher closures changed, and what they exposed
 
 Recorded here rather than in §1–§3 because none of these is a *discrepancy*:
 each is a researcher decision arriving and the implementation catching up.
@@ -468,3 +495,119 @@ would attempt, as distinct from what a replication's Gate-3 verdicts admit —
 had no producer at all. It exists now, with `d1_scale` beside it, because a
 budget is arms × models × blocks × draws and naming only the arms leaves three
 of the four factors to whoever writes the runner.
+
+
+---
+
+## 8. What adoption changed, and the one estimator defect it exposed
+
+The remaining fifteen §34 closures, U2 and P1, taken on 2026-08-23. Same rule
+as §7: none of these is a *discrepancy*, and where a closure exposed something
+the implementation had wrong it is flagged `IMPLEMENTATION_DEFECT`.
+
+### D17 — the construct floor, and the denominator it is measured on
+
+`IMPLEMENTATION_DEFECT`, and the most consequential thing in this section.
+
+The closure is $\kappa^{B}(m^{*}) \le 0.50$ on the point estimate, and the
+threshold was derived — in `d17_b_strength_decision.md` — from a curve
+recomputed on v4r4's **load-zero** calibration answers. Gate 2's registered
+`chance` rate is not that quantity. `cell_rates(present=False)` collects every
+row where the instance was absent, and in Gate 2's focal grid that includes the
+$B$-solo cells at the other seven severities: answers written under a stated
+length budget, which satisfy a *looser* budget far more often than an
+unconstrained answer does. Applying the threshold to that rate would have been
+a threshold calibrated on one estimator and applied to another under the same
+name — the exact failure §33 asks the reconciliation to catch.
+
+**Fixed, without moving anything else.** `cell_rates` gained an `arm` filter
+and `instance_rates` an optional `unconstrained_arm`; Gate 2 computes both and
+records both, and only the floor reads the load-zero one. The registered
+`chance` rate keeps the denominator it was defined with, because §13.6's
+$\kappa(R \mid B)$ is *deliberately* measured under $B$ — that is R5's whole
+subject — and changing it would have altered what every reference admission
+means.
+
+**The synthetic fixture had encoded the defect's invisibility.** Its
+$\kappa^{B}$ curve was flat at 0.67 across every severity, because `_compose`
+conflated "B stated and scripted to fail" with "B not stated" — both produced
+the same answer shape. A floor cannot be exercised against a curve with no
+shape. The fixture now draws an unconstrained answer's longest word from a
+length distribution shaped after the measured development curve and scripts a
+$B$-failing row as one word past *its own* stated budget, so B's scripted solo
+rates are unchanged and $\kappa^{B}$ runs 0.000 to 0.823 across the grid.
+These are fixture numbers; nothing reads them as evidence.
+
+### D17 — where the threshold lives
+
+`STALE_DOCUMENTATION`, pre-emptively avoided. The obvious implementation of a
+closed D17 is a constant in `construct_strength.py`, and that is exactly the
+move §34 exists to stop: the code needs a number, the number gets chosen by
+whoever writes the line, and the choice is never recorded as one. The quantity,
+value, semantics and derivation are the `spec` field of the D17 closure in the
+record; `registered_floor()` reads them; the module carries no number; and
+`signing_blockers()` reports `FLOOR_NOT_SPECIFIED` if a `floor` closure ever
+arrives without them. `decisions.recorded_spec` is the general mechanism, for
+any decision whose *value* has no room for its own parameters.
+
+### U2 — a resolution that is a fact about the record, not a default
+
+See §2's U2 entry, now marked RESOLVED. The one thing worth repeating here:
+adopting A2 by writing `formulation="A2"` into the signature would have looked
+identical and been wrong, because the refusal would have been replaced by a
+default. `adopted_formulation()` reads the open-item registry instead, so the
+fit still refuses if the resolution goes away, and
+`test_the_fit_still_refuses_if_u2_is_reopened` is what keeps that true.
+
+### U2 and P1 — resolutions had no durable home
+
+`IMPLEMENTATION_DEFECT`. `decisions.py` had a committed record; `open_items.py`
+had only `resolve()`, which lives for the length of a process. U2 **blocks the
+registration manifest outright**, so a resolution that vanished on exit was a
+researcher act nothing preserved. `open_items` now reads an `open_items`
+section of the same record file, applies it at import, refuses a record that
+disagrees with a live resolution as a §32 amendment, and
+`reopen_all_for_testing` restores the recorded state rather than a blank one —
+the same shape as `decisions`. `record_hash` covers both sections, because a
+hash over half the file would let U2's resolution change under a signature that
+did not move.
+
+### P1 — a confirmation nothing enforced
+
+`IMPLEMENTATION_DEFECT`, minor. `CONFIRM_AT_ADOPTION` items are not blocking by
+design — nothing executable turns on them — but `signing_blockers()` therefore
+did not notice that P1 had never been confirmed, and signing without it would
+have been signing a document nobody read. `UNCONFIRMED_AT_ADOPTION` is a new
+blocker kind covering exactly that gap.
+
+### D1 — a budget the manifest could not reproduce
+
+`IMPLEMENTATION_DEFECT`. The generation budget was derived in
+`tools/v5_compute_budget.py`, and the registration manifest binds the adopted
+option. A manifest cannot import a tool, so the number would have had to be
+copied — and a figure a signature carries that the code cannot reproduce is a
+figure nobody can check. The derivation moved to `dci1v5.design.budget`; the
+tool is now the regenerable report over it, and
+`test_it_binds_the_design_d1_actually_registered` asserts the manifest's figure
+*is* `budget.registered_budget()`.
+
+### D4 — an approval that bound nothing
+
+`IMPLEMENTATION_DEFECT`. `assert_marker_vocabulary_approved` returned the eight
+words, and the manifest bound a word list. Neither made a post-adoption
+substitution *detectable*: swapping `though` for `albeit` would have changed no
+bound value. `marker_population()` now binds the eight families with their
+statistic ids, discourse roles, rules, ladders and reserves under a
+`population_hash`, and the four accepted limitations travel with it — because
+"approved" must not be readable as "no concern was found", and D4's audit
+referred three markers to the researcher precisely on concerns that were
+accepted rather than answered.
+
+### The rest — eleven closures that exposed nothing
+
+D0, D2, D5, D7–D15 each closed at the document's own standing proposal, and
+each already had both branches constructed behind `decisions.choice`. Nothing
+in the implementation changed for any of them. Two carry a recorded red-team
+objection that the closure does **not** answer — R13 against D7's 0.90 and R2
+against D15's transfer — and in both cases the objection is bound into the
+manifest beside the value rather than resolved by it.

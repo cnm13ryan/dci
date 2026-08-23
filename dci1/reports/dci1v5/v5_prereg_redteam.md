@@ -11,17 +11,26 @@ wrong, what the document currently says, and whether it is **resolved**,
 decision closed before stage 1 can pass. This document is the standing finding
 register that checklist reports against.
 
-**Five findings are unresolved.** They are R1, R5, R11, R14 and R16, and none
-of them is a bug: each is a scientific degree of freedom that a researcher has
-to close. Four of the five are registered as open decisions D18, D16, D17 and
-D6; R5's residual half is not closeable by a rule. **v5 is not frozen and must
-not be described as registered until they are.**
+**Four of the five that were unresolved are now closed by decision.** R1 by
+D18, R11 by D16, R14 by D17 and R16 by D6 — none of them was a bug; each was a
+scientific degree of freedom that only a researcher could close, and all four
+were closed with their evidence on 2026-08-22 and 2026-08-23.
+
+**R5 remains, and it is an ACCEPTED PERMANENT LIMITATION rather than an open
+finding.** $\kappa^{B}$ is measured under $B$, so the reference set is a
+function of how each model writes under its own $B$ at its own $m^{*}$. §13.8
+closes the second half; the first half is not closeable by any rule, no §34
+decision names it, and it does not block the freeze. It is reported as a
+limitation on every statement it touches.
+
+**v5 is frozen and registered.** All nineteen §34 decisions carry a value, U2
+is resolved at A2 and P1 is confirmed.
 
 ---
 
 ## A. Identification and inference
 
-### R1 — the same-form control may make L3c near-automatic, and L3c is a memo verdict — **RESOLVED BY DECISION (D18), one dependency remains**
+### R1 — the same-form control may make L3c near-automatic, and L3c is a memo verdict — **RESOLVED BY DECISION (D18), and D1 no longer leaves it hanging**
 
 This is the sharpest objection to v5 and it is the mirror image of its central
 repair.
@@ -64,13 +73,14 @@ checks the invariant on the built statement, so a renderer that never consulted
 the emitter cannot produce it either.
 
 That is the gate this finding asked for, in place of the fixed sentence it
-called a weaker remedy. **One dependency remains and it is a compute
-decision, not a mitigation gap:** §34 D1 still lists a 47-cell option that
-drops the near-form arm. Under D18's closure that option cannot emit the
-refutation verdict on any model — so R1 can no longer become an unmitigated
-bias toward L3c; it can only become a study that declines to make the claim.
-`d1_arm_compute_decision.md` costs the option at a 10.4% saving and recommends
-against it.
+called a weaker remedy. **The one dependency that remained was a compute
+decision, and it is now taken.** §34 D1 lists a 47-cell option that drops the
+near-form arm; under D18's closure that option cannot emit the refutation
+verdict on any model, so it was never a cheaper version of the same study.
+D1 is closed at **`four_models_56_cells`** — all five arms, near-form
+included — so R1's registered mitigation is not merely available, it is the
+design the study registered. The 47-cell option is recorded as non-adopted,
+costed at a 10.4% saving, in `d1_arm_compute_decision.md`.
 
 ### R2 — the memo's 0.25 threshold is applied to a redefined quantity — registered, arguably inconsistent
 
@@ -284,7 +294,7 @@ derivation is post-hoc rationalisation has the sensitivity sweep in
 `d4_interaction_projection.json` to argue from: 0.85 costs two false alarms,
 0.95 misses two failures.
 
-### R14 — the focal grid extension trades construct strength for band membership — **STILL OPEN (D17 taken in principle; the threshold is not)**
+### R14 — the focal grid extension trades construct strength for band membership — **RESOLVED BY DECISION (D17); one limitation remains**
 
 v5 extends $B$'s grid to $m \in \{7,\dots,14\}$ with an extension to
 $\{15,16\}$, and §12.3 selects the rung whose solo compliance is nearest 0.80.
@@ -298,9 +308,9 @@ is close to a null instruction in ordinary English, and the focal band is
 defined on compliance rather than on construct strength. v4r4 already had this
 at $m = 12$ and v5 makes it more likely by extending further.
 
-**§34 D17 was taken *in principle* on 2026-08-22: v5 shall have a substantive
-construct floor for B. The quantity and the threshold are not chosen, and the
-finding stays open until they are.**
+**§34 D17 was taken *in principle* on 2026-08-22 and closed at `floor` on
+2026-08-23: $\kappa^{B}(m^{*}) \le 0.50$.** The mitigation is now a refusal
+rather than a report.
 
 The measurement this finding needed now exists —
 `development/d7_b_construct_strength.json`, B's chance-compliance curve over
@@ -313,11 +323,41 @@ single word. So the finding is not a worry about what *might* happen at high
 $m^{*}$: it is a measurement of what does.
 
 `d17_b_strength_decision.md` compares five candidate rules, eliminates three on
-this evidence, and recommends $\kappa^{B}(m^{*}) \le 0.50$ — which admits
+this evidence, and the researcher adopted C1 at $\theta = 0.50$ — which admits
 every operating point v4r4 actually used (10, 10, 12, 10) and refuses the region
-the grid extension opened up. Nothing is installed: the implementation still
-carries no threshold, and `assert_construct_floor` refuses a `floor` closure
-that arrives without one.
+the grid extension opened up. The refusal reads the **point** estimate, the
+Wilson bound is reported beside it, and `CONSTRUCT_FLOOR_MARGINAL` is recorded
+when the interval straddles $\theta$. An $m^{*}$ that satisfies §12.3's
+compliance band and fails the floor ends the replication at
+`FOCAL_RANGE_EXHAUSTED` **before any confirmatory generation** — the accepted
+cost of the rule, and the trade the study is registered to make.
+
+The threshold is not in the implementation. `stages/construct_strength.py`
+carries no number; the quantity, the value, the semantics and the derivation
+are fields of the D17 closure in `researcher_decisions.json`, which the manifest
+binds by hash and `registered_floor()` reads. Changing the number is a §32
+amendment to a committed file.
+
+**One thing closing D17 did NOT fix, and it is worth naming.** The threshold is
+fitted to four models of one predecessor study on one task
+(DEVELOPMENT_EVIDENCE, §30), and it is a round number that lands inside an
+observed gap — the same shape as the 0.90 ceiling R13 objects to. The
+derivation is the *separation* (0.398 at $m=12$ against 0.586 at $m=13$, a gap
+of 0.188 against a next-largest of 0.104); neither the roundness nor the gap is
+offered as support for the value. A fifth model whose prose is shorter or
+plainer could sit anywhere on this curve. That residual is a limitation of the
+rule, not an open finding, and no rule closes it.
+
+**A defect this finding surfaced on the way.** The floor's threshold was
+derived from $\kappa^{B}$ measured on **load-zero** answers, and Gate 2's
+registered `chance` rate averages every row where the severity was absent —
+which in the focal grid includes the $B$-solo cells at the other seven
+severities, answers written under a stated length budget. Applying the
+threshold to that rate would have been a threshold calibrated on one estimator
+and applied to another. Gate 2 now computes both and records both
+(`load_zero_chance_curves` beside `chance_curves`); the floor reads the
+load-zero one, and every other chance quantity keeps the denominator it was
+defined with.
 
 ### R15 — the realistic-witness rule is narrow, and its original justification was wrong — resolved, with a correction
 
@@ -422,7 +462,9 @@ header and §9 say it three times.
 
 v4r4 registered a 47-cell full design and ran none: both survivors ran 8 cells.
 v5's full design is 56 cells and 172,032 confirmatory generations per model,
-688,128 for four, plus roughly 75,000 pre-confirmatory per replication. **The
+688,128 for four. §34 D1 is closed at `four_models_56_cells` and the whole
+registered budget — calibration, Gate 4, §8.3's greedy run and confirmatory —
+is **1,135,104** generations, derived in `dci1v5.design.budget`. **The
 apparatus for the full design has been exercised only by v4r4's procedural
 pilot at $M = 4$ on twelve topics.** §19 requires the v5 pilot to run the full
 56-cell plan, which is the only pre-confirmatory evidence that the arm
@@ -450,7 +492,7 @@ Gate 3A.**
 | | Finding | Verdict |
 |---|---|---|
 | R1 | the same-form pool may make L3c near-automatic | **resolved by decision** (D18: the strong L3c requires the near-form arm) |
-| R2 | the memo's 0.25 applied to a redefined $\Delta_R$ | registered |
+| R2 | the memo's 0.25 applied to a redefined $\Delta_R$ | registered; **adopted over the objection** (D15: both transfer), and the disagreement stays on the record |
 | R3 | an eight-rung marker ladder is marginal against C4's span | resolved; reserve widened to 1…12 |
 | R4 | $\text{Ord}_\Lambda$'s linear dependence | registered |
 | R5 | $\kappa^{B}$ is measured under $B$; no realised-drift qualifier | **accepted permanent limitation**; no decision closes it |
@@ -461,8 +503,8 @@ Gate 3A.**
 | R10 | no weighted score | resolved |
 | R11 | Calibration-A screens and Calibration-B confirms | **mitigated by decision** (D16: complete population); Calibration-A's non-naivety is an accepted limitation |
 | R12 | every threshold is a literal | resolved |
-| R13 | the 0.90 ceiling sits in an observed gap | registered |
-| R14 | the focal extension trades construct strength for band membership | **still open**; D17 taken in principle, the threshold is not |
+| R13 | the 0.90 ceiling sits in an observed gap | registered; **adopted with the objection recorded** (D7: 0.90), and the coincidence is not used as evidence |
+| R14 | the focal extension trades construct strength for band membership | **resolved by decision** (D17: $\kappa^{B}(m^{*}) \le 0.50$ on the point, Wilson reported, `FOCAL_RANGE_EXHAUSTED` on failure); the threshold's fit to one predecessor study is a remaining limitation |
 | R15 | the realistic-witness rule's original justification was wrong | resolved |
 | R16 | `REFERENCE_SUPPORT_NOT_IDENTIFIED` is not terminal | **accepted limitation by decision** (D6: non-terminal and irreversible) |
 | R17 | the presence rule is now enforced and load-bearing | resolved |
@@ -470,12 +512,30 @@ Gate 3A.**
 | R19 | the v4r4 follow-up report's two caliper values | recorded |
 | R20 | no v4r4 outcome as a v5 observation | resolved |
 | R21 | "validation" | resolved |
-| R22 | the full design has never been executed | registered |
-| R23 | the Tier-1 pool has never been measured | registered |
-| R24 | 96 new questions are a prerequisite | registered |
+| R22 | the full design has never been executed | registered; §19's procedural pilot is stage 3 and precedes every scientific stage |
+| R23 | the Tier-1 pool has never been measured | registered; Gate 1 (stage 5) over the 650-instrument population is the measurement, computed over the regime screen's own generated text |
+| R24 | 96 new questions are a prerequisite | **resolved** (D3: the bank is authored, audited and hashed) |
 
-**v5 is not frozen.** Five scientific degrees of freedom remain open. §34
-carries nineteen decisions, D0 to D18, five of which came from this audit —
-D15, D16, D17, D18 and the reopened D6 — and every one must be closed in the
-signed registration manifest before stage 1 can pass. The document says so on its first page
-and this register is what the pre-freeze audit reads.
+**v5 is now frozen.** §34's nineteen decisions, D0 to D18, are all closed —
+five of them came from this audit: D15, D16, D17, D18 and the reopened D6 —
+and every one is in the signed registration manifest with its evidence, which
+is what §18 stage 1 requires. U2 is resolved at A2 and P1 is confirmed. This
+register is what the pre-freeze audit reads, and it now reports **no blocking
+finding**.
+
+**What "resolved" does and does not mean here.** A finding is resolved when its
+registered mitigation — a §34 decision — is closed. Four were: R1 by D18, R11
+by D16, R14 by D17, R16 by D6. Two more, R2 and R13, were adopted *over* a
+recorded objection rather than answered by evidence, and the objection stays on
+the record beside the value.
+
+**R5 is not resolved and no rule will resolve it.** $\kappa^{B}$ is measured
+under $B$, so the reference set is a function of how each model writes under its
+own $B$ at its own $m^{*}$: the set is not exchangeable across models and
+neither is $\Delta_R$'s meaning. §13.8's `INTERACTION_ESTIMATE_DRIFTED` closes
+the second half of the finding; the first half is a property of the design and
+is carried as an **accepted permanent limitation**. No §34 decision names it,
+`audit_prefreeze` reports it separately from the blocking findings for exactly
+that reason, and it is why no cross-model scalar carries a claim. Calling it
+resolved because nothing blocks any more would be the one move this distinction
+exists to prevent.

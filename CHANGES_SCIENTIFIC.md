@@ -13,6 +13,125 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-23 — v5 adopted: the remaining fifteen §34 decisions, U2, P1, and a construct floor whose denominator was wrong
+
+**Standing.** v5 is **adopted and registered**. All nineteen §34 decisions
+carry a value, U2 is resolved at A2, P1 is confirmed,
+`manifest.signing_blockers()` returns `[]`, and the registration manifest is
+signed. **No v5 observation exists**: no model has been loaded, no prompt
+generated, no calibration measurement taken, no gate run on model output. No
+existing number moves, because there are none.
+
+[`dci1/reports/dci1v5/researcher_decisions.json`](dci1/reports/dci1v5/researcher_decisions.json) ·
+[`dci1/reports/dci1v5/v5_adoption_checklist.md`](dci1/reports/dci1v5/v5_adoption_checklist.md)
+
+**D17 — a construct floor on $m^*$: $\kappa^{B}(m^{*}) \le 0.50$.** Against
+the standing proposal, which registered no floor. §12.3 selects the focal
+severity on *compliance*, which says nothing about whether $B$ is still the
+construct it is named after; the floor refuses a selected $m^*$ at which more
+than half of unconstrained answers already satisfy $B$. The refusal reads the
+**point** estimate; the Wilson upper bound is reported beside it and a new
+identification status, `CONSTRUCT_FLOOR_MARGINAL`, is recorded when the
+interval straddles the threshold. A selected $m^*$ that satisfies the
+compliance band and fails the floor ends the replication at
+`FOCAL_RANGE_EXHAUSTED` **before any confirmatory generation**.
+
+*What it changes about the meaning of a future number.* A $D(B \leftarrow A)$
+measured at a severity where $B$ does nothing was previously admissible with a
+limitation attached; it is now not measurable at all. The trade is registered
+and accepted: the study would rather report that no honest operating point
+exists for a model than report an effect measured against an instruction that
+does nothing. On the development curve the floor admits $m^* \le 12$ and
+refuses $m^* \ge 13$; all four v4r4 operating points (10, 10, 12, 10) survive
+it, so it excludes the region v5's grid extension opened and does not
+retrospectively invalidate the predecessor's severities.
+
+*Where the number lives.* Not in the code. `stages/construct_strength.py`
+carries no threshold; the quantity, the value, the semantics and the derivation
+are fields of the D17 closure in `researcher_decisions.json`, read by
+`registered_floor()` and bound into the manifest by hash. `signing_blockers()`
+reports `FLOOR_NOT_SPECIFIED` if a `floor` closure ever arrives without them.
+
+**The estimator defect closing D17 surfaced — the consequential half of this
+entry.** The threshold was derived from $\kappa^{B}$ measured on **load-zero**
+answers. Gate 2's registered `chance` rate is computed over every row where the
+severity was *absent*, which in the focal grid includes the $B$-solo cells at
+the other seven severities — answers written under a stated length budget,
+which satisfy a looser budget far more often than an unconstrained answer does.
+Applying the threshold to that rate would have been a threshold calibrated on
+one estimator and applied to another under the same name.
+
+`execute.cell_rates` gained an `arm` filter and `instance_rates` an optional
+`unconstrained_arm`; Gate 2 now computes both rates and records both
+(`load_zero_chance_curves` beside `chance_curves`, with
+`n_topics_load_zero`), and `assert_construct_floor` reads the load-zero curve.
+**Every other chance quantity is untouched and keeps the denominator it was
+defined with** — §13.6's $\kappa(R \mid B)$ is deliberately measured *under*
+$B$, and changing it would have altered what every reference admission means.
+Nothing retrospective is affected: no v5 chance rate has ever been computed.
+
+*A fixture that could not have caught it.* The synthetic harness gave
+$\kappa^{B}$ no curve at all — flat at 0.67 across every severity — because it
+conflated "B stated and scripted to fail" with "B not stated", so the same
+answer shape served both. It now draws an unconstrained answer's longest word
+from a length distribution shaped after the measured development curve, and
+scripts a $B$-failing row as one word past its stated budget. The walk's
+$\kappa^{B}$ now runs 0.000 at $m = 7$ to 0.823 at $m = 14$. **These are
+fixture numbers and nothing reads them as evidence**; what they buy is a
+harness in which the floor can both pass and refuse.
+
+**U2 — §11.8's tier-indicator secondary is adopted at A2.** $\alpha_f$ ranges
+over the three **core** families and a Tier-2 point sits at the unweighted mean
+core intercept plus $\gamma$, so the fit is five parameters over twelve points
+and full rank. As written the section did not identify the fit at all, and the
+four admissible repairs estimate different $\gamma$s — which is why it was a
+researcher decision. `gamma_tier` now means *the Tier-2 offset from the
+difficulty line the three core families define, at equal weight over them*.
+A1 is never constructed, A3 is never constructed, and A4 remains constructed
+and **non-adopted**: `TierFit.adopted` reports it and
+`spectrum.assert_adopted_formulation` refuses it on any reporting path. Nothing
+primary moves — sampling, reference selection, the arm set and every primary
+claim are unchanged, and $\gamma$ licenses no claim level.
+
+**D1 — the registered design: five arms, four models, 56 cells, 384 blocks,
+$M = 8$; 1,135,104 generations.** The near-form arm is now *registered* rather
+than merely permitted, so R1's only mitigation is in the design and the strong
+L3c is reachable. The budget derivation moved out of `tools/v5_compute_budget.py`
+into `dci1v5.design.budget`, because the manifest binds it and a manifest cannot
+import a tool: the figure the signature carries is one the code reproduces.
+
+**D4 — all eight Tier-1 markers, with four accepted limitations.** No marker
+moves. The limitations — `though`'s near-synonymy with `however` and its two
+syntactic frames, `namely`'s possible appositive interaction with word length,
+`overall`'s natural rate, and the vocabulary-wide spread in how unnatural the
+forced production is — are registered in
+`verifiers.constraints.D4_ACCEPTED_LIMITATIONS`, bound into the manifest, and
+reported alongside `REFERENCE_POOL_SAME_FORM` on every L3 statement. A
+**population hash** over the eight families, words, roles, statistic ids,
+ladders and reserves makes a post-adoption substitution detectable rather than
+merely forbidden.
+
+**The remaining eleven, and P1.** D0 `adopt`, D2 `no_load_three`, D5
+`lexicographic`, D7 `0.90`, D8 `0.75`, D9 `unavailable`, D10 `one_companion`,
+D11 `carry`, D12 `direction_and_sesoi_only`, D13 `primary_tier`, D14
+`iota_primary`, D15 `both_transfer` — each at the document's own standing
+proposal. Two carry a recorded objection that the closure does **not** answer:
+R13 against D7's 0.90 and R2 against D15's transfer. P1's corrected §7.10
+wording is confirmed; nothing executable changed, and Tier 3 was **not** made
+spectrum-eligible.
+
+**Red-team status.** R1 resolved by D18, R11 by D16, R14 by D17, R16 by D6.
+**R5 is not resolved and no rule will resolve it**: $\kappa^{B}$ is measured
+under $B$, so the reference set is a function of how each model writes under
+its own $B$ at its own $m^*$, and $\Delta_R$'s meaning is not exchangeable
+across models. It is an accepted permanent limitation, reported separately from
+the blocking findings, and it is why no cross-model scalar carries a claim.
+
+**Comparability.** Nothing in v4r4, v4r3, v3 or v2 is affected. No v5 number
+existed before this change and none exists after it.
+
+---
+
 ## 2026-08-22 — four §34 decisions taken, and the 96 Calibration-B questions authored
 
 **Standing.** v5 is still **drafted, not adopted**. No v5 stage record exists

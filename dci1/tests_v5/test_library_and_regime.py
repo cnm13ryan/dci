@@ -1,6 +1,8 @@
 """The registered library, §12's screen, and the decisions that block them."""
 from __future__ import annotations
 
+import dataclasses
+
 import pytest
 
 from dci1v4.errors import ProtocolError
@@ -72,13 +74,50 @@ def test_rate_lower_bound_is_in_the_grammar_and_instantiated_by_nothing():
                    for f in K.FAMILIES.values())
 
 
-def test_the_marker_vocabulary_needs_d4_before_it_is_approved(
-        restore_decisions):
+def test_the_marker_vocabulary_is_approved_and_frozen(restore_decisions):
+    """§34 D4 is closed at `approve_eight`, and the eight are bound by hash.
+
+    The guard still refuses if D4 goes away: approving the vocabulary is what
+    made the regime screen reachable, and it did not stop being a decision by
+    being taken.
+    """
+    assert len(K.assert_marker_vocabulary_approved()) == 8
+    population = K.marker_population()
+    assert population["value"] == "approve_eight"
+    assert population["population_hash"] == K.marker_population_hash()
+    assert len(population["markers"]) == 8
+    assert len(population["roles"]) == 6
+
+    restore_decisions.DECISIONS["D4"] = dataclasses.replace(
+        restore_decisions.DECISIONS["D4"], value=decisions.UNRESOLVED)
     with pytest.raises(decisions.DecisionOpenError):
         K.assert_marker_vocabulary_approved()
-    restore_decisions.close("D4", "approve_eight", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    assert len(K.assert_marker_vocabulary_approved()) == 8
+
+
+def test_the_frozen_population_names_the_limitations_it_accepted():
+    """§34 D4's closure accepted judgements; it did not answer them.
+
+    They are recorded so that a reader of an L3 statement sees them, which is
+    where the audit says they belong --- and so that "approved" cannot be read
+    as "no concern was found".
+    """
+    accepted = {x["word"]: x for x in K.D4_ACCEPTED_LIMITATIONS}
+    assert {"though", "namely", "overall", "*"} == set(accepted)
+    for entry in K.D4_ACCEPTED_LIMITATIONS:
+        assert entry["criterion"] and entry["limitation"]
+        assert entry["accepted_because"]
+    assert "closest single-word" in accepted["though"]["limitation"]
+    assert "two productive syntactic frames" in accepted["though"][
+        "limitation"]
+    assert "appositive" in accepted["namely"]["limitation"]
+    assert "0.076-0.112" in accepted["overall"]["limitation"]
+
+
+def test_the_population_hash_moves_if_a_marker_moves(monkeypatch):
+    """A substitution is forbidden; the hash is what makes it detectable."""
+    before = K.marker_population_hash()
+    monkeypatch.setitem(K.MARKER_WORDS, "marker_though", "albeit")
+    assert K.marker_population_hash() != before
 
 
 def test_rule_two_carries_every_tier12_rung_unconditionally():
@@ -162,19 +201,19 @@ def test_n_star_at_one_is_a_construct_floor_not_a_model_failure():
     assert "floor of A's construct" in result["reason"]
 
 
-def test_the_construct_floor_is_a_researcher_decision(restore_decisions):
+def test_the_construct_floor_is_registered_and_still_a_decision(
+        restore_decisions):
+    """§34 D17 closed at `floor`; the rule applies and the guard remains."""
+    out = regime.assert_construct_floor(13, chance_compliance_at_m_star=0.3)
+    assert out["floor_registered"] is True
+    assert out["floor"]["quantity"] == "chance_compliance"
+    assert out["floor"]["value"] == 0.50
+    assert out["satisfied"] and not out["selection_refused"]
+
+    restore_decisions.DECISIONS["D17"] = dataclasses.replace(
+        restore_decisions.DECISIONS["D17"], value=decisions.UNRESOLVED)
     with pytest.raises(decisions.DecisionOpenError):
         regime.assert_construct_floor(13, chance_compliance_at_m_star=0.3)
-    restore_decisions.close("D17", "no_floor", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    out = regime.assert_construct_floor(13, chance_compliance_at_m_star=0.3)
-    assert out["floor_registered"] is False
-    restore_decisions.reopen_all_for_testing()
-    restore_decisions.close("D17", "floor", evidence="test",
-                            decided_by="test", decided_on="2026-08-22")
-    with pytest.raises(ProtocolError) as excinfo:
-        regime.assert_construct_floor(13, chance_compliance_at_m_star=0.3)
-    assert "does not invent one" in str(excinfo.value)
 
 
 def test_the_coverage_criterion_separates_decisive_from_arm_dropping():

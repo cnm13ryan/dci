@@ -59,7 +59,8 @@ __all__ = ["UNRESOLVED", "Decision", "DecisionOpenError", "DECISIONS",
            "registration_payload",
            "REGISTRATION_INCOMPLETE", "RECORD_PATH", "RECORD_RELPATH",
            "recorded_closures", "apply_recorded_closures", "record_hash",
-           "record_payload", "non_adopted_alternatives"]
+           "record_payload", "non_adopted_alternatives", "recorded_spec",
+           "read_record"]
 
 #: The value every decision carries until a researcher closes it.
 UNRESOLVED = "UNRESOLVED"
@@ -477,6 +478,11 @@ def _read_record(path: Path | str | None = None) -> dict[str, Any]:
     return {**payload, "path": str(path), "present": True}
 
 
+def read_record(path: Path | str | None = None) -> dict[str, Any]:
+    """The whole record document. ``open_items`` reads its own section."""
+    return _read_record(path)
+
+
 def recorded_closures(path: Path | str | None = None
                       ) -> tuple[dict[str, Any], ...]:
     """Every closure the record carries, validated but not yet applied."""
@@ -531,12 +537,43 @@ def apply_recorded_closures(path: Path | str | None = None) -> tuple[str, ...]:
     return tuple(applied)
 
 
+def recorded_spec(decision_id: str, path: Path | str | None = None
+                  ) -> dict[str, Any] | None:
+    """The registered payload a closure carries beyond its value.
+
+    Some decisions select a *value* and some select a value **and the
+    parameters that value has no room for**. §34 D17's ``floor`` is the case
+    that forced this: the admissible values are ``no_floor`` and ``floor``,
+    and ``floor`` alone says nothing about which quantity is bounded, by what
+    number, under which semantics, or on what derivation. Putting those in
+    the code would be exactly the move §34 exists to stop, so they live in the
+    record beside the closure that requires them, and the module that applies
+    the floor reads them from here rather than from a literal.
+
+    Returns ``None`` when the decision is not recorded or carries no spec ---
+    which is most of them, and is not an error.
+    """
+    _get(decision_id)
+    for entry in recorded_closures(path):
+        if entry["id"] == decision_id:
+            spec = entry.get("spec")
+            return dict(spec) if isinstance(spec, Mapping) else None
+    return None
+
+
 def record_hash(path: Path | str | None = None) -> str | None:
-    """The record's content identity, for the registration manifest."""
+    """The record's content identity, for the registration manifest.
+
+    Over the closures **and** the open-item resolutions, because both are
+    researcher acts recorded in the same file and a hash that covered only
+    half of it would let U2's resolution change under a signature that did
+    not move.
+    """
     record = _read_record(path)
     if not record["present"]:
         return None
-    return sha_obj({"path": RECORD_RELPATH, "closures": record["closures"]})
+    return sha_obj({"path": RECORD_RELPATH, "closures": record["closures"],
+                    "open_items": record.get("open_items") or []})
 
 
 def non_adopted_alternatives() -> dict[str, list[Any]]:
@@ -561,6 +598,7 @@ def record_payload(path: Path | str | None = None) -> dict[str, Any]:
         "recorded_on": record.get("recorded_on"),
         "source": record.get("source"),
         "closed_here": [e["id"] for e in record["closures"]],
+        "resolved_here": [e["id"] for e in (record.get("open_items") or [])],
     }
 
 

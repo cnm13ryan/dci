@@ -38,22 +38,24 @@ from typing import Any, Mapping
 from dci1v4.engine import fs, store
 from dci1v4.engine.signing import create_signing_key, sign_payload, verify_signed
 from dci1v4.errors import IntegrityError, ProtocolError
-from dci1v4.models.registry import registration_models
+from dci1v4.models.registry import MODELS, registration_models
 from dci1v4.protocol.hashing import sha_obj
 
 from dci1v5 import (CLASSIFICATION, PREREGISTRATION, REFERENCE_DESIGN_SPEC,
                     STUDY_ID)
-from dci1v5.design import cells
+from dci1v5.analysis import spectrum
+from dci1v5.design import budget, cells
 from dci1v5.engine.context import StudyContext
 from dci1v5.protocol import constants as C
 from dci1v5.protocol import (decisions, identification, open_items,
                              revision, seeds, taxonomy)
 from dci1v5.protocol import wordings
 from dci1v5.protocol.wordings import wording_source_hash
+from dci1v5.stages import construct_strength
 from dci1v5.stages.audit_prefreeze import UNRESOLVED_REDTEAM_FINDINGS
 from dci1v5.topics import calibration_b
 from dci1v5.topics.bank import TopicBank, load_bank
-from dci1v5.verifiers import verifier_source_hash
+from dci1v5.verifiers import constraints, verifier_source_hash
 from dci1v5.verifiers.constraints import FAMILIES, RESERVES
 
 __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
@@ -62,7 +64,11 @@ __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
            "assert_no_model_adaptive_values", "document_hashes",
            "sign_registration", "load_manifest"]
 
-PROTOCOL_VERSION = "5.0 DRAFT"
+#: Adopted. It said "5.0 DRAFT" while §34's nineteen decisions were open,
+#: because a version number is a claim about what the document fixes and a
+#: document with fifteen open decisions fixed nothing. All nineteen are closed
+#: and U2 and P1 are resolved, so the draft qualifier comes off.
+PROTOCOL_VERSION = "5.0"
 PROTOCOL_DOCUMENT = PREREGISTRATION
 REGISTRATION_INCOMPLETE = decisions.REGISTRATION_INCOMPLETE
 
@@ -120,7 +126,16 @@ def document_hashes(repo_root: Path | str = ".") -> dict[str, Any]:
 # ------------------------------------------------------------- refusals
 
 def signing_blockers(bank: TopicBank | None = None) -> list[dict[str, Any]]:
-    """The five refusals, each reported separately and by kind."""
+    """Every refusal, each reported separately and by kind.
+
+    Five of them are about things nobody has decided yet. The last four are
+    about things a decision *implies* and that a closure alone does not
+    establish: a confirmation the researcher has to give, a floor a `floor`
+    closure has to carry, model revisions that have to be pinned to a
+    resolvable commit, and an arm set and a budget that have to be derivable.
+    A manifest that bound a decision's label without the values the label
+    stands for would be a signature over an intention.
+    """
     bank = bank if bank is not None else load_bank()
     blockers: list[dict[str, Any]] = []
 
@@ -182,6 +197,76 @@ def signing_blockers(bank: TopicBank | None = None) -> list[dict[str, Any]]:
             "n": len(open_findings),
             "why": "each of these findings' registered mitigation IS a §34 "
                    "decision; closing the decision is what resolves it"})
+
+    # P1 is CONFIRM_AT_ADOPTION: a stale sentence was corrected to match the
+    # rule three other sections and the code already implemented, and the
+    # researcher confirms the correction **at adoption** rather than
+    # discovering it afterwards. It does not block a stage --- nothing
+    # executable turns on it --- but signing without it would be signing a
+    # document nobody read.
+    unconfirmed = [k for k, i in open_items.OPEN_ITEMS.items()
+                   if i.status == open_items.CONFIRM_AT_ADOPTION
+                   and i.resolution is None]
+    if unconfirmed:
+        blockers.append({
+            "kind": "UNCONFIRMED_AT_ADOPTION", "section": "§33",
+            "detail": [{"id": k, "title": open_items.OPEN_ITEMS[k].title}
+                       for k in unconfirmed],
+            "n": len(unconfirmed),
+            "why": "a corrected sentence changes nothing executable and is "
+                   "still a change to the registered text; adoption is when "
+                   "the researcher confirms it"})
+
+    # §34 D17 closed at `floor` without a FloorSpec is a decision to have a
+    # rule and no rule. `registered_floor` raises rather than inventing one,
+    # so this reports it as a blocker instead of letting the manifest build
+    # and Gate 2 discover it.
+    if decisions.value_of("D17") == "floor":
+        try:
+            floor = construct_strength.registered_floor()
+        except ProtocolError as exc:
+            blockers.append({
+                "kind": "FLOOR_NOT_SPECIFIED", "section": "§34",
+                "detail": str(exc), "n": 1,
+                "why": "D17 is closed at 'floor'; the quantity, the value, "
+                       "the semantics and the derivation live in the "
+                       "researcher's record and this implementation does not "
+                       "invent any of them"})
+        else:
+            if floor is None:                              # pragma: no cover
+                blockers.append({
+                    "kind": "FLOOR_NOT_SPECIFIED", "section": "§34",
+                    "detail": "registered_floor() returned None under a "
+                              "'floor' closure", "n": 1,
+                    "why": "the branch and the spec disagree"})
+
+    # §6.1 fixes the model revisions in this manifest before qualification, so
+    # a manifest signed over an unpinned revision fixes nothing. Forty hex
+    # characters is a resolved commit; a tag or a branch is not.
+    unpinned = [m.model_key for m in MODELS
+                if len(m.revision) != 40
+                or any(c not in "0123456789abcdef" for c in m.revision)]
+    if unpinned:
+        blockers.append({
+            "kind": "MODEL_REVISION_UNPINNED", "section": "§6.1",
+            "detail": unpinned, "n": len(unpinned),
+            "why": "§6.1 binds the exact revision of every replication into "
+                   "this manifest and asserts it at every generation; a "
+                   "revision that is not a resolved 40-character commit "
+                   "binds nothing"})
+
+    # D1 names a budget option; the arm set, the cell count and the generation
+    # total are what the option *is*. If either is not derivable the manifest
+    # would carry a label with no design behind it.
+    try:
+        cells.admitted_arms_from_decision()
+        budget.registered_budget()
+    except ProtocolError as exc:
+        blockers.append({
+            "kind": "DESIGN_NOT_DERIVABLE", "section": "§34",
+            "detail": str(exc), "n": 1,
+            "why": "§34 D1's closure has to yield an arm set, a cell count "
+                   "and a generation budget the code can reproduce"})
     return blockers
 
 
@@ -307,6 +392,11 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
 
         # ------------------------------------------------------ §7, §10
         "candidate_library": _candidate_library(),
+        # §34 D4, closed at `approve_eight`. The exact eight --- ids, words,
+        # discourse roles, verifier statistic ids, ladders and reserves ---
+        # with the population hash that makes a substitution detectable
+        # rather than merely forbidden, and the four limitations the
+        # researcher accepted rather than substituted for.
         "marker_population": {
             "words": list(C.MARKER_WORDS),
             "max_letters": C.MARKER_MAX_LETTERS,
@@ -315,6 +405,7 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "evidence_class": "DEVELOPMENT_EVIDENCE",
             "approved_by": "§34 D4",
             "approval_status": decisions.value_of("D4"),
+            **constraints.marker_population(),
         },
         "structural_taxonomy": {
             "fields": list(taxonomy.METADATA_FIELDS),
@@ -380,6 +471,11 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                        **cells.D1_SCALE[name]}
                 for name, arms in cells.D1_ARM_SETS.items()},
             "d1_value": decisions.value_of("D1"),
+            # The adopted budget, computed from the constants above rather
+            # than quoted from the decision packet: a number the manifest
+            # carries and the code cannot reproduce is a number nobody can
+            # check. `registered_budget` names every term and its driver.
+            "d1_registered": budget.registered_budget(),
         },
 
         # ----------------------------------------------------------- §13
@@ -498,9 +594,51 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "difficulty_relation":
                 "Y_fs = alpha_f + beta*d_fs, three family intercepts and one "
                 "common slope, OLS on nine equally weighted points",
-            "tier_indicator_secondary":
-                "§11.8's secondary; NOT identified as written and blocked by "
-                "open_items.U2",
+            # open_items U2, resolved at A2. §11.8 wrote alpha_f over
+            # `families` and never said which families the twelve points
+            # span; giving each near-form control its own intercept makes the
+            # tier indicator exactly collinear with their sum. The adopted
+            # reading names the three CORE families, so the fit is 5
+            # parameters over 12 points and full rank, and gamma_tier means
+            # one thing rather than whichever thing a pseudoinverse returned.
+            "tier_indicator_secondary": {
+                "formulation": spectrum.adopted_formulation(),
+                "model": "Y_fs = alpha_f + beta*d_fs + gamma*1[Tier 2] over "
+                         "twelve points; alpha_f ranges over the THREE CORE "
+                         "families and a Tier-2 point sits at the unweighted "
+                         "mean core intercept plus gamma",
+                "gamma_tier": "the Tier-2 offset from the difficulty line the "
+                              "three core families define, at equal weight "
+                              "over them",
+                "identified_by": "the near-form arm; without it the indicator "
+                                 "does not vary, gamma is not identified and "
+                                 "the status is NEAR_FORM_ARM_NOT_AVAILABLE",
+                "tier": "secondary; gamma_tier licenses no claim level and "
+                        "F8 is a secondary family",
+                "estimated_from": "three Tier-2 points against nine Tier-1 "
+                                  "points, so it is low precision whatever "
+                                  "the parameterisation and is read as a "
+                                  "diagnostic",
+                "assumption": "the three core families' levels are equally "
+                              "weighted in defining the reference line, which "
+                              "is the same convention §11.8's prediction at "
+                              "iota_A already uses",
+                "non_adopted": ["A1", "A3", "A4"],
+                "why_not": {
+                    "A1": "exactly singular; gamma has no unique "
+                          "least-squares value. Never constructed",
+                    "A3": "identified, but it deletes gamma_tier, a "
+                          "registered F8 member --- a §32 amendment to §15 "
+                          "for no gain. Never constructed",
+                    "A4": "identified, but a pooled intercept leaves "
+                          "between-family level differences nowhere to go but "
+                          "beta, which the primary form removes deliberately. "
+                          "Constructed, non-adopted, and refused on any "
+                          "reporting path",
+                },
+                "decision_packet":
+                    "dci1/reports/dci1v5/u2_tier_model_decision.md",
+            },
         },
         "order_estimands": {
             "family": "F11",

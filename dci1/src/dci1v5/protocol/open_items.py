@@ -39,7 +39,8 @@ from dci1v4.errors import ProtocolError
 __all__ = ["OpenItem", "OpenItemError", "STATUSES", "BLOCKING_STATUSES",
            "OPEN_ITEMS", "OPEN_ITEM_IDS", "get_item", "blocking_items",
            "assert_no_blocking_open_items", "assert_item_resolved",
-           "resolve", "reopen_all_for_testing", "manifest_payload"]
+           "resolve", "reopen_all_for_testing", "manifest_payload",
+           "recorded_resolutions", "apply_recorded_resolutions"]
 
 RESEARCHER_DECISION_REQUIRED = "RESEARCHER_DECISION_REQUIRED"
 CONFIRM_AT_ADOPTION = "CONFIRM_AT_ADOPTION"
@@ -178,14 +179,19 @@ _ITEMS: tuple[OpenItem, ...] = (
                 "with family intercepts, so beta means something different in "
                 "the secondary than in the primary."),
         ),
-        implementation="`fit_with_tier_indicator` contains A2 and A4 as named "
-                       "constructions and executes neither: it raises "
-                       "OpenItemError naming this item. A1 is refused as "
-                       "singular by name; A3 is not constructed because it "
-                       "removes a registered F8 member. gamma licenses no "
-                       "claim, so the block costs no claim level: the "
-                       "secondary is simply not reported, and §18.1's rule "
-                       "for an empty field applies.",
+        implementation="RESOLVED at A2. `fit_with_tier_indicator` reads this "
+                       "item's resolution rather than a literal, so it still "
+                       "refuses --- rather than defaulting to A2 --- if the "
+                       "resolution goes away. A1 is refused as singular by "
+                       "name; A3 is not constructed because it removes a "
+                       "registered F8 member; A4 is constructed and "
+                       "NON-ADOPTED, kept because the decisive comparison in "
+                       "u2_tier_model_decision.md is computed from it on "
+                       "every test run, and refused on any reporting path by "
+                       "`assert_adopted_formulation`. §11.8's sentence is "
+                       "amended to name the three core families explicitly. "
+                       "gamma licenses no claim, so the resolution costs and "
+                       "buys no claim level.",
         blocks_calls=("analysis.spectrum.fit_with_tier_indicator",)),
     OpenItem(
         "U3",
@@ -310,10 +316,78 @@ def resolve(item_id: str, resolution: Any, *, resolved_by: str,
 
 
 def reopen_all_for_testing() -> None:
-    """Restore every item to unresolved, for a test that exercised one."""
+    """Restore every item to **the recorded state**, not to a blank one.
+
+    Same reason as ``decisions.reopen_all_for_testing``: what a fixture found
+    the module in is what the record says, and a fixture that reopened a
+    resolved question would let a test assert behaviour the protocol no
+    longer admits.
+    """
     for key, item in list(OPEN_ITEMS.items()):
         OPEN_ITEMS[key] = replace(item, resolution=None, resolved_by=None,
                                   resolved_on=None)
+    apply_recorded_resolutions()
+
+
+# ------------------------------------------------------ the durable record
+
+def recorded_resolutions(path: Any = None) -> tuple[dict[str, Any], ...]:
+    """The resolutions the researcher's record carries.
+
+    U2 and P1 are as much a researcher act as any §34 closure --- U2 blocks
+    the manifest outright --- and a resolution that lived only in a running
+    interpreter would be a choice nobody took. They live in the **same** file
+    as the decisions, under ``open_items``, so one hash covers everything the
+    researcher settled and the manifest binds it once.
+    """
+    from dci1v5.protocol import decisions
+
+    record = decisions.read_record(path)
+    entries = record.get("open_items") or []
+    if not isinstance(entries, list):
+        raise ProtocolError(
+            f"{record['path']}: 'open_items' must be a list of resolutions")
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for entry in entries:
+        for field_name in ("id", "resolution", "resolved_by", "resolved_on"):
+            if not str(entry.get(field_name, "")).strip():
+                raise ProtocolError(
+                    f"{record['path']}: a recorded resolution needs "
+                    f"{field_name}; a resolution with no author is a default "
+                    "with a filename on it")
+        item = get_item(entry["id"])
+        if entry["id"] in seen:
+            raise ProtocolError(
+                f"{record['path']}: {entry['id']} is recorded twice; a change "
+                "is a preregistration amendment, not a second entry")
+        seen.add(entry["id"])
+        admissible = {a.id for a in item.alternatives}
+        if admissible and entry["resolution"] not in admissible:
+            raise ProtocolError(
+                f"{record['path']}: {entry['id']} offers {sorted(admissible)} "
+                f"and the record says {entry['resolution']!r}")
+        out.append(dict(entry))
+    return tuple(out)
+
+
+def apply_recorded_resolutions(path: Any = None) -> tuple[str, ...]:
+    """Apply the record. Idempotent, and a disagreement is an amendment."""
+    applied: list[str] = []
+    for entry in recorded_resolutions(path):
+        current = get_item(entry["id"])
+        if current.resolution is not None:
+            if current.resolution != entry["resolution"]:
+                raise ProtocolError(
+                    f"{entry['id']} is in force as {current.resolution!r} and "
+                    f"the record says {entry['resolution']!r}; a change is a "
+                    "preregistration amendment")
+            continue
+        resolve(entry["id"], entry["resolution"],
+                resolved_by=entry["resolved_by"],
+                resolved_on=entry["resolved_on"])
+        applied.append(entry["id"])
+    return tuple(applied)
 
 
 def manifest_payload() -> dict[str, Any]:
@@ -323,5 +397,20 @@ def manifest_payload() -> dict[str, Any]:
                   "carry them",
         "n_items": len(OPEN_ITEMS),
         "blocking": list(blocking_items()),
+        "resolved": {k: i.resolution for k, i in OPEN_ITEMS.items()
+                     if i.resolution is not None},
+        "record": {"path": _record_relpath(),
+                   "resolved_here": [e["id"]
+                                     for e in recorded_resolutions()]},
         "items": [i.as_dict() for i in OPEN_ITEMS.values()],
     }
+
+
+def _record_relpath() -> str:
+    from dci1v5.protocol import decisions
+
+    return decisions.RECORD_RELPATH
+
+
+#: Applied at import, for the same reason the decision record is.
+apply_recorded_resolutions()

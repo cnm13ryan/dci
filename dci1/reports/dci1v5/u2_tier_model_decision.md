@@ -1,11 +1,13 @@
 # U2 — §11.8's tier-indicator secondary fit, and which of four to register
 
-**Status: decision-ready. One alternative recommended, none adopted.**
-U2 is a `RESEARCHER_DECISION_REQUIRED` item in `protocol/open_items.py`; it
-**blocks adoption** and `analysis.spectrum.fit_with_tier_indicator` refuses
-until it is resolved. This packet does not resolve it. The repository's
-approval mechanism is `open_items.resolve(...)`, which requires a person and a
-date, and it has not been called.
+**Status: ADOPTED. U2 is resolved at A2 on 2026-08-23.**
+U2 was a `RESEARCHER_DECISION_REQUIRED` item in `protocol/open_items.py` and
+it **blocked adoption**. The researcher approved this packet's recommendation;
+the resolution is recorded in `researcher_decisions.json` under `open_items`,
+`analysis.spectrum.fit_with_tier_indicator` runs A2 by default, and
+`assert_adopted_formulation` refuses A4 on any reporting path. §11.8's sentence
+was amended to name the three core families explicitly, which is the amendment
+§5 below asked for.
 
 Evidence: `tests_v5/test_tier_fit.py::test_a2_recovers_the_slope_and_a4_
 absorbs_family_levels` and `::test_a4s_gamma_depends_on_where_the_near_form_
@@ -126,21 +128,26 @@ already refuses with that message, and the status is
 `NEAR_FORM_ARM_NOT_AVAILABLE`. This is a **second, independent reason** the
 near-form arm is not free in §34 D1 — the first being D18's closure.
 
-## 5. The exact remaining researcher choice
+## 5. The choice, as taken
 
-One call, and one sentence of the preregistration:
+Both were done, on 2026-08-23:
 
-1. `open_items.resolve("U2", "A2", resolved_by=..., resolved_on=...)` — or
-   `"A4"`, or a decision not to report the secondary at all, which is
-   admissible: $\gamma$ licenses no claim, so §18.1's rule for a field a
-   variant legitimately leaves empty applies and the study loses nothing that
-   is registered as evidence for anything.
-2. Amend §11.8's sentence so `alpha_f` names the three core families
-   explicitly. Until that amendment, the section and the code disagree about
-   what is being fitted, which is the state U2 records.
+1. **U2 is resolved at A2**, recorded in `researcher_decisions.json` under
+   `open_items` with who resolved it and when. `open_items` reads that record
+   at import, exactly as `decisions` reads the closures, so the resolution
+   survives the process and the manifest binds it by the same hash.
+2. **§11.8's sentence is amended** so `alpha_f` names the three core families
+   explicitly. Until that amendment the section and the code disagreed about
+   what was being fitted, which is the state U2 recorded.
 
-`fit_with_tier_indicator` refuses while U2 is unresolved, and
-`assert_no_blocking_open_items` refuses the registration manifest. Neither has
-been changed to anticipate this recommendation, and A2 is not installed as a
-default anywhere: `formulation="A2"` is reachable only from a test, and the
-test resolves U2 explicitly first.
+`fit_with_tier_indicator` now runs A2 by default — and *only* because U2 is
+resolved: it still refuses if the resolution goes away, rather than falling
+back to A2, which is what would have happened had adoption been done by
+writing `formulation="A2"` into the signature. `TierFit.adopted` says on the
+object's own face whether the construction is the registered one, and
+`assert_adopted_formulation` refuses a non-adopted fit on any reporting path.
+
+**A4 stays constructed and non-adopted.** It is not dead code: the comparison
+in §3 above is computed from it on every test run, so the evidence for
+preferring A2 is recomputed rather than quoted. A1 is refused by name as
+singular and A3 is never constructed.

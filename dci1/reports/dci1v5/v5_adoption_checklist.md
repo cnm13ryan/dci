@@ -1,106 +1,119 @@
-# The v5 adoption checklist
+# The v5 adoption checklist — closed
 
 Nineteen §34 decisions, three specification questions, one confirmation. This
-page is the whole of what stands between the repository and a signed
-registration manifest. **Nothing on it is unfinished analysis or unwritten
-code.** Every item is a judgement, and every judgement is stated as one
-question in ordinary language.
+page was the whole of what stood between the repository and a signed
+registration manifest. **Every item on it is now taken.**
 
 Executable state: `protocol/decisions.py` (the nineteen),
-`protocol/open_items.py` (U1–U3, P1), and the committed closures in
-`researcher_decisions.json`. `run/cli.py plan` prints the live version of the
-first table.
+`protocol/open_items.py` (U1–U3, P1), and the committed record in
+`researcher_decisions.json`, which both modules read at import and the
+registration manifest binds by hash. `run/cli.py plan` prints the live version
+of the first table; it reports `can_register: true`.
 
 ---
 
-## A. Taken (4)
+## The nineteen, and what each one took
 
-Recorded in `researcher_decisions.json` with evidence, in force at import, and
-bound into the registration manifest by hash.
+Recorded in `researcher_decisions.json` with its evidence, who took it and
+when. Three went **against** the standing proposal, which is the column that
+matters: a checklist on which every proposal survives is a checklist nobody
+read.
 
-| | Question | Taken |
-|---|---|---|
-| **D3** | Are the 96 Calibration-B questions authored before adoption? | **Yes.** Bank authored, audited, hashed, committed |
-| **D6** | Does an unbuildable reference set stop the replication? | **No.** It continues; the reference-dependent estimands become `NOT_IDENTIFIED`, irreversibly |
-| **D16** | Does Calibration-B measure the whole candidate set or only Calibration-A's survivors? | **The whole set** |
-| **D18** | Does the strong L3c conclusion require the near-form arm? | **Yes** |
-
-## B. Ready for approval — a recommendation exists, on evidence (4)
-
-Each has a decision packet in this directory. The analysis is done; the value
-is the researcher's.
-
-| | Plain question | Recommendation | Packet |
+| | Question | Taken | Against? |
 |---|---|---|---|
-| **D1** | Which arms, and how many models, does the study run? | all five arms, four models, 56 cells — 1,135,104 generations | `d1_arm_compute_decision.md` |
-| **D4** | Are these eight marker words the right eight? | seven approved; `though`, `namely` and `overall` each carry one open judgement | `d4_marker_audit.md` |
-| **D17** | How weak may B be at the severity the study selects? | $\kappa^{B}(m^{*}) \le 0.50$ — at most half of unconstrained answers may already satisfy B | `d17_b_strength_decision.md` |
-| **U2** | §11.8's secondary fit is singular as written; which repair? | A2 — family intercepts over the three **core** families | `u2_tier_model_decision.md` |
+| **D0** | Adopt v5 at all, knowing its matching rule was fitted to v4r4? | **adopt** — §30's declaration attached permanently | no |
+| **D1** | Which arms, and how many models? | **`four_models_56_cells`** — all five arms, 4 models, 384 blocks, $M = 8$, **1,135,104** generations | no |
+| **D2** | Add a load-three arm so the memo's $\Gamma$ becomes estimable? | **no load-three arm**; §5's exclusion stands | no |
+| **D3** | Are the 96 Calibration-B questions authored before adoption? | **yes** — authored, audited, hashed, committed | no |
+| **D4** | Are these eight marker words the right eight? | **`approve_eight`** — all eight, with four accepted limitations recorded | no |
+| **D5** | Lexicographic validity, or a weighted composite? | **lexicographic** | no |
+| **D6** | Does an unbuildable reference set stop the replication? | **no** — it continues; the reference-dependent estimands become `NOT_IDENTIFIED`, irreversibly | no |
+| **D7** | Is 0.90 the right interaction-gate ceiling? | **0.90**, with R13's objection recorded and not answered by evidence | no |
+| **D8** | Is 0.75 the right chance ceiling? | **0.75** on the point, 0.85 on the Wilson upper bound | no |
+| **D9** | Will an independent annotator be available? | **no**; the basis stays `deterministic_measurement_validated` | no |
+| **D10** | One broad-class companion, or several? | **one**; no class claim | no |
+| **D11** | Carry v4's confirmatory topics, or re-author? | **carry**, with §6.2's residual declared | no |
+| **D12** | Does $\delta_{\text{difficulty}}$ get its own magnitude threshold? | **no**; direction and the SESOI only | no |
+| **D13** | Is F11 primary-tier? | **yes**, licensing L4b | no |
+| **D14** | Is instructed compliance still the difficulty coordinate? | **yes**; raw solo secondary | no |
+| **D15** | Do the memo's 0.10 and 0.25 transfer to a same-form $\Delta_R$? | **both transfer**, with R2's objection on the record | no |
+| **D16** | Does Calibration-B measure the whole candidate set or only A's survivors? | **the whole set** | **yes** |
+| **D17** | How weak may B be at the severity the study selects? | **$\kappa^{B}(m^{*}) \le 0.50$** on the point estimate | **yes** |
+| **D18** | Does the strong L3c conclusion require the near-form arm? | **yes** | **yes** |
 
-## C. Follows from something already decided (2)
+## The specification questions
 
-Mechanical, but still a closure somebody signs.
-
-| | Plain question | Follows from |
+| | Question | Status |
 |---|---|---|
-| **D0** | Adopt v5 at all, knowing its matching rule was fitted to v4r4? | Not mechanical, but it is the *same* judgement the researcher already made by directing this work. §30's declaration is attached permanently either way |
-| **D2** | Add a load-three arm so the memo's $\Gamma$ becomes estimable? | D1. Adding it changes the cell set, so it cannot be decided after the budget |
+| **U1** | What a Tier-2 core reference contributes to §13.8's role spread | `SINGLE_ADMISSIBLE_READING`. `none` is not a role; §13.15 guarantees two Tier-1 members, so the count is always well defined |
+| **U2** | §11.8's secondary fit is singular as written; which repair? | **RESOLVED at A2** — $\alpha_f$ over the three **core** families, a Tier-2 point at the unweighted mean core intercept plus $\gamma$. A1 never constructed, A3 never constructed, A4 constructed and non-adopted |
+| **U3** | Which direction "the less restrictive severity" runs | `SINGLE_ADMISSIBLE_READING`, derived from the family's predicate form |
+| **P1** | §7.10 admitted Tier 3 "to the spectrum"; three sections make that unreachable | **CONFIRMED.** Tier 1 and Tier 2 take the core, near-form and spectrum roles; Tier 3 takes the broad-class role only. Nothing executable changed — under either reading the code admitted no Tier-3 spectrum rung — and making Tier 3 reachable would be a §32 amendment to the candidate population, the §11.8 fit structure and the derived cell set. It was not made |
 
-## D. Standing proposal, no contest recorded (8)
+## What the decisions did to the red team
 
-Each has a proposal in §34, no red-team finding against it, and nothing in the
-implementation or the evidence that argues with it. Closing them is an
-afternoon's reading, not an investigation.
-
-| | Plain question | Standing proposal |
+| | Finding | Status now |
 |---|---|---|
-| **D5** | Lexicographic validity, or a weighted composite score? | lexicographic — the development data cannot fix weights that generalise |
-| **D8** | Is 0.75 the right chance ceiling? | 0.75 on the point, 0.85 on the Wilson upper bound |
-| **D9** | Will an independent annotator be available? | no; the measurement basis stays `deterministic_measurement_validated` with its scope sentence |
-| **D10** | One broad-class companion, or several? | one; no class claim is made |
-| **D11** | Carry v4's confirmatory topics, or re-author them? | carry, with §6.2's statement of the residual |
-| **D12** | Does $\delta_{\text{difficulty}}$ get a magnitude threshold of its own? | no; direction and the SESOI only |
-| **D13** | Is F11 primary-tier? | yes, licensing L4b |
-| **D14** | Is instructed compliance still the difficulty coordinate? | yes; raw solo secondary, `DIFFICULTY_COORDINATE_DEPENDENT` on disagreement |
+| **R1** | a same-form pool may make L3c near-automatic | **resolved** by D18, and D1 registers the near-form arm rather than merely permitting it |
+| **R2** | the memo's 0.25 on a redefined $\Delta_R$ | **adopted over the objection** (D15); the disagreement stays on the record |
+| **R11** | Calibration-A screens and Calibration-B confirms | **resolved** by D16 |
+| **R13** | the 0.90 ceiling sits in an observed gap | **adopted with the coincidence recorded** (D7), and not used as evidence |
+| **R14** | the focal extension trades construct strength for band membership | **resolved** by D17 |
+| **R16** | `REFERENCE_SUPPORT_NOT_IDENTIFIED` is not terminal | **resolved** by D6 |
+| **R5** | $\kappa^{B}$ is measured under $B$, so it is not pre-treatment for the pair | **ACCEPTED PERMANENT LIMITATION.** No §34 decision carries it, §13.8 closes only its second half, and no rule can close the first. It is reported as a limitation, it does not block the freeze, and it is **not** resolved |
+| **R22** | the full design has never been executed | registered; §19's procedural pilot at stage 3 is the mitigation and it precedes every scientific stage |
+| **R23** | the Tier-1 pool has never been measured | registered; Gate 1 (stage 5) over the 650-instrument population is the measurement, and it reads the regime screen's own generated text — so it is not reachable before a model runs |
 
-## E. Contested, and the contest is recorded (2)
+## What adoption bound
 
-| | Plain question | Standing proposal | Who disagrees |
-|---|---|---|---|
-| **D7** | Is 0.90 the right interaction-gate ceiling? | 0.90 | **R13** — it sits inside a gap observed on twenty points, which is a coincidence and not a derivation. Recorded and not used as evidence |
-| **D15** | Do the memo's 0.10 and 0.25 transfer to a *same-form* $\Delta_R$? | both transfer | **R2** — the memo defined them for a different companion pool. Registered as contestable |
+Everything below is in the signed manifest, and a change to any of it is a §32
+amendment rather than an edit.
 
-## F. Not a decision — one confirmation (1)
+- the **protocol document** and the **reference design spec**, by content hash;
+- the **researcher-decision record**, by hash — the nineteen closures with
+  their evidence, D17's floor spec, and U2's and P1's resolutions;
+- the **four model replications** with their exact 40-character revisions,
+  their thinking policies and their chat-template arguments (§6.1);
+- the **five arms**, 56 cells per block, 384 blocks, $M = 8$, and the
+  **1,135,104**-generation budget, recomputed from constants by
+  `dci1v5.design.budget` rather than quoted;
+- the **eight Tier-1 markers** with their ids, words, discourse roles, verifier
+  statistic ids, ladders, reserves, a **population hash**, and the four
+  accepted limitations;
+- both **calibration topic banks** by hash, with Calibration-B's authoring
+  provenance;
+- the **candidate library**: 37 families, 326 round-0 severities, 632 declared,
+  650 instruments, 39 verifiers;
+- every registered **threshold**, **estimand**, **multiplicity family**, claim
+  level, identification status and terminal status;
+- §11.8's secondary as **A2**, with A1, A3 and A4 named as non-adopted;
+- §30's **reuse ledger** and the DEVELOPMENT_EVIDENCE declaration.
 
-| | What happened | What is asked |
-|---|---|---|
-| **P1** | §7.10 admitted Tier 3 "to the spectrum"; §7.4, §11.8 and §13.12 make that unreachable. The **sentence** was corrected to match the three sections, and the sentence is now in the preregistration | Confirm the corrected wording. **Nothing executable changed** — under either reading the code admitted no Tier-3 spectrum rung — and making Tier 3 reachable instead would be a §32 amendment to the candidate population, the §11.8 fit structure and the derived cell set. It was not made |
+## What adoption did NOT do
 
-`U1` and `U3` are `SINGLE_ADMISSIBLE_READING`: the preregistration leaves a term
-undefined, exactly one reading is executable, the implementation takes it and
-records where. Neither blocks adoption and neither needs a decision.
-
-## G. Not decisions, and not closeable by one
-
-| | What it is | Status |
-|---|---|---|
-| **R5** | $\kappa^{B}$ is measured under B, so it is not pre-treatment for the pair | **accepted permanent limitation.** No §34 decision carries it, §13.8 closes only its second half, and no rule can close the first. It is reported as a limitation and it does not block the freeze |
-| **R22** | the full design has never been executed on any revision | registered; §19's pilot is the mitigation and it runs before qualification |
-| **R23** | the Tier-1 pool has never been measured | registered; Gate 1 over the 650-instrument population is the measurement, and it is the largest remaining compute prerequisite that needs no model |
+**No v5 observation exists.** No model has been loaded, no prompt has been
+generated, no calibration measurement has been taken, and no gate has been run
+on model output. Adoption fixes the rules; it does not start the study.
 
 ---
 
-## What adoption needs, in order
+## What comes next, in order
 
-1. Close **D4** and **D17** — they gate the regime screen and Gate 2, and the
-   packets are written.
-2. Resolve **U2** — it blocks the manifest outright.
-3. Close **D1** — and **D2** with it, since a load-three arm changes the cell
-   set.
-4. Close the remaining eleven (D0, D5, D7–D15) — eight are uncontested and two
-   have their contest on the record.
-5. Confirm **P1**.
-6. Sign the registration manifest. `manifest.signing_blockers()` returns empty
-   only when every one of the above is done.
-7. Run **Gate 1** over the 650-instrument population, and §19's pilot with the
-   claim-ladder tests passing, before qualification.
+Stage 1, `PROTOCOL_REGISTERED`, **has run**: it is the stage that signs the
+manifest, and signing it outside the stage machine would have produced a
+registration with no stage record and no transition-log entry. The rest of §18
+is untouched, one model at a time in §6.1's registered execution order:
+
+1. **Stage 2, `QUALIFIED`** — the next action. Non-scientific: it reads no
+   behavioural rate. It checks the clean worktree, the resolved model
+   revisions, the dependency manifest, the prompt-plan schema and the topic
+   split identity. **Nothing after stage 2 has been run, and stage 2 has not
+   been run.**
+2. **Stage 3, `GATE_0_APPARATUS`** — §19's procedural pilot: the full 56-cell
+   plan at $M = 4$ on twelve pre-screen topics, at fixture values that cannot
+   become calibration evidence. R22's mitigation, and **the first stage that
+   generates model responses**.
+3. **Stage 4, `REGIME_SCREEN`**, then **stage 5, Gate 1** over the
+   650-instrument population — R23's mitigation. Gate 1 reads the regime
+   screen's own responses, so it is not reachable before a model runs.
+4. Stages 6–18 in order.
