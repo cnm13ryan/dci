@@ -42,6 +42,7 @@ from dci1v5.design import budget
 from dci1v5.design.cells import design_cells
 from dci1v5.protocol import manifest
 from dci1v5.run import gates_run, registration_run
+from dci1v5.run.lifecycle import TerminalStatus
 from dci1v5.run.execute import (fake_backend, generate_and_score,
                                 prompt_cell, resolve_generate)
 from dci1v5.verifiers.constraints import Constraint
@@ -680,3 +681,102 @@ def test_the_genesis_registration_has_nothing_to_link(tmp_path):
     ctx = _ctx(tmp_path)
     _register(ctx, ALL_MODELS[0])
     assert "supersedes" not in manifest.load_manifest(ctx)
+
+
+def test_every_registered_terminal_status_has_a_raise_path():
+    """V5-E32: a status §28 registers and no runner can reach is a hole.
+
+    ``PREFREEZE_AUDIT_FAILURE`` was registered, computed and written into a
+    payload field, and never raised --- so a replication that could not freeze
+    carried ``terminal_status: None`` and got no §28.3 report. The check is on
+    the source rather than on one scenario because the point is that *every*
+    registered status is reachable, not that one of them is.
+    """
+    import ast
+    import pathlib
+
+    from dci1v5.run.lifecycle import terminal_statuses_in_force
+
+    root = pathlib.Path(__file__).resolve().parents[1] / "src" / "dci1v5"
+    named: set[str] = set()
+    for path in root.rglob("*.py"):
+        tree = ast.parse(path.read_text())
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.Raise) and node.exc is not None):
+                continue
+            call = node.exc
+            if not (isinstance(call, ast.Call)
+                    and getattr(call.func, "id", None) == "TerminalStatus"):
+                continue
+            # A literal names one status directly.
+            for sub in ast.walk(call):
+                if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
+                    named.add(sub.value)
+            if not call.args or isinstance(call.args[0], ast.Constant):
+                continue
+            first = call.args[0]
+            # ``manifest.REGISTRATION_INCOMPLETE`` names its status in the
+            # attribute; a bare name may too.
+            for attr in ("attr", "id"):
+                if isinstance(getattr(first, attr, None), str):
+                    named.add(getattr(first, attr))
+            # A computed variable (``status = "A" if ... else "B"``) can name
+            # any status literal in the same file.
+            source = path.read_text()
+            named.update(s for s in terminal_statuses_in_force()
+                         if f'"{s}"' in source)
+
+    unreachable = [s for s in terminal_statuses_in_force() if s not in named]
+    assert unreachable == [], (
+        f"registered terminal statuses with no raise path: {unreachable}")
+
+
+def test_a_failed_prefreeze_audit_is_terminal(tmp_path, monkeypatch):
+    """§19 + §28: the audit refusing to license a freeze ends the replication.
+
+    Not a FAIL record that leaves ``GATE_5_FREEZE`` nominally next: the record
+    is write-once, so a FAIL is unrecoverable anyway and reporting it as live
+    misdescribes the replication.
+    """
+    from dci1v5.run import prefreeze_run
+
+    monkeypatch.setattr(
+        prefreeze_run, "prefreeze_payload",
+        lambda tree, **kw: {
+            "can_freeze": False, "blocked": ["support_satisfied"],
+            "n_artifact_checks": 26, "n_artifact_failed": 1,
+            "n_artifact_unresolved": 0, "content_hash": "0" * 64,
+            "artifact_checks": [{"check": "support_satisfied",
+                                 "verdict": "FAIL", "detail": {}}]})
+
+    from dci1v5.engine import transitions
+
+    # The predecessor chain is not what is under test; the wiring from a
+    # non-freezable payload to a signed §28.3 report is.
+    from dci1v5.run import lifecycle
+
+    monkeypatch.setattr(transitions, "assert_transition_legal",
+                        lambda tree, stage: None)
+    monkeypatch.setattr(lifecycle, "stage_input", lambda tree, stage: {})
+    from dci1v4.engine.signing import create_signing_key
+
+    ctx = _ctx(tmp_path)
+    tree = model_tree(ctx, ALL_MODELS[0])
+    tree.root.mkdir(parents=True, exist_ok=True)
+    Path(ctx.signing_key_path).parent.mkdir(parents=True, exist_ok=True)
+    create_signing_key(ctx.signing_key_path)
+
+    with pytest.raises(TerminalStatus) as caught:
+        prefreeze_run.run_prefreeze_audit_stage(tree, producing_commit=COMMIT)
+    assert caught.value.status == "PREFREEZE_AUDIT_FAILURE"
+    assert caught.value.observed["blocked"] == ["support_satisfied"]
+    assert caught.value.strongest_permissible_statement == C.TERMINAL_SENTENCE
+
+    # §28.3: the verdict is on disk, and the replication now reports terminal.
+    assert tree.terminal_report.exists()
+    written = json.loads(tree.terminal_report.read_text())
+    written = written.get("payload", written)
+    assert written["status"] == "PREFREEZE_AUDIT_FAILURE"
+    assert transitions.terminal_status(tree) == "PREFREEZE_AUDIT_FAILURE"
+    # The audit detail survives, because a terminal stage writes no record.
+    assert written["observed"]["n_artifact_checks"] == 26

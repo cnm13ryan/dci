@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **ADOPTED, REGISTERED, AND QUALIFIED ON ALL FOUR REPLICATIONS 2026-08-24; the next legal action is `GATE_0_APPARATUS` and no behavioural evidence exists under the live registration.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1608,9 +1608,10 @@ and §13 registers its band on $p_{\text{solo}}$, and no band on $\iota$ at
 all. Two readings are admissible; they admit different rungs, so they can
 differ on C1–C6, on the admitted arm set, and therefore on **whether
 $\Delta_R$ is identified**. Nothing chose. Both constructions are built by
-name, the code path fails closed, and open item **U4** blocks the registration
-manifest, so no replication can begin Gate 0 under a rule nobody took. **The
-study is stopped there, waiting on one researcher decision.**
+name, the code path fails closed, and open item **U4** blocked the registration
+manifest until it was resolved. **U4 was closed at E2** (eligibility on
+$p_{\text{solo}}$) in amendment A5, and every v5 regime record carries the
+`E2` formulation.
 
 **What this cost and what it bought.** The four gemma behavioural stages
 signed under `d0485a6d…` are retained and no longer reusable — they were
@@ -1704,16 +1705,58 @@ replaced. The report now moves with the records it belongs to, retained and
 not deleted; the precondition is unchanged and still refuses any uncommitted
 change to tracked code.
 
-**Where v5 stands.** Manifest
-`e2721b17f2e9300fcfc3cc50ad65313e332786e508b04031c9997787bd547dcb` at commit
-`1b0031b`, `PROTOCOL_REGISTERED` and `QUALIFIED` **PASS on all four
-replications**, no terminal status on any of them, and the next legal action
-for every one of them is `GATE_0_APPARATUS`. 48 registered rules audited
+**Where v5 stands.** Closed. Manifest
+`af5fa4bcfd125f936cade49cf45304737c6367b6bd7106a6ec372a6735340c98` at commit
+`5ed1854` (A6 and A7 superseded `e2721b17…` in turn). All four replications
+ran to a scientific end and none reached `CONFIRMATORY_GENERATION`:
+`gemma-3n-e4b-it` and `qwen3-4b-instruct-2507` are terminal
+`COMPOSED_HEADROOM_FAILURE`; `gemma-3n-e2b-it` and `qwen3-4b` are blocked at
+`PREFREEZE_AUDIT`. Three carry irreversible D6 non-identification. 48 registered rules audited
 against the path a replication takes, 48 reachable, 15 conditional scenarios,
 111 contract fields with 329 checks against real payloads and 0 defects.
 [`dci1/reports/dci1v5/execution_path_audit.md`](dci1/reports/dci1v5/execution_path_audit.md) ·
 [`dci1/reports/dci1v5/amendment_register.md`](dci1/reports/dci1v5/amendment_register.md) ·
 [`dci1/reports/dci1v5/researcher_decisions.json`](dci1/reports/dci1v5/researcher_decisions.json)
+
+### 4y. v5 ran, and no replication reached confirmatory generation
+
+Two bottlenecks, independent of each other, ended it.
+
+**§12.6 C4.** C4 asks for six feature groups holding a family that straddles
+$\iota_A$ with three eligible rungs spanning 0.40 in $\iota$. Three
+replications got four or five. Only 14–21 eligible rungs sit *above* $\iota_A$
+against 143–163 below, so most families are one-sided and cannot straddle at
+all; and on every model three or four families straddle with enough rungs and
+miss only on span, at 0.21–0.38. The marker families recur, their ladders being
+compressed in $\iota$. C4 false drops the core and spectrum arms, which is D6
+`REFERENCE_SUPPORT_NOT_IDENTIFIED`, irreversible, 48 estimand members
+unidentified, and a failed mandatory `support_satisfied` prefreeze check.
+
+**§13.14 composed headroom.** Gate 4 was marginal on *all four*, not only the
+two it killed: the survivors cleared their worst cell by 0.054. $m^*$ is chosen
+at Gate 2 from solo curves, and composition lifts the B slot by up to +0.104,
+which is not measured until Gate 4 — after references are fixed. The two models
+with the higher baseline compliance crossed 0.95 and terminated.
+
+The one replication that survived D6 identified is one of the two that then
+failed Gate 4. Neither fix would have saved the other group.
+[`dci1/reports/dci1v5/survival_diagnosis.md`](dci1/reports/dci1v5/survival_diagnosis.md) ·
+[`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md)
+
+### 4z. V5-E32, and a follow-up that is only a proposal
+
+`PREFREEZE_AUDIT_FAILURE` is a registered §28 terminal status that the runner
+recorded in a payload field and never raised, so the two blocked replications
+have no §28.3 report and report `terminal_status: None` — terminal in fact,
+non-terminal on the record. An audit of all thirteen statuses in force found
+exactly this one hole; the runner now raises it and an AST test asserts every
+registered status is reachable. No v5 evidence was mutated or re-run (A8).
+
+[`user-notes/DCI1_v6_proposal.md`](user-notes/DCI1_v6_proposal.md) sketches the
+minimal prospective follow-up — extend the candidate library so C4 is
+satisfiable, probe composed headroom before $m^*$ is fixed, relax no threshold.
+**It is a proposal, not a registered protocol**, and no row may be generated
+against it.
 
 ## 5. Provisional, superseded, broken, unresolved
 
@@ -1772,14 +1815,16 @@ against the path a replication takes, 48 reachable, 15 conditional scenarios,
   replication marginal intervals only and declares no family containing a
   raw-coordinate member. Its one consequence is §17.6's
   `DIFFICULTY_COORDINATE_DEPENDENT`. §4x.
-- **Retained, and not reusable.** Every behavioural row ever produced under
-  v5 — 475,776 across both gemmas, under four superseded registrations —
+- **Retained, and not reusable.** Every behavioural row produced under a
+  *superseded* v5 registration — 478,464, under six of them —
   is preserved under `superseded/` and invalidated. Each was produced under
   a screen whose coverage criterion evaluated an empty set, whose
   $\iota_A$ came from the wrong severity, whose §7.2 escalation refused on
   its first instruction, and whose expansion could not run. The live
-  evidence path under `e2721b17…` holds **none**, and no restarted stage
-  can resume into them. §4w, §4x.
+  evidence path under `af5fa4bc…` holds none of them, and no restarted stage
+  can resume into them. Separately, the 459,312 rows produced under
+  `af5fa4bc…` itself are live but **pre-confirmatory**: gate and development
+  evidence only, supporting no claim about the effect. §4w, §4x, §4y.
 - **Open, and most valuable next:** the boundary-affordance causal crossing; a
   pair with a genuine trade-off region; finishing the cross-model dataset on one
   backend.

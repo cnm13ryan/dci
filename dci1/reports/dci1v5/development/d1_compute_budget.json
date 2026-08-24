@@ -29,8 +29,8 @@
   "ladder_screen": {
    "draws": 1,
    "round": 0,
-   "rows": 7824,
-   "rungs": 326,
+   "rows": 8208,
+   "rungs": 342,
    "topics": 24
   },
   "pilot": {
@@ -79,13 +79,13 @@
    "draws_per_cell": 4,
    "models": 4,
    "per_model": {
-    "calibration": 110352,
+    "calibration": 110736,
     "confirmatory": 86016,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 207120
+    "total": 207504
    },
-   "total_generations": 828480
+   "total_generations": 830016
   },
   "four_models_47_cells": {
    "arms": [
@@ -99,13 +99,13 @@
    "draws_per_cell": 8,
    "models": 4,
    "per_model": {
-    "calibration": 109920,
+    "calibration": 110304,
     "confirmatory": 144384,
     "gate_4_composed_headroom": 4512,
     "greedy_sensitivity": 4512,
-    "total": 263328
+    "total": 263712
    },
-   "total_generations": 1053312
+   "total_generations": 1054848
   },
   "four_models_56_cells": {
    "arms": [
@@ -120,13 +120,13 @@
    "draws_per_cell": 8,
    "models": 4,
    "per_model": {
-    "calibration": 110352,
+    "calibration": 110736,
     "confirmatory": 172032,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 293136
+    "total": 293520
    },
-   "total_generations": 1172544
+   "total_generations": 1174080
   },
   "two_models_56_cells": {
    "arms": [
@@ -141,13 +141,13 @@
    "draws_per_cell": 8,
    "models": 2,
    "per_model": {
-    "calibration": 110352,
+    "calibration": 110736,
     "confirmatory": 172032,
     "gate_4_composed_headroom": 5376,
     "greedy_sensitivity": 5376,
-    "total": 293136
+    "total": 293520
    },
-   "total_generations": 586272
+   "total_generations": 587040
   }
  },
  "removing_one_arm": {
