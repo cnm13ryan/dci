@@ -1067,3 +1067,55 @@ path. It was **not** carried into the replacement.
 
 The other three replications had no behavioural rows and are re-run from
 `PROTOCOL_REGISTERED`, which generates nothing.
+
+## A7 — a replacement registration did not have to say what it replaced (2026-08-24)
+
+An engineering amendment, and a provenance repair. It changes no registered
+rule, no threshold, no estimand and no measured quantity.
+
+### V5-E31 — the entry point could not record §32's chain link, and nothing refused
+
+`build_manifest` folds `supersedes` in *before* the manifest hash, deliberately:
+a superseded manifest has to be reproducible from its producing commit, and
+the chain has to be readable from the payload alone. `run_registration` took
+the argument. `run/cli.py` never passed it.
+
+So a re-registration made through the documented entry point was silently
+unlinked. The supersession record was already on disk, naming the manifest
+being retired, and the replacement signed beside it did not mention it.
+Nothing recomputes that field and nothing warned. For a command family whose
+stated contract is that *every command refuses before it does anything*, this
+was a fail-open.
+
+It was found by using the CLI for the A6 re-registration, which every earlier
+re-registration had done by a direct call that passed `supersedes` by hand.
+Manifest `f19b5e88…` was signed with the field absent, where `70608e5d…`,
+`b040b343…`, `d0485a6d…`, `faa034bd…` and `e2721b17…` each carry their
+predecessor.
+
+**What was and was not lost.** Lineage was never unrecoverable: the
+supersession record under `registration/superseded/<retired hash>/` carries
+`superseded_manifest_hash`, `superseded_producing_commit`, the reason, the
+amendment id and the observation count, and the directory is named for the
+retired manifest. What was lost is the *self-describing* link — the property
+`build_manifest` hashes the field to provide.
+
+**The repair, in two parts.** `run` gains `--supersedes`, forwarded by the
+same signature-derived rule as `--device` and refused on any stage whose
+runner does not take it. And `manifest.assert_links_supersession` now runs
+whenever a **new** manifest is signed: if the study holds a supersession
+record, the replacement must name the manifest that record retired, or it is
+refused. Naming the wrong hash is refused too. The genesis registration has
+nothing to link and is unaffected; the second, third and fourth replications
+of a study reuse the signed manifest through `ensure_registration` and never
+reach the guard.
+
+The test that existed asserted `new["supersedes"] == old` against a direct
+call only, which is exactly why the entry point's gap survived it.
+
+### Evidence
+
+No behavioural rows existed under `f19b5e88…` — the A6 supersession had
+already retained and invalidated the only Gate 0 in the study — so relinking
+cost no generation. `f19b5e88…` is superseded in turn and the replacement
+names it.

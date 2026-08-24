@@ -32,6 +32,7 @@ it first.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -801,6 +802,60 @@ def sign_registration(context: StudyContext, *, producing_commit: str,
     return manifest
 
 
+def latest_supersession(context: StudyContext) -> dict[str, Any] | None:
+    """The most recent §32 supersession in this study, or ``None``.
+
+    Read from ``registration/superseded/<hash>/supersession.json`` rather than
+    from any in-memory state, because the replacement is signed by a separate
+    command --- often a separate process --- from the one that superseded.
+    """
+    root = Path(context.registration_root) / "superseded"
+    if not root.is_dir():
+        return None
+    records = []
+    for entry in root.iterdir():
+        record = entry / "supersession.json"
+        if record.is_file():
+            body = json.loads(record.read_text())
+            records.append(body.get("payload", body))
+    if not records:
+        return None
+    return max(records, key=lambda r: str(r.get("superseded_at", "")))
+
+
+def assert_links_supersession(context: StudyContext,
+                              supersedes: str | None) -> None:
+    """A replacement manifest has to say what it replaces.
+
+    ``build_manifest`` folds ``supersedes`` in before the hash, so the chain is
+    readable from the payload alone --- that is the property this protects.
+    ``run_registration`` took the argument and the command line did not pass
+    it, so a registration signed through the documented entry point after a
+    supersession was silently unlinked: the supersession record was already on
+    disk, naming the manifest being replaced, and the replacement did not
+    mention it. For a command family whose contract is that every command
+    refuses before it does anything, dropping the one field that makes the
+    chain self-describing is a fail-open, and nothing else recomputes it.
+
+    The genesis registration has nothing to link and is unaffected.
+    """
+    record = latest_supersession(context)
+    if record is None:
+        return
+    expected = record.get("superseded_manifest_hash")
+    if not expected:                                        # pragma: no cover
+        return
+    if supersedes == expected:
+        return
+    raise IntegrityError(
+        f"§32: this study has a supersession record retiring manifest "
+        f"{expected}, and the replacement being signed "
+        f"{'names ' + str(supersedes) if supersedes else 'names nothing'}. A "
+        "replacement that does not carry `supersedes` is not readable as part "
+        "of the chain from its own payload; pass the retired hash (the CLI "
+        "flag is `--supersedes`) rather than signing an unlinked manifest")
+
+
 def ensure_registration(context: StudyContext, *, producing_commit: str,
                         adoption: Mapping[str, Any],
                         bank: TopicBank | None = None,
@@ -831,6 +886,7 @@ def ensure_registration(context: StudyContext, *, producing_commit: str,
     bank = bank if bank is not None else load_bank()
     path = Path(context.registration_manifest)
     if not path.exists():
+        assert_links_supersession(context, supersedes)
         return sign_registration(context, producing_commit=producing_commit,
                                  adoption=adoption, bank=bank,
                                  repo_root=repo_root, supersedes=supersedes)

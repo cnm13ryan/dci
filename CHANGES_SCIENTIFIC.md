@@ -13,6 +13,28 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-24 — v5: a replacement registration did not have to say what it replaced
+
+**What changed.** `run/cli.py` gains `--supersedes`, and
+`manifest.assert_links_supersession` refuses a new manifest that does not name
+the manifest an existing supersession record retired.
+`reports/dci1v5/amendment_register.md` A7.
+
+**No measured quantity moved.** This is provenance metadata: `supersedes` is
+folded into the manifest before its hash so the §32 chain is readable from the
+payload alone. `run_registration` accepted it; the CLI never passed it, so a
+re-registration through the documented entry point was signed unlinked and
+nothing refused.
+
+**Which results are affected.** None numerically. Manifest `f19b5e88…` was
+signed without the field and is superseded in turn by one that names it; no
+behavioural rows existed under it, so no generation was discarded. Lineage was
+recoverable throughout from `registration/superseded/<hash>/supersession.json`
+and the directory name; what is restored is the manifest's self-description.
+
+**Comparability.** Unaffected — no estimate, threshold or admission rule
+changes.
+
 ## 2026-08-24 — v5: the entry point could reach only one card; a registration superseded and one Gate 0 discarded
 
 **What changed.** `run/cli.py` gains `--device`, and the registration

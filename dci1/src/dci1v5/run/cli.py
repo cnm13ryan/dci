@@ -15,6 +15,8 @@ pinned backend and refuses a substitute outright. Four runners used to read
 ``generate or fake_backend(...)`` instead, so this command would have signed
 fabricated text into the registered evidence tree.
 
+``--supersedes`` carries §32's chain link into the replacement manifest. ``build_manifest`` folds it in before the hash, so without it a re-registration is signed unlinked and the chain stops being readable from the payload; ``manifest.assert_links_supersession`` now refuses that outright.
+
 ``--device`` selects which card a generating stage runs on. It is placement
 and nothing else: the runners already threaded ``device`` down to
 ``backend_env``, which clears inherited ``ROCR_``/``HIP_``/``CUDA_``
@@ -123,31 +125,46 @@ def audit(args: argparse.Namespace) -> Any:
     return audit_contracts()
 
 
-def generating_stages() -> tuple[str, ...]:
-    """The stages whose runner accepts a card, in registered order.
+def stages_accepting(parameter: str) -> tuple[str, ...]:
+    """The stages whose runner takes ``parameter``, in registered order.
 
     Derived from the signatures rather than listed, so a runner that gains or
-    loses its generative seam cannot leave a stale list behind.
+    loses one cannot leave a stale list behind.
     """
     return tuple(
         stage for stage in C.STAGE_SEQUENCE
-        if "device" in inspect.signature(RUNNERS[stage]).parameters)
+        if parameter in inspect.signature(RUNNERS[stage]).parameters)
+
+
+def generating_stages() -> tuple[str, ...]:
+    """The stages with a generative seam: the ones that can be given a card."""
+    return stages_accepting("device")
+
+
+#: CLI flag -> the runner keyword it forwards. Both are refused on a stage
+#: whose runner does not take them, rather than dropped: a flag that looks
+#: honoured and did nothing is worse than one that failed.
+FORWARDED = {"device": "device", "supersedes": "supersedes"}
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
     tree = _tree(args.model, args.root)
     runner = RUNNERS[args.stage]
-    placement: dict[str, Any] = {}
-    if args.device is not None:
-        if args.stage not in generating_stages():
+    forwarded: dict[str, Any] = {}
+    for flag, parameter in FORWARDED.items():
+        value = getattr(args, flag)
+        if value is None:
+            continue
+        accepted = stages_accepting(parameter)
+        if args.stage not in accepted:
             raise ValueError(
-                f"--device was passed to {args.stage}, which generates "
-                f"nothing and has no card to place. Accepting it silently "
-                f"would make a mistyped lane look honoured. The generating "
-                f"stages are: {', '.join(generating_stages())}")
-        placement["device"] = args.device
+                f"--{flag} was passed to {args.stage}, whose runner does not "
+                f"take {parameter!r}. Accepting it silently would make a "
+                f"mistyped invocation look honoured. Stages that take it: "
+                f"{', '.join(accepted) or 'none'}")
+        forwarded[parameter] = value
     outcome = runner(tree, producing_commit=args.commit,
-                     environment_digest=args.environment or "", **placement)
+                     environment_digest=args.environment or "", **forwarded)
     return {"stage": outcome.stage, "outcome": outcome.outcome,
             "record": str(outcome.record_path)}
 
@@ -177,6 +194,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_run.add_argument("--environment", default=None)
     p_run.add_argument("--device", type=int, default=None,
                        help="card for a generating stage; refused elsewhere")
+    p_run.add_argument("--supersedes", default=None,
+                       help="manifest hash this registration replaces (§32); "
+                            "refused outside PROTOCOL_REGISTERED")
     p_run.set_defaults(func=run)
 
     args = parser.parse_args(argv)
