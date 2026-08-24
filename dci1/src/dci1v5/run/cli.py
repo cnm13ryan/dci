@@ -2,7 +2,7 @@
 
     python -m dci1v5.run.cli status  --model <key>
     python -m dci1v5.run.cli plan
-    python -m dci1v5.run.cli run     --stage <STAGE> --model <key>
+    python -m dci1v5.run.cli run     --stage <STAGE> --model <key> [--device N]
     python -m dci1v5.run.cli audit   [--matrix]
 
 **Every command refuses before it does anything.** ``run`` goes through
@@ -15,6 +15,18 @@ pinned backend and refuses a substitute outright. Four runners used to read
 ``generate or fake_backend(...)`` instead, so this command would have signed
 fabricated text into the registered evidence tree.
 
+``--device`` selects which card a generating stage runs on. It is placement
+and nothing else: the runners already threaded ``device`` down to
+``backend_env``, which clears inherited ``ROCR_``/``HIP_``/``CUDA_``
+visibility variables and sets ``HIP_VISIBLE_DEVICES`` itself --- so a shell
+export cannot move a lane, and before this flag existed the documented entry
+point could only ever reach card 0. It changes no measured quantity: the
+prompts, decoding policy, cap, seeds and verifiers are all read from the
+signed records. On a stage that generates nothing it is **refused** rather
+than ignored, so a mistyped lane cannot look like it was honoured. Two TP=1
+lanes are how this host uses both cards; the backend's per-device flock keeps
+them independent.
+
 ``plan`` and ``status`` and ``audit`` write nothing and are safe now: they are
 how a researcher sees what adoption would bind, how far a replication has got,
 and whether every artifact field has a producer.
@@ -22,6 +34,7 @@ and whether every artifact field has a producer.
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 import sys
 from pathlib import Path
@@ -110,11 +123,31 @@ def audit(args: argparse.Namespace) -> Any:
     return audit_contracts()
 
 
+def generating_stages() -> tuple[str, ...]:
+    """The stages whose runner accepts a card, in registered order.
+
+    Derived from the signatures rather than listed, so a runner that gains or
+    loses its generative seam cannot leave a stale list behind.
+    """
+    return tuple(
+        stage for stage in C.STAGE_SEQUENCE
+        if "device" in inspect.signature(RUNNERS[stage]).parameters)
+
+
 def run(args: argparse.Namespace) -> dict[str, Any]:
     tree = _tree(args.model, args.root)
     runner = RUNNERS[args.stage]
+    placement: dict[str, Any] = {}
+    if args.device is not None:
+        if args.stage not in generating_stages():
+            raise ValueError(
+                f"--device was passed to {args.stage}, which generates "
+                f"nothing and has no card to place. Accepting it silently "
+                f"would make a mistyped lane look honoured. The generating "
+                f"stages are: {', '.join(generating_stages())}")
+        placement["device"] = args.device
     outcome = runner(tree, producing_commit=args.commit,
-                     environment_digest=args.environment or "")
+                     environment_digest=args.environment or "", **placement)
     return {"stage": outcome.stage, "outcome": outcome.outcome,
             "record": str(outcome.record_path)}
 
@@ -142,6 +175,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_run.add_argument("--root", default=None)
     p_run.add_argument("--commit", default=None)
     p_run.add_argument("--environment", default=None)
+    p_run.add_argument("--device", type=int, default=None,
+                       help="card for a generating stage; refused elsewhere")
     p_run.set_defaults(func=run)
 
     args = parser.parse_args(argv)

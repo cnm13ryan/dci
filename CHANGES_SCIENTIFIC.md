@@ -13,6 +13,36 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-24 — v5: the entry point could reach only one card; a registration superseded and one Gate 0 discarded
+
+**What changed.** `run/cli.py` gains `--device`, and the registration
+`e2721b17…` is superseded by one signed at the new commit.
+`reports/dci1v5/amendment_register.md` A6.
+
+**No measured quantity moved.** `--device` reaches only
+`dci1v4.generation.backend.backend_env`, which sets `HIP_VISIBLE_DEVICES`. The
+prompts, wordings, decoding policy, completion cap, seeds, topic sets,
+verifiers, estimands, thresholds and multiplicity families are all read from
+the signed records and registered constants and are untouched. Five runners
+already accepted `device`; only the CLI could not pass one, so every stage a
+researcher could launch ran on card 0 and a shell export could not move it
+(`backend_env` clears inherited visibility variables by design). The flag is
+refused on a stage that generates nothing rather than ignored, and the set of
+stages that may take one is derived from the runner signatures.
+
+**Which results are affected.** One: `gemma-3n-e2b-it` `GATE_0_APPARATUS`
+under `e2721b17…`, **2,688 generated rows**, outcome PASS, produced at
+`1b0031b…`. §32 makes a superseded registration carrying generated rows a
+*discarded replication*, so those rows are retained under
+`superseded/e2721b17…/` with an `invalidated.json`, are unreachable to
+`run/execute._reusable_rows`, and were **not** carried into the replacement.
+The other three replications had no behavioural rows.
+
+**Comparability.** Nothing to compare: no v5 behavioural result had been
+claimed, and the discarded Gate 0 supports no claim. Rows generated under the
+replacement are not comparable to the discarded ones only in the trivial sense
+that the discarded ones are withdrawn.
+
 ## 2026-08-24 — v5: §12.6's eligibility rule resolved at E2, and §18 step 14's raw-coordinate fit implemented as §15 registers it
 
 **What changed.** The two questions the stages 3–18 audit (entry below) left

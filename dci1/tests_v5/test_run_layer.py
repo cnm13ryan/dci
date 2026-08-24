@@ -140,3 +140,62 @@ def test_the_cli_status_and_audit_commands_are_safe_now(tmp_path, capsys):
     assert cli.main(["status", "--model", MODEL, "--root", str(tmp_path)]) == 0
     out = capsys.readouterr().out
     assert "stage_reached" in out
+
+
+def test_the_generating_stages_are_derived_from_the_signatures():
+    """The five runners with a generative seam are the five that take a card.
+
+    Listing them by hand is how a stage that loses or gains its seam ends up
+    with a stale list; ``generating_stages`` reads the signatures instead.
+    """
+    assert cli.generating_stages() == (
+        C.STAGE_GATE0, C.STAGE_REGIME, C.STAGE_GATE2, C.STAGE_GATE4,
+        C.STAGE_CONFIRMATORY)
+
+
+def test_a_card_is_refused_by_a_stage_that_generates_nothing(tmp_path):
+    """``--device`` on an analysis stage is a mistake, not a no-op.
+
+    Ignoring it would let a researcher believe a lane was honoured when the
+    stage never had a card to place.
+    """
+    for stage in (C.STAGE_REGISTERED, C.STAGE_GATE1, C.STAGE_FINAL_REPORT):
+        assert cli.main(["run", "--stage", stage, "--model", MODEL,
+                         "--root", str(tmp_path), "--device", "1"]) == 1
+
+
+_UNSET = object()
+
+
+def _card_recording_runner(seen):
+    """A stand-in that declares a card, so it stays a generating stage.
+
+    ``generating_stages`` reads signatures, so a fake without ``device`` would
+    be classified as generating nothing and the flag refused --- the fake, not
+    the code, would be what the test measured.
+    """
+    def fake(tree, *, device=_UNSET, **kwargs):
+        seen["device"] = device
+        seen.update(kwargs)
+        raise TerminalStatus("STOPPED_FOR_TEST", {"gate": "none"})
+    return fake
+
+
+def test_a_card_reaches_the_runner_that_takes_one(tmp_path, monkeypatch):
+    """§10: placement is passed through, and card 0 is not hard-wired."""
+    seen: dict[str, object] = {}
+    monkeypatch.setitem(cli.RUNNERS, C.STAGE_GATE0,
+                        _card_recording_runner(seen))
+    assert cli.main(["run", "--stage", C.STAGE_GATE0, "--model", MODEL,
+                     "--root", str(tmp_path), "--device", "1"]) == 1
+    assert seen["device"] == 1
+
+
+def test_no_card_named_leaves_the_runner_default(tmp_path, monkeypatch):
+    """Omitting the flag must not start passing ``device=None`` downstream."""
+    seen: dict[str, object] = {}
+    monkeypatch.setitem(cli.RUNNERS, C.STAGE_GATE0,
+                        _card_recording_runner(seen))
+    assert cli.main(["run", "--stage", C.STAGE_GATE0, "--model", MODEL,
+                     "--root", str(tmp_path)]) == 1
+    assert seen["device"] is _UNSET
