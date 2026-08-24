@@ -53,12 +53,16 @@ exploratory/ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl
 .env~
 .env.*
 
-# Paper drafting, in progress and not repository state. `paper/` is a bundle
-# built from committed evidence and `user-notes/paper-dci1v4r4-i1/` is the
-# drafting scratchpad for it. Both are ignored because dci1v5 §19's
-# `clean_worktree` apparatus precondition reads `git status --porcelain`: an
-# untracked draft in the tree refuses every qualification, and a registration
-# that has to wait on a paper draft is a precondition measuring the wrong
-# thing. The rule is unchanged and still refuses an uncommitted CHANGE.
+# `paper/` is a bundle BUILT from committed evidence, so it stays out of the
+# tree: it is a derived artifact, regenerable, and large.
+#
+# `user-notes/paper-dci1v4r4-i1/` was ignored alongside it for a different and
+# now-expired reason. dci1v5 §19's `clean_worktree` precondition reads
+# `git status --porcelain`, so an untracked draft refused every qualification,
+# and a registration that has to wait on a paper draft is a precondition
+# measuring the wrong thing. **v5 is closed** — two replications terminal at
+# Gate 4, two permanently blocked at PREFREEZE_AUDIT — so no v5 stage can
+# evaluate that precondition again, and the planning bundle is now tracked:
+# it is canonical planning state, and leaving it untracked left it unprotected.
+# The §19 rule itself is unchanged and still refuses an uncommitted CHANGE.
 /paper/
-/user-notes/paper-dci1v4r4-i1/
