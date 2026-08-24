@@ -1013,3 +1013,57 @@ calipers, D17's floor and D18's precondition, the estimands, the multiplicity
 families, the claim ladder and its levels, the masking specification, the
 seeds, the models and revisions, and every selection criterion. **No threshold
 moved, no criterion was weakened, and no family gained or lost a member.**
+
+## A6 — the documented entry point could only ever reach one card (2026-08-24)
+
+An engineering amendment. It changes no registered rule, no threshold, no
+estimand and no measured quantity; it changes **where** a generating stage
+runs, and nothing else.
+
+### V5-E30 — `--device` was threaded everywhere except the entry point
+
+Five of v5's eighteen runners generate — `GATE_0_APPARATUS`, `REGIME_SCREEN`,
+`GATE_2_FOCAL_CALIBRATION`, `GATE_4_COMPOSED_HEADROOM` and
+`CONFIRMATORY_GENERATION` — and each already accepted `device: int = 0` and
+threaded it to `dci1v4.generation.backend.backend_env`. `run/cli.py`, the
+documented and only sanctioned entry point, exposed no `--device`, so every
+stage a researcher could actually launch ran on card 0.
+
+The gap could not be worked around from the shell. `backend_env` *clears*
+inherited `ROCR_VISIBLE_DEVICES`, `HIP_VISIBLE_DEVICES` and
+`CUDA_VISIBLE_DEVICES` before setting `HIP_VISIBLE_DEVICES` from its `device`
+argument — deliberate GPU hygiene — so exporting a visibility variable moved
+nothing, and a lane exported to card 1 still landed on card 0. On this host
+(2× RX 7900 XTX, TP=1 only) that left half the available throughput unused for
+the whole study.
+
+**The repair.** `run` gains `--device`. The set of stages that may receive one
+is *derived from the runner signatures* (`cli.generating_stages`) rather than
+listed, so a runner that gains or loses its generative seam cannot leave a
+stale list behind. A card named for a stage that generates nothing is
+**refused**, not ignored: silently dropping it would let a mistyped lane look
+honoured. Omitting the flag passes nothing, so each runner keeps its own
+default rather than being handed `device=None`.
+
+**Why this is placement and not science.** The prompts, decoding policy,
+completion cap, seeds, topic sets and verifiers are all read from the signed
+records and the registered constants; `--device` reaches only `backend_env`.
+Two TP=1 lanes are also what this host's constraints already required: TP=2
+has known NCCL stalls here, and the backend takes an exclusive non-blocking
+flock per card, so lanes serialise within themselves and are independent of
+each other.
+
+### Evidence: preserved and invalidated
+
+One Gate 0 existed under `e2721b17…` when this amendment was made —
+`gemma-3n-e2b-it`, **2,688 generated rows**, outcome PASS, produced at
+`1b0031b…`. §32 draws the line at `GATE_0_APPARATUS`: a superseded
+registration with generated rows under it is a **discarded replication**, not
+a re-registration, and the difference has to be said. It is therefore retained
+and invalidated with an `invalidated.json` naming the stage and the row count,
+and its whole tree moves under `superseded/e2721b17…/`, unreachable to
+`run/execute._reusable_rows`, which reads only the current `backend_runs`
+path. It was **not** carried into the replacement.
+
+The other three replications had no behavioural rows and are re-run from
+`PROTOCOL_REGISTERED`, which generates nothing.
