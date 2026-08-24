@@ -52,3 +52,13 @@ exploratory/ACTUAL_CROSS_MODEL_DCI_ROWS.jsonl
 .env
 .env~
 .env.*
+
+# Paper drafting, in progress and not repository state. `paper/` is a bundle
+# built from committed evidence and `user-notes/paper-dci1v4r4-i1/` is the
+# drafting scratchpad for it. Both are ignored because dci1v5 §19's
+# `clean_worktree` apparatus precondition reads `git status --porcelain`: an
+# untracked draft in the tree refuses every qualification, and a registration
+# that has to wait on a paper draft is a precondition measuring the wrong
+# thing. The rule is unchanged and still refuses an uncommitted CHANGE.
+/paper/
+/user-notes/paper-dci1v4r4-i1/

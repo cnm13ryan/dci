@@ -571,6 +571,58 @@ def test_a_generated_chain_can_be_invalidated_only_by_naming_it(tmp_path):
         assert (tree.superseded_dir(old) / stage).exists()
 
 
+def test_a_terminal_verdict_is_retired_with_the_registration_that_reached_it(
+        tmp_path):
+    """A5's V5-E29: the supersession was one-way for a terminal replication.
+
+    §28.3's terminal report is `write_json_once` and
+    `assert_predecessor_passed` refuses every stage while it exists. It used
+    to stay on the live path through a supersession, so a replication that
+    had terminated could be superseded and then never re-run: the REPLACEMENT
+    registration's first stage was disabled by a verdict about the
+    registration it replaced.
+
+    Found the hard way. A5's re-qualification refused on §19's
+    `clean_worktree` precondition --- untracked paper drafts in the repo
+    root, an apparatus condition and nothing scientific --- and the machinery
+    correctly wrote QUALIFICATION_FAILURE, which then could not be retired.
+    """
+    from dci1v4.errors import IntegrityError as _IntegrityError
+    from dci1v5.engine import transitions
+
+    ctx = _ctx(tmp_path)
+    _register(ctx, ALL_MODELS[0])
+    tree = model_tree(ctx, ALL_MODELS[0])
+    transitions.write_terminal_report(tree, {
+        "model_key": ALL_MODELS[0], "status": "QUALIFICATION_FAILURE",
+        "gate": C.STAGE_QUALIFIED, "criterion": "a test",
+        "observed": ["clean_worktree"], "producing_commit": COMMIT,
+        "strongest_permissible_statement": C.TERMINAL_SENTENCE})
+    assert transitions.terminal_status(tree) == "QUALIFICATION_FAILURE"
+    with pytest.raises(_IntegrityError, match="terminal"):
+        transitions.assert_predecessor_passed(tree, C.STAGE_QUALIFIED)
+    old = manifest.load_manifest(ctx)["manifest_hash"]
+
+    registration_run.supersede_registration(
+        ctx, reason="the verdict was about the apparatus, not the model",
+        model_keys=ALL_MODELS[:1], producing_commit=COMMIT)
+
+    # Retired, not deleted: readable where it was reached, gone from the path
+    # the replacement reads.
+    assert not tree.terminal_report.exists()
+    assert transitions.terminal_status(tree) is None
+    retained = tree.superseded_dir(old) / tree.terminal_report.name
+    assert retained.exists(), "the verdict is preserved, not discarded"
+    assert json.loads(retained.read_text())["payload"]["status"] == \
+        "QUALIFICATION_FAILURE"
+    # And the move is in the log, because an evidence tree that changed shape
+    # with nothing saying why is what the supersession record exists to stop.
+    rows = [r for r in transitions.transition_rows(tree)
+            if r["outcome"] == "SUPERSEDED"
+            and (r.get("detail") or {}).get("terminal_report")]
+    assert len(rows) == 1
+
+
 def test_invalidated_rows_are_not_reachable_by_reuse(tmp_path):
     """Reuse reads the *current* backend_runs path, so retention is enough.
 

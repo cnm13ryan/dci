@@ -951,6 +951,43 @@ reuse ledger admits a row only when its complete scientific identity matches,
 and the superseding registration changes that identity, so no invalidated row
 is reachable by live reuse.
 
+### V5-E29 — a supersession was one-way for a replication that had terminated
+
+Found by A5's own re-registration, which is the only reason it was found at
+all. The first re-qualification refused on §19's `clean_worktree` apparatus
+precondition: two untracked paper-drafting directories sat in the repository
+root, one of them being written to by work outside this task. The precondition
+was right to refuse and the machinery did exactly what it is built to do —
+it wrote a signed `QUALIFICATION_FAILURE` terminal report on
+`gemma-3n-e2b-it`, naming `clean_worktree` as the observed failure.
+
+**That verdict then could not be retired.** §28.3's `terminal_report.json` is
+`write_json_once`, `assert_predecessor_passed` refuses every stage while it
+exists, and `supersede_registration` moved the stage records and left it on
+the live path. So a replication that had terminated could be superseded and
+never re-run: the **replacement** registration's very first stage was
+mechanically disabled by a verdict about the registration it replaced. Nothing
+had noticed because no supersession had ever followed a termination.
+
+**Repaired:** the terminal report moves under
+`superseded/<manifest>/terminal_report.json` with the stage records it belongs
+to, its durable mirror moves with it, and the move is logged like every other.
+It is **retained, not deleted** — the verdict stays readable where it was
+reached, and it is true: at that commit, in that worktree, the apparatus
+precondition was not met. What changes is only that a retired registration's
+verdict no longer governs its replacement.
+
+This is admissible for the same reason the supersession is: `QUALIFIED` is
+pre-Gate-0, reads no behavioural rate and generated nothing, so §32's rule for
+retaining and re-running the pre-observation stages covers the verdict reached
+on them. A terminal status from a **generating** stage is not reached this way
+— that path still requires `invalidating` and records a discarded replication.
+
+**The precondition itself is unchanged and was not weakened.** The two paper
+directories are added to `.gitignore` as the drafting output they are;
+`clean_worktree` still refuses any uncommitted change to tracked code, which
+is the provenance guarantee it exists to give.
+
 ### Registration
 
 One superseding registration is created, and all four models are re-qualified
