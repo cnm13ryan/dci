@@ -50,8 +50,18 @@ from dci1v5.stages.calibration_table import (
 __all__ = ["SpectrumPoint", "DifficultyFit", "fit_difficulty_relation",
            "prediction_weights", "support_verdict", "SpectrumInput",
            "estimate", "assert_algebraic_forms_agree", "bootstrap_spectrum",
+           "TierInput", "tier_estimate", "FitNotAvailable",
            "TierFit", "fit_with_tier_indicator", "adopted_formulation",
            "assert_adopted_formulation"]
+
+
+class FitNotAvailable(ProtocolError):
+    """There is no fit to compare forms on --- not a disagreement.
+
+    §11.8's both-forms check applies to a fit that exists. A degenerate one is
+    a different fact and is recorded as one; conflating them would let a
+    caller that tolerates absence tolerate a disagreement too.
+    """
 
 
 @dataclass(frozen=True)
@@ -320,6 +330,77 @@ def estimate(data: SpectrumInput, picks: Sequence[int] | None = None
     }
 
 
+@dataclass(frozen=True)
+class TierInput:
+    """§11.8's twelve points: the nine the primary fit uses, plus the three
+    near-form controls that sit at a different structural tier.
+
+    Held apart from ``SpectrumInput`` because the primary fit must not see
+    them --- §11.7 registers it over three families of three severities --- and
+    because the secondary is reportable only when the near-form arm exists.
+    """
+
+    base: SpectrumInput
+    near_family_of: Mapping[str, str]           # near-form slot -> family
+    near_solo: Mapping[str, Sequence[float]]
+    near_chance: Mapping[str, Sequence[float]]
+    b_with_near: Mapping[str, Sequence[float]]
+    tiers: Mapping[str, int]                    # slot -> structural tier
+
+
+def tier_estimate(data: TierInput, picks: Sequence[int] | None = None
+                  ) -> dict[str, object]:
+    """§11.8's secondary fit on one (re)sample, under U2's adopted reading.
+
+    Returns ``beta``, ``gamma`` and the three core-family intercepts --- the
+    five F8 members §15 registers from this fit --- or a named degeneracy.
+    Everything is recomputed from ``picks``, exactly as ``estimate`` is:
+    §17.2 forbids fitting once and reusing it across replicates.
+
+    ``assert_adopted_formulation`` runs on every returned fit, so a
+    non-adopted construction cannot reach an F8 row.
+    """
+    base = data.base
+    if picks is None:
+        picks = list(range(len(base.blocks)))
+    if not picks:
+        raise ProtocolError("an empty resample")
+    b_solo = _resampled(base.b_solo, picks)
+    points: list[SpectrumPoint] = []
+    dropped: list[str] = []
+    for slot, family in sorted(base.family_of.items()):
+        chance = _resampled(base.companion_chance[slot], picks)
+        if chance >= C.CHANCE_DEGENERACY_MAX:
+            dropped.append(slot)
+            continue
+        solo = _resampled(base.companion_solo[slot], picks)
+        points.append(SpectrumPoint(
+            slot=slot, family=family,
+            difficulty=instructed_compliance(solo, chance),
+            loss=b_solo - _resampled(base.b_with[slot], picks)))
+    for slot, family in sorted(data.near_family_of.items()):
+        chance = _resampled(data.near_chance[slot], picks)
+        if chance >= C.CHANCE_DEGENERACY_MAX:
+            dropped.append(slot)
+            continue
+        solo = _resampled(data.near_solo[slot], picks)
+        points.append(SpectrumPoint(
+            slot=slot, family=family,
+            difficulty=instructed_compliance(solo, chance),
+            loss=b_solo - _resampled(data.b_with_near[slot], picks)))
+    try:
+        fit = assert_adopted_formulation(
+            fit_with_tier_indicator(points, data.tiers),
+            where="analysis.spectrum.tier_estimate")
+    except ProtocolError as exc:
+        return {"degenerate": True, "reason": str(exc),
+                "dropped_points": dropped, "n_points": len(points)}
+    return {"degenerate": False, "beta": fit.slope, "gamma": fit.gamma,
+            "intercepts": dict(fit.intercepts), "n_points": fit.n_points,
+            "residuals": dict(fit.residuals), "formulation": fit.formulation,
+            "adopted": fit.adopted, "dropped_points": dropped}
+
+
 def assert_algebraic_forms_agree(data: SpectrumInput,
                                  picks: Sequence[int] | None = None, *,
                                  tolerance: float = 1e-9) -> float:
@@ -336,8 +417,8 @@ def assert_algebraic_forms_agree(data: SpectrumInput,
     """
     result = estimate(data, picks)
     if result["degenerate"]:
-        raise ProtocolError(f"cannot compare forms on a degenerate fit: "
-                            f"{result['reason']}")
+        raise FitNotAvailable(f"cannot compare forms on a degenerate fit: "
+                              f"{result['reason']}")
     if picks is None:
         picks = list(range(len(data.blocks)))
     weights = result["weights"]

@@ -549,6 +549,36 @@ def select_all(rows: Sequence[CalibrationRow], *, iota_a: float,
     core = admit_core_references(
         rows, iota_a=iota_a, solo_compliance_a=solo_compliance_a,
         n_topics_a=n_topics_a, stability_by_candidate=stability_by_candidate)
+    # §13.12: "core selection re-runs excluding it and the next qualifying
+    # family takes the slot, until three families each supply a complete
+    # triple **or the qualified list is exhausted. Exhaustion sets
+    # DIFFICULTY_SUPPORT_NOT_IDENTIFIED and the spectrum arm is not
+    # generated.**" Exhaustion drops the SPECTRUM, not the core: §8.1
+    # registers that "a replication that cannot identify the spectrum still
+    # estimates Delta_R, Delta_j, Xi and the reciprocal matrix". This ran the
+    # spectrum-coupled pass and stopped there, so a pool that could not
+    # straddle iota_A lost its core references too --- which is the exact
+    # coupling that produced v4r4's F5 failure.
+    if not core["references_identified"]:
+        without = admit_core_references(
+            rows, iota_a=iota_a, solo_compliance_a=solo_compliance_a,
+            n_topics_a=n_topics_a,
+            stability_by_candidate=stability_by_candidate,
+            require_spectrum=False)
+        if without["references_identified"]:
+            core = {**without,
+                    "spectrum_identified": False,
+                    "spectrum_triples": [],
+                    "spectrum_exhausted": True,
+                    "spectrum_exhaustion_note":
+                        "§13.12: no three qualifying families each supply a "
+                        "complete triple, so the spectrum arm is not "
+                        "generated. §8.1: the core set stands and Delta_R, "
+                        "Delta_j, Xi and the reciprocal matrix are still "
+                        "estimated",
+                    "identification_statuses": sorted(
+                        set(without["identification_statuses"])
+                        | {"DIFFICULTY_SUPPORT_NOT_IDENTIFIED"})}
     spectrum = (select_spectrum(core["spectrum_triples"])
                 if core["spectrum_identified"] else [])
     used = {e["family"] for e in core["core_references"]}

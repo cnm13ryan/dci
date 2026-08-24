@@ -39,6 +39,7 @@ from dci1v5.run.execute import (generate_and_score, instance_rates,
                                 prompt_cell, resolve_generate)
 from dci1v5.run.lifecycle import (StageOutcome, TerminalStatus,
                                   protocol_identity, run_stage)
+from dci1v5.stages.calibration_table import tie_key
 from dci1v5.stages import gate1 as gate1_stage
 from dci1v5.stages import regime as regime_stage
 from dci1v5.stages import mutation, specification, verifier_audit
@@ -193,12 +194,26 @@ def difficulty_table(rows: Sequence[Mapping[str, Any]],
 
 
 def _screen_rungs(round_zero_only: bool = True) -> list[Constraint]:
-    """Every registered rung §12.2 measures at round 0."""
+    """Every registered rung §12.2 measures at round 0, **and A and B**.
+
+    ``FAMILIES`` is the candidate library and excludes the two outcome
+    constraints, so iterating it alone left A unmeasured on the pre-screen ---
+    and §12.6 defines iota_A as *"the pre-screen instructed compliance of A at
+    the severity whose solo compliance is nearest §12.3's aim"*. Without it
+    every §12.6 distance is undefined, the coverage criterion cannot be
+    evaluated, the expansion cannot run and `iota_a_prescreen` is null on the
+    record. ``difficulty_table`` has always said this in its own comment ---
+    *"A and B are the outcome constraints. They are measured here because
+    §12.2's table is what fixes iota_A"* --- and the rung list disagreed with
+    it.
+    """
     rungs: list[Constraint] = []
     for kind in FAMILIES:
         severities = (registered_severities(kind) if round_zero_only
                       else declared_range(kind))
         rungs.extend(Constraint(kind, q) for q in severities)
+    rungs.extend(Constraint("A", q) for q in C.TARGET_GRID)
+    rungs.extend(Constraint("B", q) for q in C.FOCAL_GRID)
     return rungs
 
 
@@ -258,20 +273,103 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
     table = difficulty_table(screen_rows, measured)
     by_label = {row["candidate"]: row for row in table}
 
-    verdicts = [
-        regime_stage.carry_candidate(
-            kind=rung.kind, severity=rung.severity,
-            prescreen_solo_compliance=by_label[rung.label]["solo"],
-            n_prescreen_topics=by_label[rung.label]["n_topics"],
-            structural=regime_stage.StructuralScreen())
-        for rung in measured if rung.kind in FAMILIES]
+    def _verdicts(rungs_measured, difficulty):
+        return [
+            regime_stage.carry_candidate(
+                kind=rung.kind, severity=rung.severity,
+                prescreen_solo_compliance=difficulty[rung.label]["solo"],
+                n_prescreen_topics=difficulty[rung.label]["n_topics"],
+                structural=regime_stage.StructuralScreen())
+            for rung in rungs_measured if rung.kind in FAMILIES]
+
+    verdicts = _verdicts(measured, by_label)
     carried = regime_stage.carried_set(verdicts)
 
-    iota_a = next((r["iota"] for r in table if r["kind"] == "A"), None)
-    coverage = (regime_stage.coverage_criterion(
-        [r for r in table if r["candidate"] in set(carried)], iota_a=iota_a)
-        if iota_a is not None else
-        {"holds": False, "reason": "iota_A is not measured on the pre-screen"})
+    # §12.6: "Write iota_A for the pre-screen instructed compliance of A at
+    # THE SEVERITY WHOSE SOLO COMPLIANCE IS NEAREST §12.3's AIM." This read
+    # the first A row in the table --- the smallest severity of the target
+    # grid --- so every §12.6 distance was measured from the wrong point on
+    # A's own curve, and C1's "strictly below and strictly above" was
+    # evaluated against it.
+    a_rows = [r for r in table if r["kind"] == "A" and r.get("iota") is not None]
+    iota_a_row = min(
+        a_rows,
+        key=lambda r: (tie_key(abs(r["solo"] - C.TARGET_AIM)), r["severity"]),
+        default=None)
+    iota_a = iota_a_row["iota"] if iota_a_row is not None else None
+    # ------------------------------------------------- §12.6 the expansion
+    # The coverage criterion is not a diagnostic. §12.6 runs the expansion
+    # while C1-C6 are unmet and rounds remain, and when it stops without
+    # passing the replication records REFERENCE_SUPPORT_NOT_IDENTIFIED **at
+    # design time** and runs without the core and spectrum arms. Computing
+    # `coverage` and reading nothing from it left a replication whose
+    # criterion failed running the arms §12.6 forbids it.
+    expansion: dict[str, Any] | None = None
+    if iota_a is None:
+        coverage = {"conditions": {}, "decisive": list(C.COVERAGE_DECISIVE),
+                    "decisive_met": False,
+                    "realised": {},
+                    "identification_statuses": ["CLASS_ARM_NOT_AVAILABLE",
+                                                "NEAR_FORM_ARM_NOT_AVAILABLE"],
+                    "reason": "iota_A is not measured on the pre-screen"}
+        screen_statuses = sorted(set(coverage["identification_statuses"])
+                                 | {"REFERENCE_SUPPORT_NOT_IDENTIFIED",
+                                    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"})
+    else:
+        eligible_rows = regime_stage.coverage_rows(table, carried)
+        measured_by_family: dict[str, list[int]] = {}
+        for rung in measured:
+            if rung.kind in FAMILIES:
+                measured_by_family.setdefault(rung.kind, []).append(
+                    rung.severity)
+
+        def measure_reserve(admitted: Mapping[str, Sequence[int]]
+                            ) -> list[dict[str, Any]]:
+            """§12.6: only the newly admitted rungs, same topics, same cap."""
+            # §7.10's frozen reserve, which is what §12.6's expansion picks
+            # from: a reserve rung is outside the registered ladder by
+            # construction, and `reserve=True` is how the instrument layer
+            # says the severity is declared rather than measured at round 0.
+            new_rungs = [Constraint(family, severity, reserve=True)
+                         for family, severities in sorted(admitted.items())
+                         for severity in sorted(severities)]
+            if not new_rungs:
+                return []
+            new_cells, new_slots = ladder_cells(prescreen, new_rungs)
+            new_prompts = [prompt_cell(c, _by_id(prescreen)[c.topic_id],
+                                       slot_map=new_slots,
+                                       topic_split="prescreen")
+                           for c in new_cells]
+            round_index = len(expansion_rounds_seen)
+            expansion_rounds_seen.append(new_rungs)
+            new_rows = generate_and_score(
+                tree.model_key, new_prompts, stage=C.STAGE_REGIME, cap=cap,
+                device=device,
+                run_dir=(tree.backend_runs(C.STAGE_REGIME)
+                         / f"expansion-{round_index}"),
+                instances=tuple(new_slots.values()), slot_map=new_slots,
+                study_id=tree.context.study_id,
+                protocol_identity=protocol_identity(tree, C.STAGE_REGIME),
+                generate=generate)
+            rows_out = difficulty_table(new_rows, new_rungs)
+            for rung, row in zip(new_rungs, rows_out):
+                table.append(row)
+                by_label[row["candidate"]] = row
+                measured.append(rung)
+            return rows_out
+
+        expansion_rounds_seen: list[list[Constraint]] = []
+        expansion = regime_stage.run_expansion(
+            eligible_rows, iota_a=iota_a, measured=measured_by_family,
+            measure=measure_reserve)
+        coverage = expansion["coverage"]
+        screen_statuses = list(expansion["identification_statuses"])
+        if expansion["rounds"]:
+            # The expansion measured new rungs; the carried set and every
+            # quantity derived from it are recomputed over the whole table.
+            verdicts = _verdicts(measured, by_label)
+            carried = regime_stage.carried_set(verdicts)
+            eligible_rows = regime_stage.coverage_rows(table, carried)
     # §12.7's budget reads the structural tier and the pre-screen iota, and
     # a retention verdict carries neither: the two live on the difficulty
     # table this stage just built. Joining them here is what makes the budget
@@ -281,8 +379,20 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
                                                  ["kind"]].structural_tier,
                      "prescreen_iota": by_label[v["candidate"]]["iota"]}
                     for v in verdicts if v["carried"]]
+    # §12.7 orders the Tier-3 rungs by ascending |iota - iota_A|. With A
+    # unmeasured on the pre-screen this passed the literal 0.5, which is not
+    # iota_A and is not registered anywhere; the ordering it produced decided
+    # which Tier-3 rungs calibration measures. A's severity is measured now,
+    # so the placeholder is unreachable --- and if it ever were reached the
+    # record says the ordering could not be computed rather than reporting an
+    # ordering against a number nobody registered.
     priority = regime_stage.calibration_priority(
         carried_rows, iota_a_prescreen=iota_a if iota_a is not None else 0.5)
+    if iota_a is None:
+        priority = {**priority,
+                    "ordering_not_computed":
+                        "§12.7 orders Tier-3 by |iota - iota_A| and iota_A "
+                        "was not measured on the pre-screen"}
 
     return {
         "stage": C.STAGE_REGIME,
@@ -302,8 +412,22 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
             "authors a family; no stage after this one may measure a rung "
             "that is not on carried_set or reached by a recorded expansion",
         "coverage": coverage,
+        # §12.6's expansion, its rounds and the disposition it reached. When
+        # C1-C6 are unmet after the registered rounds the statuses carry
+        # REFERENCE_SUPPORT_NOT_IDENTIFIED **at design time**, and Gate 3C
+        # reads them: the arms §12.6 forbids are not admitted downstream.
+        "expansion": expansion,
+        "identification_statuses": sorted(set(screen_statuses)),
+        "coverage_eligibility_formulation": (
+            (eligible_rows[0]["eligibility"]["formulation"])
+            if iota_a is not None and eligible_rows else None),
         "calibration_priority": priority,
         "iota_a_prescreen": iota_a,
+        "iota_a_prescreen_severity": (iota_a_row["severity"]
+                                      if iota_a_row is not None else None),
+        "iota_a_prescreen_rule":
+            "§12.6: A's pre-screen instructed compliance at the severity "
+            f"whose solo compliance is nearest §12.3's aim of {C.TARGET_AIM}",
         "topic_split_used": "prescreen",
         "canonical_verifier_hash": verifier_source_hash(),
     }

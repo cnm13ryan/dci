@@ -636,8 +636,23 @@ def cell_rates(rows: Iterable[Mapping[str, Any]], *, kind: str, severity: int,
     truncation = _mean([_mean([float(o["truncated"]) for o in per_topic[t]])
                         for t in topics])
     words = sorted(o["words"] for t in topics for o in per_topic[t])
+    # §12.4 condition 3 is a statement about a SHARE OF RESPONSES, and the
+    # section says so in its own words because reading it as a statement
+    # about the mean fires on every severity §12.3 declares eligible. The two
+    # shares are formed over responses here; nothing downstream may threshold
+    # `graded_mean` and call it this.
+    observations = [o for t in topics for o in per_topic[t]]
+    graded_share_above = _mean([1.0 if float(o["graded"])
+                                > C.GRADED_DEGENERACY_HIGH else 0.0
+                                for o in observations])
+    graded_share_below = _mean([1.0 if float(o["graded"])
+                                < C.GRADED_DEGENERACY_LOW else 0.0
+                                for o in observations])
     return {"compliance": compliance, "vacuity": vacuity,
             "graded_mean": graded, "truncation": truncation,
+            "graded_share_above": graded_share_above,
+            "graded_share_below": graded_share_below,
+            "graded_share_reading": C.GRADED_CLAUSE_READING,
             "median_words": float(words[len(words) // 2]),
             "n_topics": len(topics),
             "n_observations": sum(len(per_topic[t]) for t in topics)}
@@ -687,6 +702,8 @@ def instance_rates(rows: Sequence[Mapping[str, Any]], *, kind: str,
     out = {"solo": solo["compliance"], "chance": chance["compliance"],
            "vacuity": solo["vacuity"], "chance_vacuity": chance["vacuity"],
            "graded_mean": solo["graded_mean"],
+           "graded_share_above": solo["graded_share_above"],
+           "graded_share_below": solo["graded_share_below"],
            "median_words": solo["median_words"],
            "truncation": solo["truncation"],
            "n_topics": solo["n_topics"],

@@ -13,6 +13,127 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-24 — v5 stages 3–18: twelve more registered rules were implemented and never on the execution path, and one that the preregistration does not determine
+
+**What changed.** A semantic execution-path audit of stages 3 to 18 — every
+scientifically consequential registered rule traced from the preregistration
+to its implementation, its production caller, the artifact field it produces
+and the stage that reads that field. Twelve implementation defects (V5-E9 to
+V5-E21, `reports/dci1v5/amendment_register.md` A4) and one place where the
+preregistration does not determine a rule (open item U4).
+
+Seven of the twelve are one defect repeated: the rule exists, `stages/` or
+`analysis/` implements it, `tests_v5/` covers it, and `run/` never calls it or
+calls it with a neighbouring field. The largest three:
+
+* **fifty-eight of §15's seventy-eight family members had no producer.** F5,
+  F6, F7 and F8 were computed nowhere and declared neither `NOT_IDENTIFIED`
+  nor `NOT_COMPUTABLE`; F2, F3, F9 and F10 were computed in part. F8 is
+  §11.8's tier-indicator fit — the one U2 was resolved at A2 to make
+  estimable. F6 gates §17.4's whole interpretation and F5 supplies the
+  vacuity-forced recomputation that §17.4's licensing rule compares against,
+  so that rule was vacuously satisfied at every emitter.
+* **three of the five claim emitters had no production caller.** A complete
+  lifecycle emitted `{'L1': 2}`. L3 carries $\Delta_R$ and L3c is the
+  refutation verdict D18 was closed to protect; the lifecycle could not emit
+  it on any data.
+* **§12.6's coverage criterion was evaluated on an empty row set and its
+  verdict was read by nothing.** `coverage_criterion` filters on an
+  `eligible` flag no code ever set, so C1–C6 were False on every replication;
+  and `decisive_met` is read only inside `run_expansion`, which had no caller.
+  A replication whose criterion was unmet therefore ran **with** the core and
+  spectrum arms and reported $\Delta_R$ and $\delta_{\text{diff}}$ — the
+  outcome §12.6 registers as forbidden.
+
+Also: `REGIME_NOT_FOUND` and `GRID_RESOLUTION_INSUFFICIENT` had no production
+condition; §12.6's C7/C8 arm drops were computed and discarded; §11.3, §11.7
+and §11.8's algebraic-form assertions never ran; §23's projection audit was
+the empty list; §31's result table labelled every row `L1` and `pair:A+B`;
+§19's lexicographic check and §13.7's $\iota_A$ equivalence ran only in
+tests; §3.2's L1 identification gate was the literal `True`; and $\iota_A$
+itself was read from the first row of the difficulty table rather than, as
+§12.6 states, from the severity whose solo compliance is nearest §12.3's aim.
+
+**Two more came from the researcher's own audit of 2026-08-23**
+(`user-notes/AUDIT_2026-08-23_v5_design_execution.md` §4), not from this
+sweep, because they are rules that *are* on the path and take the wrong
+branch:
+
+* **A was never measured on the pre-screen.** `_screen_rungs` iterates the
+  candidate library, which excludes the two outcome constraints, so
+  `iota_a_prescreen` was null on every real regime record and §12.6's own
+  definition of $\iota_A$ had no producer. §12.7's Tier-3 ordering was
+  therefore computed against the literal `0.5`. The registered pre-screen
+  costs 1,536 more rows per model once A's and B's grids are on it, and the
+  study budget moves from 1,172,544 to **1,174,080**.
+* **A family that could not straddle $\iota_A$ lost its core slot.** §13.12
+  drops the *spectrum* on exhaustion and §8.1 keeps the core set; the selector
+  ran only the spectrum-coupled pass, so exhaustion took the core references
+  with it — the exact coupling that produced v4r4's F5 failure,
+  re-implemented.
+
+**Which results are affected.** No v5 confirmatory number exists, no reference
+has been selected, no freeze exists and no composed outcome has been observed,
+so nothing that could influence selection is affected. The four gemma
+behavioural stages signed under registration `d0485a6d…` (Gate 0, the regime
+screen and Gate 1 on both models) are **retained and no longer reusable**:
+they were produced under a screen whose coverage criterion evaluated an empty
+set, whose $\iota_A$ came from the wrong severity, and whose expansion could
+not run. v4r4 and v3 evidence are untouched.
+
+**Comparability.** No threshold, estimand, population definition, arm, marker,
+seed, model or selection criterion changed, so a v5 result under the amended
+code answers the same registered question. Six of the twelve repairs make a
+gate strictly **harder** to pass than it was. A regime-screen record written
+before this amendment is not comparable with one written after it — the
+carried set, the calibration priority and the coverage verdict are all
+functions of rules that were not running.
+
+**And one that only the scenario suite could find.** A3 restored the caller
+for §12.3's focal escalation; the branch itself then refused, because §7.2's
+{15, 16} are outside B's registered grid by construction and `Constraint`
+rejects them unless the caller sets `extended`. A3's repair had never
+executed --- the synthetic lifecycle's focal curve always found a rung inside
+the registered grid --- so the first thing to put the production path into
+that branch was the new scenario matrix, and the branch raised on its first
+instruction. *The caller exists* and *the branch runs* are different claims.
+
+**Three more that only appeared once the rules above were running.** §20
+withheld the masked-phase members by exact name, so F5's recodings of
+$\Delta_R$ — restored above — were computed in the phase the mask exists to
+withhold them from; the guard on the sealed record caught it and refused the
+analysis, which is what a working safeguard looks like. §17.6's fifth row —
+*support fails; the local reading stands alone; L3a/L3b/L3c only* — could not
+be reached because `emit_l3` required a $\delta_{\text{diff}}$ interval, so a
+replication without the spectrum arm emitted no $\Delta_R$ claim at all.
+And `construct_strength` was declared read by two stages and read by neither
+— the first finding of the new consumption audit, and a declaration rather
+than a rule.
+
+**One registered quantity is still not implemented.** §18 step 14 and §31
+require the difficulty relation refitted on the raw coordinate, and nothing in
+the repository fits anything on `SECONDARY_DIFFICULTY_COORDINATE`. Step 9 on
+that coordinate is mechanical; step 12 — *simultaneous intervals within each
+declared family* — has no declared family containing a raw-coordinate member,
+so implementing it means choosing the multiplicity set. It is Tier-secondary
+and licenses no claim, so it does not block; it is recorded rather than
+quietly absent.
+
+**What is not resolved.** §12.6 makes eligibility *"§13's band on $\iota$ and
+its vacuity ceiling"*, and §13 registers its band on $p_{\text{solo}}$ and no
+band on $\iota$ at all. Two readings are admissible and they admit different
+rungs, so they can differ on C1–C6, on the admitted arm set, and therefore on
+whether $\Delta_R$ is identified. **Nothing chose between them.** Both are
+constructed by name, the code path fails closed, and open item U4 blocks the
+registration manifest until a researcher resolves it — so no replication can
+start Gate 0 under a rule nobody took.
+
+**Where the evidence is.** `reports/dci1v5/execution_path_audit.md` and its
+JSON companion (the registered-rule ledger, proved against a real run),
+`reports/dci1v5/v5_producer_consumer.md` (now with observed consumption, not
+declared), `tests_v5/test_execution_path.py`, `tests_v5/scenarios.py`,
+`reports/dci1v5/amendment_register.md` A4.
+
 ## 2026-08-23 — v5 preregistered-rule restoration: two registered rules were implemented and never invoked
 
 **Standing.** `dci1/reports/dci1v5/amendment_register.md` entry **A3**.

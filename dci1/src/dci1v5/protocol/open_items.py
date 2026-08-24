@@ -212,6 +212,63 @@ _ITEMS: tuple[OpenItem, ...] = (
                        "downward. The same function fixes §12.6's expansion "
                        "direction."),
     OpenItem(
+        "U4",
+        "What makes a pre-screen rung *eligible* for §12.6's coverage "
+        "criterion",
+        "§12.6, §13.4",
+        RESEARCHER_DECISION_REQUIRED,
+        "§12.6 evaluates the identification-coverage criterion \"on the "
+        "pre-screen table with eligibility as §13's band on iota and its "
+        "vacuity ceiling\". §13 registers a vacuity ceiling of 0.10 and one "
+        "band, [0.10, 0.90], and that band is registered on the RAW SOLO "
+        "COMPLIANCE p_solo(R), not on iota. §13 registers no band on iota at "
+        "all --- §13.8 constrains iota only through calipers relative to "
+        "iota_A. So the sentence names a band on a quantity §13 does not "
+        "band, and the eligible set is not determined.",
+        artifacts={
+            "preregistration": "§12.6 says 'eligibility as §13's band on "
+                               "iota'; §13.4's table bands p_solo and §13.8 "
+                               "gives iota calipers, not a band",
+            "implementation": "stages.regime.coverage_criterion reads an "
+                              "`eligible` flag on every row and NOTHING in "
+                              "the repository ever set it; the production "
+                              "caller passed the §12.2 carried set, whose "
+                              "rows carry no such key, so the criterion "
+                              "evaluated on an empty set and C1-C6 were "
+                              "False on every replication",
+            "evidence": "the synthetic lifecycle records "
+                        "coverage.decisive_met False with 73 rungs carried"},
+        alternatives=(
+            Alternative(
+                "E1",
+                "iota inside [0.10, 0.90] and pre-screen solo vacuity <= 0.10",
+                "the coverage criterion's C1-C8 counted over rungs whose "
+                "INSTRUCTED compliance sits in the band",
+                "reads the sentence literally: §13's band numbers applied to "
+                "iota, the coordinate every one of C1-C4 is stated in. A "
+                "high-chance rung with p_solo in band but iota outside is "
+                "excluded"),
+            Alternative(
+                "E2",
+                "raw solo compliance inside [0.10, 0.90] and pre-screen solo "
+                "vacuity <= 0.10",
+                "the coverage criterion's C1-C8 counted over rungs that pass "
+                "§13.4's V_head band on the quantity §13.4 states it on",
+                "reads '§13's band' as the rule §13 actually registers, and "
+                "uses iota only where C1-C4 use it, for position relative to "
+                "iota_A. A rung with p_solo outside the band but iota inside "
+                "is excluded"),
+        ),
+        implementation="not chosen. `stages.regime.coverage_eligibility` "
+                       "constructs both named formulations and refuses to "
+                       "run either until U4 is resolved, so no replication "
+                       "can measure a §12.6 expansion round or record a "
+                       "REFERENCE_SUPPORT_NOT_IDENTIFIED disposition under a "
+                       "rule nobody chose. The two eligible sets differ, so "
+                       "C1-C6 can differ, so the admitted arm set and "
+                       "therefore whether Delta_R is identified at all can "
+                       "differ: this is not a formatting choice."),
+    OpenItem(
         "P1",
         "§7.10 admitted Tier 3 'to the spectrum'; §7.4, §11.8 and §13.12 make "
         "that unreachable",

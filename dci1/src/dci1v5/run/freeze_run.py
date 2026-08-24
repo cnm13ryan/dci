@@ -187,6 +187,7 @@ def assemble(tree: ModelTree, *, producing_commit: str,
         # coordinate had no producer downstream of the freeze.
         iota_a=gate3b["iota_a"],
         solo_compliance_a=gate2["solo_compliance_a"],
+        solo_compliance_b=gate2["solo_compliance_b"],
         support_realised=gate3c["support"],
         # §34 D6, frozen: the estimand set this replication may not identify,
         # carried from Gate 3C rather than recomputed, so the freeze and the

@@ -53,12 +53,20 @@ def build() -> str:
     SL.resolved_manifest()
     try:
         with tempfile.TemporaryDirectory() as tmp:
-            walked = SL.walk(pathlib.Path(tmp))
+            from dci1v5.run import contracts, field_access
+
+            # The walk runs under the field-access recorder, so the audit
+            # sees which fields each stage ACTUALLY read. Without that it can
+            # only check that a declared field was produced --- which is how
+            # a contract reported 98 fields and 0 defects while Gate 2 read
+            # `carried_set` where §12.7 registers `calibration_priority`.
+            with field_access.recording():
+                walked = SL.walk(pathlib.Path(tmp))
+                reads = field_access.observed()
             from dci1v5.protocol import constants as C
-            from dci1v5.run import contracts
 
             payloads = walked["payloads"]
-            audit = contracts.audit_contracts(payloads)
+            audit = contracts.audit_contracts(payloads, reads)
             rows = contracts.matrix_rows(payloads)
             table = contracts.matrix_markdown(payloads)
     finally:
@@ -74,6 +82,16 @@ def build() -> str:
                  f"{len(rows) - exercised} not reached.")
     lines.append(f"- Defects: **{len(audit['defects'])}** "
                  f"({'clean' if audit['clean'] else 'NOT CLEAN'}).")
+    lines.append(f"- Checked against real payloads: "
+                 f"**{audit['n_checked_against_payloads']}** "
+                 f"({audit['n_field_presence_checks']} field-presence, "
+                 f"{audit['n_consumption_checks']} consumption, "
+                 f"{audit['n_semantic_checks']} semantic).")
+    lines.append(f"- Relayed reads (the consumer read the value from a later "
+                 f"record that carries it): **{audit['n_relayed']}**.")
+    lines.append(f"- Declared readers with no observed read: "
+                 f"**{audit['n_unconsumed']}** --- reported, not failed; see "
+                 f"below for what that can and cannot mean.")
     lines.append(f"- Stages walked: {len(payloads)} of "
                  f"{len(C.STAGE_SEQUENCE)}.\n")
     if audit["defects"]:
@@ -90,6 +108,56 @@ def build() -> str:
             f"| `{artifact}` | {len(subset)} | "
             f"{sum(1 for r in subset if r['required'])} | "
             f"{sum(1 for r in subset if r['exercised'])} |")
+    if audit.get("unconsumed"):
+        lines.append("\n### Declared readers with no observed read\n")
+        lines.append("Each of these is one of two things and this audit "
+                     "cannot yet tell them apart: a declaration with nothing "
+                     "behind it, or a registered rule that is not on the "
+                     "path. The tracker observes **top-level** keys, so a "
+                     "value a stage takes from inside a nested block --- "
+                     "`freeze[\"derived_cell_count\"]` rather than the "
+                     "record's own `cells_per_block` --- reads as unconsumed "
+                     "here even though the value reached it.\n")
+        lines.append("What this list is *not* is the V5-E6 shape. A consumer "
+                     "reaching for a neighbouring field is an "
+                     "`UNDECLARED_READ` and a population that does not match "
+                     "its registered definition is a semantic mismatch; both "
+                     "are defects and both fail.\n")
+        lines.append("| artifact | field | declared reader |")
+        lines.append("|---|---|---|")
+        for row in audit["unconsumed"]:
+            lines.append(f"| `{row['artifact']}` | `{row['field']}` | "
+                         f"`{row['reader']}` |")
+        lines.append("")
+    if audit.get("relayed"):
+        lines.append("\n### Relayed reads\n")
+        lines.append("The declared consumer read the value from a record "
+                     "that relays it rather than from the producer's own. "
+                     "That satisfies the declaration --- §18's later stages "
+                     "copy n*, m*, the arm set and the identification "
+                     "statuses forward --- and it is listed because each "
+                     "relay is a place a value could change with nothing "
+                     "comparing the two.\n")
+        lines.append("| artifact | field | consumer | read via |")
+        lines.append("|---|---|---|---|")
+        for row in audit["relayed"]:
+            lines.append(f"| `{row['artifact']}` | `{row['field']}` | "
+                         f"`{row['reader']}` | "
+                         f"{', '.join('`' + v + '`' for v in row['via'])} |")
+        lines.append("")
+    lines.append("\n## Observed consumption\n")
+    lines.append("Which fields each stage actually read while the lifecycle "
+                 "ran. A declared reader that reads nothing is a declaration "
+                 "with nothing behind it; a read the contract does not "
+                 "declare is the shape V5-E6 had.\n")
+    lines.append("| reader | artifact | fields read |")
+    lines.append("|---|---|---|")
+    for reader, by_artifact in sorted(reads.items()):
+        for artifact, fields in sorted(by_artifact.items()):
+            shown = ", ".join(f"`{f}`" for f in fields[:12])
+            if len(fields) > 12:
+                shown += f", … ({len(fields)} total)"
+            lines.append(f"| `{reader}` | `{artifact}` | {shown} |")
     lines.append("\n## The matrix\n")
     lines.append(table)
     lines.append("")

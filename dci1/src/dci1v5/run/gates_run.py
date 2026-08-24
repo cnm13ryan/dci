@@ -50,6 +50,7 @@ from dci1v5.topics.bank import (TopicBank, calibration_binding, load_bank)
 from dci1v5.verifiers.constraints import FAMILIES, Constraint
 
 __all__ = ["assert_synthetic_only", "assert_calibration_population",
+           "focal_constraint",
            "slot_map_from_record",
            "gate2_payload", "run_gate2", "gate2_5_payload", "run_gate2_5",
            "gate3a_payload", "run_gate3a", "gate3b_payload", "run_gate3b",
@@ -109,6 +110,18 @@ def _responder(row: Mapping[str, Any]) -> str:
 
 
 # ------------------------------------------------------------------ Gate 2
+
+def focal_constraint(m_star: int) -> Constraint:
+    """B at m*, whether m* is on the registered grid or §7.2's extension.
+
+    ``Constraint`` refuses an extension severity unless the caller sets
+    ``extended``, and §12.3 is the only rule that may. Every reconstruction of
+    B from a recorded m* goes through here so that a replication that
+    escalated is not refused by its own instrument layer three stages later.
+    """
+    return Constraint("B", m_star,
+                      extended=m_star in C.FOCAL_EXTENSION)
+
 
 def assert_synthetic_only(tree: ModelTree, name: str, value: Any) -> None:
     """A scale parameter may be passed only in the synthetic namespace.
@@ -244,7 +257,16 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         """One severity grid, with its unconstrained cell, on the pooled
         calibration topics. Called again for §7.2's extension when §12.3
         escalates, which is why it is a function and not the loop body."""
-        slot_map = {f"{kind}{q}": Constraint(kind, q) for q in grid}
+        # §7.2's extension {15, 16} is outside B's registered grid by
+        # construction, and `Constraint.__post_init__` refuses it unless the
+        # caller says so --- *"only this flag does, and only §12.3 sets it"*.
+        # A3 gave §12.3's escalation a caller and the branch itself then
+        # refused the moment a replication needed it: the synthetic
+        # lifecycle's focal curve always found a rung inside the registered
+        # grid, so the restored escalation had never once executed.
+        extended = any(q in C.FOCAL_EXTENSION for q in grid)
+        slot_map = {f"{kind}{q}": Constraint(kind, q, extended=extended)
+                    for q in grid}
         cells: list[Any] = []
         for block in _blocks(topics, f"g2{run_name}"):
             cells.append(_Cell(cell_id="unconstrained", arm="unconstrained",
@@ -299,16 +321,65 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         focal = regime_stage.select_focal(
             {q: curves["B"][q] for q in C.FOCAL_GRID},
             {q: curves["B"][q] for q in C.FOCAL_EXTENSION})
-    for result, status in ((target, "TARGET_RANGE_EXHAUSTED"),
-                           (focal, "FOCAL_RANGE_EXHAUSTED")):
-        if result.get("selected") is None:
+    # §12.3 registers THREE diagnoses for a selection that finds nothing and
+    # they are different facts. GRID_RESOLUTION_INSUFFICIENT --- the curve
+    # passes through the band between two adjacent registered severities
+    # without either landing in it --- takes precedence, because it is a
+    # statement about the registered ladder rather than about the model. It
+    # had no production caller at all.
+    resolution = {
+        "A": regime_stage.grid_resolution(curves["A"], band=C.TARGET_BAND,
+                                          grid=C.TARGET_GRID),
+        "B": regime_stage.grid_resolution(
+            curves["B"], band=C.FOCAL_BAND,
+            grid=(list(C.FOCAL_GRID) + list(C.FOCAL_EXTENSION)
+                  if extension_measured else list(C.FOCAL_GRID))),
+    }
+    for kind, result, status in (("A", target, "TARGET_RANGE_EXHAUSTED"),
+                                 ("B", focal, "FOCAL_RANGE_EXHAUSTED")):
+        if result.get("selected") is not None:
+            continue
+        if resolution[kind]["insufficient"]:
             raise TerminalStatus(
-                result.get("terminal_status", status), gate=C.STAGE_GATE2,
-                criterion="§12.3: an eligible severity inside the registered "
-                          "band",
-                observed={"curve": result.get("curve")},
+                "GRID_RESOLUTION_INSUFFICIENT", gate=C.STAGE_GATE2,
+                criterion="§12.3: two adjacent registered severities lie on "
+                          "opposite sides of a whole band, so the grid "
+                          "resolves nothing inside it",
+                observed={"constraint": kind, "curve": result.get("curve"),
+                          "straddling_pairs":
+                              resolution[kind]["straddling_pairs"]},
                 strongest_permissible_statement=C.TERMINAL_SENTENCE)
+        raise TerminalStatus(
+            result.get("terminal_status", status), gate=C.STAGE_GATE2,
+            criterion="§12.3: an eligible severity inside the registered "
+                      "band",
+            observed={"curve": result.get("curve")},
+            strongest_permissible_statement=C.TERMINAL_SENTENCE)
     m_star, n_star = focal["selected"], target["selected"]
+
+    # ------------------------------------------------- §12.4 regime adequacy
+    # "A replication proceeds only when..." --- three conditions, on the
+    # pooled calibration, at the selected severities. The record carried the
+    # two thresholds under the name `adequacy` and evaluated neither
+    # condition, so REGIME_NOT_FOUND had no production caller and a
+    # replication whose B was degenerate or vacuous proceeded to selection.
+    a_rates = instance_rates(grid_rows, kind="A", severity=n_star)
+    b_rates = instance_rates(grid_rows, kind="B", severity=m_star)
+    adequacy = regime_stage.regime_adequacy(
+        solo_a=a_rates["solo"], solo_b=b_rates["solo"],
+        vacuity_b=b_rates["vacuity"],
+        graded_shares={
+            "A": {"graded_share_above": a_rates["graded_share_above"],
+                  "graded_share_below": a_rates["graded_share_below"]},
+            "B": {"graded_share_above": b_rates["graded_share_above"],
+                  "graded_share_below": b_rates["graded_share_below"]}})
+    if not adequacy["adequate"]:
+        raise TerminalStatus(
+            "REGIME_NOT_FOUND", gate=C.STAGE_GATE2,
+            criterion="§12.4: the three regime-adequacy conditions on the "
+                      "pooled calibration topics",
+            observed=adequacy["failures"],
+            strongest_permissible_statement=C.TERMINAL_SENTENCE)
 
     # The topic is the independent unit kappa_B was estimated over --- §13.7's
     # topics, never the four draws within one --- and it is what the Wilson
@@ -326,7 +397,11 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             strongest_permissible_statement=C.TERMINAL_SENTENCE)
 
     # ------------------------------ pass 2: the candidates' solo compliance
-    b_star = Constraint("B", m_star)
+    # m* can come from §7.2's extension, which is outside the registered
+    # grid: every later reconstruction of B has to say so or the instrument
+    # layer refuses it. A replication that escalated could not have built its
+    # own candidate pass, let alone its slot map.
+    b_star = focal_constraint(m_star)
     candidate_rows: list[dict[str, Any]] = []
     if non_outcome:
         slot_map = {f"S{i}": c for i, c in enumerate(non_outcome)}
@@ -399,8 +474,15 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "iota_a": instructed_compliance(curves["A"][n_star],
                                         chance_curves["A"][n_star]),
         "solo_compliance_a": curves["A"][n_star],
+        # §3.2's L1 identification gate is "the outcome constraint has solo
+        # headroom", and `emit_l1` takes it as a parameter. The analysis
+        # passed the constant True, so the gate was asserted rather than
+        # measured; B's realised solo compliance at m* is the quantity it is
+        # a statement about, and nothing carried it past this record.
+        "solo_compliance_b": curves["B"][m_star],
         "iota_a_by_split": _iota_a_by_split(grid_rows, n_star),
         "solo_a_by_split": _solo_a_by_split(grid_rows, n_star),
+        "a_per_topic_by_split": _a_per_topic_by_split(grid_rows, n_star),
         "construct_strength": strength,
         "calibration_binding": binding,
         "calibration_rows": tables,
@@ -408,9 +490,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "kappa_under_b_source":
             "the B-solo cells at m*, on which every carried candidate was "
             "scored as absent under §9.1; no generation of its own (§13.6)",
-        "adequacy": {
-            "vacuity_max": C.REGIME_VACUITY_MAX,
-            "graded_degeneracy_share_max": C.GRADED_DEGENERACY_SHARE_MAX},
+        "adequacy": adequacy,
+        "grid_resolution": resolution,
         "identification_statuses": statuses,
         "selected_on": C.SECONDARY_DIFFICULTY_COORDINATE,
     }
@@ -525,6 +606,29 @@ def _solo_a_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
                                         split=split)["solo"]
         except ProtocolError:
             continue
+    return out
+
+
+def _a_per_topic_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
+                          ) -> dict[str, Any]:
+    """A's own per-topic solo vector and chance rate on each split.
+
+    §13.7 subjects iota_A to the same equivalence rule as every candidate,
+    and ``stability.assert_iota_a_stable`` implements it. It resamples
+    topics, so it needs A's per-topic vector --- which no record carried, so
+    the one rule that pins the reference point every §13.8 distance is
+    measured from could not run.
+    """
+    out: dict[str, Any] = {"per_topic": {}, "chance": {}}
+    for split in (C.CALIBRATION_A, C.CALIBRATION_B):
+        try:
+            rates = instance_rates(rows, kind="A", severity=n_star,
+                                   split=split)
+        except ProtocolError:
+            continue
+        out["per_topic"][split] = list(per_topic_compliance(
+            rows, kind="A", severity=n_star, split=split))
+        out["chance"][split] = rates["chance"]
     return out
 
 
@@ -671,6 +775,29 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
         solo_a_by_split=gate2_record["solo_a_by_split"], seed=seed,
         resamples=resamples)
         for label, pair in pairs.items()}
+    # §13.7: iota_A is subject to the same equivalence rule as every
+    # candidate, and §12.2 measured it moving by up to 0.048 between stages.
+    # `assert_iota_a_stable` implements the rule and had no caller, so every
+    # §13.8 distance was measured from a reference point nothing pinned.
+    a_splits = gate2_record.get("a_per_topic_by_split") or {}
+    per_topic = a_splits.get("per_topic") or {}
+    chance = a_splits.get("chance") or {}
+    if (per_topic.get(C.CALIBRATION_A) and per_topic.get(C.CALIBRATION_B)
+            and chance.get(C.CALIBRATION_A) is not None
+            and chance.get(C.CALIBRATION_B) is not None):
+        iota_a_stability = stability.assert_iota_a_stable(
+            per_topic_a=per_topic[C.CALIBRATION_A],
+            per_topic_b=per_topic[C.CALIBRATION_B],
+            chance_a=chance[C.CALIBRATION_A],
+            chance_b=chance[C.CALIBRATION_B], seed=seed + 2,
+            resamples=resamples)
+    else:
+        iota_a_stability = {
+            "quantity": "iota_A", "passed": None,
+            "reason": "Gate 2 recorded no per-topic vector for A on both "
+                      "splits, so §13.7's rule could not be evaluated; that "
+                      "is not the same as passing it"}
+
     return {
         "stage": C.STAGE_GATE3A,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE3A],
@@ -688,6 +815,7 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
                    C.CALIBRATION_B: len(table_b),
                    "pooled": len(table_pooled)},
         "stability": verdicts,
+        "iota_a_stability": iota_a_stability,
         "n_stable": sum(1 for v in verdicts.values() if v.get("stable")),
         "equivalence_bound": C.STABILITY_EQUIVALENCE_BOUND,
         "pooled_table": [dict(r) for r in tables["pooled"]],
@@ -809,11 +937,25 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
     # it admitted anything, and reading the record's truthiness admitted an
     # arm with no constituents --- which Gate 4 then could not render. Found
     # by the synthetic lifecycle.
+    # §12.6's C7 and C8 are decided at the regime screen and were computed
+    # and then dropped: this stage re-derived arm availability from the
+    # selection record alone, so a replication whose screen said
+    # CLASS_ARM_NOT_AVAILABLE could still admit a broad-class arm. An arm is
+    # available when the screen's coverage admitted it **and** selection
+    # bound a companion for it.
+    screen_statuses = set(regime_record.get("identification_statuses") or ())
     near_form_available = bool(
-        (selection_record.get("near_form") or {}).get("controls"))
+        (selection_record.get("near_form") or {}).get("controls")
+    ) and "NEAR_FORM_ARM_NOT_AVAILABLE" not in screen_statuses
     class_available = bool(
-        (selection_record.get("broad_class") or {}).get("companion"))
+        (selection_record.get("broad_class") or {}).get("companion")
+    ) and "CLASS_ARM_NOT_AVAILABLE" not in screen_statuses
     spectrum_identified = bool(core_block.get("spectrum_identified"))
+    design_time_failures = (
+        ["§12.6: the identification-coverage criterion was not met after the "
+         "registered expansion rounds, so the replication runs without the "
+         "core and spectrum arms"]
+        if "REFERENCE_SUPPORT_NOT_IDENTIFIED" in screen_statuses else [])
     report = support.evaluate_support(
         model_key=tree.model_key,
         structurally_eligible_tier12_families=(
@@ -822,9 +964,10 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
         selection=flattened,
         near_form_available=near_form_available,
         class_available=class_available,
-        spectrum_identified=spectrum_identified)
+        spectrum_identified=spectrum_identified,
+        design_time_failures=design_time_failures)
     arms = normalise_arms(report["admitted_arms"])
-    statuses = sorted(set(report["identification_statuses"]))
+    statuses = sorted(set(report["identification_statuses"]) | screen_statuses)
     disposition = report["disposition"]
     if not report["support_met"]:
         if disposition == "REFERENCE_SUPPORT_NOT_IDENTIFIED_TERMINAL":
@@ -845,6 +988,10 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
         "m_star": gate3b_record["m_star"],
         "support": report,
         "support_disposition": disposition,
+        # §12.6's screen-time verdict, named on this record so a reader can
+        # tell a design-time non-identification from a calibration-time one.
+        "regime_screen_statuses": sorted(screen_statuses),
+        "design_time_failures": list(design_time_failures),
         # §34 D6, closed at `identification_status`. Present and null when
         # §13.15 was met: a reader of the record can tell "the support held"
         # from "this record predates the decision", and every later stage
@@ -933,7 +1080,13 @@ def slot_map_from_record(record: Mapping[str, Any]) -> dict[str, Constraint]:
     all bind the same constituents to the same slots without any of them
     choosing. A slot map a caller supplied would be a design nobody signed.
     """
-    return {slot: Constraint(value[0], int(value[1]), reserve=True)
+    # `reserve=True` admits §7.10's declared range for a candidate family. It
+    # does nothing for B, whose admissible set is §7.2's focal grid and, only
+    # when §12.3 escalated, its extension --- so a slot map recording an
+    # extension m* was refused here, three stages after the escalation that
+    # produced it.
+    return {slot: (focal_constraint(int(value[1])) if value[0] == "B"
+                   else Constraint(value[0], int(value[1]), reserve=True))
             for slot, value in (record.get("slot_map") or {}).items()}
 
 
@@ -1058,7 +1211,7 @@ def run_gate4(tree: ModelTree, *, cap: int | None = None,
     regime = transitions.read_stage_record(tree, C.STAGE_REGIME)
     gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     slot_map.setdefault("A", Constraint("A", gate2["n_star"]))
-    slot_map.setdefault("B", Constraint("B", gate2["m_star"]))
+    slot_map.setdefault("B", focal_constraint(gate2["m_star"]))
     cap = cap if cap is not None else regime["selected_cap"]
     return run_stage(
         tree, C.STAGE_GATE4,

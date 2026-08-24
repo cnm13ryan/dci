@@ -83,7 +83,9 @@ def evaluate_support(*, model_key: str,
                      selection: Mapping[str, Any],
                      near_form_available: bool,
                      class_available: bool,
-                     spectrum_identified: bool) -> dict[str, Any]:
+                     spectrum_identified: bool,
+                     design_time_failures: Sequence[str] = ()
+                     ) -> dict[str, Any]:
     """§13.15's counts, the admitted arm set, and every identification status.
 
     Returns a Gate-3C payload carrying the D6 disposition and, when §13.15 is
@@ -100,7 +102,13 @@ def evaluate_support(*, model_key: str,
     used = [e["family"] for e in core]
     backups = freeze_backups(sorted(set(qualified_families)), used)
 
-    failures: list[str] = []
+    # §12.6: a replication whose identification-coverage criterion is unmet
+    # after the registered expansion rounds records
+    # REFERENCE_SUPPORT_NOT_IDENTIFIED **at design time** and runs without the
+    # core and spectrum arms. That verdict is reached at the regime screen,
+    # two stages before any calibration count exists, so it enters here as a
+    # failure rather than being re-derived from quantities that cannot see it.
+    failures: list[str] = list(design_time_failures)
     if n_eligible < C.MIN_STRUCTURALLY_ELIGIBLE_TIER12_FAMILIES:
         failures.append(
             f"{n_eligible} structurally eligible Tier-1/Tier-2 families "

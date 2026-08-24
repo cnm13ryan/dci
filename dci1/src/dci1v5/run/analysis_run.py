@@ -81,6 +81,18 @@ def observation_table(rows: Sequence[Mapping[str, Any]], *, m_draws: int
     return ObservationTable(build_observations(list(rows), m_draws=m_draws))
 
 
+#: Every member whose value comes from §11.7's difficulty relation or
+#: §11.8's secondary fit on it. A status that blocks the relation blocks all
+#: of them: naming only ``delta_difficulty`` left F5's two recodings of it and
+#: F8's five fit parameters to be attempted, fail for want of a cell, and be
+#: recorded ``not_computable`` --- the label §34 D6 exists to distinguish from
+#: an unidentified design.
+_DIFFICULTY_DEPENDENT: tuple[str, ...] = (
+    "delta_difficulty", "delta_difficulty|vacuity_forced",
+    "delta_difficulty|graded_0.99", "beta", "alpha_1", "alpha_2", "alpha_3",
+    "gamma_tier")
+
+
 def _licensed(statuses: Sequence[str]) -> dict[str, str | None]:
     """Which estimand each identification status blocks.
 
@@ -104,13 +116,15 @@ def _licensed(statuses: Sequence[str]) -> dict[str, str | None]:
         for member in identification.AFFECTED_ESTIMANDS:
             blocked[member] = "REFERENCE_SUPPORT_NOT_IDENTIFIED"
     if "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in statuses:
-        blocked["delta_difficulty"] = "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+        for member in _DIFFICULTY_DEPENDENT:
+            blocked[member] = "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
     if "NEAR_FORM_ARM_NOT_AVAILABLE" in statuses:
         blocked["Delta_near"] = "NEAR_FORM_ARM_NOT_AVAILABLE"
     if "CLASS_ARM_NOT_AVAILABLE" in statuses:
         blocked["Delta_broad"] = "CLASS_ARM_NOT_AVAILABLE"
     if "DIFFICULTY_COORDINATE_DEGENERATE" in statuses:
-        blocked["delta_difficulty"] = "DIFFICULTY_COORDINATE_DEGENERATE"
+        for member in _DIFFICULTY_DEPENDENT:
+            blocked[member] = "DIFFICULTY_COORDINATE_DEGENERATE"
     return blocked
 
 
@@ -129,8 +143,119 @@ def _vector(fn: Callable[..., Any], *args: Any, **kwargs: Any
         return None
 
 
+#: §15's delivery-loss members, as member name -> (outcome slot, companion
+#: slot). Every one of them is `estimators.delivery_loss` with a different
+#: pair, and F2's D(B<-R_j), F3's D(A<-R_j), F7's reciprocals, F8's six
+#: spectrum losses, F9's D(B<-N_k) and F10's D(B<-CL) were registered members
+#: that no production call ever formed.
+def _loss_members() -> dict[str, tuple[str, str]]:
+    out: dict[str, tuple[str, str]] = {"D(B<-A)": ("B", "A"),
+                                       "D(A<-B)": ("A", "B")}
+    for slot in C.CORE_SLOTS:
+        out[f"D(B<-{slot})"] = ("B", slot)          # F2
+        out[f"D(A<-{slot})"] = ("A", slot)          # F3
+        out[f"D({slot}<-B)"] = (slot, "B")          # F7
+        out[f"D({slot}<-A)"] = (slot, "A")          # F7
+    for slot in C.SPECTRUM_SLOTS:
+        out[f"D(B<-{slot})"] = ("B", slot)          # F8
+    for slot in C.NEAR_FORM_SLOTS:
+        out[f"D(B<-{slot})"] = ("B", slot)          # F9
+    out[f"D(B<-{C.CLASS_SLOT})"] = ("B", C.CLASS_SLOT)   # F10
+    return out
+
+
+#: §15 F6: the vacuity-rate difference between each composed cell containing
+#: B and the B solo cell, as member name -> companion slot.
+def _vacuity_members() -> dict[str, str]:
+    out = {"vac(B|A+B)-vac(B solo)": "A"}
+    for slot in (C.CORE_SLOTS + C.SPECTRUM_SLOTS + C.NEAR_FORM_SLOTS
+                 + (C.CLASS_SLOT,)):
+        out[f"vac(B|B+{slot})-vac(B solo)"] = slot
+    return out
+
+
+LOSS_MEMBERS = _loss_members()
+VACUITY_MEMBERS = _vacuity_members()
+
+#: §15 F5's two recodings, as member suffix -> the Observation field the
+#: estimand is recomputed on. §9.3 forms both at DRAW level --- the
+#: vacuity-forced recoding counts a vacuous pass as a failure (§17.4) and the
+#: graded recoding thresholds each draw's graded score at 0.99 --- and
+#: `observations.build_observations` has always produced them. Nothing read
+#: them, so F5 had no member with a producer.
+F5_RECODINGS: dict[str, str] = {
+    "vacuity_forced": "non_vacuous_compliance",
+    "graded_0.99": "graded_threshold",
+}
+#: Which F1 members F5 recomputes under each recoding, from §15's table: "the
+#: six F1 members under the vacuity-forced recoding, and D(B<-A), Delta_R,
+#: delta_difficulty under a graded threshold at 0.99".
+F5_MEMBERS: dict[str, tuple[str, ...]] = {
+    "vacuity_forced": C.FAMILY_MEMBERS["F1"],
+    "graded_0.99": ("D(B<-A)", "Delta_R", "delta_difficulty"),
+}
+
+
+#: F5's five vector members, as base member -> the estimator that forms it
+#: under a named recoding. Each already took a ``scale`` keyword; nothing
+#: ever passed one.
+_F5_ESTIMATORS: dict[str, Callable[..., Any]] = {
+    "D(B<-A)": lambda table, configuration, *, scale: (
+        estimators.delivery_loss(table, "B", "A", configuration, scale=scale)),
+    "D(A<-B)": lambda table, configuration, *, scale: (
+        estimators.delivery_loss(table, "A", "B", configuration, scale=scale)),
+    "Lambda": lambda table, configuration, *, scale: (
+        estimators.asymmetry(table, configuration, scale=scale)),
+    "Delta_R": lambda table, configuration, *, scale: (
+        estimators.delta_r(table, configuration, scale=scale)),
+    "Xi": lambda table, configuration, *, scale: (
+        estimators.xi(table, configuration, scale=scale)),
+}
+
+
+def tier_inputs(table: ObservationTable,
+                slot_families: Mapping[str, str],
+                spectrum_by_configuration: Mapping[str, Any]
+                ) -> dict[str, spectrum.TierInput]:
+    """§11.8's twelve points per configuration, or nothing.
+
+    The three near-form controls are the points that make the tier indicator
+    vary; without the arm there is no secondary fit, and §15 records that as
+    ``NEAR_FORM_ARM_NOT_AVAILABLE`` rather than as a missing number.
+    """
+    from dci1v5.verifiers.constraints import FAMILIES
+
+    near = {slot: family for slot, family in slot_families.items()
+            if slot in set(C.NEAR_FORM_SLOTS)}
+    out: dict[str, spectrum.TierInput] = {}
+    if not near:
+        return out
+    for configuration, base in spectrum_by_configuration.items():
+        slots = [s for s in near
+                 if table.has_composed("B", s, configuration)]
+        if len(slots) != len(near):
+            continue
+        tiers: dict[str, int] = {}
+        for slot, family in list(base.family_of.items()) + [
+                (s, near[s]) for s in slots]:
+            entry = FAMILIES.get(family)
+            tiers[slot] = entry.structural_tier if entry is not None else 0
+        out[configuration] = spectrum.TierInput(
+            base=base,
+            near_family_of={s: near[s] for s in slots},
+            near_solo={s: estimators.solo_vector(table, s) for s in slots},
+            near_chance={s: estimators.chance_vector(table, s)
+                         for s in slots},
+            b_with_near={s: estimators.composed_vector(table, "B", s,
+                                                       configuration)
+                         for s in slots},
+            tiers=tiers)
+    return out
+
+
 def spectrum_inputs(table: ObservationTable,
-                    slot_families: Mapping[str, str]
+                    slot_families: Mapping[str, str],
+                    *, scale: str = estimators.PRIMARY_SCALE
                     ) -> dict[str, spectrum.SpectrumInput]:
     """§11.7's nine points per configuration, from the table and the freeze.
 
@@ -151,21 +276,23 @@ def spectrum_inputs(table: ObservationTable,
         if len(slots) != len(family_of) or not table.has_composed(
                 "B", "A", configuration):
             continue
-        b_with = {s: estimators.composed_vector(table, "B", s, configuration)
+        b_with = {s: estimators.composed_vector(table, "B", s, configuration,
+                                                scale=scale)
                   for s in slots}
         b_with["A"] = estimators.composed_vector(table, "B", "A",
-                                                 configuration)
+                                                 configuration, scale=scale)
         out[configuration] = spectrum.SpectrumInput(
             blocks=tuple(table.blocks),
             family_of={s: family_of[s] for s in slots},
-            b_solo=estimators.solo_vector(table, "B"),
+            b_solo=estimators.solo_vector(table, "B", scale=scale),
             b_with=b_with,
-            companion_solo={s: estimators.solo_vector(table, s)
+            companion_solo={s: estimators.solo_vector(table, s, scale=scale)
                             for s in slots},
-            companion_chance={s: estimators.chance_vector(table, s)
+            companion_chance={s: estimators.chance_vector(table, s,
+                                                          scale=scale)
                               for s in slots},
-            a_solo=estimators.solo_vector(table, "A"),
-            a_chance=estimators.chance_vector(table, "A"))
+            a_solo=estimators.solo_vector(table, "A", scale=scale),
+            a_chance=estimators.chance_vector(table, "A", scale=scale))
     return out
 
 
@@ -192,12 +319,29 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
     post_unmask = bool(slot_families)
     spectrum_by_configuration = (spectrum_inputs(table, slot_families)
                                  if post_unmask else {})
+    # F5's delta_difficulty recodings need the whole fit refitted on the
+    # recoded scale --- §17.4 recomputes the ESTIMAND, not a rescaled point.
+    spectrum_by_configuration_recoded = (
+        {suffix: spectrum_inputs(table, slot_families, scale=scale)
+         for suffix, scale in F5_RECODINGS.items()}
+        if post_unmask else {})
+    tier_by_configuration = (tier_inputs(table, slot_families,
+                                         spectrum_by_configuration)
+                             if post_unmask else {})
     # §20 names the members that have no masked-phase value: A's point is
     # inside the permuted group, so a contrast of A against the reference set
     # is a contrast against a set A may have been permuted into. They are
     # withheld here rather than computed and discarded downstream --- a number
     # that exists is a number a masked-phase decision can see.
-    withheld = () if post_unmask else masking.MASKED_PHASE_FORBIDDEN_MEMBERS
+    # §20 withholds a member by what it IS, not by the exact string: F5's two
+    # recodings of Delta_R are still values for Delta_R, computed against the
+    # same permuted assignment of companions, and `gamma_tier` is the same fit
+    # as `beta`. The stem is what the guard on the sealed record matches, so
+    # it is what the withholding matches.
+    withheld = () if post_unmask else tuple(
+        member
+        for members in C.FAMILY_MEMBERS.values() for member in members
+        if member.split("|")[0] in masking.MASKED_PHASE_FORBIDDEN_MEMBERS)
     out: dict[str, Any] = {"configurations": {}, "cross_configuration": {},
                            "blocked": blocked,
                            "spectrum_phase": ("post_unmask" if post_unmask
@@ -231,12 +375,13 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
 
     for configuration in C.CONFIGURATIONS:
         bucket: dict[str, Any] = {}
-        record(bucket, "D(B<-A)",
-               _vector(estimators.delivery_loss, table, "B", "A",
-                       configuration=configuration))
-        record(bucket, "D(A<-B)",
-               _vector(estimators.delivery_loss, table, "A", "B",
-                       configuration=configuration))
+        # F1's two, and F2's, F3's, F7's, F8's, F9's and F10's delivery
+        # losses. Every registered pair, from one registry, so a family
+        # cannot lose a member by nobody writing its line.
+        for member, (outcome, companion) in sorted(LOSS_MEMBERS.items()):
+            record(bucket, member,
+                   _vector(estimators.delivery_loss, table, outcome,
+                           companion, configuration=configuration))
         record(bucket, "Lambda",
                _vector(estimators.asymmetry, table, configuration))
         record(bucket, "Delta_R",
@@ -248,7 +393,7 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
         # --- and an earlier revision computed this member nowhere at all, so
         # F1's critical value was taken over five members instead of six.
         _record_delta_difficulty(bucket, out, spectrum_by_configuration,
-                                 configuration, blocked)
+                                 configuration, blocked, withheld=withheld)
         record(bucket, "Xi", _vector(estimators.xi, table, configuration))
         for index, slot in enumerate(C.CORE_SLOTS, start=1):
             record(bucket, f"Delta_{index}",
@@ -265,6 +410,39 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
                _vector(estimators.d_rbar_from, table, "B", configuration))
         record(bucket, "D(Rbar<-Rbar')",
                _vector(estimators.d_rbar_rbar, table, configuration))
+        # ------------------------------------------------------------- F6
+        # §17.4's gate: the vacuity-rate difference between each composed
+        # cell containing B and the B solo cell. `vacuity_difference` existed
+        # and was called from nowhere, so the family that GATES the §17.4
+        # interpretation had no member with a producer.
+        for member, companion in sorted(VACUITY_MEMBERS.items()):
+            record(bucket, member,
+                   _vector(estimators.vacuity_difference, table, companion,
+                           configuration))
+        # ------------------------------------------------------------- F5
+        # The primary estimands recomputed on §9.3's two draw-level
+        # recodings. Not a length restriction and not a re-thresholded cell
+        # mean: `observations` forms both at draw level and these read them.
+        for suffix, scale in sorted(F5_RECODINGS.items()):
+            for base_member in F5_MEMBERS[suffix]:
+                member = f"{base_member}|{suffix}"
+                if base_member == "delta_difficulty":
+                    _record_delta_difficulty(
+                        bucket, out,
+                        spectrum_by_configuration_recoded.get(suffix, {}),
+                        configuration, blocked, member=member,
+                        withheld=withheld)
+                    continue
+                record(bucket, member,
+                       _vector(_F5_ESTIMATORS[base_member], table,
+                               configuration, scale=scale))
+        # ------------------------------------------------------------- F8
+        # §11.8's tier-indicator secondary, under U2's adopted A2 reading.
+        # `fit_with_tier_indicator` was resolved at A2 and never called by
+        # any production path, so the five fit members F8 registers --- the
+        # reason U2 was resolved at all --- reached no record.
+        _record_tier_fit(bucket, out, tier_by_configuration, configuration,
+                         blocked, withheld=withheld)
         out["configurations"][configuration] = bucket
 
     cross = out["cross_configuration"]
@@ -272,14 +450,66 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
         record(cross, member,
                _vector(estimators.order_contrast, table, member))
 
+    # §11.3, §11.7 and §11.8 each register an EXECUTABLE check that the
+    # quantity's two algebraic forms agree to 1e-9, because the solo baseline
+    # has to cancel exactly for the contrast to be a contrast among composed
+    # cells. All three were implemented and none had a caller, so §18's steps
+    # 8 and 9 asserted nothing. A disagreement refuses; a design that
+    # supplies no cell for the contrast is a different fact and is recorded.
+    out["algebraic_form_checks"] = _algebraic_form_checks(
+        table, spectrum_by_configuration)
+
     out["intervals"] = _intervals(out, seed=seed, resamples=resamples,
                                   n_blocks=len(table.blocks))
     return out
 
 
+def _algebraic_form_checks(table: ObservationTable,
+                           spectrum_by_configuration: Mapping[str, Any]
+                           ) -> dict[str, Any]:
+    """§18 steps 8 and 9's agreement assertions, and what they found.
+
+    Each check raises on a disagreement above the registered tolerance. A
+    missing cell is not a disagreement: it is recorded as ``not_available``
+    with the reason, exactly as an unidentified member is.
+    """
+    out: dict[str, Any] = {"tolerance": C.ALGEBRAIC_FORM_TOLERANCE,
+                           "checks": {}}
+    for configuration in C.CONFIGURATIONS:
+        try:
+            worst = estimators.assert_delta_r_forms(table, configuration)
+        except (IntegrityError, ProtocolError) as absent:
+            if isinstance(absent, estimators.AlgebraicFormError):
+                raise
+            out["checks"][f"Delta_R:{configuration}"] = {
+                "not_available": str(absent)}
+        else:
+            out["checks"][f"Delta_R:{configuration}"] = {"worst": worst}
+    try:
+        worst_order = estimators.assert_order_forms(table)
+    except (IntegrityError, ProtocolError) as absent:
+        if isinstance(absent, estimators.AlgebraicFormError):
+            raise
+        out["checks"]["order_contrasts"] = {"not_available": str(absent)}
+    else:
+        out["checks"]["order_contrasts"] = {"worst": worst_order}
+    for configuration, data in sorted(spectrum_by_configuration.items()):
+        try:
+            worst = spectrum.assert_algebraic_forms_agree(data)
+        except spectrum.FitNotAvailable as absent:
+            out["checks"][f"delta_difficulty:{configuration}"] = {
+                "not_available": str(absent)}
+        else:
+            out["checks"][f"delta_difficulty:{configuration}"] = {
+                "worst": worst}
+    return out
+
+
 def _record_delta_difficulty(bucket: dict[str, Any], out: dict[str, Any],
                              inputs: Mapping[str, Any], configuration: str,
-                             blocked: Mapping[str, str]) -> None:
+                             blocked: Mapping[str, str],
+                             member: str = "delta_difficulty",
+                             withheld: Sequence[str] = ()) -> None:
     """§11.7's residual, or the reason there is no value for it.
 
     Three different absences, written as three different reasons: the design
@@ -287,7 +517,19 @@ def _record_delta_difficulty(bucket: dict[str, Any], out: dict[str, Any],
     inside the permuted group; or the fit is degenerate on the observed
     sample. None of them is zero and none of them is an omission.
     """
-    member = "delta_difficulty"
+    # §20 first, and D6/§13.13 second. Both can be true of a masked-phase
+    # member and they are different facts: the design's verdict is about what
+    # the replication can ever identify, and §20's is about what THIS phase
+    # may compute. Reading the design's verdict first let it shadow the
+    # masking reason on a replication whose spectrum was dropped.
+    if member in set(withheld):
+        bucket[member] = {
+            "status": NOT_IDENTIFIED, "reason": "MASKED_PHASE",
+            "detail": masking.MASKED_PHASE_DECLARATIONS.get(
+                member.split("|")[0],
+                "§20: not computable before the unmask")}
+        out["not_computable"].append(member)
+        return
     if member in blocked:
         bucket[member] = {"status": NOT_IDENTIFIED, "reason": blocked[member]}
         out["not_identified"].append(member)
@@ -326,6 +568,124 @@ def _record_delta_difficulty(bucket: dict[str, Any], out: dict[str, Any],
     }
 
 
+def _record_tier_fit(bucket: dict[str, Any], out: dict[str, Any],
+                     inputs: Mapping[str, Any], configuration: str,
+                     blocked: Mapping[str, str],
+                     withheld: Sequence[str] = ()) -> None:
+    """F8's five fit members, or the registered reason there are none.
+
+    §11.8's secondary is the fit U2 was resolved at A2 to make estimable, and
+    §15 registers its slope, its three core-family intercepts and its tier
+    offset as F8 members. Every one of them refits per replicate, exactly as
+    ``delta_difficulty`` does, so each is recorded in the callable form
+    §17.2 requires.
+    """
+    members = ("beta", "alpha_1", "alpha_2", "alpha_3", "gamma_tier")
+    data = inputs.get(configuration)
+
+    def unavailable(reason: str, detail: str | None,
+                    bucket_key: str) -> None:
+        for member in members:
+            if member in set(withheld):
+                bucket[member] = {"status": NOT_IDENTIFIED,
+                                  "reason": "MASKED_PHASE",
+                                  "detail": "§20: the fit's coefficients are "
+                                            "post-unmasking"}
+                out["not_computable"].append(member)
+                continue
+            if member in blocked:
+                bucket[member] = {"status": NOT_IDENTIFIED,
+                                  "reason": blocked[member]}
+                out["not_identified"].append(member)
+                continue
+            bucket[member] = {"status": NOT_IDENTIFIED, "reason": reason,
+                              "detail": detail}
+            out[bucket_key].append(member)
+
+    if data is None:
+        unavailable(
+            "MASKED_PHASE" if not inputs else "NEAR_FORM_ARM_NOT_AVAILABLE",
+            "§20: the tier fit reads A's group and has no masked-phase value"
+            if not inputs else
+            "§11.8's secondary fit needs the three near-form controls; "
+            "without them the tier indicator does not vary and gamma is not "
+            "identified",
+            "not_computable")
+        return
+    # One fit per replicate, shared by the five members. `bootstrap_family`
+    # gives every member of a family the SAME index draw and calls them in
+    # sequence, so a one-entry cache keyed by that draw turns five refits per
+    # replicate into one --- without which §17.2's refit-per-replicate rule
+    # costs 100,000 least-squares solves per configuration at 10,000
+    # resamples. The rule is unchanged; only the arithmetic is not repeated.
+    cache: dict[tuple[int, ...], dict[str, object]] = {}
+
+    def fitted(picks: Sequence[int]) -> dict[str, object]:
+        key = tuple(picks)
+        if key not in cache:
+            cache.clear()
+            cache[key] = spectrum.tier_estimate(data, list(picks))
+        return cache[key]
+
+    point = spectrum.tier_estimate(data)
+    if point["degenerate"]:
+        unavailable("TIER_FIT_DEGENERATE", str(point.get("reason")),
+                    "not_identified")
+        return
+    # §11.8 and §15: alpha_f ranges over the three CORE families, and F8's
+    # three intercepts are those three. The index follows the core slot
+    # order, so alpha_j and Delta_j name the same reference.
+    core_families = [data.base.family_of[slot] for slot in C.CORE_SLOTS
+                     if slot in data.base.family_of]
+    intercepts = dict(point["intercepts"])
+    values: dict[str, Any] = {"beta": ("beta", None),
+                              "gamma_tier": ("gamma", None)}
+    for index, family in enumerate(core_families, start=1):
+        values[f"alpha_{index}"] = ("intercepts", family)
+    for member in members:
+        if member in set(withheld):
+            bucket[member] = {"status": NOT_IDENTIFIED,
+                              "reason": "MASKED_PHASE",
+                              "detail": "§20: the fit's coefficients are "
+                                        "post-unmasking"}
+            out["not_computable"].append(member)
+            continue
+        if member in blocked:
+            bucket[member] = {"status": NOT_IDENTIFIED,
+                              "reason": blocked[member]}
+            out["not_identified"].append(member)
+            continue
+        spec = values.get(member)
+        if spec is None or (spec[0] == "intercepts"
+                            and spec[1] not in intercepts):
+            bucket[member] = {
+                "status": NOT_IDENTIFIED,
+                "reason": "the admitted design supplies no core family for "
+                          "this intercept"}
+            out["not_computable"].append(member)
+            continue
+        key, family = spec
+        value = (intercepts[family] if key == "intercepts" else point[key])
+
+        def _refit(picks, _key=key, _family=family):
+            replicate = fitted(picks)
+            if replicate["degenerate"]:
+                raise ProtocolError(str(replicate.get("reason")))
+            return float(replicate["intercepts"][_family]
+                         if _key == "intercepts" else replicate[_key])
+
+        bucket[member] = {
+            "status": "IDENTIFIED", "n_blocks": len(data.base.blocks),
+            "point": float(value),
+            "n_points": point["n_points"],
+            "formulation": point["formulation"],
+            "adopted_formulation": point["adopted"],
+            "core_family": family,
+            "refit_per_replicate": True,
+            "_vector": _refit,
+        }
+
+
 def _intervals(estimates: Mapping[str, Any], *, seed: int, resamples: int,
                n_blocks: int) -> dict[str, Any]:
     """Simultaneous intervals per §15 family, one index draw per replicate."""
@@ -342,13 +702,31 @@ def _intervals(estimates: Mapping[str, Any], *, seed: int, resamples: int,
                       else estimates["configurations"][configuration])
             usable = {m: bucket[m]["_vector"] for m in members
                       if m in bucket and "_vector" in bucket[m]}
+            key = f"{family}:{configuration or 'cross'}"
             if not usable:
+                # A family with no computable member has no simultaneous
+                # interval, and that has to be *said*. Four families were
+                # skipped here in silence: they reached neither the interval
+                # table nor the not-identified list, so a reader of §31's
+                # table could not tell F8 apart from a family that does not
+                # exist.
+                out[key] = {
+                    "family": family,
+                    "configuration": configuration or "cross",
+                    "interval": None,
+                    "status": NOT_IDENTIFIED,
+                    "members": list(members),
+                    "member_status": {
+                        m: (bucket.get(m, {}).get("status") or "NOT_RECORDED")
+                        for m in members},
+                    "reason": "no member of this family has a computable "
+                              "value in this configuration, so §15's "
+                              "simultaneous interval is not defined for it"}
                 continue
             result = bootstrap_family(usable, seed=seed,
                                       configuration=configuration or "cross",
                                       family=family, n_blocks=n_blocks,
                                       resamples=resamples)
-            key = f"{family}:{configuration or 'cross'}"
             out[key] = {
                 name: {"estimate": member.estimate,
                        "lower": member.simultaneous_lower,
@@ -383,6 +761,10 @@ def _strip_vectors(estimates: Mapping[str, Any]) -> dict[str, Any]:
             list(estimates.get("masked_phase_members_withheld", ())),
         "not_identified": sorted(set(estimates["not_identified"])),
         "not_computable": sorted(set(estimates["not_computable"])),
+        # §11.3, §11.7 and §11.8's agreement checks and what they found. The
+        # record is the only place a reader can see that they ran, and this
+        # function's explicit key list dropped them.
+        "algebraic_form_checks": estimates.get("algebraic_form_checks", {}),
         "intervals": estimates.get("intervals", {}),
     }
 
@@ -567,10 +949,32 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
         seed=seeds.bootstrap_seed("unmasked", tree.model_key),
         resamples=C.BOOTSTRAP_RESAMPLES, slot_families=slot_families)
     result = _strip_vectors(estimates)
+    # §13.8's realised gaps and §13.6's realised interaction drift: two
+    # qualifiers emit_l3 registers and that no caller supplied. Both are
+    # measured quantities already on signed records --- the freeze's core
+    # references carry each reference's iota, and Gate 2.5's interaction
+    # report carries the drift statuses --- so the qualifier attaches when
+    # the registered magnitude is exceeded rather than never.
+    realised_gaps = {
+        entry["slot"]: float(entry["iota"]) - float(freeze["iota_a"])
+        for entry in (freeze.get("core_references") or ())
+        if entry.get("iota") is not None and freeze.get("iota_a") is not None}
+    interaction_drift = [status for status in statuses
+                         if "INTERACTION" in status or "DRIFT" in status]
+    # §3.2's L1 gate, measured rather than asserted: the outcome constraint
+    # of D(B<-A) is B and of D(A<-B) is A, and each has headroom when its
+    # realised solo compliance at the operating point leaves room to fall.
+    headroom = {
+        "D(B<-A)": _has_headroom(freeze.get("solo_compliance_b")),
+        "D(A<-B)": _has_headroom(freeze.get("solo_compliance_a")),
+    }
     statements = _statements(result, statuses=statuses,
                              measurement_basis=freeze["measurement_basis"],
                              near_form_available="NEAR_FORM_ARM_NOT_AVAILABLE"
-                             not in statuses)
+                             not in statuses,
+                             solo_headroom=headroom,
+                             realised_gaps=realised_gaps,
+                             interaction_drift=interaction_drift)
     success = support_stage.methodological_success(
         freeze["support_realised"], gate4_passed=True)
     # §34 D6: the last place an estimate could appear for a member Gate 3C
@@ -595,7 +999,7 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
         "measurement_basis": freeze["measurement_basis"],
         "scope_sentence": C.SCOPE_SENTENCE,
         "analysis_code_hash": analysis_code_hash(),
-        "projection_audit": [],
+        "projection_audit": _projection_audit(table),
         "spectrum_families": slot_families,
         "not_identified_is_not_zero":
             "a quantity the design does not identify is recorded "
@@ -604,10 +1008,152 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
     }
 
 
+def _has_headroom(solo_compliance: float | None) -> bool:
+    """§12: has the outcome constraint room to fall under composition?
+
+    True when the realised solo compliance is above §13.14's
+    composed-headroom floor: a constraint already at the floor cannot
+    exhibit a loss, and §3.2's L1 gate is a statement about that. A record
+    that does not carry the quantity cannot answer, and the gate is not
+    asserted in its absence.
+    """
+    if solo_compliance is None:
+        return False
+    return float(solo_compliance) > C.COMPOSED_HEADROOM_BAND[0]
+
+
+def _interval(result: Mapping[str, Any], family: str, configuration: str,
+              member: str) -> claims.Interval | None:
+    """One member's simultaneous interval, or None when it has none."""
+    bucket = result.get("intervals", {}).get(f"{family}:{configuration}")
+    if not isinstance(bucket, Mapping):
+        return None
+    entry = bucket.get(member)
+    if not isinstance(entry, Mapping) or entry.get("estimate") is None:
+        return None
+    return claims.Interval(member, entry["estimate"], entry["lower"],
+                           entry["upper"])
+
+
+def _identified(bucket: Mapping[str, Any], member: str) -> bool:
+    entry = bucket.get(member)
+    return bool(entry) and entry.get("status") == "IDENTIFIED"
+
+
+def _vacuity_gate_binds(result: Mapping[str, Any],
+                        configuration: str) -> bool:
+    """§17.4's F6 gate: does any vacuity-rate difference bind?
+
+    "When every vacuity-rate difference is at or below 0.05 or its interval
+    includes zero, the primary estimands are reported without qualification."
+    """
+    bucket = result.get("intervals", {}).get(f"F6:{configuration}")
+    if not isinstance(bucket, Mapping) or bucket.get("interval", "") is None:
+        return False
+    for member, entry in bucket.items():
+        if not isinstance(entry, Mapping) or entry.get("estimate") is None:
+            continue
+        if abs(entry["estimate"]) <= C.F6_VACUITY_GATE:
+            continue
+        if entry["lower"] <= 0.0 <= entry["upper"]:
+            continue
+        return True
+    return False
+
+
+def _heterogeneity_disagrees(result: Mapping[str, Any],
+                             configuration: str) -> bool:
+    """§15 F2's L3 heterogeneity qualifier.
+
+    The three Delta_j intervals do not agree on one side of the threshold
+    used: §11.4's registered smallest effect of interest, which is the
+    threshold every L3 sub-level reads.
+    """
+    sides = set()
+    for index in range(1, len(C.CORE_SLOTS) + 1):
+        interval = _interval(result, "F2", configuration, f"Delta_{index}")
+        if interval is None:
+            return False
+        if interval.lower > C.DELTA_R_GENERIC_THRESHOLD:
+            sides.add("above")
+        elif interval.upper < C.DELTA_R_GENERIC_THRESHOLD:
+            sides.add("below")
+        else:
+            sides.add("straddles")
+    return len(sides) > 1
+
+
+def _projection_audit(table: ObservationTable) -> list[dict[str, Any]]:
+    """§23 and §18 step 17: the realised projection against what happened.
+
+    §13.6 admits a candidate on a **projected** composed compliance
+    ``p_hat_c = kappa(c|B) + iota_c (1 - kappa(c|B))``, formed before any
+    composed cell exists. §31 registers the prospective record of that
+    projection: p_hat_c against the realised composed compliance, per
+    companion per composed cell, with the absolute error. The field existed
+    on both the analysis and the final-report records and was the empty list
+    on every path, so the one registered check on §13.6's admission rule
+    reported nothing.
+    """
+    from dci1v5.stages.calibration_table import instructed_compliance
+
+    audit: list[dict[str, Any]] = []
+    companions = [slot for slot in table.slots() if slot != "B"]
+    for slot in sorted(set(companions)):
+        if not table.has_kappa_under_b(slot):
+            continue
+        try:
+            kappa_b = estimators.counterfactual_chance(table, slot)
+            solo = estimators.solo_vector(table, slot)
+            chance = estimators.chance_vector(table, slot)
+        except (IntegrityError, ProtocolError):
+            continue
+        iota = [instructed_compliance(s, k) for s, k in zip(solo, chance)]
+        projected = estimators.projected_compliance_vector(kappa_b, iota)
+        displacement = estimators.displacement_vector(chance, kappa_b)
+        for configuration in C.CONFIGURATIONS:
+            if not table.has_composed(slot, "B", configuration):
+                continue
+            realised = estimators.composed_vector(table, slot, "B",
+                                                  configuration)
+            errors = [abs(p - r) for p, r in zip(projected, realised)]
+            errors_sorted = sorted(errors)
+            audit.append({
+                "companion": slot, "configuration": configuration,
+                "cell": f"pair:B+{slot}",
+                "projected_mean": sum(projected) / len(projected),
+                "realised_mean": sum(realised) / len(realised),
+                "displacement_mean": (sum(displacement)
+                                      / len(displacement)),
+                "absolute_error_mean": sum(errors) / len(errors),
+                "absolute_error_median":
+                    errors_sorted[len(errors_sorted) // 2],
+                "absolute_error_max": max(errors),
+                "n_blocks": len(errors),
+                "allowance": C.PROJECTION_ERROR_ALLOWANCE,
+                "within_allowance": (sum(errors) / len(errors)
+                                     <= C.PROJECTION_ERROR_ALLOWANCE),
+                "reading": "§13.6's projection is an ADMISSION quantity and "
+                           "this is its prospective record; it licenses no "
+                           "claim and revises no admission",
+            })
+    return audit
+
+
 def _statements(result: Mapping[str, Any], *, statuses: Sequence[str],
-                measurement_basis: str, near_form_available: bool
+                measurement_basis: str, near_form_available: bool,
+                solo_headroom: Mapping[str, bool] | None = None,
+                realised_gaps: Mapping[str, float] | None = None,
+                interaction_drift: Sequence[str] = ()
                 ) -> list[dict[str, Any]]:
-    """§17.5's guarded emitters, applied per configuration.
+    """§17.5's guarded emitters, applied per configuration, in §18's order.
+
+    Only ``emit_l1`` had a production caller: L2, L3, L4a and L4b were
+    implemented, tested and unreachable, so the lifecycle could not emit
+    Delta_R's claim --- the study's central registered question --- on any
+    data. Each emitter is called here with the inputs §3.2 and §17 register
+    for it, and each still enforces its own preconditions: a caller now
+    exists, and nothing about what licenses a claim changed.
 
     An estimand the design did not identify never reaches an emitter: the
     emitter is guarded, but a guard that is only ever reached with a real
@@ -615,22 +1161,114 @@ def _statements(result: Mapping[str, Any], *, statuses: Sequence[str],
     members were withheld rather than leaving the reader to notice.
     """
     out: list[dict[str, Any]] = []
+    references_identified = (
+        "REFERENCE_SUPPORT_NOT_IDENTIFIED" not in set(statuses)
+        and "EXCESS_NOT_IDENTIFIED" not in set(statuses))
+    classifications: dict[str, dict[str, str | None]] = {
+        member: {} for member in claims.LEVEL_MEMBERS["L4a"]}
+
     for configuration, bucket in result["configurations"].items():
-        entry = bucket.get("D(B<-A)")
-        intervals = result.get("intervals", {}).get(f"F1:{configuration}", {})
-        if not entry or entry.get("status") != "IDENTIFIED":
-            continue
-        interval = intervals.get("D(B<-A)")
-        if interval is None:
-            continue
         position = 1 if configuration == C.OUTCOME_FIRST else 2
-        out.append(claims.emit_l1(
-            configuration=configuration, cell="pair:A+B",
-            outcome_position=position, measurement_basis=measurement_basis,
-            member="D(B<-A)",
-            interval=claims.Interval("D(B<-A)", interval["estimate"],
-                                     interval["lower"], interval["upper"]),
-            solo_headroom=True))
+        gate_binds = _vacuity_gate_binds(result, configuration)
+        reached: dict[str, str | None] = {
+            member: None for member in claims.LEVEL_MEMBERS["L4a"]}
+
+        # ------------------------------------------------------------- L1
+        l1_licensed: dict[str, bool] = {}
+        for member in claims.LEVEL_MEMBERS["L1"]:
+            interval = _interval(result, "F1", configuration, member)
+            if not _identified(bucket, member) or interval is None:
+                l1_licensed[member] = False
+                continue
+            forced = _interval(result, "F5", configuration,
+                               f"{member}|vacuity_forced")
+            statement = claims.emit_l1(
+                configuration=configuration, cell="pair:A+B",
+                outcome_position=position,
+                measurement_basis=measurement_basis, member=member,
+                interval=interval,
+                solo_headroom=(solo_headroom or {}).get(member, True),
+                identification_statuses=statuses,
+                vacuity_forced=forced, vacuity_gate_binds=gate_binds)
+            out.append(statement)
+            l1_licensed[member] = bool(statement.get("emitted"))
+            if statement.get("emitted"):
+                reached[member] = "L1"
+
+        # ------------------------------------------------------------- L2
+        interval = _interval(result, "F1", configuration, "Lambda")
+        if _identified(bucket, "Lambda") and interval is not None:
+            statement = claims.emit_l2(
+                configuration=configuration, cell="pair:A+B",
+                outcome_position=position,
+                measurement_basis=measurement_basis, interval=interval,
+                l1_licensed=l1_licensed, identification_statuses=statuses,
+                vacuity_forced=_interval(result, "F5", configuration,
+                                         "Lambda|vacuity_forced"),
+                vacuity_gate_binds=gate_binds)
+            out.append(statement)
+            if statement.get("emitted"):
+                reached["Lambda"] = "L2"
+
+        # ------------------------------------------------------------- L3
+        delta_r = _interval(result, "F1", configuration, "Delta_R")
+        delta_difficulty = _interval(result, "F1", configuration,
+                                     "delta_difficulty")
+        xi = _interval(result, "F1", configuration, "Xi")
+        support = (bucket.get("delta_difficulty") or {}).get("support") or {}
+        # §17.6 row 5: when the difficulty support fails, "the local reading
+        # stands alone with that status --- L3a/L3b/L3c only". delta_r and Xi
+        # are what L3 needs; delta_difficulty may be absent, and the emitter
+        # reads its absence as the registered row rather than as a reason to
+        # emit nothing. §8.1 registers exactly this: a replication that cannot
+        # identify the spectrum still estimates Delta_R, Delta_j and Xi.
+        if delta_r is not None and xi is not None:
+            forced_r = _interval(result, "F5", configuration,
+                                 "Delta_R|vacuity_forced")
+            l3 = claims.emit_l3(
+                configuration=configuration, cell="pair:A+B",
+                outcome_position=position,
+                measurement_basis=measurement_basis, delta_r=delta_r,
+                delta_difficulty=delta_difficulty, xi=xi, support=support,
+                references_identified=references_identified,
+                delta_near=_interval(result, "F9", configuration,
+                                     "Delta_near"),
+                near_form_available=near_form_available,
+                heterogeneity_disagrees=_heterogeneity_disagrees(
+                    result, configuration),
+                realised_gaps=realised_gaps,
+                interaction_drift=interaction_drift,
+                vacuity_forced_agrees=claims.l3_vacuity_agrees(
+                    delta_r, forced_r))
+            out.extend(l3)
+            for statement in l3:
+                if not statement.get("emitted"):
+                    continue
+                level = statement["claim_level"]
+                member = claims.LEVEL_MEMBERS.get(level, ("",))[0]
+                if member in reached:
+                    reached[member] = level
+        classifications = {
+            member: {**classifications[member], configuration: reached[member]}
+            for member in classifications}
+
+    # -------------------------------------------------------------- L4a
+    out.append(claims.emit_l4a(per_member=classifications,
+                               measurement_basis=measurement_basis,
+                               identification_statuses=statuses))
+
+    # -------------------------------------------------------------- L4b
+    analysed = set(result["configurations"]) == set(C.CONFIGURATIONS)
+    cross = result.get("cross_configuration", {})
+    for member in claims.LEVEL_MEMBERS["L4b"]:
+        interval = _interval(result, "F11", "cross", member)
+        if not _identified(cross, member) or interval is None:
+            continue
+        out.append(claims.emit_l4b(
+            member=member, interval=interval,
+            measurement_basis=measurement_basis,
+            both_configurations_analysed=analysed,
+            identification_statuses=statuses))
     return out
 
 
@@ -698,6 +1336,82 @@ def final_report_payload(tree: ModelTree, *, producing_commit: str,
     }
 
 
+#: §31's per-row claim level: the level a member's estimate **is registered
+#: to**, from §3.2's ladder. Every per-configuration row carried "L1" and
+#: every cross row carried "L4b", so F4's matrix components and F2's
+#: companion losses were released as L1 estimates. A member registered to no
+#: level is Secondary in §15's own word, and so is a member registered to a
+#: level it did not reach: the row's claim level is what the emitted
+#: statements say it reached, and `None` where they say nothing. That is a
+#: fact about the estimate, not a missing field. This map records which level
+#: each member is REGISTERED to, which is a different statement and is what
+#: the emitters enforce.
+CLAIM_LEVEL_OF_MEMBER: dict[str, str] = {
+    "D(B<-A)": "L1", "D(A<-B)": "L1", "Lambda": "L2",
+    "Delta_R": "L3", "delta_difficulty": "L3",
+    **{member: "L4b" for member in C.FAMILY_MEMBERS["F11"]},
+}
+
+
+def _levels_reached(statements: Sequence[Mapping[str, Any]]
+                    ) -> dict[tuple[str, str], str]:
+    """The level each member actually reached, per configuration.
+
+    §31 releases each estimate **with its claim level**, and the level a
+    member reached is a result of the run --- L3a and L3c are different
+    findings about the same member. It is read off the emitted statements
+    rather than mapped from the member name, so the table and the statements
+    cannot disagree.
+    """
+    out: dict[tuple[str, str], str] = {}
+    for statement in statements:
+        if not statement.get("emitted"):
+            continue
+        level = statement.get("claim_level")
+        if level not in C.CLAIM_LEVELS:
+            continue
+        members = ([statement["member"]] if statement.get("member")
+                   else list(claims.LEVEL_MEMBERS.get(level, ())))
+        for configuration in str(statement.get("configuration", "")).split(
+                "|") or [""]:
+            for member in members:
+                out[(member, configuration)] = level
+    return out
+
+
+def _pair(slots: Sequence[str]) -> str:
+    """A composed cell's name, in §8.4's registered slot order, so that
+    D(R1<-A) and D(A<-R1) name the one cell they were both read from."""
+    order = {slot: index
+             for index, slot in enumerate(C.REGISTERED_SLOT_ORDER)}
+    return "pair:" + "+".join(sorted(slots,
+                                     key=lambda s: (order.get(s, 99), s)))
+
+
+def _cell_of_member(member: str) -> str:
+    """§17.5's cell: the composed cell the member's composed term was read
+    from, not the primary pair for every row in the table."""
+    # F6's `|` is the conditional bar inside `vac(B|B+R1)` and F5's separates
+    # a member from its variant. The vacuity names are matched whole, before
+    # anything splits on the bar.
+    if member.startswith("vac(B|B+") and member.endswith(")-vac(B solo)"):
+        return _pair(["B", member[len("vac(B|B+"):-len(")-vac(B solo)")]])
+    if member.startswith("vac(B|A+B)"):
+        return _pair(["A", "B"])
+    stem = member.split("|", 1)[0]
+    if stem.startswith("D(") and "<-" in stem and stem.endswith(")"):
+        outcome, _, companion = stem[2:-1].partition("<-")
+        if "Rbar" in (outcome, companion):
+            other = companion if outcome == "Rbar" else outcome
+            return f"mean over the three pair:{other}+R_j cells"
+        return _pair([outcome, companion])
+    if stem in C.FAMILY_MEMBERS["F11"]:
+        return "cross-configuration composed pair"
+    if stem in ("beta", "alpha_1", "alpha_2", "alpha_3", "gamma_tier"):
+        return "the §11.8 fit over the composed cells of the ladder"
+    return "contrast over the composed cells of the admitted arms"
+
+
 def _report_rows(tree: ModelTree, analysis: Mapping[str, Any],
                  freeze_record: Mapping[str, Any],
                  analysis_hash: str) -> list[dict[str, Any]]:
@@ -748,7 +1462,7 @@ def _report_rows(tree: ModelTree, analysis: Mapping[str, Any],
             claims.precondition_key(member))
         return {
             "member": member, "configuration": configuration,
-            "cell": "pair:A+B", "claim_level": claim_level,
+            "cell": _cell_of_member(member), "claim_level": claim_level,
             "family": family,
             "identification_status": (entry.get("reason")
                                       if entry["status"] == NOT_IDENTIFIED
@@ -785,13 +1499,18 @@ def _report_rows(tree: ModelTree, analysis: Mapping[str, Any],
             "stage_record_hash": analysis_hash,
             "freeze_hash": freeze_record["freeze_hash"]}
 
+    reached = _levels_reached(analysis.get("statements") or ())
     for configuration, bucket in estimands["configurations"].items():
         for member, entry in sorted(bucket.items()):
-            rows.append(row(member, configuration, "L1", entry,
-                            family_of.get(member, "unassigned")))
+            rows.append(row(
+                member, configuration,
+                reached.get((member, configuration)),
+                entry, family_of.get(member, "unassigned")))
     for member, entry in sorted(estimands["cross_configuration"].items()):
-        rows.append(row(member, "cross", "L4b", entry,
-                        family_of.get(member, "F11")))
+        rows.append(row(
+            member, "cross",
+            reached.get((member, "cross")),
+            entry, family_of.get(member, "F11")))
     return rows
 
 

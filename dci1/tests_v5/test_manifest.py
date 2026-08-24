@@ -14,6 +14,15 @@ from dci1v5.protocol import manifest
 REPO = registered_context().repo_root
 
 
+@pytest.fixture(autouse=True)
+def _u4(u4_named_for_testing):
+    """§18 stage 1 refuses while U4 is open, which is the point of U4 and is
+    asserted by `test_the_signature_is_refused_while_u4_is_open` below. Every
+    other test here is about what the manifest BINDS, so it runs under a
+    named formulation."""
+    return u4_named_for_testing
+
+
 def _manifest():
     return manifest.build_manifest(registered_context(),
                                    producing_commit="0" * 40,
@@ -21,7 +30,23 @@ def _manifest():
                                    repo_root=REPO)
 
 
-def test_nothing_blocks_the_signature_any_more():
+def test_the_signature_is_refused_while_u4_is_open(restore_open_items):
+    """§18 stage 1's fifth refusal, live: an unresolved specification question.
+
+    A4 opened U4 --- §12.6 makes eligibility "§13's band on iota" and §13
+    bands p_solo --- and until a researcher resolves it the manifest is
+    refused, so no replication can begin Gate 0 under a rule nobody took.
+    """
+    restore_open_items.reopen_all_for_testing()
+    assert restore_open_items.blocking_items() == ("U4",)
+    blockers = manifest.signing_blockers()
+    kinds = {b["kind"] if isinstance(b, dict) else b.kind for b in blockers}
+    assert "UNRESOLVED_SPECIFICATION" in kinds, blockers
+    with pytest.raises(ProtocolError):
+        manifest.assert_signable()
+
+
+def test_nothing_else_blocks_the_signature():
     """The shape the refusals were built for, run to its end.
 
     Every one of them names a thing somebody has to do, and every one has

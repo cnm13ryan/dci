@@ -18,9 +18,12 @@ the pipeline never put there.
 
 ## Summary
 
-- **98 fields** across **17 artifacts**, of which 95 are required.
-- **98 exercised** by the synthetic lifecycle; 0 not reached.
+- **110 fields** across **17 artifacts**, of which 104 are required.
+- **110 exercised** by the synthetic lifecycle; 0 not reached.
 - Defects: **0** (clean).
+- Checked against real payloads: **327** (110 field-presence, 217 consumption, 4 semantic).
+- Relayed reads (the consumer read the value from a later record that carries it): **18**.
+- Declared readers with no observed read: **83** --- reported, not failed; see below for what that can and cannot mean.
 - Stages walked: 18 of 18.
 
 ## Per-artifact counts
@@ -31,8 +34,8 @@ the pipeline never put there.
 | `GATE_0_APPARATUS` | 2 | 1 | 2 |
 | `GATE_1_MEASUREMENT` | 5 | 5 | 5 |
 | `GATE_2_5_CANDIDATE_QUALIFICATION` | 6 | 6 | 6 |
-| `GATE_2_FOCAL_CALIBRATION` | 9 | 9 | 9 |
-| `GATE_3A_REFERENCE_CALIBRATION` | 5 | 5 | 5 |
+| `GATE_2_FOCAL_CALIBRATION` | 18 | 17 | 18 |
+| `GATE_3A_REFERENCE_CALIBRATION` | 6 | 5 | 6 |
 | `GATE_3B_REFERENCE_SELECTION` | 3 | 3 | 3 |
 | `GATE_3C_IDENTIFICATION` | 8 | 8 | 8 |
 | `GATE_4_COMPOSED_HEADROOM` | 7 | 7 | 7 |
@@ -41,9 +44,184 @@ the pipeline never put there.
 | `PREFREEZE_AUDIT` | 3 | 3 | 3 |
 | `PROTOCOL_REGISTERED` | 12 | 12 | 12 |
 | `QUALIFIED` | 4 | 4 | 4 |
-| `REGIME_SCREEN` | 8 | 7 | 8 |
+| `REGIME_SCREEN` | 10 | 8 | 10 |
 | `UNMASKED_ANALYSIS` | 5 | 4 | 5 |
 | `UNMASKING` | 3 | 3 | 3 |
+
+### Declared readers with no observed read
+
+Each of these is one of two things and this audit cannot yet tell them apart: a declaration with nothing behind it, or a registered rule that is not on the path. The tracker observes **top-level** keys, so a value a stage takes from inside a nested block --- `freeze["derived_cell_count"]` rather than the record's own `cells_per_block` --- reads as unconsumed here even though the value reached it.
+
+What this list is *not* is the V5-E6 shape. A consumer reaching for a neighbouring field is an `UNDECLARED_READ` and a population that does not match its registered definition is a semantic mismatch; both are defects and both fail.
+
+| artifact | field | declared reader |
+|---|---|---|
+| `PROTOCOL_REGISTERED` | `manifest_hash` | `QUALIFIED` |
+| `PROTOCOL_REGISTERED` | `manifest_hash` | `GATE_5_FREEZE` |
+| `PROTOCOL_REGISTERED` | `calibration_a_hash` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `PROTOCOL_REGISTERED` | `calibration_a_hash` | `GATE_5_FREEZE` |
+| `PROTOCOL_REGISTERED` | `calibration_b_hash` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `PROTOCOL_REGISTERED` | `calibration_b_hash` | `GATE_5_FREEZE` |
+| `PROTOCOL_REGISTERED` | `split_hash` | `GATE_5_FREEZE` |
+| `PROTOCOL_REGISTERED` | `models` | `GATE_5_FREEZE` |
+| `PROTOCOL_REGISTERED` | `measurement_basis` | `GATE_1_MEASUREMENT` |
+| `PROTOCOL_REGISTERED` | `measurement_basis` | `UNMASKED_ANALYSIS` |
+| `QUALIFIED` | `canonical_verifier_hash` | `GATE_1_MEASUREMENT` |
+| `QUALIFIED` | `instrument_population` | `GATE_1_MEASUREMENT` |
+| `QUALIFIED` | `topic_split_identity` | `GATE_2_FOCAL_CALIBRATION` |
+| `QUALIFIED` | `topic_split_identity` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `REGIME_SCREEN` | `selected_cap` | `GATE_4_COMPOSED_HEADROOM` |
+| `REGIME_SCREEN` | `selected_cap` | `CONFIRMATORY_GENERATION` |
+| `REGIME_SCREEN` | `carried_set` | `GATE_2_5_CANDIDATE_QUALIFICATION` |
+| `REGIME_SCREEN` | `carried_set` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `REGIME_SCREEN` | `carried_set` | `GATE_5_FREEZE` |
+| `REGIME_SCREEN` | `difficulty_table` | `GATE_2_5_CANDIDATE_QUALIFICATION` |
+| `REGIME_SCREEN` | `difficulty_table` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `REGIME_SCREEN` | `vocabulary_frozen` | `GATE_5_FREEZE` |
+| `REGIME_SCREEN` | `coverage` | `GATE_5_FREEZE` |
+| `REGIME_SCREEN` | `calibration_priority` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `REGIME_SCREEN` | `expansion` | `GATE_5_FREEZE` |
+| `GATE_1_MEASUREMENT` | `measurement_basis` | `UNMASKED_ANALYSIS` |
+| `GATE_1_MEASUREMENT` | `measurement_basis` | `FINAL_REPORT` |
+| `GATE_1_MEASUREMENT` | `scope_sentence` | `UNMASKED_ANALYSIS` |
+| `GATE_1_MEASUREMENT` | `scope_sentence` | `FINAL_REPORT` |
+| `GATE_1_MEASUREMENT` | `instrument_population` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `n_star` | `GATE_2_5_CANDIDATE_QUALIFICATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `n_star` | `GATE_3B_REFERENCE_SELECTION` |
+| `GATE_2_FOCAL_CALIBRATION` | `n_star` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_2_FOCAL_CALIBRATION` | `n_star` | `CONFIRMATORY_GENERATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `m_star` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_2_FOCAL_CALIBRATION` | `m_star` | `CONFIRMATORY_GENERATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `chance_curves` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `solo_curves` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `calibration_binding` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `calibration_binding` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `calibration_population` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `adequacy` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `grid_resolution` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `focal_extension_measured` | `GATE_5_FREEZE` |
+| `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualification` | `GATE_5_FREEZE` |
+| `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualified_families` | `GATE_5_FREEZE` |
+| `GATE_2_5_CANDIDATE_QUALIFICATION` | `interaction` | `GATE_3B_REFERENCE_SELECTION` |
+| `GATE_2_5_CANDIDATE_QUALIFICATION` | `interaction` | `GATE_5_FREEZE` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `m_star` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `stability` | `GATE_5_FREEZE` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `calibration_b_population` | `GATE_5_FREEZE` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `iota_a_stability` | `GATE_5_FREEZE` |
+| `GATE_3B_REFERENCE_SELECTION` | `selection` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3B_REFERENCE_SELECTION` | `selection` | `CONFIRMATORY_GENERATION` |
+| `GATE_3C_IDENTIFICATION` | `admitted_arms` | `UNMASKED_ANALYSIS` |
+| `GATE_3C_IDENTIFICATION` | `derived_cell_count` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3C_IDENTIFICATION` | `slots` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3C_IDENTIFICATION` | `slots` | `CONFIRMATORY_GENERATION` |
+| `GATE_3C_IDENTIFICATION` | `identification_statuses` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3C_IDENTIFICATION` | `support` | `FINAL_REPORT` |
+| `GATE_3C_IDENTIFICATION` | `m_star` | `GATE_4_COMPOSED_HEADROOM` |
+| `GATE_3C_IDENTIFICATION` | `not_identified_members` | `GATE_5_FREEZE` |
+| `GATE_4_COMPOSED_HEADROOM` | `headroom_table` | `GATE_5_FREEZE` |
+| `PREFREEZE_AUDIT` | `artifact_checks` | `GATE_5_FREEZE` |
+| `PREFREEZE_AUDIT` | `checklist` | `GATE_5_FREEZE` |
+| `GATE_5_FREEZE` | `freeze` | `UNMASKING` |
+| `GATE_5_FREEZE` | `blocks` | `CONFIRMATORY_GENERATION` |
+| `GATE_5_FREEZE` | `cells_per_block` | `CONFIRMATORY_GENERATION` |
+| `GATE_5_FREEZE` | `M` | `CONFIRMATORY_GENERATION` |
+| `GATE_5_FREEZE` | `M` | `MASKED_ANALYSIS` |
+| `GATE_5_FREEZE` | `M` | `UNMASKED_ANALYSIS` |
+| `GATE_5_FREEZE` | `admitted_arms` | `UNMASKED_ANALYSIS` |
+| `GATE_5_FREEZE` | `selected_cap` | `CONFIRMATORY_GENERATION` |
+| `CONFIRMATORY_GENERATION` | `rows_path` | `MASKED_ANALYSIS` |
+| `CONFIRMATORY_GENERATION` | `n_rows` | `UNMASKED_ANALYSIS` |
+| `CONFIRMATORY_GENERATION` | `completeness` | `MASKED_ANALYSIS` |
+| `CONFIRMATORY_GENERATION` | `completeness` | `FINAL_REPORT` |
+| `MASKED_ANALYSIS` | `mask_namespace` | `UNMASKING` |
+| `MASKED_ANALYSIS` | `masked_result_hash` | `UNMASKED_ANALYSIS` |
+| `MASKED_ANALYSIS` | `analysis_code_hash` | `UNMASKED_ANALYSIS` |
+| `MASKED_ANALYSIS` | `sealed` | `UNMASKING` |
+| `UNMASKING` | `mask_key_hash` | `UNMASKED_ANALYSIS` |
+| `UNMASKING` | `unmask_event` | `UNMASKED_ANALYSIS` |
+
+
+### Relayed reads
+
+The declared consumer read the value from a record that relays it rather than from the producer's own. That satisfies the declaration --- §18's later stages copy n*, m*, the arm set and the identification statuses forward --- and it is listed because each relay is a place a value could change with nothing comparing the two.
+
+| artifact | field | consumer | read via |
+|---|---|---|---|
+| `PROTOCOL_REGISTERED` | `measurement_basis` | `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` |
+| `REGIME_SCREEN` | `identification_statuses` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION`, `GATE_3C_IDENTIFICATION` |
+| `GATE_1_MEASUREMENT` | `canonical_verifier_hash` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` |
+| `GATE_2_FOCAL_CALIBRATION` | `m_star` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `m_star` | `GATE_3B_REFERENCE_SELECTION` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `iota_a` | `GATE_3B_REFERENCE_SELECTION` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `iota_a` | `GATE_5_FREEZE` | `GATE_3B_REFERENCE_SELECTION` |
+| `GATE_2_FOCAL_CALIBRATION` | `solo_compliance_a` | `GATE_3B_REFERENCE_SELECTION` | `GATE_3A_REFERENCE_CALIBRATION` |
+| `GATE_2_FOCAL_CALIBRATION` | `identification_statuses` | `GATE_3C_IDENTIFICATION` | `REGIME_SCREEN` |
+| `GATE_2_FOCAL_CALIBRATION` | `identification_statuses` | `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` |
+| `GATE_3C_IDENTIFICATION` | `admitted_arms` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` |
+| `GATE_3C_IDENTIFICATION` | `admitted_arms` | `FINAL_REPORT` | `GATE_5_FREEZE` |
+| `GATE_3C_IDENTIFICATION` | `derived_cell_count` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` |
+| `GATE_3C_IDENTIFICATION` | `identification_statuses` | `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` |
+| `GATE_3C_IDENTIFICATION` | `m_star` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` |
+| `GATE_4_COMPOSED_HEADROOM` | `admitted_arms` | `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` |
+| `CONFIRMATORY_GENERATION` | `freeze_hash` | `MASKED_ANALYSIS` | `GATE_5_FREEZE` |
+| `CONFIRMATORY_GENERATION` | `freeze_hash` | `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` |
+
+
+## Observed consumption
+
+Which fields each stage actually read while the lifecycle ran. A declared reader that reads nothing is a declaration with nothing behind it; a read the contract does not declare is the shape V5-E6 had.
+
+| reader | artifact | fields read |
+|---|---|---|
+| `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | `admitted_arms`, `canonical_verifier_hash`, `derived_cell_count`, `freeze`, `freeze_hash`, `m_draws`, `n_blocks`, `slot_map` |
+| `CONFIRMATORY_GENERATION` | `PROTOCOL_REGISTERED` | `manifest_hash` |
+| `FINAL_REPORT` | `CONFIRMATORY_GENERATION` | `blocks`, `cells_per_block`, `draws`, `n_rows` |
+| `FINAL_REPORT` | `GATE_3C_IDENTIFICATION` | `identification_statuses`, `non_identification` |
+| `FINAL_REPORT` | `GATE_4_COMPOSED_HEADROOM` | `declared_refusals`, `outcome` |
+| `FINAL_REPORT` | `GATE_5_FREEZE` | `admitted_arms`, `freeze`, `freeze_hash`, `identification_statuses`, `non_identification` |
+| `FINAL_REPORT` | `PREFREEZE_AUDIT` | `checklist` |
+| `FINAL_REPORT` | `UNMASKED_ANALYSIS` | `estimands`, `identification_statuses`, `projection_audit`, `statements`, `success_criterion` |
+| `FINAL_REPORT` | `UNMASKING` | `analysis_code_hash`, `unmask_event`, `unmasked` |
+| `GATE_0_APPARATUS` | `PROTOCOL_REGISTERED` | `manifest_hash` |
+| `GATE_1_MEASUREMENT` | `REGIME_SCREEN` | `n_carried`, `outcome`, `selected_cap` |
+| `GATE_2_5_CANDIDATE_QUALIFICATION` | `GATE_2_FOCAL_CALIBRATION` | `calibration_rows`, `m_star` |
+| `GATE_2_FOCAL_CALIBRATION` | `PROTOCOL_REGISTERED` | `manifest_hash` |
+| `GATE_2_FOCAL_CALIBRATION` | `REGIME_SCREEN` | `calibration_priority`, `carried_set`, `n_carried`, `selected_cap` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `m_star`, `qualified_pool` |
+| `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_FOCAL_CALIBRATION` | `a_per_topic_by_split`, `calibration_rows`, `iota_a`, `iota_a_by_split`, `solo_a_by_split`, `solo_compliance_a` |
+| `GATE_3B_REFERENCE_SELECTION` | `GATE_3A_REFERENCE_CALIBRATION` | `iota_a`, `m_star`, `pooled_table`, `solo_compliance_a`, `stability` |
+| `GATE_3C_IDENTIFICATION` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualified_families` |
+| `GATE_3C_IDENTIFICATION` | `GATE_3B_REFERENCE_SELECTION` | `m_star`, `selection`, `slot_map` |
+| `GATE_3C_IDENTIFICATION` | `REGIME_SCREEN` | `carried_set`, `identification_statuses` |
+| `GATE_4_COMPOSED_HEADROOM` | `GATE_3C_IDENTIFICATION` | `admitted_arms` |
+| `GATE_4_COMPOSED_HEADROOM` | `PROTOCOL_REGISTERED` | `manifest_hash` |
+| `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` | `canonical_verifier_hash`, `measurement_basis`, `wording_hash` |
+| `GATE_5_FREEZE` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `earliest_failing_components`, `qualified_pool` |
+| `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | `focal_selection`, `identification_statuses`, `m_star`, `n_star`, `solo_compliance_a`, `solo_compliance_b`, `target_selection` |
+| `GATE_5_FREEZE` | `GATE_3A_REFERENCE_CALIBRATION` | `split_tables` |
+| `GATE_5_FREEZE` | `GATE_3B_REFERENCE_SELECTION` | `iota_a`, `selection`, `slot_map` |
+| `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` | `admitted_arms`, `derived_cell_count`, `identification_statuses`, `non_identification`, `support` |
+| `GATE_5_FREEZE` | `GATE_4_COMPOSED_HEADROOM` | `failures` |
+| `GATE_5_FREEZE` | `PREFREEZE_AUDIT` | `can_freeze` |
+| `GATE_5_FREEZE` | `PROTOCOL_REGISTERED` | `protocol_hash`, `protocol_version`, `reference_design_spec_hash`, `topic_hashes` |
+| `GATE_5_FREEZE` | `REGIME_SCREEN` | `selected_cap` |
+| `MASKED_ANALYSIS` | `CONFIRMATORY_GENERATION` | `n_rows` |
+| `MASKED_ANALYSIS` | `GATE_5_FREEZE` | `freeze`, `freeze_hash`, `identification_statuses` |
+| `PREFREEZE_AUDIT` | `GATE_0_APPARATUS` | `acceptance`, `study_id`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `GATE_1_MEASUREMENT` | `canonical_verifier_hash`, `instrument_population`, `measurement_basis`, `scope_sentence`, `study_id`, `verifier_hash`, `wording_hash` |
+| `PREFREEZE_AUDIT` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `earliest_failing_components`, `interaction`, `m_star`, `qualification`, `qualified_families`, `qualified_pool`, `study_id`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `GATE_2_FOCAL_CALIBRATION` | `a_per_topic_by_split`, `adequacy`, `calibration_binding`, `calibration_population`, `calibration_rows`, `chance_curves`, `construct_strength`, `focal_extension_measured`, `identification_statuses`, `iota_a`, `iota_a_by_split`, `m_star`, … (19 total) |
+| `PREFREEZE_AUDIT` | `GATE_3A_REFERENCE_CALIBRATION` | `calibration_b_population`, `m_star`, `pooled_table`, `split_tables`, `stability`, `study_id`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `GATE_3B_REFERENCE_SELECTION` | `iota_a`, `m_star`, `selection`, `study_id`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | `admitted_arms`, `derived_cell_count`, `identification_statuses`, `m_star`, `non_identification`, `not_identified_members`, `slots`, `study_id`, `support`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | `admitted_arms`, `declared_refusals`, `expected_rows`, `failures`, `headroom_table`, `n_cell_types`, `outcome`, `rows`, `study_id`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `PROTOCOL_REGISTERED` | `calibration_a_hash`, `calibration_b_hash`, `decisions`, `manifest_hash`, `measurement_basis`, `models`, `open_items`, `protocol_hash`, `protocol_version`, `reference_design_spec_hash`, `split_hash`, `study_id`, … (14 total) |
+| `PREFREEZE_AUDIT` | `QUALIFIED` | `canonical_verifier_hash`, `checks`, `instrument_population`, `study_id`, `topic_split_identity`, `verifier_hash` |
+| `PREFREEZE_AUDIT` | `REGIME_SCREEN` | `calibration_priority`, `carried_set`, `coverage`, `difficulty_table`, `identification_statuses`, `n_carried`, `selected_cap`, `study_id`, `verifier_hash`, `vocabulary_frozen` |
+| `REGIME_SCREEN` | `PROTOCOL_REGISTERED` | `manifest_hash` |
+| `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` | `freeze`, `freeze_hash`, `identification_statuses`, `non_identification`, `slot_map` |
+| `UNMASKED_ANALYSIS` | `UNMASKING` | `unmasked` |
+| `UNMASKING` | `MASKED_ANALYSIS` | `analysis_code_hash`, `masked_result_hash` |
 
 ## The matrix
 
@@ -67,13 +245,15 @@ the pipeline never put there.
 | `QUALIFIED` | `topic_split_identity` | `QUALIFIED` | `GATE_2_FOCAL_CALIBRATION`, `GATE_3A_REFERENCE_CALIBRATION` | `QUALIFIED` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_0_APPARATUS` | `acceptance` | `GATE_0_APPARATUS` | `PREFREEZE_AUDIT` | `GATE_0_APPARATUS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_0_APPARATUS` | `admitted_arms_exercised` | `GATE_0_APPARATUS` | — | `GATE_0_APPARATUS` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `REGIME_SCREEN` | `selected_cap` | `REGIME_SCREEN` | `GATE_2_FOCAL_CALIBRATION`, `GATE_4_COMPOSED_HEADROOM`, `CONFIRMATORY_GENERATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `REGIME_SCREEN` | `carried_set` | `REGIME_SCREEN` | `GATE_2_FOCAL_CALIBRATION`, `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3A_REFERENCE_CALIBRATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `REGIME_SCREEN` | `n_carried` | `REGIME_SCREEN` | `GATE_1_MEASUREMENT`, `PREFREEZE_AUDIT` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `selected_cap` | `REGIME_SCREEN` | `GATE_1_MEASUREMENT`, `GATE_2_FOCAL_CALIBRATION`, `GATE_4_COMPOSED_HEADROOM`, `CONFIRMATORY_GENERATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `carried_set` | `REGIME_SCREEN` | `GATE_2_FOCAL_CALIBRATION`, `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3A_REFERENCE_CALIBRATION`, `GATE_3C_IDENTIFICATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `n_carried` | `REGIME_SCREEN` | `GATE_1_MEASUREMENT`, `GATE_2_FOCAL_CALIBRATION`, `PREFREEZE_AUDIT` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `REGIME_SCREEN` | `difficulty_table` | `REGIME_SCREEN` | `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3A_REFERENCE_CALIBRATION` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `REGIME_SCREEN` | `vocabulary_frozen` | `REGIME_SCREEN` | `PREFREEZE_AUDIT`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `REGIME_SCREEN` | `coverage` | `REGIME_SCREEN` | `GATE_3C_IDENTIFICATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `REGIME_SCREEN` | `calibration_priority` | `REGIME_SCREEN` | `GATE_3A_REFERENCE_CALIBRATION` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `coverage` | `REGIME_SCREEN` | `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `calibration_priority` | `REGIME_SCREEN` | `GATE_2_FOCAL_CALIBRATION`, `GATE_3A_REFERENCE_CALIBRATION` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `expansion` | `REGIME_SCREEN` | `GATE_5_FREEZE` | `REGIME_SCREEN` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `REGIME_SCREEN` | `identification_statuses` | `REGIME_SCREEN` | `GATE_3C_IDENTIFICATION`, `GATE_5_FREEZE` | `REGIME_SCREEN` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `REGIME_SCREEN` | `iota_a_prescreen` | `REGIME_SCREEN` | — | `REGIME_SCREEN` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_1_MEASUREMENT` | `canonical_verifier_hash` | `GATE_1_MEASUREMENT` | `CONFIRMATORY_GENERATION`, `PREFREEZE_AUDIT`, `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_1_MEASUREMENT` | `wording_hash` | `GATE_1_MEASUREMENT` | `PREFREEZE_AUDIT`, `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -82,13 +262,22 @@ the pipeline never put there.
 | `GATE_1_MEASUREMENT` | `instrument_population` | `GATE_1_MEASUREMENT` | `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `n_star` | `GATE_2_FOCAL_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3B_REFERENCE_SELECTION`, `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE`, `CONFIRMATORY_GENERATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `m_star` | `GATE_2_FOCAL_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3A_REFERENCE_CALIBRATION`, `GATE_3B_REFERENCE_SELECTION`, `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE`, `CONFIRMATORY_GENERATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_2_FOCAL_CALIBRATION` | `iota_a` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3B_REFERENCE_SELECTION`, `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_2_FOCAL_CALIBRATION` | `solo_compliance_a` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3B_REFERENCE_SELECTION`, `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `iota_a` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION`, `GATE_3B_REFERENCE_SELECTION`, `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `solo_compliance_a` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION`, `GATE_3B_REFERENCE_SELECTION`, `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `solo_compliance_b` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `chance_curves` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `solo_curves` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_2_FOCAL_CALIBRATION` | `construct_strength` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE`, `FINAL_REPORT` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `construct_strength` | `GATE_2_FOCAL_CALIBRATION` | — | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `identification_statuses` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3C_IDENTIFICATION`, `GATE_5_FREEZE`, `UNMASKED_ANALYSIS` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_FOCAL_CALIBRATION` | `calibration_binding` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION`, `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `calibration_population` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `calibration_rows` | `GATE_2_FOCAL_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION`, `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `adequacy` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `grid_resolution` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `a_per_topic_by_split` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `iota_a_by_split` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `solo_a_by_split` | `GATE_2_FOCAL_CALIBRATION` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_FOCAL_CALIBRATION` | `focal_extension_measured` | `GATE_2_FOCAL_CALIBRATION` | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_5_CANDIDATE_QUALIFICATION` | `m_star` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_2_5_CANDIDATE_QUALIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualification` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `GATE_5_FREEZE` | `GATE_2_5_CANDIDATE_QUALIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualified_pool` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `GATE_3A_REFERENCE_CALIBRATION`, `GATE_5_FREEZE` | `GATE_2_5_CANDIDATE_QUALIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -100,6 +289,7 @@ the pipeline never put there.
 | `GATE_3A_REFERENCE_CALIBRATION` | `stability` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_3B_REFERENCE_SELECTION`, `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_3A_REFERENCE_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3A_REFERENCE_CALIBRATION` | `split_tables` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_3A_REFERENCE_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3A_REFERENCE_CALIBRATION` | `calibration_b_population` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_5_FREEZE` | `GATE_3A_REFERENCE_CALIBRATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_3A_REFERENCE_CALIBRATION` | `iota_a_stability` | `GATE_3A_REFERENCE_CALIBRATION` | `GATE_5_FREEZE` | `GATE_3A_REFERENCE_CALIBRATION` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3B_REFERENCE_SELECTION` | `m_star` | `GATE_3B_REFERENCE_SELECTION` | `GATE_3C_IDENTIFICATION` | `GATE_3B_REFERENCE_SELECTION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3B_REFERENCE_SELECTION` | `selection` | `GATE_3B_REFERENCE_SELECTION` | `GATE_3C_IDENTIFICATION`, `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE`, `PREFREEZE_AUDIT`, `CONFIRMATORY_GENERATION` | `GATE_3B_REFERENCE_SELECTION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3B_REFERENCE_SELECTION` | `iota_a` | `GATE_3B_REFERENCE_SELECTION` | `GATE_5_FREEZE` | `GATE_3B_REFERENCE_SELECTION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -109,7 +299,7 @@ the pipeline never put there.
 | `GATE_3C_IDENTIFICATION` | `identification_statuses` | `GATE_3C_IDENTIFICATION` | `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE`, `UNMASKED_ANALYSIS`, `FINAL_REPORT`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3C_IDENTIFICATION` | `support` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE`, `FINAL_REPORT`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3C_IDENTIFICATION` | `m_star` | `GATE_3C_IDENTIFICATION` | `GATE_4_COMPOSED_HEADROOM`, `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_3C_IDENTIFICATION` | `non_identification` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_3C_IDENTIFICATION` | `non_identification` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE`, `FINAL_REPORT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_3C_IDENTIFICATION` | `not_identified_members` | `GATE_3C_IDENTIFICATION` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_3C_IDENTIFICATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_4_COMPOSED_HEADROOM` | `headroom_table` | `GATE_4_COMPOSED_HEADROOM` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_4_COMPOSED_HEADROOM` | `admitted_arms` | `GATE_4_COMPOSED_HEADROOM` | `GATE_5_FREEZE`, `PREFREEZE_AUDIT` | `GATE_4_COMPOSED_HEADROOM` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -126,9 +316,9 @@ the pipeline never put there.
 | `GATE_5_FREEZE` | `blocks` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `cells_per_block` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `M` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION`, `MASKED_ANALYSIS`, `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_5_FREEZE` | `slot_map` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_5_FREEZE` | `slot_map` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION`, `UNMASKED_ANALYSIS` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `admitted_arms` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION`, `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `GATE_5_FREEZE` | `identification_statuses` | `GATE_5_FREEZE` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_5_FREEZE` | `identification_statuses` | `GATE_5_FREEZE` | `MASKED_ANALYSIS`, `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `non_identification` | `GATE_5_FREEZE` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_5_FREEZE` | `selected_cap` | `GATE_5_FREEZE` | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `CONFIRMATORY_GENERATION` | `rows_path` | `CONFIRMATORY_GENERATION` | `MASKED_ANALYSIS` | `CONFIRMATORY_GENERATION` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
@@ -139,7 +329,7 @@ the pipeline never put there.
 | `MASKED_ANALYSIS` | `masked_result_hash` | `MASKED_ANALYSIS` | `UNMASKING`, `UNMASKED_ANALYSIS` | `MASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `MASKED_ANALYSIS` | `analysis_code_hash` | `MASKED_ANALYSIS` | `UNMASKING`, `UNMASKED_ANALYSIS` | `MASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `MASKED_ANALYSIS` | `sealed` | `MASKED_ANALYSIS` | `UNMASKING` | `MASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
-| `UNMASKING` | `unmasked` | `UNMASKING` | `UNMASKED_ANALYSIS` | `UNMASKING` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `UNMASKING` | `unmasked` | `UNMASKING` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `UNMASKING` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `UNMASKING` | `mask_key_hash` | `UNMASKING` | `UNMASKED_ANALYSIS` | `UNMASKING` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `UNMASKING` | `unmask_event` | `UNMASKING` | `UNMASKED_ANALYSIS`, `FINAL_REPORT` | `UNMASKING` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `UNMASKED_ANALYSIS` | `statements` | `UNMASKED_ANALYSIS` | `FINAL_REPORT` | `UNMASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |

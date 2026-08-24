@@ -253,15 +253,21 @@ def final_report_checks(tree: ModelTree, report: Mapping[str, Any], *,
     from dci1v5.analysis import claims
 
     statements = list(report.get("statements", ()))
-    bad_levels = sorted({row.get("claim_level") for row in rows}
-                        - set(C.CLAIM_LEVELS))
+    # A row whose member reached no level carries None, which is §15's
+    # "Secondary" and §17.3's withheld statement written as a fact rather
+    # than as a level the estimate does not support. An unregistered *level*
+    # still fails.
+    bad_levels = sorted(
+        {row.get("claim_level") for row in rows if row.get("claim_level")}
+        - set(C.CLAIM_LEVELS))
     bad_members = [s for s in statements
                    if s.get("claim_level") in claims.LEVEL_MEMBERS
                    and s.get("member") is not None
                    and s["member"] not in
                    claims.LEVEL_MEMBERS[s["claim_level"]]]
     add("claim_levels_are_registered", not bad_levels and not bad_members,
-        {"levels_used": sorted({row.get("claim_level") for row in rows}),
+        {"levels_used": sorted(
+            {row.get("claim_level") or "none" for row in rows}),
          "registered": list(C.CLAIM_LEVELS),
          "unregistered_levels": bad_levels,
          "unregistered_members": [s.get("member") for s in bad_members]})

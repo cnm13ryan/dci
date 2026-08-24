@@ -49,8 +49,15 @@ def screen_rungs() -> int:
     Computed the same way ``run.regime_run._screen_rungs`` builds them, from
     ``registered_severities``, so the budget and the runner cannot disagree
     about what the screen costs.
+
+    **A's target grid and B's focal grid are part of it.** §12.2's table is
+    what fixes iota_A, and §12.6 defines iota_A on the pre-screen; a screen
+    that measured only the candidate families left the quantity every §12.6
+    distance is taken from unmeasured, and the budget agreed with the runner
+    about a screen neither of them should have had.
     """
-    return sum(len(registered_severities(kind)) for kind in FAMILIES)
+    return (sum(len(registered_severities(kind)) for kind in FAMILIES)
+            + len(C.TARGET_GRID) + len(C.FOCAL_GRID))
 
 
 def calibration_burden(cells: int) -> dict[str, Any]:
