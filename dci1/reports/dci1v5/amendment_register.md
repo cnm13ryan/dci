@@ -990,9 +990,21 @@ is the provenance guarantee it exists to give.
 
 ### Registration
 
-One superseding registration is created, and all four models are re-qualified
-under it. Nothing beyond `QUALIFIED` is run: the next legal action for every
-model is `GATE_0_APPARATUS`, and it was not taken.
+**The replacement.** Manifest
+`e2721b17f2e9300fcfc3cc50ad65313e332786e508b04031c9997787bd547dcb`, producing
+commit `1b0031b5cdc7f2c05ce9d02dc04710dee4983e05`, signed 2026-08-24, with
+`PROTOCOL_REGISTERED` and `QUALIFIED` **PASS on all four replications** and no
+terminal status on any of them. The supersession chain is `2960a1fc…` →
+`70608e5d…` → `b040b343…` → `d0485a6d…` → `faa034bd…` → `e2721b17…`, where
+`faa034bd…` is the attempt V5-E29 above retired.
+
+**475,776 behavioural rows are retained and invalidated** — 305,536 on
+`gemma-3n-e2b-it` and 170,240 on `gemma-3n-e4b-it`, across two invalidation
+records each naming its own superseded manifest. **The live evidence path
+holds none**: zero behavioural rows exist under `e2721b17…` on any model.
+
+Nothing beyond `QUALIFIED` is run: the next legal action for every model is
+`GATE_0_APPARATUS`, and it was not taken.
 
 **What this amendment leaves untouched.** Every §34 closure, U1, U2 = A2, U3,
 P1, the five arms, 56 cells, 384 blocks, M = 8, the eight markers, both topic

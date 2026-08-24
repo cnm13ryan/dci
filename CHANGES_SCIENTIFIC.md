@@ -69,11 +69,30 @@ identity, so §26's reuse ledger cannot reach them.
 registration is comparable with anything produced under the new one, and none
 of it is carried forward. v4r4 evidence is untouched.
 
+**One more defect, found by the re-registration itself (V5-E29).** The first
+re-qualification refused on §19's `clean_worktree` apparatus precondition —
+untracked paper-drafting directories in the repository root, an apparatus
+condition and nothing scientific — and the machinery correctly wrote a signed
+`QUALIFICATION_FAILURE` terminal report. That verdict could not then be
+retired: `terminal_report.json` is write-once, `assert_predecessor_passed`
+refuses every stage while it exists, and `supersede_registration` moved the
+stage records and left it on the live path, so a replication that had
+terminated could be superseded and **never re-run** — the replacement
+registration's first stage was disabled by a verdict about the registration it
+replaced. The terminal report now moves with the records it belongs to and is
+**retained, not deleted**. The precondition itself is unchanged: it still
+refuses any uncommitted change to tracked code.
+
+**The registration.** Manifest `e2721b17…` at commit `1b0031b`, superseding
+`faa034bd…` (the retired attempt) and through it `d0485a6d…`. All four models
+hold `PROTOCOL_REGISTERED` and `QUALIFIED` with no terminal status; **475,776
+behavioural rows are retained and invalidated** and the live path holds none.
+
 **Timing.** Pre-data. No signed `GATE_2_FOCAL_CALIBRATION` record exists on any
 model, no reference selection, freeze, confirmatory generation, masking or
 unmasking has ever run, and **zero new real model generations were produced
-while making this amendment**. All four models hold `PROTOCOL_REGISTERED` and
-`QUALIFIED` under the new registration and nothing beyond that was run.
+while making this amendment**. Nothing beyond `QUALIFIED` was run; the next
+legal action for every model is `GATE_0_APPARATUS`.
 
 ---
 
