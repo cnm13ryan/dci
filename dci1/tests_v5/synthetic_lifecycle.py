@@ -173,13 +173,14 @@ TEST_CLOSURES: dict[str, Any] = {
 assert not set(TEST_CLOSURES) & set(RESEARCHER_CLOSED)
 
 
-def resolved_manifest(*, eligibility_formulation: str = "E1") -> None:
-    """Close every §34 decision and resolve U2 and U4, for this process only.
+def resolved_manifest(*, eligibility_formulation: str | None = None) -> None:
+    """Close every §34 decision, for this process only.
 
     ``eligibility_formulation`` names which of U4's two constructions this
-    process runs. It is a coverage parameter, never an adoption: §12.6's
-    eligibility rule is a researcher decision and the registered namespace
-    refuses to register while it is open.
+    process runs. ``None`` --- the default --- takes the researcher's
+    recorded resolution, which since A5 is E2. Naming the other one is a
+    coverage parameter and never an adoption: a scenario that exercises E1
+    exercises a construction the researcher did not take.
     """
     still_open = [d for d in RESEARCHER_CLOSED if not decisions.is_closed(d)]
     if still_open:
@@ -200,16 +201,24 @@ def resolved_manifest(*, eligibility_formulation: str = "E1") -> None:
                            resolved_by="synthetic lifecycle harness",
                            resolved_on="synthetic")
     # U4 --- what makes a pre-screen rung eligible for §12.6's coverage
-    # criterion --- is a RESEARCHER decision and this harness does not take
-    # it. It supplies a NAMED formulation so that both readings can be
-    # exercised and neither is adopted; the registered namespace stays
-    # blocked until a researcher resolves it.
-    if "U4" in open_items.blocking_items():
-        open_items.resolve("U4", eligibility_formulation,
-                           resolved_by="synthetic lifecycle harness; a named "
-                                       "construction exercised for coverage, "
-                                       "NOT an adoption of this reading",
-                           resolved_on="synthetic")
+    # criterion --- is a RESEARCHER decision, taken at E2 in A5 and carried
+    # by `researcher_decisions.json`. The harness never supplies a value for
+    # it; a scenario that wants the non-adopted construction names it, and
+    # naming it is coverage rather than adoption.
+    if eligibility_formulation is not None:
+        if "U4" in open_items.blocking_items():
+            open_items.resolve(
+                "U4", eligibility_formulation,
+                resolved_by="synthetic lifecycle harness; a named "
+                            "construction exercised for coverage, NOT an "
+                            "adoption of this reading",
+                resolved_on="synthetic")
+        elif open_items.get_item("U4").resolution != eligibility_formulation:
+            raise AssertionError(
+                f"the record resolves U4 at "
+                f"{open_items.get_item('U4').resolution!r} and this scenario "
+                f"asked for {eligibility_formulation!r}; a change is an "
+                "amendment, not a fixture argument")
 
 
 def restore() -> None:

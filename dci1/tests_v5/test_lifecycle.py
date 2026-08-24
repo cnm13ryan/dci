@@ -126,7 +126,7 @@ def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
     # The record hash covers the open-item resolutions too: U2 blocks the
     # manifest outright, and a hash that covered only half the file would let
     # its resolution change under a signature that did not move.
-    assert payload["record"]["resolved_here"] == ["U2", "P1"]
+    assert payload["record"]["resolved_here"] == ["U2", "P1", "U4"]
 
 
 def test_the_record_hash_moves_when_a_resolution_moves(tmp_path):

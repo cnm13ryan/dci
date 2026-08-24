@@ -812,3 +812,155 @@ never takes; `tools/v5_execution_path_audit.py` — the registered-rule ledger,
 proved against a real run; and `run/field_access.py`, which makes *observed*
 consumption a fact the contract audit can check instead of a declaration it
 has to trust.
+
+---
+
+## A5 — the two questions A4 left open, closed (2026-08-24)
+
+**Author.** Researcher, on the pre-Gate-2.5 execution-path audit of
+2026-08-24. A4 found nineteen execution-path defects and repaired them, and
+ended with two things it would not decide for itself: one preregistration
+ambiguity that blocked registration (U4) and one registered quantity with no
+implementation (V5-E27). This entry closes both. **No new scientific rule is
+introduced by either closure.**
+
+**Timing, relative to every affected artifact.**
+
+| Artifact | State when this amendment was adopted |
+|---|---|
+| §34 decisions D0–D18 | all closed, none reopened |
+| U1, U2, U3, P1 | resolved; none reopened |
+| U4 | **resolved at E2 by this amendment** |
+| Registration manifest `d0485a6d…` | signed, verified, **superseded by this amendment** |
+| Stage 1 `PROTOCOL_REGISTERED` | held by all four models under `d0485a6d…`; records retained, superseded |
+| `QUALIFIED` | held by all four; superseded and re-run |
+| `GATE_0_APPARATUS` and later | **never run under this amendment**; the two gemma chains that reached Gate 1 and a partial Gate 2 are retained and invalidated |
+| Signed `GATE_2_FOCAL_CALIBRATION` record | **none exists on any model**, so §32's clause 3 is not engaged |
+| Reference selection, freeze, confirmatory data, masking, unmasking | never run, on any model |
+| v4r4 evidence | untouched |
+
+It is therefore a **pre-data** amendment: no confirmatory measurement exists
+under v5 at any registration, and none was produced while making it. **Zero
+new real model generations occurred.**
+
+### U4 — resolved at **E2**
+
+§12.6 evaluated the coverage criterion *"on the pre-screen table with
+eligibility as §13's band on $\iota$ and its vacuity ceiling."* §13.4's table
+registers the headroom band $[0.10, 0.90]$ on the **raw solo compliance**
+$p_{\text{solo}}(R)$ and registers no band on $\iota$; §13.8 constrains
+$\iota$ only through calipers *relative to* $\iota_A$, which are relative and
+not absolute. The sentence therefore named a band on a quantity §13 does not
+band.
+
+**Adopted: E2.** A pre-screen rung is eligible when
+
+$$p_{\text{solo}}(R) \in [0.10, 0.90] \quad\text{and}\quad \text{pre-screen solo vacuity} \le 0.10 .$$
+
+**The coverage criterion itself does not move.** C1–C8 are still stated in
+$\iota$ and still position every rung by $\iota$ relative to $\iota_A$ —
+span, bracketing, the 0.15 caliper region and C4's 0.40 span are unchanged.
+Eligibility is the only thing E2 decides, and it decides it with a threshold
+§13.4 already registers.
+
+**E1 is non-adopted, and the ground is that it would have invented a
+threshold.** Applying §13's band *numbers* to $\iota$ is an absolute band on
+$\iota$, and no section registers one. Under §33's classification that is a
+new rule and therefore an amendment to §13, not a reading of §12.6. E1 stays
+constructible by name so the comparison remains inspectable —
+`stages.regime.coverage_eligibility(formulation="E1")` — and no reporting path
+can reach it.
+
+**What it changes.** The eligible set is determined, so §12.6's C1–C8 evaluate
+over a non-empty set, the reserve-expansion loop has a defined trigger, and
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` is reachable under a rule a researcher
+took. The two readings admit different rungs and could therefore have differed
+in C1–C6, in the admitted arm set, and in **whether $\Delta_R$ is identified
+at all** — which is why this blocked registration rather than being recorded
+as a preference.
+
+**Where it is durable.** `reports/dci1v5/researcher_decisions.json`, under
+`open_items`, with the author, the date, the evidence and the consequences.
+The registration manifest binds that file's hash, so the resolution moves only
+by amendment. `coverage_eligibility` reads the **resolution**, not a literal:
+`tests_v5/test_execution_path.py::test_the_coverage_eligibility_rule_still_fails_closed`
+reopens U4 and asserts the rule refuses rather than defaulting to E2.
+
+**§12.6's sentence is amended** to state the band on $p_{\text{solo}}$
+explicitly, in `user-notes/DCI1_preregistration_v5.md`, carrying the reason.
+
+### V5-E27 — the raw-coordinate secondary fit, implemented as registered and no further
+
+A4 recorded §18 step 14 — *"Repeat steps 9 and 12 on the raw-coordinate
+secondary fit"* — as unimplemented, and declined to implement it because step
+12 computes *simultaneous intervals within each declared family* and §15
+declares no family containing a raw-coordinate member. Choosing one would have
+been choosing a multiplicity set.
+
+**It does not have to be chosen, and the reason is in §15 itself.** §15's own
+list of quantities *"reported with marginal intervals only and supporting no
+claim"* names **the raw-coordinate replication of the fit**. So the protocol
+already says what interval the replication gets, and it is not a simultaneous
+one. The disposition is therefore:
+
+| §18 step 14's half | Disposition |
+|---|---|
+| **Step 9**, on the raw coordinate | **Executed in full**: the fit on the nine non-$A$ points, $A$'s exclusion, §13.13's support conditions, $\delta_{\text{diff}}$ in both algebraic forms with the agreement assertion, and the block bootstrap with a refit per replicate. |
+| **Step 12**, on the raw coordinate | **`NOT_REGISTERED_FOR_INFERENCE`**, recorded on the artifact with its reason. Marginal percentile intervals from the same bootstrap are reported in its place, which is what §15 registers. |
+
+**No family was invented and no member was added to one.**
+`tests_v5/test_execution_path.py::test_no_raw_coordinate_family_was_invented`
+asserts that §15's declared members contain no raw-coordinate member, because
+adding one would change the simultaneous width of every claim that family
+carries.
+
+**The one thing the raw fit is licensed to do, it now does.** §17.6's
+coordinate-agreement paragraph and §34 D14's closure — *"$\iota$ remains
+primary, raw solo secondary, `DIFFICULTY_COORDINATE_DEPENDENT` on
+disagreement"* — both needed a raw-coordinate fit, and with none in existence
+the status was unreachable and D14's closure bound nothing.
+`analysis.claims.coordinate_agreement` now compares the two L3d/L3e
+classifications and returns a **status, never a level**: the registered
+coordinate decides which classification is emitted and the secondary decides
+only whether the statement carries the status. The
+`coordinate_dependent` scenario drives a real disagreement — primary L3e, raw
+L3d — and asserts the emitted level is still the primary's.
+
+**Two defects were found while wiring it**, both of the class A4 named:
+
+* `run/analysis_run._strip_vectors` builds the record from an **explicit key
+  list**, so the raw replication was computed and dropped before it reached
+  the artifact. This is the same function that had already lost §11.3/§11.7's
+  agreement checks once. A regression now asserts the key is in it.
+* `protocol/constants.py` already registered
+  `SECONDARY_DIFFICULTY_COORDINATE = "raw_solo_compliance"`, and the first
+  cut of this work defined a second constant of the same name with a
+  different value, shadowing it. The registered names are used and
+  `analysis.spectrum.assert_coordinate` refuses any third one.
+
+### Evidence: preserved and invalidated
+
+The two gemma chains produced under `d0485a6d…` — 30,592 rows on
+`gemma-3n-e2b-it` and 15,104 on `gemma-3n-e4b-it`, plus 430,080 rows already
+retained under `superseded/` from earlier registrations — are **retained in
+full and none is deleted**. They are **invalidated for reuse**: every one was
+produced under a screen whose coverage criterion evaluated an empty set, whose
+$\iota_A$ came from the wrong severity, whose §7.2 escalation would have
+refused on its first instruction, and whose expansion could not run. §26's
+reuse ledger admits a row only when its complete scientific identity matches,
+and the superseding registration changes that identity, so no invalidated row
+is reachable by live reuse.
+
+### Registration
+
+One superseding registration is created, and all four models are re-qualified
+under it. Nothing beyond `QUALIFIED` is run: the next legal action for every
+model is `GATE_0_APPARATUS`, and it was not taken.
+
+**What this amendment leaves untouched.** Every §34 closure, U1, U2 = A2, U3,
+P1, the five arms, 56 cells, 384 blocks, M = 8, the eight markers, both topic
+banks, the candidate library, every threshold including §13.4's band, §13.8's
+calipers, D17's floor and D18's precondition, the estimands, the multiplicity
+families, the claim ladder and its levels, the masking specification, the
+seeds, the models and revisions, and every selection criterion. **No threshold
+moved, no criterion was weakened, and no family gained or lost a member.**

@@ -39,7 +39,8 @@ from dci1v4.errors import ProtocolError
 __all__ = ["OpenItem", "OpenItemError", "STATUSES", "BLOCKING_STATUSES",
            "OPEN_ITEMS", "OPEN_ITEM_IDS", "get_item", "blocking_items",
            "assert_no_blocking_open_items", "assert_item_resolved",
-           "resolve", "reopen_all_for_testing", "manifest_payload",
+           "resolve", "reopen_all_for_testing",
+           "reopen_one_for_testing", "manifest_payload",
            "recorded_resolutions", "apply_recorded_resolutions"]
 
 RESEARCHER_DECISION_REQUIRED = "RESEARCHER_DECISION_REQUIRED"
@@ -259,15 +260,23 @@ _ITEMS: tuple[OpenItem, ...] = (
                 "iota_A. A rung with p_solo outside the band but iota inside "
                 "is excluded"),
         ),
-        implementation="not chosen. `stages.regime.coverage_eligibility` "
-                       "constructs both named formulations and refuses to "
-                       "run either until U4 is resolved, so no replication "
-                       "can measure a §12.6 expansion round or record a "
-                       "REFERENCE_SUPPORT_NOT_IDENTIFIED disposition under a "
-                       "rule nobody chose. The two eligible sets differ, so "
-                       "C1-C6 can differ, so the admitted arm set and "
-                       "therefore whether Delta_R is identified at all can "
-                       "differ: this is not a formatting choice."),
+        implementation="RESOLVED at E2. `stages.regime.coverage_eligibility` "
+                       "constructs both named formulations and reads this "
+                       "item's resolution rather than a literal, so it still "
+                       "refuses --- rather than defaulting to E2 --- if the "
+                       "resolution goes away. E1 is constructed and "
+                       "NON-ADOPTED: applying §13's band NUMBERS to a "
+                       "quantity §13 does not band is a new absolute "
+                       "threshold on iota, which is a §32 amendment and not "
+                       "a reading. Under E2 the criterion still positions "
+                       "rungs by iota --- C1-C4's span and bracketing "
+                       "relative to iota_A are unchanged --- and eligibility "
+                       "alone moves to p_solo. §12.6's sentence is amended "
+                       "to name the raw solo band explicitly. This mattered "
+                       "because the two eligible sets differ, so C1-C6 can "
+                       "differ, so the admitted arm set and therefore "
+                       "whether Delta_R is identified at all can differ.",
+        blocks_calls=("stages.regime.coverage_eligibility",)),
     OpenItem(
         "P1",
         "§7.10 admitted Tier 3 'to the spectrum'; §7.4, §11.8 and §13.12 make "
@@ -370,6 +379,22 @@ def resolve(item_id: str, resolution: Any, *, resolved_by: str,
                       resolved_on=resolved_on)
     OPEN_ITEMS[item_id] = updated
     return updated
+
+
+def reopen_one_for_testing(item_id: str) -> OpenItem:
+    """Force ONE item open, without re-applying the record.
+
+    ``reopen_all_for_testing`` restores the recorded state, which is right
+    for a fixture and useless for provoking a refusal once the record
+    resolves everything. The guards that refuse an unresolved question have
+    to stay provoked by something, or they quietly stop working the moment
+    the last question is closed --- the same reason
+    ``decisions.override_for_testing`` exists.
+    """
+    item = get_item(item_id)
+    OPEN_ITEMS[item_id] = replace(item, resolution=None, resolved_by=None,
+                                  resolved_on=None)
+    return OPEN_ITEMS[item_id]
 
 
 def reopen_all_for_testing() -> None:

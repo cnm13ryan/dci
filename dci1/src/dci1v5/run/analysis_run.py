@@ -459,8 +459,116 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
     out["algebraic_form_checks"] = _algebraic_form_checks(
         table, spectrum_by_configuration)
 
+    # §18 step 14: repeat steps 9 and 12 on the raw-coordinate secondary
+    # fit. Step 9 is executed in full; step 12 is NOT_REGISTERED_FOR_INFERENCE
+    # and the reason is in `_raw_coordinate_secondary`.
+    out["raw_coordinate_secondary"] = _raw_coordinate_secondary(
+        spectrum_by_configuration, seed=seed, resamples=resamples,
+        post_unmask=post_unmask)
+
     out["intervals"] = _intervals(out, seed=seed, resamples=resamples,
                                   n_blocks=len(table.blocks))
+    return out
+
+
+#: §18 step 14 says "repeat steps 9 and 12". Step 12 computes a SIMULTANEOUS
+#: interval **within each declared family**, and §15 declares no family
+#: containing a raw-coordinate member: it registers the raw-coordinate
+#: replication of the fit among the quantities "reported with marginal
+#: intervals only and supporting no claim". Declaring one would invent a
+#: multiplicity set nobody registered, and computing a simultaneous interval
+#: over a family of one is not the same construction. So step 12's half is
+#: recorded as not registered for inference, with marginal percentile
+#: intervals reported in its place --- which is what §15 asks for.
+RAW_COORDINATE_MULTIPLICITY = "NOT_REGISTERED_FOR_INFERENCE"
+
+
+def _raw_coordinate_secondary(spectrum_by_configuration: Mapping[str, Any], *,
+                              seed: int, resamples: int, post_unmask: bool
+                              ) -> dict[str, Any]:
+    """§18 step 14, §15's raw-coordinate replication, §34 D14's secondary.
+
+    §34 D14 is closed at *"iota remains primary, raw solo secondary,
+    `DIFFICULTY_COORDINATE_DEPENDENT` on disagreement"*, and §17.6's
+    coordinate-agreement paragraph is the rule that closure serves. Both
+    needed a raw-coordinate fit and no production path ever computed one, so
+    the status was unreachable and D14's closure bound nothing.
+
+    What is computed here is step 9 in full on the raw coordinate: the fit on
+    the nine non-A points, A's exclusion (the fitter refuses an A point on
+    either coordinate), §13.13's support conditions, delta_difficulty in both
+    algebraic forms with the agreement assertion, and the block bootstrap.
+    What is NOT computed is a simultaneous interval, and
+    ``RAW_COORDINATE_MULTIPLICITY`` says why.
+
+    Masked phase: A's point is inside the permuted group on either
+    coordinate, so the replication has no masked-phase value either and is
+    withheld exactly as ``delta_difficulty`` is.
+    """
+    out: dict[str, Any] = {
+        "registered_by": "§18 step 14, §15, §17.6, §34 D14",
+        "primary_coordinate": C.DIFFICULTY_COORDINATE,
+        "coordinate": C.SECONDARY_DIFFICULTY_COORDINATE,
+        "step_9": "executed",
+        "step_12": RAW_COORDINATE_MULTIPLICITY,
+        "step_12_reason": (
+            "§15 registers the raw-coordinate replication of the fit among "
+            "the quantities reported with marginal intervals only and "
+            "supporting no claim, and §15's F1-F11 declares no family "
+            "containing a raw-coordinate member. Declaring one would invent "
+            "a multiplicity set; marginal percentile intervals are reported "
+            "in its place"),
+        "licenses": "no claim at any level; §17.6's coordinate-agreement "
+                    "status is its only consequence",
+        "configurations": {},
+    }
+    if not post_unmask:
+        out["step_9"] = "MASKED_PHASE"
+        out["detail"] = ("§20: A's point is inside the permuted group on "
+                         "either coordinate, so the replication has no "
+                         "masked-phase value")
+        return out
+    for configuration, data in sorted(spectrum_by_configuration.items()):
+        entry: dict[str, Any] = {}
+        try:
+            entry["algebraic_forms_worst"] = \
+                spectrum.assert_algebraic_forms_agree(
+                    data, coordinate=C.SECONDARY_DIFFICULTY_COORDINATE)
+        except spectrum.FitNotAvailable as absent:
+            entry["algebraic_forms_worst"] = None
+            entry["not_available"] = str(absent)
+        point = spectrum.estimate(
+            data, coordinate=C.SECONDARY_DIFFICULTY_COORDINATE)
+        if point["degenerate"]:
+            entry["status"] = NOT_IDENTIFIED
+            entry["reason"] = "DIFFICULTY_COORDINATE_DEGENERATE"
+            entry["detail"] = point.get("reason")
+            out["configurations"][configuration] = entry
+            continue
+        boot = spectrum.bootstrap_spectrum(
+            data, resamples=resamples, seed=seed,
+            coordinate=C.SECONDARY_DIFFICULTY_COORDINATE)
+        entry.update({
+            "status": "IDENTIFIED",
+            "point": float(point["delta_difficulty"]),
+            "slope": float(point["slope"]),
+            "intercepts": dict(point["intercepts"]),
+            "predicted_at_A": float(point["predicted_at_A"]),
+            "difficulty_a": float(point["difficulty_a"]),
+            "residuals": dict(point["residuals"]),
+            "support": point["support"],
+            "dropped_points": list(point["dropped_points"]),
+            "marginal_ci95": list(boot["ci95_percentile"]),
+            "bootstrap_se": float(boot["bootstrap_se"]),
+            "slope_marginal_ci95": list(boot["slope_ci95_percentile"]),
+            "support_bootstrap_share": boot["support_bootstrap_share"],
+            "identification_statuses": list(boot["identification_statuses"]),
+            "simultaneous_ci95": None,
+            "simultaneous_ci95_reason": RAW_COORDINATE_MULTIPLICITY,
+            "resamples": boot["resamples"],
+            "refit_per_replicate": True,
+        })
+        out["configurations"][configuration] = entry
     return out
 
 
@@ -766,6 +874,12 @@ def _strip_vectors(estimates: Mapping[str, Any]) -> dict[str, Any]:
         # function's explicit key list dropped them.
         "algebraic_form_checks": estimates.get("algebraic_form_checks", {}),
         "intervals": estimates.get("intervals", {}),
+        # §18 step 14's raw-coordinate replication. Same reason as the
+        # agreement checks above: this function's explicit key list is the
+        # OUTPUT_DROPPED defect class in miniature, and `_statements` reads
+        # this key off the STRIPPED result to apply §17.6's coordinate rule.
+        "raw_coordinate_secondary":
+            estimates.get("raw_coordinate_secondary", {}),
     }
 
 
@@ -1000,6 +1114,12 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
         "scope_sentence": C.SCOPE_SENTENCE,
         "analysis_code_hash": analysis_code_hash(),
         "projection_audit": _projection_audit(table),
+        # §18 step 14's raw-coordinate replication, surfaced beside
+        # `projection_audit` rather than only inside `estimands`: §23 releases
+        # it and the contract's reader is FINAL_REPORT, so the field the
+        # reader reads is the field the contract can check is present.
+        "raw_coordinate_secondary":
+            result.get("raw_coordinate_secondary", {}),
         "spectrum_families": slot_families,
         "not_identified_is_not_zero":
             "a quantity the design does not identify is recorded "
@@ -1020,6 +1140,24 @@ def _has_headroom(solo_compliance: float | None) -> bool:
     if solo_compliance is None:
         return False
     return float(solo_compliance) > C.COMPOSED_HEADROOM_BAND[0]
+
+
+def _raw_coordinate_reading(result: Mapping[str, Any], configuration: str
+                            ) -> dict[str, Any]:
+    """The raw-coordinate replication, in the shape §17.6's rule reads.
+
+    §15 gives it **marginal** intervals only, so the interval handed to the
+    comparison is the marginal one --- which is the whole reason this cannot
+    license a claim and can only attach a status.
+    """
+    entry = ((result.get("raw_coordinate_secondary") or {})
+             .get("configurations", {}).get(configuration) or {})
+    if entry.get("status") != "IDENTIFIED":
+        return {"secondary": None, "secondary_support": None}
+    lo, hi = entry["marginal_ci95"]
+    return {"secondary": claims.Interval("delta_difficulty",
+                                         entry["point"], lo, hi),
+            "secondary_support": entry.get("support") or {}}
 
 
 def _interval(result: Mapping[str, Any], family: str, configuration: str,
@@ -1225,6 +1363,13 @@ def _statements(result: Mapping[str, Any], *, statuses: Sequence[str],
         if delta_r is not None and xi is not None:
             forced_r = _interval(result, "F5", configuration,
                                  "Delta_R|vacuity_forced")
+            # §17.6's coordinate-agreement rule, closed by §34 D14. The raw
+            # replication decides only whether the statement carries
+            # DIFFICULTY_COORDINATE_DEPENDENT; the registered coordinate
+            # decides which classification is emitted.
+            agreement = claims.coordinate_agreement(
+                delta_difficulty=delta_difficulty, support=support,
+                **_raw_coordinate_reading(result, configuration))
             l3 = claims.emit_l3(
                 configuration=configuration, cell="pair:A+B",
                 outcome_position=position,
@@ -1239,7 +1384,10 @@ def _statements(result: Mapping[str, Any], *, statuses: Sequence[str],
                 realised_gaps=realised_gaps,
                 interaction_drift=interaction_drift,
                 vacuity_forced_agrees=claims.l3_vacuity_agrees(
-                    delta_r, forced_r))
+                    delta_r, forced_r),
+                coordinate_statuses=agreement["statuses"])
+            for statement in l3:
+                statement["coordinate_agreement"] = agreement
             out.extend(l3)
             for statement in l3:
                 if not statement.get("emitted"):
@@ -1310,6 +1458,7 @@ def final_report_payload(tree: ModelTree, *, producing_commit: str,
         identification_statuses=analysis["identification_statuses"],
         admitted_arms=freeze_record["admitted_arms"],
         projection_audit=analysis.get("projection_audit", ()),
+        raw_coordinate_secondary=analysis.get("raw_coordinate_secondary"),
         stage_record_hashes=hashes)
     root = repo_root if repo_root is not None else tree.context.repo_root
     checks = final_report_checks.final_report_checks(tree, report,

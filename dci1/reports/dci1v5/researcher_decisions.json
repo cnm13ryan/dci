@@ -264,8 +264,22 @@
    "resolution": "confirmed",
    "resolved_by": "researcher, v5 adoption approval 2026-08-23",
    "resolved_on": "2026-08-23"
+  },
+  {
+   "consequences": [
+    "\u00a712.6's eligibility predicate is the band \u00a713.4 actually registers, applied to the quantity \u00a713.4 states it on: a pre-screen rung is eligible when its raw solo compliance p_solo(R) lies in [0.10, 0.90] AND its pre-screen solo vacuity is at most 0.10.",
+    "The coverage criterion itself is unchanged and continues to operate on the difficulty coordinate iota, including C1-C4's span and bracketing relative to iota_A. Eligibility selects the rungs; iota positions them.",
+    "E1 is non-adopted. It would have applied \u00a713's band NUMBERS to a quantity \u00a713 does not band, which is a new absolute threshold on iota and therefore a \u00a732 amendment, not a reading.",
+    "The eligible set is now determined, so \u00a712.6's C1-C8 evaluate over a non-empty set, the reserve-expansion loop has a defined trigger, and REFERENCE_SUPPORT_NOT_IDENTIFIED can be reached under a rule the researcher chose.",
+    "No claim level moves and no sampling changes. The two readings could have differed in the admitted arm set and therefore in whether Delta_R is identified, which is why this blocked adoption; under E2 that set is determined by a registered band."
+   ],
+   "evidence": "\u00a713.4's table registers the headroom band V_head on the raw solo compliance p_solo(R) and registers no band on iota; \u00a713.8 constrains iota only through calipers relative to iota_A, which are relative and not absolute. \u00a712.6's sentence 'eligibility as \u00a713's band on iota and its vacuity ceiling' names a band \u00a713 does not carry on iota, so the reading that preserves every registered threshold is the one that applies \u00a713's registered band to \u00a713's registered quantity. Choosing E1 would invent an absolute iota threshold that no section registers. `stages.regime.coverage_eligibility` constructs both formulations by name and `tests_v5/test_execution_path.py` exercises the adopted one on the production path.",
+   "id": "U4",
+   "resolution": "E2",
+   "resolved_by": "researcher, v5 pre-Gate-2.5 amendment approval 2026-08-24",
+   "resolved_on": "2026-08-24"
   }
  ],
- "recorded_on": "2026-08-23",
- "source": "the v5 adoption brief of 2026-08-22, which took D3, D6, D16 and D18; and the v5 adoption approval of 2026-08-23, which took the remaining fifteen \u00a734 decisions, resolved U2 at A2 and confirmed P1"
+ "recorded_on": "2026-08-24",
+ "source": "the v5 adoption brief of 2026-08-22, which took D3, D6, D16 and D18; and the v5 adoption approval of 2026-08-23, which took the remaining fifteen \u00a734 decisions, resolved U2 at A2 and confirmed P1; and the pre-Gate-2.5 engineering amendment approval of 2026-08-24, which resolved U4 at E2"
 }
