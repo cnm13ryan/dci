@@ -199,3 +199,15 @@ def test_no_card_named_leaves_the_runner_default(tmp_path, monkeypatch):
     assert cli.main(["run", "--stage", C.STAGE_GATE0, "--model", MODEL,
                      "--root", str(tmp_path)]) == 1
     assert seen["device"] is _UNSET
+
+
+def test_a_link_is_refused_by_a_stage_that_does_not_register(tmp_path):
+    """``--supersedes`` belongs to stage 1 and nowhere else."""
+    for stage in (C.STAGE_GATE0, C.STAGE_GATE1, C.STAGE_FINAL_REPORT):
+        assert cli.main(["run", "--stage", stage, "--model", MODEL,
+                         "--root", str(tmp_path), "--supersedes", "a" * 64]) == 1
+
+
+def test_the_stages_taking_a_link_are_derived_too():
+    """Only the registration runner takes ``supersedes``."""
+    assert cli.stages_accepting("supersedes") == (C.STAGE_REGISTERED,)

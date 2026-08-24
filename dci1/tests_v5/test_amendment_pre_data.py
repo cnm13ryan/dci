@@ -648,3 +648,35 @@ def test_invalidated_rows_are_not_reachable_by_reuse(tmp_path):
                 / "pilot" / "rows.jsonl")
     assert retained.exists(), "the rows are preserved, not deleted"
     assert is_superseded(retained)
+
+
+def test_a_replacement_that_names_nothing_is_refused(tmp_path):
+    """§32: the chain has to be readable from the replacement's own payload.
+
+    ``run_registration`` took ``supersedes`` and ``run/cli.py`` never passed
+    it, so a re-registration made through the documented entry point was
+    silently unlinked --- the supersession record named the retired manifest
+    and the replacement did not mention it. Nothing recomputes that field, so
+    the guard is what keeps the chain self-describing.
+    """
+    ctx = _ctx(tmp_path)
+    _register(ctx, ALL_MODELS[0])
+    old = manifest.load_manifest(ctx)["manifest_hash"]
+    registration_run.supersede_registration(
+        ctx, reason="t", model_keys=ALL_MODELS[:1], producing_commit=COMMIT)
+
+    with pytest.raises(IntegrityError, match="names nothing"):
+        _register(ctx, ALL_MODELS[0])
+
+    with pytest.raises(IntegrityError, match="supersedes"):
+        _register(ctx, ALL_MODELS[0], supersedes="b" * 64)
+
+    _register(ctx, ALL_MODELS[0], supersedes=old)
+    assert manifest.load_manifest(ctx)["supersedes"] == old
+
+
+def test_the_genesis_registration_has_nothing_to_link(tmp_path):
+    """No supersession record, no requirement."""
+    ctx = _ctx(tmp_path)
+    _register(ctx, ALL_MODELS[0])
+    assert "supersedes" not in manifest.load_manifest(ctx)
