@@ -154,6 +154,15 @@ def supersede_registration(context: Any, *, reason: str,
     ``run/execute._reusable_rows``: reuse reads ``tree.backend_runs(stage)``,
     the *current* path, so a retained run cannot be resumed into a later one
     by accident.
+
+    §28.3's ``terminal_report.json`` moves too, and that is the repair for a
+    defect this function had from the start: it retired every stage record and
+    left the terminal verdict on the live path, where
+    ``assert_predecessor_passed`` reads it. A replication that had terminated
+    could therefore be superseded but never re-run --- the replacement
+    registration's very first stage was disabled by a verdict about the
+    registration it replaced. The verdict is retained, not deleted, beside the
+    records it was reached on.
     """
     from dci1v4.engine import store
     from dci1v5.engine import transitions
@@ -238,6 +247,32 @@ def supersede_registration(context: Any, *, reason: str,
                 producing_commit=producing_commit, environment_digest="",
                 detail={"superseded_manifest": old_hash, "reason": reason,
                         "retained_at": str(target)})
+        # §28.3's terminal report belongs to the registration that produced
+        # it, and it is `write_json_once` and read by
+        # `assert_predecessor_passed`. Leaving it on the live path made a
+        # supersession one-way for any replication that had terminated: the
+        # stage records moved, the terminal status stayed, and every later
+        # stage of the REPLACEMENT registration was mechanically disabled by
+        # a verdict about the registration it replaced. It moves with the
+        # rest, so what the replacement sees is the state it is entitled to
+        # see, and the retired verdict stays readable where it was reached.
+        if tree.terminal_report.exists():
+            target = tree.superseded_dir(old_hash) / tree.terminal_report.name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(tree.terminal_report), str(target))
+            durable_terminal = tree.durable / tree.terminal_report.name
+            if durable_terminal.exists():
+                durable_target = (tree.durable / "superseded" / old_hash
+                                  / tree.terminal_report.name)
+                durable_target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(durable_terminal), str(durable_target))
+            retained.setdefault(key, []).append(str(target))
+            transitions.log_transition(
+                tree, stage=C.STAGE_QUALIFIED, outcome="SUPERSEDED",
+                producing_commit=producing_commit, environment_digest="",
+                detail={"superseded_manifest": old_hash, "reason": reason,
+                        "retained_at": str(target),
+                        "terminal_report": True})
 
     keep = Path(context.registration_root) / "superseded" / old_hash
     keep.mkdir(parents=True, exist_ok=True)
