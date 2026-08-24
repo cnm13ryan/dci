@@ -70,6 +70,8 @@ def build_final_report(*, model_key: str, rows: Sequence[Mapping[str, Any]],
                        identification_statuses: Sequence[str],
                        admitted_arms: Sequence[str],
                        projection_audit: Sequence[Mapping[str, Any]] = (),
+                       raw_coordinate_secondary: Mapping[str, Any] | None
+                       = None,
                        stage_record_hashes: Mapping[str, str] | None = None,
                        ) -> dict[str, Any]:
     """§31's payload, with every invariant this stage can check, checked."""
@@ -105,6 +107,12 @@ def build_final_report(*, model_key: str, rows: Sequence[Mapping[str, Any]],
         # §23: the prospective record of §13.6's projection, reported for
         # every companion and licensing no claim.
         "projection_audit": [dict(p) for p in projection_audit],
+        # §23: "the fitted difficulty relation ... the tier-indicator
+        # secondary, and the same on the raw coordinate". §15 gives the
+        # raw-coordinate replication marginal intervals only and no claim,
+        # and the payload says so in `step_12` rather than leaving a reader
+        # to assume a simultaneous interval was computed and omitted.
+        "raw_coordinate_secondary": dict(raw_coordinate_secondary or {}),
         "stage_record_hashes": dict(stage_record_hashes or {}),
         "every_number_traces_to_a_v5_stage_record": True,
     }

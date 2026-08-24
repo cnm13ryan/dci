@@ -1,17 +1,16 @@
 {
- "n_rules": 47,
- "n_agreeing": 47,
+ "n_rules": 48,
+ "n_agreeing": 48,
  "by_status": {
-  "SCIENTIFIC_AMBIGUITY": 2,
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 43
+  "VERIFIED_REACHABLE": 46
  },
  "contract": {
-  "n_fields": 110,
+  "n_fields": 111,
   "n_artifacts": 17,
-  "n_checked_against_payloads": 327,
-  "n_field_presence_checks": 110,
-  "n_consumption_checks": 217,
+  "n_checked_against_payloads": 329,
+  "n_field_presence_checks": 111,
+  "n_consumption_checks": 218,
   "n_semantic_checks": 4,
   "relayed": [
    {
@@ -1164,6 +1163,35 @@
    "branch": "\u00a720's one-shot unmask",
    "refused": "IntegrityError: gemma-3n-e2b-it: UNMASKING already has a record; v5 stage records are write-once. Repair creates a new producing commit and runs the stage in a fresh tree",
    "expected": "the second invocation is refused"
+  },
+  "coordinate_dependent": {
+   "scenario": "coordinate_dependent",
+   "branch": "\u00a717.6's coordinate agreement, \u00a734 D14",
+   "primary_levels": [
+    "L3e"
+   ],
+   "secondary_levels": [
+    "L3d"
+   ],
+   "agrees": false,
+   "statuses": [
+    "DIFFICULTY_COORDINATE_DEPENDENT"
+   ],
+   "emitted_levels": [
+    "L3c",
+    "L3e"
+   ],
+   "status_on_every_statement": true,
+   "expected": "primary L3e, raw L3d, DIFFICULTY_COORDINATE_DEPENDENT on the emitted statement, and the emitted level is the PRIMARY's"
+  },
+  "coordinate_secondary_not_computable": {
+   "scenario": "coordinate_secondary_not_computable",
+   "branch": "\u00a717.6 with no secondary, \u00a720",
+   "masked_step_9": "MASKED_PHASE",
+   "masked_step_12": "NOT_REGISTERED_FOR_INFERENCE",
+   "compared": false,
+   "statuses": [],
+   "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"
   }
  },
  "rules": [
@@ -1390,10 +1418,10 @@
    "impl": "dci1v5.stages.regime.coverage_rows",
    "field": "REGIME_SCREEN.coverage_eligibility_formulation",
    "consumer": null,
-   "expect": "SCIENTIFIC_AMBIGUITY",
-   "note": "open item U4: \u00a712.6 names \u00a713's band ON IOTA and \u00a713 bands p_solo. Two admissible readings, different eligible sets, different C1-C6 verdicts. Both constructed, neither adopted",
-   "status": "SCIENTIFIC_AMBIGUITY",
-   "detail": "open item U4: \u00a712.6 names \u00a713's band ON IOTA and \u00a713 bands p_solo. Two admissible readings, different eligible sets, different C1-C6 verdicts. Both constructed, neither adopted",
+   "expect": "VERIFIED_REACHABLE",
+   "note": "open item U4, opened by A4 and CLOSED AT E2 by the researcher in A5: \u00a712.6 named \u00a713's band ON IOTA and \u00a713 bands p_solo, so eligibility is p_solo in [0.10, 0.90] with the vacuity ceiling. The criterion still positions rungs by iota. Both formulations stay constructible by name; E1 is non-adopted",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
    "agrees": true
   },
   {
@@ -1782,17 +1810,34 @@
   },
   {
    "id": "R-18.14-raw",
-   "section": "\u00a718 step 14, \u00a731",
+   "section": "\u00a718 step 14, \u00a715, \u00a731",
    "area": "final report",
-   "meaning": "the difficulty relation refitted on the raw coordinate, reported beside the primary",
+   "meaning": "the difficulty relation refitted on the raw coordinate, reported beside the primary with MARGINAL intervals only",
    "runtime": "dci1v5.analysis.spectrum.estimate",
-   "impl": "(none)",
-   "field": "UNMASKED_ANALYSIS.estimands",
-   "consumer": null,
-   "expect": "SCIENTIFIC_AMBIGUITY",
-   "note": "step 9 on the raw coordinate is mechanical; step 12 --- simultaneous intervals within each declared family --- has no declared family containing a raw-coordinate member, so the multiplicity set would have to be chosen. Not implemented, and not chosen here (A4, V5-E27)",
-   "status": "SCIENTIFIC_AMBIGUITY",
-   "detail": "step 9 on the raw coordinate is mechanical; step 12 --- simultaneous intervals within each declared family --- has no declared family containing a raw-coordinate member, so the multiplicity set would have to be chosen. Not implemented, and not chosen here (A4, V5-E27)",
+   "impl": "dci1v5.run.analysis_run._raw_coordinate_secondary",
+   "field": "UNMASKED_ANALYSIS.raw_coordinate_secondary",
+   "consumer": "FINAL_REPORT",
+   "scenario": "coordinate_secondary_not_computable",
+   "expect": "VERIFIED_REACHABLE",
+   "note": "V5-E27, resolved in A5 without inventing anything. Step 9 is executed in full on the raw coordinate --- fit, A's exclusion, \u00a713.13 support, both algebraic forms, the block bootstrap. Step 12 is NOT_REGISTERED_FOR_INFERENCE: \u00a715 registers the raw-coordinate replication among the quantities reported with marginal intervals only and supporting no claim, and declares no family containing a raw-coordinate member",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-17.6-coordinate",
+   "section": "\u00a717.6, \u00a734 D14",
+   "area": "claim ladder",
+   "meaning": "when the registered and raw coordinates give different L3d/L3e classifications the statement carries DIFFICULTY_COORDINATE_DEPENDENT",
+   "runtime": "dci1v5.analysis.claims.coordinate_agreement",
+   "impl": "dci1v5.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "scenario": "coordinate_dependent",
+   "expect": "VERIFIED_REACHABLE",
+   "note": "D14's closure --- iota primary, raw solo secondary, the status on disagreement --- bound nothing until the raw fit existed",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
    "agrees": true
   },
   {

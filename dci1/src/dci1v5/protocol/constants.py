@@ -212,6 +212,12 @@ COVERAGE_CONDITIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8")
 COVERAGE_DECISIVE = ("C1", "C2", "C3", "C4", "C5", "C6")
 
 # --------------------------- §13 validity, admission, spectrum, support
+#: §34 D14's closure and §15's "raw-coordinate replication of the fit": the
+#: §11.8 difficulty relation is fitted on the registered coordinate and,
+#: separately, on raw solo compliance. §18 step 14 replicates on the second
+#: and §17.6 compares the two classifications, so the pair is the registered
+#: vocabulary and a coordinate named anywhere else would be a third one
+#: nobody registered. `analysis.spectrum.assert_coordinate` refuses one.
 DIFFICULTY_COORDINATE = "instructed_compliance"
 SECONDARY_DIFFICULTY_COORDINATE = "raw_solo_compliance"
 

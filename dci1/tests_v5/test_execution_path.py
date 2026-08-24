@@ -308,12 +308,17 @@ def test_iota_a_is_read_at_the_severity_nearest_the_aim():
 
 # -------------------------------------------------------------------- U4
 
-def test_the_coverage_eligibility_rule_fails_closed():
-    """U4 is a researcher decision and no code path may take it."""
+def test_the_coverage_eligibility_rule_reads_the_resolution():
+    """U4 is closed at E2 and the rule reads the RESOLUTION, not a literal.
+
+    The distinction is the whole design of `open_items`: a rule that hardcoded
+    E2 would keep running if the resolution went away, and the resolution is
+    what makes it a researcher's choice rather than an implementer's.
+    """
     row = {"candidate": "MK1:3", "kind": "MK1", "severity": 3,
            "iota": 0.5, "solo": 0.6, "vacuity": 0.01}
-    with pytest.raises(open_items.OpenItemError):
-        regime.coverage_eligibility(row)
+    assert open_items.get_item("U4").resolution == "E2"
+    assert regime.coverage_eligibility(row)["formulation"] == "E2"
     for name in regime.ELIGIBILITY_FORMULATIONS:
         verdict = regime.coverage_eligibility(row, formulation=name)
         assert verdict["formulation"] == name
@@ -321,12 +326,28 @@ def test_the_coverage_eligibility_rule_fails_closed():
         regime.coverage_eligibility(row, formulation="E9")
 
 
+def test_the_coverage_eligibility_rule_still_fails_closed(restore_open_items):
+    """Provoked: with U4 reopened the rule refuses rather than defaulting."""
+    row = {"candidate": "MK1:3", "kind": "MK1", "severity": 3,
+           "iota": 0.5, "solo": 0.6, "vacuity": 0.01}
+    restore_open_items.reopen_one_for_testing("U4")
+    with pytest.raises(open_items.OpenItemError):
+        regime.coverage_eligibility(row)
+
+
 def test_the_two_eligibility_readings_can_disagree():
-    """The reason U4 blocks: they admit different rungs."""
+    """Why U4 blocked at all: the readings admit different rungs.
+
+    E2 is adopted, so this rung is eligible; under E1 it would not have been,
+    and the eligible set decides C1-C6, the admitted arm set and therefore
+    whether Delta_R is identified. Kept as a live demonstration that the
+    resolution had consequences rather than being a formatting choice.
+    """
     row = {"candidate": "MK1:3", "kind": "MK1", "severity": 3,
            "iota": 0.95, "solo": 0.5, "vacuity": 0.01}
     assert not regime.coverage_eligibility(row, formulation="E1")["eligible"]
     assert regime.coverage_eligibility(row, formulation="E2")["eligible"]
+    assert regime.coverage_eligibility(row)["eligible"]
 
 
 # ------------------------------------------------------- the contract audit
@@ -551,3 +572,132 @@ def test_the_focal_extension_can_actually_be_measured():
     rebuilt = gates_run.slot_map_from_record(
         {"slot_map": {"B": ["B", C.FOCAL_EXTENSION[-1]], "R1": ["MK1", 9]}})
     assert rebuilt["B"].extended and not rebuilt["R1"].extended
+
+
+# ----------------------------------------------------------------- V5-E27
+
+def test_the_raw_coordinate_replication_is_computed_and_reported():
+    """V5-E27. §18 step 14 repeats steps 9 and 12 on the raw coordinate.
+
+    Step 9 is executed. Step 12 is not, and the reason is recorded rather
+    than left as an omission: §15 registers the raw-coordinate replication
+    among the quantities "reported with marginal intervals only and
+    supporting no claim", and §15's F1-F11 declares no family containing a
+    raw-coordinate member, so a simultaneous interval would need a
+    multiplicity set nobody registered. Inventing one is what §33 forbids.
+    """
+    from tests_v5.scenarios import _coordinate_input
+
+    payload = analysis_run._raw_coordinate_secondary(
+        {"outcome_first": _coordinate_input()}, seed=7, resamples=500,
+        post_unmask=True)
+    assert payload["coordinate"] == C.SECONDARY_DIFFICULTY_COORDINATE
+    assert payload["step_9"] == "executed"
+    assert payload["step_12"] == "NOT_REGISTERED_FOR_INFERENCE"
+    entry = payload["configurations"]["outcome_first"]
+    assert entry["status"] == "IDENTIFIED"
+    assert entry["simultaneous_ci95"] is None
+    assert entry["simultaneous_ci95_reason"] == "NOT_REGISTERED_FOR_INFERENCE"
+    # Step 9 in full: the fit, both algebraic forms, the support conditions
+    # and the block bootstrap, all on the raw coordinate.
+    assert entry["algebraic_forms_worst"] is not None
+    assert entry["marginal_ci95"][0] < entry["point"] < entry["marginal_ci95"][1]
+    assert set(entry["support"]) and entry["refit_per_replicate"]
+
+
+def test_no_raw_coordinate_family_was_invented():
+    """The conservative half of V5-E27's disposition, as a regression.
+
+    §15's declared families are the multiplicity structure. If a later change
+    ever adds a raw-coordinate member to one, the simultaneous intervals of
+    that family change and every claim it carries changes width --- so the
+    absence is asserted rather than assumed.
+    """
+    members = {m for members in C.FAMILY_MEMBERS.values() for m in members}
+    assert not [m for m in members
+                if "raw" in m.lower() or m.endswith("|raw_solo")]
+
+
+def test_the_raw_replication_is_withheld_in_the_masked_phase():
+    """§20: A's point is inside the permuted group on either coordinate."""
+    from tests_v5.scenarios import _coordinate_input
+
+    payload = analysis_run._raw_coordinate_secondary(
+        {"outcome_first": _coordinate_input()}, seed=7, resamples=50,
+        post_unmask=False)
+    assert payload["step_9"] == "MASKED_PHASE"
+    assert payload["configurations"] == {}
+
+
+def test_the_record_carries_the_raw_replication_through_the_strip():
+    """The OUTPUT_DROPPED class, on the function that caused it.
+
+    `_strip_vectors` has an explicit key list and it is where §11.3/§11.7's
+    agreement checks were lost once already. `_statements` reads the raw
+    replication off the STRIPPED result, so a key dropped here silently
+    disables §17.6's coordinate rule rather than raising.
+    """
+    source = inspect.getsource(analysis_run._strip_vectors)
+    assert "raw_coordinate_secondary" in source
+    assert "raw_coordinate_secondary" in inspect.getsource(
+        analysis_run._statements) or "_raw_coordinate_reading" in \
+        inspect.getsource(analysis_run._statements)
+
+
+def test_the_coordinate_rule_attaches_a_status_and_never_a_level():
+    """§17.6 / §34 D14: the registered coordinate decides the classification.
+
+    A raw replication that read L3d where the primary reads L3e must not
+    promote the statement. It attaches DIFFICULTY_COORDINATE_DEPENDENT and
+    the emitted level stays the primary's --- which is the difference
+    between reporting a disagreement and resolving toward whichever estimand
+    crossed a threshold.
+    """
+    from dci1v5.analysis import claims
+
+    support = {"holds": True}
+    primary = claims.Interval("delta_difficulty", 0.005, -0.023, 0.033)
+    secondary = claims.Interval("delta_difficulty", 0.060, 0.032, 0.088)
+    agreement = claims.coordinate_agreement(
+        delta_difficulty=primary, support=support, secondary=secondary,
+        secondary_support=support)
+    assert agreement["primary_levels"] == ["L3e"]
+    assert agreement["secondary_levels"] == ["L3d"]
+    assert agreement["statuses"] == ["DIFFICULTY_COORDINATE_DEPENDENT"]
+
+    statements = claims.emit_l3(
+        configuration="outcome_first", cell="pair:A+B", outcome_position=1,
+        measurement_basis=C.MEASUREMENT_BASIS,
+        delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
+        delta_difficulty=primary,
+        xi=claims.Interval("Xi", 0.09, 0.04, 0.14), support=support,
+        references_identified=True,
+        delta_near=claims.Interval("Delta_near", 0.02, -0.01, 0.05),
+        coordinate_statuses=agreement["statuses"])
+    emitted = [s for s in statements if s.get("emitted")]
+    assert emitted
+    assert "L3d" not in {s["claim_level"] for s in emitted}
+    for statement in emitted:
+        assert "DIFFICULTY_COORDINATE_DEPENDENT" in \
+            statement["identification_status"]
+    # An unregistered status cannot ride in on this argument.
+    with pytest.raises(claims.ClaimError):
+        claims.emit_l3(
+            configuration="outcome_first", cell="pair:A+B",
+            outcome_position=1, measurement_basis=C.MEASUREMENT_BASIS,
+            delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
+            delta_difficulty=primary,
+            xi=claims.Interval("Xi", 0.09, 0.04, 0.14), support=support,
+            references_identified=True,
+            coordinate_statuses=("MADE_UP_STATUS",))
+
+
+def test_agreement_is_not_claimed_when_there_is_nothing_to_compare():
+    """§17.6 compares two classifications; with one, no status is earned."""
+    from dci1v5.analysis import claims
+
+    agreement = claims.coordinate_agreement(
+        delta_difficulty=claims.Interval("delta_difficulty", 0.06, 0.03, 0.09),
+        support={"holds": True}, secondary=None, secondary_support=None)
+    assert agreement["compared"] is False
+    assert agreement["statuses"] == []

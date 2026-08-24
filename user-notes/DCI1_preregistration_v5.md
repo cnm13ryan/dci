@@ -1864,9 +1864,20 @@ $\delta_{\text{diff}}$, $\Xi$, any joint state, any composed cell, any contrast
 between two composed cells. §13.11 is the executable form.
 
 **The identification-coverage criterion**, evaluated on the pre-screen table
-with eligibility as §13's band on $\iota$ and its vacuity ceiling. Write
-$\iota_A$ for the pre-screen instructed compliance of $A$ at the severity whose
-solo compliance is nearest §12.3's aim.
+with eligibility as §13's band and its vacuity ceiling: a rung is eligible when
+its **raw solo compliance** $p_{\text{solo}}(R)$ lies in $[0.10, 0.90]$ and its
+pre-screen solo vacuity is at most $0.10$. **The band is §13.4's $V_{\text{head}}$
+band, stated on the quantity §13.4 states it on.** This sentence is the U4
+amendment and it is a wording correction, not a new rule: the sentence formerly
+said "§13's band on $\iota$", and §13 registers no band on $\iota$ at all —
+§13.4's table bands $p_{\text{solo}}$, and §13.8 constrains $\iota$ only through
+calipers *relative to* $\iota_A$. Reading the sentence literally would have
+applied §13's band numbers to a quantity §13 does not band, which is a new
+absolute threshold on $\iota$ and therefore an amendment rather than a reading.
+Eligibility is the only thing that moves: C1–C8 below are still stated in
+$\iota$, and the criterion still positions rungs by $\iota$ relative to
+$\iota_A$. Write $\iota_A$ for the pre-screen instructed compliance of $A$ at
+the severity whose solo compliance is nearest §12.3's aim.
 
 | | Condition | Value, and where it comes from |
 |---|---|---|

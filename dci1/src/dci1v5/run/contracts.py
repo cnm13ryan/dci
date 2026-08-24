@@ -247,6 +247,11 @@ CONTRACT: tuple[Field, ...] = (
     _f(UA, "success_criterion", (FR,)),
     _f(UA, "estimands", (FR,)),
     _f(UA, "projection_audit", (FR,), required=False),
+    # §18 step 14's raw-coordinate replication, read by §31's report as one
+    # of §23's secondary analyses. Not required: the masked phase has no
+    # value for it, and neither does a replication whose spectrum was never
+    # identified.
+    _f(UA, "raw_coordinate_secondary", (FR,), required=False),
 )
 
 

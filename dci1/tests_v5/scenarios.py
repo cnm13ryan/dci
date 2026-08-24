@@ -415,6 +415,140 @@ def scenario_unmask_is_one_shot(root: Path) -> dict[str, Any]:
             "expected": "the second invocation is refused"}
 
 
+#: §17.6's coordinate-agreement fixture. Three families whose CHANCE rates
+#: differ, and a loss that is linear in raw solo compliance: iota reorders
+#: the points and rescales the spread, so the two registered coordinates fit
+#: different lines and predict A differently. The jitter on p(B | A+B) is
+#: what gives both intervals a realised half-width inside §16.2's precision
+#: precondition; without it the intervals collapse and both readings are L3d.
+_COORDINATE_PLAN = {"F_a": (0.10, (0.30, 0.50, 0.70)),
+                    "F_b": (0.30, (0.35, 0.55, 0.75)),
+                    "F_c": (0.55, (0.60, 0.66, 0.80))}
+
+
+def _coordinate_input(n_blocks: int = 12):
+    from dci1v5.analysis import spectrum
+
+    family_of, companion_solo, companion_chance, b_with = {}, {}, {}, {}
+    for family, (chance, solos) in _COORDINATE_PLAN.items():
+        for index, solo in enumerate(solos):
+            slot = f"{family}_{index}"
+            family_of[slot] = family
+            companion_solo[slot] = [solo] * n_blocks
+            companion_chance[slot] = [chance] * n_blocks
+            b_with[slot] = [0.80 - (0.05 + 0.40 * solo)] * n_blocks
+    base = 0.80 - (0.05 + 0.40 * 0.55) - 0.06
+    b_with["A"] = [base - (-1) ** i * 0.045 * (1 + (i % 3)) / 2
+                   for i in range(n_blocks)]
+    return spectrum.SpectrumInput(
+        blocks=tuple(f"b{i}" for i in range(n_blocks)), family_of=family_of,
+        b_solo=[0.80] * n_blocks, b_with=b_with,
+        companion_solo=companion_solo, companion_chance=companion_chance,
+        a_solo=[0.55] * n_blocks, a_chance=[0.05] * n_blocks)
+
+
+def scenario_coordinate_dependent(root: Path) -> dict[str, Any]:
+    """14. §17.6's coordinate agreement and §34 D14, on a real disagreement.
+
+    The registered coordinate reads L3e and the raw-coordinate replication
+    reads L3d. §17.6 registers exactly this: the statement carries
+    `DIFFICULTY_COORDINATE_DEPENDENT`, both readings are reported, **the
+    registered coordinate decides which classification is emitted** and the
+    secondary decides only whether the status rides on it. So what this
+    asserts is not only that the status appears --- it is that the emitted
+    level is still the primary's.
+    """
+    from dci1v5.analysis import claims, spectrum
+    from dci1v5.run import analysis_run
+
+    data = _coordinate_input()
+    readings = {}
+    for coordinate in (C.DIFFICULTY_COORDINATE,
+                       C.SECONDARY_DIFFICULTY_COORDINATE):
+        # 300 resamples, not §14.1's 10,000: this scenario exists to drive
+        # §17.6's comparison, and the audit runs it under a profiler that
+        # costs about two orders of magnitude per call. The classification is
+        # stable from 200 upward on this fixture.
+        boot = spectrum.bootstrap_spectrum(data, resamples=300, seed=7,
+                                           coordinate=coordinate)
+        low, high = boot["ci95_percentile"]
+        readings[coordinate] = (
+            claims.Interval("delta_difficulty", boot["estimate"], low, high),
+            boot["support"])
+    primary, primary_support = readings[C.DIFFICULTY_COORDINATE]
+    secondary, secondary_support = readings[C.SECONDARY_DIFFICULTY_COORDINATE]
+
+    # The production reader, on the shape the stripped record carries.
+    result = {"raw_coordinate_secondary": {"configurations": {"outcome_first": {
+        "status": "IDENTIFIED", "point": secondary.estimate,
+        "marginal_ci95": [secondary.lower, secondary.upper],
+        "support": dict(secondary_support)}}}}
+    read = analysis_run._raw_coordinate_reading(result, "outcome_first")
+    agreement = claims.coordinate_agreement(
+        delta_difficulty=primary, support=primary_support, **read)
+
+    statements = claims.emit_l3(
+        configuration="outcome_first", cell="pair:A+B", outcome_position=1,
+        measurement_basis=C.MEASUREMENT_BASIS,
+        delta_r=claims.Interval("Delta_R", 0.02, -0.01, 0.05),
+        delta_difficulty=primary,
+        xi=claims.Interval("Xi", 0.09, 0.04, 0.14),
+        support=primary_support, references_identified=True,
+        delta_near=claims.Interval("Delta_near", 0.02, -0.01, 0.05),
+        coordinate_statuses=agreement["statuses"])
+    emitted = [s for s in statements if s.get("emitted")]
+    return {
+        "branch": "§17.6's coordinate agreement, §34 D14",
+        "primary_levels": agreement["primary_levels"],
+        "secondary_levels": agreement["secondary_levels"],
+        "agrees": agreement["agrees"],
+        "statuses": agreement["statuses"],
+        "emitted_levels": sorted(s["claim_level"] for s in emitted),
+        "status_on_every_statement": all(
+            "DIFFICULTY_COORDINATE_DEPENDENT" in s["identification_status"]
+            for s in emitted),
+        "expected": "primary L3e, raw L3d, DIFFICULTY_COORDINATE_DEPENDENT "
+                    "on the emitted statement, and the emitted level is the "
+                    "PRIMARY's",
+    }
+
+
+def scenario_coordinate_secondary_not_computable(root: Path
+                                                 ) -> dict[str, Any]:
+    """15. No raw replication is not a disagreement.
+
+    §17.6 compares two classifications; with one, the status cannot be
+    earned. The masked phase is the ordinary way this happens --- A's point
+    is inside the permuted group on either coordinate --- and a rule that
+    treated "absent" as "different" would attach a status to every masked
+    replication.
+    """
+    from dci1v5.analysis import claims, spectrum
+    from dci1v5.run import analysis_run
+
+    data = _coordinate_input()
+    boot = spectrum.bootstrap_spectrum(
+        data, resamples=200, seed=7, coordinate=C.DIFFICULTY_COORDINATE)
+    low, high = boot["ci95_percentile"]
+    primary = claims.Interval("delta_difficulty", boot["estimate"], low, high)
+
+    masked = analysis_run._raw_coordinate_secondary(
+        {"outcome_first": data}, seed=7, resamples=200, post_unmask=False)
+    read = analysis_run._raw_coordinate_reading(
+        {"raw_coordinate_secondary": masked}, "outcome_first")
+    agreement = claims.coordinate_agreement(
+        delta_difficulty=primary, support=boot["support"], **read)
+    return {
+        "branch": "§17.6 with no secondary, §20",
+        "masked_step_9": masked["step_9"],
+        "masked_step_12": masked["step_12"],
+        "compared": agreement["compared"],
+        "statuses": agreement["statuses"],
+        "expected": "the masked phase computes no raw replication and the "
+                    "comparison records that rather than a disagreement",
+    }
+
+
 SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "normal_full_path": scenario_normal_full_path,
     "no_viable_regime": scenario_no_viable_regime,
@@ -430,6 +564,9 @@ SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "broad_class_unavailable": scenario_broad_class_unavailable,
     "a2_spectrum_fit": scenario_a2_spectrum_fit,
     "unmask_is_one_shot": scenario_unmask_is_one_shot,
+    "coordinate_dependent": scenario_coordinate_dependent,
+    "coordinate_secondary_not_computable":
+        scenario_coordinate_secondary_not_computable,
 }
 
 

@@ -52,7 +52,31 @@ __all__ = ["SpectrumPoint", "DifficultyFit", "fit_difficulty_relation",
            "estimate", "assert_algebraic_forms_agree", "bootstrap_spectrum",
            "TierInput", "tier_estimate", "FitNotAvailable",
            "TierFit", "fit_with_tier_indicator", "adopted_formulation",
-           "assert_adopted_formulation"]
+           "assert_adopted_formulation", "COORDINATES", "PRIMARY_COORDINATE",
+           "SECONDARY_COORDINATE", "assert_coordinate"]
+
+#: §34 D14's closure: instructed compliance remains the difficulty
+#: coordinate and **raw solo compliance is the registered secondary**, with
+#: `DIFFICULTY_COORDINATE_DEPENDENT` on disagreement. The two names are
+#: constants because §18 step 14 replicates the fit on the second one and
+#: §17.6 compares the two classifications; a coordinate chosen anywhere else
+#: would be a third one nobody registered.
+PRIMARY_COORDINATE = C.DIFFICULTY_COORDINATE
+SECONDARY_COORDINATE = C.SECONDARY_DIFFICULTY_COORDINATE
+COORDINATES: dict[str, str] = {
+    PRIMARY_COORDINATE: "§13.2's instructed compliance, (solo - chance) / "
+                        "(1 - chance): the registered difficulty coordinate",
+    SECONDARY_COORDINATE: "raw solo compliance p_solo(R), §15's "
+                          "raw-coordinate replication of the fit",
+}
+
+
+def assert_coordinate(name: str) -> str:
+    if name not in COORDINATES:
+        raise ProtocolError(
+            f"{name!r} is not a registered difficulty coordinate; §34 D14 "
+            f"registers {sorted(COORDINATES)} and nothing else")
+    return name
 
 
 class FitNotAvailable(ProtocolError):
@@ -268,15 +292,29 @@ def _resampled(values: Sequence[float], picks: Sequence[int]) -> float:
     return sum(values[i] for i in picks) / len(picks)
 
 
-def estimate(data: SpectrumInput, picks: Sequence[int] | None = None
-             ) -> dict[str, object]:
+def estimate(data: SpectrumInput, picks: Sequence[int] | None = None, *,
+             coordinate: str = PRIMARY_COORDINATE) -> dict[str, object]:
     """One estimate of the whole spectrum block, on one (re)sample of blocks.
 
     ``picks`` is a list of block indices with replacement; ``None`` means the
     observed sample. Everything is recomputed from ``picks``: the chance
     rates, the difficulties, the losses, the fit, the prediction and the
     support verdict. §17.2 forbids doing any of it once and reusing it.
+
+    ``coordinate`` selects §34 D14's registered pair.
+    ``instructed_compliance`` is the primary and decides every
+    classification; ``raw_solo_compliance`` is §15's raw-coordinate
+    replication, which is **reported with marginal intervals only and
+    supports no claim** --- its one consequence is §17.6's
+    coordinate-agreement rule, which attaches
+    ``DIFFICULTY_COORDINATE_DEPENDENT`` when the two disagree about L3d/L3e.
+
+    The degeneracy drop stays on iota in both replications. A raw fit that
+    kept a point the primary dropped would compare two fits over different
+    point sets, and §17.6's comparison would then be reading a changed
+    design rather than a changed coordinate.
     """
+    assert_coordinate(coordinate)
     if picks is None:
         picks = list(range(len(data.blocks)))
     if not picks:
@@ -285,7 +323,8 @@ def estimate(data: SpectrumInput, picks: Sequence[int] | None = None
     b_solo = _resampled(data.b_solo, picks)
     a_solo = _resampled(data.a_solo, picks)
     a_chance = _resampled(data.a_chance, picks)
-    d_a = instructed_compliance(a_solo, a_chance)
+    d_a = (instructed_compliance(a_solo, a_chance)
+           if coordinate == PRIMARY_COORDINATE else a_solo)
 
     points: list[SpectrumPoint] = []
     dropped: list[str] = []
@@ -296,10 +335,10 @@ def estimate(data: SpectrumInput, picks: Sequence[int] | None = None
             continue
         solo = _resampled(data.companion_solo[slot], picks)
         loss = b_solo - _resampled(data.b_with[slot], picks)
+        difficulty = (instructed_compliance(solo, chance)
+                      if coordinate == PRIMARY_COORDINATE else solo)
         points.append(SpectrumPoint(slot=slot, family=family,
-                                    difficulty=instructed_compliance(solo,
-                                                                     chance),
-                                    loss=loss))
+                                    difficulty=difficulty, loss=loss))
 
     d_b_from_a = b_solo - _resampled(data.b_with["A"], picks)
     support = support_verdict(points, difficulty_a=d_a, dropped=dropped)
@@ -308,12 +347,14 @@ def estimate(data: SpectrumInput, picks: Sequence[int] | None = None
         fit = fit_difficulty_relation(points, predict_at=d_a)
     except ProtocolError as exc:
         return {"degenerate": True, "reason": str(exc),
-                "D_B_from_A": d_b_from_a, "difficulty_a": d_a,
-                "support": support, "delta_difficulty": float("nan")}
+                "coordinate": coordinate, "D_B_from_A": d_b_from_a,
+                "difficulty_a": d_a, "support": support,
+                "delta_difficulty": float("nan")}
 
     delta = d_b_from_a - fit.predicted_at
     return {
         "degenerate": False,
+        "coordinate": coordinate,
         "D_B_from_A": d_b_from_a,
         "difficulty_a": d_a,
         "slope": fit.slope,
@@ -403,7 +444,9 @@ def tier_estimate(data: TierInput, picks: Sequence[int] | None = None
 
 def assert_algebraic_forms_agree(data: SpectrumInput,
                                  picks: Sequence[int] | None = None, *,
-                                 tolerance: float = 1e-9) -> float:
+                                 tolerance: float = 1e-9,
+                                 coordinate: str = PRIMARY_COORDINATE
+                                 ) -> float:
     """§11.7: the definitional and the cancelled forms must agree.
 
     Definitional: ``D(B<-A) - [alpha_bar + beta*iota_A]``.
@@ -415,7 +458,7 @@ def assert_algebraic_forms_agree(data: SpectrumInput,
     a contrast among composed cells rather than something that inherits the
     solo cell's noise.
     """
-    result = estimate(data, picks)
+    result = estimate(data, picks, coordinate=coordinate)
     if result["degenerate"]:
         raise FitNotAvailable(f"cannot compare forms on a degenerate fit: "
                               f"{result['reason']}")
@@ -439,7 +482,9 @@ def assert_algebraic_forms_agree(data: SpectrumInput,
 
 
 def bootstrap_spectrum(data: SpectrumInput, *, resamples: int, seed: int,
-                       rng_factory=None) -> dict[str, object]:
+                       rng_factory=None,
+                       coordinate: str = PRIMARY_COORDINATE
+                       ) -> dict[str, object]:
     """§17.2: every replicate resamples blocks and **refits**.
 
     Prohibited, and none of it is reachable from here: fitting once and
@@ -451,16 +496,17 @@ def bootstrap_spectrum(data: SpectrumInput, *, resamples: int, seed: int,
     """
     import random
 
+    assert_coordinate(coordinate)
     rng = (rng_factory or random.Random)(seed)
     n = len(data.blocks)
-    point = estimate(data)
+    point = estimate(data, coordinate=coordinate)
     draws: list[float] = []
     slopes: list[float] = []
     support_held = 0
     degenerate = 0
     for _ in range(resamples):
         picks = [rng.randrange(n) for _ in range(n)]
-        replicate = estimate(data, picks)
+        replicate = estimate(data, picks, coordinate=coordinate)
         if replicate["degenerate"]:
             degenerate += 1
             continue
@@ -487,6 +533,7 @@ def bootstrap_spectrum(data: SpectrumInput, *, resamples: int, seed: int,
         statuses.append("INSUFFICIENT_PRECISION")
     return {
         "estimate": point["delta_difficulty"],
+        "coordinate": coordinate,
         "bootstrap_se": se,
         "ci95_percentile": [lo, hi],
         "slope_estimate": point["slope"],

@@ -171,10 +171,12 @@ RULES: tuple[dict[str, object], ...] = (
      "runtime": "dci1v5.stages.regime.coverage_eligibility",
      "impl": "dci1v5.stages.regime.coverage_rows",
      "field": "REGIME_SCREEN.coverage_eligibility_formulation",
-     "consumer": None, "expect": AMBIGUOUS,
-     "note": "open item U4: §12.6 names §13's band ON IOTA and §13 bands "
-             "p_solo. Two admissible readings, different eligible sets, "
-             "different C1-C6 verdicts. Both constructed, neither adopted"},
+     "consumer": None, "expect": VERIFIED,
+     "note": "open item U4, opened by A4 and CLOSED AT E2 by the researcher "
+             "in A5: §12.6 named §13's band ON IOTA and §13 bands p_solo, so "
+             "eligibility is p_solo in [0.10, 0.90] with the vacuity ceiling. "
+             "The criterion still positions rungs by iota. Both formulations "
+             "stay constructible by name; E1 is non-adopted"},
     {"id": "R-12.6-expansion", "section": "§12.6", "area": "expansion",
      "meaning": "the reserve expansion, at most four rungs per family per "
                 "round and at most two rounds",
@@ -366,18 +368,34 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "UNMASKING.unmasked", "consumer": "UNMASKED_ANALYSIS",
      "scenario": "unmask_is_one_shot", "expect": VERIFIED},
 
-    {"id": "R-18.14-raw", "section": "§18 step 14, §31",
+    {"id": "R-18.14-raw", "section": "§18 step 14, §15, §31",
      "area": "final report",
      "meaning": "the difficulty relation refitted on the raw coordinate, "
-                "reported beside the primary",
+                "reported beside the primary with MARGINAL intervals only",
      "runtime": "dci1v5.analysis.spectrum.estimate",
-     "impl": "(none)", "field": "UNMASKED_ANALYSIS.estimands",
-     "consumer": None, "expect": AMBIGUOUS,
-     "note": "step 9 on the raw coordinate is mechanical; step 12 --- "
-             "simultaneous intervals within each declared family --- has no "
-             "declared family containing a raw-coordinate member, so the "
-             "multiplicity set would have to be chosen. Not implemented, and "
-             "not chosen here (A4, V5-E27)"},
+     "impl": "dci1v5.run.analysis_run._raw_coordinate_secondary",
+     "field": "UNMASKED_ANALYSIS.raw_coordinate_secondary",
+     "consumer": "FINAL_REPORT",
+     "scenario": "coordinate_secondary_not_computable", "expect": VERIFIED,
+     "note": "V5-E27, resolved in A5 without inventing anything. Step 9 is "
+             "executed in full on the raw coordinate --- fit, A's exclusion, "
+             "§13.13 support, both algebraic forms, the block bootstrap. "
+             "Step 12 is NOT_REGISTERED_FOR_INFERENCE: §15 registers the "
+             "raw-coordinate replication among the quantities reported with "
+             "marginal intervals only and supporting no claim, and declares "
+             "no family containing a raw-coordinate member"},
+    {"id": "R-17.6-coordinate", "section": "§17.6, §34 D14",
+     "area": "claim ladder",
+     "meaning": "when the registered and raw coordinates give different "
+                "L3d/L3e classifications the statement carries "
+                "DIFFICULTY_COORDINATE_DEPENDENT",
+     "runtime": "dci1v5.analysis.claims.coordinate_agreement",
+     "impl": "dci1v5.run.analysis_run._statements",
+     "field": "UNMASKED_ANALYSIS.statements",
+     "consumer": "FINAL_REPORT", "scenario": "coordinate_dependent",
+     "expect": VERIFIED,
+     "note": "D14's closure --- iota primary, raw solo secondary, the status "
+             "on disagreement --- bound nothing until the raw fit existed"},
 
     # -------------------------------------------------------------- reporting
     {"id": "R-23-projection", "section": "§23, §31", "area": "final report",

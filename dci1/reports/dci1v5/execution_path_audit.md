@@ -6,11 +6,11 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **47 registered rules** audited.
-- **47 agree** with their expected status.
-- By status: **2** SCIENTIFIC_AMBIGUITY, **2** VERIFIED_CONDITIONAL, **43** VERIFIED_REACHABLE.
-- Contract: 110 fields, 327 checked against real payloads (110 field-presence, 217 consumption, 4 semantic), **0 defects**.
-- Scenarios run: **13**.
+- **48 registered rules** audited.
+- **48 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **46** VERIFIED_REACHABLE.
+- Contract: 111 fields, 329 checked against real payloads (111 field-presence, 218 consumption, 4 semantic), **0 defects**.
+- Scenarios run: **15**.
 
 ## regime
 
@@ -41,7 +41,7 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
 | `R-12.6-coverage` | §12.6 | the eight identification-coverage conditions | `dci1v5.stages.regime.coverage_criterion` | `dci1v5.run.regime_run.regime_payload` | `REGIME_SCREEN.coverage` | — | **VERIFIED_REACHABLE** |
-| `R-12.6-eligibility` | §12.6, §13.4 | which pre-screen rungs are eligible for the criterion | `dci1v5.stages.regime.coverage_eligibility` | `dci1v5.stages.regime.coverage_rows` | `REGIME_SCREEN.coverage_eligibility_formulation` | — | **SCIENTIFIC_AMBIGUITY** — open item U4: §12.6 names §13's band ON IOTA and §13 bands p_solo. Two admissible readings, different eligible sets, different C1-C6 verdicts. Both constructed, neither adopted |
+| `R-12.6-eligibility` | §12.6, §13.4 | which pre-screen rungs are eligible for the criterion | `dci1v5.stages.regime.coverage_eligibility` | `dci1v5.stages.regime.coverage_rows` | `REGIME_SCREEN.coverage_eligibility_formulation` | — | **VERIFIED_REACHABLE** |
 | `R-12.6-expansion` | §12.6 | the reserve expansion, at most four rungs per family per round and at most two rounds | `dci1v5.stages.regime.run_expansion` | `dci1v5.run.regime_run.regime_payload` | `REGIME_SCREEN.expansion` | — | **VERIFIED_REACHABLE** |
 | `R-12.6-disposition` | §12.6 | unmet after the rounds: REFERENCE_SUPPORT_NOT_IDENTIFIED at design time, and the replication runs without the core and spectrum arms | `dci1v5.stages.regime.run_expansion` | `dci1v5.run.gates_run.gate3c_payload` | `REGIME_SCREEN.identification_statuses` | `GATE_3C_IDENTIFICATION` | **VERIFIED_REACHABLE** |
 | `R-12.6-iota-a` | §12.6 | iota_A is A's pre-screen instructed compliance at the severity whose solo compliance is nearest §12.3's aim | `dci1v5.run.regime_run.difficulty_table` | `dci1v5.run.regime_run.regime_payload` | `REGIME_SCREEN.iota_a_prescreen_severity` | — | **VERIFIED_REACHABLE** |
@@ -86,6 +86,7 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `R-3.2-L4a` | §3.2 L4a | the same classification, per named member, in every configuration | `dci1v5.analysis.claims.emit_l4a` | `dci1v5.run.analysis_run._statements` | `UNMASKED_ANALYSIS.statements` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 | `R-3.2-L4b` | §3.2 L4b | the named order contrast depends on outcome position | `dci1v5.analysis.claims.emit_l4b` | `dci1v5.run.analysis_run._statements` | `UNMASKED_ANALYSIS.statements` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 | `R-3.2-L5` | §3.2 | L5 is permanently withheld and no code path emits it | `dci1v5.analysis.claims.assert_no_l5_emitter` | `dci1v5.run.final_report_checks.run_checks` | `FINAL_REPORT.final_report_checks` | — | **VERIFIED_REACHABLE** |
+| `R-17.6-coordinate` | §17.6, §34 D14 | when the registered and raw coordinates give different L3d/L3e classifications the statement carries DIFFICULTY_COORDINATE_DEPENDENT | `dci1v5.analysis.claims.coordinate_agreement` | `dci1v5.run.analysis_run._statements` | `UNMASKED_ANALYSIS.statements` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 
 ## masking
 
@@ -99,7 +100,7 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
-| `R-18.14-raw` | §18 step 14, §31 | the difficulty relation refitted on the raw coordinate, reported beside the primary | `dci1v5.analysis.spectrum.estimate` | `(none)` | `UNMASKED_ANALYSIS.estimands` | — | **SCIENTIFIC_AMBIGUITY** — step 9 on the raw coordinate is mechanical; step 12 --- simultaneous intervals within each declared family --- has no declared family containing a raw-coordinate member, so the multiplicity set would have to be chosen. Not implemented, and not chosen here (A4, V5-E27) |
+| `R-18.14-raw` | §18 step 14, §15, §31 | the difficulty relation refitted on the raw coordinate, reported beside the primary with MARGINAL intervals only | `dci1v5.analysis.spectrum.estimate` | `dci1v5.run.analysis_run._raw_coordinate_secondary` | `UNMASKED_ANALYSIS.raw_coordinate_secondary` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 | `R-23-projection` | §23, §31 | the realised p_hat_c against realised composed compliance | `dci1v5.analysis.estimators.projected_compliance_vector` | `dci1v5.run.analysis_run._projection_audit` | `UNMASKED_ANALYSIS.projection_audit` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 | `R-31-table` | §31 | every estimate with its cell, claim level and family | `dci1v5.stages.final_report.assert_table_traceable` | `dci1v5.run.analysis_run.final_report_payload` | `FINAL_REPORT.results` | — | **VERIFIED_REACHABLE** |
 | `R-26-success` | §26 | the methodological success criterion, judged pre-outcome | `dci1v5.stages.support.methodological_success` | `dci1v5.run.analysis_run.unmasked_payload` | `UNMASKED_ANALYSIS.success_criterion` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
@@ -121,4 +122,6 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `broad_class_unavailable` | §13.10's broad-class arm | `{"statuses": ["CLASS_ARM_NOT_AVAILABLE"], "admitted_arms": ["base", "core", "spectrum", "nearform"], "expected": "CLASS_ARM_NOT_AVAILABLE is recorded and the arm is not admitted"}` |
 | `a2_spectrum_fit` | §11.8 / U2 = A2, family F8 | `{"formulation": "A2", "adopted": true, "n_points": 12, "beta": 0.3000000000000019, "gamma_tier": 0.060000000000000005, "n_intercepts": 3, "expected": "twelve points, three core intercepts, beta and gamma recovered under A2"}` |
 | `unmask_is_one_shot` | §20's one-shot unmask | `{"refused": "IntegrityError: gemma-3n-e2b-it: UNMASKING already has a record; v5 stage records are write-once. Repair creates a new producing commit and runs the stage in a fresh tree", "expected": "the second invocation is refused"}` |
+| `coordinate_dependent` | §17.6's coordinate agreement, §34 D14 | `{"primary_levels": ["L3e"], "secondary_levels": ["L3d"], "agrees": false, "statuses": ["DIFFICULTY_COORDINATE_DEPENDENT"], "emitted_levels": ["L3c", "L3e"], "status_on_every_statement": true, "expected": "primary L3e, raw L3d, DIFFICULTY_COORDINATE_DEPENDENT on the emitted statement, and the emitted` |
+| `coordinate_secondary_not_computable` | §17.6 with no secondary, §20 | `{"masked_step_9": "MASKED_PHASE", "masked_step_12": "NOT_REGISTERED_FOR_INFERENCE", "compared": false, "statuses": [], "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"}` |
 

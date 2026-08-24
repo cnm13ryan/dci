@@ -480,6 +480,58 @@ def joint_reading(*, delta_r: Interval, delta_difficulty: Interval | None,
     }
 
 
+def coordinate_agreement(*, delta_difficulty: Interval | None,
+                         support: Mapping[str, Any],
+                         secondary: Interval | None,
+                         secondary_support: Mapping[str, Any] | None
+                         ) -> dict[str, Any]:
+    """§17.6's coordinate-agreement rule, closed by §34 D14.
+
+    *"The §11.8 fit is computed on the registered instructed-compliance
+    coordinate and, separately, on raw solo compliance. When the two give
+    different L3d/L3e classifications the statement carries
+    `DIFFICULTY_COORDINATE_DEPENDENT` and both readings are reported; the
+    registered coordinate decides which classification is emitted and the
+    secondary decides whether it carries the status."*
+
+    So this returns a **status**, never a level: the primary reading is
+    returned untouched and the secondary appears only as the reported
+    comparison. That is the whole of what the raw coordinate is licensed to
+    do --- §15 registers the raw-coordinate replication among the quantities
+    *"reported with marginal intervals only and supporting no claim"*, so it
+    has no simultaneous interval, no declared family and no claim of its own.
+
+    ``secondary`` is ``None`` when the replication was not computable, which
+    is not a disagreement: with nothing to compare, the status cannot be
+    earned and the primary stands alone.
+    """
+    primary = delta_difficulty_reading(delta_difficulty, support)
+    if secondary is None:
+        return {"compared": False, "statuses": [],
+                "primary_levels": list(primary["levels"]),
+                "secondary_levels": None,
+                "note": ("no raw-coordinate replication was computable; §17.6 "
+                         "compares two classifications and there is one")}
+    other = delta_difficulty_reading(
+        secondary, secondary_support if secondary_support is not None
+        else support)
+    mine = [level for level in primary["levels"] if level in ("L3d", "L3e")]
+    theirs = [level for level in other["levels"] if level in ("L3d", "L3e")]
+    agrees = mine == theirs
+    return {
+        "compared": True,
+        "agrees": agrees,
+        "statuses": [] if agrees else ["DIFFICULTY_COORDINATE_DEPENDENT"],
+        "primary_levels": mine,
+        "secondary_levels": theirs,
+        "primary_coordinate": C.DIFFICULTY_COORDINATE,
+        "secondary_coordinate": C.SECONDARY_DIFFICULTY_COORDINATE,
+        "note": ("the registered coordinate decides the classification; the "
+                 "secondary decides only whether the statement carries the "
+                 "status"),
+    }
+
+
 def l3_vacuity_agrees(delta_r: Interval, forced: Interval | None) -> bool:
     """§17.4 for L3: do the primary and the recomputation license the same
     claim?
@@ -673,7 +725,9 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
             heterogeneity_disagrees: bool = False,
             realised_gaps: Mapping[str, float] | None = None,
             interaction_drift: Sequence[str] = (),
-            vacuity_forced_agrees: bool = True) -> list[dict[str, Any]]:
+            vacuity_forced_agrees: bool = True,
+            coordinate_statuses: Sequence[str] = ()
+            ) -> list[dict[str, Any]]:
     """The guarded L3 emitter. One statement per licensed sub-level.
 
     Every returned statement carries ``REFERENCE_POOL_SAME_FORM`` and §28.2's
@@ -700,6 +754,16 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
     if not near_form_available:
         statuses.append("NEAR_FORM_ARM_NOT_AVAILABLE")
     statuses += list(interaction_drift)
+    # §17.6's coordinate-agreement rule (§34 D14). The status rides on the
+    # statement; it never changes which level was emitted.
+    unregistered = [s for s in coordinate_statuses
+                    if s not in C.IDENTIFICATION_STATUSES]
+    if unregistered:
+        raise ClaimError(
+            f"{unregistered} are not registered identification statuses; "
+            "§17.6's coordinate rule attaches DIFFICULTY_COORDINATE_DEPENDENT "
+            "and nothing else")
+    statuses += list(coordinate_statuses)
 
     if not vacuity_forced_agrees:
         return [{**_base_fields(level="L3", configuration=configuration,

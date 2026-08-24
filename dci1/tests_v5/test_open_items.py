@@ -11,26 +11,39 @@ from dci1v4.errors import ProtocolError
 from dci1v5.protocol import open_items
 
 
-def test_every_item_is_classified_and_u4_is_the_one_that_blocks():
+def test_every_item_is_classified_and_nothing_blocks():
     assert set(open_items.OPEN_ITEM_IDS) == {"U1", "U2", "U3", "U4", "P1"}
     for item in open_items.OPEN_ITEMS.values():
         assert item.status in open_items.STATUSES
         assert item.question and item.section
-    # U2 was resolved at A2 and P1 is confirmed. U4 --- what makes a
-    # pre-screen rung eligible for §12.6's coverage criterion --- was opened
-    # by the A4 execution-path audit and is unresolved, so the registration
-    # manifest is refused and no replication can begin Gate 0 under a rule
-    # nobody took. That is the machinery working, not a gap in the tests.
-    assert open_items.blocking_items() == ("U4",)
+    # U2 at A2, P1 confirmed, U4 at E2. U4 --- what makes a pre-screen rung
+    # eligible for §12.6's coverage criterion --- was opened by the A4
+    # execution-path audit, refused the registration manifest for as long as
+    # it stood open, and was closed by the researcher in A5. Nothing blocks
+    # now because the work was done, not because the check stopped looking:
+    # `test_a_reopened_question_blocks_again` provokes it.
+    assert open_items.blocking_items() == ()
 
 
-def test_u4_carries_the_two_readings_it_will_not_choose_between():
+def test_u4_kept_the_two_readings_it_was_resolved_between():
     item = open_items.get_item("U4")
-    assert item.blocking
-    assert item.resolution is None
+    assert not item.blocking
+    assert item.resolution == "E2"
     assert {a.id for a in item.alternatives} == {"E1", "E2"}
     for alternative in item.alternatives:
         assert alternative.estimand and alternative.consequence
+    # E2 is the band §13.4 registers on the quantity §13.4 states it on; E1
+    # would have applied those numbers to iota, which §13 does not band.
+    assert "raw solo compliance" in dict(
+        (a.id, a.form) for a in item.alternatives)["E2"]
+
+
+def test_a_reopened_question_blocks_again(restore_open_items):
+    """The refusal, provoked. A guard nothing provokes stops working."""
+    restore_open_items.reopen_one_for_testing("U4")
+    assert restore_open_items.blocking_items() == ("U4",)
+    with pytest.raises(open_items.OpenItemError):
+        restore_open_items.assert_no_blocking_open_items(where="a test")
 
 
 def test_u2_kept_the_alternatives_it_was_resolved_between():
@@ -66,7 +79,7 @@ def test_the_resolutions_come_from_the_researchers_own_record():
     """Not from a module literal, and not from a call in a test fixture."""
     recorded = {e["id"]: e["resolution"]
                 for e in open_items.recorded_resolutions()}
-    assert recorded == {"U2": "A2", "P1": "confirmed"}
+    assert recorded == {"U2": "A2", "P1": "confirmed", "U4": "E2"}
     for item_id, resolution in recorded.items():
         item = open_items.get_item(item_id)
         assert item.resolution == resolution
@@ -83,10 +96,10 @@ def test_a_reopen_restores_the_record_rather_than_a_blank_registry(
     restore_open_items.OPEN_ITEMS["U2"] = replace(
         restore_open_items.OPEN_ITEMS["U2"], resolution=None,
         resolved_by=None, resolved_on=None)
-    assert restore_open_items.blocking_items() == ("U2", "U4")
+    assert restore_open_items.blocking_items() == ("U2",)
     restore_open_items.reopen_all_for_testing()
     assert restore_open_items.get_item("U2").resolution == "A2"
-    assert restore_open_items.blocking_items() == ("U4",)
+    assert restore_open_items.blocking_items() == ()
 
 
 def test_resolving_requires_an_admissible_formulation(restore_open_items):
@@ -99,7 +112,7 @@ def test_resolving_requires_an_admissible_formulation(restore_open_items):
     with pytest.raises(ProtocolError):
         restore_open_items.resolve("U2", "A2", resolved_by="", resolved_on="t")
     restore_open_items.resolve("U2", "A2", resolved_by="t", resolved_on="t")
-    assert restore_open_items.blocking_items() == ("U4",)
+    assert restore_open_items.blocking_items() == ()
     with pytest.raises(ProtocolError):
         restore_open_items.resolve("U2", "A4", resolved_by="t",
                                    resolved_on="t")
@@ -120,8 +133,8 @@ def test_a_record_that_disagrees_with_a_live_resolution_is_an_amendment(
 def test_the_manifest_payload_carries_every_item_and_its_resolution():
     payload = open_items.manifest_payload()
     assert payload["n_items"] == 5
-    assert payload["blocking"] == ["U4"]
-    assert payload["resolved"] == {"U2": "A2", "P1": "confirmed"}
-    assert payload["record"]["resolved_here"] == ["U2", "P1"]
+    assert payload["blocking"] == []
+    assert payload["resolved"] == {"U2": "A2", "P1": "confirmed", "U4": "E2"}
+    assert payload["record"]["resolved_here"] == ["U2", "P1", "U4"]
     assert {i["id"] for i in payload["items"]} == set(
         open_items.OPEN_ITEM_IDS)

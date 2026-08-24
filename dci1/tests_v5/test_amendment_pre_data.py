@@ -74,15 +74,6 @@ def _register(ctx, model_key, *, commit=COMMIT, **kwargs):
 
 # --------------------------------------------------------------- V5-E1
 
-@pytest.fixture(autouse=True)
-def _u4(u4_named_for_testing):
-    """A1-A3's registration tests sign a manifest, and A4's U4 refuses one
-    until a researcher resolves it. `test_manifest` asserts that refusal; here
-    a **named** §12.6 formulation is supplied so these tests keep testing what
-    they were written to test."""
-    return u4_named_for_testing
-
-
 def test_every_registered_model_can_obtain_a_stage_one_record(tmp_path):
     """The defect exactly: model 1 passed and models 2-4 raised.
 

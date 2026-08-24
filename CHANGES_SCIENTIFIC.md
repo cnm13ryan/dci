@@ -13,6 +13,70 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-24 — v5: §12.6's eligibility rule resolved at E2, and §18 step 14's raw-coordinate fit implemented as §15 registers it
+
+**What changed.** The two questions the stages 3–18 audit (entry below) left
+open are closed, and one superseding registration replaces `d0485a6d…`.
+`reports/dci1v5/amendment_register.md` A5.
+
+**U4 — §12.6's eligibility predicate, resolved at E2.** §12.6 made a
+pre-screen rung's eligibility *"§13's band on $\iota$ and its vacuity
+ceiling"*, and §13.4 registers that band — $[0.10, 0.90]$ — on the **raw solo
+compliance** $p_{\text{solo}}(R)$, not on $\iota$; §13 bands $\iota$
+nowhere. The researcher adopted **E2**: eligible means $p_{\text{solo}} \in
+[0.10, 0.90]$ together with the registered vacuity ceiling of 0.10. E1 —
+applying §13's band numbers to $\iota$ — is **non-adopted**, because an
+absolute band on $\iota$ is a threshold no section registers and would be an
+amendment to §13 rather than a reading of §12.6. **The coverage criterion is
+unchanged**: C1–C8 are still stated in $\iota$ and still position rungs by
+$\iota$ relative to $\iota_A$. Recorded in
+`reports/dci1v5/researcher_decisions.json`, whose hash the registration
+manifest binds; §12.6's sentence is amended to state the band on
+$p_{\text{solo}}$ explicitly.
+
+**V5-E27 — §18 step 14's raw-coordinate secondary fit, now computed.** Step 14
+repeats steps 9 and 12 on the raw coordinate and nothing in the repository
+fitted anything on it. Step 9 is now executed in full — the fit, $A$'s
+exclusion, §13.13's support, both algebraic forms, the block bootstrap. Step
+12 is recorded as **`NOT_REGISTERED_FOR_INFERENCE`** with its reason: §15
+registers the raw-coordinate replication among the quantities *"reported with
+marginal intervals only and supporting no claim"* and declares no family
+containing a raw-coordinate member, so marginal percentile intervals are
+reported and **no multiplicity family was invented**. §17.6's
+coordinate-agreement rule and §34 D14's closure —
+`DIFFICULTY_COORDINATE_DEPENDENT` when the two coordinates classify L3d/L3e
+differently — were unreachable without a raw fit and now have a production
+path that returns a **status and never a level**.
+
+**Two defects found while wiring it**, both of the class the audit below
+names: `run/analysis_run._strip_vectors` builds the record from an explicit
+key list and dropped the replication before it reached the artifact — the same
+function that had already lost §11.3/§11.7's agreement checks once; and a
+second `SECONDARY_DIFFICULTY_COORDINATE` constant was defined shadowing the
+registered one. Both repaired, both with regressions.
+
+**Which results are affected.** No stored number changes, because no v5
+confirmatory number exists. The two gemma behavioural chains produced under
+`d0485a6d…` (30,592 and 15,104 rows) and the 430,080 rows already under
+`superseded/` are **retained in full and none is deleted**, and are
+**invalidated for reuse**: each was produced under a screen whose coverage
+criterion evaluated an empty set, whose $\iota_A$ came from the wrong
+severity, whose §7.2 escalation refused on its first instruction, and whose
+expansion could not run. The superseding registration changes their scientific
+identity, so §26's reuse ledger cannot reach them.
+
+**Comparability.** Nothing produced under `d0485a6d…` or any earlier v5
+registration is comparable with anything produced under the new one, and none
+of it is carried forward. v4r4 evidence is untouched.
+
+**Timing.** Pre-data. No signed `GATE_2_FOCAL_CALIBRATION` record exists on any
+model, no reference selection, freeze, confirmatory generation, masking or
+unmasking has ever run, and **zero new real model generations were produced
+while making this amendment**. All four models hold `PROTOCOL_REGISTERED` and
+`QUALIFIED` under the new registration and nothing beyond that was run.
+
+---
+
 ## 2026-08-24 — v5 stages 3–18: twelve more registered rules were implemented and never on the execution path, and one that the preregistration does not determine
 
 **What changed.** A semantic execution-path audit of stages 3 to 18 — every

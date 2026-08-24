@@ -18,10 +18,10 @@ the pipeline never put there.
 
 ## Summary
 
-- **110 fields** across **17 artifacts**, of which 104 are required.
-- **110 exercised** by the synthetic lifecycle; 0 not reached.
+- **111 fields** across **17 artifacts**, of which 104 are required.
+- **111 exercised** by the synthetic lifecycle; 0 not reached.
 - Defects: **0** (clean).
-- Checked against real payloads: **327** (110 field-presence, 217 consumption, 4 semantic).
+- Checked against real payloads: **329** (111 field-presence, 218 consumption, 4 semantic).
 - Relayed reads (the consumer read the value from a later record that carries it): **18**.
 - Declared readers with no observed read: **83** --- reported, not failed; see below for what that can and cannot mean.
 - Stages walked: 18 of 18.
@@ -45,7 +45,7 @@ the pipeline never put there.
 | `PROTOCOL_REGISTERED` | 12 | 12 | 12 |
 | `QUALIFIED` | 4 | 4 | 4 |
 | `REGIME_SCREEN` | 10 | 8 | 10 |
-| `UNMASKED_ANALYSIS` | 5 | 4 | 5 |
+| `UNMASKED_ANALYSIS` | 6 | 4 | 6 |
 | `UNMASKING` | 3 | 3 | 3 |
 
 ### Declared readers with no observed read
@@ -180,7 +180,7 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `FINAL_REPORT` | `GATE_4_COMPOSED_HEADROOM` | `declared_refusals`, `outcome` |
 | `FINAL_REPORT` | `GATE_5_FREEZE` | `admitted_arms`, `freeze`, `freeze_hash`, `identification_statuses`, `non_identification` |
 | `FINAL_REPORT` | `PREFREEZE_AUDIT` | `checklist` |
-| `FINAL_REPORT` | `UNMASKED_ANALYSIS` | `estimands`, `identification_statuses`, `projection_audit`, `statements`, `success_criterion` |
+| `FINAL_REPORT` | `UNMASKED_ANALYSIS` | `estimands`, `identification_statuses`, `projection_audit`, `raw_coordinate_secondary`, `statements`, `success_criterion` |
 | `FINAL_REPORT` | `UNMASKING` | `analysis_code_hash`, `unmask_event`, `unmasked` |
 | `GATE_0_APPARATUS` | `PROTOCOL_REGISTERED` | `manifest_hash` |
 | `GATE_1_MEASUREMENT` | `REGIME_SCREEN` | `n_carried`, `outcome`, `selected_cap` |
@@ -337,3 +337,4 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `UNMASKED_ANALYSIS` | `success_criterion` | `UNMASKED_ANALYSIS` | `FINAL_REPORT` | `UNMASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `UNMASKED_ANALYSIS` | `estimands` | `UNMASKED_ANALYSIS` | `FINAL_REPORT` | `UNMASKED_ANALYSIS` | yes | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
 | `UNMASKED_ANALYSIS` | `projection_audit` | `UNMASKED_ANALYSIS` | `FINAL_REPORT` | `UNMASKED_ANALYSIS` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
+| `UNMASKED_ANALYSIS` | `raw_coordinate_secondary` | `UNMASKED_ANALYSIS` | `FINAL_REPORT` | `UNMASKED_ANALYSIS` | no | `tests_v5/test_run_contracts.py` | yes | PRODUCED |
