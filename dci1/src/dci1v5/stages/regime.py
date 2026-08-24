@@ -45,8 +45,11 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 
 
+from dci1v4.errors import ProtocolError
+
 from dci1v5.analysis.intervals import interval_intersects, wilson
 from dci1v5.protocol import constants as C
+from dci1v5.protocol import open_items
 from dci1v5.stages.calibration_table import tie_key
 from dci1v5.stages.selection import restrictiveness_key
 from dci1v5.verifiers.constraints import (
@@ -56,7 +59,8 @@ from dci1v5.verifiers.constraints import (
 __all__ = ["StructuralScreen", "carry_candidate", "carried_set",
            "calibration_priority", "select_operating_point", "select_focal", "select_target",
            "assert_construct_floor", "coverage_criterion", "expansion_round",
-           "run_expansion"]
+           "run_expansion", "ELIGIBILITY_FORMULATIONS", "coverage_eligibility",
+           "coverage_rows", "regime_adequacy", "grid_resolution"]
 
 
 class StructuralScreen:
@@ -203,6 +207,94 @@ def select_operating_point(curve: Mapping[int, float], *, band: tuple,
             "reason": boundary_reason}
 
 
+def grid_resolution(curve: Mapping[int, float], *, band: tuple,
+                    grid: Sequence[int]) -> dict[str, Any]:
+    """§12.3: does the grid jump a whole band between adjacent severities?
+
+    §12.3 registers three diagnoses for a selection that finds nothing, and
+    they are not the same fact. ``*_RANGE_EXHAUSTED`` says the model's curve
+    never enters the band. ``GRID_RESOLUTION_INSUFFICIENT`` says the curve
+    passes *through* the band between two adjacent registered severities
+    without either of them landing in it --- the grid is too coarse, which is
+    a statement about the registered ladder and not about the model. The
+    section names it and no production caller could reach it.
+    """
+    low, high = band
+    measured = [q for q in grid if q in curve]
+    straddles = []
+    for left, right in zip(measured, measured[1:]):
+        a, b = curve[left], curve[right]
+        if (a > high and b < low) or (a < low and b > high):
+            straddles.append({"severities": [left, right],
+                              "compliance": [a, b]})
+    return {"insufficient": bool(straddles), "straddling_pairs": straddles,
+            "band": [low, high], "measured": measured}
+
+
+def regime_adequacy(*, solo_a: float, solo_b: float,
+                    vacuity_b: float,
+                    graded_shares: Mapping[str, Mapping[str, float]]
+                    ) -> dict[str, Any]:
+    """§12.4's three conditions, on the pooled calibration topics.
+
+    Condition 3 is a statement about a **share** and the section says so in
+    its own words, because read as a statement about the mean it fires on
+    every severity §12.3 declares eligible and contradicts its own neighbour.
+    ``graded_shares`` maps the outcome constraint to its measured
+    ``graded_share_above`` and ``graded_share_below``.
+
+    A replication that fails any condition records ``REGIME_NOT_FOUND``,
+    which is a statement about the registered grid and never about the model
+    or the hypothesis.
+    """
+    failures: list[dict[str, Any]] = []
+    for name, value, band in (("A", solo_a, C.TARGET_BAND),
+                              ("B", solo_b, C.FOCAL_BAND)):
+        if value is None or not (band[0] <= value <= band[1]):
+            failures.append({"condition": 1, "constraint": name,
+                             "solo_compliance": value, "band": list(band),
+                             "reason": f"{name}'s solo compliance is not "
+                                       f"inside {list(band)}"})
+    if vacuity_b is None or vacuity_b > C.REGIME_VACUITY_MAX:
+        failures.append({"condition": 2, "constraint": "B",
+                         "solo_vacuity": vacuity_b,
+                         "max": C.REGIME_VACUITY_MAX,
+                         "reason": "B's realised solo vacuity rate exceeds "
+                                   f"{C.REGIME_VACUITY_MAX}"})
+    for name in ("A", "B"):
+        shares = dict(graded_shares.get(name) or {})
+        for key in ("graded_share_above", "graded_share_below"):
+            share = shares.get(key)
+            if share is None or share > C.GRADED_DEGENERACY_SHARE_MAX:
+                failures.append({
+                    "condition": 3, "constraint": name, "share_name": key,
+                    "share": share, "max": C.GRADED_DEGENERACY_SHARE_MAX,
+                    "reading": C.GRADED_CLAUSE_READING,
+                    "reason": f"{name}'s {key} exceeds "
+                              f"{C.GRADED_DEGENERACY_SHARE_MAX}; §12.4 "
+                              "condition 3 is about a share of responses, "
+                              "not about the mean"})
+    return {
+        "adequate": not failures,
+        "failures": failures,
+        "conditions": {
+            "1": "solo compliance of A and of B lie inside their bands",
+            "2": f"realised solo vacuity for B at most {C.REGIME_VACUITY_MAX}",
+            "3": "the share above 0.99 and the share below 0.01 are each at "
+                 f"most {C.GRADED_DEGENERACY_SHARE_MAX}, for each outcome "
+                 "constraint"},
+        "measured": {"solo_a": solo_a, "solo_b": solo_b,
+                     "vacuity_b": vacuity_b,
+                     "graded_shares": {k: dict(v)
+                                       for k, v in graded_shares.items()}},
+        "bands": {"A": list(C.TARGET_BAND), "B": list(C.FOCAL_BAND)},
+        "vacuity_max": C.REGIME_VACUITY_MAX,
+        "graded_degeneracy_share_max": C.GRADED_DEGENERACY_SHARE_MAX,
+        "graded_degeneracy_thresholds": [C.GRADED_DEGENERACY_LOW,
+                                         C.GRADED_DEGENERACY_HIGH],
+    }
+
+
 def select_focal(curve_registered: Mapping[int, float],
                  curve_extension: Mapping[int, float] | None = None
                  ) -> dict[str, Any]:
@@ -287,6 +379,94 @@ def assert_construct_floor(m_star: int, *,
     return construct_strength.assert_construct_floor(
         m_star, chance_compliance_at_m_star=chance_compliance_at_m_star,
         **kwargs)
+
+
+#: §12.6's two admissible eligibility rules, as open item U4 carries them.
+#: The section names "§13's band on iota"; §13 registers its band on p_solo
+#: and no band on iota, so both readings are constructed and neither runs
+#: until a researcher resolves U4.
+ELIGIBILITY_FORMULATIONS: dict[str, str] = {
+    "E1": "iota inside [0.10, 0.90] and pre-screen solo vacuity <= 0.10",
+    "E2": ("raw solo compliance inside [0.10, 0.90] and pre-screen solo "
+           "vacuity <= 0.10"),
+}
+
+
+def coverage_eligibility(row: Mapping[str, Any], *,
+                         formulation: str | None = None) -> dict[str, Any]:
+    """§12.6's eligibility verdict for one pre-screen rung.
+
+    ``coverage_criterion`` has always read ``row["eligible"]`` and nothing in
+    this repository ever set it, so the criterion evaluated on an empty set
+    and C1-C6 were False on every replication. Setting it requires knowing
+    which quantity §13's band applies to, which is open item U4: the two
+    readings admit different rungs, so they can produce different C1-C6
+    verdicts, a different expansion, and a different admitted arm set.
+
+    Passing ``formulation`` explicitly runs a **named** construction and
+    records which one; passing nothing reads U4's resolution and refuses
+    while it is unresolved.
+    """
+    name = formulation or open_items.assert_item_resolved(
+        "U4", where="stages.regime.coverage_eligibility")
+    if name not in ELIGIBILITY_FORMULATIONS:
+        raise ProtocolError(
+            f"{name!r} is not a registered §12.6 eligibility formulation; "
+            f"U4 carries {sorted(ELIGIBILITY_FORMULATIONS)}")
+    vacuity = row.get("vacuity")
+    coordinate = row.get("iota") if name == "E1" else row.get("solo")
+    low, high = C.HEADROOM_BAND
+    reasons: list[str] = []
+    if coordinate is None:
+        reasons.append("no measured coordinate")
+    elif not (low <= coordinate <= high):
+        reasons.append(f"{coordinate:.4f} outside {[low, high]}")
+    if vacuity is None:
+        reasons.append("no measured vacuity")
+    elif vacuity > C.REFERENCE_VACUITY_MAX:
+        reasons.append(f"vacuity {vacuity:.4f} above "
+                       f"{C.REFERENCE_VACUITY_MAX}")
+    return {"eligible": not reasons, "formulation": name,
+            "coordinate": coordinate, "vacuity": vacuity,
+            "reason": "; ".join(reasons) or None}
+
+
+def coverage_rows(table: Sequence[Mapping[str, Any]],
+                  carried: Sequence[str], *,
+                  formulation: str | None = None) -> list[dict[str, Any]]:
+    """The pre-screen table in the shape ``coverage_criterion`` registers.
+
+    ``coverage_criterion`` needs ``candidate``, ``family``,
+    ``structural_tier``, ``feature_group``, ``constraint_class``, ``iota`` and
+    ``eligible``. The production caller passed rows carrying ``kind`` and
+    ``tier`` and no ``eligible``, so every condition was evaluated over zero
+    rungs. The join is here, from the registered family metadata, so the
+    criterion reads measured quantities rather than a caller's shape.
+    """
+    kept = set(carried)
+    out: list[dict[str, Any]] = []
+    for row in table:
+        if row.get("candidate") not in kept:
+            continue
+        kind = row.get("kind")
+        family = FAMILIES.get(kind)
+        if family is None:            # A and B: outcome constraints, no tier
+            continue
+        verdict = coverage_eligibility(row, formulation=formulation)
+        out.append({
+            "candidate": row["candidate"],
+            "family": kind,
+            "severity": row["severity"],
+            "structural_tier": family.structural_tier,
+            "feature_group": family.feature_group,
+            "constraint_class": family.constraint_class,
+            "iota": row.get("iota"),
+            "solo": row.get("solo"),
+            "vacuity": row.get("vacuity"),
+            "eligible": verdict["eligible"],
+            "eligibility": verdict,
+        })
+    return out
 
 
 def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float

@@ -37,6 +37,7 @@ from dci1v4.errors import ProtocolError
 from dci1v5.engine import transitions
 from dci1v5.engine.paths import ModelTree
 from dci1v5.protocol import constants as C
+from dci1v5.run import field_access
 from dci1v5.verifiers import verifier_source_hash
 
 __all__ = ["TerminalStatus", "StageOutcome", "run_stage", "mirror_records",
@@ -187,7 +188,8 @@ def run_stage(tree: ModelTree, stage: str, *,
         raise
     previous = stage_input(tree, stage)
     try:
-        payload = compute(previous)
+        with field_access.reading_for(stage):
+            payload = compute(previous)
     except TerminalStatus as terminal:
         transitions.write_terminal_report(
             tree, terminal.payload(tree.model_key, producing_commit))

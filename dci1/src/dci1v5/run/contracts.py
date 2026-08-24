@@ -32,7 +32,8 @@ from dci1v4.errors import ProtocolError
 
 from dci1v5.protocol import constants as C
 
-__all__ = ["Field", "CONTRACT", "audit_contracts", "matrix_rows",
+__all__ = ["Field", "CONTRACT", "NEIGHBOURS", "SEMANTIC_CHECKS",
+           "audit_contracts", "assert_contracts_clean", "matrix_rows",
            "matrix_markdown"]
 
 _S = C
@@ -99,13 +100,26 @@ CONTRACT: tuple[Field, ...] = (
     _f(G0, "admitted_arms_exercised", (), required=False),
 
     # ---------------------------------------------------------- REGIME_SCREEN
-    _f(RG, "selected_cap", (G2, G4, CONF, G5)),
-    _f(RG, "carried_set", (G2, G25, G3A, G5)),
-    _f(RG, "n_carried", (G1, PF)),
+    _f(RG, "selected_cap", (G1, G2, G4, CONF, G5)),
+    # §12.2's high-recall carried set. Gate 2 is NOT a reader: §12.7's
+    # calibration population is `calibration_priority`, and this registry
+    # declaring G2 here is what V5-E6 looked like from the contract's side.
+    # Gate 2 is a reader of the SIZE and of nothing else: `calibration_
+    # population.carried_by_the_screen` puts §12.2's high-recall total beside
+    # §12.7's measured population so a reader can see the difference. That it
+    # does not SELECT from it is enforced by value, in `_audit_semantics`,
+    # because a read is not what went wrong in V5-E6 --- the population was.
+    _f(RG, "carried_set", (G2, G25, G3A, G3C, G5)),
+    _f(RG, "n_carried", (G1, G2, PF)),
     _f(RG, "difficulty_table", (G25, G3A)),
     _f(RG, "vocabulary_frozen", (PF, G5)),
-    _f(RG, "coverage", (G3C, G5)),
-    _f(RG, "calibration_priority", (G3A,)),
+    _f(RG, "coverage", (G5,)),
+    # §12.7's calibration population, which Gate 2 measures.
+    _f(RG, "calibration_priority", (G2, G3A)),
+    # §12.6's expansion and the disposition it reached. The statuses are
+    # design-time: Gate 3C admits no arm §12.6 dropped.
+    _f(RG, "expansion", (G5,), required=False),
+    _f(RG, "identification_statuses", (G3C, G5)),
     _f(RG, "iota_a_prescreen", (), required=False),
 
     # ----------------------------------------------------- GATE_1_MEASUREMENT
@@ -118,13 +132,28 @@ CONTRACT: tuple[Field, ...] = (
     # ----------------------------------------------- GATE_2_FOCAL_CALIBRATION
     _f(G2, "n_star", (G25, G3B, G4, G5, CONF)),
     _f(G2, "m_star", (G25, G3A, G3B, G4, G5, CONF)),
-    _f(G2, "iota_a", (G3B, G5)),
-    _f(G2, "solo_compliance_a", (G3B, G5)),
+    _f(G2, "iota_a", (G3A, G3B, G5)),
+    _f(G2, "solo_compliance_a", (G3A, G3B, G5)),
+    _f(G2, "solo_compliance_b", (G5,)),
     _f(G2, "chance_curves", (G5,)),
     _f(G2, "solo_curves", (G5,)),
-    _f(G2, "construct_strength", (G5, FR)),
+    _f(G2, "construct_strength", ()),
     _f(G2, "identification_statuses", (G3C, G5, UA)),
     _f(G2, "calibration_binding", (G3A, G5)),
+    # §12.7's realised population, so a reader can see the 112 measured and
+    # the Tier-3 rungs the budget dropped beside the screen's larger set.
+    _f(G2, "calibration_population", (G5, PF)),
+    _f(G2, "calibration_rows", (G25, G3A)),
+    # §12.4's three conditions and §12.3's grid-resolution diagnosis, as
+    # verdicts rather than as the thresholds they are judged against.
+    _f(G2, "adequacy", (G5,)),
+    _f(G2, "grid_resolution", (G5,), required=False),
+    # §13.7 subjects iota_A to the same equivalence rule as every candidate,
+    # and the rule resamples topics, so Gate 3A needs A's per-topic vector.
+    _f(G2, "a_per_topic_by_split", (G3A,)),
+    _f(G2, "iota_a_by_split", (G3A,)),
+    _f(G2, "solo_a_by_split", (G3A,)),
+    _f(G2, "focal_extension_measured", (G5,)),
 
     # ------------------------------------- GATE_2_5_CANDIDATE_QUALIFICATION
     _f(G25, "m_star", (G3A,)),
@@ -140,6 +169,7 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3A, "stability", (G3B, G5, PF)),
     _f(G3A, "split_tables", (G5, PF)),
     _f(G3A, "calibration_b_population", (G5,)),
+    _f(G3A, "iota_a_stability", (G5,), required=False),
 
     # ---------------------------------------- GATE_3B_REFERENCE_SELECTION
     _f(G3B, "m_star", (G3C,)),
@@ -156,7 +186,7 @@ CONTRACT: tuple[Field, ...] = (
     # §34 D6, closed at `identification_status`. Null when §13.15 was met, and
     # the key is present either way, so a reader can tell "the support held"
     # from "this record predates the decision".
-    _f(G3C, "non_identification", (G5,)),
+    _f(G3C, "non_identification", (G5, FR)),
     _f(G3C, "not_identified_members", (G5, PF)),
 
     # ------------------------------------------- GATE_4_COMPOSED_HEADROOM
@@ -181,9 +211,12 @@ CONTRACT: tuple[Field, ...] = (
     _f(G5, "blocks", (CONF,)),
     _f(G5, "cells_per_block", (CONF,)),
     _f(G5, "M", (CONF, MA, UA)),
-    _f(G5, "slot_map", (CONF,)),
+    # §11.7's family grouping: the unmasked analysis reduces the slot map to
+    # slot -> family, which is the one input `estimate_all` gets only after
+    # the unmask.
+    _f(G5, "slot_map", (CONF, UA)),
     _f(G5, "admitted_arms", (CONF, UA, FR)),
-    _f(G5, "identification_statuses", (UA, FR)),
+    _f(G5, "identification_statuses", (MA, UA, FR)),
     # §34 D6's irreversibility: the frozen non-identification, which the
     # unmasked analysis and the final report assert against rather than
     # re-deriving. A later stage that offered an estimate for a member named
@@ -204,7 +237,7 @@ CONTRACT: tuple[Field, ...] = (
     _f(MA, "sealed", (UN,)),
 
     # ------------------------------------------------------------- UNMASKING
-    _f(UN, "unmasked", (UA,)),
+    _f(UN, "unmasked", (UA, FR)),
     _f(UN, "mask_key_hash", (UA,)),
     _f(UN, "unmask_event", (UA, FR)),
 
@@ -217,9 +250,17 @@ CONTRACT: tuple[Field, ...] = (
 )
 
 
-def audit_contracts(payloads: Mapping[str, Mapping[str, Any]] | None = None
-                    ) -> dict[str, Any]:
-    """The static audit, plus the runtime one when payloads are supplied."""
+def audit_contracts(payloads: Mapping[str, Mapping[str, Any]] | None = None,
+                    reads: Mapping[str, Mapping[str, Sequence[str]]] | None
+                    = None) -> dict[str, Any]:
+    """The static audit, the payload audit, and the consumption audit.
+
+    ``reads`` is ``run/field_access.observed()`` from a run of the synthetic
+    scenario suite: reader stage -> producing artifact -> the fields that
+    stage actually looked at. Without it this function can only check that a
+    declared field was *produced*, which is what let a contract report 98
+    fields and 0 defects while Gate 2 read the wrong one of two neighbours.
+    """
     order = {stage: i for i, stage in enumerate(C.STAGE_SEQUENCE)}
     defects: list[dict[str, Any]] = []
     producers: dict[tuple[str, str], str] = {}
@@ -259,19 +300,239 @@ def audit_contracts(payloads: Mapping[str, Mapping[str, Any]] | None = None
                                 "field": entry.field,
                                 "producer": entry.producer,
                                 "readers": list(entry.readers)})
+
+    consumption = semantic_run = 0
+    relayed: list[dict[str, Any]] = []
+    unconsumed: list[dict[str, Any]] = []
+    if payloads is not None and reads is not None:
+        consumption, consumption_defects, relayed, unconsumed = (
+            _audit_consumption(payloads, reads))
+        defects.extend(consumption_defects)
+        semantic_run, semantic_defects = _audit_semantics(payloads, reads)
+        defects.extend(semantic_defects)
+        consumption += semantic_run
+
     return {
         "n_fields": len(CONTRACT),
         "n_artifacts": len({e.artifact for e in CONTRACT}),
-        "n_checked_against_payloads": checked,
+        "n_checked_against_payloads": checked + consumption,
+        "n_field_presence_checks": checked,
+        "n_consumption_checks": consumption,
+        "n_semantic_checks": semantic_run,
+        "relayed": relayed,
+        "n_relayed": len(relayed),
+        # A declared reader with no observed read is REPORTED, not failed.
+        # It is one of two things and the audit cannot yet tell them apart: a
+        # declaration with nothing behind it, or a rule that is not on the
+        # path. Separating them needs the field read at the place the value
+        # is used, and the tracker sees top-level keys --- a value taken from
+        # inside a nested block, or from a copy a later stage made, reads as
+        # unconsumed here. What it is NOT is the V5-E6 shape: that is
+        # `UNDECLARED_READ` and the semantic checks, and both fail.
+        "unconsumed": unconsumed,
+        "n_unconsumed": len(unconsumed),
         "defects": defects,
         "n_defects": len(defects),
         "clean": not defects,
     }
 
 
+#: Pairs of neighbouring fields where reading the wrong one is a scientific
+#: defect rather than a style question, with the rule that decides. This is
+#: the registry V5-E6 would have been caught by: `carried_set` and
+#: `calibration_priority` are both on the regime record, both are lists of
+#: candidate labels, and only one of them is §12.7's calibration population.
+NEIGHBOURS: tuple[tuple[str, str, str, str], ...] = (
+    (RG, "calibration_priority", "carried_set",
+     "§12.7: Gate 2 measures the calibration population --- every Tier-1/2 "
+     "rung plus at most 24 Tier-3 --- and NOT §12.2's high-recall carried "
+     "set. Reading `carried_set` here puts the Tier-3 rungs §12.7 drops for "
+     "budget into candidate qualification and from there into reference "
+     "selection"),
+)
+
+
+#: Stages that read **every** record by construction, so an undeclared read
+#: by one of them is not a finding: the pre-freeze audit iterates
+#: `STAGE_SEQUENCE` to check the artifacts, and the final report hashes every
+#: signed record to make §31's table traceable.
+WHOLESALE_READERS: tuple[str, ...] = (PF, FR)
+
+#: Provenance carried on every stage record and read by every generating
+#: stage through `protocol_identity`. Not a scientific consumer relationship.
+PROVENANCE_FIELDS: tuple[str, ...] = ("manifest_hash", "protocol_hash",
+                                      "producing_commit")
+
+
+def _audit_consumption(payloads: Mapping[str, Mapping[str, Any]],
+                       reads: Mapping[str, Mapping[str, Sequence[str]]]
+                       ) -> tuple[int, list[dict[str, Any]],
+                                  list[dict[str, Any]],
+                                  list[dict[str, Any]]]:
+    """Observed reads against declared ones, both directions.
+
+    A field a declared reader never touched is a declaration with nothing
+    behind it. A field a stage read without a declaration is the shape of
+    V5-E6: the runner reached for a neighbour and nothing said it may.
+    """
+    defects: list[dict[str, Any]] = []
+    unconsumed: list[dict[str, Any]] = []
+    declared: dict[tuple[str, str], set[str]] = {}
+    for entry in CONTRACT:
+        for reader in entry.readers:
+            declared.setdefault((reader, entry.artifact),
+                                set()).add(entry.field)
+    checked = 0
+    ran = set(payloads)
+    relayed: list[dict[str, Any]] = []
+    for entry in CONTRACT:
+        if entry.artifact not in ran:
+            continue
+        for reader in entry.readers:
+            if reader not in ran:
+                continue
+            checked += 1
+            by_artifact = reads.get(reader) or {}
+            if entry.field in set(by_artifact.get(entry.artifact) or ()):
+                continue
+            # A value can reach its consumer **relayed**: §18's later stages
+            # copy n*, m*, the arm set and the identification statuses onto
+            # their own records, and Gate 4 reads n* from the freeze rather
+            # than from Gate 2. The contract's readers are the stages that
+            # CONSUME the value, so a relayed read satisfies the declaration
+            # --- and is recorded as relayed, because the relay is a place a
+            # value could change and nobody would see it.
+            via = sorted(artifact for artifact, fields in by_artifact.items()
+                         if entry.field in set(fields)
+                         and artifact != entry.artifact)
+            if via:
+                relayed.append({"artifact": entry.artifact,
+                                "field": entry.field, "reader": reader,
+                                "via": via})
+                continue
+            unconsumed.append({
+                "kind": "UNCONSUMED_DECLARATION",
+                "artifact": entry.artifact, "field": entry.field,
+                "reader": reader,
+                "detail": "the contract declares this reader and no read of "
+                          "the field was observed on any record"})
+    for reader, by_artifact in sorted(reads.items()):
+        for artifact, fields in sorted(by_artifact.items()):
+            if artifact not in ran or reader not in ran:
+                continue
+            if reader in WHOLESALE_READERS:
+                continue
+            known = {e.field for e in CONTRACT if e.artifact == artifact}
+            allowed = declared.get((reader, artifact), set())
+            for field in sorted(set(fields)):
+                if (field in allowed or field not in known
+                        or field in PROVENANCE_FIELDS):
+                    continue
+                defects.append({
+                    "kind": "UNDECLARED_READ",
+                    "artifact": artifact, "field": field, "reader": reader,
+                    "detail": "this stage read a contracted field the "
+                              "contract does not declare it a reader of"})
+    return checked, defects, relayed, unconsumed
+
+
+#: Value-level assertions on the real payloads, each naming the section it
+#: enforces. A presence check cannot tell 326 from 112.
+SEMANTIC_CHECKS: tuple[str, ...] = (
+    "gate2_measures_the_calibration_population",
+    "gate2_did_not_measure_the_carried_set",
+    "coverage_verdict_reaches_gate3c",
+    "every_registered_family_member_is_accounted_for",
+)
+
+
+def _audit_semantics(payloads: Mapping[str, Mapping[str, Any]],
+                     reads: Mapping[str, Mapping[str, Sequence[str]]]
+                     ) -> tuple[int, list[dict[str, Any]]]:
+    """The value-level checks named in ``SEMANTIC_CHECKS``.
+
+    Returns how many of them had the payloads they need **and ran**, beside
+    what they found. A check with no payload to inspect is not a check that
+    passed, and counting it as one is how an audit reports coverage it does
+    not have.
+    """
+    defects: list[dict[str, Any]] = []
+    ran = 0
+    regime, gate2 = payloads.get(RG), payloads.get(G2)
+
+    if regime is not None and gate2 is not None:
+        ran += 2
+        priority = regime.get("calibration_priority") or {}
+        expected = (len(priority.get("tier12") or ())
+                    + len(priority.get("tier3_measured") or ()))
+        population = gate2.get("calibration_population") or {}
+        measured = population.get("n_measured")
+        if measured != expected:
+            defects.append({
+                "kind": "WRONG_INPUT_FIELD",
+                "check": "gate2_measures_the_calibration_population",
+                "artifact": G2, "field": "calibration_population",
+                "expected": expected, "observed": measured,
+                "detail": NEIGHBOURS[0][3]})
+        carried = len(regime.get("carried_set") or ())
+        if measured is not None and carried != expected \
+                and measured == carried:
+            defects.append({
+                "kind": "WRONG_INPUT_FIELD",
+                "check": "gate2_did_not_measure_the_carried_set",
+                "artifact": G2, "field": "calibration_population",
+                "expected": expected, "observed": measured,
+                "detail": NEIGHBOURS[0][3]})
+    gate3c = payloads.get(G3C)
+    if regime is not None and gate3c is not None:
+        ran += 1
+        screen = set(regime.get("identification_statuses") or ())
+        recorded = set(gate3c.get("identification_statuses") or ())
+        missing = sorted(screen - recorded)
+        if missing:
+            defects.append({
+                "kind": "OUTPUT_DROPPED",
+                "check": "coverage_verdict_reaches_gate3c",
+                "artifact": RG, "field": "identification_statuses",
+                "reader": G3C, "missing": missing,
+                "detail": "§12.6 decides at the screen which arms the "
+                          "replication runs; a status the screen recorded "
+                          "and Gate 3C does not carry is a rule computed "
+                          "and dropped"})
+
+    analysis = payloads.get(UA)
+    if analysis is not None:
+        ran += 1
+        estimands = analysis.get("estimands") or {}
+        accounted = set(estimands.get("not_identified") or ()) | set(
+            estimands.get("not_computable") or ())
+        for bucket in (estimands.get("configurations") or {}).values():
+            accounted |= set(bucket)
+        accounted |= set(estimands.get("cross_configuration") or {})
+        for family, members in C.FAMILY_MEMBERS.items():
+            missing = sorted(set(members) - accounted)
+            if missing:
+                defects.append({
+                    "kind": "OUTPUT_DROPPED",
+                    "check": "every_registered_family_member_is_accounted_for",
+                    "artifact": UA, "field": "estimands", "family": family,
+                    "missing": missing,
+                    "detail": "§15 registers this member; the analysis record "
+                              "neither estimates it nor declares why not, so "
+                              "it is absent rather than unidentified"})
+    return ran, defects
+
+
 def assert_contracts_clean(payloads: Mapping[str, Mapping[str, Any]] | None
-                           = None) -> dict[str, Any]:
-    result = audit_contracts(payloads)
+                           = None,
+                           reads: Mapping[str, Mapping[str, Sequence[str]]]
+                           | None = None) -> dict[str, Any]:
+    result = audit_contracts(payloads, reads)
+    if payloads is not None and not result["n_checked_against_payloads"]:
+        raise ProtocolError(
+            "the producer/consumer audit checked nothing against a real "
+            "payload. A run that validates declarations against declarations "
+            "reports zero defects whatever the runner does")
     if result["defects"]:
         raise ProtocolError(
             f"the producer/consumer contract has {result['n_defects']} "

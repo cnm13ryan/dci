@@ -42,6 +42,7 @@ from dci1v5.protocol import constants as C
 from dci1v5.protocol import decisions
 
 __all__ = ["Interval", "ClaimError", "position_status", "delta_r_reading",
+           "l3_vacuity_agrees",
            "delta_near_reading", "delta_difficulty_reading", "xi_gate",
            "joint_reading", "tier_reading", "emit_l1", "emit_l2", "emit_l3",
            "emit_l4a", "emit_l4b", "assert_no_l5_emitter", "LEVEL_MEMBERS",
@@ -188,8 +189,8 @@ def delta_near_reading(interval: Interval | None) -> dict[str, Any]:
     return {"classification": classification, "markers": [], "statuses": []}
 
 
-def delta_difficulty_reading(interval: Interval, support: Mapping[str, Any]
-                             ) -> dict[str, Any]:
+def delta_difficulty_reading(interval: Interval | None,
+                             support: Mapping[str, Any]) -> dict[str, Any]:
     """§3.2's L3d / L3e, gated on §13.13's support.
 
     ``delta_difficulty`` licenses a DIRECTION claim and an EQUIVALENCE claim
@@ -197,14 +198,25 @@ def delta_difficulty_reading(interval: Interval, support: Mapping[str, Any]
     for a difference between two observed losses; this quantity differences an
     observed loss against a fitted prediction, and transferring the number
     would be inventing a threshold in someone else's provenance (§11.9).
+
+    ``interval`` is ``None`` when the member is not identified at all --- the
+    spectrum arm was not admitted, so §13.12's exhaustion dropped it. §17.6's
+    fifth row registers that case: *"support fails ...
+    `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`; the local reading stands alone with
+    that status; **L3a/L3b/L3c only**"*. The support check therefore runs
+    first, because with no fit there is no interval to name.
     """
-    if interval.member != "delta_difficulty":
-        raise ClaimError(f"{interval.member} is not delta_difficulty")
     if not support.get("holds"):
         return {"levels": [], "markers": [],
                 "statuses": ["DIFFICULTY_SUPPORT_NOT_IDENTIFIED"],
                 "note": ("the fit extrapolates to A; the point estimate is "
                          "descriptive and is not a null")}
+    if interval is None:
+        raise ClaimError(
+            "delta_difficulty has no interval and the support says it holds; "
+            "one of the two is wrong and the reading is not defined")
+    if interval.member != "delta_difficulty":
+        raise ClaimError(f"{interval.member} is not delta_difficulty")
     if not interval.meets_precondition():
         return {"levels": [], "markers": ["INSUFFICIENT_PRECISION"],
                 "statuses": [],
@@ -392,7 +404,7 @@ def assert_l3c_scope(statement: Mapping[str, Any], *,
             f"{C.L3C_SAME_FORM_ONLY_SENTENCE!r} and nothing stronger")
 
 
-def joint_reading(*, delta_r: Interval, delta_difficulty: Interval,
+def joint_reading(*, delta_r: Interval, delta_difficulty: Interval | None,
                   xi: Interval, support: Mapping[str, Any],
                   delta_near: Interval | None = None) -> dict[str, Any]:
     """§17.6's two tables, applied in advance of any number.
@@ -448,8 +460,10 @@ def joint_reading(*, delta_r: Interval, delta_difficulty: Interval,
                 "the core references resemble A unusually closely relative to "
                 "the relation"),
             "tier_reading": tier,
-            "both_reported": {"Delta_R": vars(delta_r),
-                              "delta_difficulty": vars(delta_difficulty)},
+            "both_reported": {
+                "Delta_R": vars(delta_r),
+                "delta_difficulty": (vars(delta_difficulty)
+                                     if delta_difficulty is not None else None)},
         }
 
     levels = sorted(set(local["levels"] + spectrum["levels"]))
@@ -464,6 +478,22 @@ def joint_reading(*, delta_r: Interval, delta_difficulty: Interval,
         "tier_reading": tier,
         "reference_pool_sentence": C.REFERENCE_POOL_SAME_FORM_SENTENCE,
     }
+
+
+def l3_vacuity_agrees(delta_r: Interval, forced: Interval | None) -> bool:
+    """§17.4 for L3: do the primary and the recomputation license the same
+    claim?
+
+    Agreement is on the *claim* and L3's claim is its sub-level, so the two
+    readings are compared and not the two numbers. ``emit_l3`` takes the
+    verdict as a boolean; this is the function that forms it, and it was
+    missing because F5 had no member with a producer to form it from.
+    """
+    if forced is None:
+        return True
+    recoded = Interval("Delta_R", forced.estimate, forced.lower, forced.upper)
+    return (delta_r_reading(delta_r)["levels"]
+            == delta_r_reading(recoded)["levels"])
 
 
 def assert_statement_complete(statement: Mapping[str, Any]) -> None:
@@ -636,7 +666,7 @@ def emit_l2(*, configuration: str, cell: str, outcome_position: int,
 
 def emit_l3(*, configuration: str, cell: str, outcome_position: int,
             measurement_basis: str, delta_r: Interval,
-            delta_difficulty: Interval, xi: Interval,
+            delta_difficulty: Interval | None, xi: Interval,
             support: Mapping[str, Any], references_identified: bool,
             delta_near: Interval | None = None,
             near_form_available: bool = True,

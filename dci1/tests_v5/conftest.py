@@ -125,6 +125,29 @@ def restore_decisions():
 
 
 @pytest.fixture
+def u4_named_for_testing():
+    """Run U4 under a **named** §12.6 eligibility formulation, then restore.
+
+    U4 is a researcher decision and no test takes it. What this supplies is
+    the same thing `stages.regime.coverage_eligibility(formulation=...)`
+    supplies: one of the two constructions, by name, so the machinery that
+    depends on a resolved registry can be exercised. The registered namespace
+    stays blocked --- `test_open_items` asserts that, and
+    `test_the_plan_command_reports_the_one_open_question` asserts the CLI
+    says so.
+    """
+    from dci1v5.protocol import open_items
+
+    if "U4" in open_items.blocking_items():
+        open_items.resolve("U4", "E1",
+                           resolved_by="test harness; a named construction "
+                                       "exercised, NOT an adoption",
+                           resolved_on="test")
+    yield open_items
+    open_items.reopen_all_for_testing()
+
+
+@pytest.fixture
 def restore_open_items():
     """Resolve a specification question inside a test, then restore it."""
     from dci1v5.protocol import open_items

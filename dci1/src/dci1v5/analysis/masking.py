@@ -102,8 +102,13 @@ MASKED_PHASE_DECLARATIONS = {
 #: here while §20's text named it, so the masked record carried an estimate of
 #: the study's primary quantity computed against a permuted assignment of
 #: companions --- the one number the mask exists to withhold.
+#: ``gamma_tier`` is the fifth coefficient of the same §11.8 fit as ``beta``
+#: and the three intercepts, and §20 names *"the fit's coefficients"*. It was
+#: missing here for the same reason ``Delta_R`` once was --- and it could not
+#: be noticed, because F8 had no producer on any path until A4.
 MASKED_PHASE_FORBIDDEN_MEMBERS = ("delta_difficulty", "Delta_R", "beta",
-                                  "alpha_1", "alpha_2", "alpha_3")
+                                  "alpha_1", "alpha_2", "alpha_3",
+                                  "gamma_tier")
 
 #: The companions of each outcome that share a permutation group. §20's rule
 #: for masked-phase computability is that a member is computable when every

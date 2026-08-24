@@ -74,6 +74,15 @@ def _register(ctx, model_key, *, commit=COMMIT, **kwargs):
 
 # --------------------------------------------------------------- V5-E1
 
+@pytest.fixture(autouse=True)
+def _u4(u4_named_for_testing):
+    """A1-A3's registration tests sign a manifest, and A4's U4 refuses one
+    until a researcher resolves it. `test_manifest` asserts that refusal; here
+    a **named** §12.6 formulation is supplied so these tests keep testing what
+    they were written to test."""
+    return u4_named_for_testing
+
+
 def test_every_registered_model_can_obtain_a_stage_one_record(tmp_path):
     """The defect exactly: model 1 passed and models 2-4 raised.
 
@@ -518,11 +527,18 @@ def test_the_focal_grid_budget_is_what_gate2_generates():
 
 
 def test_the_restored_totals():
+    """A2's and A3's terms, with A4's pre-screen correction on top.
+
+    §12.6 defines iota_A on the pre-screen and the screen did not measure A,
+    so A's target grid and B's focal grid are on it now and the ladder screen
+    costs 1,536 more rows per model. Every other term is A3's.
+    """
     b = budget.registered_budget()
     assert b["calibration"]["candidate_calibration"]["population"] == 112
-    assert b["per_model"]["calibration"] == 110_352
-    assert b["per_model"]["total"] == 293_136
-    assert b["total_generations"] == 1_172_544
+    assert b["calibration"]["ladder_screen"]["rows"] == 8_208
+    assert b["per_model"]["calibration"] == 110_736
+    assert b["per_model"]["total"] == 293_520
+    assert b["total_generations"] == 1_174_080
 
 
 def test_a_generated_chain_can_be_invalidated_only_by_naming_it(tmp_path):

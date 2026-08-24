@@ -147,8 +147,13 @@ def synthetic_repo(root: Path, *, source: Path | str | None = None
 #: plumbing: the full 326-rung round-0 screen would put the runtime of an
 #: integration test into the tens of minutes without exercising one extra
 #: code path.
-SCREEN_FAMILIES = ("MK1", "MK2", "MK3", "MK4", "MK5", "XC1", "XC2",
-                   "XC3", "RF1")
+#: §12.6's C6 needs eight eligible Tier-1/Tier-2 families from six feature
+#: groups, C8 needs three Tier-2 rungs from three groups, and C7 needs an
+#: eligible Tier-3 BUDGET rung near iota_A. Screening five markers and one
+#: budget family could meet none of them --- which nothing noticed while the
+#: coverage criterion was evaluated on an empty row set.
+SCREEN_FAMILIES = ("MK1", "MK2", "MK3", "MK4", "MK5", "MK6", "MK7", "MK8",
+                   "XC1", "XC2", "XC3", "RF5", "RF1")
 
 #: The §34 closures this harness makes, all of them test-only. **D6, D16 and
 #: D18 are not here**: the researcher has taken them and they are in force
@@ -168,8 +173,14 @@ TEST_CLOSURES: dict[str, Any] = {
 assert not set(TEST_CLOSURES) & set(RESEARCHER_CLOSED)
 
 
-def resolved_manifest() -> None:
-    """Close every §34 decision and resolve U2, for this process only."""
+def resolved_manifest(*, eligibility_formulation: str = "E1") -> None:
+    """Close every §34 decision and resolve U2 and U4, for this process only.
+
+    ``eligibility_formulation`` names which of U4's two constructions this
+    process runs. It is a coverage parameter, never an adoption: §12.6's
+    eligibility rule is a researcher decision and the registered namespace
+    refuses to register while it is open.
+    """
     still_open = [d for d in RESEARCHER_CLOSED if not decisions.is_closed(d)]
     if still_open:
         raise AssertionError(
@@ -187,6 +198,17 @@ def resolved_manifest() -> None:
     if "U2" in open_items.blocking_items():
         open_items.resolve("U2", "A2",
                            resolved_by="synthetic lifecycle harness",
+                           resolved_on="synthetic")
+    # U4 --- what makes a pre-screen rung eligible for §12.6's coverage
+    # criterion --- is a RESEARCHER decision and this harness does not take
+    # it. It supplies a NAMED formulation so that both readings can be
+    # exercised and neither is adopted; the registered namespace stays
+    # blocked until a researcher resolves it.
+    if "U4" in open_items.blocking_items():
+        open_items.resolve("U4", eligibility_formulation,
+                           resolved_by="synthetic lifecycle harness; a named "
+                                       "construction exercised for coverage, "
+                                       "NOT an adoption of this reading",
                            resolved_on="synthetic")
 
 
@@ -299,7 +321,7 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
     for constraint in present:
         family = FAMILIES.get(constraint.kind)
         satisfy = _satisfies(row_id, constraint.label,
-                             _target_rate(constraint))
+                             _target_rate(constraint, load=len(present)))
         if constraint.kind == "A":
             marker_counts["however"] = (constraint.severity if satisfy
                                         else constraint.severity + 1)
@@ -332,17 +354,46 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
         elif statistic == "sentence":
             sentences = (constraint.severity if satisfy
                          else constraint.severity + 1)
+    # §9.3: a pass by a response under twenty words is a VACUOUS pass. The
+    # scenario suite needs one replication whose B is vacuous, because that
+    # is §12.4 condition 2 and the only production route to REGIME_NOT_FOUND.
+    short = any(c.label in SHORT_ANSWER_LABELS for c in present)
     return _render(row_id, marker_counts, max_letters, semicolons, commas,
-                   sentences, violate_at=violate_at)
+                   sentences, violate_at=violate_at, short=short)
 
 
-def _target_rate(constraint: Constraint) -> float:
+#: Scenario knobs. Empty for the ordinary walk, so the default fixture is
+#: exactly what it was; a scenario sets one, runs, and clears it. They shape
+#: the FIXTURE, never a rule: the point is to put the production path into a
+#: registered branch it otherwise never reaches, and then watch the
+#: production path decide.
+#:
+#: ``RATE_OVERRIDES``      label -> solo compliance for that rung
+#: ``COMPOSED_OVERRIDES``  label -> compliance when two constraints are stated
+#: ``SHORT_ANSWER_LABELS`` labels whose presence makes the answer too short to
+#:                         be a non-vacuous pass (§9.3's 20-word predicate)
+RATE_OVERRIDES: dict[str, float] = {}
+COMPOSED_OVERRIDES: dict[str, float] = {}
+SHORT_ANSWER_LABELS: set[str] = set()
+
+
+def clear_overrides() -> None:
+    RATE_OVERRIDES.clear()
+    COMPOSED_OVERRIDES.clear()
+    SHORT_ANSWER_LABELS.clear()
+
+
+def _target_rate(constraint: Constraint, *, load: int = 1) -> float:
     """A fixture compliance rate that keeps every band populated.
 
     Chosen so that the outcome grids fall through their bands with severity
     and the candidate rungs straddle A --- which is what gives §12.3, §13.4,
     §13.8 and §13.12 something to select rather than nothing.
     """
+    if load > 1 and constraint.label in COMPOSED_OVERRIDES:
+        return COMPOSED_OVERRIDES[constraint.label]
+    if constraint.label in RATE_OVERRIDES:
+        return RATE_OVERRIDES[constraint.label]
     if constraint.kind == "A":
         return _clamp(0.85 - 0.06 * constraint.severity)
     if constraint.kind == "B":
@@ -350,10 +401,18 @@ def _target_rate(constraint: Constraint) -> float:
     ladder = FAMILIES[constraint.kind].ladder
     position = (ladder.index(constraint.severity)
                 if constraint.severity in ladder else len(ladder) - 1)
-    return _clamp(0.78 - 0.04 * position)
+    # §12.6's C4 wants a family straddling iota_A with at least three
+    # eligible rungs spanning 0.40 in iota, and C1/C2 want rungs on BOTH
+    # sides of it. The earlier 0.04 step gave a 0.28 span and put every rung
+    # below A, so the coverage criterion could not be met by construction ---
+    # which nothing noticed while the criterion was evaluated on an empty
+    # set. The step here is a fixture number and nothing reads it as
+    # evidence; what it buys is a harness in which C1-C8 can both pass and
+    # fail.
+    return _clamp(0.88 - 0.075 * position, low=0.12, high=0.88)
 
 
-def _clamp(rate: float) -> float:
+def _clamp(rate: float, *, low: float = 0.22, high: float = 0.78) -> float:
     """Keep every fixture rate inside §13.14's composed-headroom band, and
     far enough inside it that a Wilson interval on 48 topics is too (§13.4).
 
@@ -361,7 +420,7 @@ def _clamp(rate: float) -> float:
     empties the qualified pool --- a correct verdict about a fixture, and a
     useless one: the walk exists to exercise the stages after them.
     """
-    return max(0.22, min(0.78, rate))
+    return max(low, min(high, rate))
 
 
 #: P(longest word <= m) for an answer nobody constrained, as a CDF over the
@@ -402,7 +461,8 @@ def _letters(n: int) -> str:
 
 def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
             semicolons: int | None, commas: int | None,
-            sentences: int | None, *, violate_at: int | None = None) -> str:
+            sentences: int | None, *, violate_at: int | None = None,
+            short: bool = False) -> str:
     words: list[str] = []
     for marker, count in sorted(markers.items()):
         words.extend([marker] * count)
@@ -412,7 +472,8 @@ def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
     if not pool:
         pool = ["a", "an", "of"]
     index = int(_u(row_id, "fill") * len(pool))
-    while len(words) < 70:
+    target_words = 8 if short else 70
+    while len(words) < target_words:
         words.append(pool[index % len(pool)])
         index += 1
     if violate_at is not None:
@@ -425,22 +486,45 @@ def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
         # than fixed --- a fixed one gives a step function and no curve.
         words.append(_letters(_natural_longest(row_id)))
     text = " ".join(words)
+    if commas is None:
+        # An answer nobody constrained still has commas, and how many is a
+        # property of the answer. A fixture whose unconstrained text has
+        # none makes every comma BUDGET family satisfied by chance, which is
+        # chance-degenerate and drops the whole Tier-3 budget class out of
+        # the pre-screen --- and with it §12.6's C7.
+        commas = 2 + int(_u(row_id, "natural-commas") * 7)
     if commas:
         text = text.replace(" ", ", ", commas)
     if semicolons:
         text = text.replace(" ", "; ", semicolons)
-    if sentences and sentences > 1:
-        parts = text.split(" ")
-        step = max(1, len(parts) // sentences)
-        rebuilt = []
-        for i, word in enumerate(parts):
-            rebuilt.append(word)
-            if (i + 1) % step == 0 and rebuilt.count(".") < sentences - 1:
-                rebuilt[-1] = word + "."
-        text = " ".join(rebuilt)
     if not text.endswith("."):
         text += "."
-    return pad_to_band(text)
+    if short:
+        # Deliberately below §9.3's twenty-word predicate and therefore
+        # below §8.5's stem band too: `pad_to_band` would lift it back over
+        # both, and a vacuous pass is the thing this answer exists to be.
+        return text
+    text = pad_to_band(text)
+    if sentences:
+        # After padding, not before: `pad_to_band` appends filler, and an
+        # exact-count sentence family scored on padded text was counting the
+        # filler's periods. XC3 measured iota 0.000 on every rung and Tier 2
+        # never had three eligible feature groups, which is §12.6's C8.
+        text = _with_sentences(text, sentences)
+    return text
+
+
+def _with_sentences(text: str, sentences: int) -> str:
+    """Exactly ``sentences`` sentences, without changing the word count."""
+    words = [w.rstrip(".") for w in text.split()]
+    if not words:
+        return text
+    count = max(1, min(sentences, len(words)))
+    cuts = sorted({min(len(words) - 1, int(round(i * len(words) / count)) - 1)
+                   for i in range(1, count)} | {len(words) - 1})
+    for at in cuts:
+        words[at] = words[at] + "."
+    return " ".join(words)
 
 
 def _generate(run_dir, plan, rows):
@@ -466,9 +550,25 @@ def screen_rungs() -> list[Constraint]:
     return out
 
 
+class WalkStopped(Exception):
+    """A prefix walk reached its ``stop_after`` stage.
+
+    Carries the live tree and everything a caller needs to continue from it,
+    so a conditional scenario branches from a **real signed prefix** rather
+    than from a record somebody assembled by hand.
+    """
+
+    def __init__(self, **state: Any):
+        payloads = state.get("payloads") or {}
+        reached = list(payloads)[-1] if payloads else "nothing"
+        super().__init__(f"walk stopped after {reached}")
+        self.state = state
+
+
 def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
          repo_root: Path | str | None = None, resamples: int = 200,
-         source_repo: Path | str | None = None) -> dict[str, Any]:
+         source_repo: Path | str | None = None,
+         stop_after: str | None = None) -> dict[str, Any]:
     """Run every stage in order and return each stage's payload.
 
     ``repo_root`` defaults to an isolated repository this function builds and
@@ -493,6 +593,10 @@ def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
 
     def record(outcome):
         payloads[outcome.stage] = outcome.payload
+        if stop_after is not None and outcome.stage == stop_after:
+            raise WalkStopped(tree=tree, payloads=payloads, bank=the_bank,
+                              commit=commit, context=context,
+                              repo_root=repo_root)
         return outcome.payload
 
     from dci1v5.run.registration_run import registration_payload
@@ -610,7 +714,9 @@ def _bound_constraints(tree) -> list[Constraint]:
     gate3b = transitions.read_stage_record(tree, C.STAGE_GATE3B)
     bound = list(slot_map_from_record(gate3b).values())
     bound.append(Constraint("A", gate2["n_star"]))
-    bound.append(Constraint("B", gate2["m_star"]))
+    from dci1v5.run.gates_run import focal_constraint
+
+    bound.append(focal_constraint(gate2["m_star"]))
     return bound
 
 

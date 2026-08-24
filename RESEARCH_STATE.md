@@ -91,7 +91,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | B+R pilot | non-confirmatory design evidence for v4. `dci1/reports/br_pilot_v4/` |
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
-| **v5** | **ADOPTED AND REGISTERED 2026-08-23; no stage record, no instrument measured, no generation.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. §4q, §4r, §4s, §4t, §4u, §4v. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v5** | **ADOPTED AND REGISTERED 2026-08-23; STOPPED 2026-08-24 on one open specification question (U4), before any reusable behavioural evidence exists.** All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration does not determine the rule. That last one blocks registration and the study waits on it. §4q, §4r, §4s, §4t, §4u, §4v, §4w. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -1525,6 +1525,106 @@ superseded registration, so nothing is invalidated.
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) ·
 [`dci1/tests_v5/test_amendment_pre_data.py`](dci1/tests_v5/test_amendment_pre_data.py)
 
+### 4w. The registered rules of stages 3–18 were audited against the path a replication takes, and twelve were not on it (2026-08-24)
+
+**The question no instrument in the repository had asked.** Four defects in a
+row had one shape — the preregistered rule exists, the helper implementing it
+exists, the tests cover it, and the production runner does not call it. Every
+instrument that could have caught them asked something else: the tests asked
+*does this function behave*, the producer/consumer contract asked *is this
+field declared*, and the eighteen-stage synthetic lifecycle asked *does the
+happy path complete*. The audit added here asks **does the registered rule lie
+on the path a replication takes**, and proves each answer four ways — the
+implementation resolves, a frame of it executes during a real run, the field
+it produces is on the signed record, and the declared consumer is *observed*
+reading that field.
+
+**Twelve more defects, three of them large.**
+
+- **Fifty-eight of §15's seventy-eight family members had no producer.** F5,
+  F6, F7 and F8 were computed nowhere and declared neither `NOT_IDENTIFIED`
+  nor `NOT_COMPUTABLE`, so §31's table carried no row for them and no reason
+  for its absence. F8 is §11.8's tier-indicator fit — the one U2 was resolved
+  at A2 to make estimable. F6 gates §17.4's whole interpretation, and F5
+  supplies the recomputation §17.4's licensing rule compares against, so that
+  rule was **vacuously satisfied at every emitter**.
+- **Three of the five claim emitters had no production caller.** A complete
+  lifecycle emitted `{'L1': 2}`. L3 is where $\Delta_R$ lives and L3c is the
+  refutation verdict D18 was closed at `precondition` to protect; as wired,
+  the lifecycle could not emit it on any data.
+- **§12.6's coverage criterion was evaluated on an empty row set, and its
+  verdict was read by nothing.** `coverage_criterion` filters rows on an
+  `eligible` flag that nothing in the repository ever set, so C1–C6 were False
+  on every replication; and `decisive_met` is read only inside
+  `run_expansion`, which had no caller. A replication whose criterion was
+  unmet therefore proceeded **with** the core and spectrum arms and reported
+  $\Delta_R$ and $\delta_{\text{diff}}$ — the outcome §12.6 registers as
+  forbidden.
+
+Also: `REGIME_NOT_FOUND` and `GRID_RESOLUTION_INSUFFICIENT` had no production
+condition — the Gate-2 record carried a key named `adequacy` holding the two
+thresholds and no verdict, and neither of §12.4's two graded *shares* was ever
+computed, though `constants.py` has carried `GRADED_CLAUSE_READING = "share"`
+from the beginning. §12.6's C7/C8 arm drops were computed and discarded.
+§11.3, §11.7 and §11.8's three executable both-forms assertions never ran.
+§23's projection audit was the empty list. §31's result table labelled every
+per-configuration row `L1` and `pair:A+B`. §19's lexicographic check and
+§13.7's $\iota_A$ equivalence ran only in tests. And $\iota_A$ itself was
+read from the first row of the difficulty table rather than, as §12.6 states,
+from the severity whose solo compliance is nearest §12.3's aim.
+
+**Two more, from the researcher's own audit of the same week.** The sweep's
+instruments ask whether a registered rule is *on* the production path; two
+defects were rules that are on it and take the wrong branch, and finding those
+needs the section read against the code. A was never measured on the
+pre-screen — `_screen_rungs` iterates the candidate library, which excludes
+the outcome constraints — so `iota_a_prescreen` was null on every real regime
+record and §12.7's Tier-3 ordering ran against the literal `0.5`. And
+`select_all` ran only the spectrum-coupled selection pass, so a family that
+could not straddle $\iota_A$ lost its **core** slot, where §13.12 and §8.1
+drop only the spectrum — the exact coupling that produced v4r4's F5 failure,
+re-implemented. Restoring the pre-screen moves the registered budget from
+1,172,544 to 1,174,080.
+
+**And one that only the scenario matrix could find.** A3 had restored the
+caller for §12.3's focal escalation, and the branch refused the moment
+anything ran it: §7.2's {15, 16} sit outside B's registered grid by
+construction and the instrument layer rejects them unless the caller says so.
+A3's repair had never executed, because the synthetic fixture's focal curve
+always found a rung inside the grid. *The caller exists* is not the same
+claim as *the branch runs*, and only a scenario that forces the branch can
+tell them apart.
+
+**And one the rules caught themselves.** With F5 restored, §20's withheld set
+— which matched a member's exact name — let a recoding of $\Delta_R$ be
+computed in the masked phase, and the guard on the sealed record refused the
+analysis. A registered safeguard firing on a registered repair is what a
+working safeguard looks like; the withheld set now matches on the stem, the
+way the guard always did.
+
+**One thing the preregistration does not determine, and it is blocking.**
+§12.6 makes eligibility *"§13's band on $\iota$ and its vacuity ceiling"* —
+and §13 registers its band on $p_{\text{solo}}$, and no band on $\iota$ at
+all. Two readings are admissible; they admit different rungs, so they can
+differ on C1–C6, on the admitted arm set, and therefore on **whether
+$\Delta_R$ is identified**. Nothing chose. Both constructions are built by
+name, the code path fails closed, and open item **U4** blocks the registration
+manifest, so no replication can begin Gate 0 under a rule nobody took. **The
+study is stopped there, waiting on one researcher decision.**
+
+**What this cost and what it bought.** The four gemma behavioural stages
+signed under `d0485a6d…` are retained and no longer reusable — they were
+produced under a screen whose coverage criterion evaluated nothing, whose
+$\iota_A$ came from the wrong severity, and whose expansion could not run. No
+reference had been selected, no freeze existed and no composed outcome had
+been observed, so §32's pre-Gate-2.5 window was open and nothing that could
+influence selection is affected. Six of the twelve repairs make a gate
+strictly **harder** to pass than it was.
+[`dci1/reports/dci1v5/execution_path_audit.md`](dci1/reports/dci1v5/execution_path_audit.md) ·
+[`dci1/reports/dci1v5/amendment_register.md`](dci1/reports/dci1v5/amendment_register.md) ·
+[`dci1/tests_v5/test_execution_path.py`](dci1/tests_v5/test_execution_path.py) ·
+[`dci1/tests_v5/scenarios.py`](dci1/tests_v5/scenarios.py)
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1569,6 +1669,20 @@ superseded registration, so nothing is invalidated.
 - **Not reproducible from a clone.** `runs/` is gitignored and absent. The run
   manifests hash files a fresh checkout does not have. See
   `exploratory/evidence/README.md` for the promotion path that fixes this per claim.
+- **Blocked, on one researcher decision.** DCI-1 v5 cannot register
+  while open item **U4** stands: §12.6 makes a rung's eligibility for the
+  identification-coverage criterion *"§13's band on $\iota$ and its
+  vacuity ceiling"*, and §13 registers its band on $p_{\text{solo}}$ and
+  no band on $\iota$. The two readings admit different rungs, so they can
+  differ on C1–C6, on the admitted arm set and on whether $\Delta_R$ is
+  identified at all. Both are constructed by name and neither runs; the
+  code path fails closed and `assert_no_blocking_open_items` refuses the
+  manifest. §4w.
+- **Retained, and not reusable.** The Gate-0, regime-screen and Gate-1
+  records signed on both gemmas under registration `d0485a6d…` were
+  produced before the stage 3–18 audit, under a screen whose coverage
+  criterion evaluated an empty set and whose expansion could not run.
+  They are preserved; no restarted stage may resume into them. §4w.
 - **Open, and most valuable next:** the boundary-affordance causal crossing; a
   pair with a genuine trade-off region; finishing the cross-model dataset on one
   backend.
@@ -1577,7 +1691,10 @@ superseded registration, so nothing is invalidated.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: DCI-1 v5 drafted — the core
+whether old and new remain comparable. Most recent: the v5 stage 3–18
+execution-path audit — twelve registered rules that the production path did
+not execute, and one, §12.6's eligibility predicate, that the preregistration
+does not determine — in §4w. Before it: DCI-1 v5 drafted — the core
 reference pool inverts to production class and same-form with A, a
 pre-composition interaction gate is added, and two v4r4 documentation values
 are corrected without moving a number — in §4q. Before it: the whole pipeline

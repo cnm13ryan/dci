@@ -46,7 +46,7 @@ __all__ = ["PRIMARY_SCALE", "solo_vector", "composed_vector", "chance_vector",
            "mean_vectors", "counterfactual_chance", "displacement_vector",
            "projected_compliance_vector", "ORDER_CONTRASTS", "ord_a", "ord_b",
            "ord_lambda", "ord_rbar", "ord_cl", "order_contrast",
-           "assert_order_forms"]
+           "assert_order_forms", "AlgebraicFormError"]
 
 PRIMARY_SCALE = "compliance"
 
@@ -162,12 +162,21 @@ def delta_r_uncancelled(table: ObservationTable, configuration: str, *,
     return [x - y for x, y in zip(ba, brj)]
 
 
+class AlgebraicFormError(ProtocolError):
+    """The two algebraic forms of a registered estimand disagree.
+
+    Its own type because §11.3, §11.7 and §11.8's checks can also be *not
+    applicable* --- a missing cell, a degenerate fit --- and a caller that
+    records "not available" must not be able to record a disagreement as one.
+    """
+
+
 def _assert_forms(a: Sequence[float], b: Sequence[float], *, name: str,
                   configuration: str,
                   tolerance: float = C.ALGEBRAIC_FORM_TOLERANCE) -> float:
     worst = max(abs(x - y) for x, y in zip(a, b))
     if worst > tolerance:
-        raise ProtocolError(
+        raise AlgebraicFormError(
             f"the two algebraic forms of {name} differ by {worst:.3e} in "
             f"{configuration}; the solo baseline must cancel exactly")
     return worst

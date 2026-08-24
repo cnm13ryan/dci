@@ -28,7 +28,9 @@ from typing import Any, Sequence
 from dci1v5.protocol import constants as C
 from dci1v5.protocol.taxonomy import SLOT_CORE
 from dci1v5.stages.calibration_table import CalibrationRow
-from dci1v5.stages.validity import GATE_2_5_COMPONENTS, evaluate_validity
+from dci1v5.stages.validity import (GATE_2_5_COMPONENTS,
+                                    assert_lexicographic_order,
+                                    evaluate_validity)
 from dci1v5.verifiers.constraints import FAMILIES, family_tier
 
 __all__ = ["qualify_candidates", "QUALIFICATION_COMPONENTS"]
@@ -63,6 +65,11 @@ def qualify_candidates(rows: Sequence[CalibrationRow], *, model_key: str,
             row, slot=slot, components=QUALIFICATION_COMPONENTS,
             provenance={"stage": C.STAGE_GATE2_5, "m_star": m_star,
                         "producing_commit": producing_commit})
+        # §19 test 3: the recorded reason is the EARLIEST failing component,
+        # checked on the object rather than on the algorithm. The check was
+        # implemented and called from tests only, so the production path
+        # recorded a first-failing component nothing verified.
+        assert_lexicographic_order(validity)
         selected = [c for c in validity.components
                     if c.name in QUALIFICATION_COMPONENTS]
         passed = all(c.passed for c in selected)

@@ -144,7 +144,12 @@ def read_stage_record(tree: ModelTree, stage: str) -> dict[str, Any]:
     payload = verify_signed(record, tree.context.signing_key_path,
                             where=f"{tree.model_key}:{stage}")
     assert_own_study(tree, stage, payload)
-    return payload
+    # Observation only, and only when a harness asked for it: `track` returns
+    # the payload unchanged unless `run/field_access` is recording, and the
+    # wrapper it returns then is a dict subclass that alters no value. See
+    # `run/field_access` for why a declared reader is not a read.
+    from dci1v5.run import field_access
+    return field_access.track(stage, payload)
 
 
 def stage_reached(tree: ModelTree) -> str | None:
