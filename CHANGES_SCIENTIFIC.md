@@ -13,6 +13,38 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-24 — v5 closed with no confirmatory data; a registered terminal status had no raise path
+
+**What changed.** v5 reached its scientific end. Two replications terminated at
+Gate 4 on §13.14 composed headroom; two are permanently blocked at
+`PREFREEZE_AUDIT` by an irreversible §34 D6 non-identification. **No
+replication reached `CONFIRMATORY_GENERATION`**, masking never opened, and
+`FINAL_REPORT` is unreachable. `dci1/reports/dci1v5/CLOSURE.md` and
+`closure.json`; amendment register A8.
+
+**Which results are affected.** All of v5. Its 459,312 behavioural rows are
+gate and development evidence and support **no** claim about the effect. Three
+replications carry 48 unidentified estimand members each, including every
+primary contrast; `NOT_IDENTIFIED` is not a null result and is not reported as
+one. The single replication that survived D6 identified
+(`qwen3-4b-instruct-2507`, core arm, 26 cells) is one of the two that failed
+Gate 4.
+
+**V5-E32, and why it does not change a verdict.** `PREFREEZE_AUDIT_FAILURE` is
+a registered §28 terminal status that `run/prefreeze_run.py` wrote into a
+payload field and never raised, so the two blocked replications have no §28.3
+terminal report and report `terminal_status: None`. This is lifecycle
+bookkeeping: the `support_satisfied` failure driving it is correctly computed
+and fully recorded in the signed audit record. The runner now raises it, with
+an AST regression test asserting every registered terminal status has a
+reachable raise. **No v5 evidence is mutated, reinterpreted or re-run**, and
+the fix is deliberately not re-registered — no v5 stage can execute again.
+
+**Comparability.** v5 produced no confirmatory estimate, so there is nothing to
+compare. A follow-up (`user-notes/DCI1_v6_proposal.md`, unadopted) would be a
+new prospective version; v5 rows may not enter it as confirmatory evidence, and
+the v5 diagnosis that motivates its design is DEVELOPMENT_EVIDENCE under §30.
+
 ## 2026-08-24 — v5: a replacement registration did not have to say what it replaced
 
 **What changed.** `run/cli.py` gains `--supersedes`, and

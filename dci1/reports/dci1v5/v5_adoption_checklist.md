@@ -1,3 +1,11 @@
+> **Superseded — historical.** The registration named below,
+> `2960a1fc…`, is the *genesis* v5 registration. It was superseded five
+> times (A2–A7); v5 ran and closed under
+> `af5fa4bcfd125f936cade49cf45304737c6367b6bd7106a6ec372a6735340c98` at
+> commit `5ed1854`. See `amendment_register.md` and `CLOSURE.md`. This
+> checklist records what adoption bound at the time and is kept as
+> history, not as current state.
+
 # The v5 adoption checklist — closed
 
 Nineteen §34 decisions, three specification questions, one confirmation. This

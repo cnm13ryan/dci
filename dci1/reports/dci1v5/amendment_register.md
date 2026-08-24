@@ -1119,3 +1119,75 @@ No behavioural rows existed under `f19b5e88…` — the A6 supersession had
 already retained and invalidated the only Gate 0 in the study — so relinking
 cost no generation. `f19b5e88…` is superseded in turn and the replacement
 names it.
+
+## A6/A7 — Registration
+
+Both amendments were signed under the registration they produced. **A6**:
+manifest `f19b5e8884b7a84fffe70fc1c3ae71d883ef7a7b3034647bf06708eb7ed2dbbc`,
+producing commit `85e2c6604265e3a6cda318cdf0ca6010962714df`, superseding
+`e2721b17…` and invalidating one Gate 0 (2,688 rows, `gemma-3n-e2b-it`).
+**A7**: manifest
+`af5fa4bcfd125f936cade49cf45304737c6367b6bd7106a6ec372a6735340c98`, producing
+commit `5ed18543db89c3c5275d1303865a450c599bb18b`, superseding `f19b5e88…`
+with **zero** behavioural rows under it, `PROTOCOL_REGISTERED` and `QUALIFIED`
+PASS on all four. `af5fa4bc…` is the manifest under which v5 ran to its close.
+
+**A permanent gap in the payload-level chain.** `f19b5e88…` is the one manifest
+signed with `supersedes` absent — it *is* the V5-E31 defect. Retired manifests
+are signed and write-once, so it is not rewritten: correcting it would mean
+altering signed evidence. The chain is therefore self-describing
+`af5fa4bc… → f19b5e88…` and `e2721b17… → … → 2960a1fc…`, with the
+`f19b5e88… → e2721b17…` hop recoverable from
+`registration/superseded/e2721b17…/supersession.json` and from the directory
+name. Documented, not repaired.
+
+## A8 — a registered terminal status that no runner could reach (2026-08-24)
+
+An engineering amendment and a lifecycle repair, made **after v5 closed**. It
+changes no registered rule, no threshold, no estimand and no measured quantity,
+and **no v5 evidence is mutated, reinterpreted or re-run**.
+
+### V5-E32 — `PREFREEZE_AUDIT_FAILURE` was recorded, never raised
+
+§28 registers `PREFREEZE_AUDIT_FAILURE` as a terminal status.
+`run/prefreeze_run.py` put it in a `failure_status` payload field and returned
+`outcome="FAIL"`; the module contained no `raise` at all. So no §28.3 terminal
+report was written for a replication the §19 audit refused to license,
+`transitions.terminal_status` returned `None`, and `status --model` reported a
+replication that could never take another step as live with `GATE_5_FREEZE`
+next. `write_stage_record` is write-once, so the FAIL was permanent and the
+audit could not be re-run either: the replication was terminal in fact and
+non-terminal on the record.
+
+It was found by v5 reaching it — `gemma-3n-e2b-it` and `qwen3-4b` both failed
+the mandatory `support_satisfied` check as a consequence of D6.
+
+**The repair.** `run_prefreeze_audit_stage` raises
+`TerminalStatus(PREFREEZE_AUDIT_FAILURE, …)` when `can_freeze` is false,
+carrying the blocked list, the check counts, every non-PASS artifact check and
+the payload's `content_hash` into `observed` — a terminating stage writes no
+stage record, and the twenty-six checks are the evidence for *why* the freeze
+was refused.
+
+**Scope, audited once.** All thirteen terminal statuses in force were checked
+against their raise sites. **Exactly one hole existed**, this one.
+`TARGET_RANGE_EXHAUSTED` and `FOCAL_RANGE_EXHAUSTED` raise at
+`run/gates_run.py:352`; `SPECIFICATION_AMBIGUOUS`,
+`MEASUREMENT_NOT_ESTABLISHED` and `MEASUREMENT_EVIDENCE_INSUFFICIENT` at
+`stages/gate1.py:496` through a computed status; `REGISTRATION_INCOMPLETE` at
+`run/registration_run.py:83` as `manifest.REGISTRATION_INCOMPLETE`. An earlier
+literal-string scan wrongly reported three further holes; resolving
+attribute-form and computed raises removed them.
+
+`test_every_registered_terminal_status_has_a_raise_path` walks the AST of every
+module under `dci1/src/dci1v5/` and fails if any status in force lacks a
+reachable `raise`, so the class cannot recur silently.
+
+### This amendment is not re-registered
+
+v5 is closed: two replications are terminal at Gate 4 and two are permanently
+blocked at `PREFREEZE_AUDIT`, so **no v5 stage can execute again** under
+`af5fa4bc…`. The fix therefore applies to future executions only. HEAD moves
+past the manifest's producing commit deliberately, and that divergence is
+recorded here rather than papered over with a supersession that would discard
+459,312 rows to re-derive verdicts already known.

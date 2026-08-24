@@ -42,7 +42,7 @@ from dci1v5.protocol import decisions, manifest, open_items
 from dci1v5.protocol import reuse_ledger
 from dci1v5.run.contracts import audit_contracts
 from dci1v5.run.gates_run import assert_no_substitution_path
-from dci1v5.run.lifecycle import StageOutcome, run_stage
+from dci1v5.run.lifecycle import StageOutcome, run_stage, TerminalStatus
 from dci1v5.stages import audit_prefreeze
 from dci1v5.stages import selection as selection_stage
 from dci1v5.stages import validity as validity_stage
@@ -468,9 +468,46 @@ def run_prefreeze_audit_stage(tree: ModelTree, *,
                               artifact_texts: Mapping[str, str] | None = None
                               ) -> StageOutcome:
     commit = producing_commit or gitinfo.head_commit(Path(repo_root))
-    return run_stage(
-        tree, C.STAGE_PREFREEZE_AUDIT,
-        compute=lambda _prev: prefreeze_payload(
+
+    def compute(_prev: Any) -> dict[str, Any]:
+        """§28: a failed §19 audit is a *terminal status*, not a FAIL record.
+
+        V5-E32. ``PREFREEZE_AUDIT_FAILURE`` is a registered §28 terminal
+        status, and this runner used to put it in a ``failure_status`` field
+        and return ``outcome="FAIL"``. Nothing raised, so no §28.3 terminal
+        report was written, ``transitions.terminal_status`` kept returning
+        ``None``, and ``status`` reported a replication that could never take
+        another step as live with ``GATE_5_FREEZE`` next --- while
+        ``write_json_once`` made the FAIL record permanent, so the audit could
+        not be re-run either. The registered terminal sentence was never
+        recorded for such a replication.
+
+        The audit's own detail is carried into ``observed`` rather than
+        dropped: a terminating stage writes no stage record, and the twenty-six
+        artifact checks are the evidence for *why* the freeze was refused.
+        """
+        payload = prefreeze_payload(
             tree, producing_commit=commit, repo_root=repo_root, bank=bank,
-            artifact_texts=artifact_texts),
+            artifact_texts=artifact_texts)
+        if not payload["can_freeze"]:
+            raise TerminalStatus(
+                PREFREEZE_AUDIT_FAILURE,
+                gate=C.STAGE_PREFREEZE_AUDIT,
+                criterion="§19: every mandatory artifact check passes and "
+                          "nothing is unresolved; an unresolved check is not "
+                          "a pass and nothing here may be waived",
+                observed={"blocked": payload["blocked"],
+                          "n_artifact_checks": payload["n_artifact_checks"],
+                          "n_artifact_failed": payload["n_artifact_failed"],
+                          "n_artifact_unresolved":
+                              payload["n_artifact_unresolved"],
+                          "artifact_checks": [
+                              c for c in payload["artifact_checks"]
+                              if c["verdict"] != "PASS"],
+                          "content_hash": payload["content_hash"]},
+                strongest_permissible_statement=C.TERMINAL_SENTENCE)
+        return payload
+
+    return run_stage(
+        tree, C.STAGE_PREFREEZE_AUDIT, compute=compute,
         producing_commit=commit, environment_digest=environment_digest)
