@@ -42,9 +42,8 @@ from dci1v6.run.execute import (generate_and_score, resolve_generate,
 from dci1v6.run.lifecycle import (StageOutcome, TerminalStatus,
                                   protocol_identity, run_stage)
 from dci1v6.stages import audit_prefreeze, composed_probe
-from dci1v6.stages import feasibility
-from dci1v6.stages import construct_strength, interaction, regime as regime_stage
-from dci1v6.stages import qualification_gate
+from dci1v6.stages import construct_strength, feasibility, interaction
+from dci1v6.stages import qualification_gate, regime as regime_stage
 from dci1v6.stages.feasibility import (calibration_rows_at,
                                        qualification_at)
 from dci1v6.stages.calibration_table import (instructed_compliance,
@@ -57,7 +56,6 @@ __all__ = ["assert_synthetic_only", "assert_calibration_population",
            "slot_map_from_record",
            "gate2_payload", "run_gate2", "gate2_5_payload", "run_gate2_5",
            "probe_topics", "effective_m_star", "gate2_75_payload",
-           "calibration_rows_at", "qualification_at",
            "run_gate2_75",
            "gate3a_payload", "run_gate3a", "gate3b_payload", "run_gate3b",
            "gate3c_payload", "run_gate3c", "gate4_payload", "run_gate4",
@@ -708,8 +706,6 @@ def _prescreen_to_calibration(rows: Sequence[Mapping[str, Any]]
     protocol version --- can see whether the screen's coordinate predicts the
     one the study matches on, instead of assuming it.
     """
-    from dci1v6.stages.calibration_table import instructed_compliance
-
     moved: list[dict[str, Any]] = []
     for row in rows:
         pre_solo = row.get("prescreen_solo_compliance")
@@ -906,9 +902,11 @@ def _focal_admissibility(severities: Sequence[int], *,
     return verdicts
 
 
-# `calibration_rows_at` and `qualification_at` moved to
-# `stages/feasibility.py`, where the criterion they feed now lives, and
-# are re-exported here because they are read as Gate-2/2.5 record readers.
+# `calibration_rows_at` and `qualification_at` live in
+# `stages/feasibility.py`, with the criterion they feed. They are imported
+# above because this module reads them; they are deliberately NOT re-exported
+# from here, so that a caller wanting a record reader takes it from the seam
+# that owns it rather than from whichever runner happened to import it first.
 
 
 def _iota_a_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
@@ -1055,27 +1053,19 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
     # 2.5 runs the full V(R) at every admissible severity because it generates
     # nothing. Re-deriving it per candidate would re-bootstrap §13.7 over
     # identical per-topic vectors with identical seeds.
-    search_order = [int(q) for q in
-                    (gate2_record.get("operating_point_search_order")
-                     or [m_star])]
+    frozen = gate2_record.get("operating_point_search_order")
+    if not frozen:
+        raise ProtocolError(
+            "§12.3: Gate 2 recorded no `operating_point_search_order`, so "
+            "there is no frozen order for this stage to restrict. Falling "
+            "back to m* alone would silently disable P3.4's re-selection --- "
+            "v6's whole answer to v5's Gate-4 failure --- and would look "
+            "exactly like a replication whose m* passed at the first attempt")
+    search_order = [int(q) for q in frozen]
     op_support = feasibility.qualified_family_support(
         {"qualification_by_severity": by_severity}, severities=search_order)
-    can_support = [q for q in search_order if op_support[str(q)]["can_support"]]
-    if can_support:
-        order = ([m_star] if m_star in search_order else []) + [
-            q for q in can_support if q != m_star]
-        order_reason = ("Gate 2's frozen order restricted to the severities "
-                        "where at least §13.15's five families pass the full "
-                        "V(R) at that operating point")
-    else:
-        # No severity can support a reference set. That is §34 D6's question
-        # and not the probe's, so the order is not narrowed to nothing: the
-        # replication runs, Gate 3C records the unmet support, and D6's
-        # registered disposition governs.
-        order = list(search_order)
-        order_reason = ("no admissible severity reaches §13.15's five-family "
-                        "minimum, so the order is left whole and §34 D6 --- "
-                        "not this restriction --- decides what that means")
+    order, order_reason = feasibility.restricted_operating_point_order(
+        search_order, op_support, m_star=m_star)
     return {
         "stage": C.STAGE_GATE2_5,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE2_5],
@@ -1222,10 +1212,22 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     # rows; what the restriction buys is that a severity which cannot support
     # a reference set is never probed at all.
     admissible = [int(q) for q in (gate2.get("focal_admissible") or ())]
-    order = [int(q) for q in (gate2_5_record.get("operating_point_order")
-                              or [m_star])]
-    if not order or order[0] != m_star:
-        order = [m_star] + [q for q in order if q != m_star]
+    frozen = gate2_5_record.get("operating_point_order")
+    if not frozen:
+        raise ProtocolError(
+            "P3.1: Gate 2.5 recorded no `operating_point_order`. The order "
+            "this stage may try is frozen upstream, before any composed row "
+            "exists; defaulting to m* alone would silently disable the "
+            "re-selection and would be indistinguishable on the record from "
+            "a replication whose m* passed")
+    order = [int(q) for q in frozen]
+    if order[0] != m_star:
+        raise ProtocolError(
+            f"P3.1: the frozen order starts at {order[0]} and m* is "
+            f"{m_star}. m* is probed first by rule, and an order that does "
+            "not start there means Gate 2 and Gate 2.5 disagree about the "
+            "operating point --- repaired silently, that would probe a "
+            "severity §12.3 did not select")
     composed_probe.assert_probe_severities_are_admissible(order, gate2)
 
     topics, topic_label = probe_topics(bank, split)
@@ -1339,14 +1341,19 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         # Which cells were read off Gate 2's record instead of drawn again,
         # and --- when none were --- why they could not be.
         "shared_with_gate2": shared,
-        # The rows this stage did not draw because Gate 2 had already drawn
-        # them on the same cases, and the severities it never probed because
-        # they cannot support a reference set.
+        # What was not drawn, and for which of the two reasons. They are
+        # different facts: a severity the five-family filter removed from the
+        # order was never a candidate, and a severity still in the order that
+        # was not reached is P3.3 stopping at a passing m*.
         "rows_not_drawn": {
-            "shared_with_gate2": (len(shape) - len(generated_shape))
-                                 * len(topics) * C.M_CAL * len(probed),
-            "severities_not_probed": sorted(set(admissible) - set(order)),
-            "rows_per_severity_not_probed":
+            "cells_read_from_gate2": len(shape) - len(generated_shape),
+            "rows_read_from_gate2": (len(shape) - len(generated_shape))
+                                    * len(topics) * C.M_CAL * len(probed),
+            "severities_removed_from_the_order":
+                sorted(set(admissible) - set(order)),
+            "severities_in_the_order": list(order),
+            "severities_probed": sorted(probed),
+            "rows_a_severity_costs":
                 len(generated_shape) * len(topics) * C.M_CAL},
         "margin": composed_probe.margin(),
         "margin_band": list(band),

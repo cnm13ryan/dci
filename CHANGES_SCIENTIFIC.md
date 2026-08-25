@@ -13,6 +13,52 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — V6-E05: `n_stable` counted a key §13.7 never returns, and read zero on every replication
+
+**Found by a characterization test** written for V6-E04's extraction: running
+the extracted §13.7 kernel against the four signed v5 records reproduced every
+candidate's verdict and disagreed on one summary number.
+
+**What was wrong.** `stability.stability_verdict` returns
+`{"candidate", "passed", "reason", "admissible_on_both_splits", ...}`. It has
+never returned a key called `stable`. The Gate-3A payload counted
+
+```python
+"n_stable": sum(1 for v in verdicts.values() if v.get("stable"))
+```
+
+so the predicate was `None` for every candidate and the count was **0, always**.
+
+**What the signed v5 records therefore say.** All four carry `n_stable: 0`
+beside 112–115 verdicts of which 9 to 16 say `passed: true`:
+
+| replication | recorded `n_stable` | verdicts | actually `passed` |
+|---|---:|---:|---:|
+| `gemma-3n-e2b-it` | 0 | 113 | **11** |
+| `gemma-3n-e4b-it` | 0 | 115 | **14** |
+| `qwen3-4b` | 0 | 113 | **16** |
+| `qwen3-4b-instruct-2507` | 0 | 112 | **9** |
+
+**Scope, stated precisely.** `n_stable` is **not in the field contract, has no
+declared consumer, and no production code reads it** — which is why it survived
+v5 unnoticed. No §13.7 verdict, no V(R) component, no qualification, no
+selection, no §13.15 count and no estimand depended on it: `selection.select_all`
+receives the verdict dicts themselves and reads `passed`. So this changes **no**
+v5 or v6 result. What it changes is what a *reader* of a Gate-3A record is told:
+"zero candidates were stable" is not what §13.7 found on any replication.
+
+**v5 is not touched.** `src/dci1v5` is closed and its records say what its code
+computed; the defect is recorded here rather than corrected there, in the same
+way as V6-E02. v6's `stages/feasibility.calibration_at` now counts `passed`.
+
+**One test fixture encoded the defect** — `tests_v6/fixture_reference_chain_
+characterization.json`, the pre-extraction snapshot — and was corrected, with
+the field and the reason named in the fixture itself. The certified reference
+implementation (`stability_verdict`) agrees with the correction; that is the
+distinction between fixing a fixture and relaxing one.
+
+---
+
 ## 2026-08-25 — V6-E04: the development prescreen asked an easier question than the registered gate, and the two bases were never compared on the same cases
 
 **What changed.** Nothing in v5, which stays closed and signed. Five changes in
@@ -182,6 +228,13 @@ exists.
 ---
 
 ## 2026-08-25 — a recorded diagnostic: §12.6's coverage re-read at the measured iota_A
+
+> **Superseded 2026-08-25 by V6-E04**, above. The recomputation this
+> entry adds reads a pre-screen $\iota(R)$ table against a calibration
+> $\iota_A$ — two samples — so its drift confounds the reference point
+> with the change of basis. `coverage_at_calibrated_iota_a` replaces it
+> with a paired reading, and that one gates. The measurement recorded
+> here stands as what was computed; it is not the reading to act on.
 
 **What changed.** `GATE_3A_REFERENCE_CALIBRATION` now records
 `coverage_at_measured_iota_a`: §12.6's criterion, on the frozen pre-screen

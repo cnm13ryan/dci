@@ -1,4 +1,12 @@
 {
+  "_corrected": {
+    "change": "V6-E05",
+    "field": "gate3a.n_stable",
+    "not_a_v5_change": "the four signed v5 records still say n_stable: 0. They say what v5's code computed and are not touched.",
+    "now": 25,
+    "was": 0,
+    "why": "this snapshot was taken before the extraction and it captured a defect as behaviour: `n_stable` counted `v.get(\"stable\")` and `stability.stability_verdict` returns `passed`, so the count was 0 for every replication of v5 and would have been for v6. The certified reference implementation agrees with the correction, which is what separates fixing a fixture from relaxing one. Every other field in this file reproduces unchanged, which is what makes the correction demonstrably isolated."
+  },
   "_what": "the Gate 3A/3B/3C chain as it behaved BEFORE the reference-feasibility seam was extracted. Produced by the synthetic harness; nothing here is evidence.",
   "focal_admissible": [
     7,
@@ -131,7 +139,7 @@
       "calibration_b": 110,
       "pooled": 110
     },
-    "n_stable": 0,
+    "n_stable": 25,
     "qualified_families": [
       "MK1",
       "MK2",

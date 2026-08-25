@@ -39,6 +39,7 @@ from dci1v6.protocol import decisions, identification, seeds, wordings
 from dci1v6.protocol.reuse_ledger import build_ledger
 from dci1v6.run.lifecycle import StageOutcome, run_stage
 from dci1v6.stages import freeze as freeze_stage
+from dci1v6.stages.feasibility import qualification_at
 from dci1v6.verifiers import source_hashes
 from dci1v6.verifiers.constraints import FAMILIES, LADDERS, RESERVES
 
@@ -97,8 +98,6 @@ def assemble(tree: ModelTree, *, producing_commit: str,
             "§18 stage 12 did not pass; Gate 5 is unreachable and the "
             "predecessor check is what stops it. Blocked checks: "
             f"{audit.get('blocked')}")
-
-    from dci1v6.run.gates_run import qualification_at
 
     qualified_at = qualification_at(gate2_5, m_star=int(probe["m_star"]))
     spec = get_model(tree.model_key)
