@@ -13,6 +13,97 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — V6-E03: v6's composed probe could move the operating point, and nothing after it could follow
+
+**What changed.** Nothing in v5, which stays closed and signed. In v6,
+`GATE_2_75_COMPOSED_PROBE` exists so composed headroom is measured **while the
+operating point can still move** — that is v6's whole answer to v5's Gate-4
+problem, where m\* was chosen on solo curves, composition lifted the B slot by
+up to +0.104, and by the time §13.14 saw it the references were bound. P3.4
+lets the probe re-select m\* once. Four things made that branch unusable or
+wrong, and all four are repaired in `dci1/src/dci1v6`:
+
+1. **The re-selection branch could not execute.** §13.6's kappa(R|B) is a
+   property of the pair (R, B at the operating point); §13.11 makes its source
+   travel with the value and `assert_kappa_under_b_source` refuses a table read
+   at another m\*. That refusal is correct. But Gate 2 recorded the column at
+   its own m\* only, so the first stage after a re-selection raised
+   `ProtocolError: measured at m=8 and the replication's operating point is
+   m*=10` — an unhandled error, not a registered outcome. Reproduced, then
+   repaired: Gate 2 now records a kappa(R|B) column **and** Gate 2.5 a §13.1
+   qualified pool for every admissible severity, from B-solo cells pass 1
+   already scored every candidate as absent on. Zero additional generation.
+2. **The probe could move B to a severity Gate 2 would have refused.** §12.3's
+   `eligible` set is a band test on the solo curve; §12.4's regime adequacy and
+   §34 D17's construct floor were evaluated at m\* alone. Both are now
+   evaluated at every eligible severity and the probe is confined to
+   `focal_admissible`. On the synthetic harness that removes 13 and 14 from a
+   probe domain of eight, so the narrowing is not vacuous.
+3. **The freeze bound B at the pre-probe severity.** `freeze_payload`'s slot
+   map defaulted `B` to Gate 2's m\* while the same record declared the
+   probe's. Confirmatory generation renders every cell from that slot map, so a
+   re-selected replication would have spent its entire confirmatory budget at
+   the severity the probe rejected. The freeze — and its `qualified_pool` and
+   `earliest_failing_components` — now come from the probe's operating point.
+4. **B could not be rebuilt at §7.2's extension.** `licensed_design` used
+   `Constraint(*value)` on the frozen `["B", m]`, which the instrument layer
+   refuses at 15 and 16. A replication that escalated at §12.3 would have been
+   refused by its own verifiers at the one stage that spends the confirmatory
+   budget. Inherited from v5, where it never fired because no replication
+   reached confirmatory generation or escalated. B is now rebuilt through
+   `focal_constraint`.
+
+**Why it is scientifically consequential.** (1) and (2) decide whether v6's
+central repair mechanism works at all; (3) and (4) decide what a confirmatory
+run measures. None of them moves a threshold, a band, a margin, an estimand or
+a multiplicity family: §13.14's `[0.05, 0.95]` is untouched, §12.6's C4 stays
+at 6 groups / 3 rungs / 0.40 span, and §12.3, §12.4 and D17 are applied exactly
+as registered — at more severities, never more loosely. The pools for every
+candidate operating point are computed **before** the probe observes one
+composed cell, so §30's prohibition holds by construction: the probe's verdict
+moves the operating point and never the pool.
+
+**Which results are affected, and how.** No existing number changes. v5 is
+closed and untouched; v6 has generated nothing. What changes is that a v6
+replication needing the headroom rescue now reaches `GATE_5_FREEZE` instead of
+an unhandled error, and that the design it freezes is the one whose headroom
+was validated. `scenarios.scenario_probe_reselects_the_operating_point` drives
+the branch end to end — m\* 8 → 10, Gate 3A, Gate 4 and the freeze all at 10.
+
+**Comparability.** Nothing to compare: no v6 stage has run and no v6 row
+exists.
+
+---
+
+## 2026-08-25 — a recorded diagnostic: §12.6's coverage re-read at the measured iota_A
+
+**What changed.** `GATE_3A_REFERENCE_CALIBRATION` now records
+`coverage_at_measured_iota_a`: §12.6's criterion, on the frozen pre-screen
+table, re-read at Gate 2's measured iota_A instead of the `iota_a_prescreen` it
+was certified at. **It gates nothing, no rule reads it, and its contract entry
+declares no consumer.**
+
+**Why it is here rather than in the ordinary log.** It is evidence about a
+structural gap in the design. §12.6 certifies coverage, spends its expansion
+rounds and freezes the vocabulary at A's compliance on 24 pre-screen topics at
+one draw; the quantity references are actually matched to is A's compliance on
+192 calibration topics at four draws at n\*. On the four closed v5
+replications those two differ by **0.015, 0.046, 0.073 and 0.092**, and by the
+time the second is known the vocabulary is frozen and the expansion is spent.
+Re-reading v5's own round-0 tables at the Gate-2 iota_A changes **no** decisive
+condition on any of the four — C4's straddling count is identical on all four
+and C3's near count moves by 2 to 4 rungs against a minimum of 8 — so the
+realised risk is small and the check is nonetheless absent. Whether §12.6
+should certify over an *interval* of iota_A rather than a point is a researcher
+decision (READINESS R7) and is deliberately not taken here.
+
+**Which results are affected.** None. The diagnostic is new, it has no
+consumer, and the sensitivity measurement above is DEVELOPMENT_EVIDENCE about
+v5's implementation, not a re-verdict: every signed v5 coverage verdict is
+reproduced exactly before anything else is reported.
+
+---
+
 ## 2026-08-25 — V6-E02: §12.6's expansion measured rungs its own coverage criterion could not see
 
 **What changed.** Nothing in v5, which is closed, signed and untouched. The

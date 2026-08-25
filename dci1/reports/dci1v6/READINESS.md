@@ -696,6 +696,60 @@ the researcher's to approve.
 
 ---
 
+### R7 — Should §12.6 certify coverage at a *point* of $\iota_A$, or over an interval? (new, 2026-08-25)
+
+**Not a blocker.** A hardening option with a measurement attached, raised by
+the audit recorded in §10.
+
+§12.6 evaluates the identification-coverage criterion, spends its two expansion
+rounds and **freezes the candidate vocabulary** at `iota_a_prescreen`: A's
+compliance on the 24 pre-screen topics at one draw, at the severity nearest
+§12.3's aim. The quantity the references are actually matched to is Gate 2's
+`iota_a` — 192 calibration topics, four draws, at $n^\*$ — measured two stages
+later, when the vocabulary is frozen and the expansion is spent. §13.4 already
+acknowledges the movement; nothing acts on it.
+
+**Measured, on the four closed v5 tables** (`iota_a_prescreen` → Gate 2's
+`iota_a`; each replication's own round-0 table, and each baseline reproduces
+its signed verdict exactly before anything else is reported):
+
+| replication | drift | C4 straddling groups | C3 near rungs | decisive |
+|---|---:|---:|---:|---|
+| `gemma-3n-e2b-it` | −0.073 | 4 → 4 | 32 → 35 | False → False |
+| `gemma-3n-e4b-it` | +0.015 | 5 → 5 | 34 → 36 | False → False |
+| `qwen3-4b` | +0.046 | 5 → 5 | 30 → 26 | False → False |
+| `qwen3-4b-instruct-2507` | −0.092 | 8 → 8 | 31 → 34 | True → True |
+
+**No decisive condition changes on any of the four.** The gap is structural
+and the realised exposure is small.
+
+**Options.** (a) Leave §12.6 as registered and keep the new Gate-3A diagnostic
+`coverage_at_measured_iota_a`, which records the recomputation on a signed
+record before Gate 4 and the freeze — implemented, gates nothing. (b) Certify
+C1–C4 over an interval $[\iota_A^{\text{pre}} - w, \iota_A^{\text{pre}} + w]$
+with $w$ fixed before data, so the expansion is spent on coverage that survives
+the drift. (c) Re-open a bounded expansion at Gate 3A when the diagnostic shows
+a decisive condition lost — which re-opens the vocabulary after Gate 2 has run,
+and is the option with the largest surface.
+
+**Scientific consequence.** (b) is strictly stricter and would have changed no
+v5 verdict; it costs reserve rungs and screen rows on every replication, for a
+failure mode not observed in four. (c) buys recovery and pays for it by making
+the frozen vocabulary conditional on a later stage — which is the property
+§12.6 froze it to avoid.
+
+**Implementation consequence.** (a) is done. (b) is a change to
+`coverage_criterion`'s signature and to §12.6's registered text, plus a value
+for $w$. (c) is a new expansion caller at Gate 3A, new provenance, and a new
+terminal branch.
+
+**Recommendation: (a)** — record it, do not gate on it, and revisit if a
+replication's diagnostic shows a decisive condition lost. Taking (b) or (c) on
+four replications where the criterion was drift-invariant would be tuning
+against a failure that has not been observed.
+
+---
+
 ## 6. Blockers to adoption and registration
 
 Ordered. Nothing below is waivable, and none may be resolved by weakening a
@@ -755,6 +809,27 @@ a reader nothing about what was done.
     UNRESOLVED at import and no stage can run. The test suite reads a
     *fixture* copy of v5's record so it can exercise the paths D0–D18 select;
     that fixture is in `tests_v6/` and can never reach the registered path.
+
+11. **New, 2026-08-25, and DISCHARGED — V6-E03, in four parts.** The
+    probe's re-selection branch could not execute: Gate 2 recorded kappa(R|B)
+    at its own m\* only, and §13.11's own guard correctly refused the table at
+    the probe's. Gate 2 now records a column, and Gate 2.5 a §13.1 pool, for
+    every *admissible* severity — signed before the probe observes a composed
+    cell, so §30 holds by construction. The probe is confined to
+    `focal_admissible` (§12.3's band **and** §12.4 **and** §34 D17, each
+    evaluated at that severity). The freeze binds B, the pool and the
+    earliest-failing components at the probe's operating point, not Gate 2's.
+    And B is rebuilt through `focal_constraint`, so §7.2's extension survives
+    the freeze → confirmatory boundary. `scenarios.scenario_probe_reselects_`
+    `the_operating_point` drives the whole branch to `GATE_5_FREEZE`.
+
+12. **New, and OPEN as a researcher decision only — R7.** §12.6 certifies
+    coverage and freezes the vocabulary at `iota_a_prescreen`; references are
+    matched at Gate 2's `iota_a`, which moved by 0.015 to 0.092 on the four v5
+    replications. No decisive condition changes under that drift on any of the
+    four, so this is not a blocker. Gate 3A now records the recomputation as
+    `coverage_at_measured_iota_a` — a diagnostic with no consumer. Whether
+    §12.6 should certify over an interval is R7 and is the researcher's.
 
 **Not a blocker, and explicitly so:** none of this touches v5. v5's records,
 verdicts, terminal statuses and D6 irreversibility stand exactly as signed.
@@ -1053,3 +1128,101 @@ all point one way. L4a is within-replication.
 `assert_configuration_scope` enforces it, and §33 check 9 runs it. Putting it
 to the researcher would have been asking them to choose something the
 preregistration already says.
+
+---
+
+## 10. Identification audit (added 2026-08-25)
+
+**Question asked.** Can v6, as implemented, deliver a credible prospective test
+of the central question — *does the identity of the companion instruction
+change compliance with the focal instruction beyond the generic difficulty of
+satisfying two instructions?* — with the matched-companion counterfactual,
+reference support **and** composed headroom surviving simultaneously on the
+same replication, before confirmatory generation?
+
+**Verdict: READY WITH CONDITIONS.** Every mechanically closable route to
+another avoidable `NOT_IDENTIFIED` is closed; what remains is researcher
+judgement, listed in §5 and §6.
+
+### 10.1 The causal comparison, checked rather than asserted
+
+$\Delta_R = \overline{\text{compliance}}(B \mid B{+}R_j) - \text{compliance}(B
+\mid A{+}B)$ isolates companion *identity* only if the two composed cells match
+on everything else. In v6 they do, and none of it is new:
+
+| condition | where | status |
+|---|---|---|
+| instruction count | both cells are load 2 by construction (`design.cells`) | unchanged |
+| position | both orders measured; `CONFIGURATIONS`, `ORDER_CONTRASTS` | unchanged |
+| difficulty | §13.8's caliper on $\iota$ against $\iota_A$ | unchanged |
+| structural class / tier / feature group | §13.8, §13.15's 3 groups, ≥2 Tier-1 | unchanged |
+| non-vacuity under B | §13.6's $\kappa(R\mid B)$ | **repaired** — read at the operating point |
+| interaction-blindness | §13.11's closed schema, §30 | unchanged, and strengthened |
+
+`revision.V9` compares the **twelve** modules that carry the estimand layer —
+`analysis/{estimators,observations,intervals,bootstrap,masking}`,
+`design/cells`, `stages/{selection,support,stability,interaction,`
+`calibration_table}`, `protocol/identification` — against v5's and requires
+them byte-identical modulo the namespace token. They are. Every v6 repair is
+upstream of estimation.
+
+### 10.2 What the audit found, and what was done
+
+**V6-E03, in four parts, all repaired.** See `CHANGES_SCIENTIFIC.md`. In
+short: the probe's re-selection branch could not execute (Gate 2 held
+$\kappa(R\mid B)$ at its own $m^\*$ only); the probe could move $B$ to a
+severity §12.4 or D17 would have refused; the freeze bound $B$ at the pre-probe
+severity that confirmatory generation then renders; and $B$ could not be
+rebuilt at §7.2's extension. The first is the important one — it made v6's
+whole answer to v5's Gate-4 failure unreachable, and no test had driven it.
+
+**R7, recorded not closed.** §12.6 certifies coverage at `iota_a_prescreen` and
+references are matched at Gate 2's `iota_a`; measured drift on the four v5
+replications is 0.015–0.092 and flips no decisive condition on any of them.
+Gate 3A records the recomputation; §5 R7 states the options.
+
+### 10.3 The two conditions, and where each is established
+
+| | established at | before | on the same replication? |
+|---|---|---|---|
+| **reference support, with margin** | `GATE_3C_IDENTIFICATION` — §13.15: ≥8 structurally eligible Tier-1/2 families entering calibration, ≥5 passing the full V(R) on both splits, 3 used and **2 frozen unused** | Gate 4, the pre-freeze audit and the freeze | yes — sequential gates on one tree |
+| **composed headroom, while the operating point can still move** | `GATE_2_75_COMPOSED_PROBE` — §13.14's band unchanged, with a margin $\delta$ inside it | reference calibration, so $m^\*$ can still move | yes |
+
+The margin — 6 straddling groups at the screen against 5 qualifying families
+after calibration, and 5 qualifying against 3 used — is the registered supply
+cushion and no part of it was moved. The ordering guarantees simultaneity: a
+replication reaching `GATE_5_FREEZE` has passed both, on its own tree.
+
+### 10.4 Minimum additional pre-freeze checks
+
+Everything below is **already on the mandatory path** unless marked otherwise.
+
+| check | evidence required | data? | decides |
+|---|---|---|---|
+| §12.6 C1–C6 after the expansion | pre-screen table | existing | design-time `REFERENCE_SUPPORT_NOT_IDENTIFIED` |
+| §12.4 + D17 **at every admissible severity** | Gate 2's own curves | existing, no new rows | which severities the probe may move to |
+| §13.6 $\kappa(R\mid B)$ at the operating point | Gate 2's B-solo cells at each admissible severity | existing, no new rows | which candidates qualify |
+| §13.15's support with 2 frozen backups | Gate 3A/3B | existing | D6, and the admitted arm set |
+| P3.2 composed margin at $m^\*$ | probe rows | **new rows** — 11 cells × the probe split × $M_{\rm cal}$ | $m^\*$ stands, moves once, or `COMPOSED_HEADROOM_UNREACHABLE` |
+| §13.14 headroom on the *selected* references | 24 reserved composed topics | existing plan | `COMPOSED_HEADROOM_FAILURE` |
+| `coverage_at_measured_iota_a` | Gate 3A | existing, no new rows | **nothing** — recorded diagnostic, R7 |
+
+**One pilot is required and it is not started:** the R1/D19 measurement — 32
+Tier-1 reserve rungs × 24 pre-screen topics × 1 draw = **768 rows per
+replication, 3,072 total** — which decides whether the repaired expansion lands
+inside $p_{\rm solo}\in[0.10,0.90]$ and what span it buys. It cannot be
+answered from closed v5 data. Nothing has been generated.
+
+### 10.5 Remaining routes to an avoidable `NOT_IDENTIFIED`
+
+| route | disposition |
+|---|---|
+| expansion cannot reach the reserve C4 needs | **closed** — V6-E01 |
+| rungs the expansion measures are invisible to C4 | **closed** — V6-E02 |
+| the operating point moves and the pool does not follow | **closed** — V6-E03 |
+| the probe moves $B$ to a severity Gate 2 would refuse | **closed** — `focal_admissible` |
+| the freeze runs the design at the rejected severity | **closed** — V6-E03 |
+| coverage certified at a drifting $\iota_A$ | **open, measured, recorded** — R7; no decisive flip on 4/4 |
+| $\delta$ too small to absorb the probe-to-Gate-4 transfer | **open — R5/D23**, and §4 shows the needed margin is above the examined range |
+| Gate 4 fails on a **companion** slot | **open and stated** — `PROBE_SCOPE_LIMITS`; the probe protects the B slot only |
+| the reserve exists but does not qualify | **open — R1/D19**, needs the 3,072-row pilot |

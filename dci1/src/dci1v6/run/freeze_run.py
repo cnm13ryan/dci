@@ -98,6 +98,9 @@ def assemble(tree: ModelTree, *, producing_commit: str,
             "predecessor check is what stops it. Blocked checks: "
             f"{audit.get('blocked')}")
 
+    from dci1v6.run.gates_run import qualification_at
+
+    qualified_at = qualification_at(gate2_5, m_star=int(probe["m_star"]))
     spec = get_model(tree.model_key)
     selection = gate3b["selection"]
     arms = tuple(gate3c["admitted_arms"])
@@ -170,9 +173,13 @@ def assemble(tree: ModelTree, *, producing_commit: str,
                                   ["topic_set_hash"]),
         calibration_b_table_hash=(gate3a["split_tables"][C.CALIBRATION_B]
                                   ["topic_set_hash"]),
-        qualified_pool=list(gate2_5["qualified_pool"]),
+        # §13.6's pool at the operating point the study runs. Gate 2.5's
+        # top-level fields are its own predecessor's m*, and Gate 2.75 may
+        # have moved it --- so a freeze reading them would bind the pool that
+        # qualified against a severity the probe rejected.
+        qualified_pool=list(qualified_at["qualified_pool"]),
         earliest_failing_components=dict(
-            gate2_5["earliest_failing_components"]),
+            qualified_at["earliest_failing_components"]),
         core_references=core,
         spectrum_severities=_selection_entries(selection, "spectrum"),
         near_form_controls=_selection_entries(selection, "near_form"),
@@ -345,10 +352,16 @@ def freeze_payload(tree: ModelTree, *, producing_commit: str,
                    ) -> dict[str, Any]:
     gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     gate3b = transitions.read_stage_record(tree, C.STAGE_GATE3B)
+    probe = transitions.read_stage_record(tree, C.STAGE_GATE2_75)
     slot_map = {slot: list(value)
                 for slot, value in (gate3b.get("slot_map") or {}).items()}
     slot_map.setdefault("A", ["A", gate2["n_star"]])
-    slot_map.setdefault("B", ["B", gate2["m_star"]])
+    # Confirmatory generation renders every cell from **this** slot map, so a
+    # B bound at Gate 2's m* would run the whole confirmatory design at the
+    # severity Gate 2.75 rejected for want of composed headroom --- while the
+    # same record declared the probe's m*. The freeze binds one operating
+    # point and it is the one the study runs.
+    slot_map.setdefault("B", ["B", int(probe["m_star"])])
     record = assemble(tree, producing_commit=producing_commit,
                       environment_digest=environment_digest,
                       variance_reestimate=variance_reestimate)

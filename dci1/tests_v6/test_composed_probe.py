@@ -87,12 +87,37 @@ def test_a_probe_slot_is_not_a_registered_design_slot():
 
 # ------------------------------------------------------------ P3.1 and P3.2
 
-def test_the_probed_set_is_the_one_gate_2_recorded_as_eligible():
-    record = {"focal_selection": {"eligible": [9, 10, 11]}}
-    P.assert_probe_severities_are_gate2_eligible([10, 9], record)
+def test_the_probed_set_is_the_one_gate_2_recorded_as_admissible():
+    record = {"focal_selection": {"eligible": [9, 10, 11]},
+              "focal_admissible": [9, 10, 11]}
+    P.assert_probe_severities_are_admissible([10, 9], record)
     with pytest.raises(ProtocolError) as excinfo:
-        P.assert_probe_severities_are_gate2_eligible([10, 13], record)
+        P.assert_probe_severities_are_admissible([10, 13], record)
     assert "13" in str(excinfo.value)
+
+
+def test_an_eligible_severity_that_is_not_admissible_may_not_be_probed():
+    """§12.3's band is not §12.4's adequacy and not §34 D17's floor.
+
+    Gate 2 applies the second and third **at m\\*** and terminates the
+    replication when either fails. Every other eligible severity has passed
+    only the band test, so a probe that re-selected over `eligible` could move
+    B to an operating point Gate 2 would have refused outright.
+    """
+    record = {"focal_selection": {"eligible": [9, 10, 11]},
+              "focal_admissible": [9, 10]}
+    P.assert_probe_severities_are_admissible([10, 9], record)
+    with pytest.raises(ProtocolError) as excinfo:
+        P.assert_probe_severities_are_admissible([10, 11], record)
+    assert "11" in str(excinfo.value) and "§12.4" in str(excinfo.value)
+
+
+def test_a_record_without_the_admissible_set_is_refused_not_defaulted():
+    """Falling back to `eligible` is the defect, so absence must fail."""
+    with pytest.raises(ProtocolError) as excinfo:
+        P.assert_probe_severities_are_admissible(
+            [10], {"focal_selection": {"eligible": [9, 10, 11]}})
+    assert "focal_admissible" in str(excinfo.value)
 
 
 def test_a_severity_passes_only_when_every_cell_and_every_slot_is_inside():

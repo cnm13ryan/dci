@@ -55,6 +55,7 @@ __all__ = ["assert_synthetic_only", "assert_calibration_population",
            "slot_map_from_record",
            "gate2_payload", "run_gate2", "gate2_5_payload", "run_gate2_5",
            "probe_topics", "effective_m_star", "gate2_75_payload",
+           "calibration_rows_at", "qualification_at", "iota_a_drift",
            "run_gate2_75",
            "gate3a_payload", "run_gate3a", "gate3b_payload", "run_gate3b",
            "gate3c_payload", "run_gate3c", "gate4_payload", "run_gate4",
@@ -399,6 +400,37 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             observed=strength["reason"],
             strongest_permissible_statement=C.TERMINAL_SENTENCE)
 
+    # ------------------- the operating points Gate 2.75 may move B to
+    # §12.3's eligible set is a band test on the solo curve and nothing more.
+    # §12.4 and §34 D17 are evaluated at m* alone, so every *other* eligible
+    # severity is one no admissibility rule has been applied to --- and the
+    # probe re-selects over exactly that set. Both rules are applied here, to
+    # every eligible severity, from curves already measured, and the probe is
+    # confined to what survives. m* is in the set by construction: the two
+    # checks above terminated the replication if it were not.
+    #
+    # kappa(R|B) is then built for each of them off the B-solo cells pass 1
+    # already scored every candidate as absent on. It costs no generation, it
+    # is what lets a re-selected replication read §13.11's table at its own
+    # operating point, and computing it here --- before the probe observes a
+    # single composed cell --- is what keeps the pool independent of a
+    # composed outcome (§30).
+    eligible = sorted({int(q) for q in (focal.get("eligible") or ())}
+                      | {int(m_star)})
+    admissibility = _focal_admissibility(
+        eligible, a_rates=a_rates, grid_rows=grid_rows,
+        load_zero_curve=load_zero_curves["B"], solo_curve=curves["B"],
+        n_topics=n_load_zero["B"], floor=floor)
+    admissible = sorted(int(q) for q, v in admissibility.items()
+                        if v["admissible"])
+    if m_star not in admissible:                          # pragma: no cover
+        raise ProtocolError(
+            f"§12.4/§34 D17: m*={m_star} passed both rules above and the "
+            "per-severity evaluation disagrees; the two must be the same rule")
+    kappa_by_severity = _kappa_columns(
+        grid_rows, non_outcome, severities=admissible,
+        model_key=tree.model_key)
+
     # ------------------------------ pass 2: the candidates' solo compliance
     # m* can come from §7.2's extension, which is outside the registered
     # grid: every later reconstruction of B has to say so or the instrument
@@ -432,7 +464,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     tables = _calibration_rows(
         tree.model_key, non_outcome, m_star=m_star,
         solo_rows=candidate_rows, chance_rows=grid_rows,
-        b_solo_rows=b_solo_rows)
+        b_solo_rows=b_solo_rows,
+        kappa_column=kappa_by_severity[str(m_star)])
 
     statuses = sorted(set(target.get("identification_statuses", [])
                           + focal.get("identification_statuses", [])
@@ -446,6 +479,14 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "producing_commit": producing_commit,
         "n_star": n_star, "m_star": m_star,
         "target_selection": target, "focal_selection": focal,
+        # The severities Gate 2.75 may move B to: eligible under §12.3 **and**
+        # adequate under §12.4 **and** past §34 D17's floor, each evaluated at
+        # that severity rather than at m*. The kappa(R|B) column for each is
+        # recorded with it, so the pool at every candidate operating point is
+        # signed before the probe observes one composed cell (§30).
+        "focal_admissible": admissible,
+        "focal_admissibility": admissibility,
+        "kappa_under_b_by_severity": kappa_by_severity,
         # §7.2: whether {15, 16} were measured on this replication. §12.3
         # measures them only on escalation, so this is model-adaptive and
         # §6.1 lists it as such.
@@ -525,7 +566,8 @@ def _kappa_under_b(b_solo_rows: Sequence[Mapping[str, Any]],
 def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                       m_star: int, solo_rows: Sequence[Mapping[str, Any]],
                       chance_rows: Sequence[Mapping[str, Any]],
-                      b_solo_rows: Sequence[Mapping[str, Any]]
+                      b_solo_rows: Sequence[Mapping[str, Any]],
+                      kappa_column: Mapping[str, Any] | None = None
                       ) -> dict[str, list[dict[str, Any]]]:
     """The §13.11 closed-schema table, per split and pooled.
 
@@ -551,8 +593,22 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                 chance_value = chance["chance"]
             except ProtocolError:
                 chance_value = 0.0
-            kappa_b, n_topics_b, n_draws_b = _kappa_under_b(
-                b_solo_rows, candidate, split=restrict)
+            # ``kappa_column`` is ``_kappa_columns``' entry for this m*: the
+            # same quantity from one pass over the rows instead of one pass
+            # per candidate. The per-candidate form stays as the reference
+            # implementation and a unit test asserts the two agree exactly.
+            precomputed = (None if kappa_column is None
+                           else (kappa_column.get(split) or {}).get(
+                               candidate.label))
+            if precomputed is not None:
+                kappa_b = precomputed["kappa_under_b"]
+                source = precomputed["kappa_under_b_source"]
+                n_topics_b, n_draws_b = source["n_topics"], source["n_draws"]
+            elif kappa_column is not None:
+                kappa_b, n_topics_b, n_draws_b = None, 0, 0
+            else:
+                kappa_b, n_topics_b, n_draws_b = _kappa_under_b(
+                    b_solo_rows, candidate, split=restrict)
             entry: dict[str, Any] = {
                 "kind": candidate.kind, "severity": candidate.severity,
                 "split": split, "model_key": model_key,
@@ -585,6 +641,177 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
             rows.append(entry)
         out[split] = rows
     return out
+
+
+def _kappa_columns(grid_rows: Sequence[Mapping[str, Any]],
+                   candidates: Sequence[Constraint], *,
+                   severities: Sequence[int], model_key: str
+                   ) -> dict[str, dict[str, dict[str, Any]]]:
+    """kappa(R|B) at every operating point Gate 2.75 may move B to.
+
+    §13.6 reads the interaction quantity off the **B-solo cell at the
+    operating point**, and Gate 2.75 --- two stages later --- may re-select
+    that point. Gate 2 already scores every carried candidate as an *absent*
+    instance on every B-solo cell of the focal grid, so the column at another
+    admissible severity is arithmetic over rows that already exist and costs
+    no generation at all.
+
+    Computing them **here**, before the probe has observed a single composed
+    cell, is also what keeps §30 intact: the qualified pool at every candidate
+    operating point is fixed and signed before any composed outcome exists, so
+    the probe's verdict moves the operating point and never the pool.
+    """
+    wanted = {(c.kind, c.severity): c.label for c in candidates}
+    splits = (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")
+    out: dict[str, dict[str, dict[str, Any]]] = {}
+    for severity in severities:
+        cell_id = f"solo:{focal_constraint(severity).label}"
+        # One pass over the B-solo rows, bucketing by (split, candidate,
+        # topic). `_kappa_under_b` rescans every row for every candidate,
+        # which is the same arithmetic and quadratic in the pool; at six
+        # admissible severities and three splits that is the difference
+        # between seconds and minutes. The two agree exactly and a test
+        # asserts it against the m* column `_calibration_rows` builds.
+        acc: dict[tuple[str, str], dict[str, list[float]]] = {}
+        for row in grid_rows:
+            if row["cell_id"] != cell_id:
+                continue
+            row_split = row.get("topic_split")
+            for score in row["scores"]:
+                if score["present"]:
+                    continue
+                label = wanted.get((score["kind"], score["severity"]))
+                if label is None:
+                    continue
+                passed = float(score["passed"])
+                for split in dict.fromkeys(("pooled", row_split)):
+                    if split not in splits:
+                        continue
+                    acc.setdefault((split, label), {}).setdefault(
+                        row["topic_id"], []).append(passed)
+        per_split: dict[str, dict[str, Any]] = {s: {} for s in splits}
+        for (split, label), per_topic in acc.items():
+            topics = sorted(per_topic)
+            value = sum(sum(per_topic[t]) / len(per_topic[t])
+                        for t in topics) / len(topics)
+            per_split[split][label] = {
+                "kappa_under_b": value,
+                "kappa_under_b_source": {
+                    "load": 1, "present": [f"B:{severity}"],
+                    "candidate": label, "model_key": model_key,
+                    "m_star": severity, "split": split,
+                    "n_topics": len(topics),
+                    "n_draws": max(len(per_topic[t]) for t in topics)}}
+        out[str(severity)] = per_split
+    return out
+
+
+def _focal_admissibility(severities: Sequence[int], *,
+                         a_rates: Mapping[str, Any],
+                         grid_rows: Sequence[Mapping[str, Any]],
+                         load_zero_curve: Mapping[int, float],
+                         solo_curve: Mapping[int, float], n_topics: int,
+                         floor: construct_strength.FloorSpec | None
+                         ) -> dict[str, Any]:
+    """§12.4 and §34 D17, at every severity Gate 2.75 may re-select.
+
+    Gate 2 evaluates both **at m\\***, and terminates the replication when
+    either fails. An *eligible* severity is only one whose solo compliance sat
+    inside §12.3's band: it has been through neither §12.4's regime adequacy
+    nor D17's construct floor. Gate 2.75 re-selects over the eligible set, so
+    without this the probe could move B to a severity where B is degenerate or
+    vacuous, or where the construct floor refuses a selection --- an operating
+    point Gate 2 would itself have refused.
+
+    Nothing here relaxes a rule and nothing here selects. m* is still §12.3's
+    choice and still terminates the replication when it fails either rule;
+    this narrows the set the probe may move **to**, and it reads only curves
+    Gate 2 has already measured.
+    """
+    verdicts: dict[str, Any] = {}
+    for severity in severities:
+        rates = instance_rates(grid_rows, kind="B", severity=severity)
+        adequacy = regime_stage.regime_adequacy(
+            solo_a=a_rates["solo"], solo_b=rates["solo"],
+            vacuity_b=rates["vacuity"],
+            graded_shares={
+                "A": {"graded_share_above": a_rates["graded_share_above"],
+                      "graded_share_below": a_rates["graded_share_below"]},
+                "B": {"graded_share_above": rates["graded_share_above"],
+                      "graded_share_below": rates["graded_share_below"]}})
+        strength = construct_strength.assert_construct_floor(
+            severity, chance_compliance_at_m_star=load_zero_curve[severity],
+            curve=load_zero_curve, solo_curve=solo_curve,
+            n_topics=n_topics, floor=floor)
+        refused = bool(strength.get("selection_refused"))
+        verdicts[str(severity)] = {
+            "severity": severity,
+            "adequate": bool(adequacy["adequate"]),
+            "adequacy_failures": list(adequacy.get("failures") or ()),
+            "construct_floor_refused": refused,
+            "construct_strength": strength,
+            "admissible": bool(adequacy["adequate"]) and not refused,
+        }
+    return verdicts
+
+
+def calibration_rows_at(gate2_record: Mapping[str, Any], *, m_star: int,
+                        split: str) -> list[dict[str, Any]]:
+    """Gate 2's §13.11 table, with the kappa(R|B) column at ``m_star``.
+
+    Every other column is a solo or chance quantity measured with B absent and
+    does not move with the operating point. kappa(R|B) does; §13.11 makes its
+    source travel with the value, and ``assert_kappa_under_b_source`` refuses
+    a table read at an operating point the column was not measured at. Without
+    this, every stage after a Gate-2.75 re-selection was reading Gate 2's
+    m*-column under the probe's m*, and the refusal fired as an unhandled
+    error --- so the probe's whole re-selection branch could not execute.
+
+    The column is **swapped, never recomputed**: it comes from the map Gate 2
+    signed before the probe ran.
+    """
+    rows = [dict(r) for r in gate2_record["calibration_rows"][split]]
+    if int(m_star) == int(gate2_record["m_star"]):
+        return rows
+    by_severity = gate2_record.get("kappa_under_b_by_severity") or {}
+    column = (by_severity.get(str(int(m_star))) or {}).get(split)
+    if column is None:
+        raise ProtocolError(
+            f"§13.6: Gate 2 recorded no kappa(R|B) column at m*={m_star} on "
+            f"split {split!r}, so §13.11's table cannot be read at the "
+            "operating point Gate 2.75 selected. Gate 2 records a column for "
+            "every severity in `focal_admissible` and the probe may select "
+            "no other")
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        row.pop("kappa_under_b", None)
+        row.pop("kappa_under_b_source", None)
+        entry = column.get(f"{row['kind']}:{row['severity']}")
+        if entry is not None:
+            row["kappa_under_b"] = entry["kappa_under_b"]
+            row["kappa_under_b_source"] = dict(entry["kappa_under_b_source"])
+        out.append(row)
+    return out
+
+
+def qualification_at(gate2_5_record: Mapping[str, Any], *,
+                     m_star: int) -> Mapping[str, Any]:
+    """Gate 2.5's §13.6 pool at the operating point Gate 2.75 chose.
+
+    Gate 2.5 runs before the probe and cannot know which severity the study
+    will end up at, so it qualifies at **every** admissible one. Reading its
+    top-level pool after a re-selection would read the pool for a severity the
+    probe rejected.
+    """
+    by_severity = gate2_5_record.get("qualification_by_severity") or {}
+    entry = by_severity.get(str(int(m_star)))
+    if entry is None:
+        raise ProtocolError(
+            f"§13.6: Gate 2.5 recorded no qualified pool at m*={m_star}; it "
+            f"holds {sorted(by_severity)}. A stage after Gate 2.75 reads the "
+            "pool at the operating point the probe selected, and a missing "
+            "one is a lifecycle fault rather than a reason to fall back")
+    return entry
 
 
 def _iota_a_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
@@ -682,21 +909,46 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
     the B-solo rows Gate 2 already produced.
     """
     m_star = gate2_record["m_star"]
-    raw = list(gate2_record["calibration_rows"][split])
-    rows = load_calibration_table(raw, model_key=tree.model_key,
-                                  m_star=m_star, split=split)
-    qualified = qualification_gate.qualify_candidates(
-        rows, model_key=tree.model_key, m_star=m_star,
-        producing_commit=producing_commit)
-    interaction_rows = [
-        {"candidate": r.label, "kappa": r.chance_compliance,
-         "iota": instructed_compliance(r.solo_compliance,
-                                       r.chance_compliance),
-         "kappa_under_b": r.kappa_under_b, "source": r.kappa_under_b_source}
-        for r in rows]
-    report = interaction.measure_interaction(
-        interaction_rows, model_key=tree.model_key, m_star=m_star,
-        split=split)
+    # §13.6's quantity is a property of the pair (R, B at the operating
+    # point), and Gate 2.75 --- the next stage --- may move that point. This
+    # stage generates nothing, so qualifying at **every** admissible severity
+    # costs arithmetic and no rows, and it fixes the pool at each candidate
+    # operating point before the probe observes anything (§30). A single pool
+    # computed at Gate 2's m* would be stale the moment the probe re-selected.
+    admissible = sorted({int(q) for q in
+                         (gate2_record.get("focal_admissible") or ())}
+                        | {int(m_star)})
+    by_severity: dict[str, Any] = {}
+    for severity in admissible:
+        raw_q = calibration_rows_at(gate2_record, m_star=severity, split=split)
+        rows_q = load_calibration_table(raw_q, model_key=tree.model_key,
+                                        m_star=severity, split=split)
+        qualified_q = qualification_gate.qualify_candidates(
+            rows_q, model_key=tree.model_key, m_star=severity,
+            producing_commit=producing_commit)
+        interaction_rows_q = [
+            {"candidate": r.label, "kappa": r.chance_compliance,
+             "iota": instructed_compliance(r.solo_compliance,
+                                           r.chance_compliance),
+             "kappa_under_b": r.kappa_under_b,
+             "source": r.kappa_under_b_source}
+            for r in rows_q]
+        by_severity[str(severity)] = {
+            "m_star": severity,
+            "qualification": qualified_q,
+            "qualified_pool": qualified_q["qualified_pool"],
+            "qualified_families": qualified_q["qualified_families"],
+            "n_qualified": qualified_q["n_qualified"],
+            "earliest_failing_components": {
+                v["candidate"]: v["first_failing_component"]
+                for v in qualified_q["verdicts"]},
+            "interaction": interaction.measure_interaction(
+                interaction_rows_q, model_key=tree.model_key,
+                m_star=severity, split=split),
+        }
+    at_m_star = by_severity[str(m_star)]
+    qualified = at_m_star["qualification"]
+    report = at_m_star["interaction"]
     return {
         "stage": C.STAGE_GATE2_5,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE2_5],
@@ -712,6 +964,12 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
         "qualified_pool": qualified["qualified_pool"],
         "qualified_families": qualified["qualified_families"],
         "n_qualified": qualified["n_qualified"],
+        # The same three, at every operating point the probe may select. The
+        # top-level fields stay at Gate 2's m* --- that is what this stage's
+        # predecessor chose --- and `qualification_at` is what a stage after
+        # Gate 2.75 reads.
+        "qualification_by_severity": by_severity,
+        "qualified_at_severities": admissible,
         "earliest_failing_components": {
             v["candidate"]: v["first_failing_component"]
             for v in qualified["verdicts"]},
@@ -780,6 +1038,7 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                      bank: TopicBank | None = None, cap: int,
                      device: int = 0,
                      standins: Sequence[Constraint] | None = None,
+                     block_limit: int | None = None,
                      generate: Callable[..., dict[str, Any]] | None = None
                      ) -> dict[str, Any]:
     """§18 stage 8: composed headroom at m*, **before** any reference exists.
@@ -821,13 +1080,25 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     slots = composed_probe.probe_slots(len(standins))
     slot_map: dict[str, Constraint] = dict(zip(slots, standins))
 
-    # P3.1: m* first, then the rest of Gate 2's eligible set in ascending
-    # order. Probing m* alone is the common case and the only one that costs
-    # a single severity's rows.
-    order = [m_star] + [q for q in sorted(eligible) if q != m_star]
-    composed_probe.assert_probe_severities_are_gate2_eligible(order, gate2)
+    # P3.1: m* first, then the rest of Gate 2's **admissible** set in
+    # ascending order. Probing m* alone is the common case and the only one
+    # that costs a single severity's rows. `admissible` is `eligible`
+    # intersected with §12.4 and §34 D17 evaluated at each severity, so the
+    # probe can never move B to a point Gate 2 would have refused.
+    admissible = [int(q) for q in (gate2.get("focal_admissible") or ())]
+    order = [m_star] + [q for q in sorted(admissible) if q != m_star]
+    composed_probe.assert_probe_severities_are_admissible(order, gate2)
 
     topics, topic_label = probe_topics(bank, split)
+    if block_limit is not None:
+        # The same seam `confirmatory_run.licensed_design` uses, and admitted
+        # on the same terms: a probe measured on a subset is a different
+        # measurement under the same name, so it is refused anywhere the
+        # study id says a row could be evidence. Worth having because a probe
+        # that re-selects measures every admissible severity, and a harness
+        # that cannot afford the branch does not exercise it.
+        assert_synthetic_only(tree, "block_limit", block_limit)
+        topics = topics[:block_limit]
     generate = resolve_generate(tree, generate, _responder,
                                where=C.STAGE_GATE2_75)
     shape = composed_probe.probe_cell_types(slots)
@@ -883,8 +1154,9 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         "inputs": {
             "gate2": {"stage": C.STAGE_GATE2, "m_star": m_star,
                       "eligible": sorted(eligible),
+                      "admissible": sorted(admissible),
                       "read": ["m_star", "focal_selection.eligible",
-                               "focal_selection.curve"]},
+                               "focal_selection.curve", "focal_admissible"]},
             "gate2_5": {"stage": C.STAGE_GATE2_5, "read": ["outcome"],
                         "outcome": gate2_5_record["outcome"],
                         "why": "the probe must not know which candidates "
@@ -905,6 +1177,7 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         "band": list(C.COMPOSED_HEADROOM_BAND),
         "band_is_unchanged": True,
         "selects_nothing_but_m_star": True,
+        "admissible_severities": sorted(admissible),
         "scope_limits": list(composed_probe.PROBE_SCOPE_LIMITS),
         # §33 check 8 scans every other key for a name that would betray an
         # outcome-driven selection, and requires this block --- on this
@@ -921,6 +1194,7 @@ def run_gate2_75(tree: ModelTree, *, cap: int | None = None,
                  environment_digest: str = "", bank: TopicBank | None = None,
                  device: int = 0,
                  standins: Sequence[Constraint] | None = None,
+                 block_limit: int | None = None,
                  generate: Callable[..., dict[str, Any]] | None = None
                  ) -> StageOutcome:
     """The stage entry point. Takes ``device``, so ``cli.generating_stages``
@@ -934,11 +1208,62 @@ def run_gate2_75(tree: ModelTree, *, cap: int | None = None,
         compute=lambda previous: gate2_75_payload(
             tree, producing_commit=commit, gate2_5_record=previous,
             bank=bank, cap=cap, device=device, standins=standins,
-            generate=generate),
+            block_limit=block_limit, generate=generate),
         producing_commit=commit, environment_digest=environment_digest)
 
 
 # ---------------------------------------------------------------- Gate 3A
+
+def iota_a_drift(tree: ModelTree, *, iota_a_measured: float) -> dict[str, Any]:
+    """§12.6's coverage, re-read at the iota_A the study actually matches on.
+
+    **A recorded diagnostic. It gates nothing and no rule reads it.**
+
+    §12.6 certifies the identification-coverage criterion, spends its
+    expansion rounds and freezes the vocabulary at ``iota_a_prescreen`` --- A's
+    compliance on 24 pre-screen topics at one draw, at the severity nearest
+    §12.3's aim. The quantity references are actually matched to is Gate 2's
+    ``iota_a``, measured on 192 calibration topics at four draws at n*. On the
+    four closed v5 replications those two differ by 0.015 to 0.092, and by the
+    time the second is known the vocabulary is frozen and the expansion is
+    spent, so nothing can be done about a shortfall it reveals.
+
+    Recording the recomputation is what turns that from an invisible risk into
+    a quantity on a signed record, before Gate 4 and before the freeze. On all
+    four v5 tables no decisive condition changed under the realised drift; a
+    replication where one does is exactly the case a reader needs to see, and
+    whether §12.6 should certify over an *interval* of iota_A rather than a
+    point is a researcher decision this deliberately does not take.
+    """
+    regime = transitions.read_stage_record(tree, C.STAGE_REGIME)
+    prescreen = regime.get("iota_a_prescreen")
+    rows = regime_stage.coverage_rows(
+        regime["difficulty_table"], regime["carried_set"],
+        formulation=regime.get("coverage_eligibility_formulation"))
+    at_measured = regime_stage.coverage_criterion(
+        rows, iota_a=float(iota_a_measured))
+    certified = (regime.get("expansion") or {}).get("coverage") or {}
+    changed = sorted(
+        c for c in C.COVERAGE_CONDITIONS
+        if c in (certified.get("conditions") or {})
+        and certified["conditions"][c] != at_measured["conditions"][c])
+    return {
+        "gates_nothing": True,
+        "statement": "§12.6 is certified at iota_a_prescreen and the "
+                     "vocabulary is frozen there; this is the same criterion "
+                     "re-read at the iota_A reference selection matches on. "
+                     "No rule reads it and no status follows from it",
+        "iota_a_prescreen": prescreen,
+        "iota_a_measured": float(iota_a_measured),
+        "drift": (None if prescreen is None
+                  else float(iota_a_measured) - float(prescreen)),
+        "certified_conditions": dict(certified.get("conditions") or {}),
+        "conditions_at_measured": dict(at_measured["conditions"]),
+        "decisive_met_at_measured": at_measured["decisive_met"],
+        "conditions_changed": changed,
+        "realised_at_measured": dict(at_measured.get("realised") or {}),
+    }
+
 
 def gate3a_payload(tree: ModelTree, *, producing_commit: str,
                    probe_record: Mapping[str, Any],
@@ -959,8 +1284,16 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
     # re-selected m* once, so the operating point comes from the probe record
     # and not from Gate 2.5's copy of Gate 2's.
     m_star = int(probe_record["m_star"])
-    tables = gate2_record["calibration_rows"]
-    qualified = list(gate2_5_record["qualified_pool"])
+    # §13.11's table and §13.6's pool, both read **at the operating point the
+    # probe selected**. Gate 2's own kappa(R|B) column belongs to Gate 2's m*,
+    # and `assert_kappa_under_b_source` refuses it under another one --- which
+    # is correct, and which made the probe's re-selection branch unexecutable
+    # until Gate 2 recorded a column per admissible severity.
+    tables = {split: calibration_rows_at(gate2_record, m_star=m_star,
+                                         split=split)
+              for split in (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")}
+    qualified_at = qualification_at(gate2_5_record, m_star=m_star)
+    qualified = list(qualified_at["qualified_pool"])
     population = stability.calibration_b_population(
         carried=[r["kind"] + ":" + str(r["severity"])
                  for r in tables[C.CALIBRATION_A]],
@@ -1009,6 +1342,9 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
         "stage": C.STAGE_GATE3A,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE3A],
         "outcome": "PASS",
+        # A recorded diagnostic and **not a gate**: see `iota_a_drift`.
+        "coverage_at_measured_iota_a": iota_a_drift(
+            tree, iota_a_measured=gate2_record["iota_a"]),
         "inputs": {"gate2_5": {"stage": C.STAGE_GATE2_5},
                    "gate2_75": {"stage": C.STAGE_GATE2_75,
                                 "m_star": m_star,
@@ -1029,6 +1365,13 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
         "n_stable": sum(1 for v in verdicts.values() if v.get("stable")),
         "equivalence_bound": C.STABILITY_EQUIVALENCE_BOUND,
         "pooled_table": [dict(r) for r in tables["pooled"]],
+        # The pool this stage actually used, named with the severity it was
+        # qualified at, so a reader never has to infer which one a re-selected
+        # replication ran on.
+        "qualified_pool": list(qualified),
+        "qualified_families": list(qualified_at["qualified_families"]),
+        "n_qualified": qualified_at["n_qualified"],
+        "qualified_at_m_star": m_star,
         "iota_a": gate2_record["iota_a"],
         "solo_compliance_a": gate2_record["solo_compliance_a"],
     }
@@ -1131,7 +1474,11 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
     record, before a confirmatory row exists. That is what makes the arm set
     a design fact rather than a post-hoc description of what happened to work.
     """
-    qualified_families = list(gate2_5_record["qualified_families"])
+    # §13.15 counts the families that qualified at the operating point the
+    # study runs, which after a Gate-2.75 re-selection is not Gate 2's.
+    qualified_families = list(qualification_at(
+        gate2_5_record, m_star=int(gate3b_record["m_star"]))
+        ["qualified_families"])
     structurally_eligible_tier12_families = sorted({
         label.rpartition(":")[0] for label in regime_record["carried_set"]
         if FAMILIES[label.rpartition(":")[0]].structural_tier in (1, 2)})
@@ -1383,6 +1730,13 @@ def gate4_payload(tree: ModelTree, *, producing_commit: str,
                               "arms": list(arms)}},
         "producing_commit": producing_commit,
         "admitted_arms": list(arms),
+        # The operating point headroom was validated at, on the record rather
+        # than inferred. Gate 2.75 may have moved it, and "was headroom
+        # checked at the severity the freeze binds?" is a question a reader
+        # must be able to answer from the two records alone.
+        "m_star": slot_map["B"].severity,
+        "slot_map": {slot: [c.kind, c.severity]
+                     for slot, c in sorted(slot_map.items())},
         "cell_types": sorted(shape),
         "n_cell_types": len(shape),
         "expected_rows": expected_rows,

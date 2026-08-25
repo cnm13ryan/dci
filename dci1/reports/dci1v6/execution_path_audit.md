@@ -6,11 +6,11 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **53 registered rules** audited.
-- **53 agree** with their expected status.
-- By status: **2** VERIFIED_CONDITIONAL, **51** VERIFIED_REACHABLE.
-- Contract: 124 fields, 362 checked against real payloads (124 field-presence, 238 consumption, 4 semantic), **0 defects**.
-- Scenarios run: **15**.
+- **56 registered rules** audited.
+- **56 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **54** VERIFIED_REACHABLE.
+- Contract: 137 fields, 388 checked against real payloads (137 field-presence, 251 consumption, 4 semantic), **0 defects**.
+- Scenarios run: **16**.
 
 ## regime
 
@@ -33,6 +33,9 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 |---|---|---|---|---|---|---|---|
 | `R-2.75-margin` | §13.14, P3.2 | a probed severity passes only when every probed cell, on every evaluated slot, lies inside the registered margin | `dci1v6.stages.composed_probe.severity_verdict` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.disposition` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 | `R-2.75-reselect` | P3.3, P3.4 | m* stands, or is re-selected exactly once by the registered focal rule over Gate 2's own solo curve restricted to the severities the probe admitted | `dci1v6.stages.composed_probe.probe_disposition` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.m_star` | `GATE_3A_REFERENCE_CALIBRATION` | **VERIFIED_REACHABLE** |
+| `R-2.75-admissible` | §12.4, §34 D17, P3.1 | the probe probes --- and re-selects over --- only the severities Gate 2 found ADMISSIBLE: eligible under §12.3 and, at that severity, adequate under §12.4 and past D17's construct floor. Eligibility alone is a band test on the solo curve, so re-selecting over it could move B to an operating point Gate 2 would have refused | `dci1v6.stages.composed_probe.assert_probe_severities_are_admissible` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_FOCAL_CALIBRATION.focal_admissible` | `GATE_2_75_COMPOSED_PROBE` | **VERIFIED_REACHABLE** |
+| `R-13.6-operating-point` | §13.6, §13.11 | kappa(R|B) and the §13.1 pool are read at the operating point the probe selected, from columns Gate 2 signed for every admissible severity BEFORE the probe observed a composed cell. Reading Gate 2's own column under a re-selected m* is refused by `assert_kappa_under_b_source`, which is what made the re-selection branch unexecutable | `dci1v6.run.gates_run.calibration_rows_at` | `dci1v6.run.gates_run.gate3a_payload` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity` | `GATE_3A_REFERENCE_CALIBRATION` | **VERIFIED_REACHABLE** |
+| `R-18.1-frozen-operating-point` | §18.1 | the freeze binds B --- and the pool --- at the probe's m*, not Gate 2's. Confirmatory generation renders every cell from the frozen slot map, so a B bound at Gate 2's m* would spend the whole confirmatory budget at the severity the probe rejected for want of composed headroom | `dci1v6.run.freeze_run.freeze_payload` | `dci1v6.run.freeze_run.assemble` | `GATE_5_FREEZE.slot_map` | — | **VERIFIED_REACHABLE** |
 | `R-2.75-blind` | §13.11 | no function in the probe module reads a reference or a selection record, by name and by source | `dci1v6.stages.composed_probe.assert_probe_reads_no_reference` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.declared_refusals` | `PREFREEZE_AUDIT` | **VERIFIED_REACHABLE** |
 
 ## V(R)
@@ -40,8 +43,8 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
 | `R-12.7-population` | §12.7 | calibration measures the priority population, not the carried set | `dci1v6.stages.regime.calibration_priority` | `dci1v6.run.gates_run.assert_calibration_population` | `REGIME_SCREEN.calibration_priority` | `GATE_2_FOCAL_CALIBRATION` | **VERIFIED_REACHABLE** |
-| `R-13.1-vr` | §13.1-§13.7 | the eight V(R) components in registered order | `dci1v6.stages.validity.evaluate_validity` | `dci1v6.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualified_pool` | `GATE_3A_REFERENCE_CALIBRATION` | **VERIFIED_REACHABLE** |
-| `R-19-lexicographic` | §19 test 3 | the recorded reason is the earliest failing component | `dci1v6.stages.validity.assert_lexicographic_order` | `dci1v6.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.earliest_failing_components` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
+| `R-13.1-vr` | §13.1-§13.7 | the eight V(R) components in registered order | `dci1v6.stages.validity.evaluate_validity` | `dci1v6.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity` | `GATE_3A_REFERENCE_CALIBRATION` | **VERIFIED_REACHABLE** |
+| `R-19-lexicographic` | §19 test 3 | the recorded reason is the earliest failing component | `dci1v6.stages.validity.assert_lexicographic_order` | `dci1v6.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 | `R-13.7-stability` | §13.7 | each candidate is equivalent across the two splits | `dci1v6.stages.stability.stability_verdict` | `dci1v6.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.stability` | `GATE_3B_REFERENCE_SELECTION` | **VERIFIED_REACHABLE** |
 | `R-13.7-iota-a` | §13.7 | iota_A meets the same equivalence rule as every candidate | `dci1v6.stages.stability.assert_iota_a_stable` | `dci1v6.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.iota_a_stability` | — | **VERIFIED_REACHABLE** |
 | `R-13.6-interaction` | §13.6 | kappa(R|B), displacement and the projected compliance | `dci1v6.stages.interaction.measure_interaction` | `dci1v6.run.gates_run.gate2_5_payload` | `GATE_2_5_CANDIDATE_QUALIFICATION.interaction` | — | **VERIFIED_REACHABLE** |
@@ -134,4 +137,5 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `unmask_is_one_shot` | §20's one-shot unmask | `{"refused": "IntegrityError: gemma-3n-e2b-it: UNMASKING already has a record; v5 stage records are write-once. Repair creates a new producing commit and runs the stage in a fresh tree", "expected": "the second invocation is refused"}` |
 | `coordinate_dependent` | §17.6's coordinate agreement, §34 D14 | `{"primary_levels": ["L3e"], "secondary_levels": ["L3d"], "agrees": false, "statuses": ["DIFFICULTY_COORDINATE_DEPENDENT"], "emitted_levels": ["L3c", "L3e"], "status_on_every_statement": true, "expected": "primary L3e, raw L3d, DIFFICULTY_COORDINATE_DEPENDENT on the emitted statement, and the emitted` |
 | `coordinate_secondary_not_computable` | §17.6 with no secondary, §20 | `{"masked_step_9": "MASKED_PHASE", "masked_step_12": "NOT_REGISTERED_FOR_INFERENCE", "compared": false, "statuses": [], "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"}` |
+| `probe_reselects_the_operating_point` | P3.4: the probe re-selects m* and the study follows it | `{"m_star_in": 8, "m_star_out": 10, "reselected": true, "admissible_severities": [7, 8, 9, 10, 11, 12], "eligible_severities": [7, 8, 9, 10, 11, 12, 13, 14], "gate3a_m_star": 10, "gate3a_qualified_at": 10, "gate3c_support_met": true, "gate3c_qualified_families": 12, "gate4_m_star": 10, "freeze_m_star` |
 
