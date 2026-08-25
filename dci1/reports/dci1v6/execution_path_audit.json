@@ -1,0 +1,1989 @@
+{
+ "n_rules": 53,
+ "n_agreeing": 53,
+ "by_status": {
+  "VERIFIED_CONDITIONAL": 2,
+  "VERIFIED_REACHABLE": 51
+ },
+ "contract": {
+  "n_fields": 124,
+  "n_artifacts": 18,
+  "n_checked_against_payloads": 362,
+  "n_field_presence_checks": 124,
+  "n_consumption_checks": 238,
+  "n_semantic_checks": 4,
+  "relayed": [
+   {
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "measurement_basis",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_1_MEASUREMENT"
+    ]
+   },
+   {
+    "artifact": "REGIME_SCREEN",
+    "field": "identification_statuses",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_2_FOCAL_CALIBRATION",
+     "GATE_3C_IDENTIFICATION"
+    ]
+   },
+   {
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "canonical_verifier_hash",
+    "reader": "CONFIRMATORY_GENERATION",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "m_star",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "via": [
+     "GATE_2_75_COMPOSED_PROBE"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "m_star",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "via": [
+     "GATE_3A_REFERENCE_CALIBRATION"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "iota_a",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "via": [
+     "GATE_3A_REFERENCE_CALIBRATION"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "iota_a",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_3B_REFERENCE_SELECTION"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "solo_compliance_a",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "via": [
+     "GATE_3A_REFERENCE_CALIBRATION"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "identification_statuses",
+    "reader": "GATE_3C_IDENTIFICATION",
+    "via": [
+     "REGIME_SCREEN"
+    ]
+   },
+   {
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "identification_statuses",
+    "reader": "UNMASKED_ANALYSIS",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "field": "m_star",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "via": [
+     "GATE_2_75_COMPOSED_PROBE"
+    ]
+   },
+   {
+    "artifact": "GATE_2_75_COMPOSED_PROBE",
+    "field": "m_star",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "via": [
+     "GATE_3A_REFERENCE_CALIBRATION"
+    ]
+   },
+   {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "admitted_arms",
+    "reader": "CONFIRMATORY_GENERATION",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "admitted_arms",
+    "reader": "FINAL_REPORT",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "derived_cell_count",
+    "reader": "CONFIRMATORY_GENERATION",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "identification_statuses",
+    "reader": "UNMASKED_ANALYSIS",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "m_star",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_2_75_COMPOSED_PROBE",
+     "GATE_2_FOCAL_CALIBRATION"
+    ]
+   },
+   {
+    "artifact": "GATE_4_COMPOSED_HEADROOM",
+    "field": "admitted_arms",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_3C_IDENTIFICATION"
+    ]
+   },
+   {
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "freeze_hash",
+    "reader": "MASKED_ANALYSIS",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "freeze_hash",
+    "reader": "UNMASKED_ANALYSIS",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   }
+  ],
+  "n_relayed": 20,
+  "unconsumed": [
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "manifest_hash",
+    "reader": "QUALIFIED",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "manifest_hash",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "calibration_a_hash",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "calibration_a_hash",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "calibration_b_hash",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "calibration_b_hash",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "split_hash",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "models",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "measurement_basis",
+    "reader": "GATE_1_MEASUREMENT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PROTOCOL_REGISTERED",
+    "field": "measurement_basis",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "QUALIFIED",
+    "field": "canonical_verifier_hash",
+    "reader": "GATE_1_MEASUREMENT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "QUALIFIED",
+    "field": "instrument_population",
+    "reader": "GATE_1_MEASUREMENT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "QUALIFIED",
+    "field": "topic_split_identity",
+    "reader": "GATE_2_FOCAL_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "QUALIFIED",
+    "field": "topic_split_identity",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "selected_cap",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "selected_cap",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "carried_set",
+    "reader": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "carried_set",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "carried_set",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "difficulty_table",
+    "reader": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "difficulty_table",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "vocabulary_frozen",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "coverage",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "calibration_priority",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "REGIME_SCREEN",
+    "field": "expansion",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "measurement_basis",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "measurement_basis",
+    "reader": "FINAL_REPORT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "scope_sentence",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "scope_sentence",
+    "reader": "FINAL_REPORT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_1_MEASUREMENT",
+    "field": "instrument_population",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "n_star",
+    "reader": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "n_star",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "n_star",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "n_star",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "m_star",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "m_star",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "chance_curves",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "solo_curves",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "calibration_binding",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "calibration_binding",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "calibration_population",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "adequacy",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "grid_resolution",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "focal_extension_measured",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "field": "qualification",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "field": "qualified_families",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "field": "interaction",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "field": "interaction",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_75_COMPOSED_PROBE",
+    "field": "m_star",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_75_COMPOSED_PROBE",
+    "field": "m_star",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "m_star",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "stability",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "calibration_b_population",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "iota_a_stability",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3B_REFERENCE_SELECTION",
+    "field": "selection",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3B_REFERENCE_SELECTION",
+    "field": "selection",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "admitted_arms",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "derived_cell_count",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "slots",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "slots",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "identification_statuses",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "support",
+    "reader": "FINAL_REPORT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "m_star",
+    "reader": "GATE_4_COMPOSED_HEADROOM",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "not_identified_members",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_4_COMPOSED_HEADROOM",
+    "field": "headroom_table",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PREFREEZE_AUDIT",
+    "field": "artifact_checks",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "PREFREEZE_AUDIT",
+    "field": "checklist",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "freeze",
+    "reader": "UNMASKING",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "blocks",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "cells_per_block",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "M",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "M",
+    "reader": "MASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "M",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "admitted_arms",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_5_FREEZE",
+    "field": "selected_cap",
+    "reader": "CONFIRMATORY_GENERATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "rows_path",
+    "reader": "MASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "n_rows",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "completeness",
+    "reader": "MASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "CONFIRMATORY_GENERATION",
+    "field": "completeness",
+    "reader": "FINAL_REPORT",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "MASKED_ANALYSIS",
+    "field": "mask_namespace",
+    "reader": "UNMASKING",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "MASKED_ANALYSIS",
+    "field": "masked_result_hash",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "MASKED_ANALYSIS",
+    "field": "analysis_code_hash",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "MASKED_ANALYSIS",
+    "field": "sealed",
+    "reader": "UNMASKING",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "UNMASKING",
+    "field": "mask_key_hash",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "UNMASKING",
+    "field": "unmask_event",
+    "reader": "UNMASKED_ANALYSIS",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   }
+  ],
+  "n_unconsumed": 85,
+  "n_defects": 0,
+  "clean": true
+ },
+ "contract_defects": [],
+ "scenarios": {
+  "normal_full_path": {
+   "scenario": "normal_full_path",
+   "branch": "the full eighteen-stage path",
+   "stages": [
+    "CONFIRMATORY_GENERATION",
+    "FINAL_REPORT",
+    "GATE_0_APPARATUS",
+    "GATE_1_MEASUREMENT",
+    "GATE_2_5_CANDIDATE_QUALIFICATION",
+    "GATE_2_75_COMPOSED_PROBE",
+    "GATE_2_FOCAL_CALIBRATION",
+    "GATE_3A_REFERENCE_CALIBRATION",
+    "GATE_3B_REFERENCE_SELECTION",
+    "GATE_3C_IDENTIFICATION",
+    "GATE_4_COMPOSED_HEADROOM",
+    "GATE_5_FREEZE",
+    "MASKED_ANALYSIS",
+    "PREFREEZE_AUDIT",
+    "PROTOCOL_REGISTERED",
+    "QUALIFIED",
+    "REGIME_SCREEN",
+    "UNMASKED_ANALYSIS",
+    "UNMASKING"
+   ],
+   "n_stages": 19,
+   "outcome": "PASS"
+  },
+  "no_viable_regime": {
+   "scenario": "no_viable_regime",
+   "branch": "\u00a712.4's regime-adequacy conditions",
+   "terminal": "REGIME_NOT_FOUND",
+   "criterion": "\u00a712.4: the three regime-adequacy conditions on the pooled calibration topics",
+   "observed": [
+    {
+     "condition": 2,
+     "constraint": "B",
+     "solo_vacuity": 0.7838541666666666,
+     "max": 0.1,
+     "reason": "B's realised solo vacuity rate exceeds 0.1"
+    }
+   ],
+   "expected": "REGIME_NOT_FOUND"
+  },
+  "focal_extension_required": {
+   "scenario": "focal_extension_required",
+   "branch": "\u00a712.3 and \u00a77.2's focal escalation",
+   "terminal": "FOCAL_RANGE_EXHAUSTED",
+   "criterion": "\u00a734 D17's registered construct floor",
+   "observed": "m* = 16 satisfies \u00a712.3's compliance band and fails the registered construct floor: chance_compliance = 0.9895833333333334 against 0.5",
+   "extension_measured": null,
+   "severities_measured": [],
+   "extension_in_the_curve": [],
+   "m_star": null,
+   "expected": "\u00a77.2's {15, 16} are measured, which they never were before A3 restored the caller and A4 made the branch runnable"
+  },
+  "focal_range_exhausted": {
+   "scenario": "focal_range_exhausted",
+   "branch": "\u00a712.3's exhausted focal range",
+   "terminal": "FOCAL_RANGE_EXHAUSTED",
+   "criterion": "\u00a712.3: an eligible severity inside the registered band",
+   "observed": {
+    "curve": {
+     "7": 0.2942708333333333,
+     "8": 0.3098958333333333,
+     "9": 0.3098958333333333,
+     "10": 0.2994791666666667,
+     "11": 0.2994791666666667,
+     "12": 0.2708333333333333,
+     "13": 0.2890625,
+     "14": 0.3020833333333333,
+     "15": 0.3020833333333333,
+     "16": 0.3125
+    }
+   },
+   "expected": "FOCAL_RANGE_EXHAUSTED"
+  },
+  "grid_resolution_insufficient": {
+   "scenario": "grid_resolution_insufficient",
+   "branch": "\u00a712.3's grid resolution",
+   "terminal": "GRID_RESOLUTION_INSUFFICIENT",
+   "criterion": "\u00a712.3: two adjacent registered severities lie on opposite sides of a whole band, so the grid resolves nothing inside it",
+   "observed": {
+    "constraint": "B",
+    "curve": {
+     "7": 0.9895833333333334,
+     "8": 0.9895833333333334,
+     "9": 0.9947916666666666,
+     "10": 0.9869791666666666,
+     "11": 0.9869791666666666,
+     "12": 0.0026041666666666665,
+     "13": 0.010416666666666666,
+     "14": 0.010416666666666666,
+     "15": 0.005208333333333333,
+     "16": 0.010416666666666666
+    },
+    "straddling_pairs": [
+     {
+      "severities": [
+       11,
+       12
+      ],
+      "compliance": [
+       0.9869791666666666,
+       0.0026041666666666665
+      ]
+     }
+    ]
+   },
+   "expected": "GRID_RESOLUTION_INSUFFICIENT"
+  },
+  "calibration_population": {
+   "scenario": "calibration_population",
+   "branch": "\u00a712.7's calibration population",
+   "carried_by_the_screen": 110,
+   "tier12": 88,
+   "tier3_measured": 22,
+   "tier3_dropped_for_budget": 0,
+   "n_measured": 110,
+   "consumed_calibration_priority": true,
+   "expected": "n_measured is the priority population, never the carried set"
+  },
+  "reserve_expansion": {
+   "scenario": "reserve_expansion",
+   "branch": "\u00a712.6's candidate expansion",
+   "rounds": 0,
+   "coverage_met": true,
+   "identification_statuses": [],
+   "expected": "the expansion is reachable and its verdict is on the record"
+  },
+  "reference_support_not_identified": {
+   "scenario": "reference_support_not_identified",
+   "branch": "\u00a713.15 unmet, \u00a734 D6",
+   "support_met": false,
+   "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+   "admitted_arms": [
+    "base"
+   ],
+   "n_not_identified": 48,
+   "delta_r_blocked": true,
+   "d_b_from_a_still_identified": true,
+   "irreversible": true,
+   "expected": "core and spectrum arms dropped, Delta_R NOT_IDENTIFIED, D(B<-A) still identified"
+  },
+  "composed_headroom_failure": {
+   "scenario": "composed_headroom_failure",
+   "branch": "\u00a713.14's composed-headroom validation",
+   "terminal": "COMPOSED_HEADROOM_FAILURE",
+   "criterion": "\u00a713.14: every registered cell type inside [0.05, 0.95] on every constraint",
+   "observed": [
+    {
+     "cell": "pair:A+B",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+B",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+A",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+A",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R1",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R1",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+A",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+A",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R2",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R2",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+A",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+A",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R3",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:A+R3",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+A",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+A",
+     "slot": "A",
+     "compliance": 0.03125
+    },
+    {
+     "cell": "pair:B+R1",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+R1",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+B",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+B",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+R2",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+R2",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+B",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+B",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+R3",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+R3",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+B",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+B",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+R2",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+R2",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+R1",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+R1",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+R3",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R1+R3",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+R1",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+R1",
+     "slot": "R1",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R2+R3",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:R2+R3",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+R2",
+     "slot": "R3",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:R3+R2",
+     "slot": "R2",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:B+CL",
+     "slot": "B",
+     "compliance": 0.0
+    },
+    {
+     "cell": "pair:B+CL",
+     "slot": "CL",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:CL+B",
+     "slot": "CL",
+     "compliance": 0.010416666666666666
+    },
+    {
+     "cell": "pair:CL+B",
+     "slot": "B",
+     "compliance": 0.0
+    }
+   ],
+   "expected": "COMPOSED_HEADROOM_FAILURE"
+  },
+  "near_form_unavailable": {
+   "scenario": "near_form_unavailable",
+   "branch": "\u00a734 D18's L3c scope",
+   "with_arm_scope": "strong",
+   "without_arm_scope": "same_form_only",
+   "emitted_l3c_scope": [
+    "same_form_only"
+   ],
+   "emitted_l3c_scope_with_arm": [
+    "strong"
+   ],
+   "expected": "same_form_only without the arm; the strong conclusion is unreachable"
+  },
+  "broad_class_unavailable": {
+   "scenario": "broad_class_unavailable",
+   "branch": "\u00a713.10's broad-class arm",
+   "statuses": [
+    "CLASS_ARM_NOT_AVAILABLE"
+   ],
+   "admitted_arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform"
+   ],
+   "expected": "CLASS_ARM_NOT_AVAILABLE is recorded and the arm is not admitted"
+  },
+  "a2_spectrum_fit": {
+   "scenario": "a2_spectrum_fit",
+   "branch": "\u00a711.8 / U2 = A2, family F8",
+   "formulation": "A2",
+   "adopted": true,
+   "n_points": 12,
+   "beta": 0.3000000000000019,
+   "gamma_tier": 0.060000000000000005,
+   "n_intercepts": 3,
+   "expected": "twelve points, three core intercepts, beta and gamma recovered under A2"
+  },
+  "unmask_is_one_shot": {
+   "scenario": "unmask_is_one_shot",
+   "branch": "\u00a720's one-shot unmask",
+   "refused": "IntegrityError: gemma-3n-e2b-it: UNMASKING already has a record; v5 stage records are write-once. Repair creates a new producing commit and runs the stage in a fresh tree",
+   "expected": "the second invocation is refused"
+  },
+  "coordinate_dependent": {
+   "scenario": "coordinate_dependent",
+   "branch": "\u00a717.6's coordinate agreement, \u00a734 D14",
+   "primary_levels": [
+    "L3e"
+   ],
+   "secondary_levels": [
+    "L3d"
+   ],
+   "agrees": false,
+   "statuses": [
+    "DIFFICULTY_COORDINATE_DEPENDENT"
+   ],
+   "emitted_levels": [
+    "L3c",
+    "L3e"
+   ],
+   "status_on_every_statement": true,
+   "expected": "primary L3e, raw L3d, DIFFICULTY_COORDINATE_DEPENDENT on the emitted statement, and the emitted level is the PRIMARY's"
+  },
+  "coordinate_secondary_not_computable": {
+   "scenario": "coordinate_secondary_not_computable",
+   "branch": "\u00a717.6 with no secondary, \u00a720",
+   "masked_step_9": "MASKED_PHASE",
+   "masked_step_12": "NOT_REGISTERED_FOR_INFERENCE",
+   "compared": false,
+   "statuses": [],
+   "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"
+  }
+ },
+ "rules": [
+  {
+   "id": "R-12.1-cap",
+   "section": "\u00a712.1",
+   "area": "regime",
+   "meaning": "completion cap chosen where truncation is tolerable",
+   "runtime": "dci1v6.stages.regime.select_operating_point",
+   "impl": "dci1v6.run.regime_run.select_cap",
+   "field": "REGIME_SCREEN.selected_cap",
+   "consumer": "GATE_2_FOCAL_CALIBRATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-expansion-span",
+   "section": "\u00a712.6",
+   "area": "regime",
+   "meaning": "V6-E01: a family failing C4 on its SPAN extends outward from both measured extremes, which is the only direction that can raise max(iota) - min(iota)",
+   "runtime": "dci1v6.stages.regime.expansion_plan_for_family",
+   "impl": "dci1v6.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.expansion",
+   "consumer": null,
+   "scenario": "reserve_expansion",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-shape",
+   "section": "\u00a712.6",
+   "area": "regime",
+   "meaning": "V6-E02: a row \u00a712.6's criterion would silently drop is refused, so a measured rung cannot be counted ineligible for want of a join",
+   "runtime": "dci1v6.stages.regime.assert_coverage_shape",
+   "impl": "dci1v6.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.coverage",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-2.75-margin",
+   "section": "\u00a713.14, P3.2",
+   "area": "probe",
+   "meaning": "a probed severity passes only when every probed cell, on every evaluated slot, lies inside the registered margin",
+   "runtime": "dci1v6.stages.composed_probe.severity_verdict",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+   "consumer": "GATE_5_FREEZE",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-2.75-reselect",
+   "section": "P3.3, P3.4",
+   "area": "probe",
+   "meaning": "m* stands, or is re-selected exactly once by the registered focal rule over Gate 2's own solo curve restricted to the severities the probe admitted",
+   "runtime": "dci1v6.stages.composed_probe.probe_disposition",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_75_COMPOSED_PROBE.m_star",
+   "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-2.75-blind",
+   "section": "\u00a713.11",
+   "area": "probe",
+   "meaning": "no function in the probe module reads a reference or a selection record, by name and by source",
+   "runtime": "dci1v6.stages.composed_probe.assert_probe_reads_no_reference",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_75_COMPOSED_PROBE.declared_refusals",
+   "consumer": "PREFREEZE_AUDIT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.2-carry",
+   "section": "\u00a712.2",
+   "area": "regime",
+   "meaning": "the high-recall retention verdict for each rung",
+   "runtime": "dci1v6.stages.regime.carry_candidate",
+   "impl": "dci1v6.stages.regime.carried_set",
+   "field": "REGIME_SCREEN.carried_set",
+   "consumer": "GATE_3C_IDENTIFICATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.3-target",
+   "section": "\u00a712.3",
+   "area": "regime",
+   "meaning": "n* is A's eligible severity nearest 0.70",
+   "runtime": "dci1v6.stages.regime.select_target",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.n_star",
+   "consumer": "GATE_5_FREEZE",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.3-focal",
+   "section": "\u00a712.3",
+   "area": "regime",
+   "meaning": "m* is B's eligible severity nearest 0.80",
+   "runtime": "dci1v6.stages.regime.select_focal",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.m_star",
+   "consumer": "GATE_2_5_CANDIDATE_QUALIFICATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-7.2-extension",
+   "section": "\u00a77.2, \u00a712.3",
+   "area": "regime",
+   "meaning": "the focal grid escalates to {15, 16} when the registered grid supplies no bracketed operating point",
+   "runtime": "dci1v6.stages.regime.select_focal",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.focal_selection",
+   "consumer": "GATE_5_FREEZE",
+   "scenario": "focal_extension_required",
+   "expect": "VERIFIED_CONDITIONAL",
+   "status": "VERIFIED_CONDITIONAL",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.3-resolution",
+   "section": "\u00a712.3",
+   "area": "regime",
+   "meaning": "GRID_RESOLUTION_INSUFFICIENT when two adjacent severities lie on opposite sides of a whole band",
+   "runtime": "dci1v6.stages.regime.grid_resolution",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.grid_resolution",
+   "consumer": null,
+   "scenario": "grid_resolution_insufficient",
+   "expect": "VERIFIED_CONDITIONAL",
+   "status": "VERIFIED_CONDITIONAL",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.4-adequacy",
+   "section": "\u00a712.4",
+   "area": "regime",
+   "meaning": "the three regime-adequacy conditions, share not mean",
+   "runtime": "dci1v6.stages.regime.regime_adequacy",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.adequacy",
+   "consumer": null,
+   "scenario": "no_viable_regime",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-34-D17",
+   "section": "\u00a734 D17",
+   "area": "regime",
+   "meaning": "the construct-strength floor on kappa_B(m*), load-zero",
+   "runtime": "dci1v6.stages.construct_strength.assert_construct_floor",
+   "impl": "dci1v6.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.construct_strength",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.7-population",
+   "section": "\u00a712.7",
+   "area": "V(R)",
+   "meaning": "calibration measures the priority population, not the carried set",
+   "runtime": "dci1v6.stages.regime.calibration_priority",
+   "impl": "dci1v6.run.gates_run.assert_calibration_population",
+   "field": "REGIME_SCREEN.calibration_priority",
+   "consumer": "GATE_2_FOCAL_CALIBRATION",
+   "scenario": "calibration_population",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.1-vr",
+   "section": "\u00a713.1-\u00a713.7",
+   "area": "V(R)",
+   "meaning": "the eight V(R) components in registered order",
+   "runtime": "dci1v6.stages.validity.evaluate_validity",
+   "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualified_pool",
+   "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-19-lexicographic",
+   "section": "\u00a719 test 3",
+   "area": "V(R)",
+   "meaning": "the recorded reason is the earliest failing component",
+   "runtime": "dci1v6.stages.validity.assert_lexicographic_order",
+   "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.earliest_failing_components",
+   "consumer": "GATE_5_FREEZE",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.7-stability",
+   "section": "\u00a713.7",
+   "area": "V(R)",
+   "meaning": "each candidate is equivalent across the two splits",
+   "runtime": "dci1v6.stages.stability.stability_verdict",
+   "impl": "dci1v6.run.gates_run.gate3a_payload",
+   "field": "GATE_3A_REFERENCE_CALIBRATION.stability",
+   "consumer": "GATE_3B_REFERENCE_SELECTION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.7-iota-a",
+   "section": "\u00a713.7",
+   "area": "V(R)",
+   "meaning": "iota_A meets the same equivalence rule as every candidate",
+   "runtime": "dci1v6.stages.stability.assert_iota_a_stable",
+   "impl": "dci1v6.run.gates_run.gate3a_payload",
+   "field": "GATE_3A_REFERENCE_CALIBRATION.iota_a_stability",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.6-interaction",
+   "section": "\u00a713.6",
+   "area": "V(R)",
+   "meaning": "kappa(R|B), displacement and the projected compliance",
+   "runtime": "dci1v6.stages.interaction.measure_interaction",
+   "impl": "dci1v6.run.gates_run.gate2_5_payload",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.interaction",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-coverage",
+   "section": "\u00a712.6",
+   "area": "expansion",
+   "meaning": "the eight identification-coverage conditions",
+   "runtime": "dci1v6.stages.regime.coverage_criterion",
+   "impl": "dci1v6.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.coverage",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-eligibility",
+   "section": "\u00a712.6, \u00a713.4",
+   "area": "expansion",
+   "meaning": "which pre-screen rungs are eligible for the criterion",
+   "runtime": "dci1v6.stages.regime.coverage_eligibility",
+   "impl": "dci1v6.stages.regime.coverage_rows",
+   "field": "REGIME_SCREEN.coverage_eligibility_formulation",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "note": "open item U4, opened by A4 and CLOSED AT E2 by the researcher in A5: \u00a712.6 named \u00a713's band ON IOTA and \u00a713 bands p_solo, so eligibility is p_solo in [0.10, 0.90] with the vacuity ceiling. The criterion still positions rungs by iota. Both formulations stay constructible by name; E1 is non-adopted",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-expansion",
+   "section": "\u00a712.6",
+   "area": "expansion",
+   "meaning": "the reserve expansion, at most four rungs per family per round and at most two rounds",
+   "runtime": "dci1v6.stages.regime.run_expansion",
+   "impl": "dci1v6.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.expansion",
+   "consumer": null,
+   "scenario": "reserve_expansion",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-disposition",
+   "section": "\u00a712.6",
+   "area": "expansion",
+   "meaning": "unmet after the rounds: REFERENCE_SUPPORT_NOT_IDENTIFIED at design time, and the replication runs without the core and spectrum arms",
+   "runtime": "dci1v6.stages.regime.run_expansion",
+   "impl": "dci1v6.run.gates_run.gate3c_payload",
+   "field": "REGIME_SCREEN.identification_statuses",
+   "consumer": "GATE_3C_IDENTIFICATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-iota-a",
+   "section": "\u00a712.6",
+   "area": "expansion",
+   "meaning": "iota_A is A's pre-screen instructed compliance at the severity whose solo compliance is nearest \u00a712.3's aim",
+   "runtime": "dci1v6.run.regime_run.difficulty_table",
+   "impl": "dci1v6.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.iota_a_prescreen_severity",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.8-core",
+   "section": "\u00a713.8",
+   "area": "reference selection",
+   "meaning": "three core references by the registered tie-break",
+   "runtime": "dci1v6.stages.selection.admit_core_references",
+   "impl": "dci1v6.run.gates_run.gate3b_payload",
+   "field": "GATE_3B_REFERENCE_SELECTION.selection",
+   "consumer": "GATE_3C_IDENTIFICATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.15-support",
+   "section": "\u00a713.15, \u00a734 D6",
+   "area": "reference selection",
+   "meaning": "the support requirements, and D6's irreversible verdict",
+   "runtime": "dci1v6.stages.support.evaluate_support",
+   "impl": "dci1v6.run.gates_run.gate3c_payload",
+   "field": "GATE_3C_IDENTIFICATION.non_identification",
+   "consumer": "GATE_5_FREEZE",
+   "scenario": "reference_support_not_identified",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.14-no-substitution",
+   "section": "\u00a713.14",
+   "area": "reference selection",
+   "meaning": "no function substitutes a backup after an outcome",
+   "runtime": "dci1v6.run.gates_run.assert_no_substitution_path",
+   "impl": "dci1v6.run.prefreeze_run.artifact_checks",
+   "field": "GATE_4_COMPOSED_HEADROOM.declared_refusals",
+   "consumer": "PREFREEZE_AUDIT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.12-exhaustion",
+   "section": "\u00a713.12, \u00a78.1",
+   "area": "reference selection",
+   "meaning": "a family that cannot straddle iota_A costs the SPECTRUM arm, not the core set",
+   "runtime": "dci1v6.stages.selection.select_all",
+   "impl": "dci1v6.run.gates_run.gate3b_payload",
+   "field": "GATE_3B_REFERENCE_SELECTION.selection",
+   "consumer": "GATE_3C_IDENTIFICATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.14-headroom",
+   "section": "\u00a713.14",
+   "area": "gate 4",
+   "meaning": "every registered cell type inside [0.05, 0.95]",
+   "runtime": "dci1v6.run.gates_run.assert_headroom_table_complete",
+   "impl": "dci1v6.run.gates_run.gate4_payload",
+   "field": "GATE_4_COMPOSED_HEADROOM.headroom_table",
+   "consumer": "PREFREEZE_AUDIT",
+   "scenario": "composed_headroom_failure",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-15-members",
+   "section": "\u00a715",
+   "area": "F1-F11",
+   "meaning": "every registered family member is estimated, or carries the registered reason it is not",
+   "runtime": "dci1v6.run.analysis_run.estimate_all",
+   "impl": "dci1v6.run.analysis_run.unmasked_payload",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-15-F5",
+   "section": "\u00a715 F5, \u00a717.4",
+   "area": "F1-F11",
+   "meaning": "the six F1 members under the vacuity-forced recoding and three under the graded threshold at 0.99",
+   "runtime": "dci1v6.analysis.estimators.delivery_loss",
+   "impl": "dci1v6.run.analysis_run.estimate_all",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-15-F6",
+   "section": "\u00a715 F6, \u00a717.4",
+   "area": "F1-F11",
+   "meaning": "the vacuity-rate difference for every composed cell with B",
+   "runtime": "dci1v6.analysis.estimators.vacuity_difference",
+   "impl": "dci1v6.run.analysis_run.estimate_all",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-15-F8",
+   "section": "\u00a711.8, \u00a715 F8, U2=A2",
+   "area": "F1-F11",
+   "meaning": "the tier-indicator secondary's beta, three core intercepts and gamma, under the adopted formulation",
+   "runtime": "dci1v6.analysis.spectrum.fit_with_tier_indicator",
+   "impl": "dci1v6.run.analysis_run.estimate_all",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "scenario": "a2_spectrum_fit",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-15-simultaneous",
+   "section": "\u00a715",
+   "area": "F1-F11",
+   "meaning": "one simultaneous interval per family per configuration",
+   "runtime": "dci1v6.analysis.bootstrap.bootstrap_family",
+   "impl": "dci1v6.run.analysis_run._intervals",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-11.3-forms",
+   "section": "\u00a711.3",
+   "area": "F1-F11",
+   "meaning": "Delta_R's two algebraic forms agree to 1e-9",
+   "runtime": "dci1v6.analysis.estimators.assert_delta_r_forms",
+   "impl": "dci1v6.run.analysis_run._algebraic_form_checks",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-11.7-forms",
+   "section": "\u00a711.7",
+   "area": "F1-F11",
+   "meaning": "every order contrast agrees in both algebraic forms",
+   "runtime": "dci1v6.analysis.estimators.assert_order_forms",
+   "impl": "dci1v6.run.analysis_run._algebraic_form_checks",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-11.8-forms",
+   "section": "\u00a711.8",
+   "area": "F1-F11",
+   "meaning": "delta_difficulty's two algebraic forms agree to 1e-9",
+   "runtime": "dci1v6.analysis.spectrum.assert_algebraic_forms_agree",
+   "impl": "dci1v6.run.analysis_run._algebraic_form_checks",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L1",
+   "section": "\u00a73.2 L1",
+   "area": "claim ladder",
+   "meaning": "compositional delivery loss exists, per named D(c <- g)",
+   "runtime": "dci1v6.analysis.claims.emit_l1",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12-L1-gate",
+   "section": "\u00a712, \u00a73.2 L1",
+   "area": "claim ladder",
+   "meaning": "L1's identification gate is the outcome constraint's solo headroom, measured",
+   "runtime": "dci1v6.run.analysis_run._has_headroom",
+   "impl": "dci1v6.run.analysis_run.unmasked_payload",
+   "field": "GATE_5_FREEZE.freeze",
+   "consumer": "UNMASKED_ANALYSIS",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L2",
+   "section": "\u00a73.2 L2",
+   "area": "claim ladder",
+   "meaning": "the loss is directionally asymmetric",
+   "runtime": "dci1v6.analysis.claims.emit_l2",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L3",
+   "section": "\u00a73.2 L3, \u00a717.6",
+   "area": "claim ladder",
+   "meaning": "Delta_R and delta_difficulty's joint reading, sub-level by sub-level",
+   "runtime": "dci1v6.analysis.claims.emit_l3",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-34-D18",
+   "section": "\u00a734 D18",
+   "area": "claim ladder",
+   "meaning": "the strong L3c is unreachable without the near-form arm",
+   "runtime": "dci1v6.analysis.claims.l3c_disposition",
+   "impl": "dci1v6.analysis.claims.assert_l3c_scope",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "scenario": "near_form_unavailable",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L4a",
+   "section": "\u00a73.2 L4a",
+   "area": "claim ladder",
+   "meaning": "the same classification, per named member, in every configuration",
+   "runtime": "dci1v6.analysis.claims.emit_l4a",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L4b",
+   "section": "\u00a73.2 L4b",
+   "area": "claim ladder",
+   "meaning": "the named order contrast depends on outcome position",
+   "runtime": "dci1v6.analysis.claims.emit_l4b",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-3.2-L5",
+   "section": "\u00a73.2",
+   "area": "claim ladder",
+   "meaning": "L5 is permanently withheld and no code path emits it",
+   "runtime": "dci1v6.analysis.claims.assert_no_l5_emitter",
+   "impl": "dci1v6.run.final_report_checks.run_checks",
+   "field": "FINAL_REPORT.final_report_checks",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-20-mask",
+   "section": "\u00a720",
+   "area": "masking",
+   "meaning": "the mask removes only registered identity information",
+   "runtime": "dci1v6.analysis.masking.assert_mask_effective",
+   "impl": "dci1v6.run.analysis_run.masked_payload",
+   "field": "MASKED_ANALYSIS.masked_result_hash",
+   "consumer": "UNMASKING",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-20-withheld",
+   "section": "\u00a720",
+   "area": "masking",
+   "meaning": "the masked phase computes no forbidden member",
+   "runtime": "dci1v6.analysis.masking.assert_delta_difficulty_not_masked",
+   "impl": "dci1v6.run.analysis_run.masked_payload",
+   "field": "MASKED_ANALYSIS.masked_result_hash",
+   "consumer": "UNMASKING",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-20-once",
+   "section": "\u00a720",
+   "area": "masking",
+   "meaning": "the unmask happens exactly once",
+   "runtime": "dci1v6.analysis.masking.unmask",
+   "impl": "dci1v6.run.analysis_run.unmask_payload",
+   "field": "UNMASKING.unmasked",
+   "consumer": "UNMASKED_ANALYSIS",
+   "scenario": "unmask_is_one_shot",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-18.14-raw",
+   "section": "\u00a718 step 14, \u00a715, \u00a731",
+   "area": "final report",
+   "meaning": "the difficulty relation refitted on the raw coordinate, reported beside the primary with MARGINAL intervals only",
+   "runtime": "dci1v6.analysis.spectrum.estimate",
+   "impl": "dci1v6.run.analysis_run._raw_coordinate_secondary",
+   "field": "UNMASKED_ANALYSIS.raw_coordinate_secondary",
+   "consumer": "FINAL_REPORT",
+   "scenario": "coordinate_secondary_not_computable",
+   "expect": "VERIFIED_REACHABLE",
+   "note": "V5-E27, resolved in A5 without inventing anything. Step 9 is executed in full on the raw coordinate --- fit, A's exclusion, \u00a713.13 support, both algebraic forms, the block bootstrap. Step 12 is NOT_REGISTERED_FOR_INFERENCE: \u00a715 registers the raw-coordinate replication among the quantities reported with marginal intervals only and supporting no claim, and declares no family containing a raw-coordinate member",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-17.6-coordinate",
+   "section": "\u00a717.6, \u00a734 D14",
+   "area": "claim ladder",
+   "meaning": "when the registered and raw coordinates give different L3d/L3e classifications the statement carries DIFFICULTY_COORDINATE_DEPENDENT",
+   "runtime": "dci1v6.analysis.claims.coordinate_agreement",
+   "impl": "dci1v6.run.analysis_run._statements",
+   "field": "UNMASKED_ANALYSIS.statements",
+   "consumer": "FINAL_REPORT",
+   "scenario": "coordinate_dependent",
+   "expect": "VERIFIED_REACHABLE",
+   "note": "D14's closure --- iota primary, raw solo secondary, the status on disagreement --- bound nothing until the raw fit existed",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-23-projection",
+   "section": "\u00a723, \u00a731",
+   "area": "final report",
+   "meaning": "the realised p_hat_c against realised composed compliance",
+   "runtime": "dci1v6.analysis.estimators.projected_compliance_vector",
+   "impl": "dci1v6.run.analysis_run._projection_audit",
+   "field": "UNMASKED_ANALYSIS.projection_audit",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-31-table",
+   "section": "\u00a731",
+   "area": "final report",
+   "meaning": "every estimate with its cell, claim level and family",
+   "runtime": "dci1v6.stages.final_report.assert_table_traceable",
+   "impl": "dci1v6.run.analysis_run.final_report_payload",
+   "field": "FINAL_REPORT.results",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-26-success",
+   "section": "\u00a726",
+   "area": "final report",
+   "meaning": "the methodological success criterion, judged pre-outcome",
+   "runtime": "dci1v6.stages.support.methodological_success",
+   "impl": "dci1v6.run.analysis_run.unmasked_payload",
+   "field": "UNMASKED_ANALYSIS.success_criterion",
+   "consumer": "FINAL_REPORT",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  }
+ ]
+}
