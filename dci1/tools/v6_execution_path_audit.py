@@ -130,7 +130,7 @@ RULES: tuple[dict[str, object], ...] = (
                 "re-selected m* is refused by "
                 "`assert_kappa_under_b_source`, which is what made the "
                 "re-selection branch unexecutable",
-     "runtime": "dci1v6.run.gates_run.calibration_rows_at",
+     "runtime": "dci1v6.stages.feasibility.calibration_rows_at",
      "impl": "dci1v6.run.gates_run.gate3a_payload",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
      "consumer": "GATE_3A_REFERENCE_CALIBRATION",
@@ -226,6 +226,63 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-12.6-calibrated-coverage", "section": "§12.6", "area": "V(R)",
+     "meaning": "§12.6's criterion re-read on the CALIBRATION basis at the "
+                "iota_A reference selection matches on --- iota(R), the "
+                "eligibility coordinate, the vacuity and iota_A all from the "
+                "same 192 topics at the same four draws. A lost decisive "
+                "condition enters §13.15 as a design-time failure under §34 "
+                "D6's existing disposition; there is no drift threshold and "
+                "no new status",
+     "runtime": "dci1v6.stages.feasibility.coverage_at_calibrated_iota_a",
+     "impl": "dci1v6.run.gates_run.gate3a_payload",
+     "field": "GATE_3A_REFERENCE_CALIBRATION.calibrated_coverage_failures",
+     "consumer": "GATE_3C_IDENTIFICATION", "expect": VERIFIED},
+    {"id": "R-13.15-one-criterion", "section": "§13.15", "area": "V(R)",
+     "meaning": "the registered stage, the operating-point search and the "
+                "development pilot evaluate ONE implementation of the "
+                "support criterion. v5's development work asked whether "
+                "reserve rungs land inside the solo band, which is one "
+                "clause of one component of V(R), and could not predict the "
+                "gate it was standing in for",
+     "runtime": "dci1v6.stages.feasibility.support_at",
+     "impl": "dci1v6.run.gates_run.gate3c_payload",
+     "field": "GATE_3C_IDENTIFICATION.support",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-12.3-frozen-order", "section": "§12.3", "area": "probe",
+     "meaning": "the order in which operating points may be tried is "
+                "§12.3's own preference over `focal_admissible`, written at "
+                "Gate 2 and restricted at Gate 2.5 to the severities that "
+                "can reach §13.15's five-family minimum --- both signed "
+                "before the probe generates a row, so no candidate is "
+                "re-ranked by how a composed cell looked",
+     "runtime": "dci1v6.stages.feasibility.operating_point_order",
+     "impl": "dci1v6.run.gates_run.gate2_payload",
+     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_order",
+     "consumer": "GATE_2_75_COMPOSED_PROBE", "expect": VERIFIED},
+    {"id": "R-13.15-free-prefilter", "section": "§13.15", "area": "probe",
+     "meaning": "a severity that cannot muster five qualifying families is "
+                "never probed. The verdict is Gate 2.5's own, already "
+                "computed at every admissible severity because that stage "
+                "generates nothing, so the restriction costs no rows and no "
+                "second bootstrap --- and it removes a severity's worth of "
+                "probe generation whenever it bites",
+     "runtime": "dci1v6.stages.feasibility.qualified_family_support",
+     "impl": "dci1v6.run.gates_run.gate2_5_payload",
+     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_support",
+     "consumer": None, "expect": VERIFIED},
+    {"id": "R-13.14-controlled-reuse", "section": "§13.14", "area": "probe",
+     "meaning": "the unconstrained cell and B's own solo cell are read off "
+                "the Gate-2 record instead of drawn again, and ONLY when the "
+                "topic identifiers and the draw count are identical. That "
+                "makes the composed lift a difference from the number m* was "
+                "selected on rather than a difference between two samples of "
+                "it, and the refusal to reuse across topic sets is checked "
+                "rather than assumed",
+     "runtime": "dci1v6.stages.composed_probe.shared_cell_verdict",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.shared_with_gate2",
+     "consumer": None, "expect": VERIFIED},
     {"id": "R-13.7-stability", "section": "§13.7", "area": "V(R)",
      "meaning": "each candidate is equivalent across the two splits",
      "runtime": "dci1v6.stages.stability.stability_verdict",

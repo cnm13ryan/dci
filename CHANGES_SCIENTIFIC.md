@@ -13,6 +13,112 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — V6-E04: the development prescreen asked an easier question than the registered gate, and the two bases were never compared on the same cases
+
+**What changed.** Nothing in v5, which stays closed and signed. Five changes in
+`dci1/src/dci1v6`, and **none of them generates a row**. Every quantity below
+was already measured; what was missing was that it was measured twice under two
+names, or measured once and never read.
+
+**1. One implementation of the support criterion (`stages/feasibility.py`).**
+READINESS §7 step 3 specified a development pilot asking whether the extension's
+reserve rungs land inside `p_solo ∈ [0.10, 0.90]`. That is one clause of one
+component of §13.1's V(R), and passing it does not mean a library can support a
+reference set — v5 is the demonstration. §13.7's calibration, §13.8–§13.12's
+selection and §13.15's counts are now kernels that Gate 3A, Gate 3B, Gate 3C,
+the operating-point search **and** `tools/v6_reference_feasibility.py` all call.
+There is no development copy to drift. The extraction is pinned by
+characterization tests that reproduce all four signed v5 records exactly —
+slot maps, support verdict, admitted arms, realised counts, failure lists — and
+by a synthetic snapshot taken before the extraction was made.
+
+*What the pilot now reports that the boolean did not:* the **margin** per
+requirement. On all four closed v5 replications the binding requirement is
+`min_tier1_core` — two Tier-1 core references, cleared by 0 or 1 — while the
+qualified-family count clears by 6 to 7. A library change aimed at family count
+would have moved the requirement that was not binding.
+
+**2. §12.6 re-read on the calibration basis, and it now gates.** The previous
+diagnostic took ι(R) from 24 pre-screen topics at one draw and compared it
+against an ι_A from 192 calibration topics at four. That is a comparison across
+two samples and what moves between them is part real and part the samples. Gate
+2 measures every calibrated candidate's solo compliance, chance compliance and
+solo vacuity on the same topics and draws it measures A on, so the criterion is
+now evaluated where every quantity in it comes from one controlled set of cases.
+Three readings are recorded, and the contrast between two of them is **paired**:
+the criterion on the calibration table at the pre-screen ι_A, and at the
+measured ι_A, differ in the reference point and nothing else.
+
+A lost decisive condition is a **design-time failure into §13.15**, taking §34
+D6's existing disposition. No new status, no drift threshold, and no route back
+to the candidate library — `run_expansion` has no caller after the screen and a
+test asserts it.
+
+**3. The operating-point search is bounded, frozen and free.** Gate 2 records
+`operating_point_search_order` — §12.3's own preference over
+`focal_admissible`, m\* first — before the probe generates anything. Gate 2.5
+restricts it to the severities where at least §13.15's five families pass the
+full V(R) **at that operating point**, a verdict Gate 2.5 already holds because
+it qualifies at every admissible severity and generates nothing. The probe reads
+a list of severities and never a family name. When no severity reaches the
+minimum the order is left whole, because that is §34 D6's question and not the
+probe's.
+
+*This removes sampling.* A severity that cannot support a reference set is no
+longer probed, and each unprobed severity is a full probe measurement — 11 cells
+× the probe split × `M_CAL` — not spent.
+
+**4. Two measurements of one case are no longer taken twice.** The probe's
+unconstrained cell and its `solo:B` cell are quantities Gate 2 measured. When
+the probe runs on the same topic identifiers at the same draw count they are the
+**same case**, so the probe reads them instead of drawing a second sample —
+which also makes the composed lift a difference from the number m\* was selected
+on rather than a difference between two estimates of it. Reuse is refused, and
+the refusal recorded, whenever the topic sets or the draw counts differ;
+§34 D20's `reserved_composed` branch is exactly such a case. §13.14's evaluated
+shape is unchanged: the band still reaches `solo:B`.
+
+**5. Three quantities that existed in the rows and had never been read.**
+All free, all recorded, all read by no rule.
+
+* `prescreen_to_calibration` — `CalibrationRow` has carried
+  `prescreen_solo_compliance` and `prescreen_chance_compliance` since v5 and
+  **nothing ever filled them**, so the two measurements of one instrument — 24
+  topics at one draw, 192 at four — have never been joined on any replication.
+  They are now, paired by instrument. No admission rule reads a pre-screen
+  quantity (§12.7's Tier-3 *ordering* does, and that is all), so filling them
+  changes no verdict.
+* `kappa_b_under_candidate` — B at m\* is scored as an *absent* instance on
+  every candidate-solo cell, so B's compliance while R is the instructed
+  constraint is arithmetic over rows that exist. It is kept **off** §13.11's
+  closed table deliberately: the schema would refuse it, and that refusal is
+  what guarantees no selection rule can reach it.
+* `GATE_4.split_transfer` — each bound instrument's solo compliance here against
+  at Gate 2, paired by instrument. This is the error δ has to absorb, which
+  READINESS §4.a built by hand from the closed run at mean absolute 0.064 and
+  maximum 0.189, and which one of v5's two terminations actually was — a
+  companion slot in a *solo* cell, i.e. this movement and not composition.
+
+**What this does NOT change.** No estimand, no threshold, no band, no margin, no
+population, no seed, no estimator. `protocol/revision.V9` still checks the
+twelve estimand-layer modules byte-identical to v5, and they are.
+`stages/validity.py`, `stages/selection.py` and `stages/support.py` are
+untouched. §13.14's band is `[0.05, 0.95]` and §13.15's minima are 8/5/3/2/3 as
+registered.
+
+**Comparability.** v5's four replications are unaffected and unre-verdicted;
+§34 D6 is irreversible and `REFERENCE_SUPPORT_NOT_IDENTIFIED` stands where it
+was recorded. v6 has generated **zero** behavioural rows and is not registered.
+Within v6, a replication run before change 2 would not exist — no v6 record
+does — so nothing is made non-comparable.
+
+**Evidence.** `dci1/reports/dci1v6/reference_feasibility.json`,
+`dci1/tests_v6/test_reference_feasibility.py`,
+`dci1/tests_v6/test_operating_point_invariants.py`,
+`dci1/tests_v6/fixture_reference_chain_characterization.json`.
+
+---
+
 ## 2026-08-25 — V6-E03: v6's composed probe could move the operating point, and nothing after it could follow
 
 **What changed.** Nothing in v5, which stays closed and signed. In v6,

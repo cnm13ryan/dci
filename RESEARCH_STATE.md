@@ -1974,11 +1974,75 @@ READINESS **R7** and is the researcher's.
   pair with a genuine trade-off region; finishing the cross-model dataset on one
   backend.
 
+### 4ad. V6-E04: development asked an easier question, and two bases were never compared on the same cases (2026-08-25)
+
+A second audit asked what the v6 stages actually score, and whether anything
+was being sampled twice. Two findings, both about measurements that existed and
+were not used.
+
+**Development was evaluating a proxy.** READINESS §7 step 3 specified a pilot
+asking whether the reserve rungs land inside $p_{\rm solo}\in[0.10,0.90]$. That
+is one clause of one component of §13.1's V(R), and the registered gate is a
+conjunction over §13.4, §13.6, §13.7, §13.8 and §13.15's counts. A prescreen
+that evaluates a proxy for the gate cannot predict the gate — which is what v5
+demonstrated. §13.7's calibration, §13.8–§13.12's selection and §13.15's counts
+now live in `stages/feasibility.py`, and Gate 3A, Gate 3B, Gate 3C, the
+operating-point search and `tools/v6_reference_feasibility.py` all call it.
+Characterization tests reproduce all four **signed v5 records** exactly.
+
+Running the real criterion over the closed study says something the boolean did
+not: on **4 of 4** replications the binding §13.15 requirement is
+`min_tier1_core` — two Tier-1 core references, cleared by 0 or 1 — while the
+qualified-family count clears by 6 to 7. A library extension aimed at family
+count would move the requirement that is not binding.
+
+**§12.6 was certified on one sample and re-read against another.** The
+criterion is certified on the pre-screen table at `iota_a_prescreen` (24 topics,
+one draw). Reference selection matches on Gate 2's `iota_a` (192 topics, four
+draws). The previous diagnostic compared the *pre-screen* table against the
+*calibration* $\iota_A$, so whatever it reported was part real and part the two
+samples. Gate 2 measures every calibrated candidate's solo compliance, chance
+compliance and vacuity on exactly the cases it measures A on, so the criterion
+is now re-evaluated where every quantity in it is paired — and it **gates**: a
+lost decisive condition is a §13.15 design-time failure taking §34 D6's
+existing disposition. No drift threshold, no new status, and no route back to
+the candidate library.
+
+**Sampling went down, not up.** A full-slot composed-headroom stage was drafted
+and deliberately **not built**: it would have been a second sample of what Gate
+4 already measures, on a different topic set, carrying the very transfer error
+(§4.a: mean absolute 0.064, maximum 0.189) it was meant to remove. What was
+built instead reuses controlled cases — a severity that cannot muster §13.15's
+five qualifying families is no longer probed at all, and the probe reads the
+unconstrained cell and `solo:B` off Gate 2's record whenever the topic
+identifiers and draw count are identical, which also makes the composed lift a
+difference from the number m\* was selected on rather than from a second
+estimate of it.
+
+Three quantities that were in the rows and had never been read are now
+recorded, all free and all read by no rule: the pre-screen↔calibration movement
+per instrument (`CalibrationRow` has carried the columns since v5 and **nothing
+ever filled them**), B's compliance while R is instructed, and Gate 4's
+split transfer per bound instrument — the quantity §4.a built by hand.
+
+`stages/feasibility.py` selects nothing and gates nothing; the stages that call
+it decide. No estimand, threshold, band, margin, population or seed moved, and
+`revision.V9` still checks the twelve estimand-layer modules byte-identical to
+v5. Detail: `CHANGES_SCIENTIFIC.md` (V6-E04), `reports/dci1v6/READINESS.md`
+§11, `reports/dci1v6/reference_feasibility.json`.
+
+---
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: V6-E03 — v6's composed
+whether old and new remain comparable. Most recent: V6-E04 — v6's development
+prescreen evaluated a proxy for §13.15 rather than §13.15, and §12.6 was
+certified on one sample and re-read against another; one implementation of the
+criterion now serves the stages, the search and the pilot, the coverage
+re-reading is paired and gates, and the probe stopped re-measuring cells Gate 2
+already had — in §4ad. Before it: V6-E03 — v6's composed
 probe could move the operating point and no stage after it could follow, so the
 re-selection branch that is v6's whole answer to v5's Gate-4 failure ended in
 an unhandled error; repaired, with a scenario that drives it to the freeze, and
