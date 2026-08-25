@@ -723,9 +723,19 @@ its signed verdict exactly before anything else is reported):
 **No decisive condition changes on any of the four.** The gap is structural
 and the realised exposure is small.
 
-**Options.** (a) Leave §12.6 as registered and keep the new Gate-3A diagnostic
-`coverage_at_measured_iota_a`, which records the recomputation on a signed
-record before Gate 4 and the freeze — implemented, gates nothing. (b) Certify
+**Superseded in part by V6-E04 (2026-08-25).** The drift table above is a
+comparison *across two samples* — an $\iota(R)$ table measured on 24
+pre-screen topics at one draw, read against an $\iota_A$ measured on 192
+calibration topics at four — so what it reports is part the reference point
+moving and part the two samples, and it separates neither. §11.2 replaces it
+with a paired reading on the calibration basis, and that reading **gates**
+(§34 D6's existing disposition, no drift threshold). The numbers below stand
+as what was measured; they are no longer the reading a decision should rest on.
+
+**Options.** (a) ~~Leave §12.6 as registered and keep the Gate-3A diagnostic
+`coverage_at_measured_iota_a`~~ — **taken off the table by V6-E04**: the field
+no longer exists and the criterion is now re-evaluated where selection works.
+(b) Certify
 C1–C4 over an interval $[\iota_A^{\text{pre}} - w, \iota_A^{\text{pre}} + w]$
 with $w$ fixed before data, so the expansion is spent on coverage that survives
 the drift. (c) Re-open a bounded expansion at Gate 3A when the diagnostic shows
@@ -827,9 +837,14 @@ a reader nothing about what was done.
     coverage and freezes the vocabulary at `iota_a_prescreen`; references are
     matched at Gate 2's `iota_a`, which moved by 0.015 to 0.092 on the four v5
     replications. No decisive condition changes under that drift on any of the
-    four, so this is not a blocker. Gate 3A now records the recomputation as
-    `coverage_at_measured_iota_a` — a diagnostic with no consumer. Whether
-    §12.6 should certify over an interval is R7 and is the researcher's.
+    four, so this is not a blocker. **Updated by V6-E04:** Gate 3A no longer
+    records `coverage_at_measured_iota_a`; it records
+    `coverage_at_calibrated_iota_a`, the same criterion evaluated on the
+    calibration basis where $\iota(R)$, the coordinate, the vacuity and
+    $\iota_A$ all come from one set of cases — and a lost decisive condition
+    there is a §13.15 design-time failure under §34 D6. What remains open as
+    R7 is the narrower question: whether §12.6 should *certify* over an
+    interval of $\iota_A$ at the screen, rather than at a point.
 
 **Not a blocker, and explicitly so:** none of this touches v5. v5's records,
 verdicts, terminal statuses and D6 irreversibility stand exactly as signed.

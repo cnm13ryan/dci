@@ -29,8 +29,8 @@ import pytest
 from dci1v4.errors import ProtocolError
 
 from dci1v6.protocol import constants as C
-from dci1v6.run.gates_run import (_kappa_columns, _kappa_under_b,
-                                  calibration_rows_at, qualification_at)
+from dci1v6.run.gates_run import _kappa_columns, _kappa_under_b
+from dci1v6.stages.feasibility import calibration_rows_at, qualification_at
 from dci1v6.stages.calibration_table import load_calibration_table
 from dci1v6.verifiers.constraints import Constraint
 
@@ -87,7 +87,7 @@ def test_the_one_pass_kappa_column_equals_the_per_candidate_reference():
             source = entry["kappa_under_b_source"]
             assert source["n_topics"] == n_topics
             assert source["n_draws"] == n_draws
-            assert source["present"] == [f"B:9"]
+            assert source["present"] == ["B:9"]
             assert source["m_star"] == 9
 
 

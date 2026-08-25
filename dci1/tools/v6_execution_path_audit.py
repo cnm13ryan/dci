@@ -267,7 +267,7 @@ RULES: tuple[dict[str, object], ...] = (
                 "generates nothing, so the restriction costs no rows and no "
                 "second bootstrap --- and it removes a severity's worth of "
                 "probe generation whenever it bites",
-     "runtime": "dci1v6.stages.feasibility.qualified_family_support",
+     "runtime": "dci1v6.stages.feasibility.restricted_operating_point_order",
      "impl": "dci1v6.run.gates_run.gate2_5_payload",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_support",
      "consumer": None, "expect": VERIFIED},

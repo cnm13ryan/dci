@@ -1898,10 +1898,15 @@ coverage criterion, spends its expansion and freezes the vocabulary at
 `iota_a_prescreen`; references are matched at Gate 2's `iota_a`, measured two
 stages later. On the four v5 replications those differ by 0.015, 0.046, 0.073
 and 0.092 — and re-reading each round-0 table at the Gate-2 value flips **no**
-decisive condition on any of them. Gate 3A now records the recomputation as
-`coverage_at_measured_iota_a`, a diagnostic with no consumer that gates
-nothing. Whether §12.6 should certify over an interval of iota_A is
-READINESS **R7** and is the researcher's.
+decisive condition on any of them. Gate 3A recorded the recomputation as
+`coverage_at_measured_iota_a`, a diagnostic with no consumer that gated
+nothing. **Superseded by V6-E04 (§4ad):** that reading compared an iota(R)
+table measured on one sample against an iota_A measured on another, so its
+number confounded the reference point with the two samples. It is replaced by
+`coverage_at_calibrated_iota_a` — the same criterion on the calibration basis,
+where every quantity in it is paired — and that one gates, through §34 D6's
+existing disposition. Whether §12.6 should *certify* over an interval of
+iota_A at the screen remains READINESS **R7** and is the researcher's.
 
 ## 5. Provisional, superseded, broken, unresolved
 
@@ -2025,6 +2030,16 @@ per instrument (`CalibrationRow` has carried the columns since v5 and **nothing
 ever filled them**), B's compliance while R is instructed, and Gate 4's
 split transfer per bound instrument — the quantity §4.a built by hand.
 
+**One defect fell out of the extraction and it is worth knowing (V6-E05).**
+The characterization test that runs the extracted §13.7 kernel against the four
+signed v5 records reproduced every candidate verdict and disagreed on one
+summary number: `n_stable` counted `v.get("stable")` and `stability_verdict`
+returns `passed`, so the count read **0 on every replication**. All four signed
+v5 records say `n_stable: 0` beside 9 to 16 candidates whose own verdict says
+`passed`. Nothing reads the field — it is not in the contract and has no
+consumer — so no result of v5 or v6 depends on it, and v5 is not touched. A
+reader of those records was being told something untrue and now is not.
+
 `stages/feasibility.py` selects nothing and gates nothing; the stages that call
 it decide. No estimand, threshold, band, margin, population or seed moved, and
 `revision.V9` still checks the twelve estimand-layer modules byte-identical to
@@ -2042,7 +2057,9 @@ prescreen evaluated a proxy for §13.15 rather than §13.15, and §12.6 was
 certified on one sample and re-read against another; one implementation of the
 criterion now serves the stages, the search and the pilot, the coverage
 re-reading is paired and gates, and the probe stopped re-measuring cells Gate 2
-already had — in §4ad. Before it: V6-E03 — v6's composed
+already had — in §4ad; and V6-E05, a summary count on every Gate-3A record that
+read a key §13.7 never returns, so `n_stable` was 0 on all four signed v5
+replications beside 9 to 16 candidates that passed. Before it: V6-E03 — v6's composed
 probe could move the operating point and no stage after it could follow, so the
 re-selection branch that is v6's whole answer to v5's Gate-4 failure ended in
 an unhandled error; repaired, with a scenario that drives it to the freeze, and

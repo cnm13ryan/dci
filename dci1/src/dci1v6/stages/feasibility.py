@@ -14,12 +14,11 @@ did.
 
 So this module holds the **kernels** the registered stages run, and it is the
 same code a development pilot calls. Gate 3A calls ``calibration_at``, Gate 3B
-calls ``selection_at``, Gate 3C calls ``support_at``, and
-``reference_feasibility`` composes all three. There is no second
-implementation for development to drift away from, and
-``tests_v6/test_reference_feasibility.py`` pins the composition against the
-four **signed v5 records** so that an extraction that changed the criterion
-fails rather than passes quietly.
+calls ``selection_at`` and Gate 3C calls ``support_at``, and so does
+``tools/v6_reference_feasibility.py``. There is no second implementation for
+development to drift away from, and ``tests_v6/test_reference_feasibility.py``
+pins all three against the four **signed v5 records** so that an extraction
+which changed the criterion fails rather than passes quietly.
 
 **The chain is free.** Gate 3A, 3B and 3C generate no rows: every quantity
 they read was measured at Gate 2 and Gate 2.5. That is what makes an
@@ -31,11 +30,20 @@ is a pure function of two signed records, so it can be evaluated at **every**
 candidate operating point before a single composed row exists. Only the last
 link, composed headroom, costs generation.
 
+**Two coherent groups live here, and that is the whole scope.** The
+criterion --- ``calibration_at``, ``selection_at``, ``support_at`` and the
+§12.6 re-reading --- and the machinery that asks *at which operating points*
+the criterion can hold: ``operating_point_order``,
+``qualified_family_support`` and ``restricted_operating_point_order``. The
+second group exists because the first is free, and it reads nothing the first
+does not. §12.3's *selection* rule stays in ``stages/regime.py``, which owns
+it; what is here is the frozen order that rule induces over an already
+admissible set.
+
 **This module selects nothing and it is not a gate.** It computes; the stages
-that call it decide, raise and record. Nothing here writes a record, and
-``reference_feasibility`` never raises a terminal status --- a caller running
-it over a search order needs a verdict per candidate, not a stopped
-replication.
+that call it decide, raise and record. Nothing here writes a record and
+nothing here raises a terminal status --- a caller evaluating a candidate
+operating point needs a verdict, not a stopped replication.
 """
 from __future__ import annotations
 
@@ -50,10 +58,11 @@ from dci1v6.stages.calibration_table import load_calibration_table
 from dci1v6.verifiers.constraints import FAMILIES
 
 __all__ = ["calibration_rows_at", "qualification_at", "calibration_at",
-           "selection_at", "support_at", "reference_feasibility",
-           "SUPPORT_MARGIN_KEYS", "support_margin", "feasibility_over",
+           "selection_at", "support_at",
+           "SUPPORT_MARGIN_KEYS", "support_margin",
            "coverage_at_calibrated_iota_a", "CALIBRATED_COVERAGE_FAILURE",
-           "qualified_family_support", "operating_point_order"]
+           "qualified_family_support", "operating_point_order",
+           "restricted_operating_point_order"]
 
 
 # ------------------------------------------- the two record readers
@@ -184,7 +193,15 @@ def calibration_at(*, model_key: str, gate2_record: Mapping[str, Any],
                    C.CALIBRATION_B: len(table_b),
                    "pooled": len(table_pooled)},
         "stability": verdicts,
-        "n_stable": sum(1 for v in verdicts.values() if v.get("stable")),
+        # V6-E05. `stability_verdict` returns `passed`; it has never returned
+        # `stable`, so `v.get("stable")` was None for every candidate and this
+        # count read **0 on every replication**. All four signed v5 records
+        # carry `n_stable: 0` beside 9 to 16 candidates whose own verdict says
+        # `passed: true`. It gates nothing and no stage reads it --- which is
+        # why it survived --- but a reader of those records would take it as
+        # "no candidate was stable", and that is not what §13.7 found.
+        # v5 is not touched: its records say what its code computed.
+        "n_stable": sum(1 for v in verdicts.values() if v.get("passed")),
         "iota_a_stability": iota_a_stability,
         "qualified_pool": qualified,
         "qualified_families": list(qualified_at["qualified_families"]),
@@ -349,6 +366,41 @@ def qualified_family_support(gate2_5_record: Mapping[str, Any], *,
     return out
 
 
+def restricted_operating_point_order(
+        search_order: Sequence[int], support: Mapping[str, Any], *,
+        m_star: int) -> tuple[list[int], str]:
+    """Gate 2's frozen order, narrowed to where a reference set can exist.
+
+    Two branches, and the second is the one that matters:
+
+    * **Some severity can support.** The order keeps m* first --- P3.1 probes
+      it first by rule and §12.3 chose it --- and drops the severities that
+      cannot reach §13.15's five-family minimum. Each one dropped is a full
+      probe measurement not spent.
+    * **None can.** The order is **not** narrowed to nothing. Whether an unmet
+      §13.15 is terminal or an identification status is §34 D6's question and
+      it is answered at Gate 3C; a probe that silently refused to run because
+      no severity qualified would be answering it here, two stages early and
+      without a record saying so.
+
+    Returns the order and the reason, so the record carries which branch ran.
+    """
+    can_support = [int(q) for q in search_order
+                   if support[str(int(q))]["can_support"]]
+    if not can_support:
+        return (list(int(q) for q in search_order),
+                "no admissible severity reaches §13.15's five-family "
+                "minimum, so the order is left whole and §34 D6 --- not this "
+                "restriction --- decides what that means")
+    order = ([int(m_star)] if int(m_star) in
+             [int(q) for q in search_order] else []) + [
+        q for q in can_support if q != int(m_star)]
+    return (order,
+            "Gate 2's frozen order restricted to the severities where at "
+            "least §13.15's five families pass the full V(R) at that "
+            "operating point")
+
+
 # ------------------------------------ §12.6 re-read where selection matches
 
 #: What Gate 3C is given when the calibrated re-reading loses a decisive
@@ -493,62 +545,9 @@ def support_margin(report: Mapping[str, Any]) -> dict[str, Any]:
                 "qualified-family margin is the spare beyond both",
     }
 
-
-# --------------------------------------------------------- the composition
-
-def reference_feasibility(*, model_key: str,
-                          gate2_record: Mapping[str, Any],
-                          gate2_5_record: Mapping[str, Any],
-                          regime_record: Mapping[str, Any],
-                          m_star: int, seed: int = 0,
-                          resamples: int = C.STABILITY_BOOTSTRAP_RESAMPLES,
-                          n_topics_a: int | None = None,
-                          extra_design_time_failures: Sequence[str] = ()
-                          ) -> dict[str, Any]:
-    """The whole pre-composition chain at one candidate operating point.
-
-    **Costs no generation.** Every input was measured at Gate 2 and Gate 2.5
-    and both records are signed before Gate 2.75 observes a composed cell, so
-    running this at a candidate operating point cannot be influenced by a
-    composed outcome --- which is §30, and is what lets an operating-point
-    search evaluate support before it spends a row on headroom.
-
-    Returns the calibration, selection and support blocks a caller needs to
-    both decide and record, plus ``support_met`` and ``margin``. It does not
-    raise a terminal status: a search needs a verdict per candidate.
-    """
-    calibration = calibration_at(
-        model_key=model_key, gate2_record=gate2_record,
-        gate2_5_record=gate2_5_record, m_star=int(m_star), seed=seed,
-        resamples=resamples)
-    chosen = selection_at(calibration, model_key=model_key,
-                          n_topics_a=n_topics_a)
-    supported = support_at(chosen, model_key=model_key,
-                           calibration=calibration,
-                           regime_record=regime_record,
-                           extra_design_time_failures=(
-                               extra_design_time_failures))
-    report = supported["report"]
-    return {
-        "m_star": int(m_star), "model_key": model_key,
-        "calibration": calibration, "selection": chosen,
-        "support": supported,
-        "support_met": bool(report["support_met"]),
-        "failures": list(report["failures"]),
-        "realised": dict(report["realised"]),
-        "margin": support_margin(report),
-        "slot_map": dict(chosen["slot_map"]),
-        "admitted_arms": list(supported["arms"]),
-        "identification_statuses": list(supported["identification_statuses"]),
-        "costs_no_generation": True,
-    }
-
-
-def feasibility_over(order: Sequence[int], **kwargs: Any) -> list[dict]:
-    """``reference_feasibility`` at each candidate of a frozen search order.
-
-    The order is the caller's and this function never reorders it: a search
-    that sorted its own candidates by how they scored would be adapting to the
-    data it is searching over.
-    """
-    return [reference_feasibility(m_star=int(m), **kwargs) for m in order]
+# NOTE. There is deliberately **no** `reference_feasibility(m_star)` wrapper
+# composing the three kernels. Gate 3A, Gate 3B and Gate 3C are three stages
+# and each calls one kernel; nothing in the lifecycle wants the composition,
+# and the development report builds its inputs from a Gate-3A record rather
+# than from a Gate-2 one. A convenience wrapper with no caller is the shape
+# the A8 reachability audit exists to catch, so it is not written.

@@ -72,6 +72,29 @@ def test_the_composed_probe_module_still_holds_no_path_to_a_reference():
             in refusals)
 
 
+def test_a_missing_frozen_order_is_refused_and_never_defaulted():
+    """The fallback that would have hidden a disabled search.
+
+    ``gate2_5_record.get("operating_point_order") or [m_star]`` reads as
+    harmless and is not: a replication whose upstream field was missing would
+    probe m* alone, and its record would be indistinguishable from one whose
+    m* passed at the first attempt. Both stages refuse instead.
+
+    The positive path is exercised end to end by the synthetic lifecycle and
+    by ``scenario_probe_reselects_the_operating_point``; what is pinned here
+    is that the refusal exists and that no default was left beside it.
+    """
+    for fn in (gates_run.gate2_5_payload, gates_run.gate2_75_payload):
+        source = inspect.getsource(fn)
+        assert "or [m_star]" not in source
+        assert "raise ProtocolError(" in source
+    probe = inspect.getsource(gates_run.gate2_75_payload)
+    assert 'frozen = gate2_5_record.get("operating_point_order")' in probe
+    assert "if order[0] != m_star:" in probe        # asserted, not repaired
+    gate2_5 = inspect.getsource(gates_run.gate2_5_payload)
+    assert 'gate2_record.get("operating_point_search_order")' in gate2_5
+
+
 # ---- 2. An m* change invalidates and recomputes every dependent quantity.
 
 def test_every_m_star_dependent_quantity_is_read_at_the_operating_point():

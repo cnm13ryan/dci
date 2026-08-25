@@ -191,8 +191,8 @@ CONTRACT: tuple[Field, ...] = (
     _f(G25, "qualification", (G5,)),
     # The top-level pool is Gate 2's m*, which is this stage's own
     # predecessor's. Every stage after Gate 2.75 reads the by-severity
-    # map instead, through `gates_run.qualification_at`, because the
-    # probe may have moved the operating point.
+    # map instead, through `stages.feasibility.qualification_at`, because
+    # the probe may have moved the operating point.
     _f(G25, "qualified_pool", ()),
     _f(G25, "qualified_families", ()),
     _f(G25, "earliest_failing_components", ()),
