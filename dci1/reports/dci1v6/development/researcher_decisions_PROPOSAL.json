@@ -1,0 +1,91 @@
+{
+ "_derivations": "dci1/reports/dci1v6/READINESS.md \u00a712, dci1/reports/dci1v6/precision_design.json",
+ "_not_a_closure": true,
+ "_what": "A PROPOSAL for seven of \u00a734's twenty-six decisions, written so that closing them is a review rather than an authoring task. It is NOT the researcher-decision record, it is not at dci1/reports/dci1v6/researcher_decisions.json, and `protocol/decisions` does not read this path. Every decision remains UNRESOLVED and every dependent stage and function still refuses.",
+ "_what_is_deliberately_absent": [
+  "D0 to D18. They are v5's decisions, closed on v5's own record with v5's own evidence. `protocol/decisions.RECORD_PATH` is read for ALL twenty-six, so they are UNRESOLVED in v6 too --- and carrying a closure from one registration into another is a researcher act with its own evidence, not a transcription. Proposing them here would be exactly the act this file exists to avoid performing.",
+  "Every `decided_by` and `decided_on`. \u00a734 binds the decision AND who took it; a proposal has neither."
+ ],
+ "_where_the_real_record_goes": "dci1/reports/dci1v6/researcher_decisions.json",
+ "_why_it_is_here": "Four of these seven now follow from the registered protocol and from measurement rather than from preference, and a derivation that lives only in a memo is one the researcher has to reconstruct before they can act on it. This is the same content in the shape the record takes.",
+ "proposed_closures": [
+  {
+   "consequences": [
+    "The 3,072-row development re-screen of READINESS \u00a77 step 3 is not run, and no new construct enters the study's scope.",
+    "If the repaired mechanism proves insufficient, that is a finding about the library and an amendment, not a repair."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "V6-E01 and V6-E02 are repaired prospectively and `tools/v6_expansion_dryrun.py` replays both rules on the four signed v5 pre-screen tables: v5's admits no Tier-1 reserve rung anywhere, v6's admits them on every replication. The v5 shortage was confounded by two mechanism defects, so authoring new families now would register constructs that may prove unnecessary --- and \u00a730's precedent would then make v6 the prospective test of those too. Library extension stays available as a later \u00a732 amendment.",
+   "id": "D19",
+   "value": "reachability_only"
+  },
+  {
+   "consequences": [
+    "Every probed entry records its value on each sub-split, so the size of the assumption is on the record at the moment it is applied rather than buried in a constant.",
+    "No reserved topic is spent by the probe."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "The sub-split contrast is not a diagnostic beside the verdict: it is the estimator of the ONLY non-sampling term in the error budget. \u00a76.2 cuts calibration_a and the composed set from one seeded per-area shuffle so they are exchangeable; \u00a734 D3's calibration_b is newly authored and is not. Paired by instrument on the closed v5 record the residual sd is 0.0284, halved to 0.0142 by the pooling. It costs no extra rows, because \u00a713.7 already generates both sub-splits.",
+   "id": "D20",
+   "value": "calibration_with_measured_transfer"
+  },
+  {
+   "consequences": [
+    "\u00a713.14 is untouched, so a v6 Gate-4 record is exactly comparable with v5's.",
+    "The measured cost is on the record: a joint topic bootstrap puts the chance that a replication whose entries are all in band nonetheless fires at 0.121 and 0.190.",
+    "The precision reasoning moves into GATE_2_75's projection, which refuses operating points whose predicted Gate-4 entries sit within an interval's reach of the band."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "The recommended branch is NOT EXECUTABLE in this repository. \u00a76.2's sequestered eighth is the only unspent source and it was never materialised here: `load_bank` carries zero sequestered questions, `dci1v4.topics.sequestered` holds identities and content hashes only, the texts are retained outside the repository, and `assert_no_materialisation` refuses any released question colliding with a sequestered hash. Enlarging is an act of authoring topics and a governed \u00a76.2 change, and it spends the reserve \u00a76.2 keeps for a future uncontaminated rerun. `interval_criterion` changes what \u00a713.14 MEANS and breaks comparability with v5's Gate 4.",
+   "id": "D21",
+   "value": "as_registered"
+  },
+  {
+   "consequences": [
+    "A replication that reaches GATE_5_FREEZE identified may generate its own confirmatory data whatever the others did.",
+    "Two or more survivors remain required for any replicated or generalised study-level statement, and L5 stays withheld."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "\u00a76.1 registers four replications each analysed separately with no cross-model scalar carrying a claim, and \u00a715 registers that there is no cross-model multiplicity family, so there is no registered study-level claim a two-survivor precondition would protect. Under the alternative v6's minimum useful outcome is nothing; under this one it is one model's confirmed or refuted ladder.",
+   "id": "D22",
+   "value": "per_replication"
+  },
+  {
+   "consequences": [
+    "A non-zero value here would widen every determinate entry's interval on top of the two measured terms, and the evidence does not identify anything for it to cover.",
+    "The 95% upper bound is on the record, so a researcher who wants to be conservative about thirteen observations can see exactly what they would be buying."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "DERIVED, not chosen, and the derivation is the restatement. The error a constant was to absorb decomposes into two terms and neither is a job for a constant. (a) The calibration-to-composed transfer is SAMPLING: observed variance 0.00430 against the 0.00515 the two sample sizes imply, and \u00a76.2's seeded cut says why. It is carried per entry by a projected Gate-4 interval built from that entry's own between-topic variance at \u00a713.4's registered level and by \u00a713.4's own device. (b) The stand-in-to-reference term is not coverable by any margin, so stand-in-dependent entries are judged against \u00a713.14's registered band with none. What remains for this decision is the allowance BEYOND those two measured terms, and the measurement finds none: residual point estimate at or below zero, 95% upper bound on the residual sd 0.0687 from thirteen observations. The authored-sub-split component is already carried by `composed_probe.RESIDUAL_SD = 0.0142` and is not this number.",
+   "id": "D23",
+   "value": 0.0
+  },
+  {
+   "consequences": [
+    "The canonical verifier hash moves. No v6 record exists at the old one, so nothing is superseded.",
+    "\u00a710.2's declared instrument population is re-certified at the new hash over 674 instances, and the 650-instance evidence does not cover the three added families."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "One hash, one certification path, one place a reviewer looks. The three families are authored (`PS1`, `PS2`, `PS3`), and `assert_library_sizes` now asserts three added counts showing the selectable pool is unmoved at v5's 37 families, 326 round-0 and 632 declared severities. READINESS \u00a73.2's S3 requirement that each declare an unused feature group is DROPPED and should not be reinstated: it needs a new statistic, and `FEATURE_GROUP_IDS` is a sorted tuple whose index `selection.group_key` reads as a reference-selection tie-break.",
+   "id": "D24",
+   "value": "probe_only_in_library"
+  },
+  {
+   "consequences": [
+    "The other replications' terminal statuses are reported as terminal statuses and never as evidence about the effect.",
+    "L5 is withheld by design and the report must say so, rather than implying it was withheld for want of survivors."
+   ],
+   "decided_by": "NOT DECIDED --- this is a proposal, not a closure",
+   "decided_on": "NOT DECIDED",
+   "evidence": "The two admissible readings are written out in `run.lifecycle.SINGLE_SURVIVOR_STATEMENTS`, so a closure selects a registered sentence rather than licensing one to be composed after the survivor count is known. `survivor_ladder_only` is the reading that matches \u00a76.1 and \u00a73.2: the ladder is per replication, so a survivor's ladder is a complete registered result and saying nothing at all about it would withhold a claim the design licenses.",
+   "id": "D25",
+   "value": "survivor_ladder_only"
+  }
+ ]
+}

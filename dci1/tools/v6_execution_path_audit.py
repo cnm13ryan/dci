@@ -283,6 +283,76 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.shared_with_gate2",
      "consumer": None, "expect": VERIFIED},
+    {"id": "R-13.14-class-coverage", "section": "§13.14", "area": "probe",
+     "meaning": "the probe covers every one of §13.14's ten slot-and-order "
+                "exposure classes, and the partition is DERIVED from "
+                "design.cells.cell_types rather than listed --- so admitting "
+                "an arm or changing §8.4's order rule changes what the probe "
+                "must cover without an edit to the probe. A shape that leaves "
+                "a class uncovered is refused",
+     "runtime": "dci1v6.stages.composed_probe."
+                "assert_probe_covers_gate4_classes",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.gate4_class_coverage",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-13.4-projection", "section": "§13.4", "area": "probe",
+     "meaning": "a determinate probe entry --- one whose every constituent is "
+                "a real registered instrument --- is judged by its PROJECTED "
+                "Gate-4 interval and not by its point estimate, using the "
+                "entry's own in-stage between-topic variance at §13.4's "
+                "registered level. It is §13.4's own device applied to "
+                "§13.14's band, so the convention is the protocol's and not "
+                "the stage's, and §13.14's band itself never moves",
+     "runtime": "dci1v6.stages.composed_probe.projected_halfwidth",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-13.14-no-margin-for-a-standin", "section": "§13.14",
+     "area": "probe",
+     "meaning": "an entry of a cell containing a stand-in is judged against "
+                "§13.14's REGISTERED band with no margin. A stand-in is not "
+                "the reference, so a projection from it would project the "
+                "wrong instrument; its failure is a real composed cell "
+                "leaving the band and its passing certifies nothing about a "
+                "reference",
+     "runtime": "dci1v6.stages.composed_probe.entry_verdict",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.scope_limits",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-13.8-standin-placement", "section": "§13.8", "area": "probe",
+     "meaning": "each stand-in is probed at the severity of its own solo "
+                "ladder nearest Gate 2's measured iota_A inside §13.4's band, "
+                "because §13.8 matches a reference's iota(R) to iota_A. "
+                "iota_A does not depend on m*, so re-selecting the operating "
+                "point never moves a stand-in and a re-probed severity is "
+                "never compared against a different companion",
+     "runtime": "dci1v6.stages.composed_probe.standin_operating_points",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.standin_operating_points",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-7.10-probe-only-is-not-selectable", "section": "§7.10",
+     "area": "library",
+     "meaning": "a probe_only stand-in is a registered instrument --- same "
+                "verifier, same hash, same Gate-1 certification --- and is "
+                "outside every selectable pool: §12.2's screen filters to "
+                "SELECTABLE_FAMILY_IDS and re-asserts it rung by rung, and "
+                "the tier partitions, the candidate budget and the freeze's "
+                "candidate vocabulary all read the selectable pool",
+     "runtime": "dci1v6.verifiers.constraints.assert_selectable",
+     "impl": "dci1v6.run.regime_run._screen_rungs",
+     "field": "REGIME_SCREEN.difficulty_table",
+     "consumer": "GATE_2_FOCAL_CALIBRATION", "expect": VERIFIED},
+    {"id": "R-18.1-draft-document", "section": "§18", "area": "registration",
+     "meaning": "a registration binds two documents by hash, and a COMPLETE "
+                "DRAFT is exactly what could be mistaken for a registration "
+                "by being present. Both documents declare their own status "
+                "and the manifest refuses while either says it is a draft; "
+                "silence reads as a draft, because the safe reading of "
+                "silence here is the one that refuses",
+     "runtime": "dci1v6.protocol.manifest.assert_documents_adopted",
+     "impl": "dci1v6.protocol.manifest.signing_blockers",
+     "field": "PROTOCOL_REGISTERED.protocol_hash",
+     "consumer": None, "expect": VERIFIED},
     {"id": "R-13.7-stability", "section": "§13.7", "area": "V(R)",
      "meaning": "each candidate is equivalent across the two splits",
      "runtime": "dci1v6.stages.stability.stability_verdict",

@@ -5,7 +5,7 @@ import dataclasses
 
 import pytest
 
-from dci1v4.errors import ProtocolError
+from dci1v4.errors import InstrumentError, ProtocolError
 from dci1v6.protocol import constants as C
 from dci1v6.protocol import decisions
 from dci1v6.stages import regime
@@ -15,21 +15,83 @@ from dci1v6.verifiers import constraints as K
 def test_the_registered_library_sizes():
     """§7.10's four counts, asserted rather than described."""
     assert K.assert_library_sizes() == {
-        "families": 37, "round_0_severities": 326,
-        "declared_severities": 632, "instruments": 650, "verifiers": 39,
-        # New in v6. No `probe_only` stand-in is authored --- which ones
-        # exist is §34 D24 and it is open --- so the selectable pool is the
-        # whole library and the assertion says so rather than leaving the
-        # count unstated. Authoring one moves both numbers and fails here,
-        # which is the visibility R6 asks for.
-        "probe_only_families": 0, "selectable_families": 37}
+        "families": 40, "round_0_severities": 350,
+        "declared_severities": 656, "instruments": 674, "verifiers": 42,
+        # New in v6. Three `probe_only` stand-ins are authored (§34 D24), so
+        # the library counts moved --- and the three counts below are why
+        # that is safe: the pool §12.2 screens, §12.6 expands and §12.7
+        # calibrates is unmoved at v5's 37 families, 326 round-0 severities
+        # and 632 declared severities. Authoring a stand-in that reached the
+        # selectable pool would move one of them and fail here.
+        "probe_only_families": 3, "selectable_families": 37,
+        "selectable_round_0_severities": 326,
+        "selectable_declared_severities": 632,
+        "probe_only_severities": 24}
 
 
 def test_a_probe_only_family_is_outside_every_selectable_pool():
-    """§34 D24's category exists and its guards are live on the empty set."""
-    assert K.PROBE_ONLY_FAMILY_IDS == ()
-    assert set(K.SELECTABLE_FAMILY_IDS) == set(K.FAMILY_IDS)
+    """§34 D24's three stand-ins are registered and are not selectable.
+
+    Every route a family can take into a selection is checked, because the
+    guarantee is not "the flag exists" but "no pool contains one".
+    """
+    assert K.PROBE_ONLY_FAMILY_IDS == ("PS1", "PS2", "PS3")
+    assert set(K.SELECTABLE_FAMILY_IDS) == (set(K.FAMILY_IDS)
+                                            - {"PS1", "PS2", "PS3"})
     assert K.assert_no_probe_only_selection_path()["found"] == []
+    pools = (K.TIER1_FAMILY_IDS, K.TIER2_FAMILY_IDS, K.TIER3_FAMILY_IDS,
+             K.SELECTABLE_FAMILY_IDS)
+    for pool in pools:
+        assert set(pool).isdisjoint(K.PROBE_ONLY_FAMILY_IDS)
+    for kind in K.PROBE_ONLY_FAMILY_IDS:
+        assert K.is_probe_only(kind)
+        with pytest.raises(InstrumentError):
+            K.assert_selectable(kind, where="a test")
+    # And they are in the library proper: same verifier, same hash, same
+    # certification path. A stand-in scored by something else would not be
+    # measuring what §13.14 measures.
+    for kind in K.PROBE_ONLY_FAMILY_IDS:
+        assert kind in K.FAMILIES
+        assert kind in K.KINDS
+        assert K.LADDERS[kind] == K.RESERVES[kind]
+
+
+def test_no_standin_shares_a_form_with_a_selectable_family_of_its_group():
+    """§34 D24 S2, as the property that actually needs to hold.
+
+    A stand-in must never be instrument-identical to something that could be
+    selected. It shares a feature group with a selectable family by design ---
+    a new group would reorder `FEATURE_GROUP_IDS` and with it
+    `selection.group_key`'s tie-break --- so what separates them is the
+    (statistic, form) pair, and that is what is asserted.
+    """
+    taken = {(K.FAMILIES[k].statistic_id, K.FAMILIES[k].form)
+             for k in K.SELECTABLE_FAMILY_IDS}
+    for kind in K.PROBE_ONLY_FAMILY_IDS:
+        family = K.FAMILIES[kind]
+        assert (family.statistic_id, family.form) not in taken
+        assert family.statistic_id in K.STATISTIC_IDS
+
+
+def test_authoring_the_standins_did_not_move_the_feature_group_index():
+    """The reason S3's group requirement was dropped, as an assertion.
+
+    `selection._group_order` reads a group's **index** in a sorted tuple as a
+    reference-selection tie-break, so a stand-in in a new group would reorder
+    the tie-break for every selectable family sorting after it.
+    """
+    from dci1v6.stages import selection
+
+    assert K.FEATURE_GROUP_IDS == tuple(sorted(set(K.FEATURE_GROUPS.values())))
+    assert len(K.FEATURE_GROUP_IDS) == 21
+    groups = {K.FAMILIES[k].feature_group for k in K.PROBE_ONLY_FAMILY_IDS}
+    assert groups <= {K.FAMILIES[k].feature_group
+                      for k in K.SELECTABLE_FAMILY_IDS}
+    # The index every selectable family sorts at is unchanged, which is the
+    # property the requirement was dropped to preserve.
+    for kind in K.SELECTABLE_FAMILY_IDS:
+        assert selection._group_order(kind) == K.FEATURE_GROUP_IDS.index(
+            K.FAMILIES[kind].feature_group)
 
 
 def test_the_focal_grid_is_v5s_and_the_extension_is_conditional():
@@ -81,10 +143,19 @@ def test_no_exact_or_rate_ladder_carries_zero():
             assert 0 not in family.reserve
 
 
-def test_rate_lower_bound_is_in_the_grammar_and_instantiated_by_nothing():
+def test_rate_lower_bound_is_instantiated_by_exactly_one_probe_only_family():
+    """The form was registered and exercised by nothing until §34 D24.
+
+    PS3 is the only instrument in the library that certifies it, which is a
+    reason to have chosen it and not an accident: a registered predicate form
+    with no instance is a form whose verifier no Gate-1 suite ever runs.
+    """
     assert K.FORM_RATE_LOWER_BOUND in K.FORMS
-    assert not any(f.form == K.FORM_RATE_LOWER_BOUND
-                   for f in K.FAMILIES.values())
+    carriers = [k for k, f in K.FAMILIES.items()
+                if f.form == K.FORM_RATE_LOWER_BOUND]
+    assert carriers == ["PS3"]
+    assert not any(K.FAMILIES[k].form == K.FORM_RATE_LOWER_BOUND
+                   for k in K.SELECTABLE_FAMILY_IDS)
 
 
 def test_the_marker_vocabulary_is_approved_and_frozen(restore_decisions):

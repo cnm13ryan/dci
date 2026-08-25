@@ -149,18 +149,34 @@ def test_no_v6_decision_has_been_taken_and_no_record_exists():
     assert decisions.record_hash(real) is None
 
 
-def test_no_v6_registration_is_possible_yet():
-    """Blocker 3 of READINESS.md, as an executable refusal.
+def test_no_v6_registration_is_possible_yet(tmp_path):
+    """Blocker 3 of READINESS.md, as an executable refusal --- **restated**.
 
-    §18 stage 1 binds the hash of the preregistration and of the
-    reference-design spec, and neither is written. A registration that cannot
-    name its own protocol text binds nothing, so ``document_hashes`` raises
-    rather than hashing an absence.
+    Both documents now exist, as drafts, so ``document_hashes`` hashes them
+    and the old refusal ("neither is written") no longer fires. That refusal
+    was always going to evaporate the first time somebody wrote a draft, and
+    a complete draft is exactly what could be mistaken for a registration by
+    being present. The durable guard is
+    ``assert_documents_adopted``, which reads what each document says about
+    its own status, and it refuses a **missing** document on the same terms
+    so that the plan and ``build_manifest`` refuse the same two files for the
+    same reason --- before it existed, `plan_registration` could report
+    `can_register` while neither document was written.
     """
-    from dci1v6.protocol.manifest import Blocker, document_hashes
+    from dci1v6.protocol.manifest import (Blocker, assert_documents_adopted,
+                                          document_hashes)
 
+    bound = document_hashes(REPO_ROOT)
+    assert set(bound) == {"protocol_hash", "reference_design_spec_hash"}
+    verdict = assert_documents_adopted(REPO_ROOT)
+    assert verdict["adopted"] is False
+    assert {f["declared"] for f in verdict["findings"]} == {
+        "DRAFT_NOT_ADOPTED"}
+    # A missing document is refused by the same guard, and the hash path
+    # still refuses it too.
+    assert assert_documents_adopted(tmp_path)["adopted"] is False
     with pytest.raises(Blocker) as excinfo:
-        document_hashes(REPO_ROOT)
+        document_hashes(tmp_path)
     assert "DCI1_preregistration_v6.md" in str(excinfo.value)
 
 
@@ -184,11 +200,14 @@ def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
     assert payload["record"]["hash"] == decisions.record_hash()
     assert payload["record"]["path"] == decisions.RECORD_RELPATH
     # Every decision that offers a choice records the branch nobody took, so
-    # a reader can see what was declined as well as what was taken. D23's
-    # margin and D25's statement offer no coded branches --- they are a
-    # number and a sentence --- so they are absent here rather than empty.
+    # a reader can see what was declined as well as what was taken. D23 is a
+    # number and offers no coded branches, so it is absent here rather than
+    # empty; D25 now offers two, because its two readings of a one-survivor
+    # study are written out in `lifecycle.SINGLE_SURVIVOR_STATEMENTS` and a
+    # closure selects a registered sentence rather than licensing one to be
+    # composed after the survivor count is known.
     assert set(payload["non_adopted_alternatives"]) == set(
-        decisions.DECISION_IDS) - {"D23", "D25"}
+        decisions.DECISION_IDS) - {"D23"}
     # The record hash covers the open-item resolutions too: U2 blocks the
     # manifest outright, and a hash that covered only half the file would let
     # its resolution change under a signature that did not move.
@@ -334,8 +353,14 @@ def test_check_15_has_a_producer_and_refuses_a_missing_v6_artifact():
     from dci1v6.protocol import reuse_ledger
 
     assert reuse_ledger.ARTIFACT_TEXT_GLOBS
+    # The preregistration now exists as a draft, so the collector finds it
+    # and the refusal has to be provoked on a tree that does not.
+    assert "DCI1_preregistration_v6.md" in "".join(
+        reuse_ledger.collect_artifact_texts(REPO_ROOT))
+    import tempfile
+
     with pytest.raises(ProtocolError) as excinfo:
-        reuse_ledger.collect_artifact_texts(REPO_ROOT)
+        reuse_ledger.collect_artifact_texts(Path(tempfile.mkdtemp()))
     assert "DCI1_preregistration_v6.md" in str(excinfo.value)
 
     # And over the texts that DO exist, the phrase scan runs and is clean.

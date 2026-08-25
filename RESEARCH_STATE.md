@@ -2048,11 +2048,77 @@ v5. Detail: `CHANGES_SCIENTIFIC.md` (V6-E04), `reports/dci1v6/READINESS.md`
 
 ---
 
+### 4ae. The probe protected one slot, and its margin was absorbing sampling noise (2026-08-25)
+
+A third pass asked the two questions §§3–7 of the readiness memo had left
+unmeasured: **what does Gate 4 actually audit, and how precise is it?**
+
+**Scope.** `GATE_2_75_COMPOSED_PROBE` probed the B slot. §13.14 audits 95
+cell × slot entries falling into **ten** slot-and-order classes, and the class
+`gemma-3n-e4b-it` terminated in — a *companion* slot in a *solo* cell — was one
+the probe could not see. The probe's shape is now derived from
+`design.cells.cell_types` rather than listed: one cell per class, A and B where
+the class names them and a frozen `probe_only` stand-in where it names a
+companion, and `assert_probe_covers_gate4_classes` refuses a shape leaving one
+uncovered. Eleven cell types become eighteen; three are read off the Gate-2
+record, so fifteen are generated per severity.
+
+**Precision, measured rather than assumed.** `tools/v6_precision_design.py`
+recomputes all 73 realised Gate-4 entries from the retained rows of all four
+replications, checked against the signed tables and terminal reports (21
+checks, all agreeing). Three findings:
+
+- **the calibration→composed "split transfer" is not a bias.** Observed
+  variance of the thirteen realised transfers 0.00430, against 0.00515 from
+  sampling alone — §6.2 cuts those sets from **one seeded per-area shuffle**,
+  so they are exchangeable by construction. The one component that is not is
+  §34 D3's newly authored `calibration_b`: paired by instrument, residual sd
+  **0.0284**, halved to **0.0142** by pooling. That is the entire non-sampling
+  error budget;
+- **the topic-level ICC is 0.35**, so a fourth draw inside a topic buys little
+  and only topics buy precision;
+- **§13.14 fires on a replication that is in band about one time in six.** A
+  joint topic bootstrap over the two replications whose entries were all inside
+  the band gives 0.121 and 0.190 at the registered 24 topics.
+
+**What changed as a result.** The margin `delta` is replaced by a **projected
+Gate-4 interval** computed per entry from that entry's own between-topic
+variance, at §13.4's registered level and by §13.4's own device — contract the
+band, apply it to the interval. Entries whose constituents are all real
+instruments gate through the projection; entries containing a stand-in gate
+against §13.14's registered band with **no margin**, because no evidence bounds
+the difference between a stand-in and the reference that replaces it and a
+margin there would be a projection of the wrong instrument. §34 D23 is restated
+as the residual allowance beyond those two measured terms, derived value 0.0.
+
+**And one registered option turned out not to exist.** The memo recommended
+enlarging §6.2's composed set 24 → 48 from the sequestered eighth. The
+sequestered eighth **was never materialised in this repository** — identities
+and content hashes only, texts retained outside it, and
+`assert_no_materialisation` refuses a collision on every load. Enlarging is an
+act of authoring topics, not a change to a constant. §13.14 stays exactly as
+registered and exactly comparable with v5's Gate 4.
+
+Three `probe_only` families are authored so the probe can run at all — library
+37 → 40, verifier hash moved, no v6 record exists at the old one — and the
+selectable population is unmoved at v5's 37 families, 326 round-0 and 632
+declared severities, which `assert_library_sizes` now asserts as separate
+counts. **v6 still cannot run**: `reports/dci1v6/researcher_decisions.json` does
+not exist, no code may create it, and all twenty-six of D0–D25 are UNRESOLVED
+at import. Detail: `CHANGES_SCIENTIFIC.md` (the three 2026-08-25 v6 entries),
+`reports/dci1v6/READINESS.md` §12, `reports/dci1v6/precision_design.json`.
+
+---
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: V6-E04 — v6's development
+whether old and new remain comparable. Most recent: v6's Gate-2.75 widened from
+one slot to all ten of §13.14's exposure classes and its margin constant
+replaced by a per-entry projected interval, three `probe_only` stand-ins
+authored, and §13.14's precision left as registered because the enlargement it
+was to get is not executable here — in §4ae. Before it: V6-E04 — v6's development
 prescreen evaluated a proxy for §13.15 rather than §13.15, and §12.6 was
 certified on one sample and re-read against another; one implementation of the
 criterion now serves the stages, the search and the pilot, the coverage
@@ -2101,6 +2167,7 @@ and §4p.
 | what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
 | what v6 would have to fix, and what is still the researcher's | `dci1/reports/dci1v6/READINESS.md`, `dci1/reports/dci1v6/readiness_evidence.json` |
 | the v6 implementation, and why it cannot run | `dci1/src/dci1v6/protocol/revision.py`, `dci1/src/dci1v6/protocol/decisions.py`, `dci1/tests_v6/` |
+| how precise Gate 4 is, and what a margin has to absorb | `dci1/tools/v6_precision_design.py`, `dci1/reports/dci1v6/precision_design.json` |
 | the two expansion defects, replayed side by side | `dci1/tools/v6_expansion_dryrun.py`, `dci1/reports/dci1v6/expansion_dryrun.json` |
 | what remains a limitation rather than a decision | `dci1/reports/dci1v5/v5_prereg_redteam.md` (R5 above all), `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
 | every §34 closure, its value, its evidence and who took it | `dci1/reports/dci1v5/researcher_decisions.json` — including D17's floor spec and U2's and P1's resolutions |

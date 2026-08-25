@@ -6,10 +6,10 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **61 registered rules** audited.
-- **61 agree** with their expected status.
-- By status: **2** VERIFIED_CONDITIONAL, **59** VERIFIED_REACHABLE.
-- Contract: 151 fields, 409 checked against real payloads (151 field-presence, 258 consumption, 4 semantic), **0 defects**.
+- **67 registered rules** audited.
+- **67 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **65** VERIFIED_REACHABLE.
+- Contract: 158 fields, 420 checked against real payloads (158 field-presence, 262 consumption, 4 semantic), **0 defects**.
 - Scenarios run: **16**.
 
 ## regime
@@ -40,6 +40,10 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `R-12.3-frozen-order` | §12.3 | the order in which operating points may be tried is §12.3's own preference over `focal_admissible`, written at Gate 2 and restricted at Gate 2.5 to the severities that can reach §13.15's five-family minimum --- both signed before the probe generates a row, so no candidate is re-ranked by how a composed cell looked | `dci1v6.stages.feasibility.operating_point_order` | `dci1v6.run.gates_run.gate2_payload` | `GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_order` | `GATE_2_75_COMPOSED_PROBE` | **VERIFIED_REACHABLE** |
 | `R-13.15-free-prefilter` | §13.15 | a severity that cannot muster five qualifying families is never probed. The verdict is Gate 2.5's own, already computed at every admissible severity because that stage generates nothing, so the restriction costs no rows and no second bootstrap --- and it removes a severity's worth of probe generation whenever it bites | `dci1v6.stages.feasibility.restricted_operating_point_order` | `dci1v6.run.gates_run.gate2_5_payload` | `GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_support` | — | **VERIFIED_REACHABLE** |
 | `R-13.14-controlled-reuse` | §13.14 | the unconstrained cell and B's own solo cell are read off the Gate-2 record instead of drawn again, and ONLY when the topic identifiers and the draw count are identical. That makes the composed lift a difference from the number m* was selected on rather than a difference between two samples of it, and the refusal to reuse across topic sets is checked rather than assumed | `dci1v6.stages.composed_probe.shared_cell_verdict` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.shared_with_gate2` | — | **VERIFIED_REACHABLE** |
+| `R-13.14-class-coverage` | §13.14 | the probe covers every one of §13.14's ten slot-and-order exposure classes, and the partition is DERIVED from design.cells.cell_types rather than listed --- so admitting an arm or changing §8.4's order rule changes what the probe must cover without an edit to the probe. A shape that leaves a class uncovered is refused | `dci1v6.stages.composed_probe.assert_probe_covers_gate4_classes` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.gate4_class_coverage` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
+| `R-13.4-projection` | §13.4 | a determinate probe entry --- one whose every constituent is a real registered instrument --- is judged by its PROJECTED Gate-4 interval and not by its point estimate, using the entry's own in-stage between-topic variance at §13.4's registered level. It is §13.4's own device applied to §13.14's band, so the convention is the protocol's and not the stage's, and §13.14's band itself never moves | `dci1v6.stages.composed_probe.projected_halfwidth` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.disposition` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
+| `R-13.14-no-margin-for-a-standin` | §13.14 | an entry of a cell containing a stand-in is judged against §13.14's REGISTERED band with no margin. A stand-in is not the reference, so a projection from it would project the wrong instrument; its failure is a real composed cell leaving the band and its passing certifies nothing about a reference | `dci1v6.stages.composed_probe.entry_verdict` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.scope_limits` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
+| `R-13.8-standin-placement` | §13.8 | each stand-in is probed at the severity of its own solo ladder nearest Gate 2's measured iota_A inside §13.4's band, because §13.8 matches a reference's iota(R) to iota_A. iota_A does not depend on m*, so re-selecting the operating point never moves a stand-in and a re-probed severity is never compared against a different companion | `dci1v6.stages.composed_probe.standin_operating_points` | `dci1v6.run.gates_run.gate2_75_payload` | `GATE_2_75_COMPOSED_PROBE.standin_operating_points` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 
 ## V(R)
 
@@ -53,6 +57,18 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `R-13.7-stability` | §13.7 | each candidate is equivalent across the two splits | `dci1v6.stages.stability.stability_verdict` | `dci1v6.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.stability` | `GATE_3B_REFERENCE_SELECTION` | **VERIFIED_REACHABLE** |
 | `R-13.7-iota-a` | §13.7 | iota_A meets the same equivalence rule as every candidate | `dci1v6.stages.stability.assert_iota_a_stable` | `dci1v6.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.iota_a_stability` | — | **VERIFIED_REACHABLE** |
 | `R-13.6-interaction` | §13.6 | kappa(R|B), displacement and the projected compliance | `dci1v6.stages.interaction.measure_interaction` | `dci1v6.run.gates_run.gate2_5_payload` | `GATE_2_5_CANDIDATE_QUALIFICATION.interaction` | — | **VERIFIED_REACHABLE** |
+
+## library
+
+| rule | section | meaning | implementation | production caller | artifact field | consumer | status |
+|---|---|---|---|---|---|---|---|
+| `R-7.10-probe-only-is-not-selectable` | §7.10 | a probe_only stand-in is a registered instrument --- same verifier, same hash, same Gate-1 certification --- and is outside every selectable pool: §12.2's screen filters to SELECTABLE_FAMILY_IDS and re-asserts it rung by rung, and the tier partitions, the candidate budget and the freeze's candidate vocabulary all read the selectable pool | `dci1v6.verifiers.constraints.assert_selectable` | `dci1v6.run.regime_run._screen_rungs` | `REGIME_SCREEN.difficulty_table` | `GATE_2_FOCAL_CALIBRATION` | **VERIFIED_REACHABLE** |
+
+## registration
+
+| rule | section | meaning | implementation | production caller | artifact field | consumer | status |
+|---|---|---|---|---|---|---|---|
+| `R-18.1-draft-document` | §18 | a registration binds two documents by hash, and a COMPLETE DRAFT is exactly what could be mistaken for a registration by being present. Both documents declare their own status and the manifest refuses while either says it is a draft; silence reads as a draft, because the safe reading of silence here is the one that refuses | `dci1v6.protocol.manifest.assert_documents_adopted` | `dci1v6.protocol.manifest.signing_blockers` | `PROTOCOL_REGISTERED.protocol_hash` | — | **VERIFIED_REACHABLE** |
 
 ## expansion
 

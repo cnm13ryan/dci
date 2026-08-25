@@ -327,8 +327,26 @@ _REGISTERED: tuple[Decision, ...] = (
         "D21",
         "Whether §13.14's composed-headroom verdict stays a 24-topic binary "
         "test over up to 95 cell x slot entries (READINESS R3)",
-        "Enlarge the composed set; the [0.05, 0.95] criterion is untouched, "
-        "so this is a precision change and not a threshold relaxation",
+        "As registered. The memo recommended enlarging the composed set and "
+        "the audit that followed found that option is not executable in this "
+        "repository: §6.2's sequestered eighth is the only unspent source and "
+        "it was NEVER MATERIALISED here --- `load_bank` carries zero "
+        "sequestered questions, `dci1v4.topics.sequestered` holds identities "
+        "and content hashes only, the texts are retained by the researcher "
+        "outside the repository, and `assert_no_materialisation` refuses any "
+        "released question colliding with a sequestered hash. Enlarging is "
+        "therefore not a change to a constant but an act of authoring topics, "
+        "which is a governed §6.2 change and spends the reserve §6.2 keeps "
+        "for a future uncontaminated rerun. `interval_criterion` changes what "
+        "§13.14 MEANS and breaks comparability with v5's Gate 4. What is left "
+        "is to leave §13.14 exactly as registered and to put the precision "
+        "reasoning where it can go without touching it --- in GATE_2_75's "
+        "projection, which is new code with no v5 counterpart to be "
+        "comparable with. reports/dci1v6/precision_design.json carries the "
+        "measurement: a joint topic bootstrap over the closed v5 tables puts "
+        "the chance that a replication whose entries are all in band "
+        "nonetheless fires at 0.12 to 0.19, which is what the probe's "
+        "operating-point choice now has to move away from",
         admissible_values=("as_registered", "enlarge_composed_set",
                            "interval_criterion"),
         blocks_stages=(_REGISTERED_STAGE, _GATE4),
@@ -347,15 +365,32 @@ _REGISTERED: tuple[Decision, ...] = (
         blocks_calls=("run.lifecycle.confirmatory_licensed",)),
     Decision(
         "D23",
-        "The value of the Gate-2.75 margin delta inside §13.14's band "
-        "(READINESS R5)",
-        "NO VALUE IS PROPOSED. The closed-v5 evidence establishes that the "
-        "error the margin must absorb --- a calibration-to-composed split "
-        "transfer reaching +0.189, plus an unmeasured stand-in-to-reference "
-        "term --- lies ABOVE the examined range {0.025, 0.05, 0.075}. That "
-        "is a finding about the range, not a choice within it, and it should "
-        "stay open until D20 and D21 are settled because both change what "
-        "delta has to cover",
+        "The Gate-2.75 RESIDUAL allowance inside §13.14's band: how much "
+        "non-sampling difference between the probe's split and §13.14's the "
+        "verdict must absorb (READINESS R5, restated)",
+        "0.0, and the restatement is the derivation. The memo asked for a "
+        "constant covering (a) a calibration-to-composed transfer reaching "
+        "+0.189 and (b) an unmeasured stand-in-to-reference term. Neither is "
+        "a job for a constant. (a) is SAMPLING: over the thirteen realised "
+        "movements the observed variance is 0.00430 against the 0.00515 the "
+        "two sample sizes imply, and §6.2 cuts calibration_a, composed, "
+        "confirmatory and pre-screen from ONE seeded per-area shuffle, so "
+        "those sets are exchangeable by construction. It is now carried per "
+        "entry by a projected Gate-4 interval built from that entry's own "
+        "between-topic variance, at §13.4's registered level and by §13.4's "
+        "own device. (b) is not coverable by any margin, so stand-in-"
+        "dependent entries are judged against §13.14's registered band with "
+        "no margin at all and certify nothing about a reference. What is "
+        "left for this decision is the one component §6.2's cut does NOT "
+        "make exchangeable --- §34 D3's newly authored calibration_b, which "
+        "supplies half the topics a pooled probe measures on. Paired by "
+        "instrument on the closed v5 record its residual sd is 0.0284, "
+        "halved to 0.0142 by the pooling, and that is already carried by "
+        "`composed_probe.RESIDUAL_SD`. This decision is the allowance BEYOND "
+        "those two measured terms, its derived value is zero, and "
+        "reports/dci1v6/precision_design.json carries both the derivation "
+        "and the 95% upper bound on a residual thirteen observations could "
+        "have missed",
         blocks_stages=(_REGISTERED_STAGE, _GATE2_75),
         blocks_calls=("stages.composed_probe.margin",)),
     Decision(
@@ -374,11 +409,19 @@ _REGISTERED: tuple[Decision, ...] = (
         "What v6 states at study level when exactly one replication reaches "
         "GATE_5_FREEZE identified --- registered before data, so that the "
         "number of survivors cannot be read afterwards as a licence",
-        "The surviving replication's own L1-L4 ladder stands and nothing "
-        "above it is said; L5 remains permanently withheld; the study "
-        "reports the other replications' terminal statuses as terminal "
-        "statuses and never as evidence about the effect",
-        blocks_stages=(_REGISTERED_STAGE, _CONFIRMATORY)),
+        "`survivor_ladder_only`: the surviving replication's own L1-L4 ladder "
+        "stands and nothing above it is said; L5 remains permanently "
+        "withheld; the study reports the other replications' terminal "
+        "statuses as terminal statuses and never as evidence about the "
+        "effect. The alternative, `no_study_level_statement`, makes no "
+        "study-level statement at all. Both sentences are written out in "
+        "`run.lifecycle.SINGLE_SURVIVOR_STATEMENTS` so the closure selects a "
+        "registered sentence rather than licensing one to be composed after "
+        "the survivor count is known",
+        admissible_values=("survivor_ladder_only",
+                           "no_study_level_statement"),
+        blocks_stages=(_REGISTERED_STAGE, _CONFIRMATORY),
+        blocks_calls=("run.lifecycle.study_level_statement",)),
 )
 
 DECISIONS: dict[str, Decision] = {d.id: d for d in _REGISTERED}

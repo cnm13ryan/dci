@@ -25,7 +25,8 @@ from dci1v6.design.cells import D1_ARM_SETS, D1_SCALE, n_cells_for
 from dci1v6.protocol import constants as C
 from dci1v6.protocol import decisions
 from dci1v6.verifiers.constraints import (
-    FOCAL_GRID, FAMILIES, FAMILY_IDS, LADDERS, RESERVES, TARGET_GRID, focal_severities,
+    FOCAL_GRID, FAMILIES, LADDERS, PROBE_ONLY_FAMILY_IDS,
+    RESERVES, SELECTABLE_FAMILY_IDS, TARGET_GRID, focal_severities,
     registered_severities)
 
 __all__ = ["library", "screen_rungs", "expansion_burden",
@@ -34,15 +35,29 @@ __all__ = ["library", "screen_rungs", "expansion_burden",
 
 
 def library() -> dict[str, Any]:
-    """The instrument population by structural tier, round 0 and reserve."""
-    tiers = {k: FAMILIES[k].structural_tier for k in FAMILY_IDS}
+    """The instrument population by structural tier, round 0 and reserve.
+
+    Over the **selectable** pool. §34 D24's ``probe_only`` stand-ins are
+    registered instruments and are hashed, certified and scored like any
+    other, but they are never screened, never carried, never qualified and
+    never bound, so every term below --- which costs the candidate pipeline
+    --- would overstate it by counting them. They are reported separately and
+    their cost is ``probe_burden``.
+    """
+    tiers = {k: FAMILIES[k].structural_tier for k in SELECTABLE_FAMILY_IDS}
     out: dict[str, Any] = {}
     for tier in (1, 2, 3):
-        families = [k for k in FAMILY_IDS if tiers[k] == tier]
+        families = [k for k in SELECTABLE_FAMILY_IDS if tiers[k] == tier]
         out[f"tier_{tier}"] = {
             "families": len(families),
             "ladder_rungs": sum(len(LADDERS[k]) for k in families),
             "reserve_rungs": sum(len(RESERVES[k]) for k in families)}
+    out["probe_only"] = {
+        "families": len(PROBE_ONLY_FAMILY_IDS),
+        "ladder_rungs": sum(len(LADDERS[k]) for k in PROBE_ONLY_FAMILY_IDS),
+        "reserve_rungs": sum(len(RESERVES[k]) for k in PROBE_ONLY_FAMILY_IDS),
+        "counted_in_the_candidate_pipeline": False,
+        "costed_by": "design.budget.probe_burden"}
     return out
 
 
@@ -59,7 +74,8 @@ def screen_rungs() -> int:
     distance is taken from unmeasured, and the budget agreed with the runner
     about a screen neither of them should have had.
     """
-    return (sum(len(registered_severities(kind)) for kind in FAMILIES)
+    return (sum(len(registered_severities(kind))
+                for kind in SELECTABLE_FAMILY_IDS)
             + len(C.TARGET_GRID) + len(C.FOCAL_GRID))
 
 
@@ -81,9 +97,11 @@ def expansion_burden() -> dict[str, Any]:
     It is a ceiling, not an expectation. The loop stops the moment C1-C6 pass
     and most families are skipped once they meet C4.
     """
-    tier12 = [k for k in FAMILY_IDS if FAMILIES[k].structural_tier in (1, 2)]
+    tier12 = [k for k in SELECTABLE_FAMILY_IDS
+              if FAMILIES[k].structural_tier in (1, 2)]
     reserve_beyond_ladder = {
-        k: [q for q in RESERVES[k] if q not in LADDERS[k]] for k in FAMILY_IDS}
+        k: [q for q in RESERVES[k] if q not in LADDERS[k]]
+        for k in SELECTABLE_FAMILY_IDS}
     cap = (C.EXPANSION_MAX_RUNGS_PER_FAMILY_PER_ROUND
            * C.EXPANSION_MAX_ROUNDS)
     per_family_max = {k: min(cap, len(v))
@@ -151,14 +169,26 @@ def composed_topic_plan() -> dict[str, Any]:
 
 
 def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
-                 n_topics: int | None = None) -> dict[str, Any]:
+                 n_topics: int | None = None,
+                 reuse_gate2_cells: bool = True) -> dict[str, Any]:
     """``GATE_2_75_COMPOSED_PROBE``, costed --- new in v6.
 
-    Per probed severity the probe runs the unconstrained cell, B solo, each
-    stand-in solo, and both orders of B with each stand-in: ``2 + 3n`` cells
-    for ``n`` stand-ins. **The stand-in solo cells are not optional**: S4
-    reads each stand-in's operating point from its own solo curve measured in
-    this stage, and the composed lift is measured against it.
+    The cell set is **derived** from ``composed_probe.probe_cell_types``
+    rather than restated as a formula here, because the probe's shape is
+    itself derived from Gate 4's exposure classes and a formula in the budget
+    would silently stop tracking it the first time a class is added.
+
+    Three terms:
+
+    * the **ladder**: each stand-in's solo curve on §12.5's 24 pre-screen
+      topics at ``LADDER_SCREEN_DRAWS``, measured once per replication. It
+      decides only which severity each stand-in is probed at, and that
+      severity is pinned to Gate 2's iota_A, so it does not depend on m* and
+      is not re-measured when the operating point moves;
+    * the **probed cells**, per severity, on the probe split at ``M_CAL``;
+    * the cells **not** drawn, because Gate 2 measured them on the same
+      topics at the same draws --- the unconstrained cell and the two
+      determinate solo cells.
 
     P3.3 stops the probe the moment m* passes, so one severity is the common
     case. The ceiling is Gate 2's whole eligible set, which is at most §7.1's
@@ -166,24 +196,49 @@ def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
     """
     if n_severities < 1:
         raise ProtocolError("the probe measures m* first, so at least one")
+    from dci1v6.stages import composed_probe
+
+    slots = composed_probe.probe_slots(n_standins)
+    shape = composed_probe.probe_cell_types(slots)
+    reused = (len(composed_probe.SHARED_WITH_GATE2) if reuse_gate2_cells
+              else 0)
     topics = n_topics if n_topics is not None else C.N_CALIBRATION
-    cells = 2 + 3 * n_standins
-    per_severity = cells * topics * C.M_CAL
+    cells = len(shape)
+    generated = cells - reused
+    per_severity = generated * topics * C.M_CAL
+    ladder_rungs = sum(len(registered_severities(kind))
+                       for kind in composed_probe.PROBE_ONLY_KINDS()
+                       [:n_standins])
+    ladder_rows = ladder_rungs * C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS
     ceiling = len(focal_severities(extended=True))
+    coverage = composed_probe.probe_class_coverage(slots)
     return {
         "standins": n_standins,
-        "cells_per_severity": cells,
-        "cells_are": "unconstrained + solo:B + solo per stand-in + both "
-                     "orders of B with each stand-in",
+        "cell_types": cells,
+        "cells_read_from_gate2": reused,
+        "cells_generated_per_severity": generated,
+        "cells_are": "one cell per §13.14 slot-and-order exposure class: the "
+                     "unconstrained cell, A and B solo, each stand-in solo, "
+                     "both orders of A with B, both orders of B with each "
+                     "stand-in, and both orders of the designated stand-in "
+                     "with A and with a second stand-in",
+        "gate4_classes_covered": sum(1 for e in coverage.values()
+                                     if e["covered"] and e["roles"]),
+        "gate4_entries_audited_later": sum(e["gate4_entries"]
+                                           for e in coverage.values()),
         "topics": topics, "draws": C.M_CAL,
         "rows_per_severity": per_severity,
         "severities": n_severities,
-        "rows": per_severity * n_severities,
-        "rows_if_m_star_passes": per_severity,
+        "ladder_rungs": ladder_rungs,
+        "ladder_rows": ladder_rows,
+        "ladder_topics": C.N_PRESCREEN,
+        "ladder_draws": C.LADDER_SCREEN_DRAWS,
+        "rows": ladder_rows + per_severity * n_severities,
+        "rows_if_m_star_passes": ladder_rows + per_severity,
         "max_severities": ceiling,
-        "max_rows": per_severity * ceiling,
+        "max_rows": ladder_rows + per_severity * ceiling,
         "stops_early": "P3.3: m* passing ends the probe, so the modal cost "
-                       "is one severity",
+                       "is the ladder plus one severity",
     }
 
 

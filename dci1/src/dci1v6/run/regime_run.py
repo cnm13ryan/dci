@@ -46,7 +46,9 @@ from dci1v6.stages import mutation, specification, verifier_audit
 from dci1v6.topics.bank import (TopicBank, assert_no_reserved_topic_spent,
                                 load_bank)
 from dci1v6.verifiers import verifier_source_hash
-from dci1v6.verifiers.constraints import (FAMILIES, Constraint, declared_range,
+from dci1v6.verifiers.constraints import (FAMILIES, Constraint,
+                                          SELECTABLE_FAMILY_IDS,
+                                          assert_selectable, declared_range,
                                           registered_severities)
 
 __all__ = ["cap_cells", "select_cap", "ladder_cells", "difficulty_table",
@@ -208,10 +210,19 @@ def _screen_rungs(round_zero_only: bool = True) -> list[Constraint]:
     it.
     """
     rungs: list[Constraint] = []
-    for kind in FAMILIES:
+    # The **selectable** pool. §34 D24's probe-only stand-ins are registered
+    # instruments, but §12.2's table is the candidate population and §12.6
+    # counts feature groups and straddling families over it --- a stand-in
+    # screened here would enter a coverage count it can never be selected
+    # from. `assert_selectable` re-checks every rung below, so the filter and
+    # the guard have to disagree loudly rather than one silently defining the
+    # other.
+    for kind in SELECTABLE_FAMILY_IDS:
         severities = (registered_severities(kind) if round_zero_only
                       else declared_range(kind))
         rungs.extend(Constraint(kind, q) for q in severities)
+    for rung in rungs:
+        assert_selectable(rung.kind, where="§12.2's screen")
     rungs.extend(Constraint("A", q) for q in C.TARGET_GRID)
     rungs.extend(Constraint("B", q) for q in C.FOCAL_GRID)
     return rungs

@@ -1,0 +1,313 @@
+"""What the 2026-08-25 design pass added, and the invariants it turns on.
+
+Four groups, and they are not the same kind of claim. **Placement** is the rule
+that puts a stand-in where the design puts a companion. **Isolation** is the
+set of populations a `probe_only` family must stay out of, checked one by one
+rather than by asserting the flag exists. **Licensing** is what v6 says at
+study level, registered before data. **Adoption** is the refusal that keeps a
+complete draft from being mistaken for a registration by being present.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from dci1v4.errors import ProtocolError
+
+from dci1v6.design import budget
+from dci1v6.engine.context import REPO_ROOT
+from dci1v6.protocol import constants as C
+from dci1v6.protocol import decisions, manifest
+from dci1v6.run import lifecycle, regime_run
+from dci1v6.stages import composed_probe as P
+from dci1v6.verifiers import constraints as K
+
+REPORTS = Path(__file__).resolve().parents[1] / "reports" / "dci1v6"
+
+
+# ------------------------------------------------------------- placement
+
+def _ladder(values: dict[int, float]) -> dict[str, dict[int, float]]:
+    return {"PS1": dict(values)}
+
+
+def test_a_standin_is_placed_where_the_design_puts_a_companion():
+    """§13.8 matches a reference's iota(R) to iota_A, so that is the target.
+
+    Not FOCAL_AIM: B's aim is where the design puts the *focal* constraint,
+    and a stand-in that stood in for a companion by sitting at B's operating
+    point would sit where nothing in the design ever puts one.
+    """
+    curve = {1: 0.20, 2: 0.35, 3: 0.55, 4: 0.72, 5: 0.88}
+    out = P.standin_operating_points(_ladder(curve), iota_a=0.56)
+    assert out["PS1"]["severity"] == 3
+    assert out["PS1"]["aim"] == 0.56
+    assert out["PS1"]["band"] == list(C.HEADROOM_BAND)
+    # A different iota_A moves it, and nothing else does.
+    assert P.standin_operating_points(
+        _ladder(curve), iota_a=0.85)["PS1"]["severity"] == 5
+
+
+def test_a_standin_severity_does_not_depend_on_the_operating_point():
+    """The invariant that lets a re-selection re-probe a severity without
+    changing the companion it is composed with.
+
+    iota_A is measured at Gate 2 and does not move with m*, so the same
+    ladder and the same iota_A give the same severity however many severities
+    the probe walks.
+    """
+    curve = {1: 0.20, 2: 0.35, 3: 0.55, 4: 0.72, 5: 0.88}
+    first = P.standin_operating_points(_ladder(curve), iota_a=0.56)
+    again = P.standin_operating_points(_ladder(curve), iota_a=0.56)
+    assert first["PS1"]["severity"] == again["PS1"]["severity"]
+    assert "m_star" not in json.dumps(first)
+
+
+def test_a_standin_outside_section_13_4s_band_is_refused_not_clamped():
+    """A stand-in no severity of which could be admitted as a companion is
+    not a stand-in for one, and the honest outcome is a refusal."""
+    with pytest.raises(ProtocolError) as excinfo:
+        P.standin_operating_points(
+            _ladder({1: 0.97, 2: 0.98, 3: 0.99}), iota_a=0.6)
+    assert "§13.4" in str(excinfo.value)
+
+
+# ------------------------------------------------------------- isolation
+
+def test_the_screen_measures_the_selectable_pool_and_asserts_it():
+    """§12.2's table is the candidate population and §12.6 counts feature
+    groups and straddling families over it, so a stand-in screened there
+    would enter a count it can never be selected from."""
+    rungs = regime_run._screen_rungs()
+    kinds = {r.kind for r in rungs}
+    assert kinds.isdisjoint(K.PROBE_ONLY_FAMILY_IDS)
+    assert kinds == set(K.SELECTABLE_FAMILY_IDS) | {"A", "B"}
+
+
+def test_the_candidate_budget_counts_the_selectable_pool_only():
+    """Three families were added to the library and none of them is a
+    candidate, so every term costing the candidate pipeline is unmoved."""
+    lib = budget.library()
+    assert lib["tier_1"]["families"] == 8
+    assert lib["tier_2"]["families"] == 3
+    assert lib["tier_3"]["families"] == 26
+    assert lib["probe_only"]["families"] == 3
+    assert lib["probe_only"]["counted_in_the_candidate_pipeline"] is False
+    # v5's screen, exactly: 326 selectable round-0 rungs + A's 8 + B's 8.
+    assert budget.screen_rungs() == 326 + 8 + 8
+
+
+def test_the_probe_burden_is_derived_from_the_shape_and_not_a_formula():
+    """A formula in the budget stops tracking the shape the first time a
+    Gate-4 exposure class is added."""
+    burden = budget.probe_burden()
+    assert burden["cell_types"] == len(
+        P.probe_cell_types(P.probe_slots(3)))
+    assert burden["cells_read_from_gate2"] == len(P.SHARED_WITH_GATE2)
+    assert burden["gate4_classes_covered"] == 10
+    assert burden["gate4_entries_audited_later"] == 95
+    assert burden["rows_per_severity"] == (
+        burden["cells_generated_per_severity"] * C.N_CALIBRATION * C.M_CAL)
+    assert burden["ladder_rows"] == (
+        burden["ladder_rungs"] * C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS)
+    assert burden["rows_if_m_star_passes"] == (
+        burden["ladder_rows"] + burden["rows_per_severity"])
+    assert burden["max_rows"] > burden["rows_if_m_star_passes"]
+
+
+# ------------------------------------------------------------- licensing
+
+def test_a_single_survivor_licenses_its_own_ladder_and_nothing_above_it(
+        restore_decisions):
+    restore_decisions.override_for_testing("D25", "survivor_ladder_only")
+    out = lifecycle.study_level_statement(
+        survivors=["gemma-3n-e2b-it"],
+        terminal={"qwen3-4b": "COMPOSED_HEADROOM_FAILURE"})
+    assert out["n_survivors"] == 1
+    assert out["rule"] == "§34 D25"
+    assert "L5 is withheld by design" in out["statement"]
+    assert "never evidence about the effect" in out["statement"]
+    assert out["terminal"] == {"qwen3-4b": "COMPOSED_HEADROOM_FAILURE"}
+
+
+def test_the_other_single_survivor_reading_exists_and_is_different(
+        restore_decisions):
+    restore_decisions.override_for_testing("D25", "no_study_level_statement")
+    out = lifecycle.study_level_statement(survivors=["qwen3-4b"])
+    assert out["statement"] == \
+        lifecycle.SINGLE_SURVIVOR_STATEMENTS["no_study_level_statement"]
+    assert out["statement"] != \
+        lifecycle.SINGLE_SURVIVOR_STATEMENTS["survivor_ladder_only"]
+
+
+def test_the_zero_and_many_survivor_sentences_are_not_decisions(
+        restore_decisions):
+    """They follow from §6.1 and the claim ladder, so they are emitted with
+    D25 open --- which is also the check that D25 gates only the case it is
+    about."""
+    restore_decisions.reopen_all_for_testing()
+    assert "D25" in decisions.open_decisions()
+    none = lifecycle.study_level_statement(survivors=[])
+    assert none["rule"] == "§6.1"
+    assert "no claim about the effect at any level" in none["statement"]
+    many = lifecycle.study_level_statement(survivors=["a", "b", "c"])
+    assert "never pooled" in many["statement"]
+    assert "L5 is withheld" in many["statement"]
+    for out in (none, many):
+        assert out["l5_withheld"].startswith("generalisation is never")
+
+
+def test_the_single_survivor_case_refuses_while_d25_is_open(
+        restore_decisions):
+    restore_decisions.reopen_all_for_testing()
+    assert "D25" in decisions.open_decisions()
+    with pytest.raises(decisions.DecisionOpenError):
+        lifecycle.study_level_statement(survivors=["one"])
+
+
+def test_per_replication_licensing_does_not_read_another_replication(
+        restore_decisions):
+    """Another model's failure must not suppress a valid model-specific
+    result: that is the whole content of §34 D22's per-replication branch."""
+    restore_decisions.override_for_testing("D22", "per_replication")
+    alone = lifecycle.confirmatory_licensed(
+        this_replication_frozen=True, survivors=["me"])
+    assert alone["licensed"] is True
+    assert lifecycle.confirmatory_licensed(
+        this_replication_frozen=False, survivors=["me", "you"]
+    )["licensed"] is False
+    restore_decisions.override_for_testing("D22", "two_survivors_before_any")
+    withheld = lifecycle.confirmatory_licensed(
+        this_replication_frozen=True, survivors=["me"])
+    assert withheld["licensed"] is False
+
+
+# ------------------------------------------------------------- adoption
+
+def test_a_draft_document_is_refused_as_a_registration():
+    """A missing document already refuses. A complete draft is the thing that
+    could be mistaken for a registration by being present, so it declares its
+    own status and the manifest reads it."""
+    verdict = manifest.assert_documents_adopted(REPO_ROOT)
+    assert verdict["adopted"] is False
+    documents = {f["document"] for f in verdict["findings"]}
+    from dci1v6 import PREREGISTRATION, REFERENCE_DESIGN_SPEC
+
+    assert documents == {PREREGISTRATION, REFERENCE_DESIGN_SPEC}
+    assert all(f["declared"] == manifest.DRAFT_MARKER
+               for f in verdict["findings"])
+    kinds = {b["kind"] for b in manifest.signing_blockers()}
+    assert "DRAFT_DOCUMENT" in kinds
+
+
+def test_a_missing_declaration_reads_as_a_draft(tmp_path):
+    """The safe reading of silence is the one that refuses."""
+    from dci1v6 import PREREGISTRATION, REFERENCE_DESIGN_SPEC
+
+    prereg = tmp_path / PREREGISTRATION
+    prereg.parent.mkdir(parents=True, exist_ok=True)
+    prereg.write_text("# a document that says nothing about its status\n")
+    spec = tmp_path / REFERENCE_DESIGN_SPEC
+    spec.parent.mkdir(parents=True, exist_ok=True)
+    spec.write_text(json.dumps({"whatever": True}))
+    verdict = manifest.assert_documents_adopted(tmp_path)
+    assert verdict["adopted"] is False
+    assert {f["declared"] for f in verdict["findings"]} == {"none"}
+
+
+def test_the_reference_design_spec_is_generated_and_says_it_is_a_draft():
+    """It is derived from the registered code, so a spec that disagrees with
+    the implementation is not expressible."""
+    spec = json.loads((REPORTS / "reference_design_spec.json").read_text())
+    assert spec["_status"] == manifest.DRAFT_MARKER
+    assert spec["candidate_library"]["sizes"] == K.assert_library_sizes()
+    assert spec["composed_probe"]["residual_sd"] == P.RESIDUAL_SD
+    assert spec["design"]["gate4_entries_full_arm_set"] == 95
+    # Generated against the real decision registry, which has no record --- so
+    # every one of the twenty-six is open in the artifact whatever a test
+    # fixture has closed in this process.
+    assert sorted(spec["open_decisions"]["ids"]) == sorted(
+        decisions.DECISION_IDS)
+    assert spec["open_decisions"]["count"] == 26
+    assert spec["validity_components"]["composed_headroom_band"] == list(
+        C.COMPOSED_HEADROOM_BAND)
+
+
+def test_the_precision_report_reproduces_the_signed_gate4_verdicts():
+    """The tool refuses to report anything unless its baseline reproduces the
+    two signed Gate-4 tables and the two signed terminal reports, and the
+    committed artifact carries the count."""
+    report = json.loads((REPORTS / "precision_design.json").read_text())
+    assert report["_classification"] == "DEVELOPMENT_EVIDENCE"
+    assert report["_baseline_checks_against_signed_records"] == 21
+    assert report["gate4_precision"]["n_entries"] == 73
+    assert report["split_transfer"]["verdict"] == "consistent with sampling"
+    assert report["policies"]["materialised_sequestered_topics"] == 0
+    assert all(row["topics_that_must_be_authored"] > 0
+               for row in report["policies"]["rows"]
+               if row["n_composed"] > C.N_COMPOSED)
+    feasibility = report["operating_point_feasibility"]
+    assert feasibility["every_replication_retains_an_operating_point"] is True
+
+
+# --------------------------------------------- the verdict rule's own inputs
+
+def test_determinacy_is_read_from_the_cell_and_not_from_what_was_measured():
+    """Which of the two verdict rules an entry is judged by is a property of
+    the **design**, not of which measurements happened to arrive.
+
+    Reading it off the measured keys would let a stand-in pair whose stand-in
+    slot went unmeasured look like a determinate solo cell and be given a
+    margin it is not entitled to. So the slots come from the cell id, and a
+    table whose measurements disagree with them is refused rather than
+    silently judged under the wrong rule.
+    """
+    assert P.cell_slots_of("solo:B") == ("B",)
+    assert P.cell_slots_of("pair:B+P1") == ("B", "P1")
+    assert P.cell_slots_of("unconstrained") == ()
+    for bad in ("pair:B", "gate3b", "pair:+B"):
+        with pytest.raises(ProtocolError):
+            P.cell_slots_of(bad)
+    assert P.is_determinate(P.cell_slots_of("pair:A+B"))
+    assert not P.is_determinate(P.cell_slots_of("pair:B+P1"))
+    entry = {"compliance": 0.9, "s2_topic": 0.0, "n_topics": 192}
+    with pytest.raises(ProtocolError) as excinfo:
+        P.severity_verdict({"pair:B+P1": {"B": entry}}, residual=0.0)
+    assert "would change which verdict rule" in str(excinfo.value)
+
+
+def test_the_measured_split_transfer_is_recorded_and_gates_nothing():
+    """§34 D20's branch, as the thing it is: the estimator of the only
+    non-sampling term, put on the record beside the verdict it is an
+    assumption in --- and reading nothing, because a rule that re-tuned the
+    margin from the transfer it was measuring would fit a design constant to
+    the replication it is about to judge."""
+    from dci1v6.run.gates_run import _measured_split_transfer
+
+    def entry(a, b):
+        return {"compliance": (a + b) / 2, "s2_topic": 0.05, "n_topics": 192,
+                "a_minus_b": a - b,
+                "by_split": {C.CALIBRATION_A: {"compliance": a,
+                                               "n_topics": 96},
+                             C.CALIBRATION_B: {"compliance": b,
+                                               "n_topics": 96}}}
+
+    probed = {10: {"unconstrained": {"unconstrained": entry(1.0, 1.0)},
+                   "solo:B": {"B": entry(0.80, 0.70)},
+                   "pair:B+P1": {"B": entry(0.60, 0.64),
+                                 "P1": entry(0.50, 0.50)}}}
+    out = _measured_split_transfer(probed, residual_sd=P.RESIDUAL_SD)
+    assert out["gates_nothing"] is True and out["read_by"] == []
+    assert out["assumed_residual_sd"] == P.RESIDUAL_SD
+    assert out["n_entries"] == 3
+    assert {(r["cell"], r["slot"]) for r in out["entries"]} == {
+        ("solo:B", "B"), ("pair:B+P1", "B"), ("pair:B+P1", "P1")}
+    carried = {r["slot"] + r["cell"]: r["carried_by_the_pooled_estimate"]
+               for r in out["entries"]}
+    assert carried["Bsolo:B"] == pytest.approx(0.05)
+    assert out["max_absolute_carried_offset"] == pytest.approx(0.05)
+    # (|0.05| + |-0.02| + |0.00|) / 3
+    assert out["mean_absolute_carried_offset"] == pytest.approx(0.07 / 3)
+    assert out["mean_carried_offset"] == pytest.approx(0.03 / 3)

@@ -35,37 +35,33 @@ def _manifest():
                                    repo_root=REPO)
 
 
-def test_the_signature_is_refused_if_a_question_reopens(restore_open_items):
-    """§18 stage 1's fifth refusal: an unresolved specification question.
-
-    A4 opened U4 --- §12.6 made eligibility "§13's band on iota" and §13
-    bands p_solo --- and A5 closed it at E2, so the refusal has to be
-    provoked. A guard nothing provokes is a guard that quietly stopped
-    working the moment the last question was answered.
-    """
-    restore_open_items.reopen_one_for_testing("U4")
-    assert restore_open_items.blocking_items() == ("U4",)
-    blockers = manifest.signing_blockers()
-    kinds = {b["kind"] if isinstance(b, dict) else b.kind for b in blockers}
-    assert "UNRESOLVED_SPECIFICATION" in kinds, blockers
-    with pytest.raises(ProtocolError):
-        manifest.assert_signable()
 
 
-def test_nothing_else_blocks_the_signature():
+def test_only_the_unadopted_documents_block_the_signature():
     """The shape the refusals were built for, run to its end.
 
-    Every one of them names a thing somebody has to do, and every one has
-    been done: nineteen decisions closed, U2 resolved, P1 confirmed, the
-    Calibration-B bank authored and hashed, the marker population approved,
-    the model revisions pinned, the floor specified and the design derivable.
-    A blocker disappears when the work it names is finished, and this asserts
-    the list is empty for that reason rather than because it stopped looking.
+    Every other refusal names a thing somebody has to do, and in this
+    fixture's world every one has been done: nineteen decisions closed, U2
+    resolved, P1 confirmed, the Calibration-B bank authored and hashed, the
+    marker population approved, the model revisions pinned, the floor
+    specified and the design derivable. A blocker disappears when the work it
+    names is finished, and this asserts the list is down to exactly one for
+    that reason rather than because it stopped looking.
+
+    The one that remains is `DRAFT_DOCUMENT`, and it is the honest state: v6's
+    preregistration and reference-design spec exist and both declare
+    `DRAFT_NOT_ADOPTED`. Adopting them is a researcher act. Pointing the guard
+    at a tree where they are adopted empties the list.
     """
-    assert manifest.signing_blockers() == []
-    manifest.assert_signable()
-
-
+    blockers = manifest.signing_blockers()
+    assert [b["kind"] for b in blockers] == ["DRAFT_DOCUMENT"]
+    assert {f["declared"] for f in blockers[0]["findings"]} == {
+        "DRAFT_NOT_ADOPTED"}
+    with pytest.raises(ProtocolError):
+        manifest.assert_signable()
+    assert manifest.signing_blockers(
+        repo_root=REPO) == []
+    manifest.assert_signable(repo_root=REPO)
 def test_every_refusal_still_fires_when_its_reason_comes_back():
     """An empty blocker list is only evidence if a non-empty one is reachable.
 
@@ -115,7 +111,8 @@ def test_every_refusal_still_fires_when_its_reason_comes_back():
     finally:
         open_items.OPEN_ITEMS["U2"] = u2
         open_items.OPEN_ITEMS["P1"] = p1
-    assert manifest.signing_blockers() == []
+    assert [b["kind"] for b in manifest.signing_blockers()] == [
+        "DRAFT_DOCUMENT"]
 
 
 def test_an_unpinned_model_revision_refuses_the_signature(monkeypatch):

@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import math
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -49,10 +50,18 @@ from dci1v6.run import (analysis_run, confirmatory_run, freeze_run, gates_run,
                         prefreeze_run, qualification_run, regime_run)
 from dci1v6.run.execute import fake_backend
 from dci1v6.topics.bank import load_bank
-from dci1v6.verifiers.constraints import FAMILIES, Constraint
+from dci1v6.verifiers.constraints import (FAMILIES, Constraint,
+                                          FORM_RATE_LOWER_BOUND,
+                                          LOWER_BOUND_FORMS,
+                                          RATE_FORMS)
 from dci1v6.verifiers.realistic_witness import pad_to_band
 
 MODEL_KEY = "gemma-3n-e2b-it"
+
+#: The two documents §18 stage 1 binds by content hash. Always seeded as
+#: labelled placeholders, never copied: see `synthetic_repo`.
+GOVERNED_DOCUMENTS: tuple[str, ...] = (PREREGISTRATION,
+                                       REFERENCE_DESIGN_SPEC)
 
 #: The files a production reader opens **relative to the repository root**:
 #: the two documents §18 stage 1 binds by hash, and the §30 ledger's
@@ -98,18 +107,28 @@ REPO_TREES: tuple[str, ...] = ("dci1/src/dci1v6",)
 PLACEHOLDER_BANNER = (
     "SYNTHETIC PLACEHOLDER --- NOT A DCI-1 v6 ARTIFACT. Written by "
     "tests_v6/synthetic_lifecycle.py into a temporary repository so that the "
-    "lifecycle can be walked. v6 is NOT ADOPTED and NOT REGISTERED, and the "
-    "document this stands in for has not been written.")
+    "lifecycle can be walked. v6 is NOT ADOPTED and NOT REGISTERED. The "
+    "adoption marker below is part of the stand-in and asserts nothing about "
+    "the real documents, which declare DRAFT_NOT_ADOPTED and are refused.")
 
 
 def _seed_placeholder(target: Path, rel: str) -> None:
-    """A labelled stand-in for a repo-root file v6 does not have yet."""
+    """A labelled stand-in for a repo-root file v6 does not have yet.
+
+    It carries an ``ADOPTED`` marker because ``assert_documents_adopted``
+    refuses a draft, and a walk that stopped at stage 1 would exercise
+    nothing. The marker is inside a pytest tmpdir, under a study id no v6
+    gate accepts, one line below a banner saying what the file is --- the
+    same trade the placeholder itself already makes for ``document_hashes``.
+    """
     target.parent.mkdir(parents=True, exist_ok=True)
     if target.suffix == ".json":
         target.write_text(json.dumps(
-            {"_what": PLACEHOLDER_BANNER, "_path": rel}, indent=2) + "\n")
+            {"_what": PLACEHOLDER_BANNER, "_path": rel,
+             "_status": "ADOPTED (placeholder; see _what)"}, indent=2) + "\n")
     else:
-        target.write_text(f"# {PLACEHOLDER_BANNER}\n\n(no content)\n")
+        target.write_text(
+            f"# {PLACEHOLDER_BANNER}\n\nstatus: ADOPTED\n\n(no content)\n")
 
 
 def synthetic_repo(root: Path, *, source: Path | str | None = None
@@ -143,7 +162,13 @@ def synthetic_repo(root: Path, *, source: Path | str | None = None
     repo.mkdir(parents=True, exist_ok=True)
     for rel in REPO_FILES:
         origin = src / rel
-        if not origin.is_file():                            # pragma: no cover
+        if not origin.is_file() or rel in GOVERNED_DOCUMENTS:
+            # The two documents §18 stage 1 binds are **always** seeded, never
+            # copied, whether or not the repository has them. A walk that
+            # copied the real preregistration would be exercising the
+            # lifecycle against the study's actual protocol text --- and would
+            # start passing or failing stage 1 according to a marker in a
+            # document this harness has no business depending on.
             _seed_placeholder(repo / rel, rel)
             continue
         target = repo / rel
@@ -151,7 +176,10 @@ def synthetic_repo(root: Path, *, source: Path | str | None = None
         shutil.copy2(origin, target)
     for pattern in REPO_GLOBS:
         for origin in sorted(src.glob(pattern)):
-            target = repo / origin.relative_to(src)
+            rel = str(origin.relative_to(src))
+            if rel in GOVERNED_DOCUMENTS:
+                continue          # seeded above; a glob may not overwrite it
+            target = repo / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(origin, target)
     for rel in REPO_TREES:
@@ -223,7 +251,7 @@ TEST_CLOSURES: dict[str, Any] = {
     "D22": "per_replication",
     "D23": 0.05,
     "D24": "probe_only_in_library",
-    "D25": "the surviving replication's own ladder and nothing above it",
+    "D25": "survivor_ladder_only",
 }
 assert not set(TEST_CLOSURES) & set(RESEARCHER_CLOSED)
 assert set(TEST_CLOSURES) | set(RESEARCHER_CLOSED) == set(
@@ -232,14 +260,24 @@ assert set(TEST_CLOSURES) | set(RESEARCHER_CLOSED) == set(
     "decision with neither makes the walk stop at stage 1 with a message "
     "about the wrong thing")
 
-#: Fixture stand-ins for ``GATE_2_75_COMPOSED_PROBE``. **These are not the
-#: registered stand-ins and there are none**: which instruments stand in for
-#: a companion is §34 D24 and it is open, so no ``probe_only`` family is
-#: authored. These three are ordinary screened families used as placeholders
-#: so the walk can render a composed probe cell, and
-#: ``gates_run.assert_synthetic_only`` refuses them outside this namespace.
-FIXTURE_STANDINS = (Constraint("XC1", 2), Constraint("XC2", 2),
-                    Constraint("RF5", 3))
+#: Fixture stand-in **severities** for ``GATE_2_75_COMPOSED_PROBE``. The
+#: families are the registered ``probe_only`` ones, so the instrument identity
+#: here is production; what is fixture is the severity, which production reads
+#: per replication from each stand-in's own solo ladder at iota_A. Passing
+#: them explicitly lets a scenario skip the ladder measurement, and
+#: ``gates_run.assert_synthetic_only`` refuses the override outside a
+#: synthetic study id. The ordinary walk does **not** use it: it runs the
+#: production path so the ladder and the placement rule are exercised.
+FIXTURE_STANDINS = (Constraint("PS1", 4), Constraint("PS2", 3),
+                    Constraint("PS3", 5))
+
+#: Every declared severity of every registered stand-in, so a scripted
+#: backend can answer the probe's solo ladder.
+def probe_only_rungs() -> list[Constraint]:
+    from dci1v6.verifiers.constraints import (PROBE_ONLY_FAMILY_IDS,
+                                              registered_severities)
+    return [Constraint(kind, q) for kind in PROBE_ONLY_FAMILY_IDS
+            for q in registered_severities(kind)]
 
 #: v5's researcher-decision record, carried into ``tests_v6`` as a fixture.
 #: See ``conftest``'s module note: v6 has taken nothing and the real path
@@ -438,11 +476,51 @@ def _satisfies(row_id: str, label: str, rate: float) -> bool:
     return ((draw + rotation) % FIXTURE_DRAWS) < keep
 
 
+#: The word count `_render` builds before padding. The rate forms need a
+#: denominator to turn a percentage into a count, and guessing one produced
+#: an answer whose realised rate was on the wrong side of its own severity.
+_TARGET_WORDS = 70
+
+#: Filler that ends in `y`, so a `y_final` target is met by choosing words
+#: rather than by appending an unrelated tail. Every one is at most six
+#: letters, so B's budget still admits it at m = 7.
+_Y_WORDS = ("daily", "early", "likely", "ready", "steady", "reply", "study")
+
+
+def _scripted_count(constraint: Constraint, *, satisfy: bool,
+                    words: int = _TARGET_WORDS) -> int:
+    """How many of the family's feature a scripted row must contain.
+
+    **Form-aware, which it was not.** The harness used to emit ``severity``
+    to satisfy and ``severity + 1`` to violate, which is right for an exact
+    count and for a budget and **wrong for a lower bound**: one more than the
+    bound still satisfies ``>= q``. Every ``count_lower_bound`` family in the
+    library --- CL7, CL8 and now the probe's PS2 --- was therefore scripted to
+    pass on every row it was meant to fail, and its fixture solo compliance
+    was 1.0 whatever ``_target_rate`` asked for.
+    """
+    form = FAMILIES[constraint.kind].form
+    q = constraint.severity
+    if form in RATE_FORMS:
+        # 100 * S / W against q, so the count that meets it depends on the
+        # denominator the renderer is about to build.
+        exact = q * words / 100.0
+        if form == FORM_RATE_LOWER_BOUND:
+            need = int(math.ceil(exact))
+            return need if satisfy else max(0, need - 1)
+        under = int(math.floor(exact))
+        return under if satisfy else under + 1
+    if form in LOWER_BOUND_FORMS:
+        return q if satisfy else max(0, q - 1)
+    return q if satisfy else q + 1
+
+
 def _compose(row_id: str, present: Sequence[Constraint]) -> str:
     """Build one answer satisfying the chosen subset of ``present``."""
     marker_counts: dict[str, int] = {}
     max_letters: int | None = None
     semicolons = commas = sentences = None
+    capitals = y_words = None
     violate_at: int | None = None
     for constraint in present:
         family = FAMILIES.get(constraint.kind)
@@ -468,24 +546,26 @@ def _compose(row_id: str, present: Sequence[Constraint]) -> str:
             continue
         marker = family.marker
         statistic = family.statistic_id
+        count = _scripted_count(constraint, satisfy=satisfy)
         if marker:
-            marker_counts[marker] = (constraint.severity if satisfy
-                                     else constraint.severity + 1)
+            marker_counts[marker] = count
         elif statistic == "semicolon":
-            semicolons = (constraint.severity if satisfy
-                          else constraint.severity + 1)
+            semicolons = count
         elif statistic == "comma":
-            commas = (constraint.severity if satisfy
-                      else constraint.severity + 1)
+            commas = count
         elif statistic == "sentence":
-            sentences = (constraint.severity if satisfy
-                         else constraint.severity + 1)
+            sentences = count
+        elif statistic == "capital_word":
+            capitals = count
+        elif statistic == "y_final":
+            y_words = count
     # §9.3: a pass by a response under twenty words is a VACUOUS pass. The
     # scenario suite needs one replication whose B is vacuous, because that
     # is §12.4 condition 2 and the only production route to REGIME_NOT_FOUND.
     short = any(c.label in SHORT_ANSWER_LABELS for c in present)
     return _render(row_id, marker_counts, max_letters, semicolons, commas,
-                   sentences, violate_at=violate_at, short=short)
+                   sentences, violate_at=violate_at, short=short,
+                   capitals=capitals, y_words=y_words)
 
 
 #: Scenario knobs. Empty for the ordinary walk, so the default fixture is
@@ -588,20 +668,38 @@ def _letters(n: int) -> str:
 def _render(row_id: str, markers: Mapping[str, int], max_letters: int | None,
             semicolons: int | None, commas: int | None,
             sentences: int | None, *, violate_at: int | None = None,
-            short: bool = False) -> str:
+            short: bool = False, capitals: int | None = None,
+            y_words: int | None = None) -> str:
     words: list[str] = []
     for marker, count in sorted(markers.items()):
         words.extend([marker] * count)
     pool = [w for w in _WORDS
             if (max_letters is None or len(w) <= max_letters)
             and w not in _MARKERS]
+    if y_words is not None:
+        # A y-final target has to be met exactly, so the filler must not
+        # contribute any of its own. Two of `_WORDS` end in y.
+        pool = [w for w in pool if not w.endswith("y")]
+        chosen = [w for w in _Y_WORDS
+                  if max_letters is None or len(w) <= max_letters]
+        if chosen:
+            words.extend([chosen[i % len(chosen)] for i in range(y_words)])
     if not pool:
         pool = ["a", "an", "of"]
     index = int(_u(row_id, "fill") * len(pool))
-    target_words = 8 if short else 70
+    target_words = 8 if short else _TARGET_WORDS
     while len(words) < target_words:
         words.append(pool[index % len(pool)])
         index += 1
+    if capitals is not None:
+        # `words_with_capital` counts alpha runs carrying an upper-case
+        # character, and nothing else here produces one --- the renderer
+        # never capitalises a sentence opening --- so capitalising exactly
+        # this many filler words gives exactly this statistic.
+        plain = [i for i, w in enumerate(words)
+                 if w not in _MARKERS and w.isalpha()]
+        for i in plain[:capitals]:
+            words[i] = words[i].capitalize()
     if violate_at is not None:
         # Stated and scripted to fail: one word past the budget, so B's solo
         # compliance is exactly the rate `_target_rate` asks for.
@@ -770,9 +868,9 @@ def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
     # to satisfy pairs from here on.
     record(gates_run.run_gate2_75(
         tree, producing_commit=commit, environment_digest="synthetic",
-        bank=the_bank, standins=FIXTURE_STANDINS,
+        bank=the_bank,
         block_limit=probe_block_limit,
-        generate=_scripted_for(list(rungs) + list(FIXTURE_STANDINS))))
+        generate=_scripted_for(list(rungs) + probe_only_rungs())))
     record(gates_run.run_gate3a(tree, producing_commit=commit,
                                 environment_digest="synthetic",
                                 bank=the_bank, resamples=resamples))
@@ -870,18 +968,40 @@ def _scripted_for(rungs: Sequence[Constraint]):
     It reconstructs the present constraints from the prompt cell registry the
     runner built, which is why ``run/execute`` writes the design file: the
     row identity is the join key between a plan and the rows it produced.
+
+    The wording table is rendered **once** per backend rather than once per
+    row. It used to be rendered inside the per-row scan, so a walk paid
+    ``rows x instruments x 4`` calls to ``wording`` --- which was tolerable at
+    v5's cell counts and is not once the probe generates fifteen cells a
+    severity over a library of forty families.
     """
-    lookup = {r.label: r for r in rungs}
+    table = _wording_table(rungs)
 
     def generate(run_dir, plan, rows):
         def responder(row: Mapping[str, Any]) -> str:
-            present = _present_from_prompt(row["user_prompt"], lookup)
+            present = _present_from_prompt(row["user_prompt"], table)
             return _compose(row["row_id"], present)
         return fake_backend(responder)(run_dir, plan, rows)
     return generate
 
 
-def _present_from_prompt(prompt: str, lookup: Mapping[str, Constraint]
+def _wording_table(rungs: Sequence[Constraint]
+                   ) -> list[tuple[Constraint, tuple[str, ...]]]:
+    """Every instance's four rendered wordings, rendered once."""
+    from dci1v6.protocol.wordings import wording
+
+    out: list[tuple[Constraint, tuple[str, ...]]] = []
+    for constraint in {r.label: r for r in rungs}.values():
+        lines = tuple(
+            line for line in
+            (wording(constraint.kind, index, constraint.severity)
+             for index in range(C.N_WORDINGS)) if line)
+        out.append((constraint, lines))
+    return out
+
+
+def _present_from_prompt(prompt: str,
+                         table: Sequence[tuple[Constraint, tuple[str, ...]]]
                          ) -> list[Constraint]:
     """Which registered instances a rendered prompt states.
 
@@ -890,13 +1010,5 @@ def _present_from_prompt(prompt: str, lookup: Mapping[str, Constraint]
     if a wording stops naming its own severity, which is a real defect in the
     thing the model is asked.
     """
-    from dci1v6.protocol.wordings import wording
-
-    present: list[Constraint] = []
-    for constraint in lookup.values():
-        for index in range(C.N_WORDINGS):
-            line = wording(constraint.kind, index, constraint.severity)
-            if line and line in prompt:
-                present.append(constraint)
-                break
-    return present
+    return [constraint for constraint, lines in table
+            if any(line in prompt for line in lines)]
