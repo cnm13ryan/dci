@@ -1,0 +1,1555 @@
+{
+ "_classification": "DEVELOPMENT_EVIDENCE",
+ "_not_evidence_about": [
+  "Delta_R",
+  "Delta_j",
+  "Xi",
+  "any order estimand"
+ ],
+ "_reads": "signed v5 stage records (hash and signature verified on read) and the scored rows they were computed from",
+ "_v5_closure": "reports/dci1v5/CLOSURE.md",
+ "_what": "closed-v5 evidence for the DCI-1 v6 preregistration-readiness memo",
+ "composed_headroom": {
+  "band": [
+   0.05,
+   0.95
+  ],
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "admitted_arms": [
+     "base",
+     "class"
+    ],
+    "band_verdict": "PASS",
+    "composed_lift_on_B_by_cell": {
+     "pair:A+B": -0.16666666666666663,
+     "pair:B+A": 0.02083333333333337,
+     "pair:B+CL": 0.10416666666666674,
+     "pair:CL+B": -0.07291666666666663
+    },
+    "composed_lift_spread_across_companions_and_orders": 0.27083333333333337,
+    "decomposition_of_the_worst_B_cell": {
+     "calibration_split_solo_B_at_m_star": 0.8059895833333334,
+     "composed_split_solo_B": 0.7916666666666666,
+     "composition_term": 0.10416666666666674,
+     "split_transfer_calibration_to_composed": -0.01432291666666674,
+     "total_margin_needed_over_calibration_solo_B": 0.08984375,
+     "worst_B_cell": "pair:B+CL",
+     "worst_B_compliance": 0.8958333333333334
+    },
+    "delta_sensitivity": {
+     "0.025": {
+      "flagged": [],
+      "margin_band": [
+       0.07500000000000001,
+       0.9249999999999999
+      ]
+     },
+     "0.05": {
+      "flagged": [],
+      "margin_band": [
+       0.1,
+       0.8999999999999999
+      ]
+     },
+     "0.075": {
+      "flagged": [
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.8958333333333334,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       }
+      ],
+      "margin_band": [
+       0.125,
+       0.875
+      ]
+     }
+    },
+    "m_star": 10,
+    "n_evaluated_cell_slot_entries": 11,
+    "recomputation_validated_against_signed_records": {
+     "all_agree": true,
+     "n_checks": 11
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "admitted_arms": [
+     "base",
+     "class"
+    ],
+    "band_verdict": "FAIL",
+    "composed_lift_on_B_by_cell": {
+     "pair:A+B": -0.19791666666666663,
+     "pair:B+A": -0.03125,
+     "pair:B+CL": 0.03125,
+     "pair:CL+B": -0.08333333333333326
+    },
+    "composed_lift_spread_across_companions_and_orders": 0.22916666666666663,
+    "decomposition_of_the_worst_B_cell": {
+     "calibration_split_solo_B_at_m_star": 0.8671875,
+     "composed_split_solo_B": 0.9479166666666666,
+     "composition_term": 0.03125,
+     "split_transfer_calibration_to_composed": 0.08072916666666663,
+     "total_margin_needed_over_calibration_solo_B": 0.11197916666666663,
+     "worst_B_cell": "pair:B+CL",
+     "worst_B_compliance": 0.9791666666666666
+    },
+    "delta_sensitivity": {
+     "0.025": {
+      "flagged": [
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.9791666666666666,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "solo:CL",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "CL"
+       },
+       {
+        "cell": "solo:B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "CL"
+       }
+      ],
+      "margin_band": [
+       0.07500000000000001,
+       0.9249999999999999
+      ]
+     },
+     "0.05": {
+      "flagged": [
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.9791666666666666,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "solo:CL",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "CL"
+       },
+       {
+        "cell": "solo:B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+A",
+        "compliance": 0.9166666666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:CL+B",
+        "compliance": 0.08333333333333333,
+        "outside_the_registered_band": false,
+        "slot": "CL"
+       },
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "CL"
+       }
+      ],
+      "margin_band": [
+       0.1,
+       0.8999999999999999
+      ]
+     },
+     "0.075": {
+      "flagged": [
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.9791666666666666,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "solo:CL",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "CL"
+       },
+       {
+        "cell": "solo:B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+A",
+        "compliance": 0.9166666666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:CL+B",
+        "compliance": 0.08333333333333333,
+        "outside_the_registered_band": false,
+        "slot": "CL"
+       },
+       {
+        "cell": "pair:B+CL",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "CL"
+       }
+      ],
+      "margin_band": [
+       0.125,
+       0.875
+      ]
+     }
+    },
+    "m_star": 10,
+    "n_evaluated_cell_slot_entries": 11,
+    "recomputation_validated_against_signed_records": {
+     "all_agree": true,
+     "n_checks": 2
+    }
+   },
+   "qwen3-4b": {
+    "admitted_arms": [
+     "base"
+    ],
+    "band_verdict": "PASS",
+    "composed_lift_on_B_by_cell": {
+     "pair:A+B": 0.05208333333333337,
+     "pair:B+A": 0.05208333333333337
+    },
+    "composed_lift_spread_across_companions_and_orders": 0.0,
+    "decomposition_of_the_worst_B_cell": {
+     "calibration_split_solo_B_at_m_star": 0.76953125,
+     "composed_split_solo_B": 0.84375,
+     "composition_term": 0.05208333333333337,
+     "split_transfer_calibration_to_composed": 0.07421875,
+     "total_margin_needed_over_calibration_solo_B": 0.12630208333333337,
+     "worst_B_cell": "pair:A+B",
+     "worst_B_compliance": 0.8958333333333334
+    },
+    "delta_sensitivity": {
+     "0.025": {
+      "flagged": [],
+      "margin_band": [
+       0.07500000000000001,
+       0.9249999999999999
+      ]
+     },
+     "0.05": {
+      "flagged": [],
+      "margin_band": [
+       0.1,
+       0.8999999999999999
+      ]
+     },
+     "0.075": {
+      "flagged": [
+       {
+        "cell": "pair:A+B",
+        "compliance": 0.8958333333333334,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+A",
+        "compliance": 0.8958333333333334,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       }
+      ],
+      "margin_band": [
+       0.125,
+       0.875
+      ]
+     }
+    },
+    "m_star": 12,
+    "n_evaluated_cell_slot_entries": 6,
+    "recomputation_validated_against_signed_records": {
+     "all_agree": true,
+     "n_checks": 6
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "admitted_arms": [
+     "base",
+     "core"
+    ],
+    "band_verdict": "FAIL",
+    "composed_lift_on_B_by_cell": {
+     "pair:A+B": 0.13541666666666663,
+     "pair:B+A": 0.07291666666666663,
+     "pair:B+R1": 0.17708333333333337,
+     "pair:B+R2": 0.13541666666666663,
+     "pair:B+R3": 0.125,
+     "pair:R1+B": 0.14583333333333337,
+     "pair:R2+B": 0.05208333333333337,
+     "pair:R3+B": 0.13541666666666663
+    },
+    "composed_lift_spread_across_companions_and_orders": 0.125,
+    "decomposition_of_the_worst_B_cell": {
+     "calibration_split_solo_B_at_m_star": 0.7734375,
+     "composed_split_solo_B": 0.8125,
+     "composition_term": 0.17708333333333337,
+     "split_transfer_calibration_to_composed": 0.0390625,
+     "total_margin_needed_over_calibration_solo_B": 0.21614583333333337,
+     "worst_B_cell": "pair:B+R1",
+     "worst_B_compliance": 0.9895833333333334
+    },
+    "delta_sensitivity": {
+     "0.025": {
+      "flagged": [
+       {
+        "cell": "pair:B+R1",
+        "compliance": 0.9895833333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:A+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R2",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R3+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R3",
+        "compliance": 0.9375,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R1"
+       },
+       {
+        "cell": "pair:R1+R3",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:A+R3",
+        "compliance": 0.0625,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:R1+A",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "A"
+       }
+      ],
+      "margin_band": [
+       0.07500000000000001,
+       0.9249999999999999
+      ]
+     },
+     "0.05": {
+      "flagged": [
+       {
+        "cell": "pair:B+R1",
+        "compliance": 0.9895833333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:A+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R2",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R3+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R3",
+        "compliance": 0.9375,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:A+R1",
+        "compliance": 0.08333333333333333,
+        "outside_the_registered_band": false,
+        "slot": "A"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R1"
+       },
+       {
+        "cell": "pair:R1+R3",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:A+R3",
+        "compliance": 0.0625,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:R1+A",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "A"
+       }
+      ],
+      "margin_band": [
+       0.1,
+       0.8999999999999999
+      ]
+     },
+     "0.075": {
+      "flagged": [
+       {
+        "cell": "pair:B+R1",
+        "compliance": 0.9895833333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.9583333333333334,
+        "outside_the_registered_band": true,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:A+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R2",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R3+B",
+        "compliance": 0.9479166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+R3",
+        "compliance": 0.9375,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:B+A",
+        "compliance": 0.8854166666666666,
+        "outside_the_registered_band": false,
+        "slot": "B"
+       },
+       {
+        "cell": "pair:R3+R1",
+        "compliance": 0.11458333333333333,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:A+R1",
+        "compliance": 0.08333333333333333,
+        "outside_the_registered_band": false,
+        "slot": "A"
+       },
+       {
+        "cell": "pair:R1+B",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R1"
+       },
+       {
+        "cell": "pair:R1+R3",
+        "compliance": 0.07291666666666667,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:A+R3",
+        "compliance": 0.0625,
+        "outside_the_registered_band": false,
+        "slot": "R3"
+       },
+       {
+        "cell": "pair:R1+A",
+        "compliance": 0.052083333333333336,
+        "outside_the_registered_band": false,
+        "slot": "A"
+       }
+      ],
+      "margin_band": [
+       0.125,
+       0.875
+      ]
+     }
+    },
+    "m_star": 11,
+    "n_evaluated_cell_slot_entries": 45,
+    "recomputation_validated_against_signed_records": {
+     "all_agree": true,
+     "n_checks": 2
+    }
+   }
+  },
+  "what_the_decomposition_means": "worst_B = calibration_solo_B(m*) + split_transfer + composition. A Gate-2.75 probe on the calibration split MEASURES the composition term with a stand-in and must BUDGET, in delta, for (a) the calibration->composed split transfer and (b) the stand-in -> selected-reference transfer."
+ },
+ "expansion_reachability": {
+  "answer": "no",
+  "per_model": {
+   "gemma-3n-e2b-it": {
+    "families_admitted_round_1": [
+     "CL7",
+     "CL8",
+     "CR1",
+     "CR10",
+     "CR11",
+     "CR12",
+     "CR2",
+     "CR3",
+     "CR4",
+     "CR6",
+     "CR7",
+     "CR8",
+     "CR9",
+     "RF10",
+     "RF11",
+     "RF9",
+     "XC2"
+    ],
+    "iota_a_prescreen": 0.666504144319844,
+    "signed_n_rounds": 2,
+    "signed_rounds_tier1_admitted": [],
+    "tier1_admitted_round_1": [],
+    "tier1_detail": {
+     "MK1": {
+      "branch": "bracketing",
+      "edges": [
+       2,
+       8
+      ],
+      "measured_iota_span": 0.3758,
+      "n_above": 3,
+      "n_below": 5,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK2": {
+      "branch": "bracketing",
+      "edges": [
+       3,
+       8
+      ],
+      "measured_iota_span": 0.3334,
+      "n_above": 2,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK3": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.2493,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK4": {
+      "branch": "bracketing",
+      "edges": [
+       3,
+       7
+      ],
+      "measured_iota_span": 0.4241,
+      "n_above": 5,
+      "n_below": 3,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK5": {
+      "branch": "bracketing",
+      "edges": [
+       2,
+       7
+      ],
+      "measured_iota_span": 0.3335,
+      "n_above": 4,
+      "n_below": 4,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK6": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.1671,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK7": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.0896,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK8": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.4433,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    }
+   },
+   "gemma-3n-e4b-it": {
+    "families_admitted_round_1": [
+     "CL7",
+     "CL8",
+     "CR1",
+     "CR10",
+     "CR11",
+     "CR12",
+     "CR2",
+     "CR3",
+     "CR4",
+     "CR6",
+     "CR7",
+     "CR8",
+     "CR9",
+     "RF10",
+     "RF11",
+     "RF9",
+     "XC2",
+     "XC3"
+    ],
+    "iota_a_prescreen": 0.7082266910420476,
+    "signed_n_rounds": 2,
+    "signed_rounds_tier1_admitted": [],
+    "tier1_admitted_round_1": [],
+    "tier1_detail": {
+     "MK1": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.2918,
+      "n_above": 4,
+      "n_below": 4,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK2": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.4169,
+      "n_above": 4,
+      "n_below": 4,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK3": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.3965,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK4": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.3752,
+      "n_above": 4,
+      "n_below": 3,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK5": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.6671,
+      "n_above": 5,
+      "n_below": 3,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK6": {
+      "branch": "bracketing",
+      "edges": [
+       2,
+       8
+      ],
+      "measured_iota_span": 0.2918,
+      "n_above": 1,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK7": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.25,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK8": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.5007,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    }
+   },
+   "qwen3-4b": {
+    "families_admitted_round_1": [
+     "CL7",
+     "CL8",
+     "CR1",
+     "CR10",
+     "CR11",
+     "CR12",
+     "CR2",
+     "CR3",
+     "CR4",
+     "CR5",
+     "CR6",
+     "CR7",
+     "CR8",
+     "CR9",
+     "RF10",
+     "RF11",
+     "RF9",
+     "XC2"
+    ],
+    "iota_a_prescreen": 0.666585425298562,
+    "signed_n_rounds": 2,
+    "signed_rounds_tier1_admitted": [],
+    "tier1_admitted_round_1": [],
+    "tier1_detail": {
+     "MK1": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.4587,
+      "n_above": 7,
+      "n_below": 1,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK2": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.6252,
+      "n_above": 3,
+      "n_below": 5,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK3": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.7491,
+      "n_above": 1,
+      "n_below": 7,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK4": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.9177,
+      "n_above": 2,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK5": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.542,
+      "n_above": 2,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK6": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.4584,
+      "n_above": 6,
+      "n_below": 2,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK7": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.5427,
+      "n_above": 2,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK8": {
+      "branch": "one_sided_below",
+      "go": "easier",
+      "measured_iota_span": 0.5421,
+      "n_above": 0,
+      "n_below": 8,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    }
+   },
+   "qwen3-4b-instruct-2507": {
+    "families_admitted_round_1": [
+     "CL7",
+     "CL8",
+     "CR1",
+     "CR10",
+     "CR11",
+     "CR12",
+     "CR2",
+     "CR4",
+     "CR5",
+     "CR6",
+     "CR7",
+     "CR8",
+     "CR9",
+     "RF10",
+     "RF11",
+     "RF9",
+     "XC2",
+     "XC3"
+    ],
+    "iota_a_prescreen": 0.624267578125,
+    "signed_n_rounds": 0,
+    "signed_rounds_tier1_admitted": [],
+    "tier1_admitted_round_1": [],
+    "tier1_detail": {
+     "MK1": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       7
+      ],
+      "measured_iota_span": 0.4168,
+      "n_above": 7,
+      "n_below": 1,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK2": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       7
+      ],
+      "measured_iota_span": 0.4169,
+      "n_above": 7,
+      "n_below": 1,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK3": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.7508,
+      "n_above": 2,
+      "n_below": 6,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK4": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.7921,
+      "n_above": 4,
+      "n_below": 4,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK5": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.5842,
+      "n_above": 4,
+      "n_below": 4,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK6": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.5423,
+      "n_above": 6,
+      "n_below": 2,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK7": {
+      "branch": "bracketing",
+      "edges": [
+       1,
+       8
+      ],
+      "measured_iota_span": 0.3755,
+      "n_above": 5,
+      "n_below": 3,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     },
+     "MK8": {
+      "branch": "bracketing",
+      "edges": [
+       2,
+       8
+      ],
+      "measured_iota_span": 0.4171,
+      "n_above": 1,
+      "n_below": 7,
+      "picks": [],
+      "unmeasured_reserve": [
+       9,
+       10,
+       11,
+       12
+      ]
+     }
+    }
+   }
+  },
+  "question": "does \u00a712.6's expansion rule ever admit a Tier-1 reserve rung, on any of the four replications?",
+  "span_is_not_reachable_by_interpolation": "C4's span is max(iota) - min(iota) over a family's ELIGIBLE rungs. A rung admitted strictly between two measured edges cannot lie outside their range, so interpolation cannot raise any family's span by construction.",
+  "tier1_reserve_rungs_per_family": [
+   9,
+   10,
+   11,
+   12
+  ],
+  "why": "the bracketing branch admits only reserve rungs lying strictly between the two measured edges that bracket iota_A, and every Tier-1 rung between those edges is already in the round-0 ladder; the one-sided-below branch goes easier, and the unmeasured Tier-1 reserve is harder. Both branches return an empty pick set for every Tier-1 family, on every replication."
+ },
+ "library_and_budget": {
+  "confirmatory_by_admitted_arms": {
+   "_derivation": "n_cells(arms) x N_BLOCKS x M_DRAWS, plus the \u00a78.3 greedy sensitivity run at GREEDY_BLOCKS x GREEDY_DRAWS",
+   "blocks": 384,
+   "draws": 8,
+   "greedy_blocks": 96,
+   "greedy_draws": 1,
+   "per_arm_set": {
+    "base": {
+     "cells": 5,
+     "confirmatory_rows": 15360,
+     "greedy_rows": 480
+    },
+    "base+class": {
+     "cells": 8,
+     "confirmatory_rows": 24576,
+     "greedy_rows": 768
+    },
+    "base+core": {
+     "cells": 26,
+     "confirmatory_rows": 79872,
+     "greedy_rows": 2496
+    },
+    "base+core+class": {
+     "cells": 29,
+     "confirmatory_rows": 89088,
+     "greedy_rows": 2784
+    },
+    "base+core+spectrum+nearform+class": {
+     "cells": 56,
+     "confirmatory_rows": 172032,
+     "greedy_rows": 5376
+    }
+   }
+  },
+  "cost_of_measuring_the_whole_tier1_reserve_per_replication": {
+   "added_candidate_calibration_rows": 24576,
+   "added_rungs": 32,
+   "added_screen_rows": 768,
+   "note": "\u00a712.7 measures EVERY carried Tier-1/Tier-2 rung, so a Tier-1 rung admitted at the screen is a mandatory Gate-2 candidate; the 24-rung Tier-3 cap does not absorb it."
+  },
+  "realised_v5": {
+   "gemma-3n-e2b-it": {
+    "behavioural_rows": 114792,
+    "gate2_candidates_measured": 113,
+    "screened_rungs": 419
+   },
+   "gemma-3n-e4b-it": {
+    "behavioural_rows": 116400,
+    "gate2_candidates_measured": 115,
+    "screened_rungs": 422
+   },
+   "qwen3-4b": {
+    "behavioural_rows": 114648,
+    "gate2_candidates_measured": 113,
+    "screened_rungs": 425
+   },
+   "qwen3-4b-instruct-2507": {
+    "behavioural_rows": 113472,
+    "gate2_candidates_measured": 112,
+    "screened_rungs": 326
+   }
+  },
+  "registered_v5": {
+   "candidate_calibration_population": 112,
+   "candidate_calibration_rows": 86016,
+   "candidate_calibration_rows_per_rung": 768,
+   "ladder_screen_rows": 8208,
+   "screen_rows_per_rung": 24,
+   "tier1_frozen_reserve_rungs": 96,
+   "tier1_reserve_rungs_never_measured_on_any_replication": 32,
+   "tier1_round_0_ladder_rungs": 64
+  }
+ },
+ "span_headroom": {
+  "all_reach_c4_span_in_principle": true,
+  "c4_span": 0.4,
+  "caveat": "reachable in principle is not the same as reached. Whether the added rungs fall far enough is a measurement nobody has made; on gemma-3n-e2b-it MK1 had already flattened at 0.417/0.416 by q = 7, 8.",
+  "eligibility_floor_on_p_solo": 0.1,
+  "n_near_miss_families": 14,
+  "per_model": {
+   "gemma-3n-e2b-it": [
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "largest_reachable_span": 0.6916412818325819,
+     "max_eligible_iota": 0.7916412818325819,
+     "measured_span": 0.376,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "CL7",
+     "feature_group": "letter_a",
+     "largest_reachable_span": 0.759504132231405,
+     "max_eligible_iota": 0.859504132231405,
+     "measured_span": 0.363,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "largest_reachable_span": 0.6497560975609756,
+     "max_eligible_iota": 0.7497560975609756,
+     "measured_span": 0.333,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK5",
+     "feature_group": "marker_indeed",
+     "largest_reachable_span": 0.7749847690995492,
+     "max_eligible_iota": 0.8749847690995491,
+     "measured_span": 0.292,
+     "reaches_c4_span_in_principle": true
+    }
+   ],
+   "gemma-3n-e4b-it": [
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "largest_reachable_span": 0.7749085588880761,
+     "max_eligible_iota": 0.8749085588880761,
+     "measured_span": 0.333,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "largest_reachable_span": 0.6082977945656147,
+     "max_eligible_iota": 0.7082977945656147,
+     "measured_span": 0.292,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "largest_reachable_span": 0.7333130254660656,
+     "max_eligible_iota": 0.8333130254660656,
+     "measured_span": 0.209,
+     "reaches_c4_span_in_principle": true
+    }
+   ],
+   "qwen3-4b": [
+    {
+     "family": "XC3",
+     "feature_group": "sentence",
+     "largest_reachable_span": 0.6465915826911678,
+     "max_eligible_iota": 0.7465915826911678,
+     "measured_span": 0.366,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "largest_reachable_span": 0.775,
+     "max_eligible_iota": 0.875,
+     "measured_span": 0.334,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "largest_reachable_span": 0.775,
+     "max_eligible_iota": 0.875,
+     "measured_span": 0.333,
+     "reaches_c4_span_in_principle": true
+    }
+   ],
+   "qwen3-4b-instruct-2507": [
+    {
+     "family": "MK7",
+     "feature_group": "marker_instead",
+     "largest_reachable_span": 0.775,
+     "max_eligible_iota": 0.875,
+     "measured_span": 0.375,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "largest_reachable_span": 0.7748780487804878,
+     "max_eligible_iota": 0.8748780487804878,
+     "measured_span": 0.292,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "largest_reachable_span": 0.6496950475725787,
+     "max_eligible_iota": 0.7496950475725787,
+     "measured_span": 0.292,
+     "reaches_c4_span_in_principle": true
+    },
+    {
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "largest_reachable_span": 0.6915650901999024,
+     "max_eligible_iota": 0.7915650901999024,
+     "measured_span": 0.208,
+     "reaches_c4_span_in_principle": true
+    }
+   ]
+  },
+  "question": "for the families that straddle iota_A with >=3 rungs and miss C4 only on the 0.40 span, is 0.40 reachable at all inside the eligibility band?",
+  "smallest_reachable_span": 0.6082977945656147
+ },
+ "split_transfer": {
+  "caveat": "the composed split is 24 topics at M_cal draws, so part of each transfer is sampling error at that size and part is a real topic-set difference; this separates neither, and reports the realised movement only.",
+  "largest": {
+   "calibration_split_solo": 0.76953125,
+   "composed_split_solo": 0.9583333333333334,
+   "instrument": "RF12:7",
+   "model_key": "gemma-3n-e4b-it",
+   "slot": "CL",
+   "topics_calibration": 192,
+   "topics_composed": 24,
+   "transfer": 0.18880208333333337
+  },
+  "max_absolute_transfer": 0.18880208333333337,
+  "mean_absolute_transfer": 0.06430288461538462,
+  "n_observations": 13,
+  "observations": [
+   {
+    "calibration_split_solo": 0.6080729166666666,
+    "composed_split_solo": 0.5520833333333334,
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e2b-it",
+    "slot": "A",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": -0.05598958333333326
+   },
+   {
+    "calibration_split_solo": 0.8059895833333334,
+    "composed_split_solo": 0.7916666666666666,
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e2b-it",
+    "slot": "B",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": -0.01432291666666674
+   },
+   {
+    "calibration_split_solo": 0.59375,
+    "composed_split_solo": 0.625,
+    "instrument": "CR5:2",
+    "model_key": "gemma-3n-e2b-it",
+    "slot": "CL",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.03125
+   },
+   {
+    "calibration_split_solo": 0.7278645833333334,
+    "composed_split_solo": 0.6875,
+    "instrument": "A:6",
+    "model_key": "gemma-3n-e4b-it",
+    "slot": "A",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": -0.04036458333333337
+   },
+   {
+    "calibration_split_solo": 0.8671875,
+    "composed_split_solo": 0.9479166666666666,
+    "instrument": "B:10",
+    "model_key": "gemma-3n-e4b-it",
+    "slot": "B",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.08072916666666663
+   },
+   {
+    "calibration_split_solo": 0.76953125,
+    "composed_split_solo": 0.9583333333333334,
+    "instrument": "RF12:7",
+    "model_key": "gemma-3n-e4b-it",
+    "slot": "CL",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.18880208333333337
+   },
+   {
+    "calibration_split_solo": 0.71484375,
+    "composed_split_solo": 0.6979166666666666,
+    "instrument": "A:2",
+    "model_key": "qwen3-4b",
+    "slot": "A",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": -0.01692708333333337
+   },
+   {
+    "calibration_split_solo": 0.76953125,
+    "composed_split_solo": 0.84375,
+    "instrument": "B:12",
+    "model_key": "qwen3-4b",
+    "slot": "B",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.07421875
+   },
+   {
+    "calibration_split_solo": 0.55859375,
+    "composed_split_solo": 0.6354166666666666,
+    "instrument": "A:5",
+    "model_key": "qwen3-4b-instruct-2507",
+    "slot": "A",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.07682291666666663
+   },
+   {
+    "calibration_split_solo": 0.7734375,
+    "composed_split_solo": 0.8125,
+    "instrument": "B:11",
+    "model_key": "qwen3-4b-instruct-2507",
+    "slot": "B",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.0390625
+   },
+   {
+    "calibration_split_solo": 0.53515625,
+    "composed_split_solo": 0.6145833333333334,
+    "instrument": "MK3:3",
+    "model_key": "qwen3-4b-instruct-2507",
+    "slot": "R1",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.07942708333333337
+   },
+   {
+    "calibration_split_solo": 0.52734375,
+    "composed_split_solo": 0.5833333333333334,
+    "instrument": "MK8:4",
+    "model_key": "qwen3-4b-instruct-2507",
+    "slot": "R2",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.05598958333333337
+   },
+   {
+    "calibration_split_solo": 0.51171875,
+    "composed_split_solo": 0.59375,
+    "instrument": "MK7:7",
+    "model_key": "qwen3-4b-instruct-2507",
+    "slot": "R3",
+    "topics_calibration": 192,
+    "topics_composed": 24,
+    "transfer": 0.08203125
+   }
+  ],
+  "question": "how far does one instrument's solo compliance move between the split it is ADMITTED on (\u00a713.4, 192 calibration topics) and the split it is AUDITED on (\u00a713.14, 24 reserved composed topics)?"
+ }
+}

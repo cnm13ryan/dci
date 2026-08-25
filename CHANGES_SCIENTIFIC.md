@@ -13,6 +13,50 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — V6-E01: §12.6's expansion cannot reach the Tier-1 reserve it was widened to supply
+
+**What changed.** Nothing in v5, which is closed and untouched. A v6 readiness
+audit of `stages/regime.expansion_round` found that the rule admits **no
+Tier-1 marker reserve rung on any of the four replications, in either round**.
+Replayed on all four signed pre-screen tables from the registered round-0
+ladders, the pick set is empty for every `MK*` family, for two structural
+reasons: a straddling family takes the bracketing branch, whose picks lie
+strictly between two edges that already have every intervening rung measured;
+and a one-sided family is one-sided *below*, so the rule goes easier while the
+unmeasured Tier-1 reserve is harder. `dci1/reports/dci1v6/READINESS.md` §3.1.a,
+computed by `dci1/tools/v6_readiness_evidence.py` into
+`dci1/reports/dci1v6/readiness_evidence.json`.
+
+**Why it is scientifically consequential.** §7.10 widened the Tier-1 reserve
+from 1..10 to 1..12 *specifically* for C4's within-family span, recording that
+"higher q is harder, so extending the reserve extends the span downward, which
+is the deficient side". 32 rungs per replication were provisioned for that
+purpose and were never reachable. More generally, C4's span is
+`max(iota) - min(iota)` over a family's eligible rungs, and a rung admitted
+strictly *between* two measured edges cannot lie outside their range — so
+interpolation cannot raise any family's span **by construction**. On the one
+decisive condition that failed, the registered repair mechanism could not
+help whatever the model did.
+
+**Which results are affected, and how.** No v5 verdict, record or number
+changes. C4 was correctly evaluated on what was measured; the three
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` verdicts stand and D6 remains irreversible;
+nothing is re-run, re-verdicted or reinterpreted as a null. What changes is the
+**diagnosis**: `reports/dci1v5/survival_diagnosis.md` attributes bottleneck 1
+to candidate-library shape, and part of it is the expansion rule being unable
+to use the library it already has. The two readings are not separable from
+closed v5 data — measuring the Tier-1 reserve rungs would be new behavioural
+data — so the diagnosis is **narrowed, not corrected**, and its own numbers
+remain exactly as recorded.
+
+**Comparability.** v5 and any future study are not affected in opposite
+directions here, because no v6 code exists yet. Any repair (READINESS §3.1.b)
+changes which rungs an expansion measures and therefore which data C4 reads;
+it is a prospective change, applies to v6 only, and gets its own entry when it
+lands.
+
+---
+
 ## 2026-08-24 — v5 closed with no confirmatory data; a registered terminal status had no raise path
 
 **What changed.** v5 reached its scientific end. Two replications terminated at

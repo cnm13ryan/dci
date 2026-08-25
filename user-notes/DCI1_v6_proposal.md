@@ -6,6 +6,15 @@ no manifest exists, and no behavioural row may be generated against it. v6 is a
 closed, its four replications are scientifically terminal, and none of its rows
 may enter v6 as confirmatory evidence.
 
+**Audited 2026-08-25.** [`../dci1/reports/dci1v6/READINESS.md`](../dci1/reports/dci1v6/READINESS.md)
+turns what follows mechanically from the intent below into an exact
+specification, and reports three things this document does not know: §12.6's
+expansion cannot reach the Tier-1 reserve §7.10 widened for C4's span
+(V6-E01); the realised error a Gate-2.75 margin must absorb exceeds
+$\delta = 0.05$; and a probe at $m^*$ cannot see the failure that terminated
+`gemma-3n-e4b-it`. Six researcher decisions are open there and none is taken.
+Where the two documents disagree, the memo carries the computed evidence.
+
 Rationale and numbers: [`../dci1/reports/dci1v5/survival_diagnosis.md`].
 v5 is used as **DEVELOPMENT_EVIDENCE** for survival and identification only.
 Per §30's precedent this means v6 is the prospective test of anything fitted
