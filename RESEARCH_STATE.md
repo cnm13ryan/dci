@@ -3,7 +3,7 @@
 The 10-minute orientation. Everything here points at something else; primary
 numbers live in the reports and the generated artifacts, not in this file.
 
-Last reviewed: 2026-08-22.
+Last reviewed: 2026-08-25.
 
 ---
 
@@ -1758,6 +1758,40 @@ satisfiable, probe composed headroom before $m^*$ is fixed, relax no threshold.
 **It is a proposal, not a registered protocol**, and no row may be generated
 against it.
 
+### 4aa. V6-E01: the expansion rule could not reach the reserve, and what a probe would have to absorb (2026-08-25)
+
+The v6 readiness audit
+([`dci1/reports/dci1v6/READINESS.md`](dci1/reports/dci1v6/READINESS.md), numbers
+in `readiness_evidence.json` from signed v5 records) found three things.
+
+**§12.6's expansion admits no Tier-1 reserve rung, on any replication, in
+either round.** Replayed on all four signed pre-screen tables, the pick set is
+empty for every marker family: a straddling family takes the bracketing branch,
+whose picks lie strictly between two edges with every intervening rung already
+measured; a one-sided family is one-sided *below* and the branch goes easier
+while the unmeasured reserve is harder. §7.10 widened that reserve from 1..10
+to 1..12 **for C4's span specifically**, and 32 rungs per replication were
+never reachable. And since C4's span is `max(iota) − min(iota)` over eligible
+rungs, an interpolated rung cannot raise a span at all. No v5 verdict changes;
+the diagnosis narrows — part of what `survival_diagnosis.md` attributes to
+library shape is the rule being unable to use the library it has.
+
+**The v6 proposal's `delta = 0.05` is smaller than the error a probe must
+absorb.** The worst B cell decomposes exactly into calibration solo at $m^*$ +
+the calibration→composed split transfer + the composition term; the totals are
++0.090, +0.112, +0.126 and +0.216. Across all 13 solo slot measurements the
+split transfer alone reaches **+0.189** (`gemma-3n-e4b-it`, its class reference
+admitted at 0.770 on 192 calibration topics and measured 0.958 on the 24
+composed topics). None of δ ∈ {0.025, 0.05, 0.075} covers it.
+
+**A probe at $m^*$ cannot see the failure that ended `gemma-3n-e4b-it`.** Its
+`solo:CL` = 0.958 is a companion slot in a solo cell, decided two stages after
+the probe. And success at the library change multiplies Gate-4 exposure: the
+entries audited against the hard band go 6 → 95 as arms are admitted.
+
+Six researcher decisions are open and none is taken. Nothing is registered, no
+v6 code exists, and no row may be generated.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1833,10 +1867,14 @@ against it.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: v5's §12.6
-eligibility predicate resolved at E2 and §18 step 14's raw-coordinate fit
-implemented as §15 registers it, with one clean superseding registration and
-all four replications qualified — in §4x. Before it: the v5 stage 3–18
+whether old and new remain comparable. Most recent: V6-E01 — §12.6's expansion
+could not reach the Tier-1 reserve §7.10 widened for C4's span, which narrows
+the v5 survival diagnosis without changing a v5 verdict — in §4aa. Before it:
+v5 closed with no replication reaching confirmatory generation, and V5-E32, a
+registered terminal status with no raise path — in §4y and §4z. Before it:
+v5's §12.6 eligibility predicate resolved at E2 and §18 step 14's
+raw-coordinate fit implemented as §15 registers it, with one clean superseding
+registration and all four replications qualified — in §4x. Before it: the v5 stage 3–18
 execution-path audit — twelve registered rules that the production path did
 not execute, and one, §12.6's eligibility predicate, that the preregistration
 did not determine — in §4w. Before it: DCI-1 v5 drafted — the core
@@ -1863,6 +1901,7 @@ and §4p.
 | the adopted successor protocol | `user-notes/DCI1_preregistration_v5.md` (standalone), `user-notes/DCI1_v4r4_to_v5_changelog.md` |
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
 | what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
+| what v6 would have to fix, and what is still the researcher's | `dci1/reports/dci1v6/READINESS.md`, `dci1/reports/dci1v6/readiness_evidence.json` |
 | what remains a limitation rather than a decision | `dci1/reports/dci1v5/v5_prereg_redteam.md` (R5 above all), `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
 | every §34 closure, its value, its evidence and who took it | `dci1/reports/dci1v5/researcher_decisions.json` — including D17's floor spec and U2's and P1's resolutions |
 | the four decision packets, as adopted | `dci1/reports/dci1v5/d1_arm_compute_decision.md`, `d4_marker_audit.md`, `d17_b_strength_decision.md`, `u2_tier_model_decision.md` |
