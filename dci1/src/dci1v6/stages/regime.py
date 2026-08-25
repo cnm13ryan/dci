@@ -53,7 +53,8 @@ from dci1v6.protocol import open_items
 from dci1v6.stages.calibration_table import tie_key
 from dci1v6.stages.selection import restrictiveness_key
 from dci1v6.verifiers.constraints import (
-    FAMILIES, LADDERS, RESERVES, assert_selectable, focal_severities,
+    FAMILIES, LADDERS, RESERVES, SELECTABLE_FAMILY_IDS,
+    assert_selectable, focal_severities,
 )
 
 __all__ = ["StructuralScreen", "carry_candidate", "carried_set",
@@ -835,7 +836,7 @@ def expansion_round(table: Sequence[Mapping[str, Any]], *, iota_a: float,
         by_family.setdefault(row.get("family"), []).append(row)
     admitted: dict[str, list[int]] = {}
     plans: list[dict[str, Any]] = []
-    for family in FAMILIES:
+    for family in SELECTABLE_FAMILY_IDS:
         have = sorted(measured.get(family, ()))
         if not have:
             continue

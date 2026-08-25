@@ -306,6 +306,16 @@ registered notion of direction; the freeze point is the existing
 
 ### 3.2 `GATE_2_75_COMPOSED_PROBE` (Change 2)
 
+> **Scope superseded by §12.** The two scope limits stated at the end of
+> this section were the reason to widen it: the probe now covers all ten
+> of §13.14's slot-and-order exposure classes, derived from Gate 4's own
+> cell set rather than listed, and `assert_probe_covers_gate4_classes`
+> refuses a shape that leaves one uncovered. S4's `FOCAL_AIM`-equivalent
+> placement is replaced by placement at Gate 2's measured $\iota_A$, which
+> is where §13.8 puts a companion; S3's feature-group requirement is
+> dropped, per §12.5. What remains true is every guarantee: temporal,
+> structural, informational and directional.
+
 **Placement.** Between `GATE_2_5_CANDIDATE_QUALIFICATION` and `GATE_3A`.
 `STAGE_SEQUENCE` becomes 19 stages; `STAGE_ARTIFACT_TYPE` gains an entry
 mapping it to `calibration_record`; `STAGE_RECORD_FILES` gains
@@ -438,7 +448,8 @@ automatically** — that test is why this status cannot repeat V5-E32.
   topics. The two bottlenecks are independent *as counterfactuals on v5* — and
   they are **coupled going forward**, in the direction that makes v6 harder.
 
-### 3.3 Headroom margin — see §4.
+### 3.3 Headroom margin — see §4, and then §12.4, which replaces the constant
+with a per-entry projected interval.
 
 ### 3.4 Confirmatory licensing — see §5, decision R4.
 
@@ -584,6 +595,13 @@ precedent then makes v6 the prospective test of *those* too.
 
 ### R2 — Which split does the probe run on, and what does $\delta$ then cover?
 
+> **Answered in §12.1, and (c) stands with a reason it did not have.** The
+> sub-split contrast is not a diagnostic beside the margin: it is the
+> estimator of the only non-sampling term in the whole error budget, because
+> §6.2 cuts calibration_a and the composed set from one seeded shuffle while
+> §34 D3's calibration_b is newly authored. Residual sd 0.0284, halved to
+> 0.0142 by the pooling.
+
 | option | consequence |
 |---|---|
 | **(a) Calibration split, $\delta$ absorbs the transfer** (as proposed) | Spends no reserved topics, and the probe is measured on 192 topics — the most precise option available. Requires $\delta$ to cover a transfer whose realised magnitude reached 0.189, plus an unmeasured stand-in term; at that size $\mathcal{M}$ shrinks sharply and `COMPOSED_HEADROOM_UNREACHABLE` may become the modal outcome. |
@@ -599,6 +617,14 @@ set may be measured once. It makes the size of the assumption visible on the
 record instead of buried in a constant.
 
 ### R3 — Is Gate 4's 24-topic precision left as registered?
+
+> **Superseded by §12.3. The recommendation below — (b), enlarge the composed
+> set — is not executable in this repository**: §6.2's sequestered eighth was
+> never materialised here, so 'take 24 topics from it' is an act of authoring
+> topics rather than a change to a constant. The derivation is (a), with the
+> precision reasoning moved into Gate 2.75's projection. §12.2 has the
+> measurement the recommendation lacked: 0.121 and 0.190 false-termination
+> probability at 24 topics on the two replications that were in band.
 
 | option | consequence |
 |---|---|
@@ -668,6 +694,12 @@ number of survivors cannot be read after the fact as a licence.
 
 ### R5 — Is $\delta$ fixed now, and at what value?
 
+> **Superseded by §12.4.** The question was the wrong one: the error a
+> constant was to absorb is sampling, it is measurable per entry, and it now
+> lives in a projected Gate-4 interval built by §13.4's own device. What is
+> left of D23 is the allowance *beyond* the two measured terms and its
+> derived value is 0.0.
+
 Deliberately left open, and it should stay open until R2 and R3 are settled,
 because both change what $\delta$ has to cover. Under R2(a) or R2(c) with
 Gate 4 left as registered, none of 0.025, 0.05 or 0.075 covers the realised
@@ -683,6 +715,11 @@ Whatever is chosen is a v5-informed design choice, prospectively tested by v6
 and not established by it.
 
 ### R6 — Do the stand-ins enter the study's registered instrument set?
+
+> **Answered in §12.5.** `probe_only_in_library`, three families authored,
+> and S3's 'a feature group no selectable family uses' requirement **dropped**
+> — it would need a new statistic, which reorders `FEATURE_GROUP_IDS` and
+> therefore `selection.group_key`'s reference-selection tie-break.
 
 S1–S5 create three instruments that are measured but never selectable.
 **Options:** register them as `probe_only` families inside §7.10's library
@@ -770,6 +807,16 @@ guard.
 discharged say what discharged them, because a list that quietly shrinks tells
 a reader nothing about what was done.
 
+> **Blockers restated 2026-08-25 by §12.** Four of the seven v6 decisions now
+> have a derivation rather than an open question — D19, D20, D21 and D23 — and
+> D24's population is authored. **None of them is closed**, because closing a
+> §34 decision is an act recorded on `reports/dci1v6/researcher_decisions.json`
+> and no code may create that file. The binding blocker is therefore now
+> **blocker 10, and it is larger than this list said**: the record must carry
+> all twenty-six closures, D0–D18 included. Those nineteen are closed on v5's
+> record and carrying them into a new registration is the researcher's act, not
+> a transcription.
+
 1. **OPEN — the researcher decisions.** Registered as §34 D19–D25 in
    `dci1v6/protocol/decisions.py`, all UNRESOLVED. D19–D24 are R1–R6; D25 is
    the single-survivor statement R4's recommended branch requires registered
@@ -787,7 +834,12 @@ a reader nothing about what was done.
    `user-notes/DCI1_preregistration_v6.md`; `manifest.document_hashes` raises
    `Blocker` because it is not there, so no manifest can be signed. This is
    now an executable refusal with a test on it, not a note.
-4. **OPEN — the §6.2 topic-set arithmetic**, pending D21.
+4. **OPEN as a decision, but its recommended branch is now known to be
+   unavailable — the §6.2 topic-set arithmetic**, pending D21. §12.3: the
+   `enlarge_composed_set` branch would have to draw from a sequestered eighth
+   that was never materialised in this repository, so it is an act of authoring
+   topics and not a change to a constant. `composed_topic_plan` still carries
+   all three branches and still refuses while the decision is open.
    `budget.composed_topic_plan` carries all three branches and refuses while
    the decision is open; the `enlarge_composed_set` branch computes
    `N_COMPOSED` 24 → 48 and `N_SEQUESTERED` 96 → 72 and raises if the bank
@@ -796,7 +848,13 @@ a reader nothing about what was done.
    and in `NEW_TERMINAL_STATUSES`, raised from `probe_disposition`, and
    covered by the A8 AST regression that walks every module for a status in
    force with no reachable `raise` — which is the V5-E32 fix.
-6. **OPEN — the stand-ins do not exist.** The `probe_only` *mechanism* is
+6. **DISCHARGED 2026-08-25 — the stand-ins now exist.** `PS1`, `PS2` and `PS3`
+   are registered `probe_only` families (§12.5); `assert_library_sizes` asserts
+   `probe_only_families: 3` and `selectable_families: 37`, and three added
+   counts show the selectable population is unmoved at v5's 326 and 632. What
+   remains open is D24 itself, which selects whether they live in §7.10's
+   library or in a separate vocabulary. *Superseded text follows.*
+   ~~OPEN — the stand-ins do not exist.~~ The `probe_only` *mechanism* is
    implemented and its guards are live on the empty population;
    `assert_library_sizes` now asserts `probe_only_families: 0` and
    `selectable_families: 37`, so authoring one fails loudly. Which stand-ins
@@ -805,7 +863,13 @@ a reader nothing about what was done.
    `audit_prefreeze.NAME_SCANNED_RECORDS` names Gate 4 and Gate 2.75, each
    with its own admissible outcomes and its own required refusals — and a
    missing probe record is UNRESOLVED, which blocks the freeze.
-8. **OPEN — Change 2 does not cover the `gemma-3n-e4b-it` failure mode.** Not
+8. **DISCHARGED in part 2026-08-25, and restated.** The probe now covers the
+   `solo:companion` class the `gemma-3n-e4b-it` failure was in, and all nine
+   other classes; what it still cannot cover is the companion's **identity**,
+   because the reference is selected two stages later. That is the limit the
+   preregistration must state, and `composed_probe.PROBE_SCOPE_LIMITS` states
+   it in those terms. *Superseded text follows.*
+   ~~OPEN — Change 2 does not cover the `gemma-3n-e4b-it` failure mode.~~ Not
    a blocker to registration, but it must be *stated* in the v6
    preregistration. `composed_probe.PROBE_SCOPE_LIMITS` carries it and the
    probe record does too, so it is on the artifact; what remains is the
@@ -813,7 +877,12 @@ a reader nothing about what was done.
 9. **Discharged.** `CHANGES_SCIENTIFIC.md` carries three entries dated
    2026-08-25: V6-E01, V6-E02, and the v6 implementation with what it does
    and does not change.
-10. **New, and OPEN — the v6 §34 decisions carry no researcher record.**
+10. **OPEN, and the binding blocker — the v6 §34 decisions carry no researcher
+    record.** Restated 2026-08-25: this is not only about D19–D25. `RECORD_PATH`
+    is read at import for **all twenty-six**, so D0–D18 — v5's, closed on v5's
+    own record — are UNRESOLVED in v6 too, and carrying a closure from one
+    registration into another is a researcher act with its own evidence, not a
+    copy. *Original text follows.*
     `dci1/reports/dci1v6/researcher_decisions.json` does not exist and must
     not be created by code. Until the researcher writes one, every decision is
     UNRESOLVED at import and no stage can run. The test suite reads a
@@ -1363,3 +1432,301 @@ solo cell** — that is this movement and not a composition effect at all. §4.a
 measured it by hand across the closed run at mean absolute 0.064 and maximum
 0.189. Recording it per replication is what stops the next protocol version
 having to rebuild that table from raw rows.
+
+---
+
+## 12. The design pass of 2026-08-25 (added after §11)
+
+§§3–7 were written before the precision of Gate 4 had been measured and before
+the probe's scope had been derived from Gate 4's own cell set. Both are now
+done, and what they returned changes four of §5's six decisions from open
+questions into derivations. **Nothing below closes a decision**: closing one is
+a researcher act on `reports/dci1v6/researcher_decisions.json`, which does not
+exist and which no code may create. What changed is that four of them now have
+an answer that follows from the registered protocol and from measurement, and
+two of those answers are the opposite of what this memo recommended.
+
+Everything numeric here is computed by
+[`tools/v6_precision_design.py`](../../tools/v6_precision_design.py) into
+[`precision_design.json`](precision_design.json), from signed v5 stage records
+and the scored rows they were computed from. The tool refuses to report
+anything unless its own baseline reproduces the two signed Gate-4 headroom
+tables and the two signed terminal reports exactly — 21 checks, all agreeing,
+the same 21 §0 already relies on.
+
+### 12.1 The split transfer is not a bias. It is Gate 4's own sampling error
+
+§4.a asked $\delta$ to absorb a calibration→composed movement whose realised
+magnitude reached 0.189 and reported that it "separates neither" the sampling
+half from the real one. Separated:
+
+| quantity | value |
+|---|---:|
+| observed variance of the 13 transfers | 0.004297 |
+| variance the two sample sizes imply | 0.005153 |
+| residual | **−0.000856** |
+
+The observed spread is *smaller* than sampling alone predicts. There is no
+detectable systematic component, and §6.2 says why there should not be:
+`dci1v4.topics.split.cut_area` cuts the pre-screen, calibration_a, composed,
+confirmatory and sequestered sets out of **one seeded per-area shuffle**, so
+they are exchangeable draws from one stratified population. A constant chosen
+to cover 0.189 would have been a design constant absorbing sampling noise.
+
+**One component is not exchangeable, and it is measurable.** §34 D3's
+`calibration_b` is *newly authored*, not part of §6.2's cut, and it supplies 96
+of the 192 topics a pooled probe measures on. Paired by instrument across
+§13.7's two sub-splits on the same closed record:
+
+| quantity | value |
+|---|---:|
+| mean $\iota_a - \iota_b$ | +0.011 |
+| mean $\lvert\iota_a - \iota_b\rvert$ | 0.046 |
+| observed variance | 0.003369 |
+| sampling variance | 0.002561 |
+| residual sd | **0.0284** |
+| carried by a pooled probe ($\times \tfrac12$) | **0.0142** |
+
+That 0.0142 is the whole non-sampling error budget, it is what
+`composed_probe.RESIDUAL_SD` carries, and §34 D20's
+`calibration_with_measured_transfer` branch is the estimator that puts the
+same quantity on the record per entry, in the stage, at the moment the margin
+is applied — `GATE_2_75_COMPOSED_PROBE.measured_split_transfer`, which **gates
+nothing** because a rule that re-tuned the margin from the transfer it was
+measuring would be fitting a design constant to the replication it is about to
+judge. R2's recommendation (c) stands, with a reason it did not have: the
+sub-split contrast is not a diagnostic, it is a measurement of the only term
+the design cannot make vanish.
+
+### 12.2 How precise one §13.14 entry is, and how often Gate 4 fires on a replication that is in band
+
+73 realised cell × slot entries across the four replications, per-topic:
+
+| quantity | value |
+|---|---:|
+| median SE of one entry at 24 topics | 0.0607 |
+| median SE in the upper region ($p \ge 0.75$, 22 entries) | 0.0450 |
+| median topic-level ICC | **0.350** |
+
+The ICC is the number that decides which lever exists: at $\rho = 0.35$ a
+fourth draw within a topic buys very little and only topics buy precision,
+which is why every option below moves `N_COMPOSED` and none moves `M_CAL`.
+
+A **joint** topic bootstrap — joint because one replication's entries share one
+topic set, so treating them as independent understates the family — over each
+replication's own realised entries, 10,000 resamples at §13.7's registered
+count:
+
+| replication | entries | outside the band as measured | P(some entry outside) at 24 | at 48 | at 96 |
+|---|---:|---:|---:|---:|---:|
+| `gemma-3n-e2b-it` | 11 | 0 | **0.121** | 0.044 | 0.007 |
+| `qwen3-4b` | 6 | 0 | **0.190** | 0.074 | 0.017 |
+| `gemma-3n-e4b-it` | 11 | 2 | 0.992 | — | — |
+| `qwen3-4b-instruct-2507` | 45 | 2 | 1.000 | — | — |
+
+The first two rows are the finding: **a replication whose entries are all
+inside §13.14's band still fires roughly one time in six to eight**, on a
+re-draw of the composed topic set. This is what §4.c called "the largest single
+lever on v6 survival" and it is now a number. The full five-arm set audits 95
+entries; no replication ran it, and that rate is not measurable from v5.
+
+### 12.3 R3/D21: the enlargement branch is not executable in this repository
+
+R3 recommended enlarging the composed set 24 → 48, taking the difference from
+the sequestered eighth. **The sequestered eighth was never materialised here.**
+`load_bank` carries zero sequestered questions; `dci1v4.topics.sequestered`
+holds opaque identities and content hashes only; the texts are retained by the
+researcher outside the repository; and `assert_no_materialisation` refuses any
+released question colliding with a sequestered hash on every load. Enlarging is
+therefore not a change to a constant — it is an act of authoring topics, a
+governed §6.2 change, and it spends the reserve §6.2 keeps for a future
+uncontaminated rerun.
+
+That leaves `as_registered` and `interval_criterion`, and the second changes
+what §13.14 *means* and breaks comparability with v5's Gate 4 — which R3 itself
+says should not be bundled with this work. **The derivation is
+`as_registered`,** and the precision reasoning moves to where it can go without
+touching a reviewed definition: Gate 2.75's projection, which is new code with
+no v5 counterpart to be comparable with, and which refuses an operating point
+whose predicted Gate-4 entries sit within an interval's reach of the band. v6
+does not make Gate 4 more precise. It makes Gate 4's verdict less marginal.
+
+### 12.4 R5/D23: $\delta$ was the wrong instrument, and what replaces it
+
+§4 examined $\{0.025, 0.05, 0.075\}$ and concluded the needed margin lay above
+the range. It did, for a quantity that should never have been a constant. The
+rule is now per entry and by what the entry is evidence for:
+
+> **Determinate entries** — `solo:A`, `solo:B` and both orders of `pair:A+B`,
+> whose constituents are the real registered instruments A at $n^*$ and B at
+> $m^*$ — pass iff their **projected Gate-4 interval** lies inside §13.14's
+> registered band:
+> $\hat p \pm z\sqrt{\hat s^2/N_{\text{composed}} + \hat s^2/n_{\text{probe}} + \sigma_r^2}$,
+> with $\hat s^2$ that entry's own between-topic variance measured in the same
+> stage, $z$ at §13.4's registered 95%, and $\sigma_r = 0.0142$ from §12.1.
+> The device and the level are §13.4's own — contract the band, apply it to
+> the *interval* so an imprecisely measured value cannot sit on the boundary —
+> and using a different convention for the same device in the same protocol
+> would have been an unregistered choice.
+>
+> **Stand-in-dependent entries** — every entry of a cell containing a stand-in,
+> including the A and B slots of those cells, because B's compliance beside a
+> stand-in is not B's compliance beside the reference — pass iff the measured
+> value lies inside §13.14's registered band, **with no margin at all**. A
+> failure is a real composed cell of real instruments leaving the band. A pass
+> certifies nothing about a reference, and the record says so rather than
+> implying otherwise.
+
+The family-wise half-width over the six determinate entries is computed and
+recorded beside every verdict, so the more conservative Bonferroni reading is
+on the artifact rather than in an argument. It is deliberately conservative:
+the six entries share one topic set, so their errors are correlated.
+
+**What is left of D23** is the allowance beyond those two measured terms, and
+its derived value is **0.0**. `precision_design.json` also carries the 95%
+upper bound on a residual thirteen observations could have missed
+(sd ≤ 0.0687), because a derivation that reported only a point estimate of zero
+would be reckless.
+
+**What the rule does to the operating point, on the closed v5 curves.** Applied
+to each replication's own measured solo-B curve and its own per-severity
+between-topic variance — a determinate entry, so this is the rule's own test:
+
+| replication | v5's $m^*$ | solo B | half-width | slack to 0.95 | passes? | severities that do pass |
+|---|---:|---:|---:|---:|---|---|
+| `gemma-3n-e2b-it` | 10 | 0.8060 | 0.1193 | **+0.025** | yes | 7, 8, 9, 10 |
+| `gemma-3n-e4b-it` | 10 | 0.8672 | 0.1096 | **−0.027** | **no** | 7, 8, 9 |
+| `qwen3-4b` | 12 | 0.7695 | 0.1407 | **+0.040** | yes | 9, 10, 11, 12 |
+| `qwen3-4b-instruct-2507` | 11 | 0.7734 | 0.1412 | **+0.035** | yes | 8, 9, 10, 11 |
+
+Every replication retains admissible operating points, and the one the rule
+refuses at $m^*$ is `gemma-3n-e4b-it` — the replication that in fact terminated
+at Gate 4. Note also that the half-width is *smaller* where compliance is
+higher, because the between-topic variance is: the rule is not a constant band
+and does not behave like one. That is a property of the rule computed on
+development evidence and it is **not** a re-verdict, not a claim the rule would
+have saved anything, and not evidence that it generalises: §30's precedent
+applies and v6 tests it prospectively. `precision_design.json`'s
+`operating_point_feasibility` carries the whole table with its own refusal to
+report unless the baseline reproduces the signed records.
+
+### 12.5 R6/D24: the stand-ins exist, and S3's group requirement was dropped for a reason
+
+Three `probe_only` families are authored — `PS1` (`capital_word`, exact count),
+`PS2` (`semicolon`, count lower bound), `PS3` (`y_final`, rate lower bound).
+S3 asked additionally that each declare a `feature_group` used by no selectable
+family. **That requirement is dropped and must not be reinstated.** All
+twenty-two of §7.6's statistics are carried, so a new group needs a new
+statistic; `FEATURE_GROUP_IDS` is a *sorted* tuple and `selection.group_key`
+reads a group's index in it as a reference-selection tie-break; so adding a
+group reorders the tie-break for every selectable family sorting after it. A
+probe-only instrument that changed which reference gets selected is precisely
+the failure `probe_only` exists to prevent. Reusing registered statistics under
+forms no selectable family carries gives distinct *kinds* — which is what S2
+actually needs — at no cost to the group index, the verifier population or
+§12.6's counts.
+
+`assert_library_sizes` now asserts ten numbers, three of which exist to show
+that nothing moved where it matters: `selectable_families` 37,
+`selectable_round_0_severities` 326, `selectable_declared_severities` 632 —
+v5's values exactly.
+
+### 12.6 R1/D19 and R4/D22
+
+Unchanged in substance and now stated as the direction v6 takes: `D19` at
+`reachability_only`, with library extension available only as a later amendment
+if the correctly functioning mechanism itself proves insufficient, and the
+3,072-row development measurement of §7 step 3 **not run**; `D22` at
+`per_replication`, with `D25`'s single-survivor sentence written out in
+`run.lifecycle.SINGLE_SURVIVOR_STATEMENTS` so that closing D25 selects a
+registered sentence instead of licensing one to be composed after the survivor
+count is known.
+
+### 12.7 The compute this design costs
+
+Every figure is computed by
+[`tools/v6_compute_budget.py`](../../tools/v6_compute_budget.py) into
+[`development/d1_compute_budget.json`](development/d1_compute_budget.json) from
+the code's own constants and the arm-derived cell set; none is transcribed. A
+*generation* is one model response — one prompt at one draw.
+
+**Gate 2.75, the new term**, per replication:
+
+| term | rows |
+|---|---:|
+| stand-in solo ladder — 24 rungs × 24 pre-screen topics × 1 draw, **once** | 576 |
+| one probed severity — 15 generated cells × 192 topics × 4 draws | 11,520 |
+| **modal cost, $m^*$ passes** | **12,096** |
+| ceiling, all 10 admissible severities probed | 115,776 |
+| *not* drawn: cells read off the Gate-2 record, per severity | 3 cells / 2,304 rows |
+
+The ceiling is reached only when every admissible severity is probed; P3.3
+stops at the first pass, and Gate 2.5 has already removed severities that
+cannot meet §13.15's five-family minimum.
+
+**The whole replication**, at §34 D1's registered 56-cell option:
+
+| term | generations |
+|---|---:|
+| §12.2 ladder screen — 342 rungs × 24 topics × 1 draw | 8,208 |
+| §12.3 focal grids — 192 topics × 4 draws | 13,824 |
+| §12.7 candidate calibration — both splits | 86,016 |
+| §19 pilot — 56 cells × 12 topics × 4 draws | 2,688 |
+| *calibration subtotal* | *110,736* |
+| **Gate 2.75 (new), modal** | **12,096** |
+| Gate 4 composed headroom — 56 cells × 24 topics × 4 draws | 5,376 |
+| §8.3 greedy sensitivity | 5,376 |
+| confirmatory — 56 cells × 384 blocks × 8 draws | 172,032 |
+| **per replication, modal** | **305,616** |
+| four replications | **1,222,464** |
+
+Two terms are conditional and are named rather than folded into a figure a
+replication is expected to spend, because both stop early by rule: §12.6's
+expansion ceiling is 4,224 screen rows plus 36,864 candidate-calibration rows,
+and Gate 2.75's is 115,776. At both ceilings a replication costs 409,296 and
+four cost 1,637,184 — an upper bound nothing is expected to reach, and the
+honest one to plan against.
+
+**What the probe costs, relative to what it protects.** 12,096 generations is
+4.0% of a replication's modal cost and 7.0% of its confirmatory run. Its
+purpose is to refuse an operating point *before* the confirmatory 172,032 is
+spent, on a replication that would otherwise terminate at Gate 4 with every
+earlier gate passed — which is exactly what happened to two of v5's four.
+
+### 12.8 What is *not* resolved by any of this
+
+The researcher decision record does not exist and no code may create it. Until
+it does, **all twenty-six** of D0–D25 are `UNRESOLVED` at import — including
+D0–D18, which v5's researcher closed on v5's record and which only the
+researcher can carry into v6 — and `assert_transition_legal` refuses stage 1.
+Everything in §§12.1–12.7 is a derivation available *to* that act; none of it is
+that act.
+
+### 12.9 The two governed documents now exist as **drafts**, and are refused
+
+`user-notes/DCI1_preregistration_v6.md` and
+[`reference_design_spec.json`](reference_design_spec.json) exist. Both declare
+`DRAFT_NOT_ADOPTED`, and `manifest.assert_documents_adopted` adds a
+`DRAFT_DOCUMENT` blocker while either does — because `document_hashes` only
+refuses a *missing* document, and a complete draft is exactly the thing that
+could be mistaken for a registration by being present. Silence reads as a draft
+too: a document with no declared status is refused, because the safe reading of
+silence here is the one that refuses.
+
+Two things about them are worth knowing before reading either:
+
+- the preregistration **incorporates v5's text by content hash**
+  (`ebb27c15…`) and then states every amendment in full, rather than copying
+  3,794 lines that could drift from the text they claim to reproduce;
+- the reference-design spec is **generated from the registered code** by
+  [`tools/v6_reference_design_spec.py`](../../tools/v6_reference_design_spec.py),
+  so a spec that disagrees with the implementation is not expressible. v5's
+  equivalent was written by hand.
+
+[`development/researcher_decisions_PROPOSAL.json`](development/researcher_decisions_PROPOSAL.json)
+carries the seven v6 decisions in the shape the record takes, with each
+derivation and its evidence. **It is not the record**, it is not at
+`RECORD_RELPATH`, `protocol/decisions` does not read it, and it deliberately
+omits D0–D18: those are v5's, closed on v5's own record, and carrying a closure
+into a new registration is a researcher act with its own evidence rather than a
+transcription.

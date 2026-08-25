@@ -58,19 +58,26 @@ def test_every_later_stage_refuses_too(tmp_path):
             cli.RUNNERS[stage](tree, producing_commit="0" * 40)
 
 
-def test_the_plan_command_writes_nothing_and_says_nothing_is_missing():
+def test_the_plan_command_writes_nothing_and_reports_what_remains():
     """It never signs, never creates a key and never touches a root.
 
     A4 opened U4 --- §12.6 made a rung's eligibility "§13's band on iota" and
     §13 bands p_solo, and the two readings admit different rungs --- and A5
     closed it at E2. Nineteen decisions closed, U2 at A2, P1 confirmed, U4 at
-    E2: the plan reports nothing outstanding, and it reports it by looking
-    rather than by having stopped looking.
+    E2: the plan reports what is outstanding by looking rather than by having
+    stopped looking.
+
+    **One blocker remains and it is the honest one.** v6's preregistration and
+    reference-design spec exist and both declare `DRAFT_NOT_ADOPTED`; adopting
+    them is a researcher act. Before `assert_documents_adopted` existed this
+    plan reported `can_register` while NEITHER document was written, because
+    `document_hashes` raises only at `build_manifest` time --- so the plan and
+    the manifest disagreed about the same two files.
     """
     plan = registration_run.plan_registration(repo_root=REPO_ROOT)
-    assert plan["can_register"] is True
-    assert plan["failure_status"] is None
-    assert plan["blockers"] == []
+    assert plan["can_register"] is False
+    assert [b["kind"] for b in plan["blockers"]] == ["DRAFT_DOCUMENT"]
+    assert plan["failure_status"] == "REGISTRATION_INCOMPLETE"
     assert plan["blocking_specification_questions"] == []
     assert plan["calibration_b_status"] == "AUTHORED"
     assert plan["open_decisions"] == []
@@ -84,7 +91,10 @@ def test_the_plan_reports_a_specification_question_that_reopens(
     plan = registration_run.plan_registration(repo_root=REPO_ROOT)
     assert plan["can_register"] is False
     assert plan["blocking_specification_questions"] == ["U4"]
-    assert [b["kind"] for b in plan["blockers"]] == ["UNRESOLVED_SPECIFICATION"]
+    # Two now: the specification question this test provokes, and the two
+    # governed documents, which exist and declare DRAFT_NOT_ADOPTED.
+    assert [b["kind"] for b in plan["blockers"]] == [
+        "DRAFT_DOCUMENT", "UNRESOLVED_SPECIFICATION"]
 
 
 def test_a_refused_transition_is_logged(tmp_path):

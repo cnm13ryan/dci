@@ -25,6 +25,7 @@ so that adding one is a test failure rather than a review finding.
 """
 from __future__ import annotations
 
+import statistics
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -49,7 +50,8 @@ from dci1v6.stages.feasibility import (calibration_rows_at,
 from dci1v6.stages.calibration_table import (instructed_compliance,
                                              load_calibration_table)
 from dci1v6.topics.bank import (TopicBank, calibration_binding, load_bank)
-from dci1v6.verifiers.constraints import Constraint, assert_selectable
+from dci1v6.verifiers.constraints import (Constraint, assert_selectable,
+                                          registered_severities)
 
 __all__ = ["assert_synthetic_only", "assert_calibration_population",
            "focal_constraint",
@@ -546,6 +548,15 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "solo_compliance_b": curves["B"][m_star],
         "iota_a_by_split": _iota_a_by_split(grid_rows, n_star),
         "solo_a_by_split": _solo_a_by_split(grid_rows, n_star),
+        # The between-topic variance of A at n* and of B at every measured
+        # severity. Gate 2.75 projects a cell to §13.14's sample size and
+        # needs it; recording it here is why that stage can read `solo:A` and
+        # `solo:B` instead of drawing them again.
+        "solo_topic_moments": {
+            "A": _solo_topic_moments(grid_rows, kind="A",
+                                     severities=(n_star,)),
+            "B": _solo_topic_moments(grid_rows, kind="B",
+                                     severities=tuple(curves["B"]))},
         "a_per_topic_by_split": _a_per_topic_by_split(grid_rows, n_star),
         "construct_strength": strength,
         "calibration_binding": binding,
@@ -922,6 +933,54 @@ def _iota_a_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
     return out
 
 
+
+def _solo_topic_moments(rows: Sequence[Mapping[str, Any]], *, kind: str,
+                        severities: Sequence[int]) -> dict[str, Any]:
+    """Per severity: the solo compliance, and the variance **between topics**.
+
+    The mean was already recorded; the variance was not, and it is the
+    quantity ``GATE_2_75_COMPOSED_PROBE`` needs to project a cell forward to
+    §13.14's sample size. Recording it here rather than re-measuring it there
+    is what lets the probe read ``solo:A`` and ``solo:B`` off this record
+    instead of drawing a second sample of two numbers the design is already
+    fixed on --- and the per-split breakdown is the same paired contrast §34
+    D20's measured-transfer branch reads, because Calibration-A comes from
+    §6.2's seeded cut and §34 D3's Calibration-B is newly authored.
+
+    The topic is the sampling unit: draws inside a topic are correlated, so
+    the variance of a topic's own draw-mean is what a resample of topics
+    moves, and dividing raw draw variance by the row count would understate
+    it. ``per_topic_compliance`` already returns exactly that vector.
+    """
+    out: dict[str, Any] = {}
+    for severity in sorted({int(q) for q in severities}):
+        vector = per_topic_compliance(rows, kind=kind, severity=severity)
+        if not vector:
+            continue
+        entry: dict[str, Any] = {
+            "compliance": sum(vector) / len(vector),
+            "s2_topic": (statistics.variance(vector) if len(vector) > 1
+                         else 0.0),
+            "n_topics": len(vector)}
+        by_split: dict[str, Any] = {}
+        for split in (C.CALIBRATION_A, C.CALIBRATION_B):
+            half = per_topic_compliance(rows, kind=kind, severity=severity,
+                                        split=split)
+            if half:
+                by_split[split] = {"compliance": sum(half) / len(half),
+                                   "n_topics": len(half)}
+        entry["by_split"] = by_split
+        if len(by_split) == 2:
+            # At the entry level, not inside `by_split`, because that is where
+            # `_entry_moments` puts it and `_measured_split_transfer` reads a
+            # table built from both. Two shapes for one quantity would make
+            # the reused Gate-2 cells silently absent from §34 D20's record.
+            entry["a_minus_b"] = (by_split[C.CALIBRATION_A]["compliance"]
+                                  - by_split[C.CALIBRATION_B]["compliance"])
+        out[str(severity)] = entry
+    return out
+
+
 def _solo_a_by_split(rows: Sequence[Mapping[str, Any]], n_star: int
                      ) -> dict[str, float]:
     out: dict[str, float] = {}
@@ -1156,6 +1215,176 @@ def effective_m_star(tree: ModelTree) -> int:
     return int(probe["m_star"])
 
 
+def _entry_moments(rows: Sequence[Mapping[str, Any]], *, cell_id: str,
+                   constraint: Constraint) -> dict[str, Any]:
+    """One cell x slot entry: its compliance, its between-topic variance, and
+    its value on each calibration sub-split.
+
+    The **topic** is the sampling unit --- draws inside one topic are
+    correlated --- so the variance recorded is the variance of a topic's own
+    draw-mean, which is what a resample of topics moves and what
+    ``composed_probe.projected_halfwidth`` divides by ``N_COMPOSED``.
+
+    The per-sub-split values are §34 D20's measured transfer. They are not a
+    diagnostic: Calibration-A comes from §6.2's seeded per-area cut and is
+    exchangeable with the composed set §13.14 audits on, while §34 D3's
+    Calibration-B is newly authored and is not, so their difference is the
+    only part of the calibration-to-composed movement that is **not**
+    sampling. Recording it per entry is what makes the residual allowance
+    checkable at the moment it is applied instead of assumed from a table.
+    """
+    per_topic: dict[str, list[float]] = {}
+    per_split: dict[str, dict[str, list[float]]] = {}
+    for row in rows:
+        if row["cell_id"] != cell_id:
+            continue
+        for score in row["scores"]:
+            if (score["present"] and score["kind"] == constraint.kind
+                    and score["severity"] == constraint.severity):
+                per_topic.setdefault(row["topic_id"], []).append(
+                    float(score["passed"]))
+                split = row.get("topic_split") or "unlabelled"
+                (per_split.setdefault(split, {})
+                 .setdefault(row["topic_id"], []).append(
+                     float(score["passed"])))
+    values = [sum(v) / len(v) for v in per_topic.values()]
+    if not values:
+        raise ProtocolError(
+            f"{cell_id}: no scored observation of {constraint.label} was "
+            "produced, so this entry has no measurement and cannot be "
+            "judged. A zero would be indistinguishable from a real floor")
+    subsplits = {name: {"compliance": sum(sum(v) / len(v) for v in per.values())
+                                     / len(per),
+                        "n_topics": len(per)}
+                 for name, per in sorted(per_split.items()) if per}
+    entry = {"compliance": sum(values) / len(values),
+             "s2_topic": statistics.variance(values) if len(values) > 1
+                         else 0.0,
+             "n_topics": len(values),
+             "by_split": subsplits}
+    a, b = C.CALIBRATION_A, C.CALIBRATION_B
+    if a in subsplits and b in subsplits:
+        entry["a_minus_b"] = (subsplits[a]["compliance"]
+                              - subsplits[b]["compliance"])
+    return entry
+
+
+def _standin_ladders(tree: ModelTree, kinds: Sequence[str], *, bank: TopicBank,
+                     cap: int, device: int, generate: Callable[..., Any],
+                     topics: Sequence[Any]) -> dict[str, dict[int, float]]:
+    """Each stand-in's solo curve, on §12.5's pre-screen topics at one draw.
+
+    The cheap instrument, deliberately: this curve decides only **which
+    severity** a stand-in is probed at, and every quantity a verdict reads is
+    measured on the probe split at ``M_CAL``. §12.2 chooses B's grid the same
+    way and for the same reason.
+
+    A stand-in is never carried, so it is not in the regime screen's table and
+    §12.6's coverage conditions never see it. Measuring it here keeps it out
+    of every population a registered rule counts.
+    """
+    cells: list[_Cell] = []
+    instances: list[Constraint] = []
+    for kind in kinds:
+        for q in registered_severities(kind):
+            rung = Constraint(kind, q)
+            instances.append(rung)
+            for block in _blocks(topics, f"g275-ladder-{kind}"):
+                cells.append(_Cell(cell_id=f"solo:{rung.label}", arm="solo",
+                                   block=block, slots=(rung.label,),
+                                   draws=C.LADDER_SCREEN_DRAWS))
+    slot_map = {c.label: c for c in instances}
+    prompts = [prompt_cell(cell, _by_id(topics)[cell.topic_id],
+                           slot_map=slot_map, topic_split="prescreen")
+               for cell in cells]
+    rows = generate_and_score(
+        tree.model_key, prompts, stage=C.STAGE_GATE2_75, cap=cap,
+        device=device, run_dir=tree.backend_runs(C.STAGE_GATE2_75) / "ladder",
+        instances=tuple(instances), slot_map=slot_map,
+        study_id=tree.context.study_id,
+        protocol_identity=protocol_identity(tree, C.STAGE_GATE2_75),
+        generate=generate)
+    curves: dict[str, dict[int, float]] = {}
+    for rung in instances:
+        passes = [float(s["passed"]) for r in rows
+                  if r["cell_id"] == f"solo:{rung.label}"
+                  for s in r["scores"]
+                  if s["present"] and s["kind"] == rung.kind
+                  and s["severity"] == rung.severity]
+        if passes:
+            curves.setdefault(rung.kind, {})[rung.severity] = (
+                sum(passes) / len(passes))
+    return curves
+
+
+
+def _measured_split_transfer(probed: Mapping[int, Mapping[str, Mapping[str, Any]]],
+                             *, residual_sd: float) -> dict[str, Any]:
+    """§34 D20's measured transfer, per entry and in summary.
+
+    **The point of the branch, made visible.** §6.2 cuts Calibration-A and the
+    composed set from one seeded per-area shuffle, so those two are
+    exchangeable and the difference between them is sampling. §34 D3's
+    Calibration-B is newly authored and is not part of that cut, and it
+    supplies half the topics a pooled probe measures on --- so a pooled
+    estimate of a composed-set value carries **half** of whatever
+    instrument-specific offset the authored half introduces.
+
+    That half is the entire non-sampling term in the error budget, and
+    ``composed_probe.RESIDUAL_SD`` is a v5-fitted estimate of its size. This
+    block is the same quantity measured on **this** replication, at the moment
+    the margin is applied, so the assumption is checkable on the record rather
+    than only in a memo.
+
+    It **gates nothing**, deliberately. A rule that re-tuned the margin from
+    the transfer it was measuring would be fitting a design constant to the
+    replication it is about to judge.
+    """
+    rows: list[dict[str, Any]] = []
+    for severity, table in sorted(probed.items()):
+        for cell_id, entry in sorted(table.items()):
+            if cell_id == "unconstrained":
+                continue
+            for slot, measurement in sorted(entry.items()):
+                if "a_minus_b" not in measurement:
+                    continue
+                halves = measurement["by_split"]
+                rows.append({
+                    "severity": severity, "cell": cell_id, "slot": slot,
+                    "compliance": measurement["compliance"],
+                    "calibration_a": halves[C.CALIBRATION_A]["compliance"],
+                    "calibration_b": halves[C.CALIBRATION_B]["compliance"],
+                    "a_minus_b": measurement["a_minus_b"],
+                    "carried_by_the_pooled_estimate":
+                        measurement["a_minus_b"] / 2.0})
+    carried = [abs(r["carried_by_the_pooled_estimate"]) for r in rows]
+    summary: dict[str, Any] = {
+        "n_entries": len(rows),
+        "read_by": [],
+        "gates_nothing": True,
+        "why_it_gates_nothing":
+            "a rule that re-tuned the margin from the transfer it was "
+            "measuring would fit a design constant to the replication it is "
+            "about to judge",
+        "assumed_residual_sd": residual_sd,
+        "assumed_residual_sd_is":
+            "composed_probe.RESIDUAL_SD, half the calibration_a-vs-"
+            "calibration_b residual measured on the closed v5 record. This "
+            "block is the same quantity on this replication",
+        "entries": rows,
+    }
+    if rows:
+        signed = [r["carried_by_the_pooled_estimate"] for r in rows]
+        summary.update({
+            "mean_absolute_carried_offset": sum(carried) / len(carried),
+            "max_absolute_carried_offset": max(carried),
+            "mean_carried_offset": sum(signed) / len(signed),
+            "sd_of_the_carried_offset":
+                statistics.stdev(signed) if len(signed) > 1
+                else 0.0})
+    return summary
+
+
 def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                      gate2_5_record: Mapping[str, Any],
                      bank: TopicBank | None = None, cap: int,
@@ -1166,16 +1395,17 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                      ) -> dict[str, Any]:
     """§18 stage 8: composed headroom at m*, **before** any reference exists.
 
-    Reads Gate 2 for m*, for the eligible severity set P3.1 probes, and for
-    the solo B curve P3.4 re-selects over. Reads the Gate 2.5 record for its
-    outcome and for ``operating_point_order`` --- **a list of severities and
-    nothing else**. The probe still must not know which candidates qualified,
-    and it does not: the family names behind the restriction stay on Gate
-    2.5's record and no name crosses this boundary.
+    Reads Gate 2 for m*, n*, iota_A, the admissible severity set P3.1 probes,
+    the solo B curve P3.4 re-selects over and the between-topic moments the
+    projection needs. Reads the Gate 2.5 record for its outcome and for
+    ``operating_point_order`` --- **a list of severities and nothing else**.
+    The probe still must not know which candidates qualified, and it does not:
+    the family names behind the restriction stay on Gate 2.5's record and no
+    name crosses this boundary.
 
-    Every probed cell is B or a ``probe_only`` stand-in. No reference exists
-    at this point in the sequence and ``assert_probe_reads_no_reference`` is
-    asserted on the stage module, so the two guarantees are independent.
+    Every probed cell is A, B or a ``probe_only`` stand-in. No reference
+    exists at this point in the sequence and ``assert_probe_reads_no_reference``
+    is asserted on the stage module, so the two guarantees are independent.
     """
     if gate2_5_record.get("outcome") != "PASS":
         raise ProtocolError(
@@ -1185,24 +1415,60 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     bank = bank if bank is not None else load_bank()
     gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     m_star = int(gate2["m_star"])
+    n_star = int(gate2["n_star"])
+    iota_a = float(gate2["iota_a"])
     focal = gate2["focal_selection"]
     curve = {int(k): float(v) for k, v in (focal.get("curve") or {}).items()}
     eligible = [int(q) for q in (focal.get("eligible") or ())]
 
     split = composed_probe.probe_split()          # §34 D20, refuses while open
-    band = composed_probe.margin_band()           # §34 D23, refuses while open
+    residual = composed_probe.margin()            # §34 D23, refuses while open
+    topics, topic_label = probe_topics(bank, split)
+    generate = resolve_generate(tree, generate, _responder,
+                                where=C.STAGE_GATE2_75)
+    if block_limit is not None:
+        # The same seam `confirmatory_run.licensed_design` uses, and admitted
+        # on the same terms: a probe measured on a subset is a different
+        # measurement under the same name, so it is refused anywhere the
+        # study id says a row could be evidence. Worth having because a probe
+        # that re-selects measures every admissible severity, and a harness
+        # that cannot afford the branch does not exercise it.
+        assert_synthetic_only(tree, "block_limit", block_limit)
+        topics = topics[:block_limit]
+
+    ladders: dict[str, Any] = {}
+    operating: dict[str, Any] = {}
     if standins is None:
-        standins = composed_probe.standins()      # §34 D24, refuses while open
+        kinds = composed_probe.standins()         # §34 D24, refuses while open
+        ladder_topics = list(bank.topics("prescreen"))
+        if block_limit is not None:
+            ladder_topics = ladder_topics[:block_limit]
+        ladders = _standin_ladders(
+            tree, kinds, bank=bank, cap=cap, device=device, generate=generate,
+            topics=ladder_topics)
+        operating = composed_probe.standin_operating_points(
+            ladders, iota_a=iota_a)
+        standin_rungs = tuple(Constraint(kind, operating[kind]["severity"])
+                              for kind in kinds)
     else:
-        # No ``probe_only`` family is authored --- that is §34 D24 and it is
-        # the researcher's --- so the synthetic lifecycle would have no way
-        # to walk stages 8 to 19 at all. The seam is the one `block_limit`
-        # already uses: admitted only where the study id says the results can
-        # never be evidence, and refused everywhere else.
+        # An explicit stand-in set skips the ladder, so the harness can drive
+        # the stage without a solo curve for three instruments. Admitted only
+        # where the study id says the results can never be evidence.
         assert_synthetic_only(tree, "standins",
                               [c.label for c in standins])
-    slots = composed_probe.probe_slots(len(standins))
-    slot_map: dict[str, Constraint] = dict(zip(slots, standins))
+        standin_rungs = tuple(standins)
+    for rung in standin_rungs:
+        # A stand-in that reached a selectable pool would make the probe's
+        # composed outcomes an input to reference selection. Asserted on the
+        # instrument, not only on the family table.
+        if rung.kind not in composed_probe.PROBE_ONLY_KINDS():
+            raise ProtocolError(
+                f"{rung.label} is not a registered probe-only stand-in. Every "
+                "probed companion must be one, or a probed cell could be a "
+                "B+R cell by instrument identity")
+    slots = composed_probe.probe_slots(len(standin_rungs))
+    slot_map: dict[str, Constraint] = dict(zip(slots, standin_rungs))
+    coverage = composed_probe.assert_probe_covers_gate4_classes(slots)
 
     # P3.1: m* first, then the rest of the **frozen** order. Gate 2 wrote the
     # order --- §12.3's own preference over `focal_admissible` --- and Gate 2.5
@@ -1230,38 +1496,32 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             "severity §12.3 did not select")
     composed_probe.assert_probe_severities_are_admissible(order, gate2)
 
-    topics, topic_label = probe_topics(bank, split)
-    if block_limit is not None:
-        # The same seam `confirmatory_run.licensed_design` uses, and admitted
-        # on the same terms: a probe measured on a subset is a different
-        # measurement under the same name, so it is refused anywhere the
-        # study id says a row could be evidence. Worth having because a probe
-        # that re-selects measures every admissible severity, and a harness
-        # that cannot afford the branch does not exercise it.
-        assert_synthetic_only(tree, "block_limit", block_limit)
-        topics = topics[:block_limit]
-    generate = resolve_generate(tree, generate, _responder,
-                               where=C.STAGE_GATE2_75)
     shape = composed_probe.probe_cell_types(slots)
-    # The unconstrained cell and B's own solo cell are quantities Gate 2
-    # measured. When this stage runs on the same topics at the same draws they
-    # are the *same case*, so it reads them rather than drawing a second
-    # sample --- which also makes the composed lift a difference from the
-    # number m* was selected on instead of a difference between two samples.
+    # The unconstrained cell and the two determinate solo cells are
+    # quantities Gate 2 measured, with their between-topic variance. When
+    # this stage runs on the same topics at the same draws they are the
+    # *same case*, so it reads them rather than drawing a second sample ---
+    # which also makes every composed lift a difference from the number the
+    # design was fixed on instead of a difference between two samples.
     shared = composed_probe.shared_cell_verdict(
         gate2_topic_ids=gate2.get("calibration_topic_ids") or (),
         probe_topic_ids=[t["topic_id"] for t in topics],
         gate2_draws=C.M_CAL, probe_draws=C.M_CAL)
-    gate2_solo_b = {int(q): float(v) for q, v
-                    in (gate2["solo_curves"]["B"]).items()}
+    moments = gate2.get("solo_topic_moments") or {}
+    if shared["shared"] and not (moments.get("A") and moments.get("B")):
+        raise ProtocolError(
+            "the Gate-2 record carries no `solo_topic_moments`, so `solo:A` "
+            "and `solo:B` could be reused as means but not as the variances "
+            "the projection needs. Reusing half a measurement would leave "
+            "the projected interval reading a variance of zero")
     reused = (set(composed_probe.SHARED_WITH_GATE2)
               if shared["shared"] else set())
     generated_shape = [entry for entry in shape if entry[0] not in reused]
-    probed: dict[int, dict[str, dict[str, float]]] = {}
+    probed: dict[int, dict[str, dict[str, Any]]] = {}
     n_rows = 0
     for severity in order:
         b_rung = focal_constraint(severity)
-        bound = {**slot_map, "B": b_rung}
+        bound = {**slot_map, "B": b_rung, "A": Constraint("A", n_star)}
         cells = [_Cell(cell_id=cell_id, arm=arm, block=block, slots=cell_slots,
                        draws=C.M_CAL)
                  for block in _blocks(topics, f"g275-m{severity}")
@@ -1278,45 +1538,49 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             protocol_identity=protocol_identity(tree, C.STAGE_GATE2_75),
             generate=generate)
         n_rows += len(rows)
-        table: dict[str, dict[str, float]] = {}
+        table: dict[str, dict[str, Any]] = {}
         if shared["shared"]:
-            # Read, not re-measured. `severity_verdict` evaluates `solo:B` on
+            # Read, not re-measured. `severity_verdict` evaluates these on
             # exactly the same terms either way.
-            table["unconstrained"] = {"unconstrained": float(len(topics))}
-            table["solo:B"] = {"B": gate2_solo_b[severity]}
+            table["unconstrained"] = {"unconstrained": {
+                "compliance": float(len(topics)), "s2_topic": 0.0,
+                "n_topics": len(topics)}}
+            table["solo:A"] = {"A": dict(moments["A"][str(n_star)])}
+            table["solo:B"] = {"B": dict(moments["B"][str(severity)])}
         for cell_id, _arm, cell_slots in generated_shape:
-            cell_rows = [r for r in rows if r["cell_id"] == cell_id]
             if not cell_slots:
-                table[cell_id] = {"unconstrained": float(len(cell_rows))}
+                table[cell_id] = {"unconstrained": {
+                    "compliance": float(sum(1 for r in rows
+                                            if r["cell_id"] == cell_id)),
+                    "s2_topic": 0.0, "n_topics": len(topics)}}
                 continue
-            entry: dict[str, float] = {}
-            for slot in cell_slots:
-                constraint = bound[slot]
-                passes = [float(s["passed"]) for r in cell_rows
-                          for s in r["scores"]
-                          if s["present"] and s["kind"] == constraint.kind
-                          and s["severity"] == constraint.severity]
-                entry[slot] = sum(passes) / len(passes) if passes else 0.0
-            table[cell_id] = entry
+            table[cell_id] = {
+                slot: _entry_moments(rows, cell_id=cell_id,
+                                     constraint=bound[slot])
+                for slot in cell_slots}
         probed[severity] = table
         # P3.3: m* passing ends the probe, so the common case measures one
         # severity and the worst case measures Gate 2's whole eligible set.
         if severity == m_star and composed_probe.severity_verdict(
-                table, band=band)["passes"]:
+                table, residual=residual)["passes"]:
             break
 
     disposition = composed_probe.probe_disposition(
-        m_star=m_star, probed=probed, gate2_solo_curve=curve, band=band)
+        m_star=m_star, probed=probed, gate2_solo_curve=curve,
+        residual=residual)
     return {
         "stage": C.STAGE_GATE2_75,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE2_75],
         "producing_commit": producing_commit,
         "inputs": {
             "gate2": {"stage": C.STAGE_GATE2, "m_star": m_star,
+                      "n_star": n_star, "iota_a": iota_a,
                       "eligible": sorted(eligible),
                       "admissible": sorted(admissible),
-                      "read": ["m_star", "focal_selection.eligible",
-                               "focal_selection.curve", "focal_admissible"]},
+                      "read": ["m_star", "n_star", "iota_a",
+                               "focal_selection.eligible",
+                               "focal_selection.curve", "focal_admissible",
+                               "solo_topic_moments"]},
             "gate2_5": {"stage": C.STAGE_GATE2_5,
                         "read": ["outcome", "operating_point_order"],
                         "outcome": gate2_5_record["outcome"],
@@ -1334,10 +1598,21 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         "draws": C.M_CAL,
         "rows": n_rows,
         "probe_slots": list(slots),
-        "standins": [c.label for c in standins],
+        "standins": [c.label for c in standin_rungs],
+        "standin_operating_points": operating,
+        "standin_ladders": {k: {str(q): v for q, v in sorted(c.items())}
+                            for k, c in sorted(ladders.items())},
+        "standin_placement_rule":
+            "§13.8 matches a reference's iota(R) to iota_A, so a stand-in is "
+            "placed at the severity of its own solo ladder nearest Gate 2's "
+            "iota_A inside §13.4's band. iota_A does not depend on m*, so "
+            "re-selecting the operating point never moves a stand-in",
         "probe_cell_types": [cell_id for cell_id, _a, _s in shape],
         "probe_cell_types_generated": [cell_id for cell_id, _a, _s
                                        in generated_shape],
+        # Which of §13.14's ten slot-and-order exposure classes each probe
+        # cell carries, derived from Gate 4's own cell set rather than listed.
+        "gate4_class_coverage": coverage,
         # Which cells were read off Gate 2's record instead of drawn again,
         # and --- when none were --- why they could not be.
         "shared_with_gate2": shared,
@@ -1355,10 +1630,20 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             "severities_probed": sorted(probed),
             "rows_a_severity_costs":
                 len(generated_shape) * len(topics) * C.M_CAL},
-        "margin": composed_probe.margin(),
-        "margin_band": list(band),
+        # §34 D20's measured transfer: the realised Calibration-A vs
+        # Calibration-B movement of every probed entry, recorded beside the
+        # verdict it is an assumption in. Read by nothing.
+        "measured_split_transfer": _measured_split_transfer(
+            probed, residual_sd=composed_probe.RESIDUAL_SD),
+        "residual_allowance": residual,
+        "residual_allowance_is":
+            "§34 D23: the allowance for a difference between this stage's "
+            "split and §13.14's that is NOT sampling. The sampling part is "
+            "carried per entry by the projected interval, from that entry's "
+            "own between-topic variance, and is not in this number",
         "band": list(C.COMPOSED_HEADROOM_BAND),
         "band_is_unchanged": True,
+        "n_composed_audited_at": C.N_COMPOSED,
         "selects_nothing_but_m_star": True,
         "admissible_severities": sorted(admissible),
         "scope_limits": list(composed_probe.PROBE_SCOPE_LIMITS),

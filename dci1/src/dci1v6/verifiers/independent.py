@@ -90,6 +90,13 @@ FAMILY_SPEC: dict[str, tuple[str, str]] = {
     "XC1": ("semicolon", "exact_count"),
     "XC2": ("comma", "exact_count"),
     "XC3": ("sentence", "exact_count"),
+    # v6's §34 D24 stand-ins. They are scored by the registered verifiers
+    # like any other family, so they are certified by this independent
+    # reimplementation like any other family; PS3 is the only instrument in
+    # the library that exercises `rate_lower_bound` at all.
+    "PS1": ("capital_word", "exact_count"),
+    "PS2": ("semicolon", "count_lower_bound"),
+    "PS3": ("y_final", "rate_lower_bound"),
 }
 
 _ASCII_UPPER = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")

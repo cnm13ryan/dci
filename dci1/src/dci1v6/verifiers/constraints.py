@@ -66,6 +66,8 @@ __all__ = [
     "family_tier", "feature_group", "discourse_role", "structural_metadata",
     "N_FAMILIES", "N_SEVERITIES", "N_DECLARED_SEVERITIES", "N_INSTRUMENTS",
     "N_VERIFIERS", "KINDS", "Constraint", "CARRIED_FROM_V4R4",
+    "N_SELECTABLE_SEVERITIES", "N_SELECTABLE_DECLARED",
+    "N_PROBE_ONLY_SEVERITIES",
     "assert_slot_allowed", "assert_ladder_within_reserve",
     "assert_no_zero_rung", "assert_marker_vocabulary", "assert_library_sizes",
     "PROBE_ONLY_FAMILY_IDS", "SELECTABLE_FAMILY_IDS", "is_probe_only",
@@ -557,23 +559,105 @@ def _tier3_families() -> dict[str, Family]:
     return out
 
 
+
+#: §34 D24's three structural stand-ins, and READINESS §3.2's S1-S5 as a
+#: table. A stand-in is a **registered instrument that can never be
+#: selected**: it exists so that ``GATE_2_75_COMPOSED_PROBE`` can measure a
+#: composed cell in every slot and order class §13.14 will later audit,
+#: before any reference exists to put in those cells.
+#:
+#: **Three things S3 asked for, and the one the library cannot give.** S3 asks
+#: for stand-ins spanning §7.3's structural range whose ``feature_group`` is
+#: used by no selectable family. The second half is not available and should
+#: not be bought:
+#:
+#: * every one of §7.6's twenty-two counted statistics is already carried by a
+#:   selectable family, so a stand-in in an unused feature group requires a
+#:   **new statistic** --- a new verifier, its own §10.2 carry-over evidence,
+#:   and a new entry in ``FEATURE_GROUPS``;
+#: * ``FEATURE_GROUP_IDS`` is a *sorted* tuple and
+#:   ``selection.group_key`` reads a group's **index** in it as a
+#:   reference-selection tie-break. Adding a group therefore reorders the
+#:   tie-break for the selectable families that sort after it. A probe-only
+#:   instrument that changed which reference gets selected would be the exact
+#:   failure ``probe_only`` exists to prevent.
+#:
+#: So the stand-ins reuse registered statistics under **forms no selectable
+#: family carries**. That keeps the verifier population, the feature-group
+#: index and §12.6's group counts exactly as registered, and distinct *kinds*
+#: --- which is what S2 actually needs --- come free. ``rate_lower_bound`` is
+#: a registered §7.3 form that no selectable family exercises at all; PS3 is
+#: the only instrument in the library that certifies it.
+#:
+#: Each is chosen to be non-trivial across its ladder. A budget form over a
+#: rare statistic is satisfied at every rung and would measure nothing, which
+#: is why no stand-in carries one: the frequent statistics all already have
+#: their budget family (RF1-RF12), and the free ones are rare.
+_PROBE_ONLY_SPEC: tuple[tuple[str, str, str, tuple[int, ...], str, str], ...] = (
+    ("PS1", "capital_word", FORM_EXACT, _seq(1, 8),
+     "The answer must contain exactly q words that use a capital letter.",
+     "CR6"),
+    ("PS2", "semicolon", FORM_LOWER_BOUND, _seq(1, 8),
+     "The answer must contain at least q semicolon characters.", "CX2"),
+    ("PS3", "y_final", FORM_RATE_LOWER_BOUND, (2, 3, 4, 5, 6, 8, 10, 12),
+     "At least q percent of words must end with the letter y.", "RF8"),
+)
+
+
+def _probe_only_families() -> dict[str, Family]:
+    """The stand-ins, built through the same constructor as every family.
+
+    Deliberately not a separate dataclass or a separate table format: a
+    stand-in is scored by the same verifier, hashed into the same
+    ``verifier_source_hash`` and certified by the same Gate-1 suites as a
+    candidate. The **only** thing that differs is that it is not selectable,
+    and that is one flag rather than a second code path.
+
+    ``reserve`` equals ``ladder``: §12.6's expansion reads the reserve to
+    admit further candidate rungs, and a stand-in is never a candidate, so a
+    reserve wider than the ladder would declare instruments no rule can ever
+    reach.
+    """
+    out: dict[str, Family] = {}
+    for kind, statistic_id, form, ladder, rule, source in _PROBE_ONLY_SPEC:
+        if form in RATE_FORMS:
+            direction, burden = "neutral", "low"
+        elif form in LOWER_BOUND_FORMS:
+            direction, burden = "lengthens", "high"
+        else:
+            direction, burden = "shortens", "low"
+        out[kind] = Family(
+            kind=kind, statistic_id=statistic_id, form=form, ladder=ladder,
+            reserve=ladder, rule=rule, statistic_source=source,
+            metadata=_metadata(statistic_id, form,
+                               length_direction=direction,
+                               production_burden=burden),
+            probe_only=True)
+    return out
+
+
 FAMILIES: dict[str, Family] = {**_tier1_families(), **_TIER2,
-                               **_tier3_families()}
+                               **_tier3_families(), **_probe_only_families()}
 FAMILY_IDS = tuple(FAMILIES)
-TIER1_FAMILY_IDS = tuple(k for k, f in FAMILIES.items()
-                         if f.structural_tier == TIER_1)
-TIER2_FAMILY_IDS = tuple(k for k, f in FAMILIES.items()
-                         if f.structural_tier == TIER_2)
-TIER3_FAMILY_IDS = tuple(k for k, f in FAMILIES.items()
-                         if f.structural_tier == TIER_3)
 
 #: §34 D24's stand-ins, and the pool every selection rule reads instead of
-#: ``FAMILY_IDS``. The first is empty until the decision closes; the second is
-#: what a selection may see, and it is defined by subtraction so that
-#: authoring a stand-in cannot accidentally enlarge it.
+#: ``FAMILY_IDS``. The second is defined by subtraction so that authoring a
+#: stand-in cannot accidentally enlarge it.
 PROBE_ONLY_FAMILY_IDS = tuple(k for k, f in FAMILIES.items() if f.probe_only)
 SELECTABLE_FAMILY_IDS = tuple(k for k in FAMILIES
                               if k not in PROBE_ONLY_FAMILY_IDS)
+
+#: The tier partitions are over the **selectable** pool and not over
+#: ``FAMILIES``. §12.6 carries Tier-1 and Tier-2 families as candidates and
+#: §13.15 counts them, so a stand-in appearing in one of these tuples would
+#: put a non-selectable instrument into the population two registered rules
+#: count. PS1 is Tier-2 by its declared metadata, so this is not hypothetical.
+TIER1_FAMILY_IDS = tuple(k for k in SELECTABLE_FAMILY_IDS
+                         if FAMILIES[k].structural_tier == TIER_1)
+TIER2_FAMILY_IDS = tuple(k for k in SELECTABLE_FAMILY_IDS
+                         if FAMILIES[k].structural_tier == TIER_2)
+TIER3_FAMILY_IDS = tuple(k for k in SELECTABLE_FAMILY_IDS
+                         if FAMILIES[k].structural_tier == TIER_3)
 
 LADDERS = {k: f.ladder for k, f in FAMILIES.items()}
 RESERVES = {k: f.reserve for k, f in FAMILIES.items()}
@@ -602,6 +686,15 @@ CARRIED_FROM_V4R4: dict[str, dict[str, str]] = {
 N_FAMILIES = len(FAMILIES)
 N_SEVERITIES = sum(len(v) for v in LADDERS.values())
 N_DECLARED_SEVERITIES = sum(len(v) for v in RESERVES.values())
+#: The same two counts over the **selectable** pool alone, and over the
+#: stand-ins alone. §12.6 and §12.7 measure candidates, and a reader asking
+#: "how many instruments can become a reference?" must not be answered with a
+#: number that includes three that cannot. The 326 and the 632 below are
+#: exactly v5's, which is the check that authoring the stand-ins moved
+#: nothing in the selectable library.
+N_SELECTABLE_SEVERITIES = sum(len(LADDERS[k]) for k in SELECTABLE_FAMILY_IDS)
+N_SELECTABLE_DECLARED = sum(len(RESERVES[k]) for k in SELECTABLE_FAMILY_IDS)
+N_PROBE_ONLY_SEVERITIES = sum(len(RESERVES[k]) for k in PROBE_ONLY_FAMILY_IDS)
 #: §10.2's instrument population: the declared range of every family, plus A's
 #: eight severities and B's eight registered plus two extension rungs.
 N_INSTRUMENTS = (N_DECLARED_SEVERITIES + len(TARGET_GRID)
@@ -617,15 +710,21 @@ def assert_library_sizes() -> dict[str, int]:
     number a reader can check against the source is the only kind worth
     printing, so these are assertions and the report reads them from here.
     """
-    expected = {"families": 37, "round_0_severities": 326,
-                "declared_severities": 632, "instruments": 650,
-                "verifiers": 39, "probe_only_families": 0,
-                "selectable_families": 37}
+    expected = {"families": 40, "round_0_severities": 350,
+                "declared_severities": 656, "instruments": 674,
+                "verifiers": 42, "probe_only_families": 3,
+                "selectable_families": 37,
+                "selectable_round_0_severities": 326,
+                "selectable_declared_severities": 632,
+                "probe_only_severities": 24}
     got = {"families": N_FAMILIES, "round_0_severities": N_SEVERITIES,
            "declared_severities": N_DECLARED_SEVERITIES,
            "instruments": N_INSTRUMENTS, "verifiers": N_VERIFIERS,
            "probe_only_families": len(PROBE_ONLY_FAMILY_IDS),
-           "selectable_families": len(SELECTABLE_FAMILY_IDS)}
+           "selectable_families": len(SELECTABLE_FAMILY_IDS),
+           "selectable_round_0_severities": N_SELECTABLE_SEVERITIES,
+           "selectable_declared_severities": N_SELECTABLE_DECLARED,
+           "probe_only_severities": N_PROBE_ONLY_SEVERITIES}
     if got != expected:
         raise InstrumentError(
             f"§7.10's registered library sizes are {expected} and this "

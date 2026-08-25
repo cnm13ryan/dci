@@ -52,7 +52,7 @@ def plan_registration(*, repo_root: Path | str = ".",
     a key and never touches an evidence root.
     """
     bank = bank if bank is not None else load_bank()
-    blockers = manifest.signing_blockers(bank)
+    blockers = manifest.signing_blockers(bank, repo_root=repo_root)
     return {
         "stage": C.STAGE_REGISTERED,
         "can_register": not blockers,

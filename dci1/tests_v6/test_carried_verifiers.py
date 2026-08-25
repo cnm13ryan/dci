@@ -49,7 +49,7 @@ def test_the_boundary_suite_reproduces_every_frozen_expectation():
     assert result["failures"] == []
     assert result["agreement"] == 1.0
     assert result["checked"] > 2000
-    assert result["instruments"] == 650
+    assert result["instruments"] == 674
 
 
 def test_the_corpus_covers_the_four_marker_phenomena():

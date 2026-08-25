@@ -14,6 +14,7 @@ would be choosing.
 from __future__ import annotations
 
 import dataclasses
+import math
 
 import pytest
 
@@ -28,21 +29,41 @@ from dci1v6.stages import audit_prefreeze, composed_probe as P
 from dci1v6.stages import feasibility, regime
 from dci1v6.verifiers import constraints as K
 
-BAND = (0.10, 0.90)          # a margin band, not §13.14's --- see below
+#: A residual allowance that reproduces the old fixed margin band exactly for
+#: a **zero-variance** determinate entry: [0.05 + 0.05, 0.95 - 0.05]. Used so
+#: that a test about P3.3 to P3.6 is about the disposition rule and not about
+#: the projection, which has its own tests below.
+RESIDUAL = 0.05
 GATE2_CURVE = {7: 0.94, 8: 0.90, 9: 0.86, 10: 0.81, 11: 0.76, 12: 0.70,
                13: 0.64, 14: 0.58}
 
 
+def _m(value: float, s2: float = 0.0, n: int = 192) -> dict:
+    """One entry's measurement, in the shape ``severity_verdict`` reads."""
+    return {"compliance": value, "s2_topic": s2, "n_topics": n}
+
+
 def _table(b_solo: float, standin_solo: float = 0.5,
-           composed_b: float | None = None) -> dict:
-    """One severity's probed table, in the shape ``severity_verdict`` reads."""
+           composed_b: float | None = None, a_solo: float = 0.6,
+           a_with_b: float | None = None, s2: float = 0.0) -> dict:
+    """One severity's probed table, over the classes the verdict evaluates.
+
+    ``solo:A``, ``solo:B`` and both orders of ``pair:A+B`` are **determinate**
+    --- every constituent is a real registered instrument --- and gate through
+    the projected interval. Everything containing a stand-in gates against
+    §13.14's registered band with no margin.
+    """
     composed = b_solo if composed_b is None else composed_b
+    ab = b_solo if a_with_b is None else a_with_b
     return {
-        "unconstrained": {"unconstrained": 24.0},
-        "solo:B": {"B": b_solo},
-        "solo:P1": {"P1": standin_solo},
-        "pair:B+P1": {"B": composed, "P1": standin_solo},
-        "pair:P1+B": {"B": composed, "P1": standin_solo},
+        "unconstrained": {"unconstrained": _m(24.0)},
+        "solo:A": {"A": _m(a_solo, s2)},
+        "solo:B": {"B": _m(b_solo, s2)},
+        "pair:A+B": {"A": _m(a_solo, s2), "B": _m(ab, s2)},
+        "pair:B+A": {"A": _m(a_solo, s2), "B": _m(ab, s2)},
+        "solo:P1": {"P1": _m(standin_solo)},
+        "pair:B+P1": {"B": _m(composed), "P1": _m(standin_solo)},
+        "pair:P1+B": {"B": _m(composed), "P1": _m(standin_solo)},
     }
 
 
@@ -57,22 +78,57 @@ def test_the_probe_is_the_stage_between_gate_2_5_and_gate_3a():
     assert "composed_probe" in C.VERIFIER_BOUND_ENTRY_POINTS
 
 
-def test_the_cell_shape_is_derived_and_includes_the_standin_solo_cells():
-    """S4 reads each stand-in's operating point from its own solo curve.
+def test_the_cell_shape_covers_every_gate4_exposure_class():
+    """The probe's scope is derived from Gate 4's own cell set, not listed.
 
-    So the stand-in solo cells are not optional, and the composed lift is
-    measured against them. Two cells plus three per stand-in.
+    §13.14 audits 95 cell x slot entries falling into ten slot-and-order
+    classes. A hand-written probe shape is how the first version came to
+    protect one slot while believing it protected the design, so the
+    completeness check reads `design.cells.cell_types` and refuses a shape
+    that leaves a class uncovered.
     """
-    shape = P.probe_cell_types(P.probe_slots(3))
+    slots = P.probe_slots(3)
+    shape = P.probe_cell_types(slots)
     ids = [cell_id for cell_id, _arm, _slots in shape]
-    assert ids == ["unconstrained", "solo:B", "solo:P1", "solo:P2", "solo:P3",
+    assert ids == ["unconstrained", "solo:A", "solo:B",
+                   "solo:P1", "solo:P2", "solo:P3",
+                   "pair:A+B", "pair:B+A",
                    "pair:B+P1", "pair:P1+B", "pair:B+P2", "pair:P2+B",
-                   "pair:B+P3", "pair:P3+B"]
-    assert len(shape) == 2 + 3 * 3
-    # Stand-ins are never paired with each other: the quantity is the lift on
-    # B, and a stand-in pair would measure something no rule reads.
-    pairs = [slots for _id, arm, slots in shape if arm == "composed"]
-    assert all("B" in slots for slots in pairs)
+                   "pair:B+P3", "pair:P3+B",
+                   "pair:A+P1", "pair:P1+A", "pair:P1+P2", "pair:P2+P1"]
+    audit = P.assert_probe_covers_gate4_classes(slots)
+    assert audit["gate4_entries"] == 95
+    coverage = audit["coverage"]
+    assert sum(1 for e in coverage.values() if e["roles"]) == 10
+    assert all(e["covered"] for e in coverage.values())
+    assert sorted(audit["determinate_classes"]) == [
+        "composed:focal+target", "composed:target+focal",
+        "solo:focal", "solo:target"]
+
+
+def test_a_shape_that_leaves_a_gate4_class_uncovered_is_refused():
+    """The old shape --- B solo, stand-in solo, both orders of B with a
+    stand-in --- leaves six of the ten classes unmeasured, including the one
+    `gemma-3n-e4b-it` terminated in."""
+    old = [("unconstrained", "unconstrained", ()),
+           ("solo:B", "solo", ("B",)),
+           ("solo:P1", "solo", ("P1",)),
+           ("pair:B+P1", "composed", ("B", "P1")),
+           ("pair:P1+B", "composed", ("P1", "B"))]
+    coverage = {}
+    for key, gate4_cells in P.gate4_exposure_classes().items():
+        arm, roles = key
+        name = f"{arm}:{'+'.join(roles)}" if roles else arm
+        covering = [cid for cid, cell_arm, cell_slots in old
+                    if cell_arm == arm
+                    and tuple(P.slot_role(x) for x in cell_slots) == roles]
+        coverage[name] = bool(covering)
+    assert coverage["solo:companion"] is True
+    assert coverage["solo:target"] is False
+    assert coverage["composed:target+focal"] is False
+    assert coverage["composed:companion+companion"] is False
+    assert sum(1 for name, ok in coverage.items()
+               if not ok and name != "unconstrained") == 6
 
 
 def test_a_probe_slot_is_not_a_registered_design_slot():
@@ -120,32 +176,104 @@ def test_a_record_without_the_admissible_set_is_refused_not_defaulted():
     assert "focal_admissible" in str(excinfo.value)
 
 
-def test_a_severity_passes_only_when_every_cell_and_every_slot_is_inside():
-    inside = P.severity_verdict(_table(0.80), band=BAND)
+def test_a_severity_passes_only_when_every_entry_passes_its_own_test():
+    inside = P.severity_verdict(_table(0.80), residual=RESIDUAL)
     assert inside["passes"] and inside["failures"] == []
-    # One slot of one cell over the margin is enough to fail the severity.
-    over = P.severity_verdict(_table(0.80, composed_b=0.93), band=BAND)
+    # solo:A, solo:B, both orders of A+B (two slots each), solo:P1, and both
+    # orders of B+P1 (two slots each).
+    assert inside["n_entries_evaluated"] == 11
+    assert inside["n_determinate_entries"] == 6
+    assert inside["n_standin_dependent_entries"] == 5
+    # A determinate entry over the residual-contracted band fails, at zero
+    # variance, exactly where the old fixed margin band put it.
+    over = P.severity_verdict(_table(0.80, a_with_b=0.93), residual=RESIDUAL)
     assert not over["passes"]
-    assert {f["cell"] for f in over["failures"]} == {"pair:B+P1", "pair:P1+B"}
-    assert all(f["slot"] == "B" for f in over["failures"])
-    # The unconstrained cell carries no constraint and is recorded, not
-    # evaluated.
-    assert inside["n_cells_evaluated"] == 4
+    assert {f["cell"] for f in over["failures"]} == {"pair:A+B", "pair:B+A"}
+    assert all(f["slot"] == "B" and f["determinate"] for f in over["failures"])
 
 
-def test_the_margin_band_is_strictly_inside_the_registered_band():
-    """delta is a margin INSIDE §13.14's band, never a change to it."""
+def test_a_stand_in_dependent_entry_carries_no_margin_at_all():
+    """A stand-in is not the reference, so a projection from it would be a
+    projection of the wrong instrument. It gates on §13.14's band itself."""
     low, high = C.COMPOSED_HEADROOM_BAND
-    verdict = P.severity_verdict(_table(0.80), band=BAND)
+    # 0.93 is outside the residual-contracted band and inside the registered
+    # one. A determinate entry there fails; a stand-in-dependent one passes.
+    near = P.severity_verdict(_table(0.80, composed_b=0.93),
+                              residual=RESIDUAL)
+    assert near["passes"]
+    assert all(e["half_width"] == 0.0 for e in near["entries"]
+               if not e["determinate"])
+    # Outside the registered band it fails, and the failure is a real
+    # composed cell of real instruments leaving the band.
+    out = P.severity_verdict(_table(0.80, composed_b=0.97),
+                             residual=RESIDUAL)
+    assert not out["passes"]
+    failed = [f for f in out["failures"] if not f["determinate"]]
+    assert {f["cell"] for f in failed} == {"pair:B+P1", "pair:P1+B"}
+    assert all(f["band"] == [low, high] for f in failed)
+
+
+def test_the_projection_is_section_13_4s_device_on_section_13_14s_band():
+    """Three terms and no fourth, and the band itself is never moved."""
+    low, high = C.COMPOSED_HEADROOM_BAND
+    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual=0.0)
     assert verdict["registered_band"] == [low, high]
-    assert low <= BAND[0] and BAND[1] <= high
+    assert verdict["band_is_unchanged"] is True
+    entry = next(e for e in verdict["entries"] if e["cell"] == "solo:B")
+    expected = 1.959963984540054 * math.sqrt(0.09 / C.N_COMPOSED
+                                             + 0.09 / 192 + 0.0)
+    assert entry["half_width"] == pytest.approx(expected, rel=1e-12)
+    assert entry["projected_low"] == pytest.approx(0.80 - expected)
+    assert entry["projected_high"] == pytest.approx(0.80 + expected)
+    # Gate 4's own sample size dominates: 24 topics against the probe's 192.
+    assert (P.projected_halfwidth(0.09, n_probe=192, n_composed=96,
+                                  residual_sd=0.0)
+            < P.projected_halfwidth(0.09, n_probe=192, n_composed=24,
+                                    residual_sd=0.0))
+    # And more variance, or a family-wise correction, only ever widens it.
+    assert (P.projected_halfwidth(0.16, n_probe=192)
+            > P.projected_halfwidth(0.09, n_probe=192))
+    assert (P.projected_halfwidth(0.09, n_probe=192, k=6)
+            > P.projected_halfwidth(0.09, n_probe=192, k=1))
+
+
+def test_the_familywise_reading_is_recorded_beside_every_determinate_entry():
+    """§13.14's verdict is a conjunction, so the Bonferroni reading belongs on
+    the artifact even though the criterion is §13.4's per-entry convention."""
+    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual=0.0)
+    assert verdict["level_k"] == 1
+    assert verdict["familywise_k"] == P.N_DETERMINATE_ENTRIES == 6
+    for entry in verdict["entries"]:
+        if entry["determinate"]:
+            assert entry["half_width_familywise"] > entry["half_width"]
+        else:
+            assert "half_width_familywise" not in entry
+    assert {f["cell"] for f in verdict["would_fail_familywise"]} <= {
+        "solo:A", "solo:B", "pair:A+B", "pair:B+A"}
+
+
+def test_the_residual_allowance_matches_the_measurement_it_is_derived_from():
+    """`RESIDUAL_SD` is not a chosen constant: it is half the measured
+    calibration_a-vs-calibration_b residual, because §6.2 cuts calibration_a
+    and the composed set from one seeded shuffle and §34 D3's calibration_b
+    is newly authored."""
+    import json
+    from pathlib import Path as _P
+
+    report = json.loads(
+        (_P(__file__).resolve().parents[1] / "reports" / "dci1v6"
+         / "precision_design.json").read_text())
+    measured = report["authored_subsplit"]["carried_by_a_pooled_probe"]["sd"]
+    assert P.RESIDUAL_SD == pytest.approx(measured, abs=5e-5)
+    assert report["split_transfer"]["residual_point_estimate"] <= 0.0
 
 
 # --------------------------------------------------- P3.3, P3.4, P3.5, P3.6
 
 def test_p3_3_a_passing_m_star_stands_and_nothing_is_reselected():
     out = P.probe_disposition(m_star=10, probed={10: _table(0.81)},
-                              gate2_solo_curve=GATE2_CURVE, band=BAND)
+                              gate2_solo_curve=GATE2_CURVE,
+                              residual=RESIDUAL)
     assert out["reselected"] is False
     assert out["m_star_out"] == 10
     assert out["reselections_permitted"] == 1
@@ -159,10 +287,11 @@ def test_p3_4_a_failing_m_star_reselects_once_over_gate_2s_own_curve():
     unchanged --- FOCAL_BAND, FOCAL_AIM = 0.80, prefer_smaller --- so it takes
     11 at 0.76, the passing severity nearest the aim.
     """
-    probed = {8: _table(0.90, composed_b=0.97), 11: _table(0.76),
+    probed = {8: _table(0.90, a_with_b=0.97), 11: _table(0.76),
               12: _table(0.70), 13: _table(0.64)}
     out = P.probe_disposition(m_star=8, probed=probed,
-                              gate2_solo_curve=GATE2_CURVE, band=BAND)
+                              gate2_solo_curve=GATE2_CURVE,
+                              residual=RESIDUAL)
     assert out["reselected"] is True
     assert out["passing_severities"] == [11, 12, 13]
     assert out["m_star_out"] == 11
@@ -179,10 +308,11 @@ def test_p3_6_no_admissible_severity_terminates_the_replication(
         restore_decisions):
     """A repair loop with no terminal outcome is not a rule."""
     restore_decisions.override_for_testing("D6", "identification_status")
-    probed = {m: _table(0.90, composed_b=0.97) for m in (9, 10, 11)}
+    probed = {m: _table(0.90, a_with_b=0.97) for m in (9, 10, 11)}
     with pytest.raises(TerminalStatus) as excinfo:
         P.probe_disposition(m_star=10, probed=probed,
-                            gate2_solo_curve=GATE2_CURVE, band=BAND)
+                            gate2_solo_curve=GATE2_CURVE,
+                            residual=RESIDUAL)
     raised = excinfo.value
     assert raised.status == P.COMPOSED_HEADROOM_UNREACHABLE
     assert raised.gate == C.STAGE_GATE2_75
@@ -194,7 +324,8 @@ def test_p3_6_no_admissible_severity_terminates_the_replication(
 def test_m_star_must_be_probed_first():
     with pytest.raises(ProtocolError):
         P.probe_disposition(m_star=10, probed={11: _table(0.76)},
-                            gate2_solo_curve=GATE2_CURVE, band=BAND)
+                            gate2_solo_curve=GATE2_CURVE,
+                            residual=RESIDUAL)
 
 
 def test_the_terminal_status_is_registered_and_raisable():
@@ -324,9 +455,12 @@ def test_the_scope_limits_are_on_the_record_not_discovered_at_gate_4():
     """READINESS §3.2: the probe protects the B slot only, and Change 1
     succeeding raises Gate-4 exposure. Both are registered expectations."""
     text = " ".join(P.PROBE_SCOPE_LIMITS)
-    assert "B slot only" in text
-    assert "gemma-3n-e4b-it" in text
+    # The limit is no longer "one slot": it is the companion's IDENTITY, and
+    # the record has to say which of the two it is.
+    assert "identity" in text
+    assert "no margin" in text
     assert "95" in text
+    assert "0.12 to 0.19" in text
 
 
 # ------------------------------------------ the decisions it fails closed on
@@ -344,14 +478,20 @@ def test_every_open_decision_refuses_rather_than_defaulting(
     assert decision_id in decisions.decisions_blocking_stage(C.STAGE_GATE2_75)
 
 
-def test_no_standin_is_registered_and_the_probe_says_so(restore_decisions):
-    """§34 D24 closed does not conjure an instrument.
-
-    Which stand-ins exist is the researcher's, and authoring one changes
-    ``assert_library_sizes``' counts --- which is the visibility R6 asks for.
-    """
+def test_the_registered_standins_are_the_probe_only_families(
+        restore_decisions):
+    """§34 D24 at `probe_only_in_library` selects the authored population."""
     restore_decisions.override_for_testing("D24", "probe_only_in_library")
-    assert K.PROBE_ONLY_FAMILY_IDS == ()
+    assert P.standins() == ("PS1", "PS2", "PS3")
+    assert P.PROBE_ONLY_KINDS() == K.PROBE_ONLY_FAMILY_IDS
+
+
+def test_the_separate_vocabulary_branch_has_no_instruments_and_refuses(
+        restore_decisions):
+    """The other branch is coded and reachable, and it yields nothing here:
+    a separate frozen probe vocabulary is not in this library, so a closure
+    there fails loudly rather than running the probe with no companion."""
+    restore_decisions.override_for_testing("D24", "separate_vocabulary")
     with pytest.raises(ProtocolError) as excinfo:
         P.standins()
     assert "D24" in str(excinfo.value)
@@ -380,9 +520,9 @@ def test_the_probe_measures_compliance_and_the_module_says_so():
     reference and to any composed *contrast*.
     """
     text = " ".join((P.__doc__ or "").split())
-    assert "It is *not* free of outcomes and this module never says it is" \
-        in text
     assert "blind to any *reference* and to any *composed contrast*" in text
+    assert "no available evidence bounds the difference between a stand-in " \
+           "and the reference that replaces it" in text
 
 
 def test_l4a_stays_within_replication():

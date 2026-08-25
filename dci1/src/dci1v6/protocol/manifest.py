@@ -60,6 +60,7 @@ from dci1v6.verifiers import constraints, verifier_source_hash
 from dci1v6.verifiers.constraints import FAMILIES, RESERVES
 
 __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
+           "DRAFT_MARKER", "assert_documents_adopted",
            "REQUIRED_BINDINGS", "REGISTRATION_INCOMPLETE", "Blocker",
            "signing_blockers", "assert_signable", "build_manifest",
            "assert_no_model_adaptive_values", "document_hashes",
@@ -126,9 +127,68 @@ def document_hashes(repo_root: Path | str = ".") -> dict[str, Any]:
     return out
 
 
+#: The marker a governed document carries while it is not yet the study's
+#: commitment. Both documents §18 stage 1 binds are checked for it.
+DRAFT_MARKER = "DRAFT_NOT_ADOPTED"
+
+
+def assert_documents_adopted(repo_root: Path | str = ".") -> dict[str, Any]:
+    """Refuse a registration whose protocol text says it is a draft.
+
+    ``document_hashes`` binds the two documents by content and refuses a
+    *missing* one. That is not enough once a draft exists: a complete,
+    self-consistent draft is exactly the thing that could be mistaken for a
+    registration by being present. So the documents declare their own status
+    and this reads it.
+
+    The preregistration declares it on a line ``status: <value>``; the
+    reference-design spec in its ``_status`` field. A document with no
+    declaration at all is treated as a draft, because the safe reading of
+    silence here is the one that refuses --- and so is a **missing** one, so
+    that ``signing_blockers`` and ``document_hashes`` refuse the same two
+    files for the same reason. Before this existed the plan could report
+    ``can_register`` while neither document was written, because
+    ``document_hashes`` raises only at ``build_manifest`` time.
+
+    **Adopting a document is a researcher act.** Nothing in this package
+    writes either file or edits either marker.
+    """
+    root = Path(repo_root)
+    findings: list[dict[str, Any]] = []
+    prereg = root / PROTOCOL_DOCUMENT
+    if not prereg.exists():
+        declared = "missing"
+    else:
+        lines = [ln.strip() for ln in prereg.read_text().splitlines()]
+        declared = next((ln.split(":", 1)[1].strip() for ln in lines
+                         if ln.lower().startswith("status:")), "none")
+    if declared != "ADOPTED":
+        findings.append({"document": PROTOCOL_DOCUMENT,
+                         "declared": declared, "required": "ADOPTED"})
+    spec = root / REFERENCE_DESIGN_SPEC
+    if not spec.exists():
+        declared = "missing"
+    else:
+        try:
+            declared = str(json.loads(spec.read_text()).get("_status")
+                           or "none")
+        except json.JSONDecodeError:
+            declared = "unreadable"
+    if not declared.startswith("ADOPTED"):
+        findings.append({"document": REFERENCE_DESIGN_SPEC,
+                         "declared": declared, "required": "ADOPTED"})
+    return {"adopted": not findings, "findings": findings,
+            "draft_marker": DRAFT_MARKER,
+            "why": "a registration binds these two documents by hash; a "
+                   "document that says it is a draft may not be the text a "
+                   "study registers, and adopting one is a researcher act"}
+
+
 # ------------------------------------------------------------- refusals
 
-def signing_blockers(bank: TopicBank | None = None) -> list[dict[str, Any]]:
+def signing_blockers(bank: TopicBank | None = None, *,
+                     repo_root: Path | str | None = None
+                     ) -> list[dict[str, Any]]:
     """Every refusal, each reported separately and by kind.
 
     Five of them are about things nobody has decided yet. The last four are
@@ -141,6 +201,20 @@ def signing_blockers(bank: TopicBank | None = None) -> list[dict[str, Any]]:
     """
     bank = bank if bank is not None else load_bank()
     blockers: list[dict[str, Any]] = []
+
+    # A complete draft is exactly the thing that could be mistaken for a
+    # registration by being present, so its own declared status is read.
+    from dci1v6.engine.context import REPO_ROOT
+
+    adoption = assert_documents_adopted(
+        REPO_ROOT if repo_root is None else repo_root)
+    if not adoption["adopted"]:
+        blockers.append({
+            "kind": "DRAFT_DOCUMENT", "section": "§18 stage 1",
+            "what": "a document §18 stage 1 binds by hash is missing or "
+                    "declares itself a draft; adopting it is a researcher act",
+            "n": len(adoption["findings"]),
+            "findings": adoption["findings"]})
 
     still_open = list(decisions.open_decisions())
     if still_open:
@@ -274,9 +348,10 @@ def signing_blockers(bank: TopicBank | None = None) -> list[dict[str, Any]]:
 
 
 def assert_signable(bank: TopicBank | None = None, *,
-                    where: str = "registration") -> None:
+                    where: str = "registration",
+                    repo_root: Path | str | None = None) -> None:
     """§18 stage 1: refuse, by name, everything that is not ready."""
-    blockers = signing_blockers(bank)
+    blockers = signing_blockers(bank, repo_root=repo_root)
     if blockers:
         summary = ", ".join(f"{b['kind']}({b['n']})" for b in blockers)
         raise Blocker(
@@ -787,7 +862,8 @@ def sign_registration(context: StudyContext, *, producing_commit: str,
     behind that a later run could mistake for a registration.
     """
     bank = bank if bank is not None else load_bank()
-    assert_signable(bank, where="sign_registration")
+    assert_signable(bank, where="sign_registration",
+                    repo_root=repo_root)
     manifest = build_manifest(context, producing_commit=producing_commit,
                               adoption=adoption, bank=bank,
                               repo_root=repo_root, supersedes=supersedes)
@@ -892,7 +968,8 @@ def ensure_registration(context: StudyContext, *, producing_commit: str,
         return sign_registration(context, producing_commit=producing_commit,
                                  adoption=adoption, bank=bank,
                                  repo_root=repo_root, supersedes=supersedes)
-    assert_signable(bank, where="ensure_registration")
+    assert_signable(bank, where="ensure_registration",
+                    repo_root=repo_root)
     existing = load_manifest(context)
     if existing["producing_commit"] != producing_commit:
         raise IntegrityError(

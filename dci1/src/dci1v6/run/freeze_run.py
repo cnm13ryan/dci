@@ -41,7 +41,10 @@ from dci1v6.run.lifecycle import StageOutcome, run_stage
 from dci1v6.stages import freeze as freeze_stage
 from dci1v6.stages.feasibility import qualification_at
 from dci1v6.verifiers import source_hashes
-from dci1v6.verifiers.constraints import FAMILIES, LADDERS, RESERVES
+from dci1v6.verifiers.constraints import (FAMILIES, LADDERS,
+                                          PROBE_ONLY_FAMILY_IDS,
+                                          RESERVES,
+                                          SELECTABLE_FAMILY_IDS)
 
 __all__ = ["assemble", "freeze_payload", "run_freeze", "assert_matches_freeze",
            "load_freeze"]
@@ -132,15 +135,21 @@ def assemble(tree: ModelTree, *, producing_commit: str,
             "m_star_in": probe["m_star_in"],
             "m_star": probe["m_star"],
             "reselected": probe["reselected"],
-            "margin": probe["margin"],
-            "margin_band": probe["margin_band"],
+            "residual_allowance": probe["residual_allowance"],
             "band": probe["band"],
             "topic_split": probe["topic_split"],
             "standins": probe["standins"],
+            "standin_operating_points": probe["standin_operating_points"],
             "probe_cell_types": probe["probe_cell_types"],
+            "gate4_class_coverage": probe["gate4_class_coverage"],
             "disposition": probe["disposition"],
             "scope_limits": probe["scope_limits"]},
-        candidate_family_vocabulary=sorted(FAMILIES),
+        # The **candidate** vocabulary, which is the selectable pool: a
+        # probe-only stand-in is in the library and in the verifier hash but
+        # can never be a candidate, and a freeze that named it as one would
+        # bind a vocabulary no selection rule can draw from.
+        candidate_family_vocabulary=sorted(SELECTABLE_FAMILY_IDS),
+        probe_only_family_vocabulary=sorted(PROBE_ONLY_FAMILY_IDS),
         ladders={k: list(v) for k, v in LADDERS.items()},
         reserves={k: list(v) for k, v in RESERVES.items()},
         structural_metadata={k: dict(f.metadata)

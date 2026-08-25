@@ -51,7 +51,12 @@ def test_the_registered_tiers_are_what_the_protocol_says():
     assert len(K.TIER1_FAMILY_IDS) == 8
     assert len(K.TIER2_FAMILY_IDS) == 3
     assert len(K.TIER3_FAMILY_IDS) == 26
-    assert K.N_FAMILIES == 37
+    # The tier partitions are over the SELECTABLE pool, so authoring §34 D24's
+    # stand-ins moved none of them --- PS1 is Tier-2 by its own metadata and
+    # would have made that count 4 if the partitions read `FAMILIES`.
+    assert len(K.SELECTABLE_FAMILY_IDS) == 37
+    assert K.N_FAMILIES == 40
+    assert set(K.TIER2_FAMILY_IDS).isdisjoint(K.PROBE_ONLY_FAMILY_IDS)
 
 
 def test_every_slot_refuses_a_family_whose_tier_it_does_not_admit():

@@ -136,9 +136,9 @@ CONTRACT: tuple[Field, ...] = (
     _f(G1, "instrument_population", (G5,)),
 
     # ----------------------------------------------- GATE_2_FOCAL_CALIBRATION
-    _f(G2, "n_star", (G25, G3B, G4, G5, CONF)),
+    _f(G2, "n_star", (G25, G275, G3B, G4, G5, CONF)),
     _f(G2, "m_star", (G25, G275, G3A, G3B, G4, G5, CONF)),
-    _f(G2, "iota_a", (G3A, G3B, G5)),
+    _f(G2, "iota_a", (G275, G3A, G3B, G5)),
     _f(G2, "solo_compliance_a", (G3A, G3B, G5)),
     _f(G2, "solo_compliance_b", (G5,)),
     _f(G2, "chance_curves", (G5,)),
@@ -180,6 +180,7 @@ CONTRACT: tuple[Field, ...] = (
     # The topics this stage measured, against which a later stage checks
     # whether reusing one of its cells is the same case or a different one.
     _f(G2, "calibration_topic_ids", (G275,)),
+    _f(G2, "solo_topic_moments", (G275,)),
     # Free from rows already scored, read by nothing, and deliberately off
     # §13.11's closed table so that it cannot reach a selection rule.
     _f(G2, "kappa_b_under_candidate", ()),
@@ -216,14 +217,20 @@ CONTRACT: tuple[Field, ...] = (
     # back to find out.
     _f(G275, "reselected", (G3A, G5)),
     _f(G275, "disposition", (G5,)),
-    _f(G275, "margin", (G5,)),
-    _f(G275, "margin_band", (G5,)),
+    _f(G275, "residual_allowance", (G5,)),
     _f(G275, "band", (G5,)),
     _f(G275, "topic_split", (G5,)),
     _f(G275, "standins", (G5,)),
     _f(G275, "probe_cell_types", (G5,)),
     # Which cells were read off Gate 2 rather than drawn again, and why.
     _f(G275, "probe_cell_types_generated", ()),
+    _f(G275, "gate4_class_coverage", (G5,)),
+    _f(G275, "standin_operating_points", (G5,)),
+    _f(G275, "standin_ladders", ()),
+    _f(G275, "measured_split_transfer", ()),
+    _f(G275, "standin_placement_rule", ()),
+    _f(G275, "residual_allowance_is", ()),
+    _f(G275, "n_composed_audited_at", ()),
     _f(G275, "shared_with_gate2", ()),
     _f(G275, "rows_not_drawn", ()),
     _f(G275, "scope_limits", (G5,)),

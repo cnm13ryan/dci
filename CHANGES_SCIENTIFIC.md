@@ -13,6 +13,182 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — v6: Gate 2.75 widened from the B slot to all ten of §13.14's exposure classes, and its margin became a measurement
+
+**Prospective, and v6 only.** No v5 record, verdict, terminal status or row is
+touched. Nothing here is evidence about `Delta_j`, `Delta_R` or `Xi`.
+
+**What changed, in one sentence.** `GATE_2_75_COMPOSED_PROBE` probed the B slot
+against three stand-ins and judged every cell against a single registered
+constant `delta`; it now probes one cell for **each of the ten slot-and-order
+classes §13.14 audits**, and judges each entry by what that entry is evidence
+for — a projected Gate-4 interval where the instruments are real, and §13.14's
+registered band with no margin where one of them is a stand-in.
+
+**Scope.** `composed_probe.gate4_exposure_classes` partitions §8.1's 56 cell
+types and 95 cell × slot entries by (arm, the roles of the slots in prompt
+order) — derived from `design.cells.cell_types`, not listed — and
+`assert_probe_covers_gate4_classes` refuses a probe shape leaving one
+uncovered. The probe's cell set goes from 11 to 18 types; with the three cells
+Gate 2 already measured read off its record, 15 are generated per severity:
+11,520 rows at `N_CALIBRATION` × `M_CAL`, plus a 576-row stand-in solo ladder
+measured once. Previously 6,912 and no ladder. The classes the old probe could
+not see include `solo:companion` — which is where `gemma-3n-e4b-it` terminated
+under v5 — and every class pairing the target constraint with anything.
+
+**The margin.** `delta` was to absorb (a) a calibration→composed split transfer
+whose realised magnitude reached 0.189 and (b) an unmeasured
+stand-in→reference term. `reports/dci1v6/precision_design.json` measures both
+and neither is a job for a constant:
+
+- **(a) is sampling.** Over the thirteen realised movements the observed
+  variance is 0.00430 against the 0.00515 the two sample sizes imply, so
+  nothing survives as a bias — and §6.2 says why: `dci1v4.topics.split.cut_area`
+  cuts pre-screen, calibration_a, composed, confirmatory and sequestered from
+  **one seeded per-area shuffle**, so those sets are exchangeable by
+  construction. It is now carried per entry by a projected Gate-4 interval,
+  `z * sqrt(s2/N_COMPOSED + s2/n_probe + residual^2)`, where `s2` is that
+  entry's own between-topic variance measured in the same stage. The device
+  and the 95% level are §13.4's, applied the way §13.4 applies them — to an
+  interval, so an imprecisely measured value cannot sit on the boundary. The
+  measured topic-level ICC on the closed v5 Gate-4 rows is 0.35, which is why
+  every lever here moves topics and none moves `M_CAL`.
+- **(b) is not coverable by any margin.** Stand-in-dependent entries are judged
+  against §13.14's registered band directly, with **no margin**. A failure
+  there is a real composed cell of real instruments leaving the band; a pass
+  certifies nothing about the reference that replaces the stand-in, and the
+  record says so.
+- **What is left for §34 D23** is the one component §6.2's cut does *not* make
+  exchangeable: §34 D3's newly authored `calibration_b`, which supplies half a
+  pooled probe's topics. Paired by instrument on the closed v5 record its
+  residual sd is 0.0284, halved to 0.0142 by the pooling, and that is carried
+  by `composed_probe.RESIDUAL_SD`. The decision is now the allowance *beyond*
+  those two measured terms and its derived value is zero.
+
+**Stand-in placement.** Each stand-in was to be probed at a `FOCAL_AIM`-
+equivalent severity. It is now placed at the severity of its own solo ladder
+nearest **Gate 2's measured `iota_A`**, inside §13.4's band, because §13.8
+matches a reference's `iota(R)` to `iota_A` and that is where the design puts a
+companion. `iota_A` does not depend on m*, so re-selecting the operating point
+never moves a stand-in and a re-probed severity is never compared against a
+different companion from the one before it.
+
+**Which results are affected.** None that exist. v6 has generated no row. What
+changes is what a v6 Gate-2.75 record will mean and which operating points it
+will admit. Applied to the four closed v5 solo-B curves and their own
+per-severity between-topic variance — `solo:B` is a determinate entry, so this
+is the production rule and not a model of it — every replication retains
+admissible operating points, and the **one** m\* the rule refuses is
+`gemma-3n-e4b-it`'s, at solo compliance 0.8672 with 0.027 less room than its
+own projected interval needs. That is the replication that in fact terminated
+at Gate 4. Note also that the half-width is *smaller* where compliance is
+higher, because the between-topic variance is: the rule is not a constant band
+and does not behave like one.
+
+This is a statement about the **rule**, computed on development evidence. It is
+not a re-verdict, not a claim the rule would have saved anything, and not
+evidence that it generalises.
+
+**Comparability.** §13.14's band `[0.05, 0.95]`, §13.4's `[0.10, 0.90]`, the
+calipers, the estimands, the claim ladder and the multiplicity families are
+untouched, and `protocol/revision.V9` still requires the twelve estimand-layer
+modules byte-identical to v5. Gate 4 is exactly as registered, so a v6 Gate-4
+record is comparable with v5's. A v6 Gate-2.75 record has no v5 counterpart.
+
+## 2026-08-25 — v6: three `probe_only` stand-in families authored (§7.10, §34 D24)
+
+**What changed.** The library goes from 37 families to 40. `PS1`
+(`capital_word`, exact count), `PS2` (`semicolon`, count lower bound) and `PS3`
+(`y_final`, rate lower bound) are registered with `probe_only=True`: scored by
+the same verifiers, hashed into the same `verifier_source_hash`, certified by
+the same Gate-1 suites, and excluded by construction from every selectable
+pool. `assert_selectable` refuses one everywhere a candidate is carried,
+qualified, calibrated or bound, and §12.2's screen now filters to
+`SELECTABLE_FAMILY_IDS` and re-asserts it rung by rung.
+
+**Why these three and not what READINESS §3.2's S3 asked for.** S3 asked for
+stand-ins whose `feature_group` is used by no selectable family. Every one of
+§7.6's twenty-two counted statistics is already carried, so that requires a
+*new* statistic — a new verifier, its own §10.2 carry-over evidence, and a new
+entry in `FEATURE_GROUPS`. `FEATURE_GROUP_IDS` is a **sorted** tuple and
+`selection.group_key` reads a group's index in it as a reference-selection
+tie-break, so adding a group would reorder the tie-break for the selectable
+families sorting after it: a probe-only instrument that changed which reference
+gets selected is exactly the failure `probe_only` exists to prevent. The
+stand-ins therefore reuse registered statistics under **forms no selectable
+family carries**, which leaves the verifier population, the feature-group index
+and §12.6's group counts as registered. `rate_lower_bound` is a registered §7.3
+form that no selectable family exercises; `PS3` is the only instrument in the
+library that certifies it.
+
+Each is chosen to be non-trivial across its ladder. A budget form over a rare
+statistic is satisfied at every rung and would measure nothing, which is why no
+stand-in carries one: the frequent statistics all already have their budget
+family and the free ones are rare.
+
+**Which counts move.** `assert_library_sizes`: families 37 → 40, round-0
+severities 326 → 350, declared severities 632 → 656, instruments 650 → 674,
+verifiers 39 → 42, `probe_only_families` 0 → 3. Three counts are added and are
+the check that nothing moved in the pool that matters:
+`selectable_families` 37, `selectable_round_0_severities` **326** and
+`selectable_declared_severities` **632** — v5's values exactly. The candidate
+budget, §12.2's screen, §12.6's expansion and the freeze's candidate vocabulary
+all read the selectable pool and are unchanged.
+
+**The canonical verifier hash moves**, because the library and the wordings
+moved. v6 has no signed record at the old hash — no v6 stage has run — so
+nothing is superseded. The §10.2 declared instrument population is re-certified
+at the new hash over 674 instances, and the 650-instance evidence does not
+cover the three added families and is not claimed to.
+
+**A harness defect surfaced by the same work, and fixed.** The synthetic
+backend scripted a violation as `severity + 1` for every form. For a
+`count_lower_bound` family that **still satisfies** `>= q`, so `CL7`, `CL8` and
+the new `PS2` were scripted to pass every row they were meant to fail and their
+fixture solo compliance was 1.0 whatever the fixture rate asked for.
+`synthetic_lifecycle._scripted_count` is now form-aware. No production code and
+no stored number changes; what changes is that the harness can now put a
+lower-bound family on both sides of its own criterion.
+
+## 2026-08-25 — v6: §13.14's precision left exactly as registered, because the alternative is not executable here (§34 D21)
+
+**What was proposed and what the audit found.** READINESS R3 recommended
+enlarging §6.2's composed set from 24 topics to 48, taking the difference from
+the sequestered eighth, on the ground that a 24-topic binary verdict over up to
+95 entries is the largest single lever on v6 survival. The sequestered eighth
+**was never materialised in this repository**: `load_bank` carries zero
+sequestered questions, `dci1v4.topics.sequestered` holds opaque identities and
+content hashes only, the texts are retained by the researcher outside the
+repository, and `assert_no_materialisation` refuses any released question
+colliding with a sequestered hash. Enlarging the composed set is therefore not
+a change to a constant — it is an act of authoring topics, a governed §6.2
+change, and it spends the reserve §6.2 keeps for a future uncontaminated rerun.
+
+**What was measured instead.** `tools/v6_precision_design.py` computes, from
+the retained Gate-4 rows of all four replications and against their signed
+tables and terminal reports (21 baseline checks, all agreeing), the
+between-topic variance of every one of the 73 realised cell × slot entries, and
+a **joint** topic bootstrap — joint because one replication's entries share one
+topic set — of the chance that §13.14 fires. On the two replications whose
+entries were **all inside the band**, that chance is **0.121** and **0.190** at
+the registered 24 topics; at 48 it would be 0.044 and 0.074, and at 96, 0.007
+and 0.017. The full five-arm set audits 95 entries and no replication ran it,
+so that rate is not measurable from v5.
+
+**What v6 does about it.** Nothing to §13.14, which stays exactly as registered
+and therefore exactly comparable with v5's Gate 4. The precision reasoning goes
+where it can go without touching a reviewed definition: into Gate 2.75's
+projection, which refuses an operating point whose *predicted* Gate-4 entries
+are within an interval's reach of the band — moving the verdict away from the
+region where 24-topic sampling decides it, rather than making the verdict more
+precise.
+
+**Which results are affected.** None. No threshold, no row, no estimator, no
+admission rule changes. What changes is that a registered option is now known
+to be unavailable without a governed bank change, and that the size of the
+precision problem is a measured number on a committed artifact rather than an
+assertion in a memo.
+
 ## 2026-08-25 — V6-E05: `n_stable` counted a key §13.7 never returns, and read zero on every replication
 
 **Found by a characterization test** written for V6-E04's extraction: running

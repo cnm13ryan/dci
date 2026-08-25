@@ -44,6 +44,7 @@ __all__ = ["TerminalStatus", "StageOutcome", "run_stage", "mirror_records",
            "protocol_identity",
            "mirror_terminal_report", "now", "stage_input",
            "terminal_statuses_in_force", "confirmatory_licensed",
+           "study_level_statement", "SINGLE_SURVIVOR_STATEMENTS",
            "frozen_identified_replications"]
 
 
@@ -143,6 +144,77 @@ def confirmatory_licensed(*, this_replication_frozen: bool,
             "this_replication_frozen": bool(this_replication_frozen),
             "reason": reason,
             "l5_withheld": "generalisation is never licensed by this design"}
+
+
+#: §34 D25's two registered readings of a one-survivor study, as the sentences
+#: each licenses. Written out so that "what v6 says when exactly one
+#: replication survives" is a value on a record and not a paragraph somebody
+#: composes after seeing the number.
+SINGLE_SURVIVOR_STATEMENTS: dict[str, str] = {
+    "survivor_ladder_only":
+        "Exactly one replication reached GATE_5_FREEZE identified. Its own "
+        "L1-L4 claim ladder stands as registered, for that model and that "
+        "model only. Nothing above it is said: no replicated finding, no "
+        "cross-model comparison, and no generalisation --- L5 is withheld by "
+        "design and is not withheld for want of survivors. The other "
+        "replications' terminal statuses are reported as terminal statuses "
+        "and are never evidence about the effect.",
+    "no_study_level_statement":
+        "Exactly one replication reached GATE_5_FREEZE identified. The study "
+        "makes no statement at study level; the surviving replication's "
+        "record stands on its own and is read as a single-model result.",
+}
+
+
+def study_level_statement(*, survivors: Sequence[str],
+                          terminal: Mapping[str, str] | None = None
+                          ) -> dict[str, Any]:
+    """What v6 says at study level, given how many replications survived.
+
+    **Registered before data, which is the whole point.** §6.1 analyses four
+    replications separately and never pools them, and L5 is permanently
+    withheld, so the number of survivors licenses nothing on its own --- but
+    a study that decided *afterwards* what one survivor meant would be
+    choosing its own claim scope from the outcome. D25 fixes the one-survivor
+    sentence in advance; the zero and many cases follow from §6.1 and the
+    claim ladder and are not decisions.
+
+    ``terminal`` maps each non-surviving replication to its §28 status, and
+    is reported so that the sentence and the statuses it refers to travel
+    together.
+    """
+    from dci1v6.protocol import decisions
+
+    n = len(survivors)
+    reported = {k: v for k, v in sorted((terminal or {}).items())}
+    if n == 0:
+        return {
+            "n_survivors": 0, "survivors": [], "terminal": reported,
+            "rule": "§6.1", "statement":
+                "No replication reached GATE_5_FREEZE identified. The study "
+                "makes no claim about the effect at any level. Every "
+                "replication's terminal status is a statement about the "
+                "apparatus reaching identification, not about the effect.",
+            "l5_withheld": "generalisation is never licensed by this design"}
+    if n == 1:
+        reading = decisions.choice(
+            "D25", dict(SINGLE_SURVIVOR_STATEMENTS),
+            where="run.lifecycle.study_level_statement")
+        return {"n_survivors": 1, "survivors": list(survivors),
+                "terminal": reported, "rule": "§34 D25",
+                "statement": reading,
+                "l5_withheld":
+                    "generalisation is never licensed by this design"}
+    return {
+        "n_survivors": n, "survivors": list(survivors), "terminal": reported,
+        "rule": "§6.1 and §3.2's ladder",
+        "statement":
+            f"{n} replications reached GATE_5_FREEZE identified. Each "
+            "carries its own L1-L4 ladder for its own model. A replicated "
+            "finding may be stated where the same registered statement holds "
+            "in more than one of them, named as such and never pooled into a "
+            "single estimate. L5 is withheld by design.",
+        "l5_withheld": "generalisation is never licensed by this design"}
 
 
 class TerminalStatus(Exception):

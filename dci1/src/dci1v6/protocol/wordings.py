@@ -276,11 +276,41 @@ _TIER2_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     ),
 }
 
+#: §34 D24's three ``probe_only`` stand-ins. Authored in the same lexical
+#: vocabulary and to the same caliper as every other family, because a
+#: stand-in is prompted, generated and scored through exactly the same path
+#: as a candidate --- the only thing that differs about it is that no
+#: selection rule may see it. Wordings that were "good enough for a probe"
+#: would make the probe's composed cells a different kind of measurement from
+#: the ones §13.14 audits, which is the one thing the stage cannot afford.
+_PROBE_ONLY_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
+    "PS1": (
+        "Use exactly {q} capitalised words in your answer.",
+        "Exactly {q} capitalised words must appear in your answer.",
+        "Your answer must use exactly {q} capitalised words.",
+        "Include exactly {q} capitalised words in your whole answer.",
+    ),
+    "PS2": (
+        "Use at least {q} semicolons in your answer.",
+        "At least {q} semicolons must appear in your answer.",
+        "Your answer must use at least {q} semicolons.",
+        "Include at least {q} semicolon characters in your answer.",
+    ),
+    "PS3": (
+        "Words ending with y: {q} percent at least.",
+        "Words ending with y: at least {q} percent.",
+        "At least {q} percent of words end in y.",
+        "Use {q} percent or more words ending with y.",
+    ),
+}
+
+
 _TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     **{k: v for k, v in _V4_FAMILY_TEMPLATES.items() if k in FAMILIES},
     **{k: v for k, v in _NEW_TEMPLATES.items() if k in FAMILIES},
     **_TIER1_TEMPLATES,
     **_TIER2_TEMPLATES,
+    **_PROBE_ONLY_TEMPLATES,
 }
 assert set(_TEMPLATES) == set(FAMILIES), (
     "every registered family needs exactly four frozen wordings")
@@ -423,6 +453,14 @@ _REQUIRED_TOKENS: dict[str, tuple[tuple[str, ...], ...]] = {
     "XC1": (("semicolons", "semicolon"), ("exactly",)),
     "XC2": (("commas", "comma"), ("exactly",)),
     "XC3": (("sentences", "sentence"), ("exactly",)),
+    # §34 D24's stand-ins. The same obligation as any other family: name the
+    # feature the verifier counts, and name the operator that distinguishes
+    # the form. PS2 and PS3 are the library's only lower-bound families whose
+    # wordings had to be authored, so "least"/"more" carries the `>=` the way
+    # "exactly" carries `==`.
+    "PS1": (("capital", "capitalised"), ("exactly",)),
+    "PS2": (("semicolons", "semicolon"), ("least", "more")),
+    "PS3": (("y",), ("percent",), ("least", "more")),
 }
 
 
