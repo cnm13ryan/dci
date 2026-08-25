@@ -60,7 +60,8 @@ __all__ = ["StructuralScreen", "carry_candidate", "carried_set",
            "calibration_priority", "select_operating_point", "select_focal", "select_target",
            "assert_construct_floor", "coverage_criterion", "expansion_round",
            "run_expansion", "ELIGIBILITY_FORMULATIONS", "coverage_eligibility",
-           "coverage_rows", "regime_adequacy", "grid_resolution",
+           "coverage_rows", "calibration_coverage_rows",
+           "regime_adequacy", "grid_resolution",
            "C4_CONDITIONS", "family_c4_state", "family_deficiency",
            "expansion_plan_for_family", "COVERAGE_ROW_KEYS",
            "assert_coverage_shape"]
@@ -473,6 +474,67 @@ def coverage_rows(table: Sequence[Mapping[str, Any]],
             "iota": row.get("iota"),
             "solo": row.get("solo"),
             "vacuity": row.get("vacuity"),
+            "eligible": verdict["eligible"],
+            "eligibility": verdict,
+        })
+    return out
+
+
+def calibration_coverage_rows(rows: Sequence[Mapping[str, Any]], *,
+                              formulation: str | None = None
+                              ) -> list[dict[str, Any]]:
+    """§12.6's criterion shape, built from §13.11's **calibration** table.
+
+    §12.6 is certified on the pre-screen basis: iota over 24 pre-screen topics
+    at one draw, against an ``iota_a_prescreen`` measured on the same 24. That
+    is a paired comparison and it is the right one *for the certificate*. What
+    reference selection then matches on is Gate 2's ``iota_a`` --- 192
+    calibration topics at four draws --- and re-reading the pre-screen table
+    against **that** number compares an iota measured on one sample to an
+    iota_A measured on another. The difference such a comparison reports is
+    part real and part the two samples, and nothing separates them.
+
+    Gate 2 measures every calibrated candidate's solo compliance, chance
+    compliance and solo vacuity on the same 192 topics and the same four draws
+    it measures A on, so the criterion can be evaluated on a basis where every
+    quantity in it --- iota(R), the eligibility coordinate, the vacuity and
+    iota_A --- comes from one controlled set of cases. That is this function,
+    and it costs no generation: the rows already exist on the Gate-2 record.
+
+    Two differences from the pre-screen basis are real and are not defects:
+    the population is §12.7's calibrated set rather than §12.2's carried set,
+    which is the set the study can actually draw a reference from; and the
+    measurement is 32x the draws, which is the point.
+
+    ``coverage_eligibility`` is called unchanged, so the two bases run **one**
+    formulation, not two readings of one.
+    """
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        kind = row.get("kind")
+        family = FAMILIES.get(kind)
+        if family is None:            # A and B: outcome constraints, no tier
+            continue
+        solo = row.get("solo_compliance")
+        chance = row.get("chance_compliance")
+        iota = (None if solo is None or chance is None
+                or chance >= C.CHANCE_DEGENERACY_MAX
+                else (solo - chance) / (1.0 - chance))
+        shaped = {"candidate": f"{kind}:{row['severity']}",
+                  "kind": kind, "severity": row["severity"],
+                  "iota": iota, "solo": solo,
+                  "vacuity": row.get("solo_vacuity")}
+        verdict = coverage_eligibility(shaped, formulation=formulation)
+        out.append({
+            "candidate": shaped["candidate"],
+            "family": kind,
+            "severity": row["severity"],
+            "structural_tier": family.structural_tier,
+            "feature_group": family.feature_group,
+            "constraint_class": family.constraint_class,
+            "iota": iota,
+            "solo": solo,
+            "vacuity": shaped["vacuity"],
             "eligible": verdict["eligible"],
             "eligibility": verdict,
         })

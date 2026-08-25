@@ -25,7 +25,7 @@ from dci1v6.protocol import decisions
 from dci1v6.run import gates_run
 from dci1v6.run.lifecycle import TerminalStatus, terminal_statuses_in_force
 from dci1v6.stages import audit_prefreeze, composed_probe as P
-from dci1v6.stages import regime
+from dci1v6.stages import feasibility, regime
 from dci1v6.verifiers import constraints as K
 
 BAND = (0.10, 0.90)          # a margin band, not §13.14's --- see below
@@ -226,7 +226,9 @@ def test_guarantee_2_a_standin_is_refused_everywhere_a_candidate_is_chosen(
     families = {**K.FAMILIES, "MK1": standin}
     monkeypatch.setattr(K, "FAMILIES", families)
     monkeypatch.setattr(regime, "FAMILIES", families)
-    monkeypatch.setattr(gates_run, "FAMILIES", families)
+    # §13.15's structural-eligibility read moved with the criterion into
+    # `stages/feasibility`, so that is where the family table is now read.
+    monkeypatch.setattr(feasibility, "FAMILIES", families)
     assert K.is_probe_only("MK1")
 
     with pytest.raises(K.InstrumentError):

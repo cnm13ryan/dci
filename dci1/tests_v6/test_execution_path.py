@@ -194,9 +194,17 @@ def test_the_expansion_has_a_production_caller():
 
 
 def test_the_coverage_verdict_reaches_gate3c():
-    """V5-E12. C1-C6 unmet must drop the core and spectrum arms."""
-    source = inspect.getsource(gates_run.gate3c_payload)
+    """V5-E12. C1-C6 unmet must drop the core and spectrum arms.
+
+    The §13.15 computation moved into ``stages/feasibility.support_at`` so
+    that the registered stage, the operating-point search and the development
+    pilot run one implementation. The pin follows it there, which is
+    stronger: it now covers all three callers rather than the stage alone.
+    """
+    from dci1v6.stages import feasibility
+    source = inspect.getsource(feasibility.support_at)
     assert "regime_record.get(\"identification_statuses\")" in source
+    assert "support_at(" in inspect.getsource(gates_run.gate3c_payload)
     report = support.evaluate_support(
         model_key="fixture-model",
         structurally_eligible_tier12_families=["MK1"] * 8,
@@ -214,7 +222,8 @@ def test_the_coverage_verdict_reaches_gate3c():
 
 def test_the_screen_can_drop_an_arm_selection_would_have_admitted():
     """V5-E13. §12.6's C7 and C8 decide arm availability at the screen."""
-    source = inspect.getsource(gates_run.gate3c_payload)
+    from dci1v6.stages import feasibility
+    source = inspect.getsource(feasibility.support_at)
     assert "CLASS_ARM_NOT_AVAILABLE" in source
     assert "NEAR_FORM_ARM_NOT_AVAILABLE" in source
 
@@ -291,8 +300,10 @@ def test_the_lexicographic_order_check_runs_in_production():
 # ----------------------------------------------------------------- V5-E19
 
 def test_iota_a_stability_runs_in_production():
-    source = inspect.getsource(gates_run.gate3a_payload)
+    from dci1v6.stages import feasibility
+    source = inspect.getsource(feasibility.calibration_at)
     assert "assert_iota_a_stable(" in source
+    assert "calibration_at(" in inspect.getsource(gates_run.gate3a_payload)
     assert "a_per_topic_by_split" in inspect.getsource(gates_run.gate2_payload)
 
 

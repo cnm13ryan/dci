@@ -1205,7 +1205,7 @@ Everything below is **already on the mandatory path** unless marked otherwise.
 | §13.15's support with 2 frozen backups | Gate 3A/3B | existing | D6, and the admitted arm set |
 | P3.2 composed margin at $m^\*$ | probe rows | **new rows** — 11 cells × the probe split × $M_{\rm cal}$ | $m^\*$ stands, moves once, or `COMPOSED_HEADROOM_UNREACHABLE` |
 | §13.14 headroom on the *selected* references | 24 reserved composed topics | existing plan | `COMPOSED_HEADROOM_FAILURE` |
-| `coverage_at_measured_iota_a` | Gate 3A | existing, no new rows | **nothing** — recorded diagnostic, R7 |
+| §12.6 re-read on the **calibration** basis at the measured $\iota_A$ | Gate 3A | existing, no new rows | a lost decisive condition is a §13.15 design-time failure under D6 — see §11 |
 
 **One pilot is required and it is not started:** the R1/D19 measurement — 32
 Tier-1 reserve rungs × 24 pre-screen topics × 1 draw = **768 rows per
@@ -1222,7 +1222,129 @@ answered from closed v5 data. Nothing has been generated.
 | the operating point moves and the pool does not follow | **closed** — V6-E03 |
 | the probe moves $B$ to a severity Gate 2 would refuse | **closed** — `focal_admissible` |
 | the freeze runs the design at the rejected severity | **closed** — V6-E03 |
-| coverage certified at a drifting $\iota_A$ | **open, measured, recorded** — R7; no decisive flip on 4/4 |
+| coverage certified at a drifting $\iota_A$ | **closed** — V6-E04: the criterion is re-evaluated on the basis selection works on, and it gates. R7's *interval* question stands and is separate |
 | $\delta$ too small to absorb the probe-to-Gate-4 transfer | **open — R5/D23**, and §4 shows the needed margin is above the examined range |
 | Gate 4 fails on a **companion** slot | **open and stated** — `PROBE_SCOPE_LIMITS`; the probe protects the B slot only |
-| the reserve exists but does not qualify | **open — R1/D19**, needs the 3,072-row pilot |
+| the reserve exists but does not qualify | **open — R1/D19**; the pilot is now a §13.15 feasibility measurement, not a solo-band check (§11) |
+| development measures a proxy for the registered criterion | **closed** — V6-E04: one implementation, pinned to the four signed v5 records |
+| the operating point moves and support is discovered two stages later | **closed** — V6-E04: §13.15's five-family minimum filters the search order, free |
+
+
+---
+
+## 11. Controlled reuse across stages (added 2026-08-25)
+
+**The question this section answers.** Which stages already score the same
+model, constraints, topics and draws — and what therefore does *not* need a
+fresh sample. The audit changed the design: a full-slot composed headroom stage
+was drafted and **not built**, because it would have been a second sample of
+what Gate 4 already measures, on a *different* topic set, and would therefore
+have carried the very transfer error (§4.a) it existed to remove.
+
+### 11.1 What each stage scores
+
+| stage | topics | draws | cells | scores absent instances? |
+|---|---:|---:|---|---|
+| `REGIME_SCREEN` (§12.2) | 24 pre-screen | 1 | solo, every registered rung + A + B | — |
+| `GATE_0_APPARATUS` (§19) | 12 pre-screen | `PILOT_DRAWS` | the **full** design, composed included | fixture instruments; §19 declares them non-evidence |
+| `GATE_2` pass 1 | 192 calibration | `M_CAL` | unconstrained, A-grid solo, B-grid solo | **yes** — every carried candidate, on every cell |
+| `GATE_2` pass 2 | 192 calibration | `M_CAL` | one solo cell per carried candidate | **yes** — every other candidate, **and B at m\*** |
+| `GATE_2_5` | — | — | none: it generates nothing | — |
+| `GATE_2_75` | §34 D20's split | `M_CAL` | unconstrained, B solo, stand-in solo, B×stand-in both orders | — |
+| `GATE_3A/3B/3C` | — | — | none: pure over Gate 2 and Gate 2.5 | — |
+| `GATE_4` (§13.14) | 24 reserved composed | `M_CAL` | the full design of the admitted arms | — |
+
+### 11.2 What is now shared rather than re-measured
+
+| quantity | measured at | reused by | was it duplicated before? |
+|---|---|---|---|
+| $\iota(R)$, solo, chance, vacuity per candidate | Gate 2, 192×`M_CAL` | §12.6's calibrated re-reading, §13.7, §13.8–§13.12, §13.15 | the criterion was re-read on the *pre-screen* table against a *calibration* $\iota_A$ — two samples |
+| $\kappa(R\mid B)$ at every admissible severity | Gate 2's B-solo cells | Gate 2.5, Gate 3A | already free (V6-E03) |
+| the §13.1 qualified pool per severity | Gate 2.5 | the search order, Gate 3A, Gate 3C, the freeze | already free (V6-E03) |
+| §13.15's five-family minimum per severity | Gate 2.5 | the probe's search order | it was not computed at all; the search would otherwise re-bootstrap §13.7 at 10,000 resamples per candidate for a verdict already signed |
+| the unconstrained cell and `solo:B` | Gate 2, at every focal severity | the probe, **when the case is identical** | yes — 2 of 11 probe cells, re-drawn per probed severity |
+| each candidate's pre-screen solo and chance | the screen | joined onto §13.11's table | the columns existed and **nothing ever filled them** |
+| B at m\* while R is instructed | Gate 2 pass 2, as an absent instance | recorded; read by nothing | never extracted |
+| each bound instrument's solo compliance | Gate 2 | Gate 4's `split_transfer`, paired by instrument | §4.a built this by hand from the closed run |
+
+### 11.3 What genuinely still needs new data
+
+**Load-2 compliance on the real instruments, and nothing else.** Every
+pre-composition quantity §13 reads is available from cells that already exist;
+no stage before Gate 4 puts two admissible constraints in one prompt. Gate 0
+does render the full composed design, but on **fixture** instruments that §19
+declares can never be calibration evidence, so it is not a substitute.
+
+Two consequences, both stated rather than engineered around:
+
+1. **The stand-in probe is the only pre-Gate-4 composed measurement**, and a
+   stand-in is not the eventual reference. That limit is `PROBE_SCOPE_LIMITS`
+   and it is unchanged.
+2. **The pilot that decides R1/D19 needs rows.** Whether a Tier-1 family the
+   researcher *adds* passes the full V(R) on these models is not in the closed
+   data — an unauthored instrument has never been measured. What changed is
+   what the pilot must evaluate: the §13.15 criterion with margin, through
+   `stages/feasibility`, not "does the rung land in the solo band".
+
+### 11.4 The one number this produced that changes what the pilot is for
+
+`reference_feasibility.json`, over the four signed v5 replications:
+
+| replication | §13.15 met | margin: eligible T1/2 | qualified families | Tier-1 core |
+|---|---|---:|---:|---:|
+| `gemma-3n-e2b-it` | no | +3 | +7 | **0** |
+| `gemma-3n-e4b-it` | no | +3 | +7 | **+1** |
+| `qwen3-4b` | no | +3 | +6 | **0** |
+| `qwen3-4b-instruct-2507` | **yes** | +3 | +6 | **+1** |
+
+The binding requirement is `min_tier1_core` on **4 of 4**, never the family
+count. A library extension that adds families without adding **Tier-1
+structural** capacity moves the requirement that was not binding — and R1's
+reserve extension is a Tier-1 extension, which is the reading this supports.
+
+*The frozen-backup count is deliberately not a margin:* `freeze_backups`
+returns `spare[:2]`, so its length equals the requirement whenever the
+requirement is met, and reporting it would put a zero in every row.
+
+### 11.5 What the reuse costs and saves, in rows
+
+Per replication, at §34 D20's `calibration_pooled` (192 topics) and
+`M_CAL = 4`, with D24's three stand-ins:
+
+| | cells | rows per probed severity |
+|---|---:|---:|
+| probe as drafted | 11 | 8,448 |
+| probe with Gate 2's two cells read, not re-drawn | 9 | 6,912 |
+| **saved** | 2 | **1,536 (18.2%)** |
+
+The saving applies **only** when the probe's topic identifiers and draw count
+are Gate 2's; `shared_cell_verdict` refuses otherwise and records why, so
+closing D20 at `reserved_composed` simply returns the probe to 11 cells.
+
+On the synthetic harness eight severities are §12.3-eligible and six are
+admissible, so the probe's worst case is 6 × 8,448 = **50,688** rows as
+drafted and 6 × 6,912 = **41,472** with the reuse. Each severity the
+five-family filter removes from the order saves a further **6,912**, and the
+common case — m\* passes at the first attempt — is one severity either way.
+
+**Against this, one thing got more expensive and it should be said.** Before
+V6-E03 the re-selection branch could not execute at all, so in practice the
+probe always measured exactly one severity. Repairing it made the registered
+P3 procedure reachable, and a reachable procedure that may measure six
+severities costs more than a broken one that could measure one. The filter and
+the reuse pull that back; they do not make it free.
+
+### 11.6 The Gate-4 exposure that is *not* new data
+
+Gate 4 evaluates **96** cell × slot entries over 56 cell types. **15** of them
+are solo cells, and a solo cell measures a quantity Gate 2 already measured for
+that instrument — on 192 calibration topics rather than 24 composed ones. That
+is not a duplication that can be removed, because §13.14's verdict is
+deliberately taken on the reserved set; but it is a duplication that can be
+*reported*, and `GATE_4.split_transfer` now reports it paired by instrument.
+
+This matters because one of v5's two terminations was a **companion slot in a
+solo cell** — that is this movement and not a composition effect at all. §4.a
+measured it by hand across the closed run at mean absolute 0.064 and maximum
+0.189. Recording it per replication is what stops the next protocol version
+having to rebuild that table from raw rows.

@@ -77,7 +77,8 @@ __all__ = ["COMPOSED_HEADROOM_UNREACHABLE", "PROBE_SLOTS", "probe_slots",
            "margin_band", "severity_verdict", "probe_disposition",
            "assert_probe_reads_no_reference", "PROBE_DECLARED_REFUSALS",
            "REFERENCE_TOKENS", "FORBIDDEN_SOURCE_READS",
-           "PROBE_SCOPE_LIMITS", "assert_probe_severities_are_admissible"]
+           "PROBE_SCOPE_LIMITS", "assert_probe_severities_are_admissible",
+           "SHARED_WITH_GATE2", "shared_cell_verdict"]
 
 #: §28, new in v6. Raised by ``probe_disposition`` and nowhere else.
 COMPOSED_HEADROOM_UNREACHABLE = "COMPOSED_HEADROOM_UNREACHABLE"
@@ -264,6 +265,56 @@ def assert_probe_severities_are_admissible(
             f"P3.1: {outside} are outside §7.1's grid and §7.2's extension")
 
 
+#: Probe cells whose value **Gate 2 has already measured**, on the same
+#: model, the same constraint, the same topics and the same number of draws.
+#: The unconstrained cell carries no constraint and the probe never evaluated
+#: it; ``solo:B`` at a probed severity is a point on Gate 2's own solo B
+#: curve --- the curve §12.3 selected m* from and the curve P3.4 re-selects
+#: over. Re-drawing it here would produce a *second* estimate of the number
+#: the operating point was chosen on, and the composed lift would then be a
+#: difference between two independent samples instead of a difference from
+#: the selection input.
+SHARED_WITH_GATE2: tuple[str, ...] = ("unconstrained", "solo:B")
+
+
+def shared_cell_verdict(*, gate2_topic_ids: Sequence[str],
+                        probe_topic_ids: Sequence[str],
+                        gate2_draws: int, probe_draws: int) -> dict[str, Any]:
+    """May this stage read ``SHARED_WITH_GATE2`` off the Gate-2 record?
+
+    **Only when the case is identical**, and identity is checked rather than
+    assumed: the same topic identifiers, not merely the same split name or
+    the same count, and the same number of draws. §34 D20 may put the probe
+    on §6.2's reserved composed set, where Gate 2 measured nothing, and a
+    harness may truncate either set; in both cases the two are different
+    samples and the probe measures its own.
+
+    Refusing to reuse is always safe here --- it costs rows and nothing else.
+    Reusing when the cases differ would silently compare a composed cell on
+    one topic set against a solo cell on another, which is the error §4.a of
+    the readiness memo measures at up to 0.189.
+    """
+    gate2_ids, probe_ids = sorted(gate2_topic_ids), sorted(probe_topic_ids)
+    same_topics = bool(gate2_ids) and gate2_ids == probe_ids
+    same_draws = int(gate2_draws) == int(probe_draws)
+    shared = same_topics and same_draws
+    if shared:
+        reason = (f"Gate 2 measured these cells on the same {len(probe_ids)} "
+                  f"topics at {probe_draws} draws, so the probe reads its "
+                  "values instead of drawing a second sample of them")
+    elif not same_topics:
+        reason = (f"Gate 2 measured {len(gate2_ids)} topics and this stage "
+                  f"measures {len(probe_ids)}; the intersection is "
+                  f"{len(set(gate2_ids) & set(probe_ids))} and only an "
+                  "identical case may be reused")
+    else:
+        reason = (f"Gate 2 drew {gate2_draws} per cell and this stage draws "
+                  f"{probe_draws}")
+    return {"shared": shared, "cells": list(SHARED_WITH_GATE2) if shared
+            else [], "same_topics": same_topics, "same_draws": same_draws,
+            "n_topics": len(probe_ids), "reason": reason}
+
+
 def severity_verdict(cells: Mapping[str, Mapping[str, float]], *,
                      band: tuple[float, float]) -> dict[str, Any]:
     """P3.2: a severity passes iff **every** probed cell, on **every**
@@ -375,6 +426,17 @@ PROBE_DECLARED_REFUSALS: dict[str, str] = {
     "band_not_relaxed":
         "§13.14's [0.05, 0.95] band is unchanged. delta is a margin inside "
         "it and Gate 4 still applies the registered band",
+    "no_measurement_is_reused_across_different_cases":
+        "the cells this stage reads off the Gate-2 record instead of drawing "
+        "again are read only when the topic identifiers and the draw count "
+        "are identical; `shared_cell_verdict` checks that and records the "
+        "reason either way. Nothing is reused across topic sets",
+    "the_order_of_operating_points_was_frozen_before_any_composed_row":
+        "Gate 2 records `operating_point_search_order` --- the registered "
+        "focal rule's own preference over `focal_admissible` --- and Gate "
+        "2.5 restricts it to the severities that can meet §13.15's five-"
+        "family minimum. Both are signed before this stage generates a row, "
+        "so a candidate is never re-ranked by how a composed cell looked",
     "no_pool_is_chosen_by_a_composed_outcome":
         "§30: Gate 2 records a kappa(R|B) column and Gate 2.5 a §13.1 "
         "qualified pool for EVERY admissible severity, both signed before "

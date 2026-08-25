@@ -112,7 +112,9 @@ CONTRACT: tuple[Field, ...] = (
     # because a read is not what went wrong in V5-E6 --- the population was.
     _f(RG, "carried_set", (G2, G25, G3A, G3C, G5)),
     _f(RG, "n_carried", (G1, G2, PF)),
-    _f(RG, "difficulty_table", (G25, G3A)),
+    # Gate 2 joins §12.2's measurement of each candidate onto §13.11's
+    # table, so the two measurements of one instrument can be compared.
+    _f(RG, "difficulty_table", (G2, G25, G3A)),
     _f(RG, "vocabulary_frozen", (PF, G5)),
     _f(RG, "coverage", (G5,)),
     # §12.7's calibration population, which Gate 2 measures.
@@ -140,14 +142,16 @@ CONTRACT: tuple[Field, ...] = (
     _f(G2, "solo_compliance_a", (G3A, G3B, G5)),
     _f(G2, "solo_compliance_b", (G5,)),
     _f(G2, "chance_curves", (G5,)),
-    _f(G2, "solo_curves", (G5,)),
+    # The probe reads B's own solo curve: at a probed severity that value
+    # is the same case Gate 2 measured, so it is read and not re-drawn.
+    _f(G2, "solo_curves", (G275, G5)),
     _f(G2, "construct_strength", ()),
     _f(G2, "identification_statuses", (G3C, G5, UA)),
     _f(G2, "calibration_binding", (G3A, G5)),
     # §12.7's realised population, so a reader can see the 112 measured and
     # the Tier-3 rungs the budget dropped beside the screen's larger set.
     _f(G2, "calibration_population", (G5, PF)),
-    _f(G2, "calibration_rows", (G25, G3A)),
+    _f(G2, "calibration_rows", (G25, G3A, G4)),
     # §12.4's three conditions and §12.3's grid-resolution diagnosis, as
     # verdicts rather than as the thresholds they are judged against.
     _f(G2, "adequacy", (G5,)),
@@ -170,6 +174,17 @@ CONTRACT: tuple[Field, ...] = (
     _f(G2, "focal_admissible", (G25, G275, G5)),
     _f(G2, "focal_admissibility", (G5,)),
     _f(G2, "kappa_under_b_by_severity", (G25, G3A)),
+    # The operating-point search order, frozen before any composed row.
+    _f(G2, "operating_point_search_order", (G25,)),
+    _f(G2, "operating_point_search_rule", ()),
+    # The topics this stage measured, against which a later stage checks
+    # whether reusing one of its cells is the same case or a different one.
+    _f(G2, "calibration_topic_ids", (G275,)),
+    # Free from rows already scored, read by nothing, and deliberately off
+    # §13.11's closed table so that it cannot reach a selection rule.
+    _f(G2, "kappa_b_under_candidate", ()),
+    # The two measurements of one instrument, joined. Read by nothing.
+    _f(G2, "prescreen_to_calibration", ()),
 
     # ------------------------------------- GATE_2_5_CANDIDATE_QUALIFICATION
     _f(G25, "m_star", (G3A,)),
@@ -183,6 +198,11 @@ CONTRACT: tuple[Field, ...] = (
     _f(G25, "earliest_failing_components", ()),
     _f(G25, "qualification_by_severity", (G3A, G3C, G5)),
     _f(G25, "qualified_at_severities", (G5,)),
+    # Severities only. The family names behind the restriction stay here.
+    _f(G25, "operating_point_order", (G275,)),
+    _f(G25, "operating_point_order_reason", ()),
+    _f(G25, "operating_point_support", ()),
+    _f(G25, "operating_point_order_generates_nothing", ()),
     _f(G25, "interaction", (G3B, G5)),
 
     # ---------------------------------------------- GATE_2_75_COMPOSED_PROBE
@@ -202,6 +222,10 @@ CONTRACT: tuple[Field, ...] = (
     _f(G275, "topic_split", (G5,)),
     _f(G275, "standins", (G5,)),
     _f(G275, "probe_cell_types", (G5,)),
+    # Which cells were read off Gate 2 rather than drawn again, and why.
+    _f(G275, "probe_cell_types_generated", ()),
+    _f(G275, "shared_with_gate2", ()),
+    _f(G275, "rows_not_drawn", ()),
     _f(G275, "scope_limits", (G5,)),
     _f(G275, "admissible_severities", (G5,)),
     _f(G275, "declared_refusals", (PF,)),
@@ -218,9 +242,13 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3A, "qualified_families", ()),
     _f(G3A, "n_qualified", ()),
     _f(G3A, "qualified_at_m_star", (G5,)),
-    # §12.6 re-read at the iota_A selection matches on. A recorded
-    # diagnostic with no consumer, and deliberately so: it gates nothing.
-    _f(G3A, "coverage_at_measured_iota_a", ()),
+    # §12.6 re-read on the **calibration** basis at the iota_A selection
+    # matches on --- the reading where iota(R), the eligibility coordinate,
+    # the vacuity and iota_A all come from the same 192 topics at the same
+    # four draws. It gates: Gate 3C takes its failures as design-time
+    # failures, under §34 D6's existing disposition.
+    _f(G3A, "coverage_at_calibrated_iota_a", ()),
+    _f(G3A, "calibrated_coverage_failures", (G3C,)),
 
     # ---------------------------------------- GATE_3B_REFERENCE_SELECTION
     _f(G3B, "m_star", (G3C,)),
@@ -252,6 +280,9 @@ CONTRACT: tuple[Field, ...] = (
     # binds?" must be answerable from the records alone.
     _f(G4, "m_star", (PF, G5)),
     _f(G4, "slot_map", (PF,)),
+    # Each bound instrument here against at Gate 2, paired.
+    # Recorded; §13.14's verdict does not read it.
+    _f(G4, "split_transfer", ()),
     # §33 check 8 requires the record to *declare* §13.14's refusal, not
     # merely to lack a field that names a substitution.
     _f(G4, "declared_refusals", (PF, FR)),
