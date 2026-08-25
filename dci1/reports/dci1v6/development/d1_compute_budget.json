@@ -1,0 +1,363 @@
+{
+ "_decision": "\u00a734 D1",
+ "_units": "generations = prompt x draw; one generation is one model response",
+ "_v6_conditional_terms": {
+  "composed_probe": {
+   "if_m_star_passes": {
+    "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+    "cells_per_severity": 11,
+    "draws": 4,
+    "max_rows": 84480,
+    "max_severities": 10,
+    "rows": 8448,
+    "rows_if_m_star_passes": 8448,
+    "rows_per_severity": 8448,
+    "severities": 1,
+    "standins": 3,
+    "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+    "topics": 192
+   },
+   "worst_case": {
+    "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+    "cells_per_severity": 11,
+    "draws": 4,
+    "max_rows": 84480,
+    "max_severities": 10,
+    "rows": 84480,
+    "rows_if_m_star_passes": 8448,
+    "rows_per_severity": 8448,
+    "severities": 10,
+    "standins": 3,
+    "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+    "topics": 192
+   }
+  },
+  "expansion_ceiling": {
+   "calibration_rows_per_tier12_rung": 768,
+   "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+   "max_candidate_calibration_rows": 36864,
+   "max_rounds": 2,
+   "max_rungs_admissible": 176,
+   "max_rungs_per_family_per_round": 4,
+   "max_screen_rows": 4224,
+   "max_tier12_rungs_admissible": 48,
+   "reserve_rungs_beyond_round_0": 306,
+   "screen_rows_per_rung": 24
+  },
+  "why": "two v6 terms are conditional and are named rather than folded into a figure a replication is expected to spend: \u00a712.6's expansion stops the moment C1-C6 pass, and the Gate-2.75 probe stops the moment m* passes its margin"
+ },
+ "_v6_note": "Confirmatory cost is n_cells x N_BLOCKS x M_DRAWS and nothing else. The v6 proposal's '~110,000 confirmatory' was v5's CALIBRATION burden (110,736) quoted in the wrong row; on D1's registered 56-cell option the confirmatory figure is 56 x 384 x 8 = 172,032 per replication. Every number here is computed, none is transcribed.",
+ "_what": "\u00a734 D1's registered options, costed from the code's own constants and the arm-derived cell set",
+ "calibration": {
+  "candidate_calibration": {
+   "carried_rungs_tier12": 88,
+   "d16": "complete_population",
+   "population": 112,
+   "population_is": "\u00a712.7: all Tier-1/2 rungs + at most 24 Tier-3, NOT \u00a712.2's carried set, which is high-recall and much larger",
+   "round": 0,
+   "rows_per_rung_per_split": 384,
+   "rows_tier12_both_splits": 67584,
+   "rows_tier3_both_splits": 18432,
+   "splits": 2,
+   "tier3_cap": 24
+  },
+  "composed_probe_conditional": {
+   "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+   "cells_per_severity": 11,
+   "draws": 4,
+   "max_rows": 84480,
+   "max_severities": 10,
+   "rows": 8448,
+   "rows_if_m_star_passes": 8448,
+   "rows_per_severity": 8448,
+   "severities": 1,
+   "standins": 3,
+   "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+   "topics": 192
+  },
+  "expansion_conditional": {
+   "calibration_rows_per_tier12_rung": 768,
+   "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+   "max_candidate_calibration_rows": 36864,
+   "max_rounds": 2,
+   "max_rungs_admissible": 176,
+   "max_rungs_per_family_per_round": 4,
+   "max_screen_rows": 4224,
+   "max_tier12_rungs_admissible": 48,
+   "reserve_rungs_beyond_round_0": 306,
+   "screen_rows_per_rung": 24
+  },
+  "focal_grids": {
+   "a_rungs": 8,
+   "b_rungs": 8,
+   "b_rungs_with_extension": 10,
+   "conditional_extension_rows": 1536,
+   "draws": 4,
+   "rows": 13824,
+   "topics": 192,
+   "topics_are": "pooled: Calibration-A and Calibration-B together",
+   "unconstrained_cell_per_grid": 1
+  },
+  "ladder_screen": {
+   "draws": 1,
+   "round": 0,
+   "rows": 8208,
+   "rungs": 342,
+   "topics": 24
+  },
+  "pilot": {
+   "cells": 56,
+   "draws": 4,
+   "rows": 2688,
+   "topics": 12
+  }
+ },
+ "cells_by_arm": {
+  "base": 5,
+  "class": 3,
+  "core": 21,
+  "nearform": 9,
+  "spectrum": 18
+ },
+ "cells_full": 56,
+ "library": {
+  "tier_1": {
+   "families": 8,
+   "ladder_rungs": 64,
+   "reserve_rungs": 96
+  },
+  "tier_2": {
+   "families": 3,
+   "ladder_rungs": 24,
+   "reserve_rungs": 44
+  },
+  "tier_3": {
+   "families": 26,
+   "ladder_rungs": 238,
+   "reserve_rungs": 492
+  }
+ },
+ "options": {
+  "384_blocks_m4": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "conditional": {
+    "composed_probe": {
+     "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+     "cells_per_severity": 11,
+     "draws": 4,
+     "max_rows": 84480,
+     "max_severities": 10,
+     "rows": 8448,
+     "rows_if_m_star_passes": 8448,
+     "rows_per_severity": 8448,
+     "severities": 1,
+     "standins": 3,
+     "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+     "topics": 192
+    },
+    "expansion": {
+     "calibration_rows_per_tier12_rung": 768,
+     "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+     "max_candidate_calibration_rows": 36864,
+     "max_rounds": 2,
+     "max_rungs_admissible": 176,
+     "max_rungs_per_family_per_round": 4,
+     "max_screen_rows": 4224,
+     "max_tier12_rungs_admissible": 48,
+     "reserve_rungs_beyond_round_0": 306,
+     "screen_rows_per_rung": 24
+    }
+   },
+   "draws_per_cell": 4,
+   "models": 4,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 86016,
+    "confirmatory_derivation": "56 cells x 384 blocks x 4 draws",
+    "gate_4_composed_headroom": 5376,
+    "gate_4_composed_topics": 24,
+    "greedy_sensitivity": 5376,
+    "total": 207504
+   },
+   "total_generations": 830016
+  },
+  "four_models_47_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 47,
+   "conditional": {
+    "composed_probe": {
+     "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+     "cells_per_severity": 11,
+     "draws": 4,
+     "max_rows": 84480,
+     "max_severities": 10,
+     "rows": 8448,
+     "rows_if_m_star_passes": 8448,
+     "rows_per_severity": 8448,
+     "severities": 1,
+     "standins": 3,
+     "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+     "topics": 192
+    },
+    "expansion": {
+     "calibration_rows_per_tier12_rung": 768,
+     "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+     "max_candidate_calibration_rows": 36864,
+     "max_rounds": 2,
+     "max_rungs_admissible": 176,
+     "max_rungs_per_family_per_round": 4,
+     "max_screen_rows": 4224,
+     "max_tier12_rungs_admissible": 48,
+     "reserve_rungs_beyond_round_0": 306,
+     "screen_rows_per_rung": 24
+    }
+   },
+   "draws_per_cell": 8,
+   "models": 4,
+   "per_model": {
+    "calibration": 110304,
+    "confirmatory": 144384,
+    "confirmatory_derivation": "47 cells x 384 blocks x 8 draws",
+    "gate_4_composed_headroom": 4512,
+    "gate_4_composed_topics": 24,
+    "greedy_sensitivity": 4512,
+    "total": 263712
+   },
+   "total_generations": 1054848
+  },
+  "four_models_56_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "conditional": {
+    "composed_probe": {
+     "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+     "cells_per_severity": 11,
+     "draws": 4,
+     "max_rows": 84480,
+     "max_severities": 10,
+     "rows": 8448,
+     "rows_if_m_star_passes": 8448,
+     "rows_per_severity": 8448,
+     "severities": 1,
+     "standins": 3,
+     "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+     "topics": 192
+    },
+    "expansion": {
+     "calibration_rows_per_tier12_rung": 768,
+     "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+     "max_candidate_calibration_rows": 36864,
+     "max_rounds": 2,
+     "max_rungs_admissible": 176,
+     "max_rungs_per_family_per_round": 4,
+     "max_screen_rows": 4224,
+     "max_tier12_rungs_admissible": 48,
+     "reserve_rungs_beyond_round_0": 306,
+     "screen_rows_per_rung": 24
+    }
+   },
+   "draws_per_cell": 8,
+   "models": 4,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 172032,
+    "confirmatory_derivation": "56 cells x 384 blocks x 8 draws",
+    "gate_4_composed_headroom": 5376,
+    "gate_4_composed_topics": 24,
+    "greedy_sensitivity": 5376,
+    "total": 293520
+   },
+   "total_generations": 1174080
+  },
+  "two_models_56_cells": {
+   "arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "blocks": 384,
+   "cells_per_block": 56,
+   "conditional": {
+    "composed_probe": {
+     "cells_are": "unconstrained + solo:B + solo per stand-in + both orders of B with each stand-in",
+     "cells_per_severity": 11,
+     "draws": 4,
+     "max_rows": 84480,
+     "max_severities": 10,
+     "rows": 8448,
+     "rows_if_m_star_passes": 8448,
+     "rows_per_severity": 8448,
+     "severities": 1,
+     "standins": 3,
+     "stops_early": "P3.3: m* passing ends the probe, so the modal cost is one severity",
+     "topics": 192
+    },
+    "expansion": {
+     "calibration_rows_per_tier12_rung": 768,
+     "is_a_ceiling": "the loop stops the moment C1-C6 pass and a family meeting C4 is skipped; this is what \u00a712.6 permits, not what a replication is expected to spend",
+     "max_candidate_calibration_rows": 36864,
+     "max_rounds": 2,
+     "max_rungs_admissible": 176,
+     "max_rungs_per_family_per_round": 4,
+     "max_screen_rows": 4224,
+     "max_tier12_rungs_admissible": 48,
+     "reserve_rungs_beyond_round_0": 306,
+     "screen_rows_per_rung": 24
+    }
+   },
+   "draws_per_cell": 8,
+   "models": 2,
+   "per_model": {
+    "calibration": 110736,
+    "confirmatory": 172032,
+    "confirmatory_derivation": "56 cells x 384 blocks x 8 draws",
+    "gate_4_composed_headroom": 5376,
+    "gate_4_composed_topics": 24,
+    "greedy_sensitivity": 5376,
+    "total": 293520
+   },
+   "total_generations": 587040
+  }
+ },
+ "removing_one_arm": {
+  "class": {
+   "cells_saved": 3,
+   "cells_without": 53
+  },
+  "core": {
+   "cells_without": null,
+   "refused": "\u00a713.12 draws both spectrum rungs from an admitted core reference's own family, so the spectrum arm cannot be admitted without the core arm"
+  },
+  "nearform": {
+   "cells_saved": 9,
+   "cells_without": 47
+  },
+  "spectrum": {
+   "cells_saved": 18,
+   "cells_without": 38
+  }
+ }
+}

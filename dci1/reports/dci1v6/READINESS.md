@@ -51,6 +51,34 @@ error the probe would have to absorb, and that Change 2's probe cannot see the
 failure mode that actually terminated `gemma-3n-e4b-it`. Both are quantified
 in §4.
 
+**Added 2026-08-25, after implementation began.** Repairing V6-E01 exposed a
+second defect in the same rule, independent of it and larger — **V6-E02** —
+and §9 records what has since been built. Both are read from
+[`expansion_dryrun.json`](expansion_dryrun.json), produced by
+[`tools/v6_expansion_dryrun.py`](../../tools/v6_expansion_dryrun.py), which
+replays v5's rule and v6's side by side on the four signed pre-screen tables
+and refuses to report anything unless its baseline reproduces each signed
+coverage verdict exactly.
+
+> **§12.6's expansion measured rungs its own coverage criterion could not
+> see.** `run_expansion` extended its working table with raw
+> `difficulty_table` rows, which carry no `eligible` field, and
+> `coverage_criterion` filters on `eligible` before anything else. The three
+> replications that ran an expansion measured 93, 96 and 99 reserve rungs
+> across two rounds; their recorded coverage was evaluated over 174, 179 and
+> 174 eligible rungs against 208, 211 and 229 actually measured **and
+> carried**. Over the full measured table, `qwen3-4b` reaches `C4 = True` and
+> `decisive_met = True` where its signed record has both False.
+
+**That is not a re-verdict and may not be cited as one.** v5's coverage is what
+v5's registered code computed over the rows that code passed it; the record is
+signed, D6 is irreversible, and `qwen3-4b`'s
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` remains that replication's terminal outcome.
+It is development evidence about the v5 *implementation*, obtained after
+closure. It narrows the diagnosis further and in the same direction: V6-E01
+stopped the expansion reaching the reserve C4 needed, and V6-E02 stopped
+anything it did reach from counting.
+
 ---
 
 ## 1. Carried forward unchanged
@@ -151,6 +179,39 @@ construction*, whatever the model does.
 The families that missed C4 on span alone (`marker_thus` 0.21–0.38,
 `marker_hence` 0.29–0.33, `marker_namely` 0.29, `marker_indeed` 0.29,
 `letter_a` 0.36, `sentence` 0.37) are exactly the ones stranded in branch 1.
+
+#### 3.1.a′ The second defect (V6-E02), found while repairing the first
+
+`run_expansion` extends its working table with whatever `measure()` returns,
+and the production `measure_reserve` returns raw `difficulty_table` rows.
+Those carry `family`, `severity` and `iota` — and no `eligible`, no
+`structural_tier`, no `feature_group`, no `constraint_class`.
+`coverage_criterion`'s first line is `rows = [r for r in table if
+r.get("eligible")]`. So every rung the expansion measured was silently dropped
+from the criterion the expansion exists to satisfy.
+
+| replication | rounds | rungs the expansion measured | eligible rungs the criterion used | eligible rungs actually measured | `decisive_met` signed | over the full table |
+|---|---:|---:|---:|---:|---|---|
+| `gemma-3n-e2b-it` | 2 | 93 | 174 | 208 | False | False |
+| `gemma-3n-e4b-it` | 2 | 96 | 179 | 211 | False | False |
+| `qwen3-4b` | 2 | 99 | 174 | 229 | False | **True** |
+| `qwen3-4b-instruct-2507` | 0 | — | 164 | 164 | True | True |
+
+The recomputation is validated before it is reported: restricting the table to
+the round-0 rungs reproduces each signed `expansion.coverage` **exactly**, on
+all four replications, and the tool aborts if it does not. So the rule applied
+is the registered rule and the only thing that differs is which rows reach it.
+
+**The standing of the `qwen3-4b` row.** DEVELOPMENT_EVIDENCE about the v5
+implementation. It is not a re-verdict, not a recomputed result, and not
+evidence that any replication was identified: v5's coverage is what v5's code
+computed, the record is signed, D6 is irreversible, and no v5 replication is
+re-run or re-read. It is reported because v6 must not repeat the defect and
+because it narrows the diagnosis.
+
+**The repair.** `measure()` returns rows in the criterion's own shape, and
+`assert_coverage_shape` refuses any other — on the mandatory path, so the same
+class of defect raises instead of passing.
 
 #### 3.1.b Specification: reachability repair
 
@@ -559,18 +620,40 @@ scientific definition and should not be bundled with this work.
 | **(A) ≥2 identified Gate-5 survivors before *any* confirmatory generation** (as proposed) | **Withholds every registered claim from a legitimately identified, frozen replication because a *different* replication failed.** §6.1 registers four replications "each analysed separately, each a moderator level and never pooled", and **L5 — generalisation — is *never* licensed by this design**. So there is no registered study-level claim that a 2-survivor rule protects. Compute: 0 or ~2 × 110k confirmatory rows; nothing in between. |
 | **(B) Each independently identified and frozen replication may generate; ≥2 survivors required only for replicated/generalised study-level statements** | Matches §6.1 and the claim ladder exactly: L1–L4 are per-replication and per-member, L4a is across *configurations* (orders) within a replication, not across models. A single survivor yields its own registered claim ladder and nothing above it. Compute scales with the number of survivors and with each one's admitted arm set (§8.a). |
 
-**One registered ambiguity has to be closed first, and it is not mine to
-close.** §11.1's glossary defines a configuration as the tuple *(model
-checkpoint, position of the outcome constraint)*, while
-`protocol/constants.py` registers `CONFIGURATIONS = (outcome_first,
-outcome_second)` — position only — and the analysis runs per `ModelTree`. Under
-the implementation's reading, L4a is *within*-replication across the two
-outcome positions and no registered level needs a second model. Under the
-glossary's reading, L4a's gate — "every registered configuration was analysed"
-— would need **all four** models, not two, and option A's threshold of 2 would
-still not license it. Either way option A protects no registered claim; but
-which reading governs decides what v6 may say about replication at all, and it
-must be settled in the v6 preregistration rather than inherited.
+**The registered ambiguity this decision rested on is now closed — by the
+registered text, not by a choice.** The question was real: §11.1's glossary
+defines a configuration as the tuple *(model checkpoint, position of the
+outcome constraint)*, while `protocol/constants.py` registers
+`CONFIGURATIONS = (outcome_first, outcome_second)` — position only — and the
+analysis runs per `ModelTree`. Four registered passages settle it, and none of
+them is code:
+
+1. **§15, first paragraph.** "Families are declared per configuration, meaning
+   per (model, position of the outcome constraint) — with one exception, F11,
+   which is declared **across the two configurations of one model**… **There
+   is no cross-model multiplicity family, because this protocol licenses no
+   pooled-across-model estimand.**" So in this protocol "across
+   configurations", applied to a family or a contrast, names the two positions
+   of one model.
+2. **§3.2's L4b row** gates on "Both configurations analysed" and reads F11,
+   which §15 has just declared across the two configurations of one model.
+   L4a and L4b are registered as complementary and indexed the same way.
+3. **§11.1.** "There are two configurations per model", and the analysis runs
+   per replication — so the model index is the `ModelTree`, and the tuple that
+   varies inside it is the position. The glossary and the constant agree once
+   the model index is read as the tree rather than as an element of the tuple.
+4. **§6.1 and L5.** Replications are "each analysed separately… never pooled",
+   no cross-model scalar carries a claim, and generalisation is never licensed.
+
+§19's registered L4a regression test is the same reading made executable: it
+reproduces v4r4's `gemma-3n-e4b-it` pattern, which is a pattern *within one
+model* across its two positions. **L4a is within-replication.**
+`analysis/claims.CONFIGURATION_SCOPE` carries the derivation and
+`assert_configuration_scope` refuses a caller who widens the set; §33 check 9
+runs it. This is a resolved definitional item and **not** a researcher
+decision — putting it to the researcher would ask them to choose something the
+preregistration already says. What R4 still turns on is unaffected: under
+either reading, option A protects no registered claim.
 
 **Recommendation: (B), with the study-level language registered explicitly.**
 Option A introduces a cross-replication dependency the preregistration does not
@@ -618,40 +701,102 @@ the researcher's to approve.
 Ordered. Nothing below is waivable, and none may be resolved by weakening a
 guard.
 
-1. **R1–R6 are open.** `protocol/decisions.py` must block every dependent
-   stage until each is closed, and `assert_decisions_permit` must be wired for
-   the new stage before it can run at all.
-2. **V6-E01 is unfixed** (§3.1.a). Registering v6 on the current
-   `expansion_round` would register a study whose only failing condition is
-   one its own repair mechanism cannot reach.
-3. **No v6 preregistration document exists.** `protocol_hash` is recomputed
-   from `user-notes/DCI1_preregistration_v5.md` and is hash-bound; v6 needs its
-   own governed document before a manifest can be built.
-4. **The §6.2 topic-set arithmetic is unsettled** pending R3. `SET_SIZES` is
-   asserted to sum to `N_TOPICS`; `COMPOSED_PER_AREA` 2 → 4 moves
-   `SEQUESTERED_PER_AREA` 8 → 6 and `N_SEQUESTERED` 96 → 72 unless the bank
-   grows, and the bank is governed.
-5. **`COMPOSED_HEADROOM_UNREACHABLE` is not registered.** Adding a §28 status
-   is a change to the registered outcome vocabulary.
-6. **The stand-ins do not exist** and, under R6's recommended option, change
-   the library's asserted counts.
-7. **§33 check 8 covers the Gate-4 record only.** Until it also reads the
-   probe record, the probe is the one generating stage whose record no
-   name-scan audits (§3.2, guarantee 3).
-8. **Change 2 does not cover the `gemma-3n-e4b-it` failure mode** (§3.2). This
-   is not a blocker to registration, but it must be stated in the v6
-   preregistration rather than discovered at Gate 4, so that a companion-slot
-   Gate-4 failure is a registered expectation and not a surprise.
-9. **A `CHANGES_SCIENTIFIC.md` entry is required** before any v6 code lands:
-   §3.1.b changes which data an analysis reads, and §3.2 adds a stage, a
-   terminal status and a registered constant.
+**Updated 2026-08-25 after the implementation pass.** A blocker is marked
+**OPEN** only when it is still a blocker; the ones the implementation
+discharged say what discharged them, because a list that quietly shrinks tells
+a reader nothing about what was done.
+
+1. **OPEN — the researcher decisions.** Registered as §34 D19–D25 in
+   `dci1v6/protocol/decisions.py`, all UNRESOLVED. D19–D24 are R1–R6; D25 is
+   the single-survivor statement R4's recommended branch requires registered
+   before data. Each blocks its dependent stages, `assert_decisions_permit` is
+   wired for the new stage, and every accessor —
+   `composed_probe.probe_split`, `.margin`, `.standins`,
+   `budget.composed_topic_plan`, `lifecycle.confirmatory_licensed` — refuses
+   through `decisions.choice` rather than defaulting.
+2. **Discharged.** V6-E01 is repaired in `dci1v6/stages/regime` (E1–E6) and
+   **V6-E02** with it. `tools/v6_expansion_dryrun.py` replays both rules on
+   the four signed v5 tables: v5's admits no Tier-1 reserve rung anywhere,
+   v6's admits them on every replication.
+3. **OPEN — no v6 preregistration document exists**, and no v6
+   reference-design spec. `dci1v6.PREREGISTRATION` names
+   `user-notes/DCI1_preregistration_v6.md`; `manifest.document_hashes` raises
+   `Blocker` because it is not there, so no manifest can be signed. This is
+   now an executable refusal with a test on it, not a note.
+4. **OPEN — the §6.2 topic-set arithmetic**, pending D21.
+   `budget.composed_topic_plan` carries all three branches and refuses while
+   the decision is open; the `enlarge_composed_set` branch computes
+   `N_COMPOSED` 24 → 48 and `N_SEQUESTERED` 96 → 72 and raises if the bank
+   cannot carry it. The bank is governed and the change is the researcher's.
+5. **Discharged.** `COMPOSED_HEADROOM_UNREACHABLE` is in `TERMINAL_STATUSES`
+   and in `NEW_TERMINAL_STATUSES`, raised from `probe_disposition`, and
+   covered by the A8 AST regression that walks every module for a status in
+   force with no reachable `raise` — which is the V5-E32 fix.
+6. **OPEN — the stand-ins do not exist.** The `probe_only` *mechanism* is
+   implemented and its guards are live on the empty population;
+   `assert_library_sizes` now asserts `probe_only_families: 0` and
+   `selectable_families: 37`, so authoring one fails loudly. Which stand-ins
+   exist is D24 and it is the researcher's.
+7. **Discharged.** §33 check 8 reads both records —
+   `audit_prefreeze.NAME_SCANNED_RECORDS` names Gate 4 and Gate 2.75, each
+   with its own admissible outcomes and its own required refusals — and a
+   missing probe record is UNRESOLVED, which blocks the freeze.
+8. **OPEN — Change 2 does not cover the `gemma-3n-e4b-it` failure mode.** Not
+   a blocker to registration, but it must be *stated* in the v6
+   preregistration. `composed_probe.PROBE_SCOPE_LIMITS` carries it and the
+   probe record does too, so it is on the artifact; what remains is the
+   document.
+9. **Discharged.** `CHANGES_SCIENTIFIC.md` carries three entries dated
+   2026-08-25: V6-E01, V6-E02, and the v6 implementation with what it does
+   and does not change.
+10. **New, and OPEN — the v6 §34 decisions carry no researcher record.**
+    `dci1/reports/dci1v6/researcher_decisions.json` does not exist and must
+    not be created by code. Until the researcher writes one, every decision is
+    UNRESOLVED at import and no stage can run. The test suite reads a
+    *fixture* copy of v5's record so it can exercise the paths D0–D18 select;
+    that fixture is in `tests_v6/` and can never reach the registered path.
 
 **Not a blocker, and explicitly so:** none of this touches v5. v5's records,
 verdicts, terminal statuses and D6 irreversibility stand exactly as signed.
+The `qwen3-4b` recomputation in §3.1.a′ is development evidence about the v5
+implementation and is not a re-verdict.
 
 ---
 
-## 7. Exact next coding-agent task, once R1–R6 are settled
+## 7. Next coding-agent task
+
+**Updated 2026-08-25.** Steps 1, 2 and 4 are done and §9 records what they
+produced. Step 3 is the one measurement that decides R1/D19 and **it is new
+behavioural data, so it is not started**. Steps 5 and 6 remain, and 6 has been
+done in the sense the code allows — the budget machinery is recomputed and
+committed, but the option it costs depends on D1, D21 and D22.
+
+**What remains, in order, and all of it after the researcher decides:**
+
+- **Step 3, and only with explicit approval: the R1/D19 measurement.**
+  Re-screen the four models' Tier-1 reserve rungs $q \in \{9,10,11,12\}$ on
+  the 24 pre-screen topics at 1 draw: 32 rungs × 24 rows = **768 rows per
+  replication, 3,072 total**. It measures whether the extension lands inside
+  $p_{\text{solo}} \in [0.10, 0.90]$ and what span it buys — which is what
+  separates R1(a) from R1(b), and it cannot be answered from closed v5 data.
+  It uses only §12.5's development topic sets and carries no confirmatory
+  standing. **Nothing has been generated.**
+- **Step 5: author the v6 preregistration document** and the v6
+  reference-design spec, and wire `protocol_hash` to them. Until then
+  `manifest.document_hashes` raises and no manifest can be signed. This is a
+  researcher act.
+- **Step 6′: close D19–D25 on a researcher record.** Writing
+  `dci1/reports/dci1v6/researcher_decisions.json` is a researcher act and no
+  code may do it. Until it exists every decision is UNRESOLVED and no stage
+  runs.
+- **Step 7: author the stand-ins**, if D24 closes at `probe_only_in_library`.
+  This changes `assert_library_sizes`' counts and will fail the assertion
+  until the new counts are written in — which is the visibility R6 asks for.
+- **Then, and not before: Gate 0.**
+
+---
+
+### 7.1 The original plan, for the record
 
 Ordered, one stage per checkpoint, fail-closed, and **stopping before any new
 real behavioural data**:
@@ -717,16 +862,45 @@ constants:
 
 | change | driver | added rows |
 |---|---|---:|
-| §3.1.b reachability repair | 32 Tier-1 reserve rungs enter the screen (24 rows each) | **+768** |
-| §3.1.b, downstream | §12.7 measures **every** carried Tier-1/Tier-2 rung — the 24-rung Tier-3 cap does not absorb them — so the Gate-2 candidate population goes 112 → 144 at 768 rows per rung | **+24,576** |
-| §3.2 probe, $m^*$ only | 1 solo + 6 paired + 1 unconstrained cells × 192 topics × `M_CAL` | **+6,144** |
-| §3.2 probe, worst case | all of $\mathcal{M}$ probed (up to 5 severities on v5's records) | **up to +27,648** |
-| R3(b), if taken | `N_COMPOSED` 24 → 48 at Gate 4 | **+480 to +2,496** |
+| §3.1.b reachability repair, Tier-1 only | 32 Tier-1 reserve rungs enter the screen (24 rows each) | **+768** |
+| §3.1.b reachability repair, ceiling | §12.6 permits ≤4 rungs per family per round over 2 rounds; across the library that bounds the expansion at 176 rungs | **up to +4,224** |
+| §3.1.b, downstream | §12.7 measures **every** carried Tier-1/Tier-2 rung — the 24-rung Tier-3 cap does not absorb them — at 768 rows per rung. 32 Tier-1 rungs is +24,576; the ceiling is 48 Tier-1/2 rungs | **+24,576, up to +36,864** |
+| §3.2 probe, $m^*$ only | 11 cells × 192 pooled calibration topics × `M_CAL`. **Corrected**: the cell set is `2 + 3n` for $n$ stand-ins — unconstrained, B solo, **each stand-in solo**, and both orders of B with each. The stand-in solo cells are not optional, because S4 reads each stand-in's operating point from its own solo curve measured in this stage and the composed lift is measured against it. An earlier count here said 8 cells and omitted them | **+8,448** |
+| §3.2 probe, worst case | every severity of §7.1's grid plus §7.2's extension eligible and probed — the code-derived ceiling, 10 severities. On v5's records the realised eligible sets were smaller | **up to +84,480** |
+| R3(b), if taken | `N_COMPOSED` 24 → 48 at Gate 4, on the admitted arm set. On v5's realised arm sets that was +480 to +2,496; on D1's registered 56 cells it is 5,376 → 10,752 | **+480 to +5,376** |
 | L1–L4, if R1(b) | proportional to added rungs; the proposal's +25–40% on screen and Gate 2 | +25k to +40k |
 
-**Per replication to freeze: ~147,000 rows** (v5 realised ~115,000) under
-R1(a) + R3(b) + a single-$m^*$ probe; **~169,000** with the probe exhausting
-$\mathcal{M}$. Four replications to freeze: **~590,000 to ~676,000**.
+**Per replication to freeze, under R1(a) + R3(b), from the code's own
+constants:**
+
+| term | rows |
+|---|---:|
+| v5's four calibration terms (screen, focal grids, candidate calibration, pilot) | 110,736 |
+| §12.6's expansion, **screen** rows at its ceiling | +4,224 |
+| §12.6's expansion, **candidate-calibration** rows at its ceiling | +36,864 |
+| Gate 2.75, $m^*$ only / at the ceiling | +8,448 / +84,480 |
+| Gate 4 at `N_COMPOSED = 48` (R3(b)); 5,376 if R3(a) | +10,752 |
+| **total, expansion not firing and $m^*$ passing** | **~130,000** |
+| **total, everything at its ceiling** | **~247,000** |
+
+Four replications to freeze therefore span **~520,000 to ~988,000**, and no
+single figure inside that range is more honest than the range: both new terms
+are conditional on measurements nobody has made. v5 realised ~115,000 per
+replication. Every number here is recomputed by
+[`tools/v6_compute_budget.py`](../../tools/v6_compute_budget.py) into
+[`development/d1_compute_budget.json`](development/d1_compute_budget.json),
+with §12.6's expansion and the probe carried as **named conditional terms**
+rather than folded into a figure a replication is expected to spend: the
+expansion stops the moment C1–C6 pass and skips any family already meeting
+C4, and the probe stops the moment $m^*$ passes its margin.
+
+**v5's budget did not carry the expansion term at all**, and on v5's records
+that was harmless for the wrong reason — V6-E02 meant the 93 to 99 rungs it
+measured bought nothing. Under the repaired rule the term is real: at most 176
+reserve rungs are admissible across the library under §12.6's ≤4-per-family-
+per-round and ≤2-round caps, and at most 48 of those are Tier-1 or Tier-2, so
+§12.7 — which measures **every** carried Tier-1/2 rung, the 24-rung Tier-3 cap
+not absorbing them — carries them at 768 rows each.
 
 **Confirmatory generation is not a single number**: it is
 `n_cells(admitted arms) × 384 blocks × 8 draws`, plus §8.3's greedy
@@ -783,3 +957,99 @@ Unchanged from v5 except where stated:
   XTXs run as two independent TP=1 lanes pinned through the backend `device`
   argument, which the CLI forwards only to stages whose runner signature
   accepts it (A6).
+
+---
+
+## 9. Implementation status (added 2026-08-25)
+
+**Nothing here is registered and no v6 row exists.** `dci1/src/dci1v6` is a
+package that cannot run: twenty-six §34 decisions are UNRESOLVED, the two
+governed documents §18 stage 1 binds do not exist, and
+`assert_transition_legal` refuses every stage whose decisions are open. Three
+independent refusals, any one of which is sufficient.
+
+### 9.1 What was built
+
+| area | what exists | where |
+|---|---|---|
+| namespace | `dci1v6`, study id `dci1v6`, `FOREIGN_STUDY_PREFIXES` naming `dci1v5`, evidence root `dci1/evidence/dci1v6` (which does not exist) | `dci1v6/__init__.py`, `engine/context.py` |
+| V6-E01 | E1–E6: C4's first unmet condition is the deficiency; `SPAN_SHORT` extends **outward from both extremes** | `stages/regime.expansion_plan_for_family` |
+| V6-E02 | `measure()` returns rows in the criterion's shape; `assert_coverage_shape` refuses any other, on the mandatory path | `stages/regime`, `run/regime_run.measure_reserve` |
+| the probe | placement, record schema, P3.1–P3.6, the cell shape, `assert_probe_reads_no_reference`, the declared refusals, the scope limits | `stages/composed_probe.py`, `run/gates_run.gate2_75_payload` |
+| terminal status | `COMPOSED_HEADROOM_UNREACHABLE`, raised from `probe_disposition` | `protocol/constants`, `stages/composed_probe` |
+| stand-ins | the `probe_only` category and its guards, live on an empty population | `verifiers/constraints`, `stages/regime.carry_candidate`, `run/gates_run.slot_map_from_record` |
+| audits | §33 check 8 over both records; check 9 extended with L4a's scope; the producer/consumer contract; `generating_stages` picking the probe up from the signature | `stages/audit_prefreeze`, `run/contracts`, `run/cli` |
+| licensing | `confirmatory_licensed`, both D22 branches, on the confirmatory path before a row is generated | `run/lifecycle`, `run/confirmatory_run` |
+| budget | the confirmatory term as `n_cells × 384 × 8`, plus the expansion and probe as named conditional terms | `design/budget`, `tools/v6_compute_budget.py` |
+| the changes themselves | eight registered changes, each with an executable check, asserted on the registration path | `protocol/revision.py` |
+
+**One thing the extended check found immediately, worth recording.** Running
+§33 check 8 over the probe record failed it — on the probe's own `reselected`
+field, because `reselect` is one of §13.14's five forbidden tokens and P3.3
+requires the record to carry exactly that field. An outcome-driven selection
+and a registered pre-data one read identically to a name scan, which is the
+same problem `declared_refusals` exists for one level down. The resolution is
+**one named field with a stated reason** in
+`audit_prefreeze.NAME_SCANNED_RECORDS`, not a pattern and not a blanket: any
+other field of that record naming a selection still fails, the exempted field
+must actually be present so a stale exemption cannot sit unexercised, and the
+record must still declare `no_second_reselection_exists`. Gate 4's entry has
+no exemptions at all.
+
+### 9.2 What the decisions block, by name
+
+| decision | READINESS | blocks stages | blocks calls |
+|---|---|---|---|
+| D19 | R1 | `PROTOCOL_REGISTERED` | — |
+| D20 | R2 | registration, `GATE_2_75_COMPOSED_PROBE` | `composed_probe.probe_split` |
+| D21 | R3 | registration, `GATE_4_COMPOSED_HEADROOM` | `budget.composed_topic_plan` |
+| D22 | R4 | registration, `CONFIRMATORY_GENERATION` | `lifecycle.confirmatory_licensed` |
+| D23 | R5 | registration, the probe | `composed_probe.margin` |
+| D24 | R6 | registration, the probe | `composed_probe.standins` |
+| D25 | — | registration, `CONFIRMATORY_GENERATION` | — |
+
+D25 is not in the memo's original six. It is what R4's recommended branch
+requires: **v6 must state, before data, what it will and will not say when
+exactly one replication survives**, so the number of survivors cannot be read
+afterwards as a licence.
+
+### 9.2a What was run against it
+
+| instrument | result |
+|---|---|
+| `tests_v6` | **490 passed**, including the full **19-stage** synthetic lifecycle end to end: registration → probe → freeze → confirmatory → mask → unmask → final report, in an isolated repository the harness builds and commits, with every provenance rule unwaived |
+| producer/consumer contract | **0 defects**, 124 fields across 18 artifacts, **124 exercised** by a real walk, 19 of 19 stages reached; all 12 of the probe's contracted fields written and read |
+| execution-path audit | **53 of 53** registered rules hold their expected status — 51 `VERIFIED_REACHABLE`, 2 `VERIFIED_CONDITIONAL` — over 15 conditional scenarios, with 0 contract defects. The three new probe rules and the two new expansion rules are all reachable on the path a replication takes |
+| `tests_v5`, `dci1/tests*`, root `tests/unit` | 451 / 1,780 (+10 skipped) / 2,575 (+1 xfailed), all passing — v5 is untouched |
+
+The execution-path audit asks the question the other three cannot: *does the
+registered rule lie on the path a replication takes.* It is why V6-E01's
+repair is not merely implemented but **observed executing** while the
+lifecycle runs.
+
+### 9.3 What is deliberately not implemented
+
+- **The stand-ins themselves.** S1–S5 specify what a stand-in *is*; which
+  three exist is D24, and authoring one changes the registered library's
+  asserted counts.
+- **A value for δ.** `composed_probe.margin` reads D23 and validates that the
+  closure leaves §13.14's band with an interior. §4 establishes that the
+  needed margin lies *above* the examined range, which is a finding about the
+  range and not a choice within it.
+- **The topic split and the Gate-4 precision.** Both branches of D20 and all
+  three of D21 exist in the source and none is reachable while the decision is
+  open.
+- **The v6 preregistration and reference-design spec.** Governed documents,
+  and a researcher act.
+- **Any behavioural data.** Zero rows.
+
+### 9.4 One thing the memo raised that turned out not to be a decision
+
+The §11.1-versus-`CONFIGURATIONS` question in R4 is **closed by the registered
+text** — §15's "no cross-model multiplicity family", §3.2's L4b gate, §11.1's
+"two configurations per model", §6.1's firewall and L5's permanent withholding
+all point one way. L4a is within-replication.
+`analysis/claims.CONFIGURATION_SCOPE` carries the derivation,
+`assert_configuration_scope` enforces it, and §33 check 9 runs it. Putting it
+to the researcher would have been asking them to choose something the
+preregistration already says.

@@ -1,0 +1,470 @@
+{
+  "_classification": "DEVELOPMENT_EVIDENCE",
+  "_generated_by": "dci1/tools/v6_expansion_dryrun.py",
+  "_not_evidence_about": [
+    "Delta_R",
+    "Delta_j",
+    "Xi",
+    "any v5 replication's verdict",
+    "whether an admitted rung is eligible or moves a span, which nobody has measured"
+  ],
+  "_v5_is_unchanged": "no v5 record is written, mutated or re-verdicted here; D6 is irreversible and the four terminal outcomes stand as signed. The recomputations are validated against those records before anything is reported",
+  "_what": "\u00a712.6's expansion replayed under v5's rule and v6's, on the four signed v5 pre-screen tables",
+  "per_model": {
+    "gemma-3n-e2b-it": {
+      "baseline_reproduces_signed_record": true,
+      "iota_a_prescreen": 0.666504144319844,
+      "signed": {
+        "conditions": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": false,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met": false,
+        "n_eligible": 174,
+        "rounds": 2,
+        "rungs_measured_by_expansion": 93,
+        "straddling_groups": 4
+      },
+      "v6_e01_reachability": {
+        "tier1_reserve_reachable_under_v6_rule": true,
+        "v5_rule": {
+          "n_rungs": 59,
+          "tier1_reserve_admitted": {}
+        },
+        "v6_rule": {
+          "by_deficiency": {
+            "MISSING_SIDE": [
+              "CR1",
+              "CR10",
+              "CR11",
+              "CR12",
+              "CR2",
+              "CR3",
+              "CR4",
+              "CR6",
+              "CR7",
+              "CR8",
+              "CR9",
+              "MK3",
+              "MK6",
+              "MK7",
+              "MK8",
+              "RF1",
+              "RF10",
+              "RF11",
+              "RF12",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF6",
+              "RF7",
+              "RF9",
+              "XC1",
+              "XC2"
+            ],
+            "SPAN_SHORT": [
+              "MK1",
+              "MK2",
+              "MK5"
+            ],
+            "TOO_FEW_RUNGS": [
+              "CL7",
+              "CL8"
+            ]
+          },
+          "n_rungs": 85,
+          "tier1_reserve_admitted": {
+            "MK1": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK2": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK5": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK7": [
+              9,
+              10,
+              11,
+              12
+            ]
+          }
+        }
+      },
+      "v6_e02_criterion_blindness": {
+        "conditions_over_the_full_measured_table": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": false,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met_over_the_full_measured_table": false,
+        "eligible_rungs_actually_measured": 208,
+        "eligible_rungs_the_criterion_used": 174,
+        "measured_rungs_the_criterion_never_saw": 34,
+        "straddling_groups_over_the_full_measured_table": 4
+      }
+    },
+    "gemma-3n-e4b-it": {
+      "baseline_reproduces_signed_record": true,
+      "iota_a_prescreen": 0.7082266910420476,
+      "signed": {
+        "conditions": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": false,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": false
+        },
+        "decisive_met": false,
+        "n_eligible": 179,
+        "rounds": 2,
+        "rungs_measured_by_expansion": 96,
+        "straddling_groups": 5
+      },
+      "v6_e01_reachability": {
+        "tier1_reserve_reachable_under_v6_rule": true,
+        "v5_rule": {
+          "n_rungs": 61,
+          "tier1_reserve_admitted": {}
+        },
+        "v6_rule": {
+          "by_deficiency": {
+            "MISSING_SIDE": [
+              "CL8",
+              "CR1",
+              "CR10",
+              "CR11",
+              "CR12",
+              "CR2",
+              "CR3",
+              "CR4",
+              "CR6",
+              "CR7",
+              "CR8",
+              "CR9",
+              "MK3",
+              "MK4",
+              "MK7",
+              "MK8",
+              "RF1",
+              "RF10",
+              "RF11",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF7",
+              "RF8",
+              "RF9",
+              "XC1",
+              "XC2",
+              "XC3"
+            ],
+            "SPAN_SHORT": [
+              "MK1",
+              "MK2",
+              "MK6"
+            ],
+            "TOO_FEW_RUNGS": []
+          },
+          "n_rungs": 76,
+          "tier1_reserve_admitted": {
+            "MK1": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK2": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK6": [
+              9,
+              10,
+              11,
+              12
+            ]
+          }
+        }
+      },
+      "v6_e02_criterion_blindness": {
+        "conditions_over_the_full_measured_table": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": false,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": false
+        },
+        "decisive_met_over_the_full_measured_table": false,
+        "eligible_rungs_actually_measured": 211,
+        "eligible_rungs_the_criterion_used": 179,
+        "measured_rungs_the_criterion_never_saw": 32,
+        "straddling_groups_over_the_full_measured_table": 5
+      }
+    },
+    "qwen3-4b": {
+      "baseline_reproduces_signed_record": true,
+      "iota_a_prescreen": 0.666585425298562,
+      "signed": {
+        "conditions": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": false,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met": false,
+        "n_eligible": 174,
+        "rounds": 2,
+        "rungs_measured_by_expansion": 99,
+        "straddling_groups": 5
+      },
+      "v6_e01_reachability": {
+        "tier1_reserve_reachable_under_v6_rule": true,
+        "v5_rule": {
+          "n_rungs": 60,
+          "tier1_reserve_admitted": {}
+        },
+        "v6_rule": {
+          "by_deficiency": {
+            "MISSING_SIDE": [
+              "CL7",
+              "CL8",
+              "CR1",
+              "CR10",
+              "CR11",
+              "CR12",
+              "CR2",
+              "CR3",
+              "CR4",
+              "CR5",
+              "CR6",
+              "CR7",
+              "CR8",
+              "CR9",
+              "MK4",
+              "MK8",
+              "RF1",
+              "RF10",
+              "RF11",
+              "RF12",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF7",
+              "RF8",
+              "RF9",
+              "XC1",
+              "XC2"
+            ],
+            "SPAN_SHORT": [
+              "MK1",
+              "MK6",
+              "XC3"
+            ],
+            "TOO_FEW_RUNGS": []
+          },
+          "n_rungs": 82,
+          "tier1_reserve_admitted": {
+            "MK1": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK6": [
+              9,
+              10,
+              11,
+              12
+            ]
+          }
+        }
+      },
+      "v6_e02_criterion_blindness": {
+        "conditions_over_the_full_measured_table": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": true,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met_over_the_full_measured_table": true,
+        "eligible_rungs_actually_measured": 229,
+        "eligible_rungs_the_criterion_used": 174,
+        "measured_rungs_the_criterion_never_saw": 55,
+        "straddling_groups_over_the_full_measured_table": 6
+      }
+    },
+    "qwen3-4b-instruct-2507": {
+      "baseline_reproduces_signed_record": true,
+      "iota_a_prescreen": 0.624267578125,
+      "signed": {
+        "conditions": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": true,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met": true,
+        "n_eligible": 164,
+        "rounds": 0,
+        "rungs_measured_by_expansion": 0,
+        "straddling_groups": 8
+      },
+      "v6_e01_reachability": {
+        "tier1_reserve_reachable_under_v6_rule": true,
+        "v5_rule": {
+          "n_rungs": 60,
+          "tier1_reserve_admitted": {}
+        },
+        "v6_rule": {
+          "by_deficiency": {
+            "MISSING_SIDE": [
+              "CL7",
+              "CR1",
+              "CR10",
+              "CR11",
+              "CR12",
+              "CR2",
+              "CR3",
+              "CR4",
+              "CR5",
+              "CR7",
+              "CR8",
+              "CR9",
+              "MK3",
+              "RF1",
+              "RF12",
+              "RF2",
+              "RF3",
+              "RF4",
+              "RF5",
+              "RF6",
+              "RF8",
+              "RF9",
+              "XC2",
+              "XC3"
+            ],
+            "SPAN_SHORT": [
+              "MK1",
+              "MK2",
+              "MK6",
+              "MK7"
+            ],
+            "TOO_FEW_RUNGS": [
+              "RF10"
+            ]
+          },
+          "n_rungs": 78,
+          "tier1_reserve_admitted": {
+            "MK1": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK2": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK6": [
+              9,
+              10,
+              11,
+              12
+            ],
+            "MK7": [
+              9,
+              10,
+              11,
+              12
+            ]
+          }
+        }
+      },
+      "v6_e02_criterion_blindness": {
+        "conditions_over_the_full_measured_table": {
+          "C1": true,
+          "C2": true,
+          "C3": true,
+          "C4": true,
+          "C5": true,
+          "C6": true,
+          "C7": true,
+          "C8": true
+        },
+        "decisive_met_over_the_full_measured_table": true,
+        "eligible_rungs_actually_measured": 164,
+        "eligible_rungs_the_criterion_used": 164,
+        "measured_rungs_the_criterion_never_saw": 0,
+        "straddling_groups_over_the_full_measured_table": 8
+      }
+    }
+  },
+  "tier1_reserve_rungs_per_family": [
+    9,
+    10,
+    11,
+    12
+  ],
+  "v6_e01": {
+    "finding": "\u00a712.6's expansion admitted no Tier-1 reserve rung on any replication under v5's rule, and admits them on every replication under v6's",
+    "reachable_under_v5_rule": false,
+    "reachable_under_v6_rule_on_every_replication": true,
+    "what_v6_changes": "the deficiency is C4's own first unmet condition, and a SPAN_SHORT deficiency extends outward from both extremes --- the only direction that can raise max(iota) - min(iota)",
+    "why_v5_could_not": "a straddling family took the bracketing branch, whose picks lie strictly between two adjacent measured edges with every intervening rung already in the round-0 ladder; a one-sided family was one-sided BELOW, so the rule went easier while the unmeasured reserve was harder; and interpolation cannot raise a span at all, which is the condition three replications failed"
+  },
+  "v6_e02": {
+    "finding": "run_expansion extended its working table with raw difficulty rows carrying no `eligible` field, so every rung the expansion measured was counted as ineligible by the criterion it was measured to satisfy",
+    "replications_whose_decisive_verdict_differs_over_the_full_measured_table": [
+      "qwen3-4b"
+    ],
+    "standing_of_that_difference": "DEVELOPMENT_EVIDENCE about the v5 implementation. It is NOT a re-verdict: v5's recorded coverage is what v5's registered code computed, D6 is irreversible, and no v5 replication is re-run, repaired or re-read as identified. It is reported because v6 must not repeat the defect and because it narrows the diagnosis further",
+    "what_v6_changes": "`measure` returns rows in the criterion's shape and `assert_coverage_shape` refuses any other, on the mandatory path"
+  }
+}

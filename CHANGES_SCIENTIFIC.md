@@ -13,6 +13,110 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-25 — V6-E02: §12.6's expansion measured rungs its own coverage criterion could not see
+
+**What changed.** Nothing in v5, which is closed, signed and untouched. The
+same v6 readiness work found a second defect in `stages/regime.run_expansion`,
+independent of V6-E01 and larger. The loop extends its working table with the
+rows `measure()` returns, and the production `measure_reserve` returns raw
+`difficulty_table` rows — which carry `family`, `severity` and `iota` but **no
+`eligible` field**, and no `structural_tier`, `feature_group` or
+`constraint_class`. `coverage_criterion` filters on `eligible` before anything
+else. So every rung the expansion measured was counted as ineligible by the
+criterion the expansion exists to satisfy. Recomputed by
+`dci1/tools/v6_expansion_dryrun.py` into
+`dci1/reports/dci1v6/expansion_dryrun.json`.
+
+**Why it is scientifically consequential.** The three replications that ran an
+expansion measured 93, 96 and 99 reserve rungs across two rounds, at 24 rows
+each, and their recorded coverage was evaluated over the round-0 eligible set
+every time — 174, 179 and 174 rungs against 208, 211 and 229 actually measured
+and carried. The `carried_set` on each record **does** include the expansion
+rungs, and every later stage used them; only §12.6's coverage criterion did
+not. Recomputing `coverage_criterion` over the full measured table with the
+registered rule and the record's own eligibility formulation reproduces each
+signed *pre-expansion* verdict exactly — the tool aborts unless it does — and,
+over the full table, gives `C4 = True` and `decisive_met = True` on
+**`qwen3-4b`**, where the signed record has both False.
+
+**Which results are affected, and how.** **No v5 verdict, record or number
+changes and none may.** v5's coverage is what v5's registered code computed
+over the rows that code passed to it; the record is signed, `D6` is
+irreversible, and `qwen3-4b`'s `REFERENCE_SUPPORT_NOT_IDENTIFIED` remains that
+replication's terminal outcome. This is **not** a re-verdict, not a
+recomputation of a result, and not evidence that any replication was
+identified: it is DEVELOPMENT_EVIDENCE about the v5 implementation, obtained
+after closure, and it may not be cited as a v5 outcome. What it changes is the
+**diagnosis**, in the same direction as V6-E01 and further: `bottleneck 1` in
+`reports/dci1v5/survival_diagnosis.md` is attributed to candidate-library
+shape, and on at least one replication the criterion that recorded the
+shortfall had 55 measured eligible rungs withheld from it. The two defects
+compound — V6-E01 stopped the expansion reaching the reserve C4 needed, V6-E02
+stopped anything the expansion *did* reach from counting.
+
+**Comparability.** v5's records stay comparable with themselves and with v4r4
+exactly as before, because nothing in them moves. A v5 number and a v6 number
+computed by the repaired rule are **not** comparable, and the v6 side does not
+exist yet: no v6 stage has run and no v6 row exists.
+
+---
+
+## 2026-08-25 — v6 implementation: the expansion repair, a nineteenth stage, and what it does not change
+
+**What changed.** A `dci1/src/dci1v6` package, `dci1/tests_v6`, and v6 tools.
+Nothing is registered: `protocol/decisions.py` carries twenty-six UNRESOLVED
+decisions (v5's D0–D18 plus v6's D19–D25), the v6 preregistration document and
+reference-design spec do not exist so `manifest.document_hashes` raises, and no
+v6 stage has run or may run. `protocol/revision.py` enumerates the changes with
+an executable check for each; `assert_changes_realised` is on the registration
+path. The scientific changes are:
+
+- **V1, V2 (§12.6).** The V6-E01 and V6-E02 repairs above. The expansion now
+  takes C4's **first unmet** condition as the family's deficiency and, when
+  that is a short span, extends **outward from both measured extremes** —
+  the only direction that can raise `max(iota) − min(iota)`. Ordering is
+  `restrictiveness_key`, picks come only from §7.10's frozen reserve, the
+  ≤4-per-family-per-round and ≤2-round caps are unchanged, and no monotonicity
+  in `iota` is assumed. `assert_coverage_shape` refuses, on the mandatory path,
+  a row the criterion would silently drop.
+- **V3, V4, V5, V6 (§18, §13.14, §28, §7.10, §33).** A nineteenth stage,
+  `GATE_2_75_COMPOSED_PROBE`, between Gate 2.5 and Gate 3A: composed
+  compliance headroom measured at m\* against `probe_only` structural stand-ins,
+  on a development split, **before any reference exists**. It may re-select m\*
+  exactly once by the registered focal rule restricted to severities its margin
+  admits, or terminate `COMPOSED_HEADROOM_UNREACHABLE`. `probe_only` families
+  are excluded by construction from every selectable pool, and §33 check 8's
+  name scan now reads the probe record on the same terms as the Gate-4 record.
+- **V7 (§15).** L4a's configuration scope is stated and enforced as
+  within-replication. This is a **reading made executable**, not a change: §15
+  declares every family per configuration, F11 "across the two configurations
+  of one model", and "no cross-model multiplicity family"; §11.1 says there are
+  two configurations per model; §6.1 forbids pooling; L5 is never licensed.
+- **V8.** No threshold moves, and `_bands_are_unchanged` checks it rather than
+  asserting it in prose.
+
+**Why it is scientifically consequential.** V1 and V2 change **which data
+§12.6's coverage criterion reads**, which is the rule that decides whether a
+replication has reference support at all. V3 adds a generating stage whose
+output can move m\*, which is the operating point every later stage runs at.
+V4 adds a registered terminal outcome. All four are exactly the class of change
+this file exists for.
+
+**Which results are affected, and how.** None yet. **Zero v6 rows exist**, no
+v6 stage has run, no v6 manifest exists, and seven researcher decisions —
+D19–D25, the six of `dci1/reports/dci1v6/READINESS.md` §5 plus the
+single-survivor statement — are open and block every dependent stage. v5's
+records are untouched and no v5 row may enter a v6 estimand
+(`protocol/reuse_ledger.py`, `FOREIGN_STUDY_PREFIXES` now names `dci1v5`).
+
+**Comparability.** A v5 number and a v6 number are **not** comparable on
+anything V1–V4 touches: the expansion reads a different rung set, the coverage
+criterion reads a different row set, and m\* may be chosen at a different
+severity. v6 is a new prospective study and v5 is development evidence for its
+design, per §30.
+
+---
+
 ## 2026-08-25 — V6-E01: §12.6's expansion cannot reach the Tier-1 reserve it was widened to supply
 
 **What changed.** Nothing in v5, which is closed and untouched. A v6 readiness

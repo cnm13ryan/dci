@@ -1792,6 +1792,58 @@ entries audited against the hard band go 6 → 95 as arms are admitted.
 Six researcher decisions are open and none is taken. Nothing is registered, no
 v6 code exists, and no row may be generated.
 
+### 4ab. V6-E02, and a v6 implementation that cannot run (2026-08-25)
+
+Implementing the repair found the **larger half of the same defect**.
+`stages/regime.run_expansion` extended its working table with the rows
+`measure()` returned, and the production `measure_reserve` returned raw
+`difficulty_table` rows — which carry no `eligible` field.
+`coverage_criterion` filters on `eligible` before anything else, so **every
+rung the expansion measured was counted as ineligible by the criterion it was
+measured to satisfy.** The three replications that ran an expansion measured
+93, 96 and 99 reserve rungs across two rounds; their recorded coverage was
+evaluated over 174, 179 and 174 eligible rungs against 208, 211 and 229
+actually measured and carried. Recomputing the registered rule over the
+*pre-expansion* table reproduces each signed verdict exactly — the tool aborts
+unless it does — and over the full measured table `qwen3-4b` reaches
+`C4 = True` and `decisive_met = True`, where its signed record has both False.
+[`dci1/tools/v6_expansion_dryrun.py`](dci1/tools/v6_expansion_dryrun.py),
+[`expansion_dryrun.json`](dci1/reports/dci1v6/expansion_dryrun.json).
+
+**This is not a re-verdict and may not be cited as one.** v5's coverage is
+what v5's registered code computed over the rows that code passed it; the
+record is signed, D6 is irreversible, and `qwen3-4b`'s
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` remains that replication's terminal
+outcome. It is development evidence about the v5 *implementation*, obtained
+after closure. What it changes is the diagnosis, in the same direction as
+V6-E01 and further: the two defects compound — one stopped the expansion
+reaching the reserve C4 needed, the other stopped anything it did reach from
+counting.
+
+**`dci1/src/dci1v6` now exists and cannot run.** Twenty-six §34 decisions are
+UNRESOLVED (v5's D0–D18 plus v6's D19–D25, which are READINESS's R1–R6 plus
+the single-survivor statement D22's recommended branch needs registered);
+the v6 preregistration and reference-design spec are not written, so
+`manifest.document_hashes` raises; and `assert_transition_legal` refuses every
+stage whose decisions are open. Zero v6 rows exist. What the package carries,
+each with an executable check in `protocol/revision.py`: the V6-E01 and V6-E02
+repairs; `GATE_2_75_COMPOSED_PROBE` as a nineteenth stage with
+`COMPOSED_HEADROOM_UNREACHABLE` as a registered terminal status; `probe_only`
+instruments excluded by construction from every selectable pool; §33 check 8's
+name scan extended to the probe record; L4a's configuration scope made
+executable as within-replication; and **no threshold moved**, checked rather
+than asserted.
+
+**One definitional question the memo left open is closed by the registered
+text, not by a decision.** §15 declares every multiplicity family per
+configuration, F11 "across the two configurations of one model", and "no
+cross-model multiplicity family, because this protocol licenses no
+pooled-across-model estimand"; §3.2's L4b gate says "both configurations";
+§11.1 says there are two configurations per model; §6.1 forbids pooling and
+L5 is never licensed. So L4a is within-replication, `CONFIGURATIONS` and the
+glossary agree once the model index is read as the `ModelTree`, and
+`claims.assert_configuration_scope` refuses a caller who widens it.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1867,7 +1919,9 @@ v6 code exists, and no row may be generated.
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: V6-E01 — §12.6's expansion
+whether old and new remain comparable. Most recent: the v6 implementation, which
+cannot run — the V6-E01 and V6-E02 expansion repairs, a nineteenth stage, and
+no threshold moved — in §4ab. Before it: V6-E01 — §12.6's expansion
 could not reach the Tier-1 reserve §7.10 widened for C4's span, which narrows
 the v5 survival diagnosis without changing a v5 verdict — in §4aa. Before it:
 v5 closed with no replication reaching confirmatory generation, and V5-E32, a
@@ -1902,6 +1956,8 @@ and §4p.
 | why v5 exists, measured | `dci1/reports/dci1v5/reference_design_development.md`, `dci1/reports/dci1v5/reference_design_spec.json` |
 | what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
 | what v6 would have to fix, and what is still the researcher's | `dci1/reports/dci1v6/READINESS.md`, `dci1/reports/dci1v6/readiness_evidence.json` |
+| the v6 implementation, and why it cannot run | `dci1/src/dci1v6/protocol/revision.py`, `dci1/src/dci1v6/protocol/decisions.py`, `dci1/tests_v6/` |
+| the two expansion defects, replayed side by side | `dci1/tools/v6_expansion_dryrun.py`, `dci1/reports/dci1v6/expansion_dryrun.json` |
 | what remains a limitation rather than a decision | `dci1/reports/dci1v5/v5_prereg_redteam.md` (R5 above all), `dci1/reports/dci1v5/v5_implementation_status.md` §4 |
 | every §34 closure, its value, its evidence and who took it | `dci1/reports/dci1v5/researcher_decisions.json` — including D17's floor spec and U2's and P1's resolutions |
 | the four decision packets, as adopted | `dci1/reports/dci1v5/d1_arm_compute_decision.md`, `d4_marker_audit.md`, `d17_b_strength_decision.md`, `u2_tier_model_decision.md` |
