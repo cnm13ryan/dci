@@ -18,10 +18,14 @@ def test_every_registered_change_is_present_in_the_code():
     # Every v6 change is executable and every one is checked. A listed change
     # the code does not make stops stage 1, because `assert_changes_realised`
     # is on the registration path.
-    assert record["n_changes"] == record["n_checked"] == 8
+    assert record["n_changes"] == record["n_checked"] == 9
+    # V9 is the one that would silently stop being true: it compares the
+    # twelve modules carrying the estimand layer against v5's, so an
+    # amendment to one of them must be registered rather than absorbed.
+    assert "V9" in {c["id"] for c in record["changes"]}
     assert all(c["realised"] is True for c in record["changes"])
     assert [c["id"] for c in record["changes"]] == [
-        f"V{i}" for i in range(1, 9)]
+        f"V{i}" for i in range(1, 10)]
 
 
 def test_the_two_expansion_repairs_are_registered_changes():

@@ -133,6 +133,48 @@ def _l4a_is_within_replication() -> bool:
     return claims.CONFIGURATION_SCOPE == "within_replication"
 
 
+def _the_estimand_layer_is_byte_identical_to_v5() -> bool:
+    """The strongest available form of "the causal comparison is unchanged".
+
+    Every module that defines an estimand, the matched-companion selection, the
+    design cells, the observation table, masking, the intervals, the bootstrap,
+    D6's identification rule, §13.15's support, §13.7's stability, §13.6's
+    interaction guard and §13.11's closed schema is compared against v5's, with
+    the namespace token normalised. A prose claim that v6 changed no estimand
+    is not checkable; this is.
+
+    It is a *check*, not a compatibility guarantee: when one of these files is
+    legitimately amended, the amendment is registered here rather than being
+    absorbed by relaxing the check.
+    """
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    token = re.compile(r"dci1v[56]")
+    for name in ESTIMAND_LAYER:
+        old = root / "dci1v5" / name
+        new = root / "dci1v6" / name
+        if not old.exists() or not new.exists():
+            return False
+        if token.sub("dci1vX", old.read_text()) != \
+                token.sub("dci1vX", new.read_text()):
+            return False
+    return True
+
+
+#: The modules ``_the_estimand_layer_is_byte_identical_to_v5`` compares. Named
+#: rather than globbed: which files carry the causal comparison is a scientific
+#: statement, and a glob would silently absorb a new one.
+ESTIMAND_LAYER: tuple[str, ...] = (
+    "analysis/estimators.py", "analysis/observations.py",
+    "analysis/intervals.py", "analysis/bootstrap.py", "analysis/masking.py",
+    "design/cells.py", "stages/selection.py", "stages/support.py",
+    "stages/stability.py", "stages/interaction.py",
+    "stages/calibration_table.py", "protocol/identification.py",
+)
+
+
 CHANGES: tuple[Change, ...] = (
     Change("V1", "§12.6",
            "§12.6's expansion evaluates C4's three conditions per family and, "
@@ -208,6 +250,15 @@ CHANGES: tuple[Change, ...] = (
            "This entry is here so that the absence is checked rather than "
            "trusted",
            _bands_are_unchanged),
+    Change("V9", "§5, §11, §13",
+           "THE ESTIMAND LAYER IS UNTOUCHED, and checked file by file",
+           "v6's repairs are all upstream of estimation --- the candidate "
+           "supply, the operating point, the record a later stage reads. The "
+           "twelve modules that define Delta_R, Delta_j, Xi, "
+           "delta_difficulty, the matched-companion selection, the design "
+           "cells and D6 are byte-identical to v5's modulo the namespace "
+           "token, and this compares them rather than asserting it in prose",
+           _the_estimand_layer_is_byte_identical_to_v5),
 )
 
 #: What v6 deliberately does NOT change, named so a reader does not have to

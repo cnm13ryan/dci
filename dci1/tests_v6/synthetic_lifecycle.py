@@ -694,6 +694,7 @@ class WalkStopped(Exception):
 def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
          repo_root: Path | str | None = None, resamples: int = 200,
          source_repo: Path | str | None = None,
+         probe_block_limit: int = 24,
          stop_after: str | None = None) -> dict[str, Any]:
     """Run every stage in order and return each stage's payload.
 
@@ -770,6 +771,7 @@ def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
     record(gates_run.run_gate2_75(
         tree, producing_commit=commit, environment_digest="synthetic",
         bank=the_bank, standins=FIXTURE_STANDINS,
+        block_limit=probe_block_limit,
         generate=_scripted_for(list(rungs) + list(FIXTURE_STANDINS))))
     record(gates_run.run_gate3a(tree, producing_commit=commit,
                                 environment_digest="synthetic",

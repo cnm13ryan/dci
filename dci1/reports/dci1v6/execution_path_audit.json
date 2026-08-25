@@ -1,16 +1,16 @@
 {
- "n_rules": 53,
- "n_agreeing": 53,
+ "n_rules": 56,
+ "n_agreeing": 56,
  "by_status": {
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 51
+  "VERIFIED_REACHABLE": 54
  },
  "contract": {
-  "n_fields": 124,
+  "n_fields": 137,
   "n_artifacts": 18,
-  "n_checked_against_payloads": 362,
-  "n_field_presence_checks": 124,
-  "n_consumption_checks": 238,
+  "n_checked_against_payloads": 388,
+  "n_field_presence_checks": 137,
+  "n_consumption_checks": 251,
   "n_semantic_checks": 4,
   "relayed": [
    {
@@ -41,17 +41,17 @@
    {
     "artifact": "GATE_2_FOCAL_CALIBRATION",
     "field": "m_star",
-    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "reader": "GATE_3B_REFERENCE_SELECTION",
     "via": [
-     "GATE_2_75_COMPOSED_PROBE"
+     "GATE_3A_REFERENCE_CALIBRATION"
     ]
    },
    {
     "artifact": "GATE_2_FOCAL_CALIBRATION",
     "field": "m_star",
-    "reader": "GATE_3B_REFERENCE_SELECTION",
+    "reader": "GATE_5_FREEZE",
     "via": [
-     "GATE_3A_REFERENCE_CALIBRATION"
+     "GATE_2_75_COMPOSED_PROBE"
     ]
    },
    {
@@ -99,7 +99,8 @@
     "field": "m_star",
     "reader": "GATE_3A_REFERENCE_CALIBRATION",
     "via": [
-     "GATE_2_75_COMPOSED_PROBE"
+     "GATE_2_75_COMPOSED_PROBE",
+     "GATE_2_FOCAL_CALIBRATION"
     ]
    },
    {
@@ -147,8 +148,7 @@
     "field": "m_star",
     "reader": "GATE_5_FREEZE",
     "via": [
-     "GATE_2_75_COMPOSED_PROBE",
-     "GATE_2_FOCAL_CALIBRATION"
+     "GATE_2_75_COMPOSED_PROBE"
     ]
    },
    {
@@ -157,6 +157,14 @@
     "reader": "GATE_5_FREEZE",
     "via": [
      "GATE_3C_IDENTIFICATION"
+    ]
+   },
+   {
+    "artifact": "GATE_4_COMPOSED_HEADROOM",
+    "field": "m_star",
+    "reader": "GATE_5_FREEZE",
+    "via": [
+     "GATE_2_75_COMPOSED_PROBE"
     ]
    },
    {
@@ -176,7 +184,7 @@
     ]
    }
   ],
-  "n_relayed": 20,
+  "n_relayed": 21,
   "unconsumed": [
    {
     "kind": "UNCONSUMED_DECLARATION",
@@ -301,13 +309,6 @@
     "kind": "UNCONSUMED_DECLARATION",
     "artifact": "REGIME_SCREEN",
     "field": "carried_set",
-    "reader": "GATE_3A_REFERENCE_CALIBRATION",
-    "detail": "the contract declares this reader and no read of the field was observed on any record"
-   },
-   {
-    "kind": "UNCONSUMED_DECLARATION",
-    "artifact": "REGIME_SCREEN",
-    "field": "carried_set",
     "reader": "GATE_5_FREEZE",
     "detail": "the contract declares this reader and no read of the field was observed on any record"
    },
@@ -316,13 +317,6 @@
     "artifact": "REGIME_SCREEN",
     "field": "difficulty_table",
     "reader": "GATE_2_5_CANDIDATE_QUALIFICATION",
-    "detail": "the contract declares this reader and no read of the field was observed on any record"
-   },
-   {
-    "kind": "UNCONSUMED_DECLARATION",
-    "artifact": "REGIME_SCREEN",
-    "field": "difficulty_table",
-    "reader": "GATE_3A_REFERENCE_CALIBRATION",
     "detail": "the contract declares this reader and no read of the field was observed on any record"
    },
    {
@@ -488,6 +482,27 @@
    },
    {
     "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "focal_admissible",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "focal_admissibility",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_FOCAL_CALIBRATION",
+    "field": "kappa_under_b_by_severity",
+    "reader": "GATE_3A_REFERENCE_CALIBRATION",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
     "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
     "field": "qualification",
     "reader": "GATE_5_FREEZE",
@@ -496,7 +511,7 @@
    {
     "kind": "UNCONSUMED_DECLARATION",
     "artifact": "GATE_2_5_CANDIDATE_QUALIFICATION",
-    "field": "qualified_families",
+    "field": "qualified_at_severities",
     "reader": "GATE_5_FREEZE",
     "detail": "the contract declares this reader and no read of the field was observed on any record"
    },
@@ -530,6 +545,13 @@
    },
    {
     "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_2_75_COMPOSED_PROBE",
+    "field": "admissible_severities",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
     "artifact": "GATE_3A_REFERENCE_CALIBRATION",
     "field": "m_star",
     "reader": "GATE_4_COMPOSED_HEADROOM",
@@ -553,6 +575,20 @@
     "kind": "UNCONSUMED_DECLARATION",
     "artifact": "GATE_3A_REFERENCE_CALIBRATION",
     "field": "iota_a_stability",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "qualified_pool",
+    "reader": "GATE_5_FREEZE",
+    "detail": "the contract declares this reader and no read of the field was observed on any record"
+   },
+   {
+    "kind": "UNCONSUMED_DECLARATION",
+    "artifact": "GATE_3A_REFERENCE_CALIBRATION",
+    "field": "qualified_at_m_star",
     "reader": "GATE_5_FREEZE",
     "detail": "the contract declares this reader and no read of the field was observed on any record"
    },
@@ -774,7 +810,7 @@
     "detail": "the contract declares this reader and no read of the field was observed on any record"
    }
   ],
-  "n_unconsumed": 85,
+  "n_unconsumed": 89,
   "n_defects": 0,
   "clean": true
  },
@@ -1224,6 +1260,39 @@
    "compared": false,
    "statuses": [],
    "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"
+  },
+  "probe_reselects_the_operating_point": {
+   "scenario": "probe_reselects_the_operating_point",
+   "branch": "P3.4: the probe re-selects m* and the study follows it",
+   "m_star_in": 8,
+   "m_star_out": 10,
+   "reselected": true,
+   "admissible_severities": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "eligible_severities": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+   ],
+   "gate3a_m_star": 10,
+   "gate3a_qualified_at": 10,
+   "gate3c_support_met": true,
+   "gate3c_qualified_families": 12,
+   "gate4_m_star": 10,
+   "freeze_m_star": 10,
+   "freeze_slot_map_b": 10,
+   "expected": "one re-selection, and Gate 3A, Gate 4 and the freeze all at m_star_out"
   }
  },
  "rules": [
@@ -1293,6 +1362,51 @@
    "impl": "dci1v6.run.gates_run.gate2_75_payload",
    "field": "GATE_2_75_COMPOSED_PROBE.m_star",
    "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-2.75-admissible",
+   "section": "\u00a712.4, \u00a734 D17, P3.1",
+   "area": "probe",
+   "meaning": "the probe probes --- and re-selects over --- only the severities Gate 2 found ADMISSIBLE: eligible under \u00a712.3 and, at that severity, adequate under \u00a712.4 and past D17's construct floor. Eligibility alone is a band test on the solo curve, so re-selecting over it could move B to an operating point Gate 2 would have refused",
+   "runtime": "dci1v6.stages.composed_probe.assert_probe_severities_are_admissible",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.focal_admissible",
+   "consumer": "GATE_2_75_COMPOSED_PROBE",
+   "scenario": "probe_reselects_the_operating_point",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.6-operating-point",
+   "section": "\u00a713.6, \u00a713.11",
+   "area": "probe",
+   "meaning": "kappa(R|B) and the \u00a713.1 pool are read at the operating point the probe selected, from columns Gate 2 signed for every admissible severity BEFORE the probe observed a composed cell. Reading Gate 2's own column under a re-selected m* is refused by `assert_kappa_under_b_source`, which is what made the re-selection branch unexecutable",
+   "runtime": "dci1v6.run.gates_run.calibration_rows_at",
+   "impl": "dci1v6.run.gates_run.gate3a_payload",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
+   "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+   "scenario": "probe_reselects_the_operating_point",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-18.1-frozen-operating-point",
+   "section": "\u00a718.1",
+   "area": "probe",
+   "meaning": "the freeze binds B --- and the pool --- at the probe's m*, not Gate 2's. Confirmatory generation renders every cell from the frozen slot map, so a B bound at Gate 2's m* would spend the whole confirmatory budget at the severity the probe rejected for want of composed headroom",
+   "runtime": "dci1v6.run.freeze_run.freeze_payload",
+   "impl": "dci1v6.run.freeze_run.assemble",
+   "field": "GATE_5_FREEZE.slot_map",
+   "consumer": null,
+   "scenario": "probe_reselects_the_operating_point",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",
    "detail": "",
@@ -1435,7 +1549,7 @@
    "meaning": "the eight V(R) components in registered order",
    "runtime": "dci1v6.stages.validity.evaluate_validity",
    "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
-   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualified_pool",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
    "consumer": "GATE_3A_REFERENCE_CALIBRATION",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",
@@ -1449,7 +1563,7 @@
    "meaning": "the recorded reason is the earliest failing component",
    "runtime": "dci1v6.stages.validity.assert_lexicographic_order",
    "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
-   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.earliest_failing_components",
+   "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
    "consumer": "GATE_5_FREEZE",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",

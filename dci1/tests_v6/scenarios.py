@@ -29,7 +29,9 @@ from dci1v4.errors import IntegrityError, ProtocolError
 from dci1v6.engine.context import synthetic_context
 from dci1v6.engine.paths import model_tree
 from dci1v6.protocol import constants as C
-from dci1v6.run import field_access, gates_run
+from dci1v6.engine import transitions
+from dci1v6.run import (field_access, freeze_run, gates_run,
+                        prefreeze_run)
 from dci1v6.run.lifecycle import TerminalStatus
 
 from tests_v6 import synthetic_lifecycle as SL
@@ -549,6 +551,77 @@ def scenario_coordinate_secondary_not_computable(root: Path
     }
 
 
+def scenario_probe_reselects_the_operating_point(root: Path
+                                                 ) -> dict[str, Any]:
+    """16. §18 stage 8 moves m*, and every later stage runs at the new one.
+
+    **This is v6's whole answer to v5's Gate-4 problem** --- composed headroom
+    measured while the operating point can still move --- and until this
+    scenario existed the branch had unit tests on ``probe_disposition`` and no
+    execution at all. The first stage after a re-selection read Gate 2's
+    kappa(R|B) column under the probe's m*, ``assert_kappa_under_b_source``
+    refused it by design, and the rescue path ended in an unhandled error
+    instead of in a replication. Gate 2 now records a column and a qualified
+    pool per admissible severity, all signed before the probe observes
+    anything, and this drives the branch end to end.
+
+    The knob is a fixture composed rate for B **at m\\* alone**. Nothing here
+    changes a band, a margin, a threshold or a rule.
+    """
+    prefix = prefix_walk(root / "prefix", C.STAGE_GATE2_5)
+    tree, ctx = prefix.branch(root / "branch")
+    gate2 = prefix.payloads[C.STAGE_GATE2]
+    m_in = int(gate2["m_star"])
+    SL.COMPOSED_OVERRIDES[f"B:{m_in}"] = 0.99
+    standins = list(SL.FIXTURE_STANDINS)
+    try:
+        probe = gates_run.run_gate2_75(
+            tree, producing_commit=ctx["commit"],
+            environment_digest="scenario", bank=ctx["bank"],
+            standins=SL.FIXTURE_STANDINS, block_limit=24,
+            generate=SL._scripted_for(SL.screen_rungs() + standins)).payload
+        for run in (gates_run.run_gate3a, gates_run.run_gate3b,
+                    gates_run.run_gate3c):
+            run(tree, producing_commit=ctx["commit"],
+                environment_digest="scenario")
+        designed = SL.screen_rungs() + SL._bound_constraints(tree)
+        gate4 = gates_run.run_gate4(
+            tree, producing_commit=ctx["commit"],
+            environment_digest="scenario", bank=ctx["bank"],
+            generate=SL._scripted_for(designed)).payload
+        prefreeze_run.run_prefreeze_audit_stage(
+            tree, producing_commit=ctx["commit"],
+            environment_digest="scenario", repo_root=ctx["repo_root"],
+            bank=ctx["bank"])
+        freeze = freeze_run.run_freeze(
+            tree, producing_commit=ctx["commit"],
+            environment_digest="scenario").payload
+    finally:
+        SL.clear_overrides()
+    gate3a = transitions.read_stage_record(tree, C.STAGE_GATE3A)
+    gate3c = transitions.read_stage_record(tree, C.STAGE_GATE3C)
+    return {
+        "branch": "P3.4: the probe re-selects m* and the study follows it",
+        "m_star_in": m_in,
+        "m_star_out": int(probe["m_star"]),
+        "reselected": bool(probe["reselected"]),
+        "admissible_severities": list(probe["admissible_severities"]),
+        "eligible_severities": sorted(
+            int(q) for q in gate2["focal_selection"]["eligible"]),
+        # Every later stage's own record of the operating point it ran at.
+        "gate3a_m_star": int(gate3a["m_star"]),
+        "gate3a_qualified_at": int(gate3a["qualified_at_m_star"]),
+        "gate3c_support_met": bool(gate3c["support"]["support_met"]),
+        "gate3c_qualified_families":
+            gate3c["support"]["realised"]["qualified_families"],
+        "gate4_m_star": int(gate4["slot_map"]["B"][1]),
+        "freeze_m_star": int(freeze["m_star"]),
+        "freeze_slot_map_b": int(freeze["slot_map"]["B"][1]),
+        "expected": "one re-selection, and Gate 3A, Gate 4 and the freeze "
+                    "all at m_star_out",
+    }
+
+
 SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "normal_full_path": scenario_normal_full_path,
     "no_viable_regime": scenario_no_viable_regime,
@@ -567,6 +640,8 @@ SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "coordinate_dependent": scenario_coordinate_dependent,
     "coordinate_secondary_not_computable":
         scenario_coordinate_secondary_not_computable,
+    "probe_reselects_the_operating_point":
+        scenario_probe_reselects_the_operating_point,
 }
 
 

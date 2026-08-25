@@ -1844,6 +1844,65 @@ L5 is never licensed. So L4a is within-replication, `CONFIGURATIONS` and the
 glossary agree once the model index is read as the `ModelTree`, and
 `claims.assert_configuration_scope` refuses a caller who widens it.
 
+### 4ac. V6-E03: the probe could move the operating point and nothing after it could follow (2026-08-25)
+
+An audit of whether v6 can actually deliver a credible prospective test —
+matched-companion counterfactual, reference support **and** composed headroom
+surviving together on the same replication — found that v6's central repair
+could not execute.
+
+`GATE_2_75_COMPOSED_PROBE` exists so composed headroom is measured **while the
+operating point can still move**, and P3.4 lets it re-select m\* once. Driving
+that branch for the first time showed it ended in an unhandled
+`ProtocolError`, not in a replication:
+
+- §13.6's kappa(R|B) is a property of (R, B **at the operating point**), §13.11
+  makes its source travel with the value, and `assert_kappa_under_b_source`
+  refuses a table read at another m\*. That refusal is right. But Gate 2
+  recorded the column at its own m\* only, so Gate 3A raised *"measured at
+  m=8 and the replication's operating point is m\*=10"*. Gate 2 now records a
+  column, and Gate 2.5 a §13.1 qualified pool, for **every admissible
+  severity** — from B-solo cells pass 1 already scored every candidate as
+  absent on, so it costs no generation — and computing them before the probe
+  observes a composed cell is what keeps §30 intact: the probe's verdict moves
+  the operating point and never the pool.
+- §12.3's `eligible` set is a band test on the solo curve; §12.4's regime
+  adequacy and §34 D17's construct floor were applied at m\* alone, so the
+  probe could have moved B to a severity Gate 2 would have refused outright.
+  Both are now evaluated **at** each eligible severity and the probe is
+  confined to what survives. On the synthetic harness that removes two of
+  eight, so the narrowing is not vacuous.
+- The freeze's slot map bound `B` at Gate 2's m\* while the same record
+  declared the probe's — and confirmatory generation renders every cell from
+  that slot map. A re-selected replication would have spent its whole
+  confirmatory budget at the severity the probe rejected.
+- `licensed_design` rebuilt B with a bare `Constraint`, which the instrument
+  layer refuses at §7.2's extension rungs 15 and 16. Inherited from v5, where
+  it never fired because nothing escalated and nothing reached confirmatory
+  generation.
+
+`scenarios.scenario_probe_reselects_the_operating_point` now drives the branch
+end to end: m\* 8 → 10, and Gate 3A, Gate 4 and the freeze all at 10.
+[`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) V6-E03.
+
+**Nothing in the causal comparison moved, and that is now checked file by
+file.** `revision.V9` compares the twelve modules that define Delta_R,
+Delta_j, Xi, delta_difficulty, the matched-companion selection, the design
+cells, the observation table, masking, the intervals, the bootstrap, §13.15's
+support, §13.7's stability, §13.6's interaction guard, §13.11's closed schema
+and D6's identification rule against v5's, and they are byte-identical modulo
+the namespace token. Every v6 repair is upstream of estimation.
+
+**One structural gap is recorded rather than closed.** §12.6 certifies the
+coverage criterion, spends its expansion and freezes the vocabulary at
+`iota_a_prescreen`; references are matched at Gate 2's `iota_a`, measured two
+stages later. On the four v5 replications those differ by 0.015, 0.046, 0.073
+and 0.092 — and re-reading each round-0 table at the Gate-2 value flips **no**
+decisive condition on any of them. Gate 3A now records the recomputation as
+`coverage_at_measured_iota_a`, a diagnostic with no consumer that gates
+nothing. Whether §12.6 should certify over an interval of iota_A is
+READINESS **R7** and is the researcher's.
+
 ## 5. Provisional, superseded, broken, unresolved
 
 - **Superseded.** The capped reasoning-curve exports under
@@ -1919,9 +1978,13 @@ glossary agree once the model index is read as the `ModelTree`, and
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: the v6 implementation, which
-cannot run — the V6-E01 and V6-E02 expansion repairs, a nineteenth stage, and
-no threshold moved — in §4ab. Before it: V6-E01 — §12.6's expansion
+whether old and new remain comparable. Most recent: V6-E03 — v6's composed
+probe could move the operating point and no stage after it could follow, so the
+re-selection branch that is v6's whole answer to v5's Gate-4 failure ended in
+an unhandled error; repaired, with a scenario that drives it to the freeze, and
+with the estimand layer now checked file by file against v5 — in §4ac. Before
+it: the v6 implementation, which cannot run — the V6-E01 and V6-E02 expansion
+repairs, a nineteenth stage, and no threshold moved — in §4ab. Before it: V6-E01 — §12.6's expansion
 could not reach the Tier-1 reserve §7.10 widened for C4's span, which narrows
 the v5 survival diagnosis without changing a v5 verdict — in §4aa. Before it:
 v5 closed with no replication reaching confirmatory generation, and V5-E32, a

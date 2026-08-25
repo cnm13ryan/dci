@@ -96,8 +96,21 @@ def licensed_design(tree: ModelTree, *, bank: TopicBank | None = None
         "m_draws": C.M_DRAWS, "n_blocks": C.N_BLOCKS,
         "canonical_verifier_hash": verifier_source_hash()},
         where="confirmatory:licensed_design")
-    slot_map = {slot: Constraint(*value) if isinstance(value, (list, tuple))
-                else Constraint(**value)
+    # B is reconstructed through `focal_constraint`, never through a bare
+    # `Constraint`: §7.2's escalation puts m* at 15 or 16, outside B's
+    # registered grid, and `Constraint.__post_init__` refuses those unless the
+    # caller states the extension. A replication that escalated at §12.3 would
+    # otherwise be refused by its own instrument layer at the one stage that
+    # spends the confirmatory budget.
+    from dci1v6.run.gates_run import focal_constraint
+
+    def _slot(slot: str, value: Any) -> Constraint:
+        if isinstance(value, (list, tuple)):
+            return (focal_constraint(int(value[1])) if value[0] == "B"
+                    else Constraint(*value))
+        return Constraint(**value)
+
+    slot_map = {slot: _slot(slot, value)
                 for slot, value in (record.get("slot_map") or {}).items()}
     if not slot_map:
         raise ProtocolError(

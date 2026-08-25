@@ -119,9 +119,12 @@ CONTRACT: tuple[Field, ...] = (
     _f(RG, "calibration_priority", (G2, G3A)),
     # §12.6's expansion and the disposition it reached. The statuses are
     # design-time: Gate 3C admits no arm §12.6 dropped.
-    _f(RG, "expansion", (G5,), required=False),
+    # G3A reads the certified coverage as the baseline for its recorded
+    # iota_A-drift diagnostic. A read, not a rule: nothing downstream of
+    # the diagnostic exists.
+    _f(RG, "expansion", (G3A, G5), required=False),
     _f(RG, "identification_statuses", (G3C, G5)),
-    _f(RG, "iota_a_prescreen", (), required=False),
+    _f(RG, "iota_a_prescreen", (G3A,), required=False),
 
     # ----------------------------------------------------- GATE_1_MEASUREMENT
     _f(G1, "canonical_verifier_hash", (CONF, PF, G5)),
@@ -160,13 +163,26 @@ CONTRACT: tuple[Field, ...] = (
     # by nothing else; declaring them is what makes the probe's inputs
     # auditable rather than incidental.
     _f(G2, "focal_selection", (G275, G5)),
+    # §12.3's eligible set narrowed by §12.4 and §34 D17 evaluated at each
+    # severity, and the kappa(R|B) column for each. Gate 2.75 re-selects
+    # over the first; a stage after it reads §13.11's table through the
+    # second. Both are computed before the probe observes anything.
+    _f(G2, "focal_admissible", (G25, G275, G5)),
+    _f(G2, "focal_admissibility", (G5,)),
+    _f(G2, "kappa_under_b_by_severity", (G25, G3A)),
 
     # ------------------------------------- GATE_2_5_CANDIDATE_QUALIFICATION
     _f(G25, "m_star", (G3A,)),
     _f(G25, "qualification", (G5,)),
-    _f(G25, "qualified_pool", (G3A, G5)),
-    _f(G25, "qualified_families", (G3C, G5)),
-    _f(G25, "earliest_failing_components", (G5,)),
+    # The top-level pool is Gate 2's m*, which is this stage's own
+    # predecessor's. Every stage after Gate 2.75 reads the by-severity
+    # map instead, through `gates_run.qualification_at`, because the
+    # probe may have moved the operating point.
+    _f(G25, "qualified_pool", ()),
+    _f(G25, "qualified_families", ()),
+    _f(G25, "earliest_failing_components", ()),
+    _f(G25, "qualification_by_severity", (G3A, G3C, G5)),
+    _f(G25, "qualified_at_severities", (G5,)),
     _f(G25, "interaction", (G3B, G5)),
 
     # ---------------------------------------------- GATE_2_75_COMPOSED_PROBE
@@ -187,6 +203,7 @@ CONTRACT: tuple[Field, ...] = (
     _f(G275, "standins", (G5,)),
     _f(G275, "probe_cell_types", (G5,)),
     _f(G275, "scope_limits", (G5,)),
+    _f(G275, "admissible_severities", (G5,)),
     _f(G275, "declared_refusals", (PF,)),
 
     # ------------------------------------- GATE_3A_REFERENCE_CALIBRATION
@@ -196,6 +213,14 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3A, "split_tables", (G5, PF)),
     _f(G3A, "calibration_b_population", (G5,)),
     _f(G3A, "iota_a_stability", (G5,), required=False),
+    # The pool this stage used, named with the severity it qualified at.
+    _f(G3A, "qualified_pool", (G5,)),
+    _f(G3A, "qualified_families", ()),
+    _f(G3A, "n_qualified", ()),
+    _f(G3A, "qualified_at_m_star", (G5,)),
+    # §12.6 re-read at the iota_A selection matches on. A recorded
+    # diagnostic with no consumer, and deliberately so: it gates nothing.
+    _f(G3A, "coverage_at_measured_iota_a", ()),
 
     # ---------------------------------------- GATE_3B_REFERENCE_SELECTION
     _f(G3B, "m_star", (G3C,)),
@@ -222,6 +247,11 @@ CONTRACT: tuple[Field, ...] = (
     _f(G4, "expected_rows", (PF,)),
     _f(G4, "rows", (PF,)),
     _f(G4, "n_cell_types", (PF,)),
+    # The operating point headroom was validated at. Gate 2.75 may have
+    # moved it, and "was headroom checked at the severity the freeze
+    # binds?" must be answerable from the records alone.
+    _f(G4, "m_star", (PF, G5)),
+    _f(G4, "slot_map", (PF,)),
     # §33 check 8 requires the record to *declare* §13.14's refusal, not
     # merely to lack a field that names a substitution.
     _f(G4, "declared_refusals", (PF, FR)),

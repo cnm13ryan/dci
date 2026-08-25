@@ -77,7 +77,7 @@ __all__ = ["COMPOSED_HEADROOM_UNREACHABLE", "PROBE_SLOTS", "probe_slots",
            "margin_band", "severity_verdict", "probe_disposition",
            "assert_probe_reads_no_reference", "PROBE_DECLARED_REFUSALS",
            "REFERENCE_TOKENS", "FORBIDDEN_SOURCE_READS",
-           "PROBE_SCOPE_LIMITS", "assert_probe_severities_are_gate2_eligible"]
+           "PROBE_SCOPE_LIMITS", "assert_probe_severities_are_admissible"]
 
 #: §28, new in v6. Raised by ``probe_disposition`` and nowhere else.
 COMPOSED_HEADROOM_UNREACHABLE = "COMPOSED_HEADROOM_UNREACHABLE"
@@ -219,14 +219,21 @@ def standins() -> tuple[Constraint, ...]:
 
 # ------------------------------------------------------------ the P3 rule
 
-def assert_probe_severities_are_gate2_eligible(
+def assert_probe_severities_are_admissible(
         severities: Sequence[int], gate2_record: Mapping[str, Any]) -> None:
-    """P3.1: the probed set is the set Gate 2 recorded as **eligible**.
+    """P3.1: the probed set is the set Gate 2 recorded as **admissible**.
 
-    Not the registered grid and not a set this stage chose: the severities
-    ``focal_selection["eligible"]`` names, which is the registered grid plus
-    §7.2's extension exactly when §12.3 escalated. A probe that widened the
-    set would be measuring severities Gate 2 already refused.
+    Not the registered grid and not a set this stage chose. ``eligible`` is
+    §12.3's band test on the solo curve alone; ``focal_admissible`` is that
+    set intersected with §12.4's regime adequacy and §34 D17's construct
+    floor, each evaluated *at that severity*. The distinction is the whole
+    point: Gate 2 applies §12.4 and D17 at m* and terminates the replication
+    when either fails, so probing --- and re-selecting to --- a merely
+    *eligible* severity would move B to an operating point Gate 2 would itself
+    have refused.
+
+    Both sets are checked, so a record written before ``focal_admissible``
+    existed fails here rather than being silently read as unrestricted.
     """
     eligible = tuple(gate2_record.get("focal_selection", {}).get("eligible")
                      or ())
@@ -236,6 +243,21 @@ def assert_probe_severities_are_gate2_eligible(
             f"P3.1: {extra} are not in Gate 2's eligible set "
             f"{list(eligible)}. The probe measures the severities Gate 2 "
             "found eligible and never widens the grid")
+    admissible = gate2_record.get("focal_admissible")
+    if admissible is None:
+        raise ProtocolError(
+            "P3.1: Gate 2 recorded no `focal_admissible` set, so the probe "
+            "cannot tell which eligible severities also passed §12.4 and §34 "
+            "D17. A probe that fell back to `eligible` could re-select an "
+            "operating point Gate 2 would have refused")
+    outside_admissible = sorted(set(severities) - {int(q) for q
+                                                   in admissible})
+    if outside_admissible:
+        raise ProtocolError(
+            f"P3.1: {outside_admissible} are eligible under §12.3 but not "
+            f"admissible: Gate 2 records {sorted(int(q) for q in admissible)} "
+            "as passing §12.4's regime adequacy and §34 D17's construct floor "
+            "at that severity. The probe may not move B to the others")
     outside = sorted(set(severities) - set(focal_severities(extended=True)))
     if outside:
         raise ProtocolError(
@@ -353,6 +375,11 @@ PROBE_DECLARED_REFUSALS: dict[str, str] = {
     "band_not_relaxed":
         "§13.14's [0.05, 0.95] band is unchanged. delta is a margin inside "
         "it and Gate 4 still applies the registered band",
+    "no_pool_is_chosen_by_a_composed_outcome":
+        "§30: Gate 2 records a kappa(R|B) column and Gate 2.5 a §13.1 "
+        "qualified pool for EVERY admissible severity, both signed before "
+        "this stage generates a row. Moving m* therefore reads a pool that "
+        "was already fixed; it does not build one from what the probe saw",
 }
 
 #: Stated on the payload because READINESS §3.2 says a limit discovered at

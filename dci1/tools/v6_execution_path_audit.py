@@ -107,6 +107,45 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.m_star",
      "consumer": "GATE_3A_REFERENCE_CALIBRATION", "expect": VERIFIED},
+    {"id": "R-2.75-admissible", "section": "§12.4, §34 D17, P3.1",
+     "area": "probe",
+     "meaning": "the probe probes --- and re-selects over --- only the "
+                "severities Gate 2 found ADMISSIBLE: eligible under §12.3 "
+                "and, at that severity, adequate under §12.4 and past D17's "
+                "construct floor. Eligibility alone is a band test on the "
+                "solo curve, so re-selecting over it could move B to an "
+                "operating point Gate 2 would have refused",
+     "runtime": "dci1v6.stages.composed_probe."
+                "assert_probe_severities_are_admissible",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_FOCAL_CALIBRATION.focal_admissible",
+     "consumer": "GATE_2_75_COMPOSED_PROBE",
+     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
+    {"id": "R-13.6-operating-point", "section": "§13.6, §13.11",
+     "area": "probe",
+     "meaning": "kappa(R|B) and the §13.1 pool are read at the operating "
+                "point the probe selected, from columns Gate 2 signed for "
+                "every admissible severity BEFORE the probe observed a "
+                "composed cell. Reading Gate 2's own column under a "
+                "re-selected m* is refused by "
+                "`assert_kappa_under_b_source`, which is what made the "
+                "re-selection branch unexecutable",
+     "runtime": "dci1v6.run.gates_run.calibration_rows_at",
+     "impl": "dci1v6.run.gates_run.gate3a_payload",
+     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
+     "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
+    {"id": "R-18.1-frozen-operating-point", "section": "§18.1",
+     "area": "probe",
+     "meaning": "the freeze binds B --- and the pool --- at the probe's m*, "
+                "not Gate 2's. Confirmatory generation renders every cell "
+                "from the frozen slot map, so a B bound at Gate 2's m* would "
+                "spend the whole confirmatory budget at the severity the "
+                "probe rejected for want of composed headroom",
+     "runtime": "dci1v6.run.freeze_run.freeze_payload",
+     "impl": "dci1v6.run.freeze_run.assemble",
+     "field": "GATE_5_FREEZE.slot_map", "consumer": None,
+     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
     {"id": "R-2.75-blind", "section": "§13.11", "area": "probe",
      "meaning": "no function in the probe module reads a reference or a "
                 "selection record, by name and by source",
@@ -176,13 +215,16 @@ RULES: tuple[dict[str, object], ...] = (
      "meaning": "the eight V(R) components in registered order",
      "runtime": "dci1v6.stages.validity.evaluate_validity",
      "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
-     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualified_pool",
+     # The pool is now qualified at every admissible severity and read at the
+     # one Gate 2.75 selected, so the field a later stage reads is the
+     # by-severity map --- see R-13.6-operating-point.
+     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
      "consumer": "GATE_3A_REFERENCE_CALIBRATION", "expect": VERIFIED},
     {"id": "R-19-lexicographic", "section": "§19 test 3", "area": "V(R)",
      "meaning": "the recorded reason is the earliest failing component",
      "runtime": "dci1v6.stages.validity.assert_lexicographic_order",
      "impl": "dci1v6.stages.qualification_gate.qualify_candidates",
-     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.earliest_failing_components",
+     "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
     {"id": "R-13.7-stability", "section": "§13.7", "area": "V(R)",
      "meaning": "each candidate is equivalent across the two splits",
