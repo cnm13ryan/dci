@@ -92,7 +92,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
 | **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
-| **v6** | **ADOPTED and REGISTERED 2026-08-26 (registration after amendment A15; §4ah). Zero behavioural rows at registration.** All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness refusal**, not a §28 terminal status (A15). §4aa–§4ah. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
+| **v6** | **ADOPTED and REGISTERED 2026-08-26 (registration after amendment A15; §4ah). Zero behavioural rows at registration.** All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness refusal**, not a §28 terminal status (A15); §12.6 drops a rung with no difficulty coordinate from its coverage conditions and records it (A16). Executing: all four registered, qualified and through Gate 0; §4aa–§4ai. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -101,7 +101,7 @@ compliance rather than to B on solo failure, and makes instruction order a
 cell-level factor. It is a different protocol: v3 and v4 numbers are not
 comparable and are never compared. Nine registered open decisions (V1 to V9)
 and seven pre-freeze checks remain open; the freeze and confirmatory generation
-are implemented and deliberately not executed. **v6 (§4ag, §4ah) is the live protocol line** as of 2026-08-26; it supersedes v5,
+are implemented and deliberately not executed. **v6 (§4ag–§4ai) is the live protocol line** as of 2026-08-26; it supersedes v5,
 which superseded v4r4. v4r4 supersedes v4r3, which superseded v4r2. Each was adopted
 and registered on 2026-08-21, and each is structurally prevented from reading
 the others' artifacts: `dci1v4r4.engine.context.foreign_roots` names v4r3's
@@ -2263,13 +2263,59 @@ replications are four. Zero v6 behavioural rows existed at any point in this.
 **Zero v6 behavioural rows existed at the moment of registration**, verified by
 counting `rows.jsonl` under both roots.
 
+### 4ai. §12.6 had no rule for a rung with no difficulty coordinate (2026-08-26)
+
+**The first v6 measurement broke the stage that reads it.**
+`GATE_0_APPARATUS` passed on all four replications — 2,688 real rows each, both
+discrete cards at TP=1. `REGIME_SCREEN` then died on both replications that ran
+it, identically, on `tie_key(r["iota"])` in §12.6's coverage criterion:
+`CR7:56`'s measured chance compliance had reached `CHANCE_DEGENERACY_MAX =
+0.99`, the registered point at which iota is undefined and §11.2 records
+`DIFFICULTY_COORDINATE_DEGENERATE`.
+
+**Latent since v5, byte-identical code.** U4 resolved at **E2**, whose
+eligibility coordinate is raw solo compliance — so a rung can be eligible on a
+measured solo and have no position on the iota axis at all. Under **E1** the
+coordinate *is* iota and the case cannot arise. v5 ran E2 too and never met it:
+all its coordinate-less rungs had solo above 0.9166 and were ineligible for a
+different reason. Of the eighteen coordinate-less rungs the two v6
+replications measured, exactly one per replication is E2-eligible
+([`degenerate_iota_rungs.json`](dci1/reports/dci1v6/degenerate_iota_rungs.json)).
+
+**Amendment A16.** §12.6 evaluates C1–C8 over the eligible rungs whose
+coordinate is defined; a rung without one is dropped from every condition and
+recorded with its status, solo and chance. U4 is not reopened and §13.4's
+chance ceiling is not imported into §12.6. Declared under §32.2 as adopted
+after this observation, with the offending measurements already readable.
+
+**Why that direction could be adopted after the fact.** Every one of C1–C8 is
+an existence or a count, so removing a rung can only make a condition harder to
+meet. The rule cannot be what buys a replication a pass, whichever rungs turn
+out degenerate; the alternative reading — keeping the rung in the counts that
+do not reference iota — is the direction that could, and is rejected for that
+reason rather than for what either produces. A test asserts the property
+executably.
+
+**What it returned.** Both replications: `REGIME_SCREEN` PASS, **all eight
+conditions met**, no identification status, one rung dropped (218/219 and
+212/213 eligible rungs placed), cap 512, 410 and 404 rungs carried. The drop
+changed no verdict on either — stated because it is the honest reading, not
+because it was the aim.
+
+**No model output was regenerated.** The corrected criterion ran on the rows
+the failed run had already signed onto the evidence tree; every `rows.jsonl`
+verified byte-identical afterwards and no new backend run directory was
+created. Detail: `CHANGES_SCIENTIFIC.md` (2026-08-26, first entry),
+`reports/dci1v6/READINESS.md` §16,
+`reports/dci1v6/incidents/2026-08-26_regime_screen_undefined_iota.md`.
+
 ---
 
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: v6's amendment A15 — a §18 stage-1 readiness verdict is a refusal, not a §28 terminal outcome, so a blocker naming outstanding researcher work no longer ends the replication that discovers it; the criterion is unchanged, every §28 terminal outcome is untouched, and the one record an apparatus fault wrote is retained and hash-bound — in §4ah. Before it: m\* frozen at Gate 2, §34 D23 = `projection_sd` and D26 = 0.0142, and v6 adopted — in §4ag. Before it: v6's Gate-2.75 widened from
+whether old and new remain comparable. Most recent: v6's amendment A16 — §12.6 had no rule for an eligible rung whose difficulty coordinate is undefined and the first live REGIME_SCREEN died on one; such a rung is now dropped from every coverage condition and recorded, a direction that can only make the conditions harder to meet, declared under §32.2 as adopted after the observation — in §4ai. Before it: A15 — a §18 stage-1 readiness verdict is a refusal, not a §28 terminal outcome, so a blocker naming outstanding researcher work no longer ends the replication that discovers it; the criterion is unchanged, every §28 terminal outcome is untouched, and the one record an apparatus fault wrote is retained and hash-bound — in §4ah. Before it: m\* frozen at Gate 2, §34 D23 = `projection_sd` and D26 = 0.0142, and v6 adopted — in §4ag. Before it: v6's Gate-2.75 widened from
 one slot to all ten of §13.14's exposure classes and its margin constant
 replaced by a per-entry projected interval, three `probe_only` stand-ins
 authored, and §13.14's precision left as registered because the enlargement it
