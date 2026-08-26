@@ -535,11 +535,10 @@ TERMINAL_STATUSES = (
     "RESPONSE_LENGTH_INCOMPATIBLE", "TARGET_RANGE_EXHAUSTED",
     "FOCAL_RANGE_EXHAUSTED", "GRID_RESOLUTION_INSUFFICIENT",
     "REGIME_NOT_FOUND", "COMPOSED_HEADROOM_FAILURE",
-    #: §28, new in v6. Gate 2.75 probed every severity Gate 2 recorded as
-    #: eligible and none kept every probed cell inside the registered margin
-    #: of §13.14's band. It is a **terminal outcome**, not a repair loop:
-    #: exactly one re-selection of m* is permitted, it is driven by a rule
-    #: fixed before data, and when no severity satisfies it the replication
+    #: §28, new in v6. At the m* §12.3 froze at Gate 2, a determinate probe
+    #: entry did not keep its projected Gate-4 interval inside §13.14's band.
+    #: It is a **terminal outcome**, not a repair loop: no re-selection of m*
+    #: is permitted, no other severity is measured, and the replication
     #: stops. §13.14's [0.05, 0.95] band is unchanged and unrelaxed.
     "COMPOSED_HEADROOM_UNREACHABLE",
     "PREFREEZE_AUDIT_FAILURE", "MEASUREMENT_NOT_ESTABLISHED",

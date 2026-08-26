@@ -996,18 +996,19 @@
  },
  "operating_point_feasibility": {
   "_not_a_re_verdict": "v5's records, verdicts and terminal statuses stand exactly as signed. This applies a v6 rule to a v5 measurement and says nothing about what v5 should have done",
-  "_question": "applied to the closed v5 solo-B curves, does the derived determinate rule leave any operating point?",
-  "every_replication_retains_an_operating_point": true,
+  "_question": "applied to the closed v5 solo-B curves, does the derived determinate rule pass at the frozen m*?",
+  "_the_operating_point_is_frozen": "m* is selected once, by \u00a712.3 at GATE_2_FOCAL_CALIBRATION, and GATE_2_75_COMPOSED_PROBE cannot move it (researcher decision, 2026-08-26). So the question this table answers is whether the FROZEN m* passes; `counterfactual_passing_severities` is recorded and read by nothing",
+  "every_frozen_m_star_passes": false,
   "per_model": {
    "gemma-3n-e2b-it": {
-    "m_star": 10,
-    "m_star_passes": true,
-    "passing_severities": [
+    "counterfactual_passing_severities": [
      7,
      8,
      9,
      10
     ],
+    "m_star": 10,
+    "m_star_passes": true,
     "per_severity": {
      "10": {
       "compliance": 0.8059895833333334,
@@ -1076,13 +1077,13 @@
     }
    },
    "gemma-3n-e4b-it": {
-    "m_star": 10,
-    "m_star_passes": false,
-    "passing_severities": [
+    "counterfactual_passing_severities": [
      7,
      8,
      9
     ],
+    "m_star": 10,
+    "m_star_passes": false,
     "per_severity": {
      "10": {
       "compliance": 0.8671875,
@@ -1151,14 +1152,14 @@
     }
    },
    "qwen3-4b": {
-    "m_star": 12,
-    "m_star_passes": true,
-    "passing_severities": [
+    "counterfactual_passing_severities": [
      9,
      10,
      11,
      12
     ],
+    "m_star": 12,
+    "m_star_passes": true,
     "per_severity": {
      "10": {
       "compliance": 0.4049479166666667,
@@ -1227,14 +1228,14 @@
     }
    },
    "qwen3-4b-instruct-2507": {
-    "m_star": 11,
-    "m_star_passes": true,
-    "passing_severities": [
+    "counterfactual_passing_severities": [
      8,
      9,
      10,
      11
     ],
+    "m_star": 11,
+    "m_star_passes": true,
     "per_severity": {
      "10": {
       "compliance": 0.6770833333333334,
@@ -1303,6 +1304,9 @@
     }
    }
   },
+  "replications_whose_frozen_m_star_fails": [
+   "gemma-3n-e4b-it"
+  ],
   "residual_note": "0.0, so this isolates the projection from \u00a734 D23's reading and \u00a734 D26's magnitude. That isolation is deliberate and it is also a LIMIT: this table establishes feasibility at one value only, and the 2026-08-26 red team observed that the value it establishes it at is the one it was used to justify. `reports/dci1v6/residual_sensitivity.json` sweeps the others",
   "residual_used": 0.0,
   "swept_elsewhere": "reports/dci1v6/residual_sensitivity.json"

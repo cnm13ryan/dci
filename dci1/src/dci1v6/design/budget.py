@@ -180,7 +180,7 @@ def composed_topic_plan() -> dict[str, Any]:
                                       "enlarge_composed_set"}
 
 
-def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
+def probe_burden(*, n_standins: int = 3,
                  n_topics: int | None = None,
                  reuse_gate2_cells: bool = True) -> dict[str, Any]:
     """``GATE_2_75_COMPOSED_PROBE``, costed --- new in v6.
@@ -202,12 +202,14 @@ def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
       topics at the same draws --- the unconstrained cell and the two
       determinate solo cells.
 
-    P3.3 stops the probe the moment m* passes, so one severity is the common
-    case. The ceiling is Gate 2's whole eligible set, which is at most §7.1's
-    focal grid plus §7.2's extension.
+    **The cost is deterministic, not a ceiling.** m* is frozen at Gate 2 and
+    this stage measures composed headroom at m* and at no other severity, so
+    there is one severity to cost and no worst case to bound. Until
+    2026-08-26 the stage could re-select m* over Gate 2's admissible set and
+    this function took an ``n_severities`` argument for that; the parameter is
+    gone rather than defaulted, so a caller cannot cost a search the protocol
+    no longer permits.
     """
-    if n_severities < 1:
-        raise ProtocolError("the probe measures m* first, so at least one")
     from dci1v6.stages import composed_probe
 
     slots = composed_probe.probe_slots(n_standins)
@@ -222,7 +224,6 @@ def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
                        for kind in composed_probe.PROBE_ONLY_KINDS()
                        [:n_standins])
     ladder_rows = ladder_rungs * C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS
-    ceiling = len(focal_severities(extended=True))
     coverage = composed_probe.probe_class_coverage(slots)
     return {
         "standins": n_standins,
@@ -239,18 +240,18 @@ def probe_burden(*, n_standins: int = 3, n_severities: int = 1,
         "gate4_entries_audited_later": sum(e["gate4_entries"]
                                            for e in coverage.values()),
         "topics": topics, "draws": C.M_CAL,
-        "rows_per_severity": per_severity,
-        "severities": n_severities,
+        "rows_at_the_operating_point": per_severity,
+        "severities": 1,
         "ladder_rungs": ladder_rungs,
         "ladder_rows": ladder_rows,
         "ladder_topics": C.N_PRESCREEN,
         "ladder_draws": C.LADDER_SCREEN_DRAWS,
-        "rows": ladder_rows + per_severity * n_severities,
-        "rows_if_m_star_passes": ladder_rows + per_severity,
-        "max_severities": ceiling,
-        "max_rows": ladder_rows + per_severity * ceiling,
-        "stops_early": "P3.3: m* passing ends the probe, so the modal cost "
-                       "is the ladder plus one severity",
+        "rows": ladder_rows + per_severity,
+        "is_deterministic":
+            "m* is frozen at GATE_2_FOCAL_CALIBRATION and this stage measures "
+            "it and nothing else, so this is the cost and not a ceiling. A "
+            "replication either spends it or terminates "
+            "COMPOSED_HEADROOM_UNREACHABLE having spent it",
     }
 
 
@@ -336,11 +337,13 @@ def calibration_burden(cells: int) -> dict[str, Any]:
         "pilot": {"rows": C.PILOT_TOPICS * C.PILOT_DRAWS * cells,
                   "topics": C.PILOT_TOPICS, "draws": C.PILOT_DRAWS,
                   "cells": cells},
-        # New in v6, both conditional and both named rather than folded in:
-        # §12.6's expansion is a ceiling the loop rarely reaches, and the
-        # probe stops as soon as m* passes.
+        # New in v6, and named rather than folded in. §12.6's expansion is a
+        # ceiling the loop rarely reaches. The probe is NOT conditional: m*
+        # is frozen at Gate 2 and the probe measures it and nothing else, so
+        # what it costs is what a replication spends before it either passes
+        # or terminates.
         "expansion_conditional": expansion_burden(),
-        "composed_probe_conditional": probe_burden(),
+        "composed_probe": probe_burden(),
     }
 
 
@@ -385,10 +388,11 @@ def option(name: str) -> dict[str, Any]:
                 f"{scale['draws']} draws",
             "greedy_sensitivity": greedy,
             "total": per_model},
-        # Named, not folded in: both are conditional and both are new in v6.
-        "conditional": {
-            "expansion": calibration["expansion_conditional"],
-            "composed_probe": calibration["composed_probe_conditional"]},
+        # Named, not folded in. §12.6's expansion is conditional --- a
+        # ceiling the loop rarely reaches. The probe is exact, because m* is
+        # frozen at Gate 2 and it measures m* and nothing else.
+        "conditional": {"expansion": calibration["expansion_conditional"]},
+        "composed_probe": calibration["composed_probe"],
         "total_generations": per_model * scale["models"],
     }
 

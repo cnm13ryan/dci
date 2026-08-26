@@ -23,12 +23,19 @@ were the same choice twice. This sweeps the grid instead:
   ``0.0687`` (``precision_design.json``'s own 95% upper bound on a residual
   sd thirteen observations could have missed).
 
-**And under focal-only reselection**, the rule the researcher adopted on
-2026-08-26: admissibility is decided by determinate entries alone. ``solo:B``
-is determinate, so applying ``entry_verdict`` to each replication's measured
-solo-B curve *is* the production rule and not a model of it. What this cannot
-sweep is the rest of the determinate set --- ``solo:A`` and both orders of
-``pair:A+B`` --- because v5 measured no composed A+B cell on the calibration
+**And under the rule the researcher fixed on 2026-08-26**: m\\* is frozen at
+Gate 2, Gate 2.75 measures composed headroom **at m\\* and at no other
+severity**, and only determinate entries may fail the verdict. So the quantity
+that matters here is ``m_star_passes`` --- whether the operating point §12.3
+chose survives the projection --- and not how many severities would have
+passed. The per-severity column is kept, and it is a **counterfactual**: v6
+measures none of those cells, nothing reads them, and a replication whose m\\*
+fails terminates rather than moving to one of them.
+
+``solo:B`` is determinate, so applying ``entry_verdict`` to each replication's
+measured solo-B curve *is* the production rule and not a model of it. What this
+cannot sweep is the rest of the determinate set --- ``solo:A`` and both orders
+of ``pair:A+B`` --- because v5 measured no composed A+B cell on the calibration
 split. That is a real limit and it is reported rather than smoothed over:
 these numbers are a *lower* bound on how often the rule bites.
 """
@@ -147,10 +154,17 @@ def build() -> dict[str, Any]:
                                  if v["passes"])
                 per_model[model_key] = {
                     "m_star": m_stars[model_key],
+                    # THE quantity under the registered rule: v6 measures m*
+                    # and terminates if it fails.
                     "m_star_passes":
                         per_severity[str(m_stars[model_key])]["passes"],
-                    "n_admissible_severities": len(passing),
-                    "passing_severities": passing,
+                    "m_star_half_width":
+                        per_severity[str(m_stars[model_key])]["half_width"],
+                    # Counterfactual. v6 measures none of these and no rule
+                    # reads them; recorded so the frozen m* can be read
+                    # against its neighbours.
+                    "counterfactual_n_passing_severities": len(passing),
+                    "counterfactual_passing_severities": passing,
                     "per_severity": per_severity}
             policies.append({
                 "reading": reading,
@@ -163,16 +177,18 @@ def build() -> dict[str, Any]:
                     2 * half_ref + (C.COMPOSED_HEADROOM_BAND[1]
                                     - C.COMPOSED_HEADROOM_BAND[0]
                                     - (band[1] - band[0])),
-                "every_replication_retains_an_operating_point":
-                    all(v["passing_severities"] for v in per_model.values()),
-                "replications_with_no_operating_point": sorted(
+                "every_frozen_m_star_passes":
+                    all(v["m_star_passes"] for v in per_model.values()),
+                "replications_whose_frozen_m_star_fails": sorted(
                     k for k, v in per_model.items()
-                    if not v["passing_severities"]),
+                    if not v["m_star_passes"]),
+                "n_replications_terminating_here": sum(
+                    1 for v in per_model.values() if not v["m_star_passes"]),
                 "per_model": per_model})
 
     return {
         "_what": "§34 D23's reading x §34 D26's magnitude, costed on the "
-                 "closed v5 solo-B curves under focal-only reselection",
+                 "closed v5 solo-B curves under the frozen-m* rule",
         "_classification": "DEVELOPMENT_EVIDENCE",
         "_not_a_re_verdict":
             "v5's records, verdicts and terminal statuses stand exactly as "
@@ -184,11 +200,18 @@ def build() -> dict[str, Any]:
             "cell there. These verdicts are therefore a LOWER bound on how "
             "often the determinate rule bites, and the other five entries are "
             "measured for the first time when GATE_2_75 runs",
-        "reselection_rule": "focal_only",
-        "reselection_rule_is":
-            "the researcher's 2026-08-26 decision: only determinate entries "
-            "decide admissibility, so a stand-in cannot move m* or terminate "
-            "a replication",
+        "operating_point_rule": "frozen_at_gate2",
+        "operating_point_rule_is":
+            "the researcher's 2026-08-26 decision: m* is selected once by "
+            "§12.3 at GATE_2_FOCAL_CALIBRATION, GATE_2_75_COMPOSED_PROBE "
+            "measures composed headroom at m* alone, and only determinate "
+            "entries may fail the verdict. A failure terminates the "
+            "replication COMPOSED_HEADROOM_UNREACHABLE; no other severity "
+            "is measured or offered",
+        "_the_per_severity_column_is_counterfactual":
+            "v6 measures composed headroom at the frozen m* only. The other "
+            "severities are shown so a reader can see where m* sat on its "
+            "own curve, and NO v6 rule reads them",
         "registered_band": list(C.COMPOSED_HEADROOM_BAND),
         "measured_residual_sd": composed_probe.RESIDUAL_SD,
         "median_s2_topic": s2_ref,
@@ -214,10 +237,11 @@ def main() -> int:
     for policy in payload["policies"]:
         print(f"  {policy['reading']:<22} {policy['magnitude']:<7} "
               f"half-width {policy['half_width_at_median_s2']:.4f}  "
-              f"all retain an operating point: "
-              f"{policy['every_replication_retains_an_operating_point']}"
-              + (f"  (lost: {policy['replications_with_no_operating_point']})"
-                 if policy["replications_with_no_operating_point"] else ""))
+              f"every frozen m* passes: "
+              f"{policy['every_frozen_m_star_passes']}"
+              + (f"  (terminating: "
+                 f"{policy['replications_whose_frozen_m_star_fails']})"
+                 if policy["replications_whose_frozen_m_star_fails"] else ""))
     return 0
 
 

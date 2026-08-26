@@ -1,10 +1,11 @@
-"""The four invariants the operating-point repair has to keep.
+"""The invariants the operating point has to keep.
 
 Each is stated as a property of the **production** path, not of a fixture.
-They are separated from ``test_operating_point.py`` because that file pins the
-mechanics of a re-selection and these pin what the mechanics are *for*: a
-composed outcome may reject an operating point and it may end a replication,
-and it may never choose a reference.
+The first is the one the researcher fixed on 2026-08-26 and it governs the
+rest: **m\\* is selected once, by §12.3 at Gate 2, and nothing downstream may
+move it.** A composed outcome may reject the frozen operating point and end
+the replication; it may never choose a different one, and it may never choose
+a reference.
 """
 from __future__ import annotations
 
@@ -21,14 +22,61 @@ from dci1v6.run import contracts, freeze_run, gates_run
 from dci1v6.stages import composed_probe, feasibility
 
 
+# ---- 0. m* is frozen at Gate 2 and Gate 2.75 cannot move it.
+
+def test_the_probe_has_no_branch_that_returns_a_different_m_star():
+    """The researcher's decision, executed rather than described.
+
+    Three independent statements, each somewhere a reader can point at: the
+    disposition refuses a probe table carrying any severity but m*; the only
+    expression it ever writes into ``m_star_out`` is its own ``m_star``
+    argument; and the module imports no function that could choose one.
+    """
+    source = inspect.getsource(composed_probe.probe_disposition)
+    assert "and at no other severity" in source
+    tree = ast.parse(source)
+    returned = [value for node in ast.walk(tree)
+                if isinstance(node, ast.Dict)
+                for key, value in zip(node.keys, node.values)
+                if isinstance(key, ast.Constant) and key.value == "m_star_out"]
+    assert returned
+    assert all(isinstance(v, ast.Call) and v.func.id == "int"
+               and v.args[0].id == "m_star" for v in returned)
+    assert "select_operating_point" not in source
+
+
+def test_both_halves_of_the_frozen_invariant_are_on_the_executed_path():
+    """Producing and consuming. ``gate2_75_payload`` asserts before it writes
+    the record, and ``effective_m_star`` asserts on every read after it."""
+    producing = inspect.getsource(gates_run.gate2_75_payload)
+    assert "composed_probe.assert_m_star_unmoved(" in producing
+    consuming = inspect.getsource(gates_run.effective_m_star)
+    assert "assert_probe_m_star_agrees(" in consuming
+    assert 'read_stage_record(tree, C.STAGE_GATE2)' in consuming
+    with pytest.raises(ProtocolError):
+        gates_run.assert_probe_m_star_agrees({"m_star": 11}, gate2_m_star=10)
+    assert gates_run.assert_probe_m_star_agrees(
+        {"m_star": 10}, gate2_m_star=10) == 10
+
+
+def test_the_probe_measures_exactly_one_severity():
+    """A search is a loop. There is no loop over severities left: the payload
+    builds ``order = [m_star]`` and the disposition refuses anything else."""
+    source = inspect.getsource(gates_run.gate2_75_payload)
+    assert "order = [m_star]" in source
+    with pytest.raises(ProtocolError, match="at no other severity"):
+        composed_probe.probe_disposition(
+            m_star=10, probed={10: {}, 11: {}}, residual_sd=0.0)
+
+
 # ---- 1. No composed outcome can select an individual reference.
 
 def test_the_pool_at_every_candidate_is_signed_before_the_probe_generates():
-    """§30. The probe moves m*; it never builds the pool m* reads.
+    """§30. The probe selects nothing --- not a severity, not a pool.
 
     Gate 2 writes a kappa(R|B) column and Gate 2.5 a §13.1 qualified pool for
-    every admissible severity, both **before** this stage exists. So the
-    re-selection reads a pool that was already fixed.
+    every admissible severity, both **before** this stage exists, so no pool
+    anywhere on the record can have been shaped by a composed outcome.
     """
     order = C.STAGE_SEQUENCE
     assert order.index(C.STAGE_GATE2) < order.index(C.STAGE_GATE2_5) \
@@ -53,9 +101,9 @@ def test_no_selection_field_is_declared_to_flow_out_of_the_probe():
 def test_the_probe_reads_severities_and_never_a_family_name():
     """The restriction on the order is computed at Gate 2.5 for this reason.
 
-    Gate 2.5 knows which families qualified where. The probe is given the
-    surviving severities and nothing else, so no family name crosses the
-    boundary into the stage that observes composed cells.
+    Gate 2.5 knows which families qualified where. The probe is given one
+    severity and nothing else, so no family name crosses the boundary into
+    the stage that observes composed cells.
     """
     source = inspect.getsource(gates_run.gate2_75_payload)
     assert 'gate2_5_record.get("operating_point_order")' in source
@@ -68,21 +116,20 @@ def test_the_composed_probe_module_still_holds_no_path_to_a_reference():
     assert composed_probe.assert_probe_reads_no_reference()["found"] == []
     refusals = composed_probe.PROBE_DECLARED_REFUSALS
     assert "no_pool_is_chosen_by_a_composed_outcome" in refusals
-    assert ("the_order_of_operating_points_was_frozen_before_any_composed_row"
+    assert ("the_operating_point_was_frozen_before_any_composed_row"
             in refusals)
+    assert "no_reselection_of_the_operating_point_exists" in refusals
 
 
-def test_a_missing_frozen_order_is_refused_and_never_defaulted():
-    """The fallback that would have hidden a disabled search.
+def test_the_two_gates_must_agree_about_the_operating_point():
+    """Gate 2 selects m* and Gate 2.5 records an order whose head is where it
+    qualified. A record whose head is not Gate 2's m* means the two gates
+    disagree, and that is refused rather than repaired --- repaired silently,
+    it would measure composed headroom at a severity §12.3 did not select.
 
-    ``gate2_5_record.get("operating_point_order") or [m_star]`` reads as
-    harmless and is not: a replication whose upstream field was missing would
-    probe m* alone, and its record would be indistinguishable from one whose
-    m* passed at the first attempt. Both stages refuse instead.
-
-    The positive path is exercised end to end by the synthetic lifecycle and
-    by ``scenario_probe_reselects_the_operating_point``; what is pinned here
-    is that the refusal exists and that no default was left beside it.
+    Both paths are exercised end to end by the synthetic lifecycle and by
+    ``scenario_probe_passes_at_the_frozen_m_star``; what is pinned here is
+    that the refusal exists and that no default was left beside it.
     """
     for fn in (gates_run.gate2_5_payload, gates_run.gate2_75_payload):
         source = inspect.getsource(fn)
@@ -90,7 +137,7 @@ def test_a_missing_frozen_order_is_refused_and_never_defaulted():
         assert "raise ProtocolError(" in source
     probe = inspect.getsource(gates_run.gate2_75_payload)
     assert 'frozen = gate2_5_record.get("operating_point_order")' in probe
-    assert "if order[0] != m_star:" in probe        # asserted, not repaired
+    assert "if int(frozen[0]) != m_star:" in probe   # asserted, not repaired
     gate2_5 = inspect.getsource(gates_run.gate2_5_payload)
     assert 'gate2_record.get("operating_point_search_order")' in gate2_5
 
@@ -106,6 +153,8 @@ def test_every_m_star_dependent_quantity_is_read_at_the_operating_point():
     """
     source = inspect.getsource(gates_run.gate3a_payload)
     assert 'int(probe_record["m_star"])' in source
+    # ...and it is the same value Gate 2 froze, asserted rather than assumed.
+    assert 'if m_star != int(gate2_record["m_star"]):' in source
     assert "calibration_at(" in source
     kernel = inspect.getsource(feasibility.calibration_at)
     assert "calibration_rows_at(gate2_record, m_star=m_star" in kernel
@@ -115,9 +164,11 @@ def test_every_m_star_dependent_quantity_is_read_at_the_operating_point():
         gates_run.gate3b_payload)
     assert 'int(gate3b_record["m_star"])' in inspect.getsource(
         gates_run.gate3c_payload)
-    # And the freeze binds B at the probe's m*, not at Gate 2's.
-    freeze = inspect.getsource(freeze_run.freeze_payload)
-    assert 'int(probe["m_star"])' in freeze
+    # And the freeze binds B at the probe's m*, which `effective_m_star` and
+    # `assert_m_star_unmoved` have both already checked equals Gate 2's.
+    freeze = " ".join(inspect.getsource(freeze_run.assemble).split())
+    assert 'm_star=probe["m_star"]' in freeze
+    assert '"m_star_is_unchanged": probe["m_star_is_unchanged"]' in freeze
 
 
 def test_a_quantity_from_another_operating_point_is_refused_not_reused():

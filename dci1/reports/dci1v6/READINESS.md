@@ -1,7 +1,26 @@
 # DCI-1 v6 — preregistration-readiness memo
 
-**Status: NOT ADOPTED, NOT REGISTERED.** No manifest exists, no stage has run,
-and no behavioural row may be generated against anything here. This memo audits
+> **This memo is HISTORY, not the registered protocol.** v6 was adopted and
+> registered on 2026-08-26; the registered text is
+> [`user-notes/DCI1_preregistration_v6.md`](../../../user-notes/DCI1_preregistration_v6.md)
+> and the registered decisions are
+> [`researcher_decisions.json`](researcher_decisions.json). Sections are added
+> here in order and **never rewritten**: where a later pass superseded an
+> earlier conclusion, the earlier one is marked and the later one restates it.
+> §13 is the 2026-08-26 red-team pass and §14 the adoption pass. If a
+> statement here disagrees with the preregistration, the preregistration is
+> what the study registered.
+>
+> Two supersessions are load-bearing and are flagged where they occur:
+> **§3.2's P3 block and §13.4 both describe a one-time m\* reselection that
+> was withdrawn** — m\* is frozen at Gate 2 and `GATE_2_75_COMPOSED_PROBE`
+> may terminate a replication but never move the operating point (§14.1) —
+> and **§13.3's residual table was computed under that withdrawn rule**; the
+> current one is §14.2.
+
+**Status when this memo was written: NOT ADOPTED, NOT REGISTERED.** No manifest
+existed, no stage had run, and no behavioural row could be generated against
+anything here. This memo audits
 [`../../../user-notes/DCI1_v6_proposal.md`](../../../user-notes/DCI1_v6_proposal.md)
 against the closed v5 record and turns what follows mechanically from the
 scientific intent into an exact specification. What does **not** follow
@@ -399,6 +418,14 @@ written (3's audit half):
    read a selection record.
 
 **One-time $m^*$ reselection (P3) — specified.**
+
+> **SUPERSEDED by §14.1.** P3.4's reselection was withdrawn by the researcher
+> on 2026-08-26, before any v6 row existed. The registered rule is: m\* is
+> frozen at Gate 2, the probe measures composed headroom at m\* and at no
+> other severity, and P3.6's terminal status is the whole of the failure
+> branch. P3.1's admissibility requirement, P3.2's margin, P3.3's pass and
+> P3.5's no-path-back all stand. Kept because it is what the specification
+> said when the decision set was audited.
 
 > **P3.1.** Let $\mathcal{M}$ be the severities Gate 2 recorded as *eligible*
 > (`focal_selection["eligible"]`) — the registered grid, plus §7.2's extension
@@ -1804,8 +1831,16 @@ And `operating_point_feasibility` was computed at `residual_used = 0.0` and at
 no other value — so the evidence that every replication retains an operating
 point existed only at the value it was being used to justify.
 
-`tools/v6_residual_sensitivity.py` sweeps the grid instead, under focal-only
-reselection, writing `residual_sensitivity.json`:
+`tools/v6_residual_sensitivity.py` sweeps the grid instead, writing
+`residual_sensitivity.json`.
+
+> **The table below is SUPERSEDED.** It was computed under the focal-only
+> *reselection* rule of §13.4, which the researcher replaced on 2026-08-26
+> with a **frozen m\***. Its columns "admissible severities" and "m\*
+> survives" describe a search that no longer exists. The current table, on the
+> same grid and the same closed v5 measurements, is **§14.2**. This one is
+> kept because it is what was in front of the researcher when §34 D26 was
+> being framed.
 
 | reading | magnitude | evaluated band | half-width at median s² | admissible severities (of 8) | m\* survives |
 |---|---:|---|---:|---|---|
@@ -1827,6 +1862,10 @@ determinate entries v5 measured on the calibration split, so these are a
 **lower** bound on how often the rule bites.
 
 ### 13.4 Focal-only reselection (researcher decision, 2026-08-26)
+
+> **SUPERSEDED the same day by §14.1.** The reselection half of this decision
+> was withdrawn: m\* is now frozen at Gate 2 and the probe may terminate but
+> never move it. The determinate-only half stands unchanged.
 
 The probe could move m\* — and terminate a replication — on entries containing
 `PS1`–`PS3`, instruments that are non-selectable by construction and that A10
@@ -1881,3 +1920,141 @@ verdict, `probe_only` non-selectability, the §6.2 exchangeability argument for
 the *dispersion* of the transfer, D22's per-replication licensing, and A3's
 recalibrated coverage read. §13.14, §13.4, C4 and every other substantive
 threshold are untouched.
+
+
+## 14. The adoption pass of 2026-08-26 (added after §13)
+
+§13 audited the decision set. This records what the researcher then **decided**,
+and the state the study was registered in. Nothing in §§1–13 is deleted; where a
+conclusion is superseded it is marked there and restated here.
+
+### 14.1 m\* is frozen at Gate 2. The probe may stop, not steer
+
+The researcher withdrew the reselection half of §13.4. The rule that was
+registered:
+
+1. §12.3 selects m\* from B's solo curve at `GATE_2_FOCAL_CALIBRATION`.
+2. m\* is **frozen** there.
+3. `GATE_2_75_COMPOSED_PROBE` measures composed headroom **at m\* and at no
+   other severity**.
+4. It passes, or it terminates the replication `COMPOSED_HEADROOM_UNREACHABLE`.
+   There is no third branch.
+5. The six determinate entries — `solo:A`, `solo:B`, `pair:A+B`, `pair:B+A` —
+   are the only ones that can fail the verdict. `PS1`–`PS3` are measured,
+   judged against §13.14's registered band and recorded under
+   `standin_findings`; they gate nothing and enter no selectable pool and no
+   confirmatory estimator.
+6. Existing Gate-2 solo measurements are reused where the case is identical,
+   which `shared_cell_verdict` checks by topic identity and draw count.
+
+**The reason, stated as identification and not as caution.** `Delta_j` and
+`Delta_R` are defined *at an operating point*. A stage that could move that
+point using composed outcomes would be choosing where the estimand is measured
+after §12.3 had already chosen — and would give a replication with poor
+composed headroom a route to a severity that reported better. Headroom may
+decide **whether** the frozen design is viable. It may never decide **where**.
+
+**What it costs, declared.** This is a **tightening**: a replication whose m\*
+lacks composed headroom now stops where it previously moved and continued. v6
+buys the early measurement and explicitly does not buy the rescue.
+
+**Enforced in three places rather than described in one.**
+`composed_probe.probe_disposition` refuses a probe table carrying any severity
+but m\*; `composed_probe.assert_m_star_unmoved` runs on the producing path
+before the record is written; `gates_run.effective_m_star` checks the written
+record against Gate 2's on every downstream read. Two synthetic scenarios drive
+both outcomes end to end, and `test_operating_point_invariants` pins the AST:
+the only expression `probe_disposition` ever writes into `m_star_out` is its
+own `m_star` argument.
+
+Gate 2's `operating_point_search_order`, its κ(R|B) column at every admissible
+severity, and Gate 2.5's per-severity qualification are **retained and
+re-purposed**. Nothing tries them in turn. The head of Gate 2.5's order is
+where the two gates record their agreement about m\*, and the probe reads it
+for exactly that check; the rest is a signed prospective record, costing no
+rows, of where a reference set could have existed at all.
+
+### 14.2 The residual grid, recomputed under the frozen-m\* rule
+
+Replaces §13.3's table. Same closed v5 measurements, same six policies; the
+quantity is now **whether the frozen m\* passes**, because that is what the
+registered rule asks. Order: `gemma-3n-e2b-it`, `gemma-3n-e4b-it`, `qwen3-4b`,
+`qwen3-4b-instruct-2507`.
+
+| reading | magnitude | evaluated band | half-width at median s² | m\* passes | half-width at each m\* |
+|---|---:|---|---:|---|---|
+| `projection_sd` | 0.0 | [0.05, 0.95] | 0.1138 | Y N Y Y | 0.1193 / 0.1096 / 0.1407 / 0.1412 |
+| `projection_sd` | **0.0142** | **[0.05, 0.95]** | **0.1172** | **Y N Y Y** | **0.1225 / 0.1131 / 0.1434 / 0.1439** |
+| `projection_sd` | 0.0687 | [0.05, 0.95] | 0.1763 | N N N N | 0.1799 / 0.1736 / 0.1947 / 0.1951 |
+| `beyond_the_measured_sd` | 0.0 | [0.05, 0.95] | 0.1172 | Y N Y Y | 0.1225 / 0.1131 / 0.1434 / 0.1439 |
+| `beyond_the_measured_sd` | 0.0142 | [0.0642, 0.9358] | 0.1172 | Y N Y Y | 0.1225 / 0.1131 / 0.1434 / 0.1439 |
+| `beyond_the_measured_sd` | 0.0687 | [0.1187, 0.8813] | 0.1172 | N N N N | 0.1225 / 0.1131 / 0.1434 / 0.1439 |
+
+Three things follow, and the first is the one §13.3 could not see.
+
+**The replication the rule stops is the one v5's Gate 4 stopped.** At every
+policy the single failing m\* is `gemma-3n-e4b-it`'s — the replication v5
+terminated `COMPOSED_HEADROOM_FAILURE` at Gate 4, with every earlier gate
+passed. On v5's own measurements the probe finds that failure **two stages
+earlier**, which is the thing `GATE_2_75` exists to do. It is
+DEVELOPMENT_EVIDENCE about a v5 measurement under a v6 rule and is not a
+re-verdict of v5.
+
+**Feasibility was never the discriminator, and §13.3 read it the wrong way.**
+§13.3 concluded "every replication retains an admissible operating point at
+every policy", which was true of a *search* that no longer exists. Under the
+frozen rule the question is per replication, and the answer separates: 0.0 and
+0.0142 stop one of four, 0.0687 stops all four.
+
+**The two readings differ only in where the number is spent.** At a given
+magnitude they reach the same verdict here, because `solo:B`'s half-widths are
+far from the band edges relative to the contraction. They are still different
+quantities with different units, which is why §34 D23 exists.
+
+Scope limit, unchanged: `solo:B` is the only one of the six determinate entries
+v5 measured on the calibration split, so this is a **lower** bound on how often
+the rule bites. Five of the six are measured for the first time when the stage
+runs.
+
+### 14.3 §34 D23 and D26, closed
+
+**D23 = `projection_sd`.** The term three governed documents promise is carried
+*is* a residual standard deviation — the estimated non-sampling difference
+between the split the probe measures on and the split §13.14 audits on — and
+the projection's error model is where a standard deviation belongs. §13.14's
+band is left exactly as registered, which is what keeps a v6 Gate-4 record
+comparable with v5's.
+
+**D26 = 0.0142.** Not a chosen constant: the measured authored-sub-split
+residual, 0.0284 paired by instrument on the signed closed-v5 records, halved
+to 0.0142 by the pooling a 192-topic probe performs
+(`precision_design.json`, `authored_subsplit.carried_by_a_pooled_probe.sd`).
+Under `projection_sd` it enters the quadrature as itself, so the measurement is
+carried exactly once and nothing is added to it. Its provenance is declared:
+v5 DEVELOPMENT_EVIDENCE under §30, tested prospectively by §34 D20's measured
+sub-split transfer, and v6 may not claim it generalises.
+
+The closure was **not** made on the survival column of §14.2. 0.0 is rejected
+because the derivation behind it was about dispersion, which is not what an
+allowance protects against, and because it deletes a term the documents say is
+carried; 0.0687 is rejected because it is an upper bound on the measurement
+rather than the measurement.
+
+### 14.4 D0–D18, carried
+
+All nineteen are closed on v6's own record at **v5's actually adopted values,
+with v5's own evidence quoted from `reports/dci1v5/researcher_decisions.json`**
+and a `carried_from` block naming the record and the researcher who first took
+each. §13.1's three corrected entries are carried at `complete_population`,
+`floor` and `precondition`. D17's `FloorSpec` — quantity, value, semantics,
+derivation — travels with it, because `construct_strength.registered_floor`
+reads the record and carries no literal. §33's U2, U4 and P1 are re-resolved on
+v6's record at `A2`, `E2` and `confirmed`.
+
+### 14.5 The state the study registered in
+
+`dci1/reports/dci1v6/researcher_decisions.json` exists and closes all
+twenty-seven §34 decisions and all three blocking §33 items;
+`manifest.signing_blockers()` reports nothing; both governed documents declare
+`ADOPTED`. Zero v6 behavioural rows existed at the moment of registration, and
+`RESEARCH_STATE.md` §4 records the manifest hash and the producing commit.

@@ -66,9 +66,10 @@ REQUIRED_FIELDS: tuple[str, ...] = (
     "clean_tree", "dependency_digest", "environment_digest", "hardware",
     "gate_record_hashes", "measurement_basis", "reuse_ledger_hash",
     "analysis_plan", "open_decisions",
-    # New in v6. §18.1 binds the operating point the study runs, and Gate
-    # 2.75 may have re-selected it once; binding the probe's disposition
-    # beside m* is what lets a reader see whether it did and on what.
+    # New in v6. §18.1 binds the operating point the study runs. m* is
+    # §12.3's choice at Gate 2 and the probe cannot move it; binding the
+    # probe's disposition beside m* is what lets a reader see the composed
+    # headroom the frozen operating point was found to have.
     "composed_probe",
 )
 

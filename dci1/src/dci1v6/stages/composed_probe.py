@@ -70,14 +70,24 @@ guarantees, each enforced somewhere a reader can point at:
    refuses, by name and by source, any function here that would read a
    selection record.
 
-**One re-selection, by a rule fixed before data (P3).** If m* fails the
-margin the probe re-runs ``regime.select_operating_point`` **unchanged** over
-**Gate 2's own solo B curve**, restricted to the severities the probe found
-admissible. The probe decides *which severities are admissible*; it never
-decides which is chosen. There is exactly one re-selection, there is no path
-from a Gate-3, Gate-4 or pre-freeze outcome back to this stage, and when no
-severity is admissible the replication terminates
-``COMPOSED_HEADROOM_UNREACHABLE``.
+**m\\* is frozen at Gate 2, and this stage cannot move it (P3).** §12.3
+selects the operating point from B's solo curve at ``GATE_2_FOCAL_CALIBRATION``
+and that selection is final. This stage measures composed headroom **at that
+severity and at no other**: it probes m\\*, it passes, or it terminates the
+replication ``COMPOSED_HEADROOM_UNREACHABLE``. There is no admissible-severity
+search, no alternative operating point is constructed, and nothing downstream
+can receive one --- ``probe_disposition`` returns ``m_star_out == m_star_in``
+on every non-terminal path and ``run.gates_run.effective_m_star`` refuses a
+probe record that disagrees with Gate 2's.
+
+**Why the design is this way and not the other.** A feasibility measurement
+that could also *choose* where the estimand is measured is a selection rule,
+and a selection rule fed by composed outcomes is the thing §13.11 and §30
+exist to keep out of this study. Headroom may decide **whether** the frozen
+design is viable. It may not decide **where** ``Delta_j`` and ``Delta_R`` are
+measured. The cost is stated rather than hidden: a replication whose m\\*
+lacks composed headroom stops here instead of moving to a severity that has
+it, and that is a registered scientific outcome, not a failure of the probe.
 
 **§13.14's band is unchanged.** The projection is a margin **inside**
 [0.05, 0.95], never a relaxation of it, and Gate 4 still applies the
@@ -112,6 +122,7 @@ __all__ = ["COMPOSED_HEADROOM_UNREACHABLE", "PROBE_SLOTS", "probe_slots",
            "RESIDUAL_READINGS", "residual_reading", "residual_allowance",
            "projection_residual_sd",
            "margin_band", "severity_verdict", "probe_disposition",
+           "assert_m_star_unmoved",
            "assert_probe_reads_no_reference", "PROBE_DECLARED_REFUSALS",
            "REFERENCE_TOKENS", "FORBIDDEN_SOURCE_READS",
            "PROBE_SCOPE_LIMITS", "assert_probe_severities_are_admissible",
@@ -541,9 +552,12 @@ def assert_probe_severities_are_admissible(
     set intersected with §12.4's regime adequacy and §34 D17's construct
     floor, each evaluated *at that severity*. The distinction is the whole
     point: Gate 2 applies §12.4 and D17 at m* and terminates the replication
-    when either fails, so probing --- and re-selecting to --- a merely
-    *eligible* severity would move B to an operating point Gate 2 would itself
-    have refused.
+    when either fails, so probing a merely *eligible* severity would measure
+    B at an operating point Gate 2 would itself have refused. Since
+    2026-08-26 the probed set is ``[m*]``, so this is a cross-gate agreement
+    check rather than a restriction on a search --- and it is kept for
+    exactly that: a record whose m* is not in its own ``focal_admissible`` is
+    a lifecycle fault this catches before a row is drawn.
 
     Both sets are checked, so a record written before ``focal_admissible``
     existed fails here rather than being silently read as unrestricted.
@@ -560,17 +574,18 @@ def assert_probe_severities_are_admissible(
     if admissible is None:
         raise ProtocolError(
             "P3.1: Gate 2 recorded no `focal_admissible` set, so the probe "
-            "cannot tell which eligible severities also passed §12.4 and §34 "
-            "D17. A probe that fell back to `eligible` could re-select an "
-            "operating point Gate 2 would have refused")
+            "cannot tell whether m* also passed §12.4 and §34 D17 at that "
+            "severity. A probe that fell back to `eligible` would measure at "
+            "an operating point Gate 2 would have refused")
     outside_admissible = sorted(set(severities) - {int(q) for q
                                                    in admissible})
     if outside_admissible:
         raise ProtocolError(
             f"P3.1: {outside_admissible} are eligible under §12.3 but not "
             f"admissible: Gate 2 records {sorted(int(q) for q in admissible)} "
-            "as passing §12.4's regime adequacy and §34 D17's construct floor "
-            "at that severity. The probe may not move B to the others")
+            "as passing §12.4's regime adequacy and §34 D17's construct "
+            "floor at that severity. The probe measures only what Gate 2 "
+            "admitted")
     outside = sorted(set(severities) - set(focal_severities(extended=True)))
     if outside:
         raise ProtocolError(
@@ -580,9 +595,9 @@ def assert_probe_severities_are_admissible(
 #: Probe cells whose value **Gate 2 has already measured**, on the same
 #: model, the same constraint, the same topics and the same number of draws.
 #: The unconstrained cell carries no constraint and the probe never evaluated
-#: it; ``solo:B`` at a probed severity is a point on Gate 2's own solo B
-#: curve --- the curve §12.3 selected m* from and the curve P3.4 re-selects
-#: over --- and ``solo:A`` at n* is Gate 2's iota_A. Re-drawing either would
+#: it; ``solo:B`` at the frozen m* is a point on Gate 2's own solo B curve
+#: --- the curve §12.3 selected m* from --- and ``solo:A`` at n* is Gate 2's
+#: iota_A. Re-drawing either would
 #: produce a *second* estimate of a number the design was already fixed on,
 #: and every lift measured against it would become a difference between two
 #: samples instead of a difference from the selection input.
@@ -764,34 +779,39 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
                      band: tuple[float, float] | None = None,
                      n_composed: int | None = None,
                      k: int = 1) -> dict[str, Any]:
-    """P3.2: a severity is admissible for m\\* iff every **determinate** entry
-    passes its own test.
+    """P3.2: the frozen m\\* has composed headroom iff every **determinate**
+    entry passes its own test.
 
     ``cells`` maps a probe cell id to slot -> measurement. The unconstrained
     cell carries no constraint and is recorded, not evaluated.
 
-    **Focal-only reselection (researcher decision, 2026-08-26).** Only the
-    six determinate entries --- ``solo:A``, ``solo:B`` and both orders of
+    **Determinate-only termination (researcher decision, 2026-08-26).** Only
+    the six determinate entries --- ``solo:A``, ``solo:B`` and both orders of
     ``pair:A+B``, every constituent of which is a real registered instrument
-    that actually enters the estimand --- may make a severity inadmissible.
-    A stand-in-dependent entry is measured, judged against §13.14's
-    registered band and recorded, and it **gates nothing**: it cannot remove
-    a severity from the admissible set and it cannot terminate a replication.
+    that actually enters the estimand --- may fail this test. A
+    stand-in-dependent entry is measured, judged against §13.14's registered
+    band and recorded, and it **gates nothing**: it cannot fail the verdict
+    and it cannot terminate a replication.
 
     The reason is identification, not cost. ``PS1``-``PS3`` are non-selectable
     by construction and carry a predicate form no selectable family exercises,
-    so an instrument that can never be a reference would otherwise choose the
-    operating point at which ``Delta_j`` and ``Delta_R`` are estimated. What
+    so an instrument that can never be a reference would otherwise end a
+    replication whose registered instruments were all inside the band. What
     the stand-in entries are for is stated where it can be read rather than
     inferred: they are a prospective structural-risk record of the slot and
     order classes Gate 4 will audit, and ``standin_findings`` is where a
     reader looks for it.
 
     **This is a loosening relative to the rule it replaces**, and it is
-    declared as one. Under the previous rule a severity failing only on
-    stand-in-dependent entries was inadmissible, and a replication whose
-    every severity failed that way terminated ``COMPOSED_HEADROOM_UNREACHABLE``.
-    It now proceeds. The §32.2 declaration in the preregistration says so.
+    declared as one. Under the previous rule a replication all of whose
+    stand-in-dependent entries left the band terminated
+    ``COMPOSED_HEADROOM_UNREACHABLE``. It now proceeds. The §32.2 declaration
+    in the preregistration says so.
+
+    ``passes`` here is a verdict **about m\\***, not a vote in a search: this
+    function is called once per replication, on the frozen operating point,
+    and ``probe_disposition`` turns its answer into PASS or into a terminal
+    status. Nothing selects among severities on it.
     """
     low, high = C.COMPOSED_HEADROOM_BAND if band is None else band
     verdicts = []
@@ -815,12 +835,13 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
     standin = [v for v in verdicts if not v["determinate"]]
     if len(determinate) != N_DETERMINATE_ENTRIES:
         raise ProtocolError(
-            f"a probed severity carries {len(determinate)} determinate "
-            f"entries and the registered set is {N_DETERMINATE_ENTRIES} "
-            "(solo:A, solo:B and both orders of pair:A+B). Only these decide "
-            "admissibility, so a missing one would narrow the test silently")
-    # Focal-only: the admissibility of a severity is a function of the
-    # determinate entries and of nothing else.
+            f"the probed operating point carries {len(determinate)} "
+            f"determinate entries and the registered set is "
+            f"{N_DETERMINATE_ENTRIES} (solo:A, solo:B and both orders of "
+            "pair:A+B). Only these decide the verdict, so a missing one "
+            "would narrow the test silently")
+    # Determinate-only: the verdict is a function of the determinate entries
+    # and of nothing else.
     failures = [v for v in determinate if not v["passes"]]
     standin_findings = [v for v in standin if not v["passes"]]
     familywise_failures = [v for v in determinate
@@ -836,12 +857,14 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
         "standin_findings_gate_nothing": True,
         "why_standin_findings_gate_nothing":
             "an instrument that can never be selected as a reference may not "
-            "choose the operating point at which the estimands are measured, "
-            "nor terminate a replication",
+            "terminate a replication; and no entry here, determinate or not, "
+            "may move m*, which §12.3 froze at GATE_2_FOCAL_CALIBRATION",
         "all_entries_inside_their_test": not failures and not standin_findings,
-        "admissibility_decided_by":
+        "verdict_decided_by":
             "the six determinate entries: solo:A, solo:B and both orders of "
             "pair:A+B",
+        "decides_only_whether": "the frozen m* has composed headroom",
+        "decides_nothing_about": "which severity the study runs at",
         "would_fail_familywise": [
             {"cell": v["cell"], "slot": v["slot"],
              "compliance": v["compliance"],
@@ -863,17 +886,34 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
 
 def probe_disposition(*, m_star: int,
                       probed: Mapping[int, Mapping[str, Mapping[str, Any]]],
-                      gate2_solo_curve: Mapping[int, float],
                       residual_sd: float,
                       band: tuple[float, float] | None = None,
                       n_composed: int | None = None) -> dict[str, Any]:
-    """P3.3 to P3.6: m* stands, m* is re-selected once, or the study stops.
+    """P3.3 and P3.6: the frozen m\\* passes, or the replication stops.
 
-    ``probed`` maps each probed severity to its cell -> slot -> measurement
-    table. ``gate2_solo_curve`` is **Gate 2's own** measured solo B curve; it
-    is the selection input and the probe is not. The probe decides only which
-    severities are admissible, and under focal-only reselection it decides
-    that from the determinate entries alone --- see ``severity_verdict``.
+    ``probed`` maps the probed severity to its cell -> slot -> measurement
+    table and **must carry m\\* and nothing else**. m\\* was selected by
+    §12.3's registered focal rule at ``GATE_2_FOCAL_CALIBRATION`` and is
+    frozen there; this stage measures composed headroom at it and returns one
+    of two things:
+
+    * **PASS.** Every determinate entry's projected Gate-4 interval lies
+      inside §13.14's band. ``m_star_out`` is ``m_star``, and it is the same
+      object on every non-terminal path there is.
+    * **``COMPOSED_HEADROOM_UNREACHABLE``.** At least one determinate entry
+      does not. The replication ends. No other severity is considered, none
+      is measured, and none is offered downstream.
+
+    **There is no third branch, and that is the point.** An earlier version of
+    this stage re-ran the focal rule over the severities the probe found
+    admissible. That made a composed measurement into a selection input --- a
+    stage that decides *where* ``Delta_j`` and ``Delta_R`` are measured using
+    outcomes observed after §12.3 had already chosen. The researcher removed
+    it on 2026-08-26: headroom decides **whether** the frozen design is
+    viable and never **where** the estimand sits. The refusal below is
+    structural rather than conditional, so a caller cannot reach a
+    reselection by supplying more severities: a table carrying anything other
+    than m\\* is a ``ProtocolError``, not a search.
 
     Raising is the registered outcome of P3.6 and it is raised here, so the
     A8 AST regression --- every status in force has a reachable ``raise`` ---
@@ -882,70 +922,90 @@ def probe_disposition(*, m_star: int,
     """
     from dci1v6.run.lifecycle import TerminalStatus
 
-    verdicts = {m: severity_verdict(table, residual_sd=residual_sd,
-                                    band=band, n_composed=n_composed)
-                for m, table in sorted(probed.items())}
-    if m_star not in verdicts:
+    probed_severities = sorted(int(m) for m in probed)
+    if probed_severities != [int(m_star)]:
         raise ProtocolError(
-            f"P3.1: m* = {m_star} must be probed first and it was not")
-    passing = sorted(m for m, v in verdicts.items() if v["passes"])
-    base = {"m_star_in": m_star, "probed_severities": sorted(verdicts),
-            "verdicts": {str(m): v for m, v in verdicts.items()},
-            "passing_severities": passing,
+            f"P3.1: this stage measures composed headroom at the frozen m* = "
+            f"{m_star} and at no other severity; the table carries "
+            f"{probed_severities}. m* is §12.3's choice at "
+            f"{C.STAGE_GATE2} and Gate 2.75 may not move it, so a probe of "
+            "more than one severity is a search for an operating point and "
+            "is refused rather than truncated")
+    verdict = severity_verdict(probed[probed_severities[0]],
+                               residual_sd=residual_sd, band=band,
+                               n_composed=n_composed)
+    base = {"m_star_in": m_star,
+            "probed_severities": [int(m_star)],
+            "verdicts": {str(m_star): verdict},
+            "verdict": verdict,
             "projection_residual_sd": residual_sd,
             "evaluated_band": list(
                 C.COMPOSED_HEADROOM_BAND if band is None else band),
             "registered_band": list(C.COMPOSED_HEADROOM_BAND),
             "band_is_unchanged": True,
-            "selection_input": "GATE_2_FOCAL_CALIBRATION's solo B curve",
-            "reselection_rule": "focal_only",
+            "operating_point_source":
+                f"{C.STAGE_GATE2}'s registered focal rule on the solo B "
+                "curve. This stage reads m* and never chooses it",
+            "m_star_is_frozen": True,
+            "m_star_is_frozen_at": C.STAGE_GATE2,
+            "reselection_rule": "none",
             "reselection_rule_is":
-                "only the six determinate entries --- solo:A, solo:B and both "
-                "orders of pair:A+B --- may make a severity inadmissible. No "
-                "stand-in-dependent entry moves m* or terminates the "
-                "replication; their verdicts are recorded under "
-                "`standin_findings` as prospective structural evidence",
-            "standin_findings_by_severity": {
-                str(m): v["standin_findings"] for m, v in verdicts.items()},
-            "reselections_permitted": 1}
-    if verdicts[m_star]["passes"]:
-        return {**base, "reselected": False, "m_star_out": m_star,
-                "reason": "P3.3: m* keeps every determinate entry inside its "
-                          "projected Gate-4 interval, so it stands"}
-    if not passing:
-        raise TerminalStatus(
-            COMPOSED_HEADROOM_UNREACHABLE, gate=C.STAGE_GATE2_75,
-            criterion=(
-                "P3.6: no severity Gate 2 found eligible keeps every "
-                "DETERMINATE entry --- solo:A, solo:B and both orders of "
-                "pair:A+B --- inside its projected Gate-4 interval within "
-                f"§13.14's unchanged band {list(C.COMPOSED_HEADROOM_BAND)}. "
-                "Stand-in-dependent entries are recorded and decide nothing "
-                "here, so no replication terminates on an instrument that "
-                "could never have been selected as a reference"),
-            observed={"verdicts": base["verdicts"],
-                      "probed_severities": base["probed_severities"]},
-            strongest_permissible_statement=C.TERMINAL_SENTENCE)
-    # P3.4: the registered focal rule, unchanged, over Gate 2's own curve,
-    # restricted to the severities the probe found admissible.
-    reselection = select_operating_point(
-        {m: v for m, v in gate2_solo_curve.items() if m in passing},
-        band=C.FOCAL_BAND, aim=C.FOCAL_AIM, prefer_smaller=True,
-        grid=tuple(passing))
-    if reselection["selected"] is None:
-        raise TerminalStatus(
-            COMPOSED_HEADROOM_UNREACHABLE, gate=C.STAGE_GATE2_75,
-            criterion=("P3.4: the registered focal rule found no eligible "
-                       "severity among those the probe admitted"),
-            observed={"passing_severities": passing,
-                      "reselection": reselection},
-            strongest_permissible_statement=C.TERMINAL_SENTENCE)
-    return {**base, "reselected": True,
-            "m_star_out": reselection["selected"],
-            "reselection": reselection,
-            "reason": "P3.4: m* failed; the registered focal rule re-ran "
-                      "unchanged over Gate 2's solo curve restricted to the "
-                      "severities the probe admitted"}
+                "there is none. m* is frozen at GATE_2_FOCAL_CALIBRATION and "
+                "this stage returns m_star_out == m_star_in on every "
+                "non-terminal path. A determinate entry outside its "
+                "projected Gate-4 interval terminates the replication "
+                "COMPOSED_HEADROOM_UNREACHABLE; it never selects a different "
+                "operating point. Stand-in-dependent entries are recorded "
+                "under `standin_findings` and decide neither",
+            "standin_findings": verdict["standin_findings"],
+            "reselections_permitted": 0}
+    if verdict["passes"]:
+        return {**base, "reselected": False, "m_star_out": int(m_star),
+                "reason": "P3.3: every determinate entry at the frozen m* "
+                          "keeps its projected Gate-4 interval inside "
+                          "§13.14's band, so the registered design is viable "
+                          "at the operating point §12.3 chose"}
+    raise TerminalStatus(
+        COMPOSED_HEADROOM_UNREACHABLE, gate=C.STAGE_GATE2_75,
+        criterion=(
+            "P3.6: at the frozen m* at least one DETERMINATE entry --- "
+            "solo:A, solo:B or one of the two orders of pair:A+B --- does "
+            "not keep its projected Gate-4 interval inside §13.14's "
+            f"unchanged band {list(C.COMPOSED_HEADROOM_BAND)}. m* is §12.3's "
+            "choice and this stage may not move it, so the registered design "
+            "is not viable for this replication. Stand-in-dependent entries "
+            "are recorded and decide nothing here, so no replication "
+            "terminates on an instrument that could never have been selected "
+            "as a reference"),
+        observed={"verdicts": base["verdicts"],
+                  "probed_severities": base["probed_severities"],
+                  "failures": verdict["failures"],
+                  "standin_findings": verdict["standin_findings"]},
+        strongest_permissible_statement=C.TERMINAL_SENTENCE)
+
+
+def assert_m_star_unmoved(disposition: Mapping[str, Any], *,
+                          gate2_m_star: int) -> int:
+    """The invariant, executed: this stage returns the m\\* it was given.
+
+    The **producing** half. ``gates_run.gate2_75_payload`` calls it before the
+    record is written; the consuming half is
+    ``gates_run.assert_probe_m_star_agrees``, which ``effective_m_star`` runs
+    on every downstream read of the written record. So "Gate 2.75 cannot move
+    the operating point" is checked where the value is made and again wherever
+    it is used, rather than asserted in prose.
+    """
+    for key in ("m_star_in", "m_star_out"):
+        if int(disposition[key]) != int(gate2_m_star):
+            raise ProtocolError(
+                f"{C.STAGE_GATE2_75} recorded {key} = {disposition[key]} and "
+                f"{C.STAGE_GATE2} froze m* = {gate2_m_star}. m* is selected "
+                "once, by §12.3's focal rule, and no later stage may move it")
+    if disposition.get("reselected"):
+        raise ProtocolError(
+            f"{C.STAGE_GATE2_75} recorded `reselected` true. No reselection "
+            "path exists; a record claiming one is a defect, not an outcome")
+    return int(gate2_m_star)
 
 
 # ------------------------------------------------------------- the guards
@@ -959,10 +1019,18 @@ PROBE_DECLARED_REFUSALS: dict[str, str] = {
         "§13.11: the probe runs before GATE_3A. No reference exists, no "
         "selection record is read, and no probed cell is a B+R cell",
     "no_substitution_or_backup_promotion":
-        "a probe failure re-selects m* once by the registered focal rule or "
-        "terminates COMPOSED_HEADROOM_UNREACHABLE. Nothing is substituted, "
-        "promoted or widened",
-    "no_second_reselection_exists":
+        "a probe failure terminates COMPOSED_HEADROOM_UNREACHABLE. Nothing "
+        "is substituted, promoted, widened or re-selected",
+    "no_reselection_of_the_operating_point_exists":
+        "P3.3/P3.6: m* is frozen by §12.3 at GATE_2_FOCAL_CALIBRATION and "
+        "this stage has no branch that returns a different one. "
+        "`probe_disposition` refuses a table carrying any severity but m*, "
+        "`assert_m_star_unmoved` checks m_star_in == m_star_out on the "
+        "producing path, and `gates_run.effective_m_star` checks the written "
+        "record against Gate 2's on every downstream read. Headroom decides "
+        "WHETHER the frozen design is viable and never WHERE the estimands "
+        "are measured",
+    "no_path_back_to_this_stage_exists":
         "P3.5: the record is write-once and no later stage has a path back "
         "here; assert_transition_legal and assert_no_post_freeze_mutation "
         "enforce it",
@@ -974,38 +1042,40 @@ PROBE_DECLARED_REFUSALS: dict[str, str] = {
         "again are read only when the topic identifiers and the draw count "
         "are identical; `shared_cell_verdict` checks that and records the "
         "reason either way. Nothing is reused across topic sets",
-    "the_order_of_operating_points_was_frozen_before_any_composed_row":
-        "Gate 2 records `operating_point_search_order` --- the registered "
-        "focal rule's own preference over `focal_admissible` --- and Gate "
-        "2.5 restricts it to the severities that can meet §13.15's five-"
-        "family minimum. Both are signed before this stage generates a row, "
-        "so a candidate is never re-ranked by how a composed cell looked",
+    "the_operating_point_was_frozen_before_any_composed_row":
+        "Gate 2 selects m* from B's solo curve and records "
+        "`operating_point_search_order` --- §12.3's own preference over "
+        "`focal_admissible` --- and Gate 2.5 records which severities could "
+        "meet §13.15's five-family minimum. Both are signed before this "
+        "stage generates a row, and this stage reads the head of that order "
+        "only to check that Gate 2 and Gate 2.5 agree about m*. It probes m* "
+        "and no other severity, so no candidate can be re-ranked by how a "
+        "composed cell looked",
     "no_pool_is_chosen_by_a_composed_outcome":
         "§30: Gate 2 records a kappa(R|B) column and Gate 2.5 a §13.1 "
-        "qualified pool for EVERY admissible severity, both signed before "
-        "this stage generates a row. Moving m* therefore reads a pool that "
-        "was already fixed; it does not build one from what the probe saw",
+        "qualified pool at the frozen m*, both signed before this stage "
+        "generates a row. This stage selects nothing --- not a severity, not "
+        "a pool --- so no composed outcome can reach either",
     "no_standin_severity_depends_on_the_operating_point":
         "each stand-in is placed at the severity nearest Gate 2's iota_A "
         "inside §13.4's band, on its own solo ladder. iota_A does not depend "
-        "on m*, so re-selecting the operating point does not move a stand-in "
-        "and a probed severity is never compared against a different "
-        "companion from the one before it",
+        "on m*, so the companion a probed cell carries is fixed by a "
+        "quantity the operating point cannot move",
     "no_margin_is_claimed_for_a_stand_in_dependent_entry":
         "a cell containing a stand-in is judged against §13.14's registered "
         "band with no margin. Its failure is a real composed cell leaving the "
         "band; its passing is not evidence that the reference which replaces "
         "the stand-in will also be inside it, and nothing here treats it as "
         "though it were",
-    "no_standin_entry_moves_the_operating_point_or_ends_a_replication":
-        "focal-only reselection: admissibility is decided by the six "
+    "no_standin_entry_ends_a_replication":
+        "determinate-only termination: the verdict is decided by the six "
         "determinate entries alone --- solo:A, solo:B and both orders of "
         "pair:A+B, every constituent of which is a real registered "
         "instrument that enters the estimand. A stand-in-dependent verdict "
         "is recorded under `standin_findings` and read by no rule, so an "
-        "instrument that can never be selected as a reference can neither "
-        "choose the operating point at which Delta_j and Delta_R are "
-        "measured nor raise COMPOSED_HEADROOM_UNREACHABLE",
+        "instrument that can never be selected as a reference cannot raise "
+        "COMPOSED_HEADROOM_UNREACHABLE. No entry of either kind moves m*, "
+        "because no branch here moves m*",
 }
 
 #: Stated on the payload because READINESS §3.2 says a limit discovered at
@@ -1019,11 +1089,17 @@ PROBE_SCOPE_LIMITS: tuple[str, ...] = (
     "produce, and no closed measurement bounds the difference. Gate 4 remains "
     "the only stage that measures the actual references",
     "for the same reason a stand-in-dependent entry carries no margin AND "
-    "gates nothing. Under focal-only reselection it cannot move m* and "
-    "cannot terminate a replication; it is a prospective structural record "
-    "of a slot-and-order class, and the price of that is that a class whose "
-    "only probe evidence is stand-in-dependent is audited for the first time "
-    "at Gate 4",
+    "gates nothing. Under determinate-only termination it cannot end a "
+    "replication; it is a prospective structural record of a slot-and-order "
+    "class, and the price of that is that a class whose only probe evidence "
+    "is stand-in-dependent is audited for the first time at Gate 4",
+    "the stage measures ONE operating point --- the m* §12.3 froze at Gate 2 "
+    "--- and cannot move to another. A replication whose m* lacks composed "
+    "headroom terminates rather than relocating to a severity that has it, "
+    "so v6 buys the early measurement and explicitly does not buy the "
+    "rescue. That is the registered design: a feasibility measurement that "
+    "could also choose where the estimand sits would be a selection rule fed "
+    "by composed outcomes",
     "the entries that DO decide are the six determinate ones, so what the "
     "probe protects against is a real A+B or B+A composed cell, or A or B "
     "alone, sitting where §13.14's 24-topic verdict could plausibly fire. It "

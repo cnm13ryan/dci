@@ -272,50 +272,71 @@ def test_the_residual_allowance_matches_the_measurement_it_is_derived_from():
     assert report["split_transfer"]["residual_point_estimate"] <= 0.0
 
 
-# --------------------------------------------------- P3.3, P3.4, P3.5, P3.6
+# ---------------------------------------------------- P3.3, P3.5, P3.6
 
-def test_p3_3_a_passing_m_star_stands_and_nothing_is_reselected():
+def test_p3_3_the_frozen_m_star_passes_and_nothing_is_reselected():
     out = P.probe_disposition(m_star=10, probed={10: _table(0.81)},
-                              gate2_solo_curve=GATE2_CURVE,
                               residual_sd=RESIDUAL)
     assert out["reselected"] is False
     assert out["m_star_out"] == 10
-    assert out["reselections_permitted"] == 1
+    assert out["m_star_in"] == 10
+    assert out["reselections_permitted"] == 0
+    assert out["reselection_rule"] == "none"
+    assert out["m_star_is_frozen"] is True
+    assert out["m_star_is_frozen_at"] == C.STAGE_GATE2
+    assert P.assert_m_star_unmoved(out, gate2_m_star=10) == 10
 
 
-def test_p3_4_a_failing_m_star_reselects_once_over_gate_2s_own_curve():
-    """The probe decides which severities are ADMISSIBLE, never which is
-    chosen: the selection input is Gate 2's already-measured solo curve.
+def test_a_failing_m_star_terminates_and_never_selects_another_severity():
+    """The researcher's 2026-08-26 decision, executed: headroom decides
+    WHETHER the frozen design is viable and never WHERE the estimand sits.
 
-    Here m* = 8 fails and 11, 12 and 13 pass. ``select_operating_point`` runs
-    unchanged --- FOCAL_BAND, FOCAL_AIM = 0.80, prefer_smaller --- so it takes
-    11 at 0.76, the passing severity nearest the aim.
+    Under the rule this replaced, ``m* = 8`` failing while 11, 12 and 13
+    passed re-ran the focal rule and moved the operating point to 11. There
+    is now no such branch: the table may carry m* alone, and m* failing is
+    the end of the replication.
     """
+    with pytest.raises(TerminalStatus) as excinfo:
+        P.probe_disposition(m_star=8,
+                            probed={8: _table(0.90, a_with_b=0.97)},
+                            residual_sd=RESIDUAL)
+    assert excinfo.value.status == P.COMPOSED_HEADROOM_UNREACHABLE
+    # And the alternative severities cannot even be offered.
     probed = {8: _table(0.90, a_with_b=0.97), 11: _table(0.76),
               12: _table(0.70), 13: _table(0.64)}
-    out = P.probe_disposition(m_star=8, probed=probed,
-                              gate2_solo_curve=GATE2_CURVE,
-                              residual_sd=RESIDUAL)
-    assert out["reselected"] is True
-    assert out["passing_severities"] == [11, 12, 13]
-    assert out["m_star_out"] == 11
-    assert out["selection_input"] == \
-        "GATE_2_FOCAL_CALIBRATION's solo B curve"
-    # Unchanged rule: the same function Gate 2 used, on the same curve.
-    direct = regime.select_operating_point(
-        {m: GATE2_CURVE[m] for m in (11, 12, 13)}, band=C.FOCAL_BAND,
-        aim=C.FOCAL_AIM, prefer_smaller=True, grid=(11, 12, 13))
-    assert direct["selected"] == out["m_star_out"]
+    with pytest.raises(ProtocolError) as refused:
+        P.probe_disposition(m_star=8, probed=probed, residual_sd=RESIDUAL)
+    assert "and at no other severity" in str(refused.value)
 
 
-def test_p3_6_no_admissible_severity_terminates_the_replication(
+def test_no_function_here_can_return_an_m_star_it_was_not_given():
+    """The invariant, over the source rather than over one call: the only
+    thing ``probe_disposition`` writes into ``m_star_out`` is its own
+    ``m_star`` argument."""
+    import ast
+    import inspect
+
+    tree = ast.parse(inspect.getsource(P.probe_disposition))
+    assigned = [
+        value for node in ast.walk(tree)
+        if isinstance(node, ast.Dict)
+        for key, value in zip(node.keys, node.values)
+        if isinstance(key, ast.Constant) and key.value == "m_star_out"]
+    assert assigned, "the function must state the operating point it returns"
+    for value in assigned:
+        # int(m_star), and nothing else.
+        assert isinstance(value, ast.Call)
+        assert value.func.id == "int"
+        assert value.args[0].id == "m_star"
+
+
+def test_p3_6_a_determinate_failure_terminates_the_replication(
         restore_decisions):
     """A repair loop with no terminal outcome is not a rule."""
     restore_decisions.override_for_testing("D6", "identification_status")
-    probed = {m: _table(0.90, a_with_b=0.97) for m in (9, 10, 11)}
     with pytest.raises(TerminalStatus) as excinfo:
-        P.probe_disposition(m_star=10, probed=probed,
-                            gate2_solo_curve=GATE2_CURVE,
+        P.probe_disposition(m_star=10,
+                            probed={10: _table(0.90, a_with_b=0.97)},
                             residual_sd=RESIDUAL)
     raised = excinfo.value
     assert raised.status == P.COMPOSED_HEADROOM_UNREACHABLE
@@ -323,13 +344,22 @@ def test_p3_6_no_admissible_severity_terminates_the_replication(
     assert raised.strongest_permissible_statement == C.TERMINAL_SENTENCE
     # §13.14's band is named in the criterion and is unchanged.
     assert str(list(C.COMPOSED_HEADROOM_BAND)) in raised.criterion
+    assert raised.observed["probed_severities"] == [10]
 
 
-def test_m_star_must_be_probed_first():
+def test_m_star_must_be_the_probed_severity():
     with pytest.raises(ProtocolError):
         P.probe_disposition(m_star=10, probed={11: _table(0.76)},
-                            gate2_solo_curve=GATE2_CURVE,
                             residual_sd=RESIDUAL)
+
+
+def test_assert_m_star_unmoved_refuses_a_record_that_moved_it():
+    out = P.probe_disposition(m_star=10, probed={10: _table(0.81)},
+                              residual_sd=RESIDUAL)
+    with pytest.raises(ProtocolError):
+        P.assert_m_star_unmoved({**out, "m_star_out": 11}, gate2_m_star=10)
+    with pytest.raises(ProtocolError):
+        P.assert_m_star_unmoved({**out, "reselected": True}, gate2_m_star=10)
 
 
 def test_the_terminal_status_is_registered_and_raisable():
@@ -551,36 +581,34 @@ def test_the_two_residual_readings_are_different_quantities(
     assert P.margin_band() == (low + 0.02, high - 0.02)
 
 
-def test_a_standin_can_never_make_a_severity_inadmissible(restore_decisions):
-    """Focal-only reselection. The rule this replaces let an instrument that
-    is non-selectable by construction choose the operating point at which
-    Delta_j and Delta_R are estimated, and terminate a replication."""
+def test_a_standin_can_never_terminate_a_replication(restore_decisions):
+    """Determinate-only termination. The rule this replaces let an instrument
+    that is non-selectable by construction end a replication whose registered
+    instruments were all inside the band."""
     table = _table(0.80, composed_b=0.99)
     verdict = P.severity_verdict(table, residual_sd=0.0)
     assert verdict["passes"] is True
     assert verdict["standin_findings"], "the finding is still recorded"
     assert verdict["all_entries_inside_their_test"] is False
-    assert verdict["admissibility_decided_by"].startswith("the six")
-    # And it reaches the disposition: m* stands rather than being re-selected.
+    assert verdict["verdict_decided_by"].startswith("the six")
+    # And it reaches the disposition: the replication proceeds at m*.
     disposition = P.probe_disposition(
-        m_star=10, probed={10: table}, gate2_solo_curve={10: 0.80},
-        residual_sd=0.0)
+        m_star=10, probed={10: table}, residual_sd=0.0)
     assert disposition["reselected"] is False
     assert disposition["m_star_out"] == 10
-    assert disposition["reselection_rule"] == "focal_only"
-    assert disposition["standin_findings_by_severity"]["10"]
+    assert disposition["reselection_rule"] == "none"
+    assert disposition["standin_findings"]
 
 
-def test_a_determinate_entry_still_moves_m_star_and_can_terminate():
-    """Focal-only narrows what decides; it does not stop the probe deciding.
-    A determinate entry outside its projected interval is exactly what the
-    stage exists to catch two stages before Gate 4."""
+def test_a_determinate_entry_can_still_terminate_the_replication():
+    """Determinate-only narrows what decides; it does not stop the probe
+    deciding. A determinate entry outside its projected interval is exactly
+    what the stage exists to catch two stages before Gate 4."""
     from dci1v6.run.lifecycle import TerminalStatus
     bad = _table(0.80, a_with_b=0.99)
     assert not P.severity_verdict(bad, residual_sd=0.0)["passes"]
     with pytest.raises(TerminalStatus) as excinfo:
-        P.probe_disposition(m_star=10, probed={10: bad},
-                            gate2_solo_curve={10: 0.80}, residual_sd=0.0)
+        P.probe_disposition(m_star=10, probed={10: bad}, residual_sd=0.0)
     assert excinfo.value.status == P.COMPOSED_HEADROOM_UNREACHABLE
     assert "DETERMINATE" in excinfo.value.criterion
 

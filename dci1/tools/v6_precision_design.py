@@ -630,11 +630,15 @@ def operating_point_feasibility() -> dict[str, Any]:
             "m_star": int(record["m_star"]),
             "m_star_passes": bool(per_severity[str(record["m_star"])]
                                   ["passes"]),
-            "passing_severities": passing,
+            # Counterfactual since 2026-08-26: m* is frozen at Gate 2 and v6
+            # measures composed headroom at m* alone, so no v6 rule reads
+            # these. Recorded so the frozen m* can be read against its own
+            # curve.
+            "counterfactual_passing_severities": passing,
             "per_severity": per_severity}
     return {
         "_question": "applied to the closed v5 solo-B curves, does the "
-                     "derived determinate rule leave any operating point?",
+                     "derived determinate rule pass at the frozen m*?",
         "_not_a_re_verdict":
             "v5's records, verdicts and terminal statuses stand exactly as "
             "signed. This applies a v6 rule to a v5 measurement and says "
@@ -649,9 +653,17 @@ def operating_point_feasibility() -> dict[str, Any]:
                          "justify. `reports/dci1v6/residual_sensitivity.json` "
                          "sweeps the others",
         "swept_elsewhere": "reports/dci1v6/residual_sensitivity.json",
+        "_the_operating_point_is_frozen":
+            "m* is selected once, by §12.3 at GATE_2_FOCAL_CALIBRATION, and "
+            "GATE_2_75_COMPOSED_PROBE cannot move it (researcher decision, "
+            "2026-08-26). So the question this table answers is whether the "
+            "FROZEN m* passes; `counterfactual_passing_severities` is "
+            "recorded and read by nothing",
         "per_model": out,
-        "every_replication_retains_an_operating_point":
-            all(v["passing_severities"] for v in out.values()),
+        "every_frozen_m_star_passes":
+            all(v["m_star_passes"] for v in out.values()),
+        "replications_whose_frozen_m_star_fails": sorted(
+            k for k, v in out.items() if not v["m_star_passes"]),
     }
 
 

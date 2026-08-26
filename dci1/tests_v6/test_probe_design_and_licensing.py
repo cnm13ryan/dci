@@ -108,13 +108,18 @@ def test_the_probe_burden_is_derived_from_the_shape_and_not_a_formula():
     assert burden["cells_read_from_gate2"] == len(P.SHARED_WITH_GATE2)
     assert burden["gate4_classes_covered"] == 10
     assert burden["gate4_entries_audited_later"] == 95
-    assert burden["rows_per_severity"] == (
+    assert burden["rows_at_the_operating_point"] == (
         burden["cells_generated_per_severity"] * C.N_CALIBRATION * C.M_CAL)
     assert burden["ladder_rows"] == (
         burden["ladder_rungs"] * C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS)
-    assert burden["rows_if_m_star_passes"] == (
-        burden["ladder_rows"] + burden["rows_per_severity"])
-    assert burden["max_rows"] > burden["rows_if_m_star_passes"]
+    # m* is frozen, so the cost is exact rather than a ceiling: one severity,
+    # and no parameter by which a caller could cost a search.
+    assert burden["severities"] == 1
+    assert burden["rows"] == (
+        burden["ladder_rows"] + burden["rows_at_the_operating_point"])
+    import inspect
+    assert "n_severities" not in inspect.signature(
+        budget.probe_burden).parameters
 
 
 # ------------------------------------------------------------- licensing
@@ -186,20 +191,29 @@ def test_per_replication_licensing_does_not_read_another_replication(
 
 # ------------------------------------------------------------- adoption
 
-def test_a_draft_document_is_refused_as_a_registration():
-    """A missing document already refuses. A complete draft is the thing that
-    could be mistaken for a registration by being present, so it declares its
-    own status and the manifest reads it."""
-    verdict = manifest.assert_documents_adopted(REPO_ROOT)
-    assert verdict["adopted"] is False
-    documents = {f["document"] for f in verdict["findings"]}
+def test_both_governed_documents_declare_themselves_adopted():
+    """Adoption is a researcher act and it is recorded in the documents
+    themselves, where the manifest guard reads it.
+
+    The refusal for a document that does NOT say so is exercised in
+    ``test_a_missing_declaration_reads_as_a_draft`` and in
+    ``test_lifecycle.test_the_adoption_guard_reads_what_each_document_says_``
+    ``about_itself``, both against roots built for the purpose --- so this
+    pair of assertions is not the only thing standing between a draft and a
+    registration.
+    """
     from dci1v6 import PREREGISTRATION, REFERENCE_DESIGN_SPEC
 
-    assert documents == {PREREGISTRATION, REFERENCE_DESIGN_SPEC}
-    assert all(f["declared"] == manifest.DRAFT_MARKER
-               for f in verdict["findings"])
-    kinds = {b["kind"] for b in manifest.signing_blockers()}
-    assert "DRAFT_DOCUMENT" in kinds
+    verdict = manifest.assert_documents_adopted(REPO_ROOT)
+    assert verdict["adopted"] is True
+    assert verdict["findings"] == []
+    prereg = (REPO_ROOT / PREREGISTRATION).read_text()
+    assert "\n    status: ADOPTED\n" in prereg
+    assert manifest.DRAFT_MARKER not in prereg.split("## 2. The amendments")[0]
+    spec = json.loads((REPO_ROOT / REFERENCE_DESIGN_SPEC).read_text())
+    assert spec["_status"] == "ADOPTED"
+    assert "DRAFT_DOCUMENT" not in {b["kind"]
+                                    for b in manifest.signing_blockers()}
 
 
 def test_a_missing_declaration_reads_as_a_draft(tmp_path):
@@ -217,22 +231,29 @@ def test_a_missing_declaration_reads_as_a_draft(tmp_path):
     assert {f["declared"] for f in verdict["findings"]} == {"none"}
 
 
-def test_the_reference_design_spec_is_generated_and_says_it_is_a_draft():
+def test_the_reference_design_spec_is_generated_from_the_code():
     """It is derived from the registered code, so a spec that disagrees with
-    the implementation is not expressible."""
+    the implementation is not expressible --- and its `_status` is derived
+    too, from the three researcher acts it names, never chosen by the tool."""
     spec = json.loads((REPORTS / "reference_design_spec.json").read_text())
-    assert spec["_status"] == manifest.DRAFT_MARKER
     assert spec["candidate_library"]["sizes"] == K.assert_library_sizes()
     assert spec["composed_probe"]["measured_residual_sd"] == P.RESIDUAL_SD
     assert spec["composed_probe"]["residual_readings"] == list(
         P.RESIDUAL_READINGS)
     assert spec["design"]["gate4_entries_full_arm_set"] == 95
-    # Generated against the real decision registry, which has no record --- so
-    # every one of the twenty-seven is open in the artifact whatever a test
-    # fixture has closed in this process.
-    assert sorted(spec["open_decisions"]["ids"]) == sorted(
+    derived = spec["_status_is_derived_from"]
+    assert derived["n_decisions"] == 27
+    assert spec["_status"] == (
+        "ADOPTED" if derived["adopted"] else manifest.DRAFT_MARKER)
+    assert derived["adopted"] == (
+        derived["preregistration_status"] == "ADOPTED"
+        and not derived["open_decisions"]
+        and not derived["blocking_open_items"])
+    # Generated against the REAL decision registry, not this process's fixture
+    # one, so what it reports is what the researcher recorded.
+    assert sorted(spec["researcher_decisions"]["closed"]) == sorted(
         decisions.DECISION_IDS)
-    assert spec["open_decisions"]["count"] == 27
+    assert spec["open_decisions"]["ids"] == []
     assert spec["validity_components"]["composed_headroom_band"] == list(
         C.COMPOSED_HEADROOM_BAND)
 
@@ -251,7 +272,19 @@ def test_the_precision_report_reproduces_the_signed_gate4_verdicts():
                for row in report["policies"]["rows"]
                if row["n_composed"] > C.N_COMPOSED)
     feasibility = report["operating_point_feasibility"]
-    assert feasibility["every_replication_retains_an_operating_point"] is True
+    # The frozen-m* rule, applied to closed v5's own solo-B curves. What is
+    # pinned is the SHAPE --- that the artifact reports the verdict at the
+    # frozen m* and names the replications it would have stopped --- not the
+    # count. A test that asserted a survival number would make the number an
+    # expectation, and the number is a finding.
+    assert feasibility["residual_used"] == 0.0
+    assert isinstance(feasibility["every_frozen_m_star_passes"], bool)
+    stopped = feasibility["replications_whose_frozen_m_star_fails"]
+    assert (stopped == []) == feasibility["every_frozen_m_star_passes"]
+    assert set(stopped) <= set(feasibility["per_model"])
+    for entry in feasibility["per_model"].values():
+        assert entry["m_star_passes"] == entry["per_severity"][
+            str(entry["m_star"])]["passes"]
 
 
 # --------------------------------------------- the verdict rule's own inputs
@@ -353,15 +386,23 @@ def test_the_sensitivity_artifact_is_committed_and_sweeps_both_readings():
     """§34 D26 is the one decision with no derivation, so the grid it is to be
     chosen on has to exist as an artifact and not as a paragraph."""
     report = json.loads((REPORTS / "residual_sensitivity.json").read_text())
-    assert report["reselection_rule"] == "focal_only"
+    assert report["operating_point_rule"] == "frozen_at_gate2"
     seen = {(p["reading"], round(p["magnitude"], 4))
             for p in report["policies"]}
     assert seen == {(r, round(m, 4)) for r in P.RESIDUAL_READINGS
                     for m in (0.0, P.RESIDUAL_SD, 0.0687)}
-    # The finding that removes the circularity §12.4 left open: feasibility
-    # holds across the whole grid, so it is not the discriminator.
-    assert all(p["every_replication_retains_an_operating_point"]
-               for p in report["policies"])
+    # What the grid actually discriminates, under the frozen-m* rule: at the
+    # measured 0.0142 one of the four closed replications' m* fails the
+    # projection --- the one v5 terminated at Gate 4 --- and at the 95% upper
+    # bound all four do. Asserted as a shape, not as a number: the artifact
+    # must report the per-policy verdict and name the replications, so that
+    # no policy can be read as costless.
+    for policy in report["policies"]:
+        assert isinstance(policy["every_frozen_m_star_passes"], bool)
+        assert (policy["replications_whose_frozen_m_star_fails"] == []) == \
+            policy["every_frozen_m_star_passes"]
+        assert policy["n_replications_terminating_here"] == len(
+            policy["replications_whose_frozen_m_star_fails"])
     assert report["_scope_limit"].startswith("solo:B is one of the six")
 
 

@@ -58,24 +58,38 @@ from dci1v6.stages import feasibility                        # noqa: E402
 OUT = DCI1 / "reports" / "dci1v6" / "reference_feasibility.json"
 
 #: §34 D6 decides what an unmet §13.15 does, and ``evaluate_support`` refuses
-#: to name a disposition while it is open. **v6 has taken no decision and this
-#: does not give it one.** What is applied here is *v5's own signed record*,
-#: to re-read *v5's own data* under the disposition v5 ran --- the same move
-#: ``v6_expansion_dryrun.py`` makes when it reads U4's resolution off the
-#: record whose table it is replaying. Nothing is written, and the v6 record
-#: path is untouched: it still does not exist and no code may create it.
+#: to name a disposition while it is open. What is applied here is *v5's own
+#: signed record*, to re-read *v5's own data* under the disposition v5 ran ---
+#: the same move ``v6_expansion_dryrun.py`` makes when it reads U4's
+#: resolution off the record whose table it is replaying. Nothing is written
+#: and the v6 record is untouched; since v6 carries D0-D18 at v5's values this
+#: is normally a no-op, and `apply_recorded_closures` refuses a record that
+#: disagrees with a closure in force --- so a no-op is a check.
 V5_DECISIONS = DCI1 / "reports" / "dci1v5" / "researcher_decisions.json"
 MODELS = ("gemma-3n-e2b-it", "gemma-3n-e4b-it", "qwen3-4b",
           "qwen3-4b-instruct-2507")
 
 
-def _apply_v5_closures() -> list[str]:
-    """v5's decisions, for re-reading v5's data. Not a v6 closure."""
+def _apply_v5_closures() -> dict:
+    """v5's decisions, for re-reading v5's data. Not a v6 closure.
+
+    Since 2026-08-26 v6 has its own record, which carries D0-D18 at v5's
+    values, so this is normally a **no-op** --- and that is worth reporting
+    rather than hiding: ``apply_recorded_closures`` refuses a record that
+    disagrees with a closure already in force, so a no-op here is a positive
+    check that v6's carried values are v5's, on the data the report re-reads.
+    """
     if not V5_DECISIONS.exists():
         raise SystemExit(f"{V5_DECISIONS} is missing; this report re-reads "
                          "v5's data under v5's own recorded decisions and "
                          "will not supply a value in their place")
-    return list(decisions.apply_recorded_closures(V5_DECISIONS))
+    applied = list(decisions.apply_recorded_closures(V5_DECISIONS))
+    recorded = [e["id"] for e in decisions.recorded_closures(V5_DECISIONS)]
+    return {
+        "applied": applied,
+        "already_in_force": sorted(set(recorded) - set(applied)),
+        "n_recorded": len(recorded),
+    }
 
 
 def _records(model_key: str) -> dict:
@@ -163,11 +177,17 @@ def build() -> dict:
         "_generated_by": "dci1/tools/v6_reference_feasibility.py",
         "_decisions_applied": {
             "source": "dci1/reports/dci1v5/researcher_decisions.json",
-            "n_applied": len(applied),
-            "standing": "v5's own closures, applied in this process to "
-                        "re-read v5's own data. v6 has taken no decision; "
-                        "there is no v6 researcher-decision record and no "
-                        "code may create one"},
+            "n_recorded": applied["n_recorded"],
+            "n_applied": len(applied["applied"]),
+            "already_in_force_from_v6s_own_record":
+                applied["already_in_force"],
+            "standing":
+                "v5's own closures, applied in this process to re-read v5's "
+                "own data. v6's record carries D0-D18 at v5's values, so "
+                "these are normally already in force and nothing is applied "
+                "--- and `apply_recorded_closures` refuses a record that "
+                "disagrees with a closure in force, so a zero here is a check "
+                "that the carried values ARE v5's, not an omission"},
         "_one_implementation": (
             "the registered stages, this report and the operating-point "
             "search call dci1v6.stages.feasibility. There is no development "

@@ -76,7 +76,7 @@ SELECTION_TOKENS: tuple[str, ...] = ("replace", "substitut", "reselect",
 DEFERRED_CHECKS: tuple[int, ...] = (14,)
 
 #: The standing unresolved findings of
-#: ``dci1/reports/dci1v6/v5_prereg_redteam.md``, with the §34 decision each is
+#: ``dci1/reports/dci1v5/v5_prereg_redteam.md``, with the §34 decision each is
 #: registered as. They are listed **here** and not only in the report, because
 #: §33's checklist is what the audit runs and a finding that lives only in
 #: prose cannot fail a gate.
@@ -255,31 +255,36 @@ NAME_SCANNED_RECORDS: dict[str, dict[str, Any]] = {
     "GATE_2_75_COMPOSED_PROBE": {
         "outcomes": ("PASS", "COMPOSED_HEADROOM_UNREACHABLE"),
         # The probe's own three: it reads no reference, it substitutes and
-        # promotes nothing, and there is no second re-selection.
+        # promotes nothing, and no reselection of the operating point exists.
         "required_refusals": ("reference", "substitut", "reselection"),
         #: **The one registered exemption, and the scan found it rather than
-        #: anybody remembering it.** P3.3 and P3.4 require the record to say
-        #: whether m* was re-selected, so the field is called ``reselected``
-        #: --- and ``reselect`` is one of §13.14's five forbidden tokens. The
-        #: two facts read identically to a name scan, which is the same
-        #: problem ``DECLARED_REFUSALS_KEY`` exists for one level down.
+        #: anybody remembering it.** P3 requires the record to state whether
+        #: m* moved, so the field is called ``reselected`` --- and
+        #: ``reselect`` is one of §13.14's five forbidden tokens. The two
+        #: facts read identically to a name scan, which is the same problem
+        #: ``DECLARED_REFUSALS_KEY`` exists for one level down.
         #:
         #: The exemption is therefore **one named field with a stated
         #: reason**, not a pattern and not a blanket: any other field of this
         #: record naming a selection still fails, the field must actually be
         #: present (so a stale exemption cannot sit here unexercised), and the
-        #: record must still declare ``no_second_reselection_exists`` in its
-        #: refusals block. What §13.14 forbids is an **outcome-driven**
-        #: selection; the probe's single re-selection is driven by a rule
-        #: fixed before data, over Gate 2's already-measured solo curve, at a
-        #: point in the sequence where no reference exists.
+        #: record must still declare
+        #: ``no_reselection_of_the_operating_point_exists`` in its refusals
+        #: block. Since 2026-08-26 the field is a **standing negative**: m* is
+        #: frozen at ``GATE_2_FOCAL_CALIBRATION``, this stage has no branch
+        #: that returns a different one, and ``reselected`` is False on every
+        #: record it can produce. It is kept because §33 check 8 asks the
+        #: record to SAY so, and a record that said nothing would not be a
+        #: record that said no.
         "permitted_fields": {
-            "reselected": "P3.3/P3.4 require the record to state whether m* "
-                          "was re-selected. Exactly one re-selection is "
-                          "permitted, by the registered focal rule, over "
-                          "Gate 2's own solo curve, before any reference "
-                          "exists; §13.14's refusal is of OUTCOME-driven "
-                          "selection and this is not one"},
+            "reselected": "P3 requires the record to state whether m* moved. "
+                          "It cannot: §12.3 selects m* at GATE_2_FOCAL_"
+                          "CALIBRATION and GATE_2_75_COMPOSED_PROBE has no "
+                          "branch that returns another, so this field is "
+                          "False on every record and `assert_m_star_unmoved` "
+                          "refuses one where it is not. §13.14's refusal is "
+                          "of OUTCOME-driven selection and there is no "
+                          "selection here at all"},
         "section": "§13.11 and P3"},
 }
 
