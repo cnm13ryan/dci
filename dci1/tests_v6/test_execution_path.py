@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import ast
 import inspect
+import json
 from pathlib import Path
 
 import pytest
@@ -712,3 +713,122 @@ def test_agreement_is_not_claimed_when_there_is_nothing_to_compare():
         support={"holds": True}, secondary=None, secondary_support=None)
     assert agreement["compared"] is False
     assert agreement["statuses"] == []
+
+
+# ------------------------------------------------- §12.6/A16: no coordinate
+
+def _coverage_row(candidate, *, iota, tier=1, group="g1", family=None,
+                  cls="budget", solo=0.5, eligible=True):
+    """A row in the shape ``coverage_criterion`` registers."""
+    return {"candidate": candidate, "family": family or candidate.split(":")[0],
+            "severity": int(candidate.split(":")[1]),
+            "structural_tier": tier, "feature_group": group,
+            "constraint_class": cls, "iota": iota, "solo": solo,
+            "vacuity": 0.0, "eligible": eligible,
+            "eligibility": {"formulation": "E2", "eligible": eligible}}
+
+
+def test_a_rung_with_no_difficulty_coordinate_cannot_stop_the_stage():
+    """§12.6/A16. Every condition C1-C8 is a position relative to iota_A, and
+    ``CHANCE_DEGENERACY_MAX`` is the registered point at which iota does not
+    exist. The criterion used to read ``r["iota"]`` unguarded and died on a
+    ``TypeError`` mid-stage.
+
+    This is about the **class** of input, not about the rung that found it: a
+    coordinate-less row is constructed here directly, so the regression holds
+    whichever family, severity or model produces one next.
+    """
+    table = [_coverage_row("F1:1", iota=0.4), _coverage_row("F1:2", iota=0.9),
+             _coverage_row("XX:9", iota=None, solo=0.875)]
+    result = regime.coverage_criterion(table, iota_a=0.7)
+    assert [e["candidate"] for e in result["coordinate_undefined"]] == ["XX:9"]
+    assert result["n_coordinate_undefined"] == 1
+    assert result["coordinate_undefined"][0]["status"] == \
+        "DIFFICULTY_COORDINATE_DEGENERATE"
+    # dropped from the conditions, and the drop is legible in the counts
+    assert result["realised"]["n_eligible"] == 2
+    assert result["realised"]["n_eligible_before_coordinate_drop"] == 3
+
+
+def test_dropping_a_coordinateless_rung_can_never_help_a_condition_pass():
+    """A16's §32.1 argument, executable rather than asserted.
+
+    Every condition is an existence or a count, so removing a rung can only
+    make one harder to meet. The rule therefore cannot be what lets a
+    replication pass §12.6 --- which is the property that makes it adoptable
+    after the rungs were measured.
+    """
+    placed = [_coverage_row(f"F{i}:1", iota=0.3 + 0.1 * i, tier=1,
+                            family=f"F{i}", group=f"g{i}")
+              for i in range(6)]
+    ghost = _coverage_row("XX:9", iota=None, solo=0.875, tier=1, group="g9")
+    with_ghost = regime.coverage_criterion(placed + [ghost], iota_a=0.6)
+    without = regime.coverage_criterion(placed, iota_a=0.6)
+    for name, verdict in with_ghost["conditions"].items():
+        assert verdict == without["conditions"][name], name
+    assert with_ghost["decisive_met"] == without["decisive_met"]
+
+
+def test_the_eligibility_predicate_itself_is_untouched():
+    """U4 is closed at E2 and A16 does not reopen it.
+
+    A16 decides which *eligible* rungs carry a position, never which rungs are
+    eligible. A rung whose solo sits in the band is still eligible with no
+    iota at all --- that is exactly the case E2 admits and E1 cannot --- and
+    the criterion drops it afterwards rather than the predicate rejecting it.
+    """
+    row = {"iota": None, "solo": 0.875, "vacuity": 0.0}
+    assert regime.coverage_eligibility(row, formulation="E2")["eligible"]
+    assert not regime.coverage_eligibility(row, formulation="E1")["eligible"]
+    assert set(regime.ELIGIBILITY_FORMULATIONS) == {"E1", "E2"}
+
+
+def test_every_iota_reader_on_the_coverage_path_is_guarded():
+    """All three readers of ``iota`` on this path filter None first.
+
+    ``family_c4_state`` and ``expansion_plan_for_family`` always did, which is
+    why the crash was in ``coverage_criterion`` alone. Checked in the source
+    rather than by calling each one, so a fourth reader added later without a
+    guard fails here instead of mid-stage on a replication.
+    """
+    source = inspect.getsource(regime)
+    module = ast.parse(source)
+    functions = {n.name: n for n in ast.walk(module)
+                 if isinstance(n, ast.FunctionDef)}
+    for name in ("coverage_criterion", "family_c4_state",
+                 "expansion_plan_for_family"):
+        # normalised, because the guards are line-wrapped and a substring
+        # test against the raw source would depend on where black broke them
+        body = " ".join(ast.get_source_segment(source,
+                                               functions[name]).split())
+        reads_iota = '["iota"]' in body
+        guards = ('get("iota") is not None' in body
+                  or 'get("iota") is None' in body
+                  or '["iota"] is not None' in body)
+        assert not reads_iota or guards, (
+            f"{name} subscripts row['iota'] without filtering None first; "
+            "§12.6's conditions are positions relative to iota_A and a rung "
+            "with no coordinate has none (§11.2)")
+
+
+def test_the_degenerate_rungs_are_recorded_as_evidence():
+    """The measurement that caused a drop is durable, not only the drop.
+
+    ``coverage_criterion`` records which rungs it could not place;
+    ``tools/v6_degenerate_iota_rungs.py`` records the chance and solo
+    compliance behind each one, read from the generated rows. A drop whose
+    cause lived only in a traceback would not be checkable later.
+    """
+    report = (Path(__file__).resolve().parents[1] / "reports" / "dci1v6"
+              / "degenerate_iota_rungs.json")
+    if not report.exists():                      # pragma: no cover
+        pytest.skip("no REGIME_SCREEN rows on this checkout")
+    body = json.loads(report.read_text())
+    assert body["chance_degeneracy_max"] == C.CHANCE_DEGENERACY_MAX
+    for entry in (e for m in body["per_model"].values()
+                  for e in m["degenerate"]):
+        assert entry["iota"] is None
+        assert entry["status"] == "DIFFICULTY_COORDINATE_DEGENERATE"
+        # the reason is the measurement, and it is present
+        assert entry["chance_compliance"] >= C.CHANCE_DEGENERACY_MAX
+        assert entry["solo_compliance"] is not None

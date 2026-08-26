@@ -29,15 +29,19 @@ with its reason, §32.1 forbids weakening a criterion so that a gate passes,
 §32.2 requires a change adopted after a gate has run to be declared as such,
 and §32.3 freezes §13 from the first Gate-2.5 record.
 
-**One amendment has been taken since, and it is A15.** On 2026-08-26, after
+**Two amendments have been taken since: A15 and A16.** On 2026-08-26, after
 this line changed and still before any v6 behavioural row, the first attempt
 to execute §18 stage 1 exposed three defects in the documented entry point,
 one of which had made stage 1's readiness verdict irreversible. A15 makes it
 a refusal, retires the one record the fault produced without erasing it, and
 changes no threshold, estimand, criterion, model, reference rule, `m*` or
-claim. It is declared here rather than folded into the text above, because an
-amendment adopted after adoption is a different fact from a clause that was
-always there.
+claim. A16 followed on the same day, after registration and after two
+replications had generated their `REGIME_SCREEN` rows: §12.6's coverage
+criterion had no rule for a rung whose difficulty coordinate is undefined, and
+died on one. Both are declared here rather than folded into the text above,
+because an amendment adopted after adoption is a different fact from a clause
+that was always there — and A16 was adopted after an observation, which §32.2
+requires be said out loud.
 
 ## 0. What this document is, and what it incorporates
 
@@ -623,6 +627,96 @@ caller.
 when the fault occurred. `dci1/reports/dci1v6/incidents/2026-08-26_stage1_apparatus_fault.md`
 records the incident, the defect chain and the preserved hashes.
 
+### A16 — a rung with no difficulty coordinate is dropped from §12.6, and recorded
+
+**Adopted 2026-08-26, after this document was adopted, after v6's registration
+was signed, and after `GATE_0_APPARATUS` and the `REGIME_SCREEN` generation had
+run on two replications. §32.2 declares it as such, and the disclosure below
+is the point of the entry: this rule exists because a live v6 observation
+demanded it, and it was written knowing which rungs it would drop.**
+
+`GATE_0_APPARATUS` passed on all four replications. `REGIME_SCREEN` then
+failed on both replications that ran it, identically, with a `TypeError`:
+§12.6's `coverage_criterion` evaluated `tie_key(r["iota"])` on every eligible
+rung, and one rung had no `iota` at all.
+
+**Why a rung can have no coordinate.** `CHANCE_DEGENERACY_MAX = 0.99` is the
+registered point at which iota is undefined and §11.2 records
+`DIFFICULTY_COORDINATE_DEGENERATE`. That is a real measurement — unconstrained
+text already satisfies the constraint almost always — and not a missing one.
+
+**Why it became reachable in v6 and not v5.** §33's U4 has two registered
+constructions of §12.6's eligibility predicate, and A5 resolved it at **E2**:
+
+> E1: iota inside [0.10, 0.90] and pre-screen solo vacuity ≤ 0.10
+> E2: raw **solo compliance** inside [0.10, 0.90] and pre-screen solo vacuity ≤ 0.10
+
+Under E1 the eligibility coordinate *is* iota, so a coordinate-less rung is
+never eligible. Under E2 the coordinate is raw solo, which is measured
+whatever the chance level does — so a rung can be eligible and have no
+position on the iota axis at once. v5 ran E2 as well and never met the case,
+because every one of its coordinate-less rungs had solo above 0.9166 and was
+ineligible for a different reason. The code is byte-identical between the two
+revisions; only the data differed.
+
+> **The registered rule.** §12.6's `coverage_criterion` evaluates C1–C8 over
+> the eligible rungs **whose difficulty coordinate is defined**. A rung with
+> `iota` undefined is dropped from every condition and recorded on the stage
+> record under `coordinate_undefined`, with its status
+> `DIFFICULTY_COORDINATE_DEGENERATE`, its measured solo and chance compliance,
+> and the formulation under which it was eligible.
+>
+> §33's U4 is **not** reopened. E2 still decides eligibility on the quantity
+> it names. A16 decides only which *eligible* rungs carry a position, and the
+> §13.4 chance ceiling is not imported into §12.6's pre-screen predicate.
+
+**Why dropping, and why this is not a §32.1 weakening.** Every one of C1–C8 is
+an existence or a count — rungs on both sides, at least *N* feature groups per
+side, at least *N* near rungs, at least *N* straddling families, at least *N*
+eligible rungs, at least *N* Tier-1/2 families and groups, a Tier-3 budget rung
+near, at least *N* Tier-2 rungs. Removing a rung can therefore only make a
+condition harder to meet and never easier, whichever rungs turn out to be
+degenerate. The rule cannot be what lets a replication pass §12.6, and
+`tests_v6/test_execution_path.py` asserts that property executably rather than
+by argument: the conditions computed with a coordinate-less rung present and
+absent are required to be identical.
+
+The alternative reading — keep the rung eligible and exclude it only from the
+iota-indexed sets, so that it still counts toward C4's rung totals, C6's family
+and group counts and C7/C8's arms — is the **open** direction: it can only make
+a condition easier. It is rejected for that reason and not because of what
+either produces here.
+
+**The disclosure §32.2 requires.** This rule was not written in advance. It
+was written on 2026-08-26 after the stage had crashed, with the offending
+measurements already on the evidence tree and readable, and its author knew
+that `CR7:56` was the rung it would drop and knew that rung's solo and chance
+compliance on both replications. `reports/dci1v6/degenerate_iota_rungs.json`
+records all eighteen coordinate-less rungs the two replications measured, of
+which exactly one per replication is E2-eligible; the other eight each have
+solo at or above 0.9166 and were already outside the band. The direction was
+chosen by the argument above — that only one of the two readings can be
+adopted without the possibility of buying a pass — and not by computing which
+reading lets a replication continue.
+
+**What follows from it is a result.** C1–C8 are evaluated on the rungs that
+have positions, and whatever they return stands. If reference coverage fails,
+the replication records `REFERENCE_SUPPORT_NOT_IDENTIFIED` at design time and
+runs without the core and spectrum arms, exactly as §12.6 registers; no band
+is widened, no ceiling lowered, no severity authored and no rung reinstated to
+avoid it.
+
+**No model output was regenerated.** The rows the failed run produced were
+already signed onto the evidence tree, and the corrected criterion is
+evaluated on those exact rows: an analysis that crashed is not a reason to
+re-measure a model. `dci1/reports/dci1v6/incidents/2026-08-26_regime_screen_undefined_iota.md`
+records the incident and `READINESS.md` §16 the pass.
+
+**What A16 does not change.** No threshold, estimand, population, model,
+reference family, arm, seed, verifier, wording, claim ladder or headroom band;
+not U4's predicate; not `m*`; not §34 D23 or D26. `CHANCE_DEGENERACY_MAX` stays
+0.99 and §13.4's chance ceiling stays 0.75, each where it was.
+
 ## 3. §34: the registered open decisions
 
 Twenty-seven. D0–D18 are v5's, carried forward and requiring their own closure
@@ -696,7 +790,7 @@ Four quantities are fitted to v5 observations:
    magnitudes are all read off the closed v5 record — and, with the closure of
    §34 D26 at `0.0142`, the value the projection actually carries.
 
-**And two changes are declared under §32.2 in the other direction.**
+**And three changes are declared under §32.2 in the other direction.**
 A13's frozen-m\* rule was adopted on 2026-08-26 after the closed v5 record had
 been read, and it replaces a re-selection rule an earlier draft of this
 document carried. It is a **tightening** — a replication whose m\* lacks
@@ -714,6 +808,17 @@ and a study that could not be registered still cannot be. What it changes is
 that a *readiness* verdict — a statement about outstanding researcher work —
 no longer ends a replication, and that the one record the fault produced is
 retained and hash-bound rather than erased or honoured.
+
+A16 is the third, and it is the one adopted after a v6 observation rather
+than a v5 one. §12.6's coverage criterion had no rule for an eligible rung
+whose difficulty coordinate is undefined; the first live `REGIME_SCREEN` met
+one and the stage died. The rule was written afterwards, with the offending
+measurements already readable on the evidence tree, and its author knew which
+rung it would drop. It is declared under §32.2 for exactly that reason. The
+direction — drop the rung — is the one that can only make §12.6's conditions
+harder to satisfy, so it cannot be a change that buys a replication a pass;
+the alternative reading is the one that could, and is rejected on that
+ground rather than on what either produces. See A16.
 
 Per §30's precedent, **retrospective behaviour on v5 is not prospective
 validation.** v6 is the prospective test of these choices and may not claim
