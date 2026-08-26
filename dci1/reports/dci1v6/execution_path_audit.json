@@ -28,11 +28,11 @@
   "D25": "survivor_ladder_only",
   "D26": 0.0142
  },
- "n_rules": 71,
- "n_agreeing": 71,
+ "n_rules": 73,
+ "n_agreeing": 73,
  "by_status": {
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 69
+  "VERIFIED_REACHABLE": 71
  },
  "contract": {
   "n_fields": 164,
@@ -2371,6 +2371,45 @@
     "refused": "ProtocolError: GATE_2_FOCAL_CALIBRATION froze m* = 8 and the GATE_2_75_COMPOSED_PROBE record says 9. m* is selected once, by \u00a712.3's focal rule on the solo B curve, and no later stage may move it; a probe record that disagrees is a defect and this refuses rather than following it"
    },
    "expected": "no reselection, one probed severity, and Gate 3A, Gate 4 and the freeze all at Gate 2's m*"
+  },
+  "stage_one_readiness_is_retryable": {
+   "scenario": "stage_one_readiness_is_retryable",
+   "branch": "\u00a718 stage 1's readiness verdict (A15)",
+   "refused": {
+    "status": "REGISTRATION_INCOMPLETE",
+    "blockers": [
+     "DRAFT_DOCUMENT"
+    ]
+   },
+   "after_refusal": {
+    "terminal_report": false,
+    "stage_record": false,
+    "transition_outcomes": [
+     "REFUSED"
+    ]
+   },
+   "retry_outcome": "PASS",
+   "expected": "REFUSED then PASS, with no terminal report"
+  },
+  "stage_one_apparatus_fault_is_retired": {
+   "scenario": "stage_one_apparatus_fault_is_retired",
+   "branch": "\u00a732/A15's pre-manifest retirement",
+   "blocked_before_retirement": {
+    "refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"
+   },
+   "retired_record_hash": "cde669bbc3603fd68e9e09e702e98c4576a2dc1dc7140e8370916c30e4d187b3",
+   "retained_bytes_identical": true,
+   "live_path_cleared": true,
+   "transition_outcomes": [
+    "REFUSED",
+    "RETIRED",
+    "PASS"
+   ],
+   "stage_one_outcome": "PASS",
+   "bound_into_the_manifest": [
+    "cde669bbc3603fd68e9e09e702e98c4576a2dc1dc7140e8370916c30e4d187b3"
+   ],
+   "expected": "refused, retired, then PASS with the hash bound"
   }
  },
  "rules": [
@@ -2856,6 +2895,36 @@
    "impl": "dci1v6.protocol.manifest.signing_blockers",
    "field": "PROTOCOL_REGISTERED.protocol_hash",
    "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-18-readiness-refusal",
+   "section": "\u00a718 stage 1, A15",
+   "area": "registration",
+   "meaning": "a stage-1 readiness verdict is a REFUSAL, not a \u00a728 terminal outcome. Every blocker names work a researcher has to do, so a terminating verdict made the whole vocabulary unreachable --- the first invocation that found any of it outstanding killed the replication. It writes no record and no terminal report, logs a REFUSED transition carrying the blockers, and the stage may be attempted again once the prerequisite is met. The criterion is unchanged",
+   "runtime": "dci1v6.run.lifecycle.log_readiness_refusal",
+   "impl": "dci1v6.run.registration_run.registration_payload",
+   "field": "PROTOCOL_REGISTERED.protocol_hash",
+   "consumer": null,
+   "scenario": "stage_one_readiness_is_retryable",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-32-apparatus-fault-retirement",
+   "section": "\u00a732, A15",
+   "area": "registration",
+   "meaning": "the pre-manifest recovery: a readiness verdict an apparatus fault wrote as a \u00a728.3 terminal report is RETAINED under superseded/apparatus_fault/<record hash>/ and named in every registration signed afterwards. It refuses for any other gate, any \u00a728 terminal status, once a manifest exists, once any row has been generated, and on a hash that does not match --- so it can revive nothing scientific",
+   "runtime": "dci1v6.run.registration_run.retire_apparatus_fault",
+   "impl": "dci1v6.protocol.manifest.apparatus_faults",
+   "field": "PROTOCOL_REGISTERED.manifest_hash",
+   "consumer": null,
+   "scenario": "stage_one_apparatus_fault_is_retired",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",
    "detail": "",

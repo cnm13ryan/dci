@@ -530,8 +530,36 @@ VERIFIER_BOUND_ENTRY_POINTS = (
 )
 
 # ------------------------------------------------------------ §28 statuses
+#: §18 stage 1's readiness vocabulary, and **not** a §28 terminal outcome
+#: (amendment A15, 2026-08-26).
+#:
+#: `REGISTRATION_INCOMPLETE` names a study that is not yet ready to be signed:
+#: a decision still open, a specification question unresolved, a topic hash
+#: missing, a candidate population unapproved, a floor unspecified, a model
+#: revision unpinned, a design not derivable, a governed document still a
+#: draft. Every one of those is work a **researcher** has to do, and
+#: `decisions.choice()` says so in its own text --- "§18 stage 1 returns
+#: REGISTRATION_INCOMPLETE *until then*". "Until then" presupposes a later
+#: attempt.
+#:
+#: It sat in `TERMINAL_STATUSES` until 2026-08-26, so the first invocation
+#: that found any of that work outstanding wrote a §28.3 terminal report and
+#: `assert_predecessor_passed` disabled the replication permanently. The whole
+#: `signing_blockers` vocabulary was therefore unreachable by construction,
+#: and on 2026-08-26 a mis-invoked CLI proved it: `gemma-3n-e2b-it` was
+#: terminated by a `--repo-root` that never reached the runner, before any
+#: manifest and before any row.
+#:
+#: The criterion is unchanged --- `signing_blockers` decides readiness exactly
+#: as it did. What changed is that a readiness verdict is a **refusal**:
+#: `run.lifecycle.ReadinessRefusal` logs a REFUSED transition, writes no stage
+#: record and no terminal report, and leaves the replication retryable once
+#: the prerequisite is met. Nothing else moved: every §28 status below is as
+#: irreversible as it was.
+READINESS_REFUSAL_STATUSES = ("REGISTRATION_INCOMPLETE",)
+
 TERMINAL_STATUSES = (
-    "REGISTRATION_INCOMPLETE", "QUALIFICATION_FAILURE", "APPARATUS_FAILURE",
+    "QUALIFICATION_FAILURE", "APPARATUS_FAILURE",
     "RESPONSE_LENGTH_INCOMPATIBLE", "TARGET_RANGE_EXHAUSTED",
     "FOCAL_RANGE_EXHAUSTED", "GRID_RESOLUTION_INSUFFICIENT",
     "REGIME_NOT_FOUND", "COMPOSED_HEADROOM_FAILURE",
@@ -547,6 +575,12 @@ TERMINAL_STATUSES = (
 #: New in v6, named so a reader can see what the revision added.
 NEW_TERMINAL_STATUSES = ("COMPOSED_HEADROOM_UNREACHABLE",)
 assert set(NEW_TERMINAL_STATUSES) <= set(TERMINAL_STATUSES)
+#: A15: the two vocabularies are disjoint, and that is what makes the
+#: distinction structural rather than a convention a caller could ignore.
+#: `TerminalStatus` refuses a status outside `TERMINAL_STATUSES` and
+#: `write_terminal_report` refuses one too, so a readiness status can no
+#: longer reach §28.3's record by any path.
+assert not set(READINESS_REFUSAL_STATUSES) & set(TERMINAL_STATUSES)
 IDENTIFICATION_STATUSES = (
     "REFERENCE_SUPPORT_NOT_IDENTIFIED", "EXCESS_NOT_IDENTIFIED",
     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED", "CANDIDATE_RESERVE_EXHAUSTED",

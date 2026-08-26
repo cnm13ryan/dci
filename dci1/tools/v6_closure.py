@@ -43,26 +43,61 @@ from pathlib import Path
 DCI1_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(DCI1_ROOT / "src"))
 
+from dci1v4.engine import fs                                     # noqa: E402
+from dci1v4.engine.signing import verify_signed                  # noqa: E402
 from dci1v4.models.registry import MODELS                        # noqa: E402
 from dci1v4.protocol.hashing import sha_obj                      # noqa: E402
 from dci1v6.engine.context import registered_context             # noqa: E402
 from dci1v6.engine.paths import model_tree                       # noqa: E402
 from dci1v6.protocol import constants as C                       # noqa: E402
 from dci1v6.protocol import decisions                            # noqa: E402
+from dci1v6.engine import paths, transitions                     # noqa: E402
 from dci1v6.run import lifecycle                                 # noqa: E402
 
 OUT = DCI1_ROOT / "reports" / "dci1v6" / "closure.json"
 
 
 def _terminal_statuses(context, model_keys: list[str]) -> dict[str, str]:
-    """Each non-surviving replication's §28 status, read from its report."""
+    """Each non-surviving replication's §28 status, read from its report.
+
+    **Verified, and unwrapped.** A terminal report is a *signed* record ---
+    ``{"payload": ..., "record_hash": ..., "signature": ...}`` --- and this
+    read the outer object, so ``status`` was never there and every terminal
+    status in the study's closing record would have read ``UNKNOWN``. Nothing
+    surfaced it because no v6 replication had ever terminated; the 2026-08-26
+    apparatus fault put a report on the tree and the artifact went stale
+    naming a status it could not read. It now goes through
+    ``transitions.terminal_status``, the one reader that knows the shape, and
+    verifies the signature first --- a closing record that repeated an
+    unverifiable verdict would be worse than one that refused.
+    """
     out: dict[str, str] = {}
     for model_key in model_keys:
         tree = model_tree(context, model_key)
         if not tree.terminal_report.exists():
             continue
-        payload = json.loads(tree.terminal_report.read_text())
-        out[model_key] = str(payload.get("status", "UNKNOWN"))
+        verify_signed(fs.read_json(tree.terminal_report),
+                      context.signing_key_path,
+                      where=f"{model_key}:terminal_report")
+        out[model_key] = str(transitions.terminal_status(tree))
+    return out
+
+
+def _apparatus_faults(context) -> list[dict[str, object]]:
+    """Every stage-1 readiness verdict this study retired (A15).
+
+    Reported in the closing record because it is where a reader looks for
+    what happened to each replication, and a retirement that appeared only in
+    the registration manifest would be invisible to that reader.
+    """
+    out: list[dict[str, object]] = []
+    for path in paths.apparatus_fault_records(Path(context.study_root)):
+        body = json.loads(path.read_text())
+        body = body.get("payload", body)
+        out.append({k: body.get(k) for k in
+                    ("model_key", "retired_record_hash", "retired_status",
+                     "retired_gate", "reason", "defect", "amendment",
+                     "retained_at", "retired_at")})
     return out
 
 
@@ -94,6 +129,11 @@ def build() -> dict[str, object]:
         "survivors": list(survivors),
         "n_survivors": len(survivors),
         "terminal_statuses": terminal,
+        # A15. A retired apparatus fault is not a terminal status and never
+        # appears above; it is reported separately so that a replication
+        # whose stage-1 attempt was refused by a defect in the caller is
+        # readable as exactly that, and never as a verdict about the model.
+        "apparatus_faults": _apparatus_faults(context),
         "last_stage_recorded": _reached(context, model_keys),
         "firewall": "§6.1: four replications analysed separately and never "
                     "pooled; no cross-model scalar carries a claim, and §15 "

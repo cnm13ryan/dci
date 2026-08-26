@@ -398,6 +398,35 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v6.protocol.manifest.signing_blockers",
      "field": "PROTOCOL_REGISTERED.protocol_hash",
      "consumer": None, "expect": VERIFIED},
+    {"id": "R-18-readiness-refusal", "section": "§18 stage 1, A15",
+     "area": "registration",
+     "meaning": "a stage-1 readiness verdict is a REFUSAL, not a §28 "
+                "terminal outcome. Every blocker names work a researcher has "
+                "to do, so a terminating verdict made the whole vocabulary "
+                "unreachable --- the first invocation that found any of it "
+                "outstanding killed the replication. It writes no record and "
+                "no terminal report, logs a REFUSED transition carrying the "
+                "blockers, and the stage may be attempted again once the "
+                "prerequisite is met. The criterion is unchanged",
+     "runtime": "dci1v6.run.lifecycle.log_readiness_refusal",
+     "impl": "dci1v6.run.registration_run.registration_payload",
+     "field": "PROTOCOL_REGISTERED.protocol_hash",
+     "consumer": None, "scenario": "stage_one_readiness_is_retryable",
+     "expect": VERIFIED},
+    {"id": "R-32-apparatus-fault-retirement", "section": "§32, A15",
+     "area": "registration",
+     "meaning": "the pre-manifest recovery: a readiness verdict an apparatus "
+                "fault wrote as a §28.3 terminal report is RETAINED under "
+                "superseded/apparatus_fault/<record hash>/ and named in every "
+                "registration signed afterwards. It refuses for any other "
+                "gate, any §28 terminal status, once a manifest exists, once "
+                "any row has been generated, and on a hash that does not "
+                "match --- so it can revive nothing scientific",
+     "runtime": "dci1v6.run.registration_run.retire_apparatus_fault",
+     "impl": "dci1v6.protocol.manifest.apparatus_faults",
+     "field": "PROTOCOL_REGISTERED.manifest_hash",
+     "consumer": None, "scenario": "stage_one_apparatus_fault_is_retired",
+     "expect": VERIFIED},
     {"id": "R-13.7-stability", "section": "§13.7", "area": "V(R)",
      "meaning": "each candidate is equivalent across the two splits",
      "runtime": "dci1v6.stages.stability.stability_verdict",

@@ -6,11 +6,11 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **71 registered rules** audited.
-- **71 agree** with their expected status.
-- By status: **2** VERIFIED_CONDITIONAL, **69** VERIFIED_REACHABLE.
+- **73 registered rules** audited.
+- **73 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **71** VERIFIED_REACHABLE.
 - Contract: 164 fields, 431 checked against real payloads (164 field-presence, 267 consumption, 4 semantic), **0 defects**.
-- Scenarios run: **17**.
+- Scenarios run: **19**.
 
 ## regime
 
@@ -73,6 +73,8 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
 | `R-18.1-draft-document` | §18 | a registration binds two documents by hash, and a COMPLETE DRAFT is exactly what could be mistaken for a registration by being present. Both documents declare their own status and the manifest refuses while either says it is a draft; silence reads as a draft, because the safe reading of silence here is the one that refuses | `dci1v6.protocol.manifest.assert_documents_adopted` | `dci1v6.protocol.manifest.signing_blockers` | `PROTOCOL_REGISTERED.protocol_hash` | — | **VERIFIED_REACHABLE** |
+| `R-18-readiness-refusal` | §18 stage 1, A15 | a stage-1 readiness verdict is a REFUSAL, not a §28 terminal outcome. Every blocker names work a researcher has to do, so a terminating verdict made the whole vocabulary unreachable --- the first invocation that found any of it outstanding killed the replication. It writes no record and no terminal report, logs a REFUSED transition carrying the blockers, and the stage may be attempted again once the prerequisite is met. The criterion is unchanged | `dci1v6.run.lifecycle.log_readiness_refusal` | `dci1v6.run.registration_run.registration_payload` | `PROTOCOL_REGISTERED.protocol_hash` | — | **VERIFIED_REACHABLE** |
+| `R-32-apparatus-fault-retirement` | §32, A15 | the pre-manifest recovery: a readiness verdict an apparatus fault wrote as a §28.3 terminal report is RETAINED under superseded/apparatus_fault/<record hash>/ and named in every registration signed afterwards. It refuses for any other gate, any §28 terminal status, once a manifest exists, once any row has been generated, and on a hash that does not match --- so it can revive nothing scientific | `dci1v6.run.registration_run.retire_apparatus_fault` | `dci1v6.protocol.manifest.apparatus_faults` | `PROTOCOL_REGISTERED.manifest_hash` | — | **VERIFIED_REACHABLE** |
 
 ## expansion
 
@@ -164,4 +166,6 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `coordinate_secondary_not_computable` | §17.6 with no secondary, §20 | `{"masked_step_9": "MASKED_PHASE", "masked_step_12": "NOT_REGISTERED_FOR_INFERENCE", "compared": false, "statuses": [], "expected": "the masked phase computes no raw replication and the comparison records that rather than a disagreement"}` |
 | `probe_terminates_at_the_frozen_m_star` | P3.6: the frozen m* has no composed headroom | `{"terminal": "COMPOSED_HEADROOM_UNREACHABLE", "criterion": "P3.6: at the frozen m* at least one DETERMINATE entry --- solo:A, solo:B or one of the two orders of pair:A+B --- does not keep its projected Gate-4 interval inside \u00a713.14's unchanged band [0.05, 0.95]. m* is \u00a712.3's choice and th` |
 | `probe_passes_at_the_frozen_m_star` | P3.3: the frozen m* has composed headroom | `{"m_star_frozen_at_gate2": 8, "probe_m_star_in": 8, "probe_m_star_out": 8, "reselected": false, "reselections_permitted": 0, "severities_probed": [8], "admissible_severities": [7, 8, 9, 10, 11, 12], "gate3a_m_star": 8, "gate3a_qualified_at": 8, "gate3c_support_met": true, "gate4_m_star": 8, "freeze_` |
+| `stage_one_readiness_is_retryable` | §18 stage 1's readiness verdict (A15) | `{"refused": {"status": "REGISTRATION_INCOMPLETE", "blockers": ["DRAFT_DOCUMENT"]}, "after_refusal": {"terminal_report": false, "stage_record": false, "transition_outcomes": ["REFUSED"]}, "retry_outcome": "PASS", "expected": "REFUSED then PASS, with no terminal report"}` |
+| `stage_one_apparatus_fault_is_retired` | §32/A15's pre-manifest retirement | `{"blocked_before_retirement": {"refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"}, "retired_record_hash": "cde669bbc3603fd68e9e09e702e98c4576a2dc1dc` |
 

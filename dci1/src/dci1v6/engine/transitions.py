@@ -5,9 +5,10 @@ study, no post-freeze mutation --- with **one addition that is the point of
 this revision's implementation**: a stage may not run while a §34 decision it
 depends on is open. ``assert_transition_legal`` calls
 ``decisions.assert_decisions_closed_for_stage``, and ``PROTOCOL_REGISTERED``
-depends on all nineteen, so with the draft as it stands **no v5 stage can
-run**. That is the intended state and §18 stage 1's failure status
-``REGISTRATION_INCOMPLETE`` is its name.
+depends on all of them, so while any is open **no v6 stage can run**. §18
+stage 1's readiness status ``REGISTRATION_INCOMPLETE`` is that state's name,
+and since A15 it is a refusal rather than a terminal outcome: the researcher
+closes the decision and stage 1 is attempted again.
 
 The rules, all six enforced here and none of them documentation:
 
@@ -18,7 +19,9 @@ The rules, all six enforced here and none of them documentation:
   a record is an ``IntegrityError``, not an overwrite.
 * **Terminal is terminal.** Once a replication has written a terminal report,
   every later stage is mechanically disabled, and ``TERMINAL_SENTENCE``
-  travels with the refusal.
+  travels with the refusal. A §18 stage-1 *readiness* verdict is not one of
+  these and never writes that report --- see ``run.lifecycle.ReadinessRefusal``
+  and amendment A15.
 * **One study.** A record belongs to the study whose id it carries. A record
   from another revision is refused *where it is read*, not merely absent from
   the path it is looked for in.
@@ -264,8 +267,24 @@ def write_stage_record(tree: ModelTree, stage: str, payload: dict[str, Any]
 
 
 def write_terminal_report(tree: ModelTree, payload: dict[str, Any]) -> Path:
-    """§28.3's terminal record, carrying the registered sentence verbatim."""
+    """§28.3's terminal record, carrying the registered sentence verbatim.
+
+    A **readiness** status may not be written here (A15). §18 stage 1's
+    ``REGISTRATION_INCOMPLETE`` names outstanding researcher work rather than
+    a scientific outcome, and this record is what
+    ``assert_predecessor_passed`` reads to disable a replication forever; the
+    two vocabularies are disjoint at import so the refusal below is
+    structural, and it is named separately so the caller is told which path it
+    wants rather than that its status is unregistered.
+    """
     status = payload.get("status")
+    if status in C.READINESS_REFUSAL_STATUSES:
+        raise ProtocolError(
+            f"{status!r} is a §18 stage-1 readiness refusal, not a §28 "
+            "terminal outcome, and §28.3's report is irreversible. Raise "
+            "`run.lifecycle.ReadinessRefusal`, which logs a REFUSED "
+            "transition and leaves the replication retryable once the "
+            "prerequisite is met (A15)")
     if status not in C.TERMINAL_STATUSES:
         raise ProtocolError(
             f"{status!r} is not a registered v5 terminal status. "

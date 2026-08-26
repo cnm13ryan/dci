@@ -660,6 +660,150 @@ def scenario_probe_passes_at_the_frozen_m_star(root: Path) -> dict[str, Any]:
     }
 
 
+# ------------------------------------------------- A15: stage 1, both ways
+
+def _draft_root(root: Path) -> Path:
+    """A repository root whose two governed documents declare themselves
+    drafts. Not the study's own: a scenario that read the real preregistration
+    would start passing or failing on a marker it has no business depending
+    on."""
+    from dci1v6 import PREREGISTRATION, REFERENCE_DESIGN_SPEC
+    from dci1v6.protocol.manifest import DRAFT_MARKER
+    import json as _json
+
+    root.mkdir(parents=True, exist_ok=True)
+    prereg = root / PREREGISTRATION
+    prereg.parent.mkdir(parents=True, exist_ok=True)
+    prereg.write_text(f"# SCENARIO PLACEHOLDER\n\nstatus: {DRAFT_MARKER}\n")
+    spec = root / REFERENCE_DESIGN_SPEC
+    spec.parent.mkdir(parents=True, exist_ok=True)
+    spec.write_text(_json.dumps({"_what": "SCENARIO PLACEHOLDER",
+                                 "_status": DRAFT_MARKER}) + "\n")
+    return root
+
+
+def _stage_one(tree: Any, *, repo_root: Path, commit: str,
+               bank: Any) -> Any:
+    """Stage 1 through the production runner, at a named repository root."""
+    from dci1v6.run import registration_run
+
+    return registration_run.run_registration(
+        tree, producing_commit=commit,
+        adoption={"status": "SYNTHETIC", "note": "scenario"},
+        repo_root=repo_root, environment_digest="scenario", bank=bank)
+
+
+def scenario_stage_one_readiness_is_retryable(root: Path) -> dict[str, Any]:
+    """18. A15: a readiness blocker refuses, and the retry succeeds.
+
+    The branch the 2026-08-26 incident took, driven twice on **one** tree.
+    Under the old rule the first call ended the replication; under the
+    registered one it leaves a REFUSED row and nothing else, and the second
+    call --- identical but for a root whose documents are adopted --- passes.
+
+    The criterion is untouched: both calls run the same
+    ``signing_blockers``, and what separates them is whether the documents
+    declare themselves drafts.
+    """
+    from dci1v6.run.lifecycle import ReadinessRefusal
+
+    repo, commit = SL.synthetic_repo(root / "adopted")
+    context = synthetic_context(root / "evidence", repo_root=repo)
+    tree = model_tree(context, SL.MODEL_KEY)
+    tree.root.mkdir(parents=True, exist_ok=True)
+    context.signing_key_path.parent.mkdir(parents=True, exist_ok=True)
+    from dci1v4.engine.signing import create_signing_key
+    if not context.signing_key_path.exists():
+        create_signing_key(context.signing_key_path)
+    the_bank = SL.bank()
+
+    refused: dict[str, Any] = {}
+    try:
+        _stage_one(tree, repo_root=_draft_root(root / "draft"),
+                   commit=commit, bank=the_bank)
+    except ReadinessRefusal as refusal:
+        refused = {"status": refusal.status,
+                   "blockers": [b["kind"] for b in refusal.observed]}
+    rows = transitions.transition_rows(tree)
+    after_refusal = {
+        "terminal_report": tree.terminal_report.exists(),
+        "stage_record": tree.stage_record(C.STAGE_REGISTERED).exists(),
+        "transition_outcomes": [r["outcome"] for r in rows],
+    }
+    retry = _stage_one(tree, repo_root=repo, commit=commit, bank=the_bank)
+    return {"branch": "§18 stage 1's readiness verdict (A15)",
+            "refused": refused, "after_refusal": after_refusal,
+            "retry_outcome": retry.outcome,
+            "expected": "REFUSED then PASS, with no terminal report"}
+
+
+def scenario_stage_one_apparatus_fault_is_retired(root: Path
+                                                  ) -> dict[str, Any]:
+    """19. A15's recovery: the exact 2026-08-26 record, retired and bound.
+
+    The terminal report is reconstructed by signing the payload directly,
+    because ``write_terminal_report`` now refuses a readiness status --- that
+    refusal is the amendment, so a scenario about recovering the historical
+    record cannot use the current writer to produce one.
+
+    What it drives is the production path: the replication is refused while
+    the record stands, ``retire_apparatus_fault`` retains it under
+    ``superseded/apparatus_fault/<record hash>/``, stage 1 then passes, and
+    the manifest it signs carries the retired hash inside its own signature.
+    """
+    import json as _json
+
+    from dci1v4.engine.signing import create_signing_key, sign_payload
+    from dci1v4.protocol.hashing import sha_bytes
+    from dci1v6.protocol import manifest as manifest_mod
+    from dci1v6.run import registration_run
+
+    repo, commit = SL.synthetic_repo(root / "adopted")
+    context = synthetic_context(root / "evidence", repo_root=repo)
+    tree = model_tree(context, SL.MODEL_KEY)
+    tree.root.mkdir(parents=True, exist_ok=True)
+    context.signing_key_path.parent.mkdir(parents=True, exist_ok=True)
+    if not context.signing_key_path.exists():
+        create_signing_key(context.signing_key_path)
+    the_bank = SL.bank()
+
+    payload = {"status": "REGISTRATION_INCOMPLETE", "model_key": SL.MODEL_KEY,
+               "gate": C.STAGE_REGISTERED, "criterion": "§34",
+               "observed": [{"kind": "DRAFT_DOCUMENT", "n": 2}],
+               "producing_commit": commit,
+               "strongest_permissible_statement": C.TERMINAL_SENTENCE,
+               "terminal_sentence": C.TERMINAL_SENTENCE}
+    tree.terminal_report.write_text(_json.dumps(
+        sign_payload(payload, context.signing_key_path),
+        indent=2, sort_keys=True) + "\n")
+    record_hash = sha_bytes(tree.terminal_report.read_bytes())
+    original = tree.terminal_report.read_bytes()
+
+    blocked = _terminal(lambda: _stage_one(tree, repo_root=repo,
+                                           commit=commit, bank=the_bank))
+    retirement = registration_run.retire_apparatus_fault(
+        tree, record_hash=record_hash,
+        reason="a caller's configuration defect, not a verdict about a model",
+        defect="the CLI did not forward --repo-root to run_registration",
+        amendment={"id": "A15", "document": "scenario"},
+        producing_commit=commit, decided_by="scenario",
+        decided_on="2026-08-26")
+    retained = Path(retirement["retained_at"]) / tree.terminal_report.name
+    outcome = _stage_one(tree, repo_root=repo, commit=commit, bank=the_bank)
+    bound = manifest_mod.load_manifest(context)["apparatus_faults"]
+    return {"branch": "§32/A15's pre-manifest retirement",
+            "blocked_before_retirement": blocked,
+            "retired_record_hash": retirement["retired_record_hash"],
+            "retained_bytes_identical": retained.read_bytes() == original,
+            "live_path_cleared": not tree.terminal_report.exists(),
+            "transition_outcomes": [r["outcome"] for r in
+                                    transitions.transition_rows(tree)],
+            "stage_one_outcome": outcome.outcome,
+            "bound_into_the_manifest": [f["retired_record_hash"]
+                                        for f in bound["retired"]],
+            "expected": "refused, retired, then PASS with the hash bound"}
+
+
 SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "normal_full_path": scenario_normal_full_path,
     "no_viable_regime": scenario_no_viable_regime,
@@ -682,6 +826,10 @@ SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
         scenario_probe_terminates_at_the_frozen_m_star,
     "probe_passes_at_the_frozen_m_star":
         scenario_probe_passes_at_the_frozen_m_star,
+    "stage_one_readiness_is_retryable":
+        scenario_stage_one_readiness_is_retryable,
+    "stage_one_apparatus_fault_is_retired":
+        scenario_stage_one_apparatus_fault_is_retired,
 }
 
 
