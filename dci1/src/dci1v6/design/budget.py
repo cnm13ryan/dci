@@ -138,16 +138,28 @@ def composed_topic_plan() -> dict[str, Any]:
     property and no threshold change is proposed; what is open is whether v6
     leaves the precision where v5 had it.
 
-    All three branches exist. **None of them touches [0.05, 0.95]**: the
-    criterion is unchanged in every branch, which is why enlarging the set is
-    a precision change and not a threshold relaxation.
+    **§34 D21 is an acceptance, not a selection, since 2026-08-26.** Both
+    alternatives the register once offered are recorded under
+    ``unimplemented_alternatives`` and cannot be closed at:
+
+    * ``enlarge_composed_set`` was never executable. Gate 4 reads
+      ``bank.topics("composed")``, which is the v4 split of ``N_COMPOSED``
+      topics and is not derived from this plan, so closing there would have
+      put 48 in the manifest while Gate 4 measured 24 --- and the topics do
+      not exist to enlarge with: §6.2's sequestered eighth was never
+      materialised in this repository.
+    * ``interval_criterion`` implemented nothing. It returned the registered
+      per-area count and appeared nowhere else, so a researcher closing there
+      believing they had changed §13.14's criterion would have got §13.14
+      exactly as registered.
+
+    What is left is the acceptance: §13.14 stands as registered, a v6 Gate-4
+    record is exactly comparable with v5's, and the precision reasoning lives
+    in ``GATE_2_75``'s projection where there is no v5 counterpart to break
+    comparability with.
     """
-    per_area = decisions.choice(
-        "D21",
-        {"as_registered": C.COMPOSED_PER_AREA,
-         "enlarge_composed_set": C.COMPOSED_PER_AREA * 2,
-         "interval_criterion": C.COMPOSED_PER_AREA},
-        where="design.budget.composed_topic_plan")
+    decisions.assert_decisions_closed_for("design.budget.composed_topic_plan")
+    per_area = C.COMPOSED_PER_AREA
     n_composed = per_area * C.N_AREAS
     spent = (C.N_PRESCREEN + C.N_CALIBRATION + n_composed + C.N_CONFIRMATORY)
     sequestered = C.N_TOPICS - spent
@@ -251,7 +263,9 @@ def calibration_burden(cells: int) -> dict[str, Any]:
     if it were arm-independent, with a literal ``5`` where the cell count
     belongs, which is how the budget came to disagree with §19.
 
-    §34 D16 is closed at ``complete_population``, so both splits measure the
+    §34 D16's standing proposal is ``complete_population`` --- v5's actual
+    closure, restated in the register on 2026-08-26 --- so both splits measure
+    the
     whole carried set and the candidate term is doubled relative to the
     ``a_survivors`` proposal it replaced. That is the largest single term in
     the pre-freeze budget and it is the cost the researcher accepted to make

@@ -1,9 +1,7 @@
 {
- "_what": "A TEST FIXTURE for tests_v6, not a v6 registration. This is the v5 researcher-decision record, carried here so that the v6 suite can exercise the code paths D0-D18 select --- including \u00a734 D17's floor, whose quantity, value, semantics and derivation live in a record rather than in the source.",
- "_not": "v6 HAS TAKEN NO DECISION. `dci1/reports/dci1v6/researcher_decisions.json` does not exist and must not be created by any code; `dci1v6.protocol.decisions` reads that path, finds nothing, and holds all twenty-six of D0-D25 UNRESOLVED. That is asserted by tests_v6/test_lifecycle.py from a fresh read of the real path, which this fixture cannot reach. Nothing here is durable, nothing here is evidence that anybody decided anything for v6, and v6's own decisions D19-D25 are deliberately ABSENT from this file.",
+ "_not": "v6 HAS TAKEN NO DECISION. `dci1/reports/dci1v6/researcher_decisions.json` does not exist and must not be created by any code; `dci1v6.protocol.decisions` reads that path, finds nothing, and holds all twenty-seven of D0-D26 UNRESOLVED. That is asserted by tests_v6/test_lifecycle.py from a fresh read of the real path, which this fixture cannot reach. Nothing here is durable, nothing here is evidence that anybody decided anything for v6, and v6's own decisions D19-D26 are deliberately ABSENT from this file.",
  "_source": "copied verbatim from dci1/reports/dci1v5/researcher_decisions.json at the v5 closure commit 3850758",
- "recorded_on": "2026-08-24",
- "source": "the v5 adoption brief of 2026-08-22, which took D3, D6, D16 and D18; and the v5 adoption approval of 2026-08-23, which took the remaining fifteen \u00a734 decisions, resolved U2 at A2 and confirmed P1; and the pre-Gate-2.5 engineering amendment approval of 2026-08-24, which resolved U4 at E2",
+ "_what": "A TEST FIXTURE for tests_v6, not a v6 registration. This is the v5 researcher-decision record, carried here so that the v6 suite can exercise the code paths D0-D18 select --- including \u00a734 D17's floor, whose quantity, value, semantics and derivation live in a record rather than in the source.",
  "closures": [
   {
    "consequences": [
@@ -274,5 +272,7 @@
    "resolved_by": "researcher, v5 pre-Gate-2.5 amendment approval 2026-08-24",
    "resolved_on": "2026-08-24"
   }
- ]
+ ],
+ "recorded_on": "2026-08-24",
+ "source": "the v5 adoption brief of 2026-08-22, which took D3, D6, D16 and D18; and the v5 adoption approval of 2026-08-23, which took the remaining fifteen \u00a734 decisions, resolved U2 at A2 and confirmed P1; and the pre-Gate-2.5 engineering amendment approval of 2026-08-24, which resolved U4 at E2"
 }

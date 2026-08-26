@@ -238,18 +238,18 @@ SCREEN_FAMILIES = ("MK1", "MK2", "MK3", "MK4", "MK5", "MK6", "MK7", "MK8",
 #: be exercised at all.
 RESEARCHER_CLOSED: tuple[str, ...] = tuple(f"D{i}" for i in range(19))
 TEST_CLOSURES: dict[str, Any] = {
-    # v6's seven. Each is an OPEN researcher decision --- READINESS R1 to R6
-    # and the single-survivor statement --- and each value here exists only
-    # so the synthetic walk has a branch to take. **None of them is a
-    # recommendation and none of them is taken.** D23 in particular: the memo
-    # establishes that the margin the evidence requires lies *above* the
-    # examined range, and 0.05 is here because the code path needs a number,
-    # not because 0.05 is defensible.
+    # v6's eight. Each is an OPEN researcher decision --- READINESS R1 to R6,
+    # the single-survivor statement, and the residual magnitude D23 was split
+    # into on 2026-08-26 --- and each value here exists only so the synthetic
+    # walk has a branch to take. **None of them is a recommendation and none
+    # of them is taken.** D26 in particular: 0.05 is here because the code
+    # path needs a number, not because 0.05 is defensible.
     "D19": "reachability_only",
     "D20": "calibration_with_measured_transfer",
     "D21": "as_registered",
     "D22": "per_replication",
-    "D23": 0.05,
+    "D23": "projection_sd",
+    "D26": 0.05,
     "D24": "probe_only_in_library",
     "D25": "survivor_ladder_only",
 }

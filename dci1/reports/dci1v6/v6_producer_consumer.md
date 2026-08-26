@@ -18,10 +18,10 @@ the pipeline never put there.
 
 ## Summary
 
-- **158 fields** across **18 artifacts**, of which 151 are required.
-- **158 exercised** by the synthetic lifecycle; 0 not reached.
+- **162 fields** across **18 artifacts**, of which 155 are required.
+- **162 exercised** by the synthetic lifecycle; 0 not reached.
 - Defects: **0** (clean).
-- Checked against real payloads: **420** (158 field-presence, 262 consumption, 4 semantic).
+- Checked against real payloads: **427** (162 field-presence, 265 consumption, 4 semantic).
 - Relayed reads (the consumer read the value from a later record that carries it): **21**.
 - Declared readers with no observed read: **92** --- reported, not failed; see below for what that can and cannot mean.
 - Stages walked: 19 of 19.
@@ -34,7 +34,7 @@ the pipeline never put there.
 | `GATE_0_APPARATUS` | 2 | 1 | 2 |
 | `GATE_1_MEASUREMENT` | 5 | 5 | 5 |
 | `GATE_2_5_CANDIDATE_QUALIFICATION` | 12 | 12 | 12 |
-| `GATE_2_75_COMPOSED_PROBE` | 22 | 22 | 22 |
+| `GATE_2_75_COMPOSED_PROBE` | 26 | 26 | 26 |
 | `GATE_2_FOCAL_CALIBRATION` | 28 | 27 | 28 |
 | `GATE_3A_REFERENCE_CALIBRATION` | 12 | 11 | 12 |
 | `GATE_3B_REFERENCE_SELECTION` | 3 | 3 | 3 |
@@ -217,7 +217,7 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `GATE_4_COMPOSED_HEADROOM` | `PROTOCOL_REGISTERED` | `manifest_hash` |
 | `GATE_5_FREEZE` | `GATE_1_MEASUREMENT` | `canonical_verifier_hash`, `measurement_basis`, `wording_hash` |
 | `GATE_5_FREEZE` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `qualification_by_severity` |
-| `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | `band`, `disposition`, `gate4_class_coverage`, `m_star`, `m_star_in`, `probe_cell_types`, `reselected`, `residual_allowance`, `scope_limits`, `standin_operating_points`, `standins`, `topic_split` |
+| `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | `band`, `disposition`, `evaluated_band`, `gate4_class_coverage`, `m_star`, `m_star_in`, `probe_cell_types`, `projection_residual_sd`, `reselected`, `residual_allowance`, `residual_reading`, `scope_limits`, … (15 total) |
 | `GATE_5_FREEZE` | `GATE_2_FOCAL_CALIBRATION` | `focal_selection`, `identification_statuses`, `n_star`, `solo_compliance_a`, `solo_compliance_b`, `target_selection` |
 | `GATE_5_FREEZE` | `GATE_3A_REFERENCE_CALIBRATION` | `split_tables` |
 | `GATE_5_FREEZE` | `GATE_3B_REFERENCE_SELECTION` | `iota_a`, `selection`, `slot_map` |
@@ -231,7 +231,7 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `PREFREEZE_AUDIT` | `GATE_0_APPARATUS` | `acceptance`, `study_id`, `verifier_hash` |
 | `PREFREEZE_AUDIT` | `GATE_1_MEASUREMENT` | `canonical_verifier_hash`, `instrument_population`, `measurement_basis`, `scope_sentence`, `study_id`, `verifier_hash`, `wording_hash` |
 | `PREFREEZE_AUDIT` | `GATE_2_5_CANDIDATE_QUALIFICATION` | `earliest_failing_components`, `interaction`, `m_star`, `operating_point_order`, `operating_point_order_generates_nothing`, `operating_point_order_reason`, `operating_point_support`, `qualification`, `qualification_by_severity`, `qualified_at_severities`, `qualified_families`, `qualified_pool`, … (14 total) |
-| `PREFREEZE_AUDIT` | `GATE_2_75_COMPOSED_PROBE` | `admissible_severities`, `band`, `declared_refusals`, `disposition`, `gate4_class_coverage`, `m_star`, `m_star_in`, `measured_split_transfer`, `n_composed_audited_at`, `outcome`, `probe_cell_types`, `probe_cell_types_generated`, … (25 total) |
+| `PREFREEZE_AUDIT` | `GATE_2_75_COMPOSED_PROBE` | `admissible_severities`, `band`, `declared_refusals`, `disposition`, `evaluated_band`, `gate4_class_coverage`, `m_star`, `m_star_in`, `measured_residual_sd`, `measured_split_transfer`, `n_composed_audited_at`, `outcome`, … (29 total) |
 | `PREFREEZE_AUDIT` | `GATE_2_FOCAL_CALIBRATION` | `a_per_topic_by_split`, `adequacy`, `calibration_binding`, `calibration_population`, `calibration_rows`, `calibration_topic_ids`, `chance_curves`, `construct_strength`, `focal_admissibility`, `focal_admissible`, `focal_extension_measured`, `focal_selection`, … (29 total) |
 | `PREFREEZE_AUDIT` | `GATE_3A_REFERENCE_CALIBRATION` | `calibrated_coverage_failures`, `calibration_b_population`, `coverage_at_calibrated_iota_a`, `m_star`, `n_qualified`, `pooled_table`, `qualified_at_m_star`, `qualified_families`, `qualified_pool`, `split_tables`, `stability`, `study_id`, … (13 total) |
 | `PREFREEZE_AUDIT` | `GATE_3B_REFERENCE_SELECTION` | `iota_a`, `m_star`, `selection`, `study_id`, `verifier_hash` |
@@ -327,7 +327,11 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `GATE_2_75_COMPOSED_PROBE` | `reselected` | `GATE_2_75_COMPOSED_PROBE` | `GATE_3A_REFERENCE_CALIBRATION`, `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `disposition` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `residual_allowance` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_75_COMPOSED_PROBE` | `residual_reading` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_75_COMPOSED_PROBE` | `projection_residual_sd` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_75_COMPOSED_PROBE` | `measured_residual_sd` | `GATE_2_75_COMPOSED_PROBE` | — | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `band` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
+| `GATE_2_75_COMPOSED_PROBE` | `evaluated_band` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `topic_split` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `standins` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |
 | `GATE_2_75_COMPOSED_PROBE` | `probe_cell_types` | `GATE_2_75_COMPOSED_PROBE` | `GATE_5_FREEZE` | `GATE_2_75_COMPOSED_PROBE` | yes | `tests_v6/test_run_contracts.py` | yes | PRODUCED |

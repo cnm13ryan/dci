@@ -223,14 +223,16 @@ def test_the_reference_design_spec_is_generated_and_says_it_is_a_draft():
     spec = json.loads((REPORTS / "reference_design_spec.json").read_text())
     assert spec["_status"] == manifest.DRAFT_MARKER
     assert spec["candidate_library"]["sizes"] == K.assert_library_sizes()
-    assert spec["composed_probe"]["residual_sd"] == P.RESIDUAL_SD
+    assert spec["composed_probe"]["measured_residual_sd"] == P.RESIDUAL_SD
+    assert spec["composed_probe"]["residual_readings"] == list(
+        P.RESIDUAL_READINGS)
     assert spec["design"]["gate4_entries_full_arm_set"] == 95
     # Generated against the real decision registry, which has no record --- so
-    # every one of the twenty-six is open in the artifact whatever a test
+    # every one of the twenty-seven is open in the artifact whatever a test
     # fixture has closed in this process.
     assert sorted(spec["open_decisions"]["ids"]) == sorted(
         decisions.DECISION_IDS)
-    assert spec["open_decisions"]["count"] == 26
+    assert spec["open_decisions"]["count"] == 27
     assert spec["validity_components"]["composed_headroom_band"] == list(
         C.COMPOSED_HEADROOM_BAND)
 
@@ -274,7 +276,7 @@ def test_determinacy_is_read_from_the_cell_and_not_from_what_was_measured():
     assert not P.is_determinate(P.cell_slots_of("pair:B+P1"))
     entry = {"compliance": 0.9, "s2_topic": 0.0, "n_topics": 192}
     with pytest.raises(ProtocolError) as excinfo:
-        P.severity_verdict({"pair:B+P1": {"B": entry}}, residual=0.0)
+        P.severity_verdict({"pair:B+P1": {"B": entry}}, residual_sd=0.0)
     assert "would change which verdict rule" in str(excinfo.value)
 
 
@@ -298,9 +300,16 @@ def test_the_measured_split_transfer_is_recorded_and_gates_nothing():
                    "solo:B": {"B": entry(0.80, 0.70)},
                    "pair:B+P1": {"B": entry(0.60, 0.64),
                                  "P1": entry(0.50, 0.50)}}}
-    out = _measured_split_transfer(probed, residual_sd=P.RESIDUAL_SD)
+    out = _measured_split_transfer(
+        probed, v5_fitted_residual_sd=P.RESIDUAL_SD,
+        carried_by_the_verdict=0.0)
     assert out["gates_nothing"] is True and out["read_by"] == []
-    assert out["assumed_residual_sd"] == P.RESIDUAL_SD
+    # Two numbers, named apart, because under §34 D23's `projection_sd`
+    # reading they differ: the verdict carries D26's magnitude and not the
+    # v5-fitted estimate. Calling the fitted value "assumed" while the
+    # verdict assumed something else is the D23 defect one field down.
+    assert out["v5_fitted_residual_sd"] == P.RESIDUAL_SD
+    assert out["carried_by_the_verdict"] == 0.0
     assert out["n_entries"] == 3
     assert {(r["cell"], r["slot"]) for r in out["entries"]} == {
         ("solo:B", "B"), ("pair:B+P1", "B"), ("pair:B+P1", "P1")}
@@ -311,3 +320,98 @@ def test_the_measured_split_transfer_is_recorded_and_gates_nothing():
     # (|0.05| + |-0.02| + |0.00|) / 3
     assert out["mean_absolute_carried_offset"] == pytest.approx(0.07 / 3)
     assert out["mean_carried_offset"] == pytest.approx(0.03 / 3)
+
+
+# ------------------------- the 2026-08-26 red team, as executable assertions
+
+def test_the_sensitivity_tool_mirrors_the_production_readings(
+        restore_decisions):
+    """`v6_residual_sensitivity` computes the band and the projection sd
+    without going through `decisions`, so that the table is readable while
+    §34 D23 and D26 are open. That shortcut is only safe if it agrees with
+    the production accessors, so this checks it rather than trusting it."""
+    import importlib.util
+    from pathlib import Path as _P
+
+    root = _P(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location(
+        "_sens", root / "tools" / "v6_residual_sensitivity.py")
+    sens = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sens)
+
+    for reading in P.RESIDUAL_READINGS:
+        for magnitude in (0.0, P.RESIDUAL_SD, 0.0687):
+            band, sd = sens._band_and_sd(reading, magnitude)
+            restore_decisions.reopen_all_for_testing()
+            restore_decisions.override_for_testing("D23", reading)
+            restore_decisions.override_for_testing("D26", magnitude)
+            assert P.margin_band() == pytest.approx(band)
+            assert P.projection_residual_sd() == pytest.approx(sd)
+
+
+def test_the_sensitivity_artifact_is_committed_and_sweeps_both_readings():
+    """§34 D26 is the one decision with no derivation, so the grid it is to be
+    chosen on has to exist as an artifact and not as a paragraph."""
+    report = json.loads((REPORTS / "residual_sensitivity.json").read_text())
+    assert report["reselection_rule"] == "focal_only"
+    seen = {(p["reading"], round(p["magnitude"], 4))
+            for p in report["policies"]}
+    assert seen == {(r, round(m, 4)) for r in P.RESIDUAL_READINGS
+                    for m in (0.0, P.RESIDUAL_SD, 0.0687)}
+    # The finding that removes the circularity §12.4 left open: feasibility
+    # holds across the whole grid, so it is not the discriminator.
+    assert all(p["every_replication_retains_an_operating_point"]
+               for p in report["policies"])
+    assert report["_scope_limit"].startswith("solo:B is one of the six")
+
+
+def test_an_unimplemented_alternative_cannot_be_closed_at(restore_decisions):
+    """Thirteen entries offered values the implementation had no branch for.
+    Closing at one would have registered a study the code cannot run, and
+    nothing read the value, so nothing would have said so."""
+    restore_decisions.reopen_all_for_testing()
+    # D19 and D21 are v6's own, so the session fixture leaves them open and
+    # `close` is reachable. The guard is in `close` and is id-agnostic; the
+    # v5-era acceptances (D2, D5, D7-D15) carry the same field and are
+    # asserted below without closing anything.
+    for did in ("D19", "D21"):
+        decision = decisions.DECISIONS[did]
+        assert decision.admissible_values == ()
+        assert decision.unimplemented_alternatives
+        with pytest.raises(ProtocolError) as excinfo:
+            decisions.close(did, decision.unimplemented_alternatives[0],
+                            evidence="e", decided_by="t", decided_on="t")
+        assert "unimplemented" in str(excinfo.value)
+    for did in ("D2", "D5", "D7", "D13", "D15"):
+        decision = decisions.DECISIONS[did]
+        assert decision.admissible_values == (), did
+        assert decision.unimplemented_alternatives, did
+
+
+def test_d0_do_not_adopt_actually_refuses_a_registration(restore_decisions):
+    """It is the one value in the register meaning `this study does not run`,
+    and until 2026-08-26 it signed a manifest exactly as `adopt` did."""
+    from dci1v6.protocol import manifest
+
+    restore_decisions.reopen_all_for_testing()
+    restore_decisions.override_for_testing("D0", "do_not_adopt")
+    kinds = [b["kind"] for b in manifest.signing_blockers()]
+    assert "NOT_ADOPTED" in kinds
+
+
+def test_the_register_quotes_v5s_closures_and_not_its_draft_proposals():
+    """D16, D17 and D18 carried v5's PRE-adoption text --- in every case the
+    branch the researcher rejected, and in every case the weaker one."""
+    from pathlib import Path as _P
+
+    v5 = json.loads((_P(__file__).resolve().parents[1] / "reports" / "dci1v5"
+                     / "researcher_decisions.json").read_text())
+    closed = {c["id"]: c["value"] for c in v5["closures"]}
+    assert closed["D16"] == "complete_population"
+    assert closed["D17"] == "floor"
+    assert closed["D18"] == "precondition"
+    for did in ("D16", "D17", "D18"):
+        proposal = decisions.DECISIONS[did].standing_proposal
+        assert str(closed[did]) in proposal, did
+        # And the withdrawn text is named, so the correction is legible.
+        assert "until 2026-08-26" in proposal, did

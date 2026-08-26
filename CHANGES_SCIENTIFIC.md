@@ -13,6 +13,61 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-26 — v6: focal-only reselection, and §34 D23 split into a reading and a magnitude
+
+**What changed.** A red-team audit of the v6 decision set (`dci1/reports/dci1v6/READINESS.md` §13)
+found two defects that would have changed what a v6 study measured.
+
+1. `protocol/decisions` carried v5's *pre-adoption draft* proposals for D16,
+   D17 and D18 — `a_survivors`, `no_floor`, `not_a_precondition` — in every
+   case the branch v5's researcher rejected and in every case the weaker one.
+   `reports/dci1v5/researcher_decisions.json` records `complete_population`,
+   `floor` and `precondition`. The register now quotes v5's closures with v5's
+   evidence.
+2. §34 D23's value was passed into `projected_halfwidth` **as** `residual_sd`,
+   while four documents described it as an allowance *beyond* the measured
+   `composed_probe.RESIDUAL_SD = 0.0142`. It is now two decisions: **D23** the
+   reading (`projection_sd` | `beyond_the_measured_sd`, both executable) and
+   **D26** the magnitude, range-checked at closure. §34 therefore carries
+   twenty-seven entries.
+
+**The researcher also took one decision.** *Focal-only reselection*: only the
+six determinate entries — `solo:A`, `solo:B` and both orders of `pair:A+B` —
+may make a severity inadmissible for m\*. `PS1`–`PS3` are measured, judged
+against §13.14's registered band and recorded, and gate nothing. Registered as
+preregistration A13, which declares that this is a **loosening** of the rule it
+replaces: a replication whose every severity failed only on stand-in-dependent
+entries previously terminated and now proceeds.
+
+**Which results are affected.** *None.* No v6 row exists, no v6 manifest
+exists, and no v6 stage has run. v5's records, verdicts, terminal statuses and
+§34 D6 irreversibility stand exactly as signed and are not re-read.
+
+**Comparability.** v6-to-v5 comparability is unchanged: §13.14's band, §13.4's
+device and level, C4's thresholds and every §12.6 condition are untouched. The
+v6 quantities that move are all new in v6 and have no v5 counterpart.
+
+**Also corrected, and scientifically consequential to read:** the
+preregistration cited "§31" for the no-repair rule, which is v5's *Release*
+section — the prohibition is §32.1 and §32.3. Preregistration §4 now carries
+the §32.2 declaration that `GATE_2_75_COMPOSED_PROBE` and the three
+`probe_only` families exist **because** v5's Gate 4 fired.
+
+**New development evidence.** `dci1/reports/dci1v6/residual_sensitivity.json`
+(producer `dci1/tools/v6_residual_sensitivity.py`) costs both D23 readings at
+0.0, 0.0142 and 0.0687 on the closed v5 record under focal-only reselection.
+Every replication retains an admissible operating point at every policy; at
+0.0687 all four would re-select m\* rather than three of four keeping v5's.
+No value is proposed for D26 and it is the one decision with no derivation.
+
+**Retired from the decision set.** Thirteen entries (D2, D5, D7–D15, D19, D21)
+offered alternatives with no implementation and are now acceptances, with each
+withdrawn alternative recorded under `unimplemented_alternatives`; D20 lost
+`calibration_pooled`, which produced records identical to
+`calibration_with_measured_transfer`. §34 D0's `do_not_adopt` now blocks
+signing, and §34 D25 acquired a caller —`dci1/tools/v6_closure.py`, writing
+`reports/dci1v6/closure.json`.
+
 ## 2026-08-25 — v6: Gate 2.75 widened from the B slot to all ten of §13.14's exposure classes, and its margin became a measurement
 
 **Prospective, and v6 only.** No v5 record, verdict, terminal status or row is

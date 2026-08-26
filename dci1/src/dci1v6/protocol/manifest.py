@@ -216,6 +216,20 @@ def signing_blockers(bank: TopicBank | None = None, *,
             "n": len(adoption["findings"]),
             "findings": adoption["findings"]})
 
+    # §34 D0 is the adoption act itself, and `do_not_adopt` is the only
+    # closure in the register that means "this study does not run". Until
+    # 2026-08-26 nothing read it, so closing there signed a manifest exactly
+    # as `adopt` did --- a decision whose refusing value refused nothing.
+    if decisions.is_closed("D0") and decisions.value_of("D0") == "do_not_adopt":
+        blockers.append({
+            "kind": "NOT_ADOPTED", "section": "§34 D0",
+            "what": "§34 D0 is closed at `do_not_adopt`: the researcher "
+                    "decided this protocol version is not adopted, and a "
+                    "registration manifest is the act of adopting it",
+            "n": 1,
+            "detail": {"D0": decisions.value_of("D0"),
+                       "evidence": decisions.DECISIONS["D0"].evidence}})
+
     still_open = list(decisions.open_decisions())
     if still_open:
         blockers.append({

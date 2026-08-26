@@ -12,7 +12,7 @@ its difficulty?*
 
 **This document is a draft and the study is not registered.** No v6 manifest
 exists, no v6 stage has run, no v6 behavioural row has been generated, and all
-twenty-six of §34's decisions are `UNRESOLVED` — including D0–D18, which v5's
+twenty-seven of §34's decisions are `UNRESOLVED` — including D0–D18, which v5's
 researcher closed on v5's own record and which only the researcher can carry
 into a new registration.
 `dci1/src/dci1v6/protocol/manifest.assert_documents_adopted` refuses a
@@ -55,14 +55,22 @@ Carried without amendment, and each is executable rather than asserted:
 - **every substantive threshold**: §13.4's `HEADROOM_BAND` [0.10, 0.90],
   §13.5's calipers, §13.8's matching, §13.14's `COMPOSED_HEADROOM_BAND`
   [0.05, 0.95], §12.6's C1–C8 including C4's ≥6 qualifying feature groups, ≥3
-  eligible rungs per straddling family and ≥0.40 within-family span, §13.15's
-  support requirements, §34 D17's construct floor, §34 D18's precondition;
+  eligible rungs per straddling family and ≥0.40 within-family span, and
+  §13.15's support requirements. §34 D17's construct floor and §34 D18's
+  near-form precondition are **open decisions in v6**, not carried thresholds
+  — v5's researcher closed them at `floor` and `precondition` on v5's own
+  record, and only the researcher can carry a closure into a new
+  registration. They are listed here because v6 proposes no change to either;
+  see A13;
 - §6.2's topic bank and its seeded per-area cut, unchanged in every set size:
   24 pre-screen, 96 calibration-A, 96 calibration-B, 24 composed, 384
   confirmatory, 96 sequestered;
 - D6-style **irreversible** non-identification; the prospective freeze before
-  any confirmatory data; one-shot masking and unmasking; §31's prohibition on
-  post-outcome repair, reselection or re-expansion; §32's supersession rules;
+  any confirmatory data; one-shot masking and unmasking; §32.1's prohibition
+  on using an amendment to weaken a criterion so that a gate passes and
+  §32.3's freeze of §13 from the first Gate-2.5 record (earlier drafts of this
+  document cited these as "§31", which is *Release*); §32's supersession
+  rules;
   the write-once stage lifecycle with `verifier_source_hash` re-read at stage
   entry and exit.
 
@@ -154,28 +162,29 @@ version of this stage came to protect one slot while believing it protected the
 design. 18 cell types; three are read off the Gate-2 record; 15 are generated
 per probed severity.
 
-**Verdict — two rules, because the entries are not the same kind of evidence.**
+**Verdict — two rules, because the entries are not the same kind of evidence,
+and only one of them decides anything.**
 
 > **Determinate entries** — `solo:A`, `solo:B` and both orders of `pair:A+B`,
-> whose every constituent is a real registered instrument — pass iff their
-> **projected Gate-4 interval** lies inside §13.14's registered band:
-> half-width `z * sqrt(s2/N_COMPOSED + s2/n_probe + residual_sd^2)`, with `s2`
-> that entry's own between-topic variance measured in this stage, `z` at
-> §13.4's registered 95%, and `residual_sd = 0.0142`. The device and the level
+> whose every constituent is a real registered instrument that actually enters
+> the estimand — pass iff their **projected Gate-4 interval** lies inside the
+> evaluated band: half-width `z * sqrt(s2/N_COMPOSED + s2/n_probe +
+> residual_sd^2)`, with `s2` that entry's own between-topic variance measured
+> in this stage and `z` at §13.4's registered 95%. The device and the level
 > are §13.4's own — contract the band, and apply it to the *interval* so an
-> imprecisely measured value cannot sit on the boundary. The family-wise
-> half-width over the six determinate entries is computed and recorded beside
-> each verdict and read by nothing.
+> imprecisely measured value cannot sit on the boundary. What `residual_sd`
+> and the evaluated band are is §34 D23's and §34 D26's; see A14. The
+> family-wise half-width over the six determinate entries is computed and
+> recorded beside each verdict and read by nothing.
 >
 > **Stand-in-dependent entries** — every entry of a cell containing a stand-in,
 > including its A and B slots, because B's compliance beside a stand-in is not
-> B's compliance beside the reference — pass iff the measured value lies inside
-> §13.14's registered band, **with no margin at all**. A failure is a real
-> composed cell of real instruments leaving the band. A pass certifies nothing
-> about the reference that replaces the stand-in, and no margin can make it,
-> because no available evidence bounds the difference.
+> B's compliance beside the reference — are judged against §13.14's
+> **registered** band, with no margin at all, and the verdict is **recorded
+> and gates nothing**. See A13.
 >
-> A severity passes iff every entry passes its own test.
+> A severity is admissible for m\* iff every **determinate** entry passes its
+> own test.
 
 **§13.14's band is unchanged.** The projection is a margin *inside* [0.05,
 0.95]; Gate 4 still applies the registered band to the registered composed set.
@@ -208,7 +217,7 @@ including the one no selectable family exercises.
 > forms no selectable family carries, and do *not* introduce a new feature
 > group. Every one of §7.6's twenty-two statistics is already carried, so a new
 > group would need a new statistic; `FEATURE_GROUP_IDS` is a sorted tuple and
-> `selection.group_key` reads a group's index in it as a reference-selection
+> `selection._group_order` reads a group's index in it as a reference-selection
 > tie-break, so adding a group reorders that tie-break for every selectable
 > family sorting after it. A probe-only instrument that changed which reference
 > gets selected is precisely the failure `probe_only` exists to prevent. What
@@ -323,7 +332,13 @@ rather than licensing a sentence to be composed later:
 
 The zero-survivor and many-survivor sentences follow from §6.1 and the claim
 ladder and are not decisions; `run.lifecycle.study_level_statement` emits all
-three.
+three, and **`dci1/tools/v6_closure.py` calls it**, writing
+`reports/dci1v6/closure.json`. Until 2026-08-26 nothing called it: the
+nineteen-stage lifecycle is per replication and its `FINAL_REPORT` stage writes
+one report per model, so a statement about the study as a whole had no stage to
+live in and D25's closure changed no artifact. The closure record follows the
+precedent of `reports/dci1v5/closure.json`; it counts survivors from signed
+records and quotes the registered sentence, and it estimates nothing.
 
 ### A10 — the library grows by three non-selectable instruments
 
@@ -363,23 +378,117 @@ remains available only as a later §32 amendment, if the correctly functioning
 mechanism itself demonstrates inadequate support. The 3,072-row development
 re-screen that would have separated the two has **not been run**.
 
+### A13 — focal-only reselection: only real instruments may move m\*
+
+Registered as an amendment because it changes what m\* is a function of.
+
+The probe may re-select m\* once, and **only the six determinate entries
+decide whether a severity is admissible**. A stand-in-dependent entry is
+measured, judged against §13.14's registered band, and recorded under
+`standin_findings`; it cannot remove a severity from the admissible set and it
+cannot raise `COMPOSED_HEADROOM_UNREACHABLE`.
+
+**Why.** `PS1`–`PS3` are non-selectable by construction and, by A10's design,
+carry a predicate form no selectable family exercises. Under the rule this
+replaces, an instrument that can never be a reference could choose the
+operating point at which `Delta_j` and `Delta_R` are estimated, and could end a
+replication. That is a defect in identification, not a conservative margin.
+What remains true is that m\* is now a *composition*-determined quantity rather
+than the solo-determined one v5 used — but every cell that determines it is a
+cell of real registered instruments that the confirmatory design actually runs.
+
+**This is a loosening relative to the rule it replaces, and it is declared as
+one.** A replication whose every severity failed solely on stand-in-dependent
+entries previously terminated; it now proceeds. No threshold moved: §13.14's
+band, §13.4's device and level, and the determinate test are all unchanged.
+
+**What the stand-in rows buy, then.** Of the 15 cells generated per probed
+severity, 2 are determinate and 13 contain a stand-in — 1,536 rows decide m\*
+and 9,984 are a prospective structural-risk record of the slot and order
+classes Gate 4 will audit. Across four replications at the modal one probed
+severity that is 39,936 rows, about 3% of the study's generation budget, for
+evidence that gates nothing by design. It is retained deliberately: a class
+whose only probe evidence is stand-in-dependent is otherwise audited for the
+first time at Gate 4, which is the failure A5 exists to move earlier.
+
+### A14 — the residual allowance is two decisions, not one
+
+§34 D23 was one entry until 2026-08-26 and it carried a defect the red team
+found: its registered text described an allowance **beyond** the measured
+`composed_probe.RESIDUAL_SD = 0.0142`, and `entry_verdict` passed its value
+straight in **as** `residual_sd`. Closing it at 0.0 would therefore have
+deleted the one measured non-sampling term this document, the reference-design
+spec and the decision register all promise is carried. The two readings also
+differ in *units*.
+
+It is now two decisions, both executable:
+
+> **§34 D23 — what it means.** `projection_sd`: D26's number **is** the
+> `residual_sd` in the projection's quadrature, and 0.0142 is applied nowhere.
+> `beyond_the_measured_sd`: the projection always carries the measured 0.0142
+> and D26's number contracts §13.14's band linearly on top.
+>
+> **§34 D26 — how large it is.** A number in [0.0, 0.45), range-checked at
+> closure rather than at the stage that reads it.
+
+**No derived value survives.** The 2026-08-25 derivation gave 0.0 on the ground
+that the calibration-to-composed transfer is sampling — observed variance
+0.00430 against the 0.00515 the sample sizes imply. That is a statement about
+**dispersion**. What an allowance protects against is a common shift of one
+replication's entries, and `precision_design.json` itself says a real
+composed-set effect *"would appear as a common per-model shift and not as
+instrument noise"* — and then does not estimate that shift. It is +0.045 over
+thirteen observations; taking the four per-model means as the unit gives 0.0397
+with a 95% interval of about (−0.025, +0.104), and the artifact's own 95% upper
+bound on the residual sd is 0.0687, 4.8× the measured 0.0142.
+
+`reports/dci1v6/residual_sensitivity.json` costs the grid under focal-only
+reselection instead of proposing a point. Its finding: **every replication
+retains an admissible operating point at every one of the six policies**, so
+feasibility does not discriminate. What does discriminate is which severities
+survive — at 0.0 and 0.0142 the four replications admit 4/3/4/4 of their eight
+measured severities and three keep their v5 m\*; at 0.0687 they admit 3/3/2/3
+and **all four** would re-select. The choice is a judgment about conservatism
+under thirteen observations and this document does not make it.
+
 ## 3. §34: the registered open decisions
 
-Twenty-six. D0–D18 are v5's, carried forward and requiring their own closure on
-v6's record; D19–D25 are v6's. `protocol/decisions` blocks each dependent stage
+Twenty-seven. D0–D18 are v5's, carried forward and requiring their own closure
+on v6's record; D19–D26 are v6's. `protocol/decisions` blocks each dependent stage
 and each dependent function while one is open, and `assert_transition_legal`
 refuses a stage with an open decision, so an unclosed decision stops the study
 rather than silently defaulting.
 
 | id | question | derivation available |
 |---|---|---|
-| D19 | reachability repair alone, or repair plus new families | `reachability_only` (A12) |
-| D20 | which split the probe runs on | `calibration_with_measured_transfer` (A5) |
-| D21 | §13.14's precision | `as_registered` (A7) |
+| D19 | reachability repair alone, or repair plus new families | acceptance (A12) |
+| D20 | does the probe spend §6.2's reserved composed set | `calibration_with_measured_transfer` (A5) |
+| D21 | §13.14's precision | acceptance (A7) |
 | D22 | what licenses confirmatory generation | `per_replication` (A8) |
-| D23 | the residual allowance inside §13.14's band | `0.0` (A5) |
+| D23 | what the residual allowance *means* | none — two executable readings (A14) |
 | D24 | where the stand-ins are registered | `probe_only_in_library` (A10) |
 | D25 | the single-survivor statement | two registered sentences (A9) |
+| D26 | how large the residual allowance is | **none** (A14) |
+
+**Thirteen of the twenty-seven are acceptances, not selections.** The
+2026-08-26 red team found that D2, D5, D7–D15, D19 and D21 offered alternative
+values the implementation carried **no branch for** — closing at one would have
+registered a study the code cannot run, silently, because nothing read the
+value. Each such alternative moves to `unimplemented_alternatives` on the
+register, where it is recorded rather than deleted, and `close()` refuses it by
+name. Adopting one of them is a §32 amendment *with an implementation*, not a
+closure. The count of §34 entries is unchanged apart from D26.
+
+**§34 D0's refusing value now refuses.** `do_not_adopt` was read by nothing, so
+closing there signed a manifest exactly as `adopt` did; `signing_blockers` now
+raises `NOT_ADOPTED`.
+
+**§34 D16, D17 and D18 carried the wrong proposal until 2026-08-26.** The
+register held v5's *pre-adoption draft* text — `a_survivors`, `no_floor`,
+`not_a_precondition` — in every case the branch v5's researcher rejected, and
+in every case the weaker one. `reports/dci1v5/researcher_decisions.json`
+records `complete_population`, `floor` and `precondition`, and the register now
+quotes those with v5's evidence. Carrying them into v6 remains a researcher act.
 
 **A derivation is not a closure.** Each is recorded as a standing proposal in
 `protocol/decisions` with its evidence, and every one of them is `UNRESOLVED`
@@ -388,13 +497,29 @@ No code may write that file.
 
 ## 4. Provenance, and the honest statement about fitting
 
-v6's design was chosen after reading the **closed** v5 study, and two
-quantities are fitted to v5 observations:
+v6's design was chosen after reading the **closed** v5 study. §32.2 requires
+that a change adopted after a gate has run is declared as adopted *because*
+that gate ran, rather than presented as independent, and §32.1 names "add a
+family" among the things a gate failure is not an occasion for. So, plainly:
+
+**v5's Gate 4 fired, and `GATE_2_75_COMPOSED_PROBE` and the three `probe_only`
+families `PS1`–`PS3` exist because it did.** Neither is a weakening: the probe
+adds a measurement and can only make a replication terminate earlier, and the
+three families are non-selectable by construction, so §7.10's reference pool is
+unmoved at v5's 37 families, 326 round-0 and 632 declared severities. But they
+are not independent of the outcome that prompted them and this document does
+not present them as though they were.
+
+Four quantities are fitted to v5 observations:
 
 1. `composed_probe.RESIDUAL_SD = 0.0142`, half the measured
    calibration_a-vs-calibration_b residual;
 2. the decision to leave §13.14 as registered rather than change its
-   criterion, which rests on the measured false-termination rate.
+   criterion, which rests on the measured false-termination rate;
+3. the choice of `iota_A` as the stand-ins' placement target, which is §13.8's
+   registered rule but was checked against v5's realised curves;
+4. the grid `reports/dci1v6/residual_sensitivity.json` sweeps, whose three
+   magnitudes are all read off the closed v5 record.
 
 Per §30's precedent, **retrospective behaviour on v5 is not prospective
 validation.** v6 is the prospective test of these choices and may not claim
@@ -406,9 +531,12 @@ as signed.
 
 Development evidence: `dci1/reports/dci1v6/readiness_evidence.json`,
 `precision_design.json`, `expansion_dryrun.json`,
-`reference_feasibility.json`. Producers: `dci1/tools/v6_readiness_evidence.py`,
-`v6_precision_design.py`, `v6_expansion_dryrun.py`,
-`v6_reference_feasibility.py`. The machine-readable reference design is
+`reference_feasibility.json`, `residual_sensitivity.json`. Producers:
+`dci1/tools/v6_readiness_evidence.py`, `v6_precision_design.py`,
+`v6_expansion_dryrun.py`, `v6_reference_feasibility.py`,
+`v6_residual_sensitivity.py`. The study's closing record is
+`reports/dci1v6/closure.json`, written by `v6_closure.py`; it is a registered
+outcome, not development evidence, and no v6 stage has produced one. The machine-readable reference design is
 `dci1/reports/dci1v6/reference_design_spec.json`, generated by
 `dci1/tools/v6_reference_design_spec.py` from the registered code so that a
 spec disagreeing with the implementation is not expressible.

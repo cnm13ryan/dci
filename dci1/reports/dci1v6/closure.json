@@ -1,0 +1,31 @@
+{
+ "_classification": "REGISTERED_OUTCOME",
+ "_reads": "signed per-replication stage records only. No estimation, no pooling, no masked quantity, no row re-read",
+ "_what": "the v6 study-level closure record",
+ "firewall": "\u00a76.1: four replications analysed separately and never pooled; no cross-model scalar carries a claim, and \u00a715 registers no cross-model multiplicity family",
+ "last_stage_recorded": {
+  "gemma-3n-e2b-it": "NO_RECORD",
+  "gemma-3n-e4b-it": "NO_RECORD",
+  "qwen3-4b": "NO_RECORD",
+  "qwen3-4b-instruct-2507": "NO_RECORD"
+ },
+ "n_survivors": 0,
+ "payload_sha256": "1b98ec49a6c30f89fba1f165f587d7be6e5dd49029990a92d21fc939cd9f8bb7",
+ "registered_replications": [
+  "gemma-3n-e2b-it",
+  "gemma-3n-e4b-it",
+  "qwen3-4b",
+  "qwen3-4b-instruct-2507"
+ ],
+ "study_id": "dci1v6",
+ "study_level": {
+  "l5_withheld": "generalisation is never licensed by this design",
+  "n_survivors": 0,
+  "rule": "\u00a76.1",
+  "statement": "No replication reached GATE_5_FREEZE identified. The study makes no claim about the effect at any level. Every replication's terminal status is a statement about the apparatus reaching identification, not about the effect.",
+  "survivors": [],
+  "terminal": {}
+ },
+ "survivors": [],
+ "terminal_statuses": {}
+}

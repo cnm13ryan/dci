@@ -1730,3 +1730,154 @@ derivation and its evidence. **It is not the record**, it is not at
 omits D0–D18: those are v5's, closed on v5's own record, and carrying a closure
 into a new registration is a researcher act with its own evidence rather than a
 transcription.
+
+---
+
+## 13. The red-team pass of 2026-08-26 (added after §12)
+
+§12 recorded a design pass. This records an **audit of the decision set that
+pass produced**, and two of its findings were blocking. Nothing in §§1–12 is
+deleted; where a conclusion is superseded it is marked here.
+
+### 13.1 The register proposed three branches v5's researcher rejected
+
+`protocol/decisions` carried v5's **pre-adoption draft** proposals for D16,
+D17 and D18. `reports/dci1v5/researcher_decisions.json` records what was
+actually closed:
+
+| id | register said (until 2026-08-26) | v5 closed at | which is |
+|---|---|---|---|
+| D16 | `a_survivors` | `complete_population` | ~35,000 more rows per replication |
+| D17 | `no_floor` | `floor` (κ_B(m\*) ≤ 0.50) | a registered threshold |
+| D18 | `not_a_precondition` | `precondition` | L3c requires the near-form arm |
+
+In all three the register proposed the **weaker** branch, while
+`user-notes/DCI1_preregistration_v6.md` §1 asserted the stronger one was
+carried and `design.budget.calibration_burden` already costed
+`complete_population`. D17 compounds it: the floor is one of the three
+conditions `focal_admissible` conjoins, so `no_floor` **enlarges** the set of
+severities `GATE_2_75` may re-select m\* among. A researcher accepting the
+register's own proposals would have relaxed two substantive thresholds and
+widened probe survival, by inconsistency rather than intent.
+
+**Fixed.** The register now quotes v5's closures with v5's evidence and says
+in each entry what it used to say. Carrying them into v6 is still a researcher
+act with its own evidence.
+
+### 13.2 §34 D23 did not mean what four documents said it meant
+
+`entry_verdict` passed D23's value straight into `projected_halfwidth` as
+`residual_sd`. So D23 **was** the quadrature term, while the preregistration
+(A5), the decision register, `researcher_decisions_PROPOSAL.json` and
+`reference_design_spec.json`'s `verdict_rule` all described it as an allowance
+*beyond* a separately-carried `RESIDUAL_SD = 0.0142`. The proposed `D23 = 0.0`
+would therefore have removed the measured non-sampling term from every
+determinate verdict. `RESIDUAL_SD` reached production only as a default
+argument the verdict path always overrode, and `margin_band()` had no caller
+at all. The units differ too: an sd in a quadrature and a linear band
+contraction are not interchangeable, and 0.05 buys +0.098 of half-width under
+one reading and 0.05 of band under the other.
+
+**Fixed by splitting it.** §34 D23 is now the **reading** — `projection_sd` or
+`beyond_the_measured_sd`, both executable — and §34 D26 the **magnitude**, a
+number in [0.0, 0.45) that `decisions.close` range-checks at closure rather
+than at the stage five steps later. `severity_verdict`, `entry_verdict` and
+`probe_disposition` take the band and the projection sd as separate arguments,
+so neither can substitute for the other again.
+
+### 13.3 §12.4's derivation of δ = 0 does not survive, and no value replaces it
+
+§12.4 concluded 0.0 because the transfer's observed variance (0.00430) is below
+the sampling variance the sample sizes imply (0.00515). **That is a statement
+about dispersion.** What an allowance protects against is a *common shift of
+one replication's entries*, and `precision_design.json` names that quantity
+itself — *"a real set effect would appear as a common per-model shift and not
+as instrument noise"* — and then does not estimate it.
+
+It is **+0.045** over the thirteen realised movements. The four per-model means
+are −0.013, +0.076, +0.029, +0.067; taking them as the unit gives 0.0397, SE
+0.0204, and a 95% interval on t₃ of about **(−0.025, +0.104)**. `RESIDUAL_SD =
+0.0142` sits near the bottom of it. The artifact's own `residual_sd_upper_95`
+is **0.0687**, 4.8× the measured value.
+
+And `operating_point_feasibility` was computed at `residual_used = 0.0` and at
+no other value — so the evidence that every replication retains an operating
+point existed only at the value it was being used to justify.
+
+`tools/v6_residual_sensitivity.py` sweeps the grid instead, under focal-only
+reselection, writing `residual_sensitivity.json`:
+
+| reading | magnitude | evaluated band | half-width at median s² | admissible severities (of 8) | m\* survives |
+|---|---:|---|---:|---|---|
+| `projection_sd` | 0.0 | [0.05, 0.95] | 0.1138 | 4 / 3 / 4 / 4 | 3 of 4 |
+| `projection_sd` | 0.0142 | [0.05, 0.95] | 0.1172 | 4 / 3 / 4 / 4 | 3 of 4 |
+| `projection_sd` | 0.0687 | [0.05, 0.95] | 0.1763 | 3 / 3 / 2 / 3 | 0 of 4 |
+| `beyond_the_measured_sd` | 0.0 | [0.05, 0.95] | 0.1172 | 4 / 3 / 4 / 4 | 3 of 4 |
+| `beyond_the_measured_sd` | 0.0142 | [0.0642, 0.9358] | 0.1172 | 4 / 3 / 4 / 4 | 3 of 4 |
+| `beyond_the_measured_sd` | 0.0687 | [0.1187, 0.8813] | 0.1172 | 3 / 3 / 2 / 3 | 0 of 4 |
+
+Two things follow. **Feasibility does not discriminate**: every replication
+retains an admissible operating point at every policy, which answers the
+circularity §12.4 left open. **The readings barely discriminate either** — at a
+given magnitude they select the same severities — so the live question is the
+magnitude, and specifically whether to buy 0.0687's conservatism, which would
+make all four replications re-select rather than three of four keeping their
+v5 m\*. Scope limit on the table: `solo:B` is the only one of the six
+determinate entries v5 measured on the calibration split, so these are a
+**lower** bound on how often the rule bites.
+
+### 13.4 Focal-only reselection (researcher decision, 2026-08-26)
+
+The probe could move m\* — and terminate a replication — on entries containing
+`PS1`–`PS3`, instruments that are non-selectable by construction and that A10
+gives a predicate form no selectable family carries. The researcher's decision:
+**only the six determinate entries decide.** Registered as preregistration A13,
+including the declaration that it is a *loosening* of the rule it replaces, and
+including what the stand-in rows now buy — 1,536 rows per probed severity decide
+m\*, 9,984 are a structural-risk record that gates nothing.
+
+### 13.5 Decisions that could not affect execution
+
+Thirteen entries offered alternatives the implementation had no branch for, so
+closing at one would have registered a study the code cannot run — silently,
+because nothing read the value. D2, D5, D7–D15, D19 and D21 are now
+**acceptances**; each withdrawn alternative moves to
+`unimplemented_alternatives`, which `as_dict` carries into the registration
+payload, and `close()` refuses it by name. D20 lost `calibration_pooled` for
+the same reason in a sharper form: it and `calibration_with_measured_transfer`
+mapped to the same 192 pooled topics and produced identical records.
+
+Two more of the same kind, fixed rather than retired:
+
+- **D0's `do_not_adopt` refused nothing.** No code read D0, so the value
+  meaning "this study does not run" signed a manifest exactly as `adopt` did.
+  `signing_blockers` now raises `NOT_ADOPTED`.
+- **D25 had no caller.** `study_level_statement` was invoked by no stage —
+  the lifecycle is per replication and `FINAL_REPORT` writes one report per
+  model, so a study-level sentence had nowhere to live. `tools/v6_closure.py`
+  now writes `reports/dci1v6/closure.json`, following
+  `reports/dci1v5/closure.json`'s precedent. It counts survivors from signed
+  records and quotes the registered sentence; it estimates nothing.
+
+### 13.6 Citations corrected
+
+- §1 of the preregistration cited "§31's prohibition on post-outcome repair,
+  reselection or re-expansion". v5's §31 is **Release**; the prohibition is
+  §32.1 and §32.3, and v6 incorporates v5 by content hash, so the citation
+  resolved to the wrong text.
+- `selection.group_key` → `selection._group_order` in the preregistration and
+  the proposal record.
+- `budget.calibration_burden` and `analysis_run._raw_coordinate_secondary`
+  both said a decision "is closed at" a value. Both are v5 sentences in v6
+  modules; both decisions are `UNRESOLVED` here.
+- §32.2 requires that a change adopted after a gate ran be declared as such.
+  Preregistration §4 declared two fitted quantities and did not declare that
+  `GATE_2_75` and `PS1`–`PS3` exist because v5's Gate 4 fired. It now does.
+
+### 13.7 What the red team did **not** overturn
+
+The identification firewall, the exposure-class derivation, the two-tier
+verdict, `probe_only` non-selectability, the §6.2 exchangeability argument for
+the *dispersion* of the transfer, D22's per-replication licensing, and A3's
+recalibrated coverage read. §13.14, §13.4, C4 and every other substantive
+threshold are untouched.

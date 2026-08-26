@@ -1303,8 +1303,9 @@
     }
    }
   },
-  "residual_note": "0.0, so this isolates the projection from \u00a734 D23's allowance",
-  "residual_used": 0.0
+  "residual_note": "0.0, so this isolates the projection from \u00a734 D23's reading and \u00a734 D26's magnitude. That isolation is deliberate and it is also a LIMIT: this table establishes feasibility at one value only, and the 2026-08-26 red team observed that the value it establishes it at is the one it was used to justify. `reports/dci1v6/residual_sensitivity.json` sweeps the others",
+  "residual_used": 0.0,
+  "swept_elsewhere": "reports/dci1v6/residual_sensitivity.json"
  },
  "policies": {
   "_question": "which composed-set sizes exist, and what does each do to the quantity a margin would have to cover?",

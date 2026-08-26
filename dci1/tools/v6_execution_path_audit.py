@@ -93,8 +93,10 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "REGIME_SCREEN.coverage",
      "consumer": None, "expect": VERIFIED},
     {"id": "R-2.75-margin", "section": "§13.14, P3.2", "area": "probe",
-     "meaning": "a probed severity passes only when every probed cell, on "
-                "every evaluated slot, lies inside the registered margin",
+     "meaning": "a probed severity is admissible for m* only when every "
+                "DETERMINATE entry passes its own test. Focal-only "
+                "reselection: a stand-in-dependent verdict is recorded and "
+                "gates nothing",
      "runtime": "dci1v6.stages.composed_probe.severity_verdict",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.disposition",
@@ -306,6 +308,27 @@ RULES: tuple[dict[str, object], ...] = (
      "runtime": "dci1v6.stages.composed_probe.projected_halfwidth",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-13.14-focal-only-reselection", "section": "§13.14, P3.2",
+     "area": "probe",
+     "meaning": "only the six determinate entries may make a severity "
+                "inadmissible. An instrument that can never be selected as a "
+                "reference cannot choose the operating point at which the "
+                "estimands are measured, nor raise "
+                "COMPOSED_HEADROOM_UNREACHABLE",
+     "runtime": "dci1v6.stages.composed_probe.severity_verdict",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+     "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
+    {"id": "R-34-D23-reading-is-not-the-magnitude", "section": "§34 D23, D26",
+     "area": "probe",
+     "meaning": "the band a determinate interval must lie inside and the sd "
+                "the projection's quadrature carries are separate arguments, "
+                "so one can never be silently substituted for the other. §34 "
+                "D23 selects the reading and §34 D26 the magnitude",
+     "runtime": "dci1v6.stages.composed_probe.projection_residual_sd",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.residual_reading",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
     {"id": "R-13.14-no-margin-for-a-standin", "section": "§13.14",
      "area": "probe",

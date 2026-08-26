@@ -154,7 +154,7 @@ def test_it_binds_the_twenty_six_closures_and_what_they_did_not_take():
     built = _manifest()
     assert not set(manifest.REQUIRED_BINDINGS) - set(built)
     assert built["manifest_hash"]
-    assert built["decisions"]["n_decisions"] == 26
+    assert built["decisions"]["n_decisions"] == 27
     assert built["decisions"]["all_closed"] is True
     assert built["decisions"]["open"] == []
     assert built["open_items"]["blocking"] == []

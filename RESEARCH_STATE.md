@@ -2103,10 +2103,54 @@ Three `probe_only` families are authored so the probe can run at all — library
 37 → 40, verifier hash moved, no v6 record exists at the old one — and the
 selectable population is unmoved at v5's 37 families, 326 round-0 and 632
 declared severities, which `assert_library_sizes` now asserts as separate
-counts. **v6 still cannot run**: `reports/dci1v6/researcher_decisions.json` does
-not exist, no code may create it, and all twenty-six of D0–D25 are UNRESOLVED
-at import. Detail: `CHANGES_SCIENTIFIC.md` (the three 2026-08-25 v6 entries),
+counts. Detail: `CHANGES_SCIENTIFIC.md` (the three 2026-08-25 v6 entries),
 `reports/dci1v6/READINESS.md` §12, `reports/dci1v6/precision_design.json`.
+
+### 4af. The v6 decision set was audited, and two of its entries did not mean what they said (2026-08-26)
+
+A red team of D0–D25 before adoption found two blocking defects.
+
+**The register proposed three branches v5's researcher had rejected.**
+`protocol/decisions` carried v5's *pre-adoption draft* text for D16, D17 and
+D18 — `a_survivors`, `no_floor`, `not_a_precondition` — while
+`reports/dci1v5/researcher_decisions.json` records `complete_population`,
+`floor` and `precondition`. In all three the register proposed the **weaker**
+branch, the v6 preregistration asserted the stronger one was carried, and
+`budget.calibration_burden` already costed it. D17 compounds it: the floor is
+one of the three conditions `focal_admissible` conjoins, so `no_floor` would
+have *enlarged* the severities Gate 2.75 may re-select among.
+
+**§34 D23 was passed into the projection as the very term it claimed to sit
+beyond.** Four documents described it as an allowance beyond the measured
+`RESIDUAL_SD = 0.0142`; `entry_verdict` used its value *as* that sd, so the
+proposed `D23 = 0.0` would have deleted the measured term from every
+determinate verdict. It is now two decisions — **D23** the reading, **D26** the
+magnitude, range-checked at closure — and §34 carries twenty-seven entries.
+
+**And δ = 0's derivation does not survive.** It established that the
+calibration-to-composed transfer's *dispersion* is consistent with sampling.
+What an allowance guards against is a common shift of one replication's
+entries, which `precision_design.json` names and does not estimate: **+0.045**
+over thirteen observations, 95% interval about (−0.025, +0.104) on the four
+per-model means, against an assumed 0.0142.
+[`residual_sensitivity.json`](dci1/reports/dci1v6/residual_sensitivity.json)
+sweeps the grid instead — every replication retains an operating point at every
+policy, so feasibility does not discriminate, but at 0.0687 all four would
+re-select m\* rather than three of four keeping v5's. **No value is proposed.**
+
+**One decision was taken.** *Focal-only reselection*: only the six determinate
+entries — `solo:A`, `solo:B`, both orders of `pair:A+B` — may make a severity
+inadmissible. `PS1`–`PS3` are recorded and gate nothing, so an instrument that
+can never be a reference can no longer choose the operating point at which
+`Delta_j` and `Delta_R` are estimated. Preregistration A13 registers it and
+declares it a **loosening** of the rule it replaces.
+
+Thirteen further entries offered alternatives with no implementation and became
+acceptances; D0's `do_not_adopt` now blocks signing; D25 acquired a caller
+(`tools/v6_closure.py`). **v6 still cannot run**:
+`reports/dci1v6/researcher_decisions.json` does not exist, no code may create
+it, and all twenty-seven of D0–D26 are UNRESOLVED at import. Detail:
+`CHANGES_SCIENTIFIC.md` (2026-08-26), `reports/dci1v6/READINESS.md` §13.
 
 ---
 

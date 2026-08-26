@@ -616,7 +616,8 @@ def operating_point_feasibility() -> dict[str, Any]:
             verdict = composed_probe.entry_verdict(
                 {"compliance": moments["p"], "s2_topic": moments["s2_topic"],
                  "n_topics": moments["n_topics"]},
-                cell_id="solo:B", slot="B", cell_slots=("B",), residual=0.0)
+                cell_id="solo:B", slot="B", cell_slots=("B",),
+                residual_sd=0.0)
             per_severity[str(severity)] = {
                 "compliance": moments["p"], "s2_topic": moments["s2_topic"],
                 "half_width": verdict["half_width"],
@@ -640,7 +641,14 @@ def operating_point_feasibility() -> dict[str, Any]:
             "nothing about what v5 should have done",
         "residual_used": 0.0,
         "residual_note": "0.0, so this isolates the projection from §34 D23's "
-                         "allowance",
+                         "reading and §34 D26's magnitude. That isolation is "
+                         "deliberate and it is also a LIMIT: this table "
+                         "establishes feasibility at one value only, and the "
+                         "2026-08-26 red team observed that the value it "
+                         "establishes it at is the one it was used to "
+                         "justify. `reports/dci1v6/residual_sensitivity.json` "
+                         "sweeps the others",
+        "swept_elsewhere": "reports/dci1v6/residual_sensitivity.json",
         "per_model": out,
         "every_replication_retains_an_operating_point":
             all(v["passing_severities"] for v in out.values()),
