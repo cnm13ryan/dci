@@ -128,27 +128,51 @@ def _probe() -> dict[str, Any]:
         "shared_with_gate2": list(composed_probe.SHARED_WITH_GATE2),
         "determinate_slots": list(composed_probe.DETERMINATE_SLOTS),
         "n_determinate_entries": composed_probe.N_DETERMINATE_ENTRIES,
-        "residual_sd": composed_probe.RESIDUAL_SD,
-        "residual_sd_is": (
+        "measured_residual_sd": composed_probe.RESIDUAL_SD,
+        "measured_residual_sd_is": (
             "half the measured calibration_a-vs-calibration_b residual. §6.2 "
             "cuts calibration_a and the composed set from one seeded per-area "
             "shuffle so they are exchangeable; §34 D3's calibration_b is "
             "newly authored and is not, and supplies half a pooled probe's "
-            "topics. reports/dci1v6/precision_design.json carries it."),
+            "topics. reports/dci1v6/precision_design.json carries it. "
+            "WHETHER IT ENTERS A VERDICT IS §34 D23's: under `projection_sd` "
+            "it does not and §34 D26's number takes its place in the "
+            "quadrature; under `beyond_the_measured_sd` it does and D26's "
+            "number contracts the band instead."),
+        "residual_readings": list(composed_probe.RESIDUAL_READINGS),
+        "residual_readings_are": {
+            "projection_sd":
+                "§34 D26's number IS the residual_sd term in the "
+                "projection's quadrature; the measured 0.0142 is not applied "
+                "separately.",
+            "beyond_the_measured_sd":
+                "the projection carries the measured 0.0142 and §34 D26's "
+                "number contracts §13.14's band linearly on top of it.",
+        },
         "verdict_rule": {
             "determinate_entry":
-                "passes iff its projected Gate-4 interval lies inside "
-                "§13.14's registered band. Half-width "
+                "passes iff its projected Gate-4 interval lies inside the "
+                "evaluated band, which is §13.14's registered band contracted "
+                "only under `beyond_the_measured_sd`. Half-width "
                 "z * sqrt(s2/N_COMPOSED + s2/n_probe + residual_sd^2), with "
                 "s2 the entry's own between-topic variance measured in this "
-                "stage and z at §13.4's registered 95%.",
+                "stage, z at §13.4's registered 95%, and residual_sd from "
+                "§34 D23's reading --- NOT unconditionally 0.0142.",
             "standin_dependent_entry":
                 "passes iff the measured value lies inside §13.14's "
                 "registered band, with NO margin. A failure is a real "
                 "composed cell of real instruments leaving the band; a pass "
                 "certifies nothing about the reference that replaces the "
                 "stand-in.",
-            "severity": "passes iff every entry passes its own test",
+            "severity":
+                "passes iff every DETERMINATE entry passes its own test. "
+                "Focal-only reselection (researcher decision, 2026-08-26): a "
+                "stand-in-dependent entry is measured, judged and recorded "
+                "under `standin_findings`, and gates nothing --- it cannot "
+                "move m* and cannot terminate a replication, because an "
+                "instrument that can never be selected as a reference may "
+                "not choose the operating point at which the estimands are "
+                "measured.",
             "familywise_reading":
                 "computed and recorded per determinate entry and read by "
                 "nothing, because §13.14's verdict is a conjunction and the "
@@ -198,7 +222,7 @@ def main() -> None:
         "_status": DRAFT,
         "_status_means":
             "NOT ADOPTED. No v6 registration exists, no v6 stage has run, and "
-            "all twenty-six §34 decisions are UNRESOLVED because "
+            "all twenty-seven §34 decisions are UNRESOLVED because "
             "reports/dci1v6/researcher_decisions.json does not exist and no "
             "code may create it. `manifest.assert_documents_adopted` refuses "
             "a registration while this field says DRAFT_NOT_ADOPTED. Adopting "
@@ -232,8 +256,11 @@ def main() -> None:
         },
         "what_this_spec_does_not_decide": [
             "any §34 decision; every one of them is still open",
-            "the value of §34 D23's residual allowance, whose derivation is "
-            "0.0 and whose closure is the researcher's",
+            "what §34 D23's residual allowance MEANS: both readings are "
+            "executable and the closure selects one",
+            "how large it is (§34 D26): no derived value survives the "
+            "2026-08-26 red team, and reports/dci1v6/residual_sensitivity."
+            "json costs the grid instead of proposing a point",
             "whether §6.2's composed set is enlarged (§34 D21): the "
             "sequestered eighth is not materialised in this repository, so "
             "that branch is an act of authoring topics",

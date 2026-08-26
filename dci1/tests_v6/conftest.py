@@ -8,7 +8,7 @@ is `fixture-model`, and nothing in this file is written to an evidence tree.
 against ``reports/dci1v5/researcher_decisions.json``, a committed record of
 closures the researcher had actually taken, so a test that walked a stage
 found the decisions closed. **v6 has no such record and must not have one:**
-v6 is not adopted, not registered, and all twenty-six of D0 to D25 are
+v6 is not adopted, not registered, and all twenty-seven of D0 to D26 are
 UNRESOLVED at import --- which is the correct state and is asserted by
 ``test_lifecycle.py``. Without a fixture, every test that runs a stage would
 fail at stage 1 on ``REGISTRATION_INCOMPLETE`` and say nothing about the code
@@ -25,13 +25,13 @@ difference matters:
   the source --- so a harness that only supplied bare values could not
   exercise that path. ``decisions.RECORD_PATH`` is monkeypatched to the
   fixture for the duration of a test.
-* **D19-D25**, v6's own, are supplied as bare harness values from
+* **D19-D26**, v6's own, are supplied as bare harness values from
   ``synthetic_lifecycle.TEST_CLOSURES``. They are deliberately **absent** from
   the fixture: v6 has taken nothing and no file in this repository says
   otherwise.
 
 A harness value is not a decision: it is what lets the suite reach the thing
-it is testing. ``test_lifecycle.py`` asserts the committed state --- twenty-six
+it is testing. ``test_lifecycle.py`` asserts the committed state --- twenty-seven
 open, no record on the real path --- from a fresh read that this fixture
 cannot reach.
 """

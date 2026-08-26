@@ -1,16 +1,16 @@
 {
- "n_rules": 67,
- "n_agreeing": 67,
+ "n_rules": 69,
+ "n_agreeing": 69,
  "by_status": {
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 65
+  "VERIFIED_REACHABLE": 67
  },
  "contract": {
-  "n_fields": 158,
+  "n_fields": 162,
   "n_artifacts": 18,
-  "n_checked_against_payloads": 420,
-  "n_field_presence_checks": 158,
-  "n_consumption_checks": 262,
+  "n_checked_against_payloads": 427,
+  "n_field_presence_checks": 162,
+  "n_consumption_checks": 265,
   "n_semantic_checks": 4,
   "relayed": [
    {
@@ -1364,7 +1364,7 @@
    "id": "R-2.75-margin",
    "section": "\u00a713.14, P3.2",
    "area": "probe",
-   "meaning": "a probed severity passes only when every probed cell, on every evaluated slot, lies inside the registered margin",
+   "meaning": "a probed severity is admissible for m* only when every DETERMINATE entry passes its own test. Focal-only reselection: a stand-in-dependent verdict is recorded and gates nothing",
    "runtime": "dci1v6.stages.composed_probe.severity_verdict",
    "impl": "dci1v6.run.gates_run.gate2_75_payload",
    "field": "GATE_2_75_COMPOSED_PROBE.disposition",
@@ -1683,6 +1683,34 @@
    "runtime": "dci1v6.stages.composed_probe.projected_halfwidth",
    "impl": "dci1v6.run.gates_run.gate2_75_payload",
    "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+   "consumer": "GATE_5_FREEZE",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.14-focal-only-reselection",
+   "section": "\u00a713.14, P3.2",
+   "area": "probe",
+   "meaning": "only the six determinate entries may make a severity inadmissible. An instrument that can never be selected as a reference cannot choose the operating point at which the estimands are measured, nor raise COMPOSED_HEADROOM_UNREACHABLE",
+   "runtime": "dci1v6.stages.composed_probe.severity_verdict",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_75_COMPOSED_PROBE.disposition",
+   "consumer": "GATE_5_FREEZE",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-34-D23-reading-is-not-the-magnitude",
+   "section": "\u00a734 D23, D26",
+   "area": "probe",
+   "meaning": "the band a determinate interval must lie inside and the sd the projection's quadrature carries are separate arguments, so one can never be silently substituted for the other. \u00a734 D23 selects the reading and \u00a734 D26 the magnitude",
+   "runtime": "dci1v6.stages.composed_probe.projection_residual_sd",
+   "impl": "dci1v6.run.gates_run.gate2_75_payload",
+   "field": "GATE_2_75_COMPOSED_PROBE.residual_reading",
    "consumer": "GATE_5_FREEZE",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",

@@ -83,8 +83,9 @@ severity is admissible the replication terminates
 [0.05, 0.95], never a relaxation of it, and Gate 4 still applies the
 registered band to the registered composed set.
 
-**Two things this module does not decide, and refuses to.** The topic split
-(§34 D20) and the residual allowance (§34 D23) are researcher decisions;
+**Three things this module does not decide, and refuses to.** The topic split
+(§34 D20), what a residual allowance means (§34 D23) and how large it is
+(§34 D26) are researcher decisions;
 which stand-ins exist is §34 D24 and its closure selects the population
 ``PROBE_ONLY_FAMILY_IDS`` already carries. Every accessor below goes through
 ``protocol/decisions``, so no caller gets a default and no stage can run while
@@ -107,7 +108,9 @@ from dci1v6.verifiers.constraints import (
 )
 
 __all__ = ["COMPOSED_HEADROOM_UNREACHABLE", "PROBE_SLOTS", "probe_slots",
-           "probe_cell_types", "probe_split", "margin", "standins",
+           "probe_cell_types", "probe_split", "standins",
+           "RESIDUAL_READINGS", "residual_reading", "residual_allowance",
+           "projection_residual_sd",
            "margin_band", "severity_verdict", "probe_disposition",
            "assert_probe_reads_no_reference", "PROBE_DECLARED_REFUSALS",
            "REFERENCE_TOKENS", "FORBIDDEN_SOURCE_READS",
@@ -344,7 +347,6 @@ def probe_split() -> str:
     Every branch exists in the source and none is reachable while the
     decision is open, which is the whole point of ``choice``.
 
-    * ``calibration_pooled`` --- §6.2's 192 calibration topics, pooled.
     * ``reserved_composed`` --- the §6.2 composed set, which §6.2 spends once.
     * ``calibration_with_measured_transfer`` --- the calibration split, with
       every entry measured on **both** 96-topic sub-splits so the realised
@@ -357,63 +359,100 @@ def probe_split() -> str:
     """
     return decisions.choice(
         "D20",
-        {"calibration_pooled": "calibration_pooled",
-         "reserved_composed": "composed",
+        {"reserved_composed": "composed",
          "calibration_with_measured_transfer": "calibration_both_subsplits"},
         where="stages.composed_probe.probe_split")
 
 
-def margin() -> float:
-    """§34 D23 (READINESS R5): the **residual** allowance, in compliance units.
+#: §34 D23's two readings of what a residual allowance *is*. Both are
+#: executable; the closure selects one. They are not two values of one number
+#: --- they are two different quantities that happen to be written the same
+#: way, which is exactly why the register carried one entry that the code and
+#: the documents then read differently.
+RESIDUAL_READINGS: tuple[str, ...] = ("projection_sd",
+                                      "beyond_the_measured_sd")
 
-    **This is no longer "the value of delta", because the quantity delta was
-    invented to absorb turned out to be measurable.** READINESS §4.a asked a
-    margin to cover a calibration-to-composed transfer whose realised
-    magnitude reached 0.189 and an unmeasured stand-in-to-reference term. Two
-    things changed that question:
 
-    * the transfer is **sampling**. Over the thirteen realised movements the
-      observed variance is 0.00430 against the 0.00515 the two sample sizes
-      imply, so nothing survives to be a bias --- and §6.2's seeded cut says
-      why: the composed set and calibration_a come from one shuffle. What does
-      not is calibration_b, and its contribution is carried by ``RESIDUAL_SD``
-      and by the in-stage sub-split measurement, per entry, not by a constant;
-    * the stand-in-to-reference term is not covered by any margin, because no
-      margin can be. Stand-in-dependent entries are therefore judged against
-      §13.14's registered band directly, with no margin at all.
+def residual_reading() -> str:
+    """§34 D23: what the residual allowance MEANS. Refuses while open.
 
-    What is left for this decision is the allowance for a residual the
-    measurement did not find and the design says should not exist. The
-    derivation gives **0.0**; ``reports/dci1v6/precision_design.json`` carries
-    it, including the 95% upper bound on what a residual could be and still be
-    consistent with thirteen observations.
+    * ``projection_sd`` --- §34 D26's number **is** the ``residual_sd`` term
+      inside the projection's quadrature, and ``RESIDUAL_SD`` is not applied
+      separately. Closing D26 at 0.0 under this reading makes the projection
+      pure sampling: ``z * sqrt(s2/N_COMPOSED + s2/n_probe)``.
+    * ``beyond_the_measured_sd`` --- the projection always carries the
+      measured ``RESIDUAL_SD = 0.0142``, and §34 D26's number is an
+      **additional** contraction of §13.14's band, applied linearly to each
+      edge before the projection is laid on top. Closing D26 at 0.0 under
+      this reading keeps the measured term and adds nothing.
+
+    **Why this is a decision and not a docstring.** Until 2026-08-26 the
+    register carried one entry whose text described the second reading and
+    whose value the code used as the first, so ``D23 = 0.0`` would have
+    deleted the one measured non-sampling term the preregistration promises
+    is carried. The two readings also differ in *units*: an sd entering a
+    quadrature and a linear band contraction are not interchangeable, and
+    0.05 means ``+0.098`` of half-width under one and ``0.05`` of band under
+    the other.
     """
-    decisions.assert_decisions_closed_for("stages.composed_probe.margin")
-    value = decisions.value_of("D23")
+    return decisions.choice(
+        "D23", {r: r for r in RESIDUAL_READINGS},
+        where="stages.composed_probe.residual_reading")
+
+
+def residual_allowance() -> float:
+    """§34 D26: the magnitude of the residual allowance. Refuses while open.
+
+    What it means is §34 D23's; this is only how large it is. The range is
+    checked at **closure** by ``decisions.close`` as well as here, so a value
+    with no interior to §13.14's band cannot sign a manifest and then fail
+    five stages later.
+    """
+    decisions.assert_decisions_closed_for(
+        "stages.composed_probe.residual_allowance")
+    value = decisions.value_of("D26")
     low, high = C.COMPOSED_HEADROOM_BAND
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         raise ProtocolError(
-            f"§34 D23 closed at {value!r}; the residual allowance is a number")
+            f"§34 D26 closed at {value!r}; the residual allowance is a number")
     value = float(value)
     if not 0.0 <= value < (high - low) / 2:
         raise ProtocolError(
-            f"§34 D23 closed at {value}, which leaves no interior to "
+            f"§34 D26 closed at {value}, which leaves no interior to "
             f"{list(C.COMPOSED_HEADROOM_BAND)}. It is an allowance inside the "
             "registered band and never a change to it")
     return value
 
 
-def margin_band() -> tuple[float, float]:
-    """§13.14's band contracted by the residual allowance alone.
+def projection_residual_sd() -> float:
+    """The ``residual_sd`` term the projection's quadrature actually carries.
 
-    The **floor** the projection is applied on top of, not the verdict:
-    ``entry_verdict`` adds each entry's own projected half-width to this. It
-    exists so a reader can see the constant part separately from the measured
-    part, which is what READINESS R2 asks the record to expose.
+    Under ``projection_sd`` it is §34 D26's number. Under
+    ``beyond_the_measured_sd`` it is the measured ``RESIDUAL_SD``, and D26's
+    number is spent on the band instead --- see ``margin_band``.
+    """
+    if residual_reading() == "projection_sd":
+        return residual_allowance()
+    return RESIDUAL_SD
+
+
+def margin_band() -> tuple[float, float]:
+    """The band a determinate entry's projected interval must lie inside.
+
+    §13.14's registered [0.05, 0.95] under ``projection_sd``, because there
+    the whole allowance is inside the projection. Contracted by §34 D26's
+    number under ``beyond_the_measured_sd``, because there the allowance is a
+    band term and the measured sd is the projection's.
+
+    **§13.14 itself is untouched either way.** This is a margin *inside* the
+    registered band, applied by this stage to a projected quantity; Gate 4
+    still applies [0.05, 0.95] to the registered composed set.
     """
     low, high = C.COMPOSED_HEADROOM_BAND
-    residual = margin()
-    return (low + residual, high - residual)
+    if residual_reading() == "beyond_the_measured_sd":
+        d = residual_allowance()
+        return (low + d, high - d)
+    return (low, high)
 
 
 def standins() -> tuple[str, ...]:
@@ -656,7 +695,8 @@ def _z_two_sided(alpha: float) -> float:
 
 
 def entry_verdict(entry: Mapping[str, Any], *, cell_id: str, slot: str,
-                  cell_slots: Sequence[str], residual: float,
+                  cell_slots: Sequence[str], residual_sd: float,
+                  band: tuple[float, float] | None = None,
                   n_composed: int | None = None,
                   k: int = 1) -> dict[str, Any]:
     """One cell x slot entry, judged by what it is evidence for.
@@ -665,18 +705,25 @@ def entry_verdict(entry: Mapping[str, Any], *, cell_id: str, slot: str,
     ``s2_topic`` and ``n_topics``, all measured in this stage on the same
     rows.
     """
-    low, high = C.COMPOSED_HEADROOM_BAND
+    registered = C.COMPOSED_HEADROOM_BAND
+    low, high = registered if band is None else band
+    reg_low, reg_high = registered
+    if low < reg_low or high > reg_high:
+        raise ProtocolError(
+            f"the probe evaluates inside §13.14's registered band "
+            f"{list(registered)} and was given {[low, high]}. A margin is "
+            "applied inside the band and is never a relaxation of it")
     compliance = float(entry["compliance"])
     determinate = is_determinate(cell_slots)
     familywise = None
     if determinate:
         half = projected_halfwidth(
             float(entry["s2_topic"]), n_probe=int(entry["n_topics"]),
-            n_composed=n_composed, k=k, residual_sd=residual)
+            n_composed=n_composed, k=k, residual_sd=residual_sd)
         familywise = projected_halfwidth(
             float(entry["s2_topic"]), n_probe=int(entry["n_topics"]),
             n_composed=n_composed, k=N_DETERMINATE_ENTRIES,
-            residual_sd=residual)
+            residual_sd=residual_sd)
         lower, upper = compliance - half, compliance + half
         passes = low <= lower and upper <= high
         basis = ("the projected Gate-4 interval, from this entry's own "
@@ -685,6 +732,9 @@ def entry_verdict(entry: Mapping[str, Any], *, cell_id: str, slot: str,
     else:
         half = 0.0
         lower = upper = compliance
+        # The REGISTERED band, not the contracted one: a stand-in-dependent
+        # entry carries no margin, and a contraction is a margin.
+        low, high = reg_low, reg_high
         passes = low <= compliance <= high
         basis = ("§13.14's registered band applied to the measured value. No "
                  "margin: a stand-in is not the reference, so a projection "
@@ -692,7 +742,8 @@ def entry_verdict(entry: Mapping[str, Any], *, cell_id: str, slot: str,
     entry_out = {"cell": cell_id, "slot": slot, "compliance": compliance,
                  "determinate": determinate, "half_width": half,
                  "projected_low": lower, "projected_high": upper,
-                 "band": [low, high], "passes": passes, "basis": basis,
+                 "band": [low, high], "registered_band": [reg_low, reg_high],
+                 "passes": passes, "basis": basis,
                  "s2_topic": float(entry["s2_topic"]),
                  "n_topics": int(entry["n_topics"])}
     if familywise is not None:
@@ -709,14 +760,40 @@ def entry_verdict(entry: Mapping[str, Any], *, cell_id: str, slot: str,
 
 
 def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
-                     residual: float, n_composed: int | None = None,
+                     residual_sd: float,
+                     band: tuple[float, float] | None = None,
+                     n_composed: int | None = None,
                      k: int = 1) -> dict[str, Any]:
-    """P3.2: a severity passes iff **every** probed entry passes its own test.
+    """P3.2: a severity is admissible for m\\* iff every **determinate** entry
+    passes its own test.
 
     ``cells`` maps a probe cell id to slot -> measurement. The unconstrained
     cell carries no constraint and is recorded, not evaluated.
+
+    **Focal-only reselection (researcher decision, 2026-08-26).** Only the
+    six determinate entries --- ``solo:A``, ``solo:B`` and both orders of
+    ``pair:A+B``, every constituent of which is a real registered instrument
+    that actually enters the estimand --- may make a severity inadmissible.
+    A stand-in-dependent entry is measured, judged against §13.14's
+    registered band and recorded, and it **gates nothing**: it cannot remove
+    a severity from the admissible set and it cannot terminate a replication.
+
+    The reason is identification, not cost. ``PS1``-``PS3`` are non-selectable
+    by construction and carry a predicate form no selectable family exercises,
+    so an instrument that can never be a reference would otherwise choose the
+    operating point at which ``Delta_j`` and ``Delta_R`` are estimated. What
+    the stand-in entries are for is stated where it can be read rather than
+    inferred: they are a prospective structural-risk record of the slot and
+    order classes Gate 4 will audit, and ``standin_findings`` is where a
+    reader looks for it.
+
+    **This is a loosening relative to the rule it replaces**, and it is
+    declared as one. Under the previous rule a severity failing only on
+    stand-in-dependent entries was inadmissible, and a replication whose
+    every severity failed that way terminated ``COMPOSED_HEADROOM_UNREACHABLE``.
+    It now proceeds. The §32.2 declaration in the preregistration says so.
     """
-    low, high = C.COMPOSED_HEADROOM_BAND
+    low, high = C.COMPOSED_HEADROOM_BAND if band is None else band
     verdicts = []
     for cell_id, entry in sorted(cells.items()):
         if cell_id == "unconstrained":
@@ -732,14 +809,39 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
         for slot in cell_slots:
             verdicts.append(entry_verdict(
                 entry[slot], cell_id=cell_id, slot=slot,
-                cell_slots=cell_slots, residual=residual,
-                n_composed=n_composed, k=k))
-    failures = [v for v in verdicts if not v["passes"]]
+                cell_slots=cell_slots, residual_sd=residual_sd,
+                band=(low, high), n_composed=n_composed, k=k))
     determinate = [v for v in verdicts if v["determinate"]]
+    standin = [v for v in verdicts if not v["determinate"]]
+    if len(determinate) != N_DETERMINATE_ENTRIES:
+        raise ProtocolError(
+            f"a probed severity carries {len(determinate)} determinate "
+            f"entries and the registered set is {N_DETERMINATE_ENTRIES} "
+            "(solo:A, solo:B and both orders of pair:A+B). Only these decide "
+            "admissibility, so a missing one would narrow the test silently")
+    # Focal-only: the admissibility of a severity is a function of the
+    # determinate entries and of nothing else.
+    failures = [v for v in determinate if not v["passes"]]
+    standin_findings = [v for v in standin if not v["passes"]]
     familywise_failures = [v for v in determinate
                            if not v.get("passes_familywise", True)]
     return {
         "passes": not failures, "failures": failures,
+        # Recorded, and read by no rule. A stand-in-dependent entry outside
+        # §13.14's band is a real composed cell of a real instrument beside
+        # an instrument that is not the reference; it is prospective
+        # structural evidence about a slot-and-order class and never a
+        # statement about the reference that will fill the slot.
+        "standin_findings": standin_findings,
+        "standin_findings_gate_nothing": True,
+        "why_standin_findings_gate_nothing":
+            "an instrument that can never be selected as a reference may not "
+            "choose the operating point at which the estimands are measured, "
+            "nor terminate a replication",
+        "all_entries_inside_their_test": not failures and not standin_findings,
+        "admissibility_decided_by":
+            "the six determinate entries: solo:A, solo:B and both orders of "
+            "pair:A+B",
         "would_fail_familywise": [
             {"cell": v["cell"], "slot": v["slot"],
              "compliance": v["compliance"],
@@ -749,8 +851,9 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
         "n_entries_evaluated": len(verdicts),
         "n_determinate_entries": len(determinate),
         "n_standin_dependent_entries": len(verdicts) - len(determinate),
-        "registered_band": [low, high],
-        "residual_allowance": residual,
+        "registered_band": list(C.COMPOSED_HEADROOM_BAND),
+        "evaluated_band": [low, high],
+        "projection_residual_sd": residual_sd,
         "level_k": k,
         "familywise_k": N_DETERMINATE_ENTRIES,
         "n_composed": C.N_COMPOSED if n_composed is None else int(n_composed),
@@ -761,14 +864,16 @@ def severity_verdict(cells: Mapping[str, Mapping[str, Mapping[str, Any]]], *,
 def probe_disposition(*, m_star: int,
                       probed: Mapping[int, Mapping[str, Mapping[str, Any]]],
                       gate2_solo_curve: Mapping[int, float],
-                      residual: float,
+                      residual_sd: float,
+                      band: tuple[float, float] | None = None,
                       n_composed: int | None = None) -> dict[str, Any]:
     """P3.3 to P3.6: m* stands, m* is re-selected once, or the study stops.
 
     ``probed`` maps each probed severity to its cell -> slot -> measurement
     table. ``gate2_solo_curve`` is **Gate 2's own** measured solo B curve; it
     is the selection input and the probe is not. The probe decides only which
-    severities are admissible.
+    severities are admissible, and under focal-only reselection it decides
+    that from the determinate entries alone --- see ``severity_verdict``.
 
     Raising is the registered outcome of P3.6 and it is raised here, so the
     A8 AST regression --- every status in force has a reachable ``raise`` ---
@@ -777,8 +882,8 @@ def probe_disposition(*, m_star: int,
     """
     from dci1v6.run.lifecycle import TerminalStatus
 
-    verdicts = {m: severity_verdict(table, residual=residual,
-                                    n_composed=n_composed)
+    verdicts = {m: severity_verdict(table, residual_sd=residual_sd,
+                                    band=band, n_composed=n_composed)
                 for m, table in sorted(probed.items())}
     if m_star not in verdicts:
         raise ProtocolError(
@@ -787,24 +892,37 @@ def probe_disposition(*, m_star: int,
     base = {"m_star_in": m_star, "probed_severities": sorted(verdicts),
             "verdicts": {str(m): v for m, v in verdicts.items()},
             "passing_severities": passing,
-            "residual_allowance": residual,
+            "projection_residual_sd": residual_sd,
+            "evaluated_band": list(
+                C.COMPOSED_HEADROOM_BAND if band is None else band),
             "registered_band": list(C.COMPOSED_HEADROOM_BAND),
             "band_is_unchanged": True,
             "selection_input": "GATE_2_FOCAL_CALIBRATION's solo B curve",
+            "reselection_rule": "focal_only",
+            "reselection_rule_is":
+                "only the six determinate entries --- solo:A, solo:B and both "
+                "orders of pair:A+B --- may make a severity inadmissible. No "
+                "stand-in-dependent entry moves m* or terminates the "
+                "replication; their verdicts are recorded under "
+                "`standin_findings` as prospective structural evidence",
+            "standin_findings_by_severity": {
+                str(m): v["standin_findings"] for m, v in verdicts.items()},
             "reselections_permitted": 1}
     if verdicts[m_star]["passes"]:
         return {**base, "reselected": False, "m_star_out": m_star,
-                "reason": "P3.3: m* keeps every probed entry inside its own "
-                          "test, so it stands"}
+                "reason": "P3.3: m* keeps every determinate entry inside its "
+                          "projected Gate-4 interval, so it stands"}
     if not passing:
         raise TerminalStatus(
             COMPOSED_HEADROOM_UNREACHABLE, gate=C.STAGE_GATE2_75,
             criterion=(
-                "P3.6: no severity Gate 2 found eligible keeps every probed "
-                "entry inside §13.14's unchanged band "
-                f"{list(C.COMPOSED_HEADROOM_BAND)} --- determinate entries "
-                "through their projected Gate-4 interval, stand-in-dependent "
-                "entries through the band itself"),
+                "P3.6: no severity Gate 2 found eligible keeps every "
+                "DETERMINATE entry --- solo:A, solo:B and both orders of "
+                "pair:A+B --- inside its projected Gate-4 interval within "
+                f"§13.14's unchanged band {list(C.COMPOSED_HEADROOM_BAND)}. "
+                "Stand-in-dependent entries are recorded and decide nothing "
+                "here, so no replication terminates on an instrument that "
+                "could never have been selected as a reference"),
             observed={"verdicts": base["verdicts"],
                       "probed_severities": base["probed_severities"]},
             strongest_permissible_statement=C.TERMINAL_SENTENCE)
@@ -879,6 +997,15 @@ PROBE_DECLARED_REFUSALS: dict[str, str] = {
         "band; its passing is not evidence that the reference which replaces "
         "the stand-in will also be inside it, and nothing here treats it as "
         "though it were",
+    "no_standin_entry_moves_the_operating_point_or_ends_a_replication":
+        "focal-only reselection: admissibility is decided by the six "
+        "determinate entries alone --- solo:A, solo:B and both orders of "
+        "pair:A+B, every constituent of which is a real registered "
+        "instrument that enters the estimand. A stand-in-dependent verdict "
+        "is recorded under `standin_findings` and read by no rule, so an "
+        "instrument that can never be selected as a reference can neither "
+        "choose the operating point at which Delta_j and Delta_R are "
+        "measured nor raise COMPOSED_HEADROOM_UNREACHABLE",
 }
 
 #: Stated on the payload because READINESS §3.2 says a limit discovered at
@@ -891,9 +1018,17 @@ PROBE_SCOPE_LIMITS: tuple[str, ...] = (
     "composed lift a stand-in produces is not the lift that reference will "
     "produce, and no closed measurement bounds the difference. Gate 4 remains "
     "the only stage that measures the actual references",
-    "for the same reason a stand-in-dependent entry carries no margin. It "
-    "gates only when a real composed cell of real instruments leaves the "
-    "registered band, and it never certifies that a reference would not",
+    "for the same reason a stand-in-dependent entry carries no margin AND "
+    "gates nothing. Under focal-only reselection it cannot move m* and "
+    "cannot terminate a replication; it is a prospective structural record "
+    "of a slot-and-order class, and the price of that is that a class whose "
+    "only probe evidence is stand-in-dependent is audited for the first time "
+    "at Gate 4",
+    "the entries that DO decide are the six determinate ones, so what the "
+    "probe protects against is a real A+B or B+A composed cell, or A or B "
+    "alone, sitting where §13.14's 24-topic verdict could plausibly fire. It "
+    "does not protect against a companion whose identity is unknown here, "
+    "which is most of what Gate 4 audits",
     "two stand-ins carry the target-with-companion and companion-with-"
     "companion classes rather than all three, which measures each class once "
     "instead of three times. Running all three through every class would add "

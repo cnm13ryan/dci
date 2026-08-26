@@ -1319,7 +1319,8 @@ def _standin_ladders(tree: ModelTree, kinds: Sequence[str], *, bank: TopicBank,
 
 
 def _measured_split_transfer(probed: Mapping[int, Mapping[str, Mapping[str, Any]]],
-                             *, residual_sd: float) -> dict[str, Any]:
+                             *, v5_fitted_residual_sd: float,
+                             carried_by_the_verdict: float) -> dict[str, Any]:
     """§34 D20's measured transfer, per entry and in summary.
 
     **The point of the branch, made visible.** §6.2 cuts Calibration-A and the
@@ -1366,11 +1367,20 @@ def _measured_split_transfer(probed: Mapping[int, Mapping[str, Mapping[str, Any]
             "a rule that re-tuned the margin from the transfer it was "
             "measuring would fit a design constant to the replication it is "
             "about to judge",
-        "assumed_residual_sd": residual_sd,
-        "assumed_residual_sd_is":
+        "v5_fitted_residual_sd": v5_fitted_residual_sd,
+        "v5_fitted_residual_sd_is":
             "composed_probe.RESIDUAL_SD, half the calibration_a-vs-"
             "calibration_b residual measured on the closed v5 record. This "
             "block is the same quantity on this replication",
+        # Named separately because they are not always the same number: under
+        # §34 D23's `projection_sd` reading the verdict carries §34 D26's
+        # magnitude and NOT the v5-fitted estimate above. Calling the fitted
+        # value "assumed" while the verdict assumed something else is the
+        # defect the 2026-08-26 red team found in D23 itself, one field down.
+        "carried_by_the_verdict": carried_by_the_verdict,
+        "carried_by_the_verdict_is":
+            "the residual_sd the projection's quadrature actually used on "
+            "this run, from composed_probe.projection_residual_sd()",
         "entries": rows,
     }
     if rows:
@@ -1422,7 +1432,16 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     eligible = [int(q) for q in (focal.get("eligible") or ())]
 
     split = composed_probe.probe_split()          # §34 D20, refuses while open
-    residual = composed_probe.margin()            # §34 D23, refuses while open
+    # §34 D23 says what a residual allowance MEANS and §34 D26 how large it
+    # is; both refuse while open. `projection_residual_sd` is the sd the
+    # quadrature carries and `margin_band` the band the projected interval
+    # must lie inside, and they are different quantities under the two
+    # readings --- which is why they are read separately rather than one
+    # number being passed to both.
+    reading = composed_probe.residual_reading()
+    allowance = composed_probe.residual_allowance()
+    residual_sd = composed_probe.projection_residual_sd()
+    evaluated_band = composed_probe.margin_band()
     topics, topic_label = probe_topics(bank, split)
     generate = resolve_generate(tree, generate, _responder,
                                 where=C.STAGE_GATE2_75)
@@ -1562,12 +1581,13 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         # P3.3: m* passing ends the probe, so the common case measures one
         # severity and the worst case measures Gate 2's whole eligible set.
         if severity == m_star and composed_probe.severity_verdict(
-                table, residual=residual)["passes"]:
+                table, residual_sd=residual_sd,
+                band=evaluated_band)["passes"]:
             break
 
     disposition = composed_probe.probe_disposition(
         m_star=m_star, probed=probed, gate2_solo_curve=curve,
-        residual=residual)
+        residual_sd=residual_sd, band=evaluated_band)
     return {
         "stage": C.STAGE_GATE2_75,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE2_75],
@@ -1634,14 +1654,23 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         # Calibration-B movement of every probed entry, recorded beside the
         # verdict it is an assumption in. Read by nothing.
         "measured_split_transfer": _measured_split_transfer(
-            probed, residual_sd=composed_probe.RESIDUAL_SD),
-        "residual_allowance": residual,
+            probed, v5_fitted_residual_sd=composed_probe.RESIDUAL_SD,
+            carried_by_the_verdict=residual_sd),
+        "residual_reading": reading,
+        "residual_allowance": allowance,
+        "projection_residual_sd": residual_sd,
+        "measured_residual_sd": composed_probe.RESIDUAL_SD,
         "residual_allowance_is":
-            "§34 D23: the allowance for a difference between this stage's "
-            "split and §13.14's that is NOT sampling. The sampling part is "
-            "carried per entry by the projected interval, from that entry's "
-            "own between-topic variance, and is not in this number",
+            "§34 D23 says what the allowance MEANS and §34 D26 how large it "
+            "is. Under `projection_sd` D26's number IS the residual sd in "
+            "the projection's quadrature and the measured 0.0142 is not "
+            "applied separately; under `beyond_the_measured_sd` the "
+            "projection carries the measured 0.0142 and D26's number "
+            "contracts §13.14's band on top. The two have different units "
+            "and are recorded as separate fields so a reader never has to "
+            "infer which one a number is",
         "band": list(C.COMPOSED_HEADROOM_BAND),
+        "evaluated_band": list(evaluated_band),
         "band_is_unchanged": True,
         "n_composed_audited_at": C.N_COMPOSED,
         "selects_nothing_but_m_star": True,

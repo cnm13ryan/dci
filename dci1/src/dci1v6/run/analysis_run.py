@@ -488,8 +488,11 @@ def _raw_coordinate_secondary(spectrum_by_configuration: Mapping[str, Any], *,
                               ) -> dict[str, Any]:
     """§18 step 14, §15's raw-coordinate replication, §34 D14's secondary.
 
-    §34 D14 is closed at *"iota remains primary, raw solo secondary,
-    `DIFFICULTY_COORDINATE_DEPENDENT` on disagreement"*, and §17.6's
+    §34 D14 is **open** in v6 and its standing proposal is *"iota remains
+    primary, raw solo secondary, `DIFFICULTY_COORDINATE_DEPENDENT` on
+    disagreement"* --- v5's closure, which only the researcher may carry
+    forward. (Until 2026-08-26 this docstring said "is closed at", which is a
+    v5 sentence in a v6 module.) §17.6's
     coordinate-agreement paragraph is the rule that closure serves. Both
     needed a raw-coordinate fit and no production path ever computed one, so
     the status was unreachable and D14's closure bound nothing.

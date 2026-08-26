@@ -118,12 +118,12 @@ def test_closing_a_decision_unblocks_only_its_own_stages(restore_decisions):
     assert decisions.value_of("D17") == "no_floor"
 
 
-def test_the_decision_registry_is_v5s_nineteen_plus_v6s_seven():
-    assert len(decisions.DECISIONS) == 26
-    assert decisions.DECISION_IDS == tuple(f"D{i}" for i in range(26))
+def test_the_decision_registry_is_v5s_nineteen_plus_v6s_eight():
+    assert len(decisions.DECISIONS) == 27
+    assert decisions.DECISION_IDS == tuple(f"D{i}" for i in range(27))
     assert decisions.V5_DECISION_IDS == tuple(f"D{i}" for i in range(19))
     assert decisions.V6_DECISION_IDS == (
-        "D19", "D20", "D21", "D22", "D23", "D24", "D25")
+        "D19", "D20", "D21", "D22", "D23", "D24", "D25", "D26")
     # D19-D24 are the six open researcher decisions of
     # `dci1/reports/dci1v6/READINESS.md` §5, and each names the memo's own
     # identifier so the two documents cannot drift apart.
@@ -138,7 +138,7 @@ def test_no_v6_decision_has_been_taken_and_no_record_exists():
     ``tests_v6/conftest.py`` monkeypatches ``RECORD_PATH`` to a fixture so the
     suite can walk stages at all. This reads the path the module is actually
     born with: v6 has taken nothing, `reports/dci1v6/researcher_decisions.json`
-    does not exist, and every one of D0-D25 is UNRESOLVED at import.
+    does not exist, and every one of D0-D26 is UNRESOLVED at import.
     """
     real = REPO_ROOT / decisions.RECORD_RELPATH
     assert not real.exists(), (
@@ -187,7 +187,7 @@ def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
     ``tests_v6`` --- because v6 has no record and must not have one. What it
     covers is the mechanism: a closure read from a file carries its evidence,
     its author and its date, and a reopen restores that state rather than a
-    blank registry. v6's own D19-D25 are deliberately absent from it.
+    blank registry. v6's own D19-D26 are deliberately absent from it.
     """
     recorded = {e["id"]: e for e in decisions.recorded_closures()}
     assert set(recorded) == set(decisions.V5_DECISION_IDS)
@@ -200,14 +200,20 @@ def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
     assert payload["record"]["hash"] == decisions.record_hash()
     assert payload["record"]["path"] == decisions.RECORD_RELPATH
     # Every decision that offers a choice records the branch nobody took, so
-    # a reader can see what was declined as well as what was taken. D23 is a
-    # number and offers no coded branches, so it is absent here rather than
-    # empty; D25 now offers two, because its two readings of a one-survivor
-    # study are written out in `lifecycle.SINGLE_SURVIVOR_STATEMENTS` and a
-    # closure selects a registered sentence rather than licensing one to be
-    # composed after the survivor count is known.
+    # a reader can see what was declined as well as what was taken. The
+    # decisions absent here are the ones that offer no coded branch at all:
+    # D26 is a number, and the 2026-08-26 red team converted twelve v5-era
+    # entries plus D21 into acceptances because their alternatives had no
+    # implementation, so a closure there would have registered a study the
+    # code cannot run. What each of them declined is not lost --- it moves to
+    # `unimplemented_alternatives`, which `as_dict` carries.
+    acceptances = {d for d in decisions.DECISION_IDS
+                   if not decisions.DECISIONS[d].admissible_values}
+    assert "D26" in acceptances and "D21" in acceptances
     assert set(payload["non_adopted_alternatives"]) == set(
-        decisions.DECISION_IDS) - {"D23"}
+        decisions.DECISION_IDS) - acceptances
+    for did in acceptances - {"D26"}:
+        assert decisions.DECISIONS[did].unimplemented_alternatives, did
     # The record hash covers the open-item resolutions too: U2 blocks the
     # manifest outright, and a hash that covered only half the file would let
     # its resolution change under a signature that did not move.
@@ -267,8 +273,37 @@ def test_a_decision_cannot_be_closed_without_its_evidence(restore_decisions):
 
 
 def test_a_choice_must_supply_a_branch_for_every_admissible_value():
-    with pytest.raises(ProtocolError):
-        decisions.choice("D7", {0.90: 1}, where="test")
+    """The guard that found the dead branches: `choice` refuses a table that
+    omits an admissible value, so a decision offering a value the code has no
+    behaviour for is a defect here and not a researcher error.
+
+    D7 used to be the example. It is an **acceptance** since 2026-08-26 --- its
+    0.85 and 0.95 had no implementation anywhere --- so the example is now a
+    decision that really does select between coded branches.
+    """
+    assert decisions.DECISIONS["D20"].admissible_values
+    with pytest.raises(ProtocolError) as excinfo:
+        decisions.choice("D20", {"reserved_composed": "composed"},
+                         where="test")
+    assert "both branches" in str(excinfo.value)
+
+
+def test_an_acceptance_still_refuses_its_dependent_call_while_open(
+        restore_decisions):
+    """An acceptance offers no branch, so `choice`'s completeness guard cannot
+    protect it. What must still hold is that its dependent call refuses while
+    it is open --- otherwise converting a decision to an acceptance would have
+    quietly given its callers a default."""
+    restore_decisions.reopen_all_for_testing()
+    acceptances = [d for d in decisions.DECISION_IDS
+                   if not decisions.DECISIONS[d].admissible_values
+                   and decisions.DECISIONS[d].blocks_calls]
+    assert "D21" in acceptances and "D26" in acceptances
+    for did in acceptances:
+        for call in decisions.DECISIONS[did].blocks_calls:
+            assert did in decisions.decisions_blocking_call(call), (did, call)
+            with pytest.raises(decisions.DecisionOpenError):
+                decisions.assert_decisions_closed_for(call)
 
 
 def test_the_prefreeze_audit_runs_fifteen_checks_and_no_decision_is_open():

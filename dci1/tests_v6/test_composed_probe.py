@@ -177,16 +177,15 @@ def test_a_record_without_the_admissible_set_is_refused_not_defaulted():
 
 
 def test_a_severity_passes_only_when_every_entry_passes_its_own_test():
-    inside = P.severity_verdict(_table(0.80), residual=RESIDUAL)
+    inside = P.severity_verdict(_table(0.80), residual_sd=RESIDUAL)
     assert inside["passes"] and inside["failures"] == []
     # solo:A, solo:B, both orders of A+B (two slots each), solo:P1, and both
     # orders of B+P1 (two slots each).
     assert inside["n_entries_evaluated"] == 11
     assert inside["n_determinate_entries"] == 6
     assert inside["n_standin_dependent_entries"] == 5
-    # A determinate entry over the residual-contracted band fails, at zero
-    # variance, exactly where the old fixed margin band put it.
-    over = P.severity_verdict(_table(0.80, a_with_b=0.93), residual=RESIDUAL)
+    # A determinate entry whose projected interval leaves the band fails.
+    over = P.severity_verdict(_table(0.80, a_with_b=0.93), residual_sd=RESIDUAL)
     assert not over["passes"]
     assert {f["cell"] for f in over["failures"]} == {"pair:A+B", "pair:B+A"}
     assert all(f["slot"] == "B" and f["determinate"] for f in over["failures"])
@@ -199,24 +198,29 @@ def test_a_stand_in_dependent_entry_carries_no_margin_at_all():
     # 0.93 is outside the residual-contracted band and inside the registered
     # one. A determinate entry there fails; a stand-in-dependent one passes.
     near = P.severity_verdict(_table(0.80, composed_b=0.93),
-                              residual=RESIDUAL)
+                              residual_sd=RESIDUAL)
     assert near["passes"]
+    assert near["standin_findings"] == []
     assert all(e["half_width"] == 0.0 for e in near["entries"]
                if not e["determinate"])
-    # Outside the registered band it fails, and the failure is a real
-    # composed cell of real instruments leaving the band.
+    # Outside the REGISTERED band it is a finding --- a real composed cell of
+    # a real instrument beside one that is not the reference --- and under
+    # focal-only reselection a finding is recorded and gates nothing.
     out = P.severity_verdict(_table(0.80, composed_b=0.97),
-                             residual=RESIDUAL)
-    assert not out["passes"]
-    failed = [f for f in out["failures"] if not f["determinate"]]
-    assert {f["cell"] for f in failed} == {"pair:B+P1", "pair:P1+B"}
-    assert all(f["band"] == [low, high] for f in failed)
+                             residual_sd=RESIDUAL)
+    assert out["passes"], "a stand-in may not make a severity inadmissible"
+    assert out["failures"] == []
+    assert out["all_entries_inside_their_test"] is False
+    found = out["standin_findings"]
+    assert {f["cell"] for f in found} == {"pair:B+P1", "pair:P1+B"}
+    assert all(f["band"] == [low, high] for f in found)
+    assert out["standin_findings_gate_nothing"] is True
 
 
 def test_the_projection_is_section_13_4s_device_on_section_13_14s_band():
     """Three terms and no fourth, and the band itself is never moved."""
     low, high = C.COMPOSED_HEADROOM_BAND
-    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual=0.0)
+    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual_sd=0.0)
     assert verdict["registered_band"] == [low, high]
     assert verdict["band_is_unchanged"] is True
     entry = next(e for e in verdict["entries"] if e["cell"] == "solo:B")
@@ -240,7 +244,7 @@ def test_the_projection_is_section_13_4s_device_on_section_13_14s_band():
 def test_the_familywise_reading_is_recorded_beside_every_determinate_entry():
     """§13.14's verdict is a conjunction, so the Bonferroni reading belongs on
     the artifact even though the criterion is §13.4's per-entry convention."""
-    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual=0.0)
+    verdict = P.severity_verdict(_table(0.80, s2=0.09), residual_sd=0.0)
     assert verdict["level_k"] == 1
     assert verdict["familywise_k"] == P.N_DETERMINATE_ENTRIES == 6
     for entry in verdict["entries"]:
@@ -273,7 +277,7 @@ def test_the_residual_allowance_matches_the_measurement_it_is_derived_from():
 def test_p3_3_a_passing_m_star_stands_and_nothing_is_reselected():
     out = P.probe_disposition(m_star=10, probed={10: _table(0.81)},
                               gate2_solo_curve=GATE2_CURVE,
-                              residual=RESIDUAL)
+                              residual_sd=RESIDUAL)
     assert out["reselected"] is False
     assert out["m_star_out"] == 10
     assert out["reselections_permitted"] == 1
@@ -291,7 +295,7 @@ def test_p3_4_a_failing_m_star_reselects_once_over_gate_2s_own_curve():
               12: _table(0.70), 13: _table(0.64)}
     out = P.probe_disposition(m_star=8, probed=probed,
                               gate2_solo_curve=GATE2_CURVE,
-                              residual=RESIDUAL)
+                              residual_sd=RESIDUAL)
     assert out["reselected"] is True
     assert out["passing_severities"] == [11, 12, 13]
     assert out["m_star_out"] == 11
@@ -312,7 +316,7 @@ def test_p3_6_no_admissible_severity_terminates_the_replication(
     with pytest.raises(TerminalStatus) as excinfo:
         P.probe_disposition(m_star=10, probed=probed,
                             gate2_solo_curve=GATE2_CURVE,
-                            residual=RESIDUAL)
+                            residual_sd=RESIDUAL)
     raised = excinfo.value
     assert raised.status == P.COMPOSED_HEADROOM_UNREACHABLE
     assert raised.gate == C.STAGE_GATE2_75
@@ -325,7 +329,7 @@ def test_m_star_must_be_probed_first():
     with pytest.raises(ProtocolError):
         P.probe_disposition(m_star=10, probed={11: _table(0.76)},
                             gate2_solo_curve=GATE2_CURVE,
-                            residual=RESIDUAL)
+                            residual_sd=RESIDUAL)
 
 
 def test_the_terminal_status_is_registered_and_raisable():
@@ -466,7 +470,9 @@ def test_the_scope_limits_are_on_the_record_not_discovered_at_gate_4():
 # ------------------------------------------ the decisions it fails closed on
 
 @pytest.mark.parametrize("accessor,decision_id",
-                         [("probe_split", "D20"), ("margin", "D23"),
+                         [("probe_split", "D20"),
+                          ("residual_reading", "D23"),
+                          ("residual_allowance", "D26"),
                           ("standins", "D24")])
 def test_every_open_decision_refuses_rather_than_defaulting(
         accessor, decision_id, restore_decisions):
@@ -497,16 +503,86 @@ def test_the_separate_vocabulary_branch_has_no_instruments_and_refuses(
     assert "D24" in str(excinfo.value)
 
 
-def test_a_margin_that_leaves_no_interior_is_refused(restore_decisions):
-    restore_decisions.override_for_testing("D23", 0.50)
+def test_a_magnitude_that_leaves_no_interior_is_refused_at_closure(
+        restore_decisions):
+    """§34 D26 carries an `admissible_range`, so an out-of-range value is
+    refused when the researcher writes it and not five stages later, at the
+    one place it would have signed a manifest first."""
+    restore_decisions.reopen_all_for_testing()
+    with pytest.raises(ProtocolError) as excinfo:
+        decisions.close("D26", 0.50, evidence="e", decided_by="t",
+                        decided_on="t")
+    assert "0.45" in str(excinfo.value)
     with pytest.raises(ProtocolError):
-        P.margin()
+        restore_decisions.override_for_testing("D26", 0.50)
 
 
-def test_the_margin_is_a_number_and_not_a_branch_name(restore_decisions):
-    restore_decisions.override_for_testing("D23", "small")
+def test_the_magnitude_is_a_number_and_not_a_branch_name(restore_decisions):
+    restore_decisions.reopen_all_for_testing()
     with pytest.raises(ProtocolError):
-        P.margin()
+        decisions.close("D26", "small", evidence="e", decided_by="t",
+                        decided_on="t")
+
+
+def test_the_two_residual_readings_are_different_quantities(
+        restore_decisions):
+    """§34 D23's defect, asserted so it cannot come back: the register said
+    the allowance was BEYOND the measured sd and the code passed it in AS the
+    measured sd, so 0.0 deleted the term the documents promise is carried."""
+    low, high = C.COMPOSED_HEADROOM_BAND
+    restore_decisions.override_for_testing("D23", "projection_sd")
+    restore_decisions.override_for_testing("D26", 0.0)
+    # Under this reading D26's number IS the quadrature term, so 0.0 means the
+    # projection is pure sampling and 0.0142 is applied nowhere.
+    assert P.projection_residual_sd() == 0.0
+    assert P.margin_band() == (low, high)
+
+    restore_decisions.reopen_all_for_testing()
+    restore_decisions.override_for_testing("D23", "beyond_the_measured_sd")
+    restore_decisions.override_for_testing("D26", 0.0)
+    # Under the other, the measured term is always carried and D26 buys band.
+    assert P.projection_residual_sd() == P.RESIDUAL_SD
+    assert P.margin_band() == (low, high)
+
+    restore_decisions.reopen_all_for_testing()
+    restore_decisions.override_for_testing("D23", "beyond_the_measured_sd")
+    restore_decisions.override_for_testing("D26", 0.02)
+    assert P.projection_residual_sd() == P.RESIDUAL_SD
+    assert P.margin_band() == (low + 0.02, high - 0.02)
+
+
+def test_a_standin_can_never_make_a_severity_inadmissible(restore_decisions):
+    """Focal-only reselection. The rule this replaces let an instrument that
+    is non-selectable by construction choose the operating point at which
+    Delta_j and Delta_R are estimated, and terminate a replication."""
+    table = _table(0.80, composed_b=0.99)
+    verdict = P.severity_verdict(table, residual_sd=0.0)
+    assert verdict["passes"] is True
+    assert verdict["standin_findings"], "the finding is still recorded"
+    assert verdict["all_entries_inside_their_test"] is False
+    assert verdict["admissibility_decided_by"].startswith("the six")
+    # And it reaches the disposition: m* stands rather than being re-selected.
+    disposition = P.probe_disposition(
+        m_star=10, probed={10: table}, gate2_solo_curve={10: 0.80},
+        residual_sd=0.0)
+    assert disposition["reselected"] is False
+    assert disposition["m_star_out"] == 10
+    assert disposition["reselection_rule"] == "focal_only"
+    assert disposition["standin_findings_by_severity"]["10"]
+
+
+def test_a_determinate_entry_still_moves_m_star_and_can_terminate():
+    """Focal-only narrows what decides; it does not stop the probe deciding.
+    A determinate entry outside its projected interval is exactly what the
+    stage exists to catch two stages before Gate 4."""
+    from dci1v6.run.lifecycle import TerminalStatus
+    bad = _table(0.80, a_with_b=0.99)
+    assert not P.severity_verdict(bad, residual_sd=0.0)["passes"]
+    with pytest.raises(TerminalStatus) as excinfo:
+        P.probe_disposition(m_star=10, probed={10: bad},
+                            gate2_solo_curve={10: 0.80}, residual_sd=0.0)
+    assert excinfo.value.status == P.COMPOSED_HEADROOM_UNREACHABLE
+    assert "DETERMINATE" in excinfo.value.criterion
 
 
 # ------------------------------------------------------------ what it is not
