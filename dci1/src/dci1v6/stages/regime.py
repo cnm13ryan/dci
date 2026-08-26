@@ -558,7 +558,37 @@ def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
     lost 50% to 100% of them between the pre-screen and calibration on every
     replication.
     """
-    rows = [r for r in table if r.get("eligible")]
+    # §12.6/A16: a rung whose difficulty coordinate is undefined is dropped
+    # from every condition, and the drop is recorded.
+    #
+    # Each of C1-C8 is a position relative to iota_A --- below, above, near
+    # within the caliper, straddling within a family, feature groups on each
+    # side --- and `CHANCE_DEGENERACY_MAX` is the registered point at which
+    # iota is not defined at all (§11.2, `DIFFICULTY_COORDINATE_DEGENERATE`).
+    # A rung with no coordinate has no position, so there is no condition it
+    # could truthfully serve.
+    #
+    # It became reachable when U4 resolved at E2. E2 judges eligibility on
+    # raw solo compliance, which is measured whatever the chance level does,
+    # so a rung can be eligible and coordinate-less at once; under E1 the
+    # coordinate IS iota and the case cannot arise. Until 2026-08-26 this
+    # line read `r["iota"]` unguarded and the stage died on a TypeError ---
+    # v5 ran E2 too and never met it, because its coordinate-less rungs all
+    # had solo outside the band and were ineligible for a different reason.
+    #
+    # **Dropping is the closed direction and that is why it is the rule.**
+    # Every condition below is an existence or a count --- "there are rungs
+    # on both sides", "at least N groups", "at least N rungs" --- so removing
+    # a rung can only make a condition harder to meet and never easier. The
+    # rule therefore cannot be what lets a replication pass §12.6, whichever
+    # rungs turn out to be degenerate.
+    #
+    # `coverage_eligibility` is deliberately untouched: U4's registered
+    # predicate still decides eligibility on the quantity E2 names, and this
+    # decides only which eligible rungs carry a position.
+    eligible = [r for r in table if r.get("eligible")]
+    rows = [r for r in eligible if r.get("iota") is not None]
+    coordinate_undefined = [r for r in eligible if r.get("iota") is None]
     by_family: dict[str, list[Mapping[str, Any]]] = {}
     for r in rows:
         by_family.setdefault(r["family"], []).append(r)
@@ -619,8 +649,31 @@ def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
     return {"conditions": conditions,
             "decisive": list(C.COVERAGE_DECISIVE),
             "decisive_met": decisive_met,
+            # A16. Recorded, not silently absent: a reader of this record can
+            # see exactly which measured rungs the criterion could not place
+            # and why, and `n_eligible` above counts only the placed ones.
+            "coordinate_undefined": [
+                {"candidate": r["candidate"], "family": r["family"],
+                 "severity": r["severity"],
+                 "structural_tier": r["structural_tier"],
+                 "feature_group": r["feature_group"],
+                 "constraint_class": r["constraint_class"],
+                 "solo": r.get("solo"), "vacuity": r.get("vacuity"),
+                 "eligible_under": (r.get("eligibility") or {})
+                 .get("formulation"),
+                 "status": "DIFFICULTY_COORDINATE_DEGENERATE",
+                 "why": "chance compliance reached CHANCE_DEGENERACY_MAX = "
+                        f"{C.CHANCE_DEGENERACY_MAX}, so iota is undefined "
+                        "(§11.2) and the rung has no position relative to "
+                        "iota_A; §12.6's conditions are all positions, so it "
+                        "is dropped from every one of them"}
+                for r in sorted(coordinate_undefined,
+                                key=lambda r: r["candidate"])],
+            "n_coordinate_undefined": len(coordinate_undefined),
             "realised": {
-                "n_eligible": len(rows), "n_below": len(below),
+                "n_eligible": len(rows),
+                "n_eligible_before_coordinate_drop": len(eligible),
+                "n_below": len(below),
                 "n_above": len(above),
                 "tier12_groups_below": sorted(groups_below),
                 "tier12_groups_above": sorted(groups_above),
