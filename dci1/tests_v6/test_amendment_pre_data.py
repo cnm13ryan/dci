@@ -277,27 +277,39 @@ def test_the_flag_survives_a_resumed_run(tmp_path):
 
 # --------------------------------------------------------------- V5-E3
 
-def test_the_classification_says_v6_is_not_adopted_and_not_registered():
-    """v5's label lost its draft qualifier at adoption. **v6's has not.**
+def test_the_classification_moved_with_adoption():
+    """V5-E3 was v5's label still saying NOT ADOPTED after adoption, on every
+    row ``run/execute`` stamped. v6's label moved when the researcher adopted.
 
-    The string is what ``run/execute`` stamps on every row, so a label that
-    said ADOPTED while seven §34 decisions were open and the preregistration
-    was unwritten would put that claim on the artifacts themselves. It says
-    what is true.
+    What is pinned is the **correspondence**, not the string: the label must
+    agree with what the two governed documents in *this* repository say about
+    themselves, and with whether the researcher's own record closes §34. A
+    label asserting adoption while a decision was open, or still asserting a
+    draft after adoption, is the defect in one direction or the other.
+
+    This reads the real repository root deliberately --- the module-level
+    fixture points ``REPO_ROOT`` at a synthetic tree so registrations can run,
+    and the question here is about the committed documents.
     """
-    assert dci1v6.CLASSIFICATION == (
-        "DCI-1 PROTOCOL v6 (DRAFTED, NOT ADOPTED, NOT REGISTERED)")
-    assert "NOT ADOPTED" in dci1v6.CLASSIFICATION
-    assert "DRAFTED" in dci1v6.CLASSIFICATION
+    from dci1v6.protocol import decisions
+
+    real_root = Path(__file__).resolve().parents[2]
+    adopted = manifest.assert_documents_adopted(real_root)["adopted"]
+    recorded = {e["id"] for e in decisions.recorded_closures(
+        real_root / decisions.RECORD_RELPATH)}
+    assert adopted is (recorded == set(decisions.DECISION_IDS))
+    assert ("NOT ADOPTED" in dci1v6.CLASSIFICATION) is not adopted
+    assert dci1v6.CLASSIFICATION.startswith("DCI-1 PROTOCOL v6")
     assert manifest.PROTOCOL_VERSION == "6.0"
 
 
-def test_there_is_no_superseded_classification_yet():
-    """v6 has never been registered, so no label of its own is superseded.
+def test_there_is_no_superseded_classification():
+    """No v6 label of its own is superseded, and that is a fact about rows.
 
     v5 carried one because its first signed manifest went out under a draft
-    label and a reader meeting a record from it needs the string. v6 has
-    signed nothing, so the tuple is empty and its emptiness is the fact.
+    label and a reader meeting a record from it needs the string. v6 signed
+    nothing and generated nothing under its draft label, so no reader can meet
+    one and the tuple is empty.
     """
     assert dci1v6.SUPERSEDED_CLASSIFICATIONS == ()
     assert dci1v6.SUPERSEDES == "dci1v5"

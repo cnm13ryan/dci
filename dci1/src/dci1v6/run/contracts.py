@@ -162,19 +162,20 @@ CONTRACT: tuple[Field, ...] = (
     _f(G2, "iota_a_by_split", (G3A,)),
     _f(G2, "solo_a_by_split", (G3A,)),
     _f(G2, "focal_extension_measured", (G5,)),
-    # P3.1 probes the severities Gate 2 recorded as *eligible*, and P3.4
-    # re-selects over Gate 2's own solo curve. Both are read by the probe and
-    # by nothing else; declaring them is what makes the probe's inputs
-    # auditable rather than incidental.
+    # P3.1 requires the probed m* to be one Gate 2 recorded as *eligible*
+    # and *admissible*. Read by the probe and by nothing else; declaring them
+    # is what makes the probe's inputs auditable rather than incidental.
     _f(G2, "focal_selection", (G275, G5)),
     # §12.3's eligible set narrowed by §12.4 and §34 D17 evaluated at each
-    # severity, and the kappa(R|B) column for each. Gate 2.75 re-selects
-    # over the first; a stage after it reads §13.11's table through the
-    # second. Both are computed before the probe observes anything.
+    # severity, and the kappa(R|B) column for each. Gate 2.75 checks its
+    # frozen m* against the first; a stage after it reads §13.11's table
+    # through the second. Both are computed before the probe observes
+    # anything.
     _f(G2, "focal_admissible", (G25, G275, G5)),
     _f(G2, "focal_admissibility", (G5,)),
     _f(G2, "kappa_under_b_by_severity", (G25, G3A)),
-    # The operating-point search order, frozen before any composed row.
+    # §12.3's own preference over the admissible severities, recorded before
+    # any composed row. Nothing tries these in turn: m* is frozen at Gate 2.
     _f(G2, "operating_point_search_order", (G25,)),
     _f(G2, "operating_point_search_rule", ()),
     # The topics this stage measured, against which a later stage checks
@@ -191,15 +192,18 @@ CONTRACT: tuple[Field, ...] = (
     _f(G25, "m_star", (G3A,)),
     _f(G25, "qualification", (G5,)),
     # The top-level pool is Gate 2's m*, which is this stage's own
-    # predecessor's. Every stage after Gate 2.75 reads the by-severity
-    # map instead, through `stages.feasibility.qualification_at`, because
-    # the probe may have moved the operating point.
+    # predecessor's and the operating point the study runs at. Stages after
+    # Gate 2.75 read the by-severity map through
+    # `stages.feasibility.qualification_at`, which is the same entry named by
+    # the severity it was qualified at rather than by position.
     _f(G25, "qualified_pool", ()),
     _f(G25, "qualified_families", ()),
     _f(G25, "earliest_failing_components", ()),
     _f(G25, "qualification_by_severity", (G3A, G3C, G5)),
     _f(G25, "qualified_at_severities", (G5,)),
-    # Severities only. The family names behind the restriction stay here.
+    # Severities only; the family names behind the restriction stay here.
+    # Gate 2.75 reads the HEAD, to check that this stage and Gate 2 agree
+    # about the frozen m*. Nothing reads the tail.
     _f(G25, "operating_point_order", (G275,)),
     _f(G25, "operating_point_order_reason", ()),
     _f(G25, "operating_point_support", ()),
@@ -212,9 +216,12 @@ CONTRACT: tuple[Field, ...] = (
     # is evidence for the freeze and for §33 check 8's name scan.
     _f(G275, "m_star", (G3A, G3B, G4, G5, CONF)),
     _f(G275, "m_star_in", (G5,)),
-    # Gate 3A records whether the operating point it calibrates against was
-    # re-selected, so a reader of its record does not have to go two stages
-    # back to find out.
+    _f(G275, "m_star_is_frozen_at", (G5,)),
+    _f(G275, "m_star_is_unchanged", (G5,)),
+    # A standing negative: m* is frozen at Gate 2 and no branch of the probe
+    # can move it, so this is False on every record. Gate 3A copies it so a
+    # reader of its record does not have to go two stages back to see that
+    # the operating point it calibrates against is §12.3's.
     _f(G275, "reselected", (G3A, G5)),
     _f(G275, "disposition", (G5,)),
     _f(G275, "residual_allowance", (G5,)),

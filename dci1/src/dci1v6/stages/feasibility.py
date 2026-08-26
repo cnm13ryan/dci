@@ -74,13 +74,12 @@ def calibration_rows_at(gate2_record: Mapping[str, Any], *, m_star: int,
     Every other column is a solo or chance quantity measured with B absent and
     does not move with the operating point. kappa(R|B) does; §13.11 makes its
     source travel with the value, and ``assert_kappa_under_b_source`` refuses
-    a table read at an operating point the column was not measured at. Without
-    this, every stage after a Gate-2.75 re-selection was reading Gate 2's
-    m*-column under the probe's m*, and the refusal fired as an unhandled
-    error --- so the probe's whole re-selection branch could not execute.
+    a table read at an operating point the column was not measured at. The
+    study runs at the m* §12.3 froze at Gate 2, so the column read is the one
+    measured there.
 
-    The column is **swapped, never recomputed**: it comes from the map Gate 2
-    signed before the probe ran.
+    The column is **selected, never recomputed**: it comes from the map Gate 2
+    signed before Gate 2.5 qualified anything and before the probe ran.
     """
     rows = [dict(r) for r in gate2_record["calibration_rows"][split]]
     if int(m_star) == int(gate2_record["m_star"]):
@@ -108,12 +107,13 @@ def calibration_rows_at(gate2_record: Mapping[str, Any], *, m_star: int,
 
 def qualification_at(gate2_5_record: Mapping[str, Any], *,
                      m_star: int) -> Mapping[str, Any]:
-    """Gate 2.5's §13.6 pool at the operating point Gate 2.75 chose.
+    """Gate 2.5's §13.6 pool at the frozen operating point.
 
-    Gate 2.5 runs before the probe and cannot know which severity the study
-    will end up at, so it qualifies at **every** admissible one. Reading its
-    top-level pool after a re-selection would read the pool for a severity the
-    probe rejected.
+    Gate 2.5 qualifies at **every** admissible severity because it generates
+    nothing, so its record carries a column rather than a pool. This selects
+    the entry for the m* §12.3 froze at Gate 2 --- by name, so a stage cannot
+    read the column positionally and land on a severity the study does not
+    run at.
     """
     by_severity = gate2_5_record.get("qualification_by_severity") or {}
     entry = by_severity.get(str(int(m_star)))
@@ -302,18 +302,18 @@ def support_at(chosen: Mapping[str, Any], *, model_key: str,
 
 def operating_point_order(*, m_star: int, admissible: Sequence[int],
                           curve: Mapping[int, float]) -> list[int]:
-    """The frozen, finite order in which operating points may be tried.
+    """§12.3's own preference over the admissible severities, recorded.
 
-    Fixed at Gate 2, **before the probe generates a row**, and it is the
-    registered focal rule's own preference and not a second rule: ascending
-    distance from §12.3's aim on Gate 2's measured solo curve, ties to the
-    smaller severity, with m* first because m* is §12.3's choice and P3.1
-    requires it probed first.
+    Ascending distance from §12.3's aim on Gate 2's measured solo curve, ties
+    to the smaller severity, with m* first because m* is §12.3's choice.
 
-    Being frozen before any composed outcome exists is what makes trying more
-    than one candidate an admissible design rather than a search: the order
-    cannot be re-ranked by which candidate looked most promising, because it
-    was written down before anything was looked at.
+    **Nothing tries these in turn.** m* is frozen at Gate 2 and
+    ``GATE_2_75_COMPOSED_PROBE`` measures composed headroom at m* alone, so
+    this is a *record* of how §12.3 ranked the admissible set --- written
+    before any composed row exists, and useful for exactly two things: the
+    head is where Gate 2 and Gate 2.5 record their agreement about the
+    operating point, and the tail says what §12.3 would have preferred next
+    had the study been designed to move, which it is not.
     """
     from dci1v6.stages.calibration_table import tie_key
 
@@ -325,16 +325,21 @@ def operating_point_order(*, m_star: int, admissible: Sequence[int],
 
 def qualified_family_support(gate2_5_record: Mapping[str, Any], *,
                              severities: Sequence[int]) -> dict[str, Any]:
-    """§13.15's five-family requirement at each candidate operating point.
+    """§13.15's five-family requirement at each admissible operating point.
 
     **Already computed and signed; this only reads it.** Gate 2.5 runs the
     full V(R) --- including §13.6's V_inter against that severity's own
     kappa(R|B) column --- at every admissible severity, because it generates
-    nothing and the probe may move the operating point. So "can this severity
-    support a reference set at all?" is a lookup, not a recomputation, and
-    re-running §13.7's bootstrap per candidate to answer it would resample
-    identical per-topic vectors with identical seeds for a verdict Gate 2.5
-    already holds.
+    nothing. So "can this severity support a reference set at all?" is a
+    lookup, not a recomputation, and re-running §13.7's bootstrap per
+    severity to answer it would resample identical per-topic vectors with
+    identical seeds for a verdict Gate 2.5 already holds.
+
+    Since m* is frozen at Gate 2 the study runs at one of these and only one.
+    The rest are recorded because a signed prospective statement of where a
+    reference set could have existed is evidence about the design, and
+    because dropping the column would make Gate 2.5's own m* entry
+    unfalsifiable against its neighbours.
 
     This is a **necessary** condition, exactly evaluated: §13.15 also requires
     three core references over three feature groups with two Tier-1 among them
@@ -348,9 +353,9 @@ def qualified_family_support(gate2_5_record: Mapping[str, Any], *,
         if entry is None:
             raise ProtocolError(
                 f"§13.15: Gate 2.5 recorded no qualification at m*={severity};"
-                f" it holds {sorted(by_severity)}. The search order is Gate "
-                "2's `focal_admissible` and Gate 2.5 qualifies at exactly "
-                "that set, so a gap is a lifecycle fault")
+                f" it holds {sorted(by_severity)}. The recorded order is "
+                "Gate 2's `focal_admissible` and Gate 2.5 qualifies at "
+                "exactly that set, so a gap is a lifecycle fault")
         families = sorted(set(entry["qualified_families"]))
         out[str(severity)] = {
             "severity": severity,
@@ -369,21 +374,26 @@ def qualified_family_support(gate2_5_record: Mapping[str, Any], *,
 def restricted_operating_point_order(
         search_order: Sequence[int], support: Mapping[str, Any], *,
         m_star: int) -> tuple[list[int], str]:
-    """Gate 2's frozen order, narrowed to where a reference set can exist.
+    """§12.3's recorded order, narrowed to where a reference set can exist.
 
     Two branches, and the second is the one that matters:
 
-    * **Some severity can support.** The order keeps m* first --- P3.1 probes
-      it first by rule and §12.3 chose it --- and drops the severities that
-      cannot reach §13.15's five-family minimum. Each one dropped is a full
-      probe measurement not spent.
+    * **Some severity can support.** The order keeps m* first --- §12.3 chose
+      it and it is frozen --- and drops the severities that cannot reach
+      §13.15's five-family minimum.
     * **None can.** The order is **not** narrowed to nothing. Whether an unmet
       §13.15 is terminal or an identification status is §34 D6's question and
-      it is answered at Gate 3C; a probe that silently refused to run because
-      no severity qualified would be answering it here, two stages early and
-      without a record saying so.
+      it is answered at Gate 3C; narrowing to nothing here would answer it
+      two stages early and without a record saying so.
 
     Returns the order and the reason, so the record carries which branch ran.
+
+    **This narrows a record, not a search.** Gate 2.75 probes the frozen m*
+    and nothing else, so nothing downstream consumes the tail. What the head
+    is for is the cross-gate agreement check in ``gates_run.gate2_75_payload``:
+    a Gate 2.5 record whose order does not start at Gate 2's m* means the two
+    gates disagree about the operating point, and that is a lifecycle fault
+    caught before a composed row is drawn.
     """
     can_support = [int(q) for q in search_order
                    if support[str(int(q))]["can_support"]]

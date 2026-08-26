@@ -13,6 +13,77 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-26 — v6: m\* is frozen at Gate 2, D23/D26 closed, and v6 registered
+
+*(The second of two entries on this date. It supersedes parts of the first,
+which is immediately below.)*
+
+**What changed.** The entry below records a *focal-only reselection* rule under
+which `GATE_2_75_COMPOSED_PROBE` could re-run §12.3's focal rule once over the
+severities it found admissible. The researcher **withdrew the reselection**
+before any v6 row existed. The registered rule is:
+
+- m\* is selected once, by §12.3's focal rule on B's solo curve at
+  `GATE_2_FOCAL_CALIBRATION`, and is **frozen** there.
+- `GATE_2_75_COMPOSED_PROBE` measures composed headroom at m\* **and at no
+  other severity**, and either passes or terminates the replication
+  `COMPOSED_HEADROOM_UNREACHABLE`. There is no branch that returns a different
+  operating point, and `composed_probe.assert_m_star_unmoved` and
+  `gates_run.effective_m_star` check it on the producing and every consuming
+  path.
+- Only the six **determinate** entries may fail the verdict; `PS1`–`PS3` are
+  measured, recorded under `standin_findings` and gate nothing. That half of
+  the entry below stands.
+
+**Why it is scientifically consequential.** `Delta_j` and `Delta_R` are defined
+at an operating point. A stage that could move that point from composed
+outcomes would be choosing where the estimand is measured, using data observed
+after §12.3 had chosen. Under the withdrawn rule m\* was a
+composition-determined quantity; it is again solo-determined, as in v5. This is
+a **tightening**: a replication whose m\* lacks composed headroom now
+terminates where it previously relocated and continued.
+
+**§34 D23 and D26 are closed.** D23 = `projection_sd`, D26 = **0.0142** — the
+measured authored-sub-split residual (0.0284 paired by instrument on the signed
+v5 records, halved by a 192-topic probe's pooling) entering the projection's
+quadrature as itself, with §13.14's band exactly as registered. It is v5
+DEVELOPMENT_EVIDENCE under §30, tested prospectively by §34 D20's measured
+sub-split transfer, and v6 may not claim it generalises.
+
+**All twenty-seven §34 decisions and all three blocking §33 items are closed**
+on `dci1/reports/dci1v6/researcher_decisions.json`. D0–D18 carry v5's actually
+adopted values with v5's own evidence and a `carried_from` block; D17's
+`FloorSpec` travels with it. Both governed documents declare `ADOPTED` and the
+v6 registration manifest is signed.
+
+**Which results are affected.** *None existed.* Zero v6 behavioural rows had
+been generated at the moment of registration. v5's records, verdicts, terminal
+statuses and §34 D6 irreversibility stand exactly as signed and are not
+re-read.
+
+**The registered budget changes with it.** `design.budget.probe_burden` lost
+its `n_severities` parameter: the probe measures one operating point, so its
+cost is exact rather than a ceiling. The Gate-2.75 term in
+`d1_compute_budget.json` drops from a worst case of 115,776 rows per
+replication to a determinate 12,096 — the stand-in ladder plus fifteen
+generated cells at the frozen m\*. No confirmatory number moves.
+
+**Development evidence recomputed.**
+`dci1/reports/dci1v6/residual_sensitivity.json` and
+`precision_design.json`'s `operating_point_feasibility` now report **whether
+the frozen m\* passes**, which is what the registered rule asks;
+`counterfactual_passing_severities` is retained beside it and read by nothing.
+The finding that replaces the entry below's: on the closed v5 solo-B curves, at
+0.0 and at 0.0142 exactly one of the four replications' m\* fails the
+projection — `gemma-3n-e4b-it`, the replication v5 terminated
+`COMPOSED_HEADROOM_FAILURE` at Gate 4 — and at 0.0687 all four fail. The
+earlier reading, "every replication retains an admissible operating point at
+every policy", was true of a search that no longer exists;
+`READINESS.md` §13.3's table is marked superseded by §14.2 rather than
+rewritten.
+
+---
+
 ## 2026-08-26 — v6: focal-only reselection, and §34 D23 split into a reading and a magnitude
 
 **What changed.** A red-team audit of the v6 decision set (`dci1/reports/dci1v6/READINESS.md` §13)
@@ -59,6 +130,8 @@ the §32.2 declaration that `GATE_2_75_COMPOSED_PROBE` and the three
 Every replication retains an admissible operating point at every policy; at
 0.0687 all four would re-select m\* rather than three of four keeping v5's.
 No value is proposed for D26 and it is the one decision with no derivation.
+*(Superseded the same day: the reselection rule was withdrawn and the artifact
+recomputed under the frozen-m\* rule. See the entry above.)*
 
 **Retired from the decision set.** Thirteen entries (D2, D5, D7–D15, D19, D21)
 offered alternatives with no implementation and are now acceptances, with each

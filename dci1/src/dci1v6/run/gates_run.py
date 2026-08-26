@@ -57,7 +57,8 @@ __all__ = ["assert_synthetic_only", "assert_calibration_population",
            "focal_constraint",
            "slot_map_from_record",
            "gate2_payload", "run_gate2", "gate2_5_payload", "run_gate2_5",
-           "probe_topics", "effective_m_star", "gate2_75_payload",
+           "probe_topics", "effective_m_star", "assert_probe_m_star_agrees",
+           "gate2_75_payload",
            "run_gate2_75",
            "gate3a_payload", "run_gate3a", "gate3b_payload", "run_gate3b",
            "gate3c_payload", "run_gate3c", "gate4_payload", "run_gate4",
@@ -402,21 +403,22 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             observed=strength["reason"],
             strongest_permissible_statement=C.TERMINAL_SENTENCE)
 
-    # ------------------- the operating points Gate 2.75 may move B to
+    # ---------------- §12.4 and §34 D17 across the eligible severities
     # §12.3's eligible set is a band test on the solo curve and nothing more.
-    # §12.4 and §34 D17 are evaluated at m* alone, so every *other* eligible
-    # severity is one no admissibility rule has been applied to --- and the
-    # probe re-selects over exactly that set. Both rules are applied here, to
-    # every eligible severity, from curves already measured, and the probe is
-    # confined to what survives. m* is in the set by construction: the two
-    # checks above terminated the replication if it were not.
+    # §12.4 and §34 D17 are evaluated at m* alone and terminate the
+    # replication when either fails, so every *other* eligible severity is one
+    # no admissibility rule has been applied to. Applying both here, to every
+    # eligible severity, from curves already measured, costs no generation and
+    # gives the record a prospective statement of which severities would have
+    # been admissible at all. m* is in the set by construction: the two checks
+    # above terminated the replication if it were not, and P3.1 asserts the
+    # probed m* is in it.
     #
     # kappa(R|B) is then built for each of them off the B-solo cells pass 1
-    # already scored every candidate as absent on. It costs no generation, it
-    # is what lets a re-selected replication read §13.11's table at its own
-    # operating point, and computing it here --- before the probe observes a
-    # single composed cell --- is what keeps the pool independent of a
-    # composed outcome (§30).
+    # already scored every candidate as absent on. It costs no generation, and
+    # computing it here --- before Gate 2.5 qualifies anything and before the
+    # probe observes a single composed cell --- is what keeps the qualified
+    # pool independent of a composed outcome (§30).
     eligible = sorted({int(q) for q in (focal.get("eligible") or ())}
                       | {int(m_star)})
     admissibility = _focal_admissibility(
@@ -805,19 +807,20 @@ def _kappa_columns(grid_rows: Sequence[Mapping[str, Any]],
                    candidates: Sequence[Constraint], *,
                    severities: Sequence[int], model_key: str
                    ) -> dict[str, dict[str, dict[str, Any]]]:
-    """kappa(R|B) at every operating point Gate 2.75 may move B to.
+    """kappa(R|B) at every admissible operating point.
 
     §13.6 reads the interaction quantity off the **B-solo cell at the
-    operating point**, and Gate 2.75 --- two stages later --- may re-select
-    that point. Gate 2 already scores every carried candidate as an *absent*
-    instance on every B-solo cell of the focal grid, so the column at another
-    admissible severity is arithmetic over rows that already exist and costs
-    no generation at all.
+    operating point**. Gate 2 already scores every carried candidate as an
+    *absent* instance on every B-solo cell of the focal grid, so the column at
+    another admissible severity is arithmetic over rows that already exist and
+    costs no generation at all.
 
-    Computing them **here**, before the probe has observed a single composed
-    cell, is also what keeps §30 intact: the qualified pool at every candidate
-    operating point is fixed and signed before any composed outcome exists, so
-    the probe's verdict moves the operating point and never the pool.
+    The study runs at the frozen m* and reads that column. The others are
+    computed because they are free and because they let §13.6's quantity at m*
+    be read against its neighbours; and computing every one of them **here**,
+    before Gate 2.5 qualifies and before any composed cell exists, is what
+    keeps §30 intact: no qualified pool anywhere on the record can have been
+    shaped by a composed outcome.
     """
     wanted = {(c.kind, c.severity): c.label for c in candidates}
     splits = (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")
@@ -871,20 +874,21 @@ def _focal_admissibility(severities: Sequence[int], *,
                          solo_curve: Mapping[int, float], n_topics: int,
                          floor: construct_strength.FloorSpec | None
                          ) -> dict[str, Any]:
-    """§12.4 and §34 D17, at every severity Gate 2.75 may re-select.
+    """§12.4 and §34 D17, at every eligible severity.
 
     Gate 2 evaluates both **at m\\***, and terminates the replication when
     either fails. An *eligible* severity is only one whose solo compliance sat
     inside §12.3's band: it has been through neither §12.4's regime adequacy
-    nor D17's construct floor. Gate 2.75 re-selects over the eligible set, so
-    without this the probe could move B to a severity where B is degenerate or
-    vacuous, or where the construct floor refuses a selection --- an operating
-    point Gate 2 would itself have refused.
+    nor D17's construct floor, so `eligible` on its own overstates what Gate 2
+    established.
 
-    Nothing here relaxes a rule and nothing here selects. m* is still §12.3's
-    choice and still terminates the replication when it fails either rule;
-    this narrows the set the probe may move **to**, and it reads only curves
-    Gate 2 has already measured.
+    Nothing here relaxes a rule and nothing here selects. m* is §12.3's choice,
+    it is frozen at this stage, and it still terminates the replication when
+    it fails either rule. This records which of the *other* eligible
+    severities would also have satisfied §12.4 and D17 --- read by P3.1 as the
+    set the probed m* must belong to, and by Gate 2.5 as the set it qualifies
+    over. It generates nothing and reads only curves Gate 2 has already
+    measured.
     """
     verdicts: dict[str, Any] = {}
     for severity in severities:
@@ -1064,11 +1068,11 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
     """
     m_star = gate2_record["m_star"]
     # §13.6's quantity is a property of the pair (R, B at the operating
-    # point), and Gate 2.75 --- the next stage --- may move that point. This
-    # stage generates nothing, so qualifying at **every** admissible severity
-    # costs arithmetic and no rows, and it fixes the pool at each candidate
-    # operating point before the probe observes anything (§30). A single pool
-    # computed at Gate 2's m* would be stale the moment the probe re-selected.
+    # point). This stage generates nothing, so qualifying at **every**
+    # admissible severity costs arithmetic and no rows, and every pool on the
+    # record is fixed before the probe observes anything (§30). The study runs
+    # at the frozen m*; the rest of the column is a signed prospective record
+    # and no selection rule reads it.
     admissible = sorted({int(q) for q in
                          (gate2_record.get("focal_admissible") or ())}
                         | {int(m_star)})
@@ -1103,9 +1107,9 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
     at_m_star = by_severity[str(m_star)]
     qualified = at_m_star["qualification"]
     report = at_m_star["interaction"]
-    # The frozen order, restricted to the severities that can meet §13.15's
-    # five-family minimum. Doing it **here** is what keeps the probe blind to
-    # the pool: the probe reads a list of severities, never a family name, and
+    # §12.3's recorded order, restricted to the severities that can meet
+    # §13.15's five-family minimum. Doing it **here** is what keeps the probe
+    # blind to the pool: the probe reads a severity, never a family name, and
     # every quantity behind the restriction was signed before it ran.
     #
     # A necessary condition, exactly evaluated, and already computed --- Gate
@@ -1116,10 +1120,9 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
     if not frozen:
         raise ProtocolError(
             "§12.3: Gate 2 recorded no `operating_point_search_order`, so "
-            "there is no frozen order for this stage to restrict. Falling "
-            "back to m* alone would silently disable P3.4's re-selection --- "
-            "v6's whole answer to v5's Gate-4 failure --- and would look "
-            "exactly like a replication whose m* passed at the first attempt")
+            "there is no recorded preference for this stage to restrict. "
+            "Constructing one here would build after Gate 2.5's own "
+            "measurements what §12.3 is required to have written before them")
     search_order = [int(q) for q in frozen]
     op_support = feasibility.qualified_family_support(
         {"qualification_by_severity": by_severity}, severities=search_order)
@@ -1140,14 +1143,16 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
         "qualified_pool": qualified["qualified_pool"],
         "qualified_families": qualified["qualified_families"],
         "n_qualified": qualified["n_qualified"],
-        # The same three, at every operating point the probe may select. The
-        # top-level fields stay at Gate 2's m* --- that is what this stage's
-        # predecessor chose --- and `qualification_at` is what a stage after
-        # Gate 2.75 reads.
+        # The same three at every admissible severity, recorded. The study
+        # runs at Gate 2's frozen m* and the top-level fields carry it; the
+        # per-severity column is a signed prospective statement of where a
+        # reference set could have existed and is read by no selection rule.
         "qualification_by_severity": by_severity,
         "qualified_at_severities": admissible,
-        # What Gate 2.75 may try, in order. Severities only; no family name
-        # crosses this boundary.
+        # §12.3's preference over the admissible severities, narrowed to
+        # where §13.15 can be met. Severities only; no family name crosses
+        # this boundary. Gate 2.75 reads the head, to check that this stage
+        # and Gate 2 agree about the frozen m*, and nothing reads the tail.
         "operating_point_order": order,
         "operating_point_order_reason": order_reason,
         "operating_point_support": op_support,
@@ -1204,15 +1209,39 @@ def probe_topics(bank: TopicBank, split: str) -> tuple[list[Any], str]:
 def effective_m_star(tree: ModelTree) -> int:
     """The operating point every stage after Gate 2.75 uses.
 
-    **Gate 2.75 may re-select m* once**, so Gate 2's value is no longer the
-    last word and reading it downstream would silently run the confirmatory
-    design at a severity the probe rejected. The probe record is the
-    authoritative source from stage 8 onward and this refuses rather than
-    falling back: a missing probe record at a stage that runs after it is a
-    lifecycle fault, not a default.
+    **It is Gate 2's, and this checks that Gate 2.75 left it alone.** §12.3
+    selects m* from B's solo curve at ``GATE_2_FOCAL_CALIBRATION`` and the
+    selection is frozen there; Gate 2.75 measures composed headroom at that
+    severity and either passes or terminates the replication. So the
+    authoritative value is Gate 2's, and the probe record is read only to
+    refuse a disagreement --- the consuming half of the invariant whose
+    producing half is ``composed_probe.assert_m_star_unmoved``.
+
+    Both records are required rather than defaulted: a missing probe record
+    at a stage that runs after it is a lifecycle fault, and falling back to
+    Gate 2 alone would make the check vacuous exactly when it matters.
     """
+    gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     probe = transitions.read_stage_record(tree, C.STAGE_GATE2_75)
-    return int(probe["m_star"])
+    return assert_probe_m_star_agrees(probe, gate2_m_star=int(gate2["m_star"]))
+
+
+def assert_probe_m_star_agrees(probe_record: Mapping[str, Any], *,
+                               gate2_m_star: int) -> int:
+    """The consuming half of the frozen-m\\* invariant.
+
+    Separated from ``effective_m_star`` so that it can be driven directly ---
+    a guard whose only caller reads two real records is a guard no scenario
+    can exercise against a record that actually disagrees.
+    """
+    if int(probe_record["m_star"]) != int(gate2_m_star):
+        raise ProtocolError(
+            f"{C.STAGE_GATE2} froze m* = {gate2_m_star} and the "
+            f"{C.STAGE_GATE2_75} record says {probe_record['m_star']}. m* is "
+            "selected once, by §12.3's focal rule on the solo B curve, and "
+            "no later stage may move it; a probe record that disagrees is a "
+            "defect and this refuses rather than following it")
+    return int(gate2_m_star)
 
 
 def _entry_moments(rows: Sequence[Mapping[str, Any]], *, cell_id: str,
@@ -1405,13 +1434,19 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                      ) -> dict[str, Any]:
     """§18 stage 8: composed headroom at m*, **before** any reference exists.
 
-    Reads Gate 2 for m*, n*, iota_A, the admissible severity set P3.1 probes,
-    the solo B curve P3.4 re-selects over and the between-topic moments the
-    projection needs. Reads the Gate 2.5 record for its outcome and for
-    ``operating_point_order`` --- **a list of severities and nothing else**.
-    The probe still must not know which candidates qualified, and it does not:
-    the family names behind the restriction stay on Gate 2.5's record and no
-    name crosses this boundary.
+    Reads Gate 2 for the frozen m*, for n*, iota_A, the admissible severity
+    set m* has to belong to, and the between-topic moments the projection
+    needs. Reads the Gate 2.5 record for its outcome and for the head of
+    ``operating_point_order`` --- **one severity, checked against Gate 2's
+    m***. The probe still must not know which candidates qualified, and it
+    does not: the family names stay on Gate 2.5's record and no name crosses
+    this boundary.
+
+    **It measures one operating point.** m* is §12.3's choice and it is
+    frozen at Gate 2; this stage passes at it or terminates the replication
+    ``COMPOSED_HEADROOM_UNREACHABLE``. There is no severity loop, no
+    admissible-severity search and no branch that writes an m* different from
+    the one it read.
 
     Every probed cell is A, B or a ``probe_only`` stand-in. No reference
     exists at this point in the sequence and ``assert_probe_reads_no_reference``
@@ -1428,7 +1463,6 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     n_star = int(gate2["n_star"])
     iota_a = float(gate2["iota_a"])
     focal = gate2["focal_selection"]
-    curve = {int(k): float(v) for k, v in (focal.get("curve") or {}).items()}
     eligible = [int(q) for q in (focal.get("eligible") or ())]
 
     split = composed_probe.probe_split()          # §34 D20, refuses while open
@@ -1449,9 +1483,9 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         # The same seam `confirmatory_run.licensed_design` uses, and admitted
         # on the same terms: a probe measured on a subset is a different
         # measurement under the same name, so it is refused anywhere the
-        # study id says a row could be evidence. Worth having because a probe
-        # that re-selects measures every admissible severity, and a harness
-        # that cannot afford the branch does not exercise it.
+        # study id says a row could be evidence. Worth having because the
+        # probe's full shape is fifteen generated cells over 192 topics and a
+        # harness that cannot afford it does not exercise the stage at all.
         assert_synthetic_only(tree, "block_limit", block_limit)
         topics = topics[:block_limit]
 
@@ -1489,30 +1523,26 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     slot_map: dict[str, Constraint] = dict(zip(slots, standin_rungs))
     coverage = composed_probe.assert_probe_covers_gate4_classes(slots)
 
-    # P3.1: m* first, then the rest of the **frozen** order. Gate 2 wrote the
-    # order --- §12.3's own preference over `focal_admissible` --- and Gate 2.5
-    # restricted it to the severities that can reach §13.15's five-family
-    # minimum, both before this stage generates a row. Probing m* alone is
-    # still the common case and the only one that costs a single severity's
-    # rows; what the restriction buys is that a severity which cannot support
-    # a reference set is never probed at all.
+    # P3.1: **m\* and nothing else.** m* is §12.3's choice at Gate 2 and it
+    # is frozen there; this stage measures composed headroom at it and either
+    # passes or terminates the replication. Gate 2.5's `operating_point_order`
+    # is still read --- its head is where Gate 2 and Gate 2.5 record their
+    # agreement about the operating point --- but it is a cross-gate check,
+    # not a list of severities to try. Nothing here iterates over it.
     admissible = [int(q) for q in (gate2.get("focal_admissible") or ())]
     frozen = gate2_5_record.get("operating_point_order")
     if not frozen:
         raise ProtocolError(
-            "P3.1: Gate 2.5 recorded no `operating_point_order`. The order "
-            "this stage may try is frozen upstream, before any composed row "
-            "exists; defaulting to m* alone would silently disable the "
-            "re-selection and would be indistinguishable on the record from "
-            "a replication whose m* passed")
-    order = [int(q) for q in frozen]
-    if order[0] != m_star:
+            "P3.1: Gate 2.5 recorded no `operating_point_order`. Its head is "
+            "where Gate 2.5 records which operating point it qualified at, "
+            "and a record without one cannot be checked against Gate 2's m*")
+    if int(frozen[0]) != m_star:
         raise ProtocolError(
-            f"P3.1: the frozen order starts at {order[0]} and m* is "
-            f"{m_star}. m* is probed first by rule, and an order that does "
-            "not start there means Gate 2 and Gate 2.5 disagree about the "
-            "operating point --- repaired silently, that would probe a "
-            "severity §12.3 did not select")
+            f"P3.1: Gate 2.5's order starts at {frozen[0]} and Gate 2 froze "
+            f"m* = {m_star}. The two gates disagree about the operating "
+            "point; repaired silently, that would measure composed headroom "
+            "at a severity §12.3 did not select")
+    order = [m_star]
     composed_probe.assert_probe_severities_are_admissible(order, gate2)
 
     shape = composed_probe.probe_cell_types(slots)
@@ -1578,16 +1608,13 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                                      constraint=bound[slot])
                 for slot in cell_slots}
         probed[severity] = table
-        # P3.3: m* passing ends the probe, so the common case measures one
-        # severity and the worst case measures Gate 2's whole eligible set.
-        if severity == m_star and composed_probe.severity_verdict(
-                table, residual_sd=residual_sd,
-                band=evaluated_band)["passes"]:
-            break
 
     disposition = composed_probe.probe_disposition(
-        m_star=m_star, probed=probed, gate2_solo_curve=curve,
+        m_star=m_star, probed=probed,
         residual_sd=residual_sd, band=evaluated_band)
+    # The producing half of the frozen-m* invariant. `effective_m_star` is
+    # the consuming half and runs on every downstream read.
+    composed_probe.assert_m_star_unmoved(disposition, gate2_m_star=m_star)
     return {
         "stage": C.STAGE_GATE2_75,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE2_75],
@@ -1599,18 +1626,25 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
                       "admissible": sorted(admissible),
                       "read": ["m_star", "n_star", "iota_a",
                                "focal_selection.eligible",
-                               "focal_selection.curve", "focal_admissible",
+                               "focal_admissible",
                                "solo_topic_moments"]},
             "gate2_5": {"stage": C.STAGE_GATE2_5,
                         "read": ["outcome", "operating_point_order"],
                         "outcome": gate2_5_record["outcome"],
-                        "operating_point_order": list(order),
+                        "operating_point_order_head": int(frozen[0]),
                         "why": "the probe must not know which candidates "
                                "qualified. It reads the stage's outcome and "
-                               "a list of severities; no family name crosses "
-                               "this boundary"}},
+                               "one severity, which it checks against Gate "
+                               "2's frozen m*; no family name crosses this "
+                               "boundary"}},
         "m_star_in": m_star,
         "m_star": disposition["m_star_out"],
+        "m_star_is_frozen_at": C.STAGE_GATE2,
+        "m_star_is_unchanged": disposition["m_star_out"] == m_star,
+        # Kept, always false, and checked by `assert_m_star_unmoved`. §33's
+        # name scan requires this record to state whether m* moved, and
+        # deleting the field would remove the statement rather than make it
+        # true. There is no branch that can set it.
         "reselected": disposition["reselected"],
         "disposition": disposition,
         "topic_split": topic_label,
@@ -1626,7 +1660,8 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             "§13.8 matches a reference's iota(R) to iota_A, so a stand-in is "
             "placed at the severity of its own solo ladder nearest Gate 2's "
             "iota_A inside §13.4's band. iota_A does not depend on m*, so "
-            "re-selecting the operating point never moves a stand-in",
+            "the companion a probed cell carries is fixed by a quantity the "
+            "operating point cannot move",
         "probe_cell_types": [cell_id for cell_id, _a, _s in shape],
         "probe_cell_types_generated": [cell_id for cell_id, _a, _s
                                        in generated_shape],
@@ -1636,19 +1671,20 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         # Which cells were read off Gate 2's record instead of drawn again,
         # and --- when none were --- why they could not be.
         "shared_with_gate2": shared,
-        # What was not drawn, and for which of the two reasons. They are
-        # different facts: a severity the five-family filter removed from the
-        # order was never a candidate, and a severity still in the order that
-        # was not reached is P3.3 stopping at a passing m*.
+        # What was not drawn. One severity is measured --- the frozen m* ---
+        # so the only rows not drawn are the cells read off Gate 2's record
+        # and the severities that were never candidates for measurement
+        # because this stage does not search.
         "rows_not_drawn": {
             "cells_read_from_gate2": len(shape) - len(generated_shape),
             "rows_read_from_gate2": (len(shape) - len(generated_shape))
                                     * len(topics) * C.M_CAL * len(probed),
-            "severities_removed_from_the_order":
-                sorted(set(admissible) - set(order)),
-            "severities_in_the_order": list(order),
+            "severities_not_probed": sorted(set(admissible) - {m_star}),
+            "why_they_were_not_probed":
+                "m* is frozen at GATE_2_FOCAL_CALIBRATION and this stage "
+                "cannot move it, so no severity but m* is measurable here",
             "severities_probed": sorted(probed),
-            "rows_a_severity_costs":
+            "rows_the_operating_point_costs":
                 len(generated_shape) * len(topics) * C.M_CAL},
         # §34 D20's measured transfer: the realised Calibration-A vs
         # Calibration-B movement of every probed entry, recorded beside the
@@ -1673,7 +1709,11 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         "evaluated_band": list(evaluated_band),
         "band_is_unchanged": True,
         "n_composed_audited_at": C.N_COMPOSED,
-        "selects_nothing_but_m_star": True,
+        "selects_nothing": True,
+        "selects_nothing_is":
+            "this stage chooses no severity, no candidate, no pool and no "
+            "reference. It measures composed headroom at the operating point "
+            "§12.3 already chose and reports PASS or terminates",
         "admissible_severities": sorted(admissible),
         "scope_limits": list(composed_probe.PROBE_SCOPE_LIMITS),
         # §33 check 8 scans every other key for a name that would betray an
@@ -1727,10 +1767,16 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
     that carries the other split's rows.
     """
     bank = bank if bank is not None else load_bank()
-    # Gate 2.75 is Gate 3A's registered predecessor and it may have
-    # re-selected m*, so the operating point comes from the probe record and
-    # not from Gate 2.5's copy of Gate 2's.
+    # Gate 2.75 is Gate 3A's registered predecessor and it cannot have moved
+    # m*: §12.3 froze it at Gate 2 and the probe passes at it or terminates.
+    # `effective_m_star` is the checked accessor; here the probe record is
+    # already in hand, so the same equality is asserted against Gate 2's.
     m_star = int(probe_record["m_star"])
+    if m_star != int(gate2_record["m_star"]):
+        raise ProtocolError(
+            f"{C.STAGE_GATE2_75} records m* = {m_star} and {C.STAGE_GATE2} "
+            f"froze {gate2_record['m_star']}. m* is selected once and no "
+            "later stage may move it")
     # §13.7's whole computation is `feasibility.calibration_at`, which is the
     # same function the operating-point search and the development pilot run.
     # It generates nothing: every quantity in it was measured at Gate 2 and
@@ -1773,8 +1819,8 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
         "equivalence_bound": C.STABILITY_EQUIVALENCE_BOUND,
         "pooled_table": [dict(r) for r in calibration["pooled_table"]],
         # The pool this stage actually used, named with the severity it was
-        # qualified at, so a reader never has to infer which one a re-selected
-        # replication ran on.
+        # qualified at, so a reader never has to infer which entry of the
+        # by-severity column the replication ran on.
         "qualified_pool": list(calibration["qualified_pool"]),
         "qualified_families": list(calibration["qualified_families"]),
         "n_qualified": calibration["n_qualified"],
@@ -2207,8 +2253,9 @@ def run_gate4(tree: ModelTree, *, cap: int | None = None,
     regime = transitions.read_stage_record(tree, C.STAGE_REGIME)
     gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     slot_map.setdefault("A", Constraint("A", gate2["n_star"]))
-    # Gate 2.75 may have re-selected m*; Gate 4 composes B at the operating
-    # point the study actually runs, not at Gate 2's.
+    # Gate 4 composes B at the operating point the study runs. That is Gate
+    # 2's frozen m*, and `effective_m_star` refuses a probe record that
+    # disagrees with it rather than following either.
     slot_map.setdefault("B", focal_constraint(effective_m_star(tree)))
     cap = cap if cap is not None else regime["selected_cap"]
     return run_stage(

@@ -4,36 +4,33 @@ Everything here is **fixture data**. No fixture value can become calibration
 or confirmatory evidence: the topic identifiers are `fixture-*`, the model key
 is `fixture-model`, and nothing in this file is written to an evidence tree.
 
-**One fixture is autouse and it needs its reason stated.** v5's suite ran
-against ``reports/dci1v5/researcher_decisions.json``, a committed record of
-closures the researcher had actually taken, so a test that walked a stage
-found the decisions closed. **v6 has no such record and must not have one:**
-v6 is not adopted, not registered, and all twenty-seven of D0 to D26 are
-UNRESOLVED at import --- which is the correct state and is asserted by
-``test_lifecycle.py``. Without a fixture, every test that runs a stage would
-fail at stage 1 on ``REGISTRATION_INCOMPLETE`` and say nothing about the code
-under test.
+**One fixture is autouse and it needs its reason stated.** v6 was adopted on
+2026-08-26 and ``reports/dci1v6/researcher_decisions.json`` closes all
+twenty-seven of D0 to D26. If the suite ran against *that*, nothing would ever
+be open --- and every test of the form "this path refuses while D-x is open"
+would pass for the wrong reason or not run at all. So the suite runs against
+a **fixture record instead**, and the difference is deliberate:
 
-``harness_decisions`` therefore closes them **in process, per test, and never
-durably**, and reopens the registry afterwards. It does it two ways, and the
-difference matters:
+``harness_decisions`` monkeypatches ``decisions.RECORD_PATH`` to
+``fixture_v5_carried_decisions.json`` and reopens the registry against it, so
+every test starts from the same state whatever the researcher has recorded.
+It then supplies the rest in process, per test, and never durably:
 
-* **D0-D18** come from ``fixture_v5_carried_decisions.json``, which is v5's
-  own record copied into this directory as a fixture. Reading a *record* is
-  how §34 D17's ``floor`` reaches the code at all --- the quantity, the value,
-  the semantics and the derivation deliberately live in a record and not in
-  the source --- so a harness that only supplied bare values could not
-  exercise that path. ``decisions.RECORD_PATH`` is monkeypatched to the
-  fixture for the duration of a test.
-* **D19-D26**, v6's own, are supplied as bare harness values from
-  ``synthetic_lifecycle.TEST_CLOSURES``. They are deliberately **absent** from
-  the fixture: v6 has taken nothing and no file in this repository says
-  otherwise.
+* **D0-D18** come from the fixture, which is v5's own record copied into this
+  directory. Reading a *record* is how §34 D17's ``floor`` reaches the code at
+  all --- the quantity, the value, the semantics and the derivation
+  deliberately live in a record and not in the source --- so a harness that
+  only supplied bare values could not exercise that path.
+* **D19-D26**, v6's own, are deliberately **absent** from the fixture, so they
+  are open at the start of every test. ``synthetic_lifecycle`` supplies a
+  value for each when a walk needs one, and since adoption it takes **the
+  researcher's recorded value** where the record has one --- so the 19-stage
+  walk and the execution-path audit exercise the study that was registered,
+  not a fixture of it. See ``synthetic_lifecycle._harness_values``.
 
 A harness value is not a decision: it is what lets the suite reach the thing
-it is testing. ``test_lifecycle.py`` asserts the committed state --- twenty-seven
-open, no record on the real path --- from a fresh read that this fixture
-cannot reach.
+it is testing. ``test_lifecycle.py`` reads the real record from a fresh path
+this fixture cannot reach, and asserts the shape §34 requires of it.
 """
 from __future__ import annotations
 
@@ -182,6 +179,11 @@ def harness_decisions(monkeypatch):
     from tests_v6 import synthetic_lifecycle
 
     monkeypatch.setattr(decisions, "RECORD_PATH", FIXTURE_RECORD)
+    # Reopens against the fixture first. Since 2026-08-26 the real record
+    # exists and closes all twenty-seven, and a harness that layered the
+    # fixture on top would leave v6's own eight closed at the researcher's
+    # values --- so a test asserting "this refuses while D-x is open" would
+    # pass for the wrong reason, or not at all, depending on ordering.
     synthetic_lifecycle.use_fixture_record()
     for decision_id, value in synthetic_lifecycle.TEST_CLOSURES.items():
         if not decisions.is_closed(decision_id):

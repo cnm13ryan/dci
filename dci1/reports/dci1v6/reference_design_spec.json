@@ -6,13 +6,23 @@
    "dci1/reports/dci1v6/expansion_dryrun.json",
    "dci1/reports/dci1v6/reference_feasibility.json"
   ],
-  "overfitting_declaration": "Two quantities here are fitted to closed v5 observations and are labelled as such: composed_probe.RESIDUAL_SD, and the choice to leave \u00a713.14 as registered. Retrospective behaviour on v5 is NOT prospective validation; v6 is the prospective test and may not claim these generalise (\u00a730).",
+  "overfitting_declaration": "Four quantities here are fitted to closed v5 observations and are labelled as such: composed_probe.RESIDUAL_SD; \u00a734 D26's magnitude, which is that same measurement; the choice to leave \u00a713.14 as registered, which rests on the measured false-termination rate; and iota_A as the stand-ins' placement target, which is \u00a713.8's registered rule checked against v5's realised curves. The existence of GATE_2_75_COMPOSED_PROBE and of PS1-PS3 is itself a consequence of v5's Gate 4 having fired, declared under \u00a732.2 in the preregistration's \u00a74. Retrospective behaviour on v5 is NOT prospective validation; v6 is the prospective test and may not claim any of these generalise (\u00a730).",
   "predecessor_protocol": "user-notes/DCI1_preregistration_v5.md",
   "producer": "dci1/tools/v6_reference_design_spec.py",
   "protocol": "user-notes/DCI1_preregistration_v6.md"
  },
- "_status": "DRAFT_NOT_ADOPTED",
- "_status_means": "NOT ADOPTED. No v6 registration exists, no v6 stage has run, and all twenty-seven \u00a734 decisions are UNRESOLVED because reports/dci1v6/researcher_decisions.json does not exist and no code may create it. `manifest.assert_documents_adopted` refuses a registration while this field says DRAFT_NOT_ADOPTED. Adopting it is a researcher act.",
+ "_status": "ADOPTED",
+ "_status_is_derived_from": {
+  "adopted": true,
+  "blocking_open_items": [],
+  "decision_record": "dci1/reports/dci1v6/researcher_decisions.json",
+  "decision_record_present": true,
+  "n_decisions": 27,
+  "open_decisions": [],
+  "preregistration": "user-notes/DCI1_preregistration_v6.md",
+  "preregistration_status": "ADOPTED"
+ },
+ "_status_means": "This field is DERIVED from three researcher acts and is never chosen by the producing tool: the preregistration's own `status:` line, whether reports/dci1v6/researcher_decisions.json closes every one of \u00a734's decisions, and whether any \u00a733 item that blocks the manifest is still unresolved. `_status_is_derived_from` records all three. While it reads DRAFT_NOT_ADOPTED, `manifest.assert_documents_adopted` refuses a registration.",
  "_what_this_is": "The frozen reference-validity and composed-headroom rule for DCI-1 v6, in machine-readable form, DERIVED from the registered implementation by tools/v6_reference_design_spec.py rather than transcribed. A spec that disagrees with the code is not expressible here.",
  "candidate_library": {
   "feature_groups": [
@@ -98,7 +108,7 @@
     "statistic": "y_final"
    }
   },
-  "probe_only_is": "\u00a734 D24. A registered instrument that can never be selected: scored by the same verifiers, hashed into the same verifier_source_hash and certified by the same Gate-1 suites, and refused by `assert_selectable` everywhere a candidate is carried, qualified, calibrated or bound. It reuses a registered counted statistic under a form no selectable family carries, so FEATURE_GROUP_IDS --- whose index `selection.group_key` reads as a reference-selection tie-break --- does not move.",
+  "probe_only_is": "\u00a734 D24. A registered instrument that can never be selected: scored by the same verifiers, hashed into the same verifier_source_hash and certified by the same Gate-1 suites, and refused by `assert_selectable` everywhere a candidate is carried, qualified, calibrated or bound. It reuses a registered counted statistic under a form no selectable family carries, so FEATURE_GROUP_IDS --- whose index `selection._group_order` reads as a reference-selection tie-break --- does not move.",
   "selectable_families": [
    "MK1",
    "MK2",
@@ -245,13 +255,14 @@
    "band_not_relaxed": "\u00a713.14's [0.05, 0.95] band is unchanged. The projection is a margin inside it and Gate 4 still applies the registered band",
    "no_margin_is_claimed_for_a_stand_in_dependent_entry": "a cell containing a stand-in is judged against \u00a713.14's registered band with no margin. Its failure is a real composed cell leaving the band; its passing is not evidence that the reference which replaces the stand-in will also be inside it, and nothing here treats it as though it were",
    "no_measurement_is_reused_across_different_cases": "the cells this stage reads off the Gate-2 record instead of drawing again are read only when the topic identifiers and the draw count are identical; `shared_cell_verdict` checks that and records the reason either way. Nothing is reused across topic sets",
-   "no_pool_is_chosen_by_a_composed_outcome": "\u00a730: Gate 2 records a kappa(R|B) column and Gate 2.5 a \u00a713.1 qualified pool for EVERY admissible severity, both signed before this stage generates a row. Moving m* therefore reads a pool that was already fixed; it does not build one from what the probe saw",
+   "no_path_back_to_this_stage_exists": "P3.5: the record is write-once and no later stage has a path back here; assert_transition_legal and assert_no_post_freeze_mutation enforce it",
+   "no_pool_is_chosen_by_a_composed_outcome": "\u00a730: Gate 2 records a kappa(R|B) column and Gate 2.5 a \u00a713.1 qualified pool at the frozen m*, both signed before this stage generates a row. This stage selects nothing --- not a severity, not a pool --- so no composed outcome can reach either",
    "no_reference_is_read_or_selected_here": "\u00a713.11: the probe runs before GATE_3A. No reference exists, no selection record is read, and no probed cell is a B+R cell",
-   "no_second_reselection_exists": "P3.5: the record is write-once and no later stage has a path back here; assert_transition_legal and assert_no_post_freeze_mutation enforce it",
-   "no_standin_entry_moves_the_operating_point_or_ends_a_replication": "focal-only reselection: admissibility is decided by the six determinate entries alone --- solo:A, solo:B and both orders of pair:A+B, every constituent of which is a real registered instrument that enters the estimand. A stand-in-dependent verdict is recorded under `standin_findings` and read by no rule, so an instrument that can never be selected as a reference can neither choose the operating point at which Delta_j and Delta_R are measured nor raise COMPOSED_HEADROOM_UNREACHABLE",
-   "no_standin_severity_depends_on_the_operating_point": "each stand-in is placed at the severity nearest Gate 2's iota_A inside \u00a713.4's band, on its own solo ladder. iota_A does not depend on m*, so re-selecting the operating point does not move a stand-in and a probed severity is never compared against a different companion from the one before it",
-   "no_substitution_or_backup_promotion": "a probe failure re-selects m* once by the registered focal rule or terminates COMPOSED_HEADROOM_UNREACHABLE. Nothing is substituted, promoted or widened",
-   "the_order_of_operating_points_was_frozen_before_any_composed_row": "Gate 2 records `operating_point_search_order` --- the registered focal rule's own preference over `focal_admissible` --- and Gate 2.5 restricts it to the severities that can meet \u00a713.15's five-family minimum. Both are signed before this stage generates a row, so a candidate is never re-ranked by how a composed cell looked"
+   "no_reselection_of_the_operating_point_exists": "P3.3/P3.6: m* is frozen by \u00a712.3 at GATE_2_FOCAL_CALIBRATION and this stage has no branch that returns a different one. `probe_disposition` refuses a table carrying any severity but m*, `assert_m_star_unmoved` checks m_star_in == m_star_out on the producing path, and `gates_run.effective_m_star` checks the written record against Gate 2's on every downstream read. Headroom decides WHETHER the frozen design is viable and never WHERE the estimands are measured",
+   "no_standin_entry_ends_a_replication": "determinate-only termination: the verdict is decided by the six determinate entries alone --- solo:A, solo:B and both orders of pair:A+B, every constituent of which is a real registered instrument that enters the estimand. A stand-in-dependent verdict is recorded under `standin_findings` and read by no rule, so an instrument that can never be selected as a reference cannot raise COMPOSED_HEADROOM_UNREACHABLE. No entry of either kind moves m*, because no branch here moves m*",
+   "no_standin_severity_depends_on_the_operating_point": "each stand-in is placed at the severity nearest Gate 2's iota_A inside \u00a713.4's band, on its own solo ladder. iota_A does not depend on m*, so the companion a probed cell carries is fixed by a quantity the operating point cannot move",
+   "no_substitution_or_backup_promotion": "a probe failure terminates COMPOSED_HEADROOM_UNREACHABLE. Nothing is substituted, promoted, widened or re-selected",
+   "the_operating_point_was_frozen_before_any_composed_row": "Gate 2 selects m* from B's solo curve and records `operating_point_search_order` --- \u00a712.3's own preference over `focal_admissible` --- and Gate 2.5 records which severities could meet \u00a713.15's five-family minimum. Both are signed before this stage generates a row, and this stage reads the head of that order only to check that Gate 2 and Gate 2.5 agree about m*. It probes m* and no other severity, so no candidate can be re-ranked by how a composed cell looked"
   },
   "determinate_slots": [
    "A",
@@ -357,7 +368,21 @@
   "measured_residual_sd": 0.0142,
   "measured_residual_sd_is": "half the measured calibration_a-vs-calibration_b residual. \u00a76.2 cuts calibration_a and the composed set from one seeded per-area shuffle so they are exchangeable; \u00a734 D3's calibration_b is newly authored and is not, and supplies half a pooled probe's topics. reports/dci1v6/precision_design.json carries it. WHETHER IT ENTERS A VERDICT IS \u00a734 D23's: under `projection_sd` it does not and \u00a734 D26's number takes its place in the quadrature; under `beyond_the_measured_sd` it does and D26's number contracts the band instead.",
   "n_determinate_entries": 6,
-  "reselection": "one, by \u00a712.3's registered focal rule run unchanged over Gate 2's own solo B curve restricted to the severities the probe admitted",
+  "operating_point": {
+   "chosen_at": "GATE_2_FOCAL_CALIBRATION",
+   "chosen_by": "\u00a712.3's registered focal rule on B's solo curve",
+   "declared_on_2026_08_26": "this replaces a rule under which the probe re-ran \u00a712.3's focal rule once over the severities it found admissible. The researcher removed that branch before any v6 behavioural row existed; see preregistration A13.",
+   "enforced_by": [
+    "dci1v6.stages.composed_probe.probe_disposition refuses a probe table carrying any severity but m*",
+    "dci1v6.stages.composed_probe.assert_m_star_unmoved, on the producing path before the record is written",
+    "dci1v6.run.gates_run.effective_m_star, on every downstream read of the operating point"
+   ],
+   "frozen": true,
+   "reselections_permitted": 0,
+   "severities_probed_here": "m* and no other",
+   "what_it_does_not_decide": "WHERE Delta_j and Delta_R are measured. A feasibility measurement that could also choose the operating point would be a selection rule fed by composed outcomes, which is what \u00a713.11 and \u00a730 exist to keep out of this study.",
+   "what_this_stage_decides": "WHETHER the registered design is viable at the operating point \u00a712.3 chose. It PASSES or it terminates the replication COMPOSED_HEADROOM_UNREACHABLE."
+  },
   "residual_readings": [
    "projection_sd",
    "beyond_the_measured_sd"
@@ -372,7 +397,8 @@
   ],
   "scope_limits": [
    "the probe covers every one of \u00a713.14's ten slot-and-order exposure classes, and `assert_probe_covers_gate4_classes` refuses a shape that does not. What it cannot cover is the *identity* of the companion: the reference in each companion slot is selected two stages later, so the composed lift a stand-in produces is not the lift that reference will produce, and no closed measurement bounds the difference. Gate 4 remains the only stage that measures the actual references",
-   "for the same reason a stand-in-dependent entry carries no margin AND gates nothing. Under focal-only reselection it cannot move m* and cannot terminate a replication; it is a prospective structural record of a slot-and-order class, and the price of that is that a class whose only probe evidence is stand-in-dependent is audited for the first time at Gate 4",
+   "for the same reason a stand-in-dependent entry carries no margin AND gates nothing. Under determinate-only termination it cannot end a replication; it is a prospective structural record of a slot-and-order class, and the price of that is that a class whose only probe evidence is stand-in-dependent is audited for the first time at Gate 4",
+   "the stage measures ONE operating point --- the m* \u00a712.3 froze at Gate 2 --- and cannot move to another. A replication whose m* lacks composed headroom terminates rather than relocating to a severity that has it, so v6 buys the early measurement and explicitly does not buy the rescue. That is the registered design: a feasibility measurement that could also choose where the estimand sits would be a selection rule fed by composed outcomes",
    "the entries that DO decide are the six determinate ones, so what the probe protects against is a real A+B or B+A composed cell, or A or B alone, sitting where \u00a713.14's 24-topic verdict could plausibly fire. It does not protect against a companion whose identity is unknown here, which is most of what Gate 4 audits",
    "two stand-ins carry the target-with-companion and companion-with-companion classes rather than all three, which measures each class once instead of three times. Running all three through every class would add eight cells and 6,144 rows per probed severity",
    "the projected interval is a statement about **sampling** between this stage's split and \u00a713.14's. It cannot see a reference's calibration-split solo value, its severity, or the arm set Gate 3C will admit, and succeeding at the reference-supply change raises the number of Gate-4 entries from 6 to as many as 95",
@@ -384,12 +410,12 @@
    "solo:B"
   ],
   "stage": "GATE_2_75_COMPOSED_PROBE",
-  "standin_placement": "each stand-in is probed at the severity of its own solo ladder nearest Gate 2's measured iota_A, inside \u00a713.4's band, because \u00a713.8 matches a reference's iota(R) to iota_A. iota_A does not depend on m*, so re-selecting the operating point never moves a stand-in.",
+  "standin_placement": "each stand-in is probed at the severity of its own solo ladder nearest Gate 2's measured iota_A, inside \u00a713.4's band, because \u00a713.8 matches a reference's iota(R) to iota_A. iota_A does not depend on m*, so the companion a probed cell carries is fixed by a quantity the operating point cannot move.",
   "terminal_status": "COMPOSED_HEADROOM_UNREACHABLE",
   "verdict_rule": {
    "determinate_entry": "passes iff its projected Gate-4 interval lies inside the evaluated band, which is \u00a713.14's registered band contracted only under `beyond_the_measured_sd`. Half-width z * sqrt(s2/N_COMPOSED + s2/n_probe + residual_sd^2), with s2 the entry's own between-topic variance measured in this stage, z at \u00a713.4's registered 95%, and residual_sd from \u00a734 D23's reading --- NOT unconditionally 0.0142.",
    "familywise_reading": "computed and recorded per determinate entry and read by nothing, because \u00a713.14's verdict is a conjunction and the conservative reading belongs on the artifact.",
-   "severity": "passes iff every DETERMINATE entry passes its own test. Focal-only reselection (researcher decision, 2026-08-26): a stand-in-dependent entry is measured, judged and recorded under `standin_findings`, and gates nothing --- it cannot move m* and cannot terminate a replication, because an instrument that can never be selected as a reference may not choose the operating point at which the estimands are measured.",
+   "operating_point": "the frozen m* has composed headroom iff every DETERMINATE entry passes its own test. Determinate-only termination (researcher decision, 2026-08-26): a stand-in-dependent entry is measured, judged and recorded under `standin_findings`, and gates nothing --- it cannot terminate a replication, because an instrument that can never be selected as a reference may not end a study whose registered instruments are all inside the band.",
    "standin_dependent_entry": "passes iff the measured value lies inside \u00a713.14's registered band, with NO margin. A failure is a real composed cell of real instruments leaving the band; a pass certifies nothing about the reference that replaces the stand-in."
   }
  },
@@ -467,37 +493,135 @@
   }
  },
  "open_decisions": {
-  "count": 27,
-  "ids": [
-   "D0",
-   "D1",
-   "D2",
-   "D3",
-   "D4",
-   "D5",
-   "D6",
-   "D7",
-   "D8",
-   "D9",
-   "D10",
-   "D11",
-   "D12",
-   "D13",
-   "D14",
-   "D15",
-   "D16",
-   "D17",
-   "D18",
-   "D19",
-   "D20",
-   "D21",
-   "D22",
-   "D23",
-   "D24",
-   "D25",
-   "D26"
-  ],
+  "count": 0,
+  "ids": [],
+  "n_registered": 27,
   "why": "closing one is a researcher act recorded at dci1/reports/dci1v6/researcher_decisions.json, and no code may write it"
+ },
+ "researcher_decisions": {
+  "closed": {
+   "D0": "adopt",
+   "D1": "four_models_56_cells",
+   "D10": "one_companion",
+   "D11": "carry",
+   "D12": "direction_and_sesoi_only",
+   "D13": "primary_tier",
+   "D14": "iota_primary",
+   "D15": "both_transfer",
+   "D16": "complete_population",
+   "D17": "floor",
+   "D18": "precondition",
+   "D19": "reachability_only",
+   "D2": "no_load_three",
+   "D20": "calibration_with_measured_transfer",
+   "D21": "as_registered",
+   "D22": "per_replication",
+   "D23": "projection_sd",
+   "D24": "probe_only_in_library",
+   "D25": "survivor_ladder_only",
+   "D26": 0.0142,
+   "D3": "author_before_adoption",
+   "D4": "approve_eight",
+   "D5": "lexicographic",
+   "D6": "identification_status",
+   "D7": 0.9,
+   "D8": 0.75,
+   "D9": "unavailable"
+  },
+  "hash": "eefb32513b4f1095d83e4912abfe806c0220071f153413470faeb93ec3c5d482",
+  "non_adopted_alternatives": {
+   "D0": [
+    "do_not_adopt"
+   ],
+   "D1": [
+    "four_models_47_cells",
+    "two_models_56_cells",
+    "384_blocks_m4"
+   ],
+   "D16": [
+    "a_survivors"
+   ],
+   "D17": [
+    "no_floor"
+   ],
+   "D18": [
+    "not_a_precondition"
+   ],
+   "D20": [
+    "reserved_composed"
+   ],
+   "D22": [
+    "two_survivors_before_any"
+   ],
+   "D23": [
+    "beyond_the_measured_sd"
+   ],
+   "D24": [
+    "separate_vocabulary"
+   ],
+   "D25": [
+    "no_study_level_statement"
+   ],
+   "D3": [
+    "author_after_adoption"
+   ],
+   "D4": [
+    "approve_with_substitution",
+    "reject"
+   ],
+   "D6": [
+    "terminal"
+   ]
+  },
+  "record": "dci1/reports/dci1v6/researcher_decisions.json",
+  "unimplemented_alternatives": {
+   "D10": [
+    "several_companions"
+   ],
+   "D11": [
+    "re_author"
+   ],
+   "D12": [
+    "own_threshold"
+   ],
+   "D13": [
+    "secondary"
+   ],
+   "D14": [
+    "raw_primary"
+   ],
+   "D15": [
+    "neither_transfers",
+    "generic_only"
+   ],
+   "D19": [
+    "reachability_and_new_families"
+   ],
+   "D2": [
+    "add_load_three"
+   ],
+   "D20": [
+    "calibration_pooled"
+   ],
+   "D21": [
+    "enlarge_composed_set",
+    "interval_criterion"
+   ],
+   "D5": [
+    "weighted_composite"
+   ],
+   "D7": [
+    0.85,
+    0.95
+   ],
+   "D8": [
+    0.5,
+    0.9
+   ],
+   "D9": [
+    "available"
+   ]
+  }
  },
  "support_requirements": {
   "calibrated_iota_a_rule": "\u00a712.6's coverage criterion is re-evaluated at Gate 3A on the CALIBRATION basis, where iota(R), the difficulty coordinate, the solo vacuity and iota_A all come from the same 192 topics at M_CAL draws. A decisive condition lost there is a \u00a713.15 design-time failure under \u00a734 D6. The pre-screen value that \u00a712.6 spent its expansion rounds at is recorded beside it and gates nothing.",
@@ -572,9 +696,8 @@
   "stability_bootstrap_resamples": 10000
  },
  "what_this_spec_does_not_decide": [
-  "any \u00a734 decision; every one of them is still open",
-  "what \u00a734 D23's residual allowance MEANS: both readings are executable and the closure selects one",
-  "how large it is (\u00a734 D26): no derived value survives the 2026-08-26 red team, and reports/dci1v6/residual_sensitivity.json costs the grid instead of proposing a point",
-  "whether \u00a76.2's composed set is enlarged (\u00a734 D21): the sequestered eighth is not materialised in this repository, so that branch is an act of authoring topics"
+  "any \u00a734 decision. This file REPORTS the closures; the record that takes them is dci1/reports/dci1v6/researcher_decisions.json and no code writes it",
+  "whether \u00a76.2's composed set is enlarged (\u00a734 D21): the sequestered eighth is not materialised in this repository, so that branch is an act of authoring topics and not a constant",
+  "where the study runs. m* is chosen at GATE_2_FOCAL_CALIBRATION by \u00a712.3's focal rule and frozen there; GATE_2_75_COMPOSED_PROBE decides only whether the frozen design is viable at it"
  ]
 }

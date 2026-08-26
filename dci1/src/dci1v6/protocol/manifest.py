@@ -66,12 +66,11 @@ __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
            "assert_no_model_adaptive_values", "document_hashes",
            "sign_registration", "ensure_registration", "load_manifest"]
 
-#: **Not adopted.** A version number is a claim about what a document fixes,
-#: and v6's document does not exist yet: ``PROTOCOL_DOCUMENT`` names a path
-#: nothing is written to, so ``document_hashes`` raises ``Blocker`` and no
-#: manifest can be signed. Seven §34 decisions --- D19 to D25 --- are open on
-#: top of that. The string is here so that the artifacts a v6 stage *would*
-#: write are recognisable; it is not a statement that v6 is registered.
+#: The version a v6 artifact declares. A version number is a claim about what
+#: a document fixes, and the document it fixes is ``PROTOCOL_DOCUMENT``, bound
+#: by content hash into every signed manifest --- so the claim is checkable
+#: rather than asserted. ``assert_documents_adopted`` reads that document's own
+#: status line, so this constant never stands in for adoption.
 PROTOCOL_VERSION = "6.0"
 PROTOCOL_DOCUMENT = PREREGISTRATION
 REGISTRATION_INCOMPLETE = decisions.REGISTRATION_INCOMPLETE
@@ -431,7 +430,15 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
         "decisions": decisions.registration_payload(),
         "open_items": open_items.manifest_payload(),
         "red_team": {
-            "source": "dci1/reports/dci1v6/v5_prereg_redteam.md",
+            # The finding register v6 carries is v5's, at v5's own path: the
+            # findings are about the protocol both versions share, and v6
+            # neither rewrote nor re-verdicted them. v6's own two audit
+            # passes are the READINESS sections named beside it. A path that
+            # does not resolve would bind a citation to nothing, which is the
+            # defect §33 exists to catch one level down.
+            "source": "dci1/reports/dci1v5/v5_prereg_redteam.md",
+            "v6_passes": ["dci1/reports/dci1v6/READINESS.md §13",
+                          "dci1/reports/dci1v6/READINESS.md §14"],
             "unresolved": {k: dict(v)
                            for k, v in UNRESOLVED_REDTEAM_FINDINGS.items()},
             "not_closeable_by_rule":
@@ -869,11 +876,14 @@ def sign_registration(context: StudyContext, *, producing_commit: str,
                       bank: TopicBank | None = None,
                       repo_root: Path | str = ".",
                       supersedes: str | None = None) -> dict[str, Any]:
-    """Write and sign the manifest, once. **Refuses today, by design.**
+    """Write and sign the manifest, once.
 
     ``assert_signable`` runs first and before any file is created, so a
     refused registration leaves no directory, no key and no partial artifact
-    behind that a later run could mistake for a registration.
+    behind that a later run could mistake for a registration. It refused for
+    as long as anything on ``signing_blockers``'s list was outstanding, and
+    what changed on 2026-08-26 is that the researcher did the work each
+    blocker names --- not that any of them stopped looking.
     """
     bank = bank if bank is not None else load_bank()
     assert_signable(bank, where="sign_registration",

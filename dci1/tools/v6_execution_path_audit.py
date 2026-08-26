@@ -93,61 +93,85 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "REGIME_SCREEN.coverage",
      "consumer": None, "expect": VERIFIED},
     {"id": "R-2.75-margin", "section": "§13.14, P3.2", "area": "probe",
-     "meaning": "a probed severity is admissible for m* only when every "
-                "DETERMINATE entry passes its own test. Focal-only "
-                "reselection: a stand-in-dependent verdict is recorded and "
+     "meaning": "the frozen m* has composed headroom only when every "
+                "DETERMINATE entry passes its own test. Determinate-only "
+                "termination: a stand-in-dependent verdict is recorded and "
                 "gates nothing",
      "runtime": "dci1v6.stages.composed_probe.severity_verdict",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.disposition",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
-    {"id": "R-2.75-reselect", "section": "P3.3, P3.4", "area": "probe",
-     "meaning": "m* stands, or is re-selected exactly once by the registered "
-                "focal rule over Gate 2's own solo curve restricted to the "
-                "severities the probe admitted",
+    {"id": "R-2.75-frozen-m-star", "section": "P3.3, P3.6", "area": "probe",
+     "meaning": "m* is selected once, by §12.3 at Gate 2, and this stage "
+                "cannot move it. `probe_disposition` refuses a table "
+                "carrying any severity but m*, returns m_star_out == "
+                "m_star_in on every non-terminal path, and terminates "
+                "COMPOSED_HEADROOM_UNREACHABLE otherwise. Headroom decides "
+                "WHETHER the frozen design is viable, never WHERE the "
+                "estimands are measured",
      "runtime": "dci1v6.stages.composed_probe.probe_disposition",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.m_star",
-     "consumer": "GATE_3A_REFERENCE_CALIBRATION", "expect": VERIFIED},
+     "consumer": "GATE_3A_REFERENCE_CALIBRATION",
+     "scenario": "probe_passes_at_the_frozen_m_star", "expect": VERIFIED},
+    {"id": "R-2.75-m-star-unmoved", "section": "P3.3", "area": "probe",
+     "meaning": "the invariant is executed on both halves: the producing "
+                "path asserts m_star_in == m_star_out before the record is "
+                "written, and every downstream read checks the written "
+                "record against Gate 2's own m*",
+     "runtime": "dci1v6.stages.composed_probe.assert_m_star_unmoved",
+     "impl": "dci1v6.run.gates_run.effective_m_star",
+     "field": "GATE_2_75_COMPOSED_PROBE.m_star_is_unchanged",
+     "consumer": "GATE_5_FREEZE",
+     "scenario": "probe_passes_at_the_frozen_m_star", "expect": VERIFIED},
+    {"id": "R-2.75-unreachable", "section": "§28, P3.6", "area": "probe",
+     "meaning": "a determinate entry outside its projected Gate-4 interval "
+                "at the frozen m* ends the replication. There is no other "
+                "severity to move to, so the terminal status is the whole "
+                "of the failure branch",
+     "runtime": "dci1v6.stages.composed_probe.probe_disposition",
+     "impl": "dci1v6.run.gates_run.gate2_75_payload",
+     "field": "GATE_2_75_COMPOSED_PROBE.outcome", "consumer": None,
+     "scenario": "probe_terminates_at_the_frozen_m_star",
+     "expect": VERIFIED},
     {"id": "R-2.75-admissible", "section": "§12.4, §34 D17, P3.1",
      "area": "probe",
-     "meaning": "the probe probes --- and re-selects over --- only the "
-                "severities Gate 2 found ADMISSIBLE: eligible under §12.3 "
-                "and, at that severity, adequate under §12.4 and past D17's "
-                "construct floor. Eligibility alone is a band test on the "
-                "solo curve, so re-selecting over it could move B to an "
-                "operating point Gate 2 would have refused",
+     "meaning": "the probed m* must be one Gate 2 found ADMISSIBLE: "
+                "eligible under §12.3 and, at that severity, adequate under "
+                "§12.4 and past D17's construct floor. Eligibility alone is "
+                "a band test on the solo curve, so checking only it would "
+                "admit an operating point Gate 2 would itself have refused",
      "runtime": "dci1v6.stages.composed_probe."
                 "assert_probe_severities_are_admissible",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_FOCAL_CALIBRATION.focal_admissible",
      "consumer": "GATE_2_75_COMPOSED_PROBE",
-     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
+     "scenario": "probe_passes_at_the_frozen_m_star", "expect": VERIFIED},
     {"id": "R-13.6-operating-point", "section": "§13.6, §13.11",
      "area": "probe",
-     "meaning": "kappa(R|B) and the §13.1 pool are read at the operating "
-                "point the probe selected, from columns Gate 2 signed for "
-                "every admissible severity BEFORE the probe observed a "
-                "composed cell. Reading Gate 2's own column under a "
-                "re-selected m* is refused by "
-                "`assert_kappa_under_b_source`, which is what made the "
-                "re-selection branch unexecutable",
+     "meaning": "kappa(R|B) and the §13.1 pool are read at the frozen "
+                "operating point, BY NAME, from columns Gate 2 signed for "
+                "every admissible severity before the probe observed a "
+                "composed cell. `assert_kappa_under_b_source` refuses a "
+                "table read at an operating point its column was not "
+                "measured at, so a positional read cannot land on the wrong "
+                "severity",
      "runtime": "dci1v6.stages.feasibility.calibration_rows_at",
      "impl": "dci1v6.run.gates_run.gate3a_payload",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity",
      "consumer": "GATE_3A_REFERENCE_CALIBRATION",
-     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
+     "scenario": "probe_passes_at_the_frozen_m_star", "expect": VERIFIED},
     {"id": "R-18.1-frozen-operating-point", "section": "§18.1",
      "area": "probe",
-     "meaning": "the freeze binds B --- and the pool --- at the probe's m*, "
-                "not Gate 2's. Confirmatory generation renders every cell "
-                "from the frozen slot map, so a B bound at Gate 2's m* would "
-                "spend the whole confirmatory budget at the severity the "
-                "probe rejected for want of composed headroom",
+     "meaning": "the freeze binds B --- and the pool --- at the operating "
+                "point the study runs, which is Gate 2's frozen m*. "
+                "Confirmatory generation renders every cell from the frozen "
+                "slot map, and `effective_m_star` refuses a probe record "
+                "that disagrees with Gate 2 rather than following either",
      "runtime": "dci1v6.run.freeze_run.freeze_payload",
      "impl": "dci1v6.run.freeze_run.assemble",
      "field": "GATE_5_FREEZE.slot_map", "consumer": None,
-     "scenario": "probe_reselects_the_operating_point", "expect": VERIFIED},
+     "scenario": "probe_passes_at_the_frozen_m_star", "expect": VERIFIED},
     {"id": "R-2.75-blind", "section": "§13.11", "area": "probe",
      "meaning": "no function in the probe module reads a reference or a "
                 "selection record, by name and by source",
@@ -252,23 +276,22 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "GATE_3C_IDENTIFICATION.support",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
     {"id": "R-12.3-frozen-order", "section": "§12.3", "area": "probe",
-     "meaning": "the order in which operating points may be tried is "
-                "§12.3's own preference over `focal_admissible`, written at "
+     "meaning": "§12.3's own preference over `focal_admissible`, written at "
                 "Gate 2 and restricted at Gate 2.5 to the severities that "
-                "can reach §13.15's five-family minimum --- both signed "
-                "before the probe generates a row, so no candidate is "
-                "re-ranked by how a composed cell looked",
+                "can reach §13.15's five-family minimum. Nothing tries these "
+                "in turn --- m* is frozen --- and the probe reads the head "
+                "only, to check that Gate 2 and Gate 2.5 agree about it",
      "runtime": "dci1v6.stages.feasibility.operating_point_order",
      "impl": "dci1v6.run.gates_run.gate2_payload",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_order",
      "consumer": "GATE_2_75_COMPOSED_PROBE", "expect": VERIFIED},
     {"id": "R-13.15-free-prefilter", "section": "§13.15", "area": "probe",
-     "meaning": "a severity that cannot muster five qualifying families is "
-                "never probed. The verdict is Gate 2.5's own, already "
-                "computed at every admissible severity because that stage "
-                "generates nothing, so the restriction costs no rows and no "
-                "second bootstrap --- and it removes a severity's worth of "
-                "probe generation whenever it bites",
+     "meaning": "§13.15's five-family minimum is evaluated at every "
+                "admissible severity and recorded. The verdict is Gate 2.5's "
+                "own, computed there because that stage generates nothing, "
+                "so the column costs no rows and no second bootstrap. The "
+                "study runs at the frozen m*; the rest is a signed "
+                "prospective record that no selection rule reads",
      "runtime": "dci1v6.stages.feasibility.restricted_operating_point_order",
      "impl": "dci1v6.run.gates_run.gate2_5_payload",
      "field": "GATE_2_5_CANDIDATE_QUALIFICATION.operating_point_support",
@@ -309,13 +332,12 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.disposition",
      "consumer": "GATE_5_FREEZE", "expect": VERIFIED},
-    {"id": "R-13.14-focal-only-reselection", "section": "§13.14, P3.2",
+    {"id": "R-13.14-determinate-only-termination", "section": "§13.14, P3.2",
      "area": "probe",
-     "meaning": "only the six determinate entries may make a severity "
-                "inadmissible. An instrument that can never be selected as a "
-                "reference cannot choose the operating point at which the "
-                "estimands are measured, nor raise "
-                "COMPOSED_HEADROOM_UNREACHABLE",
+     "meaning": "only the six determinate entries may fail the verdict. An "
+                "instrument that can never be selected as a reference cannot "
+                "raise COMPOSED_HEADROOM_UNREACHABLE, and no entry of either "
+                "kind can move m*",
      "runtime": "dci1v6.stages.composed_probe.severity_verdict",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.disposition",
@@ -346,9 +368,9 @@ RULES: tuple[dict[str, object], ...] = (
      "meaning": "each stand-in is probed at the severity of its own solo "
                 "ladder nearest Gate 2's measured iota_A inside §13.4's band, "
                 "because §13.8 matches a reference's iota(R) to iota_A. "
-                "iota_A does not depend on m*, so re-selecting the operating "
-                "point never moves a stand-in and a re-probed severity is "
-                "never compared against a different companion",
+                "iota_A does not depend on m*, so the companion a probed "
+                "cell carries is fixed by a quantity the operating point "
+                "cannot move",
      "runtime": "dci1v6.stages.composed_probe.standin_operating_points",
      "impl": "dci1v6.run.gates_run.gate2_75_payload",
      "field": "GATE_2_75_COMPOSED_PROBE.standin_operating_points",
@@ -728,11 +750,19 @@ def _executed_names(root: pathlib.Path, fast: bool) -> tuple[set, dict, dict]:
             scenarios = SC.run_all(root / "scenarios")
             normal = scenarios["normal_full_path"]
             payloads, reads = normal["payloads"], normal["reads"]
+        # Captured HERE, before `SL.restore()` reopens the registry against
+        # the real record: the claim this supports is what the walk ran
+        # under, and a snapshot taken afterwards would report what the
+        # researcher recorded whether or not the walk used it.
+        from dci1v6.protocol import decisions as _decisions
+        ran_under = {k: _decisions.value_of(k)
+                     for k in _decisions.DECISION_IDS}
     finally:
         for module, attr, original in undo:
             setattr(module, attr, original)
         SL.restore()
-    return seen, {"payloads": payloads, "reads": reads}, scenarios
+    return (seen, {"payloads": payloads, "reads": reads, "decisions":
+                   ran_under}, scenarios)
 
 
 def _status(rule: dict, executed: set, payloads: dict, reads: dict,
@@ -788,6 +818,14 @@ def build(fast: bool) -> tuple[str, dict]:
                          "agrees": status == rule["expect"]})
 
     machine = {
+        # What the walk ran under, snapshotted inside the walk. The harness
+        # closes §34 for its own process --- it has to, or every stage
+        # refuses --- and since 2026-08-26 it takes the researcher's recorded
+        # values where the record has them, so this is the registered study
+        # and not a fixture of it. Recorded rather than assumed, because
+        # "the audit ran the adopted protocol" is a claim a reader should be
+        # able to check.
+        "decisions_the_walk_ran_under": run["decisions"],
         "n_rules": len(rows),
         "n_agreeing": sum(1 for r in rows if r["agrees"]),
         "by_status": {s: sum(1 for r in rows if r["status"] == s)

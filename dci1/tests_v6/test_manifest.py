@@ -37,32 +37,25 @@ def _manifest():
 
 
 
-def test_only_the_unadopted_documents_block_the_signature():
+def test_nothing_blocks_the_signature_and_the_checks_still_look():
     """The shape the refusals were built for, run to its end.
 
-    Every other refusal names a thing somebody has to do, and in this
-    fixture's world every one has been done: nineteen decisions closed, U2
-    resolved, P1 confirmed, the Calibration-B bank authored and hashed, the
-    marker population approved, the model revisions pinned, the floor
-    specified and the design derivable. A blocker disappears when the work it
-    names is finished, and this asserts the list is down to exactly one for
-    that reason rather than because it stopped looking.
-
-    The one that remains is `DRAFT_DOCUMENT`, and it is the honest state: v6's
-    preregistration and reference-design spec exist and both declare
-    `DRAFT_NOT_ADOPTED`. Adopting them is a researcher act. Pointing the guard
-    at a tree where they are adopted empties the list.
+    Every refusal names a thing somebody has to do, and every one has now been
+    done: twenty-seven decisions closed on the record, U2 and U4 resolved, P1
+    confirmed, the Calibration-B bank authored and hashed, the marker
+    population approved, the model revisions pinned, the floor specified, the
+    design derivable, and both governed documents adopted. A blocker
+    disappears when the work it names is finished; that the list is empty is
+    evidence only alongside
+    ``test_every_refusal_still_fires_when_its_reason_comes_back``, which puts
+    each condition back and watches the named refusal return.
     """
-    blockers = manifest.signing_blockers()
-    assert [b["kind"] for b in blockers] == ["DRAFT_DOCUMENT"]
-    assert {f["declared"] for f in blockers[0]["findings"]} == {
-        "DRAFT_NOT_ADOPTED"}
-    with pytest.raises(ProtocolError):
-        manifest.assert_signable()
-    assert manifest.signing_blockers(
-        repo_root=REPO) == []
+    assert manifest.signing_blockers() == []
+    manifest.assert_signable()
+    # And on the isolated synthetic tree, where the same conditions hold.
+    assert manifest.signing_blockers(repo_root=REPO) == []
     manifest.assert_signable(repo_root=REPO)
-def test_every_refusal_still_fires_when_its_reason_comes_back():
+def test_every_refusal_still_fires_when_its_reason_comes_back(tmp_path):
     """An empty blocker list is only evidence if a non-empty one is reachable.
 
     Each of these puts one condition back and asserts the named refusal
@@ -111,8 +104,22 @@ def test_every_refusal_still_fires_when_its_reason_comes_back():
     finally:
         open_items.OPEN_ITEMS["U2"] = u2
         open_items.OPEN_ITEMS["P1"] = p1
-    assert [b["kind"] for b in manifest.signing_blockers()] == [
-        "DRAFT_DOCUMENT"]
+
+    # §34 D0's refusing value must refuse. Until 2026-08-26 nothing read D0,
+    # so closing at `do_not_adopt` signed a manifest exactly as `adopt` did.
+    d0 = decisions.DECISIONS["D0"]
+    try:
+        decisions.DECISIONS["D0"] = _replace(d0, value="do_not_adopt")
+        assert "NOT_ADOPTED" in kinds()
+    finally:
+        decisions.DECISIONS["D0"] = d0
+
+    # A governed document that declares itself a draft still refuses, on a
+    # root where one does.
+    assert "DRAFT_DOCUMENT" in {
+        b["kind"] for b in manifest.signing_blockers(repo_root=tmp_path)}
+
+    assert manifest.signing_blockers() == []
 
 
 def test_an_unpinned_model_revision_refuses_the_signature(monkeypatch):

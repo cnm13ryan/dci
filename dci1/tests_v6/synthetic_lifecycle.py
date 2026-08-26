@@ -91,15 +91,15 @@ REPO_GLOBS: tuple[str, ...] = ARTIFACT_TEXT_GLOBS
 REPO_TREES: tuple[str, ...] = ("dci1/src/dci1v6",)
 
 
-#: The two documents §18 stage 1 binds by content that **do not exist in the
-#: repository**, because v6 is not written: there is no v6 preregistration and
-#: no v6 reference-design spec. ``manifest.document_hashes`` refuses to build
-#: a manifest without them, which is correct and is blocker 3 of
-#: `reports/dci1v6/READINESS.md`.
+#: The two documents §18 stage 1 binds by content. The synthetic walk builds
+#: its own repository in a tmpdir and those files are not in it, so
+#: ``manifest.document_hashes`` would refuse to build a manifest --- which is
+#: the correct refusal and is exercised against a bare root by
+#: ``test_lifecycle``.
 #:
-#: The synthetic walk therefore seeds a placeholder for each **inside the
-#: temporary repository it builds**, so the lifecycle can be exercised. The
-#: placeholder says what it is in its first line, it lives in a pytest
+#: The walk therefore seeds a placeholder for each **inside the temporary
+#: repository it builds**, so the lifecycle can be exercised. The placeholder
+#: says what it is in its first line, it lives in a pytest
 #: tmpdir, it is never written to the repository, and the walk runs in the
 #: ``dci1v6-synthetic`` namespace whose study id no v6 gate or estimator
 #: accepts. A hash over a placeholder is a hash over a placeholder; it is not
@@ -107,19 +107,22 @@ REPO_TREES: tuple[str, ...] = ("dci1/src/dci1v6",)
 PLACEHOLDER_BANNER = (
     "SYNTHETIC PLACEHOLDER --- NOT A DCI-1 v6 ARTIFACT. Written by "
     "tests_v6/synthetic_lifecycle.py into a temporary repository so that the "
-    "lifecycle can be walked. v6 is NOT ADOPTED and NOT REGISTERED. The "
-    "adoption marker below is part of the stand-in and asserts nothing about "
-    "the real documents, which declare DRAFT_NOT_ADOPTED and are refused.")
+    "lifecycle can be walked in the dci1v6-synthetic namespace. The adoption "
+    "marker below is part of the stand-in: it says nothing about the real "
+    "governed documents, whose own status is read by "
+    "manifest.assert_documents_adopted from the files themselves.")
 
 
 def _seed_placeholder(target: Path, rel: str) -> None:
-    """A labelled stand-in for a repo-root file v6 does not have yet.
+    """A labelled stand-in, in the tmpdir repository the walk builds.
 
     It carries an ``ADOPTED`` marker because ``assert_documents_adopted``
     refuses a draft, and a walk that stopped at stage 1 would exercise
     nothing. The marker is inside a pytest tmpdir, under a study id no v6
     gate accepts, one line below a banner saying what the file is --- the
     same trade the placeholder itself already makes for ``document_hashes``.
+    It is a stand-in for the real governed documents and never a copy of
+    them; what those declare about themselves is read from the files.
     """
     target.parent.mkdir(parents=True, exist_ok=True)
     if target.suffix == ".json":
@@ -218,32 +221,35 @@ SCREEN_FAMILIES = ("MK1", "MK2", "MK3", "MK4", "MK5", "MK6", "MK7", "MK8",
 #: The §34 closures this harness makes, **all of them test-only and none of
 #: them a researcher decision**.
 #:
-#: v5's harness left D6, D16 and D18 out because the researcher had taken
-#: them and ``reports/dci1v5/researcher_decisions.json`` carried them in
-#: force. **v6 has no such record**: it is not adopted, not registered, and
-#: `reports/dci1v6/researcher_decisions.json` does not exist, so every one of
-#: D0 to D25 is UNRESOLVED at import and this harness supplies a value for
-#: each of them so that the lifecycle can be walked at all.
+#: The suite runs against a FIXTURE record --- v5's, carried into this
+#: directory --- rather than against
+#: ``reports/dci1v6/researcher_decisions.json``, so that v6's own D19-D26 are
+#: open at the start of every test and their refusal branches stay reachable.
+#: This harness then supplies a value for each so that the lifecycle can be
+#: walked at all.
 #:
-#: Two things keep that honest. ``restore()`` reopens the registry after every
-#: walk, so no closure survives a test; and ``resolved_manifest`` **defers to
-#: the record** for any decision it does carry, so the day the researcher
-#: takes one the harness stops supplying a value for it and starts running
-#: the adopted protocol. A harness value is never durable and never evidence
-#: that anybody decided anything.
+#: Three things keep that honest. ``restore()`` reopens the registry after
+#: every walk, so no closure survives a test; ``resolved_manifest`` **defers
+#: to the record in force** for any decision it already carries; and
+#: ``_harness_values`` reads the researcher's own record for the VALUE it
+#: supplies, so the walk exercises the study that was registered rather than
+#: a fixture of it. A harness value is never durable and never evidence that
+#: anybody decided anything.
 #: Closures the fixture record carries (v5's D0-D18). The harness never
 #: supplies a bare value for one of these: ``conftest.harness_decisions``
 #: applies them from ``fixture_v5_carried_decisions.json``, which is what lets
 #: §34 D17's floor --- whose parameters live in a record, not in the source ---
 #: be exercised at all.
 RESEARCHER_CLOSED: tuple[str, ...] = tuple(f"D{i}" for i in range(19))
-TEST_CLOSURES: dict[str, Any] = {
-    # v6's eight. Each is an OPEN researcher decision --- READINESS R1 to R6,
-    # the single-survivor statement, and the residual magnitude D23 was split
-    # into on 2026-08-26 --- and each value here exists only so the synthetic
-    # walk has a branch to take. **None of them is a recommendation and none
-    # of them is taken.** D26 in particular: 0.05 is here because the code
-    # path needs a number, not because 0.05 is defensible.
+#: The researcher's own record, at its real path --- read for VALUES only.
+#: ``decisions.RECORD_PATH`` is monkeypatched to the fixture for the whole
+#: suite, so this names the file the study actually registered.
+_REAL_RECORD = (Path(__file__).resolve().parents[1] / "reports" / "dci1v6"
+                / "researcher_decisions.json")
+
+#: v6's eight, as **fallback** values so the synthetic walk has a branch to
+#: take when nobody has decided. None of them is a recommendation.
+_HARNESS_FALLBACK: dict[str, Any] = {
     "D19": "reachability_only",
     "D20": "calibration_with_measured_transfer",
     "D21": "as_registered",
@@ -253,6 +259,43 @@ TEST_CLOSURES: dict[str, Any] = {
     "D24": "probe_only_in_library",
     "D25": "survivor_ladder_only",
 }
+
+
+def _harness_values() -> dict[str, Any]:
+    """v6's eight, preferring **the researcher's own record** where it exists.
+
+    The fixture record is v5's and deliberately carries nothing for D19-D26,
+    so the harness has to supply something or the walk stops at stage 1 with
+    a message about the wrong thing. Which value it supplies matters:
+
+    * **Before adoption** these were open, and any value here was arbitrary.
+      ``D26 = 0.05`` in particular was a number the code path needed, not a
+      defensible magnitude.
+    * **After adoption** the researcher's record names them, and a harness
+      that kept its own literals would exercise a study nobody registered ---
+      the 19-stage walk and the execution-path audit would be auditing D26 at
+      0.05 while the study runs at 0.0142.
+
+    So the recorded value wins where there is one, and the fallback is used
+    only where there is not. Reading is all this does: nothing is written to
+    the record, and the values still enter the registry as harness closures
+    marked non-durable.
+    """
+    out = dict(_HARNESS_FALLBACK)
+    try:
+        recorded = {e["id"]: e["value"] for e in
+                    decisions.recorded_closures(_REAL_RECORD)}
+    except Exception:                                   # noqa: BLE001
+        return out
+    for key in out:
+        if key in recorded:
+            out[key] = recorded[key]
+    return out
+
+
+#: Resolved at import so the assertions below have something to check, and
+#: re-read per walk by ``resolved_manifest``.
+TEST_CLOSURES: dict[str, Any] = _harness_values()
 assert not set(TEST_CLOSURES) & set(RESEARCHER_CLOSED)
 assert set(TEST_CLOSURES) | set(RESEARCHER_CLOSED) == set(
     decisions.DECISION_IDS), (
@@ -280,10 +323,11 @@ def probe_only_rungs() -> list[Constraint]:
             for q in registered_severities(kind)]
 
 #: v5's researcher-decision record, carried into ``tests_v6`` as a fixture.
-#: See ``conftest``'s module note: v6 has taken nothing and the real path
-#: holds nothing, and reading a *record* is the only way §34 D17's floor ---
-#: whose parameters live in a record rather than in the source --- can be
-#: exercised at all.
+#: See ``conftest``'s module note. Reading a *record* is the only way §34
+#: D17's floor --- whose parameters live in a record rather than in the
+#: source --- can be exercised at all, and the suite runs against this one
+#: rather than the researcher's so that v6's own D19-D26 stay OPEN at the
+#: start of every test and their refusal branches remain reachable.
 FIXTURE_RECORD = Path(__file__).resolve().parent / \
     "fixture_v5_carried_decisions.json"
 
@@ -292,15 +336,21 @@ _HELD_RECORD_PATH: Any = None
 
 
 def use_fixture_record() -> None:
-    """Point ``decisions`` at the fixture record, and apply it.
+    """Point ``decisions`` at the fixture record, and put **only** it in force.
 
-    v6 has no researcher-decision record and must not have one, so
-    ``decisions.RECORD_PATH`` names a file that does not exist and every
-    decision is UNRESOLVED at import. The fixture is v5's own record, carried
-    into this directory; reading a *record* rather than supplying bare values
-    is what lets §34 D17's floor --- whose quantity, value, semantics and
-    derivation deliberately live in a record and not in the source --- be
-    exercised at all.
+    The fixture is v5's own record, carried into this directory. Reading a
+    *record* rather than supplying bare values is what lets §34 D17's floor
+    --- whose quantity, value, semantics and derivation deliberately live in a
+    record and not in the source --- be exercised at all.
+
+    **It reopens first, and that is the point.** Since 2026-08-26 the real
+    ``decisions.RECORD_PATH`` exists and closes all twenty-seven, so a suite
+    that merely *added* the fixture on top would run its "this path refuses
+    while D-x is open" tests against a registry where nothing is open --- and
+    they would pass for the wrong reason, or not at all depending on which
+    test ran first. Reopening against the fixture makes every test start from
+    the same state: v5's nineteen closed, v6's eight open, whatever the
+    researcher has since recorded.
 
     ``restore`` puts the real path back. Nothing here writes to it.
     """
@@ -308,8 +358,10 @@ def use_fixture_record() -> None:
     if _HELD_RECORD_PATH is None:
         _HELD_RECORD_PATH = decisions.RECORD_PATH
     decisions.RECORD_PATH = FIXTURE_RECORD
-    decisions.apply_recorded_closures(FIXTURE_RECORD)
-    open_items.apply_recorded_resolutions(FIXTURE_RECORD)
+    # `reopen_all_for_testing` blanks the registry and re-applies whatever
+    # RECORD_PATH now names, which is the fixture.
+    decisions.reopen_all_for_testing()
+    open_items.reopen_all_for_testing()
 
 
 def resolved_manifest(*, eligibility_formulation: str | None = None) -> None:
@@ -328,7 +380,7 @@ def resolved_manifest(*, eligibility_formulation: str | None = None) -> None:
             f"{still_open} are carried from v5's record and it does not hold "
             "them; conftest's `harness_decisions` applies the fixture record "
             "and this harness will not supply a bare value in its place")
-    for decision_id, value in TEST_CLOSURES.items():
+    for decision_id, value in _harness_values().items():
         if not decisions.is_closed(decision_id):
             decisions.close(
                 decision_id, value,
@@ -336,9 +388,9 @@ def resolved_manifest(*, eligibility_formulation: str | None = None) -> None:
                          "decision and never durable",
                 decided_by="synthetic lifecycle harness",
                 decided_on="synthetic")
-    # §33's specification questions. v5's were resolved on the researcher
-    # record; **v6 has no record**, so the harness supplies a value for each
-    # blocking one. Every value is the reading the researcher took for v5, so
+    # §33's specification questions. The harness runs against the FIXTURE
+    # record, so it supplies a value for each blocking one that the fixture
+    # leaves open. Every value is the reading the researcher took for v5, so
     # the walk exercises the adopted protocol rather than an alternative
     # nobody chose --- and none of it is durable or a re-adoption.
     for item_id, resolution in (("U2", "A2"), ("U4", "E2"),

@@ -313,8 +313,9 @@ _REGISTERED: tuple[Decision, ...] = (
         "field carried v5's PRE-adoption draft proposal, `no_floor`, which "
         "the researcher rejected. It is also the weaker branch twice over: "
         "§13.14 aside, D17's floor is one of the three conditions "
-        "`focal_admissible` conjoins, so dropping it ENLARGES the set of "
-        "severities GATE_2_75_COMPOSED_PROBE may re-select m* among",
+        "`focal_admissible` conjoins, and P3.1 requires the probed m* to be "
+        "in that set --- so dropping it would admit an operating point Gate "
+        "2 would itself have refused",
         admissible_values=("no_floor", "floor"),
         blocks_stages=(_REGISTERED_STAGE, _GATE2),
         blocks_calls=("stages.regime.assert_construct_floor",),
@@ -437,7 +438,8 @@ _REGISTERED: tuple[Decision, ...] = (
         "`stages.composed_probe` and the closure selects one; §34 D26 "
         "carries the magnitude separately. "
         "`reports/dci1v6/residual_sensitivity.json` costs both readings at "
-        "0.0, 0.0142 and 0.0687 on the closed v5 record",
+        "0.0, 0.0142 and 0.0687 on the closed v5 record, under the "
+        "frozen-m* rule the researcher adopted on 2026-08-26",
         admissible_values=("projection_sd", "beyond_the_measured_sd"),
         blocks_stages=(_REGISTERED_STAGE, _GATE2_75),
         blocks_calls=("stages.composed_probe.residual_reading",)),
@@ -495,9 +497,14 @@ _REGISTERED: tuple[Decision, ...] = (
         "no other value, so the evidence that every replication retains an "
         "operating point exists only at the value it was used to justify. "
         "`reports/dci1v6/residual_sensitivity.json` costs 0.0, 0.0142 and "
-        "0.0687 under both §34 D23 readings and under focal-only "
-        "reselection. THIS IS A RESEARCHER JUDGMENT ABOUT CONSERVATISM "
-        "UNDER THIRTEEN OBSERVATIONS AND THE EVIDENCE DOES NOT SETTLE IT",
+        "0.0687 under both §34 D23 readings and under the frozen-m* rule, "
+        "and what the grid discriminates is which replications stop at Gate "
+        "2.75: at 0.0 and at 0.0142 one of the four closed v5 replications' "
+        "m* fails the projection on its solo-B curve --- the one v5 "
+        "terminated COMPOSED_HEADROOM_FAILURE two stages later --- and at "
+        "0.0687 all four do. THIS IS A RESEARCHER JUDGMENT ABOUT "
+        "CONSERVATISM UNDER THIRTEEN OBSERVATIONS AND THE EVIDENCE DOES NOT "
+        "SETTLE IT",
         admissible_range=(0.0, 0.45),
         blocks_stages=(_REGISTERED_STAGE, _GATE2_75),
         blocks_calls=("stages.composed_probe.residual_allowance",)),

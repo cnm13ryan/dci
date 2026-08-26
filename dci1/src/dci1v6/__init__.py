@@ -1,16 +1,18 @@
 """DCI-1 protocol v6: the reference-supply and composed-headroom revision.
 
-**Status: DRAFTED, NOT ADOPTED, NOT REGISTERED, NOT FROZEN.** No manifest
-exists, no stage has run, and no behavioural row has been or may be generated
-against this package. ``protocol/decisions.py`` carries the open decisions of
-the v6 draft --- every one ``UNRESOLVED`` --- and
-``engine/transitions.assert_transition_legal`` refuses a stage whose decisions
-are open, so the lifecycle is closed at stage 1 by construction. Two further
-refusals are deliberate and are **not** defects to be routed around: the v6
-preregistration document named below does not exist, and neither does the v6
-reference-design spec, so ``protocol/manifest.document_hashes`` raises
-``Blocker``. A registration that cannot name its own protocol text binds
-nothing.
+**Status: ADOPTED 2026-08-26.** Both governed documents declare ``ADOPTED``,
+all twenty-seven of §34's decisions and all three blocking §33 items are
+closed on ``reports/dci1v6/researcher_decisions.json`` with their evidence,
+and ``protocol/manifest.signing_blockers()`` is empty. **Zero behavioural rows
+existed at the moment of registration.**
+
+The refusals that held the lifecycle shut are all still built and still fire
+when their reason returns: ``protocol/decisions`` refuses any path depending
+on an open decision, ``engine/transitions.assert_transition_legal`` refuses a
+stage whose decisions are open, ``protocol/manifest.assert_documents_adopted``
+reads what each governed document says about its own status, and
+``document_hashes`` refuses a missing one. What changed is that the researcher
+did the work each of them names, not that any of them stopped looking.
 
 **Why there is a v6.** v5 closed on 2026-08-24 having generated 459,312 live
 rows and reached ``CONFIRMATORY_GENERATION`` on **no** replication. Three
@@ -23,8 +25,8 @@ exists. ``NOT_IDENTIFIED`` is not a null result and v6 never reads it as one.
 estimands, every threshold, the claim ladder with L5 permanently withheld, the
 multiplicity families F1-F11, interaction-blind reference selection, the
 prohibition on a B+R composed outcome entering selection, irreversible D6, the
-prospective freeze and one-shot masking, and §31's no-repair rule are carried
-from v5 **unchanged**. ``protocol/revision.py`` enumerates the differences and
+prospective freeze and one-shot masking, and §32.1's and §32.3's no-repair
+rules are carried from v5 **unchanged**. ``protocol/revision.py`` enumerates the differences and
 checks each one against the code. In summary they are:
 
 * **V6-E01's repair.** §12.6's expansion could not reach the Tier-1 reserve
@@ -36,8 +38,9 @@ checks each one against the code. In summary they are:
 * **``GATE_2_75_COMPOSED_PROBE``.** A nineteenth stage between Gate 2.5 and
   Gate 3A, measuring composed compliance headroom at m* against
   ``probe_only`` structural stand-ins on the calibration split, before any
-  reference exists. It may re-select m* exactly once, by a rule fixed before
-  data, or terminate ``COMPOSED_HEADROOM_UNREACHABLE``.
+  reference exists. m* is frozen at Gate 2 and this stage cannot move it: it
+  passes at the operating point §12.3 chose, or terminates
+  ``COMPOSED_HEADROOM_UNREACHABLE``.
 * **The audits that would otherwise not see the new stage** --- §33 check 8's
   name scan, the generating-stage set, the producer/consumer contract and the
   execution-path audit.
@@ -61,10 +64,15 @@ from __future__ import annotations
 #: earlier identifier: see the isolation note above.
 STUDY_ID = "dci1v6"
 
-#: What this package's artifacts are, for any reader that meets one. It moves
-#: only when the researcher adopts and registers v6, and the word that is
-#: load-bearing today is NOT REGISTERED.
-CLASSIFICATION = "DCI-1 PROTOCOL v6 (DRAFTED, NOT ADOPTED, NOT REGISTERED)"
+#: What this package's artifacts are, for any reader that meets one.
+#: ``run/execute`` stamps it onto every generated row, so it has to say what
+#: is true at the moment the row is written. It said
+#: ``DRAFTED, NOT ADOPTED, NOT REGISTERED`` until 2026-08-26 and moved when
+#: the researcher adopted v6 --- which is V5-E3's fix applied prospectively:
+#: v5's label was still claiming a draft after adoption, on every row.
+CLASSIFICATION = "DCI-1 PROTOCOL v6 (ADOPTED 2026-08-26)"
+#: Empty, and its emptiness is the fact: no v6 manifest was ever signed and no
+#: v6 row was ever written under the draft label, so no reader can meet one.
 SUPERSEDED_CLASSIFICATIONS: tuple[str, ...] = ()
 
 #: The revision this one follows, and how it ended. v5 **closed**: it ran to

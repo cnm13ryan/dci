@@ -132,62 +132,124 @@ def test_the_decision_registry_is_v5s_nineteen_plus_v6s_eight():
         "D24": "R6"}
 
 
-def test_no_v6_decision_has_been_taken_and_no_record_exists():
+def test_the_committed_record_closes_every_decision_with_its_evidence():
     """The committed state, read from the real path the fixture cannot reach.
 
     ``tests_v6/conftest.py`` monkeypatches ``RECORD_PATH`` to a fixture so the
-    suite can walk stages at all. This reads the path the module is actually
-    born with: v6 has taken nothing, `reports/dci1v6/researcher_decisions.json`
-    does not exist, and every one of D0-D26 is UNRESOLVED at import.
+    suite can exercise the open branches at all. This reads the path the
+    module is actually born with. What is asserted is the **shape §34
+    requires** --- one entry per decision, each with a value the register
+    admits, evidence, an author and a date --- and not any particular value:
+    a test that pinned the values would make the researcher's decisions an
+    expectation of the code.
     """
     real = REPO_ROOT / decisions.RECORD_RELPATH
-    assert not real.exists(), (
-        f"{decisions.RECORD_RELPATH} exists. v6 is NOT ADOPTED and NOT "
-        "REGISTERED; a decision record on this path would be a registration "
-        "nobody took")
-    assert list(decisions.recorded_closures(real)) == []
-    assert decisions.record_hash(real) is None
+    assert real.exists(), (
+        f"{decisions.RECORD_RELPATH} is missing. v6 is adopted and its "
+        "closures live there; without it every dependent path refuses")
+    recorded = {e["id"]: e for e in decisions.recorded_closures(real)}
+    assert set(recorded) == set(decisions.DECISION_IDS)
+    for entry in recorded.values():
+        assert entry["evidence"].strip()
+        assert entry["decided_by"].strip()
+        assert entry["decided_on"].strip()
+    # v5's nineteen are carried, and a carried closure names where it came
+    # from --- carrying is a researcher act, not a transcription.
+    for did in decisions.V5_DECISION_IDS:
+        origin = recorded[did].get("carried_from") or {}
+        assert origin.get("study") == "dci1v5"
+        assert origin.get("record", "").endswith("researcher_decisions.json")
+    for did in decisions.V6_DECISION_IDS:
+        assert "carried_from" not in recorded[did]
+    assert decisions.record_hash(real)
 
 
-def test_no_v6_registration_is_possible_yet(tmp_path):
+def test_the_adoption_guard_reads_what_each_document_says_about_itself(
+        tmp_path):
     """Blocker 3 of READINESS.md, as an executable refusal --- **restated**.
 
-    Both documents now exist, as drafts, so ``document_hashes`` hashes them
-    and the old refusal ("neither is written") no longer fires. That refusal
-    was always going to evaporate the first time somebody wrote a draft, and
-    a complete draft is exactly what could be mistaken for a registration by
-    being present. The durable guard is
-    ``assert_documents_adopted``, which reads what each document says about
-    its own status, and it refuses a **missing** document on the same terms
-    so that the plan and ``build_manifest`` refuse the same two files for the
-    same reason --- before it existed, `plan_registration` could report
-    `can_register` while neither document was written.
+    A missing document already refuses. A complete DRAFT is the thing that
+    could be mistaken for a registration by being present, so each governed
+    document declares its own status and ``assert_documents_adopted`` reads
+    it. Both are now `ADOPTED`, so what this pins is the guard's mechanism on
+    a root where they are not: a missing document and a document declaring
+    itself a draft must refuse on the same terms, and ``document_hashes`` must
+    refuse the same two files for the same reason --- before that was true,
+    `plan_registration` could report `can_register` while neither document was
+    written.
     """
+    import json as _json
+    import shutil
+
+    from dci1v6 import PREREGISTRATION, REFERENCE_DESIGN_SPEC
     from dci1v6.protocol.manifest import (Blocker, assert_documents_adopted,
                                           document_hashes)
 
     bound = document_hashes(REPO_ROOT)
     assert set(bound) == {"protocol_hash", "reference_design_spec_hash"}
-    verdict = assert_documents_adopted(REPO_ROOT)
-    assert verdict["adopted"] is False
-    assert {f["declared"] for f in verdict["findings"]} == {
-        "DRAFT_NOT_ADOPTED"}
-    # A missing document is refused by the same guard, and the hash path
-    # still refuses it too.
+    assert assert_documents_adopted(REPO_ROOT)["adopted"] is True
+
+    # A root with no documents at all.
     assert assert_documents_adopted(tmp_path)["adopted"] is False
     with pytest.raises(Blocker) as excinfo:
         document_hashes(tmp_path)
     assert "DCI1_preregistration_v6.md" in str(excinfo.value)
+
+    # A root whose documents are present, complete, and declare themselves
+    # drafts. Hashable, and still refused.
+    draft = tmp_path / "draft"
+    for relpath in (PREREGISTRATION, REFERENCE_DESIGN_SPEC):
+        target = draft / relpath
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(REPO_ROOT / relpath, target)
+    prereg = draft / PREREGISTRATION
+    prereg.write_text(prereg.read_text().replace(
+        "    status: ADOPTED", "    status: DRAFT_NOT_ADOPTED", 1))
+    spec_path = draft / REFERENCE_DESIGN_SPEC
+    spec = _json.loads(spec_path.read_text())
+    spec["_status"] = "DRAFT_NOT_ADOPTED"
+    spec_path.write_text(_json.dumps(spec))
+    assert set(document_hashes(draft)) == {"protocol_hash",
+                                           "reference_design_spec_hash"}
+    verdict = assert_documents_adopted(draft)
+    assert verdict["adopted"] is False
+    assert {f["declared"] for f in verdict["findings"]} == {
+        "DRAFT_NOT_ADOPTED"}
+
+
+def test_the_synthetic_walk_runs_the_values_the_study_registered():
+    """The harness supplies D19-D26 because the fixture record is v5's and
+    carries none of them --- and **which** values it supplies matters.
+
+    Before adoption they were arbitrary: ``D26 = 0.05`` was a number the code
+    path needed. After adoption a harness keeping its own literals would make
+    the 19-stage walk and the execution-path audit exercise a study nobody
+    registered. So the recorded value wins wherever there is one, and the
+    fallback survives only where there is not.
+    """
+    from tests_v6 import synthetic_lifecycle as SL
+
+    recorded = {e["id"]: e["value"] for e in decisions.recorded_closures(
+        REPO_ROOT / decisions.RECORD_RELPATH)}
+    harness = SL._harness_values()
+    assert set(harness) == set(decisions.V6_DECISION_IDS)
+    for key, value in harness.items():
+        assert value == recorded.get(key, SL._HARNESS_FALLBACK[key])
+    # And the fixture the suite runs against still leaves them open, or the
+    # refusal branches would not be reachable in any test.
+    fixture = {e["id"] for e in decisions.recorded_closures(SL.FIXTURE_RECORD)}
+    assert not (fixture & set(decisions.V6_DECISION_IDS))
 
 
 def test_a_recorded_closure_carries_its_evidence_and_survives_a_reopen():
     """§34 binds the decision AND its evidence, durably.
 
     The record under test is the fixture --- v5's own, carried into
-    ``tests_v6`` --- because v6 has no record and must not have one. What it
+    ``tests_v6`` --- because the suite runs against it rather than against the
+    researcher's own record, so that the open branches stay reachable. What it
     covers is the mechanism: a closure read from a file carries its evidence,
     its author and its date, and a reopen restores that state rather than a
-    blank registry. v6's own D19-D26 are deliberately absent from it.
+    blank registry. v6's own D19-D26 are deliberately absent from the fixture.
     """
     recorded = {e["id"]: e for e in decisions.recorded_closures()}
     assert set(recorded) == set(decisions.V5_DECISION_IDS)

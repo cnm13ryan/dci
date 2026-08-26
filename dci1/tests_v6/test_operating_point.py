@@ -1,26 +1,30 @@
 """The operating point, from Gate 2 to the freeze.
 
-**What these are for.** v6's answer to v5's Gate-4 problem is that composed
-headroom is measured while the operating point can still move
-(``GATE_2_75_COMPOSED_PROBE``). Moving it touches three things that were
-computed at Gate 2's m* and silently reused:
+**m\\* is selected once and never moves.** §12.3 chooses it at Gate 2;
+``GATE_2_75_COMPOSED_PROBE`` measures composed headroom at it and either
+passes or terminates the replication. What these pin is that every quantity
+which is a *property of the operating point* is read at the one the study
+runs, **by name**, and that a read at any other is refused rather than
+silently satisfied:
 
 * §13.6's kappa(R|B) column, which ``assert_kappa_under_b_source`` refuses
-  under a different m* --- correctly, and so loudly that the probe's whole
-  re-selection branch ended in an unhandled error instead of a replication;
-* §13.1's qualified pool, computed from that column;
-* the freeze's slot map, whose ``B`` defaulted to Gate 2's m* while the same
-  record declared the probe's --- so a re-selected replication would have
-  spent its entire confirmatory budget at the severity the probe rejected.
+  under a different m*. Gate 2 records the column at every admissible
+  severity, so the refusal is a real check against a real alternative rather
+  than a check that cannot fail for want of a second column;
+* §13.1's qualified pool, computed from that column and selected by name from
+  Gate 2.5's by-severity map;
+* the freeze's slot map, whose ``B`` is bound at the operating point the study
+  runs.
 
-And one thing that was never checked at all: an *eligible* severity has passed
-§12.3's band test only, so a probe re-selecting over ``eligible`` could move B
-to a severity §12.4's regime adequacy or §34 D17's construct floor would have
-refused.
+And one thing that would otherwise not be checked at all: an *eligible*
+severity has passed §12.3's band test only, so P3.1 requires the probed m* to
+be in ``focal_admissible`` --- eligible **and** adequate under §12.4 **and**
+past §34 D17's construct floor at that severity.
 
-The end-to-end branch lives in ``scenarios.scenario_probe_reselects_the_``
-``operating_point``, which drives a real re-selection through the freeze.
-These are the cheap unit-level pins on the same four things.
+The end-to-end branches live in
+``scenarios.scenario_probe_passes_at_the_frozen_m_star`` and
+``scenarios.scenario_probe_terminates_at_the_frozen_m_star``. These are the
+cheap unit-level pins on the same four things.
 """
 from __future__ import annotations
 
@@ -91,13 +95,13 @@ def test_the_one_pass_kappa_column_equals_the_per_candidate_reference():
             assert source["m_star"] == 9
 
 
-def test_a_reselected_operating_point_reads_its_own_kappa_column():
+def test_a_table_reads_the_kappa_column_measured_at_its_own_severity():
     """§13.11's table at m* = 11, from a Gate 2 that selected m* = 9.
 
-    The refusal this exercises is real and stays: reading Gate 2's own rows
-    under another m* must fail. What changed is that the column at the other
-    severity now exists, so the read succeeds honestly rather than being
-    waived.
+    The refusal this exercises is real and stays: reading Gate 2's m*-column
+    under another m* must fail. Gate 2 records a column at every admissible
+    severity, so a read at the wrong one is a refusal rather than a missing
+    column --- which is what makes it a check and not an absence.
     """
     at_9 = _kappa_columns(_b_solo_rows(9, rate_by_kind={"MK1": 0.30,
                                                         "MK2": 0.75}),

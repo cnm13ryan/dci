@@ -551,22 +551,22 @@ def scenario_coordinate_secondary_not_computable(root: Path
     }
 
 
-def scenario_probe_reselects_the_operating_point(root: Path
-                                                 ) -> dict[str, Any]:
-    """16. §18 stage 8 moves m*, and every later stage runs at the new one.
+def scenario_probe_terminates_at_the_frozen_m_star(root: Path
+                                                  ) -> dict[str, Any]:
+    """16. §18 stage 8 refuses the frozen m\\*, and the replication stops.
 
-    **This is v6's whole answer to v5's Gate-4 problem** --- composed headroom
-    measured while the operating point can still move --- and until this
-    scenario existed the branch had unit tests on ``probe_disposition`` and no
-    execution at all. The first stage after a re-selection read Gate 2's
-    kappa(R|B) column under the probe's m*, ``assert_kappa_under_b_source``
-    refused it by design, and the rescue path ended in an unhandled error
-    instead of in a replication. Gate 2 now records a column and a qualified
-    pool per admissible severity, all signed before the probe observes
-    anything, and this drives the branch end to end.
+    **This is v6's answer to v5's Gate-4 problem, in the form the researcher
+    adopted on 2026-08-26**: composed headroom is measured two stages before
+    Gate 4, and it decides *whether* the registered design is viable at the
+    operating point §12.3 chose --- never *where* the estimand is measured.
+    m\\* is frozen at ``GATE_2_FOCAL_CALIBRATION``, so a failure here is a
+    terminal scientific outcome and not a search for a friendlier severity.
 
     The knob is a fixture composed rate for B **at m\\* alone**. Nothing here
-    changes a band, a margin, a threshold or a rule.
+    changes a band, a margin, a threshold or a rule. The scenario asserts two
+    things the earlier reselection branch could not: that the stage raises,
+    and that no record anywhere carries an operating point other than Gate
+    2's.
     """
     prefix = prefix_walk(root / "prefix", C.STAGE_GATE2_5)
     tree, ctx = prefix.branch(root / "branch")
@@ -575,50 +575,88 @@ def scenario_probe_reselects_the_operating_point(root: Path
     SL.COMPOSED_OVERRIDES[f"B:{m_in}"] = 0.99
     standins = list(SL.FIXTURE_STANDINS)
     try:
-        probe = gates_run.run_gate2_75(
+        observed = _terminal(lambda: gates_run.run_gate2_75(
             tree, producing_commit=ctx["commit"],
             environment_digest="scenario", bank=ctx["bank"],
             standins=SL.FIXTURE_STANDINS, block_limit=24,
-            generate=SL._scripted_for(SL.screen_rungs() + standins)).payload
-        for run in (gates_run.run_gate3a, gates_run.run_gate3b,
-                    gates_run.run_gate3c):
-            run(tree, producing_commit=ctx["commit"],
-                environment_digest="scenario")
-        designed = SL.screen_rungs() + SL._bound_constraints(tree)
-        gate4 = gates_run.run_gate4(
-            tree, producing_commit=ctx["commit"],
-            environment_digest="scenario", bank=ctx["bank"],
-            generate=SL._scripted_for(designed)).payload
-        prefreeze_run.run_prefreeze_audit_stage(
-            tree, producing_commit=ctx["commit"],
-            environment_digest="scenario", repo_root=ctx["repo_root"],
-            bank=ctx["bank"])
-        freeze = freeze_run.run_freeze(
-            tree, producing_commit=ctx["commit"],
-            environment_digest="scenario").payload
+            generate=SL._scripted_for(SL.screen_rungs() + standins)))
     finally:
         SL.clear_overrides()
+    # No successor may exist: a terminal stage writes no PASS record, so
+    # there is no operating point for a later stage to read.
+    probe_record = tree.stage_record(C.STAGE_GATE2_75)
+    return {
+        "branch": "P3.6: the frozen m* has no composed headroom",
+        **observed,
+        "m_star_frozen_at_gate2": m_in,
+        "gate2_5_order_head": int(
+            prefix.payloads[C.STAGE_GATE2_5]["operating_point_order"][0]),
+        "no_passing_probe_record": not probe_record.exists(),
+        "expected": "COMPOSED_HEADROOM_UNREACHABLE, and m* never moves",
+    }
+
+
+def scenario_probe_passes_at_the_frozen_m_star(root: Path) -> dict[str, Any]:
+    """17. The other side of the same rule: the probe passes, and every later
+    stage runs at **Gate 2's** m\\*.
+
+    The reselection scenario this replaces existed to drive the downstream
+    path after m\\* moved. m\\* cannot move, so what needs driving is the
+    invariant itself: ``effective_m_star`` refuses a probe record that
+    disagrees with Gate 2, and this walks Gate 3A through the freeze checking
+    every record's own operating point against the one §12.3 chose.
+    """
+    prefix = prefix_walk(root / "prefix", C.STAGE_GATE2_5)
+    tree, ctx = prefix.branch(root / "branch")
+    gate2 = prefix.payloads[C.STAGE_GATE2]
+    m_in = int(gate2["m_star"])
+    standins = list(SL.FIXTURE_STANDINS)
+    probe = gates_run.run_gate2_75(
+        tree, producing_commit=ctx["commit"],
+        environment_digest="scenario", bank=ctx["bank"],
+        standins=SL.FIXTURE_STANDINS, block_limit=24,
+        generate=SL._scripted_for(SL.screen_rungs() + standins)).payload
+    for run in (gates_run.run_gate3a, gates_run.run_gate3b,
+                gates_run.run_gate3c):
+        run(tree, producing_commit=ctx["commit"],
+            environment_digest="scenario")
+    designed = SL.screen_rungs() + SL._bound_constraints(tree)
+    gate4 = gates_run.run_gate4(
+        tree, producing_commit=ctx["commit"],
+        environment_digest="scenario", bank=ctx["bank"],
+        generate=SL._scripted_for(designed)).payload
+    prefreeze_run.run_prefreeze_audit_stage(
+        tree, producing_commit=ctx["commit"],
+        environment_digest="scenario", repo_root=ctx["repo_root"],
+        bank=ctx["bank"])
+    freeze = freeze_run.run_freeze(
+        tree, producing_commit=ctx["commit"],
+        environment_digest="scenario").payload
     gate3a = transitions.read_stage_record(tree, C.STAGE_GATE3A)
     gate3c = transitions.read_stage_record(tree, C.STAGE_GATE3C)
+    # The consuming half of the invariant, driven against a tampered record.
+    tampered = _terminal(lambda: gates_run.assert_probe_m_star_agrees(
+        {"m_star": m_in + 1}, gate2_m_star=m_in))
     return {
-        "branch": "P3.4: the probe re-selects m* and the study follows it",
-        "m_star_in": m_in,
-        "m_star_out": int(probe["m_star"]),
+        "branch": "P3.3: the frozen m* has composed headroom",
+        "m_star_frozen_at_gate2": m_in,
+        "probe_m_star_in": int(probe["m_star_in"]),
+        "probe_m_star_out": int(probe["m_star"]),
         "reselected": bool(probe["reselected"]),
+        "reselections_permitted":
+            int(probe["disposition"]["reselections_permitted"]),
+        "severities_probed": list(probe["disposition"]["probed_severities"]),
         "admissible_severities": list(probe["admissible_severities"]),
-        "eligible_severities": sorted(
-            int(q) for q in gate2["focal_selection"]["eligible"]),
         # Every later stage's own record of the operating point it ran at.
         "gate3a_m_star": int(gate3a["m_star"]),
         "gate3a_qualified_at": int(gate3a["qualified_at_m_star"]),
         "gate3c_support_met": bool(gate3c["support"]["support_met"]),
-        "gate3c_qualified_families":
-            gate3c["support"]["realised"]["qualified_families"],
         "gate4_m_star": int(gate4["slot_map"]["B"][1]),
         "freeze_m_star": int(freeze["m_star"]),
         "freeze_slot_map_b": int(freeze["slot_map"]["B"][1]),
-        "expected": "one re-selection, and Gate 3A, Gate 4 and the freeze "
-                    "all at m_star_out",
+        "a_disagreeing_probe_record_is_refused": tampered,
+        "expected": "no reselection, one probed severity, and Gate 3A, Gate "
+                    "4 and the freeze all at Gate 2's m*",
     }
 
 
@@ -640,8 +678,10 @@ SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "coordinate_dependent": scenario_coordinate_dependent,
     "coordinate_secondary_not_computable":
         scenario_coordinate_secondary_not_computable,
-    "probe_reselects_the_operating_point":
-        scenario_probe_reselects_the_operating_point,
+    "probe_terminates_at_the_frozen_m_star":
+        scenario_probe_terminates_at_the_frozen_m_star,
+    "probe_passes_at_the_frozen_m_star":
+        scenario_probe_passes_at_the_frozen_m_star,
 }
 
 

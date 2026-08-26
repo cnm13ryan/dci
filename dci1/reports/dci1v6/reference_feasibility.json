@@ -1,9 +1,31 @@
 {
   "_classification": "DEVELOPMENT_EVIDENCE",
   "_decisions_applied": {
-    "n_applied": 19,
+    "already_in_force_from_v6s_own_record": [
+      "D0",
+      "D1",
+      "D10",
+      "D11",
+      "D12",
+      "D13",
+      "D14",
+      "D15",
+      "D16",
+      "D17",
+      "D18",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ],
+    "n_applied": 0,
+    "n_recorded": 19,
     "source": "dci1/reports/dci1v5/researcher_decisions.json",
-    "standing": "v5's own closures, applied in this process to re-read v5's own data. v6 has taken no decision; there is no v6 researcher-decision record and no code may create one"
+    "standing": "v5's own closures, applied in this process to re-read v5's own data. v6's record carries D0-D18 at v5's values, so these are normally already in force and nothing is applied --- and `apply_recorded_closures` refuses a record that disagrees with a closure in force, so a zero here is a check that the carried values ARE v5's, not an omission"
   },
   "_generated_by": "dci1/tools/v6_reference_feasibility.py",
   "_generates_no_rows": "\u00a713.7, \u00a713.8-\u00a713.12 and \u00a713.15 are pure functions of what Gate 2 and Gate 2.5 measured. Nothing here generates, and nothing here reads a composed outcome",

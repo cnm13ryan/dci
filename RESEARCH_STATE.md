@@ -92,6 +92,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | **v4r2** | **implemented, not frozen, no confirmatory data**, terminal at Gate 2 as registered. `docs/v4_traceability.md`, `dci1/docs/v4_prefreeze/` |
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
 | **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
+| **v6** | **ADOPTED and REGISTERED 2026-08-26. Zero behavioural rows at registration.** All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §4aa–§4ag. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -100,8 +101,8 @@ compliance rather than to B on solo failure, and makes instruction order a
 cell-level factor. It is a different protocol: v3 and v4 numbers are not
 comparable and are never compared. Nine registered open decisions (V1 to V9)
 and seven pre-freeze checks remain open; the freeze and confirmatory generation
-are implemented and deliberately not executed. **v4r4 (§4m) is the live
-protocol line**; it supersedes v4r3, which superseded v4r2. Each was adopted
+are implemented and deliberately not executed. **v6 (§4ag) is the live protocol line** as of 2026-08-26; it supersedes v5,
+which superseded v4r4. v4r4 supersedes v4r3, which superseded v4r2. Each was adopted
 and registered on 2026-08-21, and each is structurally prevented from reading
 the others' artifacts: `dci1v4r4.engine.context.foreign_roots` names v4r3's
 evidence, durable and source trees, and `assert_own_study` refuses a stage
@@ -2138,7 +2139,8 @@ sweeps the grid instead — every replication retains an operating point at ever
 policy, so feasibility does not discriminate, but at 0.0687 all four would
 re-select m\* rather than three of four keeping v5's. **No value is proposed.**
 
-**One decision was taken.** *Focal-only reselection*: only the six determinate
+**One decision was taken** — and its reselection half was withdrawn later the
+same day; see §4ag. *Focal-only reselection*: only the six determinate
 entries — `solo:A`, `solo:B`, both orders of `pair:A+B` — may make a severity
 inadmissible. `PS1`–`PS3` are recorded and gate nothing, so an instrument that
 can never be a reference can no longer choose the operating point at which
@@ -2147,10 +2149,48 @@ declares it a **loosening** of the rule it replaces.
 
 Thirteen further entries offered alternatives with no implementation and became
 acceptances; D0's `do_not_adopt` now blocks signing; D25 acquired a caller
-(`tools/v6_closure.py`). **v6 still cannot run**:
-`reports/dci1v6/researcher_decisions.json` does not exist, no code may create
-it, and all twenty-seven of D0–D26 are UNRESOLVED at import. Detail:
-`CHANGES_SCIENTIFIC.md` (2026-08-26), `reports/dci1v6/READINESS.md` §13.
+(`tools/v6_closure.py`). At the end of this pass **v6 still could not run**:
+`reports/dci1v6/researcher_decisions.json` did not exist and all twenty-seven of
+D0–D26 were UNRESOLVED at import. Detail: `CHANGES_SCIENTIFIC.md`
+(2026-08-26), `reports/dci1v6/READINESS.md` §13.
+
+### 4ag. m\* is frozen at Gate 2, the decisions are closed, and v6 is registered (2026-08-26)
+
+**The probe may stop a replication. It may not steer one.** The researcher
+withdrew the reselection half of §4af's decision. m\* is selected once, by
+§12.3's focal rule on B's solo curve at `GATE_2_FOCAL_CALIBRATION`, and frozen
+there; `GATE_2_75_COMPOSED_PROBE` measures composed headroom **at m\* and at
+no other severity** and either passes or terminates the replication
+`COMPOSED_HEADROOM_UNREACHABLE`. `Delta_j` and `Delta_R` are defined at an
+operating point, so a stage that could move it from composed outcomes would be
+choosing *where* the estimand is measured after §12.3 had chosen. Headroom
+decides **whether** the frozen design is viable, never **where**. This is a
+**tightening**: a replication whose m\* lacks composed headroom now stops where
+it previously relocated. Preregistration A13; `READINESS.md` §14.1.
+
+**And on v5's own curves it stops the replication v5's Gate 4 stopped.**
+Recomputed under the frozen rule,
+[`residual_sensitivity.json`](dci1/reports/dci1v6/residual_sensitivity.json)
+finds one of the four closed replications' m\* failing the projection at 0.0
+and at 0.0142 — `gemma-3n-e4b-it`, which v5 terminated
+`COMPOSED_HEADROOM_FAILURE` at Gate 4 with every earlier gate passed — and all
+four failing at 0.0687. §4af's reading, that feasibility does not discriminate,
+was true of a search that no longer exists; §13.3's table is marked superseded
+by §14.2 rather than rewritten.
+
+**§34 D23 = `projection_sd` and §34 D26 = 0.0142.** The measured
+authored-sub-split residual, entering the projection's quadrature as itself,
+with §13.14's band exactly as registered. It is v5 DEVELOPMENT_EVIDENCE under
+§30 and v6 tests it prospectively through §34 D20's measured sub-split
+transfer.
+
+**v6 is registered.** All twenty-seven §34 decisions and all three blocking §33
+items are closed on `reports/dci1v6/researcher_decisions.json`; D0–D18 carry
+v5's actually adopted values with v5's own evidence and a `carried_from` block.
+Both governed documents declare `ADOPTED`. **Zero v6 behavioural rows existed at
+the moment of registration.** v5's records, verdicts, terminal statuses and §34
+D6 irreversibility stand exactly as signed. Detail: `CHANGES_SCIENTIFIC.md`
+(2026-08-26, later entry), `reports/dci1v6/READINESS.md` §14.
 
 ---
 

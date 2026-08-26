@@ -8,18 +8,26 @@ its difficulty?*
 
 ## status
 
-    status: DRAFT_NOT_ADOPTED
+    status: ADOPTED
 
-**This document is a draft and the study is not registered.** No v6 manifest
-exists, no v6 stage has run, no v6 behavioural row has been generated, and all
-twenty-seven of §34's decisions are `UNRESOLVED` — including D0–D18, which v5's
-researcher closed on v5's own record and which only the researcher can carry
-into a new registration.
-`dci1/src/dci1v6/protocol/manifest.assert_documents_adopted` refuses a
-registration while the line above says `DRAFT_NOT_ADOPTED`, so this file cannot
-function as a registration by existing. Adopting it is a researcher act: it
-means the design below is the one the study commits to, and no code may make
-that claim on the researcher's behalf.
+**Adopted 2026-08-26.** This document is the design DCI-1 v6 commits to. All
+twenty-seven of §34's decisions and all three blocking §33 items are closed on
+`dci1/reports/dci1v6/researcher_decisions.json`, with each value, its evidence,
+who took it and when; D0–D18 are carried at the values v5's researcher actually
+adopted, each with a `carried_from` block naming v5's record.
+`dci1/src/dci1v6/protocol/manifest.assert_documents_adopted` reads the line
+above, so a draft cannot function as a registration by existing, and adoption
+is a researcher act no code performs.
+
+**Zero v6 behavioural rows existed when this line changed.** No v6 stage had
+run and no v6 manifest existed. Everything below was therefore written before
+any v6 outcome could be observed, which is what makes it a preregistration
+rather than a report.
+
+Amendments after this point follow §32: a change is recorded as an amendment
+with its reason, §32.1 forbids weakening a criterion so that a gate passes,
+§32.2 requires a change adopted after a gate has run to be declared as such,
+and §32.3 freezes §13 from the first Gate-2.5 record.
 
 ## 0. What this document is, and what it incorporates
 
@@ -57,11 +65,11 @@ Carried without amendment, and each is executable rather than asserted:
   [0.05, 0.95], §12.6's C1–C8 including C4's ≥6 qualifying feature groups, ≥3
   eligible rungs per straddling family and ≥0.40 within-family span, and
   §13.15's support requirements. §34 D17's construct floor and §34 D18's
-  near-form precondition are **open decisions in v6**, not carried thresholds
-  — v5's researcher closed them at `floor` and `precondition` on v5's own
-  record, and only the researcher can carry a closure into a new
-  registration. They are listed here because v6 proposes no change to either;
-  see A13;
+  near-form precondition are **decisions, not inherited constants** — v5's
+  researcher closed them at `floor` and `precondition` on v5's own record, and
+  carrying a closure into a new registration is itself a researcher act. v6
+  closes both at the same values, on v6's own record, with v5's evidence and a
+  `carried_from` block; see §3;
 - §6.2's topic bank and its seeded per-area cut, unchanged in every set size:
   24 pre-screen, 96 calibration-A, 96 calibration-B, 24 composed, 384
   confirmatory, 96 sequestered;
@@ -183,8 +191,9 @@ and only one of them decides anything.**
 > **registered** band, with no margin at all, and the verdict is **recorded
 > and gates nothing**. See A13.
 >
-> A severity is admissible for m\* iff every **determinate** entry passes its
-> own test.
+> The frozen m\* has composed headroom iff every **determinate** entry passes
+> its own test. That verdict decides **whether the replication continues**; it
+> does not decide **where** the estimand is measured. See A13.
 
 **§13.14's band is unchanged.** The projection is a margin *inside* [0.05,
 0.95]; Gate 4 still applies the registered band to the registered composed set.
@@ -229,8 +238,9 @@ including the one no selectable family exercises.
 > §13.8 matches a reference's `iota(R)` to `iota_A` and that is where the design
 > puts a companion. The ladder is measured in this stage on §12.5's 24
 > pre-screen topics at `LADDER_SCREEN_DRAWS`, decides nothing but the severity,
-> and is never in §12.2's table. `iota_A` does not depend on m\*, so
-> re-selecting the operating point never moves a stand-in.
+> and is never in §12.2's table. `iota_A` does not depend on m\*, so the
+> companion a probed cell carries is fixed by a quantity the operating point
+> cannot move.
 
 **No selected reference can enter this stage, and no B+R outcome can enter
 reference selection.** Four independent guarantees, each enforced somewhere a
@@ -241,21 +251,44 @@ record on the same terms as Gate 4's, with its own declared refusals), and
 *directional* (`assert_probe_reads_no_reference` refuses by name and by source
 any function here that would read a selection record).
 
-**One re-selection, by a rule fixed before data (P3.1–P3.6).** The probed set
-is the severity order Gate 2 froze — §12.3's own preference over
-`focal_admissible`, which is §12.3's band **and** §12.4's regime adequacy
-**and** §34 D17's floor, each evaluated at that severity — restricted by Gate
-2.5 to severities that can meet §13.15's five-family minimum. Both are signed
-before this stage generates a row, and Gate 2 records a κ(R|B) column and Gate
-2.5 a §13.1 qualified pool for **every** admissible severity, so moving m\*
-reads a pool that was already fixed rather than building one from what the
-probe saw. m\* is probed first; if it passes it stands. If it fails, the probe
-measures the rest of the frozen order and re-runs `select_operating_point`
-**unchanged** over **Gate 2's own solo B curve** restricted to the severities
-the probe admitted — the probe decides which severities are admissible, never
-which is chosen. There is exactly one re-selection and no path back. If no
-severity is admissible the replication terminates
-`COMPOSED_HEADROOM_UNREACHABLE`, a §28 terminal status with a §28.3 report.
+**m\* is frozen at Gate 2 and this stage cannot move it (P3.1–P3.6).** §12.3
+selects the operating point from B's solo curve at `GATE_2_FOCAL_CALIBRATION`,
+and that selection is final. This stage measures composed headroom **at m\*
+and at no other severity**. P3.1 requires the probed m\* to be in Gate 2's
+`focal_admissible` — §12.3's band **and** §12.4's regime adequacy **and** §34
+D17's floor, each evaluated at that severity — and requires Gate 2.5's
+`operating_point_order` to start there, which is where the two gates record
+their agreement about the operating point. If every determinate entry passes,
+the replication continues at m\* (P3.3). If one does not, the replication
+terminates `COMPOSED_HEADROOM_UNREACHABLE` (P3.6), a §28 terminal status with a
+§28.3 report. There is no third branch: no alternative severity is measured,
+none is constructed, and none is offered downstream.
+
+**Why not a re-selection.** An earlier version of this amendment let the probe
+re-run §12.3's focal rule once over the severities it found admissible. A
+feasibility measurement that can also *choose* the operating point is a
+selection rule, and a selection rule fed by composed outcomes is what §13.11
+and §30 exist to keep out of this study. Headroom may decide **whether** the
+frozen design is viable; it may not decide **where** `Delta_j` and `Delta_R`
+are measured. The cost is stated rather than hidden: a replication whose m\*
+lacks composed headroom stops here instead of moving to a severity that has it.
+That is a registered scientific outcome, not a failure of the probe.
+
+`m_star_out == m_star_in` on every non-terminal path, and it is executed rather
+than described: `composed_probe.probe_disposition` refuses a probe table
+carrying any severity but m\*; `composed_probe.assert_m_star_unmoved` runs on
+the producing path before the record is written; and
+`gates_run.effective_m_star` checks the written record against Gate 2's on
+every downstream read.
+
+**What Gate 2 and Gate 2.5 still record, and why it is not a search.** Gate 2
+writes `operating_point_search_order` — §12.3's own preference over
+`focal_admissible` — and a κ(R|B) column at every admissible severity; Gate 2.5
+writes a §13.1 qualified pool and §13.15's five-family verdict at every one.
+All of it is arithmetic over rows those stages already have, all of it is
+signed before any composed cell exists, and **nothing tries any of it in
+turn**. The study runs at m\*, reads m\*'s column by name, and the rest is a
+prospective record of where a reference set could have existed at all.
 
 **Scope limits, registered rather than discovered at Gate 4.** The probe covers
 every one of §13.14's ten exposure classes; what it cannot cover is the
@@ -378,38 +411,75 @@ remains available only as a later §32 amendment, if the correctly functioning
 mechanism itself demonstrates inadequate support. The 3,072-row development
 re-screen that would have separated the two has **not been run**.
 
-### A13 — focal-only reselection: only real instruments may move m\*
+### A13 — m\* is frozen at Gate 2; the probe may stop, not steer
 
-Registered as an amendment because it changes what m\* is a function of.
+Registered as an amendment because it changes what m\* is a function of, and
+because it replaces a rule an earlier draft of this document carried.
 
-The probe may re-select m\* once, and **only the six determinate entries
-decide whether a severity is admissible**. A stand-in-dependent entry is
-measured, judged against §13.14's registered band, and recorded under
-`standin_findings`; it cannot remove a severity from the admissible set and it
-cannot raise `COMPOSED_HEADROOM_UNREACHABLE`.
+**The rule.** §12.3 selects m\* from B's solo curve at
+`GATE_2_FOCAL_CALIBRATION`. `GATE_2_75_COMPOSED_PROBE` measures composed
+headroom **at that m\* and at no other severity**, and reaches one of two
+outcomes: the replication continues at m\*, or it terminates
+`COMPOSED_HEADROOM_UNREACHABLE`. The probe never returns a different operating
+point, and no downstream stage can receive one.
 
-**Why.** `PS1`–`PS3` are non-selectable by construction and, by A10's design,
-carry a predicate form no selectable family exercises. Under the rule this
-replaces, an instrument that can never be a reference could choose the
-operating point at which `Delta_j` and `Delta_R` are estimated, and could end a
-replication. That is a defect in identification, not a conservative margin.
-What remains true is that m\* is now a *composition*-determined quantity rather
-than the solo-determined one v5 used — but every cell that determines it is a
-cell of real registered instruments that the confirmatory design actually runs.
+**Only the six determinate entries decide.** `solo:A`, `solo:B` and both orders
+of `pair:A+B` — every constituent a real registered instrument that actually
+enters the estimand — are the entries whose verdict can end a replication. A
+stand-in-dependent entry is measured, judged against §13.14's registered band,
+and recorded under `standin_findings`; it gates nothing.
 
-**This is a loosening relative to the rule it replaces, and it is declared as
-one.** A replication whose every severity failed solely on stand-in-dependent
-entries previously terminated; it now proceeds. No threshold moved: §13.14's
-band, §13.4's device and level, and the determinate test are all unchanged.
+**Why m\* may not move.** A feasibility measurement that can also choose the
+operating point is a selection rule. `Delta_j` and `Delta_R` are defined at an
+operating point, so a probe that moved m\* would be choosing *where the
+estimand is measured* using composed outcomes observed after §12.3 had already
+chosen — the precise thing §13.11 and §30 exist to keep out of this study, and
+a route by which a replication with poor composed headroom could search for a
+severity that reported better. Headroom decides **whether** the frozen design
+is viable. It never decides **where**.
 
-**What the stand-in rows buy, then.** Of the 15 cells generated per probed
-severity, 2 are determinate and 13 contain a stand-in — 1,536 rows decide m\*
-and 9,984 are a prospective structural-risk record of the slot and order
-classes Gate 4 will audit. Across four replications at the modal one probed
-severity that is 39,936 rows, about 3% of the study's generation budget, for
-evidence that gates nothing by design. It is retained deliberately: a class
-whose only probe evidence is stand-in-dependent is otherwise audited for the
-first time at Gate 4, which is the failure A5 exists to move earlier.
+**Why a stand-in may not terminate.** `PS1`–`PS3` are non-selectable by
+construction and, by A10's design, carry a predicate form no selectable family
+exercises. An instrument that can never be a reference must not end a
+replication whose registered instruments were all inside the band.
+
+**Both directions of the change are declared (§32.2).**
+
+> *Relative to the earlier draft's re-selection rule, this is a
+> **tightening**.* A replication whose m\* fails now terminates where it
+> previously moved to another admissible severity and continued. v6 buys the
+> early measurement and explicitly does not buy the rescue.
+>
+> *Relative to the earlier draft's stand-in rule, this is a **loosening**.* A
+> replication failing solely on stand-in-dependent entries previously
+> terminated; it now proceeds.
+
+No threshold moved in either direction: §13.14's band, §13.4's device and
+level, and the determinate test are all exactly as registered. Neither change
+was made after observing a v6 outcome, because v6 has generated no
+behavioural rows.
+
+**What the probe costs, exactly.** One operating point, so the cost is
+determinate rather than a ceiling: 576 ladder rows plus 15 generated cells over
+192 topics at 4 draws = **12,096 rows per replication**. Of the 15 cells, 2 are
+determinate and 13 contain a stand-in — 1,536 rows decide whether the
+replication continues and 9,984 are a prospective structural-risk record of the
+slot and order classes Gate 4 will audit. Across four replications that is
+39,936 stand-in rows, about 3% of the study's generation budget, for evidence
+that gates nothing by design. It is retained deliberately: a class whose only probe
+evidence is stand-in-dependent is otherwise audited for the first time at Gate
+4, which is the failure A5 exists to move earlier.
+
+**What it would have cost on the closed v5 record.**
+`reports/dci1v6/precision_design.json` applies the determinate rule to v5's own
+measured solo-B curves at `residual_used = 0.0`: three of the four
+replications' m\* pass, and `gemma-3n-e4b-it` — the replication v5 actually
+terminated `COMPOSED_HEADROOM_FAILURE` at Gate 4 — is the one whose m\* fails.
+That is DEVELOPMENT_EVIDENCE about a v5 measurement under a v6 rule and is not
+a re-verdict of v5; it says the probe would have found, two stages earlier, the
+failure Gate 4 found late. It is also only `solo:B`: v5 measured no composed
+A+B cell on the calibration split, so five of the six determinate entries are
+measured for the first time when this stage runs.
 
 ### A14 — the residual allowance is two decisions, not one
 
@@ -424,32 +494,41 @@ differ in *units*.
 It is now two decisions, both executable:
 
 > **§34 D23 — what it means.** `projection_sd`: D26's number **is** the
-> `residual_sd` in the projection's quadrature, and 0.0142 is applied nowhere.
-> `beyond_the_measured_sd`: the projection always carries the measured 0.0142
-> and D26's number contracts §13.14's band linearly on top.
+> `residual_sd` in the projection's quadrature, and 0.0142 is applied nowhere
+> else. `beyond_the_measured_sd`: the projection always carries the measured
+> 0.0142 and D26's number contracts §13.14's band linearly on top.
 >
 > **§34 D26 — how large it is.** A number in [0.0, 0.45), range-checked at
-> closure rather than at the stage that reads it.
+> closure by `decisions.close` rather than at the stage that reads it.
 
-**No derived value survives.** The 2026-08-25 derivation gave 0.0 on the ground
-that the calibration-to-composed transfer is sampling — observed variance
-0.00430 against the 0.00515 the sample sizes imply. That is a statement about
-**dispersion**. What an allowance protects against is a common shift of one
-replication's entries, and `precision_design.json` itself says a real
-composed-set effect *"would appear as a common per-model shift and not as
-instrument noise"* — and then does not estimate that shift. It is +0.045 over
-thirteen observations; taking the four per-model means as the unit gives 0.0397
-with a 95% interval of about (−0.025, +0.104), and the artifact's own 95% upper
-bound on the residual sd is 0.0687, 4.8× the measured 0.0142.
+**What the evidence establishes, and what it does not.** The 2026-08-25
+derivation gave 0.0 on the ground that the calibration-to-composed transfer is
+sampling — observed variance 0.00430 against the 0.00515 the sample sizes
+imply. That is a statement about **dispersion**. What an allowance protects
+against is a common shift of one replication's entries, and
+`precision_design.json` itself says a real composed-set effect *"would appear
+as a common per-model shift and not as instrument noise"* — and then does not
+estimate that shift. It is +0.045 over thirteen observations; taking the four
+per-model means as the unit gives 0.0397 with a 95% interval of about (−0.025,
++0.104), and the artifact's own 95% upper bound on the residual sd is 0.0687,
+4.8× the measured 0.0142.
 
-`reports/dci1v6/residual_sensitivity.json` costs the grid under focal-only
-reselection instead of proposing a point. Its finding: **every replication
-retains an admissible operating point at every one of the six policies**, so
-feasibility does not discriminate. What does discriminate is which severities
-survive — at 0.0 and 0.0142 the four replications admit 4/3/4/4 of their eight
-measured severities and three keep their v5 m\*; at 0.0687 they admit 3/3/2/3
-and **all four** would re-select. The choice is a judgment about conservatism
-under thirteen observations and this document does not make it.
+`reports/dci1v6/residual_sensitivity.json` costs the grid under the frozen-m\*
+rule instead of proposing a point. Applied to the closed v5 solo-B curves, at
+0.0 and at 0.0142 one of the four replications' m\* fails the projection; at
+0.0687 all four do. Feasibility is therefore **not** the discriminator — what a
+larger allowance buys is a stricter stopping rule, paid for in replications
+that stop at Gate 2.75.
+
+**The closure.** §34 D23 is closed at `projection_sd` and §34 D26 at
+**0.0142**: the residual standard deviation measured on the closed v5 record —
+half of the 0.0284 authored-sub-split residual, paired by instrument — entering
+the projection's quadrature as itself, with §13.14's band left exactly as
+registered. It is not an additional band contraction and it is not a chosen
+constant; its provenance is v5 DEVELOPMENT_EVIDENCE under §30's precedent, v6
+tests it prospectively through §34 D20's measured sub-split transfer, and v6
+may not claim it generalises. `researcher_decisions.json` carries the closure
+and its evidence.
 
 ## 3. §34: the registered open decisions
 
@@ -465,10 +544,10 @@ rather than silently defaulting.
 | D20 | does the probe spend §6.2's reserved composed set | `calibration_with_measured_transfer` (A5) |
 | D21 | §13.14's precision | acceptance (A7) |
 | D22 | what licenses confirmatory generation | `per_replication` (A8) |
-| D23 | what the residual allowance *means* | none — two executable readings (A14) |
+| D23 | what the residual allowance *means* | `projection_sd` (A14) |
 | D24 | where the stand-ins are registered | `probe_only_in_library` (A10) |
 | D25 | the single-survivor statement | two registered sentences (A9) |
-| D26 | how large the residual allowance is | **none** (A14) |
+| D26 | how large the residual allowance is | `0.0142`, measured (A14) |
 
 **Thirteen of the twenty-seven are acceptances, not selections.** The
 2026-08-26 red team found that D2, D5, D7–D15, D19 and D21 offered alternative
@@ -491,9 +570,11 @@ records `complete_population`, `floor` and `precondition`, and the register now
 quotes those with v5's evidence. Carrying them into v6 remains a researcher act.
 
 **A derivation is not a closure.** Each is recorded as a standing proposal in
-`protocol/decisions` with its evidence, and every one of them is `UNRESOLVED`
-until the researcher writes `dci1/reports/dci1v6/researcher_decisions.json`.
-No code may write that file.
+`protocol/decisions` with its evidence, and each is `UNRESOLVED` until the
+researcher records it in `dci1/reports/dci1v6/researcher_decisions.json`, with
+its value, its evidence, who took it and when. `protocol/decisions` reads that
+file at import, the registration manifest binds its hash, and `close()` is
+write-once — so a change to a recorded value is a §32 amendment, not an edit.
 
 ## 4. Provenance, and the honest statement about fitting
 
@@ -519,7 +600,17 @@ Four quantities are fitted to v5 observations:
 3. the choice of `iota_A` as the stand-ins' placement target, which is §13.8's
    registered rule but was checked against v5's realised curves;
 4. the grid `reports/dci1v6/residual_sensitivity.json` sweeps, whose three
-   magnitudes are all read off the closed v5 record.
+   magnitudes are all read off the closed v5 record — and, with the closure of
+   §34 D26 at `0.0142`, the value the projection actually carries.
+
+**And one design decision is declared under §32.2 in the other direction.**
+A13's frozen-m\* rule was adopted on 2026-08-26 after the closed v5 record had
+been read, and it replaces a re-selection rule an earlier draft of this
+document carried. It is a **tightening** — a replication whose m\* lacks
+composed headroom now stops rather than relocating — so it cannot be a change
+that helps a model survive, and `residual_sensitivity.json` shows on v5's own
+curves that it would have stopped a replication that v5's Gate 4 stopped later.
+It was taken before any v6 behavioural row existed.
 
 Per §30's precedent, **retrospective behaviour on v5 is not prospective
 validation.** v6 is the prospective test of these choices and may not claim

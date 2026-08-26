@@ -120,10 +120,12 @@ def assemble(tree: ModelTree, *, producing_commit: str,
                          "two": C.PROMPT_TWO},
         stem_sentence=C.STEM_SENTENCE,
         completion_cap=regime["selected_cap"],
-        # §18.1 binds the operating point the study actually runs. Gate 2.75
-        # may have re-selected m* once, so the freeze binds the probe's value
-        # and records Gate 2's beside it --- binding Gate 2's would freeze a
-        # severity the probe rejected.
+        # §18.1 binds the operating point the study actually runs. m* is
+        # §12.3's choice at Gate 2 and is frozen there; Gate 2.75 measured
+        # composed headroom at it and cannot have moved it, which
+        # `gates_run.effective_m_star` and `composed_probe.assert_m_star_
+        # unmoved` both check. The probe's value is bound because it is the
+        # record closest to this stage that carries the checked equality.
         n_star=gate2["n_star"], m_star=probe["m_star"],
         focal_extension_measured=gate2["focal_selection"].get(
             "extension_measured", False),
@@ -134,6 +136,8 @@ def assemble(tree: ModelTree, *, producing_commit: str,
             "stage": C.STAGE_GATE2_75,
             "m_star_in": probe["m_star_in"],
             "m_star": probe["m_star"],
+            "m_star_is_frozen_at": probe["m_star_is_frozen_at"],
+            "m_star_is_unchanged": probe["m_star_is_unchanged"],
             "reselected": probe["reselected"],
             "residual_allowance": probe["residual_allowance"],
             "residual_reading": probe["residual_reading"],

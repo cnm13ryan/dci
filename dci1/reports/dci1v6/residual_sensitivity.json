@@ -2,11 +2,14 @@
  "_classification": "DEVELOPMENT_EVIDENCE",
  "_not_a_re_verdict": "v5's records, verdicts and terminal statuses stand exactly as signed. This applies a v6 rule to a v5 measurement and says nothing about what v5 should have done",
  "_scope_limit": "solo:B is one of the six determinate entries and is the only one v5 measured on the calibration split: there is no composed A+B cell there. These verdicts are therefore a LOWER bound on how often the determinate rule bites, and the other five entries are measured for the first time when GATE_2_75 runs",
- "_what": "\u00a734 D23's reading x \u00a734 D26's magnitude, costed on the closed v5 solo-B curves under focal-only reselection",
+ "_the_per_severity_column_is_counterfactual": "v6 measures composed headroom at the frozen m* only. The other severities are shown so a reader can see where m* sat on its own curve, and NO v6 rule reads them",
+ "_what": "\u00a734 D23's reading x \u00a734 D26's magnitude, costed on the closed v5 solo-B curves under the frozen-m* rule",
  "measured_residual_sd": 0.0142,
  "median_s2_topic": 0.07197845086169286,
  "n_composed_topics": 24,
  "n_probe_topics": 192,
+ "operating_point_rule": "frozen_at_gate2",
+ "operating_point_rule_is": "the researcher's 2026-08-26 decision: m* is selected once by \u00a712.3 at GATE_2_FOCAL_CALIBRATION, GATE_2_75_COMPOSED_PROBE measures composed headroom at m* alone, and only determinate entries may fail the verdict. A failure terminates the replication COMPOSED_HEADROOM_UNREACHABLE; no other severity is measured or offered",
  "policies": [
   {
    "band_width_consumed_by_one_entry": 0.22769315493768774,
@@ -14,21 +17,23 @@
     0.05,
     0.95
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.11384657746884387,
    "magnitude": 0.0,
    "magnitude_is": "the withdrawn 2026-08-25 derivation: the transfer's DISPERSION is consistent with sampling, so nothing is left for a constant",
+   "n_replications_terminating_here": 1,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       7,
       8,
       9,
       10
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.11925689952024562,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -73,14 +78,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.10958660294145363,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -125,15 +131,16 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       9,
       10,
       11,
       12
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.14066970891697375,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -178,15 +185,16 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       8,
       9,
       10,
       11
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.1411890703501065,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -233,7 +241,9 @@
    },
    "projection_residual_sd": 0.0,
    "reading": "projection_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
   },
   {
    "band_width_consumed_by_one_entry": 0.2343982504881317,
@@ -241,21 +251,23 @@
     0.05,
     0.95
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.11719912524406585,
    "magnitude": 0.0142,
    "magnitude_is": "the measured authored-sub-split residual carried by a pooled probe: half of 0.0284, paired by instrument on the closed v5 record",
+   "n_replications_terminating_here": 1,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       7,
       8,
       9,
       10
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -300,14 +312,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -352,15 +365,16 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       9,
       10,
       11,
       12
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -405,15 +419,16 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       8,
       9,
       10,
       11
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -460,7 +475,9 @@
    },
    "projection_residual_sd": 0.0142,
    "reading": "projection_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
   },
   {
    "band_width_consumed_by_one_entry": 0.3526558548092535,
@@ -468,20 +485,22 @@
     0.05,
     0.95
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.17632792740462674,
    "magnitude": 0.0687,
    "magnitude_is": "precision_design.json's own 95% upper bound on a residual sd thirteen observations could have missed --- 4.8x the measured value",
+   "n_replications_terminating_here": 4,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.17986857108629015,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -526,14 +545,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.17360794430465923,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -578,13 +598,14 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": false,
-     "n_admissible_severities": 2,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 2,
+     "counterfactual_passing_severities": [
       10,
       11
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.19472663348455438,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -629,14 +650,15 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       8,
       9,
       10
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.19510214854729094,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -683,7 +705,12 @@
    },
    "projection_residual_sd": 0.0687,
    "reading": "projection_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e2b-it",
+    "gemma-3n-e4b-it",
+    "qwen3-4b",
+    "qwen3-4b-instruct-2507"
+   ]
   },
   {
    "band_width_consumed_by_one_entry": 0.2343982504881317,
@@ -691,21 +718,23 @@
     0.05,
     0.95
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.11719912524406585,
    "magnitude": 0.0,
    "magnitude_is": "the withdrawn 2026-08-25 derivation: the transfer's DISPERSION is consistent with sampling, so nothing is left for a constant",
+   "n_replications_terminating_here": 1,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       7,
       8,
       9,
       10
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -750,14 +779,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -802,15 +832,16 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       9,
       10,
       11,
       12
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -855,15 +886,16 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       8,
       9,
       10,
       11
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -910,7 +942,9 @@
    },
    "projection_residual_sd": 0.0142,
    "reading": "beyond_the_measured_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
   },
   {
    "band_width_consumed_by_one_entry": 0.26279825048813166,
@@ -918,21 +952,23 @@
     0.06420000000000001,
     0.9358
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.11719912524406585,
    "magnitude": 0.0142,
    "magnitude_is": "the measured authored-sub-split residual carried by a pooled probe: half of 0.0284, paired by instrument on the closed v5 record",
+   "n_replications_terminating_here": 1,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       7,
       8,
       9,
       10
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -977,14 +1013,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -1029,15 +1066,16 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       9,
       10,
       11,
       12
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -1082,15 +1120,16 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": true,
-     "n_admissible_severities": 4,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 4,
+     "counterfactual_passing_severities": [
       8,
       9,
       10,
       11
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": true,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -1137,7 +1176,9 @@
    },
    "projection_residual_sd": 0.0142,
    "reading": "beyond_the_measured_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e4b-it"
+   ]
   },
   {
    "band_width_consumed_by_one_entry": 0.37179825048813164,
@@ -1145,20 +1186,22 @@
     0.1187,
     0.8813
    ],
-   "every_replication_retains_an_operating_point": true,
+   "every_frozen_m_star_passes": false,
    "half_width_at_median_s2": 0.11719912524406585,
    "magnitude": 0.0687,
    "magnitude_is": "precision_design.json's own 95% upper bound on a residual sd thirteen observations could have missed --- 4.8x the measured value",
+   "n_replications_terminating_here": 4,
    "per_model": {
     "gemma-3n-e2b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.12246142184290823,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8059895833333334,
@@ -1203,14 +1246,15 @@
      }
     },
     "gemma-3n-e4b-it": {
-     "m_star": 10,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       7,
       8,
       9
      ],
+     "m_star": 10,
+     "m_star_half_width": 0.11306553542460486,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.8671875,
@@ -1255,13 +1299,14 @@
      }
     },
     "qwen3-4b": {
-     "m_star": 12,
-     "m_star_passes": false,
-     "n_admissible_severities": 2,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 2,
+     "counterfactual_passing_severities": [
       10,
       11
      ],
+     "m_star": 12,
+     "m_star_half_width": 0.14339650889540823,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.4049479166666667,
@@ -1306,14 +1351,15 @@
      }
     },
     "qwen3-4b-instruct-2507": {
-     "m_star": 11,
-     "m_star_passes": false,
-     "n_admissible_severities": 3,
-     "passing_severities": [
+     "counterfactual_n_passing_severities": 3,
+     "counterfactual_passing_severities": [
       8,
       9,
       10
      ],
+     "m_star": 11,
+     "m_star_half_width": 0.14390602955724993,
+     "m_star_passes": false,
      "per_severity": {
       "10": {
        "compliance": 0.6770833333333334,
@@ -1360,13 +1406,16 @@
    },
    "projection_residual_sd": 0.0142,
    "reading": "beyond_the_measured_sd",
-   "replications_with_no_operating_point": []
+   "replications_whose_frozen_m_star_fails": [
+    "gemma-3n-e2b-it",
+    "gemma-3n-e4b-it",
+    "qwen3-4b",
+    "qwen3-4b-instruct-2507"
+   ]
   }
  ],
  "registered_band": [
   0.05,
   0.95
- ],
- "reselection_rule": "focal_only",
- "reselection_rule_is": "the researcher's 2026-08-26 decision: only determinate entries decide admissibility, so a stand-in cannot move m* or terminate a replication"
+ ]
 }

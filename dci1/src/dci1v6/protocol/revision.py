@@ -98,6 +98,36 @@ def _headroom_unreachable_is_registered() -> bool:
     return COMPOSED_HEADROOM_UNREACHABLE in C.TERMINAL_STATUSES
 
 
+def _the_probe_cannot_move_the_operating_point() -> bool:
+    """m\\* is frozen at Gate 2. Behavioural, not a source scan.
+
+    ``probe_disposition`` is driven twice: once with a table carrying only
+    m\\*, where the returned operating point must be the one it was given,
+    and once with a second severity present, which must be refused rather
+    than searched. A source scan would pass on a module that had merely
+    renamed its reselection branch.
+    """
+    from dci1v4.errors import ProtocolError
+    from dci1v6.stages import composed_probe as probe
+
+    entry = {"compliance": 0.5, "s2_topic": 0.01,
+             "n_topics": C.N_CALIBRATION}
+    table = {"solo:A": {"A": dict(entry)}, "solo:B": {"B": dict(entry)},
+             "pair:A+B": {"A": dict(entry), "B": dict(entry)},
+             "pair:B+A": {"B": dict(entry), "A": dict(entry)}}
+    out = probe.probe_disposition(m_star=10, probed={10: table},
+                                  residual_sd=0.0)
+    if out["m_star_out"] != 10 or out["reselected"]:
+        return False
+    probe.assert_m_star_unmoved(out, gate2_m_star=10)
+    try:
+        probe.probe_disposition(m_star=10, probed={10: table, 11: table},
+                                residual_sd=0.0)
+    except ProtocolError:
+        return out["reselections_permitted"] == 0
+    return False
+
+
 def _probe_only_is_excluded_from_selection() -> bool:
     """A stand-in is not in the selectable pool, whatever else is true."""
     from dci1v6.verifiers.constraints import (
@@ -209,11 +239,13 @@ CHANGES: tuple[Change, ...] = (
            _nineteen_stages_with_the_probe),
     Change("V4", "§28",
            "COMPOSED_HEADROOM_UNREACHABLE is a registered terminal status",
-           "the probe permits exactly one re-selection of m*, by a rule fixed "
-           "before data; when no severity Gate 2 found eligible satisfies the "
-           "margin the replication stops. A repair loop with no terminal "
-           "outcome is not a rule",
-           _headroom_unreachable_is_registered),
+           "m* is frozen by §12.3 at Gate 2 and the probe cannot move it; "
+           "when the frozen m* does not satisfy the margin the replication "
+           "stops. A feasibility measurement that could also choose the "
+           "operating point would be a selection rule fed by composed "
+           "outcomes",
+           lambda: (_headroom_unreachable_is_registered()
+                    and _the_probe_cannot_move_the_operating_point())),
     Change("V5", "§7.10, §13.11",
            "``probe_only`` families exist as a category and are excluded by "
            "construction from every selectable pool",

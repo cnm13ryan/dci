@@ -9,11 +9,14 @@ support requirement is read out of `dci1v6.protocol.constants`,
 `dci1v6.verifiers.constraints`, so a spec that disagrees with the code is not
 expressible.
 
-**It emits a DRAFT.** `_status` is `DRAFT_NOT_ADOPTED` and
-`manifest.assert_documents_adopted` refuses a registration whose spec says so.
-Adopting it is a researcher act: it means the design below is the one the
-study commits to, and neither this tool nor any other code may make that
-claim on the researcher's behalf.
+**Its `_status` is DERIVED, never chosen here.** It reads `ADOPTED` only when
+three researcher acts are all on the record: the preregistration's own
+`status:` line says `ADOPTED`, `researcher_decisions.json` closes every one of
+§34's twenty-seven decisions, and no §33 open item that blocks the manifest is
+still unresolved. Otherwise it says `DRAFT_NOT_ADOPTED` and
+`manifest.assert_documents_adopted` refuses a registration. This tool makes no
+adoption claim on the researcher's behalf --- it reports what the researcher
+has and has not done, from the files where they did it.
 """
 from __future__ import annotations
 
@@ -34,6 +37,35 @@ from dci1v6.verifiers import constraints as K               # noqa: E402
 
 OUT = DCI1.parent / REFERENCE_DESIGN_SPEC
 DRAFT = "DRAFT_NOT_ADOPTED"
+ADOPTED = "ADOPTED"
+
+
+def _adoption() -> dict[str, Any]:
+    """The three researcher acts this spec's status is derived from.
+
+    Read rather than asserted, and each named separately, so that a spec
+    declaring itself adopted says exactly what it is reporting.
+    """
+    from dci1v6.protocol import open_items
+
+    prereg = DCI1.parent / PREREGISTRATION
+    declared = "missing"
+    if prereg.exists():
+        lines = [ln.strip() for ln in prereg.read_text().splitlines()]
+        declared = next((ln.split(":", 1)[1].strip() for ln in lines
+                         if ln.lower().startswith("status:")), "none")
+    still_open = list(decisions.open_decisions())
+    blocking = list(open_items.blocking_items())
+    return {
+        "preregistration_status": declared,
+        "preregistration": PREREGISTRATION,
+        "decision_record": decisions.RECORD_RELPATH,
+        "decision_record_present": decisions.record_payload()["present"],
+        "n_decisions": len(decisions.DECISIONS),
+        "open_decisions": still_open,
+        "blocking_open_items": blocking,
+        "adopted": (declared == ADOPTED and not still_open and not blocking),
+    }
 
 
 def _library() -> dict[str, Any]:
@@ -55,8 +87,8 @@ def _library() -> dict[str, Any]:
             "and refused by `assert_selectable` everywhere a candidate is "
             "carried, qualified, calibrated or bound. It reuses a registered "
             "counted statistic under a form no selectable family carries, so "
-            "FEATURE_GROUP_IDS --- whose index `selection.group_key` reads as "
-            "a reference-selection tie-break --- does not move."),
+            "FEATURE_GROUP_IDS --- whose index `selection._group_order` reads "
+            "as a reference-selection tie-break --- does not move."),
         "tiers": {"tier_1": list(K.TIER1_FAMILY_IDS),
                   "tier_2": list(K.TIER2_FAMILY_IDS),
                   "tier_3": list(K.TIER3_FAMILY_IDS)},
@@ -164,15 +196,15 @@ def _probe() -> dict[str, Any]:
                 "composed cell of real instruments leaving the band; a pass "
                 "certifies nothing about the reference that replaces the "
                 "stand-in.",
-            "severity":
-                "passes iff every DETERMINATE entry passes its own test. "
-                "Focal-only reselection (researcher decision, 2026-08-26): a "
-                "stand-in-dependent entry is measured, judged and recorded "
-                "under `standin_findings`, and gates nothing --- it cannot "
-                "move m* and cannot terminate a replication, because an "
-                "instrument that can never be selected as a reference may "
-                "not choose the operating point at which the estimands are "
-                "measured.",
+            "operating_point":
+                "the frozen m* has composed headroom iff every DETERMINATE "
+                "entry passes its own test. Determinate-only termination "
+                "(researcher decision, 2026-08-26): a stand-in-dependent "
+                "entry is measured, judged and recorded under "
+                "`standin_findings`, and gates nothing --- it cannot "
+                "terminate a replication, because an instrument that can "
+                "never be selected as a reference may not end a study whose "
+                "registered instruments are all inside the band.",
             "familywise_reading":
                 "computed and recorded per determinate entry and read by "
                 "nothing, because §13.14's verdict is a conjunction and the "
@@ -182,11 +214,37 @@ def _probe() -> dict[str, Any]:
             "each stand-in is probed at the severity of its own solo ladder "
             "nearest Gate 2's measured iota_A, inside §13.4's band, because "
             "§13.8 matches a reference's iota(R) to iota_A. iota_A does not "
-            "depend on m*, so re-selecting the operating point never moves a "
-            "stand-in.",
-        "reselection": "one, by §12.3's registered focal rule run unchanged "
-                       "over Gate 2's own solo B curve restricted to the "
-                       "severities the probe admitted",
+            "depend on m*, so the companion a probed cell carries is fixed "
+            "by a quantity the operating point cannot move.",
+        "operating_point": {
+            "chosen_at": C.STAGE_GATE2,
+            "chosen_by": "§12.3's registered focal rule on B's solo curve",
+            "frozen": True,
+            "severities_probed_here": "m* and no other",
+            "reselections_permitted": 0,
+            "what_this_stage_decides":
+                "WHETHER the registered design is viable at the operating "
+                "point §12.3 chose. It PASSES or it terminates the "
+                "replication COMPOSED_HEADROOM_UNREACHABLE.",
+            "what_it_does_not_decide":
+                "WHERE Delta_j and Delta_R are measured. A feasibility "
+                "measurement that could also choose the operating point "
+                "would be a selection rule fed by composed outcomes, which "
+                "is what §13.11 and §30 exist to keep out of this study.",
+            "declared_on_2026_08_26":
+                "this replaces a rule under which the probe re-ran §12.3's "
+                "focal rule once over the severities it found admissible. "
+                "The researcher removed that branch before any v6 "
+                "behavioural row existed; see preregistration A13.",
+            "enforced_by": [
+                "dci1v6.stages.composed_probe.probe_disposition refuses a "
+                "probe table carrying any severity but m*",
+                "dci1v6.stages.composed_probe.assert_m_star_unmoved, on the "
+                "producing path before the record is written",
+                "dci1v6.run.gates_run.effective_m_star, on every downstream "
+                "read of the operating point",
+            ],
+        },
         "terminal_status": composed_probe.COMPOSED_HEADROOM_UNREACHABLE,
         "scope_limits": list(composed_probe.PROBE_SCOPE_LIMITS),
         "declared_refusals": dict(composed_probe.PROBE_DECLARED_REFUSALS),
@@ -212,6 +270,7 @@ def _design() -> dict[str, Any]:
 
 
 def main() -> None:
+    adoption = _adoption()
     payload = {
         "_what_this_is":
             "The frozen reference-validity and composed-headroom rule for "
@@ -219,14 +278,17 @@ def main() -> None:
             "implementation by tools/v6_reference_design_spec.py rather than "
             "transcribed. A spec that disagrees with the code is not "
             "expressible here.",
-        "_status": DRAFT,
+        "_status": ADOPTED if adoption["adopted"] else DRAFT,
+        "_status_is_derived_from": adoption,
         "_status_means":
-            "NOT ADOPTED. No v6 registration exists, no v6 stage has run, and "
-            "all twenty-seven §34 decisions are UNRESOLVED because "
-            "reports/dci1v6/researcher_decisions.json does not exist and no "
-            "code may create it. `manifest.assert_documents_adopted` refuses "
-            "a registration while this field says DRAFT_NOT_ADOPTED. Adopting "
-            "it is a researcher act.",
+            "This field is DERIVED from three researcher acts and is never "
+            "chosen by the producing tool: the preregistration's own "
+            "`status:` line, whether "
+            "reports/dci1v6/researcher_decisions.json closes every one of "
+            "§34's decisions, and whether any §33 item that blocks the "
+            "manifest is still unresolved. `_status_is_derived_from` records "
+            "all three. While it reads DRAFT_NOT_ADOPTED, "
+            "`manifest.assert_documents_adopted` refuses a registration.",
         "_provenance": {
             "protocol": PREREGISTRATION,
             "predecessor_protocol": "user-notes/DCI1_preregistration_v5.md",
@@ -237,11 +299,18 @@ def main() -> None:
                 "dci1/reports/dci1v6/expansion_dryrun.json",
                 "dci1/reports/dci1v6/reference_feasibility.json"],
             "overfitting_declaration":
-                "Two quantities here are fitted to closed v5 observations and "
-                "are labelled as such: composed_probe.RESIDUAL_SD, and the "
-                "choice to leave §13.14 as registered. Retrospective "
-                "behaviour on v5 is NOT prospective validation; v6 is the "
-                "prospective test and may not claim these generalise (§30).",
+                "Four quantities here are fitted to closed v5 observations "
+                "and are labelled as such: composed_probe.RESIDUAL_SD; §34 "
+                "D26's magnitude, which is that same measurement; the choice "
+                "to leave §13.14 as registered, which rests on the measured "
+                "false-termination rate; and iota_A as the stand-ins' "
+                "placement target, which is §13.8's registered rule checked "
+                "against v5's realised curves. The existence of "
+                "GATE_2_75_COMPOSED_PROBE and of PS1-PS3 is itself a "
+                "consequence of v5's Gate 4 having fired, declared under "
+                "§32.2 in the preregistration's §4. Retrospective behaviour "
+                "on v5 is NOT prospective validation; v6 is the prospective "
+                "test and may not claim any of these generalise (§30).",
         },
         "design": _design(),
         "candidate_library": _library(),
@@ -251,19 +320,33 @@ def main() -> None:
         "open_decisions": {
             "count": len(decisions.open_decisions()),
             "ids": list(decisions.open_decisions()),
+            "n_registered": len(decisions.DECISIONS),
             "why": "closing one is a researcher act recorded at "
                    f"{decisions.RECORD_RELPATH}, and no code may write it",
         },
+        "researcher_decisions": {
+            "record": decisions.RECORD_RELPATH,
+            "hash": decisions.record_hash(),
+            "closed": {k: decisions.value_of(k)
+                       for k in decisions.DECISION_IDS
+                       if decisions.is_closed(k)},
+            "non_adopted_alternatives": decisions.non_adopted_alternatives(),
+            "unimplemented_alternatives": {
+                k: list(d.unimplemented_alternatives)
+                for k, d in decisions.DECISIONS.items()
+                if d.unimplemented_alternatives},
+        },
         "what_this_spec_does_not_decide": [
-            "any §34 decision; every one of them is still open",
-            "what §34 D23's residual allowance MEANS: both readings are "
-            "executable and the closure selects one",
-            "how large it is (§34 D26): no derived value survives the "
-            "2026-08-26 red team, and reports/dci1v6/residual_sensitivity."
-            "json costs the grid instead of proposing a point",
+            "any §34 decision. This file REPORTS the closures; the record "
+            f"that takes them is {decisions.RECORD_RELPATH} and no code "
+            "writes it",
             "whether §6.2's composed set is enlarged (§34 D21): the "
             "sequestered eighth is not materialised in this repository, so "
-            "that branch is an act of authoring topics",
+            "that branch is an act of authoring topics and not a constant",
+            "where the study runs. m* is chosen at "
+            f"{C.STAGE_GATE2} by §12.3's focal rule and frozen there; "
+            "GATE_2_75_COMPOSED_PROBE decides only whether the frozen design "
+            "is viable at it",
         ],
     }
     OUT.write_text(json.dumps(payload, indent=1, sort_keys=True) + "\n")

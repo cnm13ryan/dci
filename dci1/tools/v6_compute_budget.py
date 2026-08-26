@@ -58,15 +58,15 @@ def build() -> dict[str, object]:
             "56 x 384 x 8 = 172,032 per replication. Every number here is "
             "computed, none is transcribed."),
         "_v6_conditional_terms": {
-            "why": "two v6 terms are conditional and are named rather than "
+            "why": "one v6 term is conditional and is named rather than "
                    "folded into a figure a replication is expected to spend: "
-                   "§12.6's expansion stops the moment C1-C6 pass, and the "
-                   "Gate-2.75 probe stops the moment m* passes its margin",
+                   "§12.6's expansion stops the moment C1-C6 pass. The "
+                   "Gate-2.75 probe is NOT conditional --- m* is frozen at "
+                   "Gate 2 and the probe measures it and nothing else --- so "
+                   "its cost is exact and is listed beside the ceiling it "
+                   "used to carry",
             "expansion_ceiling": expansion_burden(),
-            "composed_probe": {
-                "if_m_star_passes": probe_burden(),
-                "worst_case": probe_burden(
-                    n_severities=probe_burden()["max_severities"])}},
+            "composed_probe": probe_burden()},
         "_decision": "§34 D1",
         "_units": "generations = prompt x draw; one generation is one "
                   "model response",
