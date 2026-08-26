@@ -2247,6 +2247,22 @@ model, reference family, arm, seed, verifier, wording, claim ladder or headroom
 band; not m\*; D23 stays `projection_sd` and D26 stays 0.0142; §6.1's four
 replications are four. Zero v6 behavioural rows existed at any point in this.
 
+**v6 is registered.** All four replications hold a signed
+`PROTOCOL_REGISTERED` record under one manifest, at producing commit
+`c59fa75508ea3c055b31f9ec1d7e53220389bd6c`:
+
+| binding | value |
+|---|---|
+| manifest hash | `36f1fb3b6dfcedeadc2cd8cbaa4832204148c6851bd6dd5dd5c5a9eada7c5662` |
+| preregistration | `sha256(path+bytes) = 95db6df44f7c9b1f9233509cf64ff77d9671921d6c67755b298628e6d186cd4c` |
+| reference-design spec | `sha256(path+bytes) = c532279edaf38f84454009b26005da4fe9740e5c800a9f824f60fa1770ab3eee` |
+| decision record | `eefb32513b4f1095d83e4912abfe806c0220071f153413470faeb93ec3c5d482`, 27 closed, 0 open |
+| retired apparatus fault | `fb9b4353b50ec2221b6a1de33465427ae3ab3a4aac81189645e5520711ed6122`, bound in the manifest |
+| topic split | `c10f17bc5846e1858705af3c8daa21c450b1c63f00618ce0d414181fc8861f10` |
+
+**Zero v6 behavioural rows existed at the moment of registration**, verified by
+counting `rows.jsonl` under both roots.
+
 ---
 
 ## 6. Recent consequential changes
