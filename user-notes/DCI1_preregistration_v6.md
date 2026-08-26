@@ -29,6 +29,16 @@ with its reason, §32.1 forbids weakening a criterion so that a gate passes,
 §32.2 requires a change adopted after a gate has run to be declared as such,
 and §32.3 freezes §13 from the first Gate-2.5 record.
 
+**One amendment has been taken since, and it is A15.** On 2026-08-26, after
+this line changed and still before any v6 behavioural row, the first attempt
+to execute §18 stage 1 exposed three defects in the documented entry point,
+one of which had made stage 1's readiness verdict irreversible. A15 makes it
+a refusal, retires the one record the fault produced without erasing it, and
+changes no threshold, estimand, criterion, model, reference rule, `m*` or
+claim. It is declared here rather than folded into the text above, because an
+amendment adopted after adoption is a different fact from a clause that was
+always there.
+
 ## 0. What this document is, and what it incorporates
 
 v6 is **v5's protocol with a named, enumerated set of amendments**. Rather than
@@ -530,6 +540,89 @@ tests it prospectively through §34 D20's measured sub-split transfer, and v6
 may not claim it generalises. `researcher_decisions.json` carries the closure
 and its evidence.
 
+### A15 — a stage-1 readiness verdict is a refusal, not an outcome
+
+**Adopted 2026-08-26, after the adoption above and before any v6 behavioural
+row. §32.2 declares it as such, and the chronology is stated rather than
+smoothed over: this amendment did not precede `0ba60e4`; it follows it.**
+
+The first attempt to execute `PROTOCOL_REGISTERED` failed three times, and all
+three faults were in the documented entry point rather than in a scientific
+rule:
+
+1. **the CLI created no signing key.** Every record is signed at write and
+   verified at read, so without one *no* v6 stage could run. v4's runner
+   created it explicitly and v6's had no equivalent.
+2. **the CLI did not forward `--repo-root`.** `run_registration` defaults it
+   to `"."`, so `manifest.assert_documents_adopted` read the process's
+   working directory. Invoked from `dci1/`, both governed documents are one
+   level up and the guard correctly reported them **missing**.
+3. **stage 1 was not retryable.** `REGISTRATION_INCOMPLETE` was a §28 terminal
+   status, so that false readiness failure wrote §28.3's terminal report and
+   `assert_predecessor_passed` disabled `gemma-3n-e2b-it` permanently.
+
+The first two are engineering repairs and carry regression tests. The third is
+this amendment, and it is a hole rather than an inconvenience. Every entry
+`manifest.signing_blockers` can report — an open §34 decision, an unresolved
+§33 question, a missing topic hash, an unapproved candidate population, an
+unspecified floor, an unpinned model revision, a non-derivable design, a
+governed document still declaring itself a draft — names work a **researcher**
+has to do, and `protocol/decisions.choice` had always said stage 1 returns the
+status *"until then"*. If the first invocation to find any of that outstanding
+kills the replication, "until then" is false and the entire blocker vocabulary
+is unreachable by construction.
+
+> **The registered rule.** §18 stage 1's `REGISTRATION_INCOMPLETE` is a
+> **readiness refusal**, not a §28 terminal status. It fails closed, writes no
+> stage record and no terminal report, is logged as a `REFUSED` transition
+> carrying the blockers, and leaves the replication free to attempt the stage
+> again once the prerequisite it names is met. `C.READINESS_REFUSAL_STATUSES`
+> and `C.TERMINAL_STATUSES` are disjoint, asserted at import.
+
+**The criterion does not move.** `signing_blockers` decides readiness exactly
+as it did; a study that could not be registered still cannot be. This is
+therefore not a §32.1 weakening in either direction — no gate passes that
+would have failed, and nothing here can make an unready study registrable. The
+verdicts §28 governs are untouched: every one of the thirteen remaining
+terminal statuses, `COMPOSED_HEADROOM_UNREACHABLE` and A13's frozen-m\* stop
+among them, is as irreversible as it was. Three structural refusals keep the
+distinction from drifting: `TerminalStatus` will not carry a readiness status,
+`write_terminal_report` will not write one, and `ReadinessRefusal` will not
+accept any gate but `PROTOCOL_REGISTERED`.
+
+**The one record already written.** The false terminal on `gemma-3n-e2b-it` is
+retained, not erased. `run/registration_run.retire_apparatus_fault` is §32's
+retain-everything shape applied to a record rather than to a manifest —
+`supersede_registration` could not reach it, because it retires under
+`superseded/<old manifest hash>/` and no manifest existed. The signed report
+moves byte-identical to `superseded/apparatus_fault/<record hash>/` in the
+evidence tree and the durable mirror; the append-only transition log keeps
+every row the failed attempt wrote; a retirement record beside it carries the
+retired payload verbatim, the defect, the amendment and the six preconditions
+verified; and `build_manifest` reads those records, so the retirement is
+**inside** the signature of the registration that follows rather than beside
+it.
+
+It refuses six ways, and each one is what keeps it from becoming a general
+retry facility: on a record hash that does not match; on a signature that does
+not verify; on any gate but `PROTOCOL_REGISTERED`; on any §28 terminal status;
+once a registration manifest exists; and once any behavioural row exists
+anywhere in the study, counted from the filesystem. A scientific gate's
+verdict is a RESULT and cannot be retired by this or any other path.
+
+**What this amendment does not change.** No threshold, no estimand, no
+criterion, no population, no model, no reference rule, no arm, no seed, no
+verifier, no claim ladder, no headroom band, and not `m*` — A13's freeze at
+Gate 2 stands exactly as adopted, D23 remains `projection_sd` and D26 remains
+`0.0142`. §6.1's four replications are four again, which is the reason the
+researcher took it: one command, issued before any registration existed and
+before any row was generated, had reduced them to three on a fault in the
+caller.
+
+**Zero v6 behavioural rows existed when this was adopted**, and zero existed
+when the fault occurred. `dci1/reports/dci1v6/incidents/2026-08-26_stage1_apparatus_fault.md`
+records the incident, the defect chain and the preserved hashes.
+
 ## 3. §34: the registered open decisions
 
 Twenty-seven. D0–D18 are v5's, carried forward and requiring their own closure
@@ -603,7 +696,7 @@ Four quantities are fitted to v5 observations:
    magnitudes are all read off the closed v5 record — and, with the closure of
    §34 D26 at `0.0142`, the value the projection actually carries.
 
-**And one design decision is declared under §32.2 in the other direction.**
+**And two changes are declared under §32.2 in the other direction.**
 A13's frozen-m\* rule was adopted on 2026-08-26 after the closed v5 record had
 been read, and it replaces a re-selection rule an earlier draft of this
 document carried. It is a **tightening** — a replication whose m\* lacks
@@ -611,6 +704,16 @@ composed headroom now stops rather than relocating — so it cannot be a change
 that helps a model survive, and `residual_sensitivity.json` shows on v5's own
 curves that it would have stopped a replication that v5's Gate 4 stopped later.
 It was taken before any v6 behavioural row existed.
+
+A15 is the second, and its §32.2 declaration is that it was adopted **after
+this document was adopted** — on 2026-08-26, prompted by a failure of the
+apparatus rather than by any observation, and still before any v6 behavioural
+row. It touches no criterion: `signing_blockers` decides registration
+readiness exactly as it did, every §28 terminal status remains irreversible,
+and a study that could not be registered still cannot be. What it changes is
+that a *readiness* verdict — a statement about outstanding researcher work —
+no longer ends a replication, and that the one record the fault produced is
+retained and hash-bound rather than erased or honoured.
 
 Per §30's precedent, **retrospective behaviour on v5 is not prospective
 validation.** v6 is the prospective test of these choices and may not claim

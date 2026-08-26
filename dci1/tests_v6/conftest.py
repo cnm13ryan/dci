@@ -208,19 +208,19 @@ def harness_decisions(monkeypatch):
 def v6_repo(tmp_path_factory):
     """A repository root where v6's two governed documents exist.
 
-    **They do not exist in this repository and must not be created here.**
     §18 stage 1 binds the hash of ``user-notes/DCI1_preregistration_v6.md``
-    and of ``dci1/reports/dci1v6/reference_design_spec.json``, neither of
-    which is written --- so ``manifest.document_hashes`` raises ``Blocker``
-    against the real root. That refusal is correct, it is blocker 3 of
-    ``dci1/reports/dci1v6/READINESS.md``, and
-    ``test_lifecycle.test_no_v6_registration_is_possible_yet`` asserts it.
+    and of ``dci1/reports/dci1v6/reference_design_spec.json``, and reads the
+    status each declares about itself. Both exist in this repository and both
+    declare ``ADOPTED`` since 2026-08-26 --- which is exactly why a test does
+    not use them: a suite that registered against the real governed documents
+    would start passing or failing on a marker in a file it has no business
+    depending on, and would be exercising the study's actual protocol text.
 
-    A test that is about something *else* --- supersession, invalidation,
-    manifest binding, the amendment rules --- still has to get past stage 1.
-    This builds the isolated, committed repository ``synthetic_lifecycle``
-    already builds for the lifecycle walk, in which the two documents are
-    labelled placeholders living in a pytest tmpdir.
+    So a test that is about something *else* --- supersession, invalidation,
+    manifest binding, the amendment rules, the apparatus-fault retirement ---
+    gets past stage 1 through the isolated, committed repository
+    ``synthetic_lifecycle`` already builds for the lifecycle walk, in which
+    the two documents are labelled placeholders living in a pytest tmpdir.
     """
     from tests_v6.synthetic_lifecycle import synthetic_repo
 

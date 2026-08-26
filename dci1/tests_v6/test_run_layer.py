@@ -1,6 +1,7 @@
 """The run layer: it exists, it is complete, and adoption unblocked it."""
 from __future__ import annotations
 
+import argparse
 import dataclasses
 from pathlib import Path
 
@@ -219,3 +220,86 @@ def test_a_link_is_refused_by_a_stage_that_does_not_register(tmp_path):
 def test_the_stages_taking_a_link_are_derived_too():
     """Only the registration runner takes ``supersedes``."""
     assert cli.stages_accepting("supersedes") == (C.STAGE_REGISTERED,)
+
+
+# ------------------------------------- the two defects of 2026-08-26
+
+def test_the_cli_creates_the_study_signing_key_before_the_first_stage(
+        tmp_path):
+    """Every record is signed at write, so without a key **no** stage runs.
+
+    v4's runner created it explicitly and v6's had no equivalent, so the first
+    real invocation of the documented entry point failed before reaching stage
+    1 at all --- the same shape as V5-E2: a registered study its own CLI could
+    not execute. Creating a key changes no measured quantity; it authenticates
+    records rather than producing them.
+    """
+    tree = _tree(tmp_path)
+    assert not tree.context.signing_key_path.exists()
+    created = cli.ensure_signing_key(tree)
+    assert created["signing_key"] == "created"
+    bytes_written = tree.context.signing_key_path.read_bytes()
+    assert cli.ensure_signing_key(tree) == {"signing_key": "present"}
+    assert tree.context.signing_key_path.read_bytes() == bytes_written
+
+
+def test_the_cli_will_not_mint_a_key_once_a_registration_exists(tmp_path):
+    """A key that vanishes after a study is registered is a **lost** key.
+
+    Minting a replacement would leave every record already signed
+    unverifiable while looking repaired, which is the worst of the available
+    outcomes. It refuses and says which case it is.
+    """
+    tree = _tree(tmp_path)
+    cli.ensure_signing_key(tree)
+    tree.context.registration_manifest.parent.mkdir(parents=True,
+                                                    exist_ok=True)
+    tree.context.registration_manifest.write_text("{}")
+    tree.context.signing_key_path.unlink()
+    with pytest.raises(IntegrityError, match="LOST key"):
+        cli.ensure_signing_key(tree)
+    assert not tree.context.signing_key_path.exists()
+
+
+def test_the_repository_a_stage_binds_is_never_the_working_directory():
+    """``--repo-root`` unset resolves to the repository, not to ``.``.
+
+    ``run_registration`` defaults ``repo_root`` to ``"."`` and the CLI never
+    forwarded the flag, so `run --stage PROTOCOL_REGISTERED` bound whatever
+    directory the process happened to be in. Invoked from ``dci1/``, the
+    preregistration is one level up and ``assert_documents_adopted``
+    correctly reported it **missing** --- a registration whose content depends
+    on the caller's cwd is not a registration.
+    """
+    from dci1v6.engine.context import REPO_ROOT as PACKAGE_ROOT
+
+    unset = argparse.Namespace(repo_root=None)
+    assert cli.repo_root_of(unset) == PACKAGE_ROOT
+    assert (PACKAGE_ROOT / "user-notes").is_dir()
+    named = argparse.Namespace(repo_root="/somewhere/else")
+    assert cli.repo_root_of(named) == Path("/somewhere/else")
+
+
+def test_the_repo_root_reaches_the_runner_that_takes_one(tmp_path,
+                                                         monkeypatch):
+    """Forwarded from the signature, like ``--device``, and not hand-listed.
+
+    Three stages read a repository root --- stage 1 binds the two governed
+    documents by hash, and the pre-freeze audit and the final report read the
+    same tree --- and all three were getting whichever directory the process
+    was started in. Unlike ``--device`` the flag is not refused elsewhere: it
+    names the repository a stage binds rather than an instruction about a
+    stage, and a stage that reads no root is simply unaffected.
+    """
+    seen: dict[str, object] = {}
+
+    def fake(tree, *, repo_root=_UNSET, **kwargs):
+        seen["repo_root"] = repo_root
+        raise TerminalStatus("STOPPED_FOR_TEST", {"gate": "none"})
+
+    monkeypatch.setitem(cli.RUNNERS, C.STAGE_REGISTERED, fake)
+    assert C.STAGE_REGISTERED in cli.stages_accepting("repo_root")
+    assert cli.main(["--repo-root", str(tmp_path), "run", "--stage",
+                     C.STAGE_REGISTERED, "--model", MODEL,
+                     "--root", str(tmp_path)]) == 1
+    assert seen["repo_root"] == tmp_path

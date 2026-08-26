@@ -13,6 +13,77 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-26 — v6 A15: a stage-1 readiness verdict is a refusal, not an outcome
+
+*(The third and last entry on this date. It corrects one sentence in the
+entry below it and changes nothing scientific.)*
+
+**Why this is here at all.** It is an apparatus change, and apparatus changes
+do not normally get an entry. This one does because it changes the registered
+§28 status vocabulary and the lifecycle rule a reader would use to interpret a
+`REGISTRATION_INCOMPLETE` on the evidence tree — and because one such record
+exists.
+
+**What happened.** The first execution of `PROTOCOL_REGISTERED` failed on three
+defects in the documented entry point, none of them in a scientific rule: the
+CLI created no signing key; it did not forward `--repo-root`, so
+`assert_documents_adopted` read the process's working directory and reported
+both governed documents `missing` when both exist and declare `ADOPTED` at the
+commit the record cites; and the resulting readiness verdict was written as a
+§28.3 terminal report, permanently disabling `gemma-3n-e2b-it`.
+
+**What changed.** §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness
+refusal**, not a §28 terminal status. `C.READINESS_REFUSAL_STATUSES` and
+`C.TERMINAL_STATUSES` are disjoint, asserted at import.
+`run/lifecycle.ReadinessRefusal` fails closed, writes no stage record and no
+terminal report, logs a `REFUSED` transition carrying the blockers, and leaves
+the replication retryable. `TerminalStatus` refuses a readiness status,
+`write_terminal_report` refuses one, and `ReadinessRefusal` refuses any gate
+but `PROTOCOL_REGISTERED`, so the change cannot spread to a scientific gate.
+
+**The criterion did not move.** `manifest.signing_blockers` decides readiness
+exactly as it did; a study that could not be registered still cannot be. This
+is not a §32.1 weakening in either direction. It is declared under §32.2 in
+`user-notes/DCI1_preregistration_v6.md` §A15 and §4 as adopted **after** that
+document was adopted, prompted by a failure of the apparatus rather than by any
+observation.
+
+**Every §28 terminal outcome is untouched.** The thirteen remaining statuses,
+`COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` among them, are
+as irreversible as they were, and none is retirable by any path.
+
+**The one record already written is retained, not erased.**
+`run/registration_run.retire_apparatus_fault` moves it byte-identical to
+`superseded/apparatus_fault/<record hash>/` in both roots, and refuses on a
+hash mismatch, an unverifiable signature, any gate but stage 1, any §28 status,
+an existing manifest, any behavioural row anywhere in the study, or a
+replication holding any stage record. `manifest.build_manifest` binds the
+retirement into the registration signed afterwards, so the study's own signed
+provenance names the failed attempt.
+
+**One defect on the same path, fixed.** `tools/v6_closure.py` read the terminal
+report as an unsigned object, so `status` was never found and every terminal
+status in the study's *closing record* would have read `UNKNOWN`. Nothing had
+surfaced it because no v6 replication had terminated. It now verifies the
+signature and reads through `transitions.terminal_status`, and reports retired
+apparatus faults separately from terminal statuses.
+
+**Which results are affected.** *None existed.* Zero v6 behavioural rows had
+been generated when the fault occurred, when A15 was adopted, or when the
+corrected registration was signed. No threshold, estimand, criterion,
+population, model, reference family, arm, seed, verifier, prompt, wording,
+claim ladder or headroom band moved; not `m\*`; §34 D23 remains `projection_sd`
+and D26 remains `0.0142`; §6.1's four replications are four.
+
+**Correction to the entry below.** It says "the v6 registration manifest is
+signed". It was not: that entry was written at adoption, and the registration
+attempt that followed failed on the three defects above. The manifest was
+signed only after A15. Incident record:
+`dci1/reports/dci1v6/incidents/2026-08-26_stage1_apparatus_fault.md`;
+readiness pass: `dci1/reports/dci1v6/READINESS.md` §15.
+
+---
+
 ## 2026-08-26 — v6: m\* is frozen at Gate 2, D23/D26 closed, and v6 registered
 
 *(The second of two entries on this date. It supersedes parts of the first,

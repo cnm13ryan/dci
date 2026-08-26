@@ -23,6 +23,14 @@ would make the interesting event invisible.
 ``TerminalStatus`` is raised by a stage's computation, caught here, written to
 the terminal report and re-raised, so that the record exists before the
 traceback reaches a caller who might not write one.
+
+**A readiness refusal is neither.** ``ReadinessRefusal`` exists at
+``PROTOCOL_REGISTERED`` and nowhere else, and says the study is not ready to
+be signed --- an open decision, a draft document, an unpinned revision. It is
+logged as a ``REFUSED`` transition and re-raised, and it writes no record and
+no terminal report, so the replication is exactly where it was and may be
+attempted again once the researcher has done the work the blockers name. That
+is amendment A15; see the class for why it had to exist.
 """
 from __future__ import annotations
 
@@ -40,8 +48,9 @@ from dci1v6.protocol import constants as C
 from dci1v6.run import field_access
 from dci1v6.verifiers import verifier_source_hash
 
-__all__ = ["TerminalStatus", "StageOutcome", "run_stage", "mirror_records",
-           "protocol_identity",
+__all__ = ["TerminalStatus", "ReadinessRefusal", "log_readiness_refusal",
+           "StageOutcome", "run_stage",
+           "mirror_records", "protocol_identity",
            "mirror_terminal_report", "now", "stage_input",
            "terminal_statuses_in_force", "confirmatory_licensed",
            "study_level_statement", "SINGLE_SURVIVOR_STATEMENTS",
@@ -217,6 +226,91 @@ def study_level_statement(*, survivors: Sequence[str],
         "l5_withheld": "generalisation is never licensed by this design"}
 
 
+class ReadinessRefusal(Exception):
+    """§18 stage 1 refuses: the study is not yet ready to be registered.
+
+    **This is the whole of amendment A15 and it is deliberately the narrowest
+    thing that works.** It exists at exactly one stage, carries exactly one
+    registered status, and gives no other stage any way to be retried.
+
+    A readiness verdict is a statement about *the apparatus and the
+    researcher's outstanding work*, never about a model. Every entry
+    ``manifest.signing_blockers`` can report --- an open §34 decision, an
+    unresolved §33 question, a missing topic hash, an unapproved candidate
+    population, an unspecified floor, an unpinned model revision, a
+    non-derivable design, a governed document still declaring itself a draft
+    --- names work a researcher has to do, and ``decisions.choice()`` has
+    always said stage 1 returns ``REGISTRATION_INCOMPLETE`` *until then*.
+
+    Until 2026-08-26 it was raised as a ``TerminalStatus``, so the first
+    invocation that found any of that outstanding wrote §28.3's terminal
+    report and ``assert_predecessor_passed`` disabled the replication
+    forever. "Until then" was therefore false, and the entire blocker
+    vocabulary was unreachable: each blocker killed the replication that
+    discovered it. On 2026-08-26 a CLI that did not forward ``--repo-root``
+    demonstrated it on ``gemma-3n-e2b-it``, before any manifest existed and
+    before a single row had been generated.
+
+    What a refusal does, and what it does not do:
+
+    * it **fails closed** --- the exception propagates and no caller receives
+      a registration;
+    * it writes **no stage record**, so the write-once rule is untouched and
+      stage 1 has not run;
+    * it writes **no terminal report**, so §28.3 keeps meaning what it means;
+    * it **is logged**, as a ``REFUSED`` transition carrying the blockers, so
+      an attempt that was refused is as visible as one that passed;
+    * it leaves the replication **retryable**, which is the only behaviour
+      that changes.
+
+    The criterion is untouched. ``signing_blockers`` decides readiness exactly
+    as it did before, and §32.1 is not in play: nothing here can make a study
+    registrable that was not registrable, and this refuses for precisely the
+    same set of reasons.
+
+    Two structural facts keep it from becoming a general retry facility. The
+    constructor refuses any gate but ``PROTOCOL_REGISTERED`` and any status
+    outside ``C.READINESS_REFUSAL_STATUSES``, whose intersection with
+    ``C.TERMINAL_STATUSES`` is asserted empty at import; and ``run_stage``
+    handles the two exception types on separate paths, so a scientific
+    terminal cannot take this one.
+    """
+
+    def __init__(self, status: str, *, gate: str, criterion: str,
+                 observed: Any, remedy: str):
+        if gate != C.STAGE_REGISTERED:
+            raise ProtocolError(
+                f"a readiness refusal exists at {C.STAGE_REGISTERED} and "
+                f"nowhere else; {gate!r} is a scientific stage and its "
+                "verdicts are §28 terminal outcomes (A15)")
+        if status not in C.READINESS_REFUSAL_STATUSES:
+            raise ProtocolError(
+                f"{status!r} is not a registered readiness status; "
+                f"registered: {C.READINESS_REFUSAL_STATUSES}")
+        super().__init__(f"{gate}: {status}")
+        self.status = status
+        self.gate = gate
+        self.criterion = criterion
+        self.observed = observed
+        self.remedy = remedy
+
+    def detail(self) -> dict[str, Any]:
+        """What the REFUSED transition row carries."""
+        return {"status": self.status, "gate": self.gate,
+                "kind": "READINESS_REFUSAL",
+                "criterion": self.criterion,
+                "observed": self.observed,
+                "remedy": self.remedy,
+                "retryable": True,
+                "terminal": False,
+                "why_not_terminal":
+                    "§18 stage 1's readiness verdict is a statement about "
+                    "outstanding researcher work and the apparatus, not about "
+                    "this model; §28.3's terminal report is not written and "
+                    "the replication may be attempted again once the "
+                    "prerequisite it names is met (A15)"}
+
+
 class TerminalStatus(Exception):
     """A registered §28 terminal status, raised by a stage's computation."""
 
@@ -242,6 +336,35 @@ class TerminalStatus(Exception):
                 "producing_commit": producing_commit,
                 "strongest_permissible_statement":
                     self.strongest_permissible_statement}
+
+
+def log_readiness_refusal(tree: ModelTree, refusal: ReadinessRefusal, *,
+                          producing_commit: str, environment_digest: str,
+                          model_revision: str | None = None
+                          ) -> dict[str, Any]:
+    """Everything a readiness refusal does to the evidence tree (A15).
+
+    It is one call and it is all of it: a ``REFUSED`` row on the replication's
+    own append-only transition log, carrying the blockers, the remedy and the
+    fact that the attempt may be repeated. No stage record, no terminal
+    report, no directory created that a later run could mistake for progress.
+
+    It is a function rather than three lines inside ``run_stage`` so that the
+    execution-path audit has a frame to observe: "the refusal path ran" is
+    then a fact the audit records rather than an inference from the absence of
+    a file. The gate is re-asserted here as well as in the constructor,
+    because this is the half that touches the tree.
+    """
+    if refusal.gate != C.STAGE_REGISTERED:                # pragma: no cover
+        raise ProtocolError(
+            f"a readiness refusal is logged at {C.STAGE_REGISTERED} and "
+            f"nowhere else; {refusal.gate!r} is a scientific stage")
+    return transitions.log_transition(
+        tree, stage=refusal.gate, outcome="REFUSED",
+        producing_commit=producing_commit,
+        environment_digest=environment_digest,
+        model_revision=model_revision,
+        detail=refusal.detail())
 
 
 @dataclass(frozen=True)
@@ -344,6 +467,17 @@ def run_stage(tree: ModelTree, stage: str, *,
     try:
         with field_access.reading_for(stage):
             payload = compute(previous)
+    except ReadinessRefusal as refusal:
+        # A15. Logged and re-raised, and that is all: no record, no terminal
+        # report, nothing on the evidence tree that a later stage reads as a
+        # verdict. The replication is exactly where it was before the call,
+        # which is what makes the attempt repeatable once the researcher has
+        # done the work the blockers name.
+        log_readiness_refusal(
+            tree, refusal, producing_commit=producing_commit,
+            environment_digest=environment_digest,
+            model_revision=model_revision)
+        raise
     except TerminalStatus as terminal:
         transitions.write_terminal_report(
             tree, terminal.payload(tree.model_key, producing_commit))

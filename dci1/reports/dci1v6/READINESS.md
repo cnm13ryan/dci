@@ -17,6 +17,11 @@
 > may terminate a replication but never move the operating point (§14.1) —
 > and **§13.3's residual table was computed under that withdrawn rule**; the
 > current one is §14.2.
+>
+> §15 is the apparatus-fault pass of 2026-08-26, added after §14. It records
+> amendment A15 and corrects one sentence in §14: adoption and registration
+> did not happen on the same day's first attempt, and §14.5's account of the
+> registered state was written before the study was registered.
 
 **Status when this memo was written: NOT ADOPTED, NOT REGISTERED.** No manifest
 existed, no stage had run, and no behavioural row could be generated against
@@ -2058,3 +2063,121 @@ twenty-seven §34 decisions and all three blocking §33 items;
 `manifest.signing_blockers()` reports nothing; both governed documents declare
 `ADOPTED`. Zero v6 behavioural rows existed at the moment of registration, and
 `RESEARCH_STATE.md` §4 records the manifest hash and the producing commit.
+
+---
+
+## 15. The apparatus-fault pass of 2026-08-26 (added after §14)
+
+§14 closed the adoption pass and the study was committed at `0ba60e4`. What
+follows is what happened when the registered study was executed for the first
+time, and it is a section about the **apparatus**: no scientific rule, no
+threshold, no estimand and no decision moved.
+
+### 15.1 Three defects in the documented entry point
+
+`python -m dci1v6.run.cli run --stage PROTOCOL_REGISTERED --model
+gemma-3n-e2b-it` failed three times in a row.
+
+| # | defect | why it was invisible |
+|---|---|---|
+| 1 | the CLI created no study signing key | every record is signed at write, so **no** stage could run; the integration harness creates its own key and never took this path |
+| 2 | `--repo-root` never reached `run_registration`, whose default is `"."` | the harness passes an explicit root; only the real CLI defaults |
+| 3 | a stage-1 readiness verdict wrote §28.3's terminal report | no v6 replication had ever been refused at stage 1 |
+
+Defect 2 is what produced the record. Invoked from `dci1/`,
+`assert_documents_adopted` looked for `user-notes/DCI1_preregistration_v6.md`
+and `dci1/reports/dci1v6/reference_design_spec.json` **relative to the working
+directory**, found neither, and reported both `missing`. Both exist and both
+declare `ADOPTED` at `0ba60e4` — the very commit the resulting record cites.
+
+Defect 3 turned that into a terminal outcome. `REGISTRATION_INCOMPLETE` was in
+`C.TERMINAL_STATUSES`, so `run_stage` wrote `terminal_report.json` and
+`assert_predecessor_passed` disabled every later stage for `gemma-3n-e2b-it`
+permanently. §6.1 registers four replications; one mis-invoked command had
+reduced them to three.
+
+### 15.2 It was a hole, not an inconvenience
+
+Two statements in the registered implementation could not both be true:
+
+> `protocol/decisions.choice()`: *"…§18 stage 1 returns
+> `REGISTRATION_INCOMPLETE` **until then**."*
+
+> `engine/transitions.assert_predecessor_passed`: *"{model} is terminal at
+> {status}; every later stage is mechanically disabled."*
+
+"Until then" presupposes a later attempt. Every entry
+`manifest.signing_blockers` can report — an open §34 decision, an unresolved
+§33 question, a missing topic hash, an unapproved candidate population, an
+unspecified floor, an unpinned model revision, a non-derivable design, a draft
+document — names work a **researcher** has to do. If the first invocation that
+finds any of it outstanding kills the replication, the whole vocabulary is
+unreachable by construction: each blocker exists only to end whichever
+replication discovers it.
+
+### 15.3 Amendment A15
+
+The researcher ruled the record an **apparatus fault**, retained the full
+four-model panel, and adopted A15 as a prospective §32 amendment — after
+adoption, before any behavioural row, declared under §32.2 in
+`DCI1_preregistration_v6.md` §4.
+
+**The criterion did not move.** `signing_blockers` decides readiness exactly as
+it did, and a study that could not be registered still cannot be. What changed
+is the kind of verdict: `run/lifecycle.ReadinessRefusal` fails closed, writes
+no stage record and no terminal report, logs a `REFUSED` transition carrying
+the blockers and the remedy, and leaves the replication free to attempt the
+stage again. `C.READINESS_REFUSAL_STATUSES` and `C.TERMINAL_STATUSES` are
+disjoint, asserted at import, and three structural refusals hold the line:
+`TerminalStatus` will not carry a readiness status, `write_terminal_report`
+will not write one, and `ReadinessRefusal` will not accept any gate but
+`PROTOCOL_REGISTERED`. Every §28 terminal outcome — `COMPOSED_HEADROOM_FAILURE`,
+`COMPOSED_HEADROOM_UNREACHABLE`, `PREFREEZE_AUDIT_FAILURE` and the rest — is as
+irreversible as it was.
+
+### 15.4 The record already written, retained
+
+`run/registration_run.retire_apparatus_fault` is §32's retain-everything shape
+applied to a *record* rather than to a manifest.
+`supersede_registration` could not reach this case: it retires under
+`superseded/<old manifest hash>/` and there was no manifest to name.
+
+Six preconditions, each a refusal: the file hash must be the one named; the
+signature must verify; the gate must be `PROTOCOL_REGISTERED`; the status must
+be a readiness status, so no §28 terminal is retirable by this or any path; no
+registration manifest may exist; and no behavioural row may exist anywhere in
+the study, counted from the filesystem rather than believed. A seventh refuses
+a replication that already holds any stage record.
+
+Nothing is deleted. The signed report moves byte-identical to
+`superseded/apparatus_fault/<record hash>/` in the evidence tree and in the
+durable mirror — `paths.is_superseded` already excludes that path from every
+current pool and the durability audit already counts it. The append-only
+transition log keeps every row the failed attempt wrote, `TERMINAL` included.
+The retirement record beside the report carries the retired payload verbatim,
+the defect, the amendment, and the preconditions verified. And
+`manifest.build_manifest` reads those records, so the retirement is **inside**
+the signature of the registration that followed rather than beside it, and
+`closure.json` reports it separately from the terminal statuses so a reader
+cannot mistake it for a verdict about a model.
+
+### 15.5 One correction to §14
+
+§14 and this memo's banner were written on the morning of 2026-08-26 and say
+v6 "was adopted and registered" that day, and §14.5 describes the registered
+state as though registration had happened. It had not: adoption was complete
+at `0ba60e4` and the registration attempt that followed failed on the three
+defects above. Registration succeeded only after A15. The earlier sections are
+left as written, per this memo's rule; this is the correction.
+
+### 15.6 What A15 does not change
+
+No threshold, estimand, criterion, population, model, reference family, arm,
+seed, verifier, prompt, wording, claim ladder or headroom band. Not `m*`: A13's
+freeze at Gate 2 stands, and `GATE_2_75_COMPOSED_PROBE` still may terminate a
+replication and still may never move the operating point. §34 D23 remains
+`projection_sd` and D26 remains `0.0142`. §6.1's four replications are four.
+
+Zero v6 behavioural rows existed when the fault occurred, when A15 was
+adopted, and when the corrected registration was signed. The incident record
+is [`incidents/2026-08-26_stage1_apparatus_fault.md`](incidents/2026-08-26_stage1_apparatus_fault.md).

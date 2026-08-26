@@ -505,9 +505,20 @@ def test_an_unresolved_check_is_not_a_pass():
     assert {c["n"] for c in audit["failures"]} >= {8, 15}
 
 
-def test_terminal_statuses_include_the_two_new_ones():
-    assert "REGISTRATION_INCOMPLETE" in C.TERMINAL_STATUSES
+def test_the_two_status_vocabularies_are_disjoint():
+    """A15: a readiness verdict and a §28 terminal outcome are not the same
+    kind of statement, and the separation is structural.
+
+    ``REGISTRATION_INCOMPLETE`` was in ``TERMINAL_STATUSES`` until 2026-08-26,
+    which made every entry ``signing_blockers`` can report --- all of them
+    outstanding *researcher* work --- irreversible for whichever replication
+    discovered it. What §28 says about a gate's verdict is untouched:
+    ``PREFREEZE_AUDIT_FAILURE`` is where it was and is as terminal as it was.
+    """
+    assert "REGISTRATION_INCOMPLETE" in C.READINESS_REFUSAL_STATUSES
+    assert "REGISTRATION_INCOMPLETE" not in C.TERMINAL_STATUSES
     assert "PREFREEZE_AUDIT_FAILURE" in C.TERMINAL_STATUSES
+    assert not set(C.READINESS_REFUSAL_STATUSES) & set(C.TERMINAL_STATUSES)
 
 
 def test_the_new_identification_statuses_are_registered():

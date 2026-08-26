@@ -9,8 +9,8 @@ the arm set --- never appear, because they reach the code only through
 per-model gate records. ``assert_no_model_adaptive_values`` enforces that
 split executably rather than by convention.
 
-**It refuses to be signed today, for five separate reasons, and each one is a
-different kind of not-ready:**
+**Every refusal that used to stop it is still built**, and each one is a
+different kind of not-ready:
 
 1. a §34 decision is open --- ``protocol/decisions.py``;
 2. a specification question the documents do not settle is unresolved ---
@@ -18,12 +18,17 @@ different kind of not-ready:**
 3. a required topic-bank hash is missing --- Calibration-B does not exist;
 4. the candidate population is unapproved --- §34 D4;
 5. a red-team finding whose registered mitigation *is* a decision is still
-   open --- R1, R11, R14, R16.
+   open --- R1, R11, R14, R16;
+6. a floor is unspecified, a model revision unpinned, a design not derivable,
+   or a governed document still declares itself a draft.
 
 They are checked separately and reported separately, because "we have not
 decided" and "the work has not been done" are different facts and collapsing
 them into one refusal loses which one a researcher has to act on. §18 stage
-1's failure status is ``REGISTRATION_INCOMPLETE`` for all five.
+1's readiness status is ``REGISTRATION_INCOMPLETE`` for all of them, and since
+amendment A15 it is a **refusal** and not a §28 terminal outcome: each of these
+names work a researcher has to do, so the stage is attempted again once it is
+done. ``run/lifecycle.ReadinessRefusal`` is where that is written down.
 
 ``build_manifest`` assembles the payload **whether or not it can be signed**,
 so that a researcher can see exactly what adoption would bind before adopting
@@ -60,7 +65,7 @@ from dci1v6.verifiers import constraints, verifier_source_hash
 from dci1v6.verifiers.constraints import FAMILIES, RESERVES
 
 __all__ = ["PROTOCOL_VERSION", "PROTOCOL_DOCUMENT", "MODEL_ADAPTIVE_KEYS",
-           "DRAFT_MARKER", "assert_documents_adopted",
+           "DRAFT_MARKER", "assert_documents_adopted", "apparatus_faults",
            "REQUIRED_BINDINGS", "REGISTRATION_INCOMPLETE", "Blocker",
            "signing_blockers", "assert_signable", "build_manifest",
            "assert_no_model_adaptive_values", "document_hashes",
@@ -97,7 +102,7 @@ REQUIRED_BINDINGS = (
     "support_requirements", "lifecycle", "estimands", "order_estimands",
     "multiplicity_families", "claim_ladder", "masking", "freeze_requirements",
     "measurement_basis", "thresholds", "precision_preconditions",
-    "reuse_ledger", "revision_changes", "red_team",
+    "reuse_ledger", "revision_changes", "red_team", "apparatus_faults",
 )
 
 
@@ -123,6 +128,29 @@ def document_hashes(repo_root: Path | str = ".") -> dict[str, Any]:
                 f"{path}; a registration that cannot name its own protocol "
                 "text binds nothing")
         out[name] = sha_obj({"path": rel, "bytes": path.read_bytes().hex()})
+    return out
+
+
+def apparatus_faults(context: StudyContext) -> list[dict[str, Any]]:
+    """Every retired stage-1 apparatus fault in this study, read from disk.
+
+    A15. ``run/registration_run.retire_apparatus_fault`` retains a readiness
+    verdict that a caller's own defect wrote as a §28.3 terminal report, and
+    this is what puts it **inside** the signature of the registration that
+    follows. A retirement recorded beside a registration rather than within it
+    would let the study's own signed provenance read as though the failed
+    attempt had never happened, which is exactly what §32 forbids.
+
+    It is a plain read of the evidence tree: the list is empty for a study
+    with no fault, so a manifest built anywhere carries the field and the
+    honest value.
+    """
+    from dci1v6.engine import paths as P
+
+    out: list[dict[str, Any]] = []
+    for path in P.apparatus_fault_records(Path(context.study_root)):
+        body = json.loads(path.read_text())
+        out.append(body.get("payload", body))
     return out
 
 
@@ -447,6 +475,22 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
         },
         "revision_changes": revision.revision_record(),
 
+        # A15. Every stage-1 readiness verdict this study retired as an
+        # apparatus fault, by the hash of the record retired. Read from the
+        # evidence tree at build time and therefore inside the signature: a
+        # registration that followed a retirement says so in its own payload,
+        # so the study's signed provenance cannot read as though the failed
+        # attempt never occurred. Empty for a study that had none.
+        "apparatus_faults": {
+            "rule": "§32/A15: a §18 stage-1 readiness verdict written as a "
+                    "§28.3 terminal report by an apparatus or configuration "
+                    "fault is RETAINED under "
+                    "superseded/apparatus_fault/<record hash>/ and named "
+                    "here. Nothing is deleted, and no scientific terminal is "
+                    "retirable by that path",
+            "retired": apparatus_faults(context),
+        },
+
         # ------------------------------------------------------ apparatus
         "models": registration_models(),
         "judges": ["gpt-oss-20b"],
@@ -667,6 +711,17 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "stages": list(C.STAGE_SEQUENCE),
             "generation_stages": list(C.GENERATION_STAGES),
             "terminal_statuses": list(C.TERMINAL_STATUSES),
+            # A15. §18 stage 1's readiness vocabulary, disjoint from §28's
+            # terminal one. Every entry names outstanding researcher work,
+            # so a readiness verdict is a refusal the researcher can act on
+            # and attempt again --- it writes no §28.3 record and disables
+            # nothing. Every status above it stays as irreversible as it was.
+            "readiness_refusal_statuses":
+                list(C.READINESS_REFUSAL_STATUSES),
+            "readiness_refusal_is_not_terminal":
+                "a §18 stage-1 readiness verdict states that this STUDY is "
+                "not yet ready to be signed; it carries no evidence about the "
+                "replication it was attempted on and does not end it",
             # The registered *vocabulary*. Which statuses a replication
             # realises is model-adaptive and lives on its Gate 3C record;
             # the key is named so the two can never be confused.

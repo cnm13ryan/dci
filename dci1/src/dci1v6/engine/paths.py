@@ -30,7 +30,9 @@ from dci1v4.errors import ProtocolError
 from dci1v6.engine.context import StudyContext
 from dci1v6.protocol import constants as C
 
-__all__ = ["SUPERSEDED_DIRNAME", "is_superseded", "current_files",
+__all__ = ["SUPERSEDED_DIRNAME", "APPARATUS_FAULT_DIRNAME",
+           "APPARATUS_FAULT_RECORD", "apparatus_fault_records",
+           "is_superseded", "current_files",
            "STAGE_RECORD_FILES", "AUX_RECORD_FILES", "ModelTree",
            "model_tree", "required_records", "unexpected_stage_files"]
 
@@ -131,6 +133,25 @@ class ModelTree:
 
 
 SUPERSEDED_DIRNAME = "superseded"
+
+#: Where a §18 stage-1 readiness verdict written as a §28.3 terminal report by
+#: an apparatus fault is retained (A15). It sits **under** ``superseded/``, so
+#: ``is_superseded`` already excludes it from every current pool and the
+#: durability audit already counts it --- a retirement is a move into an
+#: existing category, not a new provenance system.
+APPARATUS_FAULT_DIRNAME = "apparatus_fault"
+APPARATUS_FAULT_RECORD = "apparatus_fault.json"
+
+
+def apparatus_fault_records(study_root: Path) -> list[Path]:
+    """Every retirement record under a study root, in a stable order.
+
+    One glob, defined once, so the retiring code and the manifest that binds
+    the retirement cannot disagree about where a record lives.
+    """
+    return sorted(Path(study_root).glob(
+        f"*/{SUPERSEDED_DIRNAME}/{APPARATUS_FAULT_DIRNAME}/*/"
+        f"{APPARATUS_FAULT_RECORD}"))
 
 
 def is_superseded(path: Path) -> bool:

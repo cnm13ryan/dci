@@ -52,11 +52,11 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 @pytest.fixture(autouse=True)
 def _use_the_v6_repo(v6_repo):
-    """Point this module at a root where v6's two documents exist.
+    """Point this module at a root where v6's two documents are placeholders.
 
-    They do not exist in this repository --- v6 is not written --- so every
-    registration in this file would otherwise stop on ``Blocker`` before
-    reaching what it is testing. See ``conftest.v6_repo``.
+    Every registration in this file has to get past stage 1 to reach what it
+    is testing, and it must not do so by binding the study's real governed
+    documents. See ``conftest.v6_repo``.
     """
     global REPO_ROOT
     held, REPO_ROOT = REPO_ROOT, v6_repo
