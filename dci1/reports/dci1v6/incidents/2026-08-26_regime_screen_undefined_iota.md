@@ -1,7 +1,9 @@
 # Incident: §12.6's coverage criterion met a rung with no difficulty coordinate
 
-**Status: OPEN. Awaiting a researcher decision. Nothing has been repaired,
-changed or deleted, and no `REGIME_SCREEN` record exists for any replication.**
+**Status: RESOLVED 2026-08-26 under amendment A16 — the rung is dropped from
+every §12.6 condition and recorded. See "Resolution" at the end. Everything
+below this line is the report as written while the incident was open, and is
+left exactly as it was.**
 
 Written 2026-08-26, after `REGIME_SCREEN` failed on both replications that ran
 it. Registration is complete and valid; this is the stage after Gate 0.
@@ -151,3 +153,70 @@ recorded as a resolution of a new §33 item, a further construction of U4, or a
 `36f1fb3b6dfcedeadc2cd8cbaa4832204148c6851bd6dd5dd5c5a9eada7c5662` stands
 either way: no behavioural row has entered any estimator, and this stage has
 produced no record to supersede.
+
+---
+
+## Resolution (2026-08-26)
+
+The researcher ruled reading **(i) with (iii)'s recording**: `coverage_criterion`
+fails closed by **dropping** a rung with no difficulty coordinate from every
+condition and **marking** it, rather than crashing. Adopted as amendment
+**A16** in `user-notes/DCI1_preregistration_v6.md`, declared under §32.2 as
+prompted by this live v6 observation. `READINESS.md` §16 records the pass.
+
+### Why dropping is the direction that could be adopted after the fact
+
+Every one of C1–C8 is an existence or a count. Removing a rung can only make a
+condition harder to meet, never easier, so the rule cannot be what lets a
+replication pass §12.6 — whichever rungs turn out to be degenerate. The
+alternative reading (ii), keeping the rung in the counts that do not reference
+`iota`, is the open direction and could buy a pass; it is rejected on that
+ground and not on what either produces here.
+`tests_v6/test_execution_path.py::test_dropping_a_coordinateless_rung_can_never_help_a_condition_pass`
+asserts the property executably.
+
+**U4 is not reopened.** E2 still decides eligibility on the quantity it names,
+and §13.4's chance ceiling is not imported into §12.6's pre-screen predicate.
+A16 decides only which *eligible* rungs carry a position.
+
+### The measurements, recorded
+
+`reports/dci1v6/degenerate_iota_rungs.json`, written by
+`tools/v6_degenerate_iota_rungs.py` from the generated rows — no model re-run,
+nothing regenerated. **Eighteen** coordinate-less rungs across the two
+replications, of which exactly **one per replication** is E2-eligible:
+
+| replication | rungs measured | coordinate-less | E2-eligible | that rung |
+|---|---|---|---|---|
+| `gemma-3n-e2b-it` | 410 | 9 | 1 | `CR7:56`, solo 0.8750, chance 0.99306 |
+| `gemma-3n-e4b-it` | 404 | 9 | 1 | `CR7:56`, solo 0.8333, chance 0.99092 |
+
+The other eight per replication — `CR1:10-13`, `CR6:13-14`, `CR12:12-13`,
+`CR4:20`, `CL7:10` — each have solo at or above 0.9166 and were already
+outside `[0.10, 0.90]`, so E2 had excluded them for a different reason. That is
+why the case was latent: only a rung with an in-band solo *and* a degenerate
+chance level reaches the criterion.
+
+### What C1–C8 then returned
+
+Evaluated on the rows already on the evidence tree. Every `rows.jsonl` verified
+byte-identical to its pre-amendment hash afterwards, and no new backend run
+directory was created.
+
+| replication | C1–C8 | decisive met | dropped | eligible placed / before drop | statuses |
+|---|---|---|---|---|---|
+| `gemma-3n-e2b-it` | all True | yes | `CR7:56` | 218 / 219 | none |
+| `gemma-3n-e4b-it` | all True | yes | `CR7:56` | 212 / 213 | none |
+
+**The drop changed no verdict on either replication.** Coverage is met with the
+placed rungs alone, so A16's direction neither rescued nor blocked anything
+here — which is stated because it is the honest reading, not because it was the
+aim. Had coverage failed, the replication would have recorded
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` at design time and run without the core and
+spectrum arms, and that would have stood.
+
+### What was not done
+
+No model output was regenerated. No threshold, band, ceiling, population,
+estimand, arm, seed, verifier or claim was changed. `CHANCE_DEGENERACY_MAX`
+stays 0.99 and §13.4's chance ceiling stays 0.75. No rung was reinstated.

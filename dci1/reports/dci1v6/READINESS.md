@@ -2181,3 +2181,121 @@ replication and still may never move the operating point. §34 D23 remains
 Zero v6 behavioural rows existed when the fault occurred, when A15 was
 adopted, and when the corrected registration was signed. The incident record
 is [`incidents/2026-08-26_stage1_apparatus_fault.md`](incidents/2026-08-26_stage1_apparatus_fault.md).
+
+---
+
+## 16. The coverage-criterion pass of 2026-08-26 (added after §15)
+
+§15 closed the apparatus-fault pass and v6 was registered. This section is the
+first one written **after a v6 measurement existed**, and it says so at the
+top because everything in it was decided with the offending numbers already on
+the evidence tree.
+
+### 16.1 What happened
+
+`PROTOCOL_REGISTERED`, `QUALIFIED` and `GATE_0_APPARATUS` passed on all four
+replications — 2,688 real rows each, both discrete cards at TP=1.
+`REGIME_SCREEN` then died on both replications that ran it, identically:
+
+```
+stages/regime.coverage_criterion:566
+    below = [r for r in rows if tie_key(r["iota"]) < tie_key(iota_a)]
+TypeError: type NoneType doesn't define __round__ method
+```
+
+§12.6's criterion read `iota` on every eligible rung, and one rung had none:
+its measured chance compliance reached `CHANCE_DEGENERACY_MAX = 0.99`, the
+registered point at which iota is undefined and §11.2 records
+`DIFFICULTY_COORDINATE_DEGENERATE`.
+
+### 16.2 Latent since v5, first triggered by data
+
+`coverage_criterion` is byte-identical in v5 and v6. What changed is which
+rungs reach it. U4's two registered constructions of §12.6's eligibility
+predicate are `E1` (band on iota) and `E2` (band on raw solo), and A5 resolved
+it at **E2** — under which a rung can be eligible on a measured solo while
+having no position on the iota axis at all. Under E1 the case cannot arise.
+v5 ran E2 as well and never met it: all of its coordinate-less rungs had solo
+above 0.9166 and were ineligible for a different reason.
+
+`reports/dci1v6/degenerate_iota_rungs.json` records all eighteen
+coordinate-less rungs the two replications measured, from the generated rows
+and with no model re-run. Exactly one per replication is E2-eligible.
+
+| replication | rungs measured | coordinate-less | E2-eligible | that rung |
+|---|---|---|---|---|
+| `gemma-3n-e2b-it` | 410 | 9 | 1 | `CR7:56`, solo 0.8750, chance 0.99306 |
+| `gemma-3n-e4b-it` | 404 | 9 | 1 | `CR7:56`, solo 0.8333, chance 0.99092 |
+
+### 16.3 Amendment A16, and why its direction was adoptable
+
+A rung with no coordinate is **dropped** from every condition and **recorded**
+under `coordinate_undefined` with its status, its solo and its chance. U4 is
+not reopened and §13.4's chance ceiling is not imported into §12.6.
+
+Every one of C1–C8 is an existence or a count, so removing a rung can only make
+a condition harder to meet. That is what made the rule adoptable after the
+measurements were visible: it cannot be the thing that buys a replication a
+pass, whichever rungs turn out degenerate. The alternative — keep the rung in
+the counts that do not reference iota — is the open direction and could buy
+one; it is rejected on that ground, not on what either produces.
+`test_dropping_a_coordinateless_rung_can_never_help_a_condition_pass` asserts
+the property rather than arguing it.
+
+### 16.4 What C1–C8 returned
+
+Computed on the rows already signed onto the evidence tree. Every `rows.jsonl`
+verified byte-identical to its pre-amendment hash afterwards and no new backend
+run directory was created: an analysis that crashed is not a reason to
+re-measure a model.
+
+| replication | C1–C8 | decisive | dropped | placed / before drop | statuses | cap | carried |
+|---|---|---|---|---|---|---|---|
+| `gemma-3n-e2b-it` | all True | met | `CR7:56` | 218 / 219 | none | 512 | 410 |
+| `gemma-3n-e4b-it` | all True | met | `CR7:56` | 212 / 213 | none | 512 | 404 |
+
+**The drop changed no verdict.** Coverage is met on the placed rungs alone, so
+A16 neither rescued nor blocked either replication. That is stated because it
+is the honest reading and not because it was the aim: had coverage failed, the
+replication would have recorded `REFERENCE_SUPPORT_NOT_IDENTIFIED` at design
+time and run without the core and spectrum arms, and that would have stood.
+
+### 16.6 The first registered scientific outcome, and it is not A16's doing
+
+All four replications completed `REGIME_SCREEN`. Three met §12.6's coverage
+criterion; **`qwen3-4b-instruct-2507` did not.**
+
+| replication | C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8 | decisive | rounds | carried | dropped |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `gemma-3n-e2b-it` | T | T | T | T | T | T | T | T | met | 1 | 410 | `CR7:56` |
+| `gemma-3n-e4b-it` | T | T | T | T | T | T | T | T | met | 1 | 404 | `CR7:56` |
+| `qwen3-4b` | T | T | T | T | T | T | T | T | met | 0 | 326 | — |
+| `qwen3-4b-instruct-2507` | **F** | **F** | T | **F** | T | T | **F** | **F** | **not met** | 2 | 422 | `RF3:8` |
+
+After two expansion rounds `qwen3-4b-instruct-2507` records, at design time,
+`REFERENCE_SUPPORT_NOT_IDENTIFIED`, `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`,
+`CLASS_ARM_NOT_AVAILABLE` and `NEAR_FORM_ARM_NOT_AVAILABLE`. These are
+identification statuses, not terminal ones: the replication continues and runs
+without the core and spectrum arms, exactly as §12.6 registers. **It is not
+repaired.** No band is widened, no ceiling lowered, no severity authored, no
+rung reinstated and no expansion round added.
+
+**The drop is not why it failed, and that is checkable rather than asserted.**
+The rung A16 dropped there is `RF3:8` — structural tier **3**. Of the five
+failing conditions, C1, C2, C4 and C7 are all positions relative to `iota_A`,
+which a rung with no coordinate cannot occupy under any reading; and C8 counts
+**Tier-2** rungs and groups, which a Tier-3 rung is not. The two conditions a
+coordinate-less rung could reach under the rejected reading (ii) — C5's count
+of eligible rungs and C6's Tier-1/2 families — were already met. So reading
+(ii) returns the identical verdict on this replication, and A16's direction
+changed nothing about the failure. The same check on the two gemmas is
+trivial: their conditions were all met with the dropped rung excluded.
+
+### 16.5 What A16 does not change
+
+No threshold, band, ceiling, estimand, population, model, reference family,
+arm, seed, verifier, wording, claim ladder or headroom band. Not U4's
+predicate, not `m*`, not §34 D23 or D26. `CHANCE_DEGENERACY_MAX` stays 0.99 and
+§13.4's chance ceiling stays 0.75. No rung was reinstated and no model output
+was regenerated. Incident:
+[`incidents/2026-08-26_regime_screen_undefined_iota.md`](incidents/2026-08-26_regime_screen_undefined_iota.md).

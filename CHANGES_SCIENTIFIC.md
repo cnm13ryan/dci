@@ -13,10 +13,78 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-26 — v6 A16: §12.6 drops a rung with no difficulty coordinate
+
+*(The fourth and last entry on this date, and the first written after a v6
+measurement existed. §32.2 declares it as adopted in response to one.)*
+
+**What happened.** `GATE_0_APPARATUS` passed on all four replications — 2,688
+real rows each. `REGIME_SCREEN` then died on both replications that ran it,
+identically: §12.6's `coverage_criterion` evaluated `tie_key(r["iota"])` on
+every eligible rung and `CR7:56` has no `iota`, its measured chance compliance
+having reached `CHANCE_DEGENERACY_MAX = 0.99` — the registered point at which
+the coordinate is undefined and §11.2 records
+`DIFFICULTY_COORDINATE_DEGENERATE`.
+
+**Latent since v5.** `coverage_criterion` is byte-identical between the two
+revisions. What changed is which rungs reach it: U4 resolved at **E2**, whose
+eligibility coordinate is raw solo compliance, so a rung can be eligible and
+have no position on the iota axis at once. Under **E1** the coordinate *is*
+iota and the case cannot arise. v5 ran E2 as well and never met it — all of
+its coordinate-less rungs had solo above 0.9166 and were ineligible for a
+different reason.
+
+**The registered rule.** §12.6 evaluates C1–C8 over the eligible rungs **whose
+difficulty coordinate is defined**. A rung with `iota` undefined is dropped
+from every condition and recorded on the stage record under
+`coordinate_undefined`, with its status, its measured solo and chance
+compliance and the formulation under which it was eligible. **U4 is not
+reopened** — E2 still decides eligibility on the quantity it names, and §13.4's
+chance ceiling of 0.75 is not imported into §12.6's pre-screen predicate.
+
+**Why it is scientifically consequential, and why the direction was
+adoptable.** Whether such a rung counts can change C1–C6, the expansion, and
+whether a replication records `REFERENCE_SUPPORT_NOT_IDENTIFIED` at design time
+and runs without the core and spectrum arms. Every one of C1–C8 is an existence
+or a count, so **removing** a rung can only make a condition harder to meet and
+never easier: the rule cannot be what buys a replication a pass, whichever
+rungs turn out degenerate. The alternative reading — keep the rung in the
+counts that do not reference iota — is the open direction and could buy one; it
+is rejected on that ground and not on what either produces. A test asserts the
+property executably rather than by argument.
+
+**The §32.2 disclosure.** The rule was written after the crash, with the
+offending measurements already readable on the evidence tree, and its author
+knew `CR7:56` was the rung it would drop and knew that rung's solo and chance
+on both replications. `dci1/reports/dci1v6/degenerate_iota_rungs.json` records
+all eighteen coordinate-less rungs the two replications measured, of which
+exactly one per replication is E2-eligible.
+
+**Which results are affected.** Both replications recorded `REGIME_SCREEN`
+PASS with **all eight conditions met** and no identification status; the
+dropped rung changed no verdict on either. That is reported because it is the
+honest reading, not because it was the aim — had coverage failed, the design-
+time `REFERENCE_SUPPORT_NOT_IDENTIFIED` would have stood.
+
+**No model output was regenerated.** The criterion was evaluated on the rows
+the failed run had already signed onto the evidence tree; every `rows.jsonl`
+verified byte-identical to its pre-amendment hash afterwards and no new backend
+run directory was created. An analysis that crashed is not a reason to
+re-measure a model.
+
+**What A16 does not change.** No threshold, band, ceiling, estimand,
+population, model, reference family, arm, seed, verifier, wording, claim ladder
+or headroom band; not U4's predicate; not `m*`; not §34 D23 or D26.
+`CHANCE_DEGENERACY_MAX` stays 0.99 and §13.4's chance ceiling stays 0.75.
+Incident: `dci1/reports/dci1v6/incidents/2026-08-26_regime_screen_undefined_iota.md`;
+pass: `dci1/reports/dci1v6/READINESS.md` §16.
+
+---
+
 ## 2026-08-26 — v6 A15: a stage-1 readiness verdict is a refusal, not an outcome
 
-*(The third and last entry on this date. It corrects one sentence in the
-entry below it and changes nothing scientific.)*
+*(The third entry on this date. It corrects one sentence in the entry
+below it and changes nothing scientific.)*
 
 **Why this is here at all.** It is an apparatus change, and apparatus changes
 do not normally get an entry. This one does because it changes the registered
