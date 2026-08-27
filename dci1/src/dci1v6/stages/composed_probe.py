@@ -132,6 +132,7 @@ __all__ = ["COMPOSED_HEADROOM_UNREACHABLE", "PROBE_SLOTS", "probe_slots",
            "is_determinate", "cell_slots_of", "projected_halfwidth",
            "entry_verdict",
            "DESIGNATED_COMPANION_SLOTS", "standin_operating_points",
+           "placed_standins", "unplaceable_standins", "unmeasured_probe_cells",
            "PROBE_ONLY_KINDS",
            "RESIDUAL_SD", "PROBE_LADDER_DRAWS", "N_DETERMINATE_ENTRIES"]
 
@@ -520,24 +521,91 @@ def standin_operating_points(ladders: Mapping[str, Mapping[int, float]], *,
     """
     out: dict[str, dict[str, Any]] = {}
     for kind, curve in sorted(ladders.items()):
+        measured = {int(q): float(v) for q, v in curve.items()}
         selection = select_operating_point(
-            {int(q): float(v) for q, v in curve.items()},
-            band=C.HEADROOM_BAND, aim=float(iota_a), prefer_smaller=True,
-            grid=tuple(sorted(int(q) for q in curve)))
+            measured, band=C.HEADROOM_BAND, aim=float(iota_a),
+            prefer_smaller=True, grid=tuple(sorted(measured)))
+        common = {"aim": float(iota_a),
+                  "band": list(C.HEADROOM_BAND),
+                  "rule": "§13.8's target for a companion is iota_A, and "
+                          "§13.4's band is what admits one",
+                  "curve": {str(q): float(v)
+                            for q, v in sorted(measured.items())},
+                  "selection": selection}
         if selection["selected"] is None:
-            raise ProtocolError(
-                f"no severity of the stand-in {kind!r} has solo compliance "
-                f"inside §13.4's {list(C.HEADROOM_BAND)} on this "
-                f"replication, so it cannot stand in for a reference here. "
-                f"Measured: {dict(sorted((int(q), round(float(v), 4)) for q, v in curve.items()))}")
-        out[kind] = {"severity": int(selection["selected"]),
-                     "aim": float(iota_a),
-                     "band": list(C.HEADROOM_BAND),
-                     "rule": "§13.8's target for a companion is iota_A, and "
-                             "§13.4's band is what admits one",
-                     "curve": {str(q): float(v) for q, v in sorted(
-                         (int(k), v) for k, v in curve.items())},
-                     "selection": selection}
+            # A17. Recorded, not raised. This instrument cannot stand in for
+            # a reference on this replication --- no registered severity of
+            # its ladder puts its solo compliance inside the band a reference
+            # is admitted by --- so every diagnostic cell that needs it goes
+            # unmeasured and the six determinate entries decide the verdict,
+            # as they already did. Raising here let a `probe_only` instrument
+            # end the stage, which is the one power
+            # `no_standin_entry_ends_a_replication` exists to deny it.
+            out[kind] = {
+                **common,
+                "severity": None,
+                "placed": False,
+                "status": C.STANDIN_UNPLACEABLE,
+                "reason":
+                    f"no registered severity of {kind} has solo compliance "
+                    f"inside §13.4's {list(C.HEADROOM_BAND)} on this "
+                    f"replication, so it cannot stand in for a reference "
+                    f"here. Measured: "
+                    f"{dict(sorted((q, round(v, 4)) for q, v in measured.items()))}",
+                "best_severity": (max(measured, key=lambda q: measured[q])
+                                  if measured else None),
+                "best_compliance": (max(measured.values())
+                                    if measured else None),
+                "gates_nothing":
+                    "PS1-PS3 are probe_only and the Gate-2.75 verdict is "
+                    "determinate-only, so this costs diagnostic breadth and "
+                    "decides nothing about this replication",
+            }
+            continue
+        out[kind] = {**common, "severity": int(selection["selected"]),
+                     "placed": True, "status": "PLACED"}
+    return out
+
+
+def placed_standins(operating: Mapping[str, Mapping[str, Any]]
+                    ) -> tuple[str, ...]:
+    """The stand-ins that have an admissible severity, in a stable order."""
+    return tuple(k for k in sorted(operating) if operating[k].get("placed"))
+
+
+def unplaceable_standins(operating: Mapping[str, Mapping[str, Any]]
+                         ) -> tuple[str, ...]:
+    """The stand-ins with none (A17)."""
+    return tuple(k for k in sorted(operating)
+                 if not operating[k].get("placed"))
+
+
+def unmeasured_probe_cells(shape: Sequence[tuple[str, str, tuple[str, ...]]],
+                           unplaceable_slots: Sequence[str]
+                           ) -> dict[str, dict[str, Any]]:
+    """Which probe cells lose their companion, and to which stand-in (A17).
+
+    Returned as a mapping rather than a filtered shape so the record carries
+    what the design *would* have measured beside what it did: a cell that is
+    simply absent reads as a cell that was never registered.
+    """
+    missing = set(unplaceable_slots)
+    out: dict[str, dict[str, Any]] = {}
+    for cell_id, arm, slots in shape:
+        needed = sorted(set(slots) & missing)
+        if not needed:
+            continue
+        out[cell_id] = {
+            "cell_id": cell_id, "arm": arm, "slots": list(slots),
+            "requires_unplaceable_slots": needed,
+            "status": C.NOT_MEASURED_STANDIN_UNPLACEABLE,
+            "determinate": is_determinate(slots),
+            "enters_the_verdict": False,
+            "why": "the cell needs a companion this replication has no "
+                   "admissible severity for; it is not measured, and being "
+                   "stand-in-dependent it entered no verdict even when it "
+                   "was",
+        }
     return out
 
 

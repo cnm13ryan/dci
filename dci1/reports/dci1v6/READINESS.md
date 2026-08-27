@@ -2299,3 +2299,81 @@ predicate, not `m*`, not §34 D23 or D26. `CHANCE_DEGENERACY_MAX` stays 0.99 and
 §13.4's chance ceiling stays 0.75. No rung was reinstated and no model output
 was regenerated. Incident:
 [`incidents/2026-08-26_regime_screen_undefined_iota.md`](incidents/2026-08-26_regime_screen_undefined_iota.md).
+
+---
+
+## 17. The stand-in placement pass of 2026-08-27 (added after §16)
+
+### 17.1 What happened
+
+The study's first `GATE_2_75_COMPOSED_PROBE`, on `gemma-3n-e2b-it` at the
+frozen m\* = 10, refused with a `ProtocolError`: no severity of the stand-in
+`PS1` has solo compliance inside §13.4's [0.10, 0.90] on that replication.
+
+Measured on the probe's own ladder screen — 24 pre-screen topics at
+`LADDER_SCREEN_DRAWS`:
+
+| severity | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| PS1 solo compliance | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | **0.0833** | 0.0417 |
+
+`PS1` is `capital_word` / `exact_count`: *"the answer must contain exactly q
+words that use a capital letter."* Exact-count is hard by construction and this
+model essentially never hits it — best rung 0.0833 against a band floor of
+0.10. The instrument is sound: §19's witness and realistic-witness suites
+certified all 674 instruments at qualification and all four replications passed
+17/17. This is a real measurement of a hard instrument.
+
+### 17.2 The gap
+
+A5's P3 block registers **where** a stand-in is placed — the severity of its
+own solo ladder nearest Gate 2's measured `iota_A`, inside §13.4's band — and
+is silent on what happens when no severity is inside it. PS1–PS3 are new in v6
+(A10) and no v5 rows exist for them, so their placeability was never measured
+before adoption.
+
+Meanwhile this stage's own declared refusals say a stand-in decides nothing:
+`no_standin_entry_ends_a_replication` and `standin_findings_gate_nothing`. A
+hard raise let an unplaceable `probe_only` instrument **end the stage**, which
+is more power than any registered rule grants it and exactly the power those
+declarations exist to deny. The raise predates the A13/A15/A16 work.
+
+### 17.3 Amendment A17
+
+`STANDIN_UNPLACEABLE` for the stand-in, with its measured ladder and the reason
+placement failed on the record. `NOT_MEASURED_STANDIN_UNPLACEABLE` for every
+diagnostic cell requiring it; those cells are not generated and **do not enter
+the feasibility verdict**. The stage continues on the genuine determinate
+entries at the frozen m\*. Neither status is a §28 terminal status nor a §18
+stage-1 readiness refusal — asserted disjoint at import — and the stand-in is
+never clamped to a severity outside the band.
+
+**The set that cannot be measured and the set that could never have entered the
+verdict are the same set.** A13 already makes the verdict determinate-only, and
+every cell a stand-in carries is stand-in-dependent by construction. A test
+asserts this over the whole registered cell shape, including that with all
+three stand-ins unplaceable what remains is exactly the unconstrained cell plus
+the determinate four. What is lost is diagnostic breadth: the §13.14 exposure
+classes that stand-in carried go unmeasured, and the record names them.
+
+**Direction.** Terminating would hand a `probe_only` instrument the power to
+end a replication — the maximum. Recording denies it any. With respect to what
+a stand-in may decide, recording is the closed direction and termination the
+open one.
+
+### 17.4 §32.2 disclosure
+
+Written on 2026-08-27 after the stage refused, with PS1's ladder already on the
+evidence tree, knowing which instrument it would classify and on which
+replication. Chosen by the argument above, not by which direction lets a
+replication continue.
+
+### 17.5 What A17 does not change
+
+No threshold, band, estimand, population, model, reference family, arm, seed,
+verifier, wording, claim ladder or headroom band. Not `m*` — A13's freeze
+stands and nothing here moves it. Not §13.4's band, which is what judged PS1
+unplaceable. Not §34 D23, D24 or D26. The determinate entries and the verdict
+they decide are untouched, and the 576 ladder rows the refused run produced
+were reused rather than regenerated. Incident:
+[`incidents/2026-08-27_standin_unplaceable.md`](incidents/2026-08-27_standin_unplaceable.md).
