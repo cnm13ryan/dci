@@ -1501,8 +1501,16 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             topics=ladder_topics)
         operating = composed_probe.standin_operating_points(
             ladders, iota_a=iota_a)
-        standin_rungs = tuple(Constraint(kind, operating[kind]["severity"])
-                              for kind in kinds)
+        # A17. An unplaceable stand-in keeps its slot --- the cell ids stay
+        # comparable across replications --- and is given its ladder's best
+        # severity purely so the slot has an instrument to name. Nothing is
+        # generated for it: every cell that needs it is marked
+        # NOT_MEASURED_STANDIN_UNPLACEABLE below and never reaches a prompt.
+        standin_rungs = tuple(
+            Constraint(kind, int(operating[kind]["severity"]
+                                 if operating[kind].get("placed")
+                                 else operating[kind]["best_severity"]))
+            for kind in kinds)
     else:
         # An explicit stand-in set skips the ladder, so the harness can drive
         # the stage without a solo curve for three instruments. Admitted only
@@ -1522,6 +1530,13 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
     slots = composed_probe.probe_slots(len(standin_rungs))
     slot_map: dict[str, Constraint] = dict(zip(slots, standin_rungs))
     coverage = composed_probe.assert_probe_covers_gate4_classes(slots)
+    # A17. Which slots carry an instrument this replication has no admissible
+    # severity for. The design's cell shape is unchanged --- the record has to
+    # say what would have been measured, or a missing cell reads as a cell
+    # that was never registered.
+    unplaceable_kinds = composed_probe.unplaceable_standins(operating)
+    unplaceable_slots = [slot for slot, rung in slot_map.items()
+                         if rung.kind in unplaceable_kinds]
 
     # P3.1: **m\* and nothing else.** m* is §12.3's choice at Gate 2 and it
     # is frozen there; this stage measures composed headroom at it and either
@@ -1565,7 +1580,14 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
             "the projected interval reading a variance of zero")
     reused = (set(composed_probe.SHARED_WITH_GATE2)
               if shared["shared"] else set())
-    generated_shape = [entry for entry in shape if entry[0] not in reused]
+    # A17. A cell needing an unplaceable stand-in is not generated and not
+    # measured. Every one of them is stand-in-dependent by construction, so
+    # none entered the verdict even when it was measured --- the cost is
+    # diagnostic breadth and nothing else.
+    unmeasured = composed_probe.unmeasured_probe_cells(shape,
+                                                       unplaceable_slots)
+    generated_shape = [entry for entry in shape
+                       if entry[0] not in reused and entry[0] not in unmeasured]
     probed: dict[int, dict[str, dict[str, Any]]] = {}
     n_rows = 0
     for severity in order:
@@ -1665,6 +1687,31 @@ def gate2_75_payload(tree: ModelTree, *, producing_commit: str,
         "probe_cell_types": [cell_id for cell_id, _a, _s in shape],
         "probe_cell_types_generated": [cell_id for cell_id, _a, _s
                                        in generated_shape],
+        # A17. A stand-in with no admissible severity, and the diagnostic
+        # cells that lose their companion with it. Recorded rather than
+        # absent: the design's full cell shape is above, so a reader can see
+        # exactly what this replication could not measure and why. Neither
+        # status is terminal and neither enters the verdict --- every cell
+        # here is stand-in-dependent, and the verdict is determinate-only.
+        "standin_placement": {
+            kind: {"status": entry.get("status"),
+                   "placed": bool(entry.get("placed")),
+                   "severity": entry.get("severity"),
+                   "reason": entry.get("reason"),
+                   "best_severity": entry.get("best_severity"),
+                   "best_compliance": entry.get("best_compliance"),
+                   "curve": entry.get("curve")}
+            for kind, entry in sorted(operating.items())},
+        "unplaceable_standins": list(unplaceable_kinds),
+        "unplaceable_standin_slots": sorted(unplaceable_slots),
+        "n_unplaceable_standins": len(unplaceable_kinds),
+        "cells_not_measured": unmeasured,
+        "n_cells_not_measured": len(unmeasured),
+        "cells_not_measured_gate_nothing":
+            "every cell here is stand-in-dependent by construction, so none "
+            "entered the Gate-2.75 feasibility verdict even when it was "
+            "measured. An unplaceable stand-in costs diagnostic breadth and "
+            "decides nothing about this replication (A17)",
         # Which of §13.14's ten slot-and-order exposure classes each probe
         # cell carries, derived from Gate 4's own cell set rather than listed.
         "gate4_class_coverage": coverage,

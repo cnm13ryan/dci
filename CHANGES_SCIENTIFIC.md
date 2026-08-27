@@ -13,9 +13,72 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-27 — v6 A17: an unplaceable probe stand-in is recorded, not raised
+
+**What happened.** The study's first `GATE_2_75_COMPOSED_PROBE`, on
+`gemma-3n-e2b-it` at the frozen m\* = 10, refused with a `ProtocolError`: no
+severity of the stand-in `PS1` has solo compliance inside §13.4's [0.10, 0.90]
+on that replication. Measured on the probe's ladder screen: 0.0 at severities
+1–6, 0.0833 at 7, 0.0417 at 8, against a band floor of 0.10.
+
+`PS1` is `capital_word` / `exact_count` — *"exactly q words that use a capital
+letter"* — hard by construction. The instrument is sound; §19's witness and
+realistic-witness suites certified all 674 instruments at qualification. PS1–PS3
+are new in v6 (A10) and no v5 rows exist for them, so their placeability had
+never been measured before adoption.
+
+**Why the refusal was the defect.** A5's P3 block registers *where* a stand-in
+is placed and is silent on what happens when no severity is placeable, while
+the stage's own declared refusals say a stand-in decides nothing —
+`no_standin_entry_ends_a_replication`, `standin_findings_gate_nothing`. A hard
+raise let an unplaceable `probe_only` instrument end the stage, the one power
+those declarations exist to deny it.
+
+**The registered rule.** A stand-in with no admissible severity is classified
+`STANDIN_UNPLACEABLE`, with its measured ladder and the reason on the
+Gate-2.75 record. Every diagnostic cell requiring it is marked
+`NOT_MEASURED_STANDIN_UNPLACEABLE`, is not generated, and **does not enter the
+feasibility verdict**. The stage continues on the genuine determinate entries
+at the frozen m\*. Neither status is a §28 terminal status nor a §18 stage-1
+readiness refusal, asserted disjoint at import; the stand-in is never clamped
+to a severity outside the band.
+
+**Why it is scientifically consequential, and why it costs the verdict
+nothing.** A13 already makes the Gate-2.75 verdict determinate-only —
+`solo:A`, `solo:B` and both orders of `pair:A+B` — and every cell a stand-in
+carries is stand-in-dependent by construction, so the set that cannot be
+measured and the set that could never have entered the verdict are the same
+set. A test asserts that over the whole registered cell shape, including that
+with all three stand-ins unplaceable what remains is exactly the unconstrained
+cell plus the determinate four. What is lost is diagnostic breadth: the
+§13.14 exposure classes that stand-in carried go unmeasured on that
+replication, and the record names them.
+
+**Direction.** Terminating on an unplaceable stand-in would hand a `probe_only`
+instrument the power to end a replication — the maximum, and the opposite of
+what is registered. Recording denies it any.
+
+**The §32.2 disclosure.** Written on 2026-08-27 after the stage refused, with
+PS1's measured ladder already on the evidence tree, knowing which instrument it
+would classify and on which replication. Chosen by the argument above and not
+by computing which direction lets a replication continue.
+
+**No model output was regenerated.** The 576 ladder rows the refused run
+produced were reused; the ladder file verified byte-identical afterwards.
+
+**Which results are affected.** No Gate-2.75 record existed when this was
+adopted — the refused run wrote none. No threshold, band, estimand,
+population, model, reference family, arm, seed, verifier, wording, claim
+ladder or headroom band moved; not `m*`; not §13.4's band, which is what
+judged PS1 unplaceable; not §34 D23, D24 or D26. Incident:
+`dci1/reports/dci1v6/incidents/2026-08-27_standin_unplaceable.md`; pass:
+`dci1/reports/dci1v6/READINESS.md` §17.
+
+---
+
 ## 2026-08-26 — v6 A16: §12.6 drops a rung with no difficulty coordinate
 
-*(The fourth and last entry on this date, and the first written after a v6
+*(The fourth and last entry on 2026-08-26, and the first written after a v6
 measurement existed. §32.2 declares it as adopted in response to one.)*
 
 **What happened.** `GATE_0_APPARATUS` passed on all four replications — 2,688

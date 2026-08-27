@@ -29,7 +29,7 @@ with its reason, §32.1 forbids weakening a criterion so that a gate passes,
 §32.2 requires a change adopted after a gate has run to be declared as such,
 and §32.3 freezes §13 from the first Gate-2.5 record.
 
-**Two amendments have been taken since: A15 and A16.** On 2026-08-26, after
+**Three amendments have been taken since: A15, A16 and A17.** On 2026-08-26, after
 this line changed and still before any v6 behavioural row, the first attempt
 to execute §18 stage 1 exposed three defects in the documented entry point,
 one of which had made stage 1's readiness verdict irreversible. A15 makes it
@@ -717,6 +717,93 @@ reference family, arm, seed, verifier, wording, claim ladder or headroom band;
 not U4's predicate; not `m*`; not §34 D23 or D26. `CHANCE_DEGENERACY_MAX` stays
 0.99 and §13.4's chance ceiling stays 0.75, each where it was.
 
+### A17 — a stand-in with no admissible severity is recorded, not raised
+
+**Adopted 2026-08-27, after registration and after the first composed probe
+ran. §32.2 declares it as such: this rule exists because a live v6 measurement
+demanded it, and it was written knowing which stand-in it would classify and
+on which replication.**
+
+`GATE_2_75_COMPOSED_PROBE` on `gemma-3n-e2b-it` refused with a `ProtocolError`:
+
+```
+no severity of the stand-in 'PS1' has solo compliance inside §13.4's
+[0.1, 0.9] on this replication, so it cannot stand in for a reference here.
+Measured: {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0833, 8: 0.0417}
+```
+
+**PS1 is unplaceable on that model.** A10 authored it as `exact_count` —
+*"the answer must contain exactly q words that use a capital letter"* — which
+is hard by construction, and the model essentially never hits it: 0.0833 at
+its best rung against a band floor of 0.10. The instrument is sound; §19's
+witness and realistic-witness suites certified all 674 instruments at
+qualification. This is a real measurement of a hard instrument, not a verifier
+fault.
+
+**Why the refusal was wrong.** A5's P3 block registers the placement rule —
+the severity nearest Gate 2's measured `iota_A` and **inside** §13.4's band —
+and is silent on what happens when no severity is inside it. PS1–PS3 are new
+in v6 and no v5 rows exist for them, so their placeability was never measured
+before adoption; the design authored three stand-ins and assumed each would be
+placeable. Meanwhile this stage's own declared refusals say a stand-in decides
+nothing:
+
+> `no_standin_entry_ends_a_replication` — *"an instrument that can never be
+> selected as a reference cannot raise `COMPOSED_HEADROOM_UNREACHABLE`"*
+> `standin_findings_gate_nothing`
+
+A hard raise let an **unplaceable** `probe_only` instrument end the stage,
+which is more power than any registered rule grants it and precisely the power
+those two declarations exist to deny.
+
+> **The registered rule.** When no registered severity of a probe-only
+> stand-in's ladder lies inside its placement band, the stand-in is classified
+> `STANDIN_UNPLACEABLE`. Its measured ladder and the reason placement failed
+> are recorded on the Gate-2.75 record. Every diagnostic cell requiring that
+> stand-in is marked `NOT_MEASURED_STANDIN_UNPLACEABLE` and is not generated.
+> **Those cells do not enter the Gate-2.75 feasibility verdict.** The stage
+> continues on the genuine determinate entries at the frozen m\*.
+>
+> Neither status is a §28 terminal status and neither is a §18 stage-1
+> readiness refusal; `constants` asserts the vocabularies disjoint at import.
+> The stand-in is **never clamped** to a severity outside the band — the
+> property the old refusal protected, and unchanged.
+
+**Why this costs nothing the verdict reads.** A13 already makes the Gate-2.75
+verdict determinate-only: it is decided by `solo:A`, `solo:B` and both orders
+of `pair:A+B`, every constituent of which is a real registered instrument that
+enters the estimand. Every cell an unplaceable stand-in takes with it is
+stand-in-dependent by construction, so **the set that cannot be measured and
+the set that could never have entered the verdict are the same set**, and a
+test asserts that over the whole registered cell shape rather than a chosen
+example. What is lost is diagnostic breadth: the §13.14 exposure classes that
+stand-in carried go unmeasured on that replication, and the record says which.
+
+**Why this direction and not termination.** Terminating on an unplaceable
+stand-in would give a `probe_only` instrument the power to end a replication —
+the maximum, and the opposite of what is registered. Recording it denies the
+stand-in any power at all. With respect to what a stand-in may decide, this is
+the closed direction and termination is the open one.
+
+**The disclosure §32.2 requires.** The rule was written on 2026-08-27 after
+the stage refused, with PS1's measured ladder already on the evidence tree and
+readable, knowing that PS1 was the instrument it would classify and
+`gemma-3n-e2b-it` the replication. It was chosen by the argument above — that
+only one direction is consistent with the stand-ins deciding nothing — and not
+by computing which direction lets a replication continue.
+
+**No model output was regenerated.** The 576 ladder rows the refused run
+produced were already on the evidence tree and the corrected stage reads those
+exact rows.
+
+**What A17 does not change.** No threshold, band, estimand, population, model,
+reference family, arm, seed, verifier, wording, claim ladder or headroom band;
+not `m*`, which A13 froze at Gate 2 and which nothing here moves; not §13.4's
+band, which is what judged PS1 unplaceable in the first place; not §34 D23,
+D24 or D26. The determinate entries and the verdict they decide are untouched.
+Incident: `dci1/reports/dci1v6/incidents/2026-08-27_standin_unplaceable.md`;
+pass: `READINESS.md` §17.
+
 ## 3. §34: the registered open decisions
 
 Twenty-seven. D0–D18 are v5's, carried forward and requiring their own closure
@@ -790,7 +877,7 @@ Four quantities are fitted to v5 observations:
    magnitudes are all read off the closed v5 record — and, with the closure of
    §34 D26 at `0.0142`, the value the projection actually carries.
 
-**And three changes are declared under §32.2 in the other direction.**
+**And four changes are declared under §32.2 in the other direction.**
 A13's frozen-m\* rule was adopted on 2026-08-26 after the closed v5 record had
 been read, and it replaces a re-selection rule an earlier draft of this
 document carried. It is a **tightening** — a replication whose m\* lacks
@@ -819,6 +906,16 @@ direction — drop the rung — is the one that can only make §12.6's condition
 harder to satisfy, so it cannot be a change that buys a replication a pass;
 the alternative reading is the one that could, and is rejected on that
 ground rather than on what either produces. See A16.
+
+A17 is the fourth, adopted on 2026-08-27 after the first composed probe
+refused. §12.6's neighbour problem one stage later: A5 registered where a
+stand-in is placed and not what happens when no severity of its ladder is
+placeable, and PS1 turned out to be unplaceable on `gemma-3n-e2b-it`. It is
+now recorded rather than raised, and the cells it takes with it are exactly
+the cells the determinate-only verdict never read. The direction is the one
+that denies a `probe_only` instrument any power; terminating would have given
+it the most possible. Declared under §32.2 because it was written with PS1's
+ladder already measured. See A17.
 
 Per §30's precedent, **retrospective behaviour on v5 is not prospective
 validation.** v6 is the prospective test of these choices and may not claim

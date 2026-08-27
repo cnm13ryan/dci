@@ -65,13 +65,67 @@ def test_a_standin_severity_does_not_depend_on_the_operating_point():
     assert "m_star" not in json.dumps(first)
 
 
-def test_a_standin_outside_section_13_4s_band_is_refused_not_clamped():
+def test_a_standin_outside_section_13_4s_band_is_not_clamped(): 
     """A stand-in no severity of which could be admitted as a companion is
-    not a stand-in for one, and the honest outcome is a refusal."""
-    with pytest.raises(ProtocolError) as excinfo:
-        P.standin_operating_points(
-            _ladder({1: 0.97, 2: 0.98, 3: 0.99}), iota_a=0.6)
-    assert "§13.4" in str(excinfo.value)
+    not a stand-in for one, and it is **never** clamped to a severity outside
+    §13.4's band. That property is what this has always protected and it is
+    unchanged.
+
+    What changed on 2026-08-27 (A17) is the *shape* of the answer. It used to
+    raise, which let a `probe_only` instrument end the stage --- the one power
+    `no_standin_entry_ends_a_replication` exists to deny it. It now records
+    `STANDIN_UNPLACEABLE` with the measured ladder and the reason, and the
+    verdict is left to the six determinate entries, as it already was.
+    """
+    out = P.standin_operating_points(
+        _ladder({1: 0.97, 2: 0.98, 3: 0.99}), iota_a=0.6)["PS1"]
+    assert out["severity"] is None            # not clamped to 1, 2 or 3
+    assert out["placed"] is False
+    assert out["status"] == C.STANDIN_UNPLACEABLE
+    assert "§13.4" in out["reason"]
+    assert out["curve"] == {"1": 0.97, "2": 0.98, "3": 0.99}
+    assert P.unplaceable_standins({"PS1": out}) == ("PS1",)
+    assert P.placed_standins({"PS1": out}) == ()
+
+
+def test_an_unplaceable_standin_costs_cells_and_decides_nothing():
+    """A17. Every cell that loses its companion is marked, and every one of
+    them is stand-in-dependent --- so the set that cannot be measured and the
+    set that could never have entered the verdict are the same set.
+
+    Asserted over the whole registered shape rather than a hand-picked cell,
+    so a future cell type that put a stand-in on a determinate entry would
+    fail here instead of quietly entering a feasibility verdict.
+    """
+    slots = P.probe_slots(3)
+    shape = P.probe_cell_types(slots)
+    unmeasured = P.unmeasured_probe_cells(shape, ["P1"])
+    assert unmeasured, "P1 carries cells"
+    for cell_id, entry in unmeasured.items():
+        assert "P1" in entry["requires_unplaceable_slots"]
+        assert entry["status"] == C.NOT_MEASURED_STANDIN_UNPLACEABLE
+        assert entry["determinate"] is False
+        assert entry["enters_the_verdict"] is False
+    # the determinate six are untouched, whichever stand-in is unplaceable
+    for slot in slots:
+        lost = set(P.unmeasured_probe_cells(shape, [slot]))
+        assert lost.isdisjoint({"solo:A", "solo:B", "pair:A+B", "pair:B+A"})
+    # and with every stand-in unplaceable, what remains is exactly the
+    # determinate shape plus the unconstrained cell
+    all_lost = set(P.unmeasured_probe_cells(shape, list(slots)))
+    remaining = [c for c, _a, _s in shape if c not in all_lost]
+    assert remaining == ["unconstrained", "solo:A", "solo:B",
+                         "pair:A+B", "pair:B+A"]
+
+
+def test_the_probe_diagnostic_statuses_decide_nothing():
+    """Neither status is a §28 terminal outcome nor a stage-1 readiness
+    refusal. A `probe_only` instrument cannot end anything."""
+    assert C.STANDIN_UNPLACEABLE in C.PROBE_DIAGNOSTIC_STATUSES
+    assert C.NOT_MEASURED_STANDIN_UNPLACEABLE in C.PROBE_DIAGNOSTIC_STATUSES
+    assert set(C.PROBE_DIAGNOSTIC_STATUSES).isdisjoint(C.TERMINAL_STATUSES)
+    assert set(C.PROBE_DIAGNOSTIC_STATUSES).isdisjoint(
+        C.READINESS_REFUSAL_STATUSES)
 
 
 # ------------------------------------------------------------- isolation

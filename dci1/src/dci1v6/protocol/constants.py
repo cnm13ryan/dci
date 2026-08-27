@@ -572,6 +572,33 @@ TERMINAL_STATUSES = (
     "PREFREEZE_AUDIT_FAILURE", "MEASUREMENT_NOT_ESTABLISHED",
     "MEASUREMENT_EVIDENCE_INSUFFICIENT", "SPECIFICATION_AMBIGUOUS",
 )
+#: §34 D24 / A17: the probe's own vocabulary for a stand-in that has no
+#: admissible placement, and for the diagnostic cells that lose their
+#: companion with it.
+#:
+#: A stand-in is placed at the severity of its ladder nearest Gate 2's
+#: measured ``iota_A`` and **inside** §13.4's band, because §13.8 matches a
+#: reference's iota(R) to iota_A. When no registered severity of its ladder is
+#: inside that band the instrument cannot stand in for a reference on this
+#: replication at all: it is ``STANDIN_UNPLACEABLE``, its measured ladder and
+#: the reason are recorded, and every diagnostic cell that needs it is
+#: ``NOT_MEASURED_STANDIN_UNPLACEABLE``.
+#:
+#: **Neither is terminal and neither gates anything.** PS1-PS3 are
+#: ``probe_only`` by construction and the Gate-2.75 verdict is decided by the
+#: six determinate entries alone, so an unplaceable stand-in costs diagnostic
+#: breadth and nothing else. The probe used to raise a hard ``ProtocolError``
+#: here, which let a non-selectable instrument end a stage --- the exact power
+#: ``no_standin_entry_ends_a_replication`` exists to deny it.
+STANDIN_UNPLACEABLE = "STANDIN_UNPLACEABLE"
+NOT_MEASURED_STANDIN_UNPLACEABLE = "NOT_MEASURED_STANDIN_UNPLACEABLE"
+PROBE_DIAGNOSTIC_STATUSES = (STANDIN_UNPLACEABLE,
+                             NOT_MEASURED_STANDIN_UNPLACEABLE)
+assert not set(PROBE_DIAGNOSTIC_STATUSES) & (
+    set(TERMINAL_STATUSES) | set(READINESS_REFUSAL_STATUSES)), (
+    "a probe diagnostic is neither a §28 terminal outcome nor a §18 stage-1 "
+    "readiness refusal; it decides nothing")
+
 #: New in v6, named so a reader can see what the revision added.
 NEW_TERMINAL_STATUSES = ("COMPOSED_HEADROOM_UNREACHABLE",)
 assert set(NEW_TERMINAL_STATUSES) <= set(TERMINAL_STATUSES)
