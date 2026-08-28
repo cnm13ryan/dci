@@ -39,6 +39,16 @@ them independent.
 ``plan`` and ``status`` and ``audit`` write nothing and are safe now: they are
 how a researcher sees what adoption would bind, how far a replication has got,
 and whether every artifact field has a producer.
+
+``--root`` moves a command out of the registered tree, and ``--namespace``
+says which of the two non-registered namespaces it enters: ``synthetic``
+(the default with ``--root``; a stand-in generator and scale knobs are
+admissible, and the integration harness lives there) or ``development``
+(added 2026-08-28: the pinned backend, the real model and every registered
+rule and provenance check, under the study id ``dci1v7-development`` that no
+registered reader accepts). ``--namespace`` without ``--root`` is refused:
+neither namespace may ever write into the registered roots. Without either
+flag a command runs the registered study.
 """
 from __future__ import annotations
 
@@ -55,8 +65,8 @@ from dci1v4.errors import IntegrityError
 
 from dci1v7 import PREREGISTRATION
 from dci1v7.engine import transitions
-from dci1v7.engine.context import (REPO_ROOT, registered_context,
-                                   synthetic_context)
+from dci1v7.engine.context import (REPO_ROOT, development_context,
+                                   registered_context, synthetic_context)
 from dci1v7.engine.paths import ModelTree, model_tree
 from dci1v7.protocol import constants as C
 from dci1v7.protocol import decisions, open_items
@@ -106,18 +116,33 @@ def assert_every_stage_has_a_runner() -> None:
 assert_every_stage_has_a_runner()
 
 
-def _tree(model_key: str, root: str | None) -> ModelTree:
-    context = (synthetic_context(Path(root)) if root
-               else registered_context())
+#: The namespaces ``--root`` may enter, by the flag's value. ``registered``
+#: is not among them: it has no ``--root`` because its roots are fixed.
+ROOTED_NAMESPACES = {"synthetic": synthetic_context,
+                     "development": development_context}
+
+
+def _tree(model_key: str, root: str | None,
+          namespace: str | None = None) -> ModelTree:
+    if root is None:
+        if namespace is not None:
+            raise ValueError(
+                f"--namespace {namespace} was given without --root. A "
+                "non-registered namespace never writes into the registered "
+                "roots, so it has no default root; name one")
+        context = registered_context()
+    else:
+        context = ROOTED_NAMESPACES[namespace or "synthetic"](Path(root))
     return model_tree(context, model_key)
 
 
 def status(args: argparse.Namespace) -> dict[str, Any]:
-    tree = _tree(args.model, args.root)
+    tree = _tree(args.model, args.root, args.namespace)
     reached = transitions.stage_reached(tree)
     return {
         "model_key": args.model,
         "study_id": tree.context.study_id,
+        "namespace": tree.context.namespace,
         "stage_reached": reached,
         "next_stage": (C.STAGE_SEQUENCE[C.STAGE_SEQUENCE.index(reached) + 1]
                        if reached and reached != C.STAGE_SEQUENCE[-1]
@@ -216,7 +241,7 @@ def ensure_signing_key(tree: ModelTree) -> dict[str, Any]:
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
-    tree = _tree(args.model, args.root)
+    tree = _tree(args.model, args.root, args.namespace)
     key = ensure_signing_key(tree)
     runner = RUNNERS[args.stage]
     forwarded: dict[str, Any] = {}
@@ -248,7 +273,7 @@ def retire(args: argparse.Namespace) -> dict[str, Any]:
     the hash the researcher named, the reason, the defect and the amendment,
     so a retirement cannot be performed with any of them left blank.
     """
-    tree = _tree(args.model, args.root)
+    tree = _tree(args.model, args.root, args.namespace)
     ensure_signing_key(tree)
     return registration_run.retire_apparatus_fault(
         tree, record_hash=args.record_hash, reason=args.reason,
@@ -269,7 +294,8 @@ def amend(args: argparse.Namespace) -> dict[str, Any]:
     """
     from dci1v4.models.registry import MODELS
 
-    tree = _tree(args.model or MODELS[0].model_key, args.root)
+    tree = _tree(args.model or MODELS[0].model_key, args.root,
+                 args.namespace)
     ensure_signing_key(tree)
     return registration_run.amend_registration(
         tree.context, amendment_id=args.id, reason=args.reason,
@@ -294,6 +320,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_status = sub.add_parser("status")
     p_status.add_argument("--model", required=True)
     p_status.add_argument("--root", default=None)
+    p_status.add_argument("--namespace", default=None,
+                          choices=list(ROOTED_NAMESPACES))
     p_status.set_defaults(func=status)
 
     p_plan = sub.add_parser("plan")
@@ -306,7 +334,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_run = sub.add_parser("run")
     p_run.add_argument("--stage", required=True, choices=list(C.STAGE_SEQUENCE))
     p_run.add_argument("--model", required=True)
-    p_run.add_argument("--root", default=None)
+    p_run.add_argument("--root", default=None,
+                       help="evidence root outside the registered tree; "
+                            "enters the namespace --namespace names")
+    p_run.add_argument("--namespace", default=None,
+                       choices=list(ROOTED_NAMESPACES),
+                       help="with --root: synthetic (default; stand-in "
+                            "generator and scale knobs admissible) or "
+                            "development (pinned backend, real model, every "
+                            "registered rule; never the registered study)")
     p_run.add_argument("--commit", default=None)
     p_run.add_argument("--environment", default=None)
     p_run.add_argument("--device", type=int, default=None,
@@ -334,6 +370,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_amend.add_argument("--decided-on", required=True)
     p_amend.add_argument("--model", default=None)
     p_amend.add_argument("--root", default=None)
+    p_amend.add_argument("--namespace", default=None,
+                         choices=list(ROOTED_NAMESPACES))
     p_amend.add_argument("--commit", default=None)
     p_amend.set_defaults(func=amend)
 
@@ -345,6 +383,8 @@ def main(argv: Sequence[str] | None = None) -> int:
              "and once any row has been generated")
     p_retire.add_argument("--model", required=True)
     p_retire.add_argument("--root", default=None)
+    p_retire.add_argument("--namespace", default=None,
+                          choices=list(ROOTED_NAMESPACES))
     p_retire.add_argument("--commit", default=None)
     p_retire.add_argument("--record-hash", required=True,
                           help="sha256 of the terminal report being retired")

@@ -8,8 +8,8 @@ import dci1v7
 from dci1v4.errors import IntegrityError, ProtocolError, ProvenanceGuardError
 from dci1v7.engine import guards
 from dci1v7.engine.context import (
-    DCI1_ROOT, StudyContext, foreign_roots, registered_context,
-    synthetic_context,
+    DCI1_ROOT, StudyContext, development_context, foreign_roots,
+    registered_context, synthetic_context,
 )
 from dci1v7.protocol import constants as C
 
@@ -113,3 +113,69 @@ def test_no_validation_language_in_the_v5_source_tree():
             continue
         texts[str(path)] = path.read_text()
     assert_no_validation_language(texts, where="v5 source tree")
+
+
+def test_development_namespace_is_its_own_study_outside_the_registered_roots(
+        tmp_path):
+    """The development namespace (2026-08-28): a real-model rehearsal that is
+    structurally not the registered study.
+
+    Its id is neither the registered nor the synthetic one, its roots are
+    the caller's and never the registered ones, and no pairing of namespace
+    and id other than the registered one is constructible.
+    """
+    context = development_context(tmp_path)
+    assert context.namespace == "development"
+    assert context.study_id == "dci1v7-development"
+    assert context.study_id not in (registered_context().study_id,
+                                    synthetic_context(tmp_path).study_id)
+    assert context.study_root != registered_context().study_root
+    assert context.study_root == tmp_path / "evidence" / "dci1v7"
+    with pytest.raises(ProtocolError):
+        StudyContext(namespace="development", study_id="dci1v7",
+                     repo_root=tmp_path, evidence_root=tmp_path / "e",
+                     durable_root=tmp_path / "d")
+    with pytest.raises(ProtocolError):
+        StudyContext(namespace="registered", study_id="dci1v7-development",
+                     repo_root=tmp_path, evidence_root=tmp_path / "e",
+                     durable_root=tmp_path / "d")
+
+
+def test_a_non_registered_namespace_refuses_the_registered_roots():
+    """Neither the synthetic nor the development namespace may root inside
+    (or around) ``dci1/evidence/dci1v7`` --- that would put records of
+    another study id beside the registered ones."""
+    registered = DCI1_ROOT / "evidence" / "dci1v7"
+    for make in (development_context, synthetic_context):
+        with pytest.raises(ProtocolError):
+            make(registered)                    # <root>/evidence/dci1v7 inside
+        with pytest.raises(ProtocolError):
+            make(DCI1_ROOT)                     # <root>/evidence/dci1v7 IS it
+
+
+def test_the_development_namespace_gets_the_real_seam_and_no_knob(tmp_path):
+    """What makes it a rehearsal rather than a simulation: the generative
+    seam is the pinned backend (no stand-in), and no scale knob is
+    admissible. Both guards are the registered namespace's, unweakened."""
+    from dci1v7.engine.paths import model_tree
+    from dci1v7.run.execute import resolve_generate
+    from dci1v7.run.gates_run import assert_synthetic_only
+
+    tree = model_tree(development_context(tmp_path), "qwen3-4b")
+    assert resolve_generate(tree, None, lambda row: "", where="t") is None
+    with pytest.raises(ProtocolError):
+        resolve_generate(tree, lambda *a, **k: {}, lambda row: "",
+                         where="t")
+    with pytest.raises(ProtocolError):
+        assert_synthetic_only(tree, "block_limit", 4)
+    synthetic = model_tree(synthetic_context(tmp_path / "s"), "qwen3-4b")
+    assert resolve_generate(synthetic, None, lambda row: "",
+                            where="t") is not None
+
+
+def test_a_development_manifest_is_foreign_to_the_registered_study():
+    """§14.2 in the direction that matters: nothing a development rehearsal
+    writes can be read as the registered study's evidence."""
+    with pytest.raises(ProvenanceGuardError):
+        guards.assert_no_foreign_manifest(
+            {"study_id": "dci1v7-development"}, where="analysis")

@@ -673,10 +673,23 @@ def run_registration(tree: ModelTree, *, producing_commit: str | None = None,
                      bank: TopicBank | None = None,
                      supersedes: str | None = None) -> StageOutcome:
     commit = producing_commit or gitinfo.head_commit(Path(repo_root))
+    # The manifest's ``adoption`` block is what the documents declare about
+    # themselves at signing, read by the same function ``signing_blockers``
+    # refuses on. Until 2026-08-28 a caller that passed nothing --- the CLI
+    # --- had ``{"status": "DRAFT"}`` written for it, so the registered v7
+    # manifest (``969a5b9f...``) carries that literal although both documents
+    # declared ADOPTED and the signature was taken on that basis. The bytes of
+    # that manifest are signed and stand; a registration signed from here on
+    # records the verdict it was actually signed under.
+    if adoption is None:
+        verdict = manifest.assert_documents_adopted(Path(repo_root))
+        adoption = {"status": "ADOPTED" if verdict["adopted"] else "DRAFT",
+                    "read_from": "the governed documents' own status "
+                                 "declarations (assert_documents_adopted)",
+                    "findings": list(verdict["findings"])}
     return run_stage(
         tree, C.STAGE_REGISTERED,
         compute=lambda _prev: registration_payload(
-            tree, producing_commit=commit,
-            adoption=dict(adoption or {"status": "DRAFT"}),
+            tree, producing_commit=commit, adoption=dict(adoption),
             repo_root=repo_root, bank=bank, supersedes=supersedes),
         producing_commit=commit, environment_digest=environment_digest)

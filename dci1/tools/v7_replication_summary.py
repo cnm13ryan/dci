@@ -25,7 +25,8 @@ sys.path.insert(0, str(DCI1_ROOT / "src"))
 from dci1v4.engine import fs                                     # noqa: E402
 from dci1v4.models.registry import MODELS                        # noqa: E402
 from dci1v7.engine import transitions                            # noqa: E402
-from dci1v7.engine.context import registered_context             # noqa: E402
+from dci1v7.engine.context import (development_context,          # noqa: E402
+                                   registered_context)
 from dci1v7.engine.paths import model_tree                       # noqa: E402
 from dci1v7.protocol import constants as C                       # noqa: E402
 
@@ -123,15 +124,38 @@ def summarise(tree) -> dict:
 
 
 def main() -> int:
-    ctx = registered_context()
-    out = {"_what": "per-replication summary of the v7 study, read from "
-                    "signed records; no estimation, no pooling",
-           "study_id": ctx.study_id,
+    import argparse
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--dev-root", default=None,
+                    help="summarise the development-namespace tree rooted "
+                         "here (study id dci1v7-development) instead of the "
+                         "registered study; requires --out")
+    ap.add_argument("--out", default=None,
+                    help="where to write (default: the registered study's "
+                         "reports/dci1v7/replication_summary.json; required "
+                         "with --dev-root so a rehearsal never overwrites it)")
+    args = ap.parse_args()
+    if args.dev_root and not args.out:
+        ap.error("--dev-root requires --out")
+    ctx = (development_context(Path(args.dev_root)) if args.dev_root
+           else registered_context())
+    target = Path(args.out) if args.out else OUT
+    what = ("per-replication summary of a DEVELOPMENT REHEARSAL of v7 "
+            "(namespace development, study id dci1v7-development): not the "
+            "registered study, not confirmatory evidence; read from its "
+            "signed records; no estimation, no pooling"
+            if args.dev_root else
+            "per-replication summary of the v7 study, read from signed "
+            "records; no estimation, no pooling")
+    out = {"_what": what,
+           "study_id": ctx.study_id, "namespace": ctx.namespace,
            "replications": {m.model_key: summarise(model_tree(ctx, m.model_key))
                             for m in MODELS}}
-    OUT.write_text(json.dumps(out, indent=1, sort_keys=True, default=str)
-                   + "\n")
-    print(f"wrote {OUT}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(out, indent=1, sort_keys=True, default=str)
+                      + "\n")
+    print(f"wrote {target}")
     return 0
 
 

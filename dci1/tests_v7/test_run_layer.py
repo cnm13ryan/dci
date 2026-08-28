@@ -314,3 +314,28 @@ def test_the_repo_root_reaches_the_runner_that_takes_one(tmp_path,
                      C.STAGE_REGISTERED, "--model", MODEL,
                      "--root", str(tmp_path)]) == 1
     assert seen["repo_root"] == tmp_path
+
+
+def test_a_namespace_without_a_root_is_refused(tmp_path, capsys):
+    """``--namespace development`` without ``--root`` has nowhere legal to
+    write: a non-registered namespace never enters the registered roots."""
+    assert cli.main(["status", "--model", MODEL,
+                     "--namespace", "development"]) == 1
+    assert "without --root" in capsys.readouterr().out
+
+
+def test_a_rooted_development_tree_reports_its_own_study_id(tmp_path, capsys):
+    """``status`` on a development root names the development study, and a
+    synthetic root (the default with ``--root``) the synthetic one."""
+    import json
+
+    assert cli.main(["status", "--model", MODEL, "--root", str(tmp_path),
+                     "--namespace", "development"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["study_id"] == "dci1v7-development"
+    assert out["namespace"] == "development"
+    assert out["stage_reached"] is None
+    assert cli.main(["status", "--model", MODEL,
+                     "--root", str(tmp_path)]) == 0
+    assert json.loads(capsys.readouterr().out)["study_id"] == \
+        "dci1v7-synthetic"

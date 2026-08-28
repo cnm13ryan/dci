@@ -387,7 +387,10 @@ def resolve_generate(tree: Any, generate: Callable[..., dict[str, Any]] | None,
     In the **registered** namespace there is exactly one admissible answer ---
     the pinned backend --- so ``generate`` must be ``None`` and this returns
     ``None``, which is what routes ``generate_and_score`` to ``run_backend``.
-    The deterministic stand-in is built only for the synthetic namespace.
+    The deterministic stand-in is built only for the synthetic namespace. The
+    **development** namespace (``engine/context.development_context``,
+    2026-08-28) is treated exactly as the registered one here: a real-model
+    rehearsal that could substitute its generator would rehearse nothing.
 
     This exists because the four runners that had a stand-in wrote
     ``generate = generate or fake_backend(...)``. That is unconditional: it
@@ -416,10 +419,12 @@ def resolve_generate(tree: Any, generate: Callable[..., dict[str, Any]] | None,
             raise ProtocolError(
                 f"{where}: a generation callable was passed in the "
                 f"{namespace!r} namespace. The generative seam is the pinned "
-                "backend and is not substitutable in the run whose rows "
-                "become evidence; a stand-in is admissible only in the "
-                "synthetic namespace, whose study id no v5 estimator or gate "
-                "accepts")
+                "backend and is not substitutable outside the synthetic "
+                "namespace --- not in the registered run, whose rows become "
+                "evidence, and not in a development rehearsal, which exists "
+                "to exercise the real seam; a stand-in is admissible only in "
+                "the synthetic namespace, whose study id no v5 estimator or "
+                "gate accepts")
         return None
     return generate if generate is not None else fake_backend(responder)
 

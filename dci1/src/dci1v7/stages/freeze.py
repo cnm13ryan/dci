@@ -111,6 +111,21 @@ EMPTIABLE_FIELDS: dict[str, tuple[str, ...]] = {
 }
 NEVER_EMPTY = tuple(f for f in REQUIRED_FIELDS if f not in EMPTIABLE_FIELDS)
 
+#: The design elements each optional arm binds at the freeze. A6's invariant
+#: is that the frozen design is exactly Gate 3C's identification state, and
+#: ``assert_field_emptiness_explained`` checks only one direction of it ---
+#: an *empty* field needs a status. This is the other direction: a field
+#: that is bound while its arm is not admitted binds a design the
+#: replication does not run, and a field that is empty while its arm is
+#: admitted freezes an arm with nothing in it. Both refuse (2026-08-28).
+ARM_BOUND_FIELDS: dict[str, str] = {
+    "core_references": C.ARM_CORE,
+    "frozen_backup_families": C.ARM_CORE,
+    "spectrum_severities": C.ARM_SPECTRUM,
+    "near_form_controls": C.ARM_NEAR_FORM,
+    "broad_class_control": C.ARM_CLASS,
+}
+
 
 def _is_empty(value: Any) -> bool:
     if value is None:
@@ -168,6 +183,16 @@ def assert_freeze_complete(record: Mapping[str, Any], *,
     emptiness = assert_field_emptiness_explained(
         record, identification_statuses=identification_statuses)
     arms = normalise_arms(record["admitted_arms"])
+    mismatched = [
+        {"field": field, "arm": arm,
+         "admitted": arm in arms, "bound": not _is_empty(record.get(field))}
+        for field, arm in ARM_BOUND_FIELDS.items()
+        if (arm in arms) != (not _is_empty(record.get(field)))]
+    if mismatched:
+        raise ProtocolError(
+            "§18.1 / v7 A6: the freeze binds the design elements of exactly "
+            "the arms Gate 3C admitted, and this record does not: "
+            f"{mismatched}")
     if record["derived_cell_count"] != n_cells_for(arms):
         raise ProtocolError(
             f"§8.1: the admitted arm set {list(arms)} derives "

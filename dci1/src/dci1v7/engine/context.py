@@ -1,11 +1,24 @@
 """The v7 study context, and the isolation it enforces (§28).
 
-Two namespaces, structurally separate:
+Three namespaces, structurally separate:
 
 * ``registered`` --- study id ``dci1v7``, evidence under ``dci1/evidence``,
   durable mirror under ``dci1/durable_root``;
 * ``synthetic`` --- ``dci1v7-synthetic``, roots supplied by the harness and
-  required to live outside the registered roots.
+  required to live outside the registered roots; the only namespace in which
+  the generative seam may be a stand-in or the design may be sub-sampled;
+* ``development`` --- ``dci1v7-development`` (added 2026-08-28): the pinned
+  backend, the real model, the registered rules, the governed documents and
+  the real repository's provenance checks, all unweakened, under a study id
+  no registered reader accepts and in roots that must lie outside the
+  registered tree. It exists so that the amended lifecycle can be rehearsed
+  end to end on a real model **without** registering, freezing or generating
+  a row of the registered study: every record it writes carries the
+  development study id, every row it generates is refused by
+  ``engine/guards.py`` as input to the registered study, and nothing it
+  produces is confirmatory evidence of anything. ``run/execute.resolve_generate``
+  and ``run/gates_run.assert_synthetic_only`` treat it exactly as they treat
+  the registered namespace: no substitute generator, no scale knob.
 
 **Isolation runs in every direction and all of them are checked.** v5 may
 never write into a v2, v3, v4r2, v4r3, **v4r4**, pilot or screen tree; and no
@@ -34,7 +47,14 @@ from dci1v4.errors import ProtocolError
 from dci1v7 import EVIDENCE_DIRNAME, FOREIGN_STUDY_PREFIXES, STUDY_ID
 
 SYNTHETIC_STUDY_ID = f"{STUDY_ID}-synthetic"
-NAMESPACES = ("registered", "synthetic")
+DEVELOPMENT_STUDY_ID = f"{STUDY_ID}-development"
+NAMESPACES = ("registered", "synthetic", "development")
+#: The one study id each namespace may carry; ``StudyContext`` refuses any
+#: other pairing, so a development tree cannot be labelled as the registered
+#: study and the registered tree cannot be labelled as anything else.
+STUDY_ID_OF_NAMESPACE = {"registered": STUDY_ID,
+                         "synthetic": SYNTHETIC_STUDY_ID,
+                         "development": DEVELOPMENT_STUDY_ID}
 
 DCI1_ROOT = Path(__file__).resolve().parents[3]
 REPO_ROOT = DCI1_ROOT.parent
@@ -70,8 +90,7 @@ class StudyContext:
     def __post_init__(self):
         if self.namespace not in NAMESPACES:
             raise ProtocolError(f"unknown namespace {self.namespace!r}")
-        expected = (STUDY_ID if self.namespace == "registered"
-                    else SYNTHETIC_STUDY_ID)
+        expected = STUDY_ID_OF_NAMESPACE[self.namespace]
         if self.study_id != expected:
             raise ProtocolError(
                 f"namespace {self.namespace!r} requires study_id "
@@ -87,6 +106,27 @@ class StudyContext:
                         f"the v5 study root {resolved} overlaps the "
                         f"historical tree {foreign}; v5 never writes into "
                         "another study's tree and never adopts one as its own")
+        # A non-registered namespace never touches the registered roots:
+        # not inside them, not containing them. The synthetic harness roots
+        # in a temporary directory and the development namespace roots
+        # wherever the caller says, and either placed inside the registered
+        # tree would leave records of another study id beside the registered
+        # ones.
+        if self.namespace != "registered":
+            for root in (Path(self.evidence_root) / EVIDENCE_DIRNAME,
+                         Path(self.durable_root) / EVIDENCE_DIRNAME):
+                resolved = root.resolve()
+                for registered in (DCI1_ROOT / "evidence" / EVIDENCE_DIRNAME,
+                                   DCI1_ROOT / "durable_root"
+                                   / EVIDENCE_DIRNAME):
+                    other = registered.resolve()
+                    if resolved.is_relative_to(other) or \
+                            other.is_relative_to(resolved):
+                        raise ProtocolError(
+                            f"the {self.namespace} study root {resolved} "
+                            f"overlaps the registered root {other}; the "
+                            f"{self.namespace} namespace lives outside the "
+                            "registered tree in every direction")
 
     @property
     def study_root(self) -> Path:
@@ -128,6 +168,33 @@ def synthetic_context(root: Path, *,
     """
     root = Path(root)
     return StudyContext(namespace="synthetic", study_id=SYNTHETIC_STUDY_ID,
+                        repo_root=Path(repo_root) if repo_root is not None
+                        else REPO_ROOT,
+                        evidence_root=root / "evidence",
+                        durable_root=root / "durable")
+
+
+def development_context(root: Path, *,
+                        repo_root: Path | str | None = None) -> StudyContext:
+    """The development namespace, rooted at ``root`` (2026-08-28).
+
+    A real-model rehearsal of the lifecycle that is **not** the registered
+    study: same layout as the synthetic namespace (``<root>/evidence`` and
+    ``<root>/durable``), the real repository's documents and head commit
+    unless an isolated one is named, and the study id
+    ``dci1v7-development`` on every record and row. What distinguishes it
+    from the synthetic namespace is what it refuses: ``resolve_generate``
+    routes it to the pinned backend and rejects a stand-in, and
+    ``assert_synthetic_only`` rejects every scale knob, so a development
+    replication measures the registered design on the registered model with
+    the registered rules --- and what distinguishes it from the registered
+    namespace is that nothing it writes can ever be read as the registered
+    study's evidence: the id differs, the key differs, the roots differ, and
+    ``guards.assert_no_foreign_manifest`` refuses its manifest outright.
+    """
+    root = Path(root)
+    return StudyContext(namespace="development",
+                        study_id=DEVELOPMENT_STUDY_ID,
                         repo_root=Path(repo_root) if repo_root is not None
                         else REPO_ROOT,
                         evidence_root=root / "evidence",

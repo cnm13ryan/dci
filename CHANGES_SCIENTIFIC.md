@@ -13,6 +13,80 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-28 — v7 development namespace: a real-model rehearsal of the amended lifecycle that is structurally not the registered study
+
+**What changed.** `dci1v7.engine.context` gains a third namespace,
+`development` (study id `dci1v7-development`, `development_context(root)`),
+beside `registered` and `synthetic`; `python -m dci1v7.run.cli` gains
+`--namespace {synthetic,development}` to go with `--root`. A development
+replication runs the registered stage sequence on the registered model
+through the pinned backend with every registered rule, threshold, cap, seed,
+verifier and provenance check unweakened — `execute.resolve_generate` refuses
+a stand-in generator there exactly as it does in the registered namespace, and
+`gates_run.assert_synthetic_only` refuses every scale knob — but writes under
+a caller-supplied root that `StudyContext` requires to lie outside the
+registered roots, signs with its own key, and stamps `dci1v7-development` on
+every record and row. `engine/guards.assert_no_foreign_manifest` refuses that
+id, so nothing a development tree holds can reach a registered estimator or
+satisfy a registered stage.
+
+**Why.** After A6–A8 the branch that ended every v7 replication (Gate 3C
+non-identification → pre-freeze → freeze → confirmatory generation → analysis
+→ final report on the surviving arms) had been walked only synthetically. The
+researcher asked for it to be rehearsed on a real model *before* deciding
+whether to re-run the registered study, without registering or freezing v7
+again and without producing anything that could be mistaken for confirmatory
+evidence. Until this change the only non-registered path was the synthetic
+namespace, in which `resolve_generate` always substitutes the deterministic
+stand-in, so a real-model run outside the registered tree was unreachable.
+
+**What a development record is.** Development evidence about the apparatus:
+whether the amended lifecycle executes end to end on a real model. It is not a
+v7 replication, not a §28 outcome, and not evidence about any estimand; the
+per-model results of a rehearsal are reported under
+`dci1/reports/dci1v7/development_rehearsal/` and labelled as such. The
+registered v7 evidence (`dci1/evidence/dci1v7/`, manifest `969a5b9f…`, four
+terminal reports) is untouched and stays closed as recorded.
+
+**Also in this change.** `registration_run.run_registration` no longer writes
+`{"status": "DRAFT"}` into the manifest's `adoption` block when the caller
+passes nothing (the CLI never passes anything): it records the verdict of
+`manifest.assert_documents_adopted` — the same function `signing_blockers`
+refuses on — so a manifest now says what the documents declared when it was
+signed. The registered v7 manifest carries the old literal; its bytes are
+signed and unchanged, and both governed documents declared ADOPTED at that
+signing (`signing_blockers` would have refused otherwise).
+
+**Comparability.** No registered number is affected: no threshold, estimand,
+rule, verifier or admission rule moves. Development rows are never comparable
+with, and never pooled with, registered rows; the study id makes the
+refusal mechanical.
+
+**Found on the first real-model rehearsal's review, fixed in the same
+change: the freeze bound Gate 3B's selection for arms Gate 3C did not
+admit.** `freeze_run.assemble` took `core_references`,
+`spectrum_severities`, `near_form_controls`, `broad_class_control` and
+`frozen_backup_families` straight from the selection and the support block,
+ungated on `admitted_arms`; Gate 3B selects without reading the calibrated
+coverage verdict, so a replication that lost a core condition at Gate 3A with
+three matched references in hand (every v7 replication's shape) would have
+frozen three `core_references` and two backups beside `admitted_arms:
+["base"]`, and under A7 a replication with a ladder in hand and no spectrum
+arm freezes a ladder it never runs. `stages/freeze.assert_field_emptiness_explained`
+checks only the empty direction. Now the freeze binds each arm's elements
+only when that arm is admitted (Gate 3B's record, bound by hash, keeps the
+selection), and `stages/freeze.assert_freeze_complete` refuses a record that
+binds an arm it does not admit or admits an arm with nothing bound
+(`ARM_BOUND_FIELDS`); the pre-freeze audit's dry-run assembly
+(`freeze_fields_explained`, A6) runs the same check one stage earlier. This
+is A6's registered invariant — "the design the freeze will bind is exactly
+Gate 3C's identification state" — applied to the design elements and not
+only to the arm list; no rule, threshold or estimand moves, and no
+registered freeze record exists to be affected (no v7 replication reached
+the freeze). One `tests_v7/test_lifecycle.py` fixture that bound spectrum,
+near-form and class elements beside a base-only arm list is corrected to the
+shape the freeze writes.
+
 ## 2026-08-28 — v7 amended in place (A6–A8): a non-identified replication reaches the freeze; §12.6's C4 gates the spectrum arm, not the core arm; the pre-freeze audit reads the record, not the verdict
 
 **What changed.** Three amendments to `user-notes/DCI1_preregistration_v7.md`,
