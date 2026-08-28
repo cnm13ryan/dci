@@ -19,6 +19,7 @@ harness in which a registered branch can be reached at all.
 """
 from __future__ import annotations
 
+import functools
 import shutil
 import tempfile
 from pathlib import Path
@@ -36,7 +37,8 @@ from dci1v7.run.lifecycle import TerminalStatus
 
 from tests_v7 import synthetic_lifecycle as SL
 
-__all__ = ["SCENARIOS", "run_scenario", "run_all", "prefix_walk"]
+__all__ = ["SCENARIOS", "run_scenario", "run_all", "prefix_walk",
+           "run_scenarios_parallel", "instrument_calls"]
 
 
 # --------------------------------------------------------------- machinery
@@ -1212,6 +1214,145 @@ def run_scenario(name: str, root: Path | None = None) -> dict[str, Any]:
     here = Path(root or tempfile.mkdtemp(prefix=f"scenario-{name}-"))
     here.mkdir(parents=True, exist_ok=True)
     return {"scenario": name, **SCENARIOS[name](here)}
+
+
+# ------------------------------------------ parallel execution (2026-08-28)
+
+def instrument_calls(names: Sequence[str], seen: set) -> list:
+    """Record every call to the named functions, wherever they are bound.
+
+    Moved here from the audit tool so that a worker process can instrument
+    the same rules the serial audit instruments. It wraps the target
+    functions **and every alias of them** across the loaded ``dci1v7`` and
+    ``tests_v7`` modules --- ``from x import y`` binds the object into the
+    importing module and a patch on the defining module alone would never be
+    reached --- and the wrapper delegates unchanged, so the run it observes
+    is the run that would have happened. Returns the undo list.
+    """
+    import importlib
+    import sys as _sys
+
+    targets: dict = {}
+    for dotted in names:
+        module_name, _, attr = dotted.rpartition(".")
+        try:
+            original = getattr(importlib.import_module(module_name), attr,
+                               None)
+        except Exception:                                    # pragma: no cover
+            original = None
+        if callable(original):
+            targets[original] = dotted
+
+    def wrap(original, dotted):
+        # `functools.wraps` keeps the original's identity --- __module__,
+        # __qualname__, __doc__ and __wrapped__ --- which matters beyond
+        # cosmetics: `composed_probe.assert_probe_reads_no_reference`
+        # resolves its own module through `inspect.getmodule` of a wrapped
+        # function and scans that module's source. A wrapper that reported
+        # this module would make it scan the scenario file instead and
+        # refuse every walk at Gate 2.75; with the identity preserved,
+        # `inspect` unwraps to the real source and the check reads what it
+        # was registered to read. (Found by a parallel review, 2026-08-28.)
+        @functools.wraps(original)
+        def recorded(*args, **kwargs):
+            seen.add(dotted)
+            return original(*args, **kwargs)
+        return recorded
+
+    undo = []
+    for module in list(_sys.modules.values()):
+        if module is None or not getattr(module, "__name__", "").startswith(
+                ("dci1v7", "tests_v7")):
+            continue
+        for attr, value in list(vars(module).items()):
+            dotted = targets.get(value) if callable(value) else None
+            if dotted is None:
+                continue
+            setattr(module, attr, wrap(value, dotted))
+            undo.append((module, attr, value))
+    return undo
+
+
+def _scenario_worker(name: str, root: str, instrument: Sequence[str]
+                     ) -> dict[str, Any]:
+    """One scenario in its own process: its own temporary root, its own
+    harness closures, its own instrumentation, cleaned up on exit.
+
+    Returns the scenario result (payloads and reads included, for the
+    scenario that carries them), the set of instrumented functions that
+    executed here, and the §34 values the walk ran under --- exactly what
+    the serial audit accumulates in-process, gathered per scenario so the
+    parent can merge them deterministically.
+    """
+    import shutil
+
+    from dci1v7.protocol import decisions as _decisions
+
+    here = Path(root)
+    here.mkdir(parents=True, exist_ok=True)
+    # A worker process runs one scenario and exits (``max_tasks_per_child``
+    # below), and the prefix caches are cleared here as well: a cached
+    # prefix is a path into a tree this worker's previous scenario would
+    # already have removed, and a branch copied from it would fail.
+    _PREFIXES.clear()
+    _D6_PREFIXES.clear()
+    seen: set[str] = set()
+    SL.resolved_manifest()
+    undo = instrument_calls(list(instrument), seen) if instrument else []
+    try:
+        result = run_scenario(name, here)
+        ran_under = {k: _decisions.value_of(k) for k in _decisions.DECISION_IDS}
+    finally:
+        for module, attr, original in undo:
+            setattr(module, attr, original)
+        SL.restore()
+        shutil.rmtree(here, ignore_errors=True)
+    return {"name": name, "result": result, "seen": sorted(seen),
+            "decisions": ran_under}
+
+
+def run_scenarios_parallel(names: Sequence[str], *, workers: int = 5,
+                           root: Path | None = None,
+                           instrument: Sequence[str] = ()
+                           ) -> dict[str, Any]:
+    """Run independent scenarios in separate processes, results in the
+    order ``names`` gives them.
+
+    Each scenario is an independent branch of the lifecycle: it builds the
+    signed prefix it needs in its own temporary root, so no two workers
+    share a tree, a cache, a mask namespace or a repository. The cost is
+    that a prefix two scenarios share in-process is walked once per
+    process; the gain is wall-clock time bounded by the longest scenario
+    rather than the sum. Workers are spawned, not forked, so each starts
+    from a clean interpreter and the harness closures are made per process.
+
+    Returns ``{"results": {name: result}, "seen": set, "decisions": dict}``
+    with ``results`` keyed in the given order whatever the completion
+    order --- the same aggregation the serial path produces.
+    """
+    import multiprocessing as mp
+    from concurrent.futures import ProcessPoolExecutor
+
+    base = Path(root or tempfile.mkdtemp(prefix="scenarios-parallel-"))
+    base.mkdir(parents=True, exist_ok=True)
+    context = mp.get_context("spawn")
+    outcomes: dict[str, dict[str, Any]] = {}
+    with ProcessPoolExecutor(max_workers=max(1, int(workers)),
+                             mp_context=context,
+                             max_tasks_per_child=1) as pool:
+        futures = {name: pool.submit(_scenario_worker, name,
+                                     str(base / name), list(instrument))
+                   for name in names}
+        for name in names:
+            outcomes[name] = futures[name].result()
+    seen: set[str] = set()
+    decisions_ran_under: dict[str, Any] = {}
+    for name in names:
+        seen |= set(outcomes[name]["seen"])
+        if name == "normal_full_path" or not decisions_ran_under:
+            decisions_ran_under = dict(outcomes[name]["decisions"])
+    return {"results": {name: outcomes[name]["result"] for name in names},
+            "seen": seen, "decisions": decisions_ran_under}
 
 
 def run_all(root: Path | None = None,

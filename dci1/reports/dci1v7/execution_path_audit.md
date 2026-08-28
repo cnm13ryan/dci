@@ -6,11 +6,11 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **74 registered rules** audited.
-- **74 agree** with their expected status.
-- By status: **2** VERIFIED_CONDITIONAL, **72** VERIFIED_REACHABLE.
-- Contract: 169 fields, 435 checked against real payloads (169 field-presence, 266 consumption, 4 semantic), **0 defects**.
-- Scenarios run: **19**.
+- **80 registered rules** audited.
+- **80 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **78** VERIFIED_REACHABLE.
+- Contract: 172 fields, 442 checked against real payloads (172 field-presence, 270 consumption, 4 semantic), **0 defects**.
+- Scenarios run: **24**.
 
 ## regime
 
@@ -90,9 +90,20 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
 | `R-13.8-core` | §13.8 | three core references by the registered tie-break | `dci1v7.stages.selection.admit_core_references` | `dci1v7.run.gates_run.gate3b_payload` | `GATE_3B_REFERENCE_SELECTION.selection` | `GATE_3C_IDENTIFICATION` | **VERIFIED_REACHABLE** |
+| `R-12.6-arm-scoping` | §12.6 (A7) | the six conditions the expansion loop stops on are read by arm: C1/C3/C5/C6 gate the core arm and C2/C4 gate the spectrum arm, and the record carries both verdicts | `dci1v7.stages.regime.coverage_criterion` | `dci1v7.run.regime_run.regime_payload` | `REGIME_SCREEN.coverage` | — | **VERIFIED_REACHABLE** |
+| `R-12.6-calibrated-spectrum` | §12.6 (A7) | the calibrated re-read's SPECTRUM verdict (C2, C4) travels to Gate 3C as a spectrum failure, costs the spectrum arm alone and records DIFFICULTY_SUPPORT_NOT_IDENTIFIED; the core arm is decided by §13.8, §13.7 and §13.15 | `dci1v7.stages.feasibility.coverage_at_calibrated_iota_a` | `dci1v7.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.calibrated_spectrum_failures` | `GATE_3C_IDENTIFICATION` | **VERIFIED_REACHABLE** |
+| `R-13.15-spectrum-block` | §13.15, §34 D6 (A7) | a design-time spectrum loss writes its own irreversible non-identification block naming exactly the spectrum-dependent members, under DIFFICULTY_SUPPORT_NOT_IDENTIFIED, and the freeze binds it | `dci1v7.protocol.identification.non_identification` | `dci1v7.stages.support.evaluate_support` | `GATE_3C_IDENTIFICATION.non_identification` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 | `R-13.15-support` | §13.15, §34 D6 | the support requirements, and D6's irreversible verdict | `dci1v7.stages.support.evaluate_support` | `dci1v7.run.gates_run.gate3c_payload` | `GATE_3C_IDENTIFICATION.non_identification` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 | `R-13.14-no-substitution` | §13.14 | no function substitutes a backup after an outcome | `dci1v7.run.gates_run.assert_no_substitution_path` | `dci1v7.run.prefreeze_run.artifact_checks` | `GATE_4_COMPOSED_CONTRAST.declared_refusals` | `PREFREEZE_AUDIT` | **VERIFIED_REACHABLE** |
 | `R-13.12-exhaustion` | §13.12, §8.1 | a family that cannot straddle iota_A costs the SPECTRUM arm, not the core set | `dci1v7.stages.selection.select_all` | `dci1v7.run.gates_run.gate3b_payload` | `GATE_3B_REFERENCE_SELECTION.selection` | `GATE_3C_IDENTIFICATION` | **VERIFIED_REACHABLE** |
+
+## pre-freeze
+
+| rule | section | meaning | implementation | production caller | artifact field | consumer | status |
+|---|---|---|---|---|---|---|---|
+| `R-19-support-record` | §18 stage 12, §19, §33 (A6) | the pre-freeze audit establishes §13.15's RECORD, §34 D6's disposition, the exact non-identified member set, the arm set and the absence of a rehabilitation path --- and does not require support_met; a non-identified replication reaches the freeze | `dci1v7.run.prefreeze_run.support_checks` | `dci1v7.run.prefreeze_run.artifact_checks` | `PREFREEZE_AUDIT.support_met_required` | — | **VERIFIED_REACHABLE** |
+| `R-19-freeze-dry-run` | §18.1, §18 stage 12 (A6) | the §18.1 record the audit would license is assembled without being written and every empty field is explained by the status that empties it, before the freeze | `dci1v7.stages.freeze.assert_field_emptiness_explained` | `dci1v7.run.prefreeze_run.artifact_checks` | `PREFREEZE_AUDIT.artifact_checks` | — | **VERIFIED_REACHABLE** |
+| `R-34-D6-continues` | §34 D6, §8.1 (A8) | a replication that lost its reference set continues on its base arm through the freeze, confirmatory generation, both analyses and the final report, with the base-arm estimands IDENTIFIED and every reference-dependent member NOT_IDENTIFIED | `dci1v7.protocol.identification.assert_not_rehabilitated` | `dci1v7.run.analysis_run.unmasked_payload` | `UNMASKED_ANALYSIS.estimands` | `FINAL_REPORT` | **VERIFIED_REACHABLE** |
 
 ## gate 4
 
@@ -157,7 +168,12 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `grid_resolution_insufficient` | §12.3's grid resolution | `{"terminal": "GRID_RESOLUTION_INSUFFICIENT", "criterion": "\u00a712.3: two adjacent registered severities lie on opposite sides of a whole band, so the grid resolves nothing inside it", "observed": {"constraint": "B", "curve": {"7": 0.9895833333333334, "8": 0.9895833333333334, "9": 0.994791666666666` |
 | `calibration_population` | §12.7's calibration population | `{"carried_by_the_screen": 110, "tier12": 88, "tier3_measured": 22, "tier3_dropped_for_budget": 0, "n_measured": 110, "consumed_calibration_priority": true, "expected": "n_measured is the priority population, never the carried set"}` |
 | `reserve_expansion` | §12.6's candidate expansion | `{"rounds": 0, "coverage_met": true, "identification_statuses": [], "expected": "the expansion is reachable and its verdict is on the record"}` |
-| `reference_support_not_identified` | §13.15 unmet, §34 D6 | `{"support_met": false, "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED", "admitted_arms": ["base"], "n_not_identified": 48, "delta_r_blocked": true, "d_b_from_a_still_identified": true, "irreversible": true, "expected": "core and spectrum arms dropped, Delta_R NOT_IDENTIFIED, D(B<-A) still identifi` |
+| `reference_support_not_identified` | §13.15 unmet, §34 D6, end to end | `{"gate3c_statuses": ["COMPANION_CLASS_NOT_MATCHED", "DIFFICULTY_SUPPORT_NOT_IDENTIFIED", "EXCESS_NOT_IDENTIFIED", "NEAR_FORM_ARM_NOT_AVAILABLE", "REFERENCE_POOL_SAME_FORM", "REFERENCE_SUPPORT_NOT_IDENTIFIED"], "support_met": false, "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED", "admitted_arms": ` |
+| `c4_lost_core_kept` | §12.6 C4 lost on the calibrated basis, core kept (A7) | `{"calibrated_conditions": {"C1": true, "C2": true, "C3": true, "C4": false, "C5": true, "C6": true, "C7": true, "C8": true}, "calibrated_core_met": true, "calibrated_spectrum_met": false, "calibrated_core_failures": [], "calibrated_spectrum_failures": ["\u00a712.6: a spectrum coverage condition (C2,` |
+| `full_support_unchanged` | every support requirement met (the full design) | `{"calibrated_core_met": true, "calibrated_spectrum_met": true, "support_met": true, "spectrum_met": true, "admitted_arms": ["base", "core", "spectrum", "nearform", "class"], "derived_cell_count": 56, "non_identification": null, "gate3c_statuses": ["COMPANION_CLASS_NOT_MATCHED", "REFERENCE_POOL_SAME_` |
+| `base_arm_is_unconditional` | §8.1's unconditional base arm and §28.3's exits | `{"arms_when_everything_else_is_lost": ["base"], "derived_cell_count": 5, "normalise_arms_of_nothing": ["base"], "base_arm_estimands_still_identified": true, "terminal_statuses_about_support": [], "terminal_statuses_in_force": ["QUALIFICATION_FAILURE", "APPARATUS_FAILURE", "RESPONSE_LENGTH_INCOMPATIB` |
+| `unsupported_estimands_cannot_reappear` | §34 D6's irreversibility, both blocks | `{"core_block_refuses_delta_r": true, "core_block_refuses_delta_difficulty": true, "core_block_admits_d_b_from_a": true, "spectrum_block_refuses_delta_difficulty": true, "spectrum_block_refuses_spectrum_loss": true, "spectrum_block_admits_delta_r": true, "rehabilitation_paths_refused": ["broad_class_` |
+| `reference_checks_conditional` | A6: reference-specific checks follow the core arm | `{"without_core_arm": {"selected_references_valid": ["NOT_APPLICABLE", ["EXCESS_NOT_IDENTIFIED", "REFERENCE_SUPPORT_NOT_IDENTIFIED"]], "calibration_stability_satisfied": ["NOT_APPLICABLE", ["EXCESS_NOT_IDENTIFIED", "REFERENCE_SUPPORT_NOT_IDENTIFIED"]]}, "without_core_arm_outcome": "PASS", "without_co` |
 | `gate4_records_a_boundary` | v7 §13.14: a composed cell at a boundary | `{"outcome": "PASS", "terminates_nothing": true, "cells_near_a_boundary": 44, "contrast_statuses": ["COMPOSED_ARM_AT_BOUNDARY", "COMPOSED_CONTRAST_RANGE_COMPRESSED", "COMPOSED_CONTRAST_STRUCTURAL_ZERO"], "any_structural_zero": true, "prefreeze_outcome": "PASS", "expected": "PASS with the boundary sta` |
 | `near_form_unavailable` | §34 D18's L3c scope | `{"with_arm_scope": "strong", "without_arm_scope": "same_form_only", "emitted_l3c_scope": ["same_form_only"], "emitted_l3c_scope_with_arm": ["strong"], "expected": "same_form_only without the arm; the strong conclusion is unreachable"}` |
 | `broad_class_unavailable` | §13.10's broad-class arm | `{"statuses": ["CLASS_ARM_NOT_AVAILABLE"], "admitted_arms": ["base", "core", "spectrum", "nearform"], "expected": "CLASS_ARM_NOT_AVAILABLE is recorded and the arm is not admitted"}` |
@@ -168,5 +184,5 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `probe_records_a_ceiling_on_the_treated_arm` | v7 A1: the treated arm at the ceiling is recorded | `{"outcome": "PASS", "terminal_status": null, "m_star_frozen_at_gate2": 8, "probe_m_star": 8, "reselected": false, "d_b_from_a_estimate": -0.20833333333333334, "d_b_from_a_statuses": ["COMPOSED_ARM_AT_BOUNDARY", "COMPOSED_CONTRAST_RANGE_COMPRESSED"], "arm_at_boundary": true, "positive_direction_compr` |
 | `probe_passes_at_the_frozen_m_star` | A13: the frozen m* is measured, recorded and carried | `{"m_star_frozen_at_gate2": 8, "probe_m_star_in": 8, "probe_m_star_out": 8, "reselected": false, "reselections_permitted": 0, "severities_probed": [8], "admissible_severities": [7, 8, 9, 10, 11, 12], "probe_outcome": "PASS", "gate4_outcome": "PASS", "gate4_contrast_statuses": [], "gate3a_m_star": 8, ` |
 | `stage_one_readiness_is_retryable` | §18 stage 1's readiness verdict (A15) | `{"refused": {"status": "REGISTRATION_INCOMPLETE", "blockers": ["DRAFT_DOCUMENT"]}, "after_refusal": {"terminal_report": false, "stage_record": false, "transition_outcomes": ["REFUSED"]}, "retry_outcome": "PASS", "expected": "REFUSED then PASS, with no terminal report"}` |
-| `stage_one_apparatus_fault_is_retired` | §32/A15's pre-manifest retirement | `{"blocked_before_retirement": {"refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"}, "retired_record_hash": "184970fd6748444f31810df149cbb2bdb90d6b5e3` |
+| `stage_one_apparatus_fault_is_retired` | §32/A15's pre-manifest retirement | `{"blocked_before_retirement": {"refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"}, "retired_record_hash": "4e77726891a8657778a41178a584c4de5b9b8de08` |
 

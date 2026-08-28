@@ -27,18 +27,18 @@
   "D25": "survivor_ladder_only",
   "D27": "retain_the_probe_stage"
  },
- "n_rules": 74,
- "n_agreeing": 74,
+ "n_rules": 80,
+ "n_agreeing": 80,
  "by_status": {
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 72
+  "VERIFIED_REACHABLE": 78
  },
  "contract": {
-  "n_fields": 169,
+  "n_fields": 172,
   "n_artifacts": 18,
-  "n_checked_against_payloads": 435,
-  "n_field_presence_checks": 169,
-  "n_consumption_checks": 266,
+  "n_checked_against_payloads": 442,
+  "n_field_presence_checks": 172,
+  "n_consumption_checks": 270,
   "n_semantic_checks": 4,
   "relayed": [
    {
@@ -173,6 +173,14 @@
     ]
    },
    {
+    "artifact": "GATE_3C_IDENTIFICATION",
+    "field": "non_identification",
+    "reader": "FINAL_REPORT",
+    "via": [
+     "GATE_5_FREEZE"
+    ]
+   },
+   {
     "artifact": "GATE_4_COMPOSED_CONTRAST",
     "field": "contrast_statuses",
     "reader": "GATE_5_FREEZE",
@@ -214,7 +222,7 @@
     ]
    }
   ],
-  "n_relayed": 21,
+  "n_relayed": 22,
   "unconsumed": [
    {
     "kind": "UNCONSUMED_DECLARATION",
@@ -998,17 +1006,228 @@
   },
   "reference_support_not_identified": {
    "scenario": "reference_support_not_identified",
-   "branch": "\u00a713.15 unmet, \u00a734 D6",
+   "branch": "\u00a713.15 unmet, \u00a734 D6, end to end",
+   "gate3c_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "EXCESS_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+   ],
    "support_met": false,
    "disposition": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
    "admitted_arms": [
-    "base"
+    "base",
+    "class"
    ],
    "n_not_identified": 48,
    "delta_r_blocked": true,
-   "d_b_from_a_still_identified": true,
    "irreversible": true,
-   "expected": "core and spectrum arms dropped, Delta_R NOT_IDENTIFIED, D(B<-A) still identified"
+   "prefreeze_outcome": "PASS",
+   "prefreeze_support_met_required": false,
+   "prefreeze_checks": {
+    "support_recorded": "PASS",
+    "d6_disposition_registered": "PASS",
+    "arms_match_identification": "PASS",
+    "no_rehabilitation_path": "PASS",
+    "freeze_fields_explained": "PASS",
+    "selected_references_valid": "NOT_APPLICABLE",
+    "calibration_stability_satisfied": "NOT_APPLICABLE"
+   },
+   "freeze_admitted_arms": [
+    "base",
+    "class"
+   ],
+   "freeze_block_status": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+   "confirmatory_rows": 256,
+   "d_b_from_a": "IDENTIFIED",
+   "lambda": "IDENTIFIED",
+   "delta_r": "NOT_IDENTIFIED",
+   "delta_r_reason": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+   "final_report_outcome": "PASS",
+   "final_report_rows": 135,
+   "tamper_delta_r_refused": true,
+   "still_identified_includes_base_arm": true,
+   "expected": "core and spectrum arms dropped, Delta_R NOT_IDENTIFIED irreversibly, D(B<-A) IDENTIFIED, and the replication reaches FINAL_REPORT"
+  },
+  "c4_lost_core_kept": {
+   "scenario": "c4_lost_core_kept",
+   "branch": "\u00a712.6 C4 lost on the calibrated basis, core kept (A7)",
+   "calibrated_conditions": {
+    "C1": true,
+    "C2": true,
+    "C3": true,
+    "C4": false,
+    "C5": true,
+    "C6": true,
+    "C7": true,
+    "C8": true
+   },
+   "calibrated_core_met": true,
+   "calibrated_spectrum_met": false,
+   "calibrated_core_failures": [],
+   "calibrated_spectrum_failures": [
+    "\u00a712.6: a spectrum coverage condition (C2, C4) is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws; the spectrum arm is not generated and the core arm is decided by \u00a713.8, \u00a713.7 and \u00a713.15"
+   ],
+   "gate3c_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "REFERENCE_POOL_SAME_FORM",
+    "REFERENCE_ROLE_NOT_MATCHED"
+   ],
+   "support_met": true,
+   "spectrum_met": false,
+   "admitted_arms": [
+    "base",
+    "core",
+    "nearform",
+    "class"
+   ],
+   "block_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+   "n_not_identified": 20,
+   "blocked_is_the_spectrum_set": true,
+   "delta_r_blocked": false,
+   "prefreeze_outcome": "PASS",
+   "prefreeze_checks": {
+    "support_recorded": "PASS",
+    "d6_disposition_registered": "PASS",
+    "arms_match_identification": "PASS",
+    "no_rehabilitation_path": "PASS",
+    "freeze_fields_explained": "PASS",
+    "selected_references_valid": "PASS",
+    "calibration_stability_satisfied": "PASS"
+   },
+   "freeze_admitted_arms": [
+    "base",
+    "core",
+    "nearform",
+    "class"
+   ],
+   "delta_r": "IDENTIFIED",
+   "delta_difficulty": "NOT_IDENTIFIED",
+   "delta_difficulty_reason": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+   "d_b_from_r1_minus": "NOT_IDENTIFIED",
+   "final_report_outcome": "PASS",
+   "tamper_delta_difficulty_refused": true,
+   "tamper_delta_r_allowed": true,
+   "expected": "core retained, spectrum dropped, Delta_R IDENTIFIED, delta_difficulty NOT_IDENTIFIED (DIFFICULTY_SUPPORT_NOT_IDENTIFIED), FINAL_REPORT reached"
+  },
+  "full_support_unchanged": {
+   "scenario": "full_support_unchanged",
+   "branch": "every support requirement met (the full design)",
+   "calibrated_core_met": true,
+   "calibrated_spectrum_met": true,
+   "support_met": true,
+   "spectrum_met": true,
+   "admitted_arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "derived_cell_count": 56,
+   "non_identification": null,
+   "gate3c_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "REFERENCE_POOL_SAME_FORM"
+   ],
+   "prefreeze_outcome": "PASS",
+   "n_not_applicable": 0,
+   "freeze_admitted_arms": [
+    "base",
+    "core",
+    "spectrum",
+    "nearform",
+    "class"
+   ],
+   "confirmatory_rows": 1792,
+   "delta_r": "IDENTIFIED",
+   "delta_difficulty": "IDENTIFIED",
+   "delta_difficulty_reason": null,
+   "d_b_from_r1_minus": "IDENTIFIED",
+   "final_report_outcome": "PASS",
+   "expected": "all five arms, 56 cells, no block, PASS with no NOT_APPLICABLE check, Delta_R and delta_difficulty IDENTIFIED, FINAL_REPORT reached"
+  },
+  "base_arm_is_unconditional": {
+   "scenario": "base_arm_is_unconditional",
+   "branch": "\u00a78.1's unconditional base arm and \u00a728.3's exits",
+   "arms_when_everything_else_is_lost": [
+    "base"
+   ],
+   "derived_cell_count": 5,
+   "normalise_arms_of_nothing": [
+    "base"
+   ],
+   "base_arm_estimands_still_identified": true,
+   "terminal_statuses_about_support": [],
+   "terminal_statuses_in_force": [
+    "QUALIFICATION_FAILURE",
+    "APPARATUS_FAILURE",
+    "RESPONSE_LENGTH_INCOMPATIBLE",
+    "TARGET_RANGE_EXHAUSTED",
+    "FOCAL_RANGE_EXHAUSTED",
+    "GRID_RESOLUTION_INSUFFICIENT",
+    "REGIME_NOT_FOUND",
+    "PREFREEZE_AUDIT_FAILURE",
+    "MEASUREMENT_NOT_ESTABLISHED",
+    "MEASUREMENT_EVIDENCE_INSUFFICIENT",
+    "SPECIFICATION_AMBIGUOUS"
+   ],
+   "expected": "base arm only, 5 cells, D(B<-A)/D(A<-B)/Lambda/Ord_* identified, and no terminal status for a lost arm"
+  },
+  "unsupported_estimands_cannot_reappear": {
+   "scenario": "unsupported_estimands_cannot_reappear",
+   "branch": "\u00a734 D6's irreversibility, both blocks",
+   "core_block_refuses_delta_r": true,
+   "core_block_refuses_delta_difficulty": true,
+   "core_block_admits_d_b_from_a": true,
+   "spectrum_block_refuses_delta_difficulty": true,
+   "spectrum_block_refuses_spectrum_loss": true,
+   "spectrum_block_admits_delta_r": true,
+   "rehabilitation_paths_refused": [
+    "broad_class_substitution",
+    "frozen_backup",
+    "later_gate",
+    "observed_composed_outcome"
+   ],
+   "expected": "every named member refused, every other admitted"
+  },
+  "reference_checks_conditional": {
+   "scenario": "reference_checks_conditional",
+   "branch": "A6: reference-specific checks follow the core arm",
+   "without_core_arm": {
+    "selected_references_valid": [
+     "NOT_APPLICABLE",
+     [
+      "EXCESS_NOT_IDENTIFIED",
+      "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+     ]
+    ],
+    "calibration_stability_satisfied": [
+     "NOT_APPLICABLE",
+     [
+      "EXCESS_NOT_IDENTIFIED",
+      "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+     ]
+    ]
+   },
+   "without_core_arm_outcome": "PASS",
+   "without_core_arm_not_applicable": 2,
+   "with_core_arm": {
+    "selected_references_valid": [
+     "PASS",
+     null
+    ],
+    "calibration_stability_satisfied": [
+     "PASS",
+     null
+    ]
+   },
+   "with_core_arm_outcome": "PASS",
+   "with_core_arm_not_applicable": 0,
+   "expected": "NOT_APPLICABLE naming REFERENCE_SUPPORT_NOT_IDENTIFIED without the core arm; PASS with it; both audits PASS"
   },
   "gate4_records_a_boundary": {
    "scenario": "gate4_records_a_boundary",
@@ -1179,7 +1398,7 @@
    "blocked_before_retirement": {
     "refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"
    },
-   "retired_record_hash": "184970fd6748444f31810df149cbb2bdb90d6b5e38b4d72f8eada850a9d68011",
+   "retired_record_hash": "4e77726891a8657778a41178a584c4de5b9b8de08de7be7ea5f1b9be4573c8ea",
    "retained_bytes_identical": true,
    "live_path_cleared": true,
    "transition_outcomes": [
@@ -1189,7 +1408,7 @@
    ],
    "stage_one_outcome": "PASS",
    "bound_into_the_manifest": [
-    "184970fd6748444f31810df149cbb2bdb90d6b5e38b4d72f8eada850a9d68011"
+    "4e77726891a8657778a41178a584c4de5b9b8de08de7be7ea5f1b9be4573c8ea"
    ],
    "expected": "refused, retired, then PASS with the hash bound"
   }
@@ -1827,6 +2046,96 @@
    "agrees": true
   },
   {
+   "id": "R-12.6-arm-scoping",
+   "section": "\u00a712.6 (A7)",
+   "area": "reference selection",
+   "meaning": "the six conditions the expansion loop stops on are read by arm: C1/C3/C5/C6 gate the core arm and C2/C4 gate the spectrum arm, and the record carries both verdicts",
+   "runtime": "dci1v7.stages.regime.coverage_criterion",
+   "impl": "dci1v7.run.regime_run.regime_payload",
+   "field": "REGIME_SCREEN.coverage",
+   "consumer": null,
+   "scenario": "c4_lost_core_kept",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-12.6-calibrated-spectrum",
+   "section": "\u00a712.6 (A7)",
+   "area": "reference selection",
+   "meaning": "the calibrated re-read's SPECTRUM verdict (C2, C4) travels to Gate 3C as a spectrum failure, costs the spectrum arm alone and records DIFFICULTY_SUPPORT_NOT_IDENTIFIED; the core arm is decided by \u00a713.8, \u00a713.7 and \u00a713.15",
+   "runtime": "dci1v7.stages.feasibility.coverage_at_calibrated_iota_a",
+   "impl": "dci1v7.run.gates_run.gate3a_payload",
+   "field": "GATE_3A_REFERENCE_CALIBRATION.calibrated_spectrum_failures",
+   "consumer": "GATE_3C_IDENTIFICATION",
+   "scenario": "c4_lost_core_kept",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.15-spectrum-block",
+   "section": "\u00a713.15, \u00a734 D6 (A7)",
+   "area": "reference selection",
+   "meaning": "a design-time spectrum loss writes its own irreversible non-identification block naming exactly the spectrum-dependent members, under DIFFICULTY_SUPPORT_NOT_IDENTIFIED, and the freeze binds it",
+   "runtime": "dci1v7.protocol.identification.non_identification",
+   "impl": "dci1v7.stages.support.evaluate_support",
+   "field": "GATE_3C_IDENTIFICATION.non_identification",
+   "consumer": "GATE_5_FREEZE",
+   "scenario": "c4_lost_core_kept",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-19-support-record",
+   "section": "\u00a718 stage 12, \u00a719, \u00a733 (A6)",
+   "area": "pre-freeze",
+   "meaning": "the pre-freeze audit establishes \u00a713.15's RECORD, \u00a734 D6's disposition, the exact non-identified member set, the arm set and the absence of a rehabilitation path --- and does not require support_met; a non-identified replication reaches the freeze",
+   "runtime": "dci1v7.run.prefreeze_run.support_checks",
+   "impl": "dci1v7.run.prefreeze_run.artifact_checks",
+   "field": "PREFREEZE_AUDIT.support_met_required",
+   "consumer": null,
+   "scenario": "reference_support_not_identified",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-19-freeze-dry-run",
+   "section": "\u00a718.1, \u00a718 stage 12 (A6)",
+   "area": "pre-freeze",
+   "meaning": "the \u00a718.1 record the audit would license is assembled without being written and every empty field is explained by the status that empties it, before the freeze",
+   "runtime": "dci1v7.stages.freeze.assert_field_emptiness_explained",
+   "impl": "dci1v7.run.prefreeze_run.artifact_checks",
+   "field": "PREFREEZE_AUDIT.artifact_checks",
+   "consumer": null,
+   "scenario": "reference_support_not_identified",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-34-D6-continues",
+   "section": "\u00a734 D6, \u00a78.1 (A8)",
+   "area": "pre-freeze",
+   "meaning": "a replication that lost its reference set continues on its base arm through the freeze, confirmatory generation, both analyses and the final report, with the base-arm estimands IDENTIFIED and every reference-dependent member NOT_IDENTIFIED",
+   "runtime": "dci1v7.protocol.identification.assert_not_rehabilitated",
+   "impl": "dci1v7.run.analysis_run.unmasked_payload",
+   "field": "UNMASKED_ANALYSIS.estimands",
+   "consumer": "FINAL_REPORT",
+   "scenario": "reference_support_not_identified",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
    "id": "R-13.15-support",
    "section": "\u00a713.15, \u00a734 D6",
    "area": "reference selection",
@@ -2255,5 +2564,9 @@
    "detail": "",
    "agrees": true
   }
- ]
+ ],
+ "execution": {
+  "workers": 5,
+  "mode": "parallel"
+ }
 }

@@ -20,16 +20,36 @@ from tests_v7 import scenarios as SC
 from tests_v7 import synthetic_lifecycle as SL
 
 
+D6_SCENARIOS = ("reference_support_not_identified", "c4_lost_core_kept",
+                "reference_checks_conditional", "full_support_unchanged")
+
+
 @pytest.fixture(scope="module")
 def d6(tmp_path_factory):
-    SL.resolved_manifest()
+    """The four D6 scenarios, each in its own process and temporary root.
+
+    They are independent branches --- each builds the signed prefix it
+    needs and nothing is shared between them --- so running them in
+    parallel changes no verdict; ``run_scenarios_parallel`` returns them in
+    the order named whatever the completion order. Serial, this fixture was
+    the suite's long pole (~22 minutes); the wall clock is now the longest
+    branch. ``DCI1_V7_SCENARIO_WORKERS=1`` restores the serial path.
+    """
+    import os
+
+    workers = int(os.environ.get("DCI1_V7_SCENARIO_WORKERS", "4"))
     root = tmp_path_factory.mktemp("d6")
-    try:
-        yield {name: SC.run_scenario(name, root / name) for name in (
-            "reference_support_not_identified", "c4_lost_core_kept",
-            "reference_checks_conditional", "full_support_unchanged")}
-    finally:
-        SL.restore()
+    if workers <= 1:
+        SL.resolved_manifest()
+        try:
+            yield {name: SC.run_scenario(name, root / name)
+                   for name in D6_SCENARIOS}
+        finally:
+            SL.restore()
+        return
+    out = SC.run_scenarios_parallel(D6_SCENARIOS, workers=workers,
+                                    root=root)
+    yield out["results"]
 
 
 @pytest.mark.slow
