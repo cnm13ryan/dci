@@ -58,9 +58,8 @@ while true; do
     ARGS+=(--device "$DEVICE" --environment "$ENV_GPU")
     log "WAIT card $DEVICE for $NEXT"
     flock "$DLOCK" bash -c '
-      log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$1 gpu$2] $3" | tee -a "$4"; }
-      log "$1" "$2" "START $5 (attempt $6) -> $7" "$8"
-      shift 8; "$@"'  _ "$MODEL" "$DEVICE" _ "$DRV" "$NEXT" "$((attempts+1))" "$OUT" \
+      echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$1 gpu$2] START $3 (attempt $4) -> $5" | tee -a "$6"
+      shift 6; exec "$@"' _ "$MODEL" "$DEVICE" "$NEXT" "$((attempts+1))" "$OUT" "$DRV" \
       $PY -m dci1v7.run.cli "${ARGS[@]}" > "$OUT" 2>&1
     code=$?
   else
