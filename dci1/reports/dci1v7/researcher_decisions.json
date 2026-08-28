@@ -1,0 +1,559 @@
+{
+ "_what": "The §34 decisions the researcher has closed for DCI-1 v7, durably. `dci1/src/dci1v7/protocol/decisions.py` reads this file at import and applies every entry, so `value_of` returns what the researcher decided rather than what a module literal happened to say. The v7 registration manifest binds this file's hash.",
+ "_not": "This is not the registration. §34 requires all twenty-six closed before stage 1 can pass, and `manifest.signing_blockers` reports every remaining refusal by name. A closure here is one decision taken, recorded, and reproducible.",
+ "_rules": [
+  "every entry carries id, value, evidence, decided_by and decided_on; `recorded_closures` refuses one that does not",
+  "a value is admissible only if the decision offers it; `close` refuses any other",
+  "a decision appears once; a change to a closed decision is a §32 amendment, never a second entry",
+  "D0-D22, D24 and D25 are carried from v6's record (which carried D0-D18 from v5's): each is re-taken here as a researcher act with a `carried_from` block naming the record it came from",
+  "D23 and D26 are withdrawn with their consumer (v7 A5) and are not closable; `_withdrawn` says why",
+  "D27 is v7's own and is closed on v7's evidence alone",
+  "the hash the manifest binds covers the closures and the open_items resolutions together"
+ ],
+ "_withdrawn": {
+  "D23": "what the Gate-2.75 residual allowance MEANS. It parameterised a projected-interval verdict against an absolute band; v7 A1 withdraws the verdict and no function reads the reading",
+  "D26": "how large the Gate-2.75 residual allowance IS. Same consumer, same withdrawal; the measured 0.0142 remains on v6's record as development evidence about the authored sub-split"
+ },
+ "_v7_specific_decisions_recorded_here": [
+  "D27 = retain_the_probe_stage (acceptance; v7 A5, §34 D27)",
+  "D19-D22, D24, D25 re-taken at v6's adopted values, each with carried_from -> dci1v6",
+  "D0-D18 re-taken at v6's adopted values (themselves v5's), each with carried_from -> dci1v6 -> dci1v5",
+  "U2 = A2, P1 = confirmed, U4 = E2 re-resolved at v6's values, each with carried_from -> dci1v6 -> dci1v5"
+ ],
+ "source": "the v7 adoption instruction of 2026-08-28, which directed that the still-unadopted v7 draft --- as revised by the 2026-08-28 boundary audit (V10) --- be adopted, registered and executed as the prospective confirmatory study, with every remaining §34 decision resolved without changing a registered scientific rule; taken together with dci1/reports/dci1v7/development/researcher_decisions_PROPOSAL.json, whose values were checked one by one against v6's adopted record before being re-taken here",
+ "recorded_on": "2026-08-28",
+ "closures": [
+  {
+   "id": "D0",
+   "value": "adopt",
+   "evidence": "The researcher approves adoption conditionally: every D0-D18 has a concrete value, U2 is resolved at A2, P1 is confirmed, Calibration-B is frozen and valid, the preregistration, the spec and the code agree, and `manifest.signing_blockers()` is empty. §30's declaration --- that v5's matching rule and its focal grid extension were both fitted to v4r4 measurements --- is attached permanently and is not weakened by adoption. The alternative, `do_not_adopt`, was constructed and costed: it leaves the primary companion-specific estimands unidentified, which is the v4r4 outcome v5 exists to repair. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: v6 is a distinct registration and D0 is its own adoption act. §30's DEVELOPMENT_EVIDENCE declaration is carried and widened: v6 additionally declares that GATE_2_75_COMPOSED_PROBE, PS1-PS3, RESIDUAL_SD and §34 D26's magnitude were all chosen after reading the closed v5 record (preregistration §4). `signing_blockers` now raises NOT_ADOPTED when D0 is closed at `do_not_adopt`, so the refusing value refuses. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D1",
+   "value": "four_models_56_cells",
+   "evidence": "`d1_arm_compute_decision.md`, derived in the researcher's registered order --- essential arms, then desired claims, then required models, then budget --- and computed from dci1v5's own constants by `tools/v5_compute_budget.py`. All five arms: base and core because the primary estimand is a core-pool counterfactual; spectrum because delta_difficulty is a registered F1 member, so dropping it would narrow every primary simultaneous interval including D(B<-A)'s; near-form because D18 is closed at `precondition` and it is also the only thing that identifies gamma_tier under U2's A2; broad-class because the researcher approved the full design. Four models at 384 blocks and 8 draws per cell. The three cheaper options are constructed, costed and each records what it gives up. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: `design.cells.admitted_arms_from_decision` and `design.budget.registered_budget` reproduce the five arms, 56 cells and the generation total under this closure. v6 adds GATE_2_75's rows to the study budget and changes no confirmatory cell. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D2",
+   "value": "no_load_three",
+   "evidence": "§5 excludes a third simultaneous load and the standing proposal keeps that exclusion. The memo's Gamma is the quantity a load-three arm would make estimable; it licenses no registered claim level, and admitting it would change the derived cell set that D1's budget is computed over. No red-team finding contests the exclusion. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: §5's exclusion is unchanged in v6 and `add_load_three` has no implementation; it is recorded under `unimplemented_alternatives` and `close()` refuses it by name. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D3",
+   "value": "author_before_adoption",
+   "evidence": "R24 records that authoring the 96 questions is a hard prerequisite and R11 that §13.7 is only a stability test if the second split is naive. The researcher directed that the bank be authored NOW, prospectively, and gave the reason: authoring after Calibration-A outcomes are known would let the second estimate agree with the first because it was written to. The bank is `dci1/src/dci1v5/topics/data/calibration_b_v5.json`; its provenance, hash and allocation are in `dci1v5.topics.calibration_b`. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: v6 carries v5's Calibration-B bank unchanged; `topics.calibration_b` holds its provenance and hash and the bank hash binds into v6's manifest. §34 D20's measured sub-split transfer makes the authored half's offset a quantity v6 records per probed entry rather than assumes. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption brief 2026-08-22",
+     "decided_on": "2026-08-22",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D4",
+   "value": "approve_eight",
+   "evidence": "`d4_marker_audit.md` audited all eight against the researcher's eight criteria, item by item, on four v4r4 replications. No marker was REJECTED: none violates a registered §7.6 rule, none is mechanically entailed by the stem, none can violate B at any admissible severity (the structural rule is <= 7 letters and the grid starts at m = 7), and every verifier is deterministic and leak-free. The researcher reviewed the three recorded judgements --- `though`'s proximity to `however` and its two syntactic frames, `namely`'s possible appositive interaction with word length, `overall`'s natural rate --- and accepts them as limitations rather than grounds for substitution. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: the eight §7.10 markers are unchanged in v6. v6 adds three `probe_only` families (§34 D24) that carry no new marker and no new statistic, and `assert_library_sizes` asserts the selectable pool is unmoved at v5's 37 families, 326 round-0 and 632 declared severities. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D5",
+   "value": "lexicographic",
+   "evidence": "The standing proposal, uncontested. §13's validity requirements are applied as a lexicographic conjunction: every requirement is a precondition and none is tradeable against another. A weighted composite would need weights, and the only data available to fix them is the v4r4 development set --- so the weights would be fitted to the predecessor study and offered as a prospective rule, which is the defect §30 exists to name. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: §13's lexicographic conjunction is unchanged in v6 and `weighted_composite` has no implementation. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D6",
+   "value": "identification_status",
+   "evidence": "R16 observes that three of four v4r4 replications spent a full confirmatory budget on a design that could not answer the primary question. The researcher accepts that cost rather than discarding the quantities that ARE identified: an unmet §13.15 support requirement continues the replication and marks the reference-dependent estimands NOT_IDENTIFIED, irreversibly, for that replication. D(B<-A), D(A<-B), Lambda, the F11 order contrasts, Delta_near and Delta_broad do not depend on the primary reference set and are estimated as usual. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: unchanged in v6, and it now also governs §12.6's calibrated re-reading (preregistration A3): a coverage failure at the calibrated iota_A is a design-time failure under this same disposition, with no new status. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption brief 2026-08-22",
+     "decided_on": "2026-08-22",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D7",
+   "value": 0.9,
+   "evidence": "The standing proposal, with R13's objection recorded and not answered by evidence. 0.90 is the interaction-gate ceiling on kappa(R|B); R13 observes that it sits inside a gap observed on twenty development points, which is a coincidence and not a derivation. The researcher adopts it as a registered convention and the coincidence is recorded beside it, exactly as §34 D8's 0.75 and D17's 0.50 are. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: 0.90 is unchanged in v6; 0.85 and 0.95 have no implementation. R13's objection is carried forward on the record unanswered. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D8",
+   "value": 0.75,
+   "evidence": "The standing proposal, uncontested: 0.75 on the point estimate and 0.85 on the Wilson upper bound. Point-and-Wilson is the convention §13.5 already uses and the one §34 D17's floor now matches, so the study carries one reading of a ceiling rather than three. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: 0.75 on the point and 0.85 on the Wilson upper bound, unchanged in v6. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D9",
+   "value": "unavailable",
+   "evidence": "The standing proposal. No independent annotator is available for v5, so §10.3's human-agreement basis can never supersede §10.5's, and the measurement basis is `deterministic_measurement_validated` with its scope sentence attached permanently. Recording `available` and then failing to supply one would leave the study claiming a basis it never established. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: no independent annotator is available for v6 either, so §10.3 can never supersede §10.5's basis and the scope sentence binds into v6's manifest. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D10",
+   "value": "one_companion",
+   "evidence": "The standing proposal, uncontested. The broad-class arm carries one companion, so no class-level claim is made: one companion identifies Delta_broad and F10 and nothing about the class as a population. Several companions would license a class claim the study has not registered a multiplicity family for. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: the broad-class arm is unchanged in v6 and no class claim is registered. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D11",
+   "value": "carry",
+   "evidence": "The standing proposal, with §6.2's statement of the residual. The 384 confirmatory topics are carried from v4, which makes them not naive with respect to the predecessor study; re-authoring them would cost the comparability §30's reuse ledger records and would not make them naive with respect to v5's own calibration. The residual is declared rather than removed. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: v6 carries the same 384 confirmatory topics with the same §6.2 residual statement, and the reuse ledger records the carry. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D12",
+   "value": "direction_and_sesoi_only",
+   "evidence": "The standing proposal, uncontested. delta_difficulty and the F11 order contrasts are read on direction and the registered SESOI; the source memo's 0.25 was defined for a difference of composition losses and is not transferred to a difficulty coordinate or to an order contrast, where it would be a threshold nobody derived for the quantity it bounds. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: unchanged in v6. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D13",
+   "value": "primary_tier",
+   "evidence": "The standing proposal, uncontested. F11's order contrasts are primary-tier and license L4b. They are registered prospectively with their own family and their own simultaneous correction, which is what distinguishes a primary-tier family from a secondary one; demoting them would leave a registered claim level with no family to control it. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: unchanged in v6; F11 remains primary-tier and licenses L4b. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D14",
+   "value": "iota_primary",
+   "evidence": "The standing proposal, uncontested. Instructed compliance iota remains the difficulty coordinate, with raw solo compliance secondary and `DIFFICULTY_COORDINATE_DEPENDENT` recorded when the two disagree. The core pool being chance-free removes one motivation for iota but not the coordinate's role in §13.8's caliper, and switching to raw would change which references match A on difficulty --- a change to the selection rule, not to a reporting convention. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: unchanged in v6; iota remains §13.8's caliper coordinate and DIFFICULTY_COORDINATE_DEPENDENT is still recorded on disagreement. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D15",
+   "value": "both_transfer",
+   "evidence": "The standing proposal, registered as contestable, with R2's objection on the record. The memo's 0.10 and 0.25 transfer to a same-form Delta_R on the ground that the memo defined them for the *shape* of the contrast --- a difference of composition losses between the pair and a companion --- rather than for a particular companion pool. R2 holds that a same-form pool makes them a different quantity. The researcher adopts the transfer and records the disagreement rather than suppressing it. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: unchanged in v6, and still registered as contestable with R2's objection on the record. v6 adds no near-form family, so the same-form question D15 turns on is the same question. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D16",
+   "value": "complete_population",
+   "evidence": "R11 observes that restricting Calibration-B to Calibration-A's survivors makes §13.7 a re-confirmation of an already-selected set rather than a test of the candidate landscape's stability, and that calling the two splits independent then overstates what the second buys. The researcher accepts the additional generation and measures the complete registered carried population on both splits. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: `stages.stability.calibration_b_population` returns the complete carried population under this closure. NOTE: v6's register carried v5's PRE-adoption draft proposal `a_survivors` until 2026-08-26; the value closed here is v5's actual adopted one, and it is the more expensive branch by about 35,000 generations per replication. `design.budget.calibration_burden` and the published v6 budget already cost `complete_population`. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption brief 2026-08-22",
+     "decided_on": "2026-08-22",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D17",
+   "value": "floor",
+   "evidence": "`d17_b_strength_decision.md`. The researcher took D17 in principle and has now approved the recommended rule: C1, the chance-compliance ceiling kappa_B(m*) <= 0.50. The quantity is the only candidate that is already registered, already reported at m*, computable with no new generation, defined at the same granularity as B's own verdict, and non-degenerate over the region v5's grid extension opened. The value sits in the widest gap in the whole measured curve: no development model's kappa_B falls between 0.398 (m=12) and 0.586 (m=13), a separation of 0.188 against a next-largest adjacent gap of 0.104, and any theta in [0.40, 0.58) has the same effect on all four. That 0.50 is a round number inside an observed gap is recorded as a coincidence and is NOT offered as support for it --- the derivation is the separation. The threshold is fitted to four models of one predecessor study on one task (DEVELOPMENT_EVIDENCE, §30) and a fifth model could sit anywhere on this curve. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: `stages.regime.assert_construct_floor` applies the floor through `construct_strength.registered_floor`, which reads the `spec` below and carries no literal. NOTE: v6's register carried v5's PRE-adoption draft proposal `no_floor` until 2026-08-26. The floor is one of the three conditions `focal_admissible` conjoins, and P3.1 requires the probed m* to be in that set, so `no_floor` would have admitted an operating point Gate 2 would itself have refused. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption approval 2026-08-23",
+     "decided_on": "2026-08-23",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   },
+   "spec": {
+    "decided_by": "researcher, v5 adoption approval 2026-08-23",
+    "decided_on": "2026-08-23",
+    "derivation": "the widest separation in the measured kappa_B curve: no development model falls between 0.398 (m=12) and 0.586 (m=13), a gap of 0.188 against a next-largest adjacent gap of 0.104, and any theta in [0.40, 0.58) separates the two rungs on all four models. 0.50 is the approximate midpoint of that interval. The roundness of the number and the existence of the gap are recorded and neither is offered as evidence for the value. Source: dci1/reports/dci1v5/d17_b_strength_decision.md, machine-readable evidence dci1/reports/dci1v5/development/d7_b_construct_strength.json (DEVELOPMENT_EVIDENCE, §30).",
+    "marginal_status": "CONSTRUCT_FLOOR_MARGINAL",
+    "quantity": "chance_compliance",
+    "semantics": "point_estimate_refuses_wilson_reported",
+    "value": 0.5
+   }
+  },
+  {
+   "id": "D18",
+   "value": "precondition",
+   "evidence": "R1 observes that v5's core reference pool is same-form with A by construction, so Delta_R near zero is a plausible consequence of the DESIGN, and L3c is the source memo's refutation verdict. The researcher takes the strong version: the strong L3c conclusion --- no pair-specific excess --- requires the near-form arm. Same-form Tier-1 references alone justify only the narrower conclusion, no excess relative to same-form exact-count companions. --- CARRIED INTO v6 (2026-08-26). This decision was taken for v5 and is re-taken here on v6's own record, because a closure belongs to a registration and `protocol/decisions.RECORD_PATH` reads this file and not v5's. The value and the evidence above are v5's, quoted from `dci1/reports/dci1v5/researcher_decisions.json`; what is new is the researcher's judgment that v6 changes nothing that bears on them. Checked against v6's implementation: `analysis.claims.l3c_requires_near_form` applies the precondition under this closure and the near-form arm is in v6's admitted set. NOTE: v6's register carried v5's PRE-adoption draft proposal `not_a_precondition` until 2026-08-26; the value closed here is v5's actual adopted one, and it is the stronger branch. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "decided_by": "researcher, v5 adoption brief 2026-08-22",
+     "decided_on": "2026-08-22",
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "study": "dci1v5"
+    }
+   }
+  },
+  {
+   "id": "D19",
+   "value": "reachability_only",
+   "evidence": "ACCEPTANCE. V6-E01 and V6-E02 are repaired prospectively and `tools/v6_expansion_dryrun.py` replays both rules on the four signed v5 pre-screen tables: v5's mechanism admits no Tier-1 reserve rung anywhere, v6's admits them on every replication. The v5 shortage was therefore confounded by two mechanism defects, so authoring new families now would register constructs that may prove unnecessary --- and §30's precedent would then make v6 the prospective test of those too. §32.1 names 'add a family' among the things a gate failure is not an occasion for. Library extension remains available as a later §32 amendment with an implementation. `reachability_and_new_families` has no branch in this repository and is recorded under `unimplemented_alternatives`. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D20",
+   "value": "calibration_with_measured_transfer",
+   "evidence": "The probe runs on the calibration split and measures every entry on BOTH of §13.7's 96-topic sub-splits, so the realised split-to-split movement is recorded beside the verdict it is an assumption in. The sub-split contrast is not a diagnostic: it is the estimator of the only non-sampling term in the error budget. §6.2 cuts calibration_a and the composed set from one seeded per-area shuffle so those two are exchangeable, while §34 D3's calibration_b is newly authored and is not; paired by instrument on the closed v5 record the residual sd is 0.0284, halved to 0.0142 by the pooling (`reports/dci1v6/precision_design.json`, DEVELOPMENT_EVIDENCE §30). It costs no extra rows, because §13.7 already generates both sub-splits. The alternative `reserved_composed` would spend §6.2's reserved composed set, which §6.2 spends once and keeps for a future uncontaminated rerun, and would leave Gate 4 auditing topics the probe had already touched. `calibration_pooled` was withdrawn on 2026-08-26 and recorded under `unimplemented_alternatives`: `probe_topics` mapped it and the adopted branch to the SAME 192 pooled topics and `_measured_split_transfer` is written either way, so the two produced identical records and were not a choice. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D21",
+   "value": "as_registered",
+   "evidence": "ACCEPTANCE. §13.14 stays exactly as registered: a 24-topic binary test over up to 95 cell x slot entries, so a v6 Gate-4 record is exactly comparable with v5's. The READINESS memo recommended enlarging the composed set and the audit that followed found that branch is NOT EXECUTABLE in this repository: §6.2's sequestered eighth is the only unspent source and it was never materialised here --- `load_bank` carries zero sequestered questions, `dci1v4.topics.sequestered` holds identities and content hashes only, the texts are retained by the researcher outside the repository, and `assert_no_materialisation` refuses any released question colliding with a sequestered hash. Enlarging is therefore an act of authoring topics, a governed §6.2 change, and it spends the reserve §6.2 keeps for a future uncontaminated rerun. `interval_criterion` changes what §13.14 MEANS and breaks comparability with v5's Gate 4. Both are recorded under `unimplemented_alternatives`. The measured cost of leaving §13.14 alone is on the record: a joint topic bootstrap over the two v5 replications whose Gate-4 entries were all inside the band puts the chance that §13.14 nonetheless fires at 0.121 and 0.190 (`reports/dci1v6/precision_design.json`). The precision reasoning moves instead into GATE_2_75's projection, which is new code with no v5 counterpart to be comparable with. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D22",
+   "value": "per_replication",
+   "evidence": "§6.1 registers four replications each analysed separately, with no cross-model scalar carrying a claim, and §15 registers that there is no cross-model multiplicity family --- so there is no registered study-level claim a two-survivor precondition would protect. Under the alternative `two_survivors_before_any`, v6's minimum useful outcome is nothing; under this one it is one model's confirmed or refuted ladder. Two or more independently identified survivors remain required for any REPLICATED or GENERALISED study-level statement, and L5 remains permanently withheld. `run.lifecycle.confirmatory_licensed` implements both branches and this closure selects one. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D24",
+   "value": "probe_only_in_library",
+   "evidence": "One hash, one certification path, one place a reviewer looks. The three stand-ins are authored inside §7.10's library as `PS1` (capital_word, exact count), `PS2` (semicolon, count lower bound) and `PS3` (y_final, rate lower bound), each carrying `probe_only = True`; `assert_selectable` refuses one everywhere a candidate is carried, qualified, calibrated or bound, and `assert_no_probe_only_selection_path` refuses by name any function that would promote one. `assert_library_sizes` asserts the three added counts and that the SELECTABLE pool is unmoved at v5's 37 families, 326 round-0 and 632 declared severities. The alternative `separate_vocabulary` would give the probe instruments a second frozen vocabulary with its own hash and its own certification path, which is a second place a reviewer has to look for the same guarantee. Cost of the adopted branch, recorded: the canonical verifier hash moves --- no v6 record exists at the old one, so nothing is superseded --- and §10.2's declared instrument population is re-certified at the new hash over 674 instances, while the 650-instance v5 evidence does not cover the three added families. READINESS §3.2's S3 requirement that each stand-in declare an unused FEATURE GROUP is DROPPED and must not be reinstated: it would need a new statistic, and `FEATURE_GROUP_IDS` is a sorted tuple whose index `selection._group_order` reads as a reference-selection tie-break, so adding a group would let a probe-only instrument change which reference is selected --- the exact failure `probe_only` exists to prevent. What S2 requires, that no probed cell can be a B+R cell by instrument identity, follows from distinct KINDS and comes free. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D25",
+   "value": "survivor_ladder_only",
+   "evidence": "Registered BEFORE data, so the number of survivors cannot afterwards be read as a licence. The two admissible readings are written out in `run.lifecycle.SINGLE_SURVIVOR_STATEMENTS`, so this closure selects a registered sentence rather than licensing one to be composed once the survivor count is known. `survivor_ladder_only` is the reading that matches §6.1 and §3.2: the claim ladder is per replication, so a surviving replication's own L1-L4 ladder is a complete registered result, and saying nothing at all about it --- the alternative `no_study_level_statement` --- would withhold a claim the design licenses. Nothing above the ladder is said; L5 remains permanently withheld; the other replications' terminal statuses are reported as terminal statuses and never as evidence about the effect. Its caller is `tools/v6_closure.py`, which writes `reports/dci1v6/closure.json`; before 2026-08-26 NOTHING called `study_level_statement` --- the lifecycle is per replication and FINAL_REPORT writes one report per model --- so the closure reached no artifact. --- CARRIED INTO v7 (2026-08-28). Re-taken on v7's own record at the value v6 adopted, because `protocol/decisions` reads this file and a closure on another study's record is evidence, not a closure. v7 changes nothing this decision turns on: the value, its evidence and its consequences are v6's, and v7's A1-A5 touch no admissible value of it (preregistration v7 §1, §7).",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28",
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "decided_by": "researcher, v6 adoption instruction 2026-08-26",
+    "decided_on": "2026-08-26"
+   }
+  },
+  {
+   "id": "D27",
+   "value": "retain_the_probe_stage",
+   "evidence": "Retain. It is the only pre-selection measurement of D(B<-A) and D(A<-B) on 192 topics, it records whether the A arm sits where Delta_R's positive direction is compressed BEFORE any reference is chosen, and its stand-in cells are a structural-risk record of the slot-and-order classes Gate 4 measures. It costs 12,096 rows per replication and decides nothing. Dropping it is a change to §18's sequence with no implementation here --- Taken on v7's own record 2026-08-28: the probe is retained as a recording stage (preregistration v7 A5, §34 D27), with one outcome and no verdict, as `stages/composed_probe` and `revision.V3` implement.",
+   "decided_by": "researcher, v7 adoption instruction 2026-08-28",
+   "decided_on": "2026-08-28"
+  }
+ ],
+ "open_items": [
+  {
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "resolved_by": "researcher, v6 adoption instruction 2026-08-26",
+    "resolved_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "resolved_by": "researcher, v5 adoption approval 2026-08-23",
+     "resolved_on": "2026-08-23",
+     "study": "dci1v5"
+    }
+   },
+   "consequences": [
+    "alpha_f in §11.8's secondary fit ranges over the THREE CORE families; a Tier-2 point sits at the unweighted mean core intercept plus gamma, so the design matrix is 5 parameters over 12 points and full rank.",
+    "gamma_tier is the Tier-2 offset from the difficulty line the three core families define, at equal weight over them.",
+    "Nothing primary moves: sampling, reference selection, the arm set and every primary claim are unchanged. gamma licenses no claim level and F8 is a secondary family.",
+    "A1, A3 and A4 are non-adopted. A4 remains constructed for historical characterisation and is refused in adopted mode; A1 is refused by name as singular; A3 is not constructed.",
+    "§11.8's sentence is amended to name the three core families explicitly, which is the amendment U2 recorded as outstanding."
+   ],
+   "evidence": "`u2_tier_model_decision.md`, with the comparison computed rather than argued: on twelve noiseless points generated from beta = 0.300 and gamma = 0.080 with correlated family levels --- a configuration §13.8 permits, because its caliper matches each reference to A and not the references to each other --- A2 recovers both parameters exactly while A4 inflates beta by 63% and returns a gamma that moves from 0.024 to 0.134 with where the near-form controls happen to sit in difficulty, a quantity §13.9 selects on closeness to A. A1 is not identified at all; A3 would delete gamma_tier, a registered F8 member, which is a §32 amendment to §15 for no gain. Both demonstrations are executed by tests_v5/test_tier_fit.py on every run. --- CARRIED INTO v6 (2026-08-26). Re-resolved on v6's own record, because `protocol/open_items` reads this file. The reading and its evidence are v5's; v6 changes nothing the item turns on --- §11.8's fit form, §7.10's tier admissions and §12.6's eligibility quantity are all carried unchanged --- and both formulations remain constructed in `dci1v6` so the non-adopted one is executed by a test rather than merely present. --- CARRIED INTO v7 (2026-08-28). Re-resolved on v7's own record at v6's value; v7 changes nothing the item turns on (the fit form, the tier admissions and §12.6's eligibility quantity are carried unchanged, preregistration v7 §1).",
+   "id": "U2",
+   "resolution": "A2",
+   "resolved_by": "researcher, v7 adoption instruction 2026-08-28",
+   "resolved_on": "2026-08-28"
+  },
+  {
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "resolved_by": "researcher, v6 adoption instruction 2026-08-26",
+    "resolved_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "resolved_by": "researcher, v5 adoption approval 2026-08-23",
+     "resolved_on": "2026-08-23",
+     "study": "dci1v5"
+    }
+   },
+   "consequences": [
+    "The candidate population is NOT altered to make Tier 3 spectrum-eligible; doing so would be a §32 amendment to the population, to §11.8's fit structure and to the derived cell set.",
+    "CL7 and CL8 are count lower bounds and §13.10 admits budget class to the broad-class slot only, so with the spectrum closed to Tier 3 they are admissible to no design slot. They remain in the instrument population §10.2 measures."
+   ],
+   "evidence": "The researcher confirms the corrected §7.10 wording. Tier 1 and Tier 2 take the core, near-form and spectrum roles the adopted design gives them; Tier 3 takes the broad-class role only and does not become a core-family spectrum rung. This is documentation reconciliation: §7.4's slot table, §13.12's spectrum rule and §11.8's three-families-of-three fit all already excluded a Tier-3 spectrum rung, `taxonomy.assert_tier_admits_slot` already required the core family's tier, and reference_design_spec.json already carried `broad_class_control` alone for Tier 3. Nothing executable changed and no verdict moves. --- CARRIED INTO v6 (2026-08-26). Re-resolved on v6's own record, because `protocol/open_items` reads this file. The reading and its evidence are v5's; v6 changes nothing the item turns on --- §11.8's fit form, §7.10's tier admissions and §12.6's eligibility quantity are all carried unchanged --- and both formulations remain constructed in `dci1v6` so the non-adopted one is executed by a test rather than merely present. --- CARRIED INTO v7 (2026-08-28). Re-resolved on v7's own record at v6's value; v7 changes nothing the item turns on (the fit form, the tier admissions and §12.6's eligibility quantity are carried unchanged, preregistration v7 §1).",
+   "id": "P1",
+   "resolution": "confirmed",
+   "resolved_by": "researcher, v7 adoption instruction 2026-08-28",
+   "resolved_on": "2026-08-28"
+  },
+  {
+   "carried_from": {
+    "study": "dci1v6",
+    "record": "dci1/reports/dci1v6/researcher_decisions.json",
+    "resolved_by": "researcher, v6 adoption instruction 2026-08-26",
+    "resolved_on": "2026-08-26",
+    "carried_into_v6_from": {
+     "record": "dci1/reports/dci1v5/researcher_decisions.json",
+     "resolved_by": "researcher, v5 pre-Gate-2.5 amendment approval 2026-08-24",
+     "resolved_on": "2026-08-24",
+     "study": "dci1v5"
+    }
+   },
+   "consequences": [
+    "§12.6's eligibility predicate is the band §13.4 actually registers, applied to the quantity §13.4 states it on: a pre-screen rung is eligible when its raw solo compliance p_solo(R) lies in [0.10, 0.90] AND its pre-screen solo vacuity is at most 0.10.",
+    "The coverage criterion itself is unchanged and continues to operate on the difficulty coordinate iota, including C1-C4's span and bracketing relative to iota_A. Eligibility selects the rungs; iota positions them.",
+    "E1 is non-adopted. It would have applied §13's band NUMBERS to a quantity §13 does not band, which is a new absolute threshold on iota and therefore a §32 amendment, not a reading.",
+    "The eligible set is now determined, so §12.6's C1-C8 evaluate over a non-empty set, the reserve-expansion loop has a defined trigger, and REFERENCE_SUPPORT_NOT_IDENTIFIED can be reached under a rule the researcher chose.",
+    "No claim level moves and no sampling changes. The two readings could have differed in the admitted arm set and therefore in whether Delta_R is identified, which is why this blocked adoption; under E2 that set is determined by a registered band."
+   ],
+   "evidence": "§13.4's table registers the headroom band V_head on the raw solo compliance p_solo(R) and registers no band on iota; §13.8 constrains iota only through calipers relative to iota_A, which are relative and not absolute. §12.6's sentence 'eligibility as §13's band on iota and its vacuity ceiling' names a band §13 does not carry on iota, so the reading that preserves every registered threshold is the one that applies §13's registered band to §13's registered quantity. Choosing E1 would invent an absolute iota threshold that no section registers. `stages.regime.coverage_eligibility` constructs both formulations by name and `tests_v5/test_execution_path.py` exercises the adopted one on the production path. --- CARRIED INTO v6 (2026-08-26). Re-resolved on v6's own record, because `protocol/open_items` reads this file. The reading and its evidence are v5's; v6 changes nothing the item turns on --- §11.8's fit form, §7.10's tier admissions and §12.6's eligibility quantity are all carried unchanged --- and both formulations remain constructed in `dci1v6` so the non-adopted one is executed by a test rather than merely present. --- CARRIED INTO v7 (2026-08-28). Re-resolved on v7's own record at v6's value; v7 changes nothing the item turns on (the fit form, the tier admissions and §12.6's eligibility quantity are carried unchanged, preregistration v7 §1).",
+   "id": "U4",
+   "resolution": "E2",
+   "resolved_by": "researcher, v7 adoption instruction 2026-08-28",
+   "resolved_on": "2026-08-28"
+  }
+ ]
+}

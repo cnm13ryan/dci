@@ -1,0 +1,766 @@
+{
+ "_provenance": {
+  "development_evidence": [
+   "dci1/reports/dci1v6/closure.json",
+   "dci1/evidence/dci1v6/*/GATE_2_75_COMPOSED_PROBE",
+   "dci1/evidence/dci1v6/*/GATE_4_COMPOSED_HEADROOM"
+  ],
+  "overfitting_declaration": "v7 withdraws the composed-headroom criterion after observing that it ended three of four v6 replications, two of them on B's compliance RISING under A. That is a response to an outcome and is declared as one under \u00a732.2. No quantity in the replacement rule is fitted to a v6 observation: the compression level is 1 - SESOI, the allowance is the Wilson half-width at the registered block count, and the structural-zero rule reads exact boundaries. Retrospective behaviour on v6 is NOT prospective validation; v7 is the prospective test (\u00a730).",
+  "predecessor_protocol": "user-notes/DCI1_preregistration_v6.md",
+  "producer": "dci1/tools/v7_reference_design_spec.py",
+  "protocol": "user-notes/DCI1_preregistration_v7.md"
+ },
+ "_status": "ADOPTED",
+ "_status_is_derived_from": {
+  "adopted": true,
+  "blocking_open_items": [],
+  "decision_record": "dci1/reports/dci1v7/researcher_decisions.json",
+  "decision_record_present": true,
+  "n_decisions": 26,
+  "open_decisions": [],
+  "preregistration": "user-notes/DCI1_preregistration_v7.md",
+  "preregistration_status": "ADOPTED"
+ },
+ "_status_means": "This field is DERIVED from three researcher acts and is never chosen by the producing tool: the preregistration's own `status:` line, whether reports/dci1v7/researcher_decisions.json closes every one of \u00a734's decisions, and whether any \u00a733 item that blocks the manifest is still unresolved. `_status_is_derived_from` records all three. While it reads DRAFT_NOT_ADOPTED, `manifest.assert_documents_adopted` refuses a registration.",
+ "_what_this_is": "The reference-validity and composed-contrast rule for DCI-1 v7, in machine-readable form, DERIVED from the registered implementation by tools/v7_reference_design_spec.py rather than transcribed. A spec that disagrees with the code is not expressible here.",
+ "candidate_library": {
+  "feature_groups": [
+   "b_initial",
+   "capital",
+   "comma",
+   "doubled_letter",
+   "ing_final",
+   "letter_a",
+   "marker_hence",
+   "marker_indeed",
+   "marker_instead",
+   "marker_namely",
+   "marker_overall",
+   "marker_though",
+   "marker_thus",
+   "marker_whereas",
+   "one_letter",
+   "s_final",
+   "semicolon",
+   "sentence",
+   "t_initial",
+   "vowel_initial",
+   "y_final"
+  ],
+  "forms": [
+   "exact_count",
+   "count_budget",
+   "rate_budget",
+   "count_lower_bound",
+   "rate_lower_bound"
+  ],
+  "probe_only_families": {
+   "PS1": {
+    "feature_group": "capital",
+    "form": "exact_count",
+    "ladder": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "rule": "The answer must contain exactly q words that use a capital letter.",
+    "selectable": false,
+    "statistic": "capital_word"
+   },
+   "PS2": {
+    "feature_group": "semicolon",
+    "form": "count_lower_bound",
+    "ladder": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "rule": "The answer must contain at least q semicolon characters.",
+    "selectable": false,
+    "statistic": "semicolon"
+   },
+   "PS3": {
+    "feature_group": "y_final",
+    "form": "rate_lower_bound",
+    "ladder": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     10,
+     12
+    ],
+    "rule": "At least q percent of words must end with the letter y.",
+    "selectable": false,
+    "statistic": "y_final"
+   }
+  },
+  "probe_only_is": "\u00a734 D24. A registered instrument that can never be selected: scored by the same verifiers, hashed into the same verifier_source_hash and certified by the same Gate-1 suites, and refused by `assert_selectable` everywhere a candidate is carried, qualified, calibrated or bound. It reuses a registered counted statistic under a form no selectable family carries, so FEATURE_GROUP_IDS --- whose index `selection._group_order` reads as a reference-selection tie-break --- does not move.",
+  "selectable_families": [
+   "MK1",
+   "MK2",
+   "MK3",
+   "MK4",
+   "MK5",
+   "MK6",
+   "MK7",
+   "MK8",
+   "XC1",
+   "XC2",
+   "XC3",
+   "RF1",
+   "RF2",
+   "RF3",
+   "RF4",
+   "RF5",
+   "RF6",
+   "RF7",
+   "RF8",
+   "RF9",
+   "RF10",
+   "RF11",
+   "RF12",
+   "CR1",
+   "CR2",
+   "CR3",
+   "CR4",
+   "CR5",
+   "CR6",
+   "CR7",
+   "CR8",
+   "CR9",
+   "CR10",
+   "CR11",
+   "CR12",
+   "CL7",
+   "CL8"
+  ],
+  "sizes": {
+   "declared_severities": 656,
+   "families": 40,
+   "instruments": 674,
+   "probe_only_families": 3,
+   "probe_only_severities": 24,
+   "round_0_severities": 350,
+   "selectable_declared_severities": 632,
+   "selectable_families": 37,
+   "selectable_round_0_severities": 326,
+   "verifiers": 42
+  },
+  "statistics": [
+   "marker_thus",
+   "marker_hence",
+   "marker_though",
+   "marker_whereas",
+   "marker_indeed",
+   "marker_namely",
+   "marker_instead",
+   "marker_overall",
+   "b_initial",
+   "ing_final",
+   "one_letter",
+   "doubled_letter",
+   "comma",
+   "capital_char",
+   "capital_word",
+   "letter_a",
+   "y_final",
+   "t_initial",
+   "s_final",
+   "vowel_initial",
+   "sentence",
+   "semicolon"
+  ],
+  "tiers": {
+   "tier_1": [
+    "MK1",
+    "MK2",
+    "MK3",
+    "MK4",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8"
+   ],
+   "tier_2": [
+    "XC1",
+    "XC2",
+    "XC3"
+   ],
+   "tier_3": [
+    "RF1",
+    "RF2",
+    "RF3",
+    "RF4",
+    "RF5",
+    "RF6",
+    "RF7",
+    "RF8",
+    "RF9",
+    "RF10",
+    "RF11",
+    "RF12",
+    "CR1",
+    "CR2",
+    "CR3",
+    "CR4",
+    "CR5",
+    "CR6",
+    "CR7",
+    "CR8",
+    "CR9",
+    "CR10",
+    "CR11",
+    "CR12",
+    "CL7",
+    "CL8"
+   ]
+  }
+ },
+ "composed_contrast": {
+  "boundary_allowance_level": 0.95,
+  "compression_level": 0.9,
+  "direction_outcomes": [
+   "A_HARMS_MORE",
+   "A_COMPARATIVELY_BETTER",
+   "DIRECTION_UNRESOLVED"
+  ],
+  "gate4_outcomes": [
+   "PASS"
+  ],
+  "gate4_stage": "GATE_4_COMPOSED_CONTRAST",
+  "module": "dci1v7.analysis.boundary",
+  "not_projected_members": [
+   "delta_difficulty"
+  ],
+  "projected_families": [
+   "F1",
+   "F2",
+   "F3",
+   "F4",
+   "F9",
+   "F10",
+   "F11"
+  ],
+  "proximity_band": [
+   0.05,
+   0.95
+  ],
+  "proximity_band_is": "DESCRIPTIVE: classifies a cell as near a floor or ceiling on a record; gates nothing",
+  "readings": {
+   "arm_at_boundary": "a constituent cell is at an exact boundary; the decision interval is widened, in the open direction only, by that constituent's weight times the 95% Wilson half-width at the block count (about 0.010 at 384 blocks)",
+   "range_compressed": "for a two-arm contrast with observed arm levels L_P and L_N, the positive direction cannot reach +SESOI when L_N > 1 - SESOI or L_P < SESOI, and the negative direction cannot reach -SESOI when L_P > 1 - SESOI or L_N < SESOI; the compressed direction and the arm that closes it are recorded on the statement",
+   "structural_zero": "every cell the contrast differences sits at the SAME exact boundary (0 or 1 in every block): the contrast is 0 with zero observed variance, its decision interval is the allowance alone (symmetric about zero), no directional classification is reachable, and an equivalence-type reading is licensed exactly when that interval satisfies the registered rule (L3c at 384 blocks; nothing at Gate 4's 24 topics). Revised 2026-08-28 by the \u00a713.14 boundary audit (V10)"
+  },
+  "section": "v7 \u00a713.14",
+  "sesoi": 0.1,
+  "statuses": [
+   "COMPOSED_CONTRAST_STRUCTURAL_ZERO",
+   "COMPOSED_ARM_AT_BOUNDARY",
+   "COMPOSED_CONTRAST_RANGE_COMPRESSED"
+  ],
+  "terminal_statuses_withdrawn": [
+   "COMPOSED_HEADROOM_FAILURE",
+   "COMPOSED_HEADROOM_UNREACHABLE"
+  ],
+  "terminates": false,
+  "where_the_readings_run": [
+   "GATE_2_75_COMPOSED_PROBE: D(B<-A), D(A<-B), Lambda, Ord_A, Ord_B on the 192 calibration topics",
+   "GATE_4_COMPOSED_CONTRAST: every projectable registered contrast on \u00a76.2's 24 composed topics",
+   "UNMASKED_ANALYSIS: the same, realised on the 384 confirmatory blocks; the decision rules read the widened interval and the statuses attach to the statement"
+  ],
+  "withdrawn_reasons": {
+   "COMPOSED_HEADROOM_FAILURE": "v5/v6 \u00a713.14: a registered cell type outside [0.05, 0.95] on any constraint ended the replication. Withdrawn in v7 (A1): a marginal composed rate at a boundary is a property of one arm and the estimand is a paired contrast; what a boundary does to the contrast is recorded by analysis/boundary.py and terminates nothing. gemma-3n-e4b-it's v6 termination on solo:CL = 0.958 stands as a v6 outcome under v6's rule",
+   "COMPOSED_HEADROOM_UNREACHABLE": "v6 A5/A13: a determinate probe entry whose projected Gate-4 interval left [0.05, 0.95] ended the replication at Gate 2.75. Withdrawn in v7 (A1) for the same reason; both v6 Qwen terminations --- B's compliance RISING under A toward the ceiling --- stand as v6 outcomes under v6's rule"
+  }
+ },
+ "composed_probe": {
+  "cell_types": [
+   "unconstrained",
+   "solo:A",
+   "solo:B",
+   "solo:P1",
+   "solo:P2",
+   "solo:P3",
+   "pair:A+B",
+   "pair:B+A",
+   "pair:B+P1",
+   "pair:P1+B",
+   "pair:B+P2",
+   "pair:P2+B",
+   "pair:B+P3",
+   "pair:P3+B",
+   "pair:A+P1",
+   "pair:P1+A",
+   "pair:P1+P2",
+   "pair:P2+P1"
+  ],
+  "contrasts_recorded": {
+   "cross": [
+    "Ord_A",
+    "Ord_B",
+    "Ord_Lambda"
+   ],
+   "outcome_first": [
+    "D(B<-A)",
+    "D(A<-B)",
+    "Lambda"
+   ],
+   "outcome_second": [
+    "D(B<-A)",
+    "D(A<-B)",
+    "Lambda"
+   ]
+  },
+  "declared_refusals": {
+   "no_composed_rate_terminates_a_replication": "v7 \u00a713.14: the (0.05, 0.95) band is descriptive. No entry of any kind, at any level, ends the replication here; COMPOSED_HEADROOM_UNREACHABLE is withdrawn and has no raise path in this package (tests_v7 asserts the converse of A8 for it)",
+   "no_contrast_here_licenses_a_claim": "every contrast on this record is a projection on the calibration topics, labelled PROJECTION_NOT_REGISTERED_FOR_INFERENCE and read by no rule. The registered estimate is the confirmatory one",
+   "no_measurement_is_reused_across_different_cases": "the cells this stage reads off the Gate-2 record instead of drawing again are read only when the topic identifiers and the draw count are identical; `shared_cell_verdict` checks that and records the reason either way. Nothing is reused across topic sets",
+   "no_path_back_to_this_stage_exists": "the record is write-once and no later stage has a path back here; assert_transition_legal and assert_no_post_freeze_mutation enforce it",
+   "no_pool_is_chosen_by_a_composed_outcome": "\u00a730: Gate 2 records a kappa(R|B) column and Gate 2.5 a \u00a713.1 qualified pool at the frozen m*, both signed before this stage generates a row. This stage selects nothing --- not a severity, not a pool --- so no composed outcome can reach either",
+   "no_reference_is_read_or_selected_here": "\u00a713.11: the probe runs before GATE_3A. No reference exists, no selection record is read, and no probed cell is a B+R cell",
+   "no_reselection_of_the_operating_point_exists": "A13: m* is frozen by \u00a712.3 at GATE_2_FOCAL_CALIBRATION and this stage has no branch that returns a different one. `probe_disposition` refuses a table carrying any severity but m*, `assert_m_star_unmoved` checks m_star_in == m_star_out on the producing path, and `gates_run.effective_m_star` checks the written record against Gate 2's on every downstream read",
+   "no_standin_entry_ends_a_replication": "a stand-in-dependent entry is classified for proximity and recorded under `standin_proximity`; an instrument that can never be selected as a reference decides nothing, and in v7 neither does a determinate one",
+   "no_standin_severity_depends_on_the_operating_point": "each stand-in is placed at the severity nearest Gate 2's iota_A inside \u00a713.4's band, on its own solo ladder. iota_A does not depend on m*, so the companion a probed cell carries is fixed by a quantity the operating point cannot move",
+   "no_substitution_or_backup_promotion": "nothing is substituted, promoted, widened or re-selected. This stage has one outcome, PASS, and records what it measured",
+   "the_operating_point_was_frozen_before_any_composed_row": "Gate 2 selects m* from B's solo curve and records `operating_point_search_order` --- \u00a712.3's own preference over `focal_admissible` --- and Gate 2.5 records which severities could meet \u00a713.15's five-family minimum. Both are signed before this stage generates a row, and this stage reads the head of that order only to check that Gate 2 and Gate 2.5 agree about m*"
+  },
+  "determinate_slots": [
+   "A",
+   "B"
+  ],
+  "gate4_exposure_classes": {
+   "composed:companion+companion": {
+    "determinate": false,
+    "gate4_cells": 6,
+    "gate4_entries": 12,
+    "probe_cells": [
+     "pair:P1+P2",
+     "pair:P2+P1"
+    ]
+   },
+   "composed:companion+focal": {
+    "determinate": false,
+    "gate4_cells": 13,
+    "gate4_entries": 26,
+    "probe_cells": [
+     "pair:P1+B",
+     "pair:P2+B",
+     "pair:P3+B"
+    ]
+   },
+   "composed:companion+target": {
+    "determinate": false,
+    "gate4_cells": 3,
+    "gate4_entries": 6,
+    "probe_cells": [
+     "pair:P1+A"
+    ]
+   },
+   "composed:focal+companion": {
+    "determinate": false,
+    "gate4_cells": 13,
+    "gate4_entries": 26,
+    "probe_cells": [
+     "pair:B+P1",
+     "pair:B+P2",
+     "pair:B+P3"
+    ]
+   },
+   "composed:focal+target": {
+    "determinate": true,
+    "gate4_cells": 1,
+    "gate4_entries": 2,
+    "probe_cells": [
+     "pair:B+A"
+    ]
+   },
+   "composed:target+companion": {
+    "determinate": false,
+    "gate4_cells": 3,
+    "gate4_entries": 6,
+    "probe_cells": [
+     "pair:A+P1"
+    ]
+   },
+   "composed:target+focal": {
+    "determinate": true,
+    "gate4_cells": 1,
+    "gate4_entries": 2,
+    "probe_cells": [
+     "pair:A+B"
+    ]
+   },
+   "solo:companion": {
+    "determinate": false,
+    "gate4_cells": 13,
+    "gate4_entries": 13,
+    "probe_cells": [
+     "solo:P1",
+     "solo:P2",
+     "solo:P3"
+    ]
+   },
+   "solo:focal": {
+    "determinate": true,
+    "gate4_cells": 1,
+    "gate4_entries": 1,
+    "probe_cells": [
+     "solo:B"
+    ]
+   },
+   "solo:target": {
+    "determinate": true,
+    "gate4_cells": 1,
+    "gate4_entries": 1,
+    "probe_cells": [
+     "solo:A"
+    ]
+   },
+   "unconstrained": {
+    "determinate": false,
+    "gate4_cells": 1,
+    "gate4_entries": 0,
+    "probe_cells": [
+     "unconstrained"
+    ]
+   }
+  },
+  "n_determinate_entries": 6,
+  "operating_point": {
+   "chosen_at": "GATE_2_FOCAL_CALIBRATION",
+   "chosen_by": "\u00a712.3's registered focal rule on B's solo curve",
+   "enforced_by": [
+    "dci1v7.stages.composed_probe.probe_disposition refuses a probe table carrying any severity but m*",
+    "dci1v7.stages.composed_probe.assert_m_star_unmoved, on the producing path before the record is written",
+    "dci1v7.run.gates_run.effective_m_star, on every downstream read of the operating point"
+   ],
+   "frozen": true,
+   "reselections_permitted": 0,
+   "severities_probed_here": "m* and no other",
+   "what_it_does_not_decide": "WHERE Delta_j and Delta_R are measured, and WHETHER the replication continues. A feasibility measurement that could choose the operating point would be a selection rule fed by composed outcomes (v6 A13); a measurement that could end the replication on a marginal composed rate would be terminating on a property of one arm of a paired contrast (v7 A1).",
+   "what_this_stage_decides": "nothing (v7 A1)"
+  },
+  "outcomes": [
+   "PASS"
+  ],
+  "record_rule": {
+   "decides": "nothing. The record is labelled PROJECTION_NOT_REGISTERED_FOR_INFERENCE and no rule reads it",
+   "standin_dependent_entries": "classified for proximity to the descriptive band and recorded under `standin_proximity`; they enter no contrast and decide nothing",
+   "what": "the paired per-topic contrasts D(B<-A), D(A<-B) and Lambda in each configuration and Ord_A, Ord_B, Ord_Lambda across them, formed from the six determinate entries on the calibration topics; a topic bootstrap with one index draw per replicate; the v7 \u00a713.14 boundary reading of each; and the projected confirmatory half-width of each at the registered M and block count"
+  },
+  "runs_between": [
+   "GATE_2_5_CANDIDATE_QUALIFICATION",
+   "GATE_3A_REFERENCE_CALIBRATION"
+  ],
+  "scope_limits": [
+   "the probe covers every one of Gate 4's ten slot-and-order exposure classes, and `assert_probe_covers_gate4_classes` refuses a shape that does not. What it cannot cover is the *identity* of the companion: the reference in each companion slot is selected two stages later, so the composed contrast a stand-in produces is not the contrast that reference will produce, and no closed measurement bounds the difference. Gate 4 is the first stage that measures the actual references, and it too records rather than decides",
+   "the contrasts here are D(B<-A), D(A<-B), Lambda and the order contrasts Ord_A and Ord_B. Delta_R, Delta_j, Delta_near and Delta_broad need a companion that does not exist yet and are first projected at Gate 4",
+   "the stage measures ONE operating point --- the m* \u00a712.3 froze at Gate 2 --- and cannot move to another. Nothing it measures can stop the replication either: a composed rate at a boundary is a property of one arm, and what it does to the contrast is recorded (v7 \u00a713.14)",
+   "two stand-ins carry the target-with-companion and companion-with-companion classes rather than all three, which measures each class once instead of three times",
+   "every interval here is a topic bootstrap on the 192 calibration topics at M_CAL, and every projected confirmatory half-width is \u00a716.1's form re-combined at the registered M and block count from variance components one block set can only partly separate. Both are projections; \u00a717.3's precision precondition is evaluated on the realised confirmatory interval",
+   "Calibration-B is newly authored (\u00a734 D3) and is not exchangeable with the confirmatory set the way Calibration-A is; the per-entry sub-split transfer is recorded beside every contrast and read by nothing"
+  ],
+  "shared_with_gate2": [
+   "unconstrained",
+   "solo:A",
+   "solo:B"
+  ],
+  "stage": "GATE_2_75_COMPOSED_PROBE",
+  "standin_placement": "each stand-in is probed at the severity of its own solo ladder nearest Gate 2's measured iota_A, inside \u00a713.4's band, because \u00a713.8 matches a reference's iota(R) to iota_A. iota_A does not depend on m*, so the companion a probed cell carries is fixed by a quantity the operating point cannot move. A stand-in with no admissible severity is STANDIN_UNPLACEABLE (v6 A17).",
+  "terminal_statuses": []
+ },
+ "design": {
+  "arms": [
+   "base",
+   "core",
+   "spectrum",
+   "nearform",
+   "class"
+  ],
+  "cells_full_arm_set": 56,
+  "focal_aim": 0.8,
+  "focal_band": [
+   0.6,
+   0.95
+  ],
+  "focal_extension": [
+   15,
+   16
+  ],
+  "focal_grid": [
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "gate4_entries_full_arm_set": 95,
+  "m_cal": 4,
+  "n_cells_by_arm": {
+   "base": 5,
+   "class": 3,
+   "core": 21,
+   "nearform": 9,
+   "spectrum": 18
+  },
+  "slots": [
+   "A",
+   "B",
+   "R1",
+   "R2",
+   "R3",
+   "R1-",
+   "R1+",
+   "R2-",
+   "R2+",
+   "R3-",
+   "R3+",
+   "N1",
+   "N2",
+   "N3",
+   "CL"
+  ],
+  "target_grid": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "topic_sets": {
+   "calibration_a": 96,
+   "calibration_b": 96,
+   "composed": 24,
+   "confirmatory": 384,
+   "prescreen": 24,
+   "sequestered": 96
+  }
+ },
+ "open_decisions": {
+  "count": 0,
+  "ids": [],
+  "n_registered": 26,
+  "why": "closing one is a researcher act recorded at dci1/reports/dci1v7/researcher_decisions.json, and no code may write it"
+ },
+ "researcher_decisions": {
+  "closed": {
+   "D0": "adopt",
+   "D1": "four_models_56_cells",
+   "D10": "one_companion",
+   "D11": "carry",
+   "D12": "direction_and_sesoi_only",
+   "D13": "primary_tier",
+   "D14": "iota_primary",
+   "D15": "both_transfer",
+   "D16": "complete_population",
+   "D17": "floor",
+   "D18": "precondition",
+   "D19": "reachability_only",
+   "D2": "no_load_three",
+   "D20": "calibration_with_measured_transfer",
+   "D21": "as_registered",
+   "D22": "per_replication",
+   "D24": "probe_only_in_library",
+   "D25": "survivor_ladder_only",
+   "D27": "retain_the_probe_stage",
+   "D3": "author_before_adoption",
+   "D4": "approve_eight",
+   "D5": "lexicographic",
+   "D6": "identification_status",
+   "D7": 0.9,
+   "D8": 0.75,
+   "D9": "unavailable"
+  },
+  "hash": "82660e5fb2ca398b0240cb5d9b0aefdb91c6fec34e9496bcba5b50fa00354de3",
+  "non_adopted_alternatives": {
+   "D0": [
+    "do_not_adopt"
+   ],
+   "D1": [
+    "four_models_47_cells",
+    "two_models_56_cells",
+    "384_blocks_m4"
+   ],
+   "D16": [
+    "a_survivors"
+   ],
+   "D17": [
+    "no_floor"
+   ],
+   "D18": [
+    "not_a_precondition"
+   ],
+   "D20": [
+    "reserved_composed"
+   ],
+   "D22": [
+    "two_survivors_before_any"
+   ],
+   "D24": [
+    "separate_vocabulary"
+   ],
+   "D25": [
+    "no_study_level_statement"
+   ],
+   "D3": [
+    "author_after_adoption"
+   ],
+   "D4": [
+    "approve_with_substitution",
+    "reject"
+   ],
+   "D6": [
+    "terminal"
+   ]
+  },
+  "record": "dci1/reports/dci1v7/researcher_decisions.json",
+  "unimplemented_alternatives": {
+   "D10": [
+    "several_companions"
+   ],
+   "D11": [
+    "re_author"
+   ],
+   "D12": [
+    "own_threshold"
+   ],
+   "D13": [
+    "secondary"
+   ],
+   "D14": [
+    "raw_primary"
+   ],
+   "D15": [
+    "neither_transfers",
+    "generic_only"
+   ],
+   "D19": [
+    "reachability_and_new_families"
+   ],
+   "D2": [
+    "add_load_three"
+   ],
+   "D20": [
+    "calibration_pooled"
+   ],
+   "D21": [
+    "enlarge_composed_set",
+    "interval_criterion"
+   ],
+   "D27": [
+    "drop_the_probe_stage"
+   ],
+   "D5": [
+    "weighted_composite"
+   ],
+   "D7": [
+    0.85,
+    0.95
+   ],
+   "D8": [
+    0.5,
+    0.9
+   ],
+   "D9": [
+    "available"
+   ]
+  }
+ },
+ "support_requirements": {
+  "calibrated_iota_a_rule": "\u00a712.6's coverage criterion is re-evaluated at Gate 3A on the CALIBRATION basis, where iota(R), the difficulty coordinate, the solo vacuity and iota_A all come from the same 192 topics at M_CAL draws. A decisive condition lost there is a \u00a713.15 design-time failure under \u00a734 D6. The pre-screen value that \u00a712.6 spent its expansion rounds at is recorded beside it and gates nothing.",
+  "coverage_conditions": [
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8"
+  ],
+  "coverage_decisive": [
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6"
+  ],
+  "coverage_thresholds": {
+   "COVERAGE_MIN_ELIGIBLE_RUNGS": 16,
+   "COVERAGE_MIN_FAMILIES_PER_SIDE": 3,
+   "COVERAGE_MIN_NEAR_FAMILIES": 4,
+   "COVERAGE_MIN_NEAR_RUNGS": 8,
+   "COVERAGE_MIN_RUNGS_PER_STRADDLING_FAMILY": 3,
+   "COVERAGE_MIN_STRADDLING_FAMILIES": 6,
+   "COVERAGE_MIN_TIER12_FAMILIES": 8,
+   "COVERAGE_MIN_TIER12_GROUPS": 6,
+   "COVERAGE_MIN_TIER2_RUNGS": 3,
+   "COVERAGE_MIN_WITHIN_FAMILY_SPAN": 0.4,
+   "COVERAGE_NEAR_CALIPER": 0.15
+  },
+  "evaluated_by": "dci1v7.stages.support.evaluate_support",
+  "min_qualified_families": 5,
+  "n_core_feature_groups": 3
+ },
+ "validity_components": {
+  "_form": "V(R) = V_spec AND V_sat AND V_head AND V_chance AND V_struct AND V_inter AND V_stab AND V_diff. Evaluated lexicographically in that order; the first failing component is the recorded rejection reason and later components are not evaluated.",
+  "chance_max": 0.75,
+  "components": [
+   "V_spec",
+   "V_sat",
+   "V_head",
+   "V_chance",
+   "V_struct",
+   "V_inter",
+   "V_stab",
+   "V_diff"
+  ],
+  "components_documented_at": "dci1v7.stages.validity",
+  "composed_proximity_band": [
+   0.05,
+   0.95
+  ],
+  "composed_proximity_band_is": "DESCRIPTIVE (v7 A1): it classifies a composed cell as near a floor or ceiling on a record and anchors the \u00a713.4/\u00a713.6 derivations; no stage terminates on it",
+  "gate_2_5_components": [
+   "V_spec",
+   "V_sat",
+   "V_head",
+   "V_chance",
+   "V_struct",
+   "V_inter"
+  ],
+  "headroom_band": [
+   0.1,
+   0.9
+  ],
+  "headroom_is_applied_to": "the 95% Wilson interval on the candidate's own topic count, not to the point estimate, so an imprecisely measured candidate cannot sit on the boundary. The (0.05, 0.95) proximity band contracted by 0.05 on each side; the value is unchanged from v5 and the band it was derived from no longer gates.",
+  "instruction_lift_min": 0.2,
+  "reference_vacuity_max": 0.1,
+  "stability_bootstrap_resamples": 10000
+ },
+ "what_this_spec_does_not_decide": [
+  "any \u00a734 decision. This file REPORTS the closures; the record that takes them is dci1/reports/dci1v7/researcher_decisions.json and no code writes it",
+  "whether \u00a76.2's composed set is enlarged (\u00a734 D21): the sequestered eighth is not materialised in this repository, so that branch is an act of authoring topics and not a constant",
+  "where the study runs. m* is chosen at GATE_2_FOCAL_CALIBRATION by \u00a712.3's focal rule and frozen there; GATE_2_75_COMPOSED_PROBE and GATE_4 record and decide nothing"
+ ]
+}
