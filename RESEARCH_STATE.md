@@ -93,7 +93,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
 | **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v6** | **RAN AND CLOSED 2026-08-27, zero survivors of four (§4ak).** `qwen3-4b` and `qwen3-4b-instruct-2507` terminated at Gate 2.75 `COMPOSED_HEADROOM_UNREACHABLE` because **B's compliance rose under A toward the ceiling** (0.747 → 0.891; 0.779 → 0.924); `gemma-3n-e4b-it` at Gate 4 `COMPOSED_HEADROOM_FAILURE` on `solo:CL` = 0.958, a companion's own solo cell; `gemma-3n-e2b-it` passed Gate 4 and terminated at `PREFREEZE_AUDIT` because A16/A17 had edited the registered document and the lifecycle could not bind a post-registration amendment. Both Gemmas had lost `Delta_R` at Gate 3C. All four verdicts stand. [`dci1/reports/dci1v6/CLOSURE.md`](dci1/reports/dci1v6/CLOSURE.md). *Registration history:* ADOPTED and REGISTERED 2026-08-26 (registration after amendment A15; §4ah). Zero behavioural rows at registration. All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness refusal**, not a §28 terminal status (A15); §12.6 drops a rung with no difficulty coordinate from its coverage conditions and records it (A16). Executing: all four registered, qualified and through Gate 1; §4aa–§4aj. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
-| **v7** | **DRAFTED 2026-08-27, not adopted, zero rows (§4ak); §13.14 boundary-audited 2026-08-28 and revised as V10 (§4al).** A superseding registration, not a v6 amendment: v6's §32.3 froze §13 from the first Gate-2.5 record and §32.1 forbids weakening a criterion so that a gate passes. v7 **withdraws** the absolute composed-headroom criterion as a terminal requirement — `COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` leave the vocabulary and no module can raise them — and replaces it with readings of the **contrast**: a structural zero licenses nothing, an arm at an exact boundary widens the decision interval by the Wilson allowance in the open direction, and a direction compressed below the SESOI by the other arm's level is named on the statement. Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` record the paired contrasts by the confirmatory estimators, bootstrapped over topics, and have one outcome. No threshold moves; the estimand layer is byte-identical to v6's. A post-registration amendment is now bindable (A4), the hole that ended `gemma-3n-e2b-it`. [`user-notes/DCI1_preregistration_v7.md`](user-notes/DCI1_preregistration_v7.md), [`dci1/src/dci1v7/`](dci1/src/dci1v7/), [`dci1/reports/dci1v7/READINESS.md`](dci1/reports/dci1v7/READINESS.md) |
+| **v7** | **ADOPTED AND REGISTERED 2026-08-28 (§4am); running as the prospective confirmatory study.** Drafted 2026-08-27 (§4ak); §13.14 boundary-audited 2026-08-28 and revised as V10 before adoption (§4al). A superseding registration, not a v6 amendment: v6's §32.3 froze §13 from the first Gate-2.5 record and §32.1 forbids weakening a criterion so that a gate passes. v7 **withdraws** the absolute composed-headroom criterion as a terminal requirement — `COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` leave the vocabulary and no module can raise them — and replaces it with readings of the **contrast**: a structural zero licenses nothing, an arm at an exact boundary widens the decision interval by the Wilson allowance in the open direction, and a direction compressed below the SESOI by the other arm's level is named on the statement. Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` record the paired contrasts by the confirmatory estimators, bootstrapped over topics, and have one outcome. No threshold moves; the estimand layer is byte-identical to v6's. A post-registration amendment is now bindable (A4), the hole that ended `gemma-3n-e2b-it`. [`user-notes/DCI1_preregistration_v7.md`](user-notes/DCI1_preregistration_v7.md), [`dci1/src/dci1v7/`](dci1/src/dci1v7/), [`dci1/reports/dci1v7/READINESS.md`](dci1/reports/dci1v7/READINESS.md) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -2459,11 +2459,60 @@ registration and is read, with `A_COMPARATIVELY_BETTER` on the statement,
 when A is better than its references. No threshold moves. Detail:
 `CHANGES_SCIENTIFIC.md` (2026-08-28).
 
+### 4am. v7 adopted, registered, and executed as the prospective confirmatory study (2026-08-28)
+
+**Adopted.** On the researcher's instruction of 2026-08-28 the v7 draft — as
+revised by the boundary audit (§4al, V10) — was adopted without any further
+change to a registered rule. `dci1/reports/dci1v7/researcher_decisions.json`
+closes all twenty-six §34 decisions and the three blocking §33 items: D0–D22,
+D24 and D25 re-taken at the values v6's researcher adopted, each with a
+`carried_from` block naming v6's record (and through it v5's), and D27
+(retain the probe as a recording stage, A5) on v7's own evidence; D23 and D26
+are withdrawn with their consumer (A5). Every proposal value was checked one
+by one against v6's adopted record before being re-taken. Both governed
+documents declare `ADOPTED`, the reference-design spec derives `ADOPTED`,
+`CLASSIFICATION` moved, and `plan_registration` reported `can_register` with
+zero blockers. Validation on the adopted tree: `tests_v7` 642 passed,
+`tests_v6` 613 passed, the producer/consumer contract current at 169 fields
+and 0 defects. Adoption commit `ed0446f`.
+
+**Registered.** All four replications hold a signed `PROTOCOL_REGISTERED`
+record under one manifest, at producing commit
+`ed0446ff58d0efc70b7703c162997863a9530768`:
+
+| binding | value |
+|---|---|
+| manifest hash | `969a5b9f1947faddc42809a62377c6a725382e93b8f098f7d6ae98b5eb91ca14` |
+| preregistration | `sha256(path+bytes) = 15fa1786ffbd536253464a486e78f85e338514094e8b8e24df32cdb7c00b82dc` |
+| reference-design spec | `sha256(path+bytes) = 110170d7514f2d1aa20ec2f7a5d33c1f0e4c650f6b683fa301407e9b018708db` |
+| decision record | `82660e5fb2ca398b0240cb5d9b0aefdb91c6fec34e9496bcba5b50fa00354de3`, 26 closed, 0 open; U2 = A2, P1 = confirmed, U4 = E2 |
+| revision changes | V1–V10, 10 of 10 checked and realised |
+| topic split | `c10f17bc5846e1858705af3c8daa21c450b1c63f00618ce0d414181fc8861f10` |
+| amendment chain | empty; `registration/amendments/` is the append-only location the freeze binds (A4) |
+
+**Zero v7 behavioural rows existed at the moment of registration**, verified
+by counting `rows.jsonl` under both roots. v6's evidence enters nowhere:
+`dci1v6` is a foreign study to v7 and no v6 record satisfies a v7 stage.
+
+**Execution.** `dci1/tools/run_v7_replication.sh` drives one replication
+through §18's nineteen stages in registered order on one card, asking the CLI
+for the next stage and stopping only where the lifecycle stops — a §28
+terminal report, or `FINAL_REPORT` written. Two replications share each RX
+7900 XTX as two independent TP=1 lanes (`gemma-3n-e2b-it` and `qwen3-4b` on
+card 0, `gemma-3n-e4b-it` and `qwen3-4b-instruct-2507` on card 1); the
+backend's per-device flock is the arbiter. Nothing in the driver reads an
+outcome or passes an argument that changes what is measured. Per-replication
+outcomes are recorded here as they are reached and closed in
+`dci1/reports/dci1v7/closure.json` at the end.
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: v7's §13.14 boundary
+whether old and new remain comparable. Most recent: v7 adopted and registered
+on 2026-08-28 at commit `ed0446f` — twenty-six decisions closed at v6's carried
+values plus D27, zero rows at registration, four replications running — in
+§4am. Before it: v7's §13.14 boundary
 machinery audited on the production interval procedure (39,000 simulated
 experiments) — the Wilson allowance kept as necessary, the structural-zero
 veto withdrawn as V10, Gate 4 shown non-adaptive, the sign convention
@@ -2528,7 +2577,9 @@ and §4p.
 | what v5 adopted, item by item, and what comes next | `dci1/reports/dci1v5/v5_adoption_checklist.md` |
 | why v7 exists, and the statistical argument for estimating the contrast rather than gating the arms | `dci1/reports/dci1v7/READINESS.md`, `user-notes/DCI1_preregistration_v7.md` |
 | whether v7's boundary rule is statistically valid, measured on the production procedure | `dci1/reports/dci1v7/boundary_audit/DECISION_MEMO.md`, `dci1/tools/v7_boundary_audit.py` |
-| the v7 implementation, its executable change list, and what it cannot run until adopted | `dci1/src/dci1v7/protocol/revision.py`, `dci1/src/dci1v7/analysis/boundary.py`, `dci1/tests_v7/` |
+| the v7 implementation and its executable change list | `dci1/src/dci1v7/protocol/revision.py`, `dci1/src/dci1v7/analysis/boundary.py`, `dci1/tests_v7/` |
+| every v7 §34 closure, its value, its evidence, who took it and where it was carried from | `dci1/reports/dci1v7/researcher_decisions.json` |
+| how v7 was run, replication by replication, and how it closed | `dci1/tools/run_v7_replication.sh`, `dci1/reports/dci1v7/execution_logs/`, `dci1/reports/dci1v7/closure.json` |
 | how v6 closed, replication by replication | `dci1/reports/dci1v6/CLOSURE.md`, `dci1/reports/dci1v6/closure.json`, `dci1/reports/dci1v6/incidents/` |
 | what v6 would have to fix, and what is still the researcher's | `dci1/reports/dci1v6/READINESS.md`, `dci1/reports/dci1v6/readiness_evidence.json` |
 | the v6 implementation, and why it cannot run | `dci1/src/dci1v6/protocol/revision.py`, `dci1/src/dci1v6/protocol/decisions.py`, `dci1/tests_v6/` |
