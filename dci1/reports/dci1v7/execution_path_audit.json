@@ -1398,7 +1398,7 @@
    "blocked_before_retirement": {
     "refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"
    },
-   "retired_record_hash": "4e77726891a8657778a41178a584c4de5b9b8de08de7be7ea5f1b9be4573c8ea",
+   "retired_record_hash": "883ef9185ea3c6974dfe993d0581ee919bf8f29508e4fc67c67243a31ea65322",
    "retained_bytes_identical": true,
    "live_path_cleared": true,
    "transition_outcomes": [
@@ -1408,7 +1408,7 @@
    ],
    "stage_one_outcome": "PASS",
    "bound_into_the_manifest": [
-    "4e77726891a8657778a41178a584c4de5b9b8de08de7be7ea5f1b9be4573c8ea"
+    "883ef9185ea3c6974dfe993d0581ee919bf8f29508e4fc67c67243a31ea65322"
    ],
    "expected": "refused, retired, then PASS with the hash bound"
   }
@@ -2007,7 +2007,7 @@
    "id": "R-12.6-disposition",
    "section": "\u00a712.6",
    "area": "expansion",
-   "meaning": "unmet after the rounds: REFERENCE_SUPPORT_NOT_IDENTIFIED at design time, and the replication runs without the core and spectrum arms",
+   "meaning": "unmet after the rounds (v7 A7): a core condition (C1, C3, C5, C6) unmet is REFERENCE_SUPPORT_NOT_IDENTIFIED at design time and the replication runs without the core and spectrum arms; a spectrum condition (C2, C4) unmet with the core conditions met is DIFFICULTY_SUPPORT_NOT_IDENTIFIED and drops the spectrum arm alone; neither is terminal",
    "runtime": "dci1v7.stages.regime.run_expansion",
    "impl": "dci1v7.run.gates_run.gate3c_payload",
    "field": "REGIME_SCREEN.identification_statuses",
@@ -2566,7 +2566,6 @@
   }
  ],
  "execution": {
-  "workers": 5,
-  "mode": "parallel"
+  "workers": 5
  }
 }

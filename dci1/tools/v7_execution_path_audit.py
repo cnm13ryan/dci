@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Prove that the production path executes the registered rules.
 
-    python3 tools/v7_execution_path_audit.py            # write the report
-    python3 tools/v7_execution_path_audit.py --check    # fail if stale
-    python3 tools/v7_execution_path_audit.py --fast     # skip the scenarios
+    python3 tools/v7_execution_path_audit.py               # write the report
+    python3 tools/v7_execution_path_audit.py --check       # fail if stale
+    python3 tools/v7_execution_path_audit.py --fast        # the walk only, no conditional scenarios
+    python3 tools/v7_execution_path_audit.py --workers 8   # scenario processes at once (default 5)
 
 Four defects in a row had the same shape: the preregistered rule existed, the
 helper implementing it existed, unit tests covered it, and the production
@@ -29,6 +30,13 @@ takes*. That is the question here, and it is asked four ways at once:
 A rule that fails any of the four is reported with the one it failed. The
 report is a durable artifact because the finding "this rule is unreachable" is
 evidence about the study, not a note about the code.
+
+Every scenario --- the normal walk included --- runs in its own spawned
+process with its own temporary root (``tests_v7.scenarios.run_scenarios_parallel``),
+instrumented there with the ledger's rules. The executed-function set is the
+union over those processes and the scenario results are keyed in the ledger's
+order, so the report does not depend on how many processes ran at once or on
+the order they finished in; only the wall clock does.
 """
 from __future__ import annotations
 
@@ -456,9 +464,12 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "REGIME_SCREEN.expansion", "consumer": None,
      "scenario": "reserve_expansion", "expect": VERIFIED},
     {"id": "R-12.6-disposition", "section": "§12.6", "area": "expansion",
-     "meaning": "unmet after the rounds: REFERENCE_SUPPORT_NOT_IDENTIFIED at "
-                "design time, and the replication runs without the core and "
-                "spectrum arms",
+     "meaning": "unmet after the rounds (v7 A7): a core condition (C1, C3, C5, "
+                "C6) unmet is REFERENCE_SUPPORT_NOT_IDENTIFIED at design time and "
+                "the replication runs without the core and spectrum arms; a "
+                "spectrum condition (C2, C4) unmet with the core conditions met "
+                "is DIFFICULTY_SUPPORT_NOT_IDENTIFIED and drops the spectrum arm "
+                "alone; neither is terminal",
      "runtime": "dci1v7.stages.regime.run_expansion",
      "impl": "dci1v7.run.gates_run.gate3c_payload",
      "field": "REGIME_SCREEN.identification_statuses",
@@ -785,76 +796,29 @@ def _resolve(dotted: str):
         return None
 
 
-def _instrument(names: list[str], seen: set) -> list:
-    """Record every call to the named functions, wherever they are bound.
+def _executed_names(root: pathlib.Path, names: list[str], workers: int
+                    ) -> tuple[set, dict, dict]:
+    """Run the named scenarios, one process each, with the ledger's rules
+    watched.
 
-    The implementation lives in ``tests_v7.scenarios.instrument_calls`` so a
-    scenario worker process instruments exactly what this process does; the
-    serial path calls the same function.
-    """
-    from tests_v7 import scenarios as SC
-
-    return SC.instrument_calls(names, seen)
-
-
-def _executed_names_parallel(root: pathlib.Path, workers: int
-                             ) -> tuple[set, dict, dict]:
-    """The scenarios in separate processes, one temporary root each.
-
-    Same rules, same scenarios, same aggregation as ``_executed_names``:
-    the executed-function set is the union over every scenario process (in
-    the serial path it accumulates across the same scenarios in one
-    process), the payloads and reads are the normal walk's, and the §34
-    values are the ones the walk ran under. Only the wall clock differs.
-    ``tools/v7_audit_equivalence.py`` compares the two artifacts.
+    The executed-function set is the union over the scenario processes;
+    the payloads and reads are the normal walk's; the §34 values are the
+    ones that walk ran under, snapshotted inside it before the harness
+    reopens the registry against the real record --- the claim this
+    supports is what the walk ran under, and a snapshot taken afterwards
+    would report what the researcher recorded whether or not the walk used
+    it. Results are keyed in ``names`` order whatever the completion order.
     """
     from tests_v7 import scenarios as SC
 
     out = SC.run_scenarios_parallel(
-        list(SC.SCENARIOS), workers=workers, root=root / "scenarios",
+        names, workers=workers, root=root / "scenarios",
         instrument=[str(r["runtime"]) for r in RULES])
-    scenarios = {name: {"scenario": name, **result}
-                 if "scenario" not in result else result
-                 for name, result in out["results"].items()}
+    scenarios = out["results"]
     normal = scenarios["normal_full_path"]
     return (out["seen"], {"payloads": normal["payloads"],
                           "reads": normal["reads"],
                           "decisions": out["decisions"]}, scenarios)
-
-
-def _executed_names(root: pathlib.Path, fast: bool) -> tuple[set, dict, dict]:
-    """Run the lifecycle (and the scenarios) with the ledger's rules watched."""
-    from tests_v7 import synthetic_lifecycle as SL
-    from dci1v7.run import field_access
-
-    seen: set[str] = set()
-    SL.resolved_manifest()
-    scenarios: dict = {}
-    undo = _instrument([str(r["runtime"]) for r in RULES], seen)
-    try:
-        if fast:
-            with field_access.recording():
-                walked = SL.walk(root / "walk")
-                reads = field_access.observed()
-            payloads = walked["payloads"]
-        else:
-            from tests_v7 import scenarios as SC
-            scenarios = SC.run_all(root / "scenarios")
-            normal = scenarios["normal_full_path"]
-            payloads, reads = normal["payloads"], normal["reads"]
-        # Captured HERE, before `SL.restore()` reopens the registry against
-        # the real record: the claim this supports is what the walk ran
-        # under, and a snapshot taken afterwards would report what the
-        # researcher recorded whether or not the walk used it.
-        from dci1v7.protocol import decisions as _decisions
-        ran_under = {k: _decisions.value_of(k)
-                     for k in _decisions.DECISION_IDS}
-    finally:
-        for module, attr, original in undo:
-            setattr(module, attr, original)
-        SL.restore()
-    return (seen, {"payloads": payloads, "reads": reads, "decisions":
-                   ran_under}, scenarios)
 
 
 def _status(rule: dict, executed: set, payloads: dict, reads: dict,
@@ -892,13 +856,18 @@ def _status(rule: dict, executed: set, payloads: dict, reads: dict,
     return (CONDITIONAL if rule["expect"] == CONDITIONAL else VERIFIED), ""
 
 
-def build(fast: bool, workers: int = 0) -> tuple[str, dict]:
+def build(fast: bool, workers: int) -> tuple[str, dict]:
+    from tests_v7 import scenarios as SC
+
+    # --fast is the normal walk alone: the payload, consumption and
+    # instrumentation source without the conditional branches, reported
+    # with no scenario table.
+    names = ["normal_full_path"] if fast else list(SC.SCENARIOS)
     with tempfile.TemporaryDirectory() as tmp:
         root = pathlib.Path(tmp)
-        if workers and not fast:
-            executed, run, scenarios = _executed_names_parallel(root, workers)
-        else:
-            executed, run, scenarios = _executed_names(root, fast)
+        executed, run, scenarios = _executed_names(root, names, workers)
+        if fast:
+            scenarios = {}
         payloads, reads = run["payloads"], run["reads"]
 
         from dci1v7.run import contracts
@@ -1012,29 +981,18 @@ def main() -> int:
                         help="one walk, no conditional scenarios")
     parser.add_argument("--workers", type=int, default=5,
                         help="scenario processes to run at once (default 5; "
-                             "0 or --serial runs every scenario in this "
-                             "process, the original path)")
-    parser.add_argument("--serial", action="store_true",
-                        help="run the scenarios in-process, sequentially")
-    parser.add_argument("--out", default=None,
-                        help="directory to write the two artifacts into "
-                             "instead of reports/dci1v7 (for an equivalence "
-                             "run beside the governed report)")
+                             "a walk is ~5.5 GB). Every scenario runs in its "
+                             "own process whatever the count")
     args = parser.parse_args()
-    workers = 0 if args.serial else max(0, args.workers)
+    workers = max(1, args.workers)
     started = time.time()
-    text, machine = build(args.fast, workers=workers)
-    # Recorded in the artifact: how the scenarios were scheduled, which is
-    # deterministic. Printed, not recorded: the wall clock, which is not.
-    machine["execution"] = {"workers": workers or 1,
-                            "mode": "serial" if not workers else "parallel"}
+    text, machine = build(args.fast, workers)
+    # Recorded in the artifact: how many scenario processes ran at once,
+    # which changes no verdict. Printed, not recorded: the wall clock,
+    # which is not deterministic.
+    machine["execution"] = {"workers": workers}
     wall_seconds = round(time.time() - started, 1)
     report, machine_path = REPORT, MACHINE
-    if args.out:
-        out_dir = pathlib.Path(args.out)
-        out_dir.mkdir(parents=True, exist_ok=True)
-        report, machine_path = (out_dir / REPORT.name,
-                                out_dir / MACHINE.name)
     if args.check:
         current = report.read_text() if report.exists() else ""
         if current != text:

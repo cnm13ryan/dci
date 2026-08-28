@@ -23,7 +23,7 @@ import functools
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, Sequence
 
 from dci1v4.errors import IntegrityError, ProtocolError
 
@@ -37,7 +37,7 @@ from dci1v7.run.lifecycle import TerminalStatus
 
 from tests_v7 import synthetic_lifecycle as SL
 
-__all__ = ["SCENARIOS", "run_scenario", "run_all", "prefix_walk",
+__all__ = ["SCENARIOS", "run_scenario", "prefix_walk",
            "run_scenarios_parallel", "instrument_calls"]
 
 
@@ -64,10 +64,11 @@ class Prefix:
                       "bank": self.state["bank"], "repo_root": repo_root}
 
 
-#: One prefix per stop stage, shared by every scenario that branches from it.
-#: Five scenarios branch from GATE_1 and each would otherwise pay for its own
-#: walk to get there; a prefix is signed evidence and copying it is what
-#: `Prefix.branch` does, so sharing it changes nothing a scenario observes.
+#: One prefix per stop stage, shared by every branch a scenario takes from
+#: it. A prefix is signed evidence and copying it is what `Prefix.branch`
+#: does, so sharing it changes nothing a scenario observes. The cache is
+#: per process: every scenario runs in its own process
+#: (`run_scenarios_parallel`), so it never crosses a scenario.
 _PREFIXES: dict[str, Prefix] = {}
 
 
@@ -1216,13 +1217,13 @@ def run_scenario(name: str, root: Path | None = None) -> dict[str, Any]:
     return {"scenario": name, **SCENARIOS[name](here)}
 
 
-# ------------------------------------------ parallel execution (2026-08-28)
+# ------------------------------------- execution: one scenario per process
 
 def instrument_calls(names: Sequence[str], seen: set) -> list:
     """Record every call to the named functions, wherever they are bound.
 
-    Moved here from the audit tool so that a worker process can instrument
-    the same rules the serial audit instruments. It wraps the target
+    A scenario worker instruments the execution-path audit's ledger with
+    this before it runs its scenario. It wraps the target
     functions **and every alias of them** across the loaded ``dci1v7`` and
     ``tests_v7`` modules --- ``from x import y`` binds the object into the
     importing module and a patch on the defining module alone would never be
@@ -1280,9 +1281,8 @@ def _scenario_worker(name: str, root: str, instrument: Sequence[str]
 
     Returns the scenario result (payloads and reads included, for the
     scenario that carries them), the set of instrumented functions that
-    executed here, and the §34 values the walk ran under --- exactly what
-    the serial audit accumulates in-process, gathered per scenario so the
-    parent can merge them deterministically.
+    executed here, and the §34 values the walk ran under, gathered per
+    scenario so the parent can merge them deterministically.
     """
     import shutil
 
@@ -1321,14 +1321,18 @@ def run_scenarios_parallel(names: Sequence[str], *, workers: int = 5,
     Each scenario is an independent branch of the lifecycle: it builds the
     signed prefix it needs in its own temporary root, so no two workers
     share a tree, a cache, a mask namespace or a repository. The cost is
-    that a prefix two scenarios share in-process is walked once per
-    process; the gain is wall-clock time bounded by the longest scenario
-    rather than the sum. Workers are spawned, not forked, so each starts
-    from a clean interpreter and the harness closures are made per process.
+    that a prefix two scenarios could share is walked once per process;
+    the gain is wall-clock time bounded by the longest scenario rather
+    than the sum. Workers are spawned, not forked, so each starts from a
+    clean interpreter and the harness closures are made per process. This
+    is the only way scenarios run: ``workers=1`` runs them one process at
+    a time, never in the calling process.
 
     Returns ``{"results": {name: result}, "seen": set, "decisions": dict}``
     with ``results`` keyed in the given order whatever the completion
-    order --- the same aggregation the serial path produces.
+    order, ``seen`` the union over every scenario process, and
+    ``decisions`` the §34 values ``normal_full_path`` ran under (the first
+    scenario's when it is not among ``names``).
     """
     import multiprocessing as mp
     from concurrent.futures import ProcessPoolExecutor
@@ -1353,14 +1357,3 @@ def run_scenarios_parallel(names: Sequence[str], *, workers: int = 5,
             decisions_ran_under = dict(outcomes[name]["decisions"])
     return {"results": {name: outcomes[name]["result"] for name in names},
             "seen": seen, "decisions": decisions_ran_under}
-
-
-def run_all(root: Path | None = None,
-            only: tuple[str, ...] = ()) -> dict[str, Any]:
-    base = Path(root or tempfile.mkdtemp(prefix="scenarios-"))
-    out: dict[str, Any] = {}
-    for name in SCENARIOS:
-        if only and name not in only:
-            continue
-        out[name] = run_scenario(name, base / name)
-    return out
