@@ -2,7 +2,7 @@
 # Drive one DCI-1 v7 replication through §18's stage sequence, in order,
 # on one card, stopping only where the registered lifecycle stops.
 #
-#     tools/run_v7_replication.sh <model_key> <device> <log_dir>
+#     tools/run_v7_replication.sh <model_key> <device> <log_dir> [after_pids]
 #
 # Every stage is `python -m dci1v7.run.cli run --stage <next> --model <key>`,
 # which refuses out-of-order, repeated or post-terminal attempts itself; this
@@ -12,22 +12,37 @@
 #   * a terminal report exists (a registered §28 terminal status), or
 #   * a stage fails for any other reason twice in a row (an apparatus fault
 #     to be looked at by a person; the tree is left exactly where it was).
-# A GPU stage waits for the card's flock to be free before it is launched, so
-# two replications may share a card; the backend's own non-blocking lock is
-# still the arbiter, and a "held by another run" refusal is simply retried.
-# Nothing here reads an outcome, chooses a stage, or passes any argument that
-# changes what is measured.
+#
+# Two replications may share a card. A generating stage is run under a
+# blocking per-card *driver* lock (`evidence/.gpu-locks/gpu<N>.driver.lock`,
+# held for the whole stage), so that a stage which makes several backend
+# calls is never interleaved with another replication's calls on the same
+# card --- the backend's own non-blocking per-device lock would otherwise
+# refuse the second call and the stage would have to be retried. That lock
+# is still the arbiter, and a "held by another run" refusal is simply
+# retried after its holder is gone. `after_pids` (comma-separated) names
+# processes this driver waits for before doing anything; it exists so a
+# driver can be replaced while a stage it started is still running.
+# Nothing here reads an outcome, chooses a stage, or passes any argument
+# that changes what is measured.
 set -u
-MODEL="$1"; DEVICE="$2"; LOGDIR="$3"
+MODEL="$1"; DEVICE="$2"; LOGDIR="$3"; AFTER="${4:-}"
 cd "$(dirname "$0")/.."                      # dci1/
 PY=.venv/bin/python
 ENV_CPU="rocm7.2/vllm0.15.1"
 ENV_GPU="rocm7.2/vllm0.15.1/gpu${DEVICE}"
-LOCK="evidence/.gpu-locks/gpu${DEVICE}.lock"
+LOCKDIR="evidence/.gpu-locks"; mkdir -p "$LOCKDIR"
+DLOCK="$LOCKDIR/gpu${DEVICE}.driver.lock"
 GPU_STAGES=" $($PY -c 'from dci1v7.run import cli; print(" ".join(cli.stages_accepting("device")))') "
 mkdir -p "$LOGDIR"
 DRV="$LOGDIR/${MODEL}.driver.log"
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$MODEL gpu$DEVICE] $*" | tee -a "$DRV"; }
+
+for pid in ${AFTER//,/ }; do
+  [ -z "$pid" ] && continue
+  while kill -0 "$pid" 2>/dev/null; do sleep 15; done
+  log "predecessor process $pid has exited"
+done
 
 attempts=0
 while true; do
@@ -38,16 +53,22 @@ while true; do
   if [ -n "$TERM" ]; then log "TERMINAL $TERM at $REACHED; stopping"; exit 0; fi
   if [ -z "$NEXT" ]; then log "COMPLETE: reached $REACHED, no next stage"; exit 0; fi
   ARGS=(run --stage "$NEXT" --model "$MODEL")
+  OUT="$LOGDIR/${MODEL}.${NEXT}.$(date -u +%Y%m%dT%H%M%SZ).out"
   if [[ "$GPU_STAGES" == *" $NEXT "* ]]; then
     ARGS+=(--device "$DEVICE" --environment "$ENV_GPU")
-    while ! flock -n "$LOCK" true 2>/dev/null; do sleep 30; done
+    log "WAIT card $DEVICE for $NEXT"
+    flock "$DLOCK" bash -c '
+      log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$1 gpu$2] $3" | tee -a "$4"; }
+      log "$1" "$2" "START $5 (attempt $6) -> $7" "$8"
+      shift 8; "$@"'  _ "$MODEL" "$DEVICE" _ "$DRV" "$NEXT" "$((attempts+1))" "$OUT" \
+      $PY -m dci1v7.run.cli "${ARGS[@]}" > "$OUT" 2>&1
+    code=$?
   else
     ARGS+=(--environment "$ENV_CPU")
+    log "START $NEXT (attempt $((attempts+1))) -> $OUT"
+    $PY -m dci1v7.run.cli "${ARGS[@]}" > "$OUT" 2>&1
+    code=$?
   fi
-  OUT="$LOGDIR/${MODEL}.${NEXT}.$(date -u +%Y%m%dT%H%M%SZ).out"
-  log "START $NEXT (attempt $((attempts+1))) -> $OUT"
-  $PY -m dci1v7.run.cli "${ARGS[@]}" > "$OUT" 2>&1
-  code=$?
   log "EXIT $NEXT code=$code"
   if [ $code -eq 0 ]; then attempts=0; continue; fi
   # The CLI prints {"error": ..., "message": ...} on failure.
