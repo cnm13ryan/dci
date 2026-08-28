@@ -13,6 +13,211 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-28 — v7 §13.14 boundary audit: the structural-zero veto is withdrawn (V10); the Wilson allowance is kept
+
+**What happened.** Before adoption, a focused statistical audit of v7's
+boundary machinery ran the *production* interval procedure — the registered
+estimators, `bootstrap_family` at 10,000 resamples with the F1 studentised
+maximum-modulus critical value, `contrast_boundary_from_table`,
+`apply_allowance`, `claims.delta_r_reading` — on 39,000 simulated paired
+384 × 8 experiments across 39 data-generating processes (interior, near 0/1,
+exact 0/1 on one or both arms, clustered blocks, true effects at 0, ±0.05,
+±0.10, ±0.14, +0.25, ±0.30), plus deterministic sign checks and a trace of
+every consumer of the Gate 4 and Gate 2.75 records.
+`dci1/reports/dci1v7/boundary_audit/DECISION_MEMO.md`, with the machine-readable
+results beside it and the harness at `dci1/tools/v7_boundary_audit.py`.
+
+**Findings.** (1) The decision interval for `Delta_R` covered the true
+contrast in 97.6–100% of experiments in every baseline scenario, and in
+95.2–100% under a heavy-clustering stress run (τ = 2 on the logit scale);
+the procedure's own one-member calibration is 0.93–0.95 in the interior and
+no worse at any boundary, except that a near-ceiling arm whose failures sit
+in a handful of blocks under-covers at the one-member level (0.89–0.93) —
+a property of the bootstrap with few informative blocks, held at nominal
+for the registered interval by the F1 family inflation, and not caused by
+the boundary rule; recorded, not changed. (2) The Wilson allowance is *necessary*: without it, family
+simultaneous coverage falls to 0.905–0.929 whenever some cell sits at an
+exact boundary, and with it every such case recovers to 0.941–0.968, at a
+width cost ≤ 0.02 that moved no verdict. **Kept as registered.** (3) The
+structural-zero veto — "licenses no classification at any threshold and no
+equivalence" — was not a statistical safeguard: the allowance interval
+`±0.0099` at a shared boundary is a valid ≥ 95% interval by construction and
+covered 1,000/1,000 in every shared-boundary process; an equivalence false
+positive there needs every one of 3,072 draws perfect while `|Delta_R| ≥
+0.10` (probability below `0.9^384`); and the veto made 3,072/3,072 perfect
+draws license *less* than 3,071/3,072, which the rule already read as L3c.
+(4) Gate 4 is genuinely non-adaptive: no consumer of its record feeds
+reference choice, severity, m\*, n\*, order, model, the admitted set, the
+sample size or whether the confirmatory arm is generated; the only
+content-dependent consumer is a presence guard (`assert_not_rehabilitated`).
+(5) Sign convention verified end to end: `Delta_R > 0` is `A_HARMS_MORE`,
+`< 0` is `A_COMPARATIVELY_BETTER`, and L3c is one-sided by registration
+(`upper < 0.10`), so it is read when A is *better* than its references with
+that label on the statement.
+
+**What changed (V10, `dci1/src/dci1v7/protocol/revision.py`).** A structural
+zero is read on its allowance interval like any other reading: no
+directional classification is reachable (the interval is symmetric about
+zero — L1, L2, L3a, L3b, L4b unreachable, direction `DIRECTION_UNRESOLVED`),
+and an equivalence-type reading (L3c, `Delta_near` "below") is licensed
+exactly when `[−h_n, +h_n]` satisfies the registered rule: at 384 blocks it
+lies inside the ±0.10 region and meets the 0.05 precondition; at Gate 4's 24
+topics (`±0.138`) it does neither. The statement carries
+`COMPOSED_CONTRAST_STRUCTURAL_ZERO`, the `STRUCTURAL_ZERO` marker and a new
+registered sentence (`C.STRUCTURAL_ZERO_SENTENCE`: the bound is the
+allowance, not observed variation; the composed set did not discriminate;
+the excess is bounded, not measured). `claims.joint_reading` loses its
+"local structural zero" row; `l3_vacuity_agrees` compares the recoding as
+for any claim. §26's `NOT_MET` for a Gate 4 structural zero is unchanged.
+Also: `freeze_run.freeze_payload` binds B's confirmatory severity through
+`effective_m_star(tree)` (the checked Gate 2 = Gate 2.75 equality) instead of
+copying the probe record's field; the v6-era test that pinned the copy is
+rewritten to v7 semantics.
+
+**What is affected.** No data: v7 has zero rows and is `DRAFT_NOT_ADOPTED`.
+v6's closed records are untouched. Under v7 the only outcomes that change are
+confirmatory (or probe-projected) `Delta_R` and `Delta_near` readings at a
+shared exact boundary, which now read L3c / "below" with the status and
+sentence instead of no level. No threshold, band, precondition, resample
+count, estimator or interval construction moves; the estimand layer is still
+byte-identical to v6 (V9).
+
+**Comparability.** v6 → v7 comparability is as stated on 2026-08-27; this
+entry narrows nothing and adds one reading. Preregistration
+`user-notes/DCI1_preregistration_v7.md` §13.14 reading 1, §5 and §7 are
+amended and dated; `dci1/reports/dci1v7/reference_design_spec.json`
+regenerated (`DRAFT_NOT_ADOPTED`).
+
+---
+
+## 2026-08-27 — v6 closed, and v7 drafted: the absolute composed-headroom criterion is withdrawn and the composed contrast is estimated
+
+**What happened.** After A17, all four v6 replications ran to a §28 terminal
+status in one day and none reached confirmatory generation
+(`dci1/reports/dci1v6/closure.json`, `CLOSURE.md`; zero survivors of four):
+
+| replication | stage | status | the number |
+|---|---|---|---|
+| `qwen3-4b` | `GATE_2_75_COMPOSED_PROBE`, m\* = 12 | `COMPOSED_HEADROOM_UNREACHABLE` | `pair:B+A` B = 0.891 on 192 topics, projected Gate-4 interval 0.779–1.002 against [0.05, 0.95]. **B solo was 0.747: B's compliance rose under A** |
+| `qwen3-4b-instruct-2507` | `GATE_2_75_COMPOSED_PROBE`, m\* = 11 | `COMPOSED_HEADROOM_UNREACHABLE` | `pair:A+B` B 0.875 → 0.994, `pair:B+A` B 0.924 → 1.024; B solo 0.779 |
+| `gemma-3n-e4b-it` | `GATE_4_COMPOSED_HEADROOM`, m\* = 9 | `COMPOSED_HEADROOM_FAILURE` | `solo:CL` = 0.958 — the broad-class control's own solo compliance on 24 topics, a quantity that enters no primary estimand |
+| `gemma-3n-e2b-it` | `PREFREEZE_AUDIT`, m\* = 10 | `PREFREEZE_AUDIT_FAILURE` | Gate 4 passed. `protocol_hashes_agree` failed because A16 and A17 had edited the registered preregistration after rows existed and the lifecycle had no way to bind that; `support_satisfied` failed on Gate 3C's `REFERENCE_SUPPORT_NOT_IDENTIFIED`. Incident: `dci1/reports/dci1v6/incidents/2026-08-27_prefreeze_protocol_hash.md` |
+
+Every one of these is a correct outcome under v6's registered rule, and all
+four stand. No v6 record was edited.
+
+**What the audit found.** v6's Gate 4 tested every cell × slot compliance
+independently against [0.05, 0.95] and terminated on any one outside it; Gate
+2.75 projected each determinate entry forward to Gate 4's sample size and
+terminated on any projected interval leaving the band. Neither computed a
+contrast. The estimand is a paired within-block contrast between composed
+cells, `Delta_R = mean_j P(B | B+R_j) − P(B | B+A)` per configuration; a
+compliance rate near 0 or 1 in one of those cells is a property of one arm and
+does not make a difference of rates undefined. What ended both Qwens was a
+**delivery gain** on the treated arm — a measurement of `D(B<-A)` with a sign.
+Both Gemmas had already lost `Delta_R` at Gate 3C (`REFERENCE_SUPPORT_NOT_
+IDENTIFIED` under V6-E04's calibrated re-read), so the criterion decided
+nothing about `Delta_R` on them.
+
+**Why this is a new version and not an amendment.** v6's §32.3 freezes every
+component of §13 — §13.14 included — from the first Gate-2.5 record, and all
+four replications hold one. §32.1 forbids using an amendment to weaken a
+criterion so that a gate passes, and three replications terminated on this
+criterion. §28's terminal statuses are irreversible by design. A v6 amendment
+is therefore illegal under v6's own text; `dci1/src/dci1v7/` and
+`user-notes/DCI1_preregistration_v7.md` (**DRAFT, not adopted**) are a
+superseding registration that incorporates v6's document by hash, names
+`dci1v6` a foreign study, reuses no v6 row or stage record, and re-runs its
+pre-composed stages under its own seed domain.
+
+**What v7 registers (preregistration §2, A1–A5; `protocol/revision.py` V1–V9,
+each with an executable check on the registration path).**
+
+- **A1 — the criterion is withdrawn, not relaxed.** `COMPOSED_HEADROOM_FAILURE`
+  and `COMPOSED_HEADROOM_UNREACHABLE` leave the terminal vocabulary; no module
+  in the package can raise either (the converse of v6's A8 regression is
+  asserted). Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` (stage 11, renamed) have
+  one outcome each, `PASS`, and record. The (0.05, 0.95) band survives as
+  `COMPOSED_PROXIMITY_BAND`, descriptive only, and as the historical
+  derivation anchor of §13.4's and §13.6's admission bands, **whose values do
+  not move**. Eleven terminal statuses remain, none about a composed rate.
+- **A2 — new §13.14: what a rate at 0 or 1 does to a contrast**
+  (`analysis/boundary.py`), applied by one function at Gate 2.75, Gate 4 and
+  `UNMASKED_ANALYSIS`. (i) *Structural zero*: every cell the contrast
+  differences at the same exact boundary → `COMPOSED_CONTRAST_STRUCTURAL_ZERO`,
+  no classification at any threshold, no equivalence. (ii) *Arm at a
+  boundary*: a constituent at an exact boundary → the decision interval is
+  widened, in the open direction only, by the constituent's weight times the
+  95% Wilson half-width at the block count (0.0099 at 384 blocks);
+  `COMPOSED_ARM_AT_BOUNDARY`. (iii) *Compressed direction*: for a two-arm
+  contrast, an arm above `1 − SESOI` (0.90) or below the SESOI closes one
+  direction at the SESOI by arithmetic; `COMPOSED_CONTRAST_RANGE_COMPRESSED`
+  names the direction and the arm. The licensing rules read the widened
+  interval exactly as registered; the statuses attach to the statement.
+  `Delta_R`'s direction is a named §28.1 outcome (`A_HARMS_MORE`,
+  `A_COMPARATIVELY_BETTER`, `DIRECTION_UNRESOLVED`). Gate 4 reads its 24-topic
+  rows as an `ObservationTable`, forms every registered contrast the admitted
+  arms supply **by the confirmatory estimators**, bootstraps topics with
+  §17.1's one-index-draw construction, and records each member's reading and
+  its projected confirmatory half-width, labelled
+  `PROJECTION_NOT_REGISTERED_FOR_INFERENCE`; the freeze binds it. Gate 2.75
+  does the same for `D(B<-A)`, `D(A<-B)`, `Lambda`, `Ord_A`, `Ord_B` from its
+  six determinate entries, paired inside the topic (Gate 2 now records
+  `solo_topic_values`). No precision gate is added: `INSUFFICIENT_PRECISION`
+  is already the registered, non-terminal consequence.
+- **A3 — §26 restated on the estimand**: "…and `Delta_R` is estimable on Gate
+  4's composed set — not a structural zero" replaces "…survive Gate 4's
+  composed-headroom validation without replacement"; the no-substitution
+  guarantee stands on its own.
+- **A4 — a post-registration amendment is bindable** (`registration_run.amend_
+  registration`, `manifest.document_binding`): a signed, append-only chain
+  from the registered document hashes to the amended ones, carrying the
+  stage each replication had reached and its row count, the declared
+  direction and the §32.2 disclosure; the pre-freeze audit and the freeze
+  read its head. §32.3 is executable: no amendment naming §13 once any
+  replication holds a Gate-2.5 record. This is the mechanism whose absence
+  ended `gemma-3n-e2b-it`.
+- **A5 — §34**: D23 and D26 (the residual allowance) are withdrawn with the
+  verdict they parameterised; D27 (retain the probe as a recording stage) is
+  added. Twenty-six decisions, all open until the researcher closes them on
+  `dci1/reports/dci1v7/researcher_decisions.json`; a proposal is at
+  `development/researcher_decisions_PROPOSAL.json`.
+
+**Exactly how the contrast is estimated and resampled.** Unchanged at
+confirmation: the estimator layer is byte-identical to v6's and v5's
+(`revision.V9`, twelve modules, `support.methodological_success` the one
+named exception). Per block, `Delta_R` is `(1/3) Σ_j X̄(B | B+R_j) − X̄(B |
+B+A)` with each `X̄` the mean over `M = 8` draws; the estimate is the mean
+over 384 blocks; the interval is a block bootstrap of 10,000 resamples, one
+index draw per replicate shared across a family, studentised maximum-modulus
+per family. Gate 4's projection is the same construction over 24 topics at
+`M_CAL = 4`. The boundary readings are computed from the same per-block cell
+vectors the estimator combines, and a test asserts the composition-derived
+vector equals the estimator's to 1e-12 for every projectable member.
+
+**What can still make the contrast non-identifiable.** `REFERENCE_SUPPORT_
+NOT_IDENTIFIED` (Gate 3C, irreversible); `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`
+(δ_diff); a structural zero on the confirmatory blocks; `INSUFFICIENT_
+PRECISION`; F6's vacuity gate. A marginal composed rate at an edge is not on
+the list.
+
+**The §32.2 disclosure.** v7 was designed after reading the closed v6 study.
+A1 is a **loosening** with respect to what ends a replication and is adopted
+*because* three v6 replications terminated on the criterion it withdraws;
+the preregistration's §8 says so. Nothing numerical is fitted to v6: the
+replacement reads the registered SESOI and the Wilson level and nothing else.
+v7 tests it prospectively and may not claim it generalises.
+
+**Which results are affected.** No v6 verdict; every v6 record and row is
+retained and classified `HISTORICAL_OUTCOME` or `DEVELOPMENT_EVIDENCE` by
+v7's ledger. v6 and v7 Gate-4 records are not comparable — v6's is a
+band verdict and v7's is a projection — and are never compared. v7 has
+generated zero rows. Detail: `dci1/reports/dci1v7/READINESS.md`;
+`dci1/tests_v7/` (the ported suite plus `test_boundary.py`,
+`test_composed_contrast.py`, `test_amendment_chain.py`).
+
+---
+
 ## 2026-08-27 — v6 A17: an unplaceable probe stand-in is recorded, not raised
 
 **What happened.** The study's first `GATE_2_75_COMPOSED_PROBE`, on

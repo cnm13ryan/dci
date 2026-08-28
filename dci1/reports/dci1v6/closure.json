@@ -20,13 +20,13 @@
  ],
  "firewall": "\u00a76.1: four replications analysed separately and never pooled; no cross-model scalar carries a claim, and \u00a715 registers no cross-model multiplicity family",
  "last_stage_recorded": {
-  "gemma-3n-e2b-it": "PROTOCOL_REGISTERED",
-  "gemma-3n-e4b-it": "PROTOCOL_REGISTERED",
-  "qwen3-4b": "PROTOCOL_REGISTERED",
-  "qwen3-4b-instruct-2507": "PROTOCOL_REGISTERED"
+  "gemma-3n-e2b-it": "GATE_4_COMPOSED_HEADROOM",
+  "gemma-3n-e4b-it": "GATE_3C_IDENTIFICATION",
+  "qwen3-4b": "GATE_2_5_CANDIDATE_QUALIFICATION",
+  "qwen3-4b-instruct-2507": "GATE_2_5_CANDIDATE_QUALIFICATION"
  },
  "n_survivors": 0,
- "payload_sha256": "78d7c953ea115cb24ab16249f5fd1e0d92d6036ad7adc25d7312618637123933",
+ "payload_sha256": "ecacca246df964965a062666f84625a525d7adf3d9d8e4a3c12e8fdf586303ff",
  "registered_replications": [
   "gemma-3n-e2b-it",
   "gemma-3n-e4b-it",
@@ -40,8 +40,18 @@
   "rule": "\u00a76.1",
   "statement": "No replication reached GATE_5_FREEZE identified. The study makes no claim about the effect at any level. Every replication's terminal status is a statement about the apparatus reaching identification, not about the effect.",
   "survivors": [],
-  "terminal": {}
+  "terminal": {
+   "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+   "gemma-3n-e4b-it": "COMPOSED_HEADROOM_FAILURE",
+   "qwen3-4b": "COMPOSED_HEADROOM_UNREACHABLE",
+   "qwen3-4b-instruct-2507": "COMPOSED_HEADROOM_UNREACHABLE"
+  }
  },
  "survivors": [],
- "terminal_statuses": {}
+ "terminal_statuses": {
+  "gemma-3n-e2b-it": "PREFREEZE_AUDIT_FAILURE",
+  "gemma-3n-e4b-it": "COMPOSED_HEADROOM_FAILURE",
+  "qwen3-4b": "COMPOSED_HEADROOM_UNREACHABLE",
+  "qwen3-4b-instruct-2507": "COMPOSED_HEADROOM_UNREACHABLE"
+ }
 }
