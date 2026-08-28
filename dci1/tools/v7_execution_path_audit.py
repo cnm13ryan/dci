@@ -37,6 +37,7 @@ import json
 import pathlib
 import sys
 import tempfile
+import time
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "src"))
@@ -787,46 +788,38 @@ def _resolve(dotted: str):
 def _instrument(names: list[str], seen: set) -> list:
     """Record every call to the named functions, wherever they are bound.
 
-    A global profiler answers this too and costs several times the run. This
-    wraps the target functions themselves --- **and every alias of them**,
-    because ``from x import y`` binds the object into the importing module and
-    a patch on the defining module would never be reached. The wrapper
-    delegates unchanged, so the run it observes is the run that would have
-    happened.
+    The implementation lives in ``tests_v7.scenarios.instrument_calls`` so a
+    scenario worker process instruments exactly what this process does; the
+    serial path calls the same function.
     """
-    import importlib
-    targets: dict = {}
-    for dotted in names:
-        module_name, _, attr = dotted.rpartition(".")
-        try:
-            original = getattr(importlib.import_module(module_name), attr,
-                               None)
-        except Exception:                                    # pragma: no cover
-            original = None
-        if callable(original):
-            targets[original] = dotted
+    from tests_v7 import scenarios as SC
 
-    def wrap(original, dotted):
-        def recorded(*args, **kwargs):
-            seen.add(dotted)
-            return original(*args, **kwargs)
-        recorded.__name__ = getattr(original, "__name__", dotted)
-        recorded.__doc__ = getattr(original, "__doc__", None)
-        recorded.__wrapped__ = original
-        return recorded
+    return SC.instrument_calls(names, seen)
 
-    undo = []
-    for module in list(sys.modules.values()):
-        if module is None or not getattr(module, "__name__", "").startswith(
-                ("dci1v7", "tests_v7")):
-            continue
-        for attr, value in list(vars(module).items()):
-            dotted = targets.get(value) if callable(value) else None
-            if dotted is None:
-                continue
-            setattr(module, attr, wrap(value, dotted))
-            undo.append((module, attr, value))
-    return undo
+
+def _executed_names_parallel(root: pathlib.Path, workers: int
+                             ) -> tuple[set, dict, dict]:
+    """The scenarios in separate processes, one temporary root each.
+
+    Same rules, same scenarios, same aggregation as ``_executed_names``:
+    the executed-function set is the union over every scenario process (in
+    the serial path it accumulates across the same scenarios in one
+    process), the payloads and reads are the normal walk's, and the §34
+    values are the ones the walk ran under. Only the wall clock differs.
+    ``tools/v7_audit_equivalence.py`` compares the two artifacts.
+    """
+    from tests_v7 import scenarios as SC
+
+    out = SC.run_scenarios_parallel(
+        list(SC.SCENARIOS), workers=workers, root=root / "scenarios",
+        instrument=[str(r["runtime"]) for r in RULES])
+    scenarios = {name: {"scenario": name, **result}
+                 if "scenario" not in result else result
+                 for name, result in out["results"].items()}
+    normal = scenarios["normal_full_path"]
+    return (out["seen"], {"payloads": normal["payloads"],
+                          "reads": normal["reads"],
+                          "decisions": out["decisions"]}, scenarios)
 
 
 def _executed_names(root: pathlib.Path, fast: bool) -> tuple[set, dict, dict]:
@@ -899,10 +892,13 @@ def _status(rule: dict, executed: set, payloads: dict, reads: dict,
     return (CONDITIONAL if rule["expect"] == CONDITIONAL else VERIFIED), ""
 
 
-def build(fast: bool) -> tuple[str, dict]:
+def build(fast: bool, workers: int = 0) -> tuple[str, dict]:
     with tempfile.TemporaryDirectory() as tmp:
         root = pathlib.Path(tmp)
-        executed, run, scenarios = _executed_names(root, fast)
+        if workers and not fast:
+            executed, run, scenarios = _executed_names_parallel(root, workers)
+        else:
+            executed, run, scenarios = _executed_names(root, fast)
         payloads, reads = run["payloads"], run["reads"]
 
         from dci1v7.run import contracts
@@ -1001,25 +997,61 @@ def build(fast: bool) -> tuple[str, dict]:
     return "\n".join(out) + "\n", machine
 
 
+def _write_atomically(path: pathlib.Path, text: str) -> None:
+    import os
+
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text)
+    os.replace(tmp, path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--fast", action="store_true",
                         help="one walk, no conditional scenarios")
+    parser.add_argument("--workers", type=int, default=5,
+                        help="scenario processes to run at once (default 5; "
+                             "0 or --serial runs every scenario in this "
+                             "process, the original path)")
+    parser.add_argument("--serial", action="store_true",
+                        help="run the scenarios in-process, sequentially")
+    parser.add_argument("--out", default=None,
+                        help="directory to write the two artifacts into "
+                             "instead of reports/dci1v7 (for an equivalence "
+                             "run beside the governed report)")
     args = parser.parse_args()
-    text, machine = build(args.fast)
+    workers = 0 if args.serial else max(0, args.workers)
+    started = time.time()
+    text, machine = build(args.fast, workers=workers)
+    # Recorded in the artifact: how the scenarios were scheduled, which is
+    # deterministic. Printed, not recorded: the wall clock, which is not.
+    machine["execution"] = {"workers": workers or 1,
+                            "mode": "serial" if not workers else "parallel"}
+    wall_seconds = round(time.time() - started, 1)
+    report, machine_path = REPORT, MACHINE
+    if args.out:
+        out_dir = pathlib.Path(args.out)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        report, machine_path = (out_dir / REPORT.name,
+                                out_dir / MACHINE.name)
     if args.check:
-        current = REPORT.read_text() if REPORT.exists() else ""
+        current = report.read_text() if report.exists() else ""
         if current != text:
-            print(f"{REPORT} is out of date; re-run without --check")
+            print(f"{report} is out of date; re-run without --check")
             return 1
-        print(f"{REPORT} is current")
+        print(f"{report} is current")
         return 0
-    REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(text)
-    MACHINE.write_text(json.dumps(machine, indent=1, default=str) + "\n")
-    print(f"wrote {REPORT}")
-    print(f"wrote {MACHINE}")
+    report.parent.mkdir(parents=True, exist_ok=True)
+    # Atomic writes: reports/dci1v7/*.md are copied into every synthetic
+    # repository a concurrent walk builds (ARTIFACT_TEXT_GLOBS), so a reader
+    # must never see a half-written file.
+    _write_atomically(report, text)
+    _write_atomically(machine_path,
+                      json.dumps(machine, indent=1, default=str) + "\n")
+    print(f"wrote {report}")
+    print(f"wrote {machine_path}")
+    print(f"execution: {machine['execution']} wall_seconds={wall_seconds}")
     failed = [r for r in machine["rules"] if not r["agrees"]]
     if failed:
         print(f"\n{len(failed)} rule(s) do not hold their expected status:")

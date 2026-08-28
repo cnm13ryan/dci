@@ -178,7 +178,13 @@ def main() -> int:
         print(f"{REPORT} is current")
         return 0
     REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(text)
+    # Atomic: this file is copied into every synthetic repository a
+    # concurrent walk builds (ARTIFACT_TEXT_GLOBS), so no reader may see it
+    # half-written.
+    import os
+    tmp = REPORT.with_name(REPORT.name + ".tmp")
+    tmp.write_text(text)
+    os.replace(tmp, REPORT)
     print(f"wrote {REPORT}")
     return 0
 
