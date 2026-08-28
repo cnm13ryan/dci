@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The v6 study-level closure record: how many replications survived, and the
+"""The v7 study-level closure record: how many replications survived, and the
 one sentence §34 D25 registered before data for the case where one did.
 
     python3 tools/v7_closure.py [--check]
@@ -120,7 +120,7 @@ def build() -> dict[str, object]:
     survivors = lifecycle.frozen_identified_replications(context, model_keys)
     terminal = _terminal_statuses(context, model_keys)
     payload: dict[str, object] = {
-        "_what": "the v6 study-level closure record",
+        "_what": "the v7 study-level closure record",
         "_classification": "REGISTERED_OUTCOME",
         "_reads": "signed per-replication stage records only. No estimation, "
                   "no pooling, no masked quantity, no row re-read",
