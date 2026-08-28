@@ -2534,7 +2534,8 @@ v5's two D6 replications and v6's `gemma-3n-e2b-it`. The withdrawn headroom
 criterion would have ended nothing that reached it. No `Delta_R`, `Delta_j`
 or `Xi` is identified on any model; the study makes no claim about the
 effect at any level (`dci1/reports/dci1v7/closure.json`). **Standing tension
-for the researcher, not amended mid-study:** §13.15's prose and D6's closure
+for the researcher, not amended mid-study** *(resolved the same day by A6–A8,
+§4an; retained as written on closure)***:** §13.15's prose and D6's closure
 say a non-identified replication continues to the freeze with its base-arm
 estimands, while `support_satisfied` makes it terminal one stage later, so
 D(B←A), D(A←B) and Λ have never been generated confirmatorily on any

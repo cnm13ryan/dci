@@ -75,7 +75,15 @@ def terminal_statuses_in_force() -> tuple[str, ...]:
 
 
 def frozen_identified_replications(context, model_keys) -> list[str]:
-    """Replications with a passing ``GATE_5_FREEZE`` record and D6 identified.
+    """Replications with a passing ``GATE_5_FREEZE`` record.
+
+    "Survivor" means *frozen*: the replication reached the freeze on the
+    estimands it identified. It does **not** mean `Delta_R` is identified
+    --- under §34 D6 (v7 A8) a replication that lost its reference set, or
+    only its spectrum, freezes and generates on its surviving arms, and its
+    freeze record's ``non_identification`` block names what it did not
+    identify. Readers that need the distinction (``tools/v7_closure.py``)
+    read that block per survivor.
 
     Reads signed records only, and reads them per replication --- §6.1's
     firewall means this counts survivors, it never pools anything and it
@@ -136,24 +144,38 @@ def confirmatory_licensed(*, this_replication_frozen: bool,
     n = len(survivors)
     if rule == "per_replication":
         licensed = bool(this_replication_frozen)
-        reason = ("this replication is frozen and identified, so its own "
-                  "L1-L4 ladder is licensed; a replicated or generalised "
+        reason = ("this replication is frozen on its identified estimands, so "
+                  "its own L1-L4 ladder is licensed (levels an unidentified "
+                  "estimand would need are withheld); a replicated or generalised "
                   "study-level statement still needs two survivors and L5 "
                   "is never licensed"
                   if licensed else
                   "this replication has no passing GATE_5_FREEZE record")
     else:
         licensed = bool(this_replication_frozen) and n >= 2
-        reason = ("two or more replications are frozen and identified"
+        reason = ("two or more replications are frozen on their identified "
+                  "estimands"
                   if licensed else
                   f"§34 D22 closed at two_survivors_before_any and {n} "
-                  "replication(s) are frozen and identified")
+                  "replication(s) are frozen on their identified estimands")
     return {"licensed": licensed, "rule": rule, "survivors": list(survivors),
             "n_survivors": n,
             "this_replication_frozen": bool(this_replication_frozen),
             "reason": reason,
-            "l5_withheld": "generalisation is never licensed by this design"}
+            "l5_withheld": "generalisation is never licensed by this design",
+            "reached_the_freeze_means": SURVIVOR_MEANS}
 
+
+#: What "reached GATE_5_FREEZE identified" means in the registered sentences
+#: below and in every survivor count: the replication FROZE, on the estimands
+#: it identified. It is not a statement that `Delta_R` is identified (v7 A8):
+#: the freeze record's ``non_identification`` block names, per survivor, the
+#: estimands it did not identify, and the closure record reports it beside
+#: the count. The sentences are §34 D25's and are not reworded.
+SURVIVOR_MEANS = (
+    "a passing GATE_5_FREEZE record: the replication froze on the estimands "
+    "it identified; its freeze record's non_identification block names any "
+    "it did not (v7 A8)")
 
 #: §34 D25's two registered readings of a one-survivor study, as the sentences
 #: each licenses. Written out so that "what v7 says when exactly one
@@ -204,7 +226,8 @@ def study_level_statement(*, survivors: Sequence[str],
                 "makes no claim about the effect at any level. Every "
                 "replication's terminal status is a statement about the "
                 "apparatus reaching identification, not about the effect.",
-            "l5_withheld": "generalisation is never licensed by this design"}
+            "l5_withheld": "generalisation is never licensed by this design",
+            "reached_the_freeze_means": SURVIVOR_MEANS}
     if n == 1:
         reading = decisions.choice(
             "D25", dict(SINGLE_SURVIVOR_STATEMENTS),
@@ -213,7 +236,8 @@ def study_level_statement(*, survivors: Sequence[str],
                 "terminal": reported, "rule": "§34 D25",
                 "statement": reading,
                 "l5_withheld":
-                    "generalisation is never licensed by this design"}
+                    "generalisation is never licensed by this design",
+                "reached_the_freeze_means": SURVIVOR_MEANS}
     return {
         "n_survivors": n, "survivors": list(survivors), "terminal": reported,
         "rule": "§6.1 and §3.2's ladder",
@@ -223,7 +247,8 @@ def study_level_statement(*, survivors: Sequence[str],
             "finding may be stated where the same registered statement holds "
             "in more than one of them, named as such and never pooled into a "
             "single estimate. L5 is withheld by design.",
-        "l5_withheld": "generalisation is never licensed by this design"}
+        "l5_withheld": "generalisation is never licensed by this design",
+        "reached_the_freeze_means": SURVIVOR_MEANS}
 
 
 class ReadinessRefusal(Exception):

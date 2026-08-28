@@ -157,16 +157,23 @@ def test_xi_gates_the_wording_and_not_the_emission():
         "outcome_specificity_wording"]
 
 
-def test_an_unidentified_reference_set_withholds_the_local_sublevels():
-    """§13.15: Delta_R is not computed, and L3d still is --- it reads the fit.
+def test_an_unidentified_reference_set_withholds_every_l3_sublevel():
+    """§13.15: REFERENCE_SUPPORT_NOT_IDENTIFIED withholds L3a-L3e.
 
-    Dropping an identified estimand because an unidentified one is
-    unavailable is not a rule this protocol contains (§8.1).
+    Until v7 A8 this test asserted that L3d was still emitted --- "it reads
+    the fit" --- but §11.8's fit is drawn from admitted core families
+    (§13.12), so a replication without a reference set has no identified
+    fit, `delta_difficulty` is in the reference-dependent set
+    (`identification.AFFECTED_ESTIMANDS`), and the registered consequence
+    is that every L3 sub-level is withheld. The base-arm levels (L1, L2,
+    L4b) are the ones §8.1 keeps, and they are not emitted here. The
+    statement is still produced, unemitted, carrying the statuses.
     """
     out = _l3(references_identified=False)
     levels = {s["claim_level"] for s in out if s["emitted"]}
-    assert levels.isdisjoint({"L3a", "L3b", "L3c"})
-    assert "L3d" in levels
+    assert levels.isdisjoint({"L3a", "L3b", "L3c", "L3d", "L3e"})
+    assert not any(s["emitted"] for s in out)
+    assert "EXCESS_NOT_IDENTIFIED" in out[0]["identification_status"]
     assert "REFERENCE_SUPPORT_NOT_IDENTIFIED" in out[0][
         "identification_status"]
 

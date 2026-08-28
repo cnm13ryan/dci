@@ -131,6 +131,13 @@ supplies no ladder unless all nine slots are frozen, and
 **Not decided here.** Whether and how replications are re-run under the
 amended v7 (the existing four trees are terminal and the lifecycle has no
 path that re-opens one) is a researcher decision the amendments leave open.
+One clause of the hash-bound decision record is partially superseded and
+left byte-identical on purpose: `dci1/reports/dci1v7/researcher_decisions.json`'s
+D6 evidence says a coverage failure at the calibrated ι_A is "a design-time
+failure under this same disposition, with no new status"; under A7 a
+*spectrum* condition's failure carries `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`
+instead. The registration manifest binds the record's hash, A7's text
+governs, and `revision.V11` checks the behaviour.
 And one registered tension inside frozen §13, found while building the
 full-design scenario and **not** repaired because §32.3 refuses §13 after
 Gate 2.5: §13.7 condition 1 requires every $V_{\text{stab}}$ candidate to be
@@ -173,7 +180,9 @@ no verifier, wording, estimator, threshold or constant moved during the run
 (the five commits on the stage records differ in documentation, the driver,
 the regenerated audit and a tool label).
 
-**What is recorded and not changed.** §13.15's registered prose and D6's
+**What is recorded and not changed** *(superseded the same day by A6–A8,
+the entry above; this paragraph is retained as written on closure)*.
+§13.15's registered prose and D6's
 closure say a non-identified replication continues to the freeze with its
 base-arm estimands; the pre-freeze audit's `support_satisfied` check makes it
 terminal one stage later. That check has been the operative rule since v5

@@ -114,6 +114,35 @@ def _reached(context, model_keys: list[str]) -> dict[str, str]:
     return out
 
 
+def _survivor_identification(context, survivors: list[str]
+                             ) -> dict[str, dict[str, object]]:
+    """Per survivor, what its freeze record says it did NOT identify.
+
+    v7 A8: a survivor is a replication that froze on its identified
+    estimands, which is not a statement that `Delta_R` is identified. The
+    freeze record carries Gate 3C's ``non_identification`` block, so the
+    count above can never be read as a count of `Delta_R` estimates: this
+    reads the block per survivor and reports the status, the number of
+    members it names and whether `Delta_R` is among them. Signed records
+    only; no estimate is read.
+    """
+    out: dict[str, dict[str, object]] = {}
+    for model_key in survivors:
+        tree = model_tree(context, model_key)
+        freeze = transitions.read_stage_record(tree, C.STAGE_GATE5)
+        block = freeze.get("non_identification") or {}
+        named = list(block.get("not_identified_members") or ())
+        out[model_key] = {
+            "admitted_arms": list(freeze.get("admitted_arms") or ()),
+            "non_identification_status": block.get("status"),
+            "n_not_identified_members": len(named),
+            "delta_r_identified": "Delta_R" not in named,
+            "delta_difficulty_identified": "delta_difficulty" not in named,
+            "irreversible": block.get("irreversible"),
+        }
+    return out
+
+
 def build() -> dict[str, object]:
     context = registered_context()
     model_keys = sorted(m.model_key for m in MODELS)
@@ -128,6 +157,9 @@ def build() -> dict[str, object]:
         "registered_replications": model_keys,
         "survivors": list(survivors),
         "n_survivors": len(survivors),
+        "survivor_means": lifecycle.SURVIVOR_MEANS,
+        "survivor_identification": _survivor_identification(context,
+                                                            survivors),
         "terminal_statuses": terminal,
         # A15. A retired apparatus fault is not a terminal status and never
         # appears above; it is reported separately so that a replication
