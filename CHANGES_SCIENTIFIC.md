@@ -13,6 +13,57 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-28 — v7 ran and closed: zero survivors of four, all on §12.6's C4 under the calibrated re-read
+
+**What happened.** The registered v7 study ran across the four-model panel
+from 05:04 to 17:31 UTC (`dci1/reports/dci1v7/closure.json`, `CLOSURE.md`,
+`replication_summary.json`, `execution_logs/`). Every replication passed
+`QUALIFIED` through Gate 4, including the two stages v7 changed: both Qwens
+passed `GATE_2_75_COMPOSED_PROBE`, which had terminated them in v6 (B under A
+0.88 / 0.78 on `qwen3-4b`, 0.92 / 0.60 on the 2507 checkpoint, against solo
+0.77–0.78 — recorded; the second as `COMPOSED_CONTRAST_RANGE_COMPRESSED`,
+excess direction), and both Gemmas passed `GATE_4_COMPOSED_CONTRAST`, which
+had terminated `gemma-3n-e4b-it` in v6. No replication reached
+`GATE_5_FREEZE`: all four recorded `REFERENCE_SUPPORT_NOT_IDENTIFIED` at Gate
+3C and then `PREFREEZE_AUDIT_FAILURE` on the single mandatory check
+`support_satisfied`. m\* = 10, 9, 12, 11 — each the value v6 found.
+
+**The one condition.** On every replication §12.6's decisive condition C4
+(≥ 6 feature groups straddling ι_A) was certified on the pre-screen basis and
+lost on the calibration basis (2, 4, 5 and 4 straddling groups on e2b, e4b,
+qwen3-4b, qwen-2507), while §13.15's counts were met on every replication.
+This is v6 A3's calibrated re-read (V6-E04) doing what it registers; the
+withdrawn headroom criterion would have ended nothing that reached it.
+
+**Which results are affected.** None: no confirmatory row, no freeze, no
+masked or unmasked quantity exists for v7. The 118k–142k pre-confirmatory
+rows per replication and the probe / Gate-4 projections are development
+evidence only and carry no claim. Nothing was re-run after a record existed;
+no verifier, wording, estimator, threshold or constant moved during the run
+(the five commits on the stage records differ in documentation, the driver,
+the regenerated audit and a tool label).
+
+**What is recorded and not changed.** §13.15's registered prose and D6's
+closure say a non-identified replication continues to the freeze with its
+base-arm estimands; the pre-freeze audit's `support_satisfied` check makes it
+terminal one stage later. That check has been the operative rule since v5
+(v5's closure calls its failures correctly computed; v6's READINESS lists it
+as non-waivable; v7's preregistration §5 and READINESS §4.3 anticipate it), so
+it was not amended after the terminations — §32.1 forbids weakening a
+criterion so that a gate passes. The consequence is stated plainly: under
+v5–v7 as run, D6 = `identification_status` never reaches a freeze, and
+D(B←A), D(A←B) and Λ have never been generated confirmatorily on any
+replication. The execution-path audit's `reference_support_not_identified`
+scenario stops at Gate 3C and never walked the audit. Both are the
+researcher's to decide before any v8; neither is a v7 amendment.
+
+**Apparatus.** `tools/run_v7_replication.sh` drove each replication;
+revised twice during the run for scheduling only (a per-card stage lock and a
+fix to it) and `qwen3-4b-instruct-2507` moved to card 0 when it fell idle. No
+argument that changes a measured quantity was passed at any stage.
+
+---
+
 ## 2026-08-28 — v7 adopted and registered; execution begins
 
 **What happened.** The v7 draft, as revised by the boundary audit (the entry

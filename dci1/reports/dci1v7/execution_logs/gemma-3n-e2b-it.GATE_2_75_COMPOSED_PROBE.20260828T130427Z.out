@@ -1,0 +1,7 @@
+2026-08-28T13:05:11Z [gemma-3n-e2b-it gpu0] START GATE_2_75_COMPOSED_PROBE (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e2b-it.GATE_2_75_COMPOSED_PROBE.20260828T130427Z.out
+{
+  "stage": "GATE_2_75_COMPOSED_PROBE",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/gemma-3n-e2b-it/GATE_2_75_COMPOSED_PROBE/records/gate2_75_composed_probe.json",
+  "signing_key": "present"
+}

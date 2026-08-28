@@ -1,0 +1,4 @@
+{
+  "error": "IntegrityError",
+  "message": "GPU lock /home/cnm13ryan/git/dci/dci1/evidence/.gpu-locks/gpu1.lock is held by another run"
+}

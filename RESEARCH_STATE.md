@@ -93,7 +93,7 @@ its own evidence tree. It does not share code with `src/dci/` or
 | **v4r3** | **closed 2026-08-21, terminal at `GATE_1_MEASUREMENT`, no confirmatory data.** Adopted and registered, run through stage 3, and stopped where its registered criterion stopped it: §18 stage 4 required §10.2 plus §10.3 or §10.4, and neither pathway established that basis. Superseded by v4r4; its evidence is preserved unedited and its closure is hashed. §4h–§4l, §4m. `user-notes/DCI1_preregistration_v4r3.md`, `dci1/reports/dci1v4r3/closure.json` |
 | **v5** | **RUN AND CLOSED 2026-08-24. No replication reached `CONFIRMATORY_GENERATION`: two terminated at Gate 4 on §13.14 composed headroom, two are permanently blocked at `PREFREEZE_AUDIT` by an irreversible D6 non-identification. 459,312 behavioural rows exist and none is confirmatory.** [`dci1/reports/dci1v5/CLOSURE.md`](dci1/reports/dci1v5/CLOSURE.md) All nineteen §34 decisions closed, U2 resolved at A2, P1 confirmed, registration manifest signed; three closures went against the document's own standing proposal (D16, D17, D18). The registered design is five arms, four models, 56 cells, 1,172,544 generations. A standalone preregistration that rebuilds the reference-construction procedure v4r4 could not make work. The core reference pool inverts to production class and same-form with A; ι is demoted from the admission coordinate to the difficulty coordinate; a pre-composition interaction gate, two calibration splits, direct order estimands and the L4 fix are new. Its execution plumbing has been exercised end to end on synthetic fixtures, which is engineering evidence and not a result. A stage 3–18 execution-path audit then found twelve registered rules that the production path did not execute — four multiplicity families with no producer, three claim emitters with no caller, §12.6's expansion unreachable and its coverage criterion evaluated on an empty set — and one place, §12.6's eligibility predicate, where the preregistration did not determine the rule. That one was resolved at E2 — §13's band applied to the quantity §13 bands, $p_{\text{solo}}$ — and §18 step 14's raw-coordinate fit was implemented as §15 registers it, with no multiplicity family invented. 48 registered rules are now audited against the path a replication takes, all 48 reachable, over 15 conditional scenarios. §4q, §4r, §4s, §4t, §4u, §4v, §4w, §4x. [`user-notes/DCI1_preregistration_v5.md`](user-notes/DCI1_preregistration_v5.md), [`dci1/src/dci1v5/`](dci1/src/dci1v5/), [`dci1/reports/dci1v5/`](dci1/reports/dci1v5/) |
 | **v6** | **RAN AND CLOSED 2026-08-27, zero survivors of four (§4ak).** `qwen3-4b` and `qwen3-4b-instruct-2507` terminated at Gate 2.75 `COMPOSED_HEADROOM_UNREACHABLE` because **B's compliance rose under A toward the ceiling** (0.747 → 0.891; 0.779 → 0.924); `gemma-3n-e4b-it` at Gate 4 `COMPOSED_HEADROOM_FAILURE` on `solo:CL` = 0.958, a companion's own solo cell; `gemma-3n-e2b-it` passed Gate 4 and terminated at `PREFREEZE_AUDIT` because A16/A17 had edited the registered document and the lifecycle could not bind a post-registration amendment. Both Gemmas had lost `Delta_R` at Gate 3C. All four verdicts stand. [`dci1/reports/dci1v6/CLOSURE.md`](dci1/reports/dci1v6/CLOSURE.md). *Registration history:* ADOPTED and REGISTERED 2026-08-26 (registration after amendment A15; §4ah). Zero behavioural rows at registration. All twenty-seven §34 decisions and all three blocking §33 items closed on [`dci1/reports/dci1v6/researcher_decisions.json`](dci1/reports/dci1v6/researcher_decisions.json); D0–D18 carried at v5's actually adopted values with v5's evidence and a `carried_from` block. Nineteen stages: a new `GATE_2_75_COMPOSED_PROBE` measures composed headroom at the **frozen** m\* two stages before Gate 4 and may terminate a replication `COMPOSED_HEADROOM_UNREACHABLE` but may never move the operating point. V6-E01/E02/E05 repair §12.6's reachability, expansion-row eligibility and `n_stable` prospectively. Three `probe_only` families PS1–PS3 are non-selectable by construction. §34 D23 = `projection_sd`, D26 = 0.0142 (measured). Registered design: five arms, four models, 56 cells, 1,174,080 generations. §18 stage 1's `REGISTRATION_INCOMPLETE` is a **readiness refusal**, not a §28 terminal status (A15); §12.6 drops a rung with no difficulty coordinate from its coverage conditions and records it (A16). Executing: all four registered, qualified and through Gate 1; §4aa–§4aj. [`user-notes/DCI1_preregistration_v6.md`](user-notes/DCI1_preregistration_v6.md), [`dci1/src/dci1v6/`](dci1/src/dci1v6/), [`dci1/reports/dci1v6/`](dci1/reports/dci1v6/) |
-| **v7** | **ADOPTED AND REGISTERED 2026-08-28 (§4am); running as the prospective confirmatory study.** Drafted 2026-08-27 (§4ak); §13.14 boundary-audited 2026-08-28 and revised as V10 before adoption (§4al). A superseding registration, not a v6 amendment: v6's §32.3 froze §13 from the first Gate-2.5 record and §32.1 forbids weakening a criterion so that a gate passes. v7 **withdraws** the absolute composed-headroom criterion as a terminal requirement — `COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` leave the vocabulary and no module can raise them — and replaces it with readings of the **contrast**: a structural zero licenses nothing, an arm at an exact boundary widens the decision interval by the Wilson allowance in the open direction, and a direction compressed below the SESOI by the other arm's level is named on the statement. Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` record the paired contrasts by the confirmatory estimators, bootstrapped over topics, and have one outcome. No threshold moves; the estimand layer is byte-identical to v6's. A post-registration amendment is now bindable (A4), the hole that ended `gemma-3n-e2b-it`. [`user-notes/DCI1_preregistration_v7.md`](user-notes/DCI1_preregistration_v7.md), [`dci1/src/dci1v7/`](dci1/src/dci1v7/), [`dci1/reports/dci1v7/READINESS.md`](dci1/reports/dci1v7/READINESS.md) |
+| **v7** | **ADOPTED, REGISTERED AND RUN 2026-08-28; CLOSED the same day with zero survivors of four (§4am).** Every replication passed the stages v7 changed — both Qwens the composed probe, both Gemmas Gate 4 — and every one lost `Delta_R` at Gate 3C on §12.6's C4 under the calibrated re-read, then ended `PREFREEZE_AUDIT_FAILURE` on `support_satisfied`. Drafted 2026-08-27 (§4ak); §13.14 boundary-audited 2026-08-28 and revised as V10 before adoption (§4al). A superseding registration, not a v6 amendment: v6's §32.3 froze §13 from the first Gate-2.5 record and §32.1 forbids weakening a criterion so that a gate passes. v7 **withdraws** the absolute composed-headroom criterion as a terminal requirement — `COMPOSED_HEADROOM_FAILURE` and `COMPOSED_HEADROOM_UNREACHABLE` leave the vocabulary and no module can raise them — and replaces it with readings of the **contrast**: a structural zero licenses nothing, an arm at an exact boundary widens the decision interval by the Wilson allowance in the open direction, and a direction compressed below the SESOI by the other arm's level is named on the statement. Gate 2.75 and `GATE_4_COMPOSED_CONTRAST` record the paired contrasts by the confirmatory estimators, bootstrapped over topics, and have one outcome. No threshold moves; the estimand layer is byte-identical to v6's. A post-registration amendment is now bindable (A4), the hole that ended `gemma-3n-e2b-it`. [`user-notes/DCI1_preregistration_v7.md`](user-notes/DCI1_preregistration_v7.md), [`dci1/src/dci1v7/`](dci1/src/dci1v7/), [`dci1/reports/dci1v7/READINESS.md`](dci1/reports/dci1v7/READINESS.md) |
 | **v4r4** | **adopted 2026-08-21; frozen at Gate 5 on 2026-08-22 for two of four replications, confirmatory data in hand.** The live protocol line. Gate 1 is deterministic-measurement by construction (§10.7 A–E) and `CP4`/`CP7` are removed. All four replications passed Gates 1–3; **§13.10 then ended two of them at `COMPOSED_HEADROOM_FAILURE`, including the only full-design replication**. Two survive to Gate 5, both on §8.6's 8-cell reduced design, so no spectrum-dependent estimand is identified anywhere in the study. Both survivors froze at `450a049`, generated 24,576 rows each, and are analysed through `UNMASKED_ANALYSIS`; **they disagree qualitatively** and one replication's L4 field is invalidated. §4m, §4n, §4o, §4p. `user-notes/DCI1_preregistration_v4r4.md`, `dci1/reports/dci1v4r4/final_results.json` |
 
 v4r2 replaces target failure with the per-constraint compliance vector, makes
@@ -2505,14 +2505,51 @@ outcome or passes an argument that changes what is measured. Per-replication
 outcomes are recorded here as they are reached and closed in
 `dci1/reports/dci1v7/closure.json` at the end.
 
+**Executed and closed, 2026-08-28.** The four drivers ran from 05:04 to
+17:31 UTC. Every replication passed `QUALIFIED`, Gate 0, the regime screen,
+Gate 1, Gate 2, Gate 2.5, **the composed probe** (both Qwens, where v6 ended
+them: B under A 0.88 / 0.78 on `qwen3-4b` and 0.92 / 0.60 on the 2507
+checkpoint against solo 0.77–0.78, recorded, the second as a compressed excess
+direction), Gates 3A–3C and **Gate 4** (both Gemmas, where v6 ended
+`gemma-3n-e4b-it`). None reached the freeze:
+
+| replication | m\* | last stage | terminal status | Δ_R |
+|---|---|---|---|---|
+| `gemma-3n-e2b-it` | 10 | `GATE_4_COMPOSED_CONTRAST` (base + class) | `PREFREEZE_AUDIT_FAILURE` — `support_satisfied` | not identified (C4: 2 straddling groups of 6) |
+| `gemma-3n-e4b-it` | 9 | `GATE_4_COMPOSED_CONTRAST` (base + class) | `PREFREEZE_AUDIT_FAILURE` — `support_satisfied` | not identified (C4: 4 of 6) |
+| `qwen3-4b` | 12 | `GATE_4_COMPOSED_CONTRAST` (base) | `PREFREEZE_AUDIT_FAILURE` — `support_satisfied` | not identified (C4: 5 of 6) |
+| `qwen3-4b-instruct-2507` | 11 | `GATE_4_COMPOSED_CONTRAST` (base) | `PREFREEZE_AUDIT_FAILURE` — `support_satisfied` | not identified (C4: 4 of 6) |
+
+**One condition ended all four, and it is upstream of everything v7
+changed.** §12.6's decisive coverage condition C4 was certified on the
+24-topic pre-screen and lost on the 192-topic calibration basis (v6 A3's
+paired re-read) on every replication, with §13.15's own counts met on every
+replication (3 core references, 11–12 qualified families, 2 backups). Gate 3C
+recorded `REFERENCE_SUPPORT_NOT_IDENTIFIED` under §34 D6 and dropped the
+core and spectrum arms; the pre-freeze audit's mandatory `support_satisfied`
+check — support *met*, not recorded — then refused the freeze, as it did on
+v5's two D6 replications and v6's `gemma-3n-e2b-it`. The withdrawn headroom
+criterion would have ended nothing that reached it. No `Delta_R`, `Delta_j`
+or `Xi` is identified on any model; the study makes no claim about the
+effect at any level (`dci1/reports/dci1v7/closure.json`). **Standing tension
+for the researcher, not amended mid-study:** §13.15's prose and D6's closure
+say a non-identified replication continues to the freeze with its base-arm
+estimands, while `support_satisfied` makes it terminal one stage later, so
+D(B←A), D(A←B) and Λ have never been generated confirmatorily on any
+replication of v5–v7. The execution-path audit's non-identification scenario
+stops at Gate 3C and never exercised the audit. Reading:
+`dci1/reports/dci1v7/CLOSURE.md`; numbers: `replication_summary.json`; logs:
+`execution_logs/`.
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes
 only, newest first, each stating what changed, which results are affected, and
-whether old and new remain comparable. Most recent: v7 adopted and registered
-on 2026-08-28 at commit `ed0446f` — twenty-six decisions closed at v6's carried
-values plus D27, zero rows at registration, four replications running — in
-§4am. Before it: v7's §13.14 boundary
+whether old and new remain comparable. Most recent: v7 adopted, registered
+and run on 2026-08-28, and closed with zero survivors of four — every
+replication passed the stages v7 changed and every one lost `Delta_R` at
+Gate 3C on §12.6's C4 under the calibrated re-read, then ended on the
+pre-freeze audit's `support_satisfied` check — in §4am. Before it: v7's §13.14 boundary
 machinery audited on the production interval procedure (39,000 simulated
 experiments) — the Wilson allowance kept as necessary, the structural-zero
 veto withdrawn as V10, Gate 4 shown non-adaptive, the sign convention

@@ -1,0 +1,6 @@
+{
+  "stage": "GATE_1_MEASUREMENT",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/qwen3-4b/GATE_1_MEASUREMENT/records/gate1_measurement.json",
+  "signing_key": "present"
+}
