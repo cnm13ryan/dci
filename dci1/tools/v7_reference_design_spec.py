@@ -31,7 +31,8 @@ sys.path.insert(0, str(DCI1 / "src"))
 from dci1v7 import PREREGISTRATION, REFERENCE_DESIGN_SPEC   # noqa: E402
 from dci1v7.design import cells as design_cells             # noqa: E402
 from dci1v7.protocol import constants as C                  # noqa: E402
-from dci1v7.protocol import decisions                       # noqa: E402
+from dci1v7.protocol import decisions, identification       # noqa: E402
+from dci1v7.run import prefreeze_run                        # noqa: E402
 from dci1v7.stages import composed_probe, support, validity  # noqa: E402
 from dci1v7.verifiers import constraints as K               # noqa: E402
 
@@ -132,7 +133,15 @@ def _support() -> dict[str, Any]:
         "n_core_feature_groups": C.N_CORE_FEATURE_GROUPS,
         "evaluated_by": f"{support.__name__}.evaluate_support",
         "coverage_conditions": list(C.COVERAGE_CONDITIONS),
-        "coverage_decisive": list(C.COVERAGE_DECISIVE),
+        # v7 A7: the expansion loop stops on all six; the core arm is gated
+        # by C1/C3/C5/C6 and the spectrum arm by C2/C4. `coverage_decisive`
+        # (v5/v6: C1-C6 for both arms at once) is withdrawn from this spec.
+        "coverage_expansion_conditions":
+            list(C.COVERAGE_EXPANSION_CONDITIONS),
+        "coverage_core_conditions": list(C.COVERAGE_CORE_CONDITIONS),
+        "coverage_spectrum_conditions": list(C.COVERAGE_SPECTRUM_CONDITIONS),
+        "coverage_arm_conditions": {k: list(v) for k, v in
+                                    C.COVERAGE_ARM_CONDITIONS.items()},
         "coverage_thresholds": {
             name: getattr(C, name) for name in sorted(dir(C))
             if name.startswith("COVERAGE_")
@@ -141,10 +150,47 @@ def _support() -> dict[str, Any]:
             "§12.6's coverage criterion is re-evaluated at Gate 3A on the "
             "CALIBRATION basis, where iota(R), the difficulty coordinate, the "
             "solo vacuity and iota_A all come from the same 192 topics at "
-            "M_CAL draws. A decisive condition lost there is a §13.15 "
-            "design-time failure under §34 D6. The pre-screen value that "
-            "§12.6 spent its expansion rounds at is recorded beside it and "
-            "gates nothing."),
+            "M_CAL draws, and that reading gates. A core condition (C1, C3, "
+            "C5, C6) lost there is a §13.15 design-time failure under §34 D6 "
+            "(REFERENCE_SUPPORT_NOT_IDENTIFIED; core and spectrum arms "
+            "dropped); a spectrum condition (C2, C4) lost there with the core "
+            "conditions met is DIFFICULTY_SUPPORT_NOT_IDENTIFIED (spectrum "
+            "arm dropped, core arm retained when §13.8, §13.7 and §13.15 "
+            "hold). The pre-screen value that §12.6 spent its expansion rounds "
+            "at is recorded beside it and gates nothing: on 24 topics at one "
+            "draw a ladder's apparent span is inflated by noise, rungs above "
+            "0.90 leave the band at calibration, and §12.7's Tier-3 cap keeps "
+            "Tier-3 ladders from spanning 0.40 there, so a pre-screen pass "
+            "never overrides a calibrated failure (v7 A7)."),
+        "unmet_disposition": {
+            "decision": "D6", "value": decisions.value_of("D6"),
+            "terminal": False, "replication_continues": True,
+            "reference_support_not_identified": {
+                "drops": ["core", "spectrum"],
+                "not_identified_members": len(
+                    identification.AFFECTED_ESTIMANDS),
+                "irreversible": True},
+            "difficulty_support_not_identified_at_design_time": {
+                "drops": ["spectrum"],
+                "not_identified_members": len(
+                    identification.SPECTRUM_ESTIMANDS),
+                "irreversible": True},
+            "base_arm_always_identified": list(
+                identification.BASE_ARM_ESTIMANDS),
+            "prefreeze_invariant": (
+                "v7 A6: every estimand entering confirmatory generation has "
+                "the support it requires, every unsupported estimand and arm "
+                "has already been removed, and the frozen design agrees "
+                "exactly with Gate 3C's identification state; the audit does "
+                "not require support_met"),
+            "prefreeze_checks": [cid for cid, _w, _b in
+                                 prefreeze_run.ARTIFACT_CHECKS
+                                 if cid in ("support_recorded",
+                                            "d6_disposition_registered",
+                                            "arms_match_identification",
+                                            "no_rehabilitation_path",
+                                            "freeze_fields_explained")],
+        },
     }
 
 

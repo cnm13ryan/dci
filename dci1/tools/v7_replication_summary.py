@@ -82,6 +82,8 @@ def summarise(tree) -> dict:
             "conditions_moved_by_the_basis":
                 cov.get("conditions_moved_by_the_basis"),
             "decisive_met": cov.get("decisive_met"),
+            "core_met": cov.get("core_met"),
+            "spectrum_met": cov.get("spectrum_met"),
             "straddling_groups": realised.get("straddling_groups"),
             "n_eligible": realised.get("n_eligible"),
         }

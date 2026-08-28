@@ -668,7 +668,13 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                               C.EXPANSION_MAX_RUNGS_PER_FAMILY_PER_ROUND,
                           "source": "the frozen reserve of §7.10"},
             "coverage_conditions": list(C.COVERAGE_CONDITIONS),
-            "coverage_decisive": list(C.COVERAGE_DECISIVE),
+            # v7 A7: the expansion loop stops on all six; the core arm is
+            # gated by C1/C3/C5/C6 and the spectrum arm by C2/C4.
+            "coverage_expansion_conditions":
+                list(C.COVERAGE_EXPANSION_CONDITIONS),
+            "coverage_core_conditions": list(C.COVERAGE_CORE_CONDITIONS),
+            "coverage_spectrum_conditions":
+                list(C.COVERAGE_SPECTRUM_CONDITIONS),
             "reference_caliper": C.REFERENCE_CALIPER,
             "secondary_coordinate_caliper": C.SECONDARY_COORDINATE_CALIPER,
             "spectrum": {"band": list(C.SPECTRUM_ELIGIBILITY_BAND),

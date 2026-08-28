@@ -219,6 +219,36 @@ def test_the_coverage_verdict_reaches_gate3c():
     assert "spectrum" not in report["admitted_arms"]
 
 
+def test_a7_a_calibrated_spectrum_failure_reaches_gate3c_as_a_spectrum_loss():
+    """v7 A7. Gate 3A's `calibrated_spectrum_failures` enters Gate 3C through
+    `support_at` and costs the spectrum arm alone."""
+    from dci1v7.stages import feasibility
+    assert "calibrated_spectrum_failures" in inspect.getsource(
+        gates_run.gate3c_payload)
+    assert "extra_spectrum_failures" in inspect.getsource(
+        feasibility.support_at)
+    report = support.evaluate_support(
+        model_key="fixture-model",
+        structurally_eligible_tier12_families=[f"MK{i}" for i in range(1, 9)],
+        qualified_families=["MK1", "MK2", "MK3", "MK4", "MK5"],
+        selection={"core_references": [
+            {"structural_tier": 1, "feature_group": "marker_thus",
+             "family": "MK1"},
+            {"structural_tier": 1, "feature_group": "marker_hence",
+             "family": "MK2"},
+            {"structural_tier": 1, "feature_group": "marker_though",
+             "family": "MK3"}], "identification_statuses": []},
+        near_form_available=True, class_available=True,
+        spectrum_identified=True,
+        spectrum_design_time_failures=[
+            feasibility.CALIBRATED_SPECTRUM_COVERAGE_FAILURE])
+    assert report["support_met"]
+    assert "core" in report["admitted_arms"]
+    assert "spectrum" not in report["admitted_arms"]
+    assert report["non_identification"]["status"] == \
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+
+
 # ----------------------------------------------------------------- V5-E13
 
 def test_the_screen_can_drop_an_arm_selection_would_have_admitted():

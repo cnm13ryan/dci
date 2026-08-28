@@ -263,10 +263,14 @@ CONTRACT: tuple[Field, ...] = (
     # §12.6 re-read on the **calibration** basis at the iota_A selection
     # matches on --- the reading where iota(R), the eligibility coordinate,
     # the vacuity and iota_A all come from the same 192 topics at the same
-    # four draws. It gates: Gate 3C takes its failures as design-time
-    # failures, under §34 D6's existing disposition.
+    # four draws. It gates, by arm (v7 A7): Gate 3C takes the core
+    # conditions' failures as design-time failures under §34 D6's existing
+    # disposition, and the spectrum conditions' failures as the spectrum
+    # arm's own.
     _f(G3A, "coverage_at_calibrated_iota_a", ()),
     _f(G3A, "calibrated_coverage_failures", (G3C,)),
+    # v7 A7: the spectrum conditions' own verdict, read into the spectrum arm.
+    _f(G3A, "calibrated_spectrum_failures", (G3C,)),
 
     # ---------------------------------------- GATE_3B_REFERENCE_SELECTION
     _f(G3B, "m_star", (G3C,)),
@@ -280,11 +284,15 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3C, "identification_statuses", (G4, G5, UA, FR, PF)),
     _f(G3C, "support", (G5, FR, PF)),
     _f(G3C, "m_star", (G4, G5)),
-    # §34 D6, closed at `identification_status`. Null when §13.15 was met, and
-    # the key is present either way, so a reader can tell "the support held"
-    # from "this record predates the decision".
-    _f(G3C, "non_identification", (G5, FR)),
+    # §34 D6, closed at `identification_status`. Null when every support
+    # requirement was met, and the key is present either way, so a reader can
+    # tell "the support held" from "this record predates the decision". v7
+    # A6: the pre-freeze audit reads it to check the disposition, the member
+    # set and the arm set against the registered rule.
+    _f(G3C, "non_identification", (G5, FR, PF)),
     _f(G3C, "not_identified_members", (G5, PF)),
+    _f(G3C, "spectrum_failures", ()),
+    _f(G3C, "spectrum_met", ()),
 
     # ------------------------------------------- GATE_4_COMPOSED_CONTRAST
     # v7: the per-cell table is descriptive; the projection is the record.
@@ -292,7 +300,9 @@ CONTRACT: tuple[Field, ...] = (
     _f(G4, "cell_proximity", ()),
     _f(G4, "cells_near_a_boundary", ()),
     _f(G4, "proximity_band", ()),
-    _f(G4, "composed_contrast", (G5,)),
+    # v7 A6: the pre-freeze audit runs `assert_not_rehabilitated` over the
+    # Gate-4 record, so it reads the projection too.
+    _f(G4, "composed_contrast", (G5, PF)),
     _f(G4, "contrast_statuses", (PF, G5)),
     _f(G4, "any_structural_zero", (G5,)),
     _f(G4, "resamples", ()),
@@ -333,7 +343,9 @@ CONTRACT: tuple[Field, ...] = (
     # unmasked analysis and the final report assert against rather than
     # re-deriving. A later stage that offered an estimate for a member named
     # here would be lifting a status the freeze bound.
-    _f(G5, "non_identification", (UA, FR)),
+    # v7 A6/A7: the masked analysis blocks the frozen members too, so it is
+    # a reader as well as the unmasked analysis and the final report.
+    _f(G5, "non_identification", (MA, UA, FR)),
     _f(G5, "selected_cap", (CONF,)),
 
     # ------------------------------------------------ CONFIRMATORY_GENERATION

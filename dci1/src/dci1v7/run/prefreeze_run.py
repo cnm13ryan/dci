@@ -24,6 +24,24 @@ because the artifact it needs does not exist --- reports ``UNRESOLVED``, and
 ``can_freeze`` requires every mandatory check to have passed. "We did not
 establish this" and "this is false" are different facts and neither licenses
 a freeze.
+
+**v7 A6: the audit establishes the *record* of §13.15, not its *success*.**
+Until 2026-08-28 one check, ``support_satisfied``, was implemented as
+``bool(support_met)`` --- "§13.15 was met" --- while its own description said
+"recorded", and no registered rule asked for the first: §18 stage 12 names
+three failure conditions and an unmet §13.15 is not among them, §13.15 and
+§28.2 make the status non-terminal, and §34 D6 is closed at
+``identification_status``. Seven replications of v5, v6 and v7 passed every
+scientific gate and ended on that check. It is withdrawn. What the audit
+establishes instead is the invariant the registration actually states: every
+estimand entering confirmatory generation has the support it requires, every
+unsupported estimand and arm has already been removed, and the design the
+freeze will bind is exactly Gate 3C's identification state ---
+``support_recorded``, ``d6_disposition_registered``,
+``arms_match_identification``, ``no_rehabilitation_path`` and
+``freeze_fields_explained`` below, with the reference-specific checks
+conditional on the reference arm being admitted (``NOT_APPLICABLE`` when it
+is not, which does not block).
 """
 from __future__ import annotations
 
@@ -32,7 +50,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from dci1v4.engine import gitinfo
-from dci1v4.errors import IntegrityError
+from dci1v4.errors import IntegrityError, ProtocolError
 from dci1v4.protocol.hashing import sha_obj
 
 from dci1v7.engine import transitions
@@ -52,7 +70,15 @@ from dci1v7.verifiers import verifier_source_hash
 from dci1v7.protocol.wordings import wording_source_hash
 
 __all__ = ["ARTIFACT_CHECKS", "artifact_checks", "prefreeze_payload",
-           "run_prefreeze_audit_stage", "PREFREEZE_AUDIT_FAILURE"]
+           "run_prefreeze_audit_stage", "PREFREEZE_AUDIT_FAILURE",
+           "NOT_APPLICABLE", "NON_BLOCKING_VERDICTS", "support_checks"]
+
+#: v7 A6: the verdict a reference-specific check records when the arm it is
+#: about was not admitted. It does not block: a check about a reference
+#: nobody admitted cannot fail a replication that admitted none, and the
+#: detail names the identification status that explains the absence.
+NOT_APPLICABLE = "NOT_APPLICABLE"
+NON_BLOCKING_VERDICTS: tuple[str, ...] = ("PASS", NOT_APPLICABLE)
 
 PREFREEZE_AUDIT_FAILURE = audit_prefreeze.PREFREEZE_AUDIT_FAILURE
 
@@ -80,17 +106,34 @@ ARTIFACT_CHECKS: tuple[tuple[str, str, bool], ...] = (
      "recompute", True),
     ("selected_references_valid",
      "every selected reference carries a passing V(R) with no unevaluated "
-     "component", True),
+     "component (NOT_APPLICABLE when the core arm is not admitted)", True),
     ("calibration_stability_satisfied",
-     "every selected reference is stable across the two calibration splits",
-     True),
-    ("support_satisfied",
-     "§13.15's support and redundancy requirements are recorded", True),
+     "every selected reference is stable across the two calibration splits "
+     "(NOT_APPLICABLE when the core arm is not admitted)", True),
+    # v7 A6: the five checks that replace `support_satisfied`. None requires
+    # §13.15 to have been met; each requires the record of it to be complete,
+    # consistent with §34 D6, and reflected exactly in the arm set.
+    ("support_recorded",
+     "Gate 3C carries §13.15's support block: realised counts, requirements, "
+     "failure lists and a boolean verdict", True),
+    ("d6_disposition_registered",
+     "the support block's disposition is §34 D6's closed value, it is not "
+     "terminal, and when any support is unmet the non_identification block "
+     "is irreversible and names exactly the estimand set the registered rule "
+     "derives", True),
     ("no_post_outcome_substitution",
      "no substitution function exists in the Gate-4 module", True),
     ("arms_match_identification",
      "the admitted arm set is the one Gate 3C's identification statuses "
-     "imply", True),
+     "imply: every unsupported arm absent, every supported arm retained, the "
+     "base arm present", True),
+    ("no_rehabilitation_path",
+     "no record written after Gate 3C offers an estimate for a member the "
+     "non_identification block names, and the freeze, the analysis and the "
+     "final report each assert the same", True),
+    ("freeze_fields_explained",
+     "the §18.1 record the audit would license assembles, and every field it "
+     "leaves empty is explained by the status that empties it", True),
     ("exact_cell_set",
      "the derived cell count equals the cell set the admitted arms build",
      True),
@@ -123,6 +166,146 @@ def _result(check: str, verdict: str, detail: Any = None,
             "mandatory": mandatory}
 
 
+def support_checks(gate3c: Mapping[str, Any], *,
+                   gate4: Mapping[str, Any] | None
+                   ) -> list[tuple[str, bool | None, Any]]:
+    """v7 A6: §13.15's record, §34 D6's disposition and the arm set, checked.
+
+    Returns ``(check, ok, detail)`` triples for ``support_recorded``,
+    ``d6_disposition_registered``, ``arms_match_identification`` and
+    ``no_rehabilitation_path``. ``ok`` is ``None`` when the record the check
+    needs is absent (UNRESOLVED). Nothing here requires ``support_met`` to
+    be true: a replication that lost its reference set under D6 passes every
+    one of these exactly when its record says so consistently.
+    """
+    from dci1v7.design.cells import arms_from_identification
+    from dci1v7.protocol import identification
+    from dci1v7.stages import support as support_stage
+
+    out: list[tuple[str, bool | None, Any]] = []
+    report = gate3c.get("support")
+    statuses = set(gate3c.get("identification_statuses") or ())
+    well_formed = (
+        isinstance(report, Mapping)
+        and isinstance(report.get("support_met"), bool)
+        and isinstance(report.get("realised"), Mapping)
+        and isinstance(report.get("requirements"), Mapping)
+        and isinstance(report.get("failures"), list)
+        and report.get("disposition_decision") == "D6")
+    out.append(("support_recorded", bool(well_formed),
+                {"present": isinstance(report, Mapping),
+                 "support_met": (report or {}).get("support_met"),
+                 "spectrum_met": (report or {}).get("spectrum_met"),
+                 "realised": (report or {}).get("realised"),
+                 "failures": (report or {}).get("failures"),
+                 "spectrum_failures": (report or {}).get("spectrum_failures"),
+                 "disposition": (report or {}).get("disposition")}))
+    if not well_formed:
+        report = {}
+    met = bool(report.get("support_met"))
+    expected_disposition = ("SUPPORTED" if met else
+                            support_stage.support_disposition(met=False))
+    block = gate3c.get("non_identification")
+    expected_members = identification.affected_members(statuses)
+    expected_status = identification.status_of_members(statuses)
+    problems: list[str] = []
+    if report.get("disposition") != expected_disposition:
+        problems.append(f"disposition {report.get('disposition')!r} is not "
+                        f"§34 D6's {expected_disposition!r}")
+    if report.get("terminal") is not False:
+        problems.append("the support block does not declare itself "
+                        "non-terminal")
+    if ("REFERENCE_SUPPORT_NOT_IDENTIFIED" in statuses) == met:
+        problems.append("REFERENCE_SUPPORT_NOT_IDENTIFIED disagrees with "
+                        "support_met")
+    if expected_members:
+        if not isinstance(block, Mapping):
+            problems.append("a support requirement is unmet and the record "
+                            "carries no non_identification block")
+        else:
+            if block.get("irreversible") is not True:
+                problems.append("the non_identification block is not "
+                                "irreversible")
+            if block.get("terminal") is not False:
+                problems.append("the non_identification block is terminal")
+            if block.get("status") != expected_status:
+                problems.append(f"the block records {block.get('status')!r}; "
+                                f"the statuses imply {expected_status!r}")
+            named = list(block.get("not_identified_members") or ())
+            if sorted(named) != sorted(expected_members) or \
+                    len(named) != len(expected_members):
+                problems.append(
+                    f"the block names {len(named)} members; the registered "
+                    f"rule derives {len(expected_members)} for "
+                    f"{expected_status}")
+            if sorted(gate3c.get("not_identified_members") or ()) != \
+                    sorted(named):
+                problems.append("Gate 3C's top-level member list disagrees "
+                                "with its block")
+    elif block:
+        problems.append("every support requirement was met and the record "
+                        "still carries a non_identification block")
+    out.append(("d6_disposition_registered", well_formed and not problems,
+                {"expected_disposition": expected_disposition,
+                 "expected_status": expected_status,
+                 "n_expected_members": len(expected_members),
+                 "problems": problems}))
+
+    unidentified = ("REFERENCE_SUPPORT_NOT_IDENTIFIED" in statuses
+                    or "EXCESS_NOT_IDENTIFIED" in statuses)
+    implied = arms_from_identification(
+        core_identified=not unidentified,
+        spectrum_identified=(not unidentified
+                             and "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+                             not in statuses),
+        near_form_identified="NEAR_FORM_ARM_NOT_AVAILABLE" not in statuses,
+        class_identified="CLASS_ARM_NOT_AVAILABLE" not in statuses)
+    recorded = tuple(gate3c.get("admitted_arms") or ())
+    unsupported = [a for a in C.ARMS if a not in implied]
+    out.append(("arms_match_identification",
+                set(recorded) == set(implied) and C.ARM_BASE in recorded,
+                {"recorded": list(recorded), "implied": list(implied),
+                 "statuses": sorted(statuses),
+                 "unsupported_absent": [a for a in unsupported
+                                        if a not in recorded],
+                 "unsupported_present": [a for a in unsupported
+                                         if a in recorded],
+                 "supported_retained": [a for a in implied if a in recorded],
+                 "supported_missing": [a for a in implied
+                                       if a not in recorded],
+                 "base_present": C.ARM_BASE in recorded}))
+
+    import inspect
+
+    from dci1v7.run import analysis_run, final_report_checks, freeze_run
+    asserted_later = {
+        "freeze": "assert_not_rehabilitated" in inspect.getsource(freeze_run),
+        "analysis": "assert_not_rehabilitated"
+                    in inspect.getsource(analysis_run),
+        "final_report": "not_identified_members"
+                        in inspect.getsource(final_report_checks)}
+    if gate4 is None:
+        out.append(("no_rehabilitation_path", None,
+                    {"missing": C.STAGE_GATE4, **asserted_later}))
+    else:
+        try:
+            identification.assert_not_rehabilitated(
+                gate4, gate3c=block, where="PREFREEZE_AUDIT: "
+                f"{C.STAGE_GATE4}")
+            offered: Any = []
+            ok = all(asserted_later.values())
+        except ProtocolError as error:
+            offered, ok = str(error), False
+        out.append(("no_rehabilitation_path", ok,
+                    {"frozen_members": len((block or {}).get(
+                        "not_identified_members") or ()),
+                     "offered_after_gate3c": offered,
+                     "rehabilitation_paths_refused":
+                         sorted(identification.REHABILITATION_PATHS),
+                     **asserted_later}))
+    return out
+
+
 def artifact_checks(tree: ModelTree, *, repo_root: Path | str = ".",
                     bank: TopicBank | None = None) -> list[dict[str, Any]]:
     """Every check above, derived from the signed records in ``tree``.
@@ -142,6 +325,9 @@ def artifact_checks(tree: ModelTree, *, repo_root: Path | str = ".",
     def add(check: str, ok: bool | None, detail: Any = None) -> None:
         verdict = "UNRESOLVED" if ok is None else ("PASS" if ok else "FAIL")
         out.append(_result(check, verdict, detail, mandatory[check]))
+
+    def add_not_applicable(check: str, detail: Any = None) -> None:
+        out.append(_result(check, NOT_APPLICABLE, detail, mandatory[check]))
 
     records: dict[str, Mapping[str, Any]] = {}
     unreadable: dict[str, str] = {}
@@ -235,11 +421,32 @@ def artifact_checks(tree: ModelTree, *, repo_root: Path | str = ".",
         add("candidate_population_frozen", ok,
             {"sizes": sizes, "n_carried": regime.get("n_carried")})
 
+    gate3c = records.get(C.STAGE_GATE3C)
+    core_admitted = (gate3c is not None
+                     and C.ARM_CORE in (gate3c.get("admitted_arms") or ()))
+    core_absent_because = sorted(
+        s for s in (gate3c.get("identification_statuses") or ())
+        if s in ("REFERENCE_SUPPORT_NOT_IDENTIFIED", "EXCESS_NOT_IDENTIFIED")
+    ) if gate3c is not None else []
+
     gate3b = records.get(C.STAGE_GATE3B)
     if gate3b is None:
         add("selected_references_valid", None, {"missing": C.STAGE_GATE3B})
         add("calibration_stability_satisfied", None,
             {"missing": C.STAGE_GATE3B})
+    elif gate3c is None:
+        add("selected_references_valid", None, {"missing": C.STAGE_GATE3C})
+        add("calibration_stability_satisfied", None,
+            {"missing": C.STAGE_GATE3C})
+    elif not core_admitted:
+        # v7 A6: a check about the admitted references is not applicable
+        # when the core arm was not admitted. The status that explains the
+        # absence is named, and the verdict does not block.
+        detail = {"core_arm_admitted": False,
+                  "explained_by": core_absent_because,
+                  "admitted_arms": list(gate3c.get("admitted_arms") or ())}
+        add_not_applicable("selected_references_valid", detail)
+        add_not_applicable("calibration_stability_satisfied", detail)
     else:
         chosen = gate3b.get("selection") or {}
         core = chosen.get("core") or {}
@@ -268,33 +475,21 @@ def artifact_checks(tree: ModelTree, *, repo_root: Path | str = ".",
                                  for n in names)) if stability else None,
             {"checked": names, "n_verdicts": len(stability)})
 
-    gate3c = records.get(C.STAGE_GATE3C)
     if gate3c is None:
-        for name in ("support_satisfied", "arms_match_identification",
-                     "exact_cell_set", "generation_budget"):
+        for name in ("support_recorded", "d6_disposition_registered",
+                     "arms_match_identification", "no_rehabilitation_path",
+                     "exact_cell_set", "generation_budget",
+                     "freeze_fields_explained"):
             add(name, None, {"missing": C.STAGE_GATE3C})
     else:
-        report = gate3c.get("support") or {}
-        add("support_satisfied", bool(report.get("support_met")),
-            {"realised": report.get("realised"),
-             "failures": report.get("failures"),
-             "disposition": report.get("disposition")})
-        from dci1v7.design.cells import (arms_from_identification,
-                                         n_cells_for)
-        statuses = set(gate3c.get("identification_statuses") or ())
-        unidentified = ("REFERENCE_SUPPORT_NOT_IDENTIFIED" in statuses
-                        or "EXCESS_NOT_IDENTIFIED" in statuses)
-        implied = arms_from_identification(
-            core_identified=not unidentified,
-            spectrum_identified=(
-                not unidentified
-                and "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" not in statuses),
-            near_form_identified="NEAR_FORM_ARM_NOT_AVAILABLE" not in statuses,
-            class_identified="CLASS_ARM_NOT_AVAILABLE" not in statuses)
+        # v7 A6: §13.15's record, D6's disposition, the arm set and the
+        # absence of a rehabilitation path --- none of which asks whether
+        # the support was met.
+        for check, ok, detail in support_checks(
+                gate3c, gate4=records.get(C.STAGE_GATE4)):
+            add(check, ok, detail)
+        from dci1v7.design.cells import n_cells_for
         recorded = tuple(gate3c.get("admitted_arms") or ())
-        add("arms_match_identification", set(recorded) == set(implied),
-            {"recorded": list(recorded), "implied": list(implied),
-             "statuses": sorted(statuses)})
         cells = n_cells_for(recorded) if recorded else 0
         add("exact_cell_set", gate3c.get("derived_cell_count") == cells,
             {"recorded": gate3c.get("derived_cell_count"),
@@ -304,7 +499,31 @@ def artifact_checks(tree: ModelTree, *, repo_root: Path | str = ".",
             {"cells_per_block": cells, "blocks": C.N_BLOCKS,
              "M": C.M_DRAWS, "per_model": budget,
              "note": "the whole-study budget is this times the number of "
-                     "replications §34 D1 admits"})
+                     "replications §34 D1 admits; an arm-derived design on "
+                     "the base arm alone is 5 cells per block"})
+        # v7 A6: the freeze record, assembled and checked without being
+        # written, so an empty §18.1 field no status explains fails here.
+        if records.get(C.STAGE_GATE4) is None:
+            add("freeze_fields_explained", None, {"missing": C.STAGE_GATE4})
+        else:
+            from dci1v7.run import freeze_run
+            from dci1v7.stages import freeze as freeze_stage
+            try:
+                dry = freeze_run.assemble(
+                    tree, producing_commit=str(commit or ""),
+                    environment_digest="prefreeze-dry-run", dry_run=True)
+                explained = freeze_stage.assert_field_emptiness_explained(
+                    dry, identification_statuses=list(
+                        gate3c.get("identification_statuses") or ()))
+                add("freeze_fields_explained", True,
+                    {"explained_empty": explained["explained_empty"],
+                     "admitted_arms": list(dry.get("admitted_arms") or ()),
+                     "non_identification_status":
+                         (dry.get("non_identification") or {}).get("status"),
+                     "dry_run": True})
+            except Exception as error:
+                add("freeze_fields_explained", False,
+                    {"error": f"{type(error).__name__}: {error}"[:600]})
 
     try:
         assert_no_substitution_path()
@@ -450,7 +669,8 @@ def prefreeze_payload(tree: ModelTree, *, producing_commit: str,
         repo_root=str(repo_root), gate4_record=gate4, probe_record=probe,
         identification_statuses=statuses, artifact_texts=artifact_texts)
 
-    failed = [c for c in checks if c["mandatory"] and c["verdict"] != "PASS"]
+    failed = [c for c in checks
+              if c["mandatory"] and c["verdict"] not in NON_BLOCKING_VERDICTS]
     can_freeze = not failed and checklist.get("can_freeze", False)
     payload = {
         "stage": C.STAGE_PREFREEZE_AUDIT,
@@ -463,7 +683,13 @@ def prefreeze_payload(tree: ModelTree, *, producing_commit: str,
         "n_artifact_passed": sum(1 for c in checks if c["verdict"] == "PASS"),
         "n_artifact_unresolved": sum(1 for c in checks
                                      if c["verdict"] == "UNRESOLVED"),
+        "n_artifact_not_applicable": sum(1 for c in checks
+                                         if c["verdict"] == NOT_APPLICABLE),
         "n_artifact_failed": sum(1 for c in checks if c["verdict"] == "FAIL"),
+        "support_met_required": False,
+        "support_rule": "v7 A6: the audit establishes §13.15's record, §34 "
+                        "D6's disposition and the arm set; it does not "
+                        "require the support to have been met",
         "checklist": checklist,
         "can_freeze": can_freeze,
         "waived": [],
@@ -551,7 +777,7 @@ def run_prefreeze_audit_stage(tree: ModelTree, *,
                               payload["n_artifact_unresolved"],
                           "artifact_checks": [
                               c for c in payload["artifact_checks"]
-                              if c["verdict"] != "PASS"],
+                              if c["verdict"] not in NON_BLOCKING_VERDICTS],
                           **_checklist_observed(payload),
                           "content_hash": payload["content_hash"]},
                 strongest_permissible_statement=C.TERMINAL_SENTENCE)

@@ -9,6 +9,14 @@ whether failing that is *terminal* --- the replication stops --- or an
 build the reference set keeps running and keeps every estimand that does not
 depend on one.
 
+**v7 A7 adds a second, smaller block under the same rule.** When §13.15 and
+§12.6's core conditions hold but a spectrum condition (C2, C4) is lost at
+design time --- or §13.12 finds no three straddling triples --- the core arm
+stands and only the spectrum-dependent members (``SPECTRUM_ESTIMANDS``) are
+``NOT_IDENTIFIED``, irreversibly, on a block whose ``status`` is
+``DIFFICULTY_SUPPORT_NOT_IDENTIFIED``. ``assert_not_rehabilitated`` reads the
+members and not the status, so the permanence is one mechanism.
+
 **And the failure is irreversible, which is the half that needs code.** An
 identification status that a later stage could quietly lift would be worse
 than a terminal status, because the replication would carry an
@@ -44,6 +52,9 @@ from dci1v7.protocol import constants as C
 __all__ = ["CORE_SLOT_TOKENS", "REFERENCE_AGGREGATES", "REHABILITATION_PATHS",
            "NOT_IDENTIFIED", "reference_dependent",
            "AFFECTED_ESTIMANDS", "AFFECTED_BY_FAMILY", "UNAFFECTED_ESTIMANDS",
+           "SPECTRUM_SLOT_TOKENS", "SPECTRUM_AGGREGATES", "spectrum_dependent",
+           "SPECTRUM_ESTIMANDS", "SPECTRUM_BY_FAMILY", "BASE_ARM_ESTIMANDS",
+           "affected_members", "status_of_members",
            "NonIdentification", "non_identification",
            "assert_not_rehabilitated", "identification_payload"]
 
@@ -121,6 +132,85 @@ UNAFFECTED_ESTIMANDS: tuple[str, ...] = tuple(
     dict.fromkeys(m for members in C.FAMILY_MEMBERS.values() for m in members
                   if not reference_dependent(m)))
 
+#: v7 A7: the members that need the SPECTRUM arm --- the six spectrum
+#: companions' cells, or §11.8's fit on them. A subset of the
+#: reference-dependent set, because the spectrum is drawn from admitted core
+#: families (§13.12) and cannot exist without them.
+SPECTRUM_SLOT_TOKENS: tuple[str, ...] = tuple(C.SPECTRUM_SLOTS)
+SPECTRUM_AGGREGATES: tuple[str, ...] = (
+    "delta_difficulty", "beta", "alpha_1", "alpha_2", "alpha_3", "gamma_tier",
+)
+
+
+def spectrum_dependent(member: str) -> bool:
+    """Does this registered estimand need the difficulty-spectrum arm?
+
+    The rule, stated once: a member is spectrum-dependent when its name names
+    a spectrum rung, or when it is §11.8's residual or one of the fit's own
+    parameters. Delta_R, Delta_j, Xi and the reciprocal matrix are NOT:
+    §8.1 registers that a replication which cannot identify the spectrum
+    still estimates them, and that is the whole content of A7.
+    """
+    if member.split("|", 1)[0] in SPECTRUM_AGGREGATES:
+        return True
+    for token in SPECTRUM_SLOT_TOKENS:
+        if f"<-{token})" in member or f"({token}<-" in member or \
+                f"+{token})" in member or member.endswith(f"_{token}"):
+            return True
+    return False
+
+
+SPECTRUM_BY_FAMILY: dict[str, tuple[str, ...]] = {
+    family: tuple(m for m in members if spectrum_dependent(m))
+    for family, members in C.FAMILY_MEMBERS.items()}
+SPECTRUM_ESTIMANDS: tuple[str, ...] = tuple(
+    dict.fromkeys(m for members in SPECTRUM_BY_FAMILY.values()
+                  for m in members))
+#: §8.1's unconditional arm: what every replication that reaches Gate 3C
+#: keeps whatever else it loses.
+BASE_ARM_ESTIMANDS: tuple[str, ...] = (
+    "D(B<-A)", "D(A<-B)", "Lambda", "Ord_A", "Ord_B", "Ord_Lambda")
+
+assert set(SPECTRUM_ESTIMANDS) <= set(AFFECTED_ESTIMANDS), (
+    "a spectrum-dependent member is reference-dependent: the spectrum is "
+    "drawn from admitted core families")
+assert "delta_difficulty" in SPECTRUM_ESTIMANDS
+assert "D(B<-R1-)" in SPECTRUM_ESTIMANDS
+assert "vac(B|B+R1-)-vac(B solo)" in SPECTRUM_ESTIMANDS
+assert "gamma_tier" in SPECTRUM_ESTIMANDS
+for _kept in ("Delta_R", "Delta_1", "Xi", "D(B<-R1)", "Ord_Rbar",
+              "D(Rbar<-A)"):
+    assert _kept not in SPECTRUM_ESTIMANDS, _kept
+assert set(BASE_ARM_ESTIMANDS) <= set(UNAFFECTED_ESTIMANDS)
+
+
+def affected_members(statuses: Iterable[str]) -> tuple[str, ...]:
+    """The estimand set a design-time status makes NOT_IDENTIFIED (A7).
+
+    ``REFERENCE_SUPPORT_NOT_IDENTIFIED`` (or ``EXCESS_NOT_IDENTIFIED``) takes
+    the whole reference-dependent set; ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED``
+    alone takes the spectrum-dependent set; nothing else takes anything here
+    --- the near-form and class arms' absences are handled by the analysis
+    on their own statuses and are not irreversible non-identifications.
+    """
+    present = set(statuses)
+    if present & {"REFERENCE_SUPPORT_NOT_IDENTIFIED", "EXCESS_NOT_IDENTIFIED"}:
+        return AFFECTED_ESTIMANDS
+    if "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in present:
+        return SPECTRUM_ESTIMANDS
+    return ()
+
+
+def status_of_members(statuses: Iterable[str]) -> str | None:
+    """Which status a Gate-3C non-identification block carries, or None."""
+    present = set(statuses)
+    if present & {"REFERENCE_SUPPORT_NOT_IDENTIFIED", "EXCESS_NOT_IDENTIFIED"}:
+        return "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+    if "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in present:
+        return "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+    return None
+
+
 # The primary quantity and the two the study can still answer without a
 # reference set have to survive the rule, or the rule is wrong.
 assert "D(B<-A)" in UNAFFECTED_ESTIMANDS
@@ -133,42 +223,84 @@ assert "Xi" in AFFECTED_ESTIMANDS
 assert "delta_difficulty" in AFFECTED_ESTIMANDS
 
 
+#: The two sentences a block can carry, by the status it records.
+_SENTENCES = {
+    "REFERENCE_SUPPORT_NOT_IDENTIFIED": (
+        "the primary reference set could not be constructed under §13.15 or "
+        "§12.6's core coverage conditions, so every estimand that needs one "
+        "is NOT_IDENTIFIED for this replication and stays NOT_IDENTIFIED; "
+        "the replication continues for the estimands that do not need one"),
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED": (
+        "the difficulty spectrum could not be constructed under §12.6's "
+        "spectrum coverage conditions or §13.12, so every estimand that "
+        "needs the spectrum arm is NOT_IDENTIFIED for this replication and "
+        "stays NOT_IDENTIFIED; the core reference set stands and the "
+        "replication continues for every estimand that does not need the "
+        "spectrum"),
+}
+
+
 @dataclass(frozen=True)
 class NonIdentification:
-    """The Gate-3C record of an unmet §13.15, and its permanence."""
+    """The Gate-3C record of an unmet support requirement, and its permanence.
+
+    v7 A7: the block carries the status it records. For
+    ``REFERENCE_SUPPORT_NOT_IDENTIFIED`` the members are the whole
+    reference-dependent set; for a design-time
+    ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` they are the spectrum-dependent
+    set. Either way ``assert_not_rehabilitated`` reads ``not_identified_
+    members`` and nothing else, so the permanence is the same rule.
+    """
 
     model_key: str
     failures: tuple[str, ...]
     members: tuple[str, ...]
+    status: str = "REFERENCE_SUPPORT_NOT_IDENTIFIED"
     irreversible: bool = True
 
     def as_dict(self) -> dict[str, Any]:
+        if self.status not in _SENTENCES:
+            raise ProtocolError(
+                f"{self.status!r} is not a status a Gate-3C non-"
+                "identification block may carry")
+        still = tuple(m for members in C.FAMILY_MEMBERS.values()
+                      for m in members if m not in set(self.members))
         return {
             "decision": "D6", "value": "identification_status",
-            "status": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
+            "status": self.status,
             "model_key": self.model_key,
             "terminal": False,
+            "replication_continues": True,
             "irreversible": self.irreversible,
             "failures": list(self.failures),
             "not_identified_members": list(self.members),
-            "still_identified_members": list(UNAFFECTED_ESTIMANDS),
+            "still_identified_members": list(dict.fromkeys(still)),
             "rehabilitation_forbidden": dict(REHABILITATION_PATHS),
-            "sentence": (
-                "the primary reference set could not be constructed under "
-                "§13.15, so every estimand that needs one is NOT_IDENTIFIED "
-                "for this replication and stays NOT_IDENTIFIED; the "
-                "replication continues for the estimands that do not need one"),
+            "sentence": _SENTENCES[self.status],
         }
 
 
 def non_identification(*, model_key: str, support_met: bool,
-                       failures: Sequence[str] = ()) -> dict[str, Any] | None:
-    """Gate 3C's D6 record, or ``None`` when §13.15 is met."""
-    if support_met:
-        return None
-    return NonIdentification(model_key=model_key,
-                             failures=tuple(failures),
-                             members=AFFECTED_ESTIMANDS).as_dict()
+                       failures: Sequence[str] = (),
+                       spectrum_identified: bool = True,
+                       spectrum_failures: Sequence[str] = ()
+                       ) -> dict[str, Any] | None:
+    """Gate 3C's D6 record, or ``None`` when every support requirement was met.
+
+    v7 A7: an unmet §13.15 or core coverage takes the reference-dependent
+    set; a met §13.15 with the spectrum lost at design time takes the
+    spectrum-dependent set, under the same irreversibility.
+    """
+    if not support_met:
+        return NonIdentification(model_key=model_key,
+                                 failures=tuple(failures),
+                                 members=AFFECTED_ESTIMANDS).as_dict()
+    if not spectrum_identified:
+        return NonIdentification(
+            model_key=model_key, failures=tuple(spectrum_failures),
+            members=SPECTRUM_ESTIMANDS,
+            status="DIFFICULTY_SUPPORT_NOT_IDENTIFIED").as_dict()
+    return None
 
 
 def _offered_members(record: Mapping[str, Any]) -> set[str]:
@@ -216,8 +348,8 @@ def assert_not_rehabilitated(later: Mapping[str, Any], *,
     if offered:
         raise ProtocolError(
             f"{where}: {sorted(offered)} were marked {NOT_IDENTIFIED} at "
-            "Gate 3C because §13.15's reference support was unmet, and this "
-            "record offers an estimate for them. §34 D6 closed at "
+            f"Gate 3C ({block.get('status', 'REFERENCE_SUPPORT_NOT_IDENTIFIED')}"
+            "), and this record offers an estimate for them. §34 D6 closed at "
             "'identification_status' with the non-identification irreversible "
             f"for the replication; the paths it forbids by name are "
             f"{sorted(REHABILITATION_PATHS)}")
@@ -237,6 +369,16 @@ def identification_payload() -> dict[str, Any]:
         "status_when_unmet": "REFERENCE_SUPPORT_NOT_IDENTIFIED",
         "terminal": False,
         "irreversible": True,
+        "replication_continues": True,
+        # v7 A7: the spectrum-dependent subset, NOT_IDENTIFIED on its own
+        # when only the spectrum arm is lost at design time.
+        "spectrum_rule": "a member is spectrum-dependent when its name names "
+                         "a spectrum rung, or when it is delta_difficulty or "
+                         "one of the §11.8 fit's own parameters",
+        "spectrum_status_when_unmet": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+        "n_spectrum_affected": len(SPECTRUM_ESTIMANDS),
+        "spectrum_affected": list(SPECTRUM_ESTIMANDS),
+        "base_arm_always_identified": list(BASE_ARM_ESTIMANDS),
         "n_affected": len(AFFECTED_ESTIMANDS),
         "affected_by_family": {k: list(v) for k, v in
                                AFFECTED_BY_FAMILY.items() if v},

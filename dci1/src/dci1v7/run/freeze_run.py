@@ -81,9 +81,15 @@ def _selection_entries(selection: Mapping[str, Any], key: str
 
 def assemble(tree: ModelTree, *, producing_commit: str,
              environment_digest: str = "",
-             variance_reestimate: Mapping[str, Any] | None = None
-             ) -> dict[str, Any]:
-    """One replication's freeze record, every value from a signed source."""
+             variance_reestimate: Mapping[str, Any] | None = None,
+             dry_run: bool = False) -> dict[str, Any]:
+    """One replication's freeze record, every value from a signed source.
+
+    ``dry_run`` (v7 A6) is the pre-freeze audit assembling the record it
+    would license, one stage before it exists: the audit's own record is not
+    written yet, so its slot in ``gate_record_hashes`` carries a marker
+    rather than a hash. Nothing else differs, and nothing is written.
+    """
     read = transitions.read_stage_record
     registration = read(tree, C.STAGE_REGISTERED)
     regime = read(tree, C.STAGE_REGIME)
@@ -95,12 +101,13 @@ def assemble(tree: ModelTree, *, producing_commit: str,
     gate3b = read(tree, C.STAGE_GATE3B)
     gate3c = read(tree, C.STAGE_GATE3C)
     gate4 = read(tree, C.STAGE_GATE4)
-    audit = read(tree, C.STAGE_PREFREEZE_AUDIT)
-    if not audit.get("can_freeze"):
-        raise ProtocolError(
-            "§18 stage 12 did not pass; Gate 5 is unreachable and the "
-            "predecessor check is what stops it. Blocked checks: "
-            f"{audit.get('blocked')}")
+    if not dry_run:
+        audit = read(tree, C.STAGE_PREFREEZE_AUDIT)
+        if not audit.get("can_freeze"):
+            raise ProtocolError(
+                "§18 stage 12 did not pass; Gate 5 is unreachable and the "
+                "predecessor check is what stops it. Blocked checks: "
+                f"{audit.get('blocked')}")
 
     qualified_at = qualification_at(gate2_5, m_star=int(probe["m_star"]))
     spec = get_model(tree.model_key)
@@ -338,7 +345,9 @@ def assemble(tree: ModelTree, *, producing_commit: str,
         hardware={"tensor_parallel_size": spec.tensor_parallel_size,
                   "gpu_memory_utilization": spec.gpu_memory_utilization},
         gate_record_hashes={
-            stage: sha_obj(read(tree, stage))
+            stage: ("DRY_RUN: the audit's own record does not exist yet"
+                    if dry_run and stage == C.STAGE_PREFREEZE_AUDIT
+                    else sha_obj(read(tree, stage)))
             for stage in C.STAGE_SEQUENCE[:C.STAGE_SEQUENCE.index(
                 C.STAGE_GATE5)]},
         measurement_basis=gate1["measurement_basis"],

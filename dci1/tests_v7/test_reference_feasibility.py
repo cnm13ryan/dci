@@ -246,8 +246,10 @@ def test_the_calibrated_coverage_is_evaluated_on_paired_cases(
 
 def test_the_calibrated_coverage_gates_through_the_registered_disposition(
         harness_decisions):
-    """A lost decisive condition is a §13.15 design-time failure, not a new
-    status and not a drift threshold."""
+    """A lost CORE condition (C1, C3, C5, C6) is a §13.15 design-time
+    failure, not a new status and not a drift threshold. (v7 A7: a lost
+    spectrum condition is the spectrum arm's own failure; see the next
+    test.)"""
     source = inspect.getsource(feasibility.coverage_at_calibrated_iota_a)
     assert "COVERAGE_MAX_DRIFT" not in source
     assert "drift" not in source.lower().split("iota_a_movement")[0][-400:]
@@ -261,6 +263,43 @@ def test_the_calibrated_coverage_gates_through_the_registered_disposition(
     assert not report["support_met"]
     assert feasibility.CALIBRATED_COVERAGE_FAILURE in report["failures"]
     assert "core" not in report["admitted_arms"]
+
+
+def test_a7_the_calibrated_spectrum_verdict_costs_the_spectrum_only(
+        harness_decisions):
+    """v7 A7: a lost C2/C4 on the calibrated basis is a spectrum failure,
+    not a §13.15 failure, and the core arm stands."""
+    core = [{"structural_tier": 1, "feature_group": g, "family": f}
+            for f, g in (("MK1", "marker_thus"), ("MK2", "marker_hence"),
+                         ("MK3", "marker_though"))]
+    report = feasibility.support_at(
+        {"core": {"core_references": core, "spectrum_identified": True},
+         "identification_statuses": []},
+        model_key="fixture-model",
+        calibration={"qualified_families": ["MK1", "MK2", "MK3", "MK4",
+                                            "MK5"]},
+        regime_record={"carried_set": [f"MK{i}:1" for i in range(1, 9)],
+                       "identification_statuses": []},
+        extra_spectrum_failures=[
+            feasibility.CALIBRATED_SPECTRUM_COVERAGE_FAILURE])
+    assert report["report"]["support_met"]
+    assert report["report"]["failures"] == []
+    assert feasibility.CALIBRATED_SPECTRUM_COVERAGE_FAILURE in \
+        report["spectrum_failures"]
+    assert "core" in report["arms"] and "spectrum" not in report["arms"]
+    assert "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in \
+        report["identification_statuses"]
+    assert "REFERENCE_SUPPORT_NOT_IDENTIFIED" not in \
+        report["identification_statuses"]
+
+
+def test_the_calibrated_re_read_reports_both_arms():
+    """`coverage_at_calibrated_iota_a` carries a core verdict and a spectrum
+    verdict, and the pre-screen certificate beside them gates neither."""
+    source = inspect.getsource(feasibility.coverage_at_calibrated_iota_a)
+    for key in ("core_met", "spectrum_met", "spectrum_failures",
+                "core_failed", "spectrum_failed"):
+        assert f'"{key}"' in source
 
 
 # ------------------------------------------- the frozen search order

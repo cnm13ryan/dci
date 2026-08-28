@@ -548,10 +548,17 @@ def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
 
     ``table`` entries carry ``candidate``, ``family``, ``structural_tier``,
     ``feature_group``, ``constraint_class``, ``iota`` and ``eligible``.
-    C1-C6 are decisive for the core and spectrum arms; **C7 and C8 are not**
-    --- failing C7 drops the broad-class arm with ``CLASS_ARM_NOT_AVAILABLE``
-    and failing C8 drops the near-form arm with
-    ``NEAR_FORM_ARM_NOT_AVAILABLE``, and neither stops the study.
+    **v7 A7 scopes each condition to the arm it was registered for.** C1, C3,
+    C5 and C6 are the *core* coverage conditions: a lost one is
+    ``REFERENCE_SUPPORT_NOT_IDENTIFIED`` and drops the core and spectrum arms.
+    C2 and C4 are the *spectrum* coverage conditions: a lost one with the
+    core conditions met is ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` and drops the
+    spectrum arm only. C7 and C8 are unchanged --- failing C7 drops the
+    broad-class arm with ``CLASS_ARM_NOT_AVAILABLE`` and failing C8 drops the
+    near-form arm with ``NEAR_FORM_ARM_NOT_AVAILABLE``. Nothing here stops
+    the study, and no threshold moved: what A7 changed is which arm a lost
+    C4 costs, after four v7 replications lost C4 alone on the calibrated
+    basis while every matched-reference condition held.
 
     C4's "three spare" is the direct repair of v4r4's F5: v4r4 registered four
     straddling families against a requirement of three --- one spare --- and
@@ -640,15 +647,35 @@ def coverage_criterion(table: Sequence[Mapping[str, Any]], *, iota_a: float
         "C8": (len(tier2_rows) >= C.COVERAGE_MIN_TIER2_RUNGS
                and len(tier2_groups) >= C.COVERAGE_MIN_TIER2_RUNGS),
     }
-    decisive_met = all(conditions[c] for c in C.COVERAGE_DECISIVE)
+    # v7 A7: the six conditions the expansion loop stops on are read as two
+    # groups, each gating the arm it was registered for. `decisive_met` is
+    # the loop's stopping state --- all six --- and is kept under that name
+    # because the expansion reads it and every earlier record carries it;
+    # it no longer decides an arm on its own.
+    core_met = all(conditions[c] for c in C.COVERAGE_CORE_CONDITIONS)
+    spectrum_met = all(conditions[c] for c in C.COVERAGE_SPECTRUM_CONDITIONS)
+    decisive_met = all(conditions[c] for c in C.COVERAGE_EXPANSION_CONDITIONS)
     statuses = []
     if not conditions["C7"]:
         statuses.append("CLASS_ARM_NOT_AVAILABLE")
     if not conditions["C8"]:
         statuses.append("NEAR_FORM_ARM_NOT_AVAILABLE")
     return {"conditions": conditions,
-            "decisive": list(C.COVERAGE_DECISIVE),
+            "decisive": list(C.COVERAGE_EXPANSION_CONDITIONS),
             "decisive_met": decisive_met,
+            "expansion_stops_when": "C1-C6 all met (§12.6, unchanged)",
+            "core_conditions": list(C.COVERAGE_CORE_CONDITIONS),
+            "spectrum_conditions": list(C.COVERAGE_SPECTRUM_CONDITIONS),
+            "core_met": core_met,
+            "spectrum_met": spectrum_met,
+            "arm_verdicts": {"core": core_met,
+                             "spectrum": core_met and spectrum_met,
+                             "class": conditions["C7"],
+                             "nearform": conditions["C8"]},
+            "core_failed": [c for c in C.COVERAGE_CORE_CONDITIONS
+                            if not conditions[c]],
+            "spectrum_failed": [c for c in C.COVERAGE_SPECTRUM_CONDITIONS
+                                if not conditions[c]],
             # A16. Recorded, not silently absent: a reader of this record can
             # see exactly which measured rungs the criterion could not place
             # and why, and `n_eligible` above counts only the placed ones.
@@ -959,12 +986,15 @@ def run_expansion(table: Sequence[Mapping[str, Any]], *, iota_a: float,
     round-0 set every time. ``assert_coverage_shape`` refuses that shape here,
     on the mandatory path.
 
-    **When it stops without passing**, the replication records
-    ``REFERENCE_SUPPORT_NOT_IDENTIFIED`` at design time, runs without the core
-    and spectrum arms, and never reports a Delta_R or a delta_difficulty
-    obtained from an unqualified pool. This is a registered outcome and not a
-    fallback to be avoided: no band is widened, no vacuity ceiling lowered and
-    no severity authored to reach it.
+    **When it stops without passing** (v7 A7): a core condition (C1, C3,
+    C5, C6) still unmet records ``REFERENCE_SUPPORT_NOT_IDENTIFIED`` at
+    design time and the replication runs without the core and spectrum arms;
+    a spectrum condition (C2, C4) still unmet with the core conditions met
+    records ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` and the replication runs
+    without the spectrum arm. Neither reports a Delta_R or a
+    delta_difficulty obtained from an unqualified pool. Both are registered
+    outcomes and not fallbacks to be avoided: no band is widened, no vacuity
+    ceiling lowered and no severity authored to reach either.
     """
     rows = list(table)
     assert_coverage_shape(rows, where="run_expansion: the pre-screen table")
@@ -991,9 +1021,15 @@ def run_expansion(table: Sequence[Mapping[str, Any]], *, iota_a: float,
                        "n_measured": len(new_rows),
                        "n_eligible_after": coverage["realised"]["n_eligible"]})
     statuses = list(coverage["identification_statuses"])
-    if not coverage["decisive_met"]:
+    # v7 A7: the loop's stopping state is read by arm. A lost core condition
+    # costs the core and, through §13.12, the spectrum; a lost spectrum
+    # condition alone costs the spectrum and keeps the core.
+    if not coverage["core_met"]:
         statuses += ["REFERENCE_SUPPORT_NOT_IDENTIFIED",
                      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"]
+    elif not coverage["spectrum_met"]:
+        statuses.append("DIFFICULTY_SUPPORT_NOT_IDENTIFIED")
+    if not coverage["decisive_met"]:
         if any(r.get("stopped") == "CANDIDATE_RESERVE_EXHAUSTED"
                for r in rounds):
             statuses.append("CANDIDATE_RESERVE_EXHAUSTED")

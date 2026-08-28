@@ -783,10 +783,10 @@ def test_a_failed_prefreeze_audit_is_terminal(tmp_path, monkeypatch):
     monkeypatch.setattr(
         prefreeze_run, "prefreeze_payload",
         lambda tree, **kw: {
-            "can_freeze": False, "blocked": ["support_satisfied"],
-            "n_artifact_checks": 26, "n_artifact_failed": 1,
+            "can_freeze": False, "blocked": ["protocol_hashes_agree"],
+            "n_artifact_checks": 29, "n_artifact_failed": 1,
             "n_artifact_unresolved": 0, "content_hash": "0" * 64,
-            "artifact_checks": [{"check": "support_satisfied",
+            "artifact_checks": [{"check": "protocol_hashes_agree",
                                  "verdict": "FAIL", "detail": {}}]})
 
     from dci1v7.engine import transitions
@@ -809,7 +809,7 @@ def test_a_failed_prefreeze_audit_is_terminal(tmp_path, monkeypatch):
     with pytest.raises(TerminalStatus) as caught:
         prefreeze_run.run_prefreeze_audit_stage(tree, producing_commit=COMMIT)
     assert caught.value.status == "PREFREEZE_AUDIT_FAILURE"
-    assert caught.value.observed["blocked"] == ["support_satisfied"]
+    assert caught.value.observed["blocked"] == ["protocol_hashes_agree"]
     assert caught.value.strongest_permissible_statement == C.TERMINAL_SENTENCE
 
     # §28.3: the verdict is on disk, and the replication now reports terminal.
@@ -819,4 +819,4 @@ def test_a_failed_prefreeze_audit_is_terminal(tmp_path, monkeypatch):
     assert written["status"] == "PREFREEZE_AUDIT_FAILURE"
     assert transitions.terminal_status(tree) == "PREFREEZE_AUDIT_FAILURE"
     # The audit detail survives, because a terminal stage writes no record.
-    assert written["observed"]["n_artifact_checks"] == 26
+    assert written["observed"]["n_artifact_checks"] == 29

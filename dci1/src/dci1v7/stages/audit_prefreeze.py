@@ -137,14 +137,20 @@ UNRESOLVED_REDTEAM_FINDINGS: dict[str, dict[str, Any]] = {
     "R16": {"decision": "D6",
             "finding": "REFERENCE_SUPPORT_NOT_IDENTIFIED is an identification "
                        "status, so a replication that cannot identify its "
-                       "primary counterfactual still spends a full "
-                       "confirmatory budget",
+                       "primary counterfactual still spends a confirmatory "
+                       "budget on its surviving arms",
             "mitigation": "D6 taken at 'identification_status', with the "
                           "non-identification irreversible and four "
                           "rehabilitation paths refused by name. The "
                           "resource-allocation cost is ACCEPTED: an "
                           "execution-order rule would depend on a per-model "
-                          "gate outcome and §6.1's firewall forbids that",
+                          "gate outcome and §6.1's firewall forbids that. "
+                          "The cost is the arm-derived budget of the "
+                          "surviving arms (5 cells per block on the base arm "
+                          "alone), not the full 56-cell design; and since v7 "
+                          "A6 the replication actually reaches the freeze, "
+                          "which the earlier `support_satisfied` check "
+                          "prevented",
             "closeable_by_rule": True},
 }
 
@@ -234,11 +240,25 @@ def _check_6() -> tuple[str, Any]:
 
 def _check_7() -> tuple[str, Any]:
     """Every quantity's identification assumptions are explicit."""
+    from dci1v7.protocol import identification
     return "PASS", {"identification_statuses":
                     list(C.IDENTIFICATION_STATUSES),
                     "new_in_v5": list(C.NEW_IDENTIFICATION_STATUSES),
                     "new_in_v7": list(C.V7_IDENTIFICATION_STATUSES),
-                    "withdrawn": dict(C.WITHDRAWN_STATUS_REASONS)}
+                    "withdrawn": dict(C.WITHDRAWN_STATUS_REASONS),
+                    # v7 A7/A8: the derived member sets each design-time
+                    # status makes NOT_IDENTIFIED, and the arm no status
+                    # can take.
+                    "reference_dependent_members":
+                        len(identification.AFFECTED_ESTIMANDS),
+                    "spectrum_dependent_members":
+                        len(identification.SPECTRUM_ESTIMANDS),
+                    "base_arm_always_identified":
+                        list(identification.BASE_ARM_ESTIMANDS),
+                    "coverage_core_conditions":
+                        list(C.COVERAGE_CORE_CONDITIONS),
+                    "coverage_spectrum_conditions":
+                        list(C.COVERAGE_SPECTRUM_CONDITIONS)}
 
 
 #: The records §33 check 8 scans, with the outcomes each may carry and the

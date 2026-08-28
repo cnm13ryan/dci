@@ -210,7 +210,28 @@ COVERAGE_MIN_TIER12_FAMILIES = 8              # C6   new
 COVERAGE_MIN_TIER12_GROUPS = 6                # C6   new
 COVERAGE_MIN_TIER2_RUNGS = 3                  # C8   new
 COVERAGE_CONDITIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8")
-COVERAGE_DECISIVE = ("C1", "C2", "C3", "C4", "C5", "C6")
+#: v7 A7: which ARM each §12.6 condition exists for. C1 (interpolation) and
+#: C3 (§13.8's caliper region) are the conditions under which a same-form
+#: companion matched to iota_A exists; C5 and C6 are pool floors; together
+#: they gate the CORE arm. C2 (three Tier-1/2 groups on each side) and C4
+#: (six families straddling with a 0.40 span, two of §13.12's offsets) are
+#: the conditions under which the difficulty-spectrum triples exist; they
+#: gate the SPECTRUM arm. C7 and C8 keep their registered arms. The numbers
+#: above do not move; what moves is which arm a lost condition drops.
+COVERAGE_CORE_CONDITIONS = ("C1", "C3", "C5", "C6")
+COVERAGE_SPECTRUM_CONDITIONS = ("C2", "C4")
+COVERAGE_ARM_CONDITIONS: dict[str, tuple[str, ...]] = {
+    "core": COVERAGE_CORE_CONDITIONS,
+    "spectrum": COVERAGE_SPECTRUM_CONDITIONS,
+    "class": ("C7",),
+    "nearform": ("C8",),
+}
+#: §12.6's expansion loop stops the moment C1-C6 all pass (unchanged by A7):
+#: the loop's stopping rule is the union of the core and spectrum groups.
+COVERAGE_EXPANSION_CONDITIONS = ("C1", "C2", "C3", "C4", "C5", "C6")
+assert set(COVERAGE_EXPANSION_CONDITIONS) == (
+    set(COVERAGE_CORE_CONDITIONS) | set(COVERAGE_SPECTRUM_CONDITIONS))
+assert not set(COVERAGE_CORE_CONDITIONS) & set(COVERAGE_SPECTRUM_CONDITIONS)
 
 # --------------------------- §13 validity, admission, spectrum, support
 #: §34 D14's closure and §15's "raw-coordinate replication of the fit": the

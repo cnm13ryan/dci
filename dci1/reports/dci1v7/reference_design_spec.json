@@ -686,7 +686,25 @@
   }
  },
  "support_requirements": {
-  "calibrated_iota_a_rule": "\u00a712.6's coverage criterion is re-evaluated at Gate 3A on the CALIBRATION basis, where iota(R), the difficulty coordinate, the solo vacuity and iota_A all come from the same 192 topics at M_CAL draws. A decisive condition lost there is a \u00a713.15 design-time failure under \u00a734 D6. The pre-screen value that \u00a712.6 spent its expansion rounds at is recorded beside it and gates nothing.",
+  "calibrated_iota_a_rule": "\u00a712.6's coverage criterion is re-evaluated at Gate 3A on the CALIBRATION basis, where iota(R), the difficulty coordinate, the solo vacuity and iota_A all come from the same 192 topics at M_CAL draws, and that reading gates. A core condition (C1, C3, C5, C6) lost there is a \u00a713.15 design-time failure under \u00a734 D6 (REFERENCE_SUPPORT_NOT_IDENTIFIED; core and spectrum arms dropped); a spectrum condition (C2, C4) lost there with the core conditions met is DIFFICULTY_SUPPORT_NOT_IDENTIFIED (spectrum arm dropped, core arm retained when \u00a713.8, \u00a713.7 and \u00a713.15 hold). The pre-screen value that \u00a712.6 spent its expansion rounds at is recorded beside it and gates nothing: on 24 topics at one draw a ladder's apparent span is inflated by noise, rungs above 0.90 leave the band at calibration, and \u00a712.7's Tier-3 cap keeps Tier-3 ladders from spanning 0.40 there, so a pre-screen pass never overrides a calibrated failure (v7 A7).",
+  "coverage_arm_conditions": {
+   "class": [
+    "C7"
+   ],
+   "core": [
+    "C1",
+    "C3",
+    "C5",
+    "C6"
+   ],
+   "nearform": [
+    "C8"
+   ],
+   "spectrum": [
+    "C2",
+    "C4"
+   ]
+  },
   "coverage_conditions": [
    "C1",
    "C2",
@@ -697,13 +715,23 @@
    "C7",
    "C8"
   ],
-  "coverage_decisive": [
+  "coverage_core_conditions": [
+   "C1",
+   "C3",
+   "C5",
+   "C6"
+  ],
+  "coverage_expansion_conditions": [
    "C1",
    "C2",
    "C3",
    "C4",
    "C5",
    "C6"
+  ],
+  "coverage_spectrum_conditions": [
+   "C2",
+   "C4"
   ],
   "coverage_thresholds": {
    "COVERAGE_MIN_ELIGIBLE_RUNGS": 16,
@@ -720,7 +748,44 @@
   },
   "evaluated_by": "dci1v7.stages.support.evaluate_support",
   "min_qualified_families": 5,
-  "n_core_feature_groups": 3
+  "n_core_feature_groups": 3,
+  "unmet_disposition": {
+   "base_arm_always_identified": [
+    "D(B<-A)",
+    "D(A<-B)",
+    "Lambda",
+    "Ord_A",
+    "Ord_B",
+    "Ord_Lambda"
+   ],
+   "decision": "D6",
+   "difficulty_support_not_identified_at_design_time": {
+    "drops": [
+     "spectrum"
+    ],
+    "irreversible": true,
+    "not_identified_members": 20
+   },
+   "prefreeze_checks": [
+    "support_recorded",
+    "d6_disposition_registered",
+    "arms_match_identification",
+    "no_rehabilitation_path",
+    "freeze_fields_explained"
+   ],
+   "prefreeze_invariant": "v7 A6: every estimand entering confirmatory generation has the support it requires, every unsupported estimand and arm has already been removed, and the frozen design agrees exactly with Gate 3C's identification state; the audit does not require support_met",
+   "reference_support_not_identified": {
+    "drops": [
+     "core",
+     "spectrum"
+    ],
+    "irreversible": true,
+    "not_identified_members": 48
+   },
+   "replication_continues": true,
+   "terminal": false,
+   "value": "identification_status"
+  }
  },
  "validity_components": {
   "_form": "V(R) = V_spec AND V_sat AND V_head AND V_chance AND V_struct AND V_inter AND V_stab AND V_diff. Evaluated lexicographically in that order; the first failing component is the recorded rejection reason and later components are not evaluated.",

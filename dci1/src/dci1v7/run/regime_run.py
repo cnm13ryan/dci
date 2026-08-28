@@ -311,14 +311,21 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
     # ------------------------------------------------- §12.6 the expansion
     # The coverage criterion is not a diagnostic. §12.6 runs the expansion
     # while C1-C6 are unmet and rounds remain, and when it stops without
-    # passing the replication records REFERENCE_SUPPORT_NOT_IDENTIFIED **at
-    # design time** and runs without the core and spectrum arms. Computing
+    # passing the replication records, **at design time**, either
+    # REFERENCE_SUPPORT_NOT_IDENTIFIED (a core condition C1/C3/C5/C6 lost:
+    # no core or spectrum arm) or DIFFICULTY_SUPPORT_NOT_IDENTIFIED (only a
+    # spectrum condition C2/C4 lost: no spectrum arm) --- v7 A7. Computing
     # `coverage` and reading nothing from it left a replication whose
     # criterion failed running the arms §12.6 forbids it.
     expansion: dict[str, Any] | None = None
     if iota_a is None:
-        coverage = {"conditions": {}, "decisive": list(C.COVERAGE_DECISIVE),
-                    "decisive_met": False,
+        coverage = {"conditions": {},
+                    "decisive": list(C.COVERAGE_EXPANSION_CONDITIONS),
+                    "decisive_met": False, "core_met": False,
+                    "spectrum_met": False,
+                    "core_conditions": list(C.COVERAGE_CORE_CONDITIONS),
+                    "spectrum_conditions":
+                        list(C.COVERAGE_SPECTRUM_CONDITIONS),
                     "realised": {},
                     "identification_statuses": ["CLASS_ARM_NOT_AVAILABLE",
                                                 "NEAR_FORM_ARM_NOT_AVAILABLE"],

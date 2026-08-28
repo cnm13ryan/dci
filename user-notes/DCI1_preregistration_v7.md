@@ -29,6 +29,17 @@ rather than a report.
 It was written **after** the closed v6 study had been read in full, and §4 and
 §8 say exactly which v6 observations it responds to and how.
 
+**Amended in place on 2026-08-28 (A6, A7, A8), after all four v7
+replications had reached `PREFREEZE_AUDIT_FAILURE` and after the study had
+been closed on that basis.** Under §32's first paragraph a change before the
+study-wide freeze is a revision of this document, and no v7 replication
+reached `GATE_5_FREEZE`; under A4 the revision is bound as a signed,
+append-only chain record from the registered hashes to the amended ones,
+carrying its direction and its §32.2 disclosure, which each amendment states
+in its own text. The four terminal reports stand as v7 outcomes under the
+rule v7 ran (`dci1/reports/dci1v7/CLOSURE.md`); nothing here re-verdicts
+them. The amendments touch no §13 section, and the chain refuses one.
+
 **This is a superseding registration, not a v6 amendment.** v6's §32.3 —
 carried verbatim from v5 — freezes every component of §13, including §13.14,
 from the first Gate-2.5 record, and all four v6 replications hold one. v6's
@@ -62,10 +73,15 @@ differs.
 > it. Where an amendment is silent, the incorporated text governs verbatim.
 
 `dci1/src/dci1v7/protocol/revision.py` enumerates every difference from v6 as
-a `Change` with an executable check (V1–V10), and `assert_changes_realised` is
-on the registration path, so a listed change the code does not make stops
-stage 1. `revision.V9` compares the twelve `ESTIMAND_LAYER` modules byte for
-byte against v6's, so the estimands are not merely *said* to be unchanged.
+a `Change` with an executable check (V1–V13; V11–V13 are A6–A8), and
+`assert_changes_realised` is on the registration path, so a listed change the
+code does not make stops stage 1. `revision.V9` compares the twelve
+`ESTIMAND_LAYER` modules against v6's — byte for byte, except that
+`stages/support.py`'s two amended functions are excluded by name and
+`protocol/identification.py`'s reference-dependence rule is compared on its
+*output* (the derived member sets agree with v6's) because A7 adds the
+spectrum-dependent set beside it — so the estimands are not merely *said* to
+be unchanged.
 
 ## 1. What v7 does not change
 
@@ -89,15 +105,16 @@ Carried without amendment, and each is executable rather than asserted:
   lift floor 0.20, the chance ceiling 0.75 / 0.85, §13.6's projected band
   [0.10, 0.90] and displacement bound 0.25, §13.7's equivalence bound 0.20,
   §13.8's calipers, §12.6's C1–C8 including C4's ≥6 groups / ≥3 rungs / ≥0.40
-  span, §13.15's support requirements, §34 D17's construct floor, §34 D18's
+  span (A7 re-scopes which *arm* each condition gates and moves no value), §13.15's support requirements, §34 D17's construct floor, §34 D18's
   near-form precondition. **§13.4's and §13.6's bands were derived, in v5, by
   contracting §13.14's composed-headroom band by 0.05 on each side. The
   values do not move; the derivation is now historical** (A2);
 - §6.2's topic bank and its seeded per-area cut, unchanged in every set size;
 - §12.3's selection of n\* and m\* from solo curves, §12.4's regime adequacy,
   and v6 A13: **m\* is frozen at Gate 2** and no later stage may move it;
-- D6-style **irreversible** non-identification; the prospective freeze before
-  any confirmatory data; one-shot masking and unmasking; the write-once stage
+- D6-style **irreversible** non-identification, with the replication
+  continuing on every estimand that stays identified (A8); the prospective
+  freeze before any confirmatory data; one-shot masking and unmasking; the write-once stage
   lifecycle; §32.1 and §32.3 exactly as written;
 - v6's A5 (the probe's ten-class shape and its stand-ins), A10 (the three
   `probe_only` families, non-selectable by construction), A15 (a stage-1
@@ -109,7 +126,10 @@ Carried without amendment, and each is executable rather than asserted:
 
 **No threshold moves anywhere in this document.** v7 withdraws a criterion; it
 lowers no bar, adds no family, widens no caliper and moves no operating point.
-`revision.V8` checks the absence rather than trusting it.
+`revision.V8` checks the absence rather than trusting it. A6 and A7 (2026-08-28)
+withdraw an unregistered pre-freeze requirement and re-scope which arm each of
+§12.6's conditions gates; both are declared loosenings of what ends a
+replication and what drops an arm, and neither moves a number.
 
 ## 2. The amendments
 
@@ -392,6 +412,254 @@ $\Delta_R$'s excess direction is compressed, and its stand-in cells remain a
 structural-risk record of the classes Gate 4 measures; dropping it is a change
 to §18's sequence with no implementation here. Twenty-six entries; §7.
 
+### A6 — the pre-freeze audit establishes the *record* of §13.15, not its *success* (§18 stage 12, §19, §33)
+
+**Adopted 2026-08-28, after all four v7 replications had reached a §28
+terminal status. §32.2 requires that to be said first: this amendment was
+written knowing what it would have done to each of them.**
+
+**The gap.** Every v7 replication passed Gate 4 and terminated at
+`PREFREEZE_AUDIT` on one mandatory artifact check, `support_satisfied`,
+implemented as `bool(gate3c.support.support_met)` — "§13.15's support was
+*met*" — while its own registered description read "§13.15's support and
+redundancy requirements are *recorded*". No registered rule asks for the
+first. §18 stage 12 names three failure conditions for the audit — a §18.1
+field absent and unexplained, an arm whose admission is not traceable to a
+signed record, an unresolved §33 item — and an unmet §13.15 is not among
+them. §13.15 says `REFERENCE_SUPPORT_NOT_IDENTIFIED` "is an identification
+status, not a stage-terminal one"; §28.2 lists it under "identification
+statuses, which are not terminal"; §18 stage 10 says "not terminal … drops
+the corresponding arms"; §18.1 says an empty field "is declared empty, with
+the identification status that explains it"; §26 is "reported in the final
+report whether or not any L3 statement is emitted"; §32.1 item 1 calls the
+status a registered outcome with a registered reading; and §34 D6, closed at
+`identification_status` in v5, v6 and v7, says "the replication continues".
+The freeze (`stages/freeze.assert_freeze_complete`), the analysis and the
+final report were all built to carry a non-identified replication forward,
+and none of them was reachable for one. The same check ended two v5
+replications and one v6 replication before it ended four in v7, and each
+closure read it as correct because "$\Delta_R$ is irreversibly not
+identified" was read as "the replication ends", which are different
+sentences and D6 distinguishes them.
+
+**The rule.** `PREFREEZE_AUDIT` establishes, from the signed records, that
+*every estimand entering confirmatory generation has the support it
+requires, every unsupported estimand and arm has already been removed, and
+the design the freeze will bind is exactly Gate 3C's identification state*.
+Concretely, and each is a named artifact check:
+
+1. **`support_recorded`** — Gate 3C carries §13.15's `support` block with
+   its realised counts, its requirements, its failure lists and a boolean
+   `support_met`; a malformed or absent block fails.
+2. **`d6_disposition_registered`** — the block's disposition is the value
+   §34 D6 is closed at (`REFERENCE_SUPPORT_NOT_IDENTIFIED` when unmet,
+   `SUPPORTED` when met), it is not terminal, and when any support is unmet
+   the `non_identification` block is present, `irreversible`, and names
+   **exactly** the estimand set the registered rule derives — the
+   reference-dependent set for `REFERENCE_SUPPORT_NOT_IDENTIFIED`, the
+   spectrum-dependent set for a design-time `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`
+   (A7) — and nothing else.
+3. **`arms_match_identification`** — the admitted arm set is the one the
+   identification statuses imply: every unsupported arm absent, every
+   supported arm retained, the base arm always present (§8.1).
+4. **`no_rehabilitation_path`** — no record written after Gate 3C offers an
+   estimate, an interval or an `IDENTIFIED` verdict for a member the block
+   names (`identification.assert_not_rehabilitated`, run here as it is at
+   the freeze, the analysis and the final report), and the four paths §34 D6
+   refuses by name are still refused.
+5. **`freeze_fields_explained`** — the §18.1 record the audit would license
+   is assembled without being written, and every field it leaves empty is
+   explained by the status that empties it; an unexplained empty field
+   fails here rather than one stage later.
+6. **Reference-specific checks are conditional on the reference arm.**
+   `selected_references_valid` and `calibration_stability_satisfied` read the
+   admitted core references; when the core arm is not admitted they record
+   `NOT_APPLICABLE` with the status that explains the absence, and
+   `NOT_APPLICABLE` does not block. A check about a reference nobody admitted
+   cannot fail a replication that admitted none.
+
+`support_satisfied` is withdrawn by name, and `tests_v7` asserts no artifact
+check requires `support_met` to be true. Every other §18 stage-12 condition,
+§33's fifteen items, and the audit's non-waivability are unchanged: an
+`UNRESOLVED` verdict on any mandatory check still refuses the freeze.
+
+**What it does not change.** §34 D6's value, evidence and irreversibility;
+§13 (nothing here names a §13 section, and §32.3 refuses one); any
+threshold; the four v7 terminal reports, which stand as v7 outcomes under
+the rule v7 ran — a §28 terminal status mechanically disables every later
+command and no lifecycle path lifts one.
+
+**Direction and disclosure (§32.1, §32.2).** This is a **loosening** with
+respect to what ends a replication, and it is adopted because four
+replications ended on the check. What makes it adoptable is that it removes
+an *unregistered* requirement that contradicted four registered sections and
+a closed decision, and lowers no registered criterion: §18 stage 12's own
+three conditions are exactly as written. Under this rule each v7 replication
+would have reached the freeze with its base arm (and, on the two Gemmas, the
+class arm), which the author knew when writing it.
+
+### A7 — §12.6's coverage conditions are scoped to the arm each exists for (§12.6, §28.2)
+
+**Adopted 2026-08-28, after the same four terminations; the disclosure of A6
+applies. No threshold moves.**
+
+**What §12.6 already says about its own conditions.** The registered table
+gives each condition its reason: C1, "interpolation rather than
+extrapolation"; C3, "§13.8's caliper region; eight is two per core slot plus
+two backups"; C2, "§13.12 needs three straddling triples"; C4, "three groups
+plus three spare" straddling families spanning 0.40 — two of §13.12's
+spectrum offsets; C5 and C6, pool floors; C7, the broad-class arm; C8, the
+near-form arm. C1 and C3 are the conditions under which a same-form
+companion *matched to $\iota_A$* will exist, which is what $\Delta_R$ needs.
+C2 and C4 are the conditions under which a family's own ladder straddles
+$\iota_A$ widely enough for §13.12's triples, which is what the
+difficulty-response fit and $\delta_{\text{diff}}$ need. The registered
+*consequence* did not follow the registered *reasons*: "C1 to C6 are
+decisive for the core and spectrum arms", so a lost C4 dropped the core
+arm.
+
+**What v7 observed.** On all four replications C4 was the only decisive
+condition lost on the calibrated basis (5, 4, 2 and 4 straddling groups
+against 6), while C1, C3, C5 and C6 held, §13.15's counts were met on every
+replication, three core references sat within 0.017 of $\iota_A$ under
+§13.8's caliper, and §13.7's two-split stability held for each. On
+`gemma-3n-e2b-it` §13.12 had found three complete triples. The same fact
+carried two registered consequences at once: §13.12 and §8.1 ("a family
+that cannot straddle $\iota_A$ costs the spectrum arm, not the core set")
+and §12.6 ("runs without the core and spectrum arms"). This amendment keeps
+the first and withdraws the second.
+
+**The rule.**
+
+- **C1, C3, C5, C6 are the core coverage conditions.** When any is unmet —
+  at the screen after §12.6's expansion rounds, or on the calibrated basis
+  at Gate 3A (v6 A3) — the replication records
+  `REFERENCE_SUPPORT_NOT_IDENTIFIED` at design time under §34 D6 and runs
+  without the core and spectrum arms; the spectrum follows the core because
+  §13.12 draws every spectrum rung from an admitted core family.
+- **C2, C4 are the spectrum coverage conditions.** When either is unmet
+  while the core conditions hold, the replication records
+  `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` at design time, runs without the
+  spectrum arm, and marks the spectrum-dependent estimands `NOT_IDENTIFIED`
+  **irreversibly** — $D(B \leftarrow R_{f,\pm})$ and their F6 vacuity rows,
+  $\delta_{\text{diff}}$ and its F5 recodings, $\hat\beta$, $\alpha_f$ and
+  $\hat\gamma$ — on the same Gate-3C `non_identification` block, read by the
+  same `assert_not_rehabilitated` at the freeze, the analysis and the final
+  report. The core arm is retained **provided** §13.8's admission (the 0.10
+  caliper, the Newcombe region, the secondary coordinate), §13.7's stability
+  on both splits, §13.4–§13.6's non-degeneracy and §13.15's counts hold;
+  none of those moves, and any of them failing is still
+  `REFERENCE_SUPPORT_NOT_IDENTIFIED`.
+- **C7 and C8 keep their registered roles** (`CLASS_ARM_NOT_AVAILABLE`,
+  `NEAR_FORM_ARM_NOT_AVAILABLE`).
+- **The expansion loop is unchanged**: it runs while any of C1–C6 is unmet
+  and rounds remain, picks from the frozen reserve, and stops the moment all
+  six pass. Only what its stopping state *licenses* changes.
+- **The calibrated basis gates both groups** (v6 A3, unchanged): $\iota(R)$,
+  the eligibility coordinate, the vacuity and $\iota_A$ from the same 192
+  topics at the same four draws. The pre-screen reading is recorded and
+  gates nothing; a pre-screen pass never overrides a calibrated failure.
+- **No number moves.** C4 is ≥6 groups, ≥3 eligible rungs, ≥0.40 span;
+  `revision.V8` checks that beside every other threshold.
+
+**Why this is the identification argument and not a rescue.** $\Delta_R =
+\tfrac13\sum_j \mathbb{E}[\bar X_{B,B+R_j}] - \mathbb{E}[\bar X_{B,A+B}]$ is
+identified as "the excess over same-form companions matched on instructed
+compliance" exactly when the $R_j$ are matched, stable and non-degenerate —
+§13.4–§13.8 — and its bias under a difficulty slope $\beta$ is at most
+$\beta \times$ the realised gap, which §13.8 bounds at $0.10\beta$. A
+family's within-ladder span enters that argument nowhere. It enters
+$\delta_{\text{diff}}$'s: with nine spectrum points inside a 0.14 window
+the slope of $Y = \alpha_f + \beta d$ is unidentified in practice, and
+§11.8 already states that $\delta_{\text{diff}}$ then collapses to
+$D(B \leftarrow A)$ minus the mean of nine companion losses — a different
+construct wearing the same name. C4 is the design-time guarantee against
+that, and `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` is the registered status for
+its failure. Nothing in this amendment makes C4 easier to meet.
+
+**Why the pre-screen certificate overstates span, and why that is now
+said.** §12.6's expansion rounds and its certificate run on 24 pre-screen
+topics at one draw, where a rung's $\iota$ has a standard error near 0.10;
+the range of eight such rungs is inflated by noise alone (a ladder with a
+true span of 0.30 shows ≥0.40 about half the time at that noise and about
+2% of the time at calibration noise), calibrated rungs whose solo compliance
+exceeds 0.90 leave the eligibility band and trim the top of the span, and
+§12.7 carries at most 24 Tier-3 rungs into calibration, chosen nearest
+$\iota_A$, so a Tier-3 family that straddled at the screen cannot span 0.40
+at Gate 3A by construction. The pre-screen is a high-recall search that
+decides which rungs are measured and freezes the vocabulary; it proves
+nothing about final reference or spectrum support, and no v7 text may say
+that it does. Two v6 sentences that implied otherwise are corrected by A8.
+
+**Direction and disclosure (§32.1, §32.2).** A **loosening** with respect to
+what drops the core arm, adopted because the core arm was dropped on four
+replications by the condition this amendment re-scopes. The author knew,
+when writing it, that under this rule all four v7 replications would have
+retained the core arm and that all four would still have lost the spectrum
+arm (`gemma-3n-e2b-it`'s three §13.12 triples notwithstanding, because C4
+gates the spectrum on the calibrated basis and it failed there). What makes
+it adoptable is the identification argument above and the fact that §13.12
+already registered the consequence this amendment adopts. It names no §13
+section: §13.8–§13.15 are unchanged, and §13.12's exhaustion rule is
+unchanged.
+
+### A8 — §34 D6 means one thing, and every v7 text now says it (§34 D6, §28.2, §26; v7 §3, §5, §8)
+
+**D6's value and evidence do not change.** "Identification status,
+irreversible for the replication": every estimand that depends on the
+unavailable arm is `NOT_IDENTIFIED` and stays so — no later gate, frozen
+backup, broad-class control or observed composed outcome lifts it — and
+**the replication continues with every estimand that remains identified**,
+through the freeze, confirmatory generation, the masked and unmasked
+analyses and the final report. §26 records `NOT_MET` on such a replication
+and is reported; L3a–L3e are withheld; every emitted statement carries the
+status.
+
+**What this amendment corrects.** Three v7 sentences, and the readings of
+the v5, v6 and v7 closures they inherited, conflated the irreversibility of
+$\Delta_R$'s non-identification with the end of the replication: §3
+("withdrawing the headroom criterion opens nothing for [the Gemmas]"), §5
+item 1 ("both v6 Gemmas ended here in substance", and a trigger description
+naming only §13.15's counts), and §8's reading of `gemma-3n-e2b-it`'s
+audit. They are rewritten in place below with a marker naming this
+amendment; the registered bytes survive in the registration hash
+`15fa1786…` and in git. `READINESS.md` §4.3 and `RESEARCH_STATE.md` §4ak
+carry the same correction.
+
+**§28.2, restated for the two statuses A7 touches.**
+`REFERENCE_SUPPORT_NOT_IDENTIFIED`: fewer than five families through the
+full $V(R)$, fewer than three core references under §13.15, or a core
+coverage condition (C1, C3, C5, C6) unmet at the screen after the expansion
+or on the calibrated basis; the core and spectrum arms are dropped, L3a–L3e
+withheld, the reference-dependent set `NOT_IDENTIFIED` irreversibly.
+`DIFFICULTY_SUPPORT_NOT_IDENTIFIED`: a spectrum coverage condition (C2, C4)
+unmet at the screen or on the calibrated basis, §13.12's exhaustion, or
+§13.13's support failing on the confirmatory data; the spectrum arm is
+dropped when the failure is design-time, L3d and L3e withheld, and the
+spectrum-dependent set `NOT_IDENTIFIED` irreversibly when the arm was not
+generated. Neither is terminal.
+
+**The base arm is unconditional.** §8.1 admits it always; a replication
+that reaches Gate 3C therefore retains $D(B \leftarrow A)$,
+$D(A \leftarrow B)$, $\Lambda$, $\text{Ord}_A$, $\text{Ord}_B$ and
+$\text{Ord}_\Lambda$ whatever else it loses, and `design.cells` refuses an
+arm set without it. There is no registered terminal status for "no useful
+estimand remains", none is added, and the registered exits before
+confirmatory generation remain §28.3's. A replication whose only surviving
+arm is the base arm answers §2.2's questions 1, 2 and 4 and not question 3,
+and its final report says so through §26 and the statuses.
+
+**Direction.** Neutral: no criterion, threshold or estimand changes;
+`revision.V13` checks the derived member sets and the arm derivation
+executably.
+
+**What these three amendments do to the four v7 replications: nothing.**
+Their terminal reports are signed, write-once and §28-final under the rule
+they ran; this document re-verdicts none of them. How the amended v7 is
+executed — whether and how replications are re-run under the chain head
+A6–A8 binds — is a researcher decision this document does not take and no
+code performs.
+
 ## 3. Why this is a superseding registration and not a v6 amendment
 
 Three registered rules, each carried unchanged into v7, decide it:
@@ -427,8 +695,12 @@ Qwens) and the pre-freeze audit (the Gemma). **That is a statement about the
 rule, not a re-verdict.** And it changes less than it might seem: both Gemma
 replications recorded `REFERENCE_SUPPORT_NOT_IDENTIFIED` at Gate 3C under the
 calibrated coverage re-read, so $\Delta_R$ was not identified on either before
-Gate 4 ran; withdrawing the headroom criterion opens nothing for them. What it
-opens is the Qwens' path to Gate 3, where §13's unchanged machinery decides
+Gate 4 ran. *(Corrected by A8, 2026-08-28; the registered sentence read
+"withdrawing the headroom criterion opens nothing for them".)* Withdrawing the
+headroom criterion opens, for the Gemmas, the path §34 D6 registers for a
+non-identified replication — the freeze and confirmatory generation on the
+base and class arms — which v6's pre-freeze check had closed and A6 reopens;
+and for the Qwens the path to Gate 3, where §13's unchanged machinery decides
 whether a reference set exists.
 
 ## 4. What v6 measured, and how v7 reads it
@@ -533,13 +805,20 @@ registered quantity and not of a look-alike.
 **What can still make the contrast non-identifiable.** In order of where it
 is decided:
 
-1. `REFERENCE_SUPPORT_NOT_IDENTIFIED` at Gate 3C (§13.15, §34 D6,
-   irreversible): fewer than five families through $V(R)$ or fewer than three
-   core references. $\Delta_R$, $\Delta_j$, $\Xi$ and the spectrum are
-   `NOT_IDENTIFIED`; the base arm's estimands are not. Both v6 Gemmas ended
-   here in substance. **Unchanged.**
-2. `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (§12.6, §13.13): $\delta_{\text{diff}}$
-   only. **Unchanged.**
+1. `REFERENCE_SUPPORT_NOT_IDENTIFIED` at Gate 3C (§13.15, §12.6's core
+   conditions C1/C3/C5/C6 at the screen or on the calibrated basis, §34 D6,
+   irreversible): fewer than five families through $V(R)$, fewer than three
+   core references, or a core coverage condition unmet. $\Delta_R$,
+   $\Delta_j$, $\Xi$ and the spectrum are `NOT_IDENTIFIED`; the base arm's
+   estimands are not, and the replication continues on them (A6, A8). Both v6
+   Gemmas recorded this status; neither reached the freeze, because of the
+   check A6 withdraws. *(Rewritten by A7/A8, 2026-08-28; the registered text
+   named only §13.15's counts as the trigger and read "both v6 Gemmas ended
+   here in substance".)*
+2. `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (§12.6's spectrum conditions C2/C4 at
+   the screen or on the calibrated basis, §13.12's exhaustion, §13.13 on the
+   confirmatory data): the spectrum arm and $\delta_{\text{diff}}$ only; the
+   core arm and $\Delta_R$ stand when §13.8, §13.7 and §13.15 hold (A7).
 3. A **structural zero** on the confirmatory blocks (A2, revised
    2026-08-28): every composed cell $\Delta_R$ reads at the same exact
    boundary. No directional classification; L3c by the allowance interval
@@ -571,7 +850,7 @@ decisions a composed outcome can reach is **strictly smaller** than in v6:
 | $n^*$, $m^*$ | §12.3 on solo curves, Gate 2 | yes | A13: `probe_disposition` refuses any severity but m\*; `assert_m_star_unmoved`; `effective_m_star` on every read |
 | the qualified pool | §13.1–§13.6 at Gate 2.5 | yes | §13.11's closed schema; §33 check 8's name scan over both composed records |
 | the reference set, severities, backups | §13.7–§13.10, §13.12 at Gate 3A/3B | yes — Gate 2.75 precedes Gate 3A and no reference exists when it runs | `assert_probe_reads_no_reference`; `probe_only` non-selectable by construction; `assert_no_substitution_path`; §34 D6's four refused rehabilitation paths |
-| the admitted arm set | §13.15 at Gate 3C | yes | Gate 4 admits, drops and reorders nothing; a structural-zero projection drops no arm (A2) |
+| the admitted arm set | §12.6 (core and spectrum conditions, calibrated basis) and §13.15 at Gate 3C | yes | Gate 4 admits, drops and reorders nothing; a structural-zero projection drops no arm (A2); the pre-freeze audit checks the set against the statuses and withholds nothing on its own (A6) |
 | instruction order | §8.4: both orders in every block | by construction | `assert_order_forms` |
 | model / configuration | §6.1: four replications, never pooled | by construction | `assert_configuration_scope` |
 | whether to generate | §34 D22, per replication, a function of stages 1–12 passing | yes | a Gate-4 projection is not a licence to withhold generation (A5's D22 text) |
@@ -629,7 +908,20 @@ anything.
 **The fourth v6 termination is a lifecycle defect, and A4 responds to it.**
 `gemma-3n-e2b-it`'s `PREFREEZE_AUDIT_FAILURE` is correct under the rule it had
 and is retained as a v6 outcome; the incident is
-`dci1/reports/dci1v6/incidents/2026-08-27_prefreeze_protocol_hash.md`.
+`dci1/reports/dci1v6/incidents/2026-08-27_prefreeze_protocol_hash.md`. Its
+audit blocked on two checks; A4 answers the first (`protocol_hashes_agree`)
+and, as of 2026-08-28, A6 answers the second (`support_satisfied`), which was
+the same unregistered requirement that then ended all four v7 replications.
+
+**A6–A8 were adopted after v7 ran, and each says so.** They were written on
+2026-08-28 with the four v7 terminal reports on the tree and the closure
+written, knowing that A6 would have let every v7 replication reach the freeze
+on its base arm and that A7 would have kept the core arm on all four. The
+direction of each is declared on the chain record A4 binds; the argument for
+adoptability is in each amendment's own text and is not the count of
+replications it would have let through. They change no v7 verdict, and
+whether replications are re-run under the amended document is a researcher
+decision this document leaves open.
 
 **What the measured v6 quantities do and do not say.** They say what composing
 B with A did to B on two models at one operating point on 192 calibration
