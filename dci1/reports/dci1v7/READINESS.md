@@ -123,6 +123,10 @@ the estimators' algebraic forms on a synthetic table.
    non-identification is §34 D6, irreversible, and is a finding about
    reference supply on those models (V6-E04). A reader of the changelog who
    expected "remove the gate, four replications proceed" should expect two.
+   *(Superseded 2026-08-28 by A6/A8 — §9 below: D6's irreversibility is of
+   Δ_R's non-identification, not of the replication, which continues on its
+   surviving arms; under A7 all four v7 replications would have kept the
+   core arm.)*
 4. **A projection at Gate 4 is composed-outcome information before the
    confirmatory budget is spent, and a human can act on it.** No code path
    reads it, and the register now says a projection is not a licence to
@@ -157,7 +161,8 @@ the estimators' algebraic forms on a synthetic table.
 ## 6. What remains non-identifiable, in order of where it is decided
 
 `REFERENCE_SUPPORT_NOT_IDENTIFIED` (Gate 3C, irreversible);
-`DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (δ_diff only); a structural zero on the
+`DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (δ_diff only *— under A7, 2026-08-28,
+the whole spectrum-dependent set of 20 members, §9 below*); a structural zero on the
 confirmatory blocks (no classification; projected at Gate 4; `NOT_MET` on §26;
 never terminal); `INSUFFICIENT_PRECISION` (§17.3; equivalence and threshold
 statements withheld, direction still reported); F6's vacuity gate (§17.4). A

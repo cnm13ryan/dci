@@ -115,7 +115,31 @@ def assemble(tree: ModelTree, *, producing_commit: str,
     arms = tuple(gate3c["admitted_arms"])
     statuses = sorted(set(gate2.get("identification_statuses", []))
                       | set(gate3c.get("identification_statuses", [])))
-    core = _selection_entries(selection, "core")
+    # v7 A6's invariant --- "the design the freeze will bind is exactly Gate
+    # 3C's identification state" --- applied to the design elements and not
+    # only to the arm list. Gate 3B selects without reading the calibrated
+    # coverage verdict, so its selection can carry three matched references
+    # or a complete spectrum ladder for an arm Gate 3C then did not admit
+    # (every v7 replication had three references in hand and no core arm;
+    # under A7 the reachable shape is a ladder in hand and no spectrum arm).
+    # Until 2026-08-28 the freeze bound those entries anyway, so the §18.1
+    # record advertised references the design never ran, while
+    # `assert_field_emptiness_explained` checks only the empty direction.
+    # The freeze now binds each arm's elements only when that arm is
+    # admitted; Gate 3B's selection stays recoverable from its own signed
+    # record, bound here by hash. `stages/freeze.assert_freeze_complete`
+    # refuses the converse, so a record cannot bind an arm it does not run.
+    admitted = set(arms)
+    core = (_selection_entries(selection, "core")
+            if C.ARM_CORE in admitted else [])
+    spectrum = (_selection_entries(selection, "spectrum")
+                if C.ARM_SPECTRUM in admitted else [])
+    near_form = (_selection_entries(selection, "near_form")
+                 if C.ARM_NEAR_FORM in admitted else [])
+    broad_class = ((selection.get("broad_class") or {})
+                   if C.ARM_CLASS in admitted else {})
+    backups = (list(gate3c["support"]["realised"]["frozen_backups"])
+               if C.ARM_CORE in admitted else [])
     # v7 §32: the document hashes in force are the registered ones as
     # amended by the signed chain, and the freeze binds the chain with them.
     from dci1v7.protocol import manifest as manifest_mod
@@ -209,16 +233,16 @@ def assemble(tree: ModelTree, *, producing_commit: str,
         earliest_failing_components=dict(
             qualified_at["earliest_failing_components"]),
         core_references=core,
-        spectrum_severities=_selection_entries(selection, "spectrum"),
-        near_form_controls=_selection_entries(selection, "near_form"),
-        broad_class_control=selection.get("broad_class") or {},
+        spectrum_severities=spectrum,
+        near_form_controls=near_form,
+        broad_class_control=broad_class,
         # §13.15 freezes the backups, and the stage that evaluates support is
         # the stage that computed them: Gate 3C's realised block. Reading
         # ``selection["backups"]`` --- a key Gate 3B never writes --- meant
         # this always fell through to a *recomputation* here, so the freeze
-        # bound a number no signed record had produced.
-        frozen_backup_families=list(
-            gate3c["support"]["realised"]["frozen_backups"]),
+        # bound a number no signed record had produced. Backups back up core
+        # slots, so they are bound only with the core arm (above).
+        frozen_backup_families=backups,
         # The *flag*, because ``assert_freeze_complete`` asserts
         # ``is True`` --- passing the sentence here overwrote the boolean the
         # §13.14 check reads, and a freeze that explained the guarantee

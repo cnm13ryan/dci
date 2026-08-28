@@ -545,12 +545,23 @@ def test_the_freeze_record_refuses_an_unexplained_empty_field():
 
     record = {f: "x" for f in freeze.REQUIRED_FIELDS}
     record.update(build := freeze.build_freeze_record())
+    # A base-only design: every arm-bound field empty, as the freeze now
+    # writes it (until 2026-08-28 this fixture bound spectrum, near-form and
+    # class elements beside a base-only arm list, the shape the freeze
+    # refuses since the arm-consistency check).
     record.update(admitted_arms=["base"], derived_cell_count=5,
-                  open_decisions=[], core_references=[])
+                  open_decisions=[], core_references=[],
+                  frozen_backup_families=[], spectrum_severities=[],
+                  near_form_controls=[], broad_class_control={})
+    explained = ["REFERENCE_SUPPORT_NOT_IDENTIFIED",
+                 "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+                 "NEAR_FORM_ARM_NOT_AVAILABLE", "CLASS_ARM_NOT_AVAILABLE"]
     with pytest.raises(ProtocolError):
         freeze.assert_freeze_complete(record, identification_statuses=[])
-    freeze.assert_freeze_complete(
-        record, identification_statuses=["REFERENCE_SUPPORT_NOT_IDENTIFIED"])
+    with pytest.raises(ProtocolError):
+        freeze.assert_freeze_complete(
+            record, identification_statuses=explained[1:])
+    freeze.assert_freeze_complete(record, identification_statuses=explained)
     assert build["backups_never_substituted"] is True
 
 
@@ -587,3 +598,55 @@ def _assert_freeze_refuses_for_section_34(freeze):
                                      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
                                      "NEAR_FORM_ARM_NOT_AVAILABLE"])
     assert "§34" in str(excinfo.value)
+
+
+def test_the_freeze_binds_the_design_of_exactly_the_admitted_arms():
+    """A6's invariant in the direction `assert_field_emptiness_explained`
+    does not check: a record that binds three core references, or a
+    spectrum ladder, for an arm Gate 3C did not admit is refused --- and so
+    is one that admits an arm with nothing bound for it.
+
+    The first shape is the one every v7 replication had at Gate 3B (three
+    matched references in hand, no core arm), and the one the amended
+    lifecycle reaches on a real model with a ladder in hand and no spectrum
+    arm (A7); until 2026-08-28 the freeze wrote it.
+    """
+    from dci1v7.design.cells import n_cells_for
+    from dci1v7.stages import freeze
+
+    def record(arms, **bound):
+        rec = {f: "x" for f in freeze.REQUIRED_FIELDS}
+        rec.update(freeze.build_freeze_record())
+        rec.update(admitted_arms=list(arms), open_decisions=[],
+                   derived_cell_count=n_cells_for(arms),
+                   core_references=[], frozen_backup_families=[],
+                   spectrum_severities=[], near_form_controls=[],
+                   broad_class_control={})
+        rec.update(bound)
+        return rec
+
+    every = ["REFERENCE_SUPPORT_NOT_IDENTIFIED",
+             "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+             "NEAR_FORM_ARM_NOT_AVAILABLE", "CLASS_ARM_NOT_AVAILABLE"]
+    # Bound without the arm: refused, whatever the statuses say.
+    for field in freeze.ARM_BOUND_FIELDS:
+        with pytest.raises(ProtocolError) as excinfo:
+            freeze.assert_freeze_complete(
+                record(["base"], **{field: [{"slot": "R1"}]
+                                    if field != "broad_class_control"
+                                    else {"family": "CL"}}),
+                identification_statuses=every)
+        assert field in str(excinfo.value)
+    # The arm without its elements: refused too (the empty field is then
+    # unexplained, or explained by a status that contradicts the arm).
+    with pytest.raises(ProtocolError):
+        freeze.assert_freeze_complete(
+            record(["base", "core"], frozen_backup_families=["MK9", "MK4"]),
+            identification_statuses=every[1:])
+    # Consistent in both directions: accepted.
+    freeze.assert_freeze_complete(
+        record(["base", "core"], core_references=[{"slot": "R1"}] * 3,
+               frozen_backup_families=["MK9", "MK4"]),
+        identification_statuses=every[1:])
+    freeze.assert_freeze_complete(record(["base"]),
+                                  identification_statuses=every)

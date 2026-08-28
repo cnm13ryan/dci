@@ -25,10 +25,20 @@
 # driver can be replaced while a stage it started is still running.
 # Nothing here reads an outcome, chooses a stage, or passes any argument
 # that changes what is measured.
+#
+# DCI1_V7_DEV_ROOT=<dir> (environment) drives a replication in the
+# *development* namespace instead of the registered study: every `status`
+# and `run` gets `--root <dir> --namespace development`, so the records land
+# under <dir>/evidence/dci1v7 with the study id dci1v7-development and the
+# registered tree is never touched. Same stages, same rules, same backend.
 set -u
 MODEL="$1"; DEVICE="$2"; LOGDIR="$3"; AFTER="${4:-}"
 cd "$(dirname "$0")/.."                      # dci1/
 PY=.venv/bin/python
+ROOTARGS=()
+if [ -n "${DCI1_V7_DEV_ROOT:-}" ]; then
+  ROOTARGS=(--root "$DCI1_V7_DEV_ROOT" --namespace development)
+fi
 ENV_CPU="rocm7.2/vllm0.15.1"
 ENV_GPU="rocm7.2/vllm0.15.1/gpu${DEVICE}"
 LOCKDIR="evidence/.gpu-locks"; mkdir -p "$LOCKDIR"
@@ -37,6 +47,9 @@ GPU_STAGES=" $($PY -c 'from dci1v7.run import cli; print(" ".join(cli.stages_acc
 mkdir -p "$LOGDIR"
 DRV="$LOGDIR/${MODEL}.driver.log"
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$MODEL gpu$DEVICE] $*" | tee -a "$DRV"; }
+if [ ${#ROOTARGS[@]} -gt 0 ]; then
+  log "DEVELOPMENT NAMESPACE: --root $DCI1_V7_DEV_ROOT (study id dci1v7-development; not the registered study)"
+fi
 
 for pid in ${AFTER//,/ }; do
   [ -z "$pid" ] && continue
@@ -46,13 +59,13 @@ done
 
 attempts=0
 while true; do
-  STATUS=$($PY -m dci1v7.run.cli status --model "$MODEL" 2>&1)
+  STATUS=$($PY -m dci1v7.run.cli status --model "$MODEL" "${ROOTARGS[@]}" 2>&1)
   NEXT=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["next_stage"] or "")' 2>/dev/null)
   TERM=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["terminal_status"] or "")' 2>/dev/null)
   REACHED=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["stage_reached"] or "")' 2>/dev/null)
   if [ -n "$TERM" ]; then log "TERMINAL $TERM at $REACHED; stopping"; exit 0; fi
   if [ -z "$NEXT" ]; then log "COMPLETE: reached $REACHED, no next stage"; exit 0; fi
-  ARGS=(run --stage "$NEXT" --model "$MODEL")
+  ARGS=(run --stage "$NEXT" --model "$MODEL" "${ROOTARGS[@]}")
   OUT="$LOGDIR/${MODEL}.${NEXT}.$(date -u +%Y%m%dT%H%M%SZ).out"
   if [[ "$GPU_STAGES" == *" $NEXT "* ]]; then
     ARGS+=(--device "$DEVICE" --environment "$ENV_GPU")
