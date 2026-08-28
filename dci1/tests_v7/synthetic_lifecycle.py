@@ -913,61 +913,128 @@ def walk(root: Path, *, block_limit: int = 4, topic_limit: int = 96,
         tree, producing_commit=commit, environment_digest="synthetic",
         bank=the_bank, determinism_sample=64, verdict_sample=256))
 
-    record(gates_run.run_gate2(
-        tree, producing_commit=commit, environment_digest="synthetic",
-        bank=the_bank, generate=_scripted_for(rungs),
-        topic_limit=topic_limit))
-
-    record(gates_run.run_gate2_5(tree, producing_commit=commit,
-                                 environment_digest="synthetic"))
-    # Gate 2.75 composes B with the fixture stand-ins, so the backend needs
-    # to satisfy pairs from here on.
-    record(gates_run.run_gate2_75(
-        tree, producing_commit=commit, environment_digest="synthetic",
-        bank=the_bank,
-        block_limit=probe_block_limit, resamples=resamples,
-        generate=_scripted_for(list(rungs) + probe_only_rungs())))
-    record(gates_run.run_gate3a(tree, producing_commit=commit,
-                                environment_digest="synthetic",
-                                bank=the_bank, resamples=resamples))
-    record(gates_run.run_gate3b(tree, producing_commit=commit,
-                                environment_digest="synthetic"))
-    record(gates_run.run_gate3c(tree, producing_commit=commit,
-                                environment_digest="synthetic"))
-    # From here the cells are composed, so the backend has to satisfy pairs.
-    # The lookup is the screened rungs plus whatever Gate 3B actually bound.
-    designed = rungs + _bound_constraints(tree)
-    record(gates_run.run_gate4(tree, producing_commit=commit,
-                               environment_digest="synthetic", bank=the_bank,
-                               resamples=resamples,
-                               generate=_scripted_for(designed)))
-    try:
-        record(prefreeze_run.run_prefreeze_audit_stage(
-            tree, producing_commit=commit, environment_digest="synthetic",
-            repo_root=repo_root, bank=the_bank))
-    except Exception as exc:                                # pragma: no cover
-        observed = getattr(exc, "observed", None)
-        if observed is None:
-            raise
-        raise AssertionError(
-            "the synthetic pre-freeze audit did not pass:\n"
-            + json.dumps(observed, indent=1, default=str)[:6000]) from exc
-    record(freeze_run.run_freeze(tree, producing_commit=commit,
-                                 environment_digest="synthetic"))
-    record(confirmatory_run.run_confirmatory(
-        tree, producing_commit=commit, environment_digest="synthetic",
-        bank=the_bank, generate=_scripted_for(designed),
-        block_limit=block_limit))
-    record(analysis_run.run_masked_analysis(
-        tree, producing_commit=commit, environment_digest="synthetic",
-        entropy=0))
-    record(analysis_run.run_unmasking(tree, producing_commit=commit,
-                                      environment_digest="synthetic"))
-    record(analysis_run.run_unmasked_analysis(
-        tree, producing_commit=commit, environment_digest="synthetic"))
-    record(analysis_run.run_final_report(
-        tree, producing_commit=commit, environment_digest="synthetic"))
+    for _stage, runner in stage_runners(
+            tree, commit=commit, the_bank=the_bank, repo_root=repo_root,
+            rungs=rungs, block_limit=block_limit,
+            probe_block_limit=probe_block_limit, resamples=resamples,
+            topic_limit=topic_limit):
+        record(runner())
     return {"tree": tree, "payloads": payloads, "bank": the_bank}
+
+
+def stage_runners(tree, *, commit: str, the_bank, repo_root, rungs,
+                  block_limit: int = 4, probe_block_limit: int = 24,
+                  resamples: int = 200, topic_limit: int = 96
+                  ) -> list[tuple[str, Any]]:
+    """Every stage after ``GATE_1_MEASUREMENT``, in §18's order, as
+    ``(stage, callable)`` pairs through the **production** runners.
+
+    One list, used by ``walk`` and by ``continue_walk``, so a scenario that
+    branches a signed prefix and drives it to ``FINAL_REPORT`` runs exactly
+    the calls the ordinary walk runs --- which is the point of an
+    end-to-end scenario: v7's `reference_support_not_identified` scenario
+    stopped at Gate 3C for two revisions and never met the pre-freeze check
+    that ended seven real replications.
+
+    The cells become composed at Gate 2.75, and from Gate 4 the backend has
+    to satisfy whatever Gate 3B bound, so the lookup is rebuilt at call time
+    from the tree rather than fixed when the list is built.
+    """
+    def designed():
+        return rungs + _bound_constraints(tree)
+
+    def prefreeze():
+        try:
+            return prefreeze_run.run_prefreeze_audit_stage(
+                tree, producing_commit=commit, environment_digest="synthetic",
+                repo_root=repo_root, bank=the_bank)
+        except Exception as exc:                            # pragma: no cover
+            observed = getattr(exc, "observed", None)
+            if observed is None:
+                raise
+            raise AssertionError(
+                "the synthetic pre-freeze audit did not pass:\n"
+                + json.dumps(observed, indent=1, default=str)[:6000]) from exc
+
+    return [
+        (C.STAGE_GATE2, lambda: gates_run.run_gate2(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            bank=the_bank, generate=_scripted_for(rungs),
+            topic_limit=topic_limit)),
+        (C.STAGE_GATE2_5, lambda: gates_run.run_gate2_5(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+        # Gate 2.75 composes B with the fixture stand-ins, so the backend
+        # needs to satisfy pairs from here on.
+        (C.STAGE_GATE2_75, lambda: gates_run.run_gate2_75(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            bank=the_bank, block_limit=probe_block_limit,
+            resamples=resamples,
+            generate=_scripted_for(list(rungs) + probe_only_rungs()))),
+        (C.STAGE_GATE3A, lambda: gates_run.run_gate3a(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            bank=the_bank, resamples=resamples)),
+        (C.STAGE_GATE3B, lambda: gates_run.run_gate3b(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+        (C.STAGE_GATE3C, lambda: gates_run.run_gate3c(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+        # From here the cells are composed, so the backend has to satisfy
+        # pairs. The lookup is the screened rungs plus whatever Gate 3B
+        # actually bound.
+        (C.STAGE_GATE4, lambda: gates_run.run_gate4(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            bank=the_bank, resamples=resamples,
+            generate=_scripted_for(designed()))),
+        (C.STAGE_PREFREEZE_AUDIT, prefreeze),
+        (C.STAGE_GATE5, lambda: freeze_run.run_freeze(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+        (C.STAGE_CONFIRMATORY, lambda: confirmatory_run.run_confirmatory(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            bank=the_bank, generate=_scripted_for(designed()),
+            block_limit=block_limit)),
+        (C.STAGE_MASKED_ANALYSIS, lambda: analysis_run.run_masked_analysis(
+            tree, producing_commit=commit, environment_digest="synthetic",
+            entropy=0)),
+        (C.STAGE_UNMASKING, lambda: analysis_run.run_unmasking(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+        (C.STAGE_UNMASKED_ANALYSIS,
+         lambda: analysis_run.run_unmasked_analysis(
+             tree, producing_commit=commit, environment_digest="synthetic")),
+        (C.STAGE_FINAL_REPORT, lambda: analysis_run.run_final_report(
+            tree, producing_commit=commit, environment_digest="synthetic")),
+    ]
+
+
+def continue_walk(tree, *, commit: str, the_bank, repo_root, after: str,
+                  rungs, stop_after: str | None = None,
+                  block_limit: int = 4, probe_block_limit: int = 24,
+                  resamples: int = 200, topic_limit: int = 96
+                  ) -> dict[str, Any]:
+    """Drive a branched prefix from the stage after ``after`` to
+    ``FINAL_REPORT`` (or ``stop_after``) through the production runners,
+    returning each stage's payload.
+
+    The scenario knobs (``RATE_OVERRIDES`` and friends) are read by the
+    scripted backend at generation time, so a scenario sets them before
+    calling this and clears them afterwards; nothing here reads them.
+    """
+    payloads: dict[str, Any] = {}
+    runners = stage_runners(
+        tree, commit=commit, the_bank=the_bank, repo_root=repo_root,
+        rungs=rungs, block_limit=block_limit,
+        probe_block_limit=probe_block_limit, resamples=resamples,
+        topic_limit=topic_limit)
+    stages = [stage for stage, _ in runners]
+    if after not in C.STAGE_SEQUENCE:
+        raise ValueError(f"{after!r} is not a registered stage")
+    start = C.STAGE_SEQUENCE.index(after) + 1
+    for stage, runner in runners:
+        if C.STAGE_SEQUENCE.index(stage) < start:
+            continue
+        payloads[stage] = runner().payload
+        if stop_after is not None and stage == stop_after:
+            break
+    assert stages, "no stage runner"
+    return payloads
 
 
 def _qualification(context, the_bank, commit: str) -> dict[str, Any]:

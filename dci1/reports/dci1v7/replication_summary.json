@@ -40,9 +40,11 @@
      "C7": true,
      "C8": false
     },
+    "core_met": null,
     "decisive_met": false,
     "iota_a": 0.6166,
     "n_eligible": 100,
+    "spectrum_met": null,
     "straddling_groups": [
      "marker_indeed",
      "sentence"
@@ -262,9 +264,11 @@
      "C7": true,
      "C8": false
     },
+    "core_met": null,
     "decisive_met": false,
     "iota_a": 0.7252,
     "n_eligible": 104,
+    "spectrum_met": null,
     "straddling_groups": [
      "marker_hence",
      "marker_indeed",
@@ -486,9 +490,11 @@
      "C7": true,
      "C8": true
     },
+    "core_met": null,
     "decisive_met": false,
     "iota_a": 0.6827,
     "n_eligible": 81,
+    "spectrum_met": null,
     "straddling_groups": [
      "marker_indeed",
      "marker_instead",
@@ -714,9 +720,11 @@
      "C7": true,
      "C8": false
     },
+    "core_met": null,
     "decisive_met": false,
     "iota_a": 0.5399,
     "n_eligible": 65,
+    "spectrum_met": null,
     "straddling_groups": [
      "marker_overall",
      "marker_though",

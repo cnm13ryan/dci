@@ -38,6 +38,20 @@ record, so this cannot be a v6 amendment; it is a superseding registration,
 and ``protocol/revision.py`` enumerates every difference where the code can
 check it.
 
+**Amended in place on 2026-08-28 (A6, A7, A8), after v7 ran.** All four v7
+replications passed every scientific gate and terminated at
+``PREFREEZE_AUDIT`` on one artifact check that required §13.15's support to
+have been *met* --- against §13.15, §18 stage 10, §28.2 and the closed §34
+D6, all of which say a non-identified replication continues. A6 replaces
+that check with the registered invariant (the record of §13.15, D6's
+disposition, the exact non-identified member set, the arm set, no
+rehabilitation path, every empty freeze field explained); A7 scopes §12.6's
+coverage conditions to the arm each exists for (C1/C3/C5/C6 gate the core
+arm, C2/C4 gate the spectrum arm; no value moves), because every v7
+replication lost C4 alone with three matched references in hand; A8 states
+D6's meaning once. ``protocol/revision.py`` V11-V13 check each; the §32
+chain (A4) binds the amended documents; the four terminal reports stand.
+
 **Isolation, in every direction.** ``STUDY_ID`` is ``dci1v7``. It satisfies no
 earlier revision's admission prefix, and ``FOREIGN_STUDY_PREFIXES`` names
 every earlier study and screen **including ``dci1v6``**, whose evidence is

@@ -29,7 +29,19 @@ the order contrasts, Delta_near, Delta_broad --- for want of an unidentified
 one. The red team (R16) reads it the other way: three of four v4r4
 replications ran a design that could not answer the primary question and each
 consumed a full confirmatory budget doing so. ``support_disposition`` expresses
-both and refuses until D6 is closed.
+both and refuses until D6 is closed. **D6 is closed at
+``identification_status`` and, since v7 A6, that is what the lifecycle does:
+a non-identified replication continues through the pre-freeze audit, the
+freeze and confirmatory generation on its surviving arms.** Until A6 the
+pre-freeze audit required ``support_met`` and made the closed value terminal
+one stage later; seven replications of v5, v6 and v7 ended on it.
+
+**v7 A7: the spectrum has its own support verdict.** §12.6's spectrum
+conditions (C2, C4), §13.12's exhaustion and the calibrated re-read's
+spectrum verdict cost the spectrum arm alone and record
+``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` at design time, with the
+spectrum-dependent estimands on their own irreversible non-identification
+block. The core arm stands when §13.8, §13.7 and §13.15 hold.
 """
 from __future__ import annotations
 
@@ -84,7 +96,8 @@ def evaluate_support(*, model_key: str,
                      near_form_available: bool,
                      class_available: bool,
                      spectrum_identified: bool,
-                     design_time_failures: Sequence[str] = ()
+                     design_time_failures: Sequence[str] = (),
+                     spectrum_design_time_failures: Sequence[str] = ()
                      ) -> dict[str, Any]:
     """§13.15's counts, the admitted arm set, and every identification status.
 
@@ -93,6 +106,12 @@ def evaluate_support(*, model_key: str,
     replication may no longer identify. That block is what
     ``identification.assert_not_rehabilitated`` reads at the freeze, at the
     analysis and at the final report, so the status cannot be lifted later.
+
+    v7 A7: ``design_time_failures`` are §12.6 *core* failures and join
+    §13.15's own; ``spectrum_design_time_failures`` are §12.6 *spectrum*
+    failures (and §13.12's exhaustion) and cost the spectrum arm alone. When
+    §13.15 holds and the spectrum is lost, the block names the
+    spectrum-dependent set under ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED``.
     """
     core = list(selection.get("core_references", []))
     n_eligible = len(set(structurally_eligible_tier12_families))
@@ -135,19 +154,30 @@ def evaluate_support(*, model_key: str,
 
     met = not failures
     core_identified = bool(core) and len(core) == C.N_CORE_REFERENCES
+    spectrum_failures: list[str] = list(spectrum_design_time_failures)
+    if not spectrum_identified and not spectrum_failures:
+        spectrum_failures.append(
+            "§13.12: reference selection bound no complete straddling "
+            "triple, so the spectrum arm is not generated")
+    spectrum_ok = (bool(spectrum_identified) and not spectrum_failures
+                   and core_identified and met)
     arms = arms_from_identification(
         core_identified=core_identified and met,
-        spectrum_identified=bool(spectrum_identified) and core_identified
-        and met,
+        spectrum_identified=spectrum_ok,
         near_form_identified=bool(near_form_available),
         class_identified=bool(class_available))
+    # §8.1: the base arm is unconditional, and the derivation above cannot
+    # drop it. Asserted rather than trusted, because the closed §34 D6 rests
+    # on the base arm surviving every other loss.
+    if C.ARM_BASE not in arms:
+        raise ProtocolError("§8.1: the base arm is always admitted")
 
     statuses = list(selection.get("identification_statuses", []))
     if not met:
         statuses += ["REFERENCE_SUPPORT_NOT_IDENTIFIED",
                      "EXCESS_NOT_IDENTIFIED",
                      "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"]
-    elif not spectrum_identified:
+    elif not spectrum_ok:
         statuses.append("DIFFICULTY_SUPPORT_NOT_IDENTIFIED")
     if not near_form_available:
         statuses.append("NEAR_FORM_ARM_NOT_AVAILABLE")
@@ -155,7 +185,9 @@ def evaluate_support(*, model_key: str,
         statuses.append("CLASS_ARM_NOT_AVAILABLE")
 
     non_identified = identification.non_identification(
-        model_key=model_key, support_met=met, failures=failures)
+        model_key=model_key, support_met=met, failures=failures,
+        spectrum_identified=spectrum_ok,
+        spectrum_failures=spectrum_failures)
     return {
         "stage": C.STAGE_GATE3C, "model_key": model_key,
         "requirements": {
@@ -177,8 +209,12 @@ def evaluate_support(*, model_key: str,
             "frozen_backups": backups,
         },
         "support_met": met, "failures": failures,
+        # v7 A7: the spectrum's own verdict, beside the core's.
+        "spectrum_met": spectrum_ok,
+        "spectrum_failures": spectrum_failures if not spectrum_ok else [],
         "disposition": support_disposition(met=met),
         "disposition_decision": "D6",
+        "replication_continues": True,
         "non_identification": non_identified,
         "not_identified_members": (list(non_identified["not_identified_members"])
                                    if non_identified else []),

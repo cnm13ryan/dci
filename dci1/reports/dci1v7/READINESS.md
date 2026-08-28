@@ -60,6 +60,7 @@ under V6-E04's calibrated coverage re-read, so $\Delta_R$ was unidentified on
 both before Gate 4 ran. **Withdrawing the headroom criterion opens nothing for
 the Gemmas.** It opens the Qwens' path to Gate 3, where §13's unchanged
 machinery decides whether a reference set exists.
+*(Superseded 2026-08-28 by A6/A8 — §9 below: a non-identified replication continues on its base and class arms; "opens nothing" conflated Δ_R's non-identification with the end of the replication.)*
 
 ## 3. Is the proposed change statistically coherent?
 
@@ -136,6 +137,7 @@ the estimators' algebraic forms on a synthetic table.
    v7 declares it as one (preregistration §8) and the argument for its
    adoptability is §3 above, not the count of replications it lets through.
    The A4 record requires every future amendment to declare its direction.
+   *(Superseded 2026-08-28 by A6/A8 — §9 below.)*
 
 ## 5. What v7 changes, executably (`protocol/revision.py`)
 
@@ -239,3 +241,27 @@ nothing at 24 — with the status and a registered sentence); Gate 4 is shown
 non-adaptive consumer by consumer, and the freeze now binds m\* through the
 checked Gate 2 = Gate 2.75 equality; the sign convention is verified on
 deterministic tables. `CHANGES_SCIENTIFIC.md` 2026-08-28.
+
+## 9. After the run: A6–A8 (2026-08-28)
+
+Everything above was written before v7 ran and is retained as written. Two
+of its readings are **superseded** by the in-place amendments of 2026-08-28
+(preregistration A6–A8; `CHANGES_SCIENTIFIC.md` "v7 amended in place";
+`RESEARCH_STATE.md` §4an):
+
+- §2's table and §4 item 3 ("the Gemmas are not rescued by anything here;
+  their Gate-3C non-identification is §34 D6, irreversible") conflated the
+  irreversibility of Δ_R's non-identification with the end of the
+  replication. D6 registers that a non-identified replication *continues* on
+  its surviving arms; what stopped it was the pre-freeze audit's
+  `support_satisfied` check — listed here as non-waivable in §2's table —
+  which required §13.15 to have been *met* and which A6 withdraws for the
+  registered invariant.
+- §6's list is unchanged in what is non-identifiable, and changed in what it
+  costs: under A7 a lost §12.6 spectrum condition (C2, C4) is
+  `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` and costs the spectrum arm alone; the
+  core arm and Δ_R stand when §13.8, §13.7 and §13.15 hold. All four v7
+  replications lost C4 alone.
+
+The four v7 terminal reports stand; nothing here re-verdicts them.
+

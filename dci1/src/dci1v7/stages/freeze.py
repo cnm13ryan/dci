@@ -25,7 +25,14 @@ identification status §13 wrote at design time onto a signed record ---
 3C's ``non_identification`` block verbatim, so the estimand set a replication
 may no longer identify is part of the signed scientific state rather than a
 fact only the Gate-3C record remembers. Everything downstream reads it through
-``protocol/identification.assert_not_rehabilitated``.
+``protocol/identification.assert_not_rehabilitated``. v7 A7: the block may
+carry ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` and name only the
+spectrum-dependent members, in which case ``core_references`` is non-empty
+and ``spectrum_severities`` is the field the status explains. v7 A6: the
+pre-freeze audit assembles this record without writing it, so an empty field
+no status explains is refused one stage earlier than here --- and a
+replication that lost its reference set under D6 actually reaches this stage,
+which until 2026-08-28 none did.
 """
 from __future__ import annotations
 

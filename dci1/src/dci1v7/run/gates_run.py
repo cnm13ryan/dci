@@ -1802,6 +1802,8 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
     # §12.6, re-read where reference selection actually works. This **gates**:
     # `support_at` takes its failures as design-time failures, under §34 D6's
     # existing disposition and with no new status and no drift threshold.
+    # v7 A7: the core conditions' failures and the spectrum conditions'
+    # failures are two lists, and Gate 3C reads each into the arm it gates.
     coverage = feasibility.coverage_at_calibrated_iota_a(
         gate2_record=gate2_record, regime_record=regime_record)
     return {
@@ -1809,9 +1811,10 @@ def gate3a_payload(tree: ModelTree, *, producing_commit: str,
         "artifact_type": C.STAGE_ARTIFACT_TYPE[C.STAGE_GATE3A],
         "outcome": "PASS",
         # §12.6 on the calibration basis at the measured iota_A. Gate 3C
-        # reads `failures` from it; nothing else may.
+        # reads `failures` and `spectrum_failures` from it; nothing else may.
         "coverage_at_calibrated_iota_a": coverage,
         "calibrated_coverage_failures": list(coverage["failures"]),
+        "calibrated_spectrum_failures": list(coverage["spectrum_failures"]),
         "inputs": {"gate2_5": {"stage": C.STAGE_GATE2_5},
                    "gate2_75": {"stage": C.STAGE_GATE2_75,
                                 "m_star": m_star,
@@ -1948,11 +1951,18 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
         gate3b_record["selection"], model_key=tree.model_key,
         calibration=calibration, regime_record=regime_record,
         extra_design_time_failures=list(
-            gate3a_record.get("calibrated_coverage_failures") or ()))
+            gate3a_record.get("calibrated_coverage_failures") or ()),
+        extra_spectrum_failures=list(
+            gate3a_record.get("calibrated_spectrum_failures") or ()))
     report = supported["report"]
     screen_statuses = set(supported["screen_statuses"])
     design_time_failures = list(supported["design_time_failures"])
     arms = normalise_arms(supported["arms"])
+    # §8.1 / v7 A8: the base arm is unconditional, so a replication that
+    # reaches this stage always retains D(B<-A), D(A<-B), Lambda and the A/B
+    # order contrasts whatever else it loses.
+    if C.ARM_BASE not in arms:
+        raise ProtocolError("§8.1: the base arm is always admitted")
     statuses = list(supported["identification_statuses"])
     disposition = report["disposition"]
     if not report["support_met"]:
@@ -1978,6 +1988,9 @@ def gate3c_payload(tree: ModelTree, *, producing_commit: str,
         # tell a design-time non-identification from a calibration-time one.
         "regime_screen_statuses": sorted(screen_statuses),
         "design_time_failures": list(design_time_failures),
+        # v7 A7: the spectrum arm's own design-time failures, if any.
+        "spectrum_failures": list(supported["spectrum_failures"]),
+        "spectrum_met": bool(report["spectrum_met"]),
         # §34 D6, closed at `identification_status`. Present and null when
         # §13.15 was met: a reader of the record can tell "the support held"
         # from "this record predates the decision", and every later stage

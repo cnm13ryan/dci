@@ -268,10 +268,301 @@ def scenario_reserve_expansion(root: Path) -> dict[str, Any]:
                         "the record"}
 
 
+# ------------------------------------------- v7 A6/A7/A8: D6 end to end
+
+#: Cached walks for the two non-identified branches, keyed by branch. Two
+#: scenarios read each (the end-to-end one and the audit-conditionality one),
+#: and a walk to the pre-freeze audit with overrides is signed evidence that
+#: copying does not change.
+_D6_PREFIXES: dict[str, Prefix] = {}
+
+
+def _tier12_labels() -> list[str]:
+    from dci1v7.verifiers.constraints import FAMILIES
+    return [f"{kind}:{q}" for kind in SL.SCREEN_FAMILIES
+            if FAMILIES[kind].structural_tier in (1, 2)
+            for q in FAMILIES[kind].ladder]
+
+
+def _flattened_ladders(iota_a: float, *, half_gap: float) -> dict[str, float]:
+    """Every Tier-1/2 rung within ``half_gap`` of ``iota_a``, alternating
+    sides by severity: each family straddles iota_A (C1, C2), every rung is
+    inside §13.8's caliper (C3), and no family's span reaches 0.40 (C4)."""
+    out: dict[str, float] = {}
+    for label in _tier12_labels():
+        q = int(label.rpartition(":")[2])
+        out[label] = iota_a + (half_gap if q % 2 == 0 else -half_gap)
+    return out
+
+
+#: The eight rung offsets of the full-design fixture, by ladder position.
+#: Two rungs each side INSIDE §13.8's 0.10 caliper, because §13.7
+#: condition 1 requires every V_stab candidate --- spectrum rungs included
+#: --- to be independently admissible under V_diff on each split, so a
+#: §13.12 rung is selectable only inside the caliper whatever its +/-0.20
+#: target says (the real gemma-3n-e2b-it triples sat within 0.08 of iota_A
+#: for the same reason; see RESEARCH_STATE §4an). The outer rungs supply
+#: C4's 0.40 span on the calibrated basis and nothing else.
+_SPREAD_OFFSETS: tuple[float, ...] = (-0.28, -0.20, -0.06, -0.02,
+                                      0.02, 0.06, 0.20, 0.28)
+
+
+def _spread_ladders(iota_a: float) -> dict[str, float]:
+    """Every Tier-1/2 family's ladder spread across iota_A by
+    ``_SPREAD_OFFSETS`` and kept inside the solo band: each family
+    straddles iota_A with a span above 0.40 (C1-C6 on the calibrated basis),
+    §13.12 finds a qualifying rung strictly below and above iota_A inside
+    the caliper, and §13.8 holds a matched rung --- the full 56-cell
+    design, which the ordinary fixture never reaches because its default
+    ladders exhaust §13.12."""
+    out: dict[str, float] = {}
+    for label in _tier12_labels():
+        q = int(label.rpartition(":")[2])
+        offset = _SPREAD_OFFSETS[min(q, len(_SPREAD_OFFSETS)) - 1]
+        out[label] = min(0.88, max(0.12, iota_a + offset))
+    return out
+
+
+def _d6_overrides(branch: str, iota_a: float) -> dict[str, float]:
+    if branch == "core_lost":
+        # Every Tier-1/2 rung far below iota_A: C1 and C3 fail on the
+        # calibrated basis and §13.8 finds no companion inside its caliper,
+        # so §13.15 is unmet on the counts too --- the v5 shape.
+        return {label: 0.30 for label in _tier12_labels()}
+    if branch == "spectrum_lost":
+        # Every Tier-1/2 family straddles iota_A tightly: matched companions
+        # exist and qualify, and no ladder spans 0.40 --- the v7 shape.
+        return _flattened_ladders(iota_a, half_gap=0.04)
+    if branch == "spectrum_found":
+        return _spread_ladders(iota_a)
+    raise ValueError(branch)
+
+
+def _d6_prefix(root: Path, branch: str) -> Prefix:
+    """A signed tree driven through PREFREEZE_AUDIT under one of two override
+    sets, branched from the shared GATE_1 prefix so the regime screen ---
+    where §12.6's certificate passed on every real v7 replication --- is the
+    ordinary one and only the calibrated basis differs."""
+    if branch in _D6_PREFIXES:
+        return _D6_PREFIXES[branch]
+    prefix = prefix_walk(root / "prefix", C.STAGE_GATE1)
+    into = root / f"{branch}-tree"
+    tree, ctx = prefix.branch(into)
+    iota_a = float(prefix.payloads[C.STAGE_REGIME]["iota_a_prescreen"])
+    SL.RATE_OVERRIDES.update(_d6_overrides(branch, iota_a))
+    try:
+        payloads = SL.continue_walk(
+            tree, commit=ctx["commit"], the_bank=ctx["bank"],
+            repo_root=ctx["repo_root"], after=C.STAGE_GATE1,
+            rungs=SL.screen_rungs(), stop_after=C.STAGE_PREFREEZE_AUDIT)
+    finally:
+        SL.clear_overrides()
+    state = {**prefix.state, "payloads": {**prefix.payloads, **payloads},
+             "overrides": branch}
+    _D6_PREFIXES[branch] = Prefix(into, state)
+    return _D6_PREFIXES[branch]
+
+
+def _d6_finish(root: Path, branch: str) -> dict[str, Any]:
+    """Freeze, generate, mask, unmask, analyse and report on a branch of the
+    cached pre-freeze tree, under the same overrides."""
+    prefix = _d6_prefix(root, branch)
+    tree, ctx = prefix.branch(root / f"{branch}-finish")
+    iota_a = float(prefix.payloads[C.STAGE_REGIME]["iota_a_prescreen"])
+    SL.RATE_OVERRIDES.update(_d6_overrides(branch, iota_a))
+    try:
+        later = SL.continue_walk(
+            tree, commit=ctx["commit"], the_bank=ctx["bank"],
+            repo_root=ctx["repo_root"], after=C.STAGE_PREFREEZE_AUDIT,
+            rungs=SL.screen_rungs())
+    finally:
+        SL.clear_overrides()
+    return {"tree": tree, "payloads": {**prefix.payloads, **later}}
+
+
+def _estimand_status(unmasked: Mapping[str, Any], member: str) -> str | None:
+    buckets = (unmasked.get("estimands") or {}).get("configurations") or {}
+    first = buckets.get(C.OUTCOME_FIRST) or {}
+    entry = first.get(member) or {}
+    return entry.get("status")
+
+
+def _estimand_reason(unmasked: Mapping[str, Any], member: str) -> str | None:
+    buckets = (unmasked.get("estimands") or {}).get("configurations") or {}
+    entry = (buckets.get(C.OUTCOME_FIRST) or {}).get(member) or {}
+    return entry.get("reason")
+
+
+def _tamper_refused(block: Mapping[str, Any] | None, member: str) -> bool:
+    from dci1v7.protocol import identification
+    try:
+        identification.assert_not_rehabilitated(
+            {"estimands": {member: {"estimate": 0.1}}}, gate3c=block,
+            where="scenario tamper")
+    except ProtocolError:
+        return True
+    return False
+
+
 def scenario_reference_support_not_identified(root: Path) -> dict[str, Any]:
-    """7. §13.15 unmet: D6's irreversible NOT_IDENTIFIED, not a repair."""
-    prefix = prefix_walk(root / "prefix", C.STAGE_GATE2_5)
-    tree, ctx = prefix.branch(root / "branch")
+    """7. §13.15 unmet: D6's irreversible NOT_IDENTIFIED, END TO END.
+
+    Until 2026-08-28 this scenario built a Gate-3C report by hand and stopped
+    there, so the pre-freeze check that ended seven real replications on
+    exactly this branch was never walked. Now the production path is driven
+    from a signed GATE_1 prefix, under a calibration in which no Tier-1/2
+    companion sits within §13.8's caliper, through Gate 3C
+    (`REFERENCE_SUPPORT_NOT_IDENTIFIED`, core and spectrum dropped), Gate 4,
+    the pre-freeze audit (PASS: the record is consistent), the freeze,
+    confirmatory generation, both analyses and the final report --- and the
+    base-arm estimands come out IDENTIFIED while every reference-dependent
+    member stays NOT_IDENTIFIED and cannot be offered by a later record.
+    """
+    from dci1v7.protocol import identification
+    finished = _d6_finish(root, "core_lost")
+    p = finished["payloads"]
+    gate3c, audit = p[C.STAGE_GATE3C], p[C.STAGE_PREFREEZE_AUDIT]
+    freeze, unmasked = p[C.STAGE_GATE5], p[C.STAGE_UNMASKED_ANALYSIS]
+    report = p[C.STAGE_FINAL_REPORT]
+    checks = {c["check"]: c["verdict"] for c in audit["artifact_checks"]}
+    blocked = set(gate3c["not_identified_members"])
+    return {"branch": "§13.15 unmet, §34 D6, end to end",
+            "gate3c_statuses": gate3c["identification_statuses"],
+            "support_met": gate3c["support"]["support_met"],
+            "disposition": gate3c["support"]["disposition"],
+            "admitted_arms": gate3c["admitted_arms"],
+            "n_not_identified": len(blocked),
+            "delta_r_blocked": "Delta_R" in blocked,
+            "irreversible": bool(gate3c["non_identification"]["irreversible"]),
+            "prefreeze_outcome": audit["outcome"],
+            "prefreeze_support_met_required": audit["support_met_required"],
+            "prefreeze_checks": {k: checks[k] for k in (
+                "support_recorded", "d6_disposition_registered",
+                "arms_match_identification", "no_rehabilitation_path",
+                "freeze_fields_explained", "selected_references_valid",
+                "calibration_stability_satisfied")},
+            "freeze_admitted_arms": freeze["admitted_arms"],
+            "freeze_block_status": (freeze["non_identification"] or {}).get(
+                "status"),
+            "confirmatory_rows": p[C.STAGE_CONFIRMATORY]["n_rows"],
+            "d_b_from_a": _estimand_status(unmasked, "D(B<-A)"),
+            "lambda": _estimand_status(unmasked, "Lambda"),
+            "delta_r": _estimand_status(unmasked, "Delta_R"),
+            "delta_r_reason": _estimand_reason(unmasked, "Delta_R"),
+            "final_report_outcome": report["outcome"],
+            "final_report_rows": report.get("n_result_rows"),
+            "tamper_delta_r_refused": _tamper_refused(
+                freeze["non_identification"], "Delta_R"),
+            "still_identified_includes_base_arm": set(
+                identification.BASE_ARM_ESTIMANDS) <= set(
+                gate3c["non_identification"]["still_identified_members"]),
+            "expected": "core and spectrum arms dropped, Delta_R "
+                        "NOT_IDENTIFIED irreversibly, D(B<-A) IDENTIFIED, "
+                        "and the replication reaches FINAL_REPORT"}
+
+
+def scenario_c4_lost_core_kept(root: Path) -> dict[str, Any]:
+    """7b. v7 A7: C4 lost on the calibrated basis with every core condition
+    met keeps the core arm and Delta_R, drops the spectrum arm and marks the
+    spectrum-dependent members NOT_IDENTIFIED irreversibly --- end to end.
+
+    This is the shape of all four real v7 replications.
+    """
+    from dci1v7.protocol import identification
+    finished = _d6_finish(root, "spectrum_lost")
+    p = finished["payloads"]
+    gate3a, gate3c = p[C.STAGE_GATE3A], p[C.STAGE_GATE3C]
+    audit, freeze = p[C.STAGE_PREFREEZE_AUDIT], p[C.STAGE_GATE5]
+    unmasked, report = p[C.STAGE_UNMASKED_ANALYSIS], p[C.STAGE_FINAL_REPORT]
+    checks = {c["check"]: c["verdict"] for c in audit["artifact_checks"]}
+    coverage = gate3a["coverage_at_calibrated_iota_a"]
+    blocked = set(gate3c["not_identified_members"])
+    return {"branch": "§12.6 C4 lost on the calibrated basis, core kept (A7)",
+            "calibrated_conditions": coverage["conditions"],
+            "calibrated_core_met": coverage["core_met"],
+            "calibrated_spectrum_met": coverage["spectrum_met"],
+            "calibrated_core_failures": gate3a["calibrated_coverage_failures"],
+            "calibrated_spectrum_failures":
+                gate3a["calibrated_spectrum_failures"],
+            "gate3c_statuses": gate3c["identification_statuses"],
+            "support_met": gate3c["support"]["support_met"],
+            "spectrum_met": gate3c["support"]["spectrum_met"],
+            "admitted_arms": gate3c["admitted_arms"],
+            "block_status": (gate3c["non_identification"] or {}).get("status"),
+            "n_not_identified": len(blocked),
+            "blocked_is_the_spectrum_set":
+                blocked == set(identification.SPECTRUM_ESTIMANDS),
+            "delta_r_blocked": "Delta_R" in blocked,
+            "prefreeze_outcome": audit["outcome"],
+            "prefreeze_checks": {k: checks[k] for k in (
+                "support_recorded", "d6_disposition_registered",
+                "arms_match_identification", "no_rehabilitation_path",
+                "freeze_fields_explained", "selected_references_valid",
+                "calibration_stability_satisfied")},
+            "freeze_admitted_arms": freeze["admitted_arms"],
+            "delta_r": _estimand_status(unmasked, "Delta_R"),
+            "delta_difficulty": _estimand_status(unmasked,
+                                                 "delta_difficulty"),
+            "delta_difficulty_reason": _estimand_reason(
+                unmasked, "delta_difficulty"),
+            "d_b_from_r1_minus": _estimand_status(unmasked, "D(B<-R1-)"),
+            "final_report_outcome": report["outcome"],
+            "tamper_delta_difficulty_refused": _tamper_refused(
+                freeze["non_identification"], "delta_difficulty"),
+            "tamper_delta_r_allowed": not _tamper_refused(
+                freeze["non_identification"], "Delta_R"),
+            "expected": "core retained, spectrum dropped, Delta_R IDENTIFIED, "
+                        "delta_difficulty NOT_IDENTIFIED "
+                        "(DIFFICULTY_SUPPORT_NOT_IDENTIFIED), FINAL_REPORT "
+                        "reached"}
+
+
+def scenario_full_support_unchanged(root: Path) -> dict[str, Any]:
+    """7c. Both supports met: the full 56-cell design, end to end, and the
+    audit's support checks all PASS with nothing NOT_APPLICABLE.
+
+    The ordinary fixture never reaches this --- its default ladders exhaust
+    §13.12 and the walk runs base + core + class --- so the branch spreads
+    every Tier-1/2 ladder across iota_A and drives the production runners
+    from Gate 2 to the final report with every arm admitted. A6 and A7
+    change nothing on this path, which is what "unchanged" means here.
+    """
+    finished = _d6_finish(root, "spectrum_found")
+    p = finished["payloads"]
+    gate3a, gate3c = p[C.STAGE_GATE3A], p[C.STAGE_GATE3C]
+    audit, freeze = p[C.STAGE_PREFREEZE_AUDIT], p[C.STAGE_GATE5]
+    unmasked, report = p[C.STAGE_UNMASKED_ANALYSIS], p[C.STAGE_FINAL_REPORT]
+    coverage = gate3a["coverage_at_calibrated_iota_a"]
+    return {"branch": "every support requirement met (the full design)",
+            "calibrated_core_met": coverage["core_met"],
+            "calibrated_spectrum_met": coverage["spectrum_met"],
+            "support_met": gate3c["support"]["support_met"],
+            "spectrum_met": gate3c["support"]["spectrum_met"],
+            "admitted_arms": gate3c["admitted_arms"],
+            "derived_cell_count": gate3c["derived_cell_count"],
+            "non_identification": gate3c["non_identification"],
+            "gate3c_statuses": gate3c["identification_statuses"],
+            "prefreeze_outcome": audit["outcome"],
+            "n_not_applicable": audit["n_artifact_not_applicable"],
+            "freeze_admitted_arms": freeze["admitted_arms"],
+            "confirmatory_rows": p[C.STAGE_CONFIRMATORY]["n_rows"],
+            "delta_r": _estimand_status(unmasked, "Delta_R"),
+            "delta_difficulty": _estimand_status(unmasked,
+                                                 "delta_difficulty"),
+            "delta_difficulty_reason": _estimand_reason(
+                unmasked, "delta_difficulty"),
+            "d_b_from_r1_minus": _estimand_status(unmasked, "D(B<-R1-)"),
+            "final_report_outcome": report["outcome"],
+            "expected": "all five arms, 56 cells, no block, PASS with no "
+                        "NOT_APPLICABLE check, Delta_R and delta_difficulty "
+                        "IDENTIFIED, FINAL_REPORT reached"}
+
+
+def scenario_base_arm_is_unconditional(root: Path) -> dict[str, Any]:
+    """7d. A8: no Gate-3 verdict removes the base arm, and there is no
+    registered terminal status for 'no useful estimand remains' --- the
+    exits before confirmatory generation are §28.3's and nothing else."""
+    from dci1v7.design import cells
     from dci1v7.protocol import identification
     from dci1v7.stages import support
     report = support.evaluate_support(
@@ -281,18 +572,73 @@ def scenario_reference_support_not_identified(root: Path) -> dict[str, Any]:
         selection={"core_references": [], "identification_statuses": []},
         near_form_available=False, class_available=False,
         spectrum_identified=False)
-    blocked = set(report["not_identified_members"])
-    return {"branch": "§13.15 unmet, §34 D6",
-            "support_met": report["support_met"],
-            "disposition": report["disposition"],
-            "admitted_arms": report["admitted_arms"],
-            "n_not_identified": len(blocked),
-            "delta_r_blocked": "Delta_R" in blocked,
-            "d_b_from_a_still_identified":
-                "D(B<-A)" in identification.UNAFFECTED_ESTIMANDS,
-            "irreversible": bool(report["non_identification"]),
-            "expected": "core and spectrum arms dropped, Delta_R "
-                        "NOT_IDENTIFIED, D(B<-A) still identified"}
+    return {"branch": "§8.1's unconditional base arm and §28.3's exits",
+            "arms_when_everything_else_is_lost": report["admitted_arms"],
+            "derived_cell_count": report["derived_cell_count"],
+            "normalise_arms_of_nothing": list(cells.normalise_arms([])),
+            "base_arm_estimands_still_identified": all(
+                m in report["non_identification"]["still_identified_members"]
+                for m in identification.BASE_ARM_ESTIMANDS),
+            "terminal_statuses_about_support": [
+                s for s in C.TERMINAL_STATUSES if "SUPPORT" in s],
+            "terminal_statuses_in_force": list(C.TERMINAL_STATUSES),
+            "expected": "base arm only, 5 cells, D(B<-A)/D(A<-B)/Lambda/"
+                        "Ord_* identified, and no terminal status for a lost "
+                        "arm"}
+
+
+def scenario_unsupported_estimands_cannot_reappear(root: Path
+                                                   ) -> dict[str, Any]:
+    """7e. The two non-identification blocks refuse a later estimate for a
+    member they name, and admit one for a member they do not."""
+    from dci1v7.protocol import identification
+    core = identification.non_identification(
+        model_key=SL.MODEL_KEY, support_met=False, failures=["§13.15"])
+    spectrum = identification.non_identification(
+        model_key=SL.MODEL_KEY, support_met=True, spectrum_identified=False,
+        spectrum_failures=["C4"])
+    return {"branch": "§34 D6's irreversibility, both blocks",
+            "core_block_refuses_delta_r": _tamper_refused(core, "Delta_R"),
+            "core_block_refuses_delta_difficulty": _tamper_refused(
+                core, "delta_difficulty"),
+            "core_block_admits_d_b_from_a": not _tamper_refused(
+                core, "D(B<-A)"),
+            "spectrum_block_refuses_delta_difficulty": _tamper_refused(
+                spectrum, "delta_difficulty"),
+            "spectrum_block_refuses_spectrum_loss": _tamper_refused(
+                spectrum, "D(B<-R2+)"),
+            "spectrum_block_admits_delta_r": not _tamper_refused(
+                spectrum, "Delta_R"),
+            "rehabilitation_paths_refused": sorted(
+                identification.REHABILITATION_PATHS),
+            "expected": "every named member refused, every other admitted"}
+
+
+def scenario_reference_checks_conditional(root: Path) -> dict[str, Any]:
+    """7f. A6: the reference-specific pre-freeze checks are NOT_APPLICABLE
+    when the core arm is absent and applicable when it is present."""
+    core_lost = _d6_prefix(root, "core_lost").payloads[C.STAGE_PREFREEZE_AUDIT]
+    spectrum_lost = _d6_prefix(root, "spectrum_lost").payloads[
+        C.STAGE_PREFREEZE_AUDIT]
+
+    def verdicts(audit):
+        return {c["check"]: (c["verdict"], (c.get("detail") or {}).get(
+            "explained_by") if isinstance(c.get("detail"), Mapping) else None)
+            for c in audit["artifact_checks"]
+            if c["check"] in ("selected_references_valid",
+                              "calibration_stability_satisfied")}
+    return {"branch": "A6: reference-specific checks follow the core arm",
+            "without_core_arm": verdicts(core_lost),
+            "without_core_arm_outcome": core_lost["outcome"],
+            "without_core_arm_not_applicable":
+                core_lost["n_artifact_not_applicable"],
+            "with_core_arm": verdicts(spectrum_lost),
+            "with_core_arm_outcome": spectrum_lost["outcome"],
+            "with_core_arm_not_applicable":
+                spectrum_lost["n_artifact_not_applicable"],
+            "expected": "NOT_APPLICABLE naming REFERENCE_SUPPORT_NOT_"
+                        "IDENTIFIED without the core arm; PASS with it; both "
+                        "audits PASS"}
 
 
 def scenario_gate4_records_a_boundary(root: Path) -> dict[str, Any]:
@@ -837,6 +1183,12 @@ SCENARIOS: dict[str, Callable[[Path], dict[str, Any]]] = {
     "reserve_expansion": scenario_reserve_expansion,
     "reference_support_not_identified":
         scenario_reference_support_not_identified,
+    "c4_lost_core_kept": scenario_c4_lost_core_kept,
+    "full_support_unchanged": scenario_full_support_unchanged,
+    "base_arm_is_unconditional": scenario_base_arm_is_unconditional,
+    "unsupported_estimands_cannot_reappear":
+        scenario_unsupported_estimands_cannot_reappear,
+    "reference_checks_conditional": scenario_reference_checks_conditional,
     "gate4_records_a_boundary": scenario_gate4_records_a_boundary,
     "near_form_unavailable": scenario_near_form_unavailable,
     "broad_class_unavailable": scenario_broad_class_unavailable,

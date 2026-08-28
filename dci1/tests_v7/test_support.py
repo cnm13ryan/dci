@@ -89,6 +89,14 @@ def test_the_spectrum_can_drop_without_the_core_arm():
     assert "core" in out["admitted_arms"]
     assert "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in \
         out["identification_statuses"]
+    # v7 A7: the spectrum-dependent members are NOT_IDENTIFIED on their own
+    # irreversible block, and Delta_R is not among them.
+    assert out["spectrum_met"] is False
+    assert out["non_identification"]["status"] == \
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+    assert set(out["not_identified_members"]) == set(
+        identification.SPECTRUM_ESTIMANDS)
+    assert "Delta_R" not in out["not_identified_members"]
 
 
 def test_the_disposition_is_unresolved_while_d6_is_open(restore_decisions):

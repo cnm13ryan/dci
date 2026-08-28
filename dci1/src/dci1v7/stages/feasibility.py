@@ -62,6 +62,7 @@ __all__ = ["calibration_rows_at", "qualification_at", "calibration_at",
            "selection_at", "support_at",
            "SUPPORT_MARGIN_KEYS", "support_margin",
            "coverage_at_calibrated_iota_a", "CALIBRATED_COVERAGE_FAILURE",
+           "CALIBRATED_SPECTRUM_COVERAGE_FAILURE",
            "qualified_family_support", "operating_point_order",
            "restricted_operating_point_order"]
 
@@ -240,13 +241,19 @@ def selection_at(calibration: Mapping[str, Any], *,
 def support_at(chosen: Mapping[str, Any], *, model_key: str,
                calibration: Mapping[str, Any],
                regime_record: Mapping[str, Any],
-               extra_design_time_failures: Sequence[str] = ()
+               extra_design_time_failures: Sequence[str] = (),
+               extra_spectrum_failures: Sequence[str] = ()
                ) -> dict[str, Any]:
     """§13.15's counts and every identification status. The Gate-3C kernel.
 
     ``chosen`` is ``selection_at``'s result. The arm-availability rules are
     the ones Gate 3C registers: an arm is available when the screen's coverage
     admitted it **and** selection bound a companion for it.
+
+    v7 A7: two failure lists enter, one per arm. ``extra_design_time_failures``
+    are §12.6 *core* failures (C1/C3/C5/C6 on the calibrated basis) and take
+    §34 D6's disposition; ``extra_spectrum_failures`` are §12.6 *spectrum*
+    failures (C2/C4) and cost the spectrum arm alone.
     """
     structurally_eligible = sorted({
         label.rpartition(":")[0] for label in regime_record["carried_set"]
@@ -268,6 +275,8 @@ def support_at(chosen: Mapping[str, Any], *, model_key: str,
         (chosen.get("broad_class") or {}).get("companion")
     ) and "CLASS_ARM_NOT_AVAILABLE" not in screen_statuses
     spectrum_identified = bool(core_block.get("spectrum_identified"))
+    # The sentence is the one the signed v5 records carry; A7 changed which
+    # conditions raise the screen status, not what the failure is called.
     design_time_failures = (
         ["§12.6: the identification-coverage criterion was not met after the "
          "registered expansion rounds, so the replication runs without the "
@@ -279,6 +288,22 @@ def support_at(chosen: Mapping[str, Any], *, model_key: str,
     # one. `coverage_at_calibrated_iota_a` produces it and Gate 3A carries it.
     design_time_failures = design_time_failures + list(
         extra_design_time_failures)
+    # v7 A7: the spectrum's own design-time failures. The screen's verdict
+    # (C2/C4 lost after the expansion), the calibrated re-read's (Gate 3A),
+    # and §13.12's exhaustion at Gate 3B each cost the spectrum arm and
+    # nothing else; each is named so the record says which one it was.
+    spectrum_failures: list[str] = []
+    if ("DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in screen_statuses
+            and "REFERENCE_SUPPORT_NOT_IDENTIFIED" not in screen_statuses):
+        spectrum_failures.append(
+            "§12.6: a spectrum coverage condition (C2, C4) was not met after "
+            "the registered expansion rounds, so the replication runs "
+            "without the spectrum arm")
+    spectrum_failures += list(extra_spectrum_failures)
+    if not spectrum_identified and core_block.get("spectrum_exhausted"):
+        spectrum_failures.append(
+            "§13.12: no three qualifying families each supply a complete "
+            "straddling triple, so the spectrum arm is not generated")
     report = support.evaluate_support(
         model_key=model_key,
         structurally_eligible_tier12_families=structurally_eligible,
@@ -287,12 +312,14 @@ def support_at(chosen: Mapping[str, Any], *, model_key: str,
         near_form_available=near_form_available,
         class_available=class_available,
         spectrum_identified=spectrum_identified,
-        design_time_failures=design_time_failures)
+        design_time_failures=design_time_failures,
+        spectrum_design_time_failures=spectrum_failures)
     return {
         "report": report,
         "structurally_eligible_tier12_families": structurally_eligible,
         "screen_statuses": sorted(screen_statuses),
         "design_time_failures": design_time_failures,
+        "spectrum_failures": list(report["spectrum_failures"]),
         "arms": list(normalise_arms(report["admitted_arms"])),
         "identification_statuses":
             sorted(set(report["identification_statuses"]) | screen_statuses),
@@ -423,6 +450,17 @@ CALIBRATED_COVERAGE_FAILURE = (
     "reference selection matches on, evaluated on the calibration basis where "
     "iota(R), the eligibility coordinate, the vacuity and iota_A are all "
     "measured on the same 192 topics at the same four draws")
+#: v7 A7: the same re-read, when what is lost is a SPECTRUM condition (C2 or
+#: C4) while every core condition holds. It costs the spectrum arm, records
+#: ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED`` at design time, and leaves the core
+#: arm to §13.8, §13.7 and §13.15.
+CALIBRATED_SPECTRUM_COVERAGE_FAILURE = (
+    "§12.6: a spectrum coverage condition (C2, C4) is not met at the iota_A "
+    "reference selection matches on, evaluated on the calibration basis where "
+    "iota(R), the eligibility coordinate, the vacuity and iota_A are all "
+    "measured on the same 192 topics at the same four draws; the spectrum "
+    "arm is not generated and the core arm is decided by §13.8, §13.7 and "
+    "§13.15")
 
 
 def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
@@ -450,6 +488,16 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
     **No drift threshold exists here and none is proposed.** The criterion is
     §12.6's own, unchanged, and the question is whether it holds where
     selection works, not whether some distance is small.
+
+    **v7 A7 reads the six conditions by arm.** ``failures`` carries the core
+    verdict (C1, C3, C5, C6) and is what §34 D6 disposes of;
+    ``spectrum_failures`` carries the spectrum verdict (C2, C4) when the core
+    holds, and costs the spectrum arm alone. The pre-screen certificate is
+    recorded beside both and gates neither: on 24 topics at one draw a
+    ladder's apparent span is inflated by noise, rungs above 0.90 are trimmed
+    from the band at calibration, and §12.7's Tier-3 cap keeps Tier-3 ladders
+    from spanning 0.40 here at all --- all four v7 replications passed C4 at
+    the screen and lost it here.
     """
     formulation = regime_record.get("coverage_eligibility_formulation")
     iota_a_measured = float(gate2_record["iota_a"])
@@ -472,9 +520,12 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
                and certified["conditions"][c]
                != at_prescreen["conditions"].get(c)))
     decisive_met = bool(at_measured["decisive_met"])
+    core_met = bool(at_measured["core_met"])
+    spectrum_met = bool(at_measured["spectrum_met"])
     return {
-        "gates": "the decisive conditions on the calibration basis at the "
-                 "measured iota_A",
+        "gates": "the core conditions (C1, C3, C5, C6) gate the core arm and "
+                 "the spectrum conditions (C2, C4) gate the spectrum arm, on "
+                 "the calibration basis at the measured iota_A (v7 A7)",
         "costs_no_generation": True,
         "basis": "§13.11's calibration table: 192 pooled calibration topics "
                  "at M_cal draws, the same cases iota_A is measured on",
@@ -489,6 +540,12 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
         "n_eligible": at_measured["realised"]["n_eligible"],
         "conditions": dict(at_measured["conditions"]),
         "decisive_met": decisive_met,
+        "core_conditions": list(C.COVERAGE_CORE_CONDITIONS),
+        "spectrum_conditions": list(C.COVERAGE_SPECTRUM_CONDITIONS),
+        "core_met": core_met,
+        "spectrum_met": spectrum_met,
+        "core_failed": list(at_measured["core_failed"]),
+        "spectrum_failed": list(at_measured["spectrum_failed"]),
         "realised": dict(at_measured.get("realised") or {}),
         "conditions_at_prescreen_iota_a": (
             None if at_prescreen is None
@@ -503,7 +560,12 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
         "conditions_moved_by_the_reference_point":
             moved_by_the_reference_point,
         "conditions_moved_by_the_basis": moved_by_the_basis,
-        "failures": [] if decisive_met else [CALIBRATED_COVERAGE_FAILURE],
+        # v7 A7: two lists, one per arm. `failures` is the CORE list and keeps
+        # its name because Gate 3C has read it under that name since v6 A3;
+        # a spectrum-only loss lands in `spectrum_failures` and nowhere else.
+        "failures": [] if core_met else [CALIBRATED_COVERAGE_FAILURE],
+        "spectrum_failures": ([] if (spectrum_met or not core_met)
+                              else [CALIBRATED_SPECTRUM_COVERAGE_FAILURE]),
     }
 
 

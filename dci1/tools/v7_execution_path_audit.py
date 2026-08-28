@@ -478,6 +478,72 @@ RULES: tuple[dict[str, object], ...] = (
      "impl": "dci1v7.run.gates_run.gate3b_payload",
      "field": "GATE_3B_REFERENCE_SELECTION.selection",
      "consumer": "GATE_3C_IDENTIFICATION", "expect": VERIFIED},
+    # ------------------------------------------- v7 A6/A7/A8 (2026-08-28)
+    {"id": "R-12.6-arm-scoping", "section": "§12.6 (A7)",
+     "area": "reference selection",
+     "meaning": "the six conditions the expansion loop stops on are read by "
+                "arm: C1/C3/C5/C6 gate the core arm and C2/C4 gate the "
+                "spectrum arm, and the record carries both verdicts",
+     "runtime": "dci1v7.stages.regime.coverage_criterion",
+     "impl": "dci1v7.run.regime_run.regime_payload",
+     "field": "REGIME_SCREEN.coverage",
+     "consumer": None, "scenario": "c4_lost_core_kept", "expect": VERIFIED},
+    {"id": "R-12.6-calibrated-spectrum", "section": "§12.6 (A7)",
+     "area": "reference selection",
+     "meaning": "the calibrated re-read's SPECTRUM verdict (C2, C4) travels "
+                "to Gate 3C as a spectrum failure, costs the spectrum arm "
+                "alone and records DIFFICULTY_SUPPORT_NOT_IDENTIFIED; the "
+                "core arm is decided by §13.8, §13.7 and §13.15",
+     "runtime": "dci1v7.stages.feasibility.coverage_at_calibrated_iota_a",
+     "impl": "dci1v7.run.gates_run.gate3a_payload",
+     "field": "GATE_3A_REFERENCE_CALIBRATION.calibrated_spectrum_failures",
+     "consumer": "GATE_3C_IDENTIFICATION", "scenario": "c4_lost_core_kept",
+     "expect": VERIFIED},
+    {"id": "R-13.15-spectrum-block", "section": "§13.15, §34 D6 (A7)",
+     "area": "reference selection",
+     "meaning": "a design-time spectrum loss writes its own irreversible "
+                "non-identification block naming exactly the "
+                "spectrum-dependent members, under "
+                "DIFFICULTY_SUPPORT_NOT_IDENTIFIED, and the freeze binds it",
+     "runtime": "dci1v7.protocol.identification.non_identification",
+     "impl": "dci1v7.stages.support.evaluate_support",
+     "field": "GATE_3C_IDENTIFICATION.non_identification",
+     "consumer": "GATE_5_FREEZE", "scenario": "c4_lost_core_kept",
+     "expect": VERIFIED},
+    {"id": "R-19-support-record", "section": "§18 stage 12, §19, §33 (A6)",
+     "area": "pre-freeze",
+     "meaning": "the pre-freeze audit establishes §13.15's RECORD, §34 D6's "
+                "disposition, the exact non-identified member set, the arm "
+                "set and the absence of a rehabilitation path --- and does "
+                "not require support_met; a non-identified replication "
+                "reaches the freeze",
+     "runtime": "dci1v7.run.prefreeze_run.support_checks",
+     "impl": "dci1v7.run.prefreeze_run.artifact_checks",
+     "field": "PREFREEZE_AUDIT.support_met_required",
+     "consumer": None, "scenario": "reference_support_not_identified",
+     "expect": VERIFIED},
+    {"id": "R-19-freeze-dry-run", "section": "§18.1, §18 stage 12 (A6)",
+     "area": "pre-freeze",
+     "meaning": "the §18.1 record the audit would license is assembled "
+                "without being written and every empty field is explained "
+                "by the status that empties it, before the freeze",
+     "runtime": "dci1v7.stages.freeze.assert_field_emptiness_explained",
+     "impl": "dci1v7.run.prefreeze_run.artifact_checks",
+     "field": "PREFREEZE_AUDIT.artifact_checks",
+     "consumer": None, "scenario": "reference_support_not_identified",
+     "expect": VERIFIED},
+    {"id": "R-34-D6-continues", "section": "§34 D6, §8.1 (A8)",
+     "area": "pre-freeze",
+     "meaning": "a replication that lost its reference set continues on its "
+                "base arm through the freeze, confirmatory generation, both "
+                "analyses and the final report, with the base-arm estimands "
+                "IDENTIFIED and every reference-dependent member "
+                "NOT_IDENTIFIED",
+     "runtime": "dci1v7.protocol.identification.assert_not_rehabilitated",
+     "impl": "dci1v7.run.analysis_run.unmasked_payload",
+     "field": "UNMASKED_ANALYSIS.estimands",
+     "consumer": "FINAL_REPORT", "scenario": "reference_support_not_identified",
+     "expect": VERIFIED},
     {"id": "R-13.15-support", "section": "§13.15, §34 D6",
      "area": "reference selection",
      "meaning": "the support requirements, and D6's irreversible verdict",

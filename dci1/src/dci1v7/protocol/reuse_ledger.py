@@ -159,9 +159,11 @@ REGISTERED_ENTRIES: tuple[LedgerEntry, ...] = (
         "DEVELOPMENT_EVIDENCE",
         "both Gemma replications recorded REFERENCE_SUPPORT_NOT_IDENTIFIED "
         "at Gate 3C under the calibrated coverage re-read, so no v6 "
-        "replication reached Gate 4 with a core arm. Withdrawing the "
-        "headroom criterion opens nothing for them; it is why v7's "
-        "changelog says so",
+        "replication reached Gate 4 with a core arm. Under §34 D6 they "
+        "should have continued on their base and class arms; v6's "
+        "pre-freeze `support_satisfied` check stopped them, and v7 A6 "
+        "(2026-08-28) withdraws that check. Read as development evidence "
+        "about reference supply, never as a v7 outcome",
         "§30.1"),
     LedgerEntry(
         "dci1/src/dci1v6",

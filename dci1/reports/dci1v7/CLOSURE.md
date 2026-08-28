@@ -84,3 +84,26 @@ wording, estimator, threshold or constant moved.
 **Retained, not reusable.** Every v7 row and record stays under
 `dci1/evidence/dci1v7/` and its durable mirror `dci1/durable_root/dci1v7/`
 (12 signed records per replication, all mirrored; 17 GB each root).
+
+## Addendum (2026-08-28, after closure): v7 amended in place
+
+The "standing tension" paragraph above was decided the same day: on the
+researcher's instruction v7 was **amended in place** (preregistration A6,
+A7, A8; bound through the §32 chain of A4; `revision.py` V11–V13), not
+superseded by a v8. A6 withdraws the `support_satisfied` check for the
+registered invariant, so a replication that records
+`REFERENCE_SUPPORT_NOT_IDENTIFIED` at Gate 3C reaches the freeze and
+confirmatory generation on its surviving arms, as §13.15, §18 stage 10,
+§28.2 and D6 say. A7 scopes §12.6's conditions to the arm each exists for:
+the C4 loss that ended every replication above now costs the spectrum arm
+(`DIFFICULTY_SUPPORT_NOT_IDENTIFIED`) and leaves the core arm and Δ_R
+standing when §13.8, §13.7 and §13.15 hold, which on all four they did. A8
+states D6's meaning once and corrects the sentences that read it otherwise.
+No threshold moves. `CHANGES_SCIENTIFIC.md` 2026-08-28 ("amended in place").
+
+**This closure record is unchanged by it.** The four terminal reports are
+signed, write-once and §28-final under the rule v7 ran; `closure.json`
+counts zero survivors and stays so. The execution-path audit now walks the
+branch this closure found unwalked. Whether replications are re-run under
+the amended document is a researcher decision the amendments leave open.
+

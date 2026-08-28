@@ -93,8 +93,19 @@ _DIFFICULTY_DEPENDENT: tuple[str, ...] = (
     "gamma_tier")
 
 
-def _licensed(statuses: Sequence[str]) -> dict[str, str | None]:
+def _licensed(statuses: Sequence[str],
+              non_identification: Mapping[str, Any] | None = None
+              ) -> dict[str, str | None]:
     """Which estimand each identification status blocks.
+
+    v7 A7: the frozen ``non_identification`` block, when the freeze carries
+    one, blocks exactly the members it names under the status it records ---
+    the reference-dependent set for ``REFERENCE_SUPPORT_NOT_IDENTIFIED``, the
+    spectrum-dependent set for a design-time
+    ``DIFFICULTY_SUPPORT_NOT_IDENTIFIED``. The status-keyed rules below still
+    apply on their own, so an analysis-time §13.13 failure (the arm was
+    generated, the support failed on the confirmatory data) blocks the fit's
+    members and leaves the spectrum losses estimable.
 
     Every entry carries the status that blocked it, so a reader of the record
     can see *why* a quantity was not computed and adding a status without
@@ -125,6 +136,10 @@ def _licensed(statuses: Sequence[str]) -> dict[str, str | None]:
     if "DIFFICULTY_COORDINATE_DEGENERATE" in statuses:
         for member in _DIFFICULTY_DEPENDENT:
             blocked[member] = "DIFFICULTY_COORDINATE_DEGENERATE"
+    block = non_identification or {}
+    frozen_status = block.get("status") or "REFERENCE_SUPPORT_NOT_IDENTIFIED"
+    for member in block.get("not_identified_members") or ():
+        blocked.setdefault(str(member), frozen_status)
     return blocked
 
 
@@ -267,9 +282,20 @@ def spectrum_inputs(table: ObservationTable,
     Returns one input per configuration, because ``delta_difficulty`` is a
     per-configuration member of F1 exactly as ``Delta_R`` is.
     """
+    ladder = set(C.CORE_SLOTS) | set(C.SPECTRUM_SLOTS)
     family_of = {slot: family for slot, family in slot_families.items()
-                 if slot in set(C.CORE_SLOTS) | set(C.SPECTRUM_SLOTS)}
+                 if slot in ladder}
     out: dict[str, spectrum.SpectrumInput] = {}
+    # §11.8 fits NINE points --- three core references and their six
+    # spectrum companions. A freeze whose slot map does not carry all nine
+    # (the spectrum arm dropped at Gate 3C, or the core arm with it) supplies
+    # no ladder, and the member is recorded through its status rather than
+    # fitted on whatever is there. Found by the first end-to-end walk of a
+    # non-identified replication (v7 A6, 2026-08-28): the guard below only
+    # checked that every mapped slot had a cell, so a base-only design built
+    # an empty ladder and the §11.8 identity check crashed the analysis.
+    if set(family_of) != ladder:
+        return out
     for configuration in C.CONFIGURATIONS:
         slots = [s for s in family_of if table.has_composed(
             "B", s, configuration)]
@@ -299,7 +325,8 @@ def spectrum_inputs(table: ObservationTable,
 def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
                  arms: Sequence[str], seed: int,
                  resamples: int = C.BOOTSTRAP_RESAMPLES,
-                 slot_families: Mapping[str, str] | None = None
+                 slot_families: Mapping[str, str] | None = None,
+                 non_identification: Mapping[str, Any] | None = None
                  ) -> dict[str, Any]:
     """Every registered quantity, or ``NOT_IDENTIFIED`` with its reason.
 
@@ -315,7 +342,7 @@ def estimate_all(table: ObservationTable, *, statuses: Sequence[str],
     reason, which is a different fact from an unidentified design and is
     written as such.
     """
-    blocked = _licensed(statuses)
+    blocked = _licensed(statuses, non_identification)
     post_unmask = bool(slot_families)
     spectrum_by_configuration = (spectrum_inputs(table, slot_families)
                                  if post_unmask else {})
@@ -947,7 +974,9 @@ def masked_payload(tree: ModelTree, *, producing_commit: str,
                              arms=freeze["admitted_arms"],
                              seed=seeds.bootstrap_seed(
                                  "masked", tree.model_key),
-                             resamples=C.BOOTSTRAP_RESAMPLES)
+                             resamples=C.BOOTSTRAP_RESAMPLES,
+                             non_identification=freeze_record.get(
+                                 "non_identification"))
     result = _strip_vectors(estimates)
     masking.assert_delta_difficulty_not_masked(result)
     payload = {
@@ -1090,7 +1119,8 @@ def unmasked_payload(tree: ModelTree, *, producing_commit: str
     estimates = estimate_all(
         table, statuses=statuses, arms=freeze["admitted_arms"],
         seed=seeds.bootstrap_seed("unmasked", tree.model_key),
-        resamples=C.BOOTSTRAP_RESAMPLES, slot_families=slot_families)
+        resamples=C.BOOTSTRAP_RESAMPLES, slot_families=slot_families,
+        non_identification=freeze_record.get("non_identification"))
     result = _strip_vectors(estimates)
     # §13.8's realised gaps and §13.6's realised interaction drift: two
     # qualifiers emit_l3 registers and that no caller supplied. Both are

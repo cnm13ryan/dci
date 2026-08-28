@@ -20,10 +20,10 @@ def test_every_registered_change_is_present_in_the_code():
     # Every v7 change is executable and every one is checked. A listed change
     # the code does not make stops stage 1, because `assert_changes_realised`
     # is on the registration path.
-    assert record["n_changes"] == record["n_checked"] == 10
+    assert record["n_changes"] == record["n_checked"] == 13
     assert all(c["realised"] is True for c in record["changes"])
     assert [c["id"] for c in record["changes"]] == [
-        f"V{i}" for i in range(1, 11)]
+        f"V{i}" for i in range(1, 14)]
 
 
 def test_the_withdrawal_is_a_registered_change_with_an_executable_check():
@@ -37,7 +37,7 @@ def test_the_withdrawal_is_a_registered_change_with_an_executable_check():
     assert revision.assert_no_raise_path()["raise_paths"] == []
     # The boundary rule and the two recording stages are registered changes
     # with behavioural checks, not docstrings.
-    for cid in ("V2", "V3", "V4", "V5", "V7", "V10"):
+    for cid in ("V2", "V3", "V4", "V5", "V7", "V10", "V11", "V12", "V13"):
         assert by_id[cid].check is not None and by_id[cid].check(), cid
 
 
@@ -61,6 +61,23 @@ def test_the_estimand_layer_is_byte_identical_to_v6_except_where_named():
     assert by_id["V9"].check()
     assert "analysis/boundary.py" not in revision.ESTIMAND_LAYER
     assert "stages/support.py" in revision.ESTIMAND_LAYER
+    # A6/A7 amend two functions of support.py and add to identification.py;
+    # the exceptions are named, and the identification RULE is compared on
+    # its derived sets rather than waved through.
+    assert set(revision._ESTIMAND_LAYER_EXCLUDED_FUNCTIONS[
+        "stages/support.py"]) == {"methodological_success", "evaluate_support"}
+    assert "protocol/identification.py" in \
+        revision._ESTIMAND_LAYER_OUTPUT_COMPARED
+    assert revision._identification_rule_agrees_with_predecessor()
+
+
+def test_a6_a7_a8_are_registered_changes_with_executable_checks():
+    by_id = {c.id: c for c in revision.CHANGES}
+    assert "A7" in by_id["V11"].section and by_id["V11"].check()
+    assert "A6" in by_id["V12"].section and by_id["V12"].check()
+    assert "A8" in by_id["V13"].section and by_id["V13"].check()
+    # V8 still holds: the re-scoping moved no number.
+    assert by_id["V8"].check()
 
 
 def test_what_v7_deliberately_does_not_change_is_named():

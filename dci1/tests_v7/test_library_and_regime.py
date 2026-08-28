@@ -301,14 +301,77 @@ def test_the_construct_floor_is_registered_and_still_a_decision(
 
 
 def test_the_coverage_criterion_separates_decisive_from_arm_dropping():
-    assert C.COVERAGE_DECISIVE == ("C1", "C2", "C3", "C4", "C5", "C6")
+    """v7 A7: the six conditions the expansion stops on are read by arm."""
+    assert C.COVERAGE_EXPANSION_CONDITIONS == ("C1", "C2", "C3", "C4", "C5",
+                                               "C6")
+    assert C.COVERAGE_CORE_CONDITIONS == ("C1", "C3", "C5", "C6")
+    assert C.COVERAGE_SPECTRUM_CONDITIONS == ("C2", "C4")
+    assert not hasattr(C, "COVERAGE_DECISIVE")
     table = [{"candidate": "x", "family": "MK1", "structural_tier": 1,
               "feature_group": "marker_thus", "constraint_class": "production",
               "iota": 0.5, "eligible": True}]
     out = regime.coverage_criterion(table, iota_a=0.7)
     assert out["decisive_met"] is False
+    assert out["core_met"] is False and out["spectrum_met"] is False
+    assert out["arm_verdicts"] == {"core": False, "spectrum": False,
+                                   "class": False, "nearform": False}
     assert set(out["identification_statuses"]) == {
         "CLASS_ARM_NOT_AVAILABLE", "NEAR_FORM_ARM_NOT_AVAILABLE"}
+
+
+def _eleven_families(iota_a, *, offsets):
+    """Every Tier-1/2 family with the same eligible rungs around iota_a, plus
+    one Tier-3 budget rung nearby for C7."""
+    rows = []
+    for family in ("MK1", "MK2", "MK3", "MK4", "MK5", "MK6", "MK7", "MK8",
+                   "XC1", "XC2", "XC3"):
+        rows += _rows(family, {q: iota_a + o
+                               for q, o in enumerate(offsets, start=1)})
+    rows += _rows("RF5", {2: iota_a + 0.02})
+    return rows
+
+
+def test_a7_c4_lost_alone_costs_the_spectrum_and_keeps_the_core():
+    """v7 A7. Every core condition holds and only the span is short: the
+    criterion says so per arm, and the expansion's stopping state reads it
+    into DIFFICULTY_SUPPORT_NOT_IDENTIFIED alone."""
+    narrow = regime.coverage_criterion(
+        _eleven_families(0.6, offsets=(-0.06, 0.03, 0.08)), iota_a=0.6)
+    assert narrow["conditions"]["C4"] is False
+    assert all(narrow["conditions"][c] for c in ("C1", "C2", "C3", "C5",
+                                                 "C6", "C7", "C8"))
+    assert narrow["core_met"] is True and narrow["spectrum_met"] is False
+    assert narrow["core_failed"] == [] and narrow["spectrum_failed"] == ["C4"]
+    assert narrow["decisive_met"] is False        # the loop keeps expanding
+    out = regime.run_expansion(
+        _eleven_families(0.6, offsets=(-0.06, 0.03, 0.08)), iota_a=0.6,
+        measured={}, measure=lambda admitted: [])
+    statuses = set(out["identification_statuses"])
+    assert "DIFFICULTY_SUPPORT_NOT_IDENTIFIED" in statuses
+    assert "REFERENCE_SUPPORT_NOT_IDENTIFIED" not in statuses
+
+
+def test_a7_a_lost_core_condition_still_costs_both_arms():
+    above = regime.coverage_criterion(
+        _eleven_families(0.6, offsets=(0.10, 0.20, 0.45)), iota_a=0.6)
+    assert above["conditions"]["C1"] is False
+    assert above["core_met"] is False and "C1" in above["core_failed"]
+    out = regime.run_expansion(
+        _eleven_families(0.6, offsets=(0.10, 0.20, 0.45)), iota_a=0.6,
+        measured={}, measure=lambda admitted: [])
+    statuses = set(out["identification_statuses"])
+    assert {"REFERENCE_SUPPORT_NOT_IDENTIFIED",
+            "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"} <= statuses
+
+
+def test_a7_moves_no_coverage_threshold():
+    assert C.COVERAGE_MIN_STRADDLING_FAMILIES == 6
+    assert C.COVERAGE_MIN_RUNGS_PER_STRADDLING_FAMILY == 3
+    assert C.COVERAGE_MIN_WITHIN_FAMILY_SPAN == 0.40
+    assert C.COVERAGE_MIN_NEAR_RUNGS == 8 and C.COVERAGE_MIN_NEAR_FAMILIES == 4
+    assert C.COVERAGE_MIN_ELIGIBLE_RUNGS == 16
+    assert C.COVERAGE_MIN_TIER12_FAMILIES == 8
+    assert C.COVERAGE_MIN_TIER12_GROUPS == 6
 
 
 def _rows(family, iota_by, *, eligible=True):
