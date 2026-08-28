@@ -13,6 +13,36 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-28 — v7 adopted and registered; execution begins
+
+**What happened.** The v7 draft, as revised by the boundary audit (the entry
+below), was adopted on the researcher's instruction of 2026-08-28 and
+registered at commit `ed0446f` (manifest
+`969a5b9f1947faddc42809a62377c6a725382e93b8f098f7d6ae98b5eb91ca14`). No
+registered rule changed between the draft and adoption. The decision record
+`dci1/reports/dci1v7/researcher_decisions.json` closes all twenty-six §34
+decisions — D0–D22, D24 and D25 at v6's adopted values with `carried_from`
+provenance, D27 = `retain_the_probe_stage` — and resolves U2 = A2, P1 =
+confirmed, U4 = E2; D23 and D26 are withdrawn (A5). Both governed documents
+declare `ADOPTED`; the preregistration's status block was rewritten to say
+so and its drafting history retained; `CLASSIFICATION` is
+`DCI-1 PROTOCOL v7 (ADOPTED 2026-08-28)`.
+
+**Why it is here.** Adoption fixes what every v7 number will mean: the
+estimand layer byte-identical to v6's (V9), no threshold moved (V8), the
+composed contrast estimated rather than gated (V1–V5), the structural zero
+read on its allowance interval (V10). Every row generated from this point is
+`NEW_V7_EVIDENCE` under this manifest.
+
+**Which results are affected.** None existed: zero v7 behavioural rows at
+registration, verified from the filesystem. v6's records, verdicts and
+terminal statuses stand as signed and are `HISTORICAL_OUTCOME` /
+`DEVELOPMENT_EVIDENCE` to v7; they are never v7 confirmatory evidence and are
+never read as null results. `RESEARCH_STATE.md` §4am carries the bindings and
+records the per-replication outcomes as the study runs.
+
+---
+
 ## 2026-08-28 — v7 §13.14 boundary audit: the structural-zero veto is withdrawn (V10); the Wilson allowance is kept
 
 **What happened.** Before adoption, a focused statistical audit of v7's
