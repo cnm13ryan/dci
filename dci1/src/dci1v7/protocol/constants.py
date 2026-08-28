@@ -195,9 +195,12 @@ CALIBRATION_TIER3_CAP = 24
 # ------------------------------------ §12.6 candidate expansion and coverage
 EXPANSION_MAX_ROUNDS = 2
 EXPANSION_MAX_RUNGS_PER_FAMILY_PER_ROUND = 4
-#: §12.6's identification-coverage criterion. C1-C6 are decisive for the core
-#: and spectrum arms; C7 and C8 are not --- failing them drops the
-#: broad-class and near-form arms with their own statuses and stops nothing.
+#: §12.6's identification-coverage criterion. C1-C6 are the conditions the
+#: expansion loop stops on; v7 A7 scopes them to the arm each exists for ---
+#: C1, C3, C5, C6 gate the core matched-reference arm and C2, C4 gate the
+#: difficulty-spectrum arm (`COVERAGE_CORE_CONDITIONS`,
+#: `COVERAGE_SPECTRUM_CONDITIONS` below). C7 and C8 drop the broad-class and
+#: near-form arms with their own statuses. None of them stops anything.
 COVERAGE_MIN_FAMILIES_PER_SIDE = 3            # C2
 COVERAGE_NEAR_CALIPER = 0.15                  # C3, C7
 COVERAGE_MIN_NEAR_RUNGS = 8                   # C3   (v4r4: 6)

@@ -959,7 +959,14 @@ def emit_l3(*, configuration: str, cell: str, outcome_position: int,
 
     statements: list[dict[str, Any]] = []
     for level in reading["levels"]:
-        if level in ("L3a", "L3b", "L3c") and not references_identified:
+        # §13.15 (and v7 A8's §28.2 restatement): REFERENCE_SUPPORT_NOT_
+        # IDENTIFIED withholds L3a-L3e. L3d/L3e read §11.8's fit, and the
+        # fit is drawn from admitted core families (§13.12), so without a
+        # reference set there is no identified fit to read whatever interval
+        # a caller supplies; the analysis never supplies one for such a
+        # replication, and this emitter refuses to read one on its own.
+        if level in ("L3a", "L3b", "L3c", "L3d", "L3e") and \
+                not references_identified:
             continue
         if level == "L3c":
             disposition = l3c_disposition(
