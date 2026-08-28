@@ -1,0 +1,7 @@
+2026-08-28T13:51:49Z [qwen3-4b-instruct-2507 gpu0] START GATE_4_COMPOSED_CONTRAST (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/qwen3-4b-instruct-2507.GATE_4_COMPOSED_CONTRAST.20260828T135149Z.out
+{
+  "stage": "GATE_4_COMPOSED_CONTRAST",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/qwen3-4b-instruct-2507/GATE_4_COMPOSED_CONTRAST/records/gate4_composed.json",
+  "signing_key": "present"
+}

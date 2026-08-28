@@ -1,0 +1,6 @@
+{
+  "stage": "GATE_2_FOCAL_CALIBRATION",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/qwen3-4b/GATE_2_FOCAL_CALIBRATION/records/gate2_focal_calibration.json",
+  "signing_key": "present"
+}

@@ -1,0 +1,7 @@
+2026-08-28T13:29:34Z [gemma-3n-e2b-it gpu0] START GATE_4_COMPOSED_CONTRAST (attempt 1) -> /tmp/claude-1000/-home-cnm13ryan-git-dci/af9f9e83-8dad-426f-bbfe-1998836ddcae/scratchpad/run_logs/gemma-3n-e2b-it.GATE_4_COMPOSED_CONTRAST.20260828T132934Z.out
+{
+  "stage": "GATE_4_COMPOSED_CONTRAST",
+  "outcome": "PASS",
+  "record": "/home/cnm13ryan/git/dci/dci1/evidence/dci1v7/gemma-3n-e2b-it/GATE_4_COMPOSED_CONTRAST/records/gate4_composed.json",
+  "signing_key": "present"
+}
