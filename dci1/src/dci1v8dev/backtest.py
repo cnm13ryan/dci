@@ -20,6 +20,14 @@ Reserve rungs and A's grid were not measured on the splits, so the emulated
 second pass gets neither --- it is a conservative emulation. The pooled
 verdict (the study's own) is reported beside it.
 
+**The chance basis.** The signed Gate-2 tables carry the zero chance column
+(`CHANGES_SCIENTIFIC.md` 2026-08-29, "in force: §13.11's chance column");
+``load_replication`` therefore reads the §13.2 unconstrained-cell basis from
+the read-only cache ``dci1v8dev.chance_basis`` builds and replays every rule
+on the corrected table, with ι_A restated on the same basis. A replay on the
+recorded column is refused unless asked for by name (``allow_recorded_chance``),
+because its V_chance and lift verdicts are vacuous and every ι is raw solo.
+
 **Thresholds are prospective.** ``accept`` / ``reject`` come from the
 simulation; the leave-one-model-out routine reports what threshold choice
 on the other three models would have done on the held-out one, and is
@@ -34,11 +42,13 @@ from typing import Any
 
 import numpy as np
 
+from dci1v4.errors import ProtocolError
 from dci1v7.protocol import constants as C
 from dci1v7.stages import regime as regime_stage
 from dci1v7.stages import stability as stability_stage
 from dci1v7.stages.calibration_table import load_calibration_table
 from dci1v7.verifiers.constraints import FAMILIES
+from dci1v8dev import chance_basis as CB
 from dci1v8dev.prescreen import legacy
 from dci1v8dev.prescreen.geometry import Geometry, evaluate_draws
 from dci1v8dev.prescreen.rescreen import RescreenBatch, RescreenConfig, run_rescreen
@@ -117,7 +127,13 @@ FAILURE_CAUSES = ("NOISY_SPAN_INFLATION", "ELIGIBILITY_TRIMMING",
                   "NON_MONOTONIC", "RETENTION_ARTIFACT", "OTHER")
 
 
-def load_replication(evidence_root: pathlib.Path, rel: str) -> dict[str, Any]:
+def load_replication(evidence_root: pathlib.Path, rel: str, *,
+                     chance_cache_dir: pathlib.Path | None = None,
+                     tree: str | None = None, model: str | None = None,
+                     allow_recorded_chance: bool = False) -> dict[str, Any]:
+    """The stage records of one replication, with the Gate-2 table on the
+    corrected chance basis when a cache directory is given (the default for
+    every tool). ``gate2_recorded`` keeps the signed record as read."""
     model_dir = pathlib.Path(evidence_root) / rel
     out: dict[str, Any] = {"model_dir": str(model_dir)}
     for key, (stage, name) in STAGE_FILES.items():
@@ -127,6 +143,26 @@ def load_replication(evidence_root: pathlib.Path, rel: str) -> dict[str, Any]:
                 out[key] = json.load(f)
         else:
             out[key] = None
+    out["gate2_recorded"] = out["gate2"]
+    out["chance_basis"] = None
+    if out["gate2"] is not None:
+        if chance_cache_dir is not None:
+            if tree is None or model is None:
+                raise ValueError("tree and model name the cache file")
+            cache = CB.read_cache(pathlib.Path(chance_cache_dir), tree=tree, model=model)
+            out["gate2"] = CB.corrected_gate2(out["gate2"], cache)
+            out["chance_basis"] = "unconstrained-cell (§13.2, corrected; dci1v8dev.chance_basis)"
+            out["regime_recorded"] = out["regime"]
+            if out["regime"] is not None and cache.get("prescreen"):
+                out["regime"] = CB.corrected_regime(out["regime"], cache["prescreen"])
+                out["chance_basis"] += "; pre-screen κ on the ladder run's unconstrained cell"
+        elif allow_recorded_chance:
+            out["chance_basis"] = "RECORDED zero column (development only; V_chance/lift vacuous)"
+        else:
+            raise ProtocolError(
+                "a v8 backtest reads the Gate-2 table on the §13.2 chance basis; "
+                "pass chance_cache_dir (tools/v8_chance_basis_cache.py) or say "
+                "allow_recorded_chance=True to replay the recorded zero column")
     return out
 
 
@@ -173,6 +209,8 @@ def _point_events(rows: Sequence[Mapping[str, Any]], *, iota_a: float,
                             geometry=geometry)
         av = evaluate_draws(np.where(extra, p, -1.0), kappa, vac, ia,
                             geometry=geometry, band=geometry.spectrum_band)
+        ia0 = float(ia[0])
+        adm = av.eligible[0]
         out[fam] = {"c4": bool(ev.c4[0]), "support_both": bool(av.support_both[0]),
                     "support_below": bool(av.support_below[0]),
                     "support_above": bool(av.support_above[0]),
@@ -180,7 +218,17 @@ def _point_events(rows: Sequence[Mapping[str, Any]], *, iota_a: float,
                     "n_eligible": int(ev.n_eligible[0]),
                     "span": float(ev.span[0]),
                     "eligible": [e["candidate"] for e, ok in
-                                 zip(entries, ev.eligible[0]) if ok]}
+                                 zip(entries, ev.eligible[0]) if ok],
+                    "local_rungs": [e["candidate"] for e, ok in
+                                    zip(entries, lv.local[0]) if ok],
+                    "admissible_below_d": [
+                        e["candidate"] for e, ok, io in
+                        zip(entries, adm, av.iota[0])
+                        if ok and io <= ia0 - geometry.d_below],
+                    "admissible_above_d": [
+                        e["candidate"] for e, ok, io in
+                        zip(entries, adm, av.iota[0])
+                        if ok and io >= ia0 + geometry.d_above]}
     return out
 
 
@@ -330,6 +378,7 @@ def backtest_replication(rep: Mapping[str, Any], *, label: str, model: str,
     stage1 = screen_families(table, a_grid, config=screen_config)
     rescreen = None
     final = stage1
+    measure = None
     if emulate_rescreen:
         measure = carve_measure(gate2, table, split=C.CALIBRATION_A)
         rescreen = run_rescreen(table, a_grid, screen_config=screen_config,
@@ -394,12 +443,35 @@ def backtest_replication(rep: Mapping[str, Any], *, label: str, model: str,
             "batches": (rescreen or {}).get("batches_used", {}).get(fam, 0),
             "forwarded_new": sorted(c for c in forwarded
                                     if c.split(":")[0] == fam),
+            "forwarded_roles": {e["candidate"]: list(e["roles"])
+                                for e in retention["forwarded"]
+                                if e["family"] == fam},
             "forwarded_legacy": sorted(c for c in legacy_forwarded
                                        if c.split(":")[0] == fam),
+            "calibration_local_rungs": list(cal.get("local_rungs", [])),
+            "calibration_admissible_below_d": list(cal.get("admissible_below_d", [])),
+            "calibration_admissible_above_d": list(cal.get("admissible_above_d", [])),
+            "stage1_probabilities": dict(v1["probabilities"]) if v1 else None,
+            "final_probabilities": dict(vf["probabilities"]) if vf else None,
+            "stage1_rungs": [{k: r[k] for k in ("candidate", "iota_mean",
+                                                 "p_admissible", "p_local",
+                                                 "p_below_d", "p_above_d",
+                                                 "p_chance_over_ceiling")}
+                             for r in v1["rungs"]] if v1 else [],
+            "final_rungs": [{k: r[k] for k in ("candidate", "iota_mean",
+                                                "p_admissible", "p_local",
+                                                "p_below_d", "p_above_d",
+                                                "p_chance_over_ceiling")}
+                            for r in vf["rungs"]] if vf else [],
+            "unavailable_in_emulation": sorted(
+                c for c in set(getattr(measure, "unavailable", []))
+                if c.split(":")[0] == fam) if emulate_rescreen else [],
             "comparators": (v1 or {}).get("comparators"),
         })
     return {
         "tree": label, "model": model, "model_dir": rep["model_dir"],
+        "chance_basis": rep.get("chance_basis"),
+        "iota_a_recorded": gate2.get("iota_a_recorded"),
         "iota_a_prescreen": iota_a_pre, "iota_a_calibrated": iota_a_cal,
         "iota_a_calibration_b": truth_b["iota_a"],
         "iota_a_screen_posterior": {k: v for k, v in stage1["iota_a"].items()
@@ -507,9 +579,10 @@ def spectrum_backtest(rep: Mapping[str, Any], *, label: str, model: str,
     iota_a = float(gate2["iota_a"])
     solo_a = float(gate2["solo_compliance_a"])
     folded = None
-    if gate3a is not None and gate3a.get("stability"):
+    corrected = bool(rep.get("chance_basis")) and "corrected" in str(rep.get("chance_basis"))
+    if gate3a is not None and gate3a.get("stability") and not corrected:
         folded = dict(gate3a["stability"])
-        folded_source = "gate3a record"
+        folded_source = "gate3a record (recorded chance basis)"
     else:
         pairs = stability_stage.split_pair(tables[C.CALIBRATION_A],
                                            tables[C.CALIBRATION_B])
@@ -517,7 +590,9 @@ def spectrum_backtest(rep: Mapping[str, Any], *, label: str, model: str,
             pair, iota_a_by_split=gate2["iota_a_by_split"],
             solo_a_by_split=gate2["solo_a_by_split"], seed=seed,
             resamples=resamples) for lab, pair in pairs.items()}
-        folded_source = f"recomputed ({resamples} resamples)"
+        folded_source = (f"recomputed on the corrected chance basis "
+                         f"({resamples} resamples)" if corrected
+                         else f"recomputed ({resamples} resamples)")
     pool = classify_pool(tables["pooled"], tables[C.CALIBRATION_A],
                          tables[C.CALIBRATION_B], iota_a=iota_a,
                          solo_compliance_a=solo_a, n_topics_a=C.N_CALIBRATION,
@@ -553,6 +628,8 @@ def spectrum_backtest(rep: Mapping[str, Any], *, label: str, model: str,
     spectrum_valid = sorted(valid_rows, key=lambda r: r.iota)
     return {
         "tree": label, "model": model, "iota_a": iota_a, "m_star": m_star,
+        "iota_a_recorded": gate2.get("iota_a_recorded"),
+        "chance_basis": rep.get("chance_basis"),
         "folded_stability_source": folded_source,
         "n_rows": len(tables["pooled"]),
         "n_folded_stable": pool["n_folded_stable"],
@@ -587,3 +664,130 @@ def _folded_pool_range(pooled, folded, pool) -> dict[str, Any]:
     iotas = sorted(r.iota for r in pooled if r.label in set(labels))
     return {"n": len(labels), "range": [iotas[0], iotas[-1]] if iotas else None,
             "span": (iotas[-1] - iotas[0]) if iotas else 0.0}
+
+
+# ------------------------------------------------------ retention recovery
+
+RETENTION_RECOVERY_CLASSES = (
+    "REFUTED_AT_SCREEN",              # stage-1 REJECT: the posterior (chance, lift, band) says no support
+    "SECOND_PASS_ACCEPTED",           # final ACCEPT: forwarded as a spectrum family with its spaced set
+    "SECOND_PASS_UNDECIDABLE",        # final REJECT, but its extreme rungs were never calibrated, so the
+                                      #   emulated pass could not measure them (production would)
+    "SECOND_PASS_REJECTED",           # final REJECT with every measured rung available to the pass
+)
+
+
+def retention_recovery(rows: Sequence[Mapping[str, Any]], *,
+                       d_below: float, d_above: float) -> dict[str, Any]:
+    """What the new pipeline does with every historical RETENTION_ARTIFACT.
+
+    A family is a retention artefact when its pre-screen C4 rested on rungs
+    §12.7 then dropped (Tier-3 rungs not among the 24 nearest ι_A). The
+    calibrated truth for those rungs does not exist --- they were never
+    calibrated --- so recovery is stated in three parts: (1) whether the
+    screen's posterior already refutes the family (its spread rests on
+    chance-inflated or lift-less rungs: a mirage, not a loss); (2) whether
+    the family, if accepted, has admissible rungs on both offsets whose
+    retention the spaced rule guarantees (``geometry_retainable``); (3) what
+    the emulated second pass decided, and whether that decision could have
+    been informed at all (the extremes are unavailable to the emulation
+    exactly when they were dropped historically).
+    """
+    out = []
+    for r in rows:
+        if r.get("failure_cause") != "RETENTION_ARTIFACT":
+            continue
+        rungs = r.get("stage1_rungs") or []
+        below = [x["candidate"] for x in rungs
+                 if x["p_admissible"] >= 0.5 and x["p_below_d"] >= 0.5]
+        above = [x["candidate"] for x in rungs
+                 if x["p_admissible"] >= 0.5 and x["p_above_d"] >= 0.5]
+        mirage = [x["candidate"] for x in rungs if x["p_chance_over_ceiling"] >= 0.5]
+        roles = r.get("forwarded_roles") or {}
+        extremes = {c for c, rl in roles.items()
+                    if "HARD_EXTREME" in rl or "EASY_EXTREME" in rl}
+        s1, fin = r.get("stage1_status"), r.get("final_status")
+        if s1 == "SCREEN_REJECT":
+            klass = "REFUTED_AT_SCREEN"
+        elif fin == "SCREEN_ACCEPT":
+            klass = "SECOND_PASS_ACCEPTED"
+        elif r.get("unavailable_in_emulation"):
+            klass = "SECOND_PASS_UNDECIDABLE"
+        else:
+            klass = "SECOND_PASS_REJECTED"
+        out.append({
+            "tree": r["tree"], "model": r["model"], "family": r["family"],
+            "structural_tier": r["structural_tier"],
+            "class": klass,
+            "stage1_status": s1, "stage1_p": r.get("stage1_p"),
+            "stage1_p_below": (r.get("stage1_probabilities") or {}).get("support_below"),
+            "stage1_p_above": (r.get("stage1_probabilities") or {}).get("support_above"),
+            "final_status": fin, "final_p": r.get("final_p"),
+            "rungs_dropped_by_12_7": list(r.get("rungs_not_calibrated", [])),
+            "unavailable_in_emulation": list(r.get("unavailable_in_emulation", [])),
+            "admissible_below_offset_at_screen": below,
+            "admissible_above_offset_at_screen": above,
+            "geometry_retainable": bool(below and above),
+            "chance_mirage_rungs": mirage,
+            "forwarded_new": list(r.get("forwarded_new", [])),
+            "extremes_forwarded": sorted(extremes),
+            "spectrum_geometry_forwarded": bool(
+                extremes and any(c in extremes for c in below)
+                and any(c in extremes for c in above)),
+        })
+    by_class = {k: sum(1 for x in out if x["class"] == k)
+                for k in RETENTION_RECOVERY_CLASSES}
+    return {
+        "n": len(out),
+        "by_class": by_class,
+        "n_geometry_retainable": sum(1 for x in out if x["geometry_retainable"]),
+        "n_geometry_forwarded": sum(1 for x in out if x["spectrum_geometry_forwarded"]),
+        "n_mirage_only": sum(1 for x in out if x["chance_mirage_rungs"]
+                             and not x["geometry_retainable"]),
+        "n_recovered": sum(1 for x in out if x["class"] == "SECOND_PASS_ACCEPTED"
+                           and x["spectrum_geometry_forwarded"]),
+        "n_undecidable_but_retainable": sum(
+            1 for x in out if x["class"] == "SECOND_PASS_UNDECIDABLE"
+            and x["geometry_retainable"]),
+        "d_below": d_below, "d_above": d_above,
+        "families": out,
+    }
+
+
+def local_recovery_detail(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Every family that calibrated a rung inside the caliper (chance and
+    lift admissible): was that rung forwarded, and if not, why."""
+    out = []
+    for r in rows:
+        cal_local = list(r.get("calibration_local_rungs", []))
+        if not cal_local:
+            continue
+        fwd = set(r.get("forwarded_new", []))
+        s1_rungs = {x["candidate"]: x for x in (r.get("stage1_rungs") or [])}
+        best = max((x["p_local"] for x in s1_rungs.values()), default=0.0)
+        kept = sorted(c for c in cal_local if c in fwd)
+        if kept:
+            why = "KEPT"
+        elif not r.get("forwarded_new"):
+            why = ("NOT_LABELLED_LOCAL" if "LOCAL_REFERENCE_CANDIDATE"
+                   not in (r.get("final_labels") or []) else "FAMILY_NOT_FORWARDED")
+        else:
+            why = "OTHER_RUNGS_FORWARDED"
+        out.append({"tree": r["tree"], "model": r["model"], "family": r["family"],
+                    "structural_tier": r["structural_tier"],
+                    "calibrated_local_rungs": cal_local,
+                    "kept": kept, "why": why,
+                    "best_p_local_at_screen": best,
+                    "p_local_of_calibrated": {c: s1_rungs[c]["p_local"]
+                                              for c in cal_local if c in s1_rungs},
+                    "forwarded_new": sorted(fwd),
+                    "forwarded_legacy": list(r.get("forwarded_legacy", []))})
+    return {"n_families": len(out),
+            "n_kept": sum(1 for x in out if x["kept"]),
+            "n_family_forwarded": sum(1 for x in out if x["forwarded_new"]),
+            "n_kept_legacy": sum(1 for x in out
+                                 if set(x["calibrated_local_rungs"]) & set(x["forwarded_legacy"])),
+            "why": {w: sum(1 for x in out if x["why"] == w)
+                    for w in ("KEPT", "NOT_LABELLED_LOCAL", "FAMILY_NOT_FORWARDED",
+                              "OTHER_RUNGS_FORWARDED")},
+            "families": out}

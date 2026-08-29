@@ -29,13 +29,15 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--resamples", type=int, default=10_000)
+    ap.add_argument("--chance-cache", default=str(DCI1 / "reports" / "dci1v8dev" / "chance_basis"))
     args = ap.parse_args()
     ev = Path(args.evidence)
     OUT.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     results = []
     for tree, model, rel in B.REPLICATIONS:
-        rep = B.load_replication(ev, rel)
+        rep = B.load_replication(ev, rel, chance_cache_dir=Path(args.chance_cache),
+                                 tree=tree, model=model)
         if rep["gate2"] is None:
             print(f"skip {tree}/{model}")
             continue
@@ -54,6 +56,7 @@ def main() -> int:
               f"{r['backups']['recorded_backups_inadmissible']} "
               f"[{time.time() - t0:.0f}s]", flush=True)
     report = {"resamples": args.resamples, "results": results,
+              "chance_basis": results[0]["chance_basis"] if results else None,
               "seconds": time.time() - t0,
               "summary": {
                   "n_replications": len(results),
@@ -80,9 +83,10 @@ def _md(report: dict) -> str:
     s = report["summary"]
     L = ["# Spectrum replay on stored evidence (development candidate)", "",
          f"Bootstrap resamples for the unfolded stability: {report['resamples']}. "
-         "Read-only. Folded = v7's §13.7 with V_diff in condition 1 (from the "
-         "signed Gate-3A record where present); unfolded = condition 1 on V_head, "
-         "V_chance, V_inter.", "",
+         f"Chance basis: {report.get('chance_basis')} (both the folded and the unfolded "
+         "verdicts are recomputed on it; the signed Gate-3A verdicts used the zero column). "
+         "Read-only. Folded = v7's §13.7 with V_diff in condition 1; unfolded = "
+         "condition 1 on V_coord, V_chance, V_inter_s.", "",
          f"Spectrum identified: v7 {s['v7_spectrum_identified']}/{s['n_replications']}, "
          f"new rule {s['new_spectrum_identified']}/{s['n_replications']}. Replications "
          f"with a recorded frozen backup that is not an admissible core reference: "

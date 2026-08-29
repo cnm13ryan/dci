@@ -52,6 +52,8 @@ def main() -> int:
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--config-from", default=str(OUT / "simulation.json"))
     ap.add_argument("--no-rescreen", action="store_true")
+    ap.add_argument("--chance-cache", default=str(DCI1 / "reports" / "dci1v8dev" / "chance_basis"),
+                    help="the §13.2 chance-basis cache (tools/v8_chance_basis_cache.py)")
     args = ap.parse_args()
     ev = Path(args.evidence)
     cfg, rcfg, provenance = config_from(Path(args.config_from))
@@ -59,7 +61,8 @@ def main() -> int:
     t0 = time.time()
     reps = []
     for tree, model, rel in B.REPLICATIONS:
-        rep = B.load_replication(ev, rel)
+        rep = B.load_replication(ev, rel, chance_cache_dir=Path(args.chance_cache),
+                                 tree=tree, model=model)
         if rep["regime"] is None or rep["gate2"] is None:
             print(f"skip {tree}/{model}: no pre-screen or Gate-2 record")
             continue
@@ -118,9 +121,15 @@ def main() -> int:
                     "family": r["family"],
                     "forwarded_new": bool(r["forwarded_new"]),
                     "forwarded_legacy": bool(r["forwarded_legacy"])})
+    recovery = B.retention_recovery(rows, d_below=cfg.geometry.d_below,
+                                    d_above=cfg.geometry.d_above)
+    local_detail = B.local_recovery_detail(rows)
     report = {
         "config": provenance, "screen_config": cfg.__dict__ | {
             "geometry": cfg.geometry.__dict__},
+        "chance_basis": reps[0]["chance_basis"] if reps else None,
+        "retention_recovery": recovery,
+        "local_recovery_detail": local_detail,
         "replications": reps, "summary": summary,
         "failure_causes": causes,
         "n_prescreen_pass_families": n_pass,
@@ -164,6 +173,7 @@ def _f(x, nd=2):
 def _md(report: dict) -> str:
     L = ["# Pre-screen backtest on stored evidence (development candidate)", "",
          f"Screen configuration: {report['config']}", "",
+         f"Chance basis of every calibrated verdict: {report.get('chance_basis')}.", "",
          "Read-only over the registered v7 and v6 trees and the completed "
          "development rehearsals. The second pass is EMULATED by carving 24-topic "
          "batches from Calibration-A's per-topic rows (no reserve rungs, no A-grid "
@@ -193,6 +203,37 @@ def _md(report: dict) -> str:
                  f"{r['final_accept_calibrated_true']} | {r['forwarded_new']} | "
                  f"{r['forwarded_legacy']} | {r['rescreen_cost']} | "
                  f"{r['calibration_cost_new']} | {r['calibration_cost_legacy']} |")
+    rec = report["retention_recovery"]
+    L += ["", "## Retention recovery: the historical RETENTION_ARTIFACT families", "",
+          f"{rec['n']} pre-screen passes were lost to §12.7's nearest-24 Tier-3 retention. "
+          f"Under the new screen: {rec['by_class']['REFUTED_AT_SCREEN']} are refuted at stage 1 "
+          "(their spread rests on chance-inflated or lift-less rungs: a mirage, not a loss); "
+          f"{rec['by_class']['SECOND_PASS_ACCEPTED']} are accepted after the emulated second pass and "
+          f"forwarded with their spaced set ({rec['n_recovered']} with a rung beyond each offset); "
+          f"{rec['by_class']['SECOND_PASS_UNDECIDABLE']} are rejected by the emulated pass, which "
+          "could not measure their dropped extremes (never calibrated) — of these "
+          f"{rec['n_undecidable_but_retainable']} have admissible rungs on both offsets at the screen, "
+          "which the spaced retention would carry if the production pass accepted them; "
+          f"{rec['by_class']['SECOND_PASS_REJECTED']} are rejected with every rung measurable. "
+          f"Geometry retainable at the screen (an admissible rung at or beyond both offsets): "
+          f"{rec['n_geometry_retainable']}/{rec['n']}.", "",
+          "| tree | model | family | tier | class | stage-1 (P) | final (P) | P(below)/P(above) | "
+          "dropped by §12.7 | retainable | mirage rungs | forwarded (new) |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for x in rec["families"]:
+        L.append(f"| {x['tree']} | {x['model']} | {x['family']} | {x['structural_tier']} | {x['class']} | "
+                 f"{x['stage1_status']} ({_f(x['stage1_p'])}) | {x['final_status']} ({_f(x['final_p'])}) | "
+                 f"{_f(x['stage1_p_below'])}/{_f(x['stage1_p_above'])} | "
+                 f"{', '.join(x['rungs_dropped_by_12_7'][:5])} | {x['geometry_retainable']} | "
+                 f"{', '.join(x['chance_mirage_rungs'][:4])} | {', '.join(x['forwarded_new'])} |")
+    ld = report["local_recovery_detail"]
+    L += ["", "## Local-reference recovery (detail)", "",
+          f"{ld['n_families']} family-replications calibrated a chance/lift-admissible rung inside the "
+          f"±0.10 caliper. The new retention forwards that very rung for {ld['n_kept']} "
+          f"({ld['why']['OTHER_RUNGS_FORWARDED']} forward other rungs of the family, "
+          f"{ld['why']['NOT_LABELLED_LOCAL']} are not labelled local at the screen, "
+          f"{ld['why']['FAMILY_NOT_FORWARDED']} labelled but not forwarded); §12.7 forwarded it for "
+          f"{ld['n_kept_legacy']}.", ""]
     n_loc = len(report["local_recovery"])
     L += ["", "## Local-reference recovery", "",
           f"Families with a rung inside the ±0.10 caliper at calibration: {n_loc}; "

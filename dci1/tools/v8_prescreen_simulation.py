@@ -19,6 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from dci1v8dev import rules as R
 from dci1v8dev import simulate as S
 from dci1v8dev.prescreen.geometry import Geometry
 from dci1v8dev.prescreen.rescreen import RescreenConfig
@@ -27,14 +28,16 @@ from dci1v8dev.prescreen.screen import ScreenConfig
 DCI1 = Path(__file__).resolve().parents[1]
 OUT = DCI1 / "reports" / "dci1v8dev" / "prescreen"
 
-#: Prospective grid. Offsets are the ones the precision analysis supports
-#: (below 0.15 / above 0.10) and their neighbours; the event is the
-#: support-both geometry or C4-as-registered.
+#: Prospective grid. The offsets are the coverage gate's (rules.py, chosen
+#: by the coverage simulation): the screen asks whether a family plausibly
+#: reaches what the gate will require. The event is the support-both
+#: geometry; C4-as-registered is kept as the comparator. Only the status
+#: thresholds are chosen here.
 GRID = [
-    {"event": "support_both", "d_below": 0.15, "d_above": 0.10},
-    {"event": "support_both", "d_below": 0.20, "d_above": 0.10},
-    {"event": "support_both", "d_below": 0.15, "d_above": 0.15},
-    {"event": "c4", "d_below": 0.15, "d_above": 0.10},
+    {"event": "support_both", "d_below": R.SPECTRUM_OFFSET_BELOW,
+     "d_above": R.SPECTRUM_OFFSET_ABOVE},
+    {"event": "c4", "d_below": R.SPECTRUM_OFFSET_BELOW,
+     "d_above": R.SPECTRUM_OFFSET_ABOVE},
 ]
 #: (accept, reject, final_accept_at): the third is the posterior majority
 #: rule applied to a family still undecided at the maximum batch count.

@@ -51,8 +51,14 @@ def test_the_same_seed_reproduces_every_number_and_a_new_seed_moves_them():
     b = screen_families(_table(), a_grid(), config=CFG)
     assert a["families"]["MK1"]["p_spectrum"] == b["families"]["MK1"]["p_spectrum"]
     c = screen_families(_table(), a_grid(), config=ScreenConfig(draws=1500, base_seed=7))
-    assert c["families"]["MK1"]["p_spectrum"] != a["families"]["MK1"]["p_spectrum"]
-    assert abs(c["families"]["MK1"]["p_spectrum"] - a["families"]["MK1"]["p_spectrum"]) < 0.06
+    # the seed moves the Monte Carlo estimate of every family whose
+    # probability is not saturated, and only by Monte Carlo error
+    interior = [k for k, v in a["families"].items() if 0.0 < v["p_spectrum"] < 1.0]
+    assert interior
+    assert any(c["families"][k]["p_spectrum"] != a["families"][k]["p_spectrum"]
+               for k in interior)
+    for k in a["families"]:
+        assert abs(c["families"][k]["p_spectrum"] - a["families"][k]["p_spectrum"]) < 0.06
 
 
 def test_statuses_separate_wide_flat_and_one_sided_ladders():

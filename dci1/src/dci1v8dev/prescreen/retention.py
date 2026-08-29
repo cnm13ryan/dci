@@ -29,7 +29,14 @@ from typing import Any
 
 from dci1v7.protocol import constants as C
 from dci1v7.stages.selection import restrictiveness_key
+from dci1v8dev import rules as R
+from dci1v8dev.prescreen.geometry import DEFAULT_GEOMETRY
 from dci1v8dev.prescreen.screen import LOCAL_LABEL, SCREEN_ACCEPT, SPECTRUM_LABEL
+
+#: The offsets the spectrum needs (the screen's geometry defaults), used only
+#: to record whether a retained family reaches them.
+C_D_BELOW = DEFAULT_GEOMETRY.d_below
+C_D_ABOVE = DEFAULT_GEOMETRY.d_above
 
 __all__ = ["ROLES", "RetentionConfig", "retain", "spaced_subset"]
 
@@ -39,14 +46,18 @@ ROLES = ("HARD_EXTREME", "INTERMEDIATE_HARD", "NEAR_A", "INTERMEDIATE_EASY",
 
 @dataclass(frozen=True)
 class RetentionConfig:
-    spectrum_rungs: int = 5
-    local_rungs: int = 3
+    spectrum_rungs: int = R.RETENTION_SPECTRUM_RUNGS
+    local_rungs: int = R.RETENTION_LOCAL_RUNGS
     #: A rung is retainable for a role when P(admissible) is at least this.
-    admissible_min: float = 0.50
-    max_spectrum_families: int = 8
-    max_local_families: int = 8
-    class_arm_rungs: int = 2
-    near_form_rungs: int = 3
+    admissible_min: float = R.RETENTION_ADMISSIBLE_MIN
+    max_spectrum_families: int = R.RETENTION_MAX_SPECTRUM_FAMILIES
+    #: §13.15 needs ≥ 5 families passing the full V(R); three become core
+    #: references and two backups. Ten local families (three rungs each) is
+    #: the budget that keeps every plausible one on the twelve stored
+    #: replications (the backtest's local-recovery table) at 30 rungs.
+    max_local_families: int = R.RETENTION_MAX_LOCAL_FAMILIES
+    class_arm_rungs: int = R.RETENTION_CLASS_ARM_RUNGS
+    near_form_rungs: int = R.RETENTION_NEAR_FORM_RUNGS
     #: Cap on the total forwarded set; None means no cap. 112 is what §12.7
     #: sends today, so a like-for-like comparison uses it.
     total_cap: int | None = None
@@ -212,6 +223,23 @@ def retain(screen: Mapping[str, Any], *, config: RetentionConfig
             f"§12.6 C8 / §13.9 near-form candidate (P(local)={p_local:.2f})",
             r["severity"], r["iota_mean"])
 
+    # The guarantee this module exists for, recorded per spectrum family: a
+    # rung at or beyond each offset is carried whenever the screen found one
+    # likely admissible there, so the geometry the screen discovered reaches
+    # calibration.
+    geometry = {}
+    for kind, subset in spectrum_plan.items():
+        roles = {s["role"]: s for s in subset}
+        lo = min((s["iota_mean"] for s in subset), default=None)
+        hi = max((s["iota_mean"] for s in subset), default=None)
+        geometry[kind] = {
+            "n_rungs": len(subset), "roles": sorted(roles),
+            "iota_min": lo, "iota_max": hi,
+            "carries_hard_extreme": "HARD_EXTREME" in roles,
+            "carries_easy_extreme": "EASY_EXTREME" in roles,
+            "reaches_below_offset": lo is not None and lo <= iota_a - C_D_BELOW,
+            "reaches_above_offset": hi is not None and hi >= iota_a + C_D_ABOVE,
+        }
     ordered = sorted(forwarded.values(),
                      key=lambda e: (-(verdicts[e["family"]]["score_spectrum"]
                                       + verdicts[e["family"]]["score_local"]),
@@ -226,6 +254,7 @@ def retain(screen: Mapping[str, Any], *, config: RetentionConfig
         "n_forwarded": len(ordered),
         "spectrum_families": spectrum_order,
         "spectrum_plan": spectrum_plan,
+        "spectrum_geometry": geometry,
         "local_families": local_order,
         "local_plan": local_plan,
         "dropped_for_cap": dropped_for_cap,

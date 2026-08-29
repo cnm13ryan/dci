@@ -35,6 +35,7 @@ from typing import Any
 
 from dci1v7.protocol import constants as C
 from dci1v7.stages.calibration_table import tie_key
+from dci1v8dev import rules as R
 from dci1v8dev.spectrum import precision
 
 __all__ = ["DEFAULT_COVERAGE_RULE", "CoverageRule", "selected_coverage"]
@@ -42,11 +43,11 @@ __all__ = ["DEFAULT_COVERAGE_RULE", "CoverageRule", "selected_coverage"]
 
 @dataclass(frozen=True)
 class CoverageRule:
-    min_points_below: int = C.SUPPORT_MIN_BELOW          # 2
-    min_points_above: int = C.SUPPORT_MIN_ABOVE          # 2
-    min_families_per_side: int = C.SUPPORT_MIN_FAMILIES_PER_SIDE   # 2
-    d_below: float = 0.15
-    d_above: float = 0.10
+    min_points_below: int = R.SPECTRUM_MIN_POINTS_BELOW          # 2
+    min_points_above: int = R.SPECTRUM_MIN_POINTS_ABOVE          # 2
+    min_families_per_side: int = R.SPECTRUM_MIN_FAMILIES_PER_SIDE   # 2
+    d_below: float = R.SPECTRUM_OFFSET_BELOW
+    d_above: float = R.SPECTRUM_OFFSET_ABOVE
     #: Precision floor on the common slope (per unit iota). 0.05 means a 95%
     #: half-width of about 0.10 per unit iota --- the slope resolved to one
     #: SESOI (0.10 of compliance) per unit of difficulty, i.e. to 0.01 over
@@ -55,13 +56,13 @@ class CoverageRule:
     #: families x two points at ±0.07, or two families at ±0.085
     #: (``precision.design_table``). The old 0.40 span was ~4x that and
     #: unreachable on the easy side of a 0.70-aimed A.
-    max_se_beta: float = 0.05
+    max_se_beta: float = R.SPECTRUM_MAX_SE_BETA
     #: The selected set's total span (farthest above minus farthest below)
     #: must reach the two offsets together.
-    min_total_span: float = 0.25
+    min_total_span: float = R.SPECTRUM_MIN_TOTAL_SPAN
     #: Every selected point's coordinate must be pinned to this SE (from its
     #: per-topic values), the same floor ``validity.SpectrumRule`` applies.
-    max_se_iota: float = 0.05
+    max_se_iota: float = R.SPECTRUM_MAX_SE_IOTA
     se_point: float = precision.MEASURED["se_point"]
     block_corr: float = precision.MEASURED["block_corr"]
 

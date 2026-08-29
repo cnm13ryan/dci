@@ -26,6 +26,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from dci1v7.protocol import constants as C
+from dci1v8dev import rules as R
 
 __all__ = ["DEFAULT_GEOMETRY", "DrawGeometry", "Geometry", "evaluate_draws",
            "select_iota_a"]
@@ -49,8 +50,8 @@ class Geometry:
     #: §4 of the task: support *meaningfully* below and above A. The two
     #: offsets are separate because the band is asymmetric around a typical
     #: iota_A (~0.70): the easy side has only ~0.20 of room to the 0.90 edge.
-    d_below: float = 0.15
-    d_above: float = 0.10
+    d_below: float = R.SPECTRUM_OFFSET_BELOW
+    d_above: float = R.SPECTRUM_OFFSET_ABOVE
     caliper: float = C.REFERENCE_CALIPER
 
 

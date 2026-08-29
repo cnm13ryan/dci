@@ -43,6 +43,7 @@ from typing import Any
 
 from dci1v7.stages.calibration_table import CalibrationRow, tie_key
 from dci1v7.stages.selection import _group_order, restrictiveness_key
+from dci1v8dev import rules as R
 from dci1v8dev.spectrum.coverage import CoverageRule, selected_coverage
 from dci1v8dev.spectrum.validity import _se_iota
 
@@ -51,14 +52,14 @@ __all__ = ["DEFAULT_SELECTION_RULE", "SelectionRule", "select_spectrum"]
 
 @dataclass(frozen=True)
 class SelectionRule:
-    d_min: float = 0.05
-    target_below: float = 0.20
-    target_above: float = 0.15
-    max_families: int = 4
+    d_min: float = R.SPECTRUM_D_MIN
+    target_below: float = R.SELECTION_TARGET_BELOW
+    target_above: float = R.SELECTION_TARGET_ABOVE
+    max_families: int = R.SELECTION_MAX_FAMILIES
     include_core_rungs: bool = True
     #: Two points of one family must differ in iota by at least this, so a
     #: pair of nearly identical rungs is never taken as two design points.
-    min_separation: float = 0.05
+    min_separation: float = R.SELECTION_MIN_SEPARATION
     coverage: CoverageRule = field(default_factory=CoverageRule)
 
 
