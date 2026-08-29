@@ -13,6 +13,40 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — two CPU loops run in spawned process pools; every recorded value unchanged
+
+**What changed.** `engine/parallel.pool_map` (spawned workers, pickled
+per-unit inputs, a small shared state installed once per worker, results in
+input order; `DCI1_V7_CPU_WORKERS=1` is the serial reference path, and the
+serial path is what runs when the calling process's main module cannot be
+re-imported). `execute.generate_and_score` scores a backend run's rows one
+unit per row (`_score_row`, the former loop body unchanged);
+`gates_run._calibration_rows` builds §13.11's table one unit per (split,
+candidate) from rows reduced to that candidate's verdicts by a single
+bucketing pass (`_bucket`). The driver inherits the pool size; the scenario
+runner and `tools/v7_validate.sh` bound it so scenario processes share the
+cores.
+
+**What did not change: any number.** `tests_v7/test_parallel.py` asserts
+byte identity of the scored rows and of the calibration table between the
+serial and pooled paths, and the table against a naive scan-everything
+reference; a pool is also run from inside a threaded spawned child process
+(the shape that deadlocked a fork-based first version inside the
+execution-path audit). On the 2026-08-28 rehearsal's 86,016 stored candidate
+rows the pooled builder reproduces the previous implementation on all 336
+table rows in every column — including the chance column's known 0.0
+(CHANGES 2026-08-29, finding), which this change deliberately reproduces
+rather than corrects: the modules that read it are §13's frozen
+implementation (`protocol/revision.V9`) and the correction is a researcher
+decision. Cost of the table at Gate 2: 751 s before, 16.6 s pooled after on
+the same rows; scoring ~2 ms a row serial at every generating stage.
+
+**History.** A first version forked the calling process and deadlocked the
+audit (a forked worker inherited a held lock from a threaded scenario
+process); a second used `forkserver` and hung inside a real stage process;
+both were reverted (`e85c0f7`) and the rehearsal r3 lanes ran on the
+unpooled tree. Comparability: none affected.
+
 ## 2026-08-29 — finding, not yet in force: §13.11's `chance_compliance` column has been 0.0 on every replication; the fix is parked with the CPU-pool change
 
 **Finding.** `run/gates_run._calibration_rows` obtains each candidate's
