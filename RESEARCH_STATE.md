@@ -111,6 +111,18 @@ evidence, durable and source trees, and `assert_own_study` refuses a stage
 record whose `study_id` is another revision's. No v4r2 and no v4r3 record was
 edited by any of it.
 
+### 4d. v8 development candidate: pre-screen, spectrum rules, wording (2026-08-29)
+
+Read-only diagnostics over the signed v6/v7 trees and the completed rehearsals,
+and a prospective design, in `dci1/src/dci1v8dev/` with the design note
+[`dci1/docs/v8_prescreen_spectrum_redesign.md`](dci1/docs/v8_prescreen_spectrum_redesign.md)
+and reports under `dci1/reports/dci1v8dev/prescreen/`. Nothing registered moved.
+The five findings are in `CHANGES_SCIENTIFIC.md` (2026-08-29, "v8 development
+candidate"): §13.7 folds the local caliper into the spectrum, C4 gated the wrong
+quantity, §13.15's frozen backups are mostly inadmissible, two of four exact-count
+wording frames are misread, and the Tier-1 grids are too short on the 2507
+checkpoint. Development-level evidence only; no v8 is adopted.
+
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
 A read-only diagnostic established that the §13.2 reference criterion fails for
