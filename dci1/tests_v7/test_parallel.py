@@ -321,3 +321,23 @@ def test_a_stalled_pool_is_torn_down_within_the_bound_and_the_units_rerun(
     assert time.monotonic() - started < 60
     with pytest.raises(parallel.PoolStalled):
         parallel._pooled(_stalling_unit, list(range(80)), {}, 2, 1)
+
+
+# ---------------------------------- payloads larger than a pipe buffer
+
+def _bulky_unit(item: int) -> bytes:
+    return bytes([item % 251]) * 200_000            # 200 kB per result
+
+
+def test_results_larger_than_a_pipe_buffer_do_not_deadlock():
+    """A first dispatcher sent every chunk before reading any result; with
+    chunks and results bigger than a pipe's buffer the parent and a worker
+    blocked on each other's full pipe forever (rehearsal r5, Gate 2). One
+    chunk in flight per worker, collected as it completes, cannot."""
+    import time
+
+    started = time.monotonic()
+    out = parallel.pool_map(_bulky_unit, list(range(96)), workers=2,
+                            chunksize=3)              # 600 kB per result message
+    assert out == [_bulky_unit(i) for i in range(96)]
+    assert time.monotonic() - started < 120
