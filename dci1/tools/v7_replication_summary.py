@@ -106,11 +106,64 @@ def summarise(tree) -> dict:
                       "contrast_statuses": g4.get("contrast_statuses"),
                       "any_structural_zero": g4.get("any_structural_zero"),
                       "terminates_nothing": g4.get("terminates_nothing")}
-    for st in (C.STAGE_GATE5, C.STAGE_CONFIRMATORY,
-               C.STAGE_UNMASKED_ANALYSIS, C.STAGE_FINAL_REPORT):
-        r = rec(st)
-        if r:
-            s[st] = r.get("outcome")
+        # v7 A7: the spectrum's own verdict and the D6 block, beside the core's.
+        s["support"]["spectrum_met"] = sup.get("spectrum_met")
+        s["support"]["spectrum_failures"] = sup.get("spectrum_failures")
+        block = g3c.get("non_identification") or {}
+        s["non_identification"] = {
+            "status": block.get("status"),
+            "irreversible": block.get("irreversible"),
+            "n_members": len(block.get("not_identified_members") or ())}
+    g5 = rec(C.STAGE_GATE5)
+    if g5:
+        fz = g5.get("freeze") or {}
+        s[C.STAGE_GATE5] = {
+            "outcome": g5.get("outcome"),
+            "admitted_arms": g5.get("admitted_arms"),
+            "identification_statuses": g5.get("identification_statuses"),
+            "blocks": g5.get("blocks"), "cells_per_block":
+                g5.get("cells_per_block"), "M": g5.get("M"),
+            "bound": {k: len(fz.get(k) or ()) for k in
+                      ("core_references", "spectrum_severities",
+                       "near_form_controls", "frozen_backup_families")},
+            "non_identification_status":
+                (g5.get("non_identification") or {}).get("status")}
+    cg = rec(C.STAGE_CONFIRMATORY)
+    if cg:
+        s[C.STAGE_CONFIRMATORY] = {"outcome": cg.get("outcome"),
+                                   "n_rows": cg.get("n_rows"),
+                                   "completeness": cg.get("completeness")}
+    ua = rec(C.STAGE_UNMASKED_ANALYSIS)
+    if ua:
+        statements = ua.get("statements") or []
+        estimands = ua.get("estimands") or {}
+        if isinstance(estimands, dict):
+            values = list(estimands.values())
+        else:
+            values = list(estimands)
+        s[C.STAGE_UNMASKED_ANALYSIS] = {
+            "outcome": ua.get("outcome"),
+            "identification_statuses": ua.get("identification_statuses"),
+            "success_criterion": ua.get("success_criterion"),
+            "n_statements": len(statements),
+            "emitted_levels": sorted({str(st.get("level")) for st in statements
+                                      if isinstance(st, dict)
+                                      and st.get("emitted", True)}),
+            "n_estimands": len(values),
+            "n_not_identified": sum(
+                1 for v in values if isinstance(v, dict)
+                and (v.get("status") == "NOT_IDENTIFIED"
+                     or v.get("identification") == "NOT_IDENTIFIED"))}
+    fr = rec(C.STAGE_FINAL_REPORT)
+    if fr:
+        checks = fr.get("checks") or fr.get("artifact_checks") or []
+        s[C.STAGE_FINAL_REPORT] = {
+            "outcome": fr.get("outcome"),
+            "n_checks": len(checks) if isinstance(checks, (list, tuple)) else None,
+            "failed_checks": [c.get("check") for c in checks
+                              if isinstance(c, dict)
+                              and c.get("verdict") == "FAIL"]
+            if isinstance(checks, (list, tuple)) else None}
     s["timeline"] = [
         {"at": row.get("timestamp"), "stage": row.get("stage"),
          "outcome": row.get("outcome"),
