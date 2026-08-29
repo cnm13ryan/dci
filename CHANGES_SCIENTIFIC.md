@@ -13,6 +13,35 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — finding, not yet in force: §13.11's `chance_compliance` column has been 0.0 on every replication; the fix is parked with the CPU-pool change
+
+**Finding.** `run/gates_run._calibration_rows` obtains each candidate's
+`chance_compliance` through `instance_rates(chance_rows, …)`, whose solo scan
+runs first and finds no grid row in which a non-outcome candidate is stated;
+the call raises and the column is written as `0.0`. Verified 112/112 on the
+registered `qwen3-4b` Gate-2 record and on the 2026-08-28 development
+rehearsal, and by construction the same on every v5, v6 and v7 replication.
+§13.2 registers ι_c = (P(X_c = 1 | c alone) − κ_c)/(1 − κ_c) "with κ_c
+measured in the unconstrained cell of the same topic set", and the grid runs
+measure exactly that. Consequences while the column is zero: ι(R) on the
+calibration basis equals raw solo compliance while ι_A is chance-corrected;
+`CalibrationRow.lift` is solo compliance; §13.4's chance ceiling (0.75,
+Wilson 0.85) cannot fire; §13.6's displacement is measured against zero. On
+the rehearsal's real rows the correction leaves the three selected
+references unchanged (κ_c = 0) but 7 of 112 candidates sit above the ceiling
+and have been passing `V_chance` trivially.
+
+**Status.** A fix (chance from the unconstrained cells per §13.2) was
+committed as `438c1e0` together with a process-pool change and **reverted
+the same day** (`e85c0f7`): the pool hung inside a real stage process, and
+the corrected column reaches a path in `stages/validity.py` that raises on a
+degenerate chance (≥ 0.99) instead of failing the candidate, which the
+synthetic harness now exercises. Both live on branch `wip/v7-cpu-pools`
+(worktree `../dci-wip-pools`) and are not in force. Until they are, every
+calibration table — including the development rehearsals started from this
+tree — carries the zero column, knowingly. The registered v7 outcomes stand as
+recorded and are not re-verdicted.
+
 ## 2026-08-28 — v7 development namespace: a real-model rehearsal of the amended lifecycle that is structurally not the registered study
 
 **What changed.** `dci1v7.engine.context` gains a third namespace,
