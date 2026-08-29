@@ -6,7 +6,7 @@ row's ``final_answer`` under both rules for A (``however``) and the eight
 Tier-1 markers, and records every row on which any count differs, every
 verdict flip at every registered severity (A: n in 1..8; MK: q in 1..12),
 and per-tree totals. Nothing under the evidence root is written, and the
-report is written to ``dci1/reports/dci1v8/``.
+report is written to ``dci1/reports/dci1v8dev/verifier_unification/``.
 
     dci1/.venv/bin/python dci1/tools/v8_rescore_marker_unification.py \
         --evidence-root /abs/path/to/dci1/evidence
@@ -31,7 +31,7 @@ sys.path.insert(0, str(SRC))
 from dci1v4.verifiers.target import s0_count                     # noqa: E402
 from dci1v7.verifiers.constraints import MARKER_WORDS, TARGET_WORD  # noqa: E402
 from dci1v7.verifiers.statistics import marker_count as v7_marker_count  # noqa: E402
-from dci1v8.verifiers.words import count_marker                  # noqa: E402
+from dci1v8dev.verifiers.words import count_marker                  # noqa: E402
 
 A_SEVERITIES = tuple(range(1, 9))
 MK_SEVERITIES = tuple(range(1, 13))
@@ -116,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--evidence-root", required=True, type=Path)
     parser.add_argument("--out", type=Path,
-                        default=HERE.parents[1] / "reports" / "dci1v8"
+                        default=HERE.parents[1] / "reports" / "dci1v8dev" / "verifier_unification"
                         / "verifier_unification_rescore.json")
     parser.add_argument("--workers", type=int, default=6)
     args = parser.parse_args(argv)
@@ -162,7 +162,7 @@ def main(argv: list[str] | None = None) -> int:
                      "text, then alphabetic runs == 'however'",
         "rule_v7_MK": "dci1v7.verifiers.statistics.marker_count: alphabetic "
                       "runs of the text as written, each lower-cased, == marker",
-        "rule_v8": "dci1v8.verifiers.words.count_marker(text, marker): the "
+        "rule_v8": "dci1v8dev.verifiers.words.count_marker(text, marker): the "
                    "v7 MK rule, for A and MK1-MK8 alike",
         "severities_checked": {"A": list(A_SEVERITIES),
                                "MK": list(MK_SEVERITIES)},

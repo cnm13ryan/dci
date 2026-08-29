@@ -20,10 +20,10 @@ from dci1v7.verifiers import verifier_source_hash as v7_hash
 from dci1v7.verifiers.constraints import Constraint, MARKER_WORDS, TARGET_WORD
 from dci1v7.verifiers.wording_suite import SUITE_RESPONSES
 
-from dci1v8.verifiers import verifier_source_hash as v8_hash
-from dci1v8.verifiers import compliance as C8
-from dci1v8.verifiers import statistics as S8
-from dci1v8.verifiers.words import (
+from dci1v8dev.verifiers import verifier_source_hash as v8_hash
+from dci1v8dev.verifiers import compliance as C8
+from dci1v8dev.verifiers import statistics as S8
+from dci1v8dev.verifiers.words import (
     assert_marker_word, case_folding_splitters, count_marker,
 )
 

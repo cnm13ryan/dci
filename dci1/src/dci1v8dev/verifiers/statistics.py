@@ -19,7 +19,7 @@ from dci1v7.verifiers.constraints import (
 from dci1v7.verifiers.statistics import STATISTICS as _V7_STATISTICS
 from dci1v7.verifiers.statistics import focal_statistic, word_count
 
-from dci1v8.verifiers.words import (
+from dci1v8dev.verifiers.words import (
     alpha_runs, assert_marker_word, count_marker, sentence_units, words_lower,
 )
 
