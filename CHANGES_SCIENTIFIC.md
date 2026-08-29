@@ -13,6 +13,43 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — v8 (prospective): A and MK1–MK8 are counted by one function under §9.2's lexical rule
+
+**What changed.** A new, prospective instrument layer `dci1/src/dci1v8/verifiers/`
+scores A and the eight Tier-1 marker families with **one shared function**,
+`words.count_marker(text, marker)`: segment the response *as written* into
+maximal alphabetic runs, lower-case each run, count the runs equal to the
+marker. v7 scored A with `dci1v4.verifiers.target.s0_count` (lower-case the
+whole response, *then* segment) and the markers with the lexical rule, and
+the two orders disagree on exactly one code point, U+0130 `İ`, when it
+immediately precedes the marker inside one alphabetic run: `İhowever` was one
+occurrence of *however* to A's counter and `İthus` zero occurrences of *thus*
+to MK1's (a trailing `İ` folds to `i` + U+0307 and gives 0 under both). The
+lexical rule is adopted for both because it is the rule the other fourteen
+numerators already use, it is what §9.2 states for *word*, and it reads
+`İhowever` as the one word the model wrote. The fourteen non-marker
+numerators, the five predicate forms, the graded scores, the vacuity
+predicate and the presence rule are v7's functions imported unchanged;
+`dci1v8.verifiers.verifier_source_hash` hashes them at their v7 location.
+`tests_v8/test_marker_counter.py` (102 tests) asserts the structural identity
+(`.func is count_marker` for A and every MK), every frozen boundary
+expectation, the wording corpus, and a whole-Unicode differential naming
+U+0130 as the sole splitter.
+
+**Affected results: none.** `tools/v8_rescore_marker_unification.py`
+re-scored every stored response under both rules, read-only: 4,311,315 rows
+in 593 `rows.jsonl` files across all 19 `dci1/evidence/` trees (v2 through
+v7 and the v7 development rehearsals). Zero rows contain U+0130, zero counts
+differ, zero verdicts flip at any registered severity (A: 1–8; MK: 1–12).
+`dci1/reports/dci1v8/verifier_unification_rescore.json`. No v7 module,
+record, hash or evidence tree is touched; v7 rows keep v7's verdicts under
+v7's verifier hash. **Comparability:** a v8 row and a v7 row scored on A are
+comparable on every response that does not contain U+0130 immediately before
+`however`, which is every response any DCI-1 study has generated. The §9.2
+sentence "every Tier-1 family uses the same function with a different target
+string" becomes literally true in v8; a v8 preregistration must restate S0 as
+the lexical rule.
+
 ## 2026-08-29 — the final report's status trace compares with what Gate 5 binds (Gate 2 ∪ Gate 3C)
 
 **What changed.** `run/final_report_checks` required the reported
