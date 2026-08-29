@@ -270,3 +270,39 @@ of its readings are **superseded** by the in-place amendments of 2026-08-28
 
 The four v7 terminal reports stand; nothing here re-verdicts them.
 
+## 10. After the run: the §13.11 chance column (2026-08-29)
+
+A defect in the Gate-2 producer, not in any registered rule, and not in
+anything §1–§9 argue: `run/gates_run._calibration_rows` obtained every
+candidate's `chance_compliance` through `instance_rates`, whose solo scan
+finds no grid row that states a non-outcome candidate, so the call raised
+and the column was written as 0.0 for every candidate of every replication
+of v5, v6 and v7. §11.2 and §13.2 register κ_c as the candidate's compliance
+in the **unconstrained cell** of the same topic set at the same M, and the
+grid runs generate that cell on every calibration block with every carried
+candidate scored absent on it — the quantity existed on the rows and the
+column never read it.
+
+**What it did while it was zero.** ι(R) = (p_solo − κ)/(1 − κ) collapsed to
+raw solo compliance for every candidate while ι_A was chance-corrected;
+H_R = p_solo − κ was p_solo, so §13.4's lift floor was tested against the
+wrong quantity; §13.4's chance ceiling (0.75, Wilson 0.85) could not fire;
+§13.6's displacement Σ_R = κ^B_R − κ_R was measured against zero; §13.8's
+caliper |ι_R − ι_A| and §13.7's split-difference bootstrap of ι ran on the
+uncorrected coordinate; §12.6's calibrated re-read placed every rung by its
+raw solo compliance. No verdict in §2–§9 depends on it: v7's four
+replications ended on §12.6's C4 under A7's reading, and the impact report
+says what the corrected column moves on each of them.
+
+**What was done (2026-08-29, in force).** The producer measures κ_c on the
+grid runs' unconstrained cells per split (`revision.V14`, checked); a
+candidate whose κ_c reaches `CHANCE_DEGENERACY_MAX` is withheld from the
+table §13 reads and recorded with its values (§11.2; v6 A16's rule on the
+calibrated basis), the record seam refuses a table carrying one, and
+§12.6's calibrated re-read still counts it. The estimand layer `revision.V9`
+pins is untouched; no threshold moves (`V8`). Details, numbers and
+comparability: `CHANGES_SCIENTIFIC.md` (2026-08-29, "in force"),
+`dci1/reports/dci1v7/chance_basis_impact/REPORT.md`, `RESEARCH_STATE.md`
+§4ao. The four v7 terminal reports and every development rehearsal started
+before this date stand as recorded under the code they ran.
+

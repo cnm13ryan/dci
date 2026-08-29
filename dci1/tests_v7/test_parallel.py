@@ -1,4 +1,4 @@
-"""The forked pools change nothing a record carries (engine/parallel, 2026-08-29).
+"""The spawned pools change nothing a record carries (engine/parallel, 2026-08-29).
 
 Two loops run in a pool: scoring a backend run's rows and building §13.11's
 calibration table. The pool itself is tested from inside a threaded child
@@ -186,14 +186,23 @@ def _candidate_rows(n_topics=12, draws=4):
 def _grid_rows(n_topics=12, draws=4, *, chance_by_kind):
     """Grid runs: an unconstrained cell and B-solo cells per topic, every
     candidate scored absent with a known chance rate in the unconstrained
-    cell and a different rate under B."""
+    cell and a different rate under B.
+
+    The unconstrained verdict cycles through the four draws of every topic
+    --- pass on the first ``4 * rate`` residues of ``(index + draw) % 4`` ---
+    so each topic's mean is exactly ``rate`` and so is every split's; a rate
+    in {0, 0.25, 0.5, 0.75, 1.0} is therefore reproduced to the bit. The
+    B-solo cells pass every candidate on half the rows, a value a wrong
+    denominator would pick up.
+    """
     rows = []
     for index in range(n_topics):
         topic = f"fixture-topic-{index:03d}"
         for draw in range(draws):
             unc = [_score(c.kind, c.severity,
-                          ((index + draw) / float(draws * n_topics))
-                          < chance_by_kind[c.kind], present=False)
+                          ((index + draw) % draws)
+                          < round(draws * chance_by_kind[c.kind]),
+                          present=False)
                    for c in CANDIDATES]
             rows.append(_row("unconstrained", "unconstrained", topic, draw,
                              _split(index), unc))
@@ -208,7 +217,9 @@ def _grid_rows(n_topics=12, draws=4, *, chance_by_kind):
 def _naive_reference(candidates, *, solo_rows, chance_rows, b_solo_rows,
                      m_star, prescreen):
     """Scan every row for every candidate; chance from the unconstrained
-    cells; kappa(R|B) from the per-candidate reference `_kappa_under_b`."""
+    cells alone (§11.2, §13.2); kappa(R|B) from the per-candidate reference
+    `_kappa_under_b`."""
+    unconstrained = [r for r in chance_rows if r.get("arm") == "unconstrained"]
     out = {}
     for split in (C.CALIBRATION_A, C.CALIBRATION_B, "pooled"):
         restrict = None if split == "pooled" else split
@@ -223,15 +234,9 @@ def _naive_reference(candidates, *, solo_rows, chance_rows, b_solo_rows,
                            split=restrict)
             except ProtocolError:
                 continue
-            # The previous implementation's chance: instance_rates over the
-            # grid rows, 0.0 on a ProtocolError (which a non-outcome
-            # candidate always raises: it is stated in no grid row).
-            try:
-                chance = {"compliance": instance_rates(
-                    chance_rows, kind=candidate.kind,
-                    severity=candidate.severity, split=restrict)["chance"]}
-            except ProtocolError:
-                chance = {"compliance": 0.0}
+            chance = cell_rates(unconstrained, kind=candidate.kind,
+                                severity=candidate.severity, present=False,
+                                split=restrict, arm="unconstrained")
             kappa_b, n_t, n_d = gates_run._kappa_under_b(
                 b_solo_rows, candidate, split=restrict)
             entry = {
@@ -265,7 +270,7 @@ def _naive_reference(candidates, *, solo_rows, chance_rows, b_solo_rows,
 
 def test_the_calibration_table_matches_a_naive_scan(
         monkeypatch):
-    chance_by_kind = {"MK1": 0.0, "MK2": 0.5, "MK6": 0.9}
+    chance_by_kind = {"MK1": 0.0, "MK2": 0.5, "MK6": 0.75}
     solo_rows = _candidate_rows()
     grid_rows = _grid_rows(chance_by_kind=chance_by_kind)
     b_solo = [r for r in grid_rows if r["cell_id"] == f"solo:B:{B_STAR}"]
@@ -281,7 +286,10 @@ def test_the_calibration_table_matches_a_naive_scan(
         table = gates_run._calibration_rows(MODEL, CANDIDATES, **kwargs)
         assert json.dumps(table, sort_keys=True) == \
             json.dumps(reference, sort_keys=True), workers
-    # The chance column is the previous implementation's --- 0.0 for every
-    # non-outcome candidate, the defect CHANGES_SCIENTIFIC.md records as a
-    # finding --- reproduced, not corrected, by the pooled builder.
-    assert {r["chance_compliance"] for r in table["pooled"]} == {0.0}
+    # The chance column is §13.2's kappa_c: the unconstrained cells' rate,
+    # exactly, on every split --- and not the B-solo cells' 0.5, which a
+    # denominator over every absent verdict would have averaged in.
+    for split, rows in table.items():
+        assert {r["kind"]: r["chance_compliance"] for r in rows} == \
+            chance_by_kind, split
+    assert instance_rates is not None       # the old path is still imported

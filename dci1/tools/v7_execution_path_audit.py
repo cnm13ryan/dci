@@ -244,6 +244,31 @@ RULES: tuple[dict[str, object], ...] = (
      "field": "REGIME_SCREEN.calibration_priority",
      "consumer": "GATE_2_FOCAL_CALIBRATION",
      "scenario": "calibration_population", "expect": VERIFIED},
+    {"id": "R-13.2-chance-basis",
+     "section": "§11.2, §13.2, §13.11 (2026-08-29)", "area": "V(R)",
+     "meaning": "kappa_c on §13.11's table is measured in the unconstrained "
+                "cell of the split's own topic set --- the grid runs' "
+                "load-zero cells, on which §9.1 scores every carried "
+                "candidate absent --- never over every absent verdict, and "
+                "the denominator is named on the record. Until 2026-08-29 "
+                "the column was 0.0 on every replication of v5, v6 and v7",
+     "runtime": "dci1v7.run.gates_run._calibration_rows",
+     "impl": "dci1v7.run.gates_run.gate2_payload",
+     "field": "GATE_2_FOCAL_CALIBRATION.chance_basis",
+     "consumer": None, "expect": VERIFIED},
+    {"id": "R-11.2-coordinate-withheld",
+     "section": "§11.2, v6 A16 (2026-08-29)", "area": "V(R)",
+     "meaning": "a candidate whose kappa_c reaches CHANCE_DEGENERACY_MAX has "
+                "no difficulty coordinate: it is withheld from the table §13 "
+                "reads, recorded with every value it measured, named by "
+                "Gate 2.5, counted under `coordinate_undefined` by §12.6's "
+                "calibrated re-read, and refused at the record seam if a "
+                "table ever carries one. It decides no admission: the row "
+                "fails §13.4's lift floor and ceiling on its own values",
+     "runtime": "dci1v7.run.gates_run._withhold_degenerate",
+     "impl": "dci1v7.run.gates_run.gate2_payload",
+     "field": "GATE_2_FOCAL_CALIBRATION.calibration_rows_withheld",
+     "consumer": "GATE_2_5_CANDIDATE_QUALIFICATION", "expect": VERIFIED},
     {"id": "R-13.1-vr", "section": "§13.1-§13.7", "area": "V(R)",
      "meaning": "the eight V(R) components in registered order",
      "runtime": "dci1v7.stages.validity.evaluate_validity",

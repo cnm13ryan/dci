@@ -152,6 +152,11 @@ CONTRACT: tuple[Field, ...] = (
     # the Tier-3 rungs the budget dropped beside the screen's larger set.
     _f(G2, "calibration_population", (G5, PF)),
     _f(G2, "calibration_rows", (G25, G3A, G4)),
+    # §11.2 (2026-08-29): the rows Gate 2 withheld from §13.11's table for
+    # a degenerate chance, with their measured values. Gate 2.5 names them
+    # beside the pool it qualified; Gate 3A's calibrated §12.6 re-read
+    # counts them under A16's `coordinate_undefined`.
+    _f(G2, "calibration_rows_withheld", (G25, G3A)),
     # §12.4's three conditions and §12.3's grid-resolution diagnosis, as
     # verdicts rather than as the thresholds they are judged against.
     _f(G2, "adequacy", (G5,)),
