@@ -31,11 +31,6 @@
 # and `run` gets `--root <dir> --namespace development`, so the records land
 # under <dir>/evidence/dci1v7 with the study id dci1v7-development and the
 # registered tree is never touched. Same stages, same rules, same backend.
-#
-# DCI1_V7_CPU_WORKERS=<n> (environment, inherited by every stage) sizes the
-# forked pools a stage scores rows and builds the calibration table in
-# (`engine/parallel.py`); 1 is the serial reference path. It changes no
-# recorded value: the pools return their units in index order.
 set -u
 MODEL="$1"; DEVICE="$2"; LOGDIR="$3"; AFTER="${4:-}"
 cd "$(dirname "$0")/.."                      # dci1/

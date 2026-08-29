@@ -137,52 +137,33 @@ def summarise(tree) -> dict:
     if ua:
         statements = ua.get("statements") or []
         estimands = ua.get("estimands") or {}
-        members = {}
-        for cfg, bucket in (estimands.get("configurations") or {}).items():
-            members[cfg] = {
-                "identified": sorted(m for m, v in bucket.items()
-                                     if isinstance(v, dict)
-                                     and v.get("status") == "IDENTIFIED"),
-                "not_identified": {
-                    m: v.get("reason") for m, v in bucket.items()
-                    if isinstance(v, dict)
-                    and v.get("status") == "NOT_IDENTIFIED"}}
-        cross = estimands.get("cross_configuration") or {}
-        members["cross"] = {m: v.get("status") for m, v in cross.items()
-                            if isinstance(v, dict)}
-        levels: dict[str, int] = {}
-        for st in statements:
-            if isinstance(st, dict) and st.get("emitted", True):
-                key = str(st.get("claim_level"))
-                levels[key] = levels.get(key, 0) + 1
-        sc = ua.get("success_criterion") or {}
+        if isinstance(estimands, dict):
+            values = list(estimands.values())
+        else:
+            values = list(estimands)
         s[C.STAGE_UNMASKED_ANALYSIS] = {
             "outcome": ua.get("outcome"),
             "identification_statuses": ua.get("identification_statuses"),
-            "section_26_verdict": sc.get("verdict"),
+            "success_criterion": ua.get("success_criterion"),
             "n_statements": len(statements),
-            "emitted_levels": levels,
-            "members": members,
-            "points": {cfg: {m: _r(bucket[m].get("point"))
-                             for m in ("Delta_R", "Xi", "D(B<-A)",
-                                       "D(A<-B)", "Lambda")
-                             if isinstance(bucket.get(m), dict)
-                             and bucket[m].get("status") == "IDENTIFIED"}
-                       for cfg, bucket in
-                       (estimands.get("configurations") or {}).items()}}
+            "emitted_levels": sorted({str(st.get("level")) for st in statements
+                                      if isinstance(st, dict)
+                                      and st.get("emitted", True)}),
+            "n_estimands": len(values),
+            "n_not_identified": sum(
+                1 for v in values if isinstance(v, dict)
+                and (v.get("status") == "NOT_IDENTIFIED"
+                     or v.get("identification") == "NOT_IDENTIFIED"))}
     fr = rec(C.STAGE_FINAL_REPORT)
     if fr:
-        checks = fr.get("final_report_checks") or []
+        checks = fr.get("checks") or fr.get("artifact_checks") or []
         s[C.STAGE_FINAL_REPORT] = {
             "outcome": fr.get("outcome"),
-            "checks_passed": fr.get("n_final_report_passed"),
-            "checks": fr.get("n_final_report_checks"),
-            "non_passing_checks": [
-                (c.get("check"), c.get("verdict")) for c in checks
-                if isinstance(c, dict)
-                and c.get("verdict") not in ("PASS", "NOT_APPLICABLE")],
-            "n_result_rows": fr.get("n_result_rows"),
-            "scope_sentence": fr.get("scope_sentence")}
+            "n_checks": len(checks) if isinstance(checks, (list, tuple)) else None,
+            "failed_checks": [c.get("check") for c in checks
+                              if isinstance(c, dict)
+                              and c.get("verdict") == "FAIL"]
+            if isinstance(checks, (list, tuple)) else None}
     s["timeline"] = [
         {"at": row.get("timestamp"), "stage": row.get("stage"),
          "outcome": row.get("outcome"),

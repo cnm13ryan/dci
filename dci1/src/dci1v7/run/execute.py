@@ -42,7 +42,6 @@ from dci1v4.protocol.hashing import sha_obj
 
 from dci1v7 import CLASSIFICATION, STUDY_ID
 from dci1v7.design.prompts import assert_stem_present, prompt_hash, render
-from dci1v7.engine import parallel
 from dci1v7.protocol import constants as C
 from dci1v7.protocol.seeds import generation_seed
 from dci1v7.protocol.wordings import wording
@@ -491,113 +490,80 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
     # built *from* the slot map --- so this is the same label for a present
     # verdict and a defined one for an absent verdict.
     slot_of_instance = {c.label: slot for slot, c in (slot_map or {}).items()}
-    # 2026-08-29: the rows are scored in a process pool
-    # (`engine/parallel.pool_map`), one unit per row, results in row order.
-    # Scoring a row is a pure function of the row, its cell, the instance
-    # set and the frozen verifier hash --- `_score_row` below is the loop
-    # body that ran here serially, unchanged --- so the pool changes nothing
-    # a row records; `DCI1_V7_CPU_WORKERS=1` runs the same units in this
-    # process and is the reference the pool is tested against byte for byte.
-    # The `zip` the serial loop used stops at the shorter list, and so does
-    # this.
-    n_rows = min(len(outcome["rows"]), len(rows))
-    tasks = [(outcome["rows"][i], rows[i],
-              by_cell[rows[i]["cell_id"] + "|" + rows[i]["block_id"]])
-             for i in range(n_rows)]
-    scored_rows: list[dict[str, Any]] = parallel.pool_map(
-        _score_row, tasks,
-        shared={"instances": tuple(instances),
-                "slot_of_instance": slot_of_instance,
-                "model_key": model_key, "model_id": spec.model_id,
-                "model_revision": spec.revision, "study_id": study_id,
-                "stage": stage, "synthetic_run": synthetic_run,
-                "resumed": reused is not None, "frozen_hash": frozen_hash})
+    scored_rows: list[dict[str, Any]] = []
+    for raw, row in zip(outcome["rows"], rows):
+        cell = by_cell[row["cell_id"] + "|" + row["block_id"]]
+        text = raw.get("final_answer") or ""
+        truncated = bool(raw.get("answer_truncated"))
+        absent = absent_for(cell, instances)
+        scores = score_generation(
+            text, present=cell.present, absent=absent, truncated=truncated,
+            finish_reason=raw.get("finish_reason"),
+            token_count=raw.get("total_generated_tokens"))
+        assert_presence_rule(scores, stated=cell.present,
+                             instances_in_use=list(instances) or
+                             list(cell.present),
+                             where=f"{stage}:{row['row_id']}")
+        slot_of = dict(slot_of_instance)
+        slot_of.update({c.label: s for s, c in zip(cell.slots, cell.present)})
+        scored_rows.append({
+            "row_id": row["row_id"], "cell_id": cell.cell_id,
+            "block_id": cell.block_id, "draw_index": row["draw_index"],
+            "arm": cell.arm, "slots": list(cell.slots),
+            "topic_id": cell.topic_id, "area": cell.area,
+            "topic_split": cell.topic_split, "load": cell.load,
+            "wording_indices": list(cell.wording_indices),
+            "prompt_hash": cell.prompt_hash, "seed": row["scientific_seed"],
+            "raw_response": text, "finish_reason": raw.get("finish_reason"),
+            "token_count": raw.get("total_generated_tokens"),
+            "truncated": truncated, "empty": scores.empty,
+            "word_count": scores.word_count,
+            "in_stem_band": scores.in_stem_band,
+            "model_key": model_key, "model_id": spec.model_id,
+            "model_revision": spec.revision, "study_id": study_id,
+            "classification": CLASSIFICATION, "stage": stage,
+            # What produced this text, not how the runner was called. It read
+            # ``generate is not None`` until the pre-data engineering
+            # amendment, which made every row of the four runners that always
+            # passed a stand-in synthetic by definition --- and would have
+            # stamped a row synthetic even when a real backend produced it.
+            "synthetic": bool(raw.get("synthetic")) or synthetic_run,
+            "resumed": reused is not None,
+            "verifier_hash": frozen_hash,
+            # Two keys, because generation and scoring have different inputs.
+            # The first says which stored text may satisfy this row; the
+            # second says which scored verdict may. A verifier change moves
+            # the second and leaves the first alone, which is what makes
+            # rescoring free and reuse honest (§26, §34 D16).
+            "generation_identity": row["generation_identity"],
+            "observation_identity": observation_identity(
+                row["generation_identity"], verifier_hash=frozen_hash,
+                instances=list(instances) or list(cell.present)),
+            "scores": [
+                {"kind": s.kind, "severity": s.severity,
+                 # Never null. A score with no slot cannot be indexed, and
+                 # `ObservationTable` keys both the §25 chance cell and every
+                 # §9.1 absent verdict by slot -- so a null collapsed all of
+                 # a cell's verdicts onto one key. An instance the slot map
+                 # does not bind falls back to its own label, which is unique
+                 # among registered instances by construction.
+                 "slot": slot_of.get(f"{s.kind}:{s.severity}",
+                                     f"{s.kind}:{s.severity}"),
+                 "statistic": s.statistic, "passed": s.passed,
+                 "graded": s.graded, "non_vacuous": s.non_vacuous,
+                 "vacuous_pass": s.vacuous_pass, "present": s.present,
+                 "position": s.position,
+                 "configuration": (
+                     cell.configuration_of(
+                         slot_of.get(f"{s.kind}:{s.severity}", ""))
+                     if s.present else None),
+                 "processing_failure": s.processing_failure}
+                for s in scores.scores],
+        })
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "scored.jsonl").write_text(
         "".join(json.dumps(r, sort_keys=True) + "\n" for r in scored_rows))
     return scored_rows
-
-
-def _score_row(task: tuple[Mapping[str, Any], Mapping[str, Any], PromptCell]
-               ) -> dict[str, Any]:
-    """Score one backend row: the serial loop body of `generate_and_score`.
-
-    A pure function of its task --- the backend's raw row, the design row
-    and the cell --- and of the pool's shared state (the instance set, the
-    slot binding, the identities). It raises exactly what the serial loop
-    raised --- §9.1's presence rule, through `assert_presence_rule` --- and
-    returns the scored row exactly as the serial loop appended it.
-    """
-    raw, row, cell = task
-    st = parallel.shared()
-    instances, frozen_hash = st["instances"], st["frozen_hash"]
-    text = raw.get("final_answer") or ""
-    truncated = bool(raw.get("answer_truncated"))
-    absent = absent_for(cell, instances)
-    scores = score_generation(
-        text, present=cell.present, absent=absent, truncated=truncated,
-        finish_reason=raw.get("finish_reason"),
-        token_count=raw.get("total_generated_tokens"))
-    assert_presence_rule(scores, stated=cell.present,
-                         instances_in_use=list(instances) or
-                         list(cell.present),
-                         where=f"{st['stage']}:{row['row_id']}")
-    slot_of = dict(st["slot_of_instance"])
-    slot_of.update({c.label: s for s, c in zip(cell.slots, cell.present)})
-    return {
-        "row_id": row["row_id"], "cell_id": cell.cell_id,
-        "block_id": cell.block_id, "draw_index": row["draw_index"],
-        "arm": cell.arm, "slots": list(cell.slots),
-        "topic_id": cell.topic_id, "area": cell.area,
-        "topic_split": cell.topic_split, "load": cell.load,
-        "wording_indices": list(cell.wording_indices),
-        "prompt_hash": cell.prompt_hash, "seed": row["scientific_seed"],
-        "raw_response": text, "finish_reason": raw.get("finish_reason"),
-        "token_count": raw.get("total_generated_tokens"),
-        "truncated": truncated, "empty": scores.empty,
-        "word_count": scores.word_count,
-        "in_stem_band": scores.in_stem_band,
-        "model_key": st["model_key"], "model_id": st["model_id"],
-        "model_revision": st["model_revision"], "study_id": st["study_id"],
-        "classification": CLASSIFICATION, "stage": st["stage"],
-        # What produced this text, not how the runner was called. It read
-        # ``generate is not None`` until the pre-data engineering
-        # amendment, which made every row of the four runners that always
-        # passed a stand-in synthetic by definition --- and would have
-        # stamped a row synthetic even when a real backend produced it.
-        "synthetic": bool(raw.get("synthetic")) or st["synthetic_run"],
-        "resumed": st["resumed"],
-        "verifier_hash": frozen_hash,
-        # Two keys, because generation and scoring have different inputs.
-        # The first says which stored text may satisfy this row; the
-        # second says which scored verdict may. A verifier change moves
-        # the second and leaves the first alone, which is what makes
-        # rescoring free and reuse honest (§26, §34 D16).
-        "generation_identity": row["generation_identity"],
-        "observation_identity": observation_identity(
-            row["generation_identity"], verifier_hash=frozen_hash,
-            instances=list(instances) or list(cell.present)),
-        "scores": [
-            {"kind": s.kind, "severity": s.severity,
-             # Never null. A score with no slot cannot be indexed, and
-             # `ObservationTable` keys both the §25 chance cell and every
-             # §9.1 absent verdict by slot -- so a null collapsed all of
-             # a cell's verdicts onto one key. An instance the slot map
-             # does not bind falls back to its own label, which is unique
-             # among registered instances by construction.
-             "slot": slot_of.get(f"{s.kind}:{s.severity}",
-                                 f"{s.kind}:{s.severity}"),
-             "statistic": s.statistic, "passed": s.passed,
-             "graded": s.graded, "non_vacuous": s.non_vacuous,
-             "vacuous_pass": s.vacuous_pass, "present": s.present,
-             "position": s.position,
-             "configuration": (
-                 cell.configuration_of(
-                     slot_of.get(f"{s.kind}:{s.severity}", ""))
-                 if s.present else None),
-             "processing_failure": s.processing_failure}
-            for s in scores.scores],
-    }
 
 
 def assert_no_outcome_read(rows: Iterable[Mapping[str, Any]], *,
