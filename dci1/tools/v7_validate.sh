@@ -19,6 +19,9 @@ set -u
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 W="${1:-5}"
+# The stages' own process pools (engine/parallel) inside each scenario or
+# test process, bounded so W scenario processes share the cores.
+export DCI1_V7_CPU_WORKERS="${DCI1_V7_CPU_WORKERS:-3}"
 LOG="${LOG_DIR:-/tmp/v7-validate-$$}"; mkdir -p "$LOG"
 T0=$(date +%s)
 stamp() { echo "$(( $(date +%s) - T0 ))s  $*"; }

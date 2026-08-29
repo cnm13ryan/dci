@@ -36,13 +36,14 @@ from dci1v4.errors import ProtocolError
 from dci1v7.design.cells import (design_cells,
                                  normalise_arms, slots_for)
 from dci1v7.engine import transitions
+from dci1v7.engine import parallel
 from dci1v7.engine.paths import ModelTree
 from dci1v7.analysis.observations import ObservationTable, build_observations
 from dci1v7.protocol import constants as C
 from dci1v7.protocol import seeds
-from dci1v7.run.execute import (generate_and_score, resolve_generate,
+from dci1v7.run.execute import (cell_rates, generate_and_score,
                                 instance_rates, per_topic_compliance,
-                                prompt_cell)
+                                prompt_cell, resolve_generate)
 from dci1v7.run.lifecycle import (StageOutcome, TerminalStatus,
                                   protocol_identity, run_stage)
 from dci1v7.stages import audit_prefreeze, composed_contrast, composed_probe
@@ -618,6 +619,125 @@ def _kappa_under_b(b_solo_rows: Sequence[Mapping[str, Any]],
     return value, len(topics), draws
 
 
+#: §13.2 / §25: the cell kappa_c is measured in.
+UNCONSTRAINED_ARM = "unconstrained"
+
+
+def _reduced(row: Mapping[str, Any], *, label: str, present: bool
+             ) -> dict[str, Any] | None:
+    """The row as `cell_rates`, `per_topic_compliance` and `_kappa_under_b`
+    read it, keeping only the verdicts of one instance in one presence.
+
+    Those readers touch `topic_split`, `arm`, `topic_id`, `word_count`,
+    `truncated` and, of `scores`, the entries whose label and presence
+    match; a row reduced to exactly that is the same row to them, in the
+    same order, and it is small enough to send to a worker by pickle. None
+    when the row carries no such verdict, which the readers would have
+    skipped.
+    """
+    scores = [s for s in row["scores"]
+              if f"{s['kind']}:{s['severity']}" == label
+              and bool(s["present"]) == present]
+    if not scores:
+        return None
+    return {"topic_split": row.get("topic_split"), "arm": row.get("arm"),
+            "topic_id": row["topic_id"], "word_count": row["word_count"],
+            "truncated": row["truncated"],
+            "scores": [{"kind": s["kind"], "severity": s["severity"],
+                        "present": s["present"], "passed": s["passed"],
+                        "vacuous_pass": s["vacuous_pass"],
+                        "graded": s["graded"]} for s in scores]}
+
+
+def _n_in_split(rows: Sequence[Mapping[str, Any]], split: str | None) -> int:
+    return len(rows) if split is None else sum(
+        1 for r in rows if r.get("topic_split") == split)
+
+
+def _calibration_entry(task: Mapping[str, Any]) -> dict[str, Any] | None:
+    """One §13.11 row: a candidate on a split. The serial loop body.
+
+    A pure function of its task. Returns None where the serial loop
+    `continue`d: a candidate the split holds no solo row for, or ---
+    preserving the reference implementation's rule exactly --- one that
+    every solo row of the split states, so that `instance_rates`'s absent
+    scan found nothing.
+    """
+    split, candidate = task["split"], task["candidate"]
+    restrict = None if split == "pooled" else split
+    if task["n_present"] == 0 or task["n_present"] == task["n_solo"]:
+        return None
+    try:
+        solo = cell_rates(task["present_rows"], kind=candidate.kind,
+                          severity=candidate.severity, present=True,
+                          split=restrict)
+    except ProtocolError:                                # pragma: no cover
+        return None
+    # §13.2: kappa_c "measured in the unconstrained cell of the same topic
+    # set at the same M under the same prompt". Every candidate is scored as
+    # an absent instance on every unconstrained cell of the grid runs, so
+    # the quantity exists on the rows; a split with no such cell is a
+    # broken run and refuses rather than recording a chance nobody measured.
+    try:
+        chance = cell_rates(task["unconstrained_rows"], kind=candidate.kind,
+                            severity=candidate.severity, present=False,
+                            split=restrict, arm=UNCONSTRAINED_ARM)
+    except ProtocolError as absent:
+        raise ProtocolError(
+            f"§13.2: kappa_c for {candidate.label} on the {split} split has "
+            "no unconstrained cell to be measured in; the calibration table "
+            "records no chance it did not measure") from absent
+    screened = task["screened"] or {}
+    # ``precomputed`` is ``_kappa_columns``' entry for this m*: the same
+    # quantity from one pass over the rows instead of one pass per
+    # candidate. The per-candidate form stays as the reference
+    # implementation and a unit test asserts the two agree exactly.
+    precomputed = task["precomputed"]
+    if precomputed is not None:
+        kappa_b = precomputed["kappa_under_b"]
+        source = precomputed["kappa_under_b_source"]
+        n_topics_b, n_draws_b = source["n_topics"], source["n_draws"]
+    elif task["kappa_column_given"]:
+        kappa_b, n_topics_b, n_draws_b = None, 0, 0
+    else:
+        kappa_b, n_topics_b, n_draws_b = _kappa_under_b(
+            task["b_solo_rows"], candidate, split=restrict)
+    entry: dict[str, Any] = {
+        "kind": candidate.kind, "severity": candidate.severity,
+        "split": split, "model_key": task["model_key"],
+        "solo_compliance": solo["compliance"],
+        "chance_compliance": chance["compliance"],
+        "solo_vacuity": solo["vacuity"],
+        "n_topics": solo["n_topics"], "n_draws": C.M_CAL,
+        "median_words": solo["median_words"],
+        "graded_mean": solo["graded_mean"],
+        # §13.7 resamples topics, so the vector travels with the
+        # mean. A row with an empty vector makes the equivalence test
+        # report that it could not be run, and an untested
+        # equivalence is not a satisfied one --- which is how this
+        # missing producer surfaced.
+        "per_topic_solo": list(per_topic_compliance(
+            task["present_rows"], kind=candidate.kind,
+            severity=candidate.severity, split=restrict)),
+    }
+    if screened.get("solo") is not None:
+        entry["prescreen_solo_compliance"] = screened["solo"]
+    if screened.get("chance") is not None:
+        entry["prescreen_chance_compliance"] = screened["chance"]
+    if kappa_b is not None:
+        entry["kappa_under_b"] = kappa_b
+        # Written as a mapping, not as the dataclass: the table goes
+        # onto a signed JSON record and §13.11 requires the source to
+        # travel with the value. `load_calibration_table` rebuilds it
+        # and validates it, on a fresh table and a reloaded one alike.
+        entry["kappa_under_b_source"] = {
+            "load": 1, "present": [f"B:{task['m_star']}"],
+            "candidate": candidate.label, "model_key": task["model_key"],
+            "m_star": task["m_star"], "split": split,
+            "n_topics": n_topics_b, "n_draws": n_draws_b}
+    return entry
+
+
 def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                       m_star: int, solo_rows: Sequence[Mapping[str, Any]],
                       chance_rows: Sequence[Mapping[str, Any]],
@@ -643,77 +763,62 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
     *ordering* does, and that is all; v4r4's pre-screen distance caliper is
     deleted. Filling the columns therefore changes no verdict, which is why it
     can be done without amending §13.
+
+    **2026-08-29, two changes.** (1) ``chance_compliance`` is §13.2's
+    kappa_c, measured on the grid runs' unconstrained cells, where every
+    candidate is scored as an absent instance. Until this date it was
+    obtained through ``instance_rates(chance_rows, ...)``, whose *solo* scan
+    runs first and finds no row in which a non-outcome candidate is stated,
+    so the call raised and the column was written as ``0.0`` for every
+    candidate of every replication of v5, v6 and v7: iota(R) equalled raw
+    solo compliance, §13.4's chance ceiling never fired, and §13.6's
+    displacement was measured against zero. (2) The table is built one
+    (split, candidate) unit at a time in a process pool, each unit given
+    the rows that carry its candidate's verdicts, reduced to those verdicts
+    (`_reduced`) --- the same rows in the same order to every reader, so
+    every other column is the byte the serial scan produced
+    (``tests_v7/test_parallel.py``, and checked on the 2026-08-28
+    rehearsal's 86,016 stored rows against the previous implementation).
     """
-    out: dict[str, list[dict[str, Any]]] = {}
-    for split in (C.CALIBRATION_A, C.CALIBRATION_B, "pooled"):
+    splits = (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")
+    unconstrained = [r for r in chance_rows
+                     if r.get("arm") == UNCONSTRAINED_ARM]
+    n_solo = {s: _n_in_split(solo_rows, None if s == "pooled" else s)
+              for s in splits}
+    # One pass per candidate over each row set, in the parent: the rows
+    # that state the candidate, the unconstrained rows where it is absent,
+    # and --- for the per-candidate kappa(R|B) fallback --- the B-solo rows
+    # where it is absent.
+    tasks: list[dict[str, Any]] = []
+    for split in splits:
         restrict = None if split == "pooled" else split
-        rows: list[dict[str, Any]] = []
         for candidate in candidates:
-            try:
-                solo = instance_rates(solo_rows, kind=candidate.kind,
-                                      severity=candidate.severity,
-                                      split=restrict)
-            except ProtocolError:
-                continue
-            try:
-                chance = instance_rates(chance_rows, kind=candidate.kind,
-                                        severity=candidate.severity,
-                                        split=restrict)
-                chance_value = chance["chance"]
-            except ProtocolError:
-                chance_value = 0.0
-            screened = (prescreen or {}).get(candidate.label) or {}
-            # ``kappa_column`` is ``_kappa_columns``' entry for this m*: the
-            # same quantity from one pass over the rows instead of one pass
-            # per candidate. The per-candidate form stays as the reference
-            # implementation and a unit test asserts the two agree exactly.
+            label = candidate.label
+            present_rows = [r for r in (
+                _reduced(row, label=label, present=True) for row in solo_rows)
+                if r is not None]
             precomputed = (None if kappa_column is None
-                           else (kappa_column.get(split) or {}).get(
-                               candidate.label))
-            if precomputed is not None:
-                kappa_b = precomputed["kappa_under_b"]
-                source = precomputed["kappa_under_b_source"]
-                n_topics_b, n_draws_b = source["n_topics"], source["n_draws"]
-            elif kappa_column is not None:
-                kappa_b, n_topics_b, n_draws_b = None, 0, 0
-            else:
-                kappa_b, n_topics_b, n_draws_b = _kappa_under_b(
-                    b_solo_rows, candidate, split=restrict)
-            entry: dict[str, Any] = {
-                "kind": candidate.kind, "severity": candidate.severity,
-                "split": split, "model_key": model_key,
-                "solo_compliance": solo["solo"],
-                "chance_compliance": chance_value,
-                "solo_vacuity": solo["vacuity"],
-                "n_topics": solo["n_topics"], "n_draws": C.M_CAL,
-                "median_words": solo["median_words"],
-                "graded_mean": solo["graded_mean"],
-                # §13.7 resamples topics, so the vector travels with the
-                # mean. A row with an empty vector makes the equivalence test
-                # report that it could not be run, and an untested
-                # equivalence is not a satisfied one --- which is how this
-                # missing producer surfaced.
-                "per_topic_solo": list(per_topic_compliance(
-                    solo_rows, kind=candidate.kind,
-                    severity=candidate.severity, split=restrict)),
-            }
-            if screened.get("solo") is not None:
-                entry["prescreen_solo_compliance"] = screened["solo"]
-            if screened.get("chance") is not None:
-                entry["prescreen_chance_compliance"] = screened["chance"]
-            if kappa_b is not None:
-                entry["kappa_under_b"] = kappa_b
-                # Written as a mapping, not as the dataclass: the table goes
-                # onto a signed JSON record and §13.11 requires the source to
-                # travel with the value. `load_calibration_table` rebuilds it
-                # and validates it, on a fresh table and a reloaded one alike.
-                entry["kappa_under_b_source"] = {
-                    "load": 1, "present": [f"B:{m_star}"],
-                    "candidate": candidate.label, "model_key": model_key,
-                    "m_star": m_star, "split": split,
-                    "n_topics": n_topics_b, "n_draws": n_draws_b}
-            rows.append(entry)
-        out[split] = rows
+                           else (kappa_column.get(split) or {}).get(label))
+            tasks.append({
+                "split": split, "candidate": candidate,
+                "n_present": _n_in_split(present_rows, restrict),
+                "n_solo": n_solo[split],
+                "present_rows": present_rows,
+                "unconstrained_rows": [r for r in (
+                    _reduced(row, label=label, present=False)
+                    for row in unconstrained) if r is not None],
+                "b_solo_rows": ([] if kappa_column is not None else [
+                    r for r in (_reduced(row, label=label, present=False)
+                                for row in b_solo_rows) if r is not None]),
+                "precomputed": precomputed,
+                "kappa_column_given": kappa_column is not None,
+                "screened": (prescreen or {}).get(label) or {},
+                "m_star": m_star, "model_key": model_key})
+    entries = parallel.pool_map(_calibration_entry, tasks)
+    out: dict[str, list[dict[str, Any]]] = {s: [] for s in splits}
+    for task, entry in zip(tasks, entries):
+        if entry is not None:
+            out[task["split"]].append(entry)
     return out
 
 
