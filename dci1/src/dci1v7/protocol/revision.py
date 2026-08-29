@@ -376,6 +376,81 @@ def _estimand_layer_check() -> bool:
     return True
 
 
+# ------------------------------------ the §13.11 chance column (2026-08-29)
+
+def _chance_column_is_the_unconstrained_cell() -> bool:
+    """§13.11's chance column is §13.2's kappa_c --- measured on the
+    unconstrained cells of the split's own topic set and on nothing else
+    --- a row at CHANCE_DEGENERACY_MAX is withheld and recorded, and the
+    record reader refuses a table that carries one.
+
+    A self-contained fixture rather than a test import, in the shape the
+    other checks here take: two candidates on eight topics, an
+    unconstrained cell on which one passes on a quarter of the rows and
+    the other on every row, and a B-solo cell on which both pass on every
+    row --- the value a wrong denominator would pick up.
+    """
+    from dci1v7.run import gates_run
+    from dci1v7.stages import feasibility
+    from dci1v7.verifiers.constraints import Constraint
+
+    def score(kind, severity, passed, present):
+        return {"kind": kind, "severity": severity, "present": present,
+                "passed": passed, "vacuous_pass": False,
+                "graded": 1.0 if passed else 0.0}
+
+    def row(cell, arm, topic, split, scores):
+        return {"cell_id": cell, "arm": arm, "block_id": f"g2{arm}-000",
+                "topic_id": topic, "topic_split": split, "scores": scores,
+                "word_count": 80, "truncated": False}
+
+    candidates = (Constraint("MK1", 1), Constraint("MK2", 2))
+    splits = (C.CALIBRATION_A, C.CALIBRATION_B)
+    solo, grid, b_solo = [], [], []
+    for i in range(8):
+        topic, split = f"t{i}", splits[i % 2]
+        for c in candidates:
+            solo.append(row(f"solo:{c.label}", "solo", topic, split,
+                            [score(c.kind, c.severity, i % 2 == 0, True)]
+                            + [score(o.kind, o.severity, False, False)
+                               for o in candidates if o is not c]))
+        grid.append(row("unconstrained", "unconstrained", topic, split,
+                        [score("MK1", 1, i < 2, False),
+                         score("MK2", 2, True, False)]))
+        b_solo.append(row("solo:B:9", "solo", topic, split,
+                          [score("B", 9, True, True)]
+                          + [score(c.kind, c.severity, True, False)
+                             for c in candidates]))
+    tables = gates_run._calibration_rows(
+        "m", candidates, m_star=9, solo_rows=solo, chance_rows=grid + b_solo,
+        b_solo_rows=b_solo)
+    by = {(r["split"], f"{r['kind']}:{r['severity']}"): r
+          for rows in tables.values() for r in rows}
+    if any(abs(by[(s, "MK1:1")]["chance_compliance"] - 0.25) > 1e-12
+           for s in (*splits, "pooled")):
+        return False
+    if by[("pooled", "MK2:2")]["chance_compliance"] != 1.0:
+        return False
+    kept, withheld = gates_run._withhold_degenerate(tables)
+    if [r["kind"] for r in kept["pooled"]] != ["MK1"] or \
+            [r["kind"] for r in withheld["pooled"]] != ["MK2"]:
+        return False
+    if withheld["pooled"][0].get("status") != \
+            gates_run.DIFFICULTY_COORDINATE_DEGENERATE:
+        return False
+    try:
+        feasibility.calibration_rows_at(
+            {"m_star": 9, "calibration_rows": tables}, m_star=9,
+            split="pooled")
+    except ProtocolError:
+        pass
+    else:
+        return False
+    return len(feasibility.calibration_rows_at(
+        {"m_star": 9, "calibration_rows": kept}, m_star=9,
+        split="pooled")) == 1
+
+
 # ------------------------------------------------------ A6, A7, A8 (2026-08-28)
 
 def _coverage_table(iota_a: float, *, span: float, side: str = "both"
@@ -682,6 +757,25 @@ CHANGES: tuple[Change, ...] = (
            "three v7 sentences and three closures had read 'Delta_R is "
            "irreversibly not identified' as 'the replication ends'",
            _d6_means_the_replication_continues),
+    Change("V14", "§13.2, §13.4, §13.6, §13.11 (implementation, 2026-08-29)",
+           "§13.11's chance_compliance column IS §13.2's kappa_c: measured "
+           "on the grid runs' unconstrained cells of the split's own topic "
+           "set at the same M, per split, by the one function every chance "
+           "rate uses; a candidate whose kappa_c reaches "
+           "CHANCE_DEGENERACY_MAX is withheld from the table it was measured "
+           "on and recorded with its values as "
+           "DIFFICULTY_COORDINATE_DEGENERATE (§11.2; v6 A16's rule on the "
+           "calibrated basis), the record reader refuses a table that "
+           "carries one, and §12.6's calibrated re-read still counts it",
+           "the column was 0.0 for every candidate of every replication of "
+           "v5, v6 and v7: the producer asked instance_rates for a "
+           "candidate no grid row states, the call raised, and the fallback "
+           "was written --- so iota(R) was raw solo compliance beside a "
+           "chance-corrected iota_A, H_R was solo compliance, §13.4's "
+           "ceiling could not fire and §13.6's displacement was measured "
+           "against zero. No threshold, band, caliper, estimator or rule "
+           "moves; the §13 modules are the bytes V9 pins",
+           _chance_column_is_the_unconstrained_cell),
 )
 
 #: What v7 deliberately does NOT change, named so a reader does not have to

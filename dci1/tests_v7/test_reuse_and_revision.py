@@ -20,10 +20,10 @@ def test_every_registered_change_is_present_in_the_code():
     # Every v7 change is executable and every one is checked. A listed change
     # the code does not make stops stage 1, because `assert_changes_realised`
     # is on the registration path.
-    assert record["n_changes"] == record["n_checked"] == 13
+    assert record["n_changes"] == record["n_checked"] == 14
     assert all(c["realised"] is True for c in record["changes"])
     assert [c["id"] for c in record["changes"]] == [
-        f"V{i}" for i in range(1, 14)]
+        f"V{i}" for i in range(1, 15)]
 
 
 def test_the_withdrawal_is_a_registered_change_with_an_executable_check():
@@ -37,7 +37,8 @@ def test_the_withdrawal_is_a_registered_change_with_an_executable_check():
     assert revision.assert_no_raise_path()["raise_paths"] == []
     # The boundary rule and the two recording stages are registered changes
     # with behavioural checks, not docstrings.
-    for cid in ("V2", "V3", "V4", "V5", "V7", "V10", "V11", "V12", "V13"):
+    for cid in ("V2", "V3", "V4", "V5", "V7", "V10", "V11", "V12", "V13",
+                "V14"):
         assert by_id[cid].check is not None and by_id[cid].check(), cid
 
 
