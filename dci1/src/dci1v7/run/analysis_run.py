@@ -1359,19 +1359,56 @@ def _projection_audit(table: ObservationTable) -> list[dict[str, Any]]:
             chance = estimators.chance_vector(table, slot)
         except (IntegrityError, ProtocolError):
             continue
-        iota = [instructed_compliance(s, k) for s, k in zip(solo, chance)]
-        projected = estimators.projected_compliance_vector(kappa_b, iota)
-        displacement = estimators.displacement_vector(chance, kappa_b)
+        # §11.2: a block whose load-zero cell satisfied the companion on
+        # every draw has kappa_c = 1 there, and iota_c = (p - 1)/(1 - 1) is
+        # not defined; the coordinate is recorded as
+        # DIFFICULTY_COORDINATE_DEGENERATE, not computed. The projection is
+        # formed on the blocks where it exists and the entry says how many
+        # it was not. Found on the 2026-08-29 rehearsal of gemma-3n-e2b-it:
+        # the broad-class control's chance is 0.32 on average and 1.0 on
+        # some blocks, and this stage raised where §11.2 records.
+        defined = [i for i, k in enumerate(chance)
+                   if k < C.CHANCE_DEGENERACY_MAX]
+        n_degenerate = len(chance) - len(defined)
+        kappa_b_d = [kappa_b[i] for i in defined]
+        chance_d = [chance[i] for i in defined]
+        iota = [instructed_compliance(solo[i], chance[i]) for i in defined]
+        projected = estimators.projected_compliance_vector(kappa_b_d, iota)
+        displacement = estimators.displacement_vector(chance_d, kappa_b_d)
         for configuration in C.CONFIGURATIONS:
             if not table.has_composed(slot, "B", configuration):
                 continue
-            realised = estimators.composed_vector(table, slot, "B",
-                                                  configuration)
+            realised_all = estimators.composed_vector(table, slot, "B",
+                                                      configuration)
+            realised = [realised_all[i] for i in defined]
             errors = [abs(p - r) for p, r in zip(projected, realised)]
             errors_sorted = sorted(errors)
-            audit.append({
+            entry: dict[str, Any] = {
                 "companion": slot, "configuration": configuration,
                 "cell": f"pair:B+{slot}",
+                "n_blocks": len(errors),
+                "n_blocks_degenerate": n_degenerate,
+                "allowance": C.PROJECTION_ERROR_ALLOWANCE,
+                "reading": "§13.6's projection is an ADMISSION quantity and "
+                           "this is its prospective record; it licenses no "
+                           "claim and revises no admission",
+            }
+            if n_degenerate:
+                entry["status"] = "DIFFICULTY_COORDINATE_DEGENERATE"
+                entry["degenerate_reading"] = (
+                    f"§11.2: on {n_degenerate} block(s) the load-zero cell "
+                    "satisfied the companion on every draw, iota is not "
+                    "defined there, and the projection is formed on the "
+                    f"{len(errors)} block(s) where it is")
+            if not errors:
+                entry.update({
+                    "projected_mean": None, "realised_mean": None,
+                    "displacement_mean": None, "absolute_error_mean": None,
+                    "absolute_error_median": None, "absolute_error_max": None,
+                    "within_allowance": None})
+                audit.append(entry)
+                continue
+            entry.update({
                 "projected_mean": sum(projected) / len(projected),
                 "realised_mean": sum(realised) / len(realised),
                 "displacement_mean": (sum(displacement)
@@ -1380,14 +1417,10 @@ def _projection_audit(table: ObservationTable) -> list[dict[str, Any]]:
                 "absolute_error_median":
                     errors_sorted[len(errors_sorted) // 2],
                 "absolute_error_max": max(errors),
-                "n_blocks": len(errors),
-                "allowance": C.PROJECTION_ERROR_ALLOWANCE,
                 "within_allowance": (sum(errors) / len(errors)
                                      <= C.PROJECTION_ERROR_ALLOWANCE),
-                "reading": "§13.6's projection is an ADMISSION quantity and "
-                           "this is its prospective record; it licenses no "
-                           "claim and revises no admission",
             })
+            audit.append(entry)
     return audit
 
 

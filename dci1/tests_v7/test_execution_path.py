@@ -864,3 +864,51 @@ def test_the_degenerate_rungs_are_recorded_as_evidence():
         # the reason is the measurement, and it is present
         assert entry["chance_compliance"] >= C.CHANCE_DEGENERACY_MAX
         assert entry["solo_compliance"] is not None
+
+
+def test_the_projection_audit_records_a_degenerate_block_instead_of_raising(
+        monkeypatch):
+    """§11.2 on §23's audit (2026-08-29): a block whose load-zero cell
+    satisfied the companion on every draw has kappa_c = 1 and no iota; the
+    audit forms the projection on the other blocks, counts that one, and
+    carries DIFFICULTY_COORDINATE_DEGENERATE --- it raised on the gemma-3n-
+    e2b-it rehearsal (class control, chance 0.32 on average, 1.0 on some
+    blocks) and the unmasked analysis could not be written.
+    """
+    from dci1v7.analysis import estimators
+
+    class _Table:
+        blocks = ["b0", "b1", "b2", "b3"]
+
+        def slots(self):
+            return ("A", "B", "CL")
+
+        def has_kappa_under_b(self, slot):
+            return slot == "CL"
+
+        def has_composed(self, slot, outcome, configuration):
+            return configuration == "outcome_first"
+
+    vectors = {"kappa": [0.1, 0.2, 0.1, 0.3], "solo": [0.9, 0.8, 1.0, 0.7],
+               "chance": [0.3, 0.2, 1.0, 0.4],           # block 2 degenerate
+               "composed": [0.6, 0.5, 0.9, 0.4]}
+    monkeypatch.setattr(estimators, "counterfactual_chance",
+                        lambda table, slot, **k: list(vectors["kappa"]))
+    monkeypatch.setattr(estimators, "solo_vector",
+                        lambda table, slot, **k: list(vectors["solo"]))
+    monkeypatch.setattr(estimators, "chance_vector",
+                        lambda table, slot, **k: list(vectors["chance"]))
+    monkeypatch.setattr(estimators, "composed_vector",
+                        lambda table, o, c, cfg, **k: list(vectors["composed"]))
+    audit = analysis_run._projection_audit(_Table())
+    assert len(audit) == 1
+    entry = audit[0]
+    assert entry["companion"] == "CL" and entry["n_blocks"] == 3
+    assert entry["n_blocks_degenerate"] == 1
+    assert entry["status"] == "DIFFICULTY_COORDINATE_DEGENERATE"
+    assert entry["within_allowance"] in (True, False)
+    # And with every block degenerate the entry is written empty, not raised.
+    vectors["chance"] = [1.0, 1.0, 1.0, 1.0]
+    empty = analysis_run._projection_audit(_Table())[0]
+    assert empty["n_blocks"] == 0 and empty["projected_mean"] is None
+    assert empty["within_allowance"] is None

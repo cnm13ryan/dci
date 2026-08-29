@@ -13,6 +13,33 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — §23's projection audit records a degenerate block instead of raising (§11.2)
+
+**What changed.** `run/analysis_run._projection_audit` forms §13.6's
+projected composed compliance per block from that block's load-zero chance
+κ_c and ι_c = (p_solo − κ_c)/(1 − κ_c). A block on which the load-zero cell
+satisfied the companion on every draw has κ_c = 1 and no ι_c; §11.2
+registers that the coordinate is then recorded as
+`DIFFICULTY_COORDINATE_DEGENERATE`, and the audit raised instead — reachable
+only on a replication with the broad-class control admitted (its chance is
+0.32 on average on `gemma-3n-e2b-it`'s confirmatory blocks and 1.0 on some),
+which no replication of v5–v7 had reached at this stage. The audit now forms
+the projection on the blocks where the coordinate exists, records
+`n_blocks_degenerate` and the status on the entry (and an empty entry when
+no block remains), and the unmasked analysis is written. Found on the
+2026-08-29 development rehearsal r3 of `gemma-3n-e2b-it`, whose
+`UNMASKED_ANALYSIS` failed on it after 89,088 confirmatory rows;
+`tests_v7/test_execution_path.py` covers the degenerate and the all-degenerate
+block.
+
+**Comparability.** §23's audit "licenses no claim and revises no admission";
+no registered estimand, threshold or rule moves. On replications without a
+degenerate block the entries are unchanged apart from the new
+`n_blocks_degenerate: 0` field. `run/analysis_run.py` is in the analysis
+code hash sealed at `MASKED_ANALYSIS`; the e2b rehearsal's seal and unmask
+were recorded on the previous hash and its unmasked analysis on this one,
+which the final report records and does not equate.
+
 ## 2026-08-29 — two CPU loops run in spawned process pools; every recorded value unchanged
 
 **What changed.** `engine/parallel.pool_map` (spawned workers, pickled
