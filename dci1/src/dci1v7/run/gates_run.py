@@ -623,30 +623,31 @@ def _kappa_under_b(b_solo_rows: Sequence[Mapping[str, Any]],
 UNCONSTRAINED_ARM = "unconstrained"
 
 
-def _reduced(row: Mapping[str, Any], *, label: str, present: bool
-             ) -> dict[str, Any] | None:
-    """The row as `cell_rates`, `per_topic_compliance` and `_kappa_under_b`
-    read it, keeping only the verdicts of one instance in one presence.
+def _bucket(rows: Sequence[Mapping[str, Any]], *, present: bool
+            ) -> dict[str, list[dict[str, Any]]]:
+    """Every row's verdicts of the given presence, reduced, by label.
 
-    Those readers touch `topic_split`, `arm`, `topic_id`, `word_count`,
-    `truncated` and, of `scores`, the entries whose label and presence
-    match; a row reduced to exactly that is the same row to them, in the
-    same order, and it is small enough to send to a worker by pickle. None
-    when the row carries no such verdict, which the readers would have
-    skipped.
+    One pass: a row contributes to the bucket of every label it carries a
+    verdict of that presence for, in row order, so each bucket is exactly
+    what `_reduced(row, label, present)` over all rows would have produced.
     """
-    scores = [s for s in row["scores"]
-              if f"{s['kind']}:{s['severity']}" == label
-              and bool(s["present"]) == present]
-    if not scores:
-        return None
-    return {"topic_split": row.get("topic_split"), "arm": row.get("arm"),
-            "topic_id": row["topic_id"], "word_count": row["word_count"],
-            "truncated": row["truncated"],
-            "scores": [{"kind": s["kind"], "severity": s["severity"],
-                        "present": s["present"], "passed": s["passed"],
-                        "vacuous_pass": s["vacuous_pass"],
-                        "graded": s["graded"]} for s in scores]}
+    out: dict[str, list[dict[str, Any]]] = {}
+    for row in rows:
+        by_label: dict[str, list[dict[str, Any]]] = {}
+        for s in row["scores"]:
+            if bool(s["present"]) != present:
+                continue
+            by_label.setdefault(f"{s['kind']}:{s['severity']}", []).append(
+                {"kind": s["kind"], "severity": s["severity"],
+                 "present": s["present"], "passed": s["passed"],
+                 "vacuous_pass": s["vacuous_pass"], "graded": s["graded"]})
+        for label, scores in by_label.items():
+            out.setdefault(label, []).append(
+                {"topic_split": row.get("topic_split"),
+                 "arm": row.get("arm"), "topic_id": row["topic_id"],
+                 "word_count": row["word_count"],
+                 "truncated": row["truncated"], "scores": scores})
+    return out
 
 
 def _n_in_split(rows: Sequence[Mapping[str, Any]], split: str | None) -> int:
@@ -785,18 +786,22 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                      if r.get("arm") == UNCONSTRAINED_ARM]
     n_solo = {s: _n_in_split(solo_rows, None if s == "pooled" else s)
               for s in splits}
-    # One pass per candidate over each row set, in the parent: the rows
-    # that state the candidate, the unconstrained rows where it is absent,
-    # and --- for the per-candidate kappa(R|B) fallback --- the B-solo rows
-    # where it is absent.
+    # ONE pass over each row set, in the parent, bucketing every row's
+    # verdicts by label and presence: the rows that state each candidate,
+    # the unconstrained rows where each is absent, and --- for the
+    # per-candidate kappa(R|B) fallback --- the B-solo rows where each is
+    # absent. A pass per candidate (the first form of this) cost 336 scans
+    # of 86,016 rows at Gate 2, which is the cost this replaces.
+    present_by = _bucket(solo_rows, present=True)
+    unconstrained_by = _bucket(unconstrained, present=False)
+    b_solo_by = ({} if kappa_column is not None
+                 else _bucket(b_solo_rows, present=False))
     tasks: list[dict[str, Any]] = []
     for split in splits:
         restrict = None if split == "pooled" else split
         for candidate in candidates:
             label = candidate.label
-            present_rows = [r for r in (
-                _reduced(row, label=label, present=True) for row in solo_rows)
-                if r is not None]
+            present_rows = present_by.get(label, [])
             precomputed = (None if kappa_column is None
                            else (kappa_column.get(split) or {}).get(label))
             tasks.append({
@@ -804,12 +809,8 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                 "n_present": _n_in_split(present_rows, restrict),
                 "n_solo": n_solo[split],
                 "present_rows": present_rows,
-                "unconstrained_rows": [r for r in (
-                    _reduced(row, label=label, present=False)
-                    for row in unconstrained) if r is not None],
-                "b_solo_rows": ([] if kappa_column is not None else [
-                    r for r in (_reduced(row, label=label, present=False)
-                                for row in b_solo_rows) if r is not None]),
+                "unconstrained_rows": unconstrained_by.get(label, []),
+                "b_solo_rows": b_solo_by.get(label, []),
                 "precomputed": precomputed,
                 "kappa_column_given": kappa_column is not None,
                 "screened": (prescreen or {}).get(label) or {},

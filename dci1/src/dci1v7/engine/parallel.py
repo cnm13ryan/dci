@@ -23,10 +23,15 @@ threads --- the spawned scenario workers of the execution-path audit have a
 result-queue feeder thread; a stage process may have whatever a library
 started --- can inherit a lock another thread held at the fork and wait on
 it forever, and the audit did exactly that on 2026-08-29: one worker per
-scenario process asleep for eight hours, its siblings zombies. Workers are
-now started through the ``forkserver`` context (a clean, single-threaded
-server forks them) and receive their inputs by pickle, so the calling
-process's threads cannot reach them.
+scenario process asleep for eight hours, its siblings zombies. A second
+version used ``forkserver``; inside a real stage process
+(``python -m dci1v7.run.cli run --stage REGIME_SCREEN``) its forked worker
+slept on a futex before importing anything, and the stage hung. Workers are
+now **spawned**: a fresh interpreter each, nothing inherited, inputs by
+pickle. Spawning re-imports the calling process's main module (as
+``__mp_main__``), so the main module must be importable --- every entry
+point in this repository is --- and when it is not (a script fed on stdin)
+the units run serially rather than fail.
 
 ``DCI1_V7_CPU_WORKERS`` sets the pool size for a process (``1`` selects the
 serial path); the default leaves four cores to the backend and the other
@@ -98,9 +103,35 @@ def pool_map(fn: Callable[[Any], Any], items: Sequence[Any], *,
             return [fn(item) for item in items]
         finally:
             _SHARED.clear()
+    if not _main_is_importable():
+        _install_shared(state)
+        try:
+            return [fn(item) for item in items]
+        finally:
+            _SHARED.clear()
     if chunksize is None:
         chunksize = max(1, len(items) // (workers * 8))
-    context = mp.get_context("forkserver")
+    context = mp.get_context("spawn")
     with context.Pool(workers, initializer=_install_shared,
                       initargs=(state,)) as pool:
         return list(pool.imap(fn, items, chunksize=chunksize))
+
+
+def _main_is_importable() -> bool:
+    """Whether a spawned worker can re-import this process's main module.
+
+    A module run with ``-m`` or a script file can be; an interpreter fed on
+    stdin or ``-c`` cannot, and a pool started from one dies with an
+    ``EOFError`` in the worker rather than a clear message.
+    """
+    import sys
+
+    main = sys.modules.get("__main__")
+    if main is None:
+        return False
+    spec = getattr(main, "__spec__", None)
+    if spec is not None and getattr(spec, "name", None):
+        return True
+    path = getattr(main, "__file__", None)
+    return bool(path) and os.path.exists(path) and \
+        not os.path.basename(path).startswith("<")
