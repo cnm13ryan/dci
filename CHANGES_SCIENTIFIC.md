@@ -13,6 +13,187 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — in force: §13.11's `chance_compliance` is §13.2's κ_c, measured on the unconstrained cells; a degenerate candidate is withheld from the table and recorded
+
+**What changed.** `run/gates_run._calibration_rows` (the Gate-2 producer of
+§13.11's table) now measures every candidate's `chance_compliance` as §11.2,
+§13.2 and §25 register it: the candidate's compliance in the **unconstrained
+cell** of the split's own topic set at the same M — the grid runs' load-zero
+cells, on which §9.1 scores every carried candidate as an absent instance —
+through the one `cell_rates` every chance rate uses, with `arm =
+"unconstrained"`. A split with no unconstrained cell, or an unconstrained
+cell on a different topic set from the solo cell, refuses rather than
+recording a chance nobody measured. The Gate-2 record names the denominator
+(`chance_basis`: which runs, topics per split, draws per topic — 192 × 8 on
+the pooled table, both grid runs' independent unconstrained draws).
+
+A candidate whose κ_c reaches `CHANCE_DEGENERACY_MAX` (0.99) has no
+difficulty coordinate (§11.2: "reported with its difficulty coordinate
+withheld and `DIFFICULTY_COORDINATE_DEGENERATE`"). It is **withheld from
+the table §13 reads**, per split, and recorded beside it with every value it
+measured (`calibration_rows_withheld`, status, why, and the §13.4 verdicts
+it fails on those values — lift ≤ 0.01 against the 0.20 floor, κ above the
+0.75 ceiling). Gate 2.5 names the withheld set on its record
+(`withheld_from_qualification`); `feasibility.calibration_rows_at` — the
+seam every §13 stage reads the table through — refuses a table that carries
+a degenerate row; §12.6's calibrated re-read puts the withheld rows back for
+that reading alone, so v6 A16's rule (a coordinate-less rung is dropped from
+every condition and recorded under `coordinate_undefined`) holds on the
+calibrated basis as on the screen, and the re-read output now carries that
+record. `protocol/revision.V14` checks all of it executably on the
+registration path; the producer/consumer contract declares the new field
+(Gate 2 → Gate 2.5, Gate 3A); the execution-path audit's ledger gains
+`R-13.2-chance-basis` and `R-11.2-coordinate-withheld`;
+`tests_v7/test_chance_basis.py` carries the regressions (a non-zero chance
+measured on the unconstrained cells alone; the ceiling excluding a
+candidate above it; ι on the registered formula; a chance-free candidate's
+row and verdict byte-identical to before; a qualification changing only
+where the corrected value requires it; serial and pooled builders identical
+on the corrected table; the degenerate path end to end).
+
+**Why here and not in §13's modules.** `revision.V9` pins twelve
+estimand-layer modules byte-for-byte against v6 — `stages/calibration_table`,
+`stages/selection`, `stages/stability`, `stages/interaction`,
+`stages/support` (two functions excluded), `protocol/identification`,
+`design/cells` and `analysis/{estimators,observations,intervals,bootstrap,
+masking}` — and two of them, `stability` and `selection`, read
+`CalibrationRow.iota` on every row they are handed, which raises at
+κ ≥ 0.99. The correction therefore lives entirely upstream of the pin:
+the producer (`run/gates_run`), the record seam (`stages/feasibility`), the
+contract and the revision ledger. None of the twelve files changes a byte
+and `V9` still passes; `stages/validity.py` and `stages/qualification_gate.py`
+are not pinned and were not changed either. No threshold, band, caliper,
+coverage condition, estimator or selection rule moves (`V8`). **No
+preregistration text changes and no A4 chain record is written:** §11.2,
+§13.2 and §25 already register the quantity the column now carries, the
+withholding rule is §11.2's own status applied where v6 A16 applies it on
+the screen, and §32.3 would in any case refuse an amendment naming §13. The
+registered v7 tree, closed on 2026-08-28, is not touched.
+
+**Why it was zero.** `instance_rates(chance_rows, …)` runs its *solo* scan
+first and no grid row states a non-outcome candidate; the call raised and
+the producer's `except ProtocolError: chance_value = 0.0` wrote the fallback
+— for every candidate, on every split, of every replication of v5, v6 and
+v7, and of every development rehearsal started before this entry. The
+2026-08-29 "finding" entry below recorded it and parked it; this entry puts
+the correction in force.
+
+**What the zero column did.** ι(R) = (p_solo − κ)/(1 − κ) equalled raw solo
+compliance for every candidate while ι_A was chance-corrected; H_R =
+p_solo − κ was p_solo, so §13.4's lift floor tested the wrong quantity;
+§13.4's chance ceiling (0.75 point, 0.85 Wilson upper) could not fire;
+§13.6's displacement Σ_R = κ^B_R − κ_R was measured against zero and its
+projection p̂_R used an uncorrected ι_R; §13.8's caliper |ι_R − ι_A| and
+§13.7's split-difference bootstrap of ι ran on the uncorrected coordinate;
+§12.6's calibrated re-read placed every rung by raw solo compliance; the
+freeze bound tables carrying the zero column. Candidates the model already
+satisfies unprompted therefore passed `V_chance` trivially and carried an
+inflated ι into matching.
+
+**Measured on the stored tables (read-only; `tools/v7_chance_basis_impact.py`,
+report `dci1/reports/dci1v7/chance_basis_impact/REPORT.md`).** The tool
+rebuilds each stored table with the corrected column and runs the production
+kernels — Gate 2.5 qualification, Gate 3A §13.7 stability and the calibrated
+§12.6 re-read, Gate 3B selection, Gate 3C support — on the recorded table
+(reproducing the signed records) and on the corrected one.
+
+| tree | model | m\* | candidates | κ>0 | >0.75 | withheld ≥0.99 | qualified rec→cor | flipped | core references (R1–R3) | κ_c of the recorded core refs | class control (CL) | arms rec→cor | kernels reproduce the signed records |
+|---|---|---:|---:|---:|---:|---:|---|---:|---|---|---|---|---|
+| v7 | `gemma-3n-e2b-it` | 10 | 132 | 45 | 8 | 0 | 76→74 | 4 | **changed** {'R1': 'MK4:8', 'R2': 'MK1:1', 'R3': 'XC3:10'} → {'R1': 'MK4:8', 'R2': 'MK1:1', 'R3': 'MK2:7'} | MK1:1 0.003, MK4:8 0.000, XC3:10 0.007 | **changed** RF12:6 → CR5:2 | unchanged ['base', 'core', 'class'] | Gate 3C predates A7, not compared |
+| v7 | `gemma-3n-e4b-it` | 9 | 140 | 44 | 6 | 0 | 84→84 | 8 | unchanged | MK4:7 0.000, MK5:6 0.000, MK6:3 0.000 | **changed** RF12:7 → RF9:12 | unchanged ['base', 'core', 'class'] | Gate 3C predates A7, not compared |
+| v7 | `qwen3-4b` | 12 | 112 | 42 | 8 | 1 | 49→48 | 1 | unchanged | MK1:6 0.000, MK6:8 0.000, MK7:2 0.000 | — | unchanged ['base', 'core'] | Gate 3C predates A7, not compared |
+| v7 | `qwen3-4b-instruct-2507` | 11 | 112 | 46 | 9 | 0 | 44→43 | 1 | unchanged | MK1:7 0.000, MK3:3 0.000, MK4:5 0.000 | — | unchanged ['base', 'core'] | Gate 3C predates A7, not compared |
+| v6 | `gemma-3n-e2b-it` | 10 | 134 | 50 | 5 | 1 | 78→73 | 9 | **changed** {'R1': 'XC3:10', 'R2': 'MK4:8', 'R3': 'MK2:8'} → {'R1': 'MK5:7', 'R2': 'XC3:10', 'R3': 'MK4:8'} | MK2:8 0.000, MK4:8 0.000, XC3:10 0.005 | unchanged CR5:1 | unchanged ['base', 'core', 'class'] | Gate 3C predates A7, not compared |
+| v6 | `gemma-3n-e4b-it` | 9 | 132 | 47 | 9 | 0 | 74→71 | 5 | unchanged | MK1:6 0.000, MK4:8 0.000, MK5:6 0.000 | **changed** RF12:7 → None | **changed** ['base', 'core', 'class'] → ['base', 'core'] | Gate 3C predates A7, not compared |
+| v6 | `qwen3-4b` | 12 | 112 | 42 | 5 | 1 | 50→50 | 0 | unchanged | MK1:3 0.000, MK5:2 0.000, MK6:7 0.000 | — | unchanged ['base', 'core'] | yes |
+| v6 | `qwen3-4b-instruct-2507` | 11 | 119 | 50 | 14 | 7 | 43→43 | 0 | unchanged | MK5:6 0.000, MK6:8 0.000, MK8:4 0.000 | — | unchanged ['base'] | yes |
+| v7-development | `qwen3-4b` | 12 | 112 | 43 | 7 | 0 | 50→49 | 1 | unchanged | MK1:7 0.000, MK6:8 0.000, MK7:2 0.000 | — | unchanged ['base', 'core'] | yes |
+| v7-development-r3 | `gemma-3n-e2b-it` | 10 | 112 | 42 | 9 | 0 | 64→60 | 6 | unchanged | MK1:1 0.004, MK2:7 0.000, MK5:8 0.000 | **changed** RF12:6 → None | **changed** ['base', 'core', 'class'] → ['base', 'core'] | yes |
+| v7-development-r3 | `qwen3-4b` | 12 | 112 | 43 | 9 | 1 | 52→51 | 1 | unchanged | MK1:6 0.000, MK6:8 0.000, MK7:2 0.000 | — | unchanged ['base', 'core'] | yes |
+
+Reading the table. On every replication the corrected column is non-zero for
+42–50 of the 112–140 measured candidates, 5–14 sit above §13.4's 0.75
+ceiling and had been passing `V_chance` trivially, and 0–7 are degenerate
+and withheld (`RF12:7` on every `qwen3-4b` run; `CR12:9` on v6
+`gemma-3n-e2b-it`; seven length and comma budgets on v6
+`qwen3-4b-instruct-2507`). Gate 2.5's pool, Gate 3A's stability verdicts
+and Gate 3B's slot map reproduce from the *recorded* table on every
+replication, so the differences are the column's and not the tool's; Gate
+3C records written before A7 are not compared. **§12.6's calibrated C1–C8
+verdicts are unchanged on ten of eleven** — only v6 `qwen3-4b-instruct-2507`'s
+C7 turns from unmet to met — and "core met, C4 lost" is unchanged on every
+one, so the basis of every v7 terminal verdict stands. **Core reference
+sets are unchanged on nine of eleven** and change on `gemma-3n-e2b-it`
+twice, by the same mechanism: `XC3:10`'s κ = 0.007 (v7) / 0.005 (v6) moves
+its distance to ι_A by 0.003 (v7: 0.0137 → 0.0166, past `MK2:7`'s 0.0124),
+which re-orders the third-nearest admitted family; `XC3:7` (κ = 0.472 / 0.445,
+a spectrum rung on both) fails the lift floor and leaves the stable set.
+**The broad-class control moves on four**: `RF12` — a budget the Gemmas
+satisfy unprompted a fifth to a half of the time — loses the lift floor on
+both v7 Gemmas (`RF12:6` → `CR5:2`; `RF12:7` → `RF9:12`) and on v6
+`gemma-3n-e4b-it` and rehearsal r3 `gemma-3n-e2b-it` no other class
+companion qualifies, so the class arm would not be admitted there.
+Qualification flips 0–9 candidates per replication in **both** directions:
+candidates above the ceiling or below the lift floor leave; candidates whose
+displacement |κ^B − κ| had been measured against zero and failed now pass
+(`RF9:12`, `RF9:13`, `XC3:8`). The stable set moves by at most two.
+
+**Δ_R.** No registered v7 replication generated a confirmatory row. The
+completed development rehearsal `dci1v7-development/qwen3-4b` selected
+`MK1:7`, `MK7:2`, `MK6:8`, each with corrected κ = 0.000, and the corrected
+table selects the same three, so its Δ_R rows (−0.0009 outcome-first,
++0.0144 outcome-second, development numbers) stand under the reference set
+the corrected rule would choose; r3 `qwen3-4b` likewise (−0.0030 /
++0.0126). r3 `gemma-3n-e2b-it`, complete through `FINAL_REPORT` with arms
+base + core + class, selected `MK2:7`, `MK1:1` (κ = 0.004), `MK5:8`,
+unchanged under the correction, so its Δ_R rows (−0.0244 / −0.0712, both
+`IDENTIFIED`) stand on the same footing; its broad-class companion
+`RF12:6` is not one the corrected rule admits (lift below 0.20 on the
+corrected column), so its class-arm cells are the zero-column procedure's
+and not the corrected one's.
+
+**In the synthetic harness.** The fixture's unconstrained answers satisfy
+some families unprompted, as a real model's do: on the nineteen-stage
+synthetic walk 10 of 96 candidates now carry a non-zero chance (up to 0.86)
+and 14 comma-budget rungs (`RF1`, `RF5`) are degenerate at κ = 1.0 and are
+withheld and recorded — the first real exercise of the withholding path on
+the production lifecycle. One conditional scenario's shape moved with it:
+`c4_lost_core_kept`'s core set is now (`XC2`, `MK6`, `MK1`), which takes a
+Tier-2 family out of §13.9's pool and leaves two near-form families, so its
+near-form arm reads `NEAR_FORM_ARM_NOT_AVAILABLE` (three are required); the
+verdicts the scenario exists to pin — C4 lost alone on the calibrated
+basis, the core arm kept, Δ_R identified, δ_diff not — are unchanged, and
+the full-design scenario still admits every arm. Execution-path audit:
+82 rules, 82 agree, 24 scenarios, 0 contract defects.
+
+**Comparability.** Every calibration table produced before this entry —
+the four registered v7 replications (closed 2026-08-28), all of v5 and v6,
+and the development rehearsals `dci1v7-development`, `-r3` and `-r4` —
+carries the zero column and is **not** comparable number for number with a
+table produced after it: a candidate's ι, lift and displacement are
+different quantities on the two, and so is anything that read them
+(qualified pools, stability verdicts, selections, the calibrated §12.6
+reading). No stored record is edited or re-verdicted; the four v7 terminal
+reports stand as v7 outcomes under the code v7 ran, and the impact report is
+the bridge. Δ_R itself differences composed cells and does not read κ_c; a
+Δ_R estimate is comparable across the change exactly when its core reference
+set is the same set the corrected table selects, which the impact report
+states per model. Rehearsals under the corrected code go into fresh
+development roots (`dci1/reports/dci1v7/development_rehearsal/README.md`).
+
+**One related discrepancy, reported and not changed.** ι_A on the Gate-2
+record is formed with `chance_curves["A"][n*]`, A's compliance over *every*
+grid-A row where A:n\* is absent — the unconstrained cell **and** the other
+seven target severities' solo cells — while §13.2's basis is the
+unconstrained cell alone (`load_zero_chance_curves["A"]`, which §34 D17's
+floor already reads for B). The impact report gives both ι_A values per
+model: +0.002 to +0.007 on `qwen3-4b` and both Gemmas (κ_A over the
+blended rows 0.006–0.024, 0.000 on the unconstrained cell), and **+0.025
+(v7) / +0.026 (v6) on `qwen3-4b-instruct-2507`** (blended κ_A 0.055 /
+0.060), a quarter of §13.8's caliper. Moving ι_A would move the reference
+point of every §12.6 condition and §13.8 caliper on that model and is a
+researcher decision, not part of this correction.
+
 ## 2026-08-29 — the final report's status trace compares with what Gate 5 binds (Gate 2 ∪ Gate 3C)
 
 **What changed.** `run/final_report_checks` required the reported
@@ -91,6 +272,11 @@ both were reverted (`e85c0f7`) and the rehearsal r3 lanes ran on the
 unpooled tree. Comparability: none affected.
 
 ## 2026-08-29 — finding, not yet in force: §13.11's `chance_compliance` column has been 0.0 on every replication; the fix is parked with the CPU-pool change
+
+*(Superseded the same day by the entry "in force" above: the correction is
+now on the Gate-2 producer, outside `revision.V9`'s pin. Retained as the
+record of the finding and of the interval in which the column was known to
+be zero.)*
 
 **Finding.** `run/gates_run._calibration_rows` obtains each candidate's
 `chance_compliance` through `instance_rates(chance_rows, …)`, whose solo scan

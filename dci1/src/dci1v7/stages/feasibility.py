@@ -82,8 +82,27 @@ def calibration_rows_at(gate2_record: Mapping[str, Any], *, m_star: int,
 
     The column is **selected, never recomputed**: it comes from the map Gate 2
     signed before Gate 2.5 qualified anything and before the probe ran.
+
+    **A row with no difficulty coordinate is refused here** (2026-08-29).
+    §11.2 says iota is undefined at ``CHANCE_DEGENERACY_MAX`` and Gate 2
+    withholds such a row from the table it records
+    (``calibration_rows_withheld``); every §13 reader downstream of this seam
+    reads ``.iota`` on every row it is handed, and `stages/stability.py` and
+    `stages/selection.py` are the frozen bytes `revision.V9` pins. This is
+    the invariant on the mandatory path, so a table that carries one is a
+    fault at the boundary and not a crash inside a frozen module.
     """
     rows = [dict(r) for r in gate2_record["calibration_rows"][split]]
+    degenerate = [f"{r['kind']}:{r['severity']}" for r in rows
+                  if float(r["chance_compliance"]) >= C.CHANCE_DEGENERACY_MAX]
+    if degenerate:
+        raise ProtocolError(
+            f"§11.2: {degenerate} on split {split!r} carry a chance "
+            f"compliance at or above CHANCE_DEGENERACY_MAX = "
+            f"{C.CHANCE_DEGENERACY_MAX}, so their difficulty coordinate is "
+            "not defined; Gate 2 withholds such rows from §13.11's table "
+            "(`calibration_rows_withheld`) and a table that carries one "
+            "cannot be read by §13")
     if int(m_star) == int(gate2_record["m_star"]):
         return rows
     by_severity = gate2_record.get("kappa_under_b_by_severity") or {}
@@ -502,8 +521,18 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
     formulation = regime_record.get("coverage_eligibility_formulation")
     iota_a_measured = float(gate2_record["iota_a"])
     prescreen = regime_record.get("iota_a_prescreen")
+    # v6 A16 on the calibrated basis: a rung with no difficulty coordinate
+    # is dropped from every condition and *recorded*. Gate 2 withholds such
+    # rows from §13.11's table (§11.2; `calibration_rows_withheld`), so they
+    # are put back here, for this reading only, and `coverage_criterion`
+    # records them under `coordinate_undefined` exactly as it does on the
+    # screen. Dropping is the closed direction: they can serve no condition
+    # either way, so no verdict depends on their presence.
+    withheld = list(((gate2_record.get("calibration_rows_withheld") or {})
+                     .get("pooled")) or ())
     rows = regime.calibration_coverage_rows(
-        gate2_record["calibration_rows"]["pooled"], formulation=formulation)
+        list(gate2_record["calibration_rows"]["pooled"]) + withheld,
+        formulation=formulation)
     at_measured = regime.coverage_criterion(rows, iota_a=iota_a_measured)
     at_prescreen = (None if prescreen is None else
                     regime.coverage_criterion(rows, iota_a=float(prescreen)))
@@ -537,6 +566,14 @@ def coverage_at_calibrated_iota_a(*, gate2_record: Mapping[str, Any],
         "iota_a_movement": (None if prescreen is None
                             else iota_a_measured - float(prescreen)),
         "n_rows": len(rows),
+        # §11.2 / A16: rows Gate 2 withheld from §13.11's table for a
+        # degenerate chance, read back for this reading so the record of
+        # their drop is kept; `realised.coordinate_undefined` names them.
+        "n_withheld_degenerate": len(withheld),
+        "coordinate_undefined": list(
+            at_measured.get("coordinate_undefined") or ()),
+        "n_coordinate_undefined": int(
+            at_measured.get("n_coordinate_undefined") or 0),
         "n_eligible": at_measured["realised"]["n_eligible"],
         "conditions": dict(at_measured["conditions"]),
         "decisive_met": decisive_met,
