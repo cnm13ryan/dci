@@ -26,7 +26,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "tests_v3", "tests_v4", "tests_v4r3", "tests_v4r4", "tests_v5", "tests_v6", "tests_v7", "tests_v8", "tests_v8dev"]
+testpaths = ["tests", "tests_v3", "tests_v4", "tests_v4r3", "tests_v4r4", "tests_v5", "tests_v6", "tests_v7", "tests_v8dev"]
 markers = [
     "cpu: runs with no GPU stack installed",
     "gpu: needs the pinned ROCm backend environment and a real GPU",

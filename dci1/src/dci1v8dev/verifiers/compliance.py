@@ -1,7 +1,7 @@
 """The compliance-vector primitive for v8 (§7.9, §9.1, §9.3).
 
 Only the numerator dispatch changes against v7: ``statistic`` reads
-``dci1v8.verifiers.statistics.statistic_for``, so A is scored by
+``dci1v8dev.verifiers.statistics.statistic_for``, so A is scored by
 ``count_marker(text, "however")`` and no longer by ``s0_count``. The five
 predicate forms, the graded scores, the non-vacuity predicate, the presence
 rule and both refusal checks are v7's own functions --- they take the
@@ -20,7 +20,7 @@ from dci1v7.verifiers.compliance import (
 )
 from dci1v7.verifiers.constraints import Constraint
 
-from dci1v8.verifiers.statistics import alpha_runs, statistic_for
+from dci1v8dev.verifiers.statistics import alpha_runs, statistic_for
 
 __all__ = ["NON_VACUITY_MIN_WORDS", "STEM_BAND", "ConstraintScore",
            "GenerationScores", "statistic", "score_generation", "passes",
