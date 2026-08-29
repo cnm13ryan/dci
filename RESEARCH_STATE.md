@@ -2702,6 +2702,59 @@ alone; the two ι_A values differ by +0.002 to +0.007 on three models and
 by +0.025 (v7) / +0.026 (v6) on `qwen3-4b-instruct-2507`, a quarter of
 §13.8's caliper; moving it is a researcher decision.
 
+### 4ao. Development-only diagnosis of the v7 difficulty spectrum: C4's causes, and a wording-parse artefact inside the exact-count instrument (2026-08-29)
+
+**Not a change to v7; nothing registered, frozen or re-run; no GPU used.**
+Branch `dev/v7-difficulty-spectrum` (worktree `../dci-v7-spectrum-dev`, from
+the unmerged chance-basis fix `7f89dae`), report
+`dci1/reports/dci1v7/difficulty_spectrum_dev/REPORT.md` with its
+`SAFETY_AND_ISOLATION.md`. Read-only over the four registered v7 trees on
+the corrected κ_c basis, with the production kernels (the reconstruction
+reproduces the signed Gate-3A C1–C8 verdicts on every model).
+
+**C4 fails for a different reason on each model** (2 / 4 / 5 / 4 groups of
+6): `gemma-3n-e2b-it` — the exact-count ladders are flat or floored
+(MK2/MK4 span 0.32 over twelve rungs; A's own solo curve is 0.43–0.62 over
+n = 1..8); `gemma-3n-e4b-it` — ι_A = 0.725 sits above the easy end of
+every family that is not already a group; `qwen3-4b` — the [0.10, 0.90]
+band trims the easy rungs and the middles are flat (MK2 misses 0.40 by
+0.009); `qwen3-4b-instruct-2507` — the ladder 1..8 is too easy (28
+Tier-1/2 rungs above 0.90) and the reserve was never generated because the
+24 × 1 pre-screen (ι_A_pre 0.666 vs calibrated 0.540) certified ten groups.
+Correction to the 2026-08-29 landscape diagnostic: §12.6's expansion **did**
+run on both Gemmas (one round, MK2/MK4/MK5/MK7 at q = 9–12 calibrated); it
+did not on the Qwens. Local Δ_R support is dense on three models (13–21
+full-V(R) rungs from 6 families within ±0.10) and thin on e4b (6 rungs, 3
+Tier-1 families, zero spare); spectrum support is missing **above A**
+(0 / 0 / 2 / 11 eligible Tier-1/2 rungs beyond ι_A + 0.20; V_head's
+Wilson-upper ≤ 0.90 caps p_solo at 0.8575).
+
+**The instrument-level finding.** Splitting every solo cell by the frozen
+wording the row drew (§8.4) shows that, for particular markers, 2–3 of the 4
+frames are parsed with the marker modifying the instruction: *"Use the word
+namely exactly 3 times"* makes gemma-e2b write **Exactly** three times;
+*"Your answer must contain however exactly 1 time"* yields no *however* in
+90 % of gemma-e2b rows and 36–42 % of A's w1 rows on e2b and qwen3-4b;
+*overall* under w1/w2 is produced 0 times in 47–92 % of rows on every model.
+The failing frames are those with the marker between the verb and *exactly*;
+*"The word X must appear exactly q times"* is robust everywhere except for
+*instead* on the Gemmas (a genuine floor). Under the robust frames alone
+the marker ladders are monotone (Spearman −0.9 to −1.0) and 5 / 7 / 5 / 3
+Tier-1 families would straddle ι_A with span ≥ 0.40. This is a property of
+A's carried wordings as much as of the references and bears on ι_A and n\*
+on e2b and qwen3-4b; it is reported, not changed.
+
+**Proposed, not adopted** (v8 inputs; `REPORT.md` §6–§9): F1 the same
+marker families under the two robust frames with the full 1..12 ladder
+calibrated; F2 q to 16 on the 2507 checkpoint; F3 the reserve markers
+*albeit/notably/besides* and the admissible *rather/further/still/yet/then*;
+F4 a marker count lower bound as a diagnostic ladder. A solo-only screen
+(≈ 15–25k generations per model, no composed cell) ranks them; the later
+spectrum experiment composes 9–12 companions per model with B in both orders
+on the frozen blocks (≈ 83–110k generations) and fits §11.8 with family
+intercepts, a topic-block bootstrap and a leave-one-family-out jackknife.
+First model: `qwen3-4b-instruct-2507`. Nothing is authorised to run.
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes

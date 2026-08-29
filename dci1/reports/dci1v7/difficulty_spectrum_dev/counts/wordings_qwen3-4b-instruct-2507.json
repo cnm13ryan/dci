@@ -1,0 +1,2454 @@
+{
+ "cells": {
+  "A:1": {
+   "0": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 1 time."
+   },
+   "1": {
+    "mean": 0.9895833333333334,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.020833333333333332,
+    "wording": "Your answer must contain however exactly 1 time."
+   },
+   "2": {
+    "mean": 1.0104166666666667,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 1 time."
+   }
+  },
+  "A:2": {
+   "0": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0260416666666665,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 2 times."
+   },
+   "2": {
+    "mean": 2.0052083333333335,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 2 times."
+   }
+  },
+  "A:3": {
+   "0": {
+    "mean": 2.9895833333333335,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 3 times."
+   },
+   "1": {
+    "mean": 3.125,
+    "n": 192,
+    "p_exact": 0.890625,
+    "p_over": 0.109375,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 3 times."
+   },
+   "2": {
+    "mean": 3.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 3 times."
+   }
+  },
+  "A:4": {
+   "0": {
+    "mean": 3.78125,
+    "n": 192,
+    "p_exact": 0.78125,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 4 times."
+   },
+   "1": {
+    "mean": 4.119791666666667,
+    "n": 192,
+    "p_exact": 0.890625,
+    "p_over": 0.109375,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 4 times."
+   },
+   "2": {
+    "mean": 3.9114583333333335,
+    "n": 192,
+    "p_exact": 0.9114583333333334,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 3.9479166666666665,
+    "n": 192,
+    "p_exact": 0.9166666666666666,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 4 times."
+   }
+  },
+  "A:5": {
+   "0": {
+    "mean": 4.197916666666667,
+    "n": 192,
+    "p_exact": 0.19791666666666666,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 5 times."
+   },
+   "1": {
+    "mean": 5.078125,
+    "n": 192,
+    "p_exact": 0.8177083333333334,
+    "p_over": 0.13020833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 5 times."
+   },
+   "2": {
+    "mean": 4.666666666666667,
+    "n": 192,
+    "p_exact": 0.6458333333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 4.604166666666667,
+    "n": 192,
+    "p_exact": 0.5989583333333334,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 5 times."
+   }
+  },
+  "A:6": {
+   "0": {
+    "mean": 5.255208333333333,
+    "n": 192,
+    "p_exact": 0.2552083333333333,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 6 times."
+   },
+   "1": {
+    "mean": 5.989583333333333,
+    "n": 192,
+    "p_exact": 0.734375,
+    "p_over": 0.125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 6 times."
+   },
+   "2": {
+    "mean": 5.567708333333333,
+    "n": 192,
+    "p_exact": 0.5572916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 5.708333333333333,
+    "n": 192,
+    "p_exact": 0.671875,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 6 times."
+   }
+  },
+  "A:7": {
+   "0": {
+    "mean": 6.177083333333333,
+    "n": 192,
+    "p_exact": 0.1875,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 7 times."
+   },
+   "1": {
+    "mean": 7.911458333333333,
+    "n": 192,
+    "p_exact": 0.5885416666666666,
+    "p_over": 0.16145833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 7 times."
+   },
+   "2": {
+    "mean": 6.473958333333333,
+    "n": 192,
+    "p_exact": 0.4635416666666667,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.526041666666667,
+    "n": 192,
+    "p_exact": 0.5,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 7 times."
+   }
+  },
+  "A:8": {
+   "0": {
+    "mean": 7.395833333333333,
+    "n": 192,
+    "p_exact": 0.4166666666666667,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word however exactly 8 times."
+   },
+   "1": {
+    "mean": 8.161458333333334,
+    "n": 192,
+    "p_exact": 0.5364583333333334,
+    "p_over": 0.1875,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain however exactly 8 times."
+   },
+   "2": {
+    "mean": 7.71875,
+    "n": 192,
+    "p_exact": 0.6197916666666666,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Include however exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 7.708333333333333,
+    "n": 192,
+    "p_exact": 0.640625,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "The word however must appear exactly 8 times."
+   }
+  },
+  "MK1:1": {
+   "0": {
+    "mean": 1.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0104166666666667,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 1 time."
+   },
+   "2": {
+    "mean": 1.0208333333333333,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0052083333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 1 time."
+   }
+  },
+  "MK1:2": {
+   "0": {
+    "mean": 2.0572916666666665,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0364583333333335,
+    "n": 192,
+    "p_exact": 0.9635416666666666,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 2 times."
+   },
+   "2": {
+    "mean": 2.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.015625,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 2 times."
+   }
+  },
+  "MK1:3": {
+   "0": {
+    "mean": 3.0364583333333335,
+    "n": 192,
+    "p_exact": 0.9635416666666666,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 3 times."
+   },
+   "1": {
+    "mean": 3.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 3 times."
+   },
+   "2": {
+    "mean": 3.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.0208333333333335,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 3 times."
+   }
+  },
+  "MK1:4": {
+   "0": {
+    "mean": 4.072916666666667,
+    "n": 192,
+    "p_exact": 0.921875,
+    "p_over": 0.07291666666666667,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 4 times."
+   },
+   "1": {
+    "mean": 4.104166666666667,
+    "n": 192,
+    "p_exact": 0.9270833333333334,
+    "p_over": 0.07291666666666667,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 4 times."
+   },
+   "2": {
+    "mean": 4.026041666666667,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.020833333333333,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 4 times."
+   }
+  },
+  "MK1:5": {
+   "0": {
+    "mean": 5.041666666666667,
+    "n": 192,
+    "p_exact": 0.921875,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 5 times."
+   },
+   "1": {
+    "mean": 5.0625,
+    "n": 192,
+    "p_exact": 0.8958333333333334,
+    "p_over": 0.078125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 5 times."
+   },
+   "2": {
+    "mean": 4.9375,
+    "n": 192,
+    "p_exact": 0.859375,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 4.984375,
+    "n": 192,
+    "p_exact": 0.9322916666666666,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 5 times."
+   }
+  },
+  "MK1:6": {
+   "0": {
+    "mean": 6.135416666666667,
+    "n": 192,
+    "p_exact": 0.8229166666666666,
+    "p_over": 0.140625,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 6 times."
+   },
+   "1": {
+    "mean": 6.114583333333333,
+    "n": 192,
+    "p_exact": 0.828125,
+    "p_over": 0.08854166666666667,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 6 times."
+   },
+   "2": {
+    "mean": 5.802083333333333,
+    "n": 192,
+    "p_exact": 0.625,
+    "p_over": 0.078125,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 6.072916666666667,
+    "n": 192,
+    "p_exact": 0.9114583333333334,
+    "p_over": 0.07291666666666667,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 6 times."
+   }
+  },
+  "MK1:7": {
+   "0": {
+    "mean": 6.96875,
+    "n": 192,
+    "p_exact": 0.4895833333333333,
+    "p_over": 0.1875,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 7 times."
+   },
+   "1": {
+    "mean": 6.958333333333333,
+    "n": 192,
+    "p_exact": 0.5625,
+    "p_over": 0.14583333333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 7 times."
+   },
+   "2": {
+    "mean": 6.5625,
+    "n": 192,
+    "p_exact": 0.4427083333333333,
+    "p_over": 0.046875,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.692708333333333,
+    "n": 192,
+    "p_exact": 0.6354166666666666,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 7 times."
+   }
+  },
+  "MK1:8": {
+   "0": {
+    "mean": 8.239583333333334,
+    "n": 192,
+    "p_exact": 0.6041666666666666,
+    "p_over": 0.22395833333333334,
+    "p_zero": 0.0,
+    "wording": "Use the word thus exactly 8 times."
+   },
+   "1": {
+    "mean": 8.427083333333334,
+    "n": 192,
+    "p_exact": 0.671875,
+    "p_over": 0.203125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain thus exactly 8 times."
+   },
+   "2": {
+    "mean": 8.109375,
+    "n": 192,
+    "p_exact": 0.5989583333333334,
+    "p_over": 0.13020833333333334,
+    "p_zero": 0.0,
+    "wording": "Include thus exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 8.098958333333334,
+    "n": 192,
+    "p_exact": 0.71875,
+    "p_over": 0.15104166666666666,
+    "p_zero": 0.0,
+    "wording": "The word thus must appear exactly 8 times."
+   }
+  },
+  "MK2:1": {
+   "0": {
+    "mean": 1.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 1 time."
+   },
+   "2": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 1 time."
+   }
+  },
+  "MK2:2": {
+   "0": {
+    "mean": 2.015625,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 2 times."
+   },
+   "2": {
+    "mean": 2.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0052083333333335,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 2 times."
+   }
+  },
+  "MK2:3": {
+   "0": {
+    "mean": 3.0572916666666665,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 3 times."
+   },
+   "1": {
+    "mean": 3.0260416666666665,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 3 times."
+   },
+   "2": {
+    "mean": 3.0260416666666665,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 3 times."
+   }
+  },
+  "MK2:4": {
+   "0": {
+    "mean": 4.0625,
+    "n": 192,
+    "p_exact": 0.9375,
+    "p_over": 0.0625,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 4 times."
+   },
+   "1": {
+    "mean": 4.052083333333333,
+    "n": 192,
+    "p_exact": 0.9583333333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 4 times."
+   },
+   "2": {
+    "mean": 4.026041666666667,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.041666666666667,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 4 times."
+   }
+  },
+  "MK2:5": {
+   "0": {
+    "mean": 5.072916666666667,
+    "n": 192,
+    "p_exact": 0.9166666666666666,
+    "p_over": 0.078125,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 5 times."
+   },
+   "1": {
+    "mean": 5.041666666666667,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.046875,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 5 times."
+   },
+   "2": {
+    "mean": 4.963541666666667,
+    "n": 192,
+    "p_exact": 0.921875,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 5.020833333333333,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 5 times."
+   }
+  },
+  "MK2:6": {
+   "0": {
+    "mean": 6.140625,
+    "n": 192,
+    "p_exact": 0.875,
+    "p_over": 0.109375,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 6 times."
+   },
+   "1": {
+    "mean": 6.0,
+    "n": 192,
+    "p_exact": 0.796875,
+    "p_over": 0.09895833333333333,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 6 times."
+   },
+   "2": {
+    "mean": 5.994791666666667,
+    "n": 192,
+    "p_exact": 0.7760416666666666,
+    "p_over": 0.078125,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 6.0625,
+    "n": 192,
+    "p_exact": 0.921875,
+    "p_over": 0.06770833333333333,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 6 times."
+   }
+  },
+  "MK2:7": {
+   "0": {
+    "mean": 6.895833333333333,
+    "n": 192,
+    "p_exact": 0.5833333333333334,
+    "p_over": 0.140625,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 7 times."
+   },
+   "1": {
+    "mean": 6.807291666666667,
+    "n": 192,
+    "p_exact": 0.515625,
+    "p_over": 0.11979166666666667,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 7 times."
+   },
+   "2": {
+    "mean": 6.8125,
+    "n": 192,
+    "p_exact": 0.5416666666666666,
+    "p_over": 0.10416666666666667,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.770833333333333,
+    "n": 192,
+    "p_exact": 0.5989583333333334,
+    "p_over": 0.06770833333333333,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 7 times."
+   }
+  },
+  "MK2:8": {
+   "0": {
+    "mean": 8.166666666666666,
+    "n": 192,
+    "p_exact": 0.625,
+    "p_over": 0.21875,
+    "p_zero": 0.0,
+    "wording": "Use the word hence exactly 8 times."
+   },
+   "1": {
+    "mean": 8.15625,
+    "n": 192,
+    "p_exact": 0.4947916666666667,
+    "p_over": 0.19791666666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain hence exactly 8 times."
+   },
+   "2": {
+    "mean": 8.213541666666666,
+    "n": 192,
+    "p_exact": 0.6614583333333334,
+    "p_over": 0.22395833333333334,
+    "p_zero": 0.0,
+    "wording": "Include hence exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 8.260416666666666,
+    "n": 192,
+    "p_exact": 0.703125,
+    "p_over": 0.09895833333333333,
+    "p_zero": 0.0,
+    "wording": "The word hence must appear exactly 8 times."
+   }
+  },
+  "MK3:1": {
+   "0": {
+    "mean": 1.0260416666666667,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 1 time."
+   },
+   "1": {
+    "mean": 1.109375,
+    "n": 192,
+    "p_exact": 0.890625,
+    "p_over": 0.109375,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 1 time."
+   },
+   "2": {
+    "mean": 0.9895833333333334,
+    "n": 192,
+    "p_exact": 0.8020833333333334,
+    "p_over": 0.09375,
+    "p_zero": 0.10416666666666667,
+    "wording": "Include though exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0208333333333333,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 1 time."
+   }
+  },
+  "MK3:2": {
+   "0": {
+    "mean": 2.1614583333333335,
+    "n": 192,
+    "p_exact": 0.8385416666666666,
+    "p_over": 0.16145833333333334,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 2 times."
+   },
+   "1": {
+    "mean": 2.1302083333333335,
+    "n": 192,
+    "p_exact": 0.8697916666666666,
+    "p_over": 0.13020833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 2 times."
+   },
+   "2": {
+    "mean": 2.1145833333333335,
+    "n": 192,
+    "p_exact": 0.8385416666666666,
+    "p_over": 0.14583333333333334,
+    "p_zero": 0.015625,
+    "wording": "Include though exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.046875,
+    "n": 192,
+    "p_exact": 0.9635416666666666,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 2 times."
+   }
+  },
+  "MK3:3": {
+   "0": {
+    "mean": 3.53125,
+    "n": 192,
+    "p_exact": 0.5885416666666666,
+    "p_over": 0.40625,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 3 times."
+   },
+   "1": {
+    "mean": 3.7864583333333335,
+    "n": 192,
+    "p_exact": 0.53125,
+    "p_over": 0.46875,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 3 times."
+   },
+   "2": {
+    "mean": 3.5208333333333335,
+    "n": 192,
+    "p_exact": 0.6666666666666666,
+    "p_over": 0.3333333333333333,
+    "p_zero": 0.0,
+    "wording": "Include though exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.90625,
+    "n": 192,
+    "p_exact": 0.421875,
+    "p_over": 0.578125,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 3 times."
+   }
+  },
+  "MK3:4": {
+   "0": {
+    "mean": 4.770833333333333,
+    "n": 192,
+    "p_exact": 0.421875,
+    "p_over": 0.578125,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 4 times."
+   },
+   "1": {
+    "mean": 6.036458333333333,
+    "n": 192,
+    "p_exact": 0.19791666666666666,
+    "p_over": 0.8020833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 4 times."
+   },
+   "2": {
+    "mean": 4.828125,
+    "n": 192,
+    "p_exact": 0.515625,
+    "p_over": 0.4739583333333333,
+    "p_zero": 0.0,
+    "wording": "Include though exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 5.536458333333333,
+    "n": 192,
+    "p_exact": 0.140625,
+    "p_over": 0.859375,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 4 times."
+   }
+  },
+  "MK3:5": {
+   "0": {
+    "mean": 5.994791666666667,
+    "n": 192,
+    "p_exact": 0.3645833333333333,
+    "p_over": 0.6354166666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 5 times."
+   },
+   "1": {
+    "mean": 6.994791666666667,
+    "n": 192,
+    "p_exact": 0.23958333333333334,
+    "p_over": 0.7552083333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 5 times."
+   },
+   "2": {
+    "mean": 6.265625,
+    "n": 192,
+    "p_exact": 0.390625,
+    "p_over": 0.5885416666666666,
+    "p_zero": 0.005208333333333333,
+    "wording": "Include though exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 7.140625,
+    "n": 192,
+    "p_exact": 0.08333333333333333,
+    "p_over": 0.9166666666666666,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 5 times."
+   }
+  },
+  "MK3:6": {
+   "0": {
+    "mean": 7.765625,
+    "n": 192,
+    "p_exact": 0.23958333333333334,
+    "p_over": 0.7604166666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 6 times."
+   },
+   "1": {
+    "mean": 8.885416666666666,
+    "n": 192,
+    "p_exact": 0.16666666666666666,
+    "p_over": 0.7864583333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 6 times."
+   },
+   "2": {
+    "mean": 8.088541666666666,
+    "n": 192,
+    "p_exact": 0.3125,
+    "p_over": 0.625,
+    "p_zero": 0.0,
+    "wording": "Include though exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 17.447916666666668,
+    "n": 192,
+    "p_exact": 0.010416666666666666,
+    "p_over": 0.9895833333333334,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 6 times."
+   }
+  },
+  "MK3:7": {
+   "0": {
+    "mean": 10.630208333333334,
+    "n": 192,
+    "p_exact": 0.09375,
+    "p_over": 0.8958333333333334,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 7 times."
+   },
+   "1": {
+    "mean": 13.645833333333334,
+    "n": 192,
+    "p_exact": 0.13020833333333334,
+    "p_over": 0.84375,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain though exactly 7 times."
+   },
+   "2": {
+    "mean": 10.109375,
+    "n": 192,
+    "p_exact": 0.22916666666666666,
+    "p_over": 0.65625,
+    "p_zero": 0.0,
+    "wording": "Include though exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 20.197916666666668,
+    "n": 192,
+    "p_exact": 0.020833333333333332,
+    "p_over": 0.9791666666666666,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 7 times."
+   }
+  },
+  "MK3:8": {
+   "0": {
+    "mean": 12.713541666666666,
+    "n": 192,
+    "p_exact": 0.046875,
+    "p_over": 0.953125,
+    "p_zero": 0.0,
+    "wording": "Use the word though exactly 8 times."
+   },
+   "1": {
+    "mean": 14.364583333333334,
+    "n": 192,
+    "p_exact": 0.08333333333333333,
+    "p_over": 0.8645833333333334,
+    "p_zero": 0.005208333333333333,
+    "wording": "Your answer must contain though exactly 8 times."
+   },
+   "2": {
+    "mean": 12.645833333333334,
+    "n": 192,
+    "p_exact": 0.16145833333333334,
+    "p_over": 0.7291666666666666,
+    "p_zero": 0.0,
+    "wording": "Include though exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 27.713541666666668,
+    "n": 192,
+    "p_exact": 0.0,
+    "p_over": 1.0,
+    "p_zero": 0.0,
+    "wording": "The word though must appear exactly 8 times."
+   }
+  },
+  "MK4:1": {
+   "0": {
+    "mean": 1.0208333333333333,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0052083333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 1 time."
+   },
+   "2": {
+    "mean": 1.0520833333333333,
+    "n": 192,
+    "p_exact": 0.9479166666666666,
+    "p_over": 0.052083333333333336,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0052083333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 1 time."
+   }
+  },
+  "MK4:2": {
+   "0": {
+    "mean": 2.015625,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 2 times."
+   },
+   "1": {
+    "mean": 2.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 2 times."
+   },
+   "2": {
+    "mean": 2.0625,
+    "n": 192,
+    "p_exact": 0.9375,
+    "p_over": 0.0625,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 2 times."
+   }
+  },
+  "MK4:3": {
+   "0": {
+    "mean": 3.0,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 3 times."
+   },
+   "1": {
+    "mean": 3.1770833333333335,
+    "n": 192,
+    "p_exact": 0.8333333333333334,
+    "p_over": 0.16145833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 3 times."
+   },
+   "2": {
+    "mean": 3.1302083333333335,
+    "n": 192,
+    "p_exact": 0.8697916666666666,
+    "p_over": 0.13020833333333334,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.21875,
+    "n": 192,
+    "p_exact": 0.859375,
+    "p_over": 0.140625,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 3 times."
+   }
+  },
+  "MK4:4": {
+   "0": {
+    "mean": 3.9791666666666665,
+    "n": 192,
+    "p_exact": 0.84375,
+    "p_over": 0.06770833333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 4 times."
+   },
+   "1": {
+    "mean": 4.109375,
+    "n": 192,
+    "p_exact": 0.6302083333333334,
+    "p_over": 0.22916666666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 4 times."
+   },
+   "2": {
+    "mean": 4.1875,
+    "n": 192,
+    "p_exact": 0.6458333333333334,
+    "p_over": 0.24479166666666666,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.75,
+    "n": 192,
+    "p_exact": 0.546875,
+    "p_over": 0.4322916666666667,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 4 times."
+   }
+  },
+  "MK4:5": {
+   "0": {
+    "mean": 4.838541666666667,
+    "n": 192,
+    "p_exact": 0.6614583333333334,
+    "p_over": 0.08854166666666667,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 5 times."
+   },
+   "1": {
+    "mean": 5.666666666666667,
+    "n": 192,
+    "p_exact": 0.4427083333333333,
+    "p_over": 0.5364583333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 5 times."
+   },
+   "2": {
+    "mean": 5.354166666666667,
+    "n": 192,
+    "p_exact": 0.5520833333333334,
+    "p_over": 0.3645833333333333,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 5.421875,
+    "n": 192,
+    "p_exact": 0.5729166666666666,
+    "p_over": 0.3697916666666667,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 5 times."
+   }
+  },
+  "MK4:6": {
+   "0": {
+    "mean": 6.40625,
+    "n": 192,
+    "p_exact": 0.4322916666666667,
+    "p_over": 0.4270833333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 6 times."
+   },
+   "1": {
+    "mean": 7.510416666666667,
+    "n": 192,
+    "p_exact": 0.265625,
+    "p_over": 0.7239583333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 6 times."
+   },
+   "2": {
+    "mean": 6.854166666666667,
+    "n": 192,
+    "p_exact": 0.3645833333333333,
+    "p_over": 0.5520833333333334,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 8.307291666666666,
+    "n": 192,
+    "p_exact": 0.2708333333333333,
+    "p_over": 0.6927083333333334,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 6 times."
+   }
+  },
+  "MK4:7": {
+   "0": {
+    "mean": 7.760416666666667,
+    "n": 192,
+    "p_exact": 0.4791666666666667,
+    "p_over": 0.4114583333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 7 times."
+   },
+   "1": {
+    "mean": 8.942708333333334,
+    "n": 192,
+    "p_exact": 0.296875,
+    "p_over": 0.6927083333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 7 times."
+   },
+   "2": {
+    "mean": 8.3125,
+    "n": 192,
+    "p_exact": 0.3541666666666667,
+    "p_over": 0.5625,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 9.927083333333334,
+    "n": 192,
+    "p_exact": 0.3177083333333333,
+    "p_over": 0.5833333333333334,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 7 times."
+   }
+  },
+  "MK4:8": {
+   "0": {
+    "mean": 9.682291666666666,
+    "n": 192,
+    "p_exact": 0.3229166666666667,
+    "p_over": 0.59375,
+    "p_zero": 0.0,
+    "wording": "Use the word whereas exactly 8 times."
+   },
+   "1": {
+    "mean": 11.739583333333334,
+    "n": 192,
+    "p_exact": 0.296875,
+    "p_over": 0.6875,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain whereas exactly 8 times."
+   },
+   "2": {
+    "mean": 10.854166666666666,
+    "n": 192,
+    "p_exact": 0.234375,
+    "p_over": 0.65625,
+    "p_zero": 0.0,
+    "wording": "Include whereas exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 11.119791666666666,
+    "n": 192,
+    "p_exact": 0.23958333333333334,
+    "p_over": 0.703125,
+    "p_zero": 0.0,
+    "wording": "The word whereas must appear exactly 8 times."
+   }
+  },
+  "MK5:1": {
+   "0": {
+    "mean": 1.0104166666666667,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 1 time."
+   },
+   "2": {
+    "mean": 0.9270833333333334,
+    "n": 192,
+    "p_exact": 0.9166666666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.078125,
+    "wording": "Include indeed exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 1 time."
+   }
+  },
+  "MK5:2": {
+   "0": {
+    "mean": 2.0052083333333335,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 2 times."
+   },
+   "2": {
+    "mean": 1.9947916666666667,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.005208333333333333,
+    "wording": "Include indeed exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9270833333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 2 times."
+   }
+  },
+  "MK5:3": {
+   "0": {
+    "mean": 3.0260416666666665,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 3 times."
+   },
+   "1": {
+    "mean": 3.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 3 times."
+   },
+   "2": {
+    "mean": 2.953125,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.0,
+    "p_zero": 0.015625,
+    "wording": "Include indeed exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.0416666666666665,
+    "n": 192,
+    "p_exact": 0.9583333333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 3 times."
+   }
+  },
+  "MK5:4": {
+   "0": {
+    "mean": 3.96875,
+    "n": 192,
+    "p_exact": 0.9479166666666666,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 4 times."
+   },
+   "1": {
+    "mean": 4.036458333333333,
+    "n": 192,
+    "p_exact": 0.9635416666666666,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 4 times."
+   },
+   "2": {
+    "mean": 3.8333333333333335,
+    "n": 192,
+    "p_exact": 0.859375,
+    "p_over": 0.0,
+    "p_zero": 0.005208333333333333,
+    "wording": "Include indeed exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 3.921875,
+    "n": 192,
+    "p_exact": 0.90625,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 4 times."
+   }
+  },
+  "MK5:5": {
+   "0": {
+    "mean": 4.432291666666667,
+    "n": 192,
+    "p_exact": 0.4114583333333333,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 5 times."
+   },
+   "1": {
+    "mean": 5.015625,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 5 times."
+   },
+   "2": {
+    "mean": 4.5625,
+    "n": 192,
+    "p_exact": 0.5833333333333334,
+    "p_over": 0.0,
+    "p_zero": 0.005208333333333333,
+    "wording": "Include indeed exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 4.765625,
+    "n": 192,
+    "p_exact": 0.7135416666666666,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 5 times."
+   }
+  },
+  "MK5:6": {
+   "0": {
+    "mean": 5.421875,
+    "n": 192,
+    "p_exact": 0.421875,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 6 times."
+   },
+   "1": {
+    "mean": 6.036458333333333,
+    "n": 192,
+    "p_exact": 0.8958333333333334,
+    "p_over": 0.052083333333333336,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 6 times."
+   },
+   "2": {
+    "mean": 5.546875,
+    "n": 192,
+    "p_exact": 0.515625,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include indeed exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 5.713541666666667,
+    "n": 192,
+    "p_exact": 0.53125,
+    "p_over": 0.08854166666666667,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 6 times."
+   }
+  },
+  "MK5:7": {
+   "0": {
+    "mean": 6.364583333333333,
+    "n": 192,
+    "p_exact": 0.3333333333333333,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 7 times."
+   },
+   "1": {
+    "mean": 7.067708333333333,
+    "n": 192,
+    "p_exact": 0.859375,
+    "p_over": 0.08333333333333333,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 7 times."
+   },
+   "2": {
+    "mean": 6.307291666666667,
+    "n": 192,
+    "p_exact": 0.296875,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Include indeed exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.557291666666667,
+    "n": 192,
+    "p_exact": 0.40625,
+    "p_over": 0.08333333333333333,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 7 times."
+   }
+  },
+  "MK5:8": {
+   "0": {
+    "mean": 7.765625,
+    "n": 192,
+    "p_exact": 0.5,
+    "p_over": 0.11458333333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word indeed exactly 8 times."
+   },
+   "1": {
+    "mean": 8.260416666666666,
+    "n": 192,
+    "p_exact": 0.8333333333333334,
+    "p_over": 0.13020833333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain indeed exactly 8 times."
+   },
+   "2": {
+    "mean": 7.583333333333333,
+    "n": 192,
+    "p_exact": 0.546875,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.0,
+    "wording": "Include indeed exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 7.958333333333333,
+    "n": 192,
+    "p_exact": 0.484375,
+    "p_over": 0.234375,
+    "p_zero": 0.0,
+    "wording": "The word indeed must appear exactly 8 times."
+   }
+  },
+  "MK6:1": {
+   "0": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 1 time."
+   },
+   "2": {
+    "mean": 0.9947916666666666,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.0,
+    "p_zero": 0.005208333333333333,
+    "wording": "Include namely exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 1 time."
+   }
+  },
+  "MK6:2": {
+   "0": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 2 times."
+   },
+   "2": {
+    "mean": 2.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 2 times."
+   }
+  },
+  "MK6:3": {
+   "0": {
+    "mean": 3.0208333333333335,
+    "n": 192,
+    "p_exact": 0.9895833333333334,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 3 times."
+   },
+   "1": {
+    "mean": 3.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 3 times."
+   },
+   "2": {
+    "mean": 3.0260416666666665,
+    "n": 192,
+    "p_exact": 0.984375,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.0104166666666665,
+    "n": 192,
+    "p_exact": 0.9791666666666666,
+    "p_over": 0.015625,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 3 times."
+   }
+  },
+  "MK6:4": {
+   "0": {
+    "mean": 4.041666666666667,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.046875,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 4 times."
+   },
+   "1": {
+    "mean": 4.046875,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 4 times."
+   },
+   "2": {
+    "mean": 4.0,
+    "n": 192,
+    "p_exact": 1.0,
+    "p_over": 0.0,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.026041666666667,
+    "n": 192,
+    "p_exact": 0.9583333333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 4 times."
+   }
+  },
+  "MK6:5": {
+   "0": {
+    "mean": 5.015625,
+    "n": 192,
+    "p_exact": 0.8697916666666666,
+    "p_over": 0.06770833333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 5 times."
+   },
+   "1": {
+    "mean": 5.171875,
+    "n": 192,
+    "p_exact": 0.8541666666666666,
+    "p_over": 0.14583333333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 5 times."
+   },
+   "2": {
+    "mean": 5.005208333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 4.921875,
+    "n": 192,
+    "p_exact": 0.859375,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 5 times."
+   }
+  },
+  "MK6:6": {
+   "0": {
+    "mean": 6.140625,
+    "n": 192,
+    "p_exact": 0.7447916666666666,
+    "p_over": 0.15104166666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 6 times."
+   },
+   "1": {
+    "mean": 6.328125,
+    "n": 192,
+    "p_exact": 0.734375,
+    "p_over": 0.23958333333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 6 times."
+   },
+   "2": {
+    "mean": 5.838541666666667,
+    "n": 192,
+    "p_exact": 0.7083333333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 5.942708333333333,
+    "n": 192,
+    "p_exact": 0.828125,
+    "p_over": 0.052083333333333336,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 6 times."
+   }
+  },
+  "MK6:7": {
+   "0": {
+    "mean": 7.005208333333333,
+    "n": 192,
+    "p_exact": 0.4739583333333333,
+    "p_over": 0.16666666666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 7 times."
+   },
+   "1": {
+    "mean": 7.28125,
+    "n": 192,
+    "p_exact": 0.5677083333333334,
+    "p_over": 0.24479166666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 7 times."
+   },
+   "2": {
+    "mean": 6.760416666666667,
+    "n": 192,
+    "p_exact": 0.5989583333333334,
+    "p_over": 0.06770833333333333,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.546875,
+    "n": 192,
+    "p_exact": 0.3854166666666667,
+    "p_over": 0.07291666666666667,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 7 times."
+   }
+  },
+  "MK6:8": {
+   "0": {
+    "mean": 8.421875,
+    "n": 192,
+    "p_exact": 0.5625,
+    "p_over": 0.265625,
+    "p_zero": 0.0,
+    "wording": "Use the word namely exactly 8 times."
+   },
+   "1": {
+    "mean": 8.515625,
+    "n": 192,
+    "p_exact": 0.546875,
+    "p_over": 0.3072916666666667,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain namely exactly 8 times."
+   },
+   "2": {
+    "mean": 7.984375,
+    "n": 192,
+    "p_exact": 0.6145833333333334,
+    "p_over": 0.11458333333333333,
+    "p_zero": 0.0,
+    "wording": "Include namely exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 7.817708333333333,
+    "n": 192,
+    "p_exact": 0.5572916666666666,
+    "p_over": 0.078125,
+    "p_zero": 0.0,
+    "wording": "The word namely must appear exactly 8 times."
+   }
+  },
+  "MK7:1": {
+   "0": {
+    "mean": 1.0052083333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 1 time."
+   },
+   "1": {
+    "mean": 1.0416666666666667,
+    "n": 192,
+    "p_exact": 0.9583333333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 1 time."
+   },
+   "2": {
+    "mean": 0.3802083333333333,
+    "n": 192,
+    "p_exact": 0.3489583333333333,
+    "p_over": 0.015625,
+    "p_zero": 0.6354166666666666,
+    "wording": "Include instead exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 1.0052083333333333,
+    "n": 192,
+    "p_exact": 0.9947916666666666,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 1 time."
+   }
+  },
+  "MK7:2": {
+   "0": {
+    "mean": 2.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 2 times."
+   },
+   "1": {
+    "mean": 2.0260416666666665,
+    "n": 192,
+    "p_exact": 0.9739583333333334,
+    "p_over": 0.026041666666666668,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 2 times."
+   },
+   "2": {
+    "mean": 1.0989583333333333,
+    "n": 192,
+    "p_exact": 0.4895833333333333,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.4635416666666667,
+    "wording": "Include instead exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0572916666666665,
+    "n": 192,
+    "p_exact": 0.9427083333333334,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 2 times."
+   }
+  },
+  "MK7:3": {
+   "0": {
+    "mean": 3.2135416666666665,
+    "n": 192,
+    "p_exact": 0.8489583333333334,
+    "p_over": 0.15104166666666666,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 3 times."
+   },
+   "1": {
+    "mean": 3.1875,
+    "n": 192,
+    "p_exact": 0.8489583333333334,
+    "p_over": 0.15104166666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 3 times."
+   },
+   "2": {
+    "mean": 1.5729166666666667,
+    "n": 192,
+    "p_exact": 0.5,
+    "p_over": 0.015625,
+    "p_zero": 0.4739583333333333,
+    "wording": "Include instead exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.0885416666666665,
+    "n": 192,
+    "p_exact": 0.9166666666666666,
+    "p_over": 0.08333333333333333,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 3 times."
+   }
+  },
+  "MK7:4": {
+   "0": {
+    "mean": 4.302083333333333,
+    "n": 192,
+    "p_exact": 0.7239583333333334,
+    "p_over": 0.265625,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 4 times."
+   },
+   "1": {
+    "mean": 4.307291666666667,
+    "n": 192,
+    "p_exact": 0.734375,
+    "p_over": 0.24479166666666666,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 4 times."
+   },
+   "2": {
+    "mean": 2.3489583333333335,
+    "n": 192,
+    "p_exact": 0.5104166666666666,
+    "p_over": 0.046875,
+    "p_zero": 0.4166666666666667,
+    "wording": "Include instead exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.135416666666667,
+    "n": 192,
+    "p_exact": 0.8645833333333334,
+    "p_over": 0.11979166666666667,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 4 times."
+   }
+  },
+  "MK7:5": {
+   "0": {
+    "mean": 5.265625,
+    "n": 192,
+    "p_exact": 0.6510416666666666,
+    "p_over": 0.28125,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 5 times."
+   },
+   "1": {
+    "mean": 5.114583333333333,
+    "n": 192,
+    "p_exact": 0.7604166666666666,
+    "p_over": 0.14583333333333334,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 5 times."
+   },
+   "2": {
+    "mean": 3.3229166666666665,
+    "n": 192,
+    "p_exact": 0.578125,
+    "p_over": 0.046875,
+    "p_zero": 0.34375,
+    "wording": "Include instead exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 5.125,
+    "n": 192,
+    "p_exact": 0.828125,
+    "p_over": 0.125,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 5 times."
+   }
+  },
+  "MK7:6": {
+   "0": {
+    "mean": 6.583333333333333,
+    "n": 192,
+    "p_exact": 0.5729166666666666,
+    "p_over": 0.3177083333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 6 times."
+   },
+   "1": {
+    "mean": 6.067708333333333,
+    "n": 192,
+    "p_exact": 0.6354166666666666,
+    "p_over": 0.171875,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 6 times."
+   },
+   "2": {
+    "mean": 4.5625,
+    "n": 192,
+    "p_exact": 0.515625,
+    "p_over": 0.09895833333333333,
+    "p_zero": 0.2604166666666667,
+    "wording": "Include instead exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 6.234375,
+    "n": 192,
+    "p_exact": 0.6927083333333334,
+    "p_over": 0.22916666666666666,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 6 times."
+   }
+  },
+  "MK7:7": {
+   "0": {
+    "mean": 7.604166666666667,
+    "n": 192,
+    "p_exact": 0.5104166666666666,
+    "p_over": 0.3958333333333333,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 7 times."
+   },
+   "1": {
+    "mean": 7.203125,
+    "n": 192,
+    "p_exact": 0.4427083333333333,
+    "p_over": 0.234375,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 7 times."
+   },
+   "2": {
+    "mean": 5.630208333333333,
+    "n": 192,
+    "p_exact": 0.359375,
+    "p_over": 0.14583333333333334,
+    "p_zero": 0.21354166666666666,
+    "wording": "Include instead exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.9375,
+    "n": 192,
+    "p_exact": 0.5729166666666666,
+    "p_over": 0.19270833333333334,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 7 times."
+   }
+  },
+  "MK7:8": {
+   "0": {
+    "mean": 8.744791666666666,
+    "n": 192,
+    "p_exact": 0.4270833333333333,
+    "p_over": 0.3697916666666667,
+    "p_zero": 0.0,
+    "wording": "Use the word instead exactly 8 times."
+   },
+   "1": {
+    "mean": 9.578125,
+    "n": 192,
+    "p_exact": 0.5572916666666666,
+    "p_over": 0.3125,
+    "p_zero": 0.0,
+    "wording": "Your answer must contain instead exactly 8 times."
+   },
+   "2": {
+    "mean": 7.791666666666667,
+    "n": 192,
+    "p_exact": 0.3854166666666667,
+    "p_over": 0.19791666666666666,
+    "p_zero": 0.13020833333333334,
+    "wording": "Include instead exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 9.177083333333334,
+    "n": 192,
+    "p_exact": 0.6197916666666666,
+    "p_over": 0.23958333333333334,
+    "p_zero": 0.0,
+    "wording": "The word instead must appear exactly 8 times."
+   }
+  },
+  "MK8:1": {
+   "0": {
+    "mean": 1.03125,
+    "n": 192,
+    "p_exact": 0.96875,
+    "p_over": 0.03125,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 1 time."
+   },
+   "1": {
+    "mean": 0.078125,
+    "n": 192,
+    "p_exact": 0.078125,
+    "p_over": 0.0,
+    "p_zero": 0.921875,
+    "wording": "Your answer must contain overall exactly 1 time."
+   },
+   "2": {
+    "mean": 0.08333333333333333,
+    "n": 192,
+    "p_exact": 0.08333333333333333,
+    "p_over": 0.0,
+    "p_zero": 0.9166666666666666,
+    "wording": "Include overall exactly 1 time in your answer."
+   },
+   "3": {
+    "mean": 0.9635416666666666,
+    "n": 192,
+    "p_exact": 0.890625,
+    "p_over": 0.036458333333333336,
+    "p_zero": 0.07291666666666667,
+    "wording": "The word overall must appear exactly 1 time."
+   }
+  },
+  "MK8:2": {
+   "0": {
+    "mean": 2.0416666666666665,
+    "n": 192,
+    "p_exact": 0.9583333333333334,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 2 times."
+   },
+   "1": {
+    "mean": 1.6302083333333333,
+    "n": 192,
+    "p_exact": 0.7447916666666666,
+    "p_over": 0.015625,
+    "p_zero": 0.14583333333333334,
+    "wording": "Your answer must contain overall exactly 2 times."
+   },
+   "2": {
+    "mean": 1.21875,
+    "n": 192,
+    "p_exact": 0.59375,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.3854166666666667,
+    "wording": "Include overall exactly 2 times in your answer."
+   },
+   "3": {
+    "mean": 2.0416666666666665,
+    "n": 192,
+    "p_exact": 0.8958333333333334,
+    "p_over": 0.07291666666666667,
+    "p_zero": 0.0,
+    "wording": "The word overall must appear exactly 2 times."
+   }
+  },
+  "MK8:3": {
+   "0": {
+    "mean": 3.09375,
+    "n": 192,
+    "p_exact": 0.9114583333333334,
+    "p_over": 0.08854166666666667,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 3 times."
+   },
+   "1": {
+    "mean": 1.234375,
+    "n": 192,
+    "p_exact": 0.34375,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.5104166666666666,
+    "wording": "Your answer must contain overall exactly 3 times."
+   },
+   "2": {
+    "mean": 1.4375,
+    "n": 192,
+    "p_exact": 0.4791666666666667,
+    "p_over": 0.0,
+    "p_zero": 0.5208333333333334,
+    "wording": "Include overall exactly 3 times in your answer."
+   },
+   "3": {
+    "mean": 3.3229166666666665,
+    "n": 192,
+    "p_exact": 0.6614583333333334,
+    "p_over": 0.328125,
+    "p_zero": 0.0,
+    "wording": "The word overall must appear exactly 3 times."
+   }
+  },
+  "MK8:4": {
+   "0": {
+    "mean": 4.0625,
+    "n": 192,
+    "p_exact": 0.9479166666666666,
+    "p_over": 0.052083333333333336,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 4 times."
+   },
+   "1": {
+    "mean": 2.0885416666666665,
+    "n": 192,
+    "p_exact": 0.484375,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.4479166666666667,
+    "wording": "Your answer must contain overall exactly 4 times."
+   },
+   "2": {
+    "mean": 0.8072916666666666,
+    "n": 192,
+    "p_exact": 0.19270833333333334,
+    "p_over": 0.0,
+    "p_zero": 0.78125,
+    "wording": "Include overall exactly 4 times in your answer."
+   },
+   "3": {
+    "mean": 4.239583333333333,
+    "n": 192,
+    "p_exact": 0.6354166666666666,
+    "p_over": 0.3229166666666667,
+    "p_zero": 0.0,
+    "wording": "The word overall must appear exactly 4 times."
+   }
+  },
+  "MK8:5": {
+   "0": {
+    "mean": 5.078125,
+    "n": 192,
+    "p_exact": 0.9375,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 5 times."
+   },
+   "1": {
+    "mean": 1.234375,
+    "n": 192,
+    "p_exact": 0.20833333333333334,
+    "p_over": 0.0,
+    "p_zero": 0.6614583333333334,
+    "wording": "Your answer must contain overall exactly 5 times."
+   },
+   "2": {
+    "mean": 0.9635416666666666,
+    "n": 192,
+    "p_exact": 0.18229166666666666,
+    "p_over": 0.0,
+    "p_zero": 0.7760416666666666,
+    "wording": "Include overall exactly 5 times in your answer."
+   },
+   "3": {
+    "mean": 5.166666666666667,
+    "n": 192,
+    "p_exact": 0.625,
+    "p_over": 0.3177083333333333,
+    "p_zero": 0.015625,
+    "wording": "The word overall must appear exactly 5 times."
+   }
+  },
+  "MK8:6": {
+   "0": {
+    "mean": 5.96875,
+    "n": 192,
+    "p_exact": 0.84375,
+    "p_over": 0.057291666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 6 times."
+   },
+   "1": {
+    "mean": 2.3229166666666665,
+    "n": 192,
+    "p_exact": 0.2916666666666667,
+    "p_over": 0.03125,
+    "p_zero": 0.4270833333333333,
+    "wording": "Your answer must contain overall exactly 6 times."
+   },
+   "2": {
+    "mean": 0.8802083333333334,
+    "n": 192,
+    "p_exact": 0.11979166666666667,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.8072916666666666,
+    "wording": "Include overall exactly 6 times in your answer."
+   },
+   "3": {
+    "mean": 6.0625,
+    "n": 192,
+    "p_exact": 0.5989583333333334,
+    "p_over": 0.296875,
+    "p_zero": 0.0,
+    "wording": "The word overall must appear exactly 6 times."
+   }
+  },
+  "MK8:7": {
+   "0": {
+    "mean": 6.317708333333333,
+    "n": 192,
+    "p_exact": 0.28125,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 7 times."
+   },
+   "1": {
+    "mean": 1.078125,
+    "n": 192,
+    "p_exact": 0.06770833333333333,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.7708333333333334,
+    "wording": "Your answer must contain overall exactly 7 times."
+   },
+   "2": {
+    "mean": 1.6145833333333333,
+    "n": 192,
+    "p_exact": 0.125,
+    "p_over": 0.005208333333333333,
+    "p_zero": 0.71875,
+    "wording": "Include overall exactly 7 times in your answer."
+   },
+   "3": {
+    "mean": 6.9375,
+    "n": 192,
+    "p_exact": 0.4010416666666667,
+    "p_over": 0.3333333333333333,
+    "p_zero": 0.015625,
+    "wording": "The word overall must appear exactly 7 times."
+   }
+  },
+  "MK8:8": {
+   "0": {
+    "mean": 7.583333333333333,
+    "n": 192,
+    "p_exact": 0.515625,
+    "p_over": 0.041666666666666664,
+    "p_zero": 0.0,
+    "wording": "Use the word overall exactly 8 times."
+   },
+   "1": {
+    "mean": 0.6666666666666666,
+    "n": 192,
+    "p_exact": 0.03125,
+    "p_over": 0.010416666666666666,
+    "p_zero": 0.828125,
+    "wording": "Your answer must contain overall exactly 8 times."
+   },
+   "2": {
+    "mean": 2.0208333333333335,
+    "n": 192,
+    "p_exact": 0.17708333333333334,
+    "p_over": 0.020833333333333332,
+    "p_zero": 0.6979166666666666,
+    "wording": "Include overall exactly 8 times in your answer."
+   },
+   "3": {
+    "mean": 7.9375,
+    "n": 192,
+    "p_exact": 0.4010416666666667,
+    "p_over": 0.3489583333333333,
+    "p_zero": 0.010416666666666666,
+    "wording": "The word overall must appear exactly 8 times."
+   }
+  }
+ },
+ "model_key": "qwen3-4b-instruct-2507",
+ "unmatched": {}
+}
