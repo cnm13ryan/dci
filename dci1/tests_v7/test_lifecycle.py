@@ -650,3 +650,22 @@ def test_the_freeze_binds_the_design_of_exactly_the_admitted_arms():
         identification_statuses=every[1:])
     freeze.assert_freeze_complete(record(["base"]),
                                   identification_statuses=every)
+
+
+def test_the_final_report_traces_statuses_to_what_gate_5_binds():
+    """§18.1 binds Gate 2's identification statuses with Gate 3C's
+    (`freeze_run.assemble` writes their union). The final-report check
+    compared the freeze with Gate 3C's set alone, so a replication with any
+    Gate-2 status --- `OPERATING_POINT_AT_GRID_BOUNDARY` on the 2026-08-29
+    rehearsal of gemma-3n-e2b-it --- failed its final report by
+    construction. The rule is now the union, in one place."""
+    from dci1v7.run.final_report_checks import bound_statuses
+
+    gate2 = ["OPERATING_POINT_AT_GRID_BOUNDARY"]
+    gate3c = ["DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+              "NEAR_FORM_ARM_NOT_AVAILABLE"]
+    assert bound_statuses(gate2, gate3c) == [
+        "DIFFICULTY_SUPPORT_NOT_IDENTIFIED", "NEAR_FORM_ARM_NOT_AVAILABLE",
+        "OPERATING_POINT_AT_GRID_BOUNDARY"]
+    assert bound_statuses([], gate3c) == sorted(gate3c)
+    assert bound_statuses(gate2, gate2) == gate2

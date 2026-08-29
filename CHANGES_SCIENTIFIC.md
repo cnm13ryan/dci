@@ -13,6 +13,22 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — the final report's status trace compares with what Gate 5 binds (Gate 2 ∪ Gate 3C)
+
+**What changed.** `run/final_report_checks` required the reported
+identification statuses to equal the freeze's *and* Gate 3C's set; §18.1's
+freeze binds every status the replication carries and `freeze_run.assemble`
+writes the union of Gate 2's and Gate 3C's, so a replication with any Gate-2
+status (`OPERATING_POINT_AT_GRID_BOUNDARY`, `EXCESS_NOT_IDENTIFIED` at the
+operating point) failed `identification_statuses_trace_to_the_freeze` by
+construction and its final report recorded `FINAL_REPORT_FAILURE`. First
+reached on the 2026-08-29 development rehearsal r3 of `gemma-3n-e2b-it`
+(13/14 checks, the trace check the one failure; its `FINAL_REPORT` record is
+write-once and stands as the finding). The check now asserts
+`report == freeze == Gate 2 ∪ Gate 3C` (`bound_statuses`, one definition) and
+records all four sets. Re-running the checks read-only on that tree under the
+fix gives 14/14. No estimand, threshold or rule moves.
+
 ## 2026-08-29 — §23's projection audit records a degenerate block instead of raising (§11.2)
 
 **What changed.** `run/analysis_run._projection_audit` forms §13.6's

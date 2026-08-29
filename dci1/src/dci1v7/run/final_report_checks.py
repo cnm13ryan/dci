@@ -52,8 +52,8 @@ FINAL_REPORT_CHECKS: tuple[tuple[str, str, bool], ...] = (
      "§34 D6: no reported row carries an estimate for a member Gate 3C "
      "marked NOT_IDENTIFIED for want of reference support", True),
     ("identification_statuses_trace_to_the_freeze",
-     "the reported statuses are the ones Gate 3C wrote and Gate 5 bound",
-     True),
+     ("the reported statuses are the ones Gate 5 bound, and Gate 5 bound "
+      "exactly the union of Gate 2's and Gate 3C's"), True),
     ("lifecycle_records_complete",
      "every registered stage has a signed record and a transition-log entry",
      True),
@@ -80,6 +80,12 @@ FINAL_REPORT_CHECKS: tuple[tuple[str, str, bool], ...] = (
      "every stage directory has a verified durable mirror", True),
 )
 
+
+
+def bound_statuses(gate2_statuses, gate3c_statuses) -> list[str]:
+    """The identification statuses §18.1 binds: Gate 2's and Gate 3C's,
+    as one sorted set --- the same union `freeze_run.assemble` writes."""
+    return sorted(set(gate2_statuses) | set(gate3c_statuses))
 
 def _result(check: str, verdict: str, detail: Any, mandatory: bool
             ) -> dict[str, Any]:
@@ -225,13 +231,24 @@ def final_report_checks(tree: ModelTree, report: Mapping[str, Any], *,
          "decision": "D6",
          "note": "null when §13.15 was met; the check is then vacuously "
                  "satisfied and says so rather than being skipped"})
+    # §18.1 binds every identification status the replication carries:
+    # Gate 2's (`OPERATING_POINT_AT_GRID_BOUNDARY`, `EXCESS_NOT_IDENTIFIED`
+    # at the operating point) with Gate 3C's, and `freeze_run.assemble`
+    # writes their union. Until 2026-08-29 this check required the freeze
+    # to equal Gate 3C's set alone, so a replication with any Gate-2 status
+    # failed its final report by construction --- first reached on the
+    # development rehearsal r3 of gemma-3n-e2b-it.
+    gate2 = transitions.read_stage_record(tree, C.STAGE_GATE2)
     reported = sorted(set(report.get("identification_statuses", ())))
+    bound = bound_statuses(gate2.get("identification_statuses", ()),
+                           gate3c.get("identification_statuses", ()))
+    frozen_statuses = sorted(set(freeze_record["identification_statuses"]))
     add("identification_statuses_trace_to_the_freeze",
-        reported == sorted(set(freeze_record["identification_statuses"]))
-        == sorted(set(gate3c["identification_statuses"])),
-        {"report": reported,
-         "freeze": sorted(set(freeze_record["identification_statuses"])),
-         "gate3c": sorted(set(gate3c["identification_statuses"]))})
+        reported == frozen_statuses == bound,
+        {"report": reported, "freeze": frozen_statuses,
+         "gate2": sorted(set(gate2.get("identification_statuses", ()))),
+         "gate3c": sorted(set(gate3c.get("identification_statuses", ()))),
+         "bound_by_gate_5": bound})
 
     # ------------------------------------------------------ the lifecycle
     log_entries = {entry.get("stage")
