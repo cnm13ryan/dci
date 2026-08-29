@@ -1335,16 +1335,7 @@ def run_scenarios_parallel(names: Sequence[str], *, workers: int = 5,
     scenario's when it is not among ``names``).
     """
     import multiprocessing as mp
-    import os
     from concurrent.futures import ProcessPoolExecutor
-
-    # Each scenario process runs the stages' own process pools
-    # (`engine/parallel`); left at their default every scenario would ask
-    # for the whole machine at once. Bounded here, unless the caller set
-    # it, so that the scenarios share the cores rather than thrash them.
-    if not os.environ.get("DCI1_V7_CPU_WORKERS"):
-        os.environ["DCI1_V7_CPU_WORKERS"] = str(max(
-            1, ((os.cpu_count() or 1) - 4) // max(1, workers)))
 
     base = Path(root or tempfile.mkdtemp(prefix="scenarios-parallel-"))
     base.mkdir(parents=True, exist_ok=True)
