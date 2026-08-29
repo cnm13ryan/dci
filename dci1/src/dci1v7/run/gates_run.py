@@ -480,12 +480,15 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         row["candidate"]: row
         for row in (regime_record.get("difficulty_table") or ())
         if not row.get("is_outcome")}
-    tables = _calibration_rows(
+    measured_tables = _calibration_rows(
         tree.model_key, non_outcome, m_star=m_star,
         solo_rows=candidate_rows, chance_rows=grid_rows,
         b_solo_rows=b_solo_rows,
         kappa_column=kappa_by_severity[str(m_star)],
         prescreen=prescreen_by_candidate)
+    # §11.2: a candidate with no difficulty coordinate is withheld from the
+    # table §13 reads and recorded, with its measured values, beside it.
+    tables, withheld = _withhold_degenerate(measured_tables)
 
     statuses = sorted(set(target.get("identification_statuses", [])
                           + focal.get("identification_statuses", [])
@@ -581,11 +584,23 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         # this field rather than against the bank.
         "calibration_topic_ids": sorted(t["topic_id"] for t in topics),
         "calibration_rows": tables,
+        # §11.2 on §13.11's table (2026-08-29): the rows whose chance
+        # compliance reached CHANCE_DEGENERACY_MAX, withheld from the table
+        # above because their difficulty coordinate is not defined, and
+        # recorded here with every value they measured. Gate 2.5 names them
+        # on its record and §12.6's calibrated re-read still counts them
+        # (v6 A16). Empty on every split when no candidate is degenerate.
+        "calibration_rows_withheld": withheld,
+        "n_candidates_withheld_degenerate": {
+            split: len(rows) for split, rows in withheld.items()},
+        # The denominator of the chance column, named: which runs'
+        # unconstrained cells, how many topics per split, draws per topic.
+        "chance_basis": _chance_basis(grid_rows),
         # Two recorded diagnostics, both free and both read by nothing.
         "kappa_b_under_candidate": _kappa_b_under_candidate(
             candidate_rows, m_star=m_star, model_key=tree.model_key),
         "prescreen_to_calibration": _prescreen_to_calibration(
-            tables["pooled"]),
+            measured_tables["pooled"]),
         "n_candidates_measured": len(non_outcome),
         "kappa_under_b_source":
             "the B-solo cells at m*, on which every carried candidate was "
@@ -651,6 +666,12 @@ def _n_in_split(rows: Sequence[Mapping[str, Any]], split: str | None) -> int:
         1 for r in rows if r.get("topic_split") == split)
 
 
+#: §11.2 / §13.2 / §25: the cell kappa_c is measured in. Gate 2's grid runs
+#: generate it on every calibration block, and §9.1 scores every carried
+#: candidate on it as an absent instance, which is what makes the column free.
+UNCONSTRAINED_ARM = "unconstrained"
+
+
 def _calibration_entry(task: Mapping[str, Any]) -> dict[str, Any] | None:
     """One §13.11 row: a candidate on a split. The serial loop body.
 
@@ -670,25 +691,35 @@ def _calibration_entry(task: Mapping[str, Any]) -> dict[str, Any] | None:
                           split=restrict)
     except ProtocolError:                                # pragma: no cover
         return None
-    # The chance column, exactly as the previous implementation wrote it.
-    # That implementation read `instance_rates(chance_rows, ...)["chance"]`
-    # and fell back to 0.0 on a ProtocolError; `instance_rates` scans for
-    # the candidate *present* first, and a non-outcome candidate is stated
-    # in no grid row, so the fallback is what every replication of v5, v6
-    # and v7 recorded. That is a defect against §13.2 (CHANGES_SCIENTIFIC.md
-    # 2026-08-29, "finding, not yet in force") and it is deliberately NOT
-    # corrected here: the modules that read the column are §13's frozen
-    # implementation (`protocol/revision.V9`) and the correction is a
-    # researcher decision. This unit reproduces the old value: the measured
-    # chance over every grid row where the candidate is absent when some
-    # grid row states it, and 0.0 otherwise or when either scan finds no
-    # row.
-    if task["n_present_in_chance"] == 0 or task["n_absent_in_chance"] == 0:
-        chance = {"compliance": 0.0}
-    else:
-        chance = cell_rates(task["absent_chance_rows"], kind=candidate.kind,
-                            severity=candidate.severity, present=False,
-                            split=restrict)
+    # §11.2 / §13.2: kappa_c is the candidate's compliance in the
+    # unconstrained cell of the same topic set at the same M under the same
+    # prompt --- the grid runs' load-zero cells, on which §9.1 scores every
+    # carried candidate as an absent instance. Until 2026-08-29 this column
+    # was obtained through `instance_rates(chance_rows, ...)`, whose *solo*
+    # scan runs first and finds no grid row that states a non-outcome
+    # candidate, so the call raised and 0.0 was written for every candidate
+    # of every replication of v5, v6 and v7 (CHANGES_SCIENTIFIC.md,
+    # 2026-08-29): iota(R) was raw solo compliance beside a chance-corrected
+    # iota_A, H_R was solo compliance, §13.4's ceiling could not fire and
+    # §13.6's displacement was measured against zero. A split with no
+    # unconstrained cell is a broken run and refuses rather than recording a
+    # chance nobody measured; a chance measured on a different topic set
+    # from the solo cell is refused too, because §13.2 says "the same topic
+    # set" and §13.4's Wilson bound on kappa is formed at the row's n_topics.
+    if task["n_unconstrained"] == 0:
+        raise ProtocolError(
+            f"§13.2: kappa_c for {candidate.label} on the {split} split has "
+            "no unconstrained cell to be measured in; the calibration table "
+            "records no chance it did not measure")
+    chance = cell_rates(task["unconstrained_rows"], kind=candidate.kind,
+                        severity=candidate.severity, present=False,
+                        split=restrict, arm=UNCONSTRAINED_ARM)
+    if chance["n_topics"] != solo["n_topics"]:
+        raise ProtocolError(
+            f"§13.2: {candidate.label} on the {split} split was stated on "
+            f"{solo['n_topics']} topics and scored absent on "
+            f"{chance['n_topics']} unconstrained topics; kappa_c is measured "
+            "on the same topic set as the solo cell")
     screened = task["screened"] or {}
     # ``precomputed`` is ``_kappa_columns``' entry for this m*: the same
     # quantity from one pass over the rows instead of one pass per
@@ -753,6 +784,13 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
     assembled by a caller is a table nobody can trace to a generation, and
     §13.11's whole point is that the selection input is auditable.
 
+    ``chance_rows`` are the grid runs' rows; only their **unconstrained**
+    cells enter the chance column (§11.2, §13.2, §25). The B-solo cells they
+    also carry --- answers written under a stated length budget, on which
+    every candidate is scored absent too --- are §13.6's kappa(R|B), a
+    different registered quantity, and averaging them into kappa_c would
+    inflate it (`execute.cell_rates` says why).
+
     ``prescreen`` joins §12.2's measurement of **the same instrument**.
     ``CalibrationRow`` has carried ``prescreen_solo_compliance`` and
     ``prescreen_chance_compliance`` since v5 and nothing ever filled them, so
@@ -766,28 +804,28 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
     deleted. Filling the columns therefore changes no verdict, which is why it
     can be done without amending §13.
 
-    **2026-08-29: built in a process pool, every column unchanged.** One
-    (split, candidate) unit at a time, each unit given the rows that carry
-    its candidate's verdicts, reduced to those verdicts (`_bucket`) --- the
-    same rows in the same order to every reader, so every column is the
-    byte the serial scan produced (``tests_v7/test_parallel.py``, and
-    checked on the 2026-08-28 rehearsal's 86,016 stored rows against the
-    previous implementation). The chance column's known defect is
-    reproduced, not corrected: see `_calibration_entry`.
+    **Built in a process pool, every column the serial scan's.** One (split,
+    candidate) unit at a time, each unit given the rows that carry its
+    candidate's verdicts, reduced to those verdicts (`_bucket`) --- the same
+    rows in the same order to every reader, so every column is the byte the
+    serial scan produces (``tests_v7/test_parallel.py``). The table returned
+    here carries **every** measured candidate, a degenerate chance included;
+    `_withhold_degenerate` is the step that keeps a row with no difficulty
+    coordinate off the table §13 reads, and `gate2_payload` records both.
     """
     splits = (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")
     n_solo = {s: _n_in_split(solo_rows, None if s == "pooled" else s)
               for s in splits}
     # ONE pass over each row set, in the parent, bucketing every row's
     # verdicts by label and presence: the rows that state each candidate,
-    # the grid rows that state it and those where it is absent (the chance
-    # column's inputs), and --- for the per-candidate kappa(R|B) fallback
-    # --- the B-solo rows where it is absent. A pass per candidate (the
-    # first form of this) cost 336 scans of 86,016 rows at Gate 2, which is
-    # the cost this replaces.
+    # the unconstrained rows where it is absent (the chance column's input),
+    # and --- for the per-candidate kappa(R|B) fallback --- the B-solo rows
+    # where it is absent. A pass per candidate (the first form of this) cost
+    # 336 scans of 86,016 rows at Gate 2, which is the cost this replaces.
     present_by = _bucket(solo_rows, present=True)
-    chance_present_by = _bucket(chance_rows, present=True)
-    chance_absent_by = _bucket(chance_rows, present=False)
+    unconstrained_by = _bucket(
+        [r for r in chance_rows if r.get("arm") == UNCONSTRAINED_ARM],
+        present=False)
     b_solo_by = ({} if kappa_column is not None
                  else _bucket(b_solo_rows, present=False))
     tasks: list[dict[str, Any]] = []
@@ -796,6 +834,7 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
         for candidate in candidates:
             label = candidate.label
             present_rows = present_by.get(label, [])
+            unconstrained_rows = unconstrained_by.get(label, [])
             precomputed = (None if kappa_column is None
                            else (kappa_column.get(split) or {}).get(label))
             tasks.append({
@@ -803,11 +842,8 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                 "n_present": _n_in_split(present_rows, restrict),
                 "n_solo": n_solo[split],
                 "present_rows": present_rows,
-                "n_present_in_chance": _n_in_split(
-                    chance_present_by.get(label, []), restrict),
-                "n_absent_in_chance": _n_in_split(
-                    chance_absent_by.get(label, []), restrict),
-                "absent_chance_rows": chance_absent_by.get(label, []),
+                "n_unconstrained": _n_in_split(unconstrained_rows, restrict),
+                "unconstrained_rows": unconstrained_rows,
                 "b_solo_rows": b_solo_by.get(label, []),
                 "precomputed": precomputed,
                 "kappa_column_given": kappa_column is not None,
@@ -819,6 +855,115 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
         if entry is not None:
             out[task["split"]].append(entry)
     return out
+
+
+#: §11.2's status for a constraint whose difficulty coordinate is undefined.
+DIFFICULTY_COORDINATE_DEGENERATE = "DIFFICULTY_COORDINATE_DEGENERATE"
+
+
+def _withhold_degenerate(tables: Mapping[str, Sequence[Mapping[str, Any]]]
+                         ) -> tuple[dict[str, list[dict[str, Any]]],
+                                    dict[str, list[dict[str, Any]]]]:
+    """§11.2 on §13.11's table: a row whose kappa_c is at or above
+    ``CHANCE_DEGENERACY_MAX`` has no difficulty coordinate, is withheld from
+    the table it was measured on, and is recorded beside it with every
+    value it measured.
+
+    **Why here, and why the row leaves the table rather than carrying a
+    flag.** §13.2's iota is (solo - kappa)/(1 - kappa) and §11.2 registers
+    that at kappa >= 0.99 it is not defined: the constraint "is reported
+    with its difficulty coordinate withheld and
+    DIFFICULTY_COORDINATE_DEGENERATE". `CalibrationRow.iota` says exactly
+    that, by raising --- and §13's frozen readers (`stages/stability.py`,
+    `stages/selection.py`; `revision.V9`) read `.iota` on every row of a
+    table they are handed. So a table a §13 stage reads must carry only rows
+    with a coordinate, and the stage that produced the rows is where that
+    is established. v6 A16 is the same rule on §12.6's screen: a
+    coordinate-less rung "is dropped from every coverage condition and
+    recorded"; §12.6's calibrated re-read still sees the withheld rows
+    (`feasibility.coverage_at_calibrated_iota_a`), so that record is kept.
+
+    **This decides no admission.** A withheld row fails §13.4 on its own
+    measured values --- its instruction lift solo - kappa is at most 0.01
+    against the 0.20 floor, and kappa exceeds the 0.75 ceiling --- so the
+    registered rules reject it wherever it is evaluated; what is withheld is
+    the evaluation of a coordinate that does not exist, and the record says
+    so with the values on it. `CHANCE_DEGENERACY_MAX` is not thereby an
+    admission threshold (§13.4 says it is not; §13.4's ceiling is): the
+    withheld record carries the ceiling's own verdict beside the status.
+
+    **Per table.** A candidate degenerate on one split and not on the
+    other is withheld from the split it is degenerate on and kept where its
+    coordinate exists; §13.7 then finds no pair for it and it cannot be
+    stable, which is what its measurements say.
+
+    A withheld row carries ``status`` and ``why``, which §13.11's closed
+    schema refuses: it cannot be loaded back into a `CalibrationRow` by
+    any reader, which is the point.
+    """
+    kept: dict[str, list[dict[str, Any]]] = {}
+    withheld: dict[str, list[dict[str, Any]]] = {}
+    for split, rows in tables.items():
+        kept[split], withheld[split] = [], []
+        for row in rows:
+            kappa = float(row["chance_compliance"])
+            if kappa < C.CHANCE_DEGENERACY_MAX:
+                kept[split].append(dict(row))
+                continue
+            lift = float(row["solo_compliance"]) - kappa
+            withheld[split].append({
+                **row,
+                "status": DIFFICULTY_COORDINATE_DEGENERATE,
+                "why": (f"chance compliance {kappa:.4f} is at or above "
+                        f"CHANCE_DEGENERACY_MAX = {C.CHANCE_DEGENERACY_MAX}: "
+                        "iota is not defined (§11.2), so the row is withheld "
+                        "from §13.11's table and recorded here"),
+                "fails_registered_admission_on": {
+                    "V_head": (f"instruction lift {lift:.4f} below "
+                               f"{C.INSTRUCTION_LIFT_MIN}"),
+                    "V_chance": (f"chance compliance {kappa:.4f} above "
+                                 f"{C.CHANCE_MAX}")},
+            })
+    return kept, withheld
+
+
+def _chance_basis(chance_rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """The cells §13.11's chance column was measured on, for the record.
+
+    Written so a reader of the Gate-2 record can see the denominator ---
+    which runs' unconstrained cells, how many topics per split, how many
+    draws per topic --- without re-reading 86,016 rows. Read by nothing.
+    """
+    topics: dict[str, set[str]] = {}
+    n_rows: dict[str, int] = {}
+    runs: set[str] = set()
+    for row in chance_rows:
+        if row.get("arm") != UNCONSTRAINED_ARM:
+            continue
+        block = str(row.get("block_id") or "")
+        runs.add(block.rsplit("-", 1)[0] if "-" in block else block)
+        for split in dict.fromkeys(("pooled", row.get("topic_split"))):
+            if split is None:
+                continue
+            topics.setdefault(split, set()).add(row["topic_id"])
+            n_rows[split] = n_rows.get(split, 0) + 1
+    return {
+        "cell": UNCONSTRAINED_ARM,
+        "rule": "§11.2 / §13.2: kappa_c = P(X_c = 1 | unconstrained cell) on "
+                "the same topic set at the same M under the same prompt; the "
+                "grid runs' unconstrained cells, on which §9.1 scores every "
+                "carried candidate as an absent instance",
+        "runs": sorted(runs),
+        "per_split": {
+            split: {"n_topics": len(topics[split]),
+                    "n_rows": n_rows[split],
+                    "draws_per_topic": n_rows[split] / len(topics[split])}
+            for split in sorted(topics)},
+        "degeneracy_max": C.CHANCE_DEGENERACY_MAX,
+        "degenerate_rows_are": "withheld from `calibration_rows` and "
+                               "recorded in `calibration_rows_withheld` "
+                               "(§11.2; `_withhold_degenerate`)",
+    }
 
 
 def _prescreen_to_calibration(rows: Sequence[Mapping[str, Any]]
@@ -1245,6 +1390,15 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
         }
     at_m_star = by_severity[str(m_star)]
     qualified = at_m_star["qualification"]
+    # §11.2: the candidates Gate 2 withheld from §13.11's table because their
+    # chance compliance reached CHANCE_DEGENERACY_MAX. They are measured
+    # candidates that V(R) was not evaluated on --- there is no coordinate
+    # to evaluate V_inter or V_diff at --- and a reader of this record
+    # should not have to infer from a count that the table was smaller than
+    # the population §12.7 measured. Their values are on the Gate-2 record.
+    withheld = gate2_record.get("calibration_rows_withheld") or {}
+    withheld_here = [f"{r['kind']}:{r['severity']}"
+                     for r in (withheld.get(split) or ())]
     report = at_m_star["interaction"]
     # §12.3's recorded order, restricted to the severities that can meet
     # §13.15's five-family minimum. Doing it **here** is what keeps the probe
@@ -1300,6 +1454,17 @@ def gate2_5_payload(tree: ModelTree, *, producing_commit: str,
             v["candidate"]: v["first_failing_component"]
             for v in qualified["verdicts"]},
         "interaction": report,
+        "withheld_from_qualification": {
+            "rule": "§11.2: a candidate whose chance compliance on this "
+                    "table is at or above CHANCE_DEGENERACY_MAX = "
+                    f"{C.CHANCE_DEGENERACY_MAX} has no difficulty "
+                    "coordinate; Gate 2 withheld it from §13.11's table "
+                    "(`calibration_rows_withheld`, with its measured "
+                    "values) and V(R) is not evaluated on it. It fails "
+                    "§13.4's lift floor and chance ceiling on those values",
+            "split": split,
+            "candidates": withheld_here,
+            "n": len(withheld_here)},
         "generates_rows": False,
         "generation_free_statement":
             "kappa(R|B) is a verdict for an absent candidate on the B-solo "

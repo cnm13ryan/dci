@@ -27,18 +27,18 @@
   "D25": "survivor_ladder_only",
   "D27": "retain_the_probe_stage"
  },
- "n_rules": 80,
- "n_agreeing": 80,
+ "n_rules": 82,
+ "n_agreeing": 82,
  "by_status": {
   "VERIFIED_CONDITIONAL": 2,
-  "VERIFIED_REACHABLE": 78
+  "VERIFIED_REACHABLE": 80
  },
  "contract": {
-  "n_fields": 172,
+  "n_fields": 173,
   "n_artifacts": 18,
-  "n_checked_against_payloads": 442,
-  "n_field_presence_checks": 172,
-  "n_consumption_checks": 270,
+  "n_checked_against_payloads": 445,
+  "n_field_presence_checks": 173,
+  "n_consumption_checks": 272,
   "n_semantic_checks": 4,
   "relayed": [
    {
@@ -1073,6 +1073,7 @@
    "gate3c_statuses": [
     "COMPANION_CLASS_NOT_MATCHED",
     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
     "REFERENCE_POOL_SAME_FORM",
     "REFERENCE_ROLE_NOT_MATCHED"
    ],
@@ -1081,7 +1082,6 @@
    "admitted_arms": [
     "base",
     "core",
-    "nearform",
     "class"
    ],
    "block_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
@@ -1101,7 +1101,6 @@
    "freeze_admitted_arms": [
     "base",
     "core",
-    "nearform",
     "class"
    ],
    "delta_r": "IDENTIFIED",
@@ -1398,7 +1397,7 @@
    "blocked_before_retirement": {
     "refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"
    },
-   "retired_record_hash": "75f068c4866900aeeaca9f146dbf46a861ab1f2ddf06b79f2b21219ef7b31c69",
+   "retired_record_hash": "10b02b01c906951ee7836dcebfd7a3c50947ee0287731d78a2aafef292827dfa",
    "retained_bytes_identical": true,
    "live_path_cleared": true,
    "transition_outcomes": [
@@ -1408,7 +1407,7 @@
    ],
    "stage_one_outcome": "PASS",
    "bound_into_the_manifest": [
-    "75f068c4866900aeeaca9f146dbf46a861ab1f2ddf06b79f2b21219ef7b31c69"
+    "10b02b01c906951ee7836dcebfd7a3c50947ee0287731d78a2aafef292827dfa"
    ],
    "expected": "refused, retired, then PASS with the hash bound"
   }
@@ -1686,6 +1685,34 @@
    "field": "REGIME_SCREEN.calibration_priority",
    "consumer": "GATE_2_FOCAL_CALIBRATION",
    "scenario": "calibration_population",
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-13.2-chance-basis",
+   "section": "\u00a711.2, \u00a713.2, \u00a713.11 (2026-08-29)",
+   "area": "V(R)",
+   "meaning": "kappa_c on \u00a713.11's table is measured in the unconstrained cell of the split's own topic set --- the grid runs' load-zero cells, on which \u00a79.1 scores every carried candidate absent --- never over every absent verdict, and the denominator is named on the record. Until 2026-08-29 the column was 0.0 on every replication of v5, v6 and v7",
+   "runtime": "dci1v7.run.gates_run._calibration_rows",
+   "impl": "dci1v7.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.chance_basis",
+   "consumer": null,
+   "expect": "VERIFIED_REACHABLE",
+   "status": "VERIFIED_REACHABLE",
+   "detail": "",
+   "agrees": true
+  },
+  {
+   "id": "R-11.2-coordinate-withheld",
+   "section": "\u00a711.2, v6 A16 (2026-08-29)",
+   "area": "V(R)",
+   "meaning": "a candidate whose kappa_c reaches CHANCE_DEGENERACY_MAX has no difficulty coordinate: it is withheld from the table \u00a713 reads, recorded with every value it measured, named by Gate 2.5, counted under `coordinate_undefined` by \u00a712.6's calibrated re-read, and refused at the record seam if a table ever carries one. It decides no admission: the row fails \u00a713.4's lift floor and ceiling on its own values",
+   "runtime": "dci1v7.run.gates_run._withhold_degenerate",
+   "impl": "dci1v7.run.gates_run.gate2_payload",
+   "field": "GATE_2_FOCAL_CALIBRATION.calibration_rows_withheld",
+   "consumer": "GATE_2_5_CANDIDATE_QUALIFICATION",
    "expect": "VERIFIED_REACHABLE",
    "status": "VERIFIED_REACHABLE",
    "detail": "",
@@ -2566,6 +2593,6 @@
   }
  ],
  "execution": {
-  "workers": 5
+  "workers": 3
  }
 }

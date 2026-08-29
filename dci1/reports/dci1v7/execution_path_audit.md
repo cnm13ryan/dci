@@ -6,10 +6,10 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 
 ## Summary
 
-- **80 registered rules** audited.
-- **80 agree** with their expected status.
-- By status: **2** VERIFIED_CONDITIONAL, **78** VERIFIED_REACHABLE.
-- Contract: 172 fields, 442 checked against real payloads (172 field-presence, 270 consumption, 4 semantic), **0 defects**.
+- **82 registered rules** audited.
+- **82 agree** with their expected status.
+- By status: **2** VERIFIED_CONDITIONAL, **80** VERIFIED_REACHABLE.
+- Contract: 173 fields, 445 checked against real payloads (173 field-presence, 272 consumption, 4 semantic), **0 defects**.
 - Scenarios run: **24**.
 
 ## regime
@@ -53,6 +53,8 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | rule | section | meaning | implementation | production caller | artifact field | consumer | status |
 |---|---|---|---|---|---|---|---|
 | `R-12.7-population` | §12.7 | calibration measures the priority population, not the carried set | `dci1v7.stages.regime.calibration_priority` | `dci1v7.run.gates_run.assert_calibration_population` | `REGIME_SCREEN.calibration_priority` | `GATE_2_FOCAL_CALIBRATION` | **VERIFIED_REACHABLE** |
+| `R-13.2-chance-basis` | §11.2, §13.2, §13.11 (2026-08-29) | kappa_c on §13.11's table is measured in the unconstrained cell of the split's own topic set --- the grid runs' load-zero cells, on which §9.1 scores every carried candidate absent --- never over every absent verdict, and the denominator is named on the record. Until 2026-08-29 the column was 0.0 on every replication of v5, v6 and v7 | `dci1v7.run.gates_run._calibration_rows` | `dci1v7.run.gates_run.gate2_payload` | `GATE_2_FOCAL_CALIBRATION.chance_basis` | — | **VERIFIED_REACHABLE** |
+| `R-11.2-coordinate-withheld` | §11.2, v6 A16 (2026-08-29) | a candidate whose kappa_c reaches CHANCE_DEGENERACY_MAX has no difficulty coordinate: it is withheld from the table §13 reads, recorded with every value it measured, named by Gate 2.5, counted under `coordinate_undefined` by §12.6's calibrated re-read, and refused at the record seam if a table ever carries one. It decides no admission: the row fails §13.4's lift floor and ceiling on its own values | `dci1v7.run.gates_run._withhold_degenerate` | `dci1v7.run.gates_run.gate2_payload` | `GATE_2_FOCAL_CALIBRATION.calibration_rows_withheld` | `GATE_2_5_CANDIDATE_QUALIFICATION` | **VERIFIED_REACHABLE** |
 | `R-13.1-vr` | §13.1-§13.7 | the eight V(R) components in registered order | `dci1v7.stages.validity.evaluate_validity` | `dci1v7.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity` | `GATE_3A_REFERENCE_CALIBRATION` | **VERIFIED_REACHABLE** |
 | `R-19-lexicographic` | §19 test 3 | the recorded reason is the earliest failing component | `dci1v7.stages.validity.assert_lexicographic_order` | `dci1v7.stages.qualification_gate.qualify_candidates` | `GATE_2_5_CANDIDATE_QUALIFICATION.qualification_by_severity` | `GATE_5_FREEZE` | **VERIFIED_REACHABLE** |
 | `R-12.6-calibrated-coverage` | §12.6 | §12.6's criterion re-read on the CALIBRATION basis at the iota_A reference selection matches on --- iota(R), the eligibility coordinate, the vacuity and iota_A all from the same 192 topics at the same four draws. A lost decisive condition enters §13.15 as a design-time failure under §34 D6's existing disposition; there is no drift threshold and no new status | `dci1v7.stages.feasibility.coverage_at_calibrated_iota_a` | `dci1v7.run.gates_run.gate3a_payload` | `GATE_3A_REFERENCE_CALIBRATION.calibrated_coverage_failures` | `GATE_3C_IDENTIFICATION` | **VERIFIED_REACHABLE** |
@@ -184,5 +186,5 @@ Every scientifically consequential registered rule from stage 3 to stage 18, wit
 | `probe_records_a_ceiling_on_the_treated_arm` | v7 A1: the treated arm at the ceiling is recorded | `{"outcome": "PASS", "terminal_status": null, "m_star_frozen_at_gate2": 8, "probe_m_star": 8, "reselected": false, "d_b_from_a_estimate": -0.20833333333333334, "d_b_from_a_statuses": ["COMPOSED_ARM_AT_BOUNDARY", "COMPOSED_CONTRAST_RANGE_COMPRESSED"], "arm_at_boundary": true, "positive_direction_compr` |
 | `probe_passes_at_the_frozen_m_star` | A13: the frozen m* is measured, recorded and carried | `{"m_star_frozen_at_gate2": 8, "probe_m_star_in": 8, "probe_m_star_out": 8, "reselected": false, "reselections_permitted": 0, "severities_probed": [8], "admissible_severities": [7, 8, 9, 10, 11, 12], "probe_outcome": "PASS", "gate4_outcome": "PASS", "gate4_contrast_statuses": [], "gate3a_m_star": 8, ` |
 | `stage_one_readiness_is_retryable` | §18 stage 1's readiness verdict (A15) | `{"refused": {"status": "REGISTRATION_INCOMPLETE", "blockers": ["DRAFT_DOCUMENT"]}, "after_refusal": {"terminal_report": false, "stage_record": false, "transition_outcomes": ["REFUSED"]}, "retry_outcome": "PASS", "expected": "REFUSED then PASS, with no terminal report"}` |
-| `stage_one_apparatus_fault_is_retired` | §32/A15's pre-manifest retirement | `{"blocked_before_retirement": {"refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"}, "retired_record_hash": "75f068c4866900aeeaca9f146dbf46a861ab1f2dd` |
+| `stage_one_apparatus_fault_is_retired` | §32/A15's pre-manifest retirement | `{"blocked_before_retirement": {"refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"}, "retired_record_hash": "10b02b01c906951ee7836dcebfd7a3c50947ee028` |
 
