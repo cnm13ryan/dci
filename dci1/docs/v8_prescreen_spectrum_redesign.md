@@ -1,3 +1,16 @@
+> **Superseded as the design of record on 2026-08-29 (evening) by
+> [`V8_CANDIDATE.md`](V8_CANDIDATE.md)** — the canonical v8 development branch
+> `dev/v8-canonical` consolidated this note's code with the verifier
+> unification, the §13.11 chance-column fix and the maintenance-branch wording
+> repairs, re-ran every backtest on the **corrected chance basis** (the numbers
+> below were computed on the recorded zero column and the biased pre-screen
+> chance rate; they are kept as the record of that first pass), moved every
+> threshold into `dci1v8dev/rules.py` with its provenance, and chose the
+> coverage offsets (0.10/0.10, span 0.20) by simulation rather than the
+> 0.15/0.10/0.25 stated here. Sections 1, 2, 4 and 6–8 remain the mechanism
+> descriptions; for every number, read `V8_CANDIDATE.md` and the JSON under
+> `reports/dci1v8dev/`.
+
 # DCI-1 v8 development candidate: the reference pre-screen, the spectrum rules, and the exact-count wording
 
 **Status: DEVELOPMENT CANDIDATE, not a registration.** Everything below was

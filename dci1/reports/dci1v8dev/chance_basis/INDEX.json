@@ -1,0 +1,104 @@
+{
+ "generated_by": "tools/v8_chance_basis_cache.py",
+ "read_only": true,
+ "evidence_root": "/home/cnm13ryan/git/dci/dci1/evidence",
+ "results": [
+  {
+   "tree": "v7",
+   "model": "gemma-3n-e2b-it",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v7__gemma-3n-e2b-it.json",
+   "n_labels": 148,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v7",
+   "model": "gemma-3n-e4b-it",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v7__gemma-3n-e4b-it.json",
+   "n_labels": 156,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v7",
+   "model": "qwen3-4b",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v7__qwen3-4b.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v7",
+   "model": "qwen3-4b-instruct-2507",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v7__qwen3-4b-instruct-2507.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v6",
+   "model": "gemma-3n-e2b-it",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v6__gemma-3n-e2b-it.json",
+   "n_labels": 150,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v6",
+   "model": "gemma-3n-e4b-it",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v6__gemma-3n-e4b-it.json",
+   "n_labels": 148,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v6",
+   "model": "qwen3-4b",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v6__qwen3-4b.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "v6",
+   "model": "qwen3-4b-instruct-2507",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/v6__qwen3-4b-instruct-2507.json",
+   "n_labels": 135,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "dev",
+   "model": "qwen3-4b",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/dev__qwen3-4b.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "r3",
+   "model": "qwen3-4b",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/r3__qwen3-4b.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "r3",
+   "model": "gemma-3n-e2b-it",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/r3__gemma-3n-e2b-it.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  },
+  {
+   "tree": "r4",
+   "model": "qwen3-4b-instruct-2507",
+   "path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/reports/dci1v8dev/chance_basis/r4__qwen3-4b-instruct-2507.json",
+   "n_labels": 128,
+   "n_unconstrained_rows": 1536,
+   "seconds": 0.7
+  }
+ ],
+ "seconds": 2.1
+}

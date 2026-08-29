@@ -13,6 +13,55 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 (evening) — canonical v8 candidate: one branch, the corrected chance basis in every replay, retention/coverage/wording finalised (no registered rule changes)
+
+**What changed.** Branch `dev/v8-canonical` reconciles the four v8/v7 lines
+(`fix/v8-verifier-unification`, `fix/v7-chance-basis`,
+`dev/v7-difficulty-spectrum`, `dev/v8-prescreen-redesign`) and takes the
+grammatical-number rule, README banner and `VERSION_DRIFT.md` from
+`maint/v7-docs-marker-unification` re-implemented in `dci1v8dev` (no
+hash-bound or V9-pinned `dci1v7` module moves). Design of record:
+`dci1/docs/V8_CANDIDATE.md`. Findings that change how earlier development
+numbers must be read:
+
+1. **The first v8 backtests inherited the zero chance column.**
+   `dci1v8dev.backtest` reconstructed κ from the recorded ι, so on every
+   calibrated table V_chance and the lift floor were vacuous and ι was raw
+   solo. Every replay now reads §13.2's basis through
+   `dci1v8dev.chance_basis` (cache under `reports/dci1v8dev/chance_basis/`,
+   checked against `run/execute.cell_rates`); ι_A is restated on the same
+   cell (≤ 0.026 from the record). The 2026-08-29 (day) entry's numbers
+   (spectrum pool 41–81 rungs, 12/12 identified, local recovery 92/135)
+   were computed on the zero column and are superseded by
+   `reports/dci1v8dev/pipeline_validation.md`.
+2. **The pre-screen's own chance rate is a different basis.** §12.2's
+   `chance` is `instance_rates` over every absent row, other candidates'
+   solo answers included; against the unconstrained cell it differs with SD
+   0.21 on Tier-3 budget families (0.005 on Tier 1). The v8 screen reads the
+   regime screen's unconstrained cell.
+3. **The "30 retention artefacts" were mostly chance mirages.** On the
+   corrected basis 32 pre-screen passes were lost to §12.7's nearest-24
+   Tier-3 rule, but only 5 have an admissible rung at or beyond both
+   offsets at the screen; 19 rest on chance-inflated budget rungs the legacy
+   C4 eligibility never checked. The spaced retention stays (it carries every
+   accepted family's geometry by construction); the measured historical gain
+   is ~5 families.
+4. **Coverage thresholds by simulation.** Offsets 0.10/0.10, span 0.20,
+   SE(ι) ≤ 0.05 (PPV 0.954, recall 0.63 against realised identifiability),
+   replacing the day entry's 0.15/0.10/0.25 (PPV 0.975, recall 0.44). Screen
+   thresholds re-chosen at those offsets: accept 0.80 / reject 0.20 /
+   final 0.50 (unchanged values). All constants and their provenance:
+   `dci1v8dev/rules.py`; `tests_v8dev/test_rules_provenance.py` asserts they
+   equal the simulations' recorded choices.
+5. **Package consolidation.** `dci1v8.verifiers` → `dci1v8dev.verifiers`
+   (import lines only; the v8 verifier hash moves with them);
+   `reports/dci1v8` → `reports/dci1v8dev/verifier_unification`.
+
+**Which results are affected.** No signed v5–v7 record is re-verdicted.
+The development numbers of the two 2026-08-29 (day) v8 entries and of
+`docs/v8_prescreen_spectrum_redesign.md` are superseded where they read a
+chance column. Comparability: not applicable (nothing registered moved).
+
 ## 2026-08-29 — v8 development candidate: the reference pre-screen, the spectrum rules and the exact-count wording (no registered rule changes)
 
 **What changed.** Nothing on a registered path. A development package

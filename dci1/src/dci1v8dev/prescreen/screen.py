@@ -57,6 +57,7 @@ from dci1v4.errors import ProtocolError
 from dci1v7.protocol import constants as C
 from dci1v7.stages.selection import restrictiveness_key
 from dci1v7.verifiers.constraints import FAMILIES
+from dci1v8dev import rules as R
 from dci1v8dev.prescreen.geometry import Geometry, evaluate_draws, select_iota_a
 from dci1v8dev.prescreen.ladder import ladder_diagnostics
 from dci1v8dev.prescreen.schema import ARung, PrescreenRung
@@ -109,11 +110,21 @@ class ScreenConfig:
     base_seed: int = 20260829
     icc: float = TOPIC_ICC
     #: Status thresholds on P(spectrum event).
-    accept: float = 0.75
-    reject: float = 0.15
-    #: A rung is a local candidate when P(admissible & within caliper) is at
-    #: least this; the family carries the label when any rung does.
-    local_accept: float = 0.50
+    accept: float = R.SCREEN_ACCEPT
+    reject: float = R.SCREEN_REJECT
+    #: A rung is a local candidate when P(admissible & within the ±0.10
+    #: caliper) is at least this; the family carries the label when any rung
+    #: does. **Derived from the pre-screen's own precision, not tuned**: at
+    #: 24 topics × 1 draw the posterior SD of a rung's ι is ≈0.09 and ι_A's
+    #: is comparable, so the difference has SD ≈0.13; a rung *truly on the
+    #: caliper edge* (0.10 from A) then has P(inside) ≈ 0.34 and a truly
+    #: matched rung ≈ 0.56, while a rung 0.20 away has ≈ 0.14. The old value
+    #: 0.50 therefore discarded about half of the truly matched rungs (the
+    #: backtest measured 92 of 135 calibrated-local families kept); 0.25 keeps
+    #: every rung at least as plausible as an edge rung and still drops the
+    #: 0.20-away ones. The label is a retention decision, not an admission:
+    #: the caliper is applied at calibration by the LOCAL rule in full.
+    local_accept: float = R.LOCAL_LABEL_MIN
     spectrum_event: str = "support_both"
     chance_max: float = C.CHANCE_MAX
     lift_min: float = C.INSTRUCTION_LIFT_MIN

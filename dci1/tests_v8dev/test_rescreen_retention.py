@@ -28,7 +28,10 @@ from dci1v8dev.prescreen.screen import (
 from .conftest import a_grid, ladder, rung
 
 CFG = ScreenConfig(draws=1200)
-BORDER = [0.90, 0.86, 0.82, 0.76, 0.69, 0.62, 0.56, 0.50]
+#: A ladder whose support below A is genuinely uncertain at 24 topics under
+#: the candidate offsets (rules.SPECTRUM_OFFSET_BELOW/ABOVE): P(support both)
+#: about 0.35 — the middle band the second pass exists for.
+BORDER = [0.84, 0.82, 0.79, 0.76, 0.72, 0.66, 0.61, 0.57]
 
 
 def _truth_measure(rates):

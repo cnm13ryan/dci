@@ -36,6 +36,7 @@ from typing import Any
 
 from dci1v7.stages.selection import restrictiveness_key
 from dci1v7.verifiers.constraints import LADDERS, RESERVES
+from dci1v8dev import rules as R
 
 __all__ = [
     "ExtensionRule",
@@ -48,11 +49,11 @@ __all__ = [
 
 @dataclass(frozen=True)
 class ExtensionRule:
-    p_reach: float = 0.80
-    picks_per_batch: int = 2
-    calibration_picks: int = 2
-    d_below: float = 0.15
-    d_above: float = 0.10
+    p_reach: float = R.EXTENSION_P_REACH
+    picks_per_batch: int = R.RESCREEN_RESERVE_PICKS_PER_BATCH
+    calibration_picks: int = R.EXTENSION_CALIBRATION_PICKS
+    d_below: float = R.SPECTRUM_OFFSET_BELOW
+    d_above: float = R.SPECTRUM_OFFSET_ABOVE
 
 
 def reach_deficiency(verdict: Mapping[str, Any], *, rule: ExtensionRule

@@ -52,6 +52,7 @@ from dci1v7.stages.calibration_table import CalibrationRow, tie_key
 from dci1v7.stages.interaction import displacement, projected_compliance
 from dci1v7.stages.stability import SplitPair, split_pair
 from dci1v7.stages.validity import VALIDITY_COMPONENTS, evaluate_validity
+from dci1v8dev import rules as R
 
 __all__ = [
     "FOLDED_SPLIT_COMPONENTS",
@@ -118,14 +119,14 @@ class SpectrumRule:
     projection inside the same guard band rather than the headroom band.
     """
 
-    band: tuple[float, float] = C.SPECTRUM_ELIGIBILITY_BAND
+    band: tuple[float, float] = R.SPECTRUM_GUARD_BAND
     vacuity_max: float = C.REFERENCE_VACUITY_MAX
     lift_min: float = C.INSTRUCTION_LIFT_MIN
     degeneracy: float = C.CHANCE_DEGENERACY_MAX
-    max_se_iota: float = 0.05
+    max_se_iota: float = R.SPECTRUM_MAX_SE_IOTA
     displacement_max: float = C.DISPLACEMENT_MAX
-    projection_guard: tuple[float, float] = C.SPECTRUM_ELIGIBILITY_BAND
-    d_min: float = 0.05
+    projection_guard: tuple[float, float] = R.SPECTRUM_GUARD_BAND
+    d_min: float = R.SPECTRUM_D_MIN
 
 
 DEFAULT_SPECTRUM_RULE = SpectrumRule()

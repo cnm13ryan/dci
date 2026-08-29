@@ -41,6 +41,7 @@ from dci1v4.errors import ProtocolError
 from dci1v7.protocol import constants as C
 from dci1v7.stages import regime
 from dci1v7.verifiers.constraints import LADDERS, RESERVES, SELECTABLE_FAMILY_IDS
+from dci1v8dev import rules as R
 from dci1v8dev.prescreen.schema import ARung, PrescreenRung
 from dci1v8dev.prescreen.screen import (
     SCREEN_ACCEPT,
@@ -65,15 +66,15 @@ AMBIGUOUS_AT_MAX = "AMBIGUOUS_AT_MAX"
 
 @dataclass(frozen=True)
 class RescreenConfig:
-    max_batches: int = 3
+    max_batches: int = R.RESCREEN_MAX_BATCHES
     layout: str = "topics"           # "topics" | "draws"
-    batch_topics: int = 24
+    batch_topics: int = R.RESCREEN_BATCH_TOPICS
     batch_draws: int = 1
-    reserve_picks_per_batch: int = 2
+    reserve_picks_per_batch: int = R.RESCREEN_RESERVE_PICKS_PER_BATCH
     include_a_grid: bool = True
     #: After ``max_batches`` a family still in the middle band is accepted
     #: iff P(spectrum event) >= this. 0.5 is the posterior majority.
-    final_accept_at: float = 0.5
+    final_accept_at: float = R.RESCREEN_FINAL_ACCEPT_AT
 
     def __post_init__(self):
         if self.layout not in ("topics", "draws"):

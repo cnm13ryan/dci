@@ -111,17 +111,26 @@ evidence, durable and source trees, and `assert_own_study` refuses a stage
 record whose `study_id` is another revision's. No v4r2 and no v4r3 record was
 edited by any of it.
 
-### 4d. v8 development candidate: pre-screen, spectrum rules, wording (2026-08-29)
+### 4d. The canonical v8 candidate (2026-08-29, branch `dev/v8-canonical`)
 
-Read-only diagnostics over the signed v6/v7 trees and the completed rehearsals,
-and a prospective design, in `dci1/src/dci1v8dev/` with the design note
-[`dci1/docs/v8_prescreen_spectrum_redesign.md`](dci1/docs/v8_prescreen_spectrum_redesign.md)
-and reports under `dci1/reports/dci1v8dev/prescreen/`. Nothing registered moved.
-The five findings are in `CHANGES_SCIENTIFIC.md` (2026-08-29, "v8 development
-candidate"): §13.7 folds the local caliper into the spectrum, C4 gated the wrong
-quantity, §13.15's frozen backups are mostly inadmissible, two of four exact-count
-wording frames are misread, and the Tier-1 grids are too short on the 2507
-checkpoint. Development-level evidence only; no v8 is adopted.
+One development branch reconciles the verifier unification, the §13.11
+chance-column fix (7f89dae, merged here and not on the study branch), the
+difficulty-spectrum diagnosis and the pre-screen/spectrum redesign. Design of
+record: [`dci1/docs/V8_CANDIDATE.md`](dci1/docs/V8_CANDIDATE.md); which
+definition belongs to which revision:
+[`dci1/docs/VERSION_DRIFT.md`](dci1/docs/VERSION_DRIFT.md); code
+`dci1/src/dci1v8dev/`, constants with provenance `dci1v8dev/rules.py`, tests
+`dci1/tests_v8dev/`, reports `dci1/reports/dci1v8dev/`. Every replay on
+stored evidence now reads §13.2's chance basis (the first v8 backtests read
+the zero column and are superseded). What the corrected replays say: the
+pre-screen's own chance rate is a biased basis for Tier-3 budget families;
+most of the historical "retention artefacts" were chance mirages, ~5 of 32
+are real; the new screen reaches precision 0.73 / recall 0.72 against 0.46 /
+0.70 for the legacy certificate; 105 of 117 local caliper rungs are kept at
+40–64 forwarded rungs (§12.7: 112–140); coverage offsets 0.10/0.10 and span
+0.20 were chosen by simulation. Nothing is registered; no v8 evidence
+exists; the next step is a solo/calibration pilot on one model under the
+v8 frames, after a v8 run layer is built (§12 of the design note).
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
