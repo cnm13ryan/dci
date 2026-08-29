@@ -22,6 +22,7 @@ from dci1v7.run.execute import (
     cell_rates,
     fake_backend,
     generate_and_score,
+    instance_rates,
     per_topic_compliance,
     prompt_cell,
 )
@@ -222,9 +223,15 @@ def _naive_reference(candidates, *, solo_rows, chance_rows, b_solo_rows,
                            split=restrict)
             except ProtocolError:
                 continue
-            chance = cell_rates(chance_rows, kind=candidate.kind,
-                                severity=candidate.severity, present=False,
-                                split=restrict, arm="unconstrained")
+            # The previous implementation's chance: instance_rates over the
+            # grid rows, 0.0 on a ProtocolError (which a non-outcome
+            # candidate always raises: it is stated in no grid row).
+            try:
+                chance = {"compliance": instance_rates(
+                    chance_rows, kind=candidate.kind,
+                    severity=candidate.severity, split=restrict)["chance"]}
+            except ProtocolError:
+                chance = {"compliance": 0.0}
             kappa_b, n_t, n_d = gates_run._kappa_under_b(
                 b_solo_rows, candidate, split=restrict)
             entry = {
@@ -256,7 +263,7 @@ def _naive_reference(candidates, *, solo_rows, chance_rows, b_solo_rows,
     return out
 
 
-def test_the_calibration_table_matches_a_naive_scan_and_measures_chance(
+def test_the_calibration_table_matches_a_naive_scan(
         monkeypatch):
     chance_by_kind = {"MK1": 0.0, "MK2": 0.5, "MK6": 0.9}
     solo_rows = _candidate_rows()
@@ -274,27 +281,7 @@ def test_the_calibration_table_matches_a_naive_scan_and_measures_chance(
         table = gates_run._calibration_rows(MODEL, CANDIDATES, **kwargs)
         assert json.dumps(table, sort_keys=True) == \
             json.dumps(reference, sort_keys=True), workers
-    pooled = {r["kind"]: r for r in table["pooled"]}
-    # §13.2: kappa_c is the unconstrained cell's rate, and it is not zero.
-    expected = {kind: cell_rates(grid_rows, kind=kind, severity=sev,
-                                 present=False, arm="unconstrained")
-                ["compliance"] for kind, sev in
-                (("MK1", 1), ("MK2", 2), ("MK6", 3))}
-    assert {k: pooled[k]["chance_compliance"] for k in pooled} == expected
-    assert expected["MK6"] > 0.5 > expected["MK1"] == 0.0
-    # And it is measured only in the unconstrained cell: not under B.
-    under_b = cell_rates(grid_rows, kind="MK6", severity=3, present=False)
-    assert under_b["compliance"] != expected["MK6"]
-
-
-def test_the_calibration_table_refuses_a_chance_nobody_measured(monkeypatch):
-    monkeypatch.setenv("DCI1_V7_CPU_WORKERS", "1")
-    solo_rows = _candidate_rows()
-    grid_rows = [r for r in _grid_rows(chance_by_kind={"MK1": 0, "MK2": 0,
-                                                       "MK6": 0})
-                 if r["arm"] != "unconstrained"]
-    with pytest.raises(ProtocolError, match="§13.2"):
-        gates_run._calibration_rows(
-            MODEL, CANDIDATES, m_star=B_STAR, solo_rows=solo_rows,
-            chance_rows=grid_rows,
-            b_solo_rows=[r for r in grid_rows if r["arm"] == "solo"])
+    # The chance column is the previous implementation's --- 0.0 for every
+    # non-outcome candidate, the defect CHANGES_SCIENTIFIC.md records as a
+    # finding --- reproduced, not corrected, by the pooled builder.
+    assert {r["chance_compliance"] for r in table["pooled"]} == {0.0}

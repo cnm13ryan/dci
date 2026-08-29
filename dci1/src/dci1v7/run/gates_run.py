@@ -619,10 +619,6 @@ def _kappa_under_b(b_solo_rows: Sequence[Mapping[str, Any]],
     return value, len(topics), draws
 
 
-#: §13.2 / §25: the cell kappa_c is measured in.
-UNCONSTRAINED_ARM = "unconstrained"
-
-
 def _bucket(rows: Sequence[Mapping[str, Any]], *, present: bool
             ) -> dict[str, list[dict[str, Any]]]:
     """Every row's verdicts of the given presence, reduced, by label.
@@ -674,20 +670,25 @@ def _calibration_entry(task: Mapping[str, Any]) -> dict[str, Any] | None:
                           split=restrict)
     except ProtocolError:                                # pragma: no cover
         return None
-    # §13.2: kappa_c "measured in the unconstrained cell of the same topic
-    # set at the same M under the same prompt". Every candidate is scored as
-    # an absent instance on every unconstrained cell of the grid runs, so
-    # the quantity exists on the rows; a split with no such cell is a
-    # broken run and refuses rather than recording a chance nobody measured.
-    try:
-        chance = cell_rates(task["unconstrained_rows"], kind=candidate.kind,
+    # The chance column, exactly as the previous implementation wrote it.
+    # That implementation read `instance_rates(chance_rows, ...)["chance"]`
+    # and fell back to 0.0 on a ProtocolError; `instance_rates` scans for
+    # the candidate *present* first, and a non-outcome candidate is stated
+    # in no grid row, so the fallback is what every replication of v5, v6
+    # and v7 recorded. That is a defect against §13.2 (CHANGES_SCIENTIFIC.md
+    # 2026-08-29, "finding, not yet in force") and it is deliberately NOT
+    # corrected here: the modules that read the column are §13's frozen
+    # implementation (`protocol/revision.V9`) and the correction is a
+    # researcher decision. This unit reproduces the old value: the measured
+    # chance over every grid row where the candidate is absent when some
+    # grid row states it, and 0.0 otherwise or when either scan finds no
+    # row.
+    if task["n_present_in_chance"] == 0 or task["n_absent_in_chance"] == 0:
+        chance = {"compliance": 0.0}
+    else:
+        chance = cell_rates(task["absent_chance_rows"], kind=candidate.kind,
                             severity=candidate.severity, present=False,
-                            split=restrict, arm=UNCONSTRAINED_ARM)
-    except ProtocolError as absent:
-        raise ProtocolError(
-            f"§13.2: kappa_c for {candidate.label} on the {split} split has "
-            "no unconstrained cell to be measured in; the calibration table "
-            "records no chance it did not measure") from absent
+                            split=restrict)
     screened = task["screened"] or {}
     # ``precomputed`` is ``_kappa_columns``' entry for this m*: the same
     # quantity from one pass over the rows instead of one pass per
@@ -765,35 +766,28 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
     deleted. Filling the columns therefore changes no verdict, which is why it
     can be done without amending §13.
 
-    **2026-08-29, two changes.** (1) ``chance_compliance`` is §13.2's
-    kappa_c, measured on the grid runs' unconstrained cells, where every
-    candidate is scored as an absent instance. Until this date it was
-    obtained through ``instance_rates(chance_rows, ...)``, whose *solo* scan
-    runs first and finds no row in which a non-outcome candidate is stated,
-    so the call raised and the column was written as ``0.0`` for every
-    candidate of every replication of v5, v6 and v7: iota(R) equalled raw
-    solo compliance, §13.4's chance ceiling never fired, and §13.6's
-    displacement was measured against zero. (2) The table is built one
-    (split, candidate) unit at a time in a process pool, each unit given
-    the rows that carry its candidate's verdicts, reduced to those verdicts
-    (`_reduced`) --- the same rows in the same order to every reader, so
-    every other column is the byte the serial scan produced
-    (``tests_v7/test_parallel.py``, and checked on the 2026-08-28
-    rehearsal's 86,016 stored rows against the previous implementation).
+    **2026-08-29: built in a process pool, every column unchanged.** One
+    (split, candidate) unit at a time, each unit given the rows that carry
+    its candidate's verdicts, reduced to those verdicts (`_bucket`) --- the
+    same rows in the same order to every reader, so every column is the
+    byte the serial scan produced (``tests_v7/test_parallel.py``, and
+    checked on the 2026-08-28 rehearsal's 86,016 stored rows against the
+    previous implementation). The chance column's known defect is
+    reproduced, not corrected: see `_calibration_entry`.
     """
     splits = (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")
-    unconstrained = [r for r in chance_rows
-                     if r.get("arm") == UNCONSTRAINED_ARM]
     n_solo = {s: _n_in_split(solo_rows, None if s == "pooled" else s)
               for s in splits}
     # ONE pass over each row set, in the parent, bucketing every row's
     # verdicts by label and presence: the rows that state each candidate,
-    # the unconstrained rows where each is absent, and --- for the
-    # per-candidate kappa(R|B) fallback --- the B-solo rows where each is
-    # absent. A pass per candidate (the first form of this) cost 336 scans
-    # of 86,016 rows at Gate 2, which is the cost this replaces.
+    # the grid rows that state it and those where it is absent (the chance
+    # column's inputs), and --- for the per-candidate kappa(R|B) fallback
+    # --- the B-solo rows where it is absent. A pass per candidate (the
+    # first form of this) cost 336 scans of 86,016 rows at Gate 2, which is
+    # the cost this replaces.
     present_by = _bucket(solo_rows, present=True)
-    unconstrained_by = _bucket(unconstrained, present=False)
+    chance_present_by = _bucket(chance_rows, present=True)
+    chance_absent_by = _bucket(chance_rows, present=False)
     b_solo_by = ({} if kappa_column is not None
                  else _bucket(b_solo_rows, present=False))
     tasks: list[dict[str, Any]] = []
@@ -809,7 +803,11 @@ def _calibration_rows(model_key: str, candidates: Sequence[Constraint], *,
                 "n_present": _n_in_split(present_rows, restrict),
                 "n_solo": n_solo[split],
                 "present_rows": present_rows,
-                "unconstrained_rows": unconstrained_by.get(label, []),
+                "n_present_in_chance": _n_in_split(
+                    chance_present_by.get(label, []), restrict),
+                "n_absent_in_chance": _n_in_split(
+                    chance_absent_by.get(label, []), restrict),
+                "absent_chance_rows": chance_absent_by.get(label, []),
                 "b_solo_rows": b_solo_by.get(label, []),
                 "precomputed": precomputed,
                 "kappa_column_given": kappa_column is not None,
