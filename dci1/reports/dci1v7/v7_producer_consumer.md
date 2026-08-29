@@ -190,6 +190,7 @@ Which fields each stage actually read while the lifecycle ran. A declared reader
 | `CONFIRMATORY_GENERATION` | `GATE_5_FREEZE` | `admitted_arms`, `canonical_verifier_hash`, `derived_cell_count`, `freeze`, `freeze_hash`, `m_draws`, `n_blocks`, `outcome`, `slot_map` |
 | `CONFIRMATORY_GENERATION` | `PROTOCOL_REGISTERED` | `manifest_hash` |
 | `FINAL_REPORT` | `CONFIRMATORY_GENERATION` | `blocks`, `cells_per_block`, `draws`, `n_rows` |
+| `FINAL_REPORT` | `GATE_2_FOCAL_CALIBRATION` | `identification_statuses` |
 | `FINAL_REPORT` | `GATE_3C_IDENTIFICATION` | `identification_statuses` |
 | `FINAL_REPORT` | `GATE_4_COMPOSED_CONTRAST` | `declared_refusals`, `outcome` |
 | `FINAL_REPORT` | `GATE_5_FREEZE` | `admitted_arms`, `freeze`, `freeze_hash`, `identification_statuses`, `non_identification` |
