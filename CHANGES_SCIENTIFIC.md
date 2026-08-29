@@ -94,7 +94,12 @@ uses `Pool`: each spawned worker owns a duplex pipe, chunks are dealt
 round-robin by index and reassembled in order, a dead worker is seen on its
 sentinel, silence beyond a bound is a stall, teardown joins with a bound and
 kills what is left, and any of those reruns the units serially
-(`PoolStalled`) — the same results, later, never never.
+(`PoolStalled`) — the same results, later, never never. Dispatch keeps one
+chunk in flight per worker and collects as it goes: a first form sent every
+chunk before reading any result and, with results larger than a pipe's
+buffer, parent and worker blocked on each other's full pipe (the same
+lane, Gate 2, the same day); `tests_v7/test_parallel.py` sends 600 kB
+results through two workers.
 `tests_v7/test_parallel.py` stalls a worker that ignores SIGTERM and asserts
 the bound and the results. A watchdog covered the lanes already running on
 the previous pool.

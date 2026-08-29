@@ -180,51 +180,70 @@ def _pooled(fn: Callable[[Any], Any], items: Sequence[Any],
             child_end.close()
             procs.append(process)
             conns.append(parent_end)
-        # Static round-robin: chunk c goes to worker c % n. The units are
-        # uniform, so balance costs nothing, and the assignment is a pure
-        # function of the item order.
-        for c, chunk in enumerate(chunks):
-            conns[c % n_workers].send(("chunk", c, chunk))
-        for conn in conns:
-            conn.send(("stop",))
+        # One chunk in flight per worker, dispatch interleaved with
+        # collection. A first version sent every chunk up front and only
+        # then read results: with a pipe's buffer smaller than a chunk of
+        # scored rows, a worker blocked sending its result to a parent
+        # blocked sending it the next chunk, and both waited forever
+        # (rehearsal r5 of gemma-3n-e2b-it, Gate 2, 2026-08-29). Which
+        # worker computes which chunk is immaterial to the result: a chunk's
+        # values are a pure function of its items and the shared state, and
+        # they are reassembled by chunk index.
         results: dict[int, list[Any]] = {}
-        pending = set(range(len(chunks)))
-        open_conns = list(conns)
+        next_chunk = 0
+        in_flight: dict[Any, int] = {}          # conn -> chunk index
+        idle = list(conns)
         sentinel_of = {p.sentinel: p for p in procs}
-        conn_of_worker = dict(zip(conns, procs))
-        while pending:
-            ready = mpc.wait(open_conns + list(sentinel_of),
+        worker_of = dict(zip(conns, procs))
+
+        def dispatch() -> None:
+            nonlocal next_chunk
+            while idle and next_chunk < len(chunks):
+                conn = idle.pop()
+                conn.send(("chunk", next_chunk, chunks[next_chunk]))
+                in_flight[conn] = next_chunk
+                next_chunk += 1
+
+        dispatch()
+        while len(results) < len(chunks):
+            ready = mpc.wait(list(in_flight) + list(sentinel_of),
                              timeout=RESULT_TIMEOUT_SECONDS)
             if not ready:
                 raise PoolStalled(
                     f"no result within {RESULT_TIMEOUT_SECONDS:.0f} s with "
-                    f"{len(pending)} of {len(chunks)} chunks outstanding")
+                    f"{len(chunks) - len(results)} of {len(chunks)} chunks "
+                    "outstanding")
             for item in ready:
                 if item in sentinel_of:
                     process = sentinel_of.pop(item)
-                    # A worker may exit normally after its "stop" only once
-                    # its pipe has been drained; anything else is a death.
-                    if any(c in open_conns and conn_of_worker[c] is process
-                           for c in open_conns):
+                    if any(worker_of[c] is process for c in in_flight):
                         raise PoolStalled(
                             f"worker {process.name} exited (code "
-                            f"{process.exitcode}) with work outstanding")
+                            f"{process.exitcode}) with a chunk in flight")
+                    continue
+                if item not in in_flight:
                     continue
                 try:
                     message = item.recv()
-                except EOFError:
-                    open_conns.remove(item)
-                    continue
+                except EOFError as gone:
+                    raise PoolStalled(
+                        f"worker {worker_of[item].name} closed its pipe "
+                        "with a chunk in flight") from gone
                 kind = message[0]
                 if kind == "result":
                     _, c, values = message
                     results[c] = values
-                    pending.discard(c)
+                    del in_flight[item]
+                    idle.append(item)
                 elif kind == "error":
-                    _, c, payload = message
+                    _, _c, payload = message
                     raise pickle.loads(payload)
-                elif kind == "done":
-                    open_conns.remove(item)
+            dispatch()
+        for conn in conns:
+            try:
+                conn.send(("stop",))
+            except (OSError, ValueError):
+                pass
         return [value for c in range(len(chunks)) for value in results[c]]
     finally:
         for conn in conns:
