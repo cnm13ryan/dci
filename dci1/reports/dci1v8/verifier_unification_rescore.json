@@ -1,0 +1,219 @@
+{
+ "tool": "dci1/tools/v8_rescore_marker_unification.py",
+ "evidence_root": "/home/cnm13ryan/git/dci/dci1/evidence",
+ "read_only": true,
+ "rule_v7_A": "dci1v4.verifiers.target.s0_count: lower-case whole text, then alphabetic runs == 'however'",
+ "rule_v7_MK": "dci1v7.verifiers.statistics.marker_count: alphabetic runs of the text as written, each lower-cased, == marker",
+ "rule_v8": "dci1v8.verifiers.words.count_marker(text, marker): the v7 MK rule, for A and MK1-MK8 alike",
+ "severities_checked": {
+  "A": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "MK": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12
+  ]
+ },
+ "text_field": "final_answer (raw_generation only where absent)",
+ "files": 593,
+ "rows": 4311315,
+ "undecodable_lines": 0,
+ "missing_final_answer": 0,
+ "rows_with_u0130": 0,
+ "rows_with_differing_counts": 0,
+ "verdict_flips_total": 0,
+ "verdict_flips_by_instrument": {},
+ "per_tree": {
+  ".superseded-dci1-v4-preregistration-apparatus-20260819T230003Z": {
+   "files": 4,
+   "rows": 1392,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "bgrid-screen-v4": {
+   "files": 4,
+   "rows": 2112,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "br-pilot-v4": {
+   "files": 2,
+   "rows": 1152,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "cal-screen-v4": {
+   "files": 16,
+   "rows": 169632,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1-v2": {
+   "files": 14,
+   "rows": 12480,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1-v3": {
+   "files": 62,
+   "rows": 109699,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1-v4": {
+   "files": 20,
+   "rows": 16128,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v4r3": {
+   "files": 50,
+   "rows": 76008,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v4r4": {
+   "files": 37,
+   "rows": 157248,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v5": {
+   "files": 73,
+   "rows": 937776,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v6": {
+   "files": 46,
+   "rows": 516240,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7": {
+   "files": 46,
+   "rows": 525144,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7-development": {
+   "files": 46,
+   "rows": 400128,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7-development-r2": {
+   "files": 8,
+   "rows": 11040,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7-development-r3": {
+   "files": 92,
+   "rows": 830016,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7-development-r4": {
+   "files": 61,
+   "rows": 461408,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "dci1v7-development-r5": {
+   "files": 4,
+   "rows": 5520,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "fs-screen-v4": {
+   "files": 4,
+   "rows": 13392,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  },
+  "matrix-screen-v4": {
+   "files": 4,
+   "rows": 64800,
+   "undecodable_lines": 0,
+   "missing_final_answer": 0,
+   "rows_with_u0130": 0,
+   "rows_with_differing_counts": 0,
+   "verdict_flips": {}
+  }
+ },
+ "differing_rows": [],
+ "elapsed_seconds": 246.6,
+ "workers": 6
+}
