@@ -285,3 +285,39 @@ def test_the_calibration_table_matches_a_naive_scan(
     # non-outcome candidate, the defect CHANGES_SCIENTIFIC.md records as a
     # finding --- reproduced, not corrected, by the pooled builder.
     assert {r["chance_compliance"] for r in table["pooled"]} == {0.0}
+
+
+# ------------------------------------------- a stalled pool falls back
+
+def _stalling_unit(item: int) -> int:
+    """Blocks forever in a *worker* for one item (and ignores SIGTERM there,
+    as the stuck workers of 2026-08-29 did); returns at once in the calling
+    process, so the serial fallback can finish the same units."""
+    import multiprocessing as mp
+    import signal
+    import time
+
+    if item == 3 and mp.parent_process() is not None:
+        signal.signal(signal.SIGTERM, signal.SIG_IGN)
+        time.sleep(600)
+    return item * 2
+
+
+def test_a_stalled_pool_is_torn_down_within_the_bound_and_the_units_rerun(
+        monkeypatch):
+    """2026-08-29: a stage's pool finished every unit and then hung for 75
+    minutes in Pool.__exit__ on two workers that never exited. Now a pool
+    that stops delivering results within the bound is terminated, workers
+    still alive after the teardown bound are killed, and the units are
+    rerun serially --- the same results, later, rather than never."""
+    import time
+
+    monkeypatch.setattr(parallel, "RESULT_TIMEOUT_SECONDS", 3.0)
+    monkeypatch.setattr(parallel, "TEARDOWN_TIMEOUT_SECONDS", 2.0)
+    started = time.monotonic()
+    out = parallel.pool_map(_stalling_unit, list(range(80)), workers=2,
+                            chunksize=1)
+    assert out == [i * 2 for i in range(80)]
+    assert time.monotonic() - started < 60
+    with pytest.raises(parallel.PoolStalled):
+        parallel._pooled(_stalling_unit, list(range(80)), {}, 2, 1)
