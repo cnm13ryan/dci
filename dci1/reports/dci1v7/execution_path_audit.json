@@ -1398,7 +1398,7 @@
    "blocked_before_retirement": {
     "refused": "IntegrityError: gemma-3n-e2b-it is terminal at REGISTRATION_INCOMPLETE; every later stage is mechanically disabled (a terminal pre-confirmatory status carries no evidence about the effect)"
    },
-   "retired_record_hash": "6e3530026515b5c4466085e7c23d74ecef1f7dc80516d645f64eba5bc1d1de58",
+   "retired_record_hash": "75f068c4866900aeeaca9f146dbf46a861ab1f2ddf06b79f2b21219ef7b31c69",
    "retained_bytes_identical": true,
    "live_path_cleared": true,
    "transition_outcomes": [
@@ -1408,7 +1408,7 @@
    ],
    "stage_one_outcome": "PASS",
    "bound_into_the_manifest": [
-    "6e3530026515b5c4466085e7c23d74ecef1f7dc80516d645f64eba5bc1d1de58"
+    "75f068c4866900aeeaca9f146dbf46a861ab1f2ddf06b79f2b21219ef7b31c69"
    ],
    "expected": "refused, retired, then PASS with the hash bound"
   }
