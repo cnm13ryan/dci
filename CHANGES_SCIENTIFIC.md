@@ -13,6 +13,47 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — v8 development candidate: the reference pre-screen, the spectrum rules and the exact-count wording (no registered rule changes)
+
+**What changed.** Nothing on a registered path. A development package
+`dci1/src/dci1v8dev/` (tests `dci1/tests_v8dev/`, tools `dci1/tools/v8_*.py`,
+reports `dci1/reports/dci1v8dev/prescreen/`, design note
+`dci1/docs/v8_prescreen_spectrum_redesign.md`) proposes a v8 replacement for
+§12.2/§12.6/§12.7 and §13.7/§13.12/§13.15 and records five **findings about
+the registered rules**, each reconstructed read-only from the signed v6/v7
+records and the completed development rehearsals:
+
+1. **§13.7 folds §13.8's caliper into the spectrum.** `stability.SPLIT_ADMISSIBILITY_COMPONENTS`
+   includes `V_diff`; `feasibility.calibration_at` computes one stability
+   verdict per candidate in the core slot; `selection.select_spectrum_triple`
+   drops `V_diff` but keeps `V_stab`, so every spectrum rung had to sit inside
+   ±0.10 of ι_A on both splits. The registered spectrum pool spans 0.07–0.16
+   on all twelve replications; the ±0.20 targets were unreachable by construction.
+2. **§12.6's C4 gated the spectrum on a quantity the spectrum could not use**
+   (a within-family span of 0.40 over eligible rungs), was inflated at the
+   pre-screen by 24×1 noise, Tier-3 padding and ι_A movement, and lost at
+   calibration mainly to §12.6's 0.90 band trimming the easy rungs. Under §11.8's
+   family-intercept fit, v7's realised core set (one rung per family) has zero
+   leverage: β is not identified from it at all.
+3. **§13.15's backups were not backups.** `support.freeze_backups` takes the
+   first two unused families of Gate 2.5's list (no `V_stab`, no `V_diff`, no
+   tier filter); on 10 of 12 replications a recorded frozen backup is not an
+   admissible core reference (CR5/CR6, Tier 3, on every Gemma and Qwen tree).
+4. **Two of the four exact-count wording frames are read unreliably.** The
+   frames that do not say "the word" (w1 "Your answer must contain X exactly q
+   times.", w2 "Include X exactly q times in your answer.") leave the marker
+   absent in 46–53% of Gemma answers (92–100% for "though"/"namely"); w3 "The
+   word X must appear exactly q times." is the most reliable frame on every
+   model. `SPECTRUM_ELIGIBILITY_BAND = (0.10, 0.95)` is registered and applied
+   nowhere.
+5. **The severity grids are too short on the 2507 checkpoint** (five marker
+   families never reach ι_A − 0.15 within q ≤ 8) and §12.6's expansion — the
+   only rule that measures the reserve — never ran on any replication.
+
+**Which results are affected.** None re-verdicted: every signed v5–v7 record
+stands as what its registered code computed. The findings bear on the design
+of any v8 registration. Comparability: not applicable (no number changes).
+
 ## 2026-08-29 — v8 (prospective): A and MK1–MK8 are counted by one function under §9.2's lexical rule
 
 **What changed.** A new, prospective instrument layer `dci1/src/dci1v8/verifiers/`

@@ -1,0 +1,101 @@
+{
+ "wording_flat": {
+  "case": "wording_flat",
+  "truth": [
+   0.95,
+   0.9,
+   0.84,
+   0.76,
+   0.66,
+   0.54,
+   0.42,
+   0.3
+  ],
+  "bad_frames": [
+   1,
+   3
+  ],
+  "p_confused": 0.7,
+  "n_sims": 150,
+  "true_span": 0.6499999999999999,
+  "detection_rate_bad_frames": 1.0,
+  "false_flag_rate_good_frames": 0.0,
+  "apparent_span_all_frames": 0.772890625,
+  "span_after_repair": 0.6516666666666666,
+  "rho_all_frames": -0.9993650793650795,
+  "rho_after_repair": -0.9998014684905233
+ },
+ "wording_flat_one_frame": {
+  "case": "wording_flat_one_frame",
+  "truth": [
+   0.95,
+   0.9,
+   0.84,
+   0.76,
+   0.66,
+   0.54,
+   0.42,
+   0.3
+  ],
+  "bad_frames": [
+   1
+  ],
+  "p_confused": 0.7,
+  "n_sims": 150,
+  "true_span": 0.6499999999999999,
+  "detection_rate_bad_frames": 1.0,
+  "false_flag_rate_good_frames": 0.0,
+  "apparent_span_all_frames": 0.7121875,
+  "span_after_repair": 0.6509953703703703,
+  "rho_all_frames": -0.9998412698412699,
+  "rho_after_repair": -1.0
+ },
+ "truly_flat": {
+  "case": "truly_flat",
+  "truth": [
+   0.66,
+   0.65,
+   0.64,
+   0.64,
+   0.63,
+   0.62,
+   0.62,
+   0.61
+  ],
+  "bad_frames": [],
+  "p_confused": 0.0,
+  "n_sims": 150,
+  "true_span": 0.050000000000000044,
+  "detection_rate_bad_frames": 0.0,
+  "false_flag_rate_good_frames": 0.0,
+  "apparent_span_all_frames": 0.07036458333333333,
+  "span_after_repair": 0.07036458333333333,
+  "rho_all_frames": -0.6980195181665128,
+  "rho_after_repair": -0.6980195181665128
+ },
+ "truly_flat_with_bad_frame": {
+  "case": "truly_flat_with_bad_frame",
+  "truth": [
+   0.66,
+   0.65,
+   0.64,
+   0.64,
+   0.63,
+   0.62,
+   0.62,
+   0.61
+  ],
+  "bad_frames": [
+   1
+  ],
+  "p_confused": 0.7,
+  "n_sims": 150,
+  "true_span": 0.050000000000000044,
+  "detection_rate_bad_frames": 1.0,
+  "false_flag_rate_good_frames": 0.0,
+  "apparent_span_all_frames": 0.22642361111111106,
+  "span_after_repair": 0.07524305555555555,
+  "rho_all_frames": -0.7154554239485187,
+  "rho_after_repair": -0.6435025921147061
+ }
+}
