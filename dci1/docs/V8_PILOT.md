@@ -262,7 +262,22 @@ reading). Earlier roots: `dci1v8-pilot` (terminal at `QUALIFIED`,
 
 ## 7b. The pilot under Approach A (2026-08-30)
 
-The pilot re-runs in a fresh root under §1a item 6 with the same model
+**r4 (both models, 09:01Z–10:26Z) is an apparatus record.** Registered,
+qualified, Gate 0, regime screen, second pass and Gate 1 signed `PASS` for
+`qwen3-4b` and `qwen3-4b-instruct-2507`; `qwen3-4b` reached Gate 2, measured
+both grids and all 53 forwarded candidates on every block, and the §13.11
+producer then refused the extension round's first rung — *kappa_c for MK6:9
+has no unconstrained cell to be measured in*. A reserve rung the extension
+measures had never been declared as an instance on the grids, so it had no
+chance column and no kappa(R|B) (`CHANGES_SCIENTIFIC.md`, 2026-08-30 pilot
+r4); the round was inert rather than wrong, and no replication had reached
+it before. Fixed by `calibration.extension_instances` (no generation);
+pinned by `tests_v8dev/test_frame_conditioning.py`. r4's grids did show
+Approach A working on real rows: `qwen3-4b`'s four A curves select **three
+different operating points** (n* = 4, 7, 4, 6 for f0…f3) where the
+frame-pooled curve selects 4.
+
+The pilot re-runs in a fresh root at the fixed commit with the same models
 and configuration; its outcome is recorded here when it has run. What it
 measures per frame: n*(f), m*(f), ι_A(f), the number of calibrated
 candidates, LOCAL-valid families, the spectrum-valid pool, the core

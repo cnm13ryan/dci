@@ -13,6 +13,42 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 (pilot r4) — the v8 calibration extension: a reserve rung the round measures now has a chance column and kappa(R|B)
+
+**What changed.** `dci1v8dev.run.calibration` declares, on the Gate-2 grid
+runs, every reserve rung the calibration extension may pick
+(`extension_instances`: §7.10's frozen reserve of each spectrum-candidate
+family, minus the carried severities) as a scored **absent** instance.
+
+**The defect it fixes.** The extension round generates a reserve rung's
+solo cell, but §13.2's chance column and §13.6's kappa(R|B) are read on
+cells generated earlier — the grids' unconstrained cells and their B-solo
+cells — where a rung is counted only if it was an instance when those rows
+were scored. The round-0 candidates are; the extension's rungs did not
+exist yet. Pilot r4 (qwen3-4b, root `dci1v8-pilot-r4`, 2026-08-30 10:24Z)
+is the first replication to reach the round, and the §13.11 producer
+refused: *"kappa_c for MK6:9 on the calibration_a split has no
+unconstrained cell to be measured in; the calibration table records no
+chance it did not measure"*. Had it not refused, `kappa_under_b` would
+have been `None` for every extension rung, and §13.6 admits no candidate
+whose interaction quantity is missing — so **every rung the extension
+measured would have been inadmissible by construction and the round was
+scientifically inert**. The rule is unchanged; what was missing was the
+scoring obligation that makes its rungs measurable. Declaring the
+instances costs no generation (§9.1 scores every carried candidate as
+absent wherever it is not stated, which is why the kappa(R|B) column at
+every admissible severity is already free); the set is fixed before any
+calibration value exists, so no measurement decides it.
+
+**What is affected.** No registered result, and no completed v8 result: the
+defect is on a path no replication had executed. v7's extension round is a
+different rule and is untouched. `dci1v8-pilot-r4` is kept as an apparatus
+record (signed through `GATE_1_INSTRUMENT` for both models, Gate-2 rows on
+disk, no Gate-2 record); the pilot re-runs in a fresh root at the fixed
+commit. **Comparability.** Any future replication's spectrum pool may now
+contain extension rungs that the pre-fix code could not have admitted;
+r1–r4 contain no calibrated candidate at all, so nothing is re-read.
+
 ## 2026-08-30 (after pilot r3) — v8: the wording frame is part of the experimental condition (Approach A; researcher decision; prospective)
 
 **What changed** (`dci1/docs/V8_FRAME_CONDITIONING.md`; `dci1v8dev.run`
