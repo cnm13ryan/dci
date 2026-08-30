@@ -183,8 +183,34 @@ allocation. The screen and second pass stay frame-pooled as a
 measurement budget. Sixteen scientific-contract tests
 (`dci1/tests_v8dev/test_frame_conditioning.py`) and the synthetic
 lifecycle cover the migration; `CHANGES_SCIENTIFIC.md` has the entry.
-The pilot re-runs under Approach A in a fresh root (see `V8_PILOT.md`
-§7b for its outcome).
+**The pilot ran under Approach A on three checkpoints and reached the
+pre-freeze endpoint on all of them** (2026-08-30; `dci1v8-pilot-r5`:
+qwen3-4b and qwen3-4b-instruct-2507; `dci1v8-pilot-r6`: gemma-3n-e2b-it;
+nine stages signed, 73.7k/93.5k/83.4k generations, no composed cell, no
+freeze; `V8_PILOT.md` §7b). Four results. (1) **Approach A keeps alive a
+replication the pooled instrument kills**: on 2507 --- the model that ended
+r3 --- the frame-pooled A curve is still out of regime, but three of four
+frames have an operating point and the run continues on them; only the
+frame terminates, not the replication. (2) **The frames are separate
+conditions in the data**: up to four distinct n* on one model (Gemma 8, 3,
+2, 3), four different Gate-3 states there, and no family LOCAL-valid under
+every frame; 51/56/61 % of calibration rungs are WORDING_SENSITIVE
+(τ 0.073/0.077/0.094) while each frame's own ι is stable across its two
+fresh-topic splits. (3) **What binds is the per-frame allocation, not the
+frames**: at 48 topics per frame the measured SE(ι) is 0.0497 against the
+registered 0.05 floor, no rung below A survives `V_coord`/`V_stab`, and no
+spectrum is selected --- while the screen, second pass and retention halves
+of the coverage criterion pass on every model. No threshold was relaxed;
+the projection `reports/dci1v8dev/allocation_projection*.md` runs the
+production Gate-3 rules at ×1/×2/×4 topics per frame (SPECTRUM identified
+on every supported frame at ×4, LOCAL on the majority) and is the measured
+input to the first open allocation decision. (4) **The v8 frame repair
+works and what remains is marker-specific**: on Gemma the four frames are
+at 14--22 % marker-absent against v7's 46--53 %, and the two markers that
+still fail --- *namely*, *instead* --- fail by family, rescued by f3 alone,
+a frame × family interaction one canonical wording would have hidden. One
+defect was found by the run and fixed (the calibration extension's rungs
+had no chance column; `CHANGES_SCIENTIFIC.md`).
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 

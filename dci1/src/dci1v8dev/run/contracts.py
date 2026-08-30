@@ -88,6 +88,7 @@ CONTRACT: tuple[Field, ...] = (
     _f(G2, "unsupported_frames", (G3, RP)),
     _f(G2, "by_frame", (G3, RP)),
     _f(G2, "descriptive_pooled", (), required=True),
+    _f(G2, "reserve_instances_declared_on_the_grids", (), required=True),
     _f(G2, "grids", (RP,)),
     _f(G2, "calibration_topic_ids", (RP,)),
     _f(G2, "calibration_population", (RP,)),

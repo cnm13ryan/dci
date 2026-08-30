@@ -8,7 +8,7 @@
 
 Stages walked: 9 / 9 (PILOT_REGISTERED, QUALIFIED, GATE_0_APPARATUS, REGIME_SCREEN, SECOND_PASS_SCREEN, GATE_1_INSTRUMENT, GATE_2_CALIBRATION, GATE_3_REFERENCES, PILOT_REPORT).
 
-Contract: 61 fields, 0 defects, 61 checked against payloads.
+Contract: 62 fields, 0 defects, 62 checked against payloads.
 
 ## Criteria on the synthetic walk
 
@@ -86,6 +86,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | GATE_2_CALIBRATION | `unsupported_frames` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `by_frame` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `descriptive_pooled` | — | yes | PRESENT |
+| GATE_2_CALIBRATION | `reserve_instances_declared_on_the_grids` | — | yes | PRESENT |
 | GATE_2_CALIBRATION | `grids` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_topic_ids` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_population` | PILOT_REPORT | yes | PRESENT |
