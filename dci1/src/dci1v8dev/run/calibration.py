@@ -46,7 +46,7 @@ from dci1v7.run.gates_run import (_calibration_rows, _chance_basis,
 from dci1v7.stages import regime as regime_stage
 from dci1v7.stages.calibration_table import instructed_compliance
 from dci1v7.topics.bank import TopicBank, calibration_binding, load_bank
-from dci1v7.verifiers.constraints import Constraint
+from dci1v7.verifiers.constraints import RESERVES, Constraint
 
 from dci1v8dev import rules as R
 from dci1v8dev.prescreen.extension import ExtensionRule, calibration_extension_plan
@@ -66,6 +66,7 @@ from dci1v8dev.run.regime import screen_responder
 
 __all__ = ["gate2_payload", "run_gate2", "constraints_from_labels",
            "assert_synthetic_only", "reach_input", "frame_curves",
+           "extension_instances",
            "frame_operating_points", "frame_tables", "frame_a_coordinate",
            "supported_frame_block", "unsupported_frame_block",
            "gate2_frames_from_rows", "terminal_status_over_frames",
@@ -103,6 +104,45 @@ def constraints_from_labels(labels: Sequence[str]) -> list[Constraint]:
     for label in labels:
         kind, _, severity = label.rpartition(":")
         out.append(Constraint(kind, int(severity), reserve=True))
+    return out
+
+
+def extension_instances(candidates: Sequence[Constraint],
+                        spectrum_families: Sequence[str]
+                        ) -> list[Constraint]:
+    """Every reserve rung the calibration extension could pick, declared as a
+    scored instance on the grid runs.
+
+    **The defect this exists for** (pilot r4, 2026-08-30): the extension
+    round measures a reserve rung's *solo* cell, but §13.2's chance column
+    and §13.6's kappa(R|B) are read on cells generated earlier --- the grid
+    runs' unconstrained cells and their B-solo cells --- where a rung is
+    counted only if it was declared an instance when those rows were scored.
+    The round-0 candidates are declared there (``non_outcome``); the
+    extension's rungs did not exist yet, so on the first replication to reach
+    the round the producer refused (``kappa_c for MK6:9 ... has no
+    unconstrained cell to be measured in``) --- and had it not, kappa(R|B)
+    would have been ``None`` and §13.6 admits no candidate whose interaction
+    quantity is missing, so every extension rung would have been inadmissible
+    by construction and the round scientifically inert.
+
+    Declaring them costs **no generation**: an instance is a scoring
+    obligation on rows that are generated anyway (§9.1 scores every carried
+    candidate as absent wherever it is not stated), which is the same reason
+    the kappa(R|B) column at every admissible severity is free. The set is
+    the frozen reserve (§7.10) of every spectrum-candidate family, minus the
+    severities already carried --- a superset of what
+    ``extension.calibration_extension_plan`` can pick, computed before any
+    calibration value exists so that no measurement decides it.
+    """
+    carried = {(c.kind, c.severity) for c in candidates}
+    out: list[Constraint] = []
+    for kind in sorted(set(spectrum_families)):
+        if kind not in RESERVES:
+            continue
+        for q in RESERVES[kind]:
+            if (kind, q) not in carried:
+                out.append(Constraint(kind, q, reserve=True))
     return out
 
 
@@ -480,6 +520,13 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     non_outcome = [c for c in constraints_from_labels(forwarded)
                    if c.kind not in ("A", "B")]
     extension_rule = extension_rule or ExtensionRule()
+    retention = second_pass_record.get("retention") or {}
+    spectrum_families = list(retention.get("spectrum_families") or ())
+    # Declared before any calibration value exists (see ``extension_instances``):
+    # the reserve rungs the extension round may pick, so that their chance
+    # column and kappa(R|B) are read on the same cells as every other
+    # candidate's. No generation of their own.
+    reserve_instances = extension_instances(non_outcome, spectrum_families)
     grid_rows: list[dict[str, Any]] = []
 
     def measure_grid(kind: str, grid: Sequence[int], run_name: str) -> None:
@@ -498,8 +545,9 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         prompts = [prompt_cell(c, by_id[c.topic_id], slot_map=slot_map,
                                topic_split=_split_of(bank, c.topic_id))
                    for c in cells]
-        instances = tuple(slot_map.values()) + tuple(
-            c for c in non_outcome if c.kind != kind)
+        instances = (tuple(slot_map.values())
+                     + tuple(c for c in non_outcome if c.kind != kind)
+                     + tuple(c for c in reserve_instances if c.kind != kind))
         rows = generate_and_score(
             tree.model_key, prompts, stage=S.STAGE_GATE2, cap=cap,
             device=device, run_dir=tree.backend_runs(S.STAGE_GATE2) / run_name,
@@ -604,8 +652,6 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             prescreen=prescreen_by_candidate, pooled_grid_rows=grid_rows)
 
     # ---------------------------------------------- the extension round
-    retention = second_pass_record.get("retention") or {}
-    spectrum_families = list(retention.get("spectrum_families") or ())
     reach_by_frame: dict[int, dict[str, Any]] = {}
     plan_by_frame: dict[int, dict[str, Any]] = {}
     union_picks: dict[str, set[int]] = {}
@@ -711,6 +757,18 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                     "(V8_FRAME_CONDITIONING.md §5); every forwarded rung is "
                     "calibrated on every block, hence under every frame"},
         "b_instances_scored_absent_on_candidate_cells": [b.label for b in b_stars],
+        "reserve_instances_declared_on_the_grids": {
+            "labels": [c.label for c in reserve_instances],
+            "n": len(reserve_instances),
+            "families": sorted({c.kind for c in reserve_instances}),
+            "rule": "§7.10's frozen reserve of every spectrum-candidate "
+                    "family, minus the carried severities: the rungs the "
+                    "calibration extension may pick, scored as absent "
+                    "instances on the grids' unconstrained and B-solo cells "
+                    "so that their chance column (§13.2) and kappa(R|B) "
+                    "(§13.6) are read on the same cells as every other "
+                    "candidate's; costs no generation",
+        },
         "calibration_binding": binding,
         "calibration_topic_ids": sorted(by_id),
         "chance_basis": {**_chance_basis(grid_rows),

@@ -75,7 +75,8 @@ def _default_rates(kind_shift: float = 0.0) -> dict[str, float]:
 def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
              draws: int = C.M_CAL,
              chance: dict[str, float] | None = None,
-             outcome_key=None) -> tuple[list[dict], list[dict]]:
+             outcome_key=None, extra_instances: tuple[str, ...] = (),
+             extension: tuple[str, ...] = ()) -> tuple[list[dict], ...]:
     """Scored rows in the run layer's schema for a two-split calibration on
     ``2 * topics_per_split`` blocks (frame = block index % 4). ``rates_by_frame``
     maps frame -> label -> pass probability when the constraint is stated;
@@ -86,9 +87,10 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
     position within its frame makes frames identical (contract 16)."""
     chance = chance or {}
     instances = ([f"A:{q}" for q in A_GRID] + [f"B:{m}" for m in B_GRID]
-                 + list(CANDIDATES))
+                 + list(CANDIDATES) + list(extra_instances))
     grid_rows: list[dict] = []
     cand_rows: list[dict] = []
+    ext_rows: list[dict] = []
     outcome_key = outcome_key or (lambda f, label, t, d, present: (f, label, t, d, present))
     n = 0
     for split in (C.CALIBRATION_A, C.CALIBRATION_B):
@@ -114,6 +116,12 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
 
             def row(cell_id: str, stated: str | None, draw: int, run: str) -> dict:
                 block_id = f"g2{run}-{block_index:03d}"
+                # the run's own instance list, as ``generate_and_score`` gets
+                # it: the extension run scores its own candidates, the grid
+                # and candidate runs score what was declared when they ran
+                scored_instances = (list(instances) + [l for l in extension
+                                                       if l not in instances]
+                                    if run == "extension-1" else instances)
                 return {"row_id": f"{block_id}:{cell_id}:{draw}", "cell_id": cell_id,
                         "block_id": block_id, "block_index": block_index,
                         "block_frame": frame, "draw_index": draw,
@@ -125,7 +133,8 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
                         "frame": None if stated is None else frame,
                         "word_count": 80, "truncated": False, "empty": False,
                         "run": run, "model_key": MODEL,
-                        "scores": [score(label, stated, draw) for label in instances]}
+                        "scores": [score(label, stated, draw)
+                                   for label in scored_instances]}
 
             for draw in range(draws):
                 grid_rows.append(row("unconstrained", None, draw, "grid-A"))
@@ -136,6 +145,10 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
                     grid_rows.append(row(f"solo:B:{m}", f"B:{m}", draw, "grid-B"))
                 for label in CANDIDATES:
                     cand_rows.append(row(f"solo:{label}", label, draw, "candidates"))
+                for label in extension:
+                    ext_rows.append(row(f"solo:{label}", label, draw, "extension-1"))
+    if extension:
+        return grid_rows, cand_rows, ext_rows
     return grid_rows, cand_rows
 
 
@@ -466,6 +479,70 @@ def test_identical_frames_give_identical_selections_and_the_result_is_determinis
         assert fr_r["by_frame"][w]["iota_a"] == fr["by_frame"][w]["iota_a"]
 
 
+# ------------------------------------------------------- the extension round
+def test_extension_instances_cover_every_rung_the_extension_round_can_pick():
+    """Pilot r4's defect: a reserve rung the extension measures has a chance
+    column only if it was declared an instance when the grids were scored.
+    The declared set is a superset of every pick, under every deficiency
+    pattern, and is computed before any calibration value exists."""
+    from dci1v8dev.prescreen.extension import (ExtensionRule,
+                                               calibration_extension_plan)
+    families = ("MK1", "MK6", "XC1", "XC3", "MK5")
+    carried = CAL.constraints_from_labels(
+        ["MK1:2", "MK1:5", "MK6:3", "MK6:8", "XC1:3", "XC3:4", "MK5:5"])
+    declared = {c.label for c in CAL.extension_instances(carried, families)}
+    assert declared and all(c.label not in declared for c in carried)
+    for below in (True, False):
+        for above in (True, False):
+            reach = {k: {"measured": sorted(c.severity for c in carried
+                                            if c.kind == k),
+                         "reaches_below": below, "reaches_above": above,
+                         "spectrum_candidate": True} for k in families}
+            plan = calibration_extension_plan(reach, rule=ExtensionRule())
+            picks = {f"{k}:{q}" for k, qs in plan["picks"].items() for q in qs}
+            assert picks <= declared, (below, above, sorted(picks - declared))
+    # a family the retention did not forward as a spectrum candidate cannot
+    # be picked from, so it is not declared either
+    assert not any(l.startswith("MK2:") for l in declared)
+
+
+def test_an_extension_rung_gets_its_chance_column_and_kappa_under_b():
+    """With the reserve rung declared on the grids, the extension round's
+    §13.11 row carries a measured chance column (§13.2) and kappa(R|B)
+    (§13.6), on the frame's own cells. Undeclared, the producer refuses ---
+    the r4 defect, pinned."""
+    rates = _default_rates()
+    rates["MK1:9"] = 0.30
+    rates_by_frame = {w: rates for w in S.FRAMES}
+    grid, cand, ext = rows_for(rates_by_frame, extra_instances=("MK1:9",),
+                               extension=("MK1:9",), chance={"MK1:9": 0.05})
+    fr = _frames(grid, cand)
+    assert fr["supported"], fr["failures"]
+    w = fr["supported"][0]
+    m_star = fr["by_frame"][w]["m_star"]
+    kept, withheld, measured = CAL.frame_tables(
+        rows_of_frame(grid, w),
+        candidate_rows=rows_of_frame(cand, w) + rows_of_frame(ext, w),
+        candidates=CAL.constraints_from_labels(["MK1:9"]), m_star=m_star,
+        model_key=MODEL, prescreen={}, kappa_column=None)
+    row = next(r for r in kept["pooled"]
+               if r["kind"] == "MK1" and r["severity"] == 9)
+    assert row["chance_compliance"] > 0            # measured, not assumed
+    assert row["n_topics"] == C.N_CALIBRATION // C.N_WORDINGS
+    assert row["kappa_under_b"] is not None        # §13.6 admits no absence
+    assert row["kappa_under_b_source"]["m_star"] == m_star
+    assert row["per_topic_solo"]                   # §13.7 can be run on it
+    bare_grid, bare_cand, bare_ext = rows_for(
+        rates_by_frame, extension=("MK1:9",), chance={"MK1:9": 0.05})
+    with pytest.raises(ProtocolError, match="no unconstrained cell"):
+        CAL.frame_tables(rows_of_frame(bare_grid, w),
+                         candidate_rows=rows_of_frame(bare_cand, w)
+                         + rows_of_frame(bare_ext, w),
+                         candidates=CAL.constraints_from_labels(["MK1:9"]),
+                         m_star=m_star, model_key=MODEL, prescreen={},
+                         kappa_column=None)
+
+
 # ------------------------------------------------------------ the report
 def test_the_report_aggregates_per_frame_verdicts_without_hiding_a_frame():
     agg = RPT.aggregate({"0": True, "1": False, "3": True})
@@ -494,6 +571,70 @@ def test_the_per_frame_precision_projection_is_the_registered_one_rescaled():
     assert full["n_blocks"] == C.N_BLOCKS and quarter["n_blocks"] == C.N_BLOCKS // C.N_WORDINGS
     assert abs(quarter["se_beta"] / full["se_beta"] - 2.0) < 1e-9
     assert precision.se_point_at(C.N_BLOCKS) == precision.MEASURED["se_point"]
+
+
+@pytest.mark.slow
+def test_the_extension_round_runs_end_to_end_and_its_rungs_are_calibrated(tmp_path):
+    """The round the synthetic walk never reached (`calibration_extension: 0`)
+    and the real pilot died in. Driven through the production Gate-2 runner
+    with an extension rule no family can satisfy, so every spectrum-candidate
+    family is reach-deficient on both sides: the round measures reserve
+    rungs, each lands in its frame's §13.11 table with a chance column
+    measured on that frame's unconstrained cells and a kappa(R|B) on its
+    B-solo cell, and Gate 3 evaluates them like any other rung."""
+    from dci1v8dev.prescreen.extension import ExtensionRule
+    from dci1v8dev.run import calibration as CALIB
+    from tests_v8dev import pilot_harness as H
+
+    try:
+        H.walk(tmp_path / "ext", stop_after=S.STAGE_GATE1)
+    except H.WalkStopped as stopped:
+        state = stopped.state
+    else:                                                    # pragma: no cover
+        raise AssertionError("the walk did not stop at GATE_1_INSTRUMENT")
+    tree, payloads = state["tree"], state["payloads"]
+    outcome = CALIB.run_gate2(
+        tree, producing_commit=state["commit"], environment_digest="synthetic",
+        bank=state["bank"], generate=H.scripted_generate, topic_limit=96)
+    g2 = outcome.payload
+    measured = g2["extension"]["measured"]
+    assert not measured, "the default rule should reach both offsets here"
+
+    # ... and with a rule nothing can reach, the round fires. A second root,
+    # because a stage record is write-once.
+    try:
+        H.walk(tmp_path / "ext2", stop_after=S.STAGE_GATE1)
+    except H.WalkStopped as stopped:
+        state = stopped.state
+    tree = state["tree"]
+    g2 = CALIB.gate2_payload(
+        tree, producing_commit=state["commit"],
+        second_pass_record=state["payloads"][S.STAGE_SECOND_PASS],
+        regime_record=state["payloads"][S.STAGE_REGIME], bank=state["bank"],
+        generate=H.scripted_generate, topic_limit=96,
+        extension_rule=ExtensionRule(d_below=0.9, d_above=0.9))
+    measured = g2["extension"]["measured"]
+    assert measured, g2["extension"]["plan_by_frame"]
+    declared = set(g2["reserve_instances_declared_on_the_grids"]["labels"])
+    assert set(measured) <= declared, sorted(set(measured) - declared)
+    seen = 0
+    for w in g2["supported_frames"]:
+        table = {f"{r['kind']}:{r['severity']}": r
+                 for r in g2["by_frame"][str(w)]["calibration_rows"]["pooled"]}
+        withheld = {f"{r['kind']}:{r['severity']}"
+                    for r in g2["by_frame"][str(w)]["calibration_rows_withheld"]["pooled"]}
+        for label in measured:
+            assert label in table or label in withheld, (w, label)
+            if label not in table:
+                continue
+            row = table[label]
+            seen += 1
+            assert row["chance_compliance"] is not None
+            assert row["kappa_under_b"] is not None, (w, label)
+            assert row["kappa_under_b_source"]["m_star"] == g2["by_frame"][str(w)]["m_star"]
+            assert row["n_topics"] == len(g2["calibration_topic_ids"]) // C.N_WORDINGS
+            assert row["per_topic_solo"]
+    assert seen, "no extension rung reached a frame's table"
 
 
 # ------------------------------------------------------------ 15 (slow)
