@@ -2,8 +2,8 @@
  "contract": {
   "clean": true,
   "defects": [],
-  "n_checked_against_payloads": 51,
-  "n_fields": 51
+  "n_checked_against_payloads": 63,
+  "n_fields": 63
  },
  "criteria": {
   "CHANCE_BASIS": {
@@ -38,44 +38,6 @@
    "passed": true,
    "rule": "chance measured on the unconstrained cell in the screen and in every calibration split; iota_A on the same basis; the column is not identically zero",
    "screen_cell": "unconstrained"
-  },
-  "FRAME_RELIABILITY": {
-   "best_v7_frame_share": 0.0,
-   "limit": 0.05,
-   "margin": 0.05,
-   "passed": true,
-   "per_frame": {
-    "0": {
-     "limit": 0.05,
-     "n_rows": 432,
-     "passed": true,
-     "share": 0.0,
-     "v7_share": 0.0
-    },
-    "1": {
-     "limit": 0.05,
-     "n_rows": 432,
-     "passed": true,
-     "share": 0.0,
-     "v7_share": 0.0658275462962963
-    },
-    "2": {
-     "limit": 0.05,
-     "n_rows": 432,
-     "passed": true,
-     "share": 0.0,
-     "v7_share": 0.12196180555555555
-    },
-    "3": {
-     "limit": 0.05,
-     "n_rows": 432,
-     "passed": true,
-     "share": 0.0,
-     "v7_share": 0.001591435185185185
-    }
-   },
-   "reason": null,
-   "second_pass": true
   },
   "LADDER_COVERAGE": {
    "ambiguous_at_max": [
@@ -199,6 +161,902 @@
     "MK1",
     "MK4"
    ]
+  },
+  "WORDING_DIAGNOSTIC": {
+   "frame_reliability_descriptive": {
+    "descriptive_only": true,
+    "screen": {
+     "by_frame": {
+      "0": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 432,
+       "share": 0.0
+      },
+      "1": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 432,
+       "share": 0.0
+      },
+      "2": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 432,
+       "share": 0.0
+      },
+      "3": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK3": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK4": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK5": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK6": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK7": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 432,
+       "share": 0.0
+      }
+     },
+     "families": [
+      "A",
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8"
+     ],
+     "pooled": {
+      "marker_absent": 0,
+      "n_rows": 1728,
+      "share": 0.0
+     },
+     "statistic": "share of A and MK1-8 load-1 rows whose marker statistic is 0, per wording index"
+    },
+    "second_pass": {
+     "by_frame": {
+      "0": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 144,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 168,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 180,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 540,
+       "share": 0.0
+      },
+      "1": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 144,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 168,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 180,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 540,
+       "share": 0.0
+      },
+      "2": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 144,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 168,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 180,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 540,
+       "share": 0.0
+      },
+      "3": {
+       "by_family": {
+        "A": {
+         "marker_absent": 0,
+         "n_rows": 144,
+         "share": 0.0
+        },
+        "MK1": {
+         "marker_absent": 0,
+         "n_rows": 48,
+         "share": 0.0
+        },
+        "MK2": {
+         "marker_absent": 0,
+         "n_rows": 168,
+         "share": 0.0
+        },
+        "MK8": {
+         "marker_absent": 0,
+         "n_rows": 180,
+         "share": 0.0
+        }
+       },
+       "marker_absent": 0,
+       "n_rows": 540,
+       "share": 0.0
+      }
+     },
+     "families": [
+      "A",
+      "MK1",
+      "MK2",
+      "MK8"
+     ],
+     "pooled": {
+      "marker_absent": 0,
+      "n_rows": 2160,
+      "share": 0.0
+     },
+     "statistic": "share of A and MK1-8 load-1 rows whose marker statistic is 0, per wording index (second pass)"
+    }
+   },
+   "frames_measured_separately": true,
+   "judgment": "RESEARCHER_DECISION_REQUIRED",
+   "ladders_per_frame": {
+    "calibration": {
+     "0": {
+      "classes": {
+       "FLAT_LADDER": [
+        "MK2",
+        "MK5",
+        "RF5",
+        "XC1"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK3",
+        "MK4",
+        "MK6",
+        "MK7",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK8"
+       ]
+      },
+      "n_families": 13
+     },
+     "1": {
+      "classes": {
+       "FLAT_LADDER": [
+        "MK2",
+        "MK8",
+        "RF5"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK3",
+        "MK4",
+        "MK6",
+        "MK7",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK5",
+        "XC1"
+       ]
+      },
+      "n_families": 13
+     },
+     "2": {
+      "classes": {
+       "FLAT_LADDER": [
+        "MK5",
+        "MK8",
+        "RF5"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK3",
+        "MK4",
+        "MK6",
+        "MK7",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK2",
+        "XC1"
+       ]
+      },
+      "n_families": 13
+     },
+     "3": {
+      "classes": {
+       "FLAT_LADDER": [
+        "MK8",
+        "RF5"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK1",
+        "MK4",
+        "MK6",
+        "MK7",
+        "XC2",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK2",
+        "MK3",
+        "MK5",
+        "XC1"
+       ]
+      },
+      "n_families": 13
+     }
+    },
+    "screen": {
+     "0": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "MK7",
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK3",
+        "XC3"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "CL8",
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK8",
+        "XC1",
+        "XC2"
+       ]
+      },
+      "n_families": 17
+     },
+     "1": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "MK3",
+        "MK5",
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK6"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ]
+      },
+      "n_families": 17
+     },
+     "2": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "MK2",
+        "RF5",
+        "RF8",
+        "XC1"
+       ],
+       "STRONG_LADDER": [
+        "MK5",
+        "MK6"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK1",
+        "MK3",
+        "MK4",
+        "MK7",
+        "MK8",
+        "XC2",
+        "XC3"
+       ]
+      },
+      "n_families": 17
+     },
+     "3": {
+      "classes": {
+       "FLAT_LADDER": [
+        "CL7",
+        "CL8"
+       ],
+       "NON_MONOTONIC_LADDER": [
+        "RF5",
+        "RF8"
+       ],
+       "STRONG_LADDER": [
+        "MK3",
+        "MK4",
+        "MK6"
+       ],
+       "USABLE_NOISY_LADDER": [
+        "MK1",
+        "MK2",
+        "MK5",
+        "MK7",
+        "MK8",
+        "XC1",
+        "XC2",
+        "XC3"
+       ]
+      },
+      "n_families": 17
+     }
+    }
+   },
+   "passed": null,
+   "reference_bound": 0.2,
+   "rule": "no pass/fail rule: the per-frame tables are on the Gate-1 and Gate-2 records; the wording policy (retain all frames, a specified subset, or model frame variation) is a researcher decision on solo/pre-screen/calibration evidence",
+   "sensitive_rungs_touching_reference_set": {
+    "UNRESOLVED": [],
+    "WORDING_SENSITIVE": []
+   },
+   "stability_across_fresh_topics": {
+    "calibration_splits": {
+     "n_compared": 356,
+     "n_inside_bound": 355,
+     "reference_bound": 0.2,
+     "share_inside_bound": 0.9971910112359551
+    },
+    "screen_vs_second_pass": {
+     "n_compared": 204,
+     "n_inside_bound": 130,
+     "share_inside_bound": 0.6372549019607843
+    }
+   },
+   "survival": {
+    "core_identified": true,
+    "coverage_identified": true,
+    "n_local_valid_families": 11,
+    "spectrum_pool_ok": true
+   },
+   "unresolved_rungs": [
+    {
+     "backup_family": false,
+     "candidate": "B:14",
+     "core_reference": false,
+     "local_valid": false,
+     "max_abs_difference": 0.23076923076923084,
+     "max_abs_z": 0.2685788434761501,
+     "selected_spectrum_point": false,
+     "spectrum_valid": false,
+     "spread": 0.23076923076923084
+    }
+   ],
+   "wording_dependence": {
+    "calibration": {
+     "n_rungs_compared": 89,
+     "n_rungs_with_all_frames": 89,
+     "reading": "\u03c4\u00b2 is the between-frame variance of \u03b9 net of sampling variance, per rung, summarised over rungs; the classes are descriptive (module note) and select nothing",
+     "rungs_by_class": {
+      "CONSISTENT": [
+       "A:1",
+       "A:2",
+       "A:3",
+       "A:4",
+       "A:5",
+       "A:6",
+       "A:7",
+       "A:8",
+       "B:10",
+       "B:11",
+       "B:12",
+       "B:13",
+       "B:7",
+       "B:8",
+       "B:9",
+       "MK1:1",
+       "MK1:2",
+       "MK1:3",
+       "MK1:4",
+       "MK1:5",
+       "MK1:6",
+       "MK1:8",
+       "MK2:1",
+       "MK2:2",
+       "MK2:3",
+       "MK2:4",
+       "MK3:1",
+       "MK3:2",
+       "MK3:3",
+       "MK3:4",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:3",
+       "MK5:4",
+       "MK5:5",
+       "MK6:1",
+       "MK6:2",
+       "MK6:3",
+       "MK6:4",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:1",
+       "MK7:2",
+       "MK7:3",
+       "MK7:4",
+       "MK7:5",
+       "MK7:6",
+       "MK7:8",
+       "MK8:2",
+       "MK8:3",
+       "MK8:4",
+       "MK8:5",
+       "RF5:2",
+       "RF8:0",
+       "RF8:1",
+       "RF8:2",
+       "RF8:3",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:2",
+       "XC1:3",
+       "XC1:4",
+       "XC1:5",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC2:2",
+       "XC2:4",
+       "XC2:6",
+       "XC2:8",
+       "XC3:10",
+       "XC3:3",
+       "XC3:4",
+       "XC3:5",
+       "XC3:6",
+       "XC3:7",
+       "XC3:8"
+      ],
+      "UNRESOLVED": [
+       "B:14"
+      ],
+      "WORDING_SENSITIVE": []
+     },
+     "share_by_class": {
+      "CONSISTENT": 0.9887640449438202,
+      "UNRESOLVED": 0.011235955056179775,
+      "WORDING_SENSITIVE": 0.0
+     },
+     "spread_median": 0.04166666666666663,
+     "spread_q90": 0.07291666666666663,
+     "tau2_mean": 0.0,
+     "tau2_median": 0.0,
+     "tau_median": 0.0
+    },
+    "screen": {
+     "n_rungs_compared": 129,
+     "n_rungs_with_all_frames": 129,
+     "reading": "\u03c4\u00b2 is the between-frame variance of \u03b9 net of sampling variance, per rung, summarised over rungs; the classes are descriptive (module note) and select nothing",
+     "rungs_by_class": {
+      "CONSISTENT": [
+       "A:3",
+       "B:7",
+       "B:9",
+       "CL7:100",
+       "CL7:130",
+       "CL7:45",
+       "CL7:60",
+       "CL7:80",
+       "CL8:19",
+       "MK1:2",
+       "MK1:3",
+       "MK1:5",
+       "MK1:8",
+       "MK2:1",
+       "MK2:2",
+       "MK2:3",
+       "MK2:5",
+       "MK3:1",
+       "MK3:5",
+       "MK4:1",
+       "MK4:7",
+       "MK5:1",
+       "MK5:4",
+       "MK7:1",
+       "MK8:1",
+       "MK8:3",
+       "MK8:8",
+       "RF5:0",
+       "RF8:6",
+       "XC1:3",
+       "XC1:6",
+       "XC1:8",
+       "XC2:10",
+       "XC2:14",
+       "XC3:3",
+       "XC3:4",
+       "XC3:6"
+      ],
+      "UNRESOLVED": [
+       "A:1",
+       "A:2",
+       "A:4",
+       "A:5",
+       "A:7",
+       "A:8",
+       "B:10",
+       "B:11",
+       "B:12",
+       "B:13",
+       "B:14",
+       "B:8",
+       "CL8:14",
+       "CL8:25",
+       "MK1:1",
+       "MK1:4",
+       "MK1:6",
+       "MK1:7",
+       "MK2:4",
+       "MK2:6",
+       "MK2:7",
+       "MK2:8",
+       "MK3:2",
+       "MK3:3",
+       "MK3:4",
+       "MK3:6",
+       "MK3:7",
+       "MK3:8",
+       "MK4:2",
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:3",
+       "MK5:5",
+       "MK5:6",
+       "MK5:8",
+       "MK6:1",
+       "MK6:2",
+       "MK6:3",
+       "MK6:4",
+       "MK6:5",
+       "MK6:7",
+       "MK6:8",
+       "MK7:2",
+       "MK7:3",
+       "MK7:4",
+       "MK7:5",
+       "MK7:6",
+       "MK7:7",
+       "MK7:8",
+       "MK8:2",
+       "MK8:4",
+       "MK8:5",
+       "MK8:6",
+       "MK8:7",
+       "RF5:1",
+       "RF5:2",
+       "RF5:3",
+       "RF5:4",
+       "RF5:5",
+       "RF5:6",
+       "RF5:7",
+       "RF8:0",
+       "RF8:1",
+       "RF8:2",
+       "RF8:3",
+       "RF8:4",
+       "RF8:7",
+       "XC1:1",
+       "XC1:2",
+       "XC1:4",
+       "XC1:5",
+       "XC1:7",
+       "XC2:16",
+       "XC2:2",
+       "XC2:4",
+       "XC2:6",
+       "XC2:8",
+       "XC3:10",
+       "XC3:5",
+       "XC3:7",
+       "XC3:8",
+       "XC3:9"
+      ],
+      "WORDING_SENSITIVE": [
+       "A:6",
+       "MK5:7",
+       "MK6:6",
+       "RF8:5",
+       "RF8:8",
+       "XC2:12"
+      ]
+     },
+     "share_by_class": {
+      "CONSISTENT": 0.2868217054263566,
+      "UNRESOLVED": 0.6666666666666666,
+      "WORDING_SENSITIVE": 0.046511627906976744
+     },
+     "spread_median": 0.33333333333333337,
+     "spread_q90": 0.5,
+     "tau2_mean": 0.006454493252942864,
+     "tau2_median": 0.0,
+     "tau_median": 0.0
+    }
+   },
+   "wording_policy": {
+    "evidence_admissible": "solo, pre-screen and calibration only",
+    "options": [
+     "retain_all_frames",
+     "retain_specified_subset",
+     "model_frame_variation"
+    ],
+    "status": "OPEN"
+   },
+   "wording_sensitive_rungs": []
   }
  },
  "generations": {

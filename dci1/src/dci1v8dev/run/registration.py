@@ -43,7 +43,6 @@ def registration_payload(tree: ModelTree, *, producing_commit: str,
     manifest, created = M.ensure_registration(
         tree.context, producing_commit=producing_commit, bank=bank,
         repo_root=repo_root)
-    reference = manifest["frame_reference"]["models"].get(tree.model_key)
     model = next(m for m in manifest["models"]
                  if m["model_key"] == tree.model_key)
     return {
@@ -62,8 +61,8 @@ def registration_payload(tree: ModelTree, *, producing_commit: str,
                                  "v7_verifier_hash", "v7_wording_hash",
                                  "frames")},
         "model": model,
-        "frame_reference": reference,
-        "frame_reliability_margin": S.FRAME_RELIABILITY_MARGIN,
+        "wording_diagnostic": manifest["wording_diagnostic"],
+        "wording_policy": manifest["wording_diagnostic"]["wording_policy"],
         "topics": manifest["topics"],
         "seeds": manifest["seeds"],
         "criteria": manifest["criteria"],

@@ -38,7 +38,9 @@ def build() -> tuple[str, dict]:
         audit = contracts.audit_contracts(payloads)
         matrix = contracts.matrix_markdown(payloads)
         report = payloads[S.STAGE_REPORT]
-    criteria = {k: v["passed"] for k, v in report["criteria"].items()}
+    criteria = {k: (v["passed"] if v["passed"] is not None
+                    else f"— ({v.get('judgment')})")
+                for k, v in report["criteria"].items()}
     machine = {"contract": audit, "criteria": report["criteria"],
                "generations": report["generations"],
                "stages": list(payloads)}
@@ -65,6 +67,21 @@ def build() -> tuple[str, dict]:
     ]
     for name, ok in criteria.items():
         lines.append(f"| {name} | {ok} |")
+    lines += ["", f"Pilot status: `{report['pilot_status']}`; wording judgment: "
+              f"`{report['wording_judgment']['status']}` "
+              f"(options {report['wording_judgment']['options']}).",
+              "",
+              "## Wording diagnostic (synthetic)", "",
+              "| basis | rungs compared | τ median | spread median | "
+              "sensitive | unresolved | consistent |",
+              "|---|---:|---:|---:|---:|---:|---:|"]
+    wd = report["criteria"]["WORDING_DIAGNOSTIC"]["wording_dependence"]
+    for basis, d in wd.items():
+        sh = d["share_by_class"]
+        lines.append(f"| {basis} | {d['n_rungs_compared']} | "
+                     f"{d['tau_median']} | {d['spread_median']} | "
+                     f"{sh['WORDING_SENSITIVE']} | {sh['UNRESOLVED']} | "
+                     f"{sh['CONSISTENT']} |")
     lines += ["", "## Generations", "", "| stage | rows |", "|---|---:|"]
     for k, v in report["generations"].items():
         lines.append(f"| {k} | {v} |")

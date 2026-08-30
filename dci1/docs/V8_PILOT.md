@@ -1,6 +1,7 @@
 # DCI-1 v8 pilot — execution layer and criteria (prospective; not registered)
 
-**Status (2026-08-30, branch `dev/v8-canonical`).** The execution layer of
+**Status (2026-08-30, branch `dev/v8-canonical`; revised the same day by
+researcher decision --- §1a below).** The execution layer of
 the v8 candidate (`dci1/docs/V8_CANDIDATE.md`), written so that the four
 questions the candidate leaves open can be measured on one real model
 before anything is frozen. Package `dci1v8dev.run`; CLI
@@ -17,26 +18,79 @@ before any row exists, evaluated by `PILOT_REPORT` on signed records only):
 
 | criterion | question | rule |
 |---|---|---|
-| `FRAME_RELIABILITY` | are the repaired frames read reliably? | every v8 frame's marker-absent share over A and MK load-1 rows ≤ the best v7 frame's share on the same model (`reports/dci1v8dev/frame_reference.json`, from the stored-row audit) + 0.05 |
+| `WORDING_DIAGNOSTIC` | how do the four frames behave, measured separately? | **no pass/fail rule** (§1a): per (frame, family, q) the sample, exact compliance, chance on the unconstrained cell, ι, SE and the comparison with the other frames, on the screen, the second pass and calibration; the report leaves the judgment explicit |
 | `LADDER_COVERAGE` | does the screen/second pass/retention carry the ladder's geometry to calibration? | second pass resolves within 3 batches; ≥ 2 forwarded spectrum families reach both offsets at the screen; the spectrum-valid pool at calibration has ≥ 2 points from ≥ 2 families per side |
 | `CHANCE_BASIS` | is κ measured on §13.2's unconstrained cell in both tables? | the screen's and Gate 2's chance basis is the unconstrained cell on every split, the column is not the zero column, ι_A is on the same basis (the all-absent v7 basis is recorded beside it) |
 | `REFERENCE_SURVIVAL` | do LOCAL and SPECTRUM references survive calibration? | ≥ 5 LOCAL-valid families (§13.15 on the admissible basis), three core references by the registered §13.8 kernel, selected coverage identified with projected SE(β̂) ≤ 0.05, ≥ 2 admissible backups |
 
-The margin on the first criterion is half the smallest effect of interest on
-a rate (§11.9: 0.10), against a per-frame sampling SE of ≈ 0.015; without it
-the criterion is unattainable on qwen3-4b-instruct-2507, whose best v7 frame
-had 0 absent rows in 1,536. A failed criterion **terminates nothing**: it is
-recorded where it is measured and summarised by the report. The only
-terminal statuses are v7's apparatus and operating-regime ones
+The three *decided* criteria (`stages.DECIDED_CRITERIA`) carry a
+registered rule; the wording diagnostic carries none. A failed criterion
+**terminates nothing**: it is recorded where it is measured and summarised
+by the report. The only terminal statuses are v7's apparatus and
+operating-regime ones
 (`QUALIFICATION_FAILURE`, `APPARATUS_FAILURE`,
 `RESPONSE_LENGTH_INCOMPATIBLE`, `TARGET_RANGE_EXHAUSTED`,
 `FOCAL_RANGE_EXHAUSTED`, `GRID_RESOLUTION_INSUFFICIENT`, `REGIME_NOT_FOUND`).
 
-**No composed cell.** The pilot generates load 0 and load 1 only. The
-renderer refuses a two-slot cell (`execute.prompt_cell`), no stage builds
-one, and the sequence ends at the report. The spectrum arm's B+X / X+B cells
-are a post-freeze experiment (`V8_CANDIDATE.md` §12 step 4) that this layer
-cannot produce.
+**No composed cell.** The pilot generates load 0 and load 1 only.
+`execute.assert_no_composed_cell` refuses a two-slot cell at the renderer,
+at the row plan and at the generation seam; no stage builds one; the
+sequence ends at the report; and `tests_v8dev` scans every module of the
+layer for a composed constructor. The spectrum arm's B+X / X+B cells and
+every composed or interference outcome (Δ_R, δ_diff, …) are a post-freeze
+experiment (`V8_CANDIDATE.md` §12 step 4) that this layer cannot produce
+and that may not be inspected before the wording policy and the v8 design
+are frozen.
+
+### 1a. Researcher decisions of 2026-08-30
+
+1. **Second-pass sampling** --- fresh Calibration-A topics for the families
+   the first pass could not settle; no extra draw on a pre-screen topic;
+   Calibration-B untouched; batches disjoint (two topics per area per batch,
+   three batches at most = 72 of 96); the budget of
+   `rules.RESCREEN_MAX_BATCHES × RESCREEN_BATCH_TOPICS` unchanged. Asserted
+   per batch (`rescreen.assert_batch_isolated`) and on every generated row
+   (`topic_id`, `topic_split`, `run` = batch), recorded on the stage record
+   (`topic_isolation`, `batches[].topic_ids`).
+2. **The v7-relative frame threshold is removed.** The former
+   `FRAME_RELIABILITY` rule (best v7 frame + 0.05) is deleted from the
+   stages, the manifest, the registration record, Gate 1 and the report; no
+   v7 frame statistic enters any v8 verdict. `reports/dci1v8dev/frame_reference.json`
+   remains as a descriptive report of the historical instrument. No
+   replacement threshold was introduced.
+3. **Every generated output is data.** Compliant and non-compliant rows are
+   kept and counted; nothing downstream conditions on uptake or exact
+   compliance. Each scored row carries `frame`, family and severity (in
+   `scores[].kind/severity`), `topic_id`, `topic_split`, `run`, the observed
+   constraint count (`scores[].statistic`), the exact-compliance verdict
+   (`scores[].passed`) and the existing provenance. `execute.row_accounting`
+   proves per run that every planned row was generated and every generated
+   row scored; it runs on the path (a shortfall fails the stage) and is
+   recorded on the regime, second-pass and Gate-2 records.
+4. **Wording sensitivity is measured directly** (`run/wording.py`): for every
+   (frame, family, q) --- sample, exact-compliance rate, chance on the
+   unconstrained cell, ι, SE, and the comparison with the other frames; per
+   frame, the ladder class over q (`prescreen.ladder`); per frame, the
+   stability of ι between disjoint topic sets (screen vs second pass;
+   Calibration-A vs Calibration-B); the dependence of ι on the frame (τ²
+   net of sampling variance, class shares). Frames are never averaged as the
+   primary diagnostic. Two frames' difference in ι is described against the
+   registered §13.7 equivalence bound (0.20, `stages.WORDING_REFERENCE_BOUND`):
+   beyond it with a 95 % interval excluding zero is `WORDING_SENSITIVE`
+   (instrument instability), beyond it otherwise `UNRESOLVED`, else
+   `CONSISTENT`. No frame is discarded on any class. The per-frame SE is
+   the topic-level SE floored by the Agresti–Coull binomial SE over the
+   frame's topics (a frame whose few screen topics all pass or all fail
+   has an SD of 0, and without the floor any difference would count as
+   resolved). At the screen a frame holds 6 topics × 1 draw, so the
+   cross-frame comparison there is mostly `UNRESOLVED` by construction;
+   the calibration basis (48 topics × 4 draws per frame per split) is the
+   one that resolves it.
+5. **The pilot informs the wording policy; outcome data must not.** The
+   policy --- retain all frames, retain a specified subset, or model frame
+   variation --- is a later researcher decision on solo / pre-screen /
+   calibration evidence only (`stages.WORDING_POLICY_OPTIONS`, status
+   `OPEN` on the manifest, the registration record and the report).
 
 ## 2. The nine stages
 
@@ -99,7 +153,7 @@ for κ(R|B) (recorded on the Gate-2 record).
     .venv/bin/python -m pytest tests_v8dev -q -p no:cacheprovider          # rule + execution layer
     .venv/bin/python -m pytest tests_v8dev/test_pilot_lifecycle.py -q      # the nine-stage synthetic walk
     .venv/bin/python tools/v8_pilot_walk.py                                # reports/dci1v8dev/pilot_walk.md
-    .venv/bin/python tools/v8_frame_reference.py --check
+    .venv/bin/python tools/v8_frame_reference.py --check                   # descriptive report only
     .venv/bin/python -m dci1v8dev.run.cli audit                            # the producer/consumer contract
     .venv/bin/python -m dci1v8dev.run.cli plan --root /tmp/v8-plan         # what signing would bind
 
@@ -115,8 +169,10 @@ topics, and that the report evaluates the four criteria.
     cd dci1
     tools/run_v8_pilot.sh qwen3-4b-instruct-2507 <device> evidence/dci1v8-pilot <log_dir>
 
-Sequence (V8_CANDIDATE.md §12): one model; inspect only the four criteria on
-`PILOT_REPORT`; freeze v8 only if they hold; only then the spectrum arm.
+Sequence (V8_CANDIDATE.md §12): one model; inspect the three decided
+criteria and the wording diagnostic on `PILOT_REPORT`; take the wording
+policy decision on that evidence; freeze v8 only then; only then the
+spectrum arm.
 Estimated generations per model ≈ 8k (cap) + 8.2k (screen) + 7–12k (second
 pass) + 13k (grids) + 192 × 4 × forwarded (≈ 31–49k) + ≤ 12k (extension)
 ≈ 60–90k --- ≈ 1–1.5 h on qwen3-4b-instruct-2507 per card at the observed
@@ -125,7 +181,18 @@ lock the v7 driver uses and waits.
 
 ## 7. What the pilot cannot tell you
 
-That the effect exists; that v8 works; anything about B+R or R+B. A pilot
-whose four criteria hold licenses a freeze of the v8 candidate as a
-registration to be written; one whose criteria fail names the stage and the
-rule that failed on a signed record, and the candidate is revised there.
+That the effect exists; that v8 works; anything about B+R or R+B; which
+frames to keep. A pilot whose three decided criteria hold, together with an
+explicit researcher judgment on the wording diagnostic, licenses a freeze of
+the v8 candidate as a registration to be written; one whose criteria fail
+names the stage and the rule that failed on a signed record, and the
+candidate is revised there.
+
+The report shows, per frame: whether the frame produces an interpretable
+difficulty ladder (ladder classes at the screen and at calibration);
+whether its ι estimates are stable across fresh topics (share of (frame,
+rung) inside the §13.7 bound between the screen and the second pass, and
+between the two calibration splits); how strongly difficulty depends on
+wording (τ², spreads, class shares); whether enough LOCAL and SPECTRUM
+candidates survive (Gate 3's survival block); and every wording-sensitive
+or unresolved rung with its standing in the reference set.

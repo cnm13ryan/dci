@@ -48,7 +48,8 @@ __all__ = ["PromptCell", "Block", "SoloCell", "blocks", "prompt_cell",
            "design_rows", "generate_and_score", "resolve_generate",
            "fake_backend", "cell_rates", "instance_rates",
            "per_topic_compliance", "absent_for", "frame_of_row",
-           "marker_of", "assert_v8_prompt", "UNCONSTRAINED_ARM",
+           "marker_of", "assert_v8_prompt", "assert_no_composed_cell",
+           "row_accounting", "UNCONSTRAINED_ARM",
            "DECODING_IDENTITY_FIELDS", "decoding_identity"]
 
 UNCONSTRAINED_ARM = "unconstrained"
@@ -135,15 +136,28 @@ def assert_v8_prompt(prompt: str, present: Sequence[Constraint]) -> None:
                 f"{marker}'; the v8 instrument was not applied")
 
 
+def assert_no_composed_cell(cells: Sequence[Any], *, where: str) -> None:
+    """The hard block, at every seam a cell passes: a cell with two slots or
+    two present constituents is refused before it is rendered, planned or
+    generated. No stage of this layer builds one; a future one could not
+    get it past here."""
+    for cell in cells:
+        slots = getattr(cell, "slots", ())
+        present = getattr(cell, "present", ())
+        if len(slots) > 1 or len(present) > 1:
+            raise ProtocolError(
+                f"{where}: a composed cell ({getattr(cell, 'cell_id', '?')}, "
+                f"{len(slots)} slots) reached the pilot; the pilot generates "
+                "load 0 and load 1 only and no composed cell exists before "
+                "the v8 design and wording policy are frozen "
+                "(stages.NO_COMPOSED_CELLS)")
+
+
 def prompt_cell(cell: Any, topic: Mapping[str, Any], *,
                 slot_map: Mapping[str, Constraint],
                 topic_split: str) -> PromptCell:
     """Render one cell into a prompt under the v8 wording instrument."""
-    if len(cell.slots) > 1:
-        raise ProtocolError(
-            f"{cell.cell_id}: a composed cell ({len(cell.slots)} slots) "
-            "reached the pilot's renderer; the pilot generates load 0 and "
-            "load 1 only (stages.NO_COMPOSED_CELLS)")
+    assert_no_composed_cell([cell], where="prompt_cell")
     missing = [s for s in cell.slots if s not in slot_map]
     if missing:
         raise ProtocolError(
@@ -197,6 +211,7 @@ def design_rows(cells: Sequence[PromptCell], *, stage: str, model_id: str,
                 decoding: Mapping[str, Any] | None = None
                 ) -> list[dict[str, Any]]:
     """One row per (cell, draw). All draws are kept; none is selected."""
+    assert_no_composed_cell(cells, where=f"design_rows:{stage}")
     wording_hash = v8_wording_source_hash()
     rows: list[dict[str, Any]] = []
     for cell in cells:
@@ -257,6 +272,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
     use (present where stated, absent everywhere else --- §9.1)."""
     if stage not in S.GENERATION_STAGES:
         raise ProtocolError(f"{stage} is not a generating pilot stage")
+    assert_no_composed_cell(cells, where=f"generate_and_score:{stage}")
     spec = get_model(model_key)
     frozen = {"verifier_hash": verifier_source_hash(),
               "wording_hash": v8_wording_source_hash()}
@@ -298,11 +314,57 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
                 "model_key": model_key, "model_id": spec.model_id,
                 "model_revision": spec.revision, "study_id": study_id,
                 "stage": stage, "synthetic_run": synthetic_run,
-                "resumed": reused is not None, **frozen})
+                "resumed": reused is not None, "run": Path(run_dir).name,
+                **frozen})
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "scored.jsonl").write_text(
         "".join(json.dumps(r, sort_keys=True) + "\n" for r in scored_rows))
+    # Every planned row was generated and every generated row was scored,
+    # compliant or not; asserted here, on the path, and recorded per run.
+    accounting = row_accounting(run_dir)
+    if not accounting["every_row_scored"]:
+        raise ProtocolError(
+            f"{stage}/{Path(run_dir).name}: {accounting['n_design']} rows "
+            f"planned, {accounting['n_generated']} generated, "
+            f"{accounting['n_scored']} scored; every generated row is data "
+            "and reaches scoring")
     return scored_rows
+
+
+def row_accounting(run_dir: Path) -> dict[str, Any]:
+    """The audit that no generation was dropped: the planned rows
+    (``design.jsonl``), the backend's rows (``rows.jsonl``) and the scored
+    rows (``scored.jsonl``) carry the same row identities, and the scored
+    rows hold both exact-compliant and non-compliant answers for the stated
+    constraint --- the outcome is counted, never filtered on."""
+    run_dir = Path(run_dir)
+
+    def _ids(name: str, key: str = "row_id") -> list[str]:
+        path = run_dir / name
+        if not path.exists():
+            return []
+        return [json.loads(line)[key] for line in path.read_text().splitlines()
+                if line.strip()]
+
+    design = _ids("design.jsonl")
+    generated = _ids("rows.jsonl")
+    scored_rows = [json.loads(line) for line in
+                   (run_dir / "scored.jsonl").read_text().splitlines()
+                   if line.strip()] if (run_dir / "scored.jsonl").exists() else []
+    scored = [r["row_id"] for r in scored_rows]
+    present = [s for r in scored_rows for s in r["scores"] if s.get("present")]
+    n_pass = sum(1 for s in present if s.get("passed"))
+    return {"run": run_dir.name,
+            "n_design": len(design), "n_generated": len(generated),
+            "n_scored": len(scored),
+            "every_row_scored": bool(design) and set(design) == set(scored)
+            and len(set(scored)) == len(scored)
+            and (not generated or set(generated) == set(design)),
+            "n_present_verdicts": len(present),
+            "n_present_exact_compliant": n_pass,
+            "n_present_non_compliant": len(present) - n_pass,
+            "rule": "every generated row is data; nothing downstream is "
+                    "conditioned on exact compliance or uptake"}
 
 
 def _score_row(task: tuple[Mapping[str, Any], Mapping[str, Any], PromptCell]
@@ -341,6 +403,9 @@ def _score_row(task: tuple[Mapping[str, Any], Mapping[str, Any], PromptCell]
         "model_key": st["model_key"], "model_id": st["model_id"],
         "model_revision": st["model_revision"], "study_id": st["study_id"],
         "classification": CLASSIFICATION, "stage": st["stage"],
+        "run": st["run"],
+        "frame": (int(cell.wording_indices[0]) if len(cell.wording_indices) == 1
+                  else None),
         "synthetic": bool(raw.get("synthetic")) or st["synthetic_run"],
         "resumed": st["resumed"],
         "verifier_hash": frozen_hash,

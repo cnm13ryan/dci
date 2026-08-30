@@ -8,16 +8,25 @@
 
 Stages walked: 9 / 9 (PILOT_REGISTERED, QUALIFIED, GATE_0_APPARATUS, REGIME_SCREEN, SECOND_PASS_SCREEN, GATE_1_INSTRUMENT, GATE_2_CALIBRATION, GATE_3_REFERENCES, PILOT_REPORT).
 
-Contract: 51 fields, 0 defects, 51 checked against payloads.
+Contract: 63 fields, 0 defects, 63 checked against payloads.
 
 ## Criteria on the synthetic walk
 
 | criterion | passed |
 |---|---|
-| FRAME_RELIABILITY | True |
+| WORDING_DIAGNOSTIC | — (RESEARCHER_DECISION_REQUIRED) |
 | LADDER_COVERAGE | True |
 | CHANCE_BASIS | True |
 | REFERENCE_SURVIVAL | True |
+
+Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['retain_all_frames', 'retain_specified_subset', 'model_frame_variation']).
+
+## Wording diagnostic (synthetic)
+
+| basis | rungs compared | τ median | spread median | sensitive | unresolved | consistent |
+|---|---:|---:|---:|---:|---:|---:|
+| calibration | 89 | 0.0 | 0.04166666666666663 | 0.0 | 0.011235955056179775 | 0.9887640449438202 |
+| screen | 129 | 0.0 | 0.33333333333333337 | 0.046511627906976744 | 0.6666666666666666 | 0.2868217054263566 |
 
 ## Generations
 
@@ -38,8 +47,7 @@ Contract: 51 fields, 0 defects, 51 checked against payloads.
 |---|---|---|---|---|
 | PILOT_REGISTERED | `manifest_hash` | PILOT_REPORT | yes | PRESENT |
 | PILOT_REGISTERED | `instrument` | GATE_1_INSTRUMENT | yes | PRESENT |
-| PILOT_REGISTERED | `frame_reference` | GATE_1_INSTRUMENT | yes | PRESENT |
-| PILOT_REGISTERED | `frame_reliability_margin` | PILOT_REPORT | yes | PRESENT |
+| PILOT_REGISTERED | `wording_policy` | GATE_1_INSTRUMENT, PILOT_REPORT | yes | PRESENT |
 | PILOT_REGISTERED | `criteria` | PILOT_REPORT | yes | PRESENT |
 | QUALIFIED | `checks` | — | yes | PRESENT |
 | QUALIFIED | `topic_split_identity` | — | yes | PRESENT |
@@ -49,6 +57,7 @@ Contract: 51 fields, 0 defects, 51 checked against payloads.
 | REGIME_SCREEN | `prescreen_table` | SECOND_PASS_SCREEN | yes | PRESENT |
 | REGIME_SCREEN | `difficulty_table` | GATE_2_CALIBRATION | yes | PRESENT |
 | REGIME_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
+| REGIME_SCREEN | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `chance_basis` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `n_rungs_measured` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `cap_selection` | PILOT_REPORT | yes | PRESENT |
@@ -56,11 +65,16 @@ Contract: 51 fields, 0 defects, 51 checked against payloads.
 | SECOND_PASS_SCREEN | `forwarded_set` | GATE_2_CALIBRATION | yes | PRESENT |
 | SECOND_PASS_SCREEN | `retention` | GATE_2_CALIBRATION, PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
+| SECOND_PASS_SCREEN | `topic_isolation` | PILOT_REPORT | yes | PRESENT |
+| SECOND_PASS_SCREEN | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `n_batches` | PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `resolved_at_max` | PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `cost_generations` | PILOT_REPORT | yes | PRESENT |
-| GATE_1_INSTRUMENT | `frame_criterion` | PILOT_REPORT | yes | PRESENT |
-| GATE_1_INSTRUMENT | `frame_criterion_second_pass` | PILOT_REPORT | no | PRESENT |
+| GATE_1_INSTRUMENT | `frame_reliability` | PILOT_REPORT | yes | PRESENT |
+| GATE_1_INSTRUMENT | `ladders_by_frame_screen` | PILOT_REPORT | yes | PRESENT |
+| GATE_1_INSTRUMENT | `wording_dependence_screen` | PILOT_REPORT | yes | PRESENT |
+| GATE_1_INSTRUMENT | `frame_comparison_screen` | — | yes | PRESENT |
+| GATE_1_INSTRUMENT | `stability_screen_vs_second_pass` | PILOT_REPORT | no | PRESENT |
 | GATE_1_INSTRUMENT | `verifier_hash` | — | yes | PRESENT |
 | GATE_1_INSTRUMENT | `wording_hash` | — | yes | PRESENT |
 | GATE_2_CALIBRATION | `m_star` | GATE_3_REFERENCES | yes | PRESENT |
@@ -79,7 +93,14 @@ Contract: 51 fields, 0 defects, 51 checked against payloads.
 | GATE_2_CALIBRATION | `calibration_topic_ids` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `solo_curves` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_population` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `frame_comparison_pooled` | GATE_3_REFERENCES | yes | PRESENT |
+| GATE_2_CALIBRATION | `wording_by_frame` | — | yes | PRESENT |
+| GATE_2_CALIBRATION | `ladders_by_frame_pooled` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `wording_dependence_pooled` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `split_stability_by_frame` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `survival` | PILOT_REPORT | yes | PRESENT |
+| GATE_3_REFERENCES | `wording_sensitive_rungs` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `local` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `spectrum` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `core` | — | yes | PRESENT |

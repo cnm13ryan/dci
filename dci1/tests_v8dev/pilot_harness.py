@@ -35,7 +35,7 @@ MODEL_KEY = "qwen3-4b-instruct-2507"
 _REAL_REPO_ROOT = Path(__file__).resolve().parents[2]
 
 REPO_TREES = ("dci1/src/dci1v4", "dci1/src/dci1v7", "dci1/src/dci1v8dev")
-REPO_FILES = ("dci1/uv.lock", S.FRAME_REFERENCE_SOURCE)
+REPO_FILES = ("dci1/uv.lock",)
 DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, BASE_PREREGISTRATION)
 
 PLACEHOLDER = ("SYNTHETIC PLACEHOLDER --- NOT A DCI-1 ARTIFACT. Written by "

@@ -140,7 +140,14 @@ chance basis, the wording allocation under the v8 frames, a producer/consumer
 contract and a synthetic nine-stage walk --- validated on this machine with
 no GPU (`dci1/tools/v8_validate.sh`). Design and criteria:
 [`dci1/docs/V8_PILOT.md`](dci1/docs/V8_PILOT.md). It generates no composed
-cell by construction. The next step is the one-model pilot
+cell by construction. Revised the same day by researcher decision
+(`V8_PILOT.md` §1a): the second pass samples fresh Calibration-A topics
+only (asserted per batch and per row); the v7-relative frame threshold is
+deleted and replaced by a v8-internal **wording diagnostic** with no
+pass/fail rule (four frames measured separately per (family, q); the
+wording policy is an open researcher decision on solo/pre-screen/calibration
+evidence); every generated row is data and an on-path accounting proves it;
+the composed-cell block is asserted at every seam. The next step is the one-model pilot
 (`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507) **after** the two
 running v7 rehearsal lanes finish; its four criteria on `PILOT_REPORT` are
 what a v8 freeze may rest on; the spectrum arm's B+X / X+B cells come only

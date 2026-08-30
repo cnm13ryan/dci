@@ -264,12 +264,14 @@ Sequence: (1) a small solo/calibration pilot on one representative model —
 ι_A moved most; qwen3-4b as the alternative if the reserve question is not
 the priority) — through pre-screen, second pass, retention, calibration and
 the extension round, under the v8 frames; (2) inspect only the prospectively
-specified criteria: frame reliability (marker-absent share per frame ≤ the
-best v7 frame's), second-pass resolution (≤ 3 batches, `AMBIGUOUS_AT_MAX`
+specified criteria: second-pass resolution (≤ 3 batches, `AMBIGUOUS_AT_MAX`
 count), forwarded set (spectrum families with both extremes carried),
 LOCAL-valid families ≥ 5, spectrum-valid points ≥ 2 per side from ≥ 2
-families, selected coverage identified with projected SE(β̂) ≤ 0.05;
-(3) freeze v8; (4) only then generate the selected spectrum's B+X / X+B
+families, selected coverage identified with projected SE(β̂) ≤ 0.05 --- and
+the **wording diagnostic** (2026-08-30: the four frames measured separately
+per (family, q), no pass/fail rule, no v7 reference; `V8_PILOT.md` §1a);
+(3) take the wording policy decision on solo/pre-screen/calibration evidence
+and freeze v8; (4) only then generate the selected spectrum's B+X / X+B
 cells and fit §11.8.
 
 What runs today (CPU, this worktree, both GPUs untouched):
