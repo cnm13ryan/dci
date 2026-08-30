@@ -2,8 +2,8 @@
  "contract": {
   "clean": true,
   "defects": [],
-  "n_checked_against_payloads": 61,
-  "n_fields": 61
+  "n_checked_against_payloads": 62,
+  "n_fields": 62
  },
  "criteria": {
   "CHANCE_BASIS": {

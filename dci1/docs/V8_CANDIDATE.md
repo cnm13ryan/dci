@@ -270,14 +270,24 @@ the same again for the spectrum arm, per card.
    ≤ 0.026) is reported, not resolved.
 4. **The core selection in `e2e.py` is a stand-in** for §13.8; the v8 run
    layer must call the registered kernel.
-5. **The v8 run layer ran once on a model** (2026-08-30,
-   `dci1v8dev/run`, `docs/V8_PILOT.md` §7a): terminal at Gate 2 on the
-   frame-pooled A curve; the layer now runs per frame (§5a) and its
-   per-frame result is the next pilot's (`V8_PILOT.md` §7b).
-8. **Per-frame precision.** A frame is calibrated on 48 topics and would
-   be estimated on 96 confirmatory blocks at the registered allocation;
-   whether to allocate more per frame is a researcher decision the design
-   note lists (§10 there).
+5. **The v8 run layer has run on three checkpoints under Approach A**
+   (2026-08-30, `docs/V8_PILOT.md` §7a--§7b): r3 ended terminal on the
+   frame-pooled A curve; r5 and r6 reached the pre-freeze endpoint on
+   qwen3-4b, qwen3-4b-instruct-2507 and gemma-3n-e2b-it. What the layer
+   still cannot tell you is unchanged; what it now measures is the cost of
+   the per-frame allocation (item 8) and the frame × family structure of
+   the wording effect.
+8. **Per-frame precision, now measured.** A frame is calibrated on 48 of
+   the 192 topics and would be estimated on 96 of the 384 confirmatory
+   blocks at the registered allocation. The pilot measured SE(ι) = 0.0497
+   per frame against the registered 0.05 floor: no rung below A survives
+   `V_coord`/`V_stab`, so no spectrum is selected on any frame of any
+   model. `tools/v8_allocation_projection.py` runs the production Gate-3
+   rules at ×1/×2/×4 topics per frame on each pilot's own rows --- SPECTRUM
+   identified on every supported frame at ×4 (projected SE(β̂)
+   0.021--0.029), LOCAL on the majority --- and is the measured input to
+   the allocation decision, which remains the researcher's
+   (`V8_FRAME_CONDITIONING.md` §10).
 6. The coverage simulation's truth is a modelling choice (SE ≤ 0.05,
    bracketing, ≤ 10 % attenuation); the geometry grid uses three families.
 7. Gemma-3n-e4b (ι_A ≈ 0.73) has little room above A: on the stored

@@ -277,8 +277,73 @@ Approach A working on real rows: `qwen3-4b`'s four A curves select **three
 different operating points** (n* = 4, 7, 4, 6 for f0…f3) where the
 frame-pooled curve selects 4.
 
-The pilot re-runs in a fresh root at the fixed commit with the same models
-and configuration; its outcome is recorded here when it has run. What it
+**r5 and r6 ran Approach A to the pre-freeze endpoint on three
+checkpoints** --- `dci1v8-pilot-r5` (qwen3-4b and qwen3-4b-instruct-2507,
+10:34Z--12:39Z) and `dci1v8-pilot-r6` (gemma-3n-e2b-it, 12:29Z--14:55Z),
+all nine stages signed `PASS`, 73.7k / 93.5k / 83.4k generations, no
+composed cell, no freeze.
+
+| | qwen3-4b | qwen3-4b-instruct-2507 | gemma-3n-e2b-it |
+|---|---|---|---|
+| supported frames | 0,1,2,3 | 0,1,3 (**f2 `GRID_RESOLUTION_INSUFFICIENT`**) | 0,1,2,3 |
+| n*(f) | 3, 7, 4, 4 | 4, 5, --, 6 | 8, 3, 2, 3 |
+| m*(f) | 12, 12, 12, 13 | 11, 10, --, 12 | 7, 10, 10, 11 |
+| ι_A(f) | .682 / .625 / .719 / .682 | .807 / .682 / -- / .682 | .688 / .609 / .714 / .724 |
+| candidates per frame | 56 (ext. 2) | 77 (ext. 11) | 68 (ext. 9) |
+| frame states | NEITHER ×4 | NEITHER ×3, UNSUPPORTED | **LOCAL_ONLY**, NEITHER ×3 |
+| `CHANCE_BASIS` | pass, every frame | pass | pass |
+| `LADDER_COVERAGE` / `REFERENCE_SURVIVAL` | fail | fail | fail |
+
+Four findings the pilot was run to obtain.
+
+1. **Approach A keeps a replication alive that the pooled instrument
+   kills.** On qwen3-4b-instruct-2507 --- the model and configuration that
+   ended r3 --- the frame-pooled A curve is still out of regime
+   (`n* = None`, `grid_resolution_insufficient`), but f0, f1 and f3 each
+   have an operating point and the replication continues on them. Under
+   §7.8's pooled reading it terminates; under Approach A it does not.
+2. **The frames are separate conditions in the data, not in principle.**
+   Three checkpoints give three different n* patterns, up to four distinct
+   operating points on one model (Gemma: 8, 3, 2, 3), and on Gemma four
+   different Gate-3 states with **no family LOCAL-valid under every frame**
+   (f0 {MK2,MK4,MK5,XC3}, f1 {}, f2 {MK4}, f3 {MK5,MK8}). 51 %, 56 % and
+   61 % of calibration rungs are `WORDING_SENSITIVE` (τ median
+   0.073 / 0.077 / 0.094) while each frame's own ι is stable across its two
+   fresh-topic splits (92 % inside the §13.7 bound).
+3. **What binds is the per-frame allocation, not the frames.** A frame is
+   calibrated on 48 of the 192 topics, and the measured per-frame SE(ι) is
+   0.0497 --- exactly the registered 0.05 floor (46 % of coordinates above
+   it). Of the ~30 rungs positioned below A per frame, `V_coord` refuses 21
+   on that floor and the two-split `V_stab` refuses 9, so **no rung below A
+   survives**, no family straddles, and no spectrum is selected; LOCAL fails
+   at `V_stab` (~32 of 56) and `V_head` (~21). The screen, second pass and
+   retention halves of `LADDER_COVERAGE` **pass** on every model (seven
+   families reach both offsets, three batches, the extension fires): only
+   the per-frame calibration half fails. No threshold was relaxed to obtain
+   a passing run; the projection
+   `reports/dci1v8dev/allocation_projection*.md` runs the production Gate-3
+   rules at ×1/×2/×4 topics per frame and is the measured input to the
+   allocation decision.
+4. **The v8 frame repair works, and what remains is marker-specific.** On
+   Gemma --- where v7's audit found w1/w2 marker-absent in 46--53 % of
+   answers and *though* in 92--100 % --- the four v8 frames are at 14--22 %
+   (pooled 19.7 %), *though* at 2--15 %, and six of the eight marker
+   families are ≤ 0.15 under every frame. Two markers remain unreliable and
+   they are unreliable **by family, not by frame**: *namely* (MK6, .73/.81/.77
+   under f0/f1/f2) and *instead* (MK7, .96/.96/.98) --- and f3, the frame
+   that puts the marker where it cannot be read as a connective of the
+   instruction, rescues both (.17 and .71). That frame × family interaction
+   is the empirical case for Approach A: under one canonical wording the
+   choice of frame would silently decide whether two of eight marker
+   families exist on Gemma.
+
+`GRID_RESOLUTION_INSUFFICIENT` on one frame of one model is the only
+terminal status any replication recorded, and it terminated a frame rather
+than a replication --- which is §6 of `V8_FRAME_CONDITIONING.md` working as
+designed. Provenance note: r5's records carry two producing commits
+(`2145277` through the regime screen, `2aa3378` from the second pass on)
+because a test-only commit landed mid-run; the manifest's package and
+document hashes are identical across the two, and r6 runs on one commit. What it
 measures per frame: n*(f), m*(f), ι_A(f), the number of calibrated
 candidates, LOCAL-valid families, the spectrum-valid pool, the core
 references, the selected spectrum points, the backups, and the frame's
