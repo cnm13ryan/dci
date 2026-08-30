@@ -38,7 +38,8 @@ from dci1v7.stages.calibration_table import tie_key
 from dci1v8dev import rules as R
 from dci1v8dev.spectrum import precision
 
-__all__ = ["DEFAULT_COVERAGE_RULE", "CoverageRule", "selected_coverage"]
+__all__ = ["DEFAULT_COVERAGE_RULE", "FRAME_COVERAGE_RULE", "CoverageRule",
+           "selected_coverage"]
 
 
 @dataclass(frozen=True)
@@ -65,9 +66,17 @@ class CoverageRule:
     max_se_iota: float = R.SPECTRUM_MAX_SE_IOTA
     se_point: float = precision.MEASURED["se_point"]
     block_corr: float = precision.MEASURED["block_corr"]
+    #: The confirmatory blocks the projected fit rests on. ``se_point`` was
+    #: measured at the registered ``C.N_BLOCKS``; a frame-specific design
+    #: (Approach A) is projected at the frame's share of them,
+    #: ``rules.CONFIRMATORY_BLOCKS_PER_FRAME``.
+    n_blocks: int = C.N_BLOCKS
 
 
 DEFAULT_COVERAGE_RULE = CoverageRule()
+#: The per-frame rule: the same thresholds, the projection at the frame's
+#: share of the registered blocks (docs/V8_FRAME_CONDITIONING.md §4, §6).
+FRAME_COVERAGE_RULE = CoverageRule(n_blocks=R.CONFIRMATORY_BLOCKS_PER_FRAME)
 
 
 def selected_coverage(points: Sequence[Mapping[str, Any]], *, iota_a: float,
@@ -109,7 +118,15 @@ def selected_coverage(points: Sequence[Mapping[str, Any]], *, iota_a: float,
         reasons.append(f"coordinate SE above {rule.max_se_iota} for {imprecise}")
     proj = precision.projected_se_beta(
         [(p["family"], p["iota"]) for p in points],
-        se_point=rule.se_point, block_corr=rule.block_corr)
+        se_point=rule.se_point, block_corr=rule.block_corr,
+        n_blocks=rule.n_blocks)
+    # The same design at the full registered allocation, recorded beside the
+    # verdict for the allocation decision; it decides nothing here.
+    proj_full = (proj if rule.n_blocks == C.N_BLOCKS else
+                 precision.projected_se_beta(
+                     [(p["family"], p["iota"]) for p in points],
+                     se_point=rule.se_point, block_corr=rule.block_corr,
+                     n_blocks=C.N_BLOCKS))
     if proj["se_beta"] is None or proj["se_beta"] > rule.max_se_beta:
         reasons.append(
             f"projected SE(beta) {proj['se_beta']} above {rule.max_se_beta} "
@@ -126,6 +143,7 @@ def selected_coverage(points: Sequence[Mapping[str, Any]], *, iota_a: float,
             "offset_above": (None if farthest_above is None
                              else farthest_above - iota_a),
             "projection": proj,
+            "projection_at_full_allocation": proj_full,
             "status": ("DIFFICULTY_SUPPORT_IDENTIFIED" if not reasons
                        else "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"),
             "rule": {"min_points_below": rule.min_points_below,
@@ -136,4 +154,5 @@ def selected_coverage(points: Sequence[Mapping[str, Any]], *, iota_a: float,
                      "min_total_span": rule.min_total_span,
                      "max_se_iota": rule.max_se_iota,
                      "se_point": rule.se_point,
-                     "block_corr": rule.block_corr}}
+                     "block_corr": rule.block_corr,
+                     "n_blocks": rule.n_blocks}}

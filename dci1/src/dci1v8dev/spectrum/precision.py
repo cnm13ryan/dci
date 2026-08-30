@@ -46,6 +46,7 @@ __all__ = [
     "leverage_for_se",
     "projected_se_beta",
     "projected_se_delta_diff",
+    "se_point_at",
     "simulate_design",
 ]
 
@@ -73,22 +74,39 @@ def _leverage(points: Sequence[tuple[str, float]]) -> tuple[float, dict[str, flo
     return float(sum(per_family.values())), per_family
 
 
+def se_point_at(n_blocks: int, *, se_point: float = MEASURED["se_point"],
+                measured_blocks: int = C.N_BLOCKS) -> float:
+    """The per-point SE at ``n_blocks`` blocks: ``MEASURED["se_point"]`` was
+    read at the registered 384 blocks and a block-bootstrap SE scales as
+    1/sqrt(blocks). A frame-specific estimate (Approach A,
+    docs/V8_FRAME_CONDITIONING.md) rests on the frame's share of the blocks
+    and is projected at that share."""
+    if n_blocks <= 0:
+        raise ValueError("n_blocks must be positive")
+    return se_point * math.sqrt(measured_blocks / n_blocks)
+
+
 def projected_se_beta(points: Sequence[tuple[str, float]], *,
                       se_point: float = MEASURED["se_point"],
-                      block_corr: float = MEASURED["block_corr"]
-                      ) -> dict[str, Any]:
-    """Analytic SE of §11.8's slope for a design of (family, d) points."""
+                      block_corr: float = MEASURED["block_corr"],
+                      n_blocks: int = C.N_BLOCKS) -> dict[str, Any]:
+    """Analytic SE of §11.8's slope for a design of (family, d) points,
+    at ``n_blocks`` confirmatory blocks (``se_point`` is the value measured
+    at the registered ``C.N_BLOCKS`` and is rescaled by ``se_point_at``)."""
     leverage, per_family = _leverage(points)
+    se_at = se_point_at(n_blocks, se_point=se_point)
     if leverage <= 0:
         return {"se_beta": None, "leverage": 0.0, "per_family": per_family,
                 "half_width_95": None, "n_points": len(points),
-                "n_families": len(per_family)}
-    se = se_point * math.sqrt(1.0 - block_corr) / math.sqrt(leverage)
+                "n_families": len(per_family), "n_blocks": n_blocks,
+                "se_point_at_n_blocks": se_at}
+    se = se_at * math.sqrt(1.0 - block_corr) / math.sqrt(leverage)
     return {"se_beta": se, "leverage": leverage, "per_family": per_family,
             "half_width_95": 1.96 * se,
             "half_width_planning": PLANNING_CONSTANT * se,
             "n_points": len(points), "n_families": len(per_family),
-            "se_point": se_point, "block_corr": block_corr}
+            "se_point": se_point, "block_corr": block_corr,
+            "n_blocks": n_blocks, "se_point_at_n_blocks": se_at}
 
 
 def projected_se_delta_diff(points: Sequence[tuple[str, str, float]], *,

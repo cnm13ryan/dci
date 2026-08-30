@@ -319,6 +319,16 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
             "n_unconstrained_rows": sum(
                 1 for r in screen_rows if r.get("arm") == UNCONSTRAINED_ARM)},
         "frame_reliability": reliability,
+        "frame_conditioning": {
+            "policy": S.FRAME_CONDITIONING,
+            "at_this_stage": "pooled over the four frames as a measurement "
+                             "budget: at 24 topics x 1 draw a frame holds six "
+                             "topics; the screen decides which rungs are "
+                             "measured at calibration and every measured rung "
+                             "is calibrated under every frame; no admission, "
+                             "matching or selection reads a screen quantity "
+                             "(§12.2; docs/V8_FRAME_CONDITIONING.md §5)",
+            "per_frame_reading": "GATE_1_INSTRUMENT.wording_diagnostic_screen"},
         "row_accounting": {
             run.name: row_accounting(run)
             for run in sorted(tree.backend_runs(S.STAGE_REGIME).iterdir())

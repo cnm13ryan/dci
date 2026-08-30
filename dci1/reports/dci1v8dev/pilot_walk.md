@@ -8,18 +8,18 @@
 
 Stages walked: 9 / 9 (PILOT_REGISTERED, QUALIFIED, GATE_0_APPARATUS, REGIME_SCREEN, SECOND_PASS_SCREEN, GATE_1_INSTRUMENT, GATE_2_CALIBRATION, GATE_3_REFERENCES, PILOT_REPORT).
 
-Contract: 63 fields, 0 defects, 63 checked against payloads.
+Contract: 61 fields, 0 defects, 61 checked against payloads.
 
 ## Criteria on the synthetic walk
 
 | criterion | passed |
 |---|---|
-| WORDING_DIAGNOSTIC | — (RESEARCHER_DECISION_REQUIRED) |
-| LADDER_COVERAGE | True |
-| CHANCE_BASIS | True |
-| REFERENCE_SURVIVAL | True |
+| WORDING_DIAGNOSTIC | — (DESCRIPTIVE_ONLY) |
+| LADDER_COVERAGE | True (frames passing [0, 1, 2, 3], failing []) |
+| CHANCE_BASIS | True (frames passing [0, 1, 2, 3], failing []) |
+| REFERENCE_SURVIVAL | True (frames passing [0, 1, 2, 3], failing []) |
 
-Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['retain_all_frames', 'retain_specified_subset', 'model_frame_variation']).
+Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; frames meeting every decided criterion [0, 1, 2, 3]; supported frames [0, 1, 2, 3]; frame states {'0': 'LOCAL_AND_SPECTRUM', '1': 'LOCAL_AND_SPECTRUM', '2': 'LOCAL_AND_SPECTRUM', '3': 'LOCAL_AND_SPECTRUM'}); wording judgment: `DECIDED` (policy `model_frame_variation`; options ['retain_all_frames', 'retain_specified_subset', 'model_frame_variation']).
 
 ## Wording diagnostic (synthetic)
 
@@ -48,6 +48,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['
 | PILOT_REGISTERED | `manifest_hash` | PILOT_REPORT | yes | PRESENT |
 | PILOT_REGISTERED | `instrument` | GATE_1_INSTRUMENT | yes | PRESENT |
 | PILOT_REGISTERED | `wording_policy` | GATE_1_INSTRUMENT, PILOT_REPORT | yes | PRESENT |
+| PILOT_REGISTERED | `frame_conditioning` | — | yes | PRESENT |
 | PILOT_REGISTERED | `criteria` | PILOT_REPORT | yes | PRESENT |
 | QUALIFIED | `checks` | — | yes | PRESENT |
 | QUALIFIED | `topic_split_identity` | — | yes | PRESENT |
@@ -57,6 +58,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['
 | REGIME_SCREEN | `prescreen_table` | SECOND_PASS_SCREEN | yes | PRESENT |
 | REGIME_SCREEN | `difficulty_table` | GATE_2_CALIBRATION | yes | PRESENT |
 | REGIME_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
+| REGIME_SCREEN | `frame_conditioning` | — | yes | PRESENT |
 | REGIME_SCREEN | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `chance_basis` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `n_rungs_measured` | PILOT_REPORT | yes | PRESENT |
@@ -65,6 +67,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['
 | SECOND_PASS_SCREEN | `forwarded_set` | GATE_2_CALIBRATION | yes | PRESENT |
 | SECOND_PASS_SCREEN | `retention` | GATE_2_CALIBRATION, PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
+| SECOND_PASS_SCREEN | `frame_conditioning` | — | yes | PRESENT |
 | SECOND_PASS_SCREEN | `topic_isolation` | PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `n_batches` | PILOT_REPORT | yes | PRESENT |
@@ -77,35 +80,30 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET`; wording judgment: `OPEN` (options ['
 | GATE_1_INSTRUMENT | `stability_screen_vs_second_pass` | PILOT_REPORT | no | PRESENT |
 | GATE_1_INSTRUMENT | `verifier_hash` | — | yes | PRESENT |
 | GATE_1_INSTRUMENT | `wording_hash` | — | yes | PRESENT |
-| GATE_2_CALIBRATION | `m_star` | GATE_3_REFERENCES | yes | PRESENT |
-| GATE_2_CALIBRATION | `iota_a` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `iota_a_all_absent_v7_basis` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `iota_a_basis` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `solo_compliance_a` | GATE_3_REFERENCES | yes | PRESENT |
-| GATE_2_CALIBRATION | `iota_a_by_split` | GATE_3_REFERENCES | yes | PRESENT |
-| GATE_2_CALIBRATION | `solo_a_by_split` | GATE_3_REFERENCES | yes | PRESENT |
-| GATE_2_CALIBRATION | `a_per_topic_by_split` | GATE_3_REFERENCES | yes | PRESENT |
-| GATE_2_CALIBRATION | `calibration_rows` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `calibration_rows_withheld` | — | yes | PRESENT |
-| GATE_2_CALIBRATION | `n_candidates_withheld_degenerate` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `chance_basis` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `extension` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `frame_conditioning` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `frames` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `supported_frames` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `unsupported_frames` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `by_frame` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `descriptive_pooled` | — | yes | PRESENT |
+| GATE_2_CALIBRATION | `grids` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_topic_ids` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `solo_curves` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_population` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `chance_basis` | — | yes | PRESENT |
+| GATE_2_CALIBRATION | `extension` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `frame_comparison_pooled` | GATE_3_REFERENCES | yes | PRESENT |
 | GATE_2_CALIBRATION | `wording_by_frame` | — | yes | PRESENT |
 | GATE_2_CALIBRATION | `ladders_by_frame_pooled` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `wording_dependence_pooled` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `split_stability_by_frame` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `row_accounting` | PILOT_REPORT | yes | PRESENT |
-| GATE_3_REFERENCES | `survival` | PILOT_REPORT | yes | PRESENT |
-| GATE_3_REFERENCES | `wording_sensitive_rungs` | PILOT_REPORT | yes | PRESENT |
-| GATE_3_REFERENCES | `local` | — | yes | PRESENT |
-| GATE_3_REFERENCES | `spectrum` | — | yes | PRESENT |
-| GATE_3_REFERENCES | `core` | — | yes | PRESENT |
-| GATE_3_REFERENCES | `coverage` | — | yes | PRESENT |
-| GATE_3_REFERENCES | `backups` | — | yes | PRESENT |
+| GATE_3_REFERENCES | `frames` | — | yes | PRESENT |
+| GATE_3_REFERENCES | `supported_frames` | — | yes | PRESENT |
+| GATE_3_REFERENCES | `by_frame` | PILOT_REPORT | yes | PRESENT |
+| GATE_3_REFERENCES | `frame_states` | PILOT_REPORT | yes | PRESENT |
+| GATE_3_REFERENCES | `cross_frame` | — | yes | PRESENT |
+| GATE_3_REFERENCES | `estimands` | PILOT_REPORT | yes | PRESENT |
 | PILOT_REPORT | `criteria` | — | yes | PRESENT |
 | PILOT_REPORT | `pilot_status` | — | yes | PRESENT |
+| PILOT_REPORT | `frames_meeting_all_decided_criteria` | — | yes | PRESENT |
 

@@ -27,7 +27,7 @@ A2=$!
 A3=$!
 wait $A1 $A2 $A3
 stamp "== phase B: synthetic pilot walk || producer/consumer report"
-( S=$(date +%s); $PY -m pytest tests_v8dev/test_pilot_lifecycle.py -q -p no:cacheprovider --basetemp "$LOG/bt-walk" > "$LOG/walk.log" 2>&1; echo "pilot-walk exit=$? $(( $(date +%s) - S ))s: $(tail -1 "$LOG/walk.log")" ) &
+( S=$(date +%s); $PY -m pytest tests_v8dev/test_pilot_lifecycle.py tests_v8dev/test_frame_conditioning.py -m slow -q -p no:cacheprovider --basetemp "$LOG/bt-walk" > "$LOG/walk.log" 2>&1; echo "pilot-walk exit=$? $(( $(date +%s) - S ))s: $(tail -1 "$LOG/walk.log")" ) &
 B1=$!
 ( S=$(date +%s); $PY tools/v8_pilot_walk.py > "$LOG/pc.log" 2>&1; echo "producer-consumer exit=$? $(( $(date +%s) - S ))s" ) &
 B2=$!

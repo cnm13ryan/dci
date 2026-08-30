@@ -2,11 +2,13 @@
  "available": true,
  "basis": "GATE_2_CALIBRATION (pooled = Calibration-A \u222a Calibration-B; each split reported separately); the pre-screen is not used",
  "composed_outcomes_read": false,
+ "frame_conditioning": "frame_is_experimental_condition",
  "gate2": {
   "chance_basis": {
    "cell": "unconstrained",
    "degeneracy_max": 0.99,
    "degenerate_rows_are": "withheld from `calibration_rows` and recorded in `calibration_rows_withheld` (\u00a711.2; `_withhold_degenerate`)",
+   "per_frame": "each frame's table reads kappa on the unconstrained cells of its own blocks (by_frame[f].chance_basis); the producer refuses any other topic set",
    "per_split": {
     "calibration_a": {
      "draws_per_topic": 8.0,
@@ -30,10 +32,51 @@
     "g2grid-B"
    ]
   },
-  "iota_a": 0.7135416666666666,
-  "iota_a_by_split": {
-   "calibration_a": 0.7135416666666666,
-   "calibration_b": 0.7135416666666666
+  "iota_a_by_frame": {
+   "0": {
+    "iota_a": 0.6875,
+    "iota_a_by_split": {
+     "calibration_a": 0.6458333333333334,
+     "calibration_b": 0.7291666666666666
+    },
+    "m_star": 9,
+    "n_star": 3,
+    "status": "SUPPORTED",
+    "unsupported_reason": null
+   },
+   "1": {
+    "iota_a": 0.6979166666666666,
+    "iota_a_by_split": {
+     "calibration_a": 0.7083333333333334,
+     "calibration_b": 0.6875
+    },
+    "m_star": 8,
+    "n_star": 2,
+    "status": "SUPPORTED",
+    "unsupported_reason": null
+   },
+   "2": {
+    "iota_a": 0.71875,
+    "iota_a_by_split": {
+     "calibration_a": 0.7291666666666666,
+     "calibration_b": 0.7083333333333334
+    },
+    "m_star": 10,
+    "n_star": 2,
+    "status": "SUPPORTED",
+    "unsupported_reason": null
+   },
+   "3": {
+    "iota_a": 0.7083333333333334,
+    "iota_a_by_split": {
+     "calibration_a": 0.6875,
+     "calibration_b": 0.7291666666666666
+    },
+    "m_star": 8,
+    "n_star": 2,
+    "status": "SUPPORTED",
+    "unsupported_reason": null
+   }
   },
   "ladders_by_frame_pooled": {
    "0": {
@@ -133,6 +176,12 @@
     "run": "grid-B"
    }
   },
+  "supported_frames": [
+   0,
+   1,
+   2,
+   3
+  ],
   "wording_dependence_pooled": {
    "n_rungs_compared": 89,
    "n_rungs_with_all_frames": 89,
@@ -4925,250 +4974,1851 @@
  "item4_reference_exposure": {
   "available": true,
   "backup_families": [
-   "MK5",
-   "MK6"
+   "MK2",
+   "MK4",
+   "MK6",
+   "MK7",
+   "MK8",
+   "XC3"
   ],
-  "core_references": [
-   "MK1:3",
-   "MK7:3",
-   "MK8:3"
-  ],
-  "gate3_block": {
-   "by_class": {
-    "UNRESOLVED": [
-     {
-      "backup_family": false,
-      "candidate": "B:14",
-      "core_reference": false,
-      "local_valid": false,
-      "max_abs_difference": 0.23076923076923084,
-      "max_abs_z": 0.2685788434761501,
-      "selected_spectrum_point": false,
-      "spectrum_valid": false,
-      "spread": 0.23076923076923084
-     }
+  "by_frame": {
+   "0": {
+    "backup_families": [
+     "MK7",
+     "XC3"
     ],
-    "WORDING_SENSITIVE": []
+    "core_references": [
+     "MK2:4",
+     "MK6:4",
+     "MK8:4"
+    ],
+    "frame": 0,
+    "gate3_block": {
+     "by_class": {
+      "UNRESOLVED": [
+       {
+        "backup_family": false,
+        "candidate": "B:14",
+        "core_reference": false,
+        "iota_under_this_frame": -0.6153846153846159,
+        "local_valid": false,
+        "max_abs_difference": 0.23076923076923084,
+        "max_abs_z": 0.2685788434761501,
+        "selected_spectrum_point": false,
+        "spectrum_valid": false,
+        "spread": 0.23076923076923084
+       }
+      ],
+      "WORDING_SENSITIVE": []
+     },
+     "frame": 0,
+     "n_unresolved": 1,
+     "n_wording_sensitive": 0,
+     "note": "descriptive; under Approach A the frame is the condition and no rung is dropped for wording sensitivity",
+     "reference_bound": 0.2,
+     "selection_rule": null,
+     "touching_reference_set": {
+      "UNRESOLVED": [],
+      "WORDING_SENSITIVE": []
+     }
+    },
+    "iota_a": 0.6875,
+    "m_star": 9,
+    "n_star": 3,
+    "selected_spectrum_points": [
+     "MK3:1",
+     "MK3:6",
+     "MK4:1",
+     "MK4:6",
+     "MK6:2",
+     "MK6:4",
+     "MK6:6",
+     "RF8:0",
+     "RF8:5"
+    ],
+    "sets": {
+     "backup_family_rungs_local_valid": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK7:3",
+       "MK7:4",
+       "XC3:5"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "local_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 11,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:3",
+       "MK1:4",
+       "MK2:4",
+       "MK3:3",
+       "MK4:4",
+       "MK6:4",
+       "MK7:3",
+       "MK7:4",
+       "MK8:3",
+       "MK8:4",
+       "XC3:5"
+      ],
+      "n": 11,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_local_references_core": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK2:4",
+       "MK6:4",
+       "MK8:4"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_spectrum_points": {
+      "by_class": {
+       "CONSISTENT": 9,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK3:1",
+       "MK3:6",
+       "MK4:1",
+       "MK4:6",
+       "MK6:2",
+       "MK6:4",
+       "MK6:6",
+       "RF8:0",
+       "RF8:5"
+      ],
+      "n": 9,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "spectrum_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 53,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:1",
+       "MK1:2",
+       "MK1:5",
+       "MK1:6",
+       "MK2:1",
+       "MK2:2",
+       "MK2:3",
+       "MK3:1",
+       "MK3:2",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:3",
+       "MK5:5",
+       "MK6:1",
+       "MK6:2",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:1",
+       "MK7:2",
+       "MK7:5",
+       "MK7:6",
+       "MK7:8",
+       "MK8:2",
+       "MK8:5",
+       "RF8:0",
+       "RF8:1",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:2",
+       "XC1:3",
+       "XC1:5",
+       "XC2:2",
+       "XC2:4",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC3:3",
+       "XC3:4",
+       "XC3:6",
+       "XC3:7",
+       "XC3:8",
+       "XC3:10"
+      ],
+      "n": 53,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     }
+    },
+    "state": "LOCAL_AND_SPECTRUM",
+    "survival": {
+     "backups": [
+      "XC3",
+      "MK7"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK2",
+       "iota": 0.6875,
+       "severity": 4
+      },
+      {
+       "family": "MK6",
+       "iota": 0.6770833333333334,
+       "severity": 4
+      },
+      {
+       "family": "MK8",
+       "iota": 0.6666666666666666,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "coverage_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "frame": 0,
+     "iota_a": 0.6875,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "min_local_families": 5,
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 8,
+     "n_spectrum_references": 8,
+     "projected_se_beta": 0.032306337699209896,
+     "projected_se_beta_at_full_allocation": 0.016153168849604948,
+     "selected_families": [
+      "MK4",
+      "MK3",
+      "RF8",
+      "MK6"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_above": [
+      "MK1:1",
+      "MK1:2",
+      "MK2:1",
+      "MK2:2",
+      "MK2:3",
+      "MK3:1",
+      "MK3:2",
+      "MK4:1",
+      "MK4:2",
+      "MK4:3",
+      "MK5:2",
+      "MK5:3",
+      "MK6:1",
+      "MK6:2",
+      "MK7:1",
+      "MK7:2",
+      "MK8:2",
+      "RF8:0",
+      "RF8:1",
+      "XC1:2",
+      "XC1:3",
+      "XC2:2",
+      "XC2:4",
+      "XC3:3",
+      "XC3:4"
+     ],
+     "spectrum_valid_below": [
+      "MK1:5",
+      "MK1:6",
+      "MK3:5",
+      "MK3:6",
+      "MK3:8",
+      "MK4:4",
+      "MK4:5",
+      "MK4:6",
+      "MK4:8",
+      "MK5:5",
+      "MK6:5",
+      "MK6:6",
+      "MK6:8",
+      "MK7:5",
+      "MK7:6",
+      "MK7:8",
+      "MK8:5",
+      "RF8:4",
+      "RF8:5",
+      "RF8:8",
+      "XC1:5",
+      "XC2:10",
+      "XC2:12",
+      "XC2:16",
+      "XC3:10",
+      "XC3:6",
+      "XC3:7",
+      "XC3:8"
+     ],
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
    },
-   "n_unresolved": 1,
-   "n_wording_sensitive": 0,
-   "note": "descriptive; the wording policy is a later researcher decision and no rung is dropped for wording sensitivity",
-   "reference_bound": 0.2,
-   "selection_rule": null,
-   "touching_reference_set": {
-    "UNRESOLVED": [],
-    "WORDING_SENSITIVE": []
+   "1": {
+    "backup_families": [
+     "MK4",
+     "MK8"
+    ],
+    "core_references": [
+     "MK5:3",
+     "MK6:4",
+     "MK7:4"
+    ],
+    "frame": 1,
+    "gate3_block": {
+     "by_class": {
+      "UNRESOLVED": [
+       {
+        "backup_family": false,
+        "candidate": "B:14",
+        "core_reference": false,
+        "iota_under_this_frame": -0.6923076923076925,
+        "local_valid": false,
+        "max_abs_difference": 0.23076923076923084,
+        "max_abs_z": 0.2685788434761501,
+        "selected_spectrum_point": false,
+        "spectrum_valid": false,
+        "spread": 0.23076923076923084
+       }
+      ],
+      "WORDING_SENSITIVE": []
+     },
+     "frame": 1,
+     "n_unresolved": 1,
+     "n_wording_sensitive": 0,
+     "note": "descriptive; under Approach A the frame is the condition and no rung is dropped for wording sensitivity",
+     "reference_bound": 0.2,
+     "selection_rule": null,
+     "touching_reference_set": {
+      "UNRESOLVED": [],
+      "WORDING_SENSITIVE": []
+     }
+    },
+    "iota_a": 0.6979166666666666,
+    "m_star": 8,
+    "n_star": 2,
+    "selected_spectrum_points": [
+     "MK1:1",
+     "MK1:6",
+     "MK4:1",
+     "MK4:6",
+     "MK6:1",
+     "MK6:4",
+     "MK6:6",
+     "XC3:3",
+     "XC3:8"
+    ],
+    "sets": {
+     "backup_family_rungs_local_valid": {
+      "by_class": {
+       "CONSISTENT": 5,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK8:3",
+       "MK8:4"
+      ],
+      "n": 5,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "local_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 14,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:4",
+       "MK2:4",
+       "MK4:3",
+       "MK4:4",
+       "MK4:5",
+       "MK5:3",
+       "MK5:4",
+       "MK6:3",
+       "MK6:4",
+       "MK7:4",
+       "MK8:3",
+       "MK8:4",
+       "XC1:4",
+       "XC3:6"
+      ],
+      "n": 14,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_local_references_core": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK5:3",
+       "MK6:4",
+       "MK7:4"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_spectrum_points": {
+      "by_class": {
+       "CONSISTENT": 9,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:1",
+       "MK1:6",
+       "MK4:1",
+       "MK4:6",
+       "MK6:1",
+       "MK6:4",
+       "MK6:6",
+       "XC3:3",
+       "XC3:8"
+      ],
+      "n": 9,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "spectrum_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 51,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:1",
+       "MK1:2",
+       "MK1:5",
+       "MK1:6",
+       "MK1:8",
+       "MK2:1",
+       "MK2:2",
+       "MK3:1",
+       "MK3:2",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:4",
+       "MK5:5",
+       "MK6:1",
+       "MK6:2",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:1",
+       "MK7:2",
+       "MK7:5",
+       "MK7:6",
+       "MK7:8",
+       "MK8:2",
+       "MK8:5",
+       "RF8:0",
+       "RF8:1",
+       "RF8:3",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:2",
+       "XC1:5",
+       "XC2:4",
+       "XC2:8",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC3:3",
+       "XC3:4",
+       "XC3:5",
+       "XC3:7",
+       "XC3:8",
+       "XC3:10"
+      ],
+      "n": 51,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     }
+    },
+    "state": "LOCAL_AND_SPECTRUM",
+    "survival": {
+     "backups": [
+      "MK8",
+      "MK4"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK6",
+       "iota": 0.6979166666666666,
+       "severity": 4
+      },
+      {
+       "family": "MK5",
+       "iota": 0.7083333333333334,
+       "severity": 3
+      },
+      {
+       "family": "MK7",
+       "iota": 0.6875,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "coverage_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "frame": 1,
+     "iota_a": 0.6979166666666666,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "min_local_families": 5,
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 9,
+     "n_spectrum_references": 8,
+     "projected_se_beta": 0.03078979643970348,
+     "projected_se_beta_at_full_allocation": 0.01539489821985174,
+     "selected_families": [
+      "MK6",
+      "MK1",
+      "MK4",
+      "XC3"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_above": [
+      "MK1:1",
+      "MK1:2",
+      "MK2:1",
+      "MK2:2",
+      "MK3:1",
+      "MK3:2",
+      "MK4:1",
+      "MK4:2",
+      "MK5:2",
+      "MK6:1",
+      "MK6:2",
+      "MK7:1",
+      "MK7:2",
+      "MK8:2",
+      "RF8:0",
+      "RF8:1",
+      "XC1:2",
+      "XC2:4",
+      "XC3:3",
+      "XC3:4",
+      "XC3:5"
+     ],
+     "spectrum_valid_below": [
+      "MK1:5",
+      "MK1:6",
+      "MK1:8",
+      "MK3:5",
+      "MK3:6",
+      "MK3:8",
+      "MK4:5",
+      "MK4:6",
+      "MK4:8",
+      "MK5:4",
+      "MK5:5",
+      "MK6:5",
+      "MK6:6",
+      "MK6:8",
+      "MK7:5",
+      "MK7:6",
+      "MK7:8",
+      "MK8:5",
+      "RF8:3",
+      "RF8:4",
+      "RF8:5",
+      "RF8:8",
+      "XC1:5",
+      "XC2:10",
+      "XC2:12",
+      "XC2:16",
+      "XC2:8",
+      "XC3:10",
+      "XC3:7",
+      "XC3:8"
+     ],
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
+   },
+   "2": {
+    "backup_families": [
+     "MK4",
+     "MK8"
+    ],
+    "core_references": [
+     "MK5:3",
+     "MK6:3",
+     "XC1:3"
+    ],
+    "frame": 2,
+    "gate3_block": {
+     "by_class": {
+      "UNRESOLVED": [
+       {
+        "backup_family": false,
+        "candidate": "B:14",
+        "core_reference": false,
+        "iota_under_this_frame": -0.6153846153846159,
+        "local_valid": false,
+        "max_abs_difference": 0.23076923076923084,
+        "max_abs_z": 0.2685788434761501,
+        "selected_spectrum_point": false,
+        "spectrum_valid": false,
+        "spread": 0.23076923076923084
+       }
+      ],
+      "WORDING_SENSITIVE": []
+     },
+     "frame": 2,
+     "n_unresolved": 1,
+     "n_wording_sensitive": 0,
+     "note": "descriptive; under Approach A the frame is the condition and no rung is dropped for wording sensitivity",
+     "reference_bound": 0.2,
+     "selection_rule": null,
+     "touching_reference_set": {
+      "UNRESOLVED": [],
+      "WORDING_SENSITIVE": []
+     }
+    },
+    "iota_a": 0.71875,
+    "m_star": 10,
+    "n_star": 2,
+    "selected_spectrum_points": [
+     "MK3:1",
+     "MK3:6",
+     "MK6:1",
+     "MK6:3",
+     "MK6:6",
+     "RF8:0",
+     "RF8:5",
+     "XC2:2",
+     "XC2:12"
+    ],
+    "sets": {
+     "backup_family_rungs_local_valid": {
+      "by_class": {
+       "CONSISTENT": 2,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK4:4",
+       "MK8:4"
+      ],
+      "n": 2,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "local_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 9,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK2:4",
+       "MK4:4",
+       "MK5:3",
+       "MK5:4",
+       "MK6:3",
+       "MK8:4",
+       "XC1:3",
+       "XC1:4",
+       "XC3:6"
+      ],
+      "n": 9,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_local_references_core": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK5:3",
+       "MK6:3",
+       "XC1:3"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_spectrum_points": {
+      "by_class": {
+       "CONSISTENT": 9,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK3:1",
+       "MK3:6",
+       "MK6:1",
+       "MK6:3",
+       "MK6:6",
+       "RF8:0",
+       "RF8:5",
+       "XC2:2",
+       "XC2:12"
+      ],
+      "n": 9,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "spectrum_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 59,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:1",
+       "MK1:2",
+       "MK1:4",
+       "MK1:5",
+       "MK1:6",
+       "MK1:8",
+       "MK2:1",
+       "MK2:2",
+       "MK2:4",
+       "MK3:1",
+       "MK3:2",
+       "MK3:4",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:4",
+       "MK5:5",
+       "MK6:1",
+       "MK6:2",
+       "MK6:4",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:1",
+       "MK7:2",
+       "MK7:4",
+       "MK7:5",
+       "MK7:6",
+       "MK7:8",
+       "MK8:2",
+       "MK8:4",
+       "MK8:5",
+       "RF5:2",
+       "RF8:0",
+       "RF8:1",
+       "RF8:3",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:2",
+       "XC1:5",
+       "XC2:2",
+       "XC2:8",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC3:3",
+       "XC3:4",
+       "XC3:6",
+       "XC3:7",
+       "XC3:8",
+       "XC3:10"
+      ],
+      "n": 59,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     }
+    },
+    "state": "LOCAL_AND_SPECTRUM",
+    "survival": {
+     "backups": [
+      "MK8",
+      "MK4"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK6",
+       "iota": 0.71875,
+       "severity": 3
+      },
+      {
+       "family": "XC1",
+       "iota": 0.71875,
+       "severity": 3
+      },
+      {
+       "family": "MK5",
+       "iota": 0.7291666666666666,
+       "severity": 3
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "coverage_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "frame": 2,
+     "iota_a": 0.71875,
+     "local_valid_families": [
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "min_local_families": 5,
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 7,
+     "n_spectrum_references": 8,
+     "projected_se_beta": 0.028844603340476692,
+     "projected_se_beta_at_full_allocation": 0.014422301670238346,
+     "selected_families": [
+      "RF8",
+      "XC2",
+      "MK6",
+      "MK3"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_above": [
+      "MK1:1",
+      "MK1:2",
+      "MK2:1",
+      "MK2:2",
+      "MK3:1",
+      "MK3:2",
+      "MK4:1",
+      "MK4:2",
+      "MK5:2",
+      "MK6:1",
+      "MK6:2",
+      "MK7:1",
+      "MK7:2",
+      "MK8:2",
+      "RF8:0",
+      "RF8:1",
+      "XC1:2",
+      "XC2:2",
+      "XC3:3",
+      "XC3:4"
+     ],
+     "spectrum_valid_below": [
+      "MK1:4",
+      "MK1:5",
+      "MK1:6",
+      "MK1:8",
+      "MK2:4",
+      "MK3:4",
+      "MK3:5",
+      "MK3:6",
+      "MK3:8",
+      "MK4:4",
+      "MK4:5",
+      "MK4:6",
+      "MK4:8",
+      "MK5:4",
+      "MK5:5",
+      "MK6:4",
+      "MK6:5",
+      "MK6:6",
+      "MK6:8",
+      "MK7:4",
+      "MK7:5",
+      "MK7:6",
+      "MK7:8",
+      "MK8:4",
+      "MK8:5",
+      "RF5:2",
+      "RF8:3",
+      "RF8:4",
+      "RF8:5",
+      "RF8:8",
+      "XC1:5",
+      "XC2:10",
+      "XC2:12",
+      "XC2:16",
+      "XC2:8",
+      "XC3:10",
+      "XC3:6",
+      "XC3:7",
+      "XC3:8"
+     ],
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
+   },
+   "3": {
+    "backup_families": [
+     "MK2",
+     "MK6"
+    ],
+    "core_references": [
+     "MK1:4",
+     "MK7:3",
+     "MK8:3"
+    ],
+    "frame": 3,
+    "gate3_block": {
+     "by_class": {
+      "UNRESOLVED": [
+       {
+        "backup_family": false,
+        "candidate": "B:14",
+        "core_reference": false,
+        "iota_under_this_frame": -0.4615384615384617,
+        "local_valid": false,
+        "max_abs_difference": 0.23076923076923084,
+        "max_abs_z": 0.2685788434761501,
+        "selected_spectrum_point": false,
+        "spectrum_valid": false,
+        "spread": 0.23076923076923084
+       }
+      ],
+      "WORDING_SENSITIVE": []
+     },
+     "frame": 3,
+     "n_unresolved": 1,
+     "n_wording_sensitive": 0,
+     "note": "descriptive; under Approach A the frame is the condition and no rung is dropped for wording sensitivity",
+     "reference_bound": 0.2,
+     "selection_rule": null,
+     "touching_reference_set": {
+      "UNRESOLVED": [],
+      "WORDING_SENSITIVE": []
+     }
+    },
+    "iota_a": 0.7083333333333334,
+    "m_star": 8,
+    "n_star": 2,
+    "selected_spectrum_points": [
+     "MK4:1",
+     "MK4:6",
+     "MK6:1",
+     "MK6:6",
+     "RF8:0",
+     "RF8:5",
+     "XC2:2",
+     "XC2:12"
+    ],
+    "sets": {
+     "backup_family_rungs_local_valid": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK2:3",
+       "MK2:4",
+       "MK6:4"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "local_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 10,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:4",
+       "MK2:3",
+       "MK2:4",
+       "MK4:4",
+       "MK5:4",
+       "MK6:4",
+       "MK7:3",
+       "MK8:3",
+       "MK8:4",
+       "XC3:6"
+      ],
+      "n": 10,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_local_references_core": {
+      "by_class": {
+       "CONSISTENT": 3,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:4",
+       "MK7:3",
+       "MK8:3"
+      ],
+      "n": 3,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "selected_spectrum_points": {
+      "by_class": {
+       "CONSISTENT": 8,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK4:1",
+       "MK4:6",
+       "MK6:1",
+       "MK6:6",
+       "RF8:0",
+       "RF8:5",
+       "XC2:2",
+       "XC2:12"
+      ],
+      "n": 8,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     },
+     "spectrum_valid_candidates": {
+      "by_class": {
+       "CONSISTENT": 51,
+       "UNRESOLVED": 0,
+       "WORDING_SENSITIVE": 0
+      },
+      "labels": [
+       "MK1:2",
+       "MK1:5",
+       "MK1:6",
+       "MK1:8",
+       "MK2:2",
+       "MK3:1",
+       "MK3:2",
+       "MK3:4",
+       "MK3:5",
+       "MK3:6",
+       "MK3:8",
+       "MK4:1",
+       "MK4:2",
+       "MK4:4",
+       "MK4:5",
+       "MK4:6",
+       "MK4:8",
+       "MK5:2",
+       "MK5:4",
+       "MK5:5",
+       "MK6:1",
+       "MK6:2",
+       "MK6:5",
+       "MK6:6",
+       "MK6:8",
+       "MK7:2",
+       "MK7:5",
+       "MK7:6",
+       "MK7:8",
+       "MK8:2",
+       "MK8:5",
+       "RF8:0",
+       "RF8:1",
+       "RF8:3",
+       "RF8:4",
+       "RF8:5",
+       "RF8:8",
+       "XC1:2",
+       "XC1:4",
+       "XC1:5",
+       "XC2:2",
+       "XC2:4",
+       "XC2:8",
+       "XC2:10",
+       "XC2:12",
+       "XC2:16",
+       "XC3:3",
+       "XC3:4",
+       "XC3:7",
+       "XC3:8",
+       "XC3:10"
+      ],
+      "n": 51,
+      "sensitive": [],
+      "unclassified": 0,
+      "unresolved": []
+     }
+    },
+    "state": "LOCAL_AND_SPECTRUM",
+    "survival": {
+     "backups": [
+      "MK2",
+      "MK6"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK7",
+       "iota": 0.6979166666666666,
+       "severity": 3
+      },
+      {
+       "family": "MK8",
+       "iota": 0.6979166666666666,
+       "severity": 3
+      },
+      {
+       "family": "MK1",
+       "iota": 0.6979166666666666,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "coverage_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "frame": 3,
+     "iota_a": 0.7083333333333334,
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "min_local_families": 5,
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 8,
+     "n_spectrum_references": 8,
+     "projected_se_beta": 0.03088911205005174,
+     "projected_se_beta_at_full_allocation": 0.01544455602502587,
+     "selected_families": [
+      "MK4",
+      "RF8",
+      "XC2",
+      "MK6"
+     ],
+     "spectrum_pool_ok": true,
+     "spectrum_valid_above": [
+      "MK1:2",
+      "MK2:2",
+      "MK3:1",
+      "MK3:2",
+      "MK4:1",
+      "MK4:2",
+      "MK5:2",
+      "MK6:1",
+      "MK6:2",
+      "MK7:2",
+      "MK8:2",
+      "RF8:0",
+      "RF8:1",
+      "XC1:2",
+      "XC2:2",
+      "XC2:4",
+      "XC3:3",
+      "XC3:4"
+     ],
+     "spectrum_valid_below": [
+      "MK1:5",
+      "MK1:6",
+      "MK1:8",
+      "MK3:4",
+      "MK3:5",
+      "MK3:6",
+      "MK3:8",
+      "MK4:4",
+      "MK4:5",
+      "MK4:6",
+      "MK4:8",
+      "MK5:4",
+      "MK5:5",
+      "MK6:5",
+      "MK6:6",
+      "MK6:8",
+      "MK7:5",
+      "MK7:6",
+      "MK7:8",
+      "MK8:5",
+      "RF8:3",
+      "RF8:4",
+      "RF8:5",
+      "RF8:8",
+      "XC1:4",
+      "XC1:5",
+      "XC2:10",
+      "XC2:12",
+      "XC2:16",
+      "XC2:8",
+      "XC3:10",
+      "XC3:7",
+      "XC3:8"
+     ],
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
+   }
+  },
+  "core_references": [
+   "MK1:4",
+   "MK2:4",
+   "MK5:3",
+   "MK6:3",
+   "MK6:4",
+   "MK7:3",
+   "MK7:4",
+   "MK8:3",
+   "MK8:4",
+   "XC1:3"
+  ],
+  "cross_frame": {
+   "core_family_in_every_supported_frame": [],
+   "core_reference_by_family": {
+    "MK1": {
+     "3": 4
+    },
+    "MK2": {
+     "0": 4
+    },
+    "MK5": {
+     "1": 3,
+     "2": 3
+    },
+    "MK6": {
+     "0": 4,
+     "1": 4,
+     "2": 3
+    },
+    "MK7": {
+     "1": 4,
+     "3": 3
+    },
+    "MK8": {
+     "0": 4,
+     "3": 3
+    },
+    "XC1": {
+     "2": 3
+    }
+   },
+   "core_same_rung_in_every_supported_frame": [],
+   "iota_a_by_frame": {
+    "0": 0.6875,
+    "1": 0.6979166666666666,
+    "2": 0.71875,
+    "3": 0.7083333333333334
+   },
+   "local_valid_families_by_frame": {
+    "0": [
+     "MK1",
+     "MK2",
+     "MK3",
+     "MK4",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC3"
+    ],
+    "1": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "2": [
+     "MK2",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK8",
+     "XC1",
+     "XC3"
+    ],
+    "3": [
+     "MK1",
+     "MK2",
+     "MK4",
+     "MK5",
+     "MK6",
+     "MK7",
+     "MK8",
+     "XC3"
+    ]
+   },
+   "local_valid_family_in_every_supported_frame": [
+    "MK2",
+    "MK4",
+    "MK6",
+    "MK8",
+    "XC3"
+   ],
+   "m_star_by_frame": {
+    "0": 9,
+    "1": 8,
+    "2": 10,
+    "3": 8
+   },
+   "n_star_by_frame": {
+    "0": 3,
+    "1": 2,
+    "2": 2,
+    "3": 2
+   },
+   "spectrum_points_by_family": {
+    "MK1": {
+     "1": [
+      "MK1:6",
+      "MK1:1"
+     ]
+    },
+    "MK3": {
+     "0": [
+      "MK3:6",
+      "MK3:1"
+     ],
+     "2": [
+      "MK3:6",
+      "MK3:1"
+     ]
+    },
+    "MK4": {
+     "0": [
+      "MK4:6",
+      "MK4:1"
+     ],
+     "1": [
+      "MK4:6",
+      "MK4:1"
+     ],
+     "3": [
+      "MK4:6",
+      "MK4:1"
+     ]
+    },
+    "MK6": {
+     "0": [
+      "MK6:6",
+      "MK6:4",
+      "MK6:2"
+     ],
+     "1": [
+      "MK6:6",
+      "MK6:4",
+      "MK6:1"
+     ],
+     "2": [
+      "MK6:6",
+      "MK6:3",
+      "MK6:1"
+     ],
+     "3": [
+      "MK6:6",
+      "MK6:1"
+     ]
+    },
+    "RF8": {
+     "0": [
+      "RF8:5",
+      "RF8:0"
+     ],
+     "2": [
+      "RF8:5",
+      "RF8:0"
+     ],
+     "3": [
+      "RF8:5",
+      "RF8:0"
+     ]
+    },
+    "XC2": {
+     "2": [
+      "XC2:12",
+      "XC2:2"
+     ],
+     "3": [
+      "XC2:12",
+      "XC2:2"
+     ]
+    },
+    "XC3": {
+     "1": [
+      "XC3:8",
+      "XC3:3"
+     ]
+    }
+   },
+   "standing": "descriptive; the frames are compared after each has its own selection and nothing here selects",
+   "states": {
+    "0": "LOCAL_AND_SPECTRUM",
+    "1": "LOCAL_AND_SPECTRUM",
+    "2": "LOCAL_AND_SPECTRUM",
+    "3": "LOCAL_AND_SPECTRUM"
+   },
+   "supported_frames": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  "frame_conditioning": "frame_is_experimental_condition",
+  "frame_states": {
+   "0": {
+    "local_identified": true,
+    "meets_min_backups": true,
+    "meets_min_local_families": true,
+    "n_backups": 2,
+    "n_local_valid_families": 8,
+    "operating_point": "SUPPORTED",
+    "spectrum_identified": true,
+    "state": "LOCAL_AND_SPECTRUM"
+   },
+   "1": {
+    "local_identified": true,
+    "meets_min_backups": true,
+    "meets_min_local_families": true,
+    "n_backups": 2,
+    "n_local_valid_families": 9,
+    "operating_point": "SUPPORTED",
+    "spectrum_identified": true,
+    "state": "LOCAL_AND_SPECTRUM"
+   },
+   "2": {
+    "local_identified": true,
+    "meets_min_backups": true,
+    "meets_min_local_families": true,
+    "n_backups": 2,
+    "n_local_valid_families": 7,
+    "operating_point": "SUPPORTED",
+    "spectrum_identified": true,
+    "state": "LOCAL_AND_SPECTRUM"
+   },
+   "3": {
+    "local_identified": true,
+    "meets_min_backups": true,
+    "meets_min_local_families": true,
+    "n_backups": 2,
+    "n_local_valid_families": 8,
+    "operating_point": "SUPPORTED",
+    "spectrum_identified": true,
+    "state": "LOCAL_AND_SPECTRUM"
    }
   },
   "selected_spectrum_points": [
    "MK1:1",
-   "MK1:3",
    "MK1:6",
+   "MK3:1",
+   "MK3:6",
    "MK4:1",
    "MK4:6",
    "MK6:1",
+   "MK6:2",
+   "MK6:3",
+   "MK6:4",
    "MK6:6",
+   "RF8:0",
+   "RF8:5",
    "XC2:2",
-   "XC2:12"
+   "XC2:12",
+   "XC3:3",
+   "XC3:8"
   ],
   "sets": {
    "backup_family_rungs_local_valid": {
     "by_class": {
-     "CONSISTENT": 5,
+     "CONSISTENT": 11,
      "UNRESOLVED": 0,
      "WORDING_SENSITIVE": 0
     },
-    "n": 5,
+    "labels": [
+     "MK2:3",
+     "MK2:4",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK6:4",
+     "MK7:3",
+     "MK7:4",
+     "MK8:3",
+     "MK8:4",
+     "XC3:5"
+    ],
+    "n": 11,
     "sensitive": [],
     "unclassified": 0,
     "unresolved": []
    },
    "local_valid_candidates": {
     "by_class": {
-     "CONSISTENT": 27,
+     "CONSISTENT": 20,
      "UNRESOLVED": 0,
      "WORDING_SENSITIVE": 0
     },
-    "n": 27,
+    "labels": [
+     "MK1:3",
+     "MK1:4",
+     "MK2:3",
+     "MK2:4",
+     "MK3:3",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK5:3",
+     "MK5:4",
+     "MK6:3",
+     "MK6:4",
+     "MK7:3",
+     "MK7:4",
+     "MK8:3",
+     "MK8:4",
+     "XC1:3",
+     "XC1:4",
+     "XC3:5",
+     "XC3:6"
+    ],
+    "n": 20,
     "sensitive": [],
     "unclassified": 0,
     "unresolved": []
    },
    "selected_local_references_core": {
     "by_class": {
-     "CONSISTENT": 3,
+     "CONSISTENT": 10,
      "UNRESOLVED": 0,
      "WORDING_SENSITIVE": 0
     },
-    "n": 3,
+    "labels": [
+     "MK1:4",
+     "MK2:4",
+     "MK5:3",
+     "MK6:3",
+     "MK6:4",
+     "MK7:3",
+     "MK7:4",
+     "MK8:3",
+     "MK8:4",
+     "XC1:3"
+    ],
+    "n": 10,
     "sensitive": [],
     "unclassified": 0,
     "unresolved": []
    },
    "selected_spectrum_points": {
     "by_class": {
-     "CONSISTENT": 9,
+     "CONSISTENT": 17,
      "UNRESOLVED": 0,
      "WORDING_SENSITIVE": 0
     },
-    "n": 9,
+    "labels": [
+     "MK1:1",
+     "MK1:6",
+     "MK3:1",
+     "MK3:6",
+     "MK4:1",
+     "MK4:6",
+     "MK6:1",
+     "MK6:2",
+     "MK6:3",
+     "MK6:4",
+     "MK6:6",
+     "RF8:0",
+     "RF8:5",
+     "XC2:2",
+     "XC2:12",
+     "XC3:3",
+     "XC3:8"
+    ],
+    "n": 17,
     "sensitive": [],
     "unclassified": 0,
     "unresolved": []
    },
    "spectrum_valid_candidates": {
     "by_class": {
-     "CONSISTENT": 55,
+     "CONSISTENT": 66,
      "UNRESOLVED": 0,
      "WORDING_SENSITIVE": 0
     },
-    "n": 55,
+    "labels": [
+     "MK1:1",
+     "MK1:2",
+     "MK1:4",
+     "MK1:5",
+     "MK1:6",
+     "MK1:8",
+     "MK2:1",
+     "MK2:2",
+     "MK2:3",
+     "MK2:4",
+     "MK3:1",
+     "MK3:2",
+     "MK3:4",
+     "MK3:5",
+     "MK3:6",
+     "MK3:8",
+     "MK4:1",
+     "MK4:2",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK4:6",
+     "MK4:8",
+     "MK5:2",
+     "MK5:3",
+     "MK5:4",
+     "MK5:5",
+     "MK6:1",
+     "MK6:2",
+     "MK6:4",
+     "MK6:5",
+     "MK6:6",
+     "MK6:8",
+     "MK7:1",
+     "MK7:2",
+     "MK7:4",
+     "MK7:5",
+     "MK7:6",
+     "MK7:8",
+     "MK8:2",
+     "MK8:4",
+     "MK8:5",
+     "RF5:2",
+     "RF8:0",
+     "RF8:1",
+     "RF8:3",
+     "RF8:4",
+     "RF8:5",
+     "RF8:8",
+     "XC1:2",
+     "XC1:3",
+     "XC1:4",
+     "XC1:5",
+     "XC2:2",
+     "XC2:4",
+     "XC2:8",
+     "XC2:10",
+     "XC2:12",
+     "XC2:16",
+     "XC3:3",
+     "XC3:4",
+     "XC3:5",
+     "XC3:6",
+     "XC3:7",
+     "XC3:8",
+     "XC3:10"
+    ],
+    "n": 66,
     "sensitive": [],
     "unclassified": 0,
     "unresolved": []
    }
   },
-  "survival": {
-   "backups": [
-    "MK5",
-    "MK6"
-   ],
-   "core_identified": true,
-   "core_references": [
-    {
-     "family": "MK7",
-     "iota": 0.7135416666666666,
-     "severity": 3
-    },
-    {
-     "family": "MK8",
-     "iota": 0.7161458333333334,
-     "severity": 3
-    },
-    {
-     "family": "MK1",
-     "iota": 0.7291666666666666,
-     "severity": 3
-    }
-   ],
-   "coverage_identified": true,
-   "coverage_reasons": [],
-   "coverage_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
-   "iota_a": 0.7135416666666666,
-   "local_valid_families": [
-    "MK1",
-    "MK2",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "XC1",
-    "XC2",
-    "XC3"
-   ],
-   "meets_min_backups": true,
-   "meets_min_local_families": true,
-   "min_local_families": 5,
-   "n_backups": 2,
-   "n_local_valid_families": 11,
-   "n_spectrum_references": 8,
-   "projected_se_beta": 0.014958452017636304,
-   "selected_families": [
-    "XC2",
-    "MK6",
-    "MK1",
-    "MK4"
-   ],
-   "spectrum_pool_ok": true,
-   "spectrum_valid_above": [
-    "MK1:1",
-    "MK1:2",
-    "MK2:1",
-    "MK2:2",
-    "MK3:1",
-    "MK3:2",
-    "MK4:1",
-    "MK4:2",
-    "MK5:2",
-    "MK6:1",
-    "MK6:2",
-    "MK7:1",
-    "MK7:2",
-    "MK8:2",
-    "RF8:0",
-    "RF8:1",
-    "XC1:2",
-    "XC2:2",
-    "XC2:4",
-    "XC3:3",
-    "XC3:4"
-   ],
-   "spectrum_valid_below": [
-    "MK1:5",
-    "MK1:6",
-    "MK1:8",
-    "MK3:4",
-    "MK3:5",
-    "MK3:6",
-    "MK3:8",
-    "MK4:4",
-    "MK4:5",
-    "MK4:6",
-    "MK4:8",
-    "MK5:4",
-    "MK5:5",
-    "MK6:5",
-    "MK6:6",
-    "MK6:8",
-    "MK7:5",
-    "MK7:6",
-    "MK7:8",
-    "MK8:5",
-    "RF8:3",
-    "RF8:4",
-    "RF8:5",
-    "RF8:8",
-    "XC1:4",
-    "XC1:5",
-    "XC2:10",
-    "XC2:12",
-    "XC2:16",
-    "XC2:8",
-    "XC3:10",
-    "XC3:6",
-    "XC3:7",
-    "XC3:8"
-   ],
-   "spectrum_valid_families_above": [
-    "MK1",
-    "MK2",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "RF8",
-    "XC1",
-    "XC2",
-    "XC3"
-   ],
-   "spectrum_valid_families_below": [
-    "MK1",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "RF8",
-    "XC1",
-    "XC2",
-    "XC3"
-   ]
-  }
+  "sets_basis": "union over the supported frames' own sets (each frame's sets are under by_frame)",
+  "supported_frames": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "item5_exemplars": {
   "basis": "no WORDING_SENSITIVE rung: the largest-spread rungs are shown instead (all CONSISTENT or UNRESOLVED)",
@@ -5854,7 +7504,7 @@
   ],
   "pooled": null
  },
- "root": "/tmp/claude-1000/-home-cnm13ryan-git-dci/3f902338-1319-495f-835c-8ba92b7409e7/scratchpad/v8walk/root",
+ "root": "/tmp/claude-1000/-home-cnm13ryan-git-dci/3f902338-1319-495f-835c-8ba92b7409e7/scratchpad/walkA/root",
  "signed_gate2_record": true,
  "stage_reached": "PILOT_REPORT",
  "stages_read": [

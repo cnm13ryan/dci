@@ -4,9 +4,18 @@
 
 > **SYNTHETIC WALK — NOT EVIDENCE.** The rows below come from the `dci1v8-synthetic` namespace's scripted generator, which has no wording effect by construction. The tables show the *shape* of the report; every number is a fixture.
 
-Root `/tmp/claude-1000/-home-cnm13ryan-git-dci/3f902338-1319-495f-835c-8ba92b7409e7/scratchpad/v8walk/root` (namespace `synthetic`, study `dci1v8-synthetic`), model `qwen3-4b-instruct-2507`, stage reached `PILOT_REPORT`. Basis: GATE_2_CALIBRATION (pooled = Calibration-A ∪ Calibration-B; each split reported separately); the pre-screen is not used. Reference bound 0.2 (§13.7).
+Root `/tmp/claude-1000/-home-cnm13ryan-git-dci/3f902338-1319-495f-835c-8ba92b7409e7/scratchpad/walkA/root` (namespace `synthetic`, study `dci1v8-synthetic`), model `qwen3-4b-instruct-2507`, stage reached `PILOT_REPORT`. Basis: GATE_2_CALIBRATION (pooled = Calibration-A ∪ Calibration-B; each split reported separately); the pre-screen is not used. Reference bound 0.2 (§13.7).
 
-ι_A = 0.714 (by split {'calibration_a': 0.7135416666666666, 'calibration_b': 0.7135416666666666}); 34944 scored Gate-2 rows read; chance basis: {'cell': 'unconstrained', 'degeneracy_max': 0.99, 'degenerate_rows_are': 'withheld from `calibration_rows` and recorded in `calibration_rows_withheld` (§11.2; `_withhold_degenerate`)', 'per_split': {'calibration_a': {'draws_per_topic': 8.0, 'n_rows': 384, 'n_topics': 48}, 'calibration_b': {'draws_per_topic': 8.0, 'n_rows': 384, 'n_topics': 48}, 'pooled': {'draws_per_topic': 8.0, 'n_rows': 768, 'n_topics': 96}}, 'rule': "§11.2 / §13.2: kappa_c = P(X_c = 1 | unconstrained cell) on the same topic set at the same M under the same prompt; the grid runs' unconstrained cells, on which §9.1 scores every carried candidate as an absent instance", 'runs': ['g2grid-A', 'g2grid-B']}.
+Frame conditioning: `frame_is_experimental_condition` (Approach A, docs/V8_FRAME_CONDITIONING.md): every operating point, ι_A and reference set below is per frame; supported frames [0, 1, 2, 3].
+
+| frame | status | n* | m* | ι_A(f) | ι_A by split | unsupported reason |
+|---|---|---:|---:|---:|---|---|
+| f0 | SUPPORTED | 3 | 9 | 0.688 | {'calibration_a': 0.646, 'calibration_b': 0.729} | — |
+| f1 | SUPPORTED | 2 | 8 | 0.698 | {'calibration_a': 0.708, 'calibration_b': 0.688} | — |
+| f2 | SUPPORTED | 2 | 10 | 0.719 | {'calibration_a': 0.729, 'calibration_b': 0.708} | — |
+| f3 | SUPPORTED | 2 | 8 | 0.708 | {'calibration_a': 0.688, 'calibration_b': 0.729} | — |
+
+34944 scored Gate-2 rows read; chance basis: §11.2 / §13.2: kappa_c = P(X_c = 1 | unconstrained cell) on the same topic set at the same M under the same prompt; the grid runs' unconstrained cells, on which §9.1 scores every carried candidate as an absent instance.
 
 ## 0. §12.3 on each frame's own A curve
 
@@ -144,17 +153,65 @@ Flagged rungs (pooled WORDING_SENSITIVE or UNRESOLVED): 1; same sign on both spl
 
 ## 4. Do wording-sensitive rungs touch the reference set?
 
-Gate 3: LOCAL-valid families 11, spectrum pool ok yes, core identified yes, coverage identified yes. Core references: MK1:3, MK7:3, MK8:3; selected spectrum points: MK1:1, MK1:3, MK1:6, MK4:1, MK4:6, MK6:1, MK6:6, XC2:2, XC2:12; backup families: MK5, MK6.
+The reference set is per frame (Approach A). Supported frames [0, 1, 2, 3]; states {'0': 'LOCAL_AND_SPECTRUM', '1': 'LOCAL_AND_SPECTRUM', '2': 'LOCAL_AND_SPECTRUM', '3': 'LOCAL_AND_SPECTRUM'}.
+
+### Frame f0 — LOCAL_AND_SPECTRUM (n* 3, m* 9, ι_A(f) 0.688)
+
+LOCAL-valid families 8, spectrum pool ok yes, core identified yes, coverage identified yes (projected SE(β̂) 0.032 at 96 blocks; 0.016 at the full allocation). Core references: MK2:4, MK6:4, MK8:4; selected spectrum points: MK3:1, MK3:6, MK4:1, MK4:6, MK6:2, MK6:4, MK6:6, RF8:0, RF8:5; backup families: MK7, XC3.
 
 | set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |
 |---|---:|---:|---:|---:|---|---|
-| local_valid_candidates | 27 | 27 | 0 | 0 | — | — |
-| spectrum_valid_candidates | 55 | 55 | 0 | 0 | — | — |
+| local_valid_candidates | 11 | 11 | 0 | 0 | — | — |
+| spectrum_valid_candidates | 53 | 53 | 0 | 0 | — | — |
+| selected_local_references_core | 3 | 3 | 0 | 0 | — | — |
+| selected_spectrum_points | 9 | 9 | 0 | 0 | — | — |
+| backup_family_rungs_local_valid | 3 | 3 | 0 | 0 | — | — |
+
+Gate 3's block for f0: 0 sensitive, 1 unresolved; touching this frame's reference set: {'UNRESOLVED': [], 'WORDING_SENSITIVE': []}.
+
+### Frame f1 — LOCAL_AND_SPECTRUM (n* 2, m* 8, ι_A(f) 0.698)
+
+LOCAL-valid families 9, spectrum pool ok yes, core identified yes, coverage identified yes (projected SE(β̂) 0.031 at 96 blocks; 0.015 at the full allocation). Core references: MK5:3, MK6:4, MK7:4; selected spectrum points: MK1:1, MK1:6, MK4:1, MK4:6, MK6:1, MK6:4, MK6:6, XC3:3, XC3:8; backup families: MK4, MK8.
+
+| set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |
+|---|---:|---:|---:|---:|---|---|
+| local_valid_candidates | 14 | 14 | 0 | 0 | — | — |
+| spectrum_valid_candidates | 51 | 51 | 0 | 0 | — | — |
 | selected_local_references_core | 3 | 3 | 0 | 0 | — | — |
 | selected_spectrum_points | 9 | 9 | 0 | 0 | — | — |
 | backup_family_rungs_local_valid | 5 | 5 | 0 | 0 | — | — |
 
-Gate 3's own block: 0 sensitive, 1 unresolved; touching the reference set: {'UNRESOLVED': [], 'WORDING_SENSITIVE': []}.
+Gate 3's block for f1: 0 sensitive, 1 unresolved; touching this frame's reference set: {'UNRESOLVED': [], 'WORDING_SENSITIVE': []}.
+
+### Frame f2 — LOCAL_AND_SPECTRUM (n* 2, m* 10, ι_A(f) 0.719)
+
+LOCAL-valid families 7, spectrum pool ok yes, core identified yes, coverage identified yes (projected SE(β̂) 0.029 at 96 blocks; 0.014 at the full allocation). Core references: MK5:3, MK6:3, XC1:3; selected spectrum points: MK3:1, MK3:6, MK6:1, MK6:3, MK6:6, RF8:0, RF8:5, XC2:2, XC2:12; backup families: MK4, MK8.
+
+| set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |
+|---|---:|---:|---:|---:|---|---|
+| local_valid_candidates | 9 | 9 | 0 | 0 | — | — |
+| spectrum_valid_candidates | 59 | 59 | 0 | 0 | — | — |
+| selected_local_references_core | 3 | 3 | 0 | 0 | — | — |
+| selected_spectrum_points | 9 | 9 | 0 | 0 | — | — |
+| backup_family_rungs_local_valid | 2 | 2 | 0 | 0 | — | — |
+
+Gate 3's block for f2: 0 sensitive, 1 unresolved; touching this frame's reference set: {'UNRESOLVED': [], 'WORDING_SENSITIVE': []}.
+
+### Frame f3 — LOCAL_AND_SPECTRUM (n* 2, m* 8, ι_A(f) 0.708)
+
+LOCAL-valid families 8, spectrum pool ok yes, core identified yes, coverage identified yes (projected SE(β̂) 0.031 at 96 blocks; 0.015 at the full allocation). Core references: MK1:4, MK7:3, MK8:3; selected spectrum points: MK4:1, MK4:6, MK6:1, MK6:6, RF8:0, RF8:5, XC2:2, XC2:12; backup families: MK2, MK6.
+
+| set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |
+|---|---:|---:|---:|---:|---|---|
+| local_valid_candidates | 10 | 10 | 0 | 0 | — | — |
+| spectrum_valid_candidates | 51 | 51 | 0 | 0 | — | — |
+| selected_local_references_core | 3 | 3 | 0 | 0 | — | — |
+| selected_spectrum_points | 8 | 8 | 0 | 0 | — | — |
+| backup_family_rungs_local_valid | 3 | 3 | 0 | 0 | — | — |
+
+Gate 3's block for f3: 0 sensitive, 1 unresolved; touching this frame's reference set: {'UNRESOLVED': [], 'WORDING_SENSITIVE': []}.
+
+Cross-frame (descriptive): core rung by family {'MK1': {'3': 4}, 'MK2': {'0': 4}, 'MK5': {'1': 3, '2': 3}, 'MK6': {'0': 4, '1': 4, '2': 3}, 'MK7': {'1': 4, '3': 3}, 'MK8': {'0': 4, '3': 3}, 'XC1': {'2': 3}}; core family in every supported frame []; same rung in every supported frame []; LOCAL-valid in every supported frame ['MK2', 'MK4', 'MK6', 'MK8', 'XC3'].
 
 ## 5. The strongest cases: prompts, outputs, counts
 
@@ -443,4 +500,4 @@ Answer:
 - rungs with a resolved frame effect: 0 of 89 with all frames; spread Spearman A vs B 0.284
 - reading: modelling the frame (a random or fixed frame term in ι) is supported when τ² is a non-trivial share of the total variance and the spreads reproduce across the splits, but no single frame is the culprit
 
-Decision made here: none. No frame discarded.
+Decision made here: none. No frame discarded. (The wording policy was decided by the researcher on 2026-08-30 --- the frame is part of the experimental condition, docs/V8_FRAME_CONDITIONING.md; this report remains the per-frame evidence.)

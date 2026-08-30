@@ -228,6 +228,16 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
         "forwarded_set": forwarded,
         "n_forwarded": len(forwarded),
         "frame_reliability": pooled_rows_reliability,
+        "frame_conditioning": {
+            "policy": S.FRAME_CONDITIONING,
+            "at_this_stage": "pooled over the four frames as a measurement "
+                             "budget (six topics per frame per batch): the "
+                             "forwarded set is what calibration measures, on "
+                             "every block and hence under every frame; "
+                             "eligibility, matching and selection are decided "
+                             "per frame at Gates 2 and 3 on calibration rows "
+                             "only (docs/V8_FRAME_CONDITIONING.md §5)",
+            "per_frame_reading": "GATE_1_INSTRUMENT.wording_diagnostic_second_pass"},
         "calibration_cost_generations": retention["calibration_cost_generations"],
         "vocabulary_frozen": True,
     }

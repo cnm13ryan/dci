@@ -48,6 +48,7 @@ __all__ = ["PromptCell", "Block", "SoloCell", "blocks", "prompt_cell",
            "design_rows", "generate_and_score", "resolve_generate",
            "fake_backend", "cell_rates", "instance_rates",
            "per_topic_compliance", "absent_for", "frame_of_row",
+           "frame_of_block", "rows_of_frame",
            "marker_of", "assert_v8_prompt", "assert_no_composed_cell",
            "row_accounting", "UNCONSTRAINED_ARM",
            "DECODING_IDENTITY_FIELDS", "decoding_identity"]
@@ -105,10 +106,18 @@ class PromptCell:
     present: tuple[Constraint, ...]
     wording_indices: tuple[int, ...]
     draws: int
+    #: The block's position, from which its frame follows
+    #: (``block_index % N_WORDINGS``); carried on every row, load 0 included,
+    #: so a frame's unconstrained cells can be read (§13.2 per frame).
+    block_index: int = 0
 
     @property
     def load(self) -> int:
         return len(self.present)
+
+    @property
+    def block_frame(self) -> int:
+        return self.block_index % C.N_WORDINGS
 
     def configuration_of(self, slot: str) -> str | None:
         return None                       # no composed cell, ever
@@ -165,6 +174,17 @@ def prompt_cell(cell: Any, topic: Mapping[str, Any], *,
             "replication's slot map")
     present = tuple(slot_map[s] for s in cell.slots)
     indices = tuple(cell.wording_by_slot[s] for s in cell.slots)
+    block_index = int(cell.block_index)
+    # Approach A: the frame is the block's, on every constraint the block
+    # states; a slot rendered under another frame would put a row in a
+    # condition its block is not in.
+    for slot, index in zip(cell.slots, indices):
+        if index != block_index % C.N_WORDINGS:
+            raise ProtocolError(
+                f"{cell.cell_id}: slot {slot} is rendered under frame {index} "
+                f"and its block {cell.block_id} carries frame "
+                f"{block_index % C.N_WORDINGS}; the frame is a property of "
+                "the block (docs/V8_FRAME_CONDITIONING.md)")
     lines = [v8_wording(c.kind, i, c.severity)
              for c, i in zip(present, indices)]
     prompt = render(topic["question"], lines)
@@ -175,7 +195,8 @@ def prompt_cell(cell: Any, topic: Mapping[str, Any], *,
         topic_id=topic["topic_id"], area=topic["area"],
         topic_split=topic_split, prompt=prompt,
         prompt_hash=prompt_hash(prompt), slots=tuple(cell.slots),
-        present=present, wording_indices=indices, draws=cell.draws)
+        present=present, wording_indices=indices, draws=cell.draws,
+        block_index=block_index)
 
 
 def generation_identity(cell: PromptCell, *, draw: int, stage: str,
@@ -406,6 +427,8 @@ def _score_row(task: tuple[Mapping[str, Any], Mapping[str, Any], PromptCell]
         "run": st["run"],
         "frame": (int(cell.wording_indices[0]) if len(cell.wording_indices) == 1
                   else None),
+        "block_index": int(cell.block_index),
+        "block_frame": int(cell.block_frame),
         "synthetic": bool(raw.get("synthetic")) or st["synthetic_run"],
         "resumed": st["resumed"],
         "verifier_hash": frozen_hash,
@@ -431,3 +454,35 @@ def frame_of_row(row: Mapping[str, Any]) -> int | None:
     """The wording index a load-1 row was rendered under."""
     indices = row.get("wording_indices") or []
     return int(indices[0]) if len(indices) == 1 else None
+
+
+def frame_of_block(row: Mapping[str, Any]) -> int:
+    """The frame of the row's block, defined on every load: ``block_frame``
+    when the row carries it, else ``block_index % N_WORDINGS``, else the
+    index parsed from a ``<prefix>-<index>`` block id (rows scored before
+    the field existed). On a load-1 row it equals ``frame_of_row``; the
+    two disagreeing is refused."""
+    if row.get("block_frame") is not None:
+        frame = int(row["block_frame"])
+    elif row.get("block_index") is not None:
+        frame = int(row["block_index"]) % C.N_WORDINGS
+    else:
+        block = str(row.get("block_id") or "")
+        _, _, tail = block.rpartition("-")
+        if not tail.isdigit():
+            raise ProtocolError(f"row {row.get('row_id')!r}: no block frame "
+                                f"and an unparseable block id {block!r}")
+        frame = int(tail) % C.N_WORDINGS
+    stated = frame_of_row(row)
+    if stated is not None and stated != frame:
+        raise ProtocolError(
+            f"row {row.get('row_id')!r} was rendered under frame {stated} in "
+            f"a block of frame {frame}")
+    return frame
+
+
+def rows_of_frame(rows: Sequence[Mapping[str, Any]], frame: int
+                  ) -> list[dict[str, Any]]:
+    """Every row --- load 0 and load 1 --- of the blocks rendered under
+    ``frame``: the row set a frame-specific quantity is measured on."""
+    return [dict(r) for r in rows if frame_of_block(r) == frame]

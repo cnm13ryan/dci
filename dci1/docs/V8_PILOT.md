@@ -1,7 +1,9 @@
 # DCI-1 v8 pilot — execution layer and criteria (prospective; not registered)
 
 **Status (2026-08-30, branch `dev/v8-canonical`; revised the same day by
-researcher decision --- §1a below).** The execution layer of
+researcher decision --- §1a below; revised again after pilot r3: the
+wording frame is part of the experimental condition, §1a item 6 and
+`V8_FRAME_CONDITIONING.md`).** The execution layer of
 the v8 candidate (`dci1/docs/V8_CANDIDATE.md`), written so that the four
 questions the candidate leaves open can be measured on one real model
 before anything is frozen. Package `dci1v8dev.run`; CLI
@@ -99,9 +101,31 @@ are frozen.
    one that resolves it.
 5. **The pilot informs the wording policy; outcome data must not.** The
    policy --- retain all frames, retain a specified subset, or model frame
-   variation --- is a later researcher decision on solo / pre-screen /
-   calibration evidence only (`stages.WORDING_POLICY_OPTIONS`, status
-   `OPEN` on the manifest, the registration record and the report).
+   variation --- was a researcher decision on solo / pre-screen /
+   calibration evidence only (`stages.WORDING_POLICY_OPTIONS`); taken on
+   2026-08-30 after r3 (item 6), status `DECIDED` on the manifest, the
+   registration record and the report.
+6. **The wording frame is part of the experimental condition (Approach A,
+   2026-08-30, after r3).** Design note `V8_FRAME_CONDITIONING.md`
+   (Approach B --- one canonical wording --- recorded and rejected).
+   Difficulty is ι(X, f). Gate 2 selects n*(f) and m*(f) by §12.3 on each
+   frame's own curves, checks §12.4 on each frame's own rates, and writes
+   §13.11's table per frame on that frame's rows (§13.2's chance on the
+   unconstrained cells of the frame's own blocks --- the producer's
+   same-topic rule; κ(R|B) at m*(f) on the frame's B-solo cell; the
+   extension reach at ι_A(f)). Gate 3 decides LOCAL and SPECTRUM
+   validity, the core references, the spectrum points, the coverage
+   (projected at the frame's 96 of the 384 confirmatory blocks) and the
+   backups per frame and records each frame's state (`UNSUPPORTED`,
+   `NEITHER`, `LOCAL_ONLY`, `SPECTRUM_ONLY`, `LOCAL_AND_SPECTRUM`). An
+   unsupported frame records the §12.3/§12.4 status it hit and the other
+   frames continue; the replication is terminal only when no frame is
+   supported. The report evaluates the decided criteria per frame and
+   aggregates by "at least one supported frame passes" with every frame's
+   verdict beside it. The screen and second pass stay pooled over frames
+   as a measurement budget. No pooled ι_A, table, core set or spectrum
+   exists on any record; the frame-pooled curves are `descriptive_pooled`,
+   read by nothing. Executable: `tests_v8dev/test_frame_conditioning.py`.
 
 ## 2. The nine stages
 
@@ -113,9 +137,9 @@ are frozen.
 | 4 | `REGIME_SCREEN` | cap selection 3 × 96; ladder 24 × (326 + 8 + 8 + 1) | §12.1, §12.2 under the v8 frames; κ on the unconstrained cell; frame reliability; the uncertainty-aware first pass (`prescreen.screen`) |
 | 5 | `SECOND_PASS_SCREEN` | ≤ 3 batches × 24 × (rungs + 8 + 1) | `prescreen.rescreen.run_rescreen` with a real `measure`: fresh Calibration-A topics (two per area per batch, disjoint), reserve picks, A's grid; then `retention.retain` → the forwarded set |
 | 6 | `GATE_1_INSTRUMENT` | – | frame criterion vs the bound reference; §7.5 over the v8 population; v8 scorer determinism; hashes frozen |
-| 7 | `GATE_2_CALIBRATION` | 192 × 4 × (8 + 8 + 1) + 192 × 4 × forwarded + extension | n*, m*, adequacy (v7's rules); the forwarded set at calibration precision with B at m* absent; §13.11's table by the 7f89dae producer on the unconstrained cell; one extension round (≤ 2 reserve rungs per deficient side of a spectrum family) |
-| 8 | `GATE_3_REFERENCES` | – | folded §13.7 stability; `classify_pool` (LOCAL = v7's full V(R); SPECTRUM = V_coord/unfolded V_stab/V_pos); core by `admit_core_references(require_spectrum=False)`; `select_spectrum`; `selected_coverage`; `admissible_backups` |
-| 9 | `PILOT_REPORT` | – | the four criteria on the records; generation counts; what the freeze decision may rest on |
+| 7 | `GATE_2_CALIBRATION` | 192 × 4 × (8 + 8 + 1) + 192 × 4 × forwarded + extension | **per frame** (§1a item 6): n*(f), m*(f), adequacy (v7's rules on the frame's own curves); the forwarded set at calibration precision on every block, with B at every supported frame's m*(f) absent; §13.11's table per frame by the 7f89dae producer on the frame's own unconstrained cells; one extension round (the union of the frames' plans, each ≤ 2 reserve rungs per deficient side of a spectrum family); unsupported frames recorded, terminal only when none is supported |
+| 8 | `GATE_3_REFERENCES` | – | **per supported frame**: folded §13.7 stability against ι_A(f); `classify_pool` (LOCAL = v7's full V(R); SPECTRUM = V_coord/unfolded V_stab/V_pos); core by `admit_core_references(require_spectrum=False)`; `select_spectrum`; `selected_coverage` at 96 blocks per frame; `admissible_backups`; the frame's state; a descriptive cross-frame block; the estimands stated per frame |
+| 9 | `PILOT_REPORT` | – | the four criteria on the records, the three decided ones per frame; the run-level aggregate (`any_supported_frame`); frames meeting every decided criterion; generation counts; what the freeze decision may rest on |
 
 Second-pass topics: §12.5 admits only the three development sets to
 iterative work and the pre-screen set is spent at round 0, so batches are
@@ -167,7 +191,8 @@ for κ(R|B) (recorded on the Gate-2 record).
     .venv/bin/python tools/v8_frame_reference.py --check                   # descriptive report only
     .venv/bin/python -m dci1v8dev.run.cli audit                            # the producer/consumer contract
     .venv/bin/python -m dci1v8dev.run.cli plan --root /tmp/v8-plan         # what signing would bind
-    .venv/bin/python tools/v8_wording_decision.py --root <root>            # the wording-policy decision report (Gate 2/3 only)
+    .venv/bin/python tools/v8_wording_decision.py --root <root>            # the per-frame wording report (Gate 2/3 only)
+    .venv/bin/python -m pytest tests_v8dev/test_frame_conditioning.py -q   # Approach A's sixteen contracts (one slow)
 
 The synthetic walk drives all nine stages through the production runners
 with v7's scripted composer (`tests_v7.synthetic_lifecycle._compose`) as the
@@ -234,6 +259,15 @@ explicit frame term in ι (then §12.3 and §13.11 need a frame-aware
 reading). Earlier roots: `dci1v8-pilot` (terminal at `QUALIFIED`,
 `clean_worktree`) and `dci1v8-pilot-r2` (the second-pass index defect,
 §1a item 1) are apparatus records.
+
+## 7b. The pilot under Approach A (2026-08-30)
+
+The pilot re-runs in a fresh root under §1a item 6 with the same model
+and configuration; its outcome is recorded here when it has run. What it
+measures per frame: n*(f), m*(f), ι_A(f), the number of calibrated
+candidates, LOCAL-valid families, the spectrum-valid pool, the core
+references, the selected spectrum points, the backups, and the frame's
+state; and whether the frames agree.
 
 ## 7. What the pilot cannot tell you
 

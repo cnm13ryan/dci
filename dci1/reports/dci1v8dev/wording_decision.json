@@ -2,12 +2,12 @@
  "available": true,
  "basis": "UNSIGNED: GATE_2_CALIBRATION ended terminal (GRID_RESOLUTION_INSUFFICIENT) after the A and B grids and before any candidate; the per-frame tables below are recomputed by this report from the stage's 13824 scored grid rows (A and B only). The pre-screen is not used",
  "composed_outcomes_read": false,
+ "frame_conditioning": null,
  "gate2": {
   "chance_basis": {
    "basis": "unconstrained cell of the grid rows' topic set (\u00a713.2); computed by this report from the rows, not by the stage"
   },
-  "iota_a": null,
-  "iota_a_by_split": null,
+  "iota_a_by_frame": {},
   "ladders_by_frame_pooled": {},
   "n_scored_rows_read": 13824,
   "row_accounting": {
@@ -34,6 +34,7 @@
     "run": "grid-B"
    }
   },
+  "supported_frames": null,
   "wording_dependence_pooled": {
    "n_rungs_compared": 16,
    "n_rungs_with_all_frames": 16,
