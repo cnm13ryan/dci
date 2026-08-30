@@ -210,3 +210,67 @@ def test_a_stage_cannot_run_twice(walked):
     from dci1v8dev.run import report as report_stage
     with pytest.raises(IntegrityError, match="write-once"):
         report_stage.run_report(walked["tree"], producing_commit="0" * 40)
+
+
+@pytest.mark.slow
+def test_the_wording_decision_report_builds_on_gate2_and_gate3_only(walked, tmp_path):
+    """tools/v8_wording_decision.py answers the researcher's five questions
+    from the signed Gate-2/Gate-3 records and the Gate-2 rows, refuses a
+    root without Gate 2, reads no composed outcome and chooses no frame."""
+    import importlib.util
+    import pathlib
+    import re
+
+    from dci1v7.protocol import constants as C
+
+    path = pathlib.Path(__file__).resolve().parents[1] / "tools" / "v8_wording_decision.py"
+    spec = importlib.util.spec_from_file_location("v8_wording_decision", path)
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    source = path.read_text()
+    assert not re.search(r"Delta_R|delta_diff|composed_contrast|CONFIRMATORY", source)
+    assert tool.STAGES_READ == (S.STAGE_GATE2, S.STAGE_GATE3)
+
+    tree = walked["tree"]
+    rep = tool.build(tree.context.evidence_root.parent, model_key=tree.model_key,
+                     namespace="synthetic", n_cases=2, per_frame=2)
+    assert rep["available"] and rep["synthetic"] and not rep["composed_outcomes_read"]
+    rungs = rep["item1_rungs"]
+    gate2 = walked["payloads"][S.STAGE_GATE2]
+    assert {r["candidate"] for r in rungs} == set(gate2["frame_comparison_pooled"])
+    for r in rungs:
+        assert set(r["frames"]) == {str(w) for w in range(C.N_WORDINGS)}
+        assert r["class"] in (None, *tool.W.CLASSES)
+        assert set(r["class_by_split"]) == {C.CALIBRATION_A, C.CALIBRATION_B}
+    outliers = rep["item2_frame_outliers"]["by_frame"]
+    assert set(outliers) == {str(w) for w in range(C.N_WORDINGS)}
+    assert abs(sum(o["share_hardest"] for o in outliers.values()) - 1.0) < 1e-9
+    assert rep["item3_split_replication"]["gate2_split_stability"]["n_compared"] == \
+        gate2["split_stability_by_frame"]["n_compared"]
+    exposure = rep["item4_reference_exposure"]
+    assert exposure["available"]
+    assert set(exposure["sets"]) == {"local_valid_candidates", "spectrum_valid_candidates",
+                                     "selected_local_references_core",
+                                     "selected_spectrum_points",
+                                     "backup_family_rungs_local_valid"}
+    assert exposure["sets"]["selected_local_references_core"]["n"] == \
+        len(walked["payloads"][S.STAGE_GATE3]["core_references"])
+    cases = rep["item5_exemplars"]["cases"]
+    assert cases
+    for case in cases:
+        sentences = [f["constraint_sentence"] for f in case["frames"].values()]
+        assert len(sentences) == C.N_WORDINGS and len(set(sentences)) == C.N_WORDINGS
+        for f in case["frames"].values():
+            assert f["full_prompt_example"] and f["constraint_sentence"] in f["full_prompt_example"]
+            assert 0 <= f["k_exact_compliant"] <= f["n_rows"]
+            assert sum(f["observed_count_distribution"].values()) == f["n_rows"]
+            assert all("observed_count" in o and "exact_compliant" in o for o in f["outputs"])
+    assert rep["options"]["decision_made_here"] is None
+    assert rep["options"]["no_frame_discarded"] is True
+    assert tool.render(rep).startswith("# DCI-1 v8 pilot — wording-policy decision report")
+
+    empty = tool.build(tmp_path / "no-gate2", model_key=tree.model_key,
+                       namespace="synthetic", n_cases=1, per_frame=1)
+    assert empty["available"] is False
+    assert empty["must_finish"][-1] == S.STAGE_GATE2
+    assert "NOT AVAILABLE" in tool.render(empty)

@@ -147,7 +147,10 @@ deleted and replaced by a v8-internal **wording diagnostic** with no
 pass/fail rule (four frames measured separately per (family, q); the
 wording policy is an open researcher decision on solo/pre-screen/calibration
 evidence); every generated row is data and an on-path accounting proves it;
-the composed-cell block is asserted at every seam. The next step is the one-model pilot
+the composed-cell block is asserted at every seam; the wording-policy
+decision report (`dci1/tools/v8_wording_decision.py`, Gate 2/3 only,
+chooses nothing) is written and validated on the synthetic walk --- no
+real Gate-2 data exists yet. The next step is the one-model pilot
 (`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507) **after** the two
 running v7 rehearsal lanes finish; its four criteria on `PILOT_REPORT` are
 what a v8 freeze may rest on; the spectrum arm's B+X / X+B cells come only
