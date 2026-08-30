@@ -93,7 +93,14 @@ def test_prompt_cell_renders_the_v8_frames_and_refuses_a_composed_cell():
                      topic_split="prescreen")
     assert "the word thus" in pc.prompt or "the word " in pc.prompt
     assert pc.wording_indices == (1,)          # block 1 -> frame 1
+    assert pc.block_index == 1 and pc.block_frame == 1
     assert "must contain the word" in pc.prompt  # v8-w1's repaired phrase
+    # the frame is the block's: a slot under another frame is refused
+    other = SoloCell(cell_id="solo:MK1:3", arm="solo", block=block, slot="S0",
+                     draws=1, wording_index=2)
+    with pytest.raises(ProtocolError, match="frame"):
+        prompt_cell(other, TOPIC, slot_map={"S0": Constraint("MK1", 3)},
+                    topic_split="prescreen")
 
     class Two:
         cell_id, arm, block_id, block_index, topic_id = "c", "composed", "b", 0, "t"
@@ -207,7 +214,10 @@ def test_the_v7_frame_threshold_is_gone():
     assert "FRAME_RELIABILITY" not in S.PILOT_CRITERIA
     assert "WORDING_DIAGNOSTIC" in S.PILOT_CRITERIA
     assert "WORDING_DIAGNOSTIC" not in S.DECIDED_CRITERIA
-    assert S.WORDING_POLICY_STATUS == "OPEN"
+    # decided 2026-08-30: the frame is part of the condition (Approach A)
+    assert S.WORDING_POLICY_STATUS == "DECIDED"
+    assert S.WORDING_POLICY == "model_frame_variation"
+    assert S.FRAME_CONDITIONING == "frame_is_experimental_condition"
     import inspect
     src = inspect.getsource(report) + inspect.getsource(instrument) + inspect.getsource(M)
     assert "best_v7" not in src and "frame_reference" not in src

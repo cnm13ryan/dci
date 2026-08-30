@@ -48,6 +48,17 @@ SELECTION_MAX_FAMILIES = 4
 #: Two points of one family must differ by at least this to count as a pair.
 SELECTION_MIN_SEPARATION = 0.05
 
+# ---------------------------------------------------------- frame conditioning
+#: Approach A (docs/V8_FRAME_CONDITIONING.md, researcher decision of
+#: 2026-08-30): the wording frame is part of the experimental condition, so
+#: every difficulty, operating point, validity, selection and eventual
+#: estimand is frame-specific. The registered confirmatory allocation
+#: (N_BLOCKS × 8 draws, wording by block) puts one quarter of the blocks
+#: under each frame; a frame-specific estimate is projected at that share.
+#: Derived, not chosen: N_BLOCKS / N_WORDINGS.
+CONFIRMATORY_BLOCKS_PER_FRAME = C.N_BLOCKS // C.N_WORDINGS
+assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == C.N_BLOCKS
+
 # ---------------------------------------------------------------- pre-screen
 #: Status thresholds on P(support both sides) and the posterior-majority
 #: rule at the batch maximum — chosen by the synthetic operating

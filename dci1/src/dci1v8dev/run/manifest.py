@@ -27,7 +27,8 @@ from dci1v7.topics.bank import TopicBank, load_bank
 import dci1v8dev
 from dci1v8dev import rules as R
 from dci1v8dev.run import (BASE_PREREGISTRATION, CLASSIFICATION,
-                           DESIGN_DOCUMENT, PILOT_DOCUMENT, SUPERSEDES)
+                           DESIGN_DOCUMENT, FRAME_DOCUMENT, PILOT_DOCUMENT,
+                           SUPERSEDES)
 from dci1v8dev.run import seeds
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import EVIDENCE_DIRNAME, StudyContext
@@ -42,7 +43,8 @@ __all__ = ["PROTOCOL_VERSION", "DOCUMENTS", "Blocker", "document_hashes",
            "load_manifest", "manifest_hash"]
 
 PROTOCOL_VERSION = "8.0-pilot"
-DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, BASE_PREREGISTRATION)
+DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, FRAME_DOCUMENT,
+             BASE_PREREGISTRATION)
 
 
 class Blocker(ProtocolError):
@@ -81,7 +83,10 @@ def rule_table() -> dict[str, Any]:
              if name.isupper() and not name.startswith("_")
              and isinstance(getattr(R, name), (bool, int, float, str, tuple, list))}
     for name in ("WORDING_REFERENCE_BOUND", "WORDING_POLICY_OPTIONS",
-                 "WORDING_POLICY_STATUS", "DECIDED_CRITERIA",
+                 "WORDING_POLICY_STATUS", "WORDING_POLICY",
+                 "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES",
+                 "FRAME_FAILURE_STATUSES", "CONFIRMATORY_BLOCKS_PER_FRAME",
+                 "REPORT_AGGREGATION", "DECIDED_CRITERIA",
                  "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA",
                  "GATE0_TOPICS", "GATE0_DRAWS", "MIN_LOCAL_FAMILIES",
                  "MIN_CORE_REFERENCES", "MIN_BACKUPS", "NO_COMPOSED_CELLS",
@@ -144,9 +149,37 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "selection_rule": None,
             "v7_frame_statistics_affect_verdicts": False,
             "wording_policy": {"status": S.WORDING_POLICY_STATUS,
+                               "policy": S.WORDING_POLICY,
+                               "decided": "2026-08-30 (researcher): the frame "
+                                          "is part of the experimental "
+                                          "condition; no frame retained or "
+                                          "discarded on the diagnostic",
                                "options": list(S.WORDING_POLICY_OPTIONS),
                                "evidence_admissible": "solo, pre-screen and "
                                                       "calibration only"},
+        },
+        "frame_conditioning": {
+            "policy": S.FRAME_CONDITIONING,
+            "document": FRAME_DOCUMENT,
+            "frames": list(S.FRAMES),
+            "frame_of_block": "block_index % N_WORDINGS",
+            "difficulty": "iota(X, f) per frame; n*(f), m*(f), LOCAL(R, f), "
+                          "SPECTRUM(R, f), core, spectrum points, coverage "
+                          "and backups per frame",
+            "pooled_over_frames": "descriptive only; decides nothing",
+            "screen_and_second_pass": "pooled over frames as a measurement "
+                                      "budget (which rungs are calibrated); "
+                                      "every calibrated rung is measured under "
+                                      "every frame",
+            "unsupported_frame": "recorded with its §12.3/§12.4 status; the "
+                                 "other frames continue; terminal only when "
+                                 "no frame is supported",
+            "frame_states": list(S.FRAME_STATES),
+            "confirmatory_blocks_per_frame": S.CONFIRMATORY_BLOCKS_PER_FRAME,
+            "estimands": "Delta_R(f) and the difficulty-response slope per "
+                         "frame; cross-frame comparison afterwards; never a "
+                         "silent average",
+            "report_aggregation": S.REPORT_AGGREGATION,
         },
         "models": [{"model_key": m.model_key, "model_id": m.model_id,
                     "revision": m.revision, "family": m.family,

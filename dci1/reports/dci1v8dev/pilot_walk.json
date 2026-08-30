@@ -2,49 +2,301 @@
  "contract": {
   "clean": true,
   "defects": [],
-  "n_checked_against_payloads": 63,
-  "n_fields": 63
+  "n_checked_against_payloads": 61,
+  "n_fields": 61
  },
  "criteria": {
   "CHANCE_BASIS": {
-   "gate2_cell": "unconstrained",
-   "gate2_per_split": {
-    "calibration_a": {
-     "draws_per_topic": 8.0,
-     "n_rows": 384,
-     "n_topics": 48
+   "aggregation": "any_supported_frame",
+   "by_frame": {
+    "0": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 192,
+       "n_topics": 24
+      }
+     },
+     "iota_a": 0.6875,
+     "iota_a_all_absent_v7_basis": 0.6765498652291105,
+     "iota_a_basis_discrepancy": 0.010950134770889464,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 73,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
     },
-    "calibration_b": {
-     "draws_per_topic": 8.0,
-     "n_rows": 384,
-     "n_topics": 48
+    "1": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 192,
+       "n_topics": 24
+      }
+     },
+     "iota_a": 0.6979166666666666,
+     "iota_a_all_absent_v7_basis": 0.6918990703851261,
+     "iota_a_basis_discrepancy": 0.006017596281540527,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 73,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
     },
-    "pooled": {
-     "draws_per_topic": 8.0,
-     "n_rows": 768,
-     "n_topics": 96
+    "2": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 192,
+       "n_topics": 24
+      }
+     },
+     "iota_a": 0.71875,
+     "iota_a_all_absent_v7_basis": 0.7112299465240641,
+     "iota_a_basis_discrepancy": 0.007520053475935873,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 73,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
+    },
+    "3": {
+     "gate2_cell": "unconstrained",
+     "gate2_per_split": {
+      "calibration_a": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "calibration_b": {
+       "draws_per_topic": 8.0,
+       "n_rows": 96,
+       "n_topics": 12
+      },
+      "pooled": {
+       "draws_per_topic": 8.0,
+       "n_rows": 192,
+       "n_topics": 24
+      }
+     },
+     "iota_a": 0.7083333333333334,
+     "iota_a_all_absent_v7_basis": 0.6997319034852547,
+     "iota_a_basis_discrepancy": 0.008601429848078657,
+     "kappa_a": 0.0,
+     "kappa_a_all_frames_blocks": 0.0,
+     "n_candidates": 73,
+     "n_candidates_with_nonzero_chance": 5,
+     "n_withheld_degenerate": {
+      "calibration_a": 0,
+      "calibration_b": 0,
+      "pooled": 0
+     },
+     "passed": true
     }
    },
-   "iota_a": 0.7135416666666666,
-   "iota_a_all_absent_v7_basis": 0.7058823529411764,
-   "iota_a_basis_discrepancy": 0.007659313725490224,
-   "n_candidates": 73,
-   "n_candidates_with_nonzero_chance": 5,
-   "n_withheld_degenerate": {
-    "calibration_a": 0,
-    "calibration_b": 0,
-    "pooled": 0
-   },
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
+   ],
    "passed": true,
-   "rule": "chance measured on the unconstrained cell in the screen and in every calibration split; iota_A on the same basis; the column is not identically zero",
+   "passed_on_every_supported_frame": true,
+   "rule": "chance measured on the unconstrained cell in the screen and, per frame, in every calibration split on the frame's own blocks; iota_A(f) on the same basis; the column is not identically zero",
    "screen_cell": "unconstrained"
   },
   "LADDER_COVERAGE": {
+   "aggregation": "any_supported_frame",
    "ambiguous_at_max": [
     "CL8",
     "MK2",
     "MK8"
    ],
+   "by_frame": {
+    "0": {
+     "n_spectrum_valid_above": 25,
+     "n_spectrum_valid_below": 28,
+     "passed": true,
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "1": {
+     "n_spectrum_valid_above": 21,
+     "n_spectrum_valid_below": 30,
+     "passed": true,
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "2": {
+     "n_spectrum_valid_above": 20,
+     "n_spectrum_valid_below": 39,
+     "passed": true,
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF5",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "3": {
+     "n_spectrum_valid_above": 18,
+     "n_spectrum_valid_below": 33,
+     "passed": true,
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    }
+   },
    "extension_measured": [],
    "families_carrying_both_extremes": [
     "MK1",
@@ -66,11 +318,18 @@
     "XC2",
     "XC3"
    ],
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
+   ],
    "max_batches": 3,
-   "n_spectrum_valid_above": 21,
-   "n_spectrum_valid_below": 34,
    "passed": true,
-   "rule": "batches <= 3; >= 2 forwarded spectrum families reaching both offsets at the screen; spectrum-valid pool >= 2/2 points from >= 2 families per side",
+   "passed_on_every_supported_frame": true,
+   "rule": "batches <= 3; >= 2 forwarded spectrum families reaching both offsets at the screen; per frame, a spectrum-valid pool >= 2/2 points from >= 2 families per side",
+   "screen_and_second_pass_ok": true,
    "second_pass_batches": 3,
    "spectrum_families_forwarded": [
     "MK3",
@@ -81,88 +340,229 @@
     "RF8",
     "XC3",
     "MK7"
-   ],
-   "spectrum_valid_families_above": [
-    "MK1",
-    "MK2",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "RF8",
-    "XC1",
-    "XC2",
-    "XC3"
-   ],
-   "spectrum_valid_families_below": [
-    "MK1",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "RF8",
-    "XC1",
-    "XC2",
-    "XC3"
    ]
   },
   "REFERENCE_SURVIVAL": {
-   "backups": [
-    "MK5",
-    "MK6"
-   ],
-   "core_identified": true,
-   "core_references": [
-    {
-     "family": "MK7",
-     "iota": 0.7135416666666666,
-     "severity": 3
+   "aggregation": "any_supported_frame",
+   "by_frame": {
+    "0": {
+     "backups": [
+      "XC3",
+      "MK7"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK2",
+       "iota": 0.6875,
+       "severity": 4
+      },
+      {
+       "family": "MK6",
+       "iota": 0.6770833333333334,
+       "severity": 4
+      },
+      {
+       "family": "MK8",
+       "iota": 0.6666666666666666,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 8,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.032306337699209896,
+     "projected_se_beta_at_full_allocation": 0.016153168849604948,
+     "selected_families": [
+      "MK4",
+      "MK3",
+      "RF8",
+      "MK6"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
     },
-    {
-     "family": "MK8",
-     "iota": 0.7161458333333334,
-     "severity": 3
+    "1": {
+     "backups": [
+      "MK8",
+      "MK4"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK6",
+       "iota": 0.6979166666666666,
+       "severity": 4
+      },
+      {
+       "family": "MK5",
+       "iota": 0.7083333333333334,
+       "severity": 3
+      },
+      {
+       "family": "MK7",
+       "iota": 0.6875,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 9,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.03078979643970348,
+     "projected_se_beta_at_full_allocation": 0.01539489821985174,
+     "selected_families": [
+      "MK6",
+      "MK1",
+      "MK4",
+      "XC3"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
     },
-    {
-     "family": "MK1",
-     "iota": 0.7291666666666666,
-     "severity": 3
+    "2": {
+     "backups": [
+      "MK8",
+      "MK4"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK6",
+       "iota": 0.71875,
+       "severity": 3
+      },
+      {
+       "family": "XC1",
+       "iota": 0.71875,
+       "severity": 3
+      },
+      {
+       "family": "MK5",
+       "iota": 0.7291666666666666,
+       "severity": 3
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_valid_families": [
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK8",
+      "XC1",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 7,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.028844603340476692,
+     "projected_se_beta_at_full_allocation": 0.014422301670238346,
+     "selected_families": [
+      "RF8",
+      "XC2",
+      "MK6",
+      "MK3"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "backups": [
+      "MK2",
+      "MK6"
+     ],
+     "core_identified": true,
+     "core_references": [
+      {
+       "family": "MK7",
+       "iota": 0.6979166666666666,
+       "severity": 3
+      },
+      {
+       "family": "MK8",
+       "iota": 0.6979166666666666,
+       "severity": 3
+      },
+      {
+       "family": "MK1",
+       "iota": 0.6979166666666666,
+       "severity": 4
+      }
+     ],
+     "coverage_identified": true,
+     "coverage_reasons": [],
+     "local_valid_families": [
+      "MK1",
+      "MK2",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "n_backups": 2,
+     "n_blocks_projected": 96,
+     "n_local_valid_families": 8,
+     "n_spectrum_references": 8,
+     "passed": true,
+     "projected_se_beta": 0.03088911205005174,
+     "projected_se_beta_at_full_allocation": 0.01544455602502587,
+     "selected_families": [
+      "MK4",
+      "RF8",
+      "XC2",
+      "MK6"
+     ],
+     "state": "LOCAL_AND_SPECTRUM"
     }
-   ],
-   "coverage_identified": true,
-   "coverage_reasons": [],
-   "local_valid_families": [
-    "MK1",
-    "MK2",
-    "MK3",
-    "MK4",
-    "MK5",
-    "MK6",
-    "MK7",
-    "MK8",
-    "XC1",
-    "XC2",
-    "XC3"
+   },
+   "frames_failing": [],
+   "frames_passing": [
+    0,
+    1,
+    2,
+    3
    ],
    "max_se_beta": 0.05,
    "min_backups": 2,
    "min_local_families": 5,
-   "n_local_valid_families": 11,
-   "n_spectrum_references": 8,
+   "n_blocks_per_frame": 96,
    "passed": true,
-   "projected_se_beta": 0.014958452017636304,
-   "selected_families": [
-    "XC2",
-    "MK6",
-    "MK1",
-    "MK4"
-   ]
+   "passed_on_every_supported_frame": true,
+   "rule": ">= 5 LOCAL-valid families, three core references by \u00a713.8, selected coverage identified with the projected SE(beta) <= 0.05 at the frame's 96 blocks, >= 2 admissible backups --- per frame"
   },
   "WORDING_DIAGNOSTIC": {
+   "frame_conditioning": "frame_is_experimental_condition",
    "frame_reliability_descriptive": {
     "descriptive_only": true,
     "screen": {
@@ -519,8 +919,50 @@
      "statistic": "share of A and MK1-8 load-1 rows whose marker statistic is 0, per wording index (second pass)"
     }
    },
+   "frame_states": {
+    "0": {
+     "local_identified": true,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 8,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "1": {
+     "local_identified": true,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 9,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "2": {
+     "local_identified": true,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 7,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    },
+    "3": {
+     "local_identified": true,
+     "meets_min_backups": true,
+     "meets_min_local_families": true,
+     "n_backups": 2,
+     "n_local_valid_families": 8,
+     "operating_point": "SUPPORTED",
+     "spectrum_identified": true,
+     "state": "LOCAL_AND_SPECTRUM"
+    }
+   },
    "frames_measured_separately": true,
-   "judgment": "RESEARCHER_DECISION_REQUIRED",
+   "judgment": "DESCRIPTIVE_ONLY",
    "ladders_per_frame": {
     "calibration": {
      "0": {
@@ -743,12 +1185,56 @@
      }
     }
    },
+   "operating_points_by_frame": {
+    "0": {
+     "iota_a": 0.6875,
+     "m_star": 9,
+     "n_star": 3,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "1": {
+     "iota_a": 0.6979166666666666,
+     "m_star": 8,
+     "n_star": 2,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "2": {
+     "iota_a": 0.71875,
+     "m_star": 10,
+     "n_star": 2,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    },
+    "3": {
+     "iota_a": 0.7083333333333334,
+     "m_star": 8,
+     "n_star": 2,
+     "status": "SUPPORTED",
+     "unsupported_reason": null
+    }
+   },
    "passed": null,
    "reference_bound": 0.2,
-   "rule": "no pass/fail rule: the per-frame tables are on the Gate-1 and Gate-2 records; the wording policy (retain all frames, a specified subset, or model frame variation) is a researcher decision on solo/pre-screen/calibration evidence",
-   "sensitive_rungs_touching_reference_set": {
-    "UNRESOLVED": [],
-    "WORDING_SENSITIVE": []
+   "rule": "no pass/fail rule: the per-frame tables are on the Gate-1 and Gate-2 records; the wording policy is decided (the frame is part of the experimental condition, dci1/docs/V8_FRAME_CONDITIONING.md) and the cross-frame comparison is the secondary analysis",
+   "sensitive_rungs_touching_reference_set_by_frame": {
+    "0": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "1": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "2": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    },
+    "3": {
+     "UNRESOLVED": [],
+     "WORDING_SENSITIVE": []
+    }
    },
    "stability_across_fresh_topics": {
     "calibration_splits": {
@@ -763,25 +1249,32 @@
      "share_inside_bound": 0.6372549019607843
     }
    },
-   "survival": {
-    "core_identified": true,
-    "coverage_identified": true,
-    "n_local_valid_families": 11,
-    "spectrum_pool_ok": true
-   },
-   "unresolved_rungs": [
-    {
-     "backup_family": false,
-     "candidate": "B:14",
-     "core_reference": false,
-     "local_valid": false,
-     "max_abs_difference": 0.23076923076923084,
-     "max_abs_z": 0.2685788434761501,
-     "selected_spectrum_point": false,
-     "spectrum_valid": false,
-     "spread": 0.23076923076923084
+   "survival_by_frame": {
+    "0": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 8,
+     "spectrum_pool_ok": true
+    },
+    "1": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 9,
+     "spectrum_pool_ok": true
+    },
+    "2": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 7,
+     "spectrum_pool_ok": true
+    },
+    "3": {
+     "core_identified": true,
+     "coverage_identified": true,
+     "n_local_valid_families": 8,
+     "spectrum_pool_ok": true
     }
-   ],
+   },
    "wording_dependence": {
     "calibration": {
      "n_rungs_compared": 89,
@@ -1048,15 +1541,86 @@
     }
    },
    "wording_policy": {
+    "decided": "2026-08-30 (researcher): the frame is part of the experimental condition; no frame retained or discarded on the diagnostic",
     "evidence_admissible": "solo, pre-screen and calibration only",
     "options": [
      "retain_all_frames",
      "retain_specified_subset",
      "model_frame_variation"
     ],
-    "status": "OPEN"
+    "policy": "model_frame_variation",
+    "status": "DECIDED"
    },
-   "wording_sensitive_rungs": []
+   "wording_sensitive_rungs_by_frame": {
+    "0": {
+     "UNRESOLVED": [
+      {
+       "backup_family": false,
+       "candidate": "B:14",
+       "core_reference": false,
+       "iota_under_this_frame": -0.6153846153846159,
+       "local_valid": false,
+       "max_abs_difference": 0.23076923076923084,
+       "max_abs_z": 0.2685788434761501,
+       "selected_spectrum_point": false,
+       "spectrum_valid": false,
+       "spread": 0.23076923076923084
+      }
+     ],
+     "WORDING_SENSITIVE": []
+    },
+    "1": {
+     "UNRESOLVED": [
+      {
+       "backup_family": false,
+       "candidate": "B:14",
+       "core_reference": false,
+       "iota_under_this_frame": -0.6923076923076925,
+       "local_valid": false,
+       "max_abs_difference": 0.23076923076923084,
+       "max_abs_z": 0.2685788434761501,
+       "selected_spectrum_point": false,
+       "spectrum_valid": false,
+       "spread": 0.23076923076923084
+      }
+     ],
+     "WORDING_SENSITIVE": []
+    },
+    "2": {
+     "UNRESOLVED": [
+      {
+       "backup_family": false,
+       "candidate": "B:14",
+       "core_reference": false,
+       "iota_under_this_frame": -0.6153846153846159,
+       "local_valid": false,
+       "max_abs_difference": 0.23076923076923084,
+       "max_abs_z": 0.2685788434761501,
+       "selected_spectrum_point": false,
+       "spectrum_valid": false,
+       "spread": 0.23076923076923084
+      }
+     ],
+     "WORDING_SENSITIVE": []
+    },
+    "3": {
+     "UNRESOLVED": [
+      {
+       "backup_family": false,
+       "candidate": "B:14",
+       "core_reference": false,
+       "iota_under_this_frame": -0.4615384615384617,
+       "local_valid": false,
+       "max_abs_difference": 0.23076923076923084,
+       "max_abs_z": 0.2685788434761501,
+       "selected_spectrum_point": false,
+       "spectrum_valid": false,
+       "spread": 0.23076923076923084
+      }
+     ],
+     "WORDING_SENSITIVE": []
+    }
+   }
   }
  },
  "generations": {

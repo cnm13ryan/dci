@@ -6,7 +6,8 @@ Root `/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r3` (names
 
 > **Replication terminal at `GATE_2_CALIBRATION`: `GRID_RESOLUTION_INSUFFICIENT`** — §12.3: two adjacent registered severities lie on opposite sides of a whole band. A terminal status is a statement about the operating regime; it carries no evidence about the effect. Signed Gate-2 record: no (tables recomputed from the grid rows).
 
-ι_A = — (by split None); 13824 scored Gate-2 rows read; chance basis: unconstrained cell of the grid rows' topic set (§13.2); computed by this report from the rows, not by the stage.
+ι_A: no signed Gate-2 record (the tables are recomputed from the grid rows). 
+13824 scored Gate-2 rows read; chance basis: unconstrained cell of the grid rows' topic set (§13.2); computed by this report from the rows, not by the stage.
 
 ## 0. §12.3 on each frame's own A curve
 
@@ -371,4 +372,4 @@ Answer:
 - rungs with a resolved frame effect: 9 of 16 with all frames; spread Spearman A vs B 0.517
 - reading: modelling the frame (a random or fixed frame term in ι) is supported when τ² is a non-trivial share of the total variance and the spreads reproduce across the splits, but no single frame is the culprit
 
-Decision made here: none. No frame discarded.
+Decision made here: none. No frame discarded. (The wording policy was decided by the researcher on 2026-08-30 --- the frame is part of the experimental condition, docs/V8_FRAME_CONDITIONING.md; this report remains the per-frame evidence.)

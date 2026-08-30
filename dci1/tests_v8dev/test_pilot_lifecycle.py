@@ -83,17 +83,21 @@ def test_chance_is_read_on_the_unconstrained_cell_in_both_tables(walked):
     gate2 = walked["payloads"][S.STAGE_GATE2]
     assert regime["chance_basis"]["cell"] == "unconstrained"
     assert gate2["chance_basis"]["cell"] == "unconstrained"
-    pooled = gate2["calibration_rows"]["pooled"]
-    assert pooled, "no calibrated candidate"
-    # budget families answer 'at most q commas' by chance; the scripted
-    # unconstrained answer carries 2-8 commas, so kappa > 0 there and the
-    # column is not the zero column
-    budget = [r for r in pooled if r["kind"].startswith("RF")]
-    assert budget and any(r["chance_compliance"] > 0 for r in budget)
-    for split, rows in gate2["calibration_rows"].items():
-        for r in rows:
-            assert r["chance_compliance"] < 0.99
-    assert gate2["iota_a_basis"].startswith("§13.2")
+    assert gate2["supported_frames"], "no supported frame"
+    for w in gate2["supported_frames"]:
+        block = gate2["by_frame"][str(w)]
+        pooled = block["calibration_rows"]["pooled"]
+        assert pooled, f"frame {w}: no calibrated candidate"
+        # budget families answer 'at most q commas' by chance; the scripted
+        # unconstrained answer carries 2-8 commas, so kappa > 0 there and
+        # the column is not the zero column
+        budget = [r for r in pooled if r["kind"].startswith("RF")]
+        assert budget and any(r["chance_compliance"] > 0 for r in budget)
+        for split, rows in block["calibration_rows"].items():
+            for r in rows:
+                assert r["chance_compliance"] < 0.99
+        assert block["iota_a_basis"].startswith("§13.2")
+        assert block["chance_basis"]["cell"] == "unconstrained"
 
 
 @pytest.mark.slow
@@ -120,10 +124,16 @@ def test_the_report_evaluates_the_four_criteria(walked):
     assert report["criteria"]["CHANCE_BASIS"]["passed"] is True
     wording = report["criteria"]["WORDING_DIAGNOSTIC"]
     assert wording["passed"] is None
-    assert wording["judgment"] == "RESEARCHER_DECISION_REQUIRED"
-    assert report["wording_judgment"]["status"] == "OPEN"
+    assert wording["judgment"] == "DESCRIPTIVE_ONLY"
+    assert report["wording_judgment"]["status"] == "DECIDED"
+    assert report["wording_judgment"]["policy"] == S.WORDING_POLICY
     assert "WORDING_DIAGNOSTIC" in report["open_judgments"]
     assert report["decided_criteria"] == list(S.DECIDED_CRITERIA)
+    for name in S.DECIDED_CRITERIA:
+        verdict = report["criteria"][name]
+        assert set(verdict["by_frame"]) == {str(w) for w in report["supported_frames"]}
+        assert verdict["aggregation"] == S.REPORT_AGGREGATION
+    assert report["frame_states"] and report["estimands"]["generated_here"] is False
     assert wording["ladders_per_frame"]["calibration"].keys() >= {"0", "1", "2", "3"}
     assert wording["stability_across_fresh_topics"]["calibration_splits"]["n_compared"] > 0
     assert wording["wording_dependence"]["calibration"]["n_rungs_compared"] > 0
@@ -190,7 +200,8 @@ def test_gate2_measures_every_frame_of_every_candidate_separately(walked):
     for e in pooled:
         frames.setdefault(e["candidate"], set()).add(e["frame"])
     candidates = {f"{r['kind']}:{r['severity']}"
-                  for r in gate2["calibration_rows"]["pooled"]}
+                  for w in gate2["supported_frames"]
+                  for r in gate2["by_frame"][str(w)]["calibration_rows"]["pooled"]}
     for label in candidates:
         assert frames[label] == {0, 1, 2, 3}, label
     for e in pooled:
@@ -202,7 +213,8 @@ def test_gate2_measures_every_frame_of_every_candidate_separately(walked):
     assert set(gate2["rungs_by_wording_class"]) == {"CONSISTENT", "UNRESOLVED",
                                                      "WORDING_SENSITIVE"}
     gate3 = walked["payloads"][S.STAGE_GATE3]
-    assert gate3["wording_sensitive_rungs"]["selection_rule"] is None
+    for w in gate3["supported_frames"]:
+        assert gate3["by_frame"][str(w)]["wording_sensitive_rungs"]["selection_rule"] is None
 
 
 @pytest.mark.slow
@@ -253,8 +265,11 @@ def test_the_wording_decision_report_builds_on_gate2_and_gate3_only(walked, tmp_
                                      "selected_local_references_core",
                                      "selected_spectrum_points",
                                      "backup_family_rungs_local_valid"}
-    assert exposure["sets"]["selected_local_references_core"]["n"] == \
-        len(walked["payloads"][S.STAGE_GATE3]["core_references"])
+    gate3 = walked["payloads"][S.STAGE_GATE3]
+    assert set(exposure["by_frame"]) == {str(w) for w in gate3["supported_frames"]}
+    for w in gate3["supported_frames"]:
+        assert exposure["by_frame"][str(w)]["sets"]["selected_local_references_core"]["n"] == \
+            len(gate3["by_frame"][str(w)]["core_references"])
     cases = rep["item5_exemplars"]["cases"]
     assert cases
     for case in cases:

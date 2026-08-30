@@ -23,7 +23,7 @@ from dci1v7.protocol import constants as C
 from dci1v7.topics.bank import load_bank
 from dci1v7.verifiers.constraints import FAMILIES, Constraint
 from dci1v8dev.run import (BASE_PREREGISTRATION, DESIGN_DOCUMENT,
-                           PILOT_DOCUMENT)
+                           FRAME_DOCUMENT, PILOT_DOCUMENT)
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import model_tree, synthetic_context
 from dci1v8dev.run.execute import fake_backend
@@ -36,7 +36,8 @@ _REAL_REPO_ROOT = Path(__file__).resolve().parents[2]
 
 REPO_TREES = ("dci1/src/dci1v4", "dci1/src/dci1v7", "dci1/src/dci1v8dev")
 REPO_FILES = ("dci1/uv.lock",)
-DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, BASE_PREREGISTRATION)
+DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, FRAME_DOCUMENT,
+             BASE_PREREGISTRATION)
 
 PLACEHOLDER = ("SYNTHETIC PLACEHOLDER --- NOT A DCI-1 ARTIFACT. Written by "
                "tests_v8dev/pilot_harness.py into a temporary repository so "
@@ -97,10 +98,51 @@ def present_of(cell_id: str) -> tuple[Constraint, ...]:
 
 
 def scripted_generate(run_dir, plan, rows):
-    """The synthetic seam: v7's per-cell composer, driven by the cell id."""
+    """The synthetic seam: v7's per-cell composer, driven by the cell id.
+    Frame-blind: the four frames behave identically up to which topics
+    each frame happens to hold."""
     def responder(row: Mapping[str, Any]) -> str:
         return V7._compose(row["row_id"], present_of(row["cell_id"]))
     return fake_backend(responder)(run_dir, plan, rows)
+
+
+def frame_of_design_row(row: Mapping[str, Any]) -> int:
+    """The frame of a design row's block: ``<prefix>-<index>`` % N_WORDINGS
+    (the same rule ``execute.SoloCell`` allocates by)."""
+    return int(str(row["block_id"]).rpartition("-")[2]) % C.N_WORDINGS
+
+
+def frame_effect_generate(effects: Mapping[str, Mapping[int, float]]):
+    """A generator with a genuine frame effect: for family ``kind`` under
+    frame ``f``, a scripted-compliant answer is spoiled with probability
+    ``1 - effects[kind][f]`` (an extra marker word for an exact-count
+    family; one over-long word for B), by a hash of the row id, so frame f
+    reads that family as harder. Families and frames not named behave as
+    the frame-blind composer. The verifier is unchanged: the effect is in
+    the answers, exactly as a wording effect would be."""
+    import hashlib
+
+    def responder(row: Mapping[str, Any]) -> str:
+        present = present_of(row["cell_id"])
+        text = V7._compose(row["row_id"], present)
+        if not present:
+            return text
+        constraint = present[0]
+        keep = (effects.get(constraint.kind) or {}).get(frame_of_design_row(row))
+        if keep is None:
+            return text
+        digest = hashlib.sha256(f"frame-effect|{row['row_id']}".encode()).hexdigest()
+        u = int(digest[:12], 16) / float(16 ** 12)
+        if u < keep:
+            return text
+        if constraint.kind == "B":
+            return text.rstrip(".") + " " + "consideration" + "a" * 6 + "."
+        marker = ("however" if constraint.kind == "A"
+                  else FAMILIES[constraint.kind].marker)
+        if marker:
+            return text.rstrip(".") + f" {marker}."
+        return text
+    return fake_backend(responder)
 
 
 def screen_rungs(families: Sequence[str] = SCREEN_FAMILIES) -> list[Constraint]:
@@ -119,8 +161,12 @@ class WalkStopped(Exception):
 def walk(root: Path, *, topic_limit: int = 96, resamples: int = 200,
          families: Sequence[str] = SCREEN_FAMILIES,
          stop_after: str | None = None,
-         repo_root: Path | None = None) -> dict[str, Any]:
-    """Every stage in order through the production runners."""
+         repo_root: Path | None = None,
+         generate=None) -> dict[str, Any]:
+    """Every stage in order through the production runners. ``generate``
+    defaults to the frame-blind scripted composer; ``frame_effect_generate``
+    gives one with a frame effect."""
+    generate = generate if generate is not None else scripted_generate
     from dci1v4.engine.signing import create_signing_key
     from dci1v8dev.run import (calibration, instrument, qualification,
                                references, regime, registration, report,
@@ -155,19 +201,19 @@ def walk(root: Path, *, topic_limit: int = 96, resamples: int = 200,
         tree, producing_commit=commit, environment_digest=env, bank=bank))
     record(qualification.run_gate0(
         tree, producing_commit=commit, environment_digest=env, bank=bank,
-        generate=scripted_generate))
+        generate=generate))
     record(regime.run_regime_screen(
         tree, producing_commit=commit, environment_digest=env, bank=bank,
-        generate=scripted_generate, rungs=screen_rungs(families)))
+        generate=generate, rungs=screen_rungs(families)))
     record(rescreen.run_second_pass(
         tree, producing_commit=commit, environment_digest=env, bank=bank,
-        generate=scripted_generate))
+        generate=generate))
     record(instrument.run_gate1(
         tree, producing_commit=commit, environment_digest=env,
         determinism_sample=64))
     record(calibration.run_gate2(
         tree, producing_commit=commit, environment_digest=env, bank=bank,
-        generate=scripted_generate, topic_limit=topic_limit))
+        generate=generate, topic_limit=topic_limit))
     record(references.run_gate3(
         tree, producing_commit=commit, environment_digest=env,
         resamples=resamples))

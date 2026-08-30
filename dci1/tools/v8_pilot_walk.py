@@ -38,7 +38,9 @@ def build() -> tuple[str, dict]:
         audit = contracts.audit_contracts(payloads)
         matrix = contracts.matrix_markdown(payloads)
         report = payloads[S.STAGE_REPORT]
-    criteria = {k: (v["passed"] if v["passed"] is not None
+    criteria = {k: (f"{v['passed']} (frames passing {v.get('frames_passing')}, "
+                    f"failing {v.get('frames_failing')})"
+                    if v["passed"] is not None
                     else f"— ({v.get('judgment')})")
                 for k, v in report["criteria"].items()}
     machine = {"contract": audit, "criteria": report["criteria"],
@@ -67,9 +69,14 @@ def build() -> tuple[str, dict]:
     ]
     for name, ok in criteria.items():
         lines.append(f"| {name} | {ok} |")
-    lines += ["", f"Pilot status: `{report['pilot_status']}`; wording judgment: "
-              f"`{report['wording_judgment']['status']}` "
-              f"(options {report['wording_judgment']['options']}).",
+    lines += ["", f"Pilot status: `{report['pilot_status']}` (aggregation "
+              f"`{report['aggregation']}`; frames meeting every decided criterion "
+              f"{report['frames_meeting_all_decided_criteria']}; supported frames "
+              f"{report['supported_frames']}; frame states "
+              f"{ {w: s['state'] for w, s in report['frame_states'].items()} }); "
+              f"wording judgment: `{report['wording_judgment']['status']}` "
+              f"(policy `{report['wording_judgment']['policy']}`; options "
+              f"{report['wording_judgment']['options']}).",
               "",
               "## Wording diagnostic (synthetic)", "",
               "| basis | rungs compared | τ median | spread median | "

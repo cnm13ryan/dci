@@ -489,10 +489,58 @@ def split_replication(gate2: Mapping[str, Any],
 
 def reference_exposure(gate3: Mapping[str, Any] | None,
                        rungs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Item 4, per frame (Approach A: the reference set is frame-specific).
+    ``sets`` is the union over supported frames for the option summary;
+    ``by_frame`` carries each frame's own sets and state."""
     if gate3 is None:
         return {"available": False,
                 "reason": f"{S.STAGE_GATE3} has not been reached; the "
                           f"reference set does not exist yet"}
+    supported = [int(w) for w in gate3.get("supported_frames") or ()]
+    per_frame = {str(w): _frame_exposure(gate3["by_frame"][str(w)], rungs, w)
+                 for w in supported}
+    union: dict[str, Any] = {}
+    for name in ("local_valid_candidates", "spectrum_valid_candidates",
+                 "selected_local_references_core", "selected_spectrum_points",
+                 "backup_family_rungs_local_valid"):
+        labels = sorted({l for e in per_frame.values()
+                         for l in e["sets"][name]["labels"]}, key=_rung_key)
+        union[name] = _tally_labels(labels, {r["candidate"]: r["class"] for r in rungs})
+    return {
+        "available": True,
+        "frame_conditioning": gate3.get("frame_conditioning", {}).get("policy"),
+        "supported_frames": supported,
+        "frame_states": gate3.get("frame_states"),
+        "by_frame": per_frame,
+        "sets": union,
+        "sets_basis": "union over the supported frames' own sets (each frame's "
+                      "sets are under by_frame)",
+        "core_references": sorted({l for e in per_frame.values()
+                                   for l in e["core_references"]}, key=_rung_key),
+        "selected_spectrum_points": sorted({l for e in per_frame.values()
+                                            for l in e["selected_spectrum_points"]},
+                                           key=_rung_key),
+        "backup_families": sorted({f for e in per_frame.values()
+                                   for f in e["backup_families"]}),
+        "cross_frame": gate3.get("cross_frame"),
+    }
+
+
+def _tally_labels(labels: Sequence[str], klass: Mapping[str, str | None]) -> dict[str, Any]:
+    counts = Counter(klass.get(l) for l in labels)
+    return {"n": len(labels), "labels": list(labels),
+            "by_class": {k: counts.get(k, 0) for k in W.CLASSES},
+            "unclassified": counts.get(None, 0),
+            "sensitive": sorted((l for l in labels
+                                 if klass.get(l) == "WORDING_SENSITIVE"),
+                                key=_rung_key),
+            "unresolved": sorted((l for l in labels
+                                  if klass.get(l) == "UNRESOLVED"),
+                                 key=_rung_key)}
+
+
+def _frame_exposure(gate3: Mapping[str, Any], rungs: Sequence[Mapping[str, Any]],
+                    frame: int) -> dict[str, Any]:
     klass = {r["candidate"]: r["class"] for r in rungs}
     local = gate3["local"]
     spectrum = gate3["spectrum"]
@@ -502,16 +550,7 @@ def reference_exposure(gate3: Mapping[str, Any] | None,
     backup_families = set((gate3.get("backups") or {}).get("backups") or ())
 
     def _tally(labels: Sequence[str]) -> dict[str, Any]:
-        counts = Counter(klass.get(l) for l in labels)
-        return {"n": len(labels),
-                "by_class": {k: counts.get(k, 0) for k in W.CLASSES},
-                "unclassified": counts.get(None, 0),
-                "sensitive": sorted((l for l in labels
-                                     if klass.get(l) == "WORDING_SENSITIVE"),
-                                    key=_rung_key),
-                "unresolved": sorted((l for l in labels
-                                      if klass.get(l) == "UNRESOLVED"),
-                                     key=_rung_key)}
+        return _tally_labels(labels, klass)
     local_valid = sorted((l for l, v in local.items() if v.get("passed")),
                          key=_rung_key)
     spectrum_valid = sorted((l for l, v in spectrum.items() if v.get("passed")),
@@ -519,7 +558,10 @@ def reference_exposure(gate3: Mapping[str, Any] | None,
     backup_rungs = sorted((l for l in local_valid
                            if _rung_key(l)[0] in backup_families), key=_rung_key)
     return {
-        "available": True,
+        "frame": frame,
+        "state": gate3.get("state"),
+        "iota_a": gate3.get("iota_a"), "n_star": gate3.get("n_star"),
+        "m_star": gate3.get("m_star"),
         "gate3_block": gate3["wording_sensitive_rungs"],
         "survival": gate3["survival"],
         "sets": {
@@ -734,10 +776,18 @@ def build(root: Path, *, model_key: str, namespace: str, n_cases: int,
     replication = split_replication(gate2, rungs)
     exposure = reference_exposure(gate3, rungs)
     cases = exemplars(rungs, rows, prompts, n_cases=n_cases, per_frame=per_frame)
+    by_frame_g2 = gate2.get("by_frame") or {}
     return {
         **head, "available": True,
-        "gate2": {"iota_a": gate2.get("iota_a"),
-                  "iota_a_by_split": gate2.get("iota_a_by_split"),
+        "frame_conditioning": (gate2.get("frame_conditioning") or {}).get("policy"),
+        "gate2": {"iota_a_by_frame": {w: {"status": b.get("status"),
+                                         "n_star": b.get("n_star"),
+                                         "m_star": b.get("m_star"),
+                                         "iota_a": b.get("iota_a"),
+                                         "iota_a_by_split": b.get("iota_a_by_split"),
+                                         "unsupported_reason": b.get("unsupported_reason")}
+                                     for w, b in sorted(by_frame_g2.items())},
+                  "supported_frames": gate2.get("supported_frames"),
                   "chance_basis": gate2.get("chance_basis"),
                   "row_accounting": gate2.get("row_accounting"),
                   "n_scored_rows_read": len(rows),
@@ -786,9 +836,24 @@ def render(rep: Mapping[str, Any]) -> str:
           f"A terminal status is a statement about the operating regime; it carries "
           f"no evidence about the effect. Signed Gate-2 record: "
           f"{'yes' if rep.get('signed_gate2_record') else 'no (tables recomputed from the grid rows)'}.\n")
-    p(f"ι_A = {_fmt(g2['iota_a'])} (by split {g2['iota_a_by_split']}); "
-      f"{g2['n_scored_rows_read']} scored Gate-2 rows read; chance basis: "
-      f"{(g2['chance_basis'] or {}).get('basis', g2['chance_basis'])}.\n")
+    if rep.get("frame_conditioning"):
+        p(f"Frame conditioning: `{rep['frame_conditioning']}` (Approach A, "
+          f"docs/V8_FRAME_CONDITIONING.md): every operating point, ι_A and reference "
+          f"set below is per frame; supported frames {g2.get('supported_frames')}.\n")
+    if g2.get("iota_a_by_frame"):
+        p("| frame | status | n* | m* | ι_A(f) | ι_A by split | unsupported reason |")
+        p("|---|---|---:|---:|---:|---|---|")
+        for w, b in sorted(g2["iota_a_by_frame"].items()):
+            ur = b.get("unsupported_reason") or {}
+            p(f"| f{w} | {b.get('status')} | {b.get('n_star') if b.get('n_star') is not None else '—'} | "
+              f"{b.get('m_star') if b.get('m_star') is not None else '—'} | {_fmt(b.get('iota_a'))} | "
+              f"{ {k: round(v, 3) for k, v in (b.get('iota_a_by_split') or {}).items()} or '—'} | "
+              f"{ur.get('status', '—')}{(' (step ' + str(ur.get('step')) + ')') if ur else ''} |")
+        p("")
+    else:
+        p("ι_A: no signed Gate-2 record (the tables are recomputed from the grid rows). ")
+    p(f"{g2['n_scored_rows_read']} scored Gate-2 rows read; chance basis: "
+      f"{(g2['chance_basis'] or {}).get('basis', (g2['chance_basis'] or {}).get('rule', g2['chance_basis']))}.\n")
     rg = rep.get("regime_by_frame") or {}
     if rg.get("by_frame"):
         p("## 0. §12.3 on each frame's own A curve\n")
@@ -891,25 +956,38 @@ def render(rep: Mapping[str, Any]) -> str:
     if not ex["available"]:
         p(ex["reason"] + ".\n")
     else:
-        sv = ex["survival"]
-        p(f"Gate 3: LOCAL-valid families {sv.get('n_local_valid_families')}, spectrum "
-          f"pool ok {_fmt(sv.get('spectrum_pool_ok'))}, core identified "
-          f"{_fmt(sv.get('core_identified'))}, coverage identified "
-          f"{_fmt(sv.get('coverage_identified'))}. Core references: "
-          f"{', '.join(ex['core_references']) or '—'}; selected spectrum points: "
-          f"{', '.join(ex['selected_spectrum_points']) or '—'}; backup families: "
-          f"{', '.join(ex['backup_families']) or '—'}.\n")
-        p("| set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |")
-        p("|---|---:|---:|---:|---:|---|---|")
-        for name, t in ex["sets"].items():
-            bc = t["by_class"]
-            p(f"| {name} | {t['n']} | {bc['CONSISTENT']} | {bc['UNRESOLVED']} | "
-              f"{bc['WORDING_SENSITIVE']} | {', '.join(t['sensitive']) or '—'} | "
-              f"{', '.join(t['unresolved']) or '—'} |")
-        blk = ex["gate3_block"]
-        p(f"\nGate 3's own block: {blk['n_wording_sensitive']} sensitive, "
-          f"{blk['n_unresolved']} unresolved; touching the reference set: "
-          f"{blk['touching_reference_set']}.\n")
+        p(f"The reference set is per frame (Approach A). Supported frames "
+          f"{ex['supported_frames']}; states "
+          f"{ {w: s['state'] for w, s in (ex.get('frame_states') or {}).items()} }.\n")
+        for w, fe in sorted(ex["by_frame"].items()):
+            sv = fe["survival"]
+            p(f"### Frame f{w} — {fe['state']} (n* {fe['n_star']}, m* {fe['m_star']}, ι_A(f) {_fmt(fe['iota_a'])})\n")
+            p(f"LOCAL-valid families {sv.get('n_local_valid_families')}, spectrum "
+              f"pool ok {_fmt(sv.get('spectrum_pool_ok'))}, core identified "
+              f"{_fmt(sv.get('core_identified'))}, coverage identified "
+              f"{_fmt(sv.get('coverage_identified'))} (projected SE(β̂) "
+              f"{_fmt(sv.get('projected_se_beta'))} at {sv.get('n_blocks_projected')} blocks; "
+              f"{_fmt(sv.get('projected_se_beta_at_full_allocation'))} at the full allocation). "
+              f"Core references: {', '.join(fe['core_references']) or '—'}; selected "
+              f"spectrum points: {', '.join(fe['selected_spectrum_points']) or '—'}; backup "
+              f"families: {', '.join(fe['backup_families']) or '—'}.\n")
+            p("| set | n | CONSISTENT | UNRESOLVED | WORDING_SENSITIVE | sensitive rungs | unresolved rungs |")
+            p("|---|---:|---:|---:|---:|---|---|")
+            for name, t in fe["sets"].items():
+                bc = t["by_class"]
+                p(f"| {name} | {t['n']} | {bc['CONSISTENT']} | {bc['UNRESOLVED']} | "
+                  f"{bc['WORDING_SENSITIVE']} | {', '.join(t['sensitive']) or '—'} | "
+                  f"{', '.join(t['unresolved']) or '—'} |")
+            blk = fe["gate3_block"]
+            p(f"\nGate 3's block for f{w}: {blk['n_wording_sensitive']} sensitive, "
+              f"{blk['n_unresolved']} unresolved; touching this frame's reference set: "
+              f"{blk['touching_reference_set']}.\n")
+        cf = ex.get("cross_frame") or {}
+        if cf:
+            p(f"Cross-frame (descriptive): core rung by family {cf.get('core_reference_by_family')}; "
+              f"core family in every supported frame {cf.get('core_family_in_every_supported_frame')}; "
+              f"same rung in every supported frame {cf.get('core_same_rung_in_every_supported_frame')}; "
+              f"LOCAL-valid in every supported frame {cf.get('local_valid_family_in_every_supported_frame')}.\n")
 
     # 5
     e5 = rep["item5_exemplars"]
@@ -967,7 +1045,10 @@ def render(rep: Mapping[str, Any]) -> str:
       f"{m['n_rungs_with_all_frames']} with all frames; spread Spearman A vs B "
       f"{_fmt(m['split_spread_spearman'])}")
     p(f"- reading: {m['reading']}\n")
-    p("Decision made here: none. No frame discarded.\n")
+    p("Decision made here: none. No frame discarded. (The wording policy was "
+      "decided by the researcher on 2026-08-30 --- the frame is part of the "
+      "experimental condition, docs/V8_FRAME_CONDITIONING.md; this report "
+      "remains the per-frame evidence.)\n")
     return "\n".join(L)
 
 

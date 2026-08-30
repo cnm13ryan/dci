@@ -163,6 +163,29 @@ policy is now the blocking researcher decision; the evidence is in
 [`dci1/reports/dci1v8dev/wording_decision.md`](dci1/reports/dci1v8dev/wording_decision.md)
 and `V8_PILOT.md` §7a. No v8 freeze; no spectrum arm; no further v7 runs.
 
+**Approach A adopted (2026-08-30, researcher decision): the wording frame
+is part of the experimental condition.** Design note
+[`dci1/docs/V8_FRAME_CONDITIONING.md`](dci1/docs/V8_FRAME_CONDITIONING.md)
+(Approach B --- one canonical wording --- recorded and rejected for this
+study). Difficulty is ι(X, f); `dci1v8dev.run` now selects n*(f) and
+m*(f), writes §13.11's table, decides LOCAL and SPECTRUM validity, selects
+core references, spectrum points and backups **per frame** on that
+frame's own rows against ι_A(f); an unsupported frame is recorded with
+its §12.3/§12.4 status and the others continue (terminal only when no
+frame is supported); each frame ends in an explicit state
+(`UNSUPPORTED` / `NEITHER` / `LOCAL_ONLY` / `SPECTRUM_ONLY` /
+`LOCAL_AND_SPECTRUM`); the eventual estimands are Δ_R(f) and the slope
+per frame, compared across frames only afterwards; the frame-pooled
+curves survive as a descriptive block read by nothing. Costs stated, not
+hidden: per-frame calibration precision is that of 48 topics and the
+per-frame confirmatory precision that of 96 blocks at the registered
+allocation. The screen and second pass stay frame-pooled as a
+measurement budget. Sixteen scientific-contract tests
+(`dci1/tests_v8dev/test_frame_conditioning.py`) and the synthetic
+lifecycle cover the migration; `CHANGES_SCIENTIFIC.md` has the entry.
+The pilot re-runs under Approach A in a fresh root (see `V8_PILOT.md`
+§7b for its outcome).
+
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
 A read-only diagnostic established that the §13.2 reference criterion fails for

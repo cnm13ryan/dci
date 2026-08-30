@@ -37,9 +37,9 @@ superseded by the v8 verifier layer. Code: `dci1/src/dci1v8dev/`; tests:
 | adaptive severity expansion | `prescreen/extension.py`, `prescreen/rescreen.py` | a one-sided REJECT with unmeasured reserve in the deficient direction becomes RESAMPLE with the next reserve severities; bounded by the reserve and by 3 batches |
 | LOCAL/SPECTRUM rung retention | `prescreen/retention.py` | spectrum families carry five roles (hard extreme, intermediate-hard, near-A, intermediate-easy, easy extreme); local families their four rungs most likely inside the caliper; class/near-form arms their few rungs |
 | full calibration (+ one extension round) | v7's Gate 2 at 192 × 4, corrected chance column; `extension.calibration_extension_plan` | a spectrum family whose admissible rungs do not reach a side, with reserve left, gets ≤ 2 reserve rungs on that side, once |
-| separate LOCAL / SPECTRUM validity | `spectrum/validity.py` | §3 below |
-| deterministic spectrum selection | `spectrum/selection.py` | §8 below |
-| coverage + projected-precision gate | `spectrum/coverage.py` | §4 below; admissible backups `spectrum/backups.py` |
+| separate LOCAL / SPECTRUM validity | `spectrum/validity.py` | §3 below; **per wording frame** since 2026-08-30 (`docs/V8_FRAME_CONDITIONING.md`) |
+| deterministic spectrum selection | `spectrum/selection.py` | §8 below; per frame |
+| coverage + projected-precision gate | `spectrum/coverage.py` | §4 below; admissible backups `spectrum/backups.py`; per frame, projected at the frame's 96 blocks |
 | end to end | `e2e.py`, `tools/v8_pipeline_validation.py` | the whole chain on a synthetic world with seeded draws at the registered sample sizes |
 
 ## 2. The chance basis (both tables)
@@ -120,6 +120,25 @@ Boundaries are tested one step either side (`test_eligibility_boundary.py`);
 a chance-free 0.93 rung is spectrum-valid and selected high, chance-dominated,
 vacuous and degenerate rungs fail at V_coord (`test_e2e.py`, world
 `extremes`; `spectrum_scenarios.md`).
+
+## 5a. The wording frame is part of the experimental condition (2026-08-30)
+
+After the first real pilot (`V8_PILOT.md` §7a) the four frames were
+found not exchangeable on A. Researcher decision (Approach A,
+`docs/V8_FRAME_CONDITIONING.md`): difficulty is ι(X, f); the run layer
+selects n*(f) and m*(f), writes §13.11's table, decides LOCAL and
+SPECTRUM validity, and selects core references, spectrum points, coverage
+and backups **per frame** against ι_A(f); an unsupported frame is
+recorded and the others continue; each frame ends in an explicit state;
+the eventual estimands are Δ_R(f) and the difficulty-response slope per
+frame, compared across frames afterwards. Everything in §§3, 4, 8 below
+is therefore evaluated per frame on that frame's own rows (48 of the 192
+calibration topics); the thresholds are unchanged. The screen and second
+pass (§7, §8) remain pooled over frames as a measurement budget. Approach
+B (one canonical wording) is recorded in the design note and rejected for
+this study. The `e2e.py` synthetic pipeline models no frame (it is the
+rule layer's frame-free replay) and the retrospective replays in §9 are
+frame-pooled by construction.
 
 ## 6. The wording instrument
 
@@ -251,11 +270,14 @@ the same again for the spectrum arm, per card.
    ≤ 0.026) is reported, not resolved.
 4. **The core selection in `e2e.py` is a stand-in** for §13.8; the v8 run
    layer must call the registered kernel.
-5. **The v8 run layer exists but has run on no model** (2026-08-30,
-   `dci1v8dev/run`, `docs/V8_PILOT.md`): nine stages, CLI, pilot manifest,
-   `dci1v8:*` seed domain, isolated evidence roots, the §13.11 producer on
-   the corrected basis, the wording allocation under the v8 frames, and a
-   synthetic nine-stage walk. Its first real result is the pilot's.
+5. **The v8 run layer ran once on a model** (2026-08-30,
+   `dci1v8dev/run`, `docs/V8_PILOT.md` §7a): terminal at Gate 2 on the
+   frame-pooled A curve; the layer now runs per frame (§5a) and its
+   per-frame result is the next pilot's (`V8_PILOT.md` §7b).
+8. **Per-frame precision.** A frame is calibrated on 48 topics and would
+   be estimated on 96 confirmatory blocks at the registered allocation;
+   whether to allocate more per frame is a researcher decision the design
+   note lists (§10 there).
 6. The coverage simulation's truth is a modelling choice (SE ≤ 0.05,
    bracketing, ≤ 10 % attenuation); the geometry grid uses three families.
 7. Gemma-3n-e4b (ι_A ≈ 0.73) has little room above A: on the stored
@@ -279,9 +301,11 @@ the researcher's five questions on Gate 2/3 are answered by
 `tools/v8_wording_decision.py` (`V8_PILOT.md` §7);
 **the pilot ran on 2026-08-30 and ended terminal at Gate 2 on the pooled A
 curve --- the frames are not exchangeable on A; see `V8_PILOT.md` §7a**;
-(3) take the wording policy decision on solo/pre-screen/calibration evidence
-and freeze v8; (4) only then generate the selected spectrum's B+X / X+B
-cells and fit §11.8.
+(3) the wording policy decision was taken on that evidence (the frame is
+part of the condition, §5a) and the pilot re-runs per frame
+(`V8_PILOT.md` §7b); a freeze of v8 is per frame and is the researcher's;
+(4) only then generate the selected spectrum's B+X / X+B cells and fit
+§11.8, per frame.
 
 What runs today (CPU, this worktree, both GPUs untouched):
 

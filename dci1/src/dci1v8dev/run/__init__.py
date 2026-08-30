@@ -53,6 +53,9 @@ EVIDENCE_DIRNAME = "dci1v8"
 #: The design of record this layer executes, and the pilot's own note.
 DESIGN_DOCUMENT = "dci1/docs/V8_CANDIDATE.md"
 PILOT_DOCUMENT = "dci1/docs/V8_PILOT.md"
+#: The frame-conditioning design note (Approach A, researcher decision of
+#: 2026-08-30): the wording frame is part of the experimental condition.
+FRAME_DOCUMENT = "dci1/docs/V8_FRAME_CONDITIONING.md"
 #: The v7 preregistration the candidate amends; bound by hash as the base.
 BASE_PREREGISTRATION = "user-notes/DCI1_preregistration_v7.md"
 #: What this layer supersedes as the live line, and how that line ended.
@@ -61,5 +64,6 @@ SUPERSEDES_TERMINAL_STATUS = "CLOSED: 0/4 survivors (C4 lost at Gate 3C; " \
                              "PREFREEZE_AUDIT_FAILURE)"
 
 __all__ = ["STUDY_ID", "CLASSIFICATION", "EVIDENCE_DIRNAME",
-           "DESIGN_DOCUMENT", "PILOT_DOCUMENT", "BASE_PREREGISTRATION",
+           "DESIGN_DOCUMENT", "PILOT_DOCUMENT", "FRAME_DOCUMENT",
+           "BASE_PREREGISTRATION",
            "SUPERSEDES", "SUPERSEDES_TERMINAL_STATUS"]

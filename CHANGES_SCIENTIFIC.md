@@ -13,6 +13,57 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 (after pilot r3) — v8: the wording frame is part of the experimental condition (Approach A; researcher decision; prospective)
+
+**What changed** (`dci1/docs/V8_FRAME_CONDITIONING.md`; `dci1v8dev.run`
+Gates 2 and 3, the report, the manifest). Pilot r3 showed the four v8
+frames are not exchangeable on A (0.22 / 0.68 / 0.42 / 0.52 at q = 5,
+replicated on both splits; a different frame is the outlier on B), and
+the frame-pooled A curve was out of regime. The researcher decided that
+difficulty is defined conditionally, ι(X, f), and that the frame f of a
+block (`block_index % 4`) is carried through every step that reads a
+difficulty: (1) Gate 2 selects n*(f) and m*(f) by §12.3 on each frame's
+own curves, checks §12.4 on each frame's own rates, and writes §13.11's
+table per frame on that frame's rows with §13.2's chance on the
+unconstrained cells of *that frame's blocks* (the producer's same-topic
+rule), κ(R|B) at m*(f) on the frame's B-solo cell, and the extension
+reach at ι_A(f); an unsupported frame records the §12.3/§12.4 status it
+hit and the others continue; the replication is terminal only when no
+frame is supported. (2) Gate 3 evaluates LOCAL (v7's full V(R)) and
+SPECTRUM validity, §13.8's core kernel, the spectrum selection, coverage
+and backups per frame against ι_A(f), and records each frame's state
+(`UNSUPPORTED` / `NEITHER` / `LOCAL_ONLY` / `SPECTRUM_ONLY` /
+`LOCAL_AND_SPECTRUM`); the coverage projection is at the frame's share of
+the registered confirmatory blocks (96 of 384; derived, not chosen), with
+the full-allocation projection recorded beside it. (3) The report
+evaluates the three decided criteria per frame; the run-level status is
+"at least one supported frame passes" with every frame's verdict beside
+it (an aggregation for the status line, not a freeze rule). (4) The
+eventual estimands are stated per frame (Δ_R(f), the slope per frame) and
+none is generated. (5) The regime screen and second pass remain pooled
+over frames as a measurement budget (six topics per frame per batch):
+they decide which rungs are calibrated, every calibrated rung is measured
+under every frame, and no admission reads them. (6) The wording policy is
+`DECIDED` (`model_frame_variation`, in this form); the wording diagnostic
+keeps no pass/fail rule. No threshold changed; no pooled ι_A, pooled
+table, pooled core set or pooled spectrum exists on any record (the
+frame-pooled curves are recorded as `descriptive_pooled`, read by nothing).
+
+**What is affected.** No registered result: v8 is a development candidate
+and nothing v7 recorded is re-read. The v8 pilot roots `dci1v8-pilot`,
+`-r2`, `-r3` (2026-08-30) were produced under the frame-pooled Gate 2 and
+are kept as they are; r3's per-frame tables (`wording_decision.md`) were
+recomputed from its rows and remain valid as per-frame descriptive
+evidence, but no r3 record carries a per-frame operating point or
+reference set. The pilot re-runs in a fresh root.
+
+**Comparability.** A per-frame quantity is measured on a quarter of the
+calibration topics (48 of 192 pooled; 24 per split) and is not comparable
+in precision with a v7 or pooled-v8 quantity at 192; the rules (0.10
+caliper, SE(ι) ≤ 0.05, the Wilson/Newcombe intervals) are unchanged and
+harder to meet per frame, which the pilot now measures rather than
+assumes away.
+
 ## 2026-08-30 (pilot r2) — the v8 second pass: batch index is the batch's position; the cap of three is global
 
 **What changed.** `dci1v8dev.prescreen.rescreen.plan_batch` returned
