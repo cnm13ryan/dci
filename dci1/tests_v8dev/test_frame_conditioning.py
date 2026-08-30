@@ -592,7 +592,7 @@ def test_the_extension_round_runs_end_to_end_and_its_rungs_are_calibrated(tmp_pa
         state = stopped.state
     else:                                                    # pragma: no cover
         raise AssertionError("the walk did not stop at GATE_1_INSTRUMENT")
-    tree, payloads = state["tree"], state["payloads"]
+    tree = state["tree"]
     outcome = CALIB.run_gate2(
         tree, producing_commit=state["commit"], environment_digest="synthetic",
         bank=state["bank"], generate=H.scripted_generate, topic_limit=96)
