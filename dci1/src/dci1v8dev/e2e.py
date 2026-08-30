@@ -22,6 +22,7 @@ Nothing here reads evidence; nothing here is registered.
 from __future__ import annotations
 
 import copy
+import hashlib
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
@@ -144,7 +145,11 @@ def world_from_archetypes(assignments: Mapping[str, str], *, a_curve: dict[int, 
 
 def _rng(world: World, *parts: Any) -> np.random.Generator:
     key = "|".join(str(p) for p in parts)
-    return np.random.default_rng([world.seed, abs(hash(key)) % (2 ** 31)])
+    # a stable digest, not the builtin hash: the builtin is salted per
+    # process (PYTHONHASHSEED), which made the synthetic worlds differ
+    # between runs and tests_v8dev/test_e2e.py flaky (2026-08-30)
+    digest = int(hashlib.sha256(key.encode()).hexdigest()[:8], 16)
+    return np.random.default_rng([world.seed, digest % (2 ** 31)])
 
 
 def _prescreen_table(world: World) -> tuple[list[PrescreenRung], list[ARung]]:

@@ -215,13 +215,18 @@ identified (simulation: accepted 0.73–0.97, FP 0; v7's certificate: 0.00).
   6.7k–11.9k generations.
 * Spectrum replay: identified on **12/12** replications against v7's 2/12 (Gate 3B; both lost again to C4 on the calibrated basis); spectrum-valid pools of 37–81 rungs spanning ≈ 0.20–0.94 in ι where v7's folded pool spanned 0.07–0.18; 2–4 families, 4–8 points, offsets 0.18–0.31 below / 0.13–0.32 above A, projected SE(β̂) 0.013–0.028; §13.15's "≥ 5 families passing the full V(R)" met on the admissible basis on 11/12 (v7 gemma-3n-e4b-it has three admissible families and no backup); a recorded frozen backup is inadmissible on 10/12 (CR5/CR6 Tier 3 on every Gemma and Qwen tree; MK1/MK2 failing the full rule on others).
 
-**Synthetic, end to end** (`pipeline_validation.md`): wide, outlier,
+**Synthetic, end to end** (`pipeline_validation.md`, regenerated
+2026-08-30 after `e2e.py` stopped seeding its worlds with the process-salted
+builtin `hash()` --- the earlier numbers were one salted draw): wide, outlier,
 too-easy-reserve, extremes and wording-repaired worlds identified (SE(β̂)
-0.014–0.024, 3–4 families, 6–8 points, spans 0.35–0.57); one-sided and flat
+0.014–0.032, 2–4 families, 4–8 points, spans 0.27–0.55); one-sided and flat
 worlds not identified with the reason named; the *narrow* world (true
-support just at the offsets) is a conservative miss; families confused by the
+support just at the offsets) is a boundary case --- identified in some seeded
+draws and a conservative miss in others (missed in the committed report:
+one point/family below A where two are required); families confused by the
 v7 frames are accepted only under the v8 frames; true local families found
-6/6, 4/4, 3/4; 12–36 rungs forwarded; 16k–37k generations to the freeze.
+6/6 (wide), 4/4 (narrow), 3/4 (one-sided), 2/4 (too-easy-reserve); 15–37
+rungs forwarded; 18.6k–36.4k generations to the freeze.
 
 ## 10. Compute
 

@@ -6,26 +6,27 @@ Synthetic worlds run the whole chain with seeded draws at the registered sample 
 
 | world | identified | truth | family accept TP/FP/FN | selected families | points | offset below/above | span | SE(β̂) | local found/true | forwarded rungs | reserve picks (2nd pass) | extension | gens to freeze |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| wide | True | True | 5/0/0 | MK2, MK1, MK6, XC1 | 8 | 0.34/0.23 | 0.57 | 0.013 | 6/6 | 35 | {} | {} | 34392 |
-| narrow | True | True | 2/0/2 | MK4, MK3 | 4 | 0.20/0.15 | 0.35 | 0.026 | 4/4 | 24 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10], 'MK4': [9, 10]}, 1: {'MK1': [11, 12], 'MK2': [11, 12], 'MK3': [11, 12]}, 2: {}} | {} | 28320 |
-| flat | False | False | 0/1/0 |  | 0 | —/— | 0.00 | — | 4/4 | 18 | {0: {'XC1': [9, 10]}} | {'MK2': [9, 10]} | 22944 |
-| one_sided | False | False | 0/0/0 | MK4, MK2, MK1, MK3 | 8 | 0.29/— | 0.00 | 0.026 | 3/4 | 16 | {} | {} | 19416 |
-| outlier | True | True | 3/0/0 | MK2, MK1, MK3 | 6 | 0.21/0.19 | 0.40 | 0.019 | 4/4 | 23 | {} | {} | 24792 |
-| too_easy_reserve | True | True | 4/0/0 | MK1, MK2, MK3 | 6 | 0.23/0.23 | 0.46 | 0.017 | 4/4 | 22 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10]}, 1: {'MK1': [11, 12], 'MK2': [11, 12], 'MK3': [11, 12]}, 2: {}} | {} | 26736 |
-| extremes | True | True | 3/0/0 | MK2, XC1, MK1 | 6 | 0.23/0.19 | 0.42 | 0.019 | 3/3 | 18 | {} | {} | 21864 |
-| wording_confusion_v7 | True | True | 2/0/0 | MK2, MK1 | 4 | 0.18/0.18 | 0.36 | 0.030 | 2/2 | 12 | {0: {}} | {} | 16752 |
-| wording_confusion_v8 | True | True | 4/0/0 | MK2, MK3, MK1, MK6 | 8 | 0.18/0.18 | 0.36 | 0.021 | 4/4 | 24 | {0: {}} | {} | 25968 |
-- wide: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, MK2:6:V_stab, MK3:4:V_pos, MK3:5:V_pos, MK5:1:V_pos, MK5:2:V_pos, MK5:3:V_pos, MK5:4:V_pos, MK6:5:V_pos, XC1:5:V_pos
-- narrow: first failing spectrum component — MK1:4:V_pos, MK1:5:V_pos, MK1:6:V_pos, MK2:5:V_pos, MK2:6:V_pos, MK2:7:V_pos, MK2:8:V_stab, MK3:3:V_pos, MK3:4:V_pos, MK3:5:V_pos, MK3:6:V_pos, MK4:6:V_pos
+| wide | True | True | 5/0/0 | MK2, MK1, XC1, MK3 | 8 | 0.22/0.20 | 0.42 | 0.018 | 6/6 | 37 | {0: {'MK3': [9, 10]}} | {} | 36384 |
+| narrow | False | True | 1/0/3 | MK4 | 2 | 0.18/0.15 | 0.34 | 0.034 | 4/4 | 19 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10], 'MK4': [9, 10]}, 1: {'MK2': [11, 12]}, 2: {}, 3: {}} | {} | 24912 |
+| flat | False | False | 0/0/0 |  | 0 | —/— | 0.00 | — | 4/4 | 16 | {} | {} | 19416 |
+| one_sided | False | False | 0/0/0 | MK2, MK1, MK4, MK3 | 8 | 0.31/— | 0.00 | 0.025 | 3/4 | 16 | {} | {} | 19416 |
+| outlier | True | True | 3/0/0 | MK2, MK1, MK3 | 6 | 0.30/0.16 | 0.46 | 0.019 | 4/4 | 23 | {} | {} | 24792 |
+| too_easy_reserve | True | True | 4/0/0 | MK3, MK4, MK2, MK1 | 8 | 0.39/0.16 | 0.55 | 0.014 | 2/4 | 25 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10]}, 1: {'MK1': [11, 12], 'MK2': [11, 12], 'MK3': [11, 12]}, 2: {}} | {} | 29136 |
+| extremes | True | True | 3/0/0 | MK1, XC1, MK2 | 6 | 0.16/0.17 | 0.34 | 0.023 | 3/3 | 16 | {} | {} | 20328 |
+| wording_confusion_v7 | True | True | 2/0/0 | MK1, MK2 | 4 | 0.15/0.12 | 0.27 | 0.032 | 2/2 | 15 | {} | {} | 18648 |
+| wording_confusion_v8 | True | True | 4/0/0 | MK3, MK1, MK2, MK6 | 8 | 0.15/0.16 | 0.31 | 0.023 | 4/4 | 25 | {} | {} | 26328 |
+- wide: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, MK3:10:V_stab, MK3:5:V_pos, MK3:6:V_pos, MK5:5:V_pos, MK5:6:V_pos, MK5:8:V_pos, MK6:1:V_coord, MK6:4:V_stab, MK6:5:V_pos, XC1:4:V_pos
+- narrow: coverage reasons — 1 points below A; 2 required; 1 families below A; 2 required; 1 families above A; 2 required
+- narrow: first failing spectrum component — MK1:4:V_pos, MK1:5:V_pos, MK1:6:V_pos, MK1:7:V_pos, MK2:5:V_pos, MK2:6:V_pos, MK3:5:V_pos, MK3:6:V_pos, MK3:7:V_pos, MK4:4:V_pos, MK4:5:V_pos, MK4:6:V_pos
 - flat: coverage reasons — 0 points below A; 2 required; 0 points above A; 2 required; 0 families below A; 2 required; 0 families above A; 2 required; no point at or beyond 0.1 below A; no point at or beyond 0.1 above A; total span 0.000 below 0.2; projected SE(beta) None above 0.05 (within-family leverage 0.0000)
-- flat: first failing spectrum component — MK1:1:V_pos, MK1:2:V_pos, MK1:3:V_pos, MK1:5:V_pos, MK2:1:V_pos, MK2:10:V_pos, MK2:3:V_pos, MK2:4:V_pos, MK2:5:V_pos, MK2:6:V_pos, MK2:8:V_pos, MK3:1:V_pos
+- flat: first failing spectrum component — MK1:3:V_pos, MK1:4:V_pos, MK1:5:V_pos, MK1:6:V_stab, MK2:1:V_pos, MK2:3:V_pos, MK2:5:V_pos, MK2:8:V_pos, MK3:2:V_pos, MK3:6:V_pos, MK3:7:V_pos, XC1:2:V_pos
 - one_sided: coverage reasons — 0 points above A; 2 required; 0 families above A; 2 required; no point at or beyond 0.1 above A; total span 0.000 below 0.2
-- one_sided: first failing spectrum component — MK1:1:V_pos, MK3:1:V_stab
-- outlier: first failing spectrum component — MK1:1:V_coord, MK1:5:V_pos, MK1:6:V_stab, MK2:1:V_coord, MK2:5:V_pos, MK2:6:V_stab, MK3:5:V_pos, MK5:1:V_pos, MK5:2:V_pos, MK5:3:V_pos, MK5:4:V_pos
-- too_easy_reserve: first failing spectrum component — MK1:10:V_pos, MK1:2:V_coord, MK1:7:V_stab, MK2:3:V_stab, MK3:10:V_pos, MK3:3:V_stab, MK4:6:V_pos, MK4:8:V_stab
-- extremes: first failing spectrum component — MK1:6:V_stab, MK2:5:V_stab, MK2:6:V_stab, MK2:8:V_stab, XC1:4:V_pos
-- wording_confusion_v7: first failing spectrum component — MK1:6:V_stab, MK2:4:V_pos, MK2:5:V_pos, MK2:8:V_stab
-- wording_confusion_v8: first failing spectrum component — MK1:6:V_stab, MK2:4:V_pos, MK2:5:V_pos, MK2:8:V_stab, MK3:5:V_pos, MK6:4:V_stab, MK6:5:V_pos
+- one_sided: first failing spectrum component — MK3:1:V_stab, MK4:1:V_pos, MK4:3:V_stab
+- outlier: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, MK3:5:V_pos, MK5:5:V_pos, MK5:6:V_pos, MK5:8:V_pos
+- too_easy_reserve: first failing spectrum component — MK3:10:V_stab, MK3:11:V_stab, MK4:4:V_pos, MK4:5:V_pos, MK4:6:V_pos
+- extremes: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, XC1:4:V_pos
+- wording_confusion_v7: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos
+- wording_confusion_v8: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, MK3:5:V_pos, MK3:7:V_stab, MK6:1:V_coord, MK6:5:V_pos
 
 ## Invariances
 
