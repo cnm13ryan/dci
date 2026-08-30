@@ -149,10 +149,12 @@ wording policy is an open researcher decision on solo/pre-screen/calibration
 evidence); every generated row is data and an on-path accounting proves it;
 the composed-cell block is asserted at every seam; the wording-policy
 decision report (`dci1/tools/v8_wording_decision.py`, Gate 2/3 only,
-chooses nothing) is written and validated on the synthetic walk --- no
-real Gate-2 data exists yet. The next step is the one-model pilot
-(`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507) **after** the two
-running v7 rehearsal lanes finish; its four criteria on `PILOT_REPORT` are
+chooses nothing) is written and validated on the synthetic walk. The
+real pilot started 2026-08-30 05:38Z on gpu1 after E2B r5 finished: r2
+found a rule defect in the second pass (batch index per family, not per
+batch; fixed, `CHANGES_SCIENTIFIC.md`) and the pilot re-ran as r3
+(`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507, gpu1; the E4B r4 v7
+lane on gpu0 untouched); its four criteria on `PILOT_REPORT` are
 what a v8 freeze may rest on; the spectrum arm's B+X / X+B cells come only
 after the freeze.
 

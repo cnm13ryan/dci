@@ -13,6 +13,36 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 (pilot r2) — the v8 second pass: batch index is the batch's position; the cap of three is global
+
+**What changed.** `dci1v8dev.prescreen.rescreen.plan_batch` returned
+`index = max(batches_used.values())` (the largest per-family batch count)
+and applied `RESCREEN_MAX_BATCHES` per family. In the real pilot
+(qwen3-4b-instruct-2507, root `dci1v8-pilot-r2`) a family whose status
+returned to `SCREEN_RESAMPLE` after the A-grid re-measurement moved ι_A
+re-entered the second pass with index 3 (a fourth batch on the last 24
+Calibration-A topics, 648 generations) and then index 3 again, which the
+run layer's topic-isolation assertion refused. Now the index is the
+batch's position in the run (`n_batches`), the cap bounds that sequence
+(three batches, 72 of 96 Calibration-A topics --- the documented budget),
+and a family still undecided when the sequence is spent is resolved by the
+existing `AMBIGUOUS_AT_MAX` rule. `run/cli.py` also resolves `--root` to an
+absolute path (the backend runs with `cwd=exploratory/`; a relative root
+crashed Gate 0 on r2's first attempt).
+
+**What is affected.** No registered result: v8 is a development candidate.
+The v8 pilot roots: `dci1v8-pilot` (terminal at `QUALIFIED`,
+`clean_worktree`; apparatus only) and `dci1v8-pilot-r2` (regime record
+signed, four second-pass batches generated, no second-pass record) are
+kept as apparatus records; the pilot re-runs as `dci1v8-pilot-r3` at the
+fixed commit. The prescreen simulation and backtest reports
+(`reports/dci1v8dev/prescreen/`) predate the change; they differ only where
+a family re-enters after ι_A moves (the simulation's `measure` ignores the
+index) and are regenerated where cited.
+
+**Comparability.** r2's regime record is comparable with r3's (same code
+path); r2's batches are not read by anything.
+
 ## 2026-08-30 (later) — v8 pilot: fresh-topic second pass asserted, the v7-relative frame threshold removed, the wording diagnostic measured per frame (researcher decisions; prospective; no evidence)
 
 **What changed** (`dci1/docs/V8_PILOT.md` §1a). (1) The second pass takes

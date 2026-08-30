@@ -119,9 +119,25 @@ def _entries_for_plan(verdict: Mapping[str, Any], *, threshold: float = 0.5
 
 
 def plan_batch(screen: Mapping[str, Any], *, batches_used: Mapping[str, int],
-               config: RescreenConfig, table: Sequence[PrescreenRung]
-               ) -> RescreenBatch | None:
-    """The next batch, or None when no family is still undecided."""
+               config: RescreenConfig, table: Sequence[PrescreenRung],
+               n_batches: int = 0) -> RescreenBatch | None:
+    """The next batch, or None when no family is still undecided or the
+    budget is spent.
+
+    ``n_batches`` is how many batches the loop has measured so far; the
+    returned batch's ``index`` is that position, so every batch in one run
+    carries a distinct index and the topic cut keyed on it stays disjoint.
+    The cap ``config.max_batches`` bounds this sequence (three batches at
+    most: 72 of the 96 Calibration-A topics), not each family's own count.
+    Before 2026-08-30 the index was ``max(batches_used.values())`` and the
+    cap was per family: a family whose status returned to RESAMPLE after
+    ι_A moved (the A-grid is re-measured every batch) re-entered with the
+    same index twice --- pilot r2 generated a fourth batch and then refused
+    a fifth on the isolation rule. A family still undecided when the
+    sequence is spent is resolved by the at-max rule in ``run_rescreen``.
+    """
+    if n_batches >= config.max_batches:
+        return None
     verdicts = screen["families"]
     iota_a = screen["iota_a"]["iota_a_mean"]
     measured: dict[str, list[int]] = {}
@@ -149,9 +165,8 @@ def plan_batch(screen: Mapping[str, Any], *, batches_used: Mapping[str, int],
                           "p_spectrum": v["p_spectrum"]}
     if not families:
         return None
-    index = max(batches_used.values(), default=0)
     return RescreenBatch(
-        index=index, families=families, a_grid=config.include_a_grid,
+        index=n_batches, families=families, a_grid=config.include_a_grid,
         layout=config.layout,
         n_topics=config.batch_topics if config.layout == "topics"
         else C.N_PRESCREEN,
@@ -219,11 +234,14 @@ def run_rescreen(table: Sequence[PrescreenRung], a_grid: Sequence[ARung], *,
                     "p_spectrum": {k: v["p_spectrum"]
                                    for k, v in screen["families"].items()}})
     total_cost = 0
+    n_batches = 0
     while True:
         batch = plan_batch(screen, batches_used=batches_used, config=config,
-                           table=table)
+                           table=table, n_batches=n_batches)
         if batch is None:
             break
+        assert batch.index == n_batches
+        n_batches += 1
         new_rungs, new_a = measure(batch)
         table, a_grid = apply_batch(table, a_grid, new_rungs, new_a)
         for kind in batch.families:

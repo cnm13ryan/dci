@@ -66,7 +66,10 @@ def _context(root: str | None, namespace: str | None):
     if root is None:
         raise ValueError("--root is required: the v8 pilot has no registered "
                          "root and never writes into one")
-    return ROOTED_NAMESPACES[namespace or "pilot"](Path(root))
+    # Absolute: the backend runs with cwd=exploratory/, so a relative root
+    # reaches it as a path that does not exist there (pilot r2, 2026-08-30:
+    # "backend crashed ... No such file or directory: evidence/.../plan.json").
+    return ROOTED_NAMESPACES[namespace or "pilot"](Path(root).resolve())
 
 
 def _tree(model_key: str, root: str | None, namespace: str | None) -> ModelTree:
