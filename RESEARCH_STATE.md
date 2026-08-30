@@ -153,10 +153,15 @@ chooses nothing) is written and validated on the synthetic walk. The
 real pilot started 2026-08-30 05:38Z on gpu1 after E2B r5 finished: r2
 found a rule defect in the second pass (batch index per family, not per
 batch; fixed, `CHANGES_SCIENTIFIC.md`) and the pilot re-ran as r3
-(`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507, gpu1; the E4B r4 v7
-lane on gpu0 untouched); its four criteria on `PILOT_REPORT` are
-what a v8 freeze may rest on; the spectrum arm's B+X / X+B cells come only
-after the freeze.
+(qwen3-4b-instruct-2507, gpu1; the E4B r4 v7 lane on gpu0 untouched).
+**r3 ended terminal at Gate 2 (`GRID_RESOLUTION_INSUFFICIENT`)** after
+the A and B grids: pooled over the four v8 frames A's compliance jumps
+0.92 → 0.46 across the target band, because the frames are not
+exchangeable on A (0.22 / 0.68 / 0.42 / 0.52 at q = 5, replicated on both
+calibration splits; a different frame is the outlier on B). The wording
+policy is now the blocking researcher decision; the evidence is in
+[`dci1/reports/dci1v8dev/wording_decision.md`](dci1/reports/dci1v8dev/wording_decision.md)
+and `V8_PILOT.md` §7a. No v8 freeze; no spectrum arm; no further v7 runs.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 

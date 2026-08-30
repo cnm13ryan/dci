@@ -191,6 +191,50 @@ pass) + 13k (grids) + 192 × 4 × forwarded (≈ 31–49k) + ≤ 12k (extension)
 Gate-2 throughput. No v7 lane is interrupted: the driver takes the per-card
 lock the v7 driver uses and waits.
 
+## 7a. Outcome of the first real pilot (r3, 2026-08-30)
+
+`dci1/evidence/dci1v8-pilot-r3`, qwen3-4b-instruct-2507, gpu1, commit
+190e660, 05:38Z–07:14Z. Registered, qualified (15/15), Gate 0 (8/8), regime
+screen (cap 512; 342 rungs; κ on the unconstrained cell; 0 `SCREEN_ACCEPT`,
+19 reject, 18 resample), second pass (3 batches × 24 fresh Calibration-A
+topics, 12 768 generations, every row scored; 15 families resolved at the
+maximum, 6 accepted; 56 rungs forwarded; 5 of 6 spectrum families reach
+both offsets), Gate 1 --- all signed `PASS`. **Gate 2 ended terminal:
+`GRID_RESOLUTION_INSUFFICIENT`** (§12.3) after the A and B grids (13 824
+rows) and before any candidate: A's solo compliance pooled over the four
+frames is 0.986 / 0.993 / 0.982 / 0.921 / 0.460 / 0.464 / 0.306 / 0.449 at
+q = 1…8, and q4 → q5 jumps across the whole target band [0.50, 0.85]. Under
+v7's frames the same model (r4) had 0.87 → 0.566 there and passed.
+
+The wording diagnostic on the grid rows (`reports/dci1v8dev/wording_decision.md`,
+recomputed from the rows because the stage wrote no record; 48 topics × 4
+draws per frame per split; κ = 0 on A, so ι is raw compliance) shows why:
+**the four A frames disagree by 0.34–0.46 at q = 5–8, replicated on both
+splits** (A:5 --- f0 0.219, f1 0.682, f2 0.417, f3 0.521; A:6 --- 0.240 /
+0.615 / 0.312 / 0.688). Frame 0 (*Use the word however exactly q times.*)
+is the hardest at every q ≥ 4, frame 1 (*Your answer must contain the word
+however exactly q times.*) the easiest; on B a different frame (f3, *No
+word in your answer may exceed q letters.*) is the hardest at every q ≥ 8
+(B:9 --- 0.578 / 0.661 / 0.442 / 0.296). The failure mode on A is a
+systematic off-by-one (under f0 at q = 5, 150 of 192 answers use the word
+exactly four times; the verifier's count agrees with an independent regex
+count on every row). Per frame, §12.3 resolves the band under f0, f1 and f3
+alone and fails under f2 alone and under the pooled curve. 11 of 16 A/B
+rungs are `WORDING_SENSITIVE` or `UNRESOLVED`; 8 of the 11 replicate (same
+sign, beyond the bound on both splits); τ median 0.115. Gate 3 was not
+reached, so the exposure of the reference set (item 4) is unmeasured.
+
+What this licenses: nothing about the effect. It says the v8 instrument
+as pooled by §7.8 is out of regime on this model because its frames are
+not exchangeable on A, and the wording policy (§1a item 5) is now the
+blocking decision: retain all frames (then the target rule needs a
+per-frame or frame-robust operating point), a specified subset (f1, or
+f1 + f3, resolve the band; the choice would rest on this one model), or an
+explicit frame term in ι (then §12.3 and §13.11 need a frame-aware
+reading). Earlier roots: `dci1v8-pilot` (terminal at `QUALIFIED`,
+`clean_worktree`) and `dci1v8-pilot-r2` (the second-pass index defect,
+§1a item 1) are apparatus records.
+
 ## 7. What the pilot cannot tell you
 
 That the effect exists; that v8 works; anything about B+R or R+B; which

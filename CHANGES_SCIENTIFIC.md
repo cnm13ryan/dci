@@ -36,9 +36,9 @@ The v8 pilot roots: `dci1v8-pilot` (terminal at `QUALIFIED`,
 signed, four second-pass batches generated, no second-pass record) are
 kept as apparatus records; the pilot re-runs as `dci1v8-pilot-r3` at the
 fixed commit. The prescreen simulation and backtest reports
-(`reports/dci1v8dev/prescreen/`) predate the change; they differ only where
-a family re-enters after ι_A moves (the simulation's `measure` ignores the
-index) and are regenerated where cited.
+(`reports/dci1v8dev/prescreen/`) were regenerated at 190e660 and are
+identical to the committed reports except wall-clock seconds: no replay
+contains a family that re-enters after ι_A moves.
 
 **Comparability.** r2's regime record is comparable with r3's (same code
 path); r2's batches are not read by anything.
