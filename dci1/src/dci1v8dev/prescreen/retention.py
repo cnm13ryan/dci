@@ -248,7 +248,7 @@ def retain(screen: Mapping[str, Any], *, config: RetentionConfig
     if config.total_cap is not None and len(ordered) > config.total_cap:
         dropped_for_cap = [e["candidate"] for e in ordered[config.total_cap:]]
         ordered = ordered[:config.total_cap]
-    per_rung = 2 * C.N_CALIBRATION_A * C.M_CAL
+    per_rung = R.CALIBRATION_GENERATIONS_PER_RUNG
     return {
         "forwarded": ordered,
         "n_forwarded": len(ordered),

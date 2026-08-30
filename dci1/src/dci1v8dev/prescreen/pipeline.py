@@ -15,6 +15,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from dci1v7.protocol import constants as C
+from dci1v8dev import rules as R
 from dci1v8dev.prescreen import legacy
 from dci1v8dev.prescreen.rescreen import (
     DEFAULT_RESCREEN_CONFIG,
@@ -58,7 +59,7 @@ def run_pipeline(table: Sequence[PrescreenRung], a_grid: Sequence[ARung], *,
         table, iota_a=certificate["iota_a_prescreen"])
     screen_cost = C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS * (
         len(table) + len(a_grid) + 1)
-    per_rung = 2 * C.N_CALIBRATION_A * C.M_CAL
+    per_rung = R.CALIBRATION_GENERATIONS_PER_RUNG
     return {
         "stage1": stage1,
         "stage2": stage2,

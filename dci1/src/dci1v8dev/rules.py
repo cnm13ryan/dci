@@ -59,6 +59,49 @@ SELECTION_MIN_SEPARATION = 0.05
 CONFIRMATORY_BLOCKS_PER_FRAME = C.N_BLOCKS // C.N_WORDINGS
 assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == C.N_BLOCKS
 
+# ------------------------------------------------- calibration allocation
+#: **The calibration passes** (researcher decision of 2026-08-30, after
+#: pilot r5/r6; docs/V8_FRAME_CONDITIONING.md §10 item 1). Approach A gives
+#: every frame its own difficulty coordinates, and §8.4's allocation --- one
+#: frame per block --- gives each frame a quarter of the calibration
+#: topics: 48, at which r5/r6 measured a median per-frame SE(iota) of 0.0497
+#: against the 0.05 floor `SPECTRUM_MAX_SE_IOTA`, so `V_coord` refused most
+#: rungs below A and no frame identified a spectrum (V8_PILOT.md §7b).
+#:
+#: A calibration *pass* renders every calibration topic under one frame;
+#: pass p shifts the frame by ``CALIBRATION_FRAME_OFFSETS[p]``, so a topic
+#: at position i is met under frame ``(i + offset_p) % N_WORDINGS``. Two
+#: passes with distinct offsets put every topic under two frames and every
+#: frame on ``N_CALIBRATION * 2 / N_WORDINGS`` = 96 topics --- half of each
+#: §13.7 split --- at exactly 2x the Gate-2 generation.
+#:
+#: What it is and is not. It buys information *inside* each frame: the
+#: offsets are distinct modulo N_WORDINGS, so no topic is ever measured
+#: twice under one frame and the *topic*-level standard error falls by
+#: sqrt(2) (the estimators average draws within a topic first, so extra
+#: draws would not have done this). Frames are never pooled; every frame
+#: still has its own curve, operating point, table, validity and selection.
+#: No threshold moves: this changes how much is measured, not what admits.
+CALIBRATION_FRAME_OFFSETS = (0, 2)
+CALIBRATION_FRAME_PASSES = len(CALIBRATION_FRAME_OFFSETS)
+assert len({o % C.N_WORDINGS for o in CALIBRATION_FRAME_OFFSETS}) == \
+    CALIBRATION_FRAME_PASSES <= C.N_WORDINGS, (
+        "the passes' frame offsets must be distinct modulo N_WORDINGS, or a "
+        "topic would be measured twice under one frame and its two "
+        "measurements counted as two topics")
+#: Derived, not chosen: what one frame's table is measured on, and what one
+#: calibrated rung costs in generations across all frames.
+CALIBRATION_TOPICS_PER_FRAME = (C.N_CALIBRATION * CALIBRATION_FRAME_PASSES
+                                // C.N_WORDINGS)
+CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = (
+    C.N_CALIBRATION_A * CALIBRATION_FRAME_PASSES // C.N_WORDINGS)
+CALIBRATION_GENERATIONS_PER_RUNG = (C.N_CALIBRATION * C.M_CAL
+                                    * CALIBRATION_FRAME_PASSES)
+assert CALIBRATION_TOPICS_PER_FRAME * C.N_WORDINGS == \
+    C.N_CALIBRATION * CALIBRATION_FRAME_PASSES
+assert CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT * 2 == \
+    CALIBRATION_TOPICS_PER_FRAME
+
 # ---------------------------------------------------------------- pre-screen
 #: Status thresholds on P(support both sides) and the posterior-majority
 #: rule at the batch maximum — chosen by the synthetic operating

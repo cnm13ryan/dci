@@ -317,4 +317,4 @@ def max_cost_generations(config: RescreenConfig, *,
             "against_screen": C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS
             * (326 + len(C.TARGET_GRID) + len(C.FOCAL_GRID) + 1),
             "against_one_calibrated_rung":
-                2 * C.N_CALIBRATION_A * C.M_CAL}
+                R.CALIBRATION_GENERATIONS_PER_RUNG}

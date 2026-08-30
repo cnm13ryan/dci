@@ -28,6 +28,8 @@ __all__ = [
     "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES", "FRAME_SUPPORTED",
     "FRAME_UNSUPPORTED", "FRAME_FAILURE_STATUSES",
     "CONFIRMATORY_BLOCKS_PER_FRAME", "REPORT_AGGREGATION",
+    "CALIBRATION_FRAME_OFFSETS", "CALIBRATION_FRAME_PASSES",
+    "CALIBRATION_TOPICS_PER_FRAME", "CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT",
     "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA", "GATE0_TOPICS",
     "GATE0_DRAWS", "MIN_LOCAL_FAMILIES", "MIN_CORE_REFERENCES",
     "MIN_BACKUPS", "NO_COMPOSED_CELLS",
@@ -161,6 +163,18 @@ FRAME_STATES = ("UNSUPPORTED", "NEITHER", "LOCAL_ONLY", "SPECTRUM_ONLY",
 #: The confirmatory blocks a frame-specific estimate would rest on at the
 #: registered allocation (rules.py; derived).
 CONFIRMATORY_BLOCKS_PER_FRAME = R.CONFIRMATORY_BLOCKS_PER_FRAME
+#: Gate 2's calibration allocation (rules.py): one pass over the calibration
+#: topics per frame offset, so a frame's own table is measured on
+#: CALIBRATION_TOPICS_PER_FRAME distinct topics --- 96 of the 192 at the two
+#: registered offsets, 48 from each §13.7 split. The amendment of 2026-08-30
+#: after r5/r6 measured SE(iota) on the precision floor; it changes how much
+#: is measured within a frame and no threshold.
+CALIBRATION_FRAME_OFFSETS = R.CALIBRATION_FRAME_OFFSETS
+CALIBRATION_FRAME_PASSES = R.CALIBRATION_FRAME_PASSES
+CALIBRATION_TOPICS_PER_FRAME = R.CALIBRATION_TOPICS_PER_FRAME
+CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT
+assert CALIBRATION_TOPICS_PER_FRAME * C.N_WORDINGS == (
+    C.N_CALIBRATION * CALIBRATION_FRAME_PASSES)
 #: The report's run-level aggregate over frames (V8_FRAME_CONDITIONING.md
 #: §7): a decided criterion ``passed`` when at least one supported frame
 #: passes it, every frame's verdict recorded beside it. Not a freeze rule.

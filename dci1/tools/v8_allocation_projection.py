@@ -2,15 +2,14 @@
 """What the per-frame calibration allocation would buy: a projection, not evidence.
 
 Approach A (`docs/V8_FRAME_CONDITIONING.md`) measures every difficulty
-within a wording frame. At the registered allocation (192 calibration
-topics x M_cal draws, one frame per block) a frame holds 48 topics --- 24
-per split --- and the pilot measured what that costs: a per-frame
-coordinate's SE(iota) sits on the registered 0.05 precision floor, so
-`V_coord` and the two-split `V_stab` refuse most rungs and the
-frame-specific LOCAL and SPECTRUM rules find little. The design note's
-first open researcher decision is therefore the *allocation*: keep the
-registered total (accept per-frame precision) or render every block under
-every frame (4x the Gate-2 generation, giving each frame all 192 topics).
+within a wording frame, so what a frame's rules can admit depends on how
+many topics that frame is measured on. The run being read says what that
+was (`GATE_2_CALIBRATION.calibration_allocation`); this tool asks what
+multiplying it would buy. Pilot r5/r6 ran at one calibration pass --- 48
+topics per frame --- and measured a per-frame SE(iota) sitting on the
+registered 0.05 floor, which is the finding that prompted the two-pass
+amendment (96 topics per frame). The ceiling is every block under every
+frame: N_WORDINGS passes, all 192 topics per frame.
 
 This tool answers that question arithmetically from a completed pilot's own
 rows, by running the **production** Gate-3 rules --- `classify_pool`,
@@ -56,9 +55,10 @@ from dci1v8dev.run.context import model_tree, pilot_context, synthetic_context  
 from dci1v8dev.spectrum.coverage import CoverageRule, selected_coverage  # noqa: E402
 
 REPORTS = HERE.parent / "reports" / "dci1v8dev"
-#: Calibration-allocation multipliers: 1 = the registered allocation (one
-#: frame per block, 48 topics per frame), 2 = every block under two frames,
-#: 4 = every block under every frame (each frame sees all 192 topics).
+#: Calibration-allocation multipliers, relative to *the allocation the run
+#: being read was measured at* --- which is on its Gate-2 record and is not
+#: assumed here. k = 1 is that run; k = 2 doubles the calibration passes;
+#: k = 4 is every block under every frame (each frame on all 192 topics).
 FACTORS = (1, 2, 4)
 STAGES_READ = (S.STAGE_GATE2, S.STAGE_GATE3)
 
@@ -118,7 +118,13 @@ def project(tree, gate2: Mapping[str, Any], gate3: Mapping[str, Any], *,
             factors: Sequence[int], resamples: int) -> dict[str, Any]:
     supported = [int(w) for w in gate2["supported_frames"]]
     topics = len(gate2["calibration_topic_ids"])
-    per_frame_topics = topics // C.N_WORDINGS
+    # The allocation the run was measured at, from its own record. Records
+    # written before the calibration-allocation amendment carry no block, and
+    # for those one pass (a quarter of the topics per frame) is what ran.
+    alloc = dict(gate2.get("calibration_allocation") or {})
+    per_frame_topics = int(alloc.get("topics_per_frame")
+                           or topics // C.N_WORDINGS)
+    passes = int(alloc.get("passes") or 1)
     out: dict[str, Any] = {
         "model_key": tree.model_key,
         "stages_read": list(STAGES_READ),
@@ -127,13 +133,29 @@ def project(tree, gate2: Mapping[str, Any], gate3: Mapping[str, Any], *,
                       "times: every rate unchanged, every SE divided by "
                       "sqrt(k). Not a measurement.",
         "registered_calibration_topics": topics,
+        "calibration_allocation_of_this_run": alloc or {
+            "passes": 1, "topics_per_frame": per_frame_topics,
+            "rule": "no calibration_allocation block on this record: it was "
+                    "written before the amendment, at one pass"},
+        "calibration_passes_of_this_run": passes,
         "topics_per_frame_at_the_registered_allocation": per_frame_topics,
         "supported_frames": supported,
         "precision_floor": {"max_se_iota": REF.DEFAULT_SPECTRUM_RULE.max_se_iota,
                             "stability_bound": C.STABILITY_EQUIVALENCE_BOUND},
         "by_factor": {},
     }
-    for k in factors:
+    # A frame cannot be measured on more topics than the calibration set
+    # holds: the ceiling is every block under every frame (N_WORDINGS
+    # passes, N_CALIBRATION topics per frame). A factor past it would print
+    # an allocation this design cannot buy at any price.
+    reachable = [k for k in factors if per_frame_topics * k <= topics]
+    out["factors_requested"] = list(factors)
+    out["factors_reachable"] = reachable
+    out["factor_ceiling_rule"] = (
+        f"a frame is measured on at most the {topics} calibration topics "
+        f"(every block under every frame, {C.N_WORDINGS} passes); factors "
+        "past that are not printed because no allocation buys them")
+    for k in reachable:
         record = scaled_record(gate2, k) if k != 1 else dict(gate2)
         frames: dict[str, Any] = {}
         for w in supported:
@@ -197,10 +219,11 @@ def render(rep: Mapping[str, Any]) -> str:
       "one question --- *if the rates are what this pilot measured, does more "
       "precision let the registered rules admit references?* --- and nothing "
       "else. No threshold is changed; no frame is chosen; nothing is frozen.\n")
-    p(f"Model `{rep['model_key']}`; registered allocation "
-      f"{rep['registered_calibration_topics']} calibration topics, "
-      f"{rep['topics_per_frame_at_the_registered_allocation']} per frame "
-      f"(one frame per block, §8.4). Supported frames {rep['supported_frames']}. "
+    p(f"Model `{rep['model_key']}`; the run read here measured "
+      f"{rep['registered_calibration_topics']} calibration topics over "
+      f"{rep['calibration_passes_of_this_run']} calibration pass(es), "
+      f"{rep['topics_per_frame_at_the_registered_allocation']} topics per "
+      f"frame. Supported frames {rep['supported_frames']}. "
       f"Precision floor SE(ι) ≤ {rep['precision_floor']['max_se_iota']} "
       f"(`rules.SPECTRUM_MAX_SE_IOTA`), split-equivalence bound "
       f"±{rep['precision_floor']['stability_bound']} (§13.7). Both unchanged here.\n")
@@ -208,17 +231,19 @@ def render(rep: Mapping[str, Any]) -> str:
     p("| calibration allocation | topics per frame | Gate-2 generation | frames with LOCAL identified | frames with SPECTRUM identified |")
     p("|---|---:|---:|---:|---:|")
     for k, block in sorted(rep["by_factor"].items(), key=lambda kv: int(kv[0])):
-        label = {"1": "registered (one frame per block)",
-                 "2": "every block under two frames",
-                 "4": "every block under every frame"}.get(k, f"{k}x")
+        label = {"1": f"as measured ({rep['calibration_passes_of_this_run']} "
+                      f"pass(es) over the calibration topics)",
+                 "2": "twice this run's calibration passes",
+                 "4": "four times this run's calibration passes"}.get(k, f"{k}x")
         p(f"| {label} | {block['topics_per_frame']} | "
           f"{block['gate2_generation_multiplier']}× | "
           f"{block['n_frames_local']} / {len(block['by_frame'])} | "
           f"{block['n_frames_spectrum']} / {len(block['by_frame'])} |")
     p("")
     for k, block in sorted(rep["by_factor"].items(), key=lambda kv: int(kv[0])):
-        p(f"## Calibration allocation ×{k} — {block['topics_per_frame']} topics "
-          f"per frame ({block['topics_per_frame'] // 2} per split)\n")
+        p(f"## Calibration allocation ×{k} of this run — "
+          f"{block['topics_per_frame']} topics per frame "
+          f"({block['topics_per_frame'] // 2} per split)\n")
         p("| frame | state | ι_A(f) | median SE(ι) | coords within the floor | "
           "LOCAL families | core | backups | spectrum below/above | coverage | SE(β̂) frame / full |")
         p("|---|---|---:|---:|---|---:|---|---:|---|---|---|")

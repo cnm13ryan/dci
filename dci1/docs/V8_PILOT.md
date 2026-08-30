@@ -97,8 +97,9 @@ are frozen.
    has an SD of 0, and without the floor any difference would count as
    resolved). At the screen a frame holds 6 topics × 1 draw, so the
    cross-frame comparison there is mostly `UNRESOLVED` by construction;
-   the calibration basis (48 topics × 4 draws per frame per split) is the
-   one that resolves it.
+   the calibration basis (48 topics × 4 draws per frame per split at the
+   two-pass allocation, `V8_CANDIDATE.md` §5b; 24 before it) is the one
+   that resolves it.
 5. **The pilot informs the wording policy; outcome data must not.** The
    policy --- retain all frames, retain a specified subset, or model frame
    variation --- was a researcher decision on solo / pre-screen /
@@ -348,6 +349,21 @@ measures per frame: n*(f), m*(f), ι_A(f), the number of calibrated
 candidates, LOCAL-valid families, the spectrum-valid pool, the core
 references, the selected spectrum points, the backups, and the frame's
 state; and whether the frames agree.
+
+## 7c. The calibration allocation amended, and the 2x pilot (2026-08-30)
+
+r5/r6's finding 3 is an allocation result, and the researcher took the
+allocation decision on it: **two calibration passes, 96 topics per frame**
+(`V8_FRAME_CONDITIONING.md` §4a, `V8_CANDIDATE.md` §5b,
+`CHANGES_SCIENTIFIC.md`). Gate 2 renders each of its runs over one pass per
+frame offset `(0, 2)`, so every calibration topic is met under two frames,
+every frame is measured on 96 distinct topics (48 per §13.7 split), no
+topic recurs inside a frame, no frame is pooled with another, and Gate-2
+generation doubles. **No threshold changed.** The record carries
+`calibration_allocation` with the counts realised on the grids, the
+candidate run and the extension, and
+`calibration.assert_allocation_realised` refuses a frame that is short or
+unbalanced.
 
 ## 7. What the pilot cannot tell you
 

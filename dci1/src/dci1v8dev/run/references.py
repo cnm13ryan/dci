@@ -398,10 +398,17 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
                      "frame on that frame's table against that frame's "
                      "iota_A(f); a reference may be LOCAL-valid under one "
                      "frame and not another; the coverage projection is at "
-                     f"{R.CONFIRMATORY_BLOCKS_PER_FRAME} blocks per frame"},
+                     f"{R.CONFIRMATORY_BLOCKS_PER_FRAME} blocks per frame; "
+                     "the coordinates come from "
+                     f"{R.CALIBRATION_TOPICS_PER_FRAME} calibration topics "
+                     "per frame (calibration_allocation)"},
         "frames": list(S.FRAMES),
         "supported_frames": supported,
         "unsupported_frames": gate2_record.get("unsupported_frames") or {},
+        # The allocation the coordinates this stage admits were measured at,
+        # carried from Gate 2: a LOCAL or SPECTRUM verdict is a statement
+        # about a precision, and the precision is this number.
+        "calibration_allocation": gate2_record.get("calibration_allocation"),
         "by_frame": by_frame,
         "frame_states": states,
         "frame_state_vocabulary": list(S.FRAME_STATES),

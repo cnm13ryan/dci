@@ -87,8 +87,20 @@ class SoloCell:
         self.draws = draws
 
 
-def blocks(topics: Sequence[Mapping[str, Any]], prefix: str) -> list[Block]:
-    return [Block(f"{prefix}-{i:03d}", i, t["topic_id"])
+def blocks(topics: Sequence[Mapping[str, Any]], prefix: str, *,
+           index_base: int = 0) -> list[Block]:
+    """The blocks of one pass over ``topics``, numbered from ``index_base``.
+
+    The block index is the *only* thing that decides the frame
+    (``block.index % N_WORDINGS``, §8.4). ``index_base`` therefore does two
+    things at once and both are load-bearing: it keeps a second pass over
+    the same topics on block ids and row identities disjoint from the
+    first's, and --- because the caller chooses a base congruent to the
+    frame offset it wants --- it puts that pass's topics under a different
+    frame. See ``calibration.calibration_blocks``.
+    """
+    return [Block(f"{prefix}-{index_base + i:03d}", index_base + i,
+                  t["topic_id"])
             for i, t in enumerate(topics)]
 
 

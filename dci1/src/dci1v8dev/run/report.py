@@ -247,14 +247,22 @@ def _generations(regime: Mapping[str, Any], second_pass: Mapping[str, Any],
     caps = len(regime["cap_selection"]["truncation_by_cap"]) * C.N_PRESCREEN * 3
     grids_spec = gate2["grids"]
     n_topics = len(gate2["calibration_topic_ids"])
+    # Every Gate-2 run is laid out over one pass per frame offset, so a
+    # block count is the topic count times the passes (calibration.
+    # calibration_blocks). Reading the record's own allocation rather than
+    # a constant keeps this arithmetic true of the run it describes.
+    passes = int((gate2.get("calibration_allocation") or {}).get("passes", 1))
+    n_blocks = n_topics * passes
     cells = (len(grids_spec["A"]) + 1) + (len(grids_spec["B"]) + 1) + (
         (len(grids_spec["B_extension"]) + 1)
         if grids_spec["focal_extension_measured"] else 0)
-    grids = n_topics * C.M_CAL * cells
-    candidates = n_topics * C.M_CAL * gate2["calibration_population"]["n_measured"]
+    grids = n_blocks * C.M_CAL * cells
+    candidates = n_blocks * C.M_CAL * gate2["calibration_population"]["n_measured"]
     extension = gate2["extension"]["n_rows"]
     return {"gate0": gate0["rows"], "cap_selection": caps, "screen": screen,
             "second_pass": second_pass["cost_generations"],
+            "calibration_passes": passes,
+            "calibration_blocks_per_run": n_blocks,
             "calibration_grids": grids, "calibration_candidates": candidates,
             "calibration_extension": extension,
             "total": gate0["rows"] + caps + screen + second_pass["cost_generations"]
