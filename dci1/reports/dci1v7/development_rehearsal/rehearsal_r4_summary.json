@@ -10,9 +10,379 @@
    "timeline": []
   },
   "gemma-3n-e4b-it": {
-   "behavioural_rows": 38000,
+   "CONFIRMATORY_GENERATION": {
+    "completeness": {
+     "complete": true,
+     "duplicates": [],
+     "expected": 89088,
+     "missing": [],
+     "n_duplicate": 0,
+     "n_missing": 0,
+     "n_unexpected": 0,
+     "produced": 89088,
+     "rule": "every (block, cell, draw) identity exactly once; all M draws kept and none selected (\u00a714.2)",
+     "unexpected": []
+    },
+    "n_rows": 89088,
+    "outcome": "PASS"
+   },
+   "FINAL_REPORT": {
+    "checks": 14,
+    "checks_passed": 14,
+    "n_result_rows": 135,
+    "non_passing_checks": [],
+    "outcome": "PASS",
+    "scope_sentence": "the outcomes are verifier-defined and support no claim about compliance as an independent human would judge it"
+   },
+   "GATE_5_FREEZE": {
+    "M": 8,
+    "admitted_arms": [
+     "base",
+     "core",
+     "class"
+    ],
+    "blocks": 384,
+    "bound": {
+     "core_references": 3,
+     "frozen_backup_families": 2,
+     "near_form_controls": 0,
+     "spectrum_severities": 0
+    },
+    "cells_per_block": 29,
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "NEAR_FORM_ARM_NOT_AVAILABLE",
+     "REFERENCE_POOL_SAME_FORM"
+    ],
+    "non_identification_status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "outcome": "PASS"
+   },
+   "UNMASKED_ANALYSIS": {
+    "emitted_levels": {
+     "L1": 3,
+     "L2": 1,
+     "L3c": 2,
+     "L4b": 5
+    },
+    "identification_statuses": [
+     "COMPANION_CLASS_NOT_MATCHED",
+     "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+     "NEAR_FORM_ARM_NOT_AVAILABLE",
+     "REFERENCE_POOL_SAME_FORM"
+    ],
+    "members": {
+     "cross": {
+      "Ord_A": "IDENTIFIED",
+      "Ord_B": "IDENTIFIED",
+      "Ord_CL": "IDENTIFIED",
+      "Ord_Lambda": "IDENTIFIED",
+      "Ord_Rbar": "IDENTIFIED"
+     },
+     "outcome_first": {
+      "identified": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R2)",
+       "D(B<-R3)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_broad",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "vac(B|A+B)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)"
+      ],
+      "not_identified": {
+       "D(B<-N1)": "the admitted design supplies no cell for this contrast",
+       "D(B<-N2)": "the admitted design supplies no cell for this contrast",
+       "D(B<-N3)": "the admitted design supplies no cell for this contrast",
+       "D(B<-R1+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R1-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R2+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R2-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R3+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R3-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "Delta_near": "NEAR_FORM_ARM_NOT_AVAILABLE",
+       "alpha_1": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "alpha_2": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "alpha_3": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "beta": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty|graded_0.99": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty|vacuity_forced": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "gamma_tier": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+N1)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+N2)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+N3)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+R1+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R1-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R2+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R2-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R3+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R3-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+      }
+     },
+     "outcome_second": {
+      "identified": [
+       "D(A<-B)",
+       "D(A<-B)|vacuity_forced",
+       "D(A<-R1)",
+       "D(A<-R2)",
+       "D(A<-R3)",
+       "D(B<-A)",
+       "D(B<-A)|graded_0.99",
+       "D(B<-A)|vacuity_forced",
+       "D(B<-CL)",
+       "D(B<-R1)",
+       "D(B<-R2)",
+       "D(B<-R3)",
+       "D(R1<-A)",
+       "D(R1<-B)",
+       "D(R2<-A)",
+       "D(R2<-B)",
+       "D(R3<-A)",
+       "D(R3<-B)",
+       "D(Rbar<-A)",
+       "D(Rbar<-B)",
+       "D(Rbar<-Rbar')",
+       "Delta^A",
+       "Delta_1",
+       "Delta_2",
+       "Delta_3",
+       "Delta_R",
+       "Delta_R|graded_0.99",
+       "Delta_R|vacuity_forced",
+       "Delta_broad",
+       "Lambda",
+       "Lambda|vacuity_forced",
+       "Xi",
+       "Xi|vacuity_forced",
+       "vac(B|A+B)-vac(B solo)",
+       "vac(B|B+CL)-vac(B solo)",
+       "vac(B|B+R1)-vac(B solo)",
+       "vac(B|B+R2)-vac(B solo)",
+       "vac(B|B+R3)-vac(B solo)"
+      ],
+      "not_identified": {
+       "D(B<-N1)": "the admitted design supplies no cell for this contrast",
+       "D(B<-N2)": "the admitted design supplies no cell for this contrast",
+       "D(B<-N3)": "the admitted design supplies no cell for this contrast",
+       "D(B<-R1+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R1-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R2+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R2-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R3+)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "D(B<-R3-)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "Delta_near": "NEAR_FORM_ARM_NOT_AVAILABLE",
+       "alpha_1": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "alpha_2": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "alpha_3": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "beta": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty|graded_0.99": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "delta_difficulty|vacuity_forced": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "gamma_tier": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+N1)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+N2)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+N3)-vac(B solo)": "the admitted design supplies no cell for this contrast",
+       "vac(B|B+R1+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R1-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R2+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R2-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R3+)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+       "vac(B|B+R3-)-vac(B solo)": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+      }
+     }
+    },
+    "n_statements": 14,
+    "outcome": "PASS",
+    "points": {
+     "outcome_first": {
+      "D(A<-B)": 0.2139,
+      "D(B<-A)": 0.0355,
+      "Delta_R": -0.0268,
+      "Lambda": -0.1784,
+      "Xi": 0.002
+     },
+     "outcome_second": {
+      "D(A<-B)": 0.1702,
+      "D(B<-A)": 0.3916,
+      "Delta_R": -0.0726,
+      "Lambda": 0.2214,
+      "Xi": -0.0056
+     }
+    },
+    "section_26_verdict": "MET"
+   },
+   "admitted_arms": [
+    "base",
+    "core",
+    "class"
+   ],
+   "behavioural_rows": 233424,
+   "coverage_12_6": {
+    "certified_conditions": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": true,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "conditions_moved_by_the_basis": [
+     "C4"
+    ],
+    "conditions_on_calibration_basis": {
+     "C1": true,
+     "C2": true,
+     "C3": true,
+     "C4": false,
+     "C5": true,
+     "C6": true,
+     "C7": true,
+     "C8": false
+    },
+    "core_met": true,
+    "decisive_met": false,
+    "iota_a": 0.7252,
+    "n_eligible": 104,
+    "spectrum_met": false,
+    "straddling_groups": [
+     "marker_hence",
+     "marker_indeed",
+     "marker_thus",
+     "marker_whereas"
+    ]
+   },
+   "delta_r_identified": true,
+   "derived_cell_count": 29,
+   "gate4": {
+    "any_structural_zero": false,
+    "contrast_statuses": [],
+    "rows": 2784,
+    "terminates_nothing": true
+   },
+   "identification_statuses": [
+    "COMPANION_CLASS_NOT_MATCHED",
+    "DIFFICULTY_SUPPORT_NOT_IDENTIFIED",
+    "NEAR_FORM_ARM_NOT_AVAILABLE",
+    "REFERENCE_POOL_SAME_FORM"
+   ],
+   "m_star": 9,
    "model_key": "gemma-3n-e4b-it",
-   "stage_reached": "GATE_1_MEASUREMENT",
+   "n_star": 6,
+   "non_identification": {
+    "irreversible": true,
+    "n_members": 20,
+    "status": "DIFFICULTY_SUPPORT_NOT_IDENTIFIED"
+   },
+   "probe": {
+    "contrast_statuses": [],
+    "contrasts": {
+     "D(A<-B)|outcome_first": {
+      "estimate": 0.2096,
+      "statuses": []
+     },
+     "D(A<-B)|outcome_second": {
+      "estimate": 0.1576,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_first": {
+      "estimate": 0.0156,
+      "statuses": []
+     },
+     "D(B<-A)|outcome_second": {
+      "estimate": 0.3958,
+      "statuses": []
+     },
+     "Lambda|outcome_first": {
+      "estimate": -0.194,
+      "statuses": []
+     },
+     "Lambda|outcome_second": {
+      "estimate": 0.2383,
+      "statuses": []
+     },
+     "Ord_A|cross": {
+      "estimate": 0.0521,
+      "statuses": []
+     },
+     "Ord_B|cross": {
+      "estimate": -0.3802,
+      "statuses": []
+     },
+     "Ord_Lambda|cross": {
+      "estimate": -0.4323,
+      "statuses": []
+     }
+    },
+    "decides": "nothing",
+    "determinate_entries": {
+     "pair:A+B@outcome_first": 0.5221,
+     "pair:A+B@outcome_second": 0.3555,
+     "pair:B+A@outcome_first": 0.7357,
+     "pair:B+A@outcome_second": 0.5742,
+     "solo:A@None": 0.7318,
+     "solo:B@None": 0.7513
+    },
+    "what_this_is": "the composed contrasts at the frozen m*, on the calibration topics, before any reference exists: a projection of what the confirmatory blocks will estimate, labelled as one and read by no rule. The same readings are recomputed at Gate 4 on the composed set and at UNMASKED_ANALYSIS on the 384 blocks"
+   },
+   "stage_reached": "FINAL_REPORT",
+   "support": {
+    "disposition": "SUPPORTED",
+    "failures": [],
+    "realised": {
+     "core_references": 3,
+     "feature_groups": [
+      "marker_indeed",
+      "marker_namely",
+      "marker_whereas"
+     ],
+     "frozen_backups": [
+      "MK1",
+      "MK2"
+     ],
+     "qualified_families": 11,
+     "structurally_eligible_tier12_families": 11,
+     "tier1_core": 3
+    },
+    "spectrum_failures": [
+     "\u00a712.6: a spectrum coverage condition (C2, C4) is not met at the iota_A reference selection matches on, evaluated on the calibration basis where iota(R), the eligibility coordinate, the vacuity and iota_A are all measured on the same 192 topics at the same four draws; the spectrum arm is not generated and the core arm is decided by \u00a713.8, \u00a713.7 and \u00a713.15",
+     "\u00a713.12: no three qualifying families each supply a complete straddling triple, so the spectrum arm is not generated"
+    ],
+    "spectrum_met": false,
+    "support_met": true
+   },
    "terminal_status": null,
    "timeline": [
     {
@@ -44,6 +414,90 @@
      "commit": "3ea82b28122b",
      "outcome": "PASS",
      "stage": "GATE_1_MEASUREMENT"
+    },
+    {
+     "at": "2026-08-30T00:56:37+00:00",
+     "commit": "3ea82b28122b",
+     "outcome": "PASS",
+     "stage": "GATE_2_FOCAL_CALIBRATION"
+    },
+    {
+     "at": "2026-08-30T00:56:38+00:00",
+     "commit": "6eac8e307774",
+     "outcome": "PASS",
+     "stage": "GATE_2_5_CANDIDATE_QUALIFICATION"
+    },
+    {
+     "at": "2026-08-30T01:16:05+00:00",
+     "commit": "6eac8e307774",
+     "outcome": "PASS",
+     "stage": "GATE_2_75_COMPOSED_PROBE"
+    },
+    {
+     "at": "2026-08-30T01:17:11+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "GATE_3A_REFERENCE_CALIBRATION"
+    },
+    {
+     "at": "2026-08-30T01:17:12+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "GATE_3B_REFERENCE_SELECTION"
+    },
+    {
+     "at": "2026-08-30T01:17:12+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "GATE_3C_IDENTIFICATION"
+    },
+    {
+     "at": "2026-08-30T01:28:55+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "GATE_4_COMPOSED_CONTRAST"
+    },
+    {
+     "at": "2026-08-30T01:28:55+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "PREFREEZE_AUDIT"
+    },
+    {
+     "at": "2026-08-30T01:28:56+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "GATE_5_FREEZE"
+    },
+    {
+     "at": "2026-08-30T07:17:17+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "CONFIRMATORY_GENERATION"
+    },
+    {
+     "at": "2026-08-30T07:17:34+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "MASKED_ANALYSIS"
+    },
+    {
+     "at": "2026-08-30T07:17:34+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "UNMASKING"
+    },
+    {
+     "at": "2026-08-30T07:17:51+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "UNMASKED_ANALYSIS"
+    },
+    {
+     "at": "2026-08-30T07:18:01+00:00",
+     "commit": "43bb22a533b0",
+     "outcome": "PASS",
+     "stage": "FINAL_REPORT"
     }
    ]
   },

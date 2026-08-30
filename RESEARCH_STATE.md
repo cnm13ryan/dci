@@ -2615,6 +2615,66 @@ fitted over a compressed range (`gemma-3n-e2b-it`'s real triples: within
 v8, and the full-design scenario is built to the rule as registered.
 
 
+### 4ao. v7 rehearsed end to end on real models, in a development namespace (2026-08-29/30)
+
+**What was asked.** Development-test the amended v7 (A6–A8, §4an) end to
+end on real models — registration through gates, freeze, confirmatory
+generation, analysis and final report — without freezing or registering v7,
+without calling any output confirmatory, and without a v8.
+
+**What exists now.** A third namespace, `development`
+(`dci1v7.engine.context.development_context`, study id
+`dci1v7-development`): the real backend and the real rules, no synthetic
+knobs, roots outside the registered tree, and a manifest identity
+`guards.assert_no_foreign_manifest` refuses as foreign to the registered
+study (`CHANGES_SCIENTIFIC.md` 2026-08-28, "v7 development namespace").
+`tools/run_v7_replication.sh` drives a lane into such a root under
+`DCI1_V7_DEV_ROOT`. Roots `dci1/evidence/dci1v7-development{,-r2,-r3,-r4,-r5}`
+(gitignored; a README in each; the per-lane summaries from signed records
+and the account in `dci1/reports/dci1v7/development_rehearsal/`).
+
+**What the rehearsals reached.** `qwen3-4b` (twice),
+`qwen3-4b-instruct-2507` and `gemma-3n-e2b-it` (twice) walked all 19
+stages: pre-freeze audit 29/29, freeze, 79,872 / 89,088 confirmatory rows
+complete, masked and unmasked analysis, §26 MET, final report 14/14.
+`gemma-3n-e4b-it` did the same on the final tree (`43bb22a`; m\* 9, n\* 6;
+base + core + class, 29 cells; 89,088 rows; 14 h wall, 5 h 48 min of it
+confirmatory generation) — all four registered models, six lanes. Every lane
+reproduced its registered replication's operating point (m\*/n\*) and the
+registered pattern at Gate 3A — C4 certified on the 24-topic pre-screen and
+lost on the 192-topic calibration basis — and, under A7, kept the core arm
+and withheld the 20 spectrum members irreversibly (D6). So the registered
+v7's uniform `PREFREEZE_AUDIT_FAILURE` was the check that read the verdict
+(§4an), not the models: with A6 in force the same models reach the freeze
+and the analyses the protocol describes. Δ_R's point estimates on the
+rehearsal rows sit within ±0.09 of zero on every lane; they are development
+evidence about the apparatus, not estimates of anything.
+
+**Defects found and fixed inside v7 on the way** (each with a
+`CHANGES_SCIENTIFIC.md` entry and tests): no real-model path outside the
+registered tree; the freeze binding Gate 3B's selection for arms Gate 3C
+had not admitted; the manifest recording `adoption: DRAFT` by default;
+§23's projection audit raising on a block with κ_c = 1 instead of recording
+`DIFFICULTY_COORDINATE_DEGENERATE`; the final report's status trace
+demanding freeze = Gate 3C where §18.1 binds Gate 2 ∪ Gate 3C. Two CPU
+loops (row scoring, §13.11's table) now run in spawned process pools with
+every recorded value unchanged — Gate 2's table 751 s → 17 s, the
+execution-path audit 1,250 s → 340 s (2026-08-29, "two CPU loops").
+
+**One finding recorded and not in force.** §13.11's `chance_compliance`
+column has been 0.0 on every replication of v5–v7 (the chance branch was
+reached through a call that raised for every non-outcome candidate). §13.2
+defines κ_c on the unconstrained cells; the correction runs through the
+modules `revision.V9` pins byte-for-byte, so it is recorded (2026-08-29,
+"finding, not yet in force") and left for the researcher. On the rehearsal
+rows the selected references have κ_c = 0 and do not move.
+
+**What this is not.** v7 stays closed (2026-08-28) and is not
+re-registered; no rehearsal row is v7 evidence or is ever pooled with one.
+Whether the registered replications are re-run under the amended v7, and
+what rule the chance column gets before any such run, are the researcher's
+decisions.
+
 ## 6. Recent consequential changes
 
 [`CHANGES_SCIENTIFIC.md`](CHANGES_SCIENTIFIC.md) — measurement-affecting changes

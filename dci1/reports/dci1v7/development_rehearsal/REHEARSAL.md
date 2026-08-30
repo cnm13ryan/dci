@@ -1,4 +1,4 @@
-# DCI-1 v7 development rehearsals (2026-08-28/29) — development evidence only
+# DCI-1 v7 development rehearsals (2026-08-28 → 30) — development evidence only
 
 Real-model, end-to-end rehearsals of the amended v7 lifecycle (A6–A8) in the
 **development namespace** (`dci1v7.engine.context.development_context`,
@@ -18,8 +18,8 @@ the signed records of each root; every number below is read from them.
 | `dci1v7-development-r3` (`551cd93`, code = `13173db`) | qwen3-4b | all 19, PASS | same | base + core / 26 | 79,872 complete | MET | L1×2 L3c×2 L4a×1 L4b×4 | −0.003 / +0.013 | 14/14 | 10:20Z → 14:34Z |
 | `dci1v7-development-r3` | gemma-3n-e2b-it | 19 stages; `UNMASKED_ANALYSIS` raised once (defect 5), passed under `aa226ca`; `FINAL_REPORT` recorded FAIL on one check (defect 6) | `DIFFICULTY_SUPPORT_NOT_IDENTIFIED`, core kept; `OPERATING_POINT_AT_GRID_BOUNDARY` from Gate 2 | base + core + class / 29 | 89,088 complete | MET | L1×3 L3c×2 L4b×4 | −0.024 / −0.071 | 13/14 as written (write-once); 14/14 re-checked read-only under `3ea82b2` | 10:21Z → 17:21Z |
 | `dci1v7-development-r4` (`a1ed2a9`, pooled tree) | qwen3-4b-instruct-2507 | all 19, PASS | `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (4 straddling groups), core kept | base + core / 26 | 79,872 complete | MET | L3c×2 L4a×1 L4b×1 | +0.006 / −0.003 | 14/14 | 14:35Z → 19:27Z |
-| `dci1v7-development-r4` | gemma-3n-e4b-it | running (Gate 2 from 18:08Z) | — | — | — | — | — | — | — | — |
-| `dci1v7-development-r5` (`a18db3d`) | gemma-3n-e2b-it (again, under both fixes) | running (from 19:29Z) | — | — | — | — | — | — | — | — |
+| `dci1v7-development-r4` | gemma-3n-e4b-it | all 19, PASS (Gate 2 under `3ea82b2`; probe → freeze → report under `43bb22a`) | `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (ι_A 0.725; C4 lost on the 192-topic basis: straddling `marker_hence`, `marker_indeed`, `marker_thus`, `marker_whereas`), core kept | base + core + class / 29 | 89,088 complete | MET | L1×3 L2×1 L3c×2 L4b×5 | −0.027 / −0.073 | 14/14 | 17:16Z → 07:18Z (Gate 2 6 h 48 min, confirmatory generation 5 h 48 min — the slowest model on the panel) |
+| `dci1v7-development-r5` (`a18db3d`; Gate 2 under `6eac8e3`, Gate 2.5 onward under `43bb22a`) | gemma-3n-e2b-it (again, under both fixes and the final pools) | all 19, PASS | `DIFFICULTY_SUPPORT_NOT_IDENTIFIED` (ι_A 0.589; C4 lost on the 192-topic basis: straddling `semicolon`, `sentence`), core kept; `OPERATING_POINT_AT_GRID_BOUNDARY` from Gate 2 | base + core + class / 29 | 89,088 complete | MET | L1×3 L3c×2 L4b×4 | −0.032 / −0.085 | 14/14 | 19:29Z → 05:08Z (Gate 2's first two attempts deadlocked in the interim pool and were retried by the driver, 21:11Z–23:06Z; the third ran under `6eac8e3`) |
 
 A study root binds one registration commit, so each code change after a
 root's first registration required a new root for later models (`r3` →
@@ -51,7 +51,12 @@ withheld irreversibly on every lane, as D6 registers.
    forkserver pool hung a real stage; reverted, redesigned on spawned
    workers, proven byte-identical (unit tests; 336 real calibration rows in
    every column), landed as `e0006b4` (Gate 2's table 751 s → 16.6 s; the
-   audit 1,250 s → 340 s).
+   audit 1,250 s → 340 s). That pool's dispatch-all-then-collect deadlocked
+   on full pipes in r5's Gate 2 (two attempts, retried by the driver);
+   redesigned as its own spawned workers with one pipe each, one chunk in
+   flight per worker, chunk-indexed reassembly, bounded waits and a serial
+   fallback on a stall (`19aab65`, `6eac8e3`; `engine/parallel.py`), re-proven
+   identical, and the audit re-run on it (`43bb22a`).
 5. **§23's projection audit raised on a block with κ_c = 1** instead of
    recording `DIFFICULTY_COORDINATE_DEGENERATE` (§11.2); reachable only with
    the class arm admitted (`aa226ca`).
@@ -73,6 +78,8 @@ references have κ_c = 0 and do not move; 7 of 112 candidates sit above
 
 ## Validation state of the study tree
 
-`473d30c`: execution-path audit 80/80 rules, 24 scenarios, 0 contract
-defects; fast subset 659; synthetic walk 25; D6 branches 4;
-producer/consumer 172 fields, 0 defects.
+`43bb22a` (the tree both running lanes froze on): execution-path audit
+80/80 rules, 24 scenarios, 0 contract defects; fast subset 661; synthetic
+walk 25; D6 branches 4; producer/consumer 172 fields, 0 defects; the
+pool's identity checks (scoring rows byte-identical; 336 real calibration
+rows in every column; stalled-pool fallback) in `tests_v7/test_parallel.py`.
