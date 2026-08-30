@@ -57,7 +57,10 @@ from dci1v8dev.run import stages as S  # noqa: E402
 from dci1v8dev.run import transitions, wording as W  # noqa: E402
 from dci1v8dev.run.context import (model_tree, pilot_context,  # noqa: E402
                                    synthetic_context)
-from dci1v8dev.run.execute import UNCONSTRAINED_ARM  # noqa: E402
+from dci1v4.engine import fs  # noqa: E402
+from dci1v4.engine.signing import verify_signed  # noqa: E402
+from dci1v7.stages.regime import grid_resolution  # noqa: E402
+from dci1v8dev.run.execute import UNCONSTRAINED_ARM, row_accounting  # noqa: E402
 from dci1v8dev.wordings import v8_wordings  # noqa: E402
 
 STAGES_READ = (S.STAGE_GATE2, S.STAGE_GATE3)
@@ -114,6 +117,80 @@ def _scored_rows(tree) -> tuple[list[dict[str, Any]], dict[str, str]]:
                     f"constraint; a composed row is never read by this report")
             rows.append(r)
     return rows, prompts
+
+
+def _terminal(tree) -> dict[str, Any] | None:
+    """The signed terminal report's payload, if the replication is terminal."""
+    path = tree.terminal_report
+    if not path.exists():
+        return None
+    return verify_signed(fs.read_json(path), tree.context.signing_key_path,
+                         where=f"{tree.model_key}:terminal")
+
+
+def _gate2_from_rows(tree, rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """The Gate-2 wording blocks recomputed from the stage's scored rows, for
+    a replication that ended terminal *inside* Gate 2 (after the A and B
+    grids, before the candidates). Unsigned: the stage wrote no record; the
+    rows carry their own provenance and the terminal report is signed."""
+    by_frame = {C.CALIBRATION_A: W.frame_table(rows, split=C.CALIBRATION_A),
+                C.CALIBRATION_B: W.frame_table(rows, split=C.CALIBRATION_B),
+                "pooled": W.frame_table(rows)}
+    comparison = W.frame_comparison(by_frame["pooled"], bound=BOUND)
+    base = tree.backend_runs(S.STAGE_GATE2)
+    accounting = {p.name: row_accounting(p) for p in sorted(base.iterdir())
+                  if p.is_dir() and (p / "design.jsonl").exists()}
+    return {
+        "wording_by_frame": by_frame,
+        "frame_comparison_pooled": comparison,
+        "ladders_by_frame_pooled": W.ladders_by_frame(by_frame["pooled"]),
+        "wording_dependence_pooled": W.wording_dependence(comparison),
+        "split_stability_by_frame": W.stability_by_frame(
+            by_frame[C.CALIBRATION_A], by_frame[C.CALIBRATION_B], bound=BOUND,
+            names=(C.CALIBRATION_A, C.CALIBRATION_B)),
+        "rungs_by_wording_class": W.sensitive_rungs(comparison),
+        "iota_a": None, "iota_a_by_split": None,
+        "chance_basis": {"basis": "unconstrained cell of the grid rows' topic "
+                                  "set (§13.2); computed by this report from "
+                                  "the rows, not by the stage"},
+        "row_accounting": accounting,
+        "recomputed_from_rows": True,
+    }
+
+
+def regime_by_frame(gate2: Mapping[str, Any], *, pooled_curve: Mapping[str, float] | None
+                    ) -> dict[str, Any]:
+    """§12.3 on each frame's own A curve: would the target grid resolve the
+    band under that frame alone? The stage applies the rule to the curve
+    pooled over the four frames (v7's reading of §7.8); the per-frame
+    curves are what the wording policy turns on."""
+    tab = gate2["wording_by_frame"]["pooled"]
+    low, high = C.TARGET_BAND
+    out: dict[str, Any] = {"band": [low, high], "grid": list(C.TARGET_GRID),
+                           "by_frame": {}, "pooled": None}
+    for w in FRAMES:
+        curve = {e["severity"]: e["exact_compliance"] for e in tab
+                 if e["kind"] == "A" and int(e["frame"]) == w
+                 and e["exact_compliance"] is not None}
+        if not curve:
+            continue
+        res = grid_resolution(curve, band=(low, high), grid=C.TARGET_GRID)
+        inside = sorted(q for q, p in curve.items() if low <= p <= high)
+        out["by_frame"][str(w)] = {
+            "curve": {str(q): curve[q] for q in sorted(curve)},
+            "severities_inside_band": inside,
+            "grid_resolution_insufficient": bool(res["insufficient"]),
+            "straddling_pairs": res["straddling_pairs"],
+        }
+    if pooled_curve:
+        pc = {int(q): float(p) for q, p in pooled_curve.items()}
+        res = grid_resolution(pc, band=(low, high), grid=C.TARGET_GRID)
+        out["pooled"] = {"curve": {str(q): pc[q] for q in sorted(pc)},
+                         "severities_inside_band": sorted(q for q, p in pc.items()
+                                                          if low <= p <= high),
+                         "grid_resolution_insufficient": bool(res["insufficient"]),
+                         "straddling_pairs": res["straddling_pairs"]}
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -187,6 +264,22 @@ def _rung_key(label: str) -> tuple[str, int]:
 # 1. per (family, q): four frames, SE, spread, class --- pooled and per split
 # --------------------------------------------------------------------------
 
+def _chance_of(table: Sequence[Mapping[str, Any]], label: str) -> float | None:
+    for e in table:
+        if e["candidate"] == label and e.get("chance") is not None:
+            return e["chance"]
+    return None
+
+
+def _max_abs_p_difference(c: Mapping[str, Any]) -> float | None:
+    """The largest pairwise difference in exact compliance (not ι): on a
+    rung whose chance κ is high, ι = (p − κ)/(1 − κ) amplifies a one-answer
+    difference by 1/(1 − κ); the reader needs both."""
+    ps = [f["exact_compliance"] for f in c["frames"].values()
+          if f and f.get("exact_compliance") is not None]
+    return (max(ps) - min(ps)) if len(ps) >= 2 else None
+
+
 def rung_table(gate2: Mapping[str, Any]) -> list[dict[str, Any]]:
     by_frame = gate2["wording_by_frame"]
     pooled = gate2["frame_comparison_pooled"]
@@ -200,6 +293,8 @@ def rung_table(gate2: Mapping[str, Any]) -> list[dict[str, Any]]:
             "candidate": label, "family": kind, "severity": q,
             "tier": _tier(kind),
             "frames": {str(w): c["frames"].get(str(w)) for w in FRAMES},
+            "chance": _chance_of(by_frame["pooled"], label),
+            "max_abs_difference_compliance": _max_abs_p_difference(c),
             "n_frames_measured": c["n_frames_measured"],
             "spread": c["spread"],
             "max_abs_difference": c["max_abs_difference"],
@@ -514,6 +609,8 @@ def exemplars(rungs: Sequence[Mapping[str, Any]], rows: Sequence[Mapping[str, An
             }
         cases.append({
             "candidate": r["candidate"], "class": r["class"],
+            "chance": r.get("chance"),
+            "max_abs_difference_compliance": r.get("max_abs_difference_compliance"),
             "spread": r["spread"], "max_abs_z": r["max_abs_z"],
             "class_by_split": r["class_by_split"],
             "frames": frames_out,
@@ -610,15 +707,28 @@ def build(root: Path, *, model_key: str, namespace: str, n_cases: int,
         "composed_outcomes_read": False,
         "synthetic": namespace == "synthetic",
     }
+    terminal = _terminal(tree)
+    head["terminal"] = ({"gate": terminal.get("gate"), "status": terminal.get("status"),
+                         "criterion": terminal.get("criterion")} if terminal else None)
     gate2 = _record(tree, S.STAGE_GATE2)
+    rows, prompts = _scored_rows(tree)
+    head["signed_gate2_record"] = gate2 is not None
+    if gate2 is None and rows and terminal and terminal.get("gate") == S.STAGE_GATE2:
+        gate2 = _gate2_from_rows(tree, rows)
+        head["basis"] = (f"UNSIGNED: {S.STAGE_GATE2} ended terminal "
+                         f"({terminal.get('status')}) after the A and B grids and "
+                         f"before any candidate; the per-frame tables below are "
+                         f"recomputed by this report from the stage's {len(rows)} "
+                         f"scored grid rows (A and B only). The pre-screen is not used")
     if gate2 is None:
         needed = list(S.STAGE_SEQUENCE[:S.STAGE_SEQUENCE.index(S.STAGE_GATE2) + 1])
         return {**head, "available": False,
-                "reason": f"no {S.STAGE_GATE2} record under {tree.root}",
+                "reason": f"no {S.STAGE_GATE2} record under {tree.root}"
+                          + (f"; terminal {terminal.get('status')} at {terminal.get('gate')}"
+                             if terminal else ""),
                 "must_finish": needed,
                 "then_for_item_4": S.STAGE_GATE3}
     gate3 = _record(tree, S.STAGE_GATE3)
-    rows, prompts = _scored_rows(tree)
     rungs = rung_table(gate2)
     outliers = frame_outliers(gate2)
     replication = split_replication(gate2, rungs)
@@ -635,6 +745,9 @@ def build(root: Path, *, model_key: str, namespace: str, n_cases: int,
                   "ladders_by_frame_pooled": {
                       w: {fam: d.get("ladder_class") for fam, d in fams.items()}
                       for w, fams in gate2["ladders_by_frame_pooled"].items()}},
+        "regime_by_frame": regime_by_frame(
+            gate2, pooled_curve=((terminal or {}).get("observed") or {}).get("curve")
+            if terminal and terminal.get("gate") == S.STAGE_GATE2 else None),
         "item1_rungs": rungs,
         "item2_frame_outliers": outliers,
         "item3_split_replication": replication,
@@ -667,16 +780,42 @@ def render(rep: Mapping[str, Any]) -> str:
           + f"; item 4 additionally needs `{rep['then_for_item_4']}`.\n")
         return "\n".join(L)
     g2 = rep["gate2"]
+    if rep.get("terminal"):
+        t = rep["terminal"]
+        p(f"> **Replication terminal at `{t['gate']}`: `{t['status']}`** — {t['criterion']}. "
+          f"A terminal status is a statement about the operating regime; it carries "
+          f"no evidence about the effect. Signed Gate-2 record: "
+          f"{'yes' if rep.get('signed_gate2_record') else 'no (tables recomputed from the grid rows)'}.\n")
     p(f"ι_A = {_fmt(g2['iota_a'])} (by split {g2['iota_a_by_split']}); "
       f"{g2['n_scored_rows_read']} scored Gate-2 rows read; chance basis: "
       f"{(g2['chance_basis'] or {}).get('basis', g2['chance_basis'])}.\n")
+    rg = rep.get("regime_by_frame") or {}
+    if rg.get("by_frame"):
+        p("## 0. §12.3 on each frame's own A curve\n")
+        p(f"Target band {rg['band']} on raw solo compliance; the stage applies the rule "
+          f"to the curve pooled over the four frames. Per frame (48 topics × 4 draws per split):\n")
+        qs = [str(q) for q in rg["grid"]]
+        p("| curve | " + " | ".join(f"q={q}" for q in qs) + " | inside band | resolves alone? |")
+        p("|---|" + "---:|" * len(qs) + "---|---|")
+        for w, d in sorted(rg["by_frame"].items()):
+            p(f"| f{w} | " + " | ".join(_fmt(d["curve"].get(q)) for q in qs)
+              + f" | {d['severities_inside_band'] or '—'} | "
+              + ("**no** (" + "; ".join(f"q{s['severities'][0]}→q{s['severities'][1]}" for s in d["straddling_pairs"]) + ")"
+                 if d["grid_resolution_insufficient"] else "yes") + " |")
+        if rg.get("pooled"):
+            d = rg["pooled"]
+            p(f"| pooled (stage) | " + " | ".join(_fmt(d["curve"].get(q)) for q in qs)
+              + f" | {d['severities_inside_band'] or '—'} | "
+              + ("**no** (" + "; ".join(f"q{s['severities'][0]}→q{s['severities'][1]}" for s in d["straddling_pairs"]) + ")"
+                 if d["grid_resolution_insufficient"] else "yes") + " |")
+        p("")
 
     # 1
     p("## 1. Per (family, q): the four frames\n")
     p("ι ± SE per frame (pooled calibration basis); spread = max ι − min ι; "
       "class per the descriptive rule; A/B = class on each split alone.\n")
-    p("| rung | tier | f0 | f1 | f2 | f3 | spread | max\\|z\\| | class | A | B |")
-    p("|---|---|---|---|---|---|---:|---:|---|---|---|")
+    p("| rung | tier | κ | f0 | f1 | f2 | f3 | spread ι | max Δp | max\\|z\\| | class | A | B |")
+    p("|---|---|---:|---|---|---|---|---:|---:|---:|---|---|---|")
     for r in rep["item1_rungs"]:
         cells = []
         for w in FRAMES:
@@ -684,17 +823,19 @@ def render(rep: Mapping[str, Any]) -> str:
             cells.append(f"{_fmt(f['iota'])} ± {_fmt(f['se_iota'])}"
                          if f and f.get("iota") is not None else "—")
         cb = r["class_by_split"]
-        p(f"| {r['candidate']} | {r['tier'] or '—'} | " + " | ".join(cells)
-          + f" | {_fmt(r['spread'])} | {_fmt(r['max_abs_z'], 2)} | {r['class'] or '—'}"
+        p(f"| {r['candidate']} | {r['tier'] or '—'} | {_fmt(r['chance'])} | " + " | ".join(cells)
+          + f" | {_fmt(r['spread'])} | {_fmt(r['max_abs_difference_compliance'])} | {_fmt(r['max_abs_z'], 2)} | {r['class'] or '—'}"
           + f" | {(cb.get(C.CALIBRATION_A) or '—')} | {(cb.get(C.CALIBRATION_B) or '—')} |")
     dep = g2["wording_dependence_pooled"]
     p(f"\nRungs compared: {dep['n_rungs_compared']} ({dep['n_rungs_with_all_frames']} "
       f"with all four frames); τ median {_fmt(dep['tau_median'])}; spread median "
       f"{_fmt(dep['spread_median'])}, q90 {_fmt(dep['spread_q90'])}; class shares "
       + ", ".join(f"{k} {_fmt(v)}" for k, v in dep["share_by_class"].items()) + ".\n")
-    p("Ladder class per frame (pooled): " + "; ".join(
+    ladders = g2["ladders_by_frame_pooled"]
+    p("Ladder class per frame (pooled): " + ("; ".join(
         f"f{w}: " + ", ".join(f"{fam}={cls}" for fam, cls in sorted(fams.items()))
-        for w, fams in sorted(g2["ladders_by_frame_pooled"].items())) + "\n")
+        for w, fams in sorted(ladders.items())) if any(ladders.values())
+        else "— (no registered family measured on this basis; A and B carry no ladder class)") + "\n")
 
     # 2
     o = rep["item2_frame_outliers"]
@@ -775,7 +916,7 @@ def render(rep: Mapping[str, Any]) -> str:
     p("## 5. The strongest cases: prompts, outputs, counts\n")
     p(f"Basis: {e5['basis']}. {e5['n_cases']} case(s).\n")
     for c in e5["cases"]:
-        p(f"### {c['candidate']} — {c['class']} (spread {_fmt(c['spread'])}, "
+        p(f"### {c['candidate']} — {c['class']} (κ {_fmt(c.get('chance'))}, max Δp {_fmt(c.get('max_abs_difference_compliance'))}, spread ι {_fmt(c['spread'])}, "
           f"max |z| {_fmt(c['max_abs_z'], 2)}; A {c['class_by_split'].get(C.CALIBRATION_A)}, "
           f"B {c['class_by_split'].get(C.CALIBRATION_B)})\n")
         for w, f in sorted(c["frames"].items()):

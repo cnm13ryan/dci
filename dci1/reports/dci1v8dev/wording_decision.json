@@ -1,0 +1,2092 @@
+{
+ "available": true,
+ "basis": "UNSIGNED: GATE_2_CALIBRATION ended terminal (GRID_RESOLUTION_INSUFFICIENT) after the A and B grids and before any candidate; the per-frame tables below are recomputed by this report from the stage's 13824 scored grid rows (A and B only). The pre-screen is not used",
+ "composed_outcomes_read": false,
+ "gate2": {
+  "chance_basis": {
+   "basis": "unconstrained cell of the grid rows' topic set (\u00a713.2); computed by this report from the rows, not by the stage"
+  },
+  "iota_a": null,
+  "iota_a_by_split": null,
+  "ladders_by_frame_pooled": {},
+  "n_scored_rows_read": 13824,
+  "row_accounting": {
+   "grid-A": {
+    "every_row_scored": true,
+    "n_design": 6912,
+    "n_generated": 6912,
+    "n_present_exact_compliant": 4270,
+    "n_present_non_compliant": 1874,
+    "n_present_verdicts": 6144,
+    "n_scored": 6912,
+    "rule": "every generated row is data; nothing downstream is conditioned on exact compliance or uptake",
+    "run": "grid-A"
+   },
+   "grid-B": {
+    "every_row_scored": true,
+    "n_design": 6912,
+    "n_generated": 6912,
+    "n_present_exact_compliant": 4100,
+    "n_present_non_compliant": 2044,
+    "n_present_verdicts": 6144,
+    "n_scored": 6912,
+    "rule": "every generated row is data; nothing downstream is conditioned on exact compliance or uptake",
+    "run": "grid-B"
+   }
+  },
+  "wording_dependence_pooled": {
+   "n_rungs_compared": 16,
+   "n_rungs_with_all_frames": 16,
+   "reading": "\u03c4\u00b2 is the between-frame variance of \u03b9 net of sampling variance, per rung, summarised over rungs; the classes are descriptive (module note) and select nothing",
+   "rungs_by_class": {
+    "CONSISTENT": [
+     "A:1",
+     "A:2",
+     "A:3",
+     "A:4",
+     "B:7"
+    ],
+    "UNRESOLVED": [
+     "B:13",
+     "B:14"
+    ],
+    "WORDING_SENSITIVE": [
+     "A:5",
+     "A:6",
+     "A:7",
+     "A:8",
+     "B:10",
+     "B:11",
+     "B:12",
+     "B:8",
+     "B:9"
+    ]
+   },
+   "share_by_class": {
+    "CONSISTENT": 0.3125,
+    "UNRESOLVED": 0.125,
+    "WORDING_SENSITIVE": 0.5625
+   },
+   "spread_median": 0.30208333333333337,
+   "spread_q90": 0.3958333333333333,
+   "tau2_mean": 0.013393568673959926,
+   "tau2_median": 0.013313332685024513,
+   "tau_median": 0.11538341598784685
+  }
+ },
+ "item1_rungs": [
+  {
+   "candidate": "A:1",
+   "chance": 0.020833333333333332,
+   "class": "CONSISTENT",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "CONSISTENT"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 1.0,
+     "iota": 1.0,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.027235688849029244
+    },
+    "1": {
+     "exact_compliance": 0.953125,
+     "iota": 0.9521276595744681,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.038798909293403884
+    },
+    "2": {
+     "exact_compliance": 0.9947916666666666,
+     "iota": 0.9946808510638298,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.02881550038631893
+    },
+    "3": {
+     "exact_compliance": 0.9947916666666666,
+     "iota": 0.9946808510638298,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.02881550038631893
+    }
+   },
+   "max_abs_difference": 0.0478723404255319,
+   "max_abs_difference_compliance": 0.046875,
+   "max_abs_z": 1.0098800146074012,
+   "n_frames_measured": 4,
+   "severity": 1,
+   "spread": 0.0478723404255319,
+   "spread_by_split": {
+    "calibration_a": 0.04221635883905006,
+    "calibration_b": 0.0536193029490617
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:2",
+   "chance": 0.0,
+   "class": "CONSISTENT",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "CONSISTENT"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.9895833333333334,
+     "iota": 0.9895833333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.029666587182960672
+    },
+    "1": {
+     "exact_compliance": 0.984375,
+     "iota": 0.984375,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.031035907504372042
+    },
+    "2": {
+     "exact_compliance": 1.0,
+     "iota": 1.0,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.02666827866467447
+    },
+    "3": {
+     "exact_compliance": 1.0,
+     "iota": 1.0,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.02666827866467447
+    }
+   },
+   "max_abs_difference": 0.015625,
+   "max_abs_difference_compliance": 0.015625,
+   "max_abs_z": 0.38184510067983524,
+   "n_frames_measured": 4,
+   "severity": 2,
+   "spread": 0.015625,
+   "spread_by_split": {
+    "calibration_a": 0.02083333333333337,
+    "calibration_b": 0.01041666666666663
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:3",
+   "chance": 0.0,
+   "class": "CONSISTENT",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "CONSISTENT"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.9947916666666666,
+     "iota": 0.9947916666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.02821517746160395
+    },
+    "1": {
+     "exact_compliance": 0.9739583333333334,
+     "iota": 0.9739583333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.033567884720598413
+    },
+    "2": {
+     "exact_compliance": 0.9895833333333334,
+     "iota": 0.9895833333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.029666587182960672
+    },
+    "3": {
+     "exact_compliance": 0.96875,
+     "iota": 0.96875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.03474560483104449
+    }
+   },
+   "max_abs_difference": 0.02604166666666663,
+   "max_abs_difference_compliance": 0.02604166666666663,
+   "max_abs_z": 0.5818218184758132,
+   "n_frames_measured": 4,
+   "severity": 3,
+   "spread": 0.02604166666666663,
+   "spread_by_split": {
+    "calibration_a": 0.02083333333333337,
+    "calibration_b": 0.03125
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:4",
+   "chance": 0.0,
+   "class": "CONSISTENT",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "CONSISTENT"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.8125,
+     "iota": 0.8125,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.056634784912495795
+    },
+    "1": {
+     "exact_compliance": 0.9739583333333334,
+     "iota": 0.9739583333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.033567884720598413
+    },
+    "2": {
+     "exact_compliance": 0.9635416666666666,
+     "iota": 0.9635416666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.035872304486555484
+    },
+    "3": {
+     "exact_compliance": 0.9322916666666666,
+     "iota": 0.9322916666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.0417797121848672
+    }
+   },
+   "max_abs_difference": 0.16145833333333337,
+   "max_abs_difference_compliance": 0.16145833333333337,
+   "max_abs_z": 2.452454132730269,
+   "n_frames_measured": 4,
+   "severity": 4,
+   "spread": 0.16145833333333337,
+   "spread_by_split": {
+    "calibration_a": 0.14583333333333337,
+    "calibration_b": 0.1875
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:5",
+   "chance": 0.0,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "WORDING_SENSITIVE",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.21875,
+     "iota": 0.21875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.05925821138669402
+    },
+    "1": {
+     "exact_compliance": 0.6822916666666666,
+     "iota": 0.6822916666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06529304739408609
+    },
+    "2": {
+     "exact_compliance": 0.4166666666666667,
+     "iota": 0.4166666666666667,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06851204838407934
+    },
+    "3": {
+     "exact_compliance": 0.5208333333333334,
+     "iota": 0.5208333333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06928622039643194
+    }
+   },
+   "max_abs_difference": 0.46354166666666663,
+   "max_abs_difference_compliance": 0.46354166666666663,
+   "max_abs_z": 5.257102743315462,
+   "n_frames_measured": 4,
+   "severity": 5,
+   "spread": 0.46354166666666663,
+   "spread_by_split": {
+    "calibration_a": 0.48958333333333337,
+    "calibration_b": 0.4375
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:6",
+   "chance": 0.0,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "WORDING_SENSITIVE",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.23958333333333334,
+     "iota": 0.23958333333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06079841165156919
+    },
+    "1": {
+     "exact_compliance": 0.6145833333333334,
+     "iota": 0.6145833333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06776839373110408
+    },
+    "2": {
+     "exact_compliance": 0.3125,
+     "iota": 0.3125,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06505092364658288
+    },
+    "3": {
+     "exact_compliance": 0.6875,
+     "iota": 0.6875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06505092364658287
+    }
+   },
+   "max_abs_difference": 0.44791666666666663,
+   "max_abs_difference_compliance": 0.44791666666666663,
+   "max_abs_z": 5.0305271526704285,
+   "n_frames_measured": 4,
+   "severity": 6,
+   "spread": 0.44791666666666663,
+   "spread_by_split": {
+    "calibration_a": 0.5,
+    "calibration_b": 0.39583333333333337
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:7",
+   "chance": 0.0,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "WORDING_SENSITIVE",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.18229166666666666,
+     "iota": 0.18229166666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.056157943181575576
+    },
+    "1": {
+     "exact_compliance": 0.5,
+     "iota": 0.5,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06933752452815364
+    },
+    "2": {
+     "exact_compliance": 0.15625,
+     "iota": 0.15625,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.053585989199669115
+    },
+    "3": {
+     "exact_compliance": 0.3854166666666667,
+     "iota": 0.3854166666666667,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06776839373110408
+    }
+   },
+   "max_abs_difference": 0.34375,
+   "max_abs_difference_compliance": 0.34375,
+   "max_abs_z": 3.922709217315495,
+   "n_frames_measured": 4,
+   "severity": 7,
+   "spread": 0.34375,
+   "spread_by_split": {
+    "calibration_a": 0.34375,
+    "calibration_b": 0.35416666666666663
+   },
+   "tier": null
+  },
+  {
+   "candidate": "A:8",
+   "chance": 0.0,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "WORDING_SENSITIVE",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "A",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.421875,
+     "iota": 0.421875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06861253688169407
+    },
+    "1": {
+     "exact_compliance": 0.46875,
+     "iota": 0.46875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06922203676024154
+    },
+    "2": {
+     "exact_compliance": 0.2552083333333333,
+     "iota": 0.2552083333333333,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.061853017950139526
+    },
+    "3": {
+     "exact_compliance": 0.6510416666666666,
+     "iota": 0.6510416666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.0665873061391673
+    }
+   },
+   "max_abs_difference": 0.3958333333333333,
+   "max_abs_difference_compliance": 0.3958333333333333,
+   "max_abs_z": 4.3554310458950525,
+   "n_frames_measured": 4,
+   "severity": 8,
+   "spread": 0.3958333333333333,
+   "spread_by_split": {
+    "calibration_a": 0.41666666666666663,
+    "calibration_b": 0.37500000000000006
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:7",
+   "chance": 0.0,
+   "class": "CONSISTENT",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.1875,
+     "iota": 0.1875,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.056634784912495795
+    },
+    "1": {
+     "exact_compliance": 0.234375,
+     "iota": 0.234375,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06042807744120925
+    },
+    "2": {
+     "exact_compliance": 0.08854166666666667,
+     "iota": 0.08854166666666667,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.04509522336633579
+    },
+    "3": {
+     "exact_compliance": 0.13020833333333334,
+     "iota": 0.13020833333333334,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.05066534304297432
+    }
+   },
+   "max_abs_difference": 0.14583333333333331,
+   "max_abs_difference_compliance": 0.14583333333333331,
+   "max_abs_z": 1.934133900912684,
+   "n_frames_measured": 4,
+   "severity": 7,
+   "spread": 0.14583333333333331,
+   "spread_by_split": {
+    "calibration_a": 0.11458333333333331,
+    "calibration_b": 0.23958333333333331
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:8",
+   "chance": 0.0,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "UNRESOLVED",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.4322916666666667,
+     "iota": 0.4322916666666667,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06879369240987589
+    },
+    "1": {
+     "exact_compliance": 0.515625,
+     "iota": 0.515625,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06930867062697342
+    },
+    "2": {
+     "exact_compliance": 0.3125,
+     "iota": 0.3125,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06505092364658288
+    },
+    "3": {
+     "exact_compliance": 0.21354166666666666,
+     "iota": 0.21354166666666666,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.05884798480154226
+    }
+   },
+   "max_abs_difference": 0.30208333333333337,
+   "max_abs_difference_compliance": 0.30208333333333337,
+   "max_abs_z": 3.3224514997825927,
+   "n_frames_measured": 4,
+   "severity": 8,
+   "spread": 0.30208333333333337,
+   "spread_by_split": {
+    "calibration_a": 0.22916666666666666,
+    "calibration_b": 0.41666666666666663
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:9",
+   "chance": 0.0013020833333333333,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "UNRESOLVED",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.578125,
+     "iota": 0.5775749674054759,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06870199260122693
+    },
+    "1": {
+     "exact_compliance": 0.6614583333333334,
+     "iota": 0.6610169491525424,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06627186058710408
+    },
+    "2": {
+     "exact_compliance": 0.4427083333333333,
+     "iota": 0.44198174706649285,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06903848360508197
+    },
+    "3": {
+     "exact_compliance": 0.296875,
+     "iota": 0.2959582790091265,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06436140948167737
+    }
+   },
+   "max_abs_difference": 0.36505867014341586,
+   "max_abs_difference_compliance": 0.36458333333333337,
+   "max_abs_z": 3.951640510118151,
+   "n_frames_measured": 4,
+   "severity": 9,
+   "spread": 0.36505867014341586,
+   "spread_by_split": {
+    "calibration_a": 0.2506527415143603,
+    "calibration_b": 0.47916666666666663
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:10",
+   "chance": 0.006510416666666667,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "UNRESOLVED",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.7447916666666666,
+     "iota": 0.7431192660550459,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.0622583457217656
+    },
+    "1": {
+     "exact_compliance": 0.8489583333333334,
+     "iota": 0.8479685452162516,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.053379019549205806
+    },
+    "2": {
+     "exact_compliance": 0.6770833333333334,
+     "iota": 0.6749672346002622,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06595690046502048
+    },
+    "3": {
+     "exact_compliance": 0.4947916666666667,
+     "iota": 0.491480996068152,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06978867246849121
+    }
+   },
+   "max_abs_difference": 0.35648754914809966,
+   "max_abs_difference_compliance": 0.3541666666666667,
+   "max_abs_z": 4.057345071395499,
+   "n_frames_measured": 4,
+   "severity": 10,
+   "spread": 0.35648754914809966,
+   "spread_by_split": {
+    "calibration_a": 0.24083769633507857,
+    "calibration_b": 0.4724409448818898
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:11",
+   "chance": 0.07942708333333333,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "UNRESOLVED",
+    "calibration_b": "WORDING_SENSITIVE"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.78125,
+     "iota": 0.7623762376237624,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06437101321779493
+    },
+    "1": {
+     "exact_compliance": 0.90625,
+     "iota": 0.8981612446958982,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.04981947738876443
+    },
+    "2": {
+     "exact_compliance": 0.8333333333333334,
+     "iota": 0.818953323903819,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.059369232690289736
+    },
+    "3": {
+     "exact_compliance": 0.578125,
+     "iota": 0.5417256011315418,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.07453243044574406
+    }
+   },
+   "max_abs_difference": 0.3564356435643564,
+   "max_abs_difference_compliance": 0.328125,
+   "max_abs_z": 3.975872297989755,
+   "n_frames_measured": 4,
+   "severity": 11,
+   "spread": 0.3564356435643564,
+   "spread_by_split": {
+    "calibration_a": 0.24788732394366209,
+    "calibration_b": 0.4659090909090908
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:12",
+   "chance": 0.3229166666666667,
+   "class": "WORDING_SENSITIVE",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "UNRESOLVED"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.9166666666666666,
+     "iota": 0.876923076923077,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06543459247426975
+    },
+    "1": {
+     "exact_compliance": 0.9791666666666666,
+     "iota": 0.9692307692307693,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.04775419498092541
+    },
+    "2": {
+     "exact_compliance": 0.9270833333333334,
+     "iota": 0.8923076923076925,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.06298841528376621
+    },
+    "3": {
+     "exact_compliance": 0.8177083333333334,
+     "iota": 0.7307692307692308,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.08294096223740394
+    }
+   },
+   "max_abs_difference": 0.2384615384615385,
+   "max_abs_difference_compliance": 0.16145833333333326,
+   "max_abs_z": 2.4916011017034805,
+   "n_frames_measured": 4,
+   "severity": 12,
+   "spread": 0.2384615384615385,
+   "spread_by_split": {
+    "calibration_a": 0.19259259259259254,
+    "calibration_b": 0.2879999999999999
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:13",
+   "chance": 0.66015625,
+   "class": "UNRESOLVED",
+   "class_by_split": {
+    "calibration_a": "UNRESOLVED",
+    "calibration_b": "UNRESOLVED"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.984375,
+     "iota": 0.9540229885057471,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.09132404966803727
+    },
+    "1": {
+     "exact_compliance": 0.984375,
+     "iota": 0.9540229885057471,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.09132404966803727
+    },
+    "2": {
+     "exact_compliance": 0.9739583333333334,
+     "iota": 0.9233716475095787,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.09877446538474935
+    },
+    "3": {
+     "exact_compliance": 0.8854166666666666,
+     "iota": 0.6628352490421455,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.14335945273364673
+    }
+   },
+   "max_abs_difference": 0.29118773946360155,
+   "max_abs_difference_compliance": 0.09895833333333337,
+   "max_abs_z": 1.7131057433314085,
+   "n_frames_measured": 4,
+   "severity": 13,
+   "spread": 0.29118773946360155,
+   "spread_by_split": {
+    "calibration_a": 0.32352941176470607,
+    "calibration_b": 0.3200000000000002
+   },
+   "tier": null
+  },
+  {
+   "candidate": "B:14",
+   "chance": 0.8697916666666666,
+   "class": "UNRESOLVED",
+   "class_by_split": {
+    "calibration_a": "CONSISTENT",
+    "calibration_b": "UNRESOLVED"
+   },
+   "family": "B",
+   "frames": {
+    "0": {
+     "exact_compliance": 0.9895833333333334,
+     "iota": 0.9200000000000003,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.22783938956513788
+    },
+    "1": {
+     "exact_compliance": 0.9895833333333334,
+     "iota": 0.9200000000000003,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.22783938956513788
+    },
+    "2": {
+     "exact_compliance": 0.9895833333333334,
+     "iota": 0.9200000000000003,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.22783938956513788
+    },
+    "3": {
+     "exact_compliance": 0.9583333333333334,
+     "iota": 0.6800000000000004,
+     "n_rows": 192,
+     "n_topics": 48,
+     "se_iota": 0.28379635874378506
+    }
+   },
+   "max_abs_difference": 0.23999999999999988,
+   "max_abs_difference_compliance": 0.03125,
+   "max_abs_z": 0.6594522547737685,
+   "n_frames_measured": 4,
+   "severity": 14,
+   "spread": 0.23999999999999988,
+   "spread_by_split": {
+    "calibration_a": 0.07843137254902022,
+    "calibration_b": 0.48979591836734704
+   },
+   "tier": null
+  }
+ ],
+ "item2_frame_outliers": {
+  "by_frame": {
+   "0": {
+    "beyond_bound_resolved_rungs": [
+     "A:5",
+     "A:6"
+    ],
+    "mean_abs_deviation": 0.09508195311724887,
+    "mean_abs_z": 1.30297154458852,
+    "mean_deviation": -0.02622881077164002,
+    "median_deviation": 0.015090811965811857,
+    "n_beyond_bound_resolved": 2,
+    "n_rungs": 16,
+    "share_easiest": 0.17708333333333334,
+    "share_extreme": 0.3645833333333333,
+    "share_hardest": 0.1875,
+    "share_negative_deviation": 0.375
+   },
+   "1": {
+    "beyond_bound_resolved_rungs": [
+     "A:5",
+     "A:6",
+     "A:7",
+     "B:9",
+     "B:10"
+    ],
+    "mean_abs_deviation": 0.1352382849143069,
+    "mean_abs_z": 1.8802307171767105,
+    "mean_deviation": 0.12687632421690737,
+    "median_deviation": 0.1215885646920129,
+    "n_beyond_bound_resolved": 5,
+    "n_rungs": 16,
+    "share_easiest": 0.6145833333333333,
+    "share_extreme": 0.7395833333333334,
+    "share_hardest": 0.125,
+    "share_negative_deviation": 0.1875
+   },
+   "2": {
+    "beyond_bound_resolved_rungs": [
+     "A:6",
+     "A:8"
+    ],
+    "mean_abs_deviation": 0.08308253552489316,
+    "mean_abs_z": 1.1629892056238347,
+    "mean_deviation": -0.038906230776759435,
+    "median_deviation": -0.0052709061453327655,
+    "n_beyond_bound_resolved": 2,
+    "n_rungs": 16,
+    "share_easiest": 0.05208333333333333,
+    "share_extreme": 0.23958333333333334,
+    "share_hardest": 0.1875,
+    "share_negative_deviation": 0.5
+   },
+   "3": {
+    "beyond_bound_resolved_rungs": [
+     "A:6",
+     "A:8",
+     "B:8",
+     "B:9",
+     "B:10",
+     "B:11"
+    ],
+    "mean_abs_deviation": 0.16073193721933535,
+    "mean_abs_z": 1.8689688469344343,
+    "mean_deviation": -0.06174128266850793,
+    "median_deviation": -0.028645833333333343,
+    "n_beyond_bound_resolved": 6,
+    "n_rungs": 16,
+    "share_easiest": 0.15625,
+    "share_extreme": 0.65625,
+    "share_hardest": 0.5,
+    "share_negative_deviation": 0.5625
+   }
+  },
+  "expected_share_extreme_if_exchangeable": 0.5,
+  "expected_share_hardest_if_exchangeable": 0.25,
+  "n_rungs_with_all_frames": 16,
+  "reading": "leave-one-out: each frame's \u03b9 minus the mean of the other three, per rung; a systematic outlier keeps one sign and is the extreme far more often than chance; ties share the credit; descriptive only"
+ },
+ "item3_split_replication": {
+  "flagged_rungs": [
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "A:5",
+    "class_a": "WORDING_SENSITIVE",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": 0.48958333333333337,
+    "difference_b": 0.4375,
+    "difference_pooled": 0.46354166666666663,
+    "frame_order_hardest_first_a": [
+     "0",
+     "2",
+     "3",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "0",
+     "2",
+     "3",
+     "1"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": true,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     0,
+     1
+    ],
+    "z_a": 4.041190546948962,
+    "z_b": 3.564225540521209
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "A:6",
+    "class_a": "WORDING_SENSITIVE",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": 0.5,
+    "difference_b": 0.39583333333333337,
+    "difference_pooled": 0.44791666666666663,
+    "frame_order_hardest_first_a": [
+     "0",
+     "2",
+     "1",
+     "3"
+    ],
+    "frame_order_hardest_first_b": [
+     "0",
+     "2",
+     "1",
+     "3"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": true,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     0,
+     3
+    ],
+    "z_a": 4.161626142495428,
+    "z_b": 3.1512012581333164
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "A:7",
+    "class_a": "WORDING_SENSITIVE",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.3333333333333333,
+    "difference_b": -0.35416666666666663,
+    "difference_pooled": -0.34375,
+    "frame_order_hardest_first_a": [
+     "0",
+     "2",
+     "3",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "2",
+     "0",
+     "3",
+     "1"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": true,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     2
+    ],
+    "z_a": -2.8050134328417995,
+    "z_b": -2.8680349421699733
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "A:8",
+    "class_a": "WORDING_SENSITIVE",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": 0.41666666666666663,
+    "difference_b": 0.37500000000000006,
+    "difference_pooled": 0.3958333333333333,
+    "frame_order_hardest_first_a": [
+     "2",
+     "0",
+     "1",
+     "3"
+    ],
+    "frame_order_hardest_first_b": [
+     "2",
+     "1",
+     "0",
+     "3"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": true,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     2,
+     3
+    ],
+    "z_a": 3.3779449830800825,
+    "z_b": 2.9640319823368815
+   },
+   {
+    "beyond_bound_on_both_splits": false,
+    "candidate": "B:8",
+    "class_a": "UNRESOLVED",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.1875,
+    "difference_b": -0.41666666666666663,
+    "difference_pooled": -0.30208333333333337,
+    "frame_order_hardest_first_a": [
+     "2",
+     "3",
+     "1",
+     "0"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "2",
+     "0",
+     "1"
+    ],
+    "replicates": false,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     3
+    ],
+    "z_a": -1.5035658823292637,
+    "z_b": -3.3779449830800825
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "B:9",
+    "class_a": "UNRESOLVED",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.2506527415143603,
+    "difference_b": -0.47916666666666663,
+    "difference_pooled": -0.36505867014341586,
+    "frame_order_hardest_first_a": [
+     "3",
+     "2",
+     "0",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "2",
+     "0",
+     "1"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     3
+    ],
+    "z_a": -1.9182067835608407,
+    "z_b": -3.933520641073486
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "B:10",
+    "class_a": "UNRESOLVED",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.24083769633507857,
+    "difference_b": -0.4724409448818898,
+    "difference_pooled": -0.35648754914809966,
+    "frame_order_hardest_first_a": [
+     "3",
+     "0",
+     "2",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "2",
+     "0",
+     "1"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     3
+    ],
+    "z_a": -1.8996093810488461,
+    "z_b": -4.107170858269278
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "B:11",
+    "class_a": "UNRESOLVED",
+    "class_b": "WORDING_SENSITIVE",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.24788732394366209,
+    "difference_b": -0.4659090909090908,
+    "difference_pooled": -0.3564356435643564,
+    "frame_order_hardest_first_a": [
+     "3",
+     "0",
+     "2",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "0",
+     "2",
+     "1"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     3
+    ],
+    "z_a": -1.9445879405845947,
+    "z_b": -3.8075679388437713
+   },
+   {
+    "beyond_bound_on_both_splits": false,
+    "candidate": "B:12",
+    "class_a": "CONSISTENT",
+    "class_b": "UNRESOLVED",
+    "class_pooled": "WORDING_SENSITIVE",
+    "difference_a": -0.19259259259259254,
+    "difference_b": -0.2879999999999999,
+    "difference_pooled": -0.2384615384615385,
+    "frame_order_hardest_first_a": [
+     "3",
+     "0",
+     "2",
+     "1"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "0",
+     "2",
+     "1"
+    ],
+    "replicates": false,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     1,
+     3
+    ],
+    "z_a": -1.413640584254489,
+    "z_b": -1.9576522251505422
+   },
+   {
+    "beyond_bound_on_both_splits": true,
+    "candidate": "B:13",
+    "class_a": "UNRESOLVED",
+    "class_b": "UNRESOLVED",
+    "class_pooled": "UNRESOLVED",
+    "difference_a": -0.32352941176470607,
+    "difference_b": -0.2560000000000001,
+    "difference_pooled": -0.29118773946360155,
+    "frame_order_hardest_first_a": [
+     "3",
+     "2",
+     "1",
+     "0"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "0",
+     "1",
+     "2"
+    ],
+    "replicates": true,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     0,
+     3
+    ],
+    "z_a": -1.3320341239784494,
+    "z_b": -0.9205987852415168
+   },
+   {
+    "beyond_bound_on_both_splits": false,
+    "candidate": "B:14",
+    "class_a": "CONSISTENT",
+    "class_b": "UNRESOLVED",
+    "class_pooled": "UNRESOLVED",
+    "difference_a": -0.07843137254902022,
+    "difference_b": -0.4081632653061228,
+    "difference_pooled": -0.23999999999999988,
+    "frame_order_hardest_first_a": [
+     "1",
+     "2",
+     "3",
+     "0"
+    ],
+    "frame_order_hardest_first_b": [
+     "3",
+     "0",
+     "1",
+     "2"
+    ],
+    "replicates": false,
+    "resolved_on_both_splits": false,
+    "same_sign_on_both_splits": true,
+    "worst_pair": [
+     0,
+     3
+    ],
+    "z_a": -0.139908090586507,
+    "z_b": -0.643763462222453
+   }
+  ],
+  "gate2_split_stability": {
+   "n_compared": 64,
+   "n_inside_bound": 59,
+   "reference_bound": 0.2,
+   "share_inside_bound": 0.921875
+  },
+  "n_flagged": 11,
+  "n_replicating": 8,
+  "n_resolved_on_both": 4,
+  "n_same_sign": 11,
+  "per_frame_stability_a_vs_b": {
+   "0": {
+    "inside": 15,
+    "mean_abs_difference": 0.06655671299610899,
+    "n": 16,
+    "share_inside_bound": 0.9375
+   },
+   "1": {
+    "inside": 14,
+    "mean_abs_difference": 0.08738837945487418,
+    "n": 16,
+    "share_inside_bound": 0.875
+   },
+   "2": {
+    "inside": 15,
+    "mean_abs_difference": 0.08323322816284116,
+    "n": 16,
+    "share_inside_bound": 0.9375
+   },
+   "3": {
+    "inside": 15,
+    "mean_abs_difference": 0.06541973651092894,
+    "n": 16,
+    "share_inside_bound": 0.9375
+   }
+  },
+  "spread_correlation_a_vs_b": {
+   "n_rungs": 16,
+   "reading": "rank correlation of the cross-frame spread on A with the spread on B over rungs: a real frame effect reproduces the same large spreads on fresh topics; sampling noise does not",
+   "spearman": 0.5165564312363659
+  }
+ },
+ "item4_reference_exposure": {
+  "available": false,
+  "reason": "GATE_3_REFERENCES has not been reached; the reference set does not exist yet"
+ },
+ "item5_exemplars": {
+  "basis": "WORDING_SENSITIVE rungs ordered by |z| then spread",
+  "cases": [
+   {
+    "candidate": "A:5",
+    "chance": 0.0,
+    "class": "WORDING_SENSITIVE",
+    "class_by_split": {
+     "calibration_a": "WORDING_SENSITIVE",
+     "calibration_b": "WORDING_SENSITIVE"
+    },
+    "frames": {
+     "0": {
+      "constraint_sentence": "Use the word however exactly 5 times.",
+      "exact_compliance": 0.21875,
+      "full_prompt_example": "How does light change the way a sculpture reads?\n\nAnswer in 60 to 120 words.\n\n1. Use the word however exactly 5 times.\n\nAnswer:",
+      "iota": 0.21875,
+      "k_exact_compliant": 42,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "4": 150,
+       "5": 42
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 5,
+        "response_head": "Some posters still communicate from across a street because they reach people who don\u2019t use digital platforms. However, this method is outdated. However, it remains effective for local awareness. However, visibility in public spaces ensures broad access. However, it fosters commu",
+        "row_id": "g2grid-A-096:solo:A:5:0",
+        "topic_id": "art-and-design-b01",
+        "topic_split": "calibration_b",
+        "truncated": false,
+        "word_count": 67
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 4,
+        "response_head": "Light transforms a sculpture by altering its shadow, texture, and form, making it appear dynamic or abstract depending on the angle and time of day. However, subtle shifts in illumination can emphasize certain features, creating a sense of movement. However, the interplay of ligh",
+        "row_id": "g2grid-A-000:solo:A:5:0",
+        "topic_id": "art-and-design-24",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 81
+       }
+      ],
+      "se_iota": 0.05925821138669402
+     },
+     "1": {
+      "constraint_sentence": "Your answer must contain the word however exactly 5 times.",
+      "exact_compliance": 0.6822916666666666,
+      "full_prompt_example": "Why do certain materials feel expensive regardless of cost?\n\nAnswer in 60 to 120 words.\n\n1. Your answer must contain the word however exactly 5 times.\n\nAnswer:",
+      "iota": 0.6822916666666666,
+      "k_exact_compliant": 131,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "4": 61,
+       "5": 131
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 5,
+        "response_head": "Some buildings improve with weathering because exposure to elements like rain, wind, and sunlight enhances their natural textures and patinas, giving them a more authentic, aged appearance. This wear can highlight craftsmanship and blend the structure into its surroundings. Howev",
+        "row_id": "g2grid-A-005:solo:A:5:0",
+        "topic_id": "art-and-design-42",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 80
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 4,
+        "response_head": "Certain materials feel expensive due to perceived rarity, craftsmanship, or luxury branding, even if their actual cost is low. However, consumers associate these materials with status and quality. However, the sensory experience\u2014like texture or finish\u2014amplifies this perception. H",
+        "row_id": "g2grid-A-001:solo:A:5:0",
+        "topic_id": "art-and-design-28",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 71
+       }
+      ],
+      "se_iota": 0.06529304739408609
+     },
+     "2": {
+      "constraint_sentence": "Include the word however exactly 5 times in your answer.",
+      "exact_compliance": 0.4166666666666667,
+      "full_prompt_example": "Why do certain workshops produce distinctive work over generations?\n\nAnswer in 60 to 120 words.\n\n1. Include the word however exactly 5 times in your answer.\n\nAnswer:",
+      "iota": 0.4166666666666667,
+      "k_exact_compliant": 80,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "4": 112,
+       "5": 80
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 5,
+        "response_head": "Certain workshops produce distinctive work over generations due to the transmission of refined techniques, shared materials, and cultural traditions. Skilled artisans pass down knowledge through hands-on training, preserving unique styles and craftsmanship. However, each generati",
+        "row_id": "g2grid-A-002:solo:A:5:0",
+        "topic_id": "art-and-design-29",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 82
+       },
+       {
+        "draw_index": 1,
+        "exact_compliant": false,
+        "observed_count": 4,
+        "response_head": "Certain workshops produce distinctive work over generations due to the transmission of refined techniques, shared materials, and deep-rooted traditions. Apprentices learn through hands-on experience and mentorship, preserving unique styles. However, external influences can disrup",
+        "row_id": "g2grid-A-002:solo:A:5:1",
+        "topic_id": "art-and-design-29",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 69
+       }
+      ],
+      "se_iota": 0.06851204838407934
+     },
+     "3": {
+      "constraint_sentence": "The word however must appear exactly 5 times.",
+      "exact_compliance": 0.5208333333333334,
+      "full_prompt_example": "Why do handmade objects show their maker so clearly?\n\nAnswer in 60 to 120 words.\n\n1. The word however must appear exactly 5 times.\n\nAnswer:",
+      "iota": 0.5208333333333334,
+      "k_exact_compliant": 100,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "4": 91,
+       "5": 100,
+       "6": 1
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 5,
+        "response_head": "Handmade objects reveal their maker through unique imperfections, subtle marks, and personal touches. Each stitch, curve, or scratch tells a story of human intent. The process is intimate, leaving fingerprints of time and emotion. However, these details create authenticity. Howev",
+        "row_id": "g2grid-A-003:solo:A:5:0",
+        "topic_id": "art-and-design-32",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 66
+       },
+       {
+        "draw_index": 2,
+        "exact_compliant": false,
+        "observed_count": 4,
+        "response_head": "Handmade objects reveal their maker through unique imperfections, subtle marks, and personal touches. Each stitch, scratch, or uneven line tells a story. The process is intimate, leaving fingerprints of the creator\u2019s hands and mind. However, these details make the object feel aut",
+        "row_id": "g2grid-A-003:solo:A:5:2",
+        "topic_id": "art-and-design-32",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 82
+       }
+      ],
+      "se_iota": 0.06928622039643194
+     }
+    },
+    "max_abs_difference_compliance": 0.46354166666666663,
+    "max_abs_z": 5.257102743315462,
+    "spread": 0.46354166666666663
+   },
+   {
+    "candidate": "A:6",
+    "chance": 0.0,
+    "class": "WORDING_SENSITIVE",
+    "class_by_split": {
+     "calibration_a": "WORDING_SENSITIVE",
+     "calibration_b": "WORDING_SENSITIVE"
+    },
+    "frames": {
+     "0": {
+      "constraint_sentence": "Use the word however exactly 6 times.",
+      "exact_compliance": 0.23958333333333334,
+      "full_prompt_example": "How does light change the way a sculpture reads?\n\nAnswer in 60 to 120 words.\n\n1. Use the word however exactly 6 times.\n\nAnswer:",
+      "iota": 0.23958333333333334,
+      "k_exact_compliant": 46,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "5": 146,
+       "6": 46
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 6,
+        "response_head": "Some posters still communicate from across a street because they reach people who may not be online or attentive to digital content. However, this method is outdated in a connected world. However, visibility and reach remain valuable. However, many still rely on physical presence",
+        "row_id": "g2grid-A-096:solo:A:6:0",
+        "topic_id": "art-and-design-b01",
+        "topic_split": "calibration_b",
+        "truncated": false,
+        "word_count": 77
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 5,
+        "response_head": "Light transforms a sculpture\u2019s appearance by highlighting textures, shadows, and forms. However, it can emphasize certain angles while diminishing others. However, the play of light alters the viewer\u2019s perception of depth and volume. However, surface reflections may create unexpe",
+        "row_id": "g2grid-A-000:solo:A:6:0",
+        "topic_id": "art-and-design-24",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 67
+       }
+      ],
+      "se_iota": 0.06079841165156919
+     },
+     "1": {
+      "constraint_sentence": "Your answer must contain the word however exactly 6 times.",
+      "exact_compliance": 0.6145833333333334,
+      "full_prompt_example": "Why do certain materials feel expensive regardless of cost?\n\nAnswer in 60 to 120 words.\n\n1. Your answer must contain the word however exactly 6 times.\n\nAnswer:",
+      "iota": 0.6145833333333334,
+      "k_exact_compliant": 118,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "5": 70,
+       "6": 118,
+       "7": 4
+      },
+      "outputs": [
+       {
+        "draw_index": 1,
+        "exact_compliant": true,
+        "observed_count": 6,
+        "response_head": "Certain materials feel expensive due to perceived quality, rarity, or craftsmanship, even if their actual cost is low. However, consumers associate these materials with luxury and status. However, their smooth texture or rich appearance enhances sensory appeal. However, marketing",
+        "row_id": "g2grid-A-001:solo:A:6:1",
+        "topic_id": "art-and-design-28",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 72
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 5,
+        "response_head": "Certain materials feel expensive due to perceived quality, craftsmanship, and rarity. However, this sensation often stems from branding and psychological associations. However, even when cost is low, the tactile experience can evoke luxury. However, the texture, finish, or origin",
+        "row_id": "g2grid-A-001:solo:A:6:0",
+        "topic_id": "art-and-design-28",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 62
+       }
+      ],
+      "se_iota": 0.06776839373110408
+     },
+     "2": {
+      "constraint_sentence": "Include the word however exactly 6 times in your answer.",
+      "exact_compliance": 0.3125,
+      "full_prompt_example": "Why do certain workshops produce distinctive work over generations?\n\nAnswer in 60 to 120 words.\n\n1. Include the word however exactly 6 times in your answer.\n\nAnswer:",
+      "iota": 0.3125,
+      "k_exact_compliant": 60,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "5": 131,
+       "6": 60,
+       "7": 1
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 6,
+        "response_head": "Some colours seem to advance or recede due to how the human eye perceives light and contrast. Warm colours like red and yellow appear to move forward, while cool colours like blue and green seem to recede. This effect is influenced by brightness, saturation, and surrounding conte",
+        "row_id": "g2grid-A-098:solo:A:6:0",
+        "topic_id": "art-and-design-b03",
+        "topic_split": "calibration_b",
+        "truncated": false,
+        "word_count": 100
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 5,
+        "response_head": "Certain workshops produce distinctive work over generations due to passed-down techniques, shared knowledge, and consistent materials. Each generation builds on the previous, refining styles and methods through experience. However, external influences can disrupt continuity. Howe",
+        "row_id": "g2grid-A-002:solo:A:6:0",
+        "topic_id": "art-and-design-29",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 70
+       }
+      ],
+      "se_iota": 0.06505092364658288
+     },
+     "3": {
+      "constraint_sentence": "The word however must appear exactly 6 times.",
+      "exact_compliance": 0.6875,
+      "full_prompt_example": "Why do handmade objects show their maker so clearly?\n\nAnswer in 60 to 120 words.\n\n1. The word however must appear exactly 6 times.\n\nAnswer:",
+      "iota": 0.6875,
+      "k_exact_compliant": 132,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "4": 1,
+       "5": 57,
+       "6": 132,
+       "7": 2
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 6,
+        "response_head": "Handmade objects show their maker clearly because each touch, mark, and imperfection carries the maker\u2019s unique touch. The tools used, the pressure applied, and the choices made reveal personal style and intention. Every seam, curve, or scratch tells a story. However, these detai",
+        "row_id": "g2grid-A-003:solo:A:6:0",
+        "topic_id": "art-and-design-32",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 88
+       },
+       {
+        "draw_index": 1,
+        "exact_compliant": false,
+        "observed_count": 5,
+        "response_head": "Some rooms encourage conversation because they are designed with open layouts, comfortable seating, and ambient lighting. These features create a welcoming atmosphere that invites people to interact. Additionally, shared spaces often have neutral decor and natural elements that r",
+        "row_id": "g2grid-A-007:solo:A:6:1",
+        "topic_id": "art-and-design-50",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 96
+       }
+      ],
+      "se_iota": 0.06505092364658287
+     }
+    },
+    "max_abs_difference_compliance": 0.44791666666666663,
+    "max_abs_z": 5.0305271526704285,
+    "spread": 0.44791666666666663
+   },
+   {
+    "candidate": "A:8",
+    "chance": 0.0,
+    "class": "WORDING_SENSITIVE",
+    "class_by_split": {
+     "calibration_a": "WORDING_SENSITIVE",
+     "calibration_b": "WORDING_SENSITIVE"
+    },
+    "frames": {
+     "0": {
+      "constraint_sentence": "Use the word however exactly 8 times.",
+      "exact_compliance": 0.421875,
+      "full_prompt_example": "How does light change the way a sculpture reads?\n\nAnswer in 60 to 120 words.\n\n1. Use the word however exactly 8 times.\n\nAnswer:",
+      "iota": 0.421875,
+      "k_exact_compliant": 81,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "6": 7,
+       "7": 100,
+       "8": 81,
+       "9": 4
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 8,
+        "response_head": "Light transforms a sculpture\u2019s appearance by highlighting textures, shadows, and forms. However, it can emphasize certain angles while flattening others. However, the play of light alters perception, making the piece seem dynamic or static. However, surface reflections may distra",
+        "row_id": "g2grid-A-000:solo:A:8:0",
+        "topic_id": "art-and-design-24",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 82
+       },
+       {
+        "draw_index": 3,
+        "exact_compliant": false,
+        "observed_count": 7,
+        "response_head": "Light transforms a sculpture\u2019s appearance by highlighting contours, shadows, and texture, altering how it is perceived. However, the surface can appear smooth or rugged depending on illumination. However, angles affect depth and dimension. However, ambient light may soften or int",
+        "row_id": "g2grid-A-000:solo:A:8:3",
+        "topic_id": "art-and-design-24",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 81
+       }
+      ],
+      "se_iota": 0.06861253688169407
+     },
+     "1": {
+      "constraint_sentence": "Your answer must contain the word however exactly 8 times.",
+      "exact_compliance": 0.46875,
+      "full_prompt_example": "Why do certain materials feel expensive regardless of cost?\n\nAnswer in 60 to 120 words.\n\n1. Your answer must contain the word however exactly 8 times.\n\nAnswer:",
+      "iota": 0.46875,
+      "k_exact_compliant": 90,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "10": 2,
+       "7": 97,
+       "8": 90,
+       "9": 3
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 8,
+        "response_head": "Certain materials feel expensive due to perceived quality, rarity, or craftsmanship, not just price. However, tactile sensations like smoothness or weight contribute to this perception. However, brand association often amplifies this feeling. However, even affordable materials ca",
+        "row_id": "g2grid-A-001:solo:A:8:0",
+        "topic_id": "art-and-design-28",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 73
+       },
+       {
+        "draw_index": 1,
+        "exact_compliant": false,
+        "observed_count": 7,
+        "response_head": "Certain materials feel expensive due to perceived craftsmanship, rarity, or luxury branding, not just price. However, texture and finish often signal status. However, emotional associations with heritage or exclusivity amplify this perception. However, even affordable options can",
+        "row_id": "g2grid-A-001:solo:A:8:1",
+        "topic_id": "art-and-design-28",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 80
+       }
+      ],
+      "se_iota": 0.06922203676024154
+     },
+     "2": {
+      "constraint_sentence": "Include the word however exactly 8 times in your answer.",
+      "exact_compliance": 0.2552083333333333,
+      "full_prompt_example": "Why do certain workshops produce distinctive work over generations?\n\nAnswer in 60 to 120 words.\n\n1. Include the word however exactly 8 times in your answer.\n\nAnswer:",
+      "iota": 0.2552083333333333,
+      "k_exact_compliant": 49,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "6": 8,
+       "7": 134,
+       "8": 49,
+       "9": 1
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 8,
+        "response_head": "Copies of a famous work rarely satisfy because they lack the original\u2019s unique essence, emotion, and context. However, they may evoke familiarity. However, they often feel impersonal and mechanical. However, fans still seek them for nostalgia. However, the absence of authenticity",
+        "row_id": "g2grid-A-102:solo:A:8:0",
+        "topic_id": "art-and-design-b07",
+        "topic_split": "calibration_b",
+        "truncated": false,
+        "word_count": 73
+       },
+       {
+        "draw_index": 0,
+        "exact_compliant": false,
+        "observed_count": 7,
+        "response_head": "Certain workshops produce distinctive work over generations due to passed-down techniques, shared knowledge, and consistent materials. Each generation builds on the legacy of the last, preserving unique styles and craftsmanship. However, external influences may disrupt tradition.",
+        "row_id": "g2grid-A-002:solo:A:8:0",
+        "topic_id": "art-and-design-29",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 75
+       }
+      ],
+      "se_iota": 0.061853017950139526
+     },
+     "3": {
+      "constraint_sentence": "The word however must appear exactly 8 times.",
+      "exact_compliance": 0.6510416666666666,
+      "full_prompt_example": "Why do handmade objects show their maker so clearly?\n\nAnswer in 60 to 120 words.\n\n1. The word however must appear exactly 8 times.\n\nAnswer:",
+      "iota": 0.6510416666666666,
+      "k_exact_compliant": 125,
+      "n_rows": 192,
+      "n_topics": 48,
+      "observed_count_distribution": {
+       "10": 1,
+       "11": 1,
+       "6": 2,
+       "7": 56,
+       "8": 125,
+       "9": 7
+      },
+      "outputs": [
+       {
+        "draw_index": 0,
+        "exact_compliant": true,
+        "observed_count": 8,
+        "response_head": "Handmade objects show their maker clearly because each touch, mark, and imperfection reflects the maker\u2019s hand. The uneven lines, slight variations, and personal choices reveal unique traits. However, these details tell a story. However, they carry emotion and intention. However,",
+        "row_id": "g2grid-A-003:solo:A:8:0",
+        "topic_id": "art-and-design-32",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 88
+       },
+       {
+        "draw_index": 3,
+        "exact_compliant": false,
+        "observed_count": 7,
+        "response_head": "Handmade objects show their maker clearly because each touch, mark, and imperfection carries the maker\u2019s personality. The tools, techniques, and choices reflect individuality. However, these details reveal a human hand behind the work. However, there\u2019s no uniformity\u2014only authenti",
+        "row_id": "g2grid-A-003:solo:A:8:3",
+        "topic_id": "art-and-design-32",
+        "topic_split": "calibration_a",
+        "truncated": false,
+        "word_count": 81
+       }
+      ],
+      "se_iota": 0.0665873061391673
+     }
+    },
+    "max_abs_difference_compliance": 0.3958333333333333,
+    "max_abs_z": 4.3554310458950525,
+    "spread": 0.3958333333333333
+   }
+  ],
+  "n_cases": 3
+ },
+ "model_key": "qwen3-4b-instruct-2507",
+ "namespace": "pilot",
+ "options": {
+  "decision_made_here": null,
+  "model_frame_variation": {
+   "icc_like_ratio": 0.7651060209642613,
+   "n_rungs_with_all_frames": 16,
+   "n_rungs_with_resolved_frame_effect": 9,
+   "reading": "modelling the frame (a random or fixed frame term in \u03b9) is supported when \u03c4\u00b2 is a non-trivial share of the total variance and the spreads reproduce across the splits, but no single frame is the culprit",
+   "split_spread_spearman": 0.5165564312363659,
+   "tau2_median": 0.013313332685024513,
+   "within_frame_sampling_variance_median": 0.004087305030838383
+  },
+  "no_frame_discarded": true,
+  "retain_all_frames": {
+   "reading": "if nearly every rung is CONSISTENT, \u03c4 is small next to the SE, and no sensitive rung replicates on both splits or touches the reference set, pooling the four frames as one instrument (v7's reading of \u00a77.8) is supported by this pilot",
+   "reference_set_rungs_that_are_sensitive": {},
+   "sensitive_rungs_replicating_on_both_splits": 8,
+   "share_consistent": 0.3125,
+   "share_unresolved": 0.125,
+   "share_wording_sensitive": 0.5625,
+   "spread_median": 0.30208333333333337,
+   "spread_q90": 0.3958333333333333,
+   "tau_median": 0.11538341598784685
+  },
+  "retain_specified_subset": {
+   "expected_share_extreme_if_exchangeable": 0.5,
+   "frame_outlier_summary": {
+    "0": {
+     "mean_abs_z": 1.30297154458852,
+     "mean_deviation": -0.02622881077164002,
+     "n_beyond_bound_resolved": 2,
+     "n_rungs": 16,
+     "share_easiest": 0.17708333333333334,
+     "share_extreme": 0.3645833333333333,
+     "share_hardest": 0.1875
+    },
+    "1": {
+     "mean_abs_z": 1.8802307171767105,
+     "mean_deviation": 0.12687632421690737,
+     "n_beyond_bound_resolved": 5,
+     "n_rungs": 16,
+     "share_easiest": 0.6145833333333333,
+     "share_extreme": 0.7395833333333334,
+     "share_hardest": 0.125
+    },
+    "2": {
+     "mean_abs_z": 1.1629892056238347,
+     "mean_deviation": -0.038906230776759435,
+     "n_beyond_bound_resolved": 2,
+     "n_rungs": 16,
+     "share_easiest": 0.05208333333333333,
+     "share_extreme": 0.23958333333333334,
+     "share_hardest": 0.1875
+    },
+    "3": {
+     "mean_abs_z": 1.8689688469344343,
+     "mean_deviation": -0.06174128266850793,
+     "n_beyond_bound_resolved": 6,
+     "n_rungs": 16,
+     "share_easiest": 0.15625,
+     "share_extreme": 0.65625,
+     "share_hardest": 0.5
+    }
+   },
+   "most_often_extreme_frame": "1",
+   "reading": "a subset is supported only if one (or two) frames are the resolved outlier on many rungs with one sign, and that outlier status replicates on both splits; the per-frame ladders (Gate 2 ladders_by_frame_pooled) say whether the remaining frames still carry the ladder"
+  }
+ },
+ "reference_bound": 0.2,
+ "regime_by_frame": {
+  "band": [
+   0.5,
+   0.85
+  ],
+  "by_frame": {
+   "0": {
+    "curve": {
+     "1": 1.0,
+     "2": 0.9895833333333334,
+     "3": 0.9947916666666666,
+     "4": 0.8125,
+     "5": 0.21875,
+     "6": 0.23958333333333334,
+     "7": 0.18229166666666666,
+     "8": 0.421875
+    },
+    "grid_resolution_insufficient": false,
+    "severities_inside_band": [
+     4
+    ],
+    "straddling_pairs": []
+   },
+   "1": {
+    "curve": {
+     "1": 0.953125,
+     "2": 0.984375,
+     "3": 0.9739583333333334,
+     "4": 0.9739583333333334,
+     "5": 0.6822916666666666,
+     "6": 0.6145833333333334,
+     "7": 0.5,
+     "8": 0.46875
+    },
+    "grid_resolution_insufficient": false,
+    "severities_inside_band": [
+     5,
+     6,
+     7
+    ],
+    "straddling_pairs": []
+   },
+   "2": {
+    "curve": {
+     "1": 0.9947916666666666,
+     "2": 1.0,
+     "3": 0.9895833333333334,
+     "4": 0.9635416666666666,
+     "5": 0.4166666666666667,
+     "6": 0.3125,
+     "7": 0.15625,
+     "8": 0.2552083333333333
+    },
+    "grid_resolution_insufficient": true,
+    "severities_inside_band": [],
+    "straddling_pairs": [
+     {
+      "compliance": [
+       0.9635416666666666,
+       0.4166666666666667
+      ],
+      "severities": [
+       4,
+       5
+      ]
+     }
+    ]
+   },
+   "3": {
+    "curve": {
+     "1": 0.9947916666666666,
+     "2": 1.0,
+     "3": 0.96875,
+     "4": 0.9322916666666666,
+     "5": 0.5208333333333334,
+     "6": 0.6875,
+     "7": 0.3854166666666667,
+     "8": 0.6510416666666666
+    },
+    "grid_resolution_insufficient": false,
+    "severities_inside_band": [
+     5,
+     6,
+     8
+    ],
+    "straddling_pairs": []
+   }
+  },
+  "grid": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "pooled": {
+   "curve": {
+    "1": 0.9856770833333334,
+    "2": 0.9934895833333334,
+    "3": 0.9817708333333334,
+    "4": 0.9205729166666666,
+    "5": 0.4596354166666667,
+    "6": 0.4635416666666667,
+    "7": 0.3059895833333333,
+    "8": 0.44921875
+   },
+   "grid_resolution_insufficient": true,
+   "severities_inside_band": [],
+   "straddling_pairs": [
+    {
+     "compliance": [
+      0.9205729166666666,
+      0.4596354166666667
+     ],
+     "severities": [
+      4,
+      5
+     ]
+    }
+   ]
+  }
+ },
+ "root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r3",
+ "signed_gate2_record": false,
+ "stage_reached": "GATE_1_INSTRUMENT",
+ "stages_read": [
+  "GATE_2_CALIBRATION",
+  "GATE_3_REFERENCES"
+ ],
+ "study_id": "dci1v8",
+ "synthetic": false,
+ "terminal": {
+  "criterion": "\u00a712.3: two adjacent registered severities lie on opposite sides of a whole band",
+  "gate": "GATE_2_CALIBRATION",
+  "status": "GRID_RESOLUTION_INSUFFICIENT"
+ }
+}

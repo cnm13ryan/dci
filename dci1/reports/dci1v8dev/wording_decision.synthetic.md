@@ -8,101 +8,112 @@ Root `/tmp/claude-1000/-home-cnm13ryan-git-dci/3f902338-1319-495f-835c-8ba92b740
 
 ι_A = 0.714 (by split {'calibration_a': 0.7135416666666666, 'calibration_b': 0.7135416666666666}); 34944 scored Gate-2 rows read; chance basis: {'cell': 'unconstrained', 'degeneracy_max': 0.99, 'degenerate_rows_are': 'withheld from `calibration_rows` and recorded in `calibration_rows_withheld` (§11.2; `_withhold_degenerate`)', 'per_split': {'calibration_a': {'draws_per_topic': 8.0, 'n_rows': 384, 'n_topics': 48}, 'calibration_b': {'draws_per_topic': 8.0, 'n_rows': 384, 'n_topics': 48}, 'pooled': {'draws_per_topic': 8.0, 'n_rows': 768, 'n_topics': 96}}, 'rule': "§11.2 / §13.2: kappa_c = P(X_c = 1 | unconstrained cell) on the same topic set at the same M under the same prompt; the grid runs' unconstrained cells, on which §9.1 scores every carried candidate as an absent instance", 'runs': ['g2grid-A', 'g2grid-B']}.
 
+## 0. §12.3 on each frame's own A curve
+
+Target band [0.5, 0.85] on raw solo compliance; the stage applies the rule to the curve pooled over the four frames. Per frame (48 topics × 4 draws per split):
+
+| curve | q=1 | q=2 | q=3 | q=4 | q=5 | q=6 | q=7 | q=8 | inside band | resolves alone? |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| f0 | 0.760 | 0.729 | 0.688 | 0.604 | 0.531 | 0.479 | 0.448 | 0.365 | [1, 2, 3, 4, 5] | yes |
+| f1 | 0.844 | 0.698 | 0.646 | 0.615 | 0.562 | 0.479 | 0.427 | 0.354 | [1, 2, 3, 4, 5] | yes |
+| f2 | 0.792 | 0.719 | 0.635 | 0.604 | 0.573 | 0.500 | 0.417 | 0.375 | [1, 2, 3, 4, 5, 6] | yes |
+| f3 | 0.771 | 0.708 | 0.688 | 0.594 | 0.542 | 0.479 | 0.417 | 0.354 | [1, 2, 3, 4, 5] | yes |
+
 ## 1. Per (family, q): the four frames
 
 ι ± SE per frame (pooled calibration basis); spread = max ι − min ι; class per the descriptive rule; A/B = class on each split alone.
 
-| rung | tier | f0 | f1 | f2 | f3 | spread | max\|z\| | class | A | B |
-|---|---|---|---|---|---|---:|---:|---|---|---|
-| A:1 | — | 0.760 ± 0.085 | 0.844 ± 0.076 | 0.792 ± 0.082 | 0.771 ± 0.084 | 0.083 | 0.73 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:2 | — | 0.729 ± 0.087 | 0.698 ± 0.089 | 0.719 ± 0.088 | 0.708 ± 0.088 | 0.031 | 0.25 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:3 | — | 0.688 ± 0.089 | 0.646 ± 0.091 | 0.635 ± 0.092 | 0.688 ± 0.089 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:4 | — | 0.604 ± 0.093 | 0.615 ± 0.093 | 0.604 ± 0.093 | 0.594 ± 0.093 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:5 | — | 0.531 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.542 ± 0.094 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:6 | — | 0.479 ± 0.094 | 0.479 ± 0.094 | 0.500 ± 0.094 | 0.479 ± 0.094 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:7 | — | 0.448 ± 0.094 | 0.427 ± 0.094 | 0.417 ± 0.094 | 0.417 ± 0.094 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
-| A:8 | — | 0.365 ± 0.092 | 0.354 ± 0.091 | 0.375 ± 0.092 | 0.354 ± 0.091 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:7 | — | 0.740 ± 0.086 | 0.719 ± 0.088 | 0.750 ± 0.085 | 0.698 ± 0.089 | 0.052 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:8 | — | 0.771 ± 0.084 | 0.781 ± 0.083 | 0.781 ± 0.083 | 0.802 ± 0.081 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:9 | — | 0.792 ± 0.082 | 0.781 ± 0.083 | 0.750 ± 0.085 | 0.792 ± 0.082 | 0.042 | 0.35 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:10 | — | 0.747 ± 0.086 | 0.778 ± 0.084 | 0.799 ± 0.082 | 0.799 ± 0.082 | 0.053 | 0.44 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:11 | — | 0.732 ± 0.092 | 0.765 ± 0.089 | 0.765 ± 0.089 | 0.777 ± 0.088 | 0.045 | 0.35 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:12 | — | 0.658 ± 0.121 | 0.658 ± 0.121 | 0.643 ± 0.122 | 0.673 ± 0.119 | 0.030 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:13 | — | 0.368 ± 0.239 | 0.338 ± 0.242 | 0.308 ± 0.244 | 0.398 ± 0.236 | 0.090 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
-| B:14 | — | -0.615 ± 0.611 | -0.692 ± 0.618 | -0.615 ± 0.611 | -0.462 ± 0.597 | 0.231 | 0.27 | UNRESOLVED | UNRESOLVED | UNRESOLVED |
-| MK1:1 | 1 | 0.906 ± 0.068 | 0.885 ± 0.071 | 0.865 ± 0.074 | 0.906 ± 0.068 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:2 | 1 | 0.823 ± 0.079 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.771 ± 0.084 | 0.052 | 0.45 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:3 | 1 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:4 | 1 | 0.646 ± 0.091 | 0.667 ± 0.091 | 0.646 ± 0.091 | 0.698 ± 0.089 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:5 | 1 | 0.552 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.594 ± 0.093 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:6 | 1 | 0.510 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK1:8 | 1 | 0.354 ± 0.091 | 0.323 ± 0.090 | 0.365 ± 0.092 | 0.375 ± 0.092 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK2:1 | 1 | 0.865 ± 0.074 | 0.844 ± 0.076 | 0.896 ± 0.069 | 0.906 ± 0.068 | 0.062 | 0.61 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK2:2 | 1 | 0.792 ± 0.082 | 0.844 ± 0.076 | 0.802 ± 0.081 | 0.802 ± 0.081 | 0.052 | 0.47 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK2:3 | 1 | 0.740 ± 0.086 | 0.740 ± 0.086 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.010 | 0.09 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK2:4 | 1 | 0.688 ± 0.089 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.677 ± 0.090 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:1 | 1 | 0.875 ± 0.072 | 0.854 ± 0.075 | 0.896 ± 0.069 | 0.812 ± 0.080 | 0.083 | 0.79 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:2 | 1 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.812 ± 0.080 | 0.021 | 0.18 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:3 | 1 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.740 ± 0.086 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:4 | 1 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.667 ± 0.091 | 0.635 ± 0.092 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:5 | 1 | 0.521 ± 0.094 | 0.573 ± 0.094 | 0.573 ± 0.094 | 0.604 ± 0.093 | 0.083 | 0.63 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:6 | 1 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK3:8 | 1 | 0.365 ± 0.092 | 0.385 ± 0.093 | 0.323 ± 0.090 | 0.375 ± 0.092 | 0.062 | 0.48 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:1 | 1 | 0.885 ± 0.071 | 0.885 ± 0.071 | 0.896 ± 0.069 | 0.896 ± 0.069 | 0.010 | 0.10 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:2 | 1 | 0.781 ± 0.083 | 0.802 ± 0.081 | 0.812 ± 0.080 | 0.781 ± 0.083 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:3 | 1 | 0.750 ± 0.085 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.031 | 0.26 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:4 | 1 | 0.635 ± 0.092 | 0.677 ± 0.090 | 0.667 ± 0.091 | 0.646 ± 0.091 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:5 | 1 | 0.542 ± 0.094 | 0.646 ± 0.091 | 0.583 ± 0.094 | 0.562 ± 0.094 | 0.104 | 0.79 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:6 | 1 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK4:8 | 1 | 0.323 ± 0.090 | 0.344 ± 0.091 | 0.344 ± 0.091 | 0.375 ± 0.092 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK5:2 | 1 | 0.771 ± 0.084 | 0.823 ± 0.079 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.052 | 0.45 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK5:3 | 1 | 0.740 ± 0.086 | 0.708 ± 0.088 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.042 | 0.34 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK5:4 | 1 | 0.635 ± 0.092 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK5:5 | 1 | 0.573 ± 0.094 | 0.573 ± 0.094 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:1 | 1 | 0.917 ± 0.066 | 0.885 ± 0.071 | 0.896 ± 0.069 | 0.875 ± 0.072 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:2 | 1 | 0.833 ± 0.078 | 0.802 ± 0.081 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.052 | 0.46 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:3 | 1 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.750 ± 0.085 | 0.031 | 0.26 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:4 | 1 | 0.677 ± 0.090 | 0.698 ± 0.089 | 0.625 ± 0.092 | 0.688 ± 0.089 | 0.073 | 0.57 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:5 | 1 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.552 ± 0.094 | 0.052 | 0.39 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:6 | 1 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.521 ± 0.094 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK6:8 | 1 | 0.375 ± 0.092 | 0.344 ± 0.091 | 0.354 ± 0.091 | 0.354 ± 0.091 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:1 | 1 | 0.844 ± 0.076 | 0.885 ± 0.071 | 0.875 ± 0.072 | 0.948 ± 0.061 | 0.104 | 1.07 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:2 | 1 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.010 | 0.09 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:3 | 1 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.698 ± 0.089 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:4 | 1 | 0.656 ± 0.091 | 0.688 ± 0.089 | 0.646 ± 0.091 | 0.667 ± 0.091 | 0.042 | 0.33 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:5 | 1 | 0.552 ± 0.094 | 0.552 ± 0.094 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.052 | 0.39 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:6 | 1 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK7:8 | 1 | 0.354 ± 0.091 | 0.375 ± 0.092 | 0.354 ± 0.091 | 0.323 ± 0.090 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK8:2 | 1 | 0.844 ± 0.076 | 0.802 ± 0.081 | 0.771 ± 0.084 | 0.802 ± 0.081 | 0.073 | 0.64 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK8:3 | 1 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.698 ± 0.089 | 0.031 | 0.25 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK8:4 | 1 | 0.667 ± 0.091 | 0.688 ± 0.089 | 0.667 ± 0.091 | 0.667 ± 0.091 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| MK8:5 | 1 | 0.562 ± 0.094 | 0.604 ± 0.093 | 0.562 ± 0.094 | 0.562 ± 0.094 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF5:2 | 3 | 0.696 ± 0.101 | 0.696 ± 0.101 | 0.635 ± 0.104 | 0.660 ± 0.103 | 0.061 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:0 | 3 | 0.865 ± 0.074 | 0.833 ± 0.078 | 0.917 ± 0.066 | 0.896 ± 0.069 | 0.083 | 0.82 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:1 | 3 | 0.802 ± 0.081 | 0.771 ± 0.084 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:2 | 3 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.729 ± 0.087 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:3 | 3 | 0.656 ± 0.091 | 0.646 ± 0.091 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:4 | 3 | 0.594 ± 0.093 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:5 | 3 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| RF8:8 | 3 | 0.271 ± 0.087 | 0.271 ± 0.087 | 0.281 ± 0.088 | 0.271 ± 0.087 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC1:2 | 2 | 0.792 ± 0.082 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.031 | 0.28 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC1:3 | 2 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC1:4 | 2 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.677 ± 0.090 | 0.635 ± 0.092 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC1:5 | 2 | 0.583 ± 0.094 | 0.573 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:2 | 2 | 0.878 ± 0.081 | 0.915 ± 0.075 | 0.903 ± 0.077 | 0.891 ± 0.079 | 0.036 | 0.33 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:4 | 2 | 0.811 ± 0.088 | 0.811 ± 0.088 | 0.753 ± 0.094 | 0.800 ± 0.089 | 0.059 | 0.46 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:6 | 2 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.000 | 0.00 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:8 | 2 | 0.587 ± 0.107 | 0.648 ± 0.104 | 0.575 ± 0.107 | 0.575 ± 0.107 | 0.073 | 0.49 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:10 | 2 | 0.594 ± 0.093 | 0.583 ± 0.094 | 0.594 ± 0.093 | 0.552 ± 0.094 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:12 | 2 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC2:16 | 2 | 0.344 ± 0.091 | 0.333 ± 0.091 | 0.354 ± 0.091 | 0.385 ± 0.093 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:3 | 2 | 0.885 ± 0.071 | 0.875 ± 0.072 | 0.875 ± 0.072 | 0.917 ± 0.066 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:4 | 2 | 0.802 ± 0.081 | 0.812 ± 0.080 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:5 | 2 | 0.708 ± 0.088 | 0.750 ± 0.085 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.042 | 0.34 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:6 | 2 | 0.625 ± 0.092 | 0.656 ± 0.091 | 0.667 ± 0.091 | 0.677 ± 0.090 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:7 | 2 | 0.604 ± 0.093 | 0.562 ± 0.094 | 0.594 ± 0.093 | 0.594 ± 0.093 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:8 | 2 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
-| XC3:10 | 2 | 0.365 ± 0.092 | 0.344 ± 0.091 | 0.312 ± 0.089 | 0.344 ± 0.091 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
+| rung | tier | κ | f0 | f1 | f2 | f3 | spread ι | max Δp | max\|z\| | class | A | B |
+|---|---|---:|---|---|---|---|---:|---:|---:|---|---|---|
+| A:1 | — | 0.000 | 0.760 ± 0.085 | 0.844 ± 0.076 | 0.792 ± 0.082 | 0.771 ± 0.084 | 0.083 | 0.083 | 0.73 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:2 | — | 0.000 | 0.729 ± 0.087 | 0.698 ± 0.089 | 0.719 ± 0.088 | 0.708 ± 0.088 | 0.031 | 0.031 | 0.25 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:3 | — | 0.000 | 0.688 ± 0.089 | 0.646 ± 0.091 | 0.635 ± 0.092 | 0.688 ± 0.089 | 0.052 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:4 | — | 0.000 | 0.604 ± 0.093 | 0.615 ± 0.093 | 0.604 ± 0.093 | 0.594 ± 0.093 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:5 | — | 0.000 | 0.531 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.542 ± 0.094 | 0.042 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:6 | — | 0.000 | 0.479 ± 0.094 | 0.479 ± 0.094 | 0.500 ± 0.094 | 0.479 ± 0.094 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:7 | — | 0.000 | 0.448 ± 0.094 | 0.427 ± 0.094 | 0.417 ± 0.094 | 0.417 ± 0.094 | 0.031 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
+| A:8 | — | 0.000 | 0.365 ± 0.092 | 0.354 ± 0.091 | 0.375 ± 0.092 | 0.354 ± 0.091 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:7 | — | 0.000 | 0.740 ± 0.086 | 0.719 ± 0.088 | 0.750 ± 0.085 | 0.698 ± 0.089 | 0.052 | 0.052 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:8 | — | 0.000 | 0.771 ± 0.084 | 0.781 ± 0.083 | 0.781 ± 0.083 | 0.802 ± 0.081 | 0.031 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:9 | — | 0.000 | 0.792 ± 0.082 | 0.781 ± 0.083 | 0.750 ± 0.085 | 0.792 ± 0.082 | 0.042 | 0.042 | 0.35 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:10 | — | 0.013 | 0.747 ± 0.086 | 0.778 ± 0.084 | 0.799 ± 0.082 | 0.799 ± 0.082 | 0.053 | 0.052 | 0.44 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:11 | — | 0.068 | 0.732 ± 0.092 | 0.765 ± 0.089 | 0.765 ± 0.089 | 0.777 ± 0.088 | 0.045 | 0.042 | 0.35 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:12 | — | 0.299 | 0.658 ± 0.121 | 0.658 ± 0.121 | 0.643 ± 0.122 | 0.673 ± 0.119 | 0.030 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:13 | — | 0.654 | 0.368 ± 0.239 | 0.338 ± 0.242 | 0.308 ± 0.244 | 0.398 ± 0.236 | 0.090 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
+| B:14 | — | 0.865 | -0.615 ± 0.611 | -0.692 ± 0.618 | -0.615 ± 0.611 | -0.462 ± 0.597 | 0.231 | 0.031 | 0.27 | UNRESOLVED | UNRESOLVED | UNRESOLVED |
+| MK1:1 | 1 | 0.000 | 0.906 ± 0.068 | 0.885 ± 0.071 | 0.865 ± 0.074 | 0.906 ± 0.068 | 0.042 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:2 | 1 | 0.000 | 0.823 ± 0.079 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.771 ± 0.084 | 0.052 | 0.052 | 0.45 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:3 | 1 | 0.000 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.021 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:4 | 1 | 0.000 | 0.646 ± 0.091 | 0.667 ± 0.091 | 0.646 ± 0.091 | 0.698 ± 0.089 | 0.052 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:5 | 1 | 0.000 | 0.552 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.594 ± 0.093 | 0.042 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:6 | 1 | 0.000 | 0.510 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK1:8 | 1 | 0.000 | 0.354 ± 0.091 | 0.323 ± 0.090 | 0.365 ± 0.092 | 0.375 ± 0.092 | 0.052 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK2:1 | 1 | 0.000 | 0.865 ± 0.074 | 0.844 ± 0.076 | 0.896 ± 0.069 | 0.906 ± 0.068 | 0.062 | 0.062 | 0.61 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK2:2 | 1 | 0.000 | 0.792 ± 0.082 | 0.844 ± 0.076 | 0.802 ± 0.081 | 0.802 ± 0.081 | 0.052 | 0.052 | 0.47 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK2:3 | 1 | 0.000 | 0.740 ± 0.086 | 0.740 ± 0.086 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.010 | 0.010 | 0.09 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK2:4 | 1 | 0.000 | 0.688 ± 0.089 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.677 ± 0.090 | 0.031 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:1 | 1 | 0.000 | 0.875 ± 0.072 | 0.854 ± 0.075 | 0.896 ± 0.069 | 0.812 ± 0.080 | 0.083 | 0.083 | 0.79 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:2 | 1 | 0.000 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.812 ± 0.080 | 0.021 | 0.021 | 0.18 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:3 | 1 | 0.000 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.740 ± 0.086 | 0.021 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:4 | 1 | 0.000 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.667 ± 0.091 | 0.635 ± 0.092 | 0.031 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:5 | 1 | 0.000 | 0.521 ± 0.094 | 0.573 ± 0.094 | 0.573 ± 0.094 | 0.604 ± 0.093 | 0.083 | 0.083 | 0.63 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:6 | 1 | 0.000 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK3:8 | 1 | 0.000 | 0.365 ± 0.092 | 0.385 ± 0.093 | 0.323 ± 0.090 | 0.375 ± 0.092 | 0.062 | 0.062 | 0.48 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:1 | 1 | 0.000 | 0.885 ± 0.071 | 0.885 ± 0.071 | 0.896 ± 0.069 | 0.896 ± 0.069 | 0.010 | 0.010 | 0.10 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:2 | 1 | 0.000 | 0.781 ± 0.083 | 0.802 ± 0.081 | 0.812 ± 0.080 | 0.781 ± 0.083 | 0.031 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:3 | 1 | 0.000 | 0.750 ± 0.085 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.031 | 0.031 | 0.26 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:4 | 1 | 0.000 | 0.635 ± 0.092 | 0.677 ± 0.090 | 0.667 ± 0.091 | 0.646 ± 0.091 | 0.042 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:5 | 1 | 0.000 | 0.542 ± 0.094 | 0.646 ± 0.091 | 0.583 ± 0.094 | 0.562 ± 0.094 | 0.104 | 0.104 | 0.79 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:6 | 1 | 0.000 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK4:8 | 1 | 0.000 | 0.323 ± 0.090 | 0.344 ± 0.091 | 0.344 ± 0.091 | 0.375 ± 0.092 | 0.052 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK5:2 | 1 | 0.000 | 0.771 ± 0.084 | 0.823 ± 0.079 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.052 | 0.052 | 0.45 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK5:3 | 1 | 0.000 | 0.740 ± 0.086 | 0.708 ± 0.088 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.042 | 0.042 | 0.34 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK5:4 | 1 | 0.000 | 0.635 ± 0.092 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK5:5 | 1 | 0.000 | 0.573 ± 0.094 | 0.573 ± 0.094 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.031 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:1 | 1 | 0.000 | 0.917 ± 0.066 | 0.885 ± 0.071 | 0.896 ± 0.069 | 0.875 ± 0.072 | 0.042 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:2 | 1 | 0.000 | 0.833 ± 0.078 | 0.802 ± 0.081 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.052 | 0.052 | 0.46 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:3 | 1 | 0.000 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.750 ± 0.085 | 0.031 | 0.031 | 0.26 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:4 | 1 | 0.000 | 0.677 ± 0.090 | 0.698 ± 0.089 | 0.625 ± 0.092 | 0.688 ± 0.089 | 0.073 | 0.073 | 0.57 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:5 | 1 | 0.000 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.552 ± 0.094 | 0.052 | 0.052 | 0.39 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:6 | 1 | 0.000 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.521 ± 0.094 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK6:8 | 1 | 0.000 | 0.375 ± 0.092 | 0.344 ± 0.091 | 0.354 ± 0.091 | 0.354 ± 0.091 | 0.031 | 0.031 | 0.24 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:1 | 1 | 0.000 | 0.844 ± 0.076 | 0.885 ± 0.071 | 0.875 ± 0.072 | 0.948 ± 0.061 | 0.104 | 0.104 | 1.07 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:2 | 1 | 0.000 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.010 | 0.010 | 0.09 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:3 | 1 | 0.000 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.698 ± 0.089 | 0.021 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:4 | 1 | 0.000 | 0.656 ± 0.091 | 0.688 ± 0.089 | 0.646 ± 0.091 | 0.667 ± 0.091 | 0.042 | 0.042 | 0.33 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:5 | 1 | 0.000 | 0.552 ± 0.094 | 0.552 ± 0.094 | 0.604 ± 0.093 | 0.583 ± 0.094 | 0.052 | 0.052 | 0.39 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:6 | 1 | 0.000 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK7:8 | 1 | 0.000 | 0.354 ± 0.091 | 0.375 ± 0.092 | 0.354 ± 0.091 | 0.323 ± 0.090 | 0.052 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK8:2 | 1 | 0.000 | 0.844 ± 0.076 | 0.802 ± 0.081 | 0.771 ± 0.084 | 0.802 ± 0.081 | 0.073 | 0.073 | 0.64 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK8:3 | 1 | 0.000 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.719 ± 0.088 | 0.698 ± 0.089 | 0.031 | 0.031 | 0.25 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK8:4 | 1 | 0.000 | 0.667 ± 0.091 | 0.688 ± 0.089 | 0.667 ± 0.091 | 0.667 ± 0.091 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| MK8:5 | 1 | 0.000 | 0.562 ± 0.094 | 0.604 ± 0.093 | 0.562 ± 0.094 | 0.562 ± 0.094 | 0.042 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF5:2 | 3 | 0.143 | 0.696 ± 0.101 | 0.696 ± 0.101 | 0.635 ± 0.104 | 0.660 ± 0.103 | 0.061 | 0.052 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:0 | 3 | 0.000 | 0.865 ± 0.074 | 0.833 ± 0.078 | 0.917 ± 0.066 | 0.896 ± 0.069 | 0.083 | 0.083 | 0.82 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:1 | 3 | 0.000 | 0.802 ± 0.081 | 0.771 ± 0.084 | 0.792 ± 0.082 | 0.792 ± 0.082 | 0.031 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:2 | 3 | 0.000 | 0.729 ± 0.087 | 0.729 ± 0.087 | 0.750 ± 0.085 | 0.729 ± 0.087 | 0.021 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:3 | 3 | 0.000 | 0.656 ± 0.091 | 0.646 ± 0.091 | 0.646 ± 0.091 | 0.656 ± 0.091 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:4 | 3 | 0.000 | 0.594 ± 0.093 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.583 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:5 | 3 | 0.000 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| RF8:8 | 3 | 0.000 | 0.271 ± 0.087 | 0.271 ± 0.087 | 0.281 ± 0.088 | 0.271 ± 0.087 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC1:2 | 2 | 0.000 | 0.792 ± 0.082 | 0.823 ± 0.079 | 0.812 ± 0.080 | 0.812 ± 0.080 | 0.031 | 0.031 | 0.28 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC1:3 | 2 | 0.000 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.719 ± 0.088 | 0.740 ± 0.086 | 0.021 | 0.021 | 0.17 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC1:4 | 2 | 0.000 | 0.656 ± 0.091 | 0.656 ± 0.091 | 0.677 ± 0.090 | 0.635 ± 0.092 | 0.042 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC1:5 | 2 | 0.000 | 0.583 ± 0.094 | 0.573 ± 0.094 | 0.562 ± 0.094 | 0.573 ± 0.094 | 0.021 | 0.021 | 0.16 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:2 | 2 | 0.143 | 0.878 ± 0.081 | 0.915 ± 0.075 | 0.903 ± 0.077 | 0.891 ± 0.079 | 0.036 | 0.031 | 0.33 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:4 | 2 | 0.116 | 0.811 ± 0.088 | 0.811 ± 0.088 | 0.753 ± 0.094 | 0.800 ± 0.089 | 0.059 | 0.052 | 0.46 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:6 | 2 | 0.156 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.691 ± 0.102 | 0.000 | 0.000 | 0.00 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:8 | 2 | 0.142 | 0.587 ± 0.107 | 0.648 ± 0.104 | 0.575 ± 0.107 | 0.575 ± 0.107 | 0.073 | 0.062 | 0.49 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:10 | 2 | 0.000 | 0.594 ± 0.093 | 0.583 ± 0.094 | 0.594 ± 0.093 | 0.552 ± 0.094 | 0.042 | 0.042 | 0.31 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:12 | 2 | 0.000 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC2:16 | 2 | 0.000 | 0.344 ± 0.091 | 0.333 ± 0.091 | 0.354 ± 0.091 | 0.385 ± 0.093 | 0.052 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:3 | 2 | 0.000 | 0.885 ± 0.071 | 0.875 ± 0.072 | 0.875 ± 0.072 | 0.917 ± 0.066 | 0.042 | 0.042 | 0.42 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:4 | 2 | 0.000 | 0.802 ± 0.081 | 0.812 ± 0.080 | 0.781 ± 0.083 | 0.812 ± 0.080 | 0.031 | 0.031 | 0.27 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:5 | 2 | 0.000 | 0.708 ± 0.088 | 0.750 ± 0.085 | 0.740 ± 0.086 | 0.729 ± 0.087 | 0.042 | 0.042 | 0.34 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:6 | 2 | 0.000 | 0.625 ± 0.092 | 0.656 ± 0.091 | 0.667 ± 0.091 | 0.677 ± 0.090 | 0.052 | 0.052 | 0.40 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:7 | 2 | 0.000 | 0.604 ± 0.093 | 0.562 ± 0.094 | 0.594 ± 0.093 | 0.594 ± 0.093 | 0.042 | 0.042 | 0.32 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:8 | 2 | 0.000 | 0.510 ± 0.094 | 0.500 ± 0.094 | 0.510 ± 0.094 | 0.510 ± 0.094 | 0.010 | 0.010 | 0.08 | CONSISTENT | CONSISTENT | CONSISTENT |
+| XC3:10 | 2 | 0.000 | 0.365 ± 0.092 | 0.344 ± 0.091 | 0.312 ± 0.089 | 0.344 ± 0.091 | 0.052 | 0.052 | 0.41 | CONSISTENT | CONSISTENT | CONSISTENT |
 
 Rungs compared: 89 (89 with all four frames); τ median 0.000; spread median 0.042, q90 0.073; class shares CONSISTENT 0.989, UNRESOLVED 0.011, WORDING_SENSITIVE 0.000.
 
@@ -149,7 +160,7 @@ Gate 3's own block: 0 sensitive, 1 unresolved; touching the reference set: {'UNR
 
 Basis: no WORDING_SENSITIVE rung: the largest-spread rungs are shown instead (all CONSISTENT or UNRESOLVED). 3 case(s).
 
-### B:14 — UNRESOLVED (spread 0.231, max |z| 0.27; A UNRESOLVED, B UNRESOLVED)
+### B:14 — UNRESOLVED (κ 0.865, max Δp 0.031, spread ι 0.231, max |z| 0.27; A UNRESOLVED, B UNRESOLVED)
 
 **Frame f0** — ι -0.615 ± 0.611; exact compliance 75/96 (0.781) over 24 topics; observed-count distribution {'6': 75, '15': 21}.
 
@@ -235,7 +246,7 @@ Answer:
 - `g2grid-B-007:solo:B:14:0` topic art-and-design-50 (calibration_a), draw 0: observed 15, exact-compliant no, 71 words:
   > study, answer, matter, reason, detail, note part value line field reply text point case study answer matter reason detail note part value line field reply text point case study answer matter reason detail note part value line field reply text point case study answer matter reason
 
-### MK4:5 — CONSISTENT (spread 0.104, max |z| 0.79; A CONSISTENT, B CONSISTENT)
+### MK4:5 — CONSISTENT (κ 0.000, max Δp 0.104, spread ι 0.104, max |z| 0.79; A CONSISTENT, B CONSISTENT)
 
 **Frame f0** — ι 0.542 ± 0.094; exact compliance 52/96 (0.542) over 24 topics; observed-count distribution {'5': 52, '6': 44}.
 
@@ -321,7 +332,7 @@ Answer:
 - `g2candidates-003:solo:MK4:5:1` topic art-and-design-32 (calibration_a), draw 1: observed 6, exact-compliant no, 71 words:
   > whereas, whereas, whereas, whereas, whereas, whereas, reply, text point case study answer matter reason detail note part value line field reply text point case study answer matter reason detail note part value line field reply text point case study answer matter reason detail not
 
-### MK7:1 — CONSISTENT (spread 0.104, max |z| 1.07; A CONSISTENT, B CONSISTENT)
+### MK7:1 — CONSISTENT (κ 0.000, max Δp 0.104, spread ι 0.104, max |z| 1.07; A CONSISTENT, B CONSISTENT)
 
 **Frame f0** — ι 0.844 ± 0.076; exact compliance 81/96 (0.844) over 24 topics; observed-count distribution {'1': 81, '2': 15}.
 
