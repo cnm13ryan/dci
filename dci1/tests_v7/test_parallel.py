@@ -293,3 +293,59 @@ def test_the_calibration_table_matches_a_naive_scan(
         assert {r["kind"]: r["chance_compliance"] for r in rows} == \
             chance_by_kind, split
     assert instance_rates is not None       # the old path is still imported
+
+
+# ------------------------------------------- a stalled pool falls back
+
+def _stalling_unit(item: int) -> int:
+    """Blocks forever in a *worker* for one item (and ignores SIGTERM there,
+    as the stuck workers of 2026-08-29 did); returns at once in the calling
+    process, so the serial fallback can finish the same units."""
+    import multiprocessing as mp
+    import signal
+    import time
+
+    if item == 3 and mp.parent_process() is not None:
+        signal.signal(signal.SIGTERM, signal.SIG_IGN)
+        time.sleep(600)
+    return item * 2
+
+
+def test_a_stalled_pool_is_torn_down_within_the_bound_and_the_units_rerun(
+        monkeypatch):
+    """2026-08-29: a stage's pool finished every unit and then hung for 75
+    minutes in Pool.__exit__ on two workers that never exited. Now a pool
+    that stops delivering results within the bound is terminated, workers
+    still alive after the teardown bound are killed, and the units are
+    rerun serially --- the same results, later, rather than never."""
+    import time
+
+    monkeypatch.setattr(parallel, "RESULT_TIMEOUT_SECONDS", 3.0)
+    monkeypatch.setattr(parallel, "TEARDOWN_TIMEOUT_SECONDS", 2.0)
+    started = time.monotonic()
+    out = parallel.pool_map(_stalling_unit, list(range(80)), workers=2,
+                            chunksize=1)
+    assert out == [i * 2 for i in range(80)]
+    assert time.monotonic() - started < 60
+    with pytest.raises(parallel.PoolStalled):
+        parallel._pooled(_stalling_unit, list(range(80)), {}, 2, 1)
+
+
+# ---------------------------------- payloads larger than a pipe buffer
+
+def _bulky_unit(item: int) -> bytes:
+    return bytes([item % 251]) * 200_000            # 200 kB per result
+
+
+def test_results_larger_than_a_pipe_buffer_do_not_deadlock():
+    """A first dispatcher sent every chunk before reading any result; with
+    chunks and results bigger than a pipe's buffer the parent and a worker
+    blocked on each other's full pipe forever (rehearsal r5, Gate 2). One
+    chunk in flight per worker, collected as it completes, cannot."""
+    import time
+
+    started = time.monotonic()
+    out = parallel.pool_map(_bulky_unit, list(range(96)), workers=2,
+                            chunksize=3)              # 600 kB per result message
+    assert out == [_bulky_unit(i) for i in range(96)]
+    assert time.monotonic() - started < 120

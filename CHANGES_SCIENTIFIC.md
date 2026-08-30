@@ -392,6 +392,26 @@ implementation (`protocol/revision.V9`) and the correction is a researcher
 decision. Cost of the table at Gate 2: 751 s before, 16.6 s pooled after on
 the same rows; scoring ~2 ms a row serial at every generating stage.
 
+**Own pool, bounded waits (later the same day).** A stage's pool finished
+every unit and then hung for 75 minutes in `Pool.__exit__` (development
+rehearsal r5 of `gemma-3n-e2b-it`, regime screen): `multiprocessing.Pool`'s
+workers share one task queue behind one lock, a worker that dies holding it
+leaves the others and `Pool.terminate()` waiting on it forever, and two of
+twelve spawned workers were asleep on exactly that lock. `pool_map` no longer
+uses `Pool`: each spawned worker owns a duplex pipe, chunks are dealt
+round-robin by index and reassembled in order, a dead worker is seen on its
+sentinel, silence beyond a bound is a stall, teardown joins with a bound and
+kills what is left, and any of those reruns the units serially
+(`PoolStalled`) — the same results, later, never never. Dispatch keeps one
+chunk in flight per worker and collects as it goes: a first form sent every
+chunk before reading any result and, with results larger than a pipe's
+buffer, parent and worker blocked on each other's full pipe (the same
+lane, Gate 2, the same day); `tests_v7/test_parallel.py` sends 600 kB
+results through two workers.
+`tests_v7/test_parallel.py` stalls a worker that ignores SIGTERM and asserts
+the bound and the results. A watchdog covered the lanes already running on
+the previous pool.
+
 **History.** A first version forked the calling process and deadlocked the
 audit (a forked worker inherited a held lock from a threaded scenario
 process); a second used `forkserver` and hung inside a real stage process;
