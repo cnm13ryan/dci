@@ -199,7 +199,24 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                                     "second_pass_max_batches":
                                         R.RESCREEN_MAX_BATCHES,
                                     "calibration_topics": C.N_CALIBRATION,
-                                    "calibration_draws": C.M_CAL},
+                                    "calibration_draws": C.M_CAL,
+                                    "calibration_frame_passes":
+                                        R.CALIBRATION_FRAME_PASSES,
+                                    "calibration_topics_per_frame":
+                                        R.CALIBRATION_TOPICS_PER_FRAME},
+                   "calibration_allocation": {
+                       "frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
+                       "topics_per_frame": R.CALIBRATION_TOPICS_PER_FRAME,
+                       "topics_per_frame_per_split":
+                           R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT,
+                       "generations_per_rung":
+                           R.CALIBRATION_GENERATIONS_PER_RUNG,
+                       "rule": "Approach A measures every difficulty inside "
+                               "a frame; a calibration pass renders every "
+                               "calibration topic under one frame and the "
+                               "passes' offsets are distinct, so each frame "
+                               "is measured on its own half of the topics "
+                               "and no topic recurs within a frame"},
                    "completion_caps": list(C.COMPLETION_CAPS),
                    "target_grid": list(C.TARGET_GRID),
                    "focal_grid": list(C.FOCAL_GRID),

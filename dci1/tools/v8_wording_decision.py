@@ -30,8 +30,10 @@ chooses none of them: no frame is selected or discarded here.
 **Composed outcomes are never read.** The v8 pilot generates no composed
 cell; this tool additionally refuses any scored row with more than one
 present constraint, reads no stage beyond ``GATE_3_REFERENCES``, and names
-no interference quantity. Base: Gate 2 (48 topics × 4 draws per frame per
-split); the pre-screen's 6-topic frames are not used here.
+no interference quantity. Base: Gate 2 at whatever calibration allocation
+the run recorded (``calibration_allocation``: 96 topics per frame under the
+two-pass amendment, 48 under one pass); the pre-screen's 6-topic frames are
+not used here.
 
 If the root has no Gate-2 record the report says so and lists what must
 finish first; the exit status is 2.
@@ -791,6 +793,7 @@ def build(root: Path, *, model_key: str, namespace: str, n_cases: int,
                   "chance_basis": gate2.get("chance_basis"),
                   "row_accounting": gate2.get("row_accounting"),
                   "n_scored_rows_read": len(rows),
+                  "calibration_allocation": gate2.get("calibration_allocation"),
                   "wording_dependence_pooled": gate2["wording_dependence_pooled"],
                   "ladders_by_frame_pooled": {
                       w: {fam: d.get("ladder_class") for fam, d in fams.items()}
@@ -857,8 +860,13 @@ def render(rep: Mapping[str, Any]) -> str:
     rg = rep.get("regime_by_frame") or {}
     if rg.get("by_frame"):
         p("## 0. §12.3 on each frame's own A curve\n")
+        alloc = g2.get("calibration_allocation") or {}
+        per_frame = alloc.get("topics_per_frame")
+        shape = (f"{per_frame} topics x {alloc.get('draws', C.M_CAL)} draws, "
+                 f"{alloc.get('topics_per_frame_per_split')} topics per split"
+                 if per_frame else "the run's own per-frame allocation")
         p(f"Target band {rg['band']} on raw solo compliance; the stage applies the rule "
-          f"to the curve pooled over the four frames. Per frame (48 topics × 4 draws per split):\n")
+          f"to the curve pooled over the four frames. Per frame ({shape}):\n")
         qs = [str(q) for q in rg["grid"]]
         p("| curve | " + " | ".join(f"q={q}" for q in qs) + " | inside band | resolves alone? |")
         p("|---|" + "---:|" * len(qs) + "---|---|")

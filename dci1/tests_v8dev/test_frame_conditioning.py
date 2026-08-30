@@ -34,6 +34,7 @@ from dci1v4.errors import ProtocolError
 from dci1v7.protocol import constants as C
 from dci1v7.stages.calibration_table import FORBIDDEN_CALIBRATION_FIELDS
 from dci1v7.verifiers.constraints import Constraint
+from dci1v8dev import rules as R
 from dci1v8dev.run import calibration as CAL
 from dci1v8dev.run import references as REF
 from dci1v8dev.run import report as RPT
@@ -51,6 +52,13 @@ CANDIDATES = ("MK1:2", "MK1:5", "MK1:8", "MK2:2", "MK2:5", "MK2:8",
 A_GRID = tuple(C.TARGET_GRID)
 B_GRID = tuple(C.FOCAL_GRID)
 RESAMPLES = 150
+
+
+def _topics_per_frame(topics_per_split: int = C.N_CALIBRATION_A) -> int:
+    """What one frame is measured on in a fixture of this size: the
+    allocation's own arithmetic, so a change to the passes moves the
+    fixtures with it instead of leaving them asserting the old design."""
+    return 2 * topics_per_split * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS
 
 
 def _u(*key) -> float:
@@ -77,14 +85,22 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
              chance: dict[str, float] | None = None,
              outcome_key=None, extra_instances: tuple[str, ...] = (),
              extension: tuple[str, ...] = ()) -> tuple[list[dict], ...]:
-    """Scored rows in the run layer's schema for a two-split calibration on
-    ``2 * topics_per_split`` blocks (frame = block index % 4). ``rates_by_frame``
-    maps frame -> label -> pass probability when the constraint is stated;
-    ``chance`` maps label -> pass probability when it is absent on the
-    unconstrained cell. ``outcome_key`` (frame, label, topic_index, draw,
-    present) -> key decides the pseudo-random outcome; the default keys by
-    the topic's global index, so two frames differ; keying by the topic's
-    position within its frame makes frames identical (contract 16)."""
+    """Scored rows in the run layer's schema for a two-split calibration,
+    laid out over ``rules.CALIBRATION_FRAME_OFFSETS`` calibration passes
+    exactly as ``calibration.calibration_blocks`` lays the real ones out:
+    each pass covers ``2 * topics_per_split`` topics under one frame per
+    block, and pass p is based at a block index congruent to its offset, so
+    ``frame = block index % 4`` holds on every row and each frame ends on
+    ``2 * topics_per_split * passes / N_WORDINGS`` distinct topics.
+
+    ``rates_by_frame`` maps frame -> label -> pass probability when the
+    constraint is stated; ``chance`` maps label -> pass probability when it
+    is absent on the unconstrained cell. ``outcome_key`` (frame, label,
+    topic position within the pass, draw, present) -> key decides the
+    pseudo-random outcome; the default keys by the frame and the position,
+    so two frames differ; keying by ``position // N_WORDINGS`` --- the
+    topic's rank within its frame, which the passes preserve --- makes the
+    frames identical (contract 16)."""
     chance = chance or {}
     instances = ([f"A:{q}" for q in A_GRID] + [f"B:{m}" for m in B_GRID]
                  + list(CANDIDATES) + list(extra_instances))
@@ -92,61 +108,66 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
     cand_rows: list[dict] = []
     ext_rows: list[dict] = []
     outcome_key = outcome_key or (lambda f, label, t, d, present: (f, label, t, d, present))
-    n = 0
-    for split in (C.CALIBRATION_A, C.CALIBRATION_B):
-        for t in range(topics_per_split):
-            block_index = n
-            n += 1
-            frame = block_index % C.N_WORDINGS
-            topic = f"{split}-topic-{t:03d}"
-            rates = rates_by_frame[frame]
+    n_topics_total = 2 * topics_per_split
+    cursor = 0
+    for offset in R.CALIBRATION_FRAME_OFFSETS:
+        cursor += (offset - cursor) % C.N_WORDINGS
+        base, cursor = cursor, cursor + n_topics_total
+        n = 0
+        for split in (C.CALIBRATION_A, C.CALIBRATION_B):
+            for t in range(topics_per_split):
+                position, block_index = n, base + n
+                n += 1
+                frame = block_index % C.N_WORDINGS
+                topic = f"{split}-topic-{t:03d}"
+                rates = rates_by_frame[frame]
 
-            def score(label: str, stated: str | None, draw: int) -> dict:
-                kind, q = label.rpartition(":")[0], int(label.rpartition(":")[2])
-                present = label == stated
-                p = rates[label] if present else chance.get(label, 0.0)
-                passed = _u(*outcome_key(frame, label, block_index, draw, present),
-                            "outcome") < p
-                return {"kind": kind, "severity": q, "slot": label,
-                        "statistic": q if passed else q + 1, "passed": passed,
-                        "graded": 0.5, "non_vacuous": True,
-                        "vacuous_pass": False, "present": present,
-                        "position": 0 if present else None,
-                        "configuration": None, "processing_failure": False}
+                def score(label: str, stated: str | None, draw: int) -> dict:
+                    kind, q = label.rpartition(":")[0], int(label.rpartition(":")[2])
+                    present = label == stated
+                    p = rates[label] if present else chance.get(label, 0.0)
+                    passed = _u(*outcome_key(frame, label, position, draw, present),
+                                "outcome") < p
+                    return {"kind": kind, "severity": q, "slot": label,
+                            "statistic": q if passed else q + 1, "passed": passed,
+                            "graded": 0.5, "non_vacuous": True,
+                            "vacuous_pass": False, "present": present,
+                            "position": 0 if present else None,
+                            "configuration": None, "processing_failure": False}
 
-            def row(cell_id: str, stated: str | None, draw: int, run: str) -> dict:
-                block_id = f"g2{run}-{block_index:03d}"
-                # the run's own instance list, as ``generate_and_score`` gets
-                # it: the extension run scores its own candidates, the grid
-                # and candidate runs score what was declared when they ran
-                scored_instances = (list(instances) + [l for l in extension
-                                                       if l not in instances]
-                                    if run == "extension-1" else instances)
-                return {"row_id": f"{block_id}:{cell_id}:{draw}", "cell_id": cell_id,
-                        "block_id": block_id, "block_index": block_index,
-                        "block_frame": frame, "draw_index": draw,
-                        "arm": UNCONSTRAINED_ARM if stated is None else "solo",
-                        "slots": [] if stated is None else [stated],
-                        "topic_id": topic, "area": "fixture", "topic_split": split,
-                        "load": 0 if stated is None else 1,
-                        "wording_indices": [] if stated is None else [frame],
-                        "frame": None if stated is None else frame,
-                        "word_count": 80, "truncated": False, "empty": False,
-                        "run": run, "model_key": MODEL,
-                        "scores": [score(label, stated, draw)
-                                   for label in scored_instances]}
+                def row(cell_id: str, stated: str | None, draw: int, run: str) -> dict:
+                    block_id = f"g2{run}-{block_index:03d}"
+                    # the run's own instance list, as ``generate_and_score`` gets
+                    # it: the extension run scores its own candidates, the grid
+                    # and candidate runs score what was declared when they ran
+                    scored_instances = (list(instances) + [l for l in extension
+                                                           if l not in instances]
+                                        if run == "extension-1" else instances)
+                    return {"row_id": f"{block_id}:{cell_id}:{draw}", "cell_id": cell_id,
+                            "block_id": block_id, "block_index": block_index,
+                            "block_frame": frame, "draw_index": draw,
+                            "arm": UNCONSTRAINED_ARM if stated is None else "solo",
+                            "slots": [] if stated is None else [stated],
+                            "topic_id": topic, "area": "fixture", "topic_split": split,
+                            "load": 0 if stated is None else 1,
+                            "wording_indices": [] if stated is None else [frame],
+                            "frame": None if stated is None else frame,
+                            "word_count": 80, "truncated": False, "empty": False,
+                            "run": run, "model_key": MODEL,
+                            "scores": [score(label, stated, draw)
+                                       for label in scored_instances]}
 
-            for draw in range(draws):
-                grid_rows.append(row("unconstrained", None, draw, "grid-A"))
-                for q in A_GRID:
-                    grid_rows.append(row(f"solo:A:{q}", f"A:{q}", draw, "grid-A"))
-                grid_rows.append(row("unconstrained", None, draw, "grid-B"))
-                for m in B_GRID:
-                    grid_rows.append(row(f"solo:B:{m}", f"B:{m}", draw, "grid-B"))
-                for label in CANDIDATES:
-                    cand_rows.append(row(f"solo:{label}", label, draw, "candidates"))
-                for label in extension:
-                    ext_rows.append(row(f"solo:{label}", label, draw, "extension-1"))
+                for draw in range(draws):
+                    grid_rows.append(row("unconstrained", None, draw, "grid-A"))
+                    for q in A_GRID:
+                        grid_rows.append(row(f"solo:A:{q}", f"A:{q}", draw, "grid-A"))
+                    grid_rows.append(row("unconstrained", None, draw, "grid-B"))
+                    for m in B_GRID:
+                        grid_rows.append(row(f"solo:B:{m}", f"B:{m}", draw, "grid-B"))
+                    for label in CANDIDATES:
+                        cand_rows.append(row(f"solo:{label}", label, draw, "candidates"))
+                    for label in extension:
+                        ext_rows.append(row(f"solo:{label}", label, draw, "extension-1"))
     if extension:
         return grid_rows, cand_rows, ext_rows
     return grid_rows, cand_rows
@@ -215,7 +236,7 @@ def test_the_same_rung_under_two_frames_carries_different_iota_uncollapsed(two_f
     for label in ("MK1:5", "MK2:5", "MK3:5"):
         hard, easy = tables[0][label], tables[1][label]
         assert hard["solo_compliance"] < easy["solo_compliance"] - 0.10
-        assert hard["n_topics"] == easy["n_topics"] == 48     # the frame's own topics
+        assert hard["n_topics"] == easy["n_topics"] == _topics_per_frame()
     # ... and the wording diagnostic keeps them apart as well
     diag = W.frame_table(two_frame_world["grid"] + two_frame_world["cand"])
     by = {(e["frame"], e["candidate"]): e for e in diag}
@@ -231,7 +252,7 @@ def test_different_frames_select_different_operating_points(two_frame_world):
         block = fr["by_frame"][w]
         assert block["iota_a_basis"].startswith("§13.2")
         assert block["chance_basis"]["cell"] == UNCONSTRAINED_ARM
-        assert block["n_topics_a"] == 48
+        assert block["n_topics_a"] == _topics_per_frame()
         # iota_A(f) is A's own solo rate at n*(f) under frame f
         assert block["solo_compliance_a"] == block["solo_curves"]["A"][str(block["n_star"])]
     assert len(set(round(v, 6) for v in iota_a.values())) >= 2
@@ -528,7 +549,7 @@ def test_an_extension_rung_gets_its_chance_column_and_kappa_under_b():
     row = next(r for r in kept["pooled"]
                if r["kind"] == "MK1" and r["severity"] == 9)
     assert row["chance_compliance"] > 0            # measured, not assumed
-    assert row["n_topics"] == C.N_CALIBRATION // C.N_WORDINGS
+    assert row["n_topics"] == _topics_per_frame()
     assert row["kappa_under_b"] is not None        # §13.6 admits no absence
     assert row["kappa_under_b_source"]["m_star"] == m_star
     assert row["per_topic_solo"]                   # §13.7 can be run on it
@@ -571,6 +592,155 @@ def test_the_per_frame_precision_projection_is_the_registered_one_rescaled():
     assert full["n_blocks"] == C.N_BLOCKS and quarter["n_blocks"] == C.N_BLOCKS // C.N_WORDINGS
     assert abs(quarter["se_beta"] / full["se_beta"] - 2.0) < 1e-9
     assert precision.se_point_at(C.N_BLOCKS) == precision.MEASURED["se_point"]
+
+
+# ------------------------------------------------------------------------
+# The calibration-allocation amendment (rules.CALIBRATION_FRAME_OFFSETS,
+# CHANGES_SCIENTIFIC.md 2026-08-30): two passes over the calibration topics,
+# 96 topics per frame, no frame pooled with another and no topic repeated
+# inside a frame. Approach A is what makes the allocation a *per-frame*
+# question, so these are frame contracts.
+# ------------------------------------------------------------------------
+def _real_calibration_topics():
+    return ([{"topic_id": f"a-{i:03d}"} for i in range(C.N_CALIBRATION_A)]
+            + [{"topic_id": f"b-{i:03d}"} for i in range(C.N_CALIBRATION_B)])
+
+
+def test_each_frame_is_measured_on_the_designed_number_of_topics():
+    """Contract: the allocation gives every frame exactly
+    ``rules.CALIBRATION_TOPICS_PER_FRAME`` distinct topics --- 96 of the 192
+    at the two registered passes, against 48 under one."""
+    topics = _real_calibration_topics()
+    built = CAL.calibration_blocks(topics, "g2grid-A")
+    assert len(built) == C.N_CALIBRATION * R.CALIBRATION_FRAME_PASSES
+    by_frame: dict[int, set[str]] = {}
+    for block in built:
+        by_frame.setdefault(block.index % C.N_WORDINGS, set()).add(block.topic_id)
+    assert sorted(by_frame) == list(S.FRAMES)
+    for frame, seen in by_frame.items():
+        assert len(seen) == R.CALIBRATION_TOPICS_PER_FRAME == 96, frame
+    # every topic is met, and met under exactly `passes` distinct frames
+    frames_of_topic: dict[str, set[int]] = {}
+    for block in built:
+        frames_of_topic.setdefault(block.topic_id, set()).add(
+            block.index % C.N_WORDINGS)
+    assert len(frames_of_topic) == C.N_CALIBRATION
+    assert {len(v) for v in frames_of_topic.values()} == {
+        R.CALIBRATION_FRAME_PASSES}
+
+
+def test_no_topic_is_measured_twice_inside_one_frame_and_the_splits_balance():
+    """Contract: a frame's topics are distinct (so its per-topic vector has
+    one entry per topic and the SE is formed at the topic count that is
+    really there) and balanced over §13.7's two splits."""
+    topics = _real_calibration_topics()
+    built = CAL.calibration_blocks(topics, "g2grid-A")
+    assert len({b.block_id for b in built}) == len(built)
+    assert len({b.index for b in built}) == len(built)
+    per_frame: dict[int, list[str]] = {}
+    for block in built:
+        per_frame.setdefault(block.index % C.N_WORDINGS, []).append(block.topic_id)
+    for frame, seen in per_frame.items():
+        assert len(seen) == len(set(seen)), f"frame {frame} repeats a topic"
+        a = sum(1 for t in seen if t.startswith("a-"))
+        b = sum(1 for t in seen if t.startswith("b-"))
+        assert a == b == R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT == 48, frame
+    # the offsets are what makes this true; a repeated offset would not
+    assert len({o % C.N_WORDINGS for o in R.CALIBRATION_FRAME_OFFSETS}) == \
+        R.CALIBRATION_FRAME_PASSES
+
+
+def test_the_frame_is_still_the_block_index_modulo_the_wordings():
+    """The passes must not break the one invariant every reader uses
+    (``execute.frame_of_block``): a pass is based at an index congruent to
+    its offset, so the derived frame and the rendered frame agree on every
+    row of every pass."""
+    topics = _real_calibration_topics()
+    built = CAL.calibration_blocks(topics, "g2cand")
+    n = len(topics)
+    for pass_index, offset in enumerate(R.CALIBRATION_FRAME_OFFSETS):
+        chunk = built[pass_index * n:(pass_index + 1) * n]
+        for position, block in enumerate(chunk):
+            assert block.index % C.N_WORDINGS == (position + offset) % C.N_WORDINGS
+
+
+def test_the_allocation_is_asserted_on_the_rows_and_refuses_a_short_frame():
+    """``assert_allocation_realised`` runs on the generated rows on the
+    mandatory path. A frame short of the allocation, or unbalanced across
+    the splits, is refused rather than recorded."""
+    grid, _cand = rows_for({w: _default_rates() for w in S.FRAMES},
+                           topics_per_split=24, draws=1)
+    by_frame = {w: rows_of_frame(grid, w) for w in S.FRAMES}
+    expected = 48 * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS
+    realised = CAL.assert_allocation_realised(
+        by_frame, expected_topics_per_frame=expected, where="test")
+    assert {v["n_topics"] for v in realised.values()} == {expected}
+    with pytest.raises(ProtocolError, match="distinct topics"):
+        CAL.assert_allocation_realised(by_frame,
+                                       expected_topics_per_frame=expected + 1,
+                                       where="test")
+    lopsided = {w: [r for r in rows if r["topic_split"] == C.CALIBRATION_A]
+                for w, rows in by_frame.items()}
+    with pytest.raises(ProtocolError, match="§13.7 compares two halves"):
+        CAL.assert_allocation_realised(
+            lopsided, expected_topics_per_frame=expected // 2, where="test")
+
+
+def test_the_passes_reach_the_estimator_that_forms_the_coordinate(monkeypatch):
+    """The point of the amendment: a frame's §13.11 per-topic vector --- the
+    vector ``spectrum.validity._se_iota`` forms SE(iota) at --- is as long
+    as the frame's topic count, so two passes halve the variance instead of
+    piling extra draws onto the same topics. Measured against one pass on
+    the same production path."""
+    rates = {w: _default_rates() for w in S.FRAMES}
+
+    def vectors():
+        grid, cand = rows_for(rates, topics_per_split=24, draws=2)
+        result = _frames(grid, cand)
+        block = result["by_frame"][result["supported"][0]]
+        return {f"{r['kind']}:{r['severity']}": r
+                for r in block["calibration_rows"]["pooled"]}
+
+    two = vectors()
+    monkeypatch.setattr(R, "CALIBRATION_FRAME_OFFSETS", (0,))
+    one = vectors()
+    shared = sorted(set(one) & set(two))
+    assert shared
+    for label in shared:
+        n_one = len(one[label]["per_topic_solo"])
+        n_two = len(two[label]["per_topic_solo"])
+        assert n_one == one[label]["n_topics"] == 12, label
+        assert n_two == two[label]["n_topics"] == 24, label
+    # and the standard error the rule reads falls with it
+    from dci1v7.stages.calibration_table import load_calibration_table
+    from dci1v8dev.spectrum.validity import _se_iota
+    def _ses(rows):
+        table = load_calibration_table(
+            [r for r in rows.values()], model_key=MODEL,
+            m_star=int(rows[next(iter(rows))]["kappa_under_b_source"]["m_star"]),
+            split="pooled")
+        return {r.label: _se_iota(r) for r in table}
+    se_one, se_two = _ses(one), _ses(two)
+    ratios = [se_one[k] / se_two[k] for k in shared
+              if se_one.get(k) and se_two.get(k)]
+    assert ratios and sum(ratios) / len(ratios) > 1.2, ratios
+
+
+def test_the_gate2_record_and_the_manifest_state_the_allocation():
+    """A record that does not say what it was measured on cannot be read
+    later; the allocation block is on Gate 2, carried to Gate 3, and bound
+    by the manifest."""
+    allocation = CAL.calibration_allocation(_real_calibration_topics())
+    assert allocation["passes"] == R.CALIBRATION_FRAME_PASSES
+    assert allocation["topics_per_frame"] == R.CALIBRATION_TOPICS_PER_FRAME
+    assert allocation["topics_per_frame_per_split"] * 2 == \
+        allocation["topics_per_frame"]
+    assert allocation["generations_per_rung"] == \
+        R.CALIBRATION_GENERATIONS_PER_RUNG
+    from dci1v8dev.run import contracts
+    declared = {(f.artifact, f.field) for f in contracts.CONTRACT}
+    assert (S.STAGE_GATE2, "calibration_allocation") in declared
+    assert (S.STAGE_GATE3, "calibration_allocation") in declared
 
 
 @pytest.mark.slow
@@ -632,7 +802,10 @@ def test_the_extension_round_runs_end_to_end_and_its_rungs_are_calibrated(tmp_pa
             assert row["chance_compliance"] is not None
             assert row["kappa_under_b"] is not None, (w, label)
             assert row["kappa_under_b_source"]["m_star"] == g2["by_frame"][str(w)]["m_star"]
-            assert row["n_topics"] == len(g2["calibration_topic_ids"]) // C.N_WORDINGS
+            assert row["n_topics"] == g2["calibration_allocation"][
+                "topics_per_frame"] == (
+                len(g2["calibration_topic_ids"])
+                * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS)
             assert row["per_topic_solo"]
     assert seen, "no extension rung reached a frame's table"
 

@@ -13,6 +13,70 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 (after pilot r5/r6) — the v8 calibration allocation: two passes, 96 topics per wording frame
+
+**What changed.** `dci1v8dev.rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`, and
+Gate 2 lays every one of its backend runs out over one **calibration pass**
+per offset (`calibration.calibration_blocks`). A pass renders every
+calibration topic under one frame; pass *p* shifts the frame by `offset_p`,
+so the topic at position *i* is met under frame `(i + offset_p) % 4`. The
+consequence: every one of the 192 calibration topics is now met under two
+frames, and every frame's own §13.11 table, ι_A(f), operating points and
+per-topic vectors are measured on **96 distinct topics — 48 from each
+§13.7 split — instead of 48 and 24**. Gate-2 generation doubles; nothing
+else in the design moves.
+
+**Why.** Approach A (`dci1/docs/V8_FRAME_CONDITIONING.md`) makes difficulty
+ι(X, f) a within-frame quantity, so the allocation became a per-frame
+question, and pilots r5/r6 measured the answer: at one frame per block the
+median per-frame SE(ι) is **0.0497** against the registered coordinate
+floor SE(ι) ≤ 0.05 (`rules.SPECTRUM_MAX_SE_IOTA`, unchanged). Of roughly
+thirty rungs positioned below A per frame, `V_coord` refused 21 on that
+floor and the two-split `V_stab` 9, so no rung below A survived on any
+frame of any of the three checkpoints, no family straddled ι_A, and no
+frame identified a spectrum; LOCAL failed at `V_stab` (~32 of 56) and
+`V_head` (~21). The screen, second-pass and retention halves of
+`LADDER_COVERAGE` passed on every model. The binding constraint was
+measurement, not the rules.
+
+**This is an allocation amendment, not a threshold relaxation.** No
+threshold changed. `SPECTRUM_MAX_SE_IOTA`, §13.7's equivalence bound,
+§13.8's 0.10 caliper and core kernel, the spectrum geometry
+(`SPECTRUM_OFFSET_*`, `SPECTRUM_MIN_TOTAL_SPAN`, `SPECTRUM_MAX_SE_BETA`),
+the chance-compliance rules (§11.2, §13.2, §13.4, §13.6), the wording
+policy and the frame-specific estimands are byte-identical. The change is
+to how much is measured inside each frame; what admits a reference is
+untouched. It is equally not a pooling: a second pass over the *frames* is
+not a pooling *over* frames — every frame keeps its own curves, operating
+point, table, validity, selection and Δ_R(f), and the offsets are distinct
+modulo `N_WORDINGS` so no topic is ever measured twice within one frame
+(the topic-level standard error falls by √2; extra draws would not have
+done this, because every estimator averages draws within a topic first).
+
+**Which results are affected, and comparability.** Every v8 pilot record
+written before this date (`dci1v8-pilot`, `-r2`, `-r3`, `-r4`, `-r5`,
+`-r6`) was produced at one calibration pass and stands unchanged; none is
+rewritten. A per-frame quantity from those roots and one from a two-pass
+root are **the same estimand at different precision** — the rates are
+comparable, the standard errors, the `V_coord`/`V_stab` verdicts and
+therefore the LOCAL/SPECTRUM states are not. Records now carry
+`GATE_2_CALIBRATION.calibration_allocation` (the offsets, the passes, the
+topics per frame and per split, and the counts *realised* on the grids, the
+candidate run and the extension), Gate 3 carries it forward, and the pilot
+manifest binds it, so a reader can tell which allocation any record was
+measured at. Records written before the amendment carry no such block and
+are read as one pass (`tools/v8_allocation_projection.py`).
+
+**Where enforced.** `calibration.assert_allocation_realised` runs on the
+generated rows of the grids, the candidate run and the extension round, and
+refuses a frame that is not on the designed number of distinct topics or
+whose topics are not balanced across the two splits; `rules` asserts the
+offsets are distinct modulo `N_WORDINGS`;
+`tests_v8dev/test_frame_conditioning.py` pins the allocation, the split
+balance, the `frame = block_index % N_WORDINGS` invariant, the refusal, the
+per-topic vector length that SE(ι) is formed at, and the record fields.
+Nothing is frozen and no composed or interference outcome exists.
+
 ## 2026-08-30 (pilot r4) — the v8 calibration extension: a reserve rung the round measures now has a chance column and kappa(R|B)
 
 **What changed.** `dci1v8dev.run.calibration` declares, on the Gate-2 grid

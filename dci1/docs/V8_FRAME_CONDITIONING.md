@@ -21,7 +21,9 @@ four reasonable wordings of one rule (`wording_v8.V8_FRAMES`):
 
 Every other family, and B, likewise carries four wordings (v7's). A block
 (one topic) is rendered under one frame, `block.index % 4`, so each frame
-meets a quarter of the topics of every cell (§8.4's allocation, kept).
+meets a quarter of the topics of every cell (§8.4's allocation, kept). At
+**Gate 2** each run is laid out over two such allocations (§4a), so a
+calibration frame meets half the topics rather than a quarter.
 
 The first real pilot (`V8_PILOT.md` §7a; root `dci1v8-pilot-r3`,
 qwen3-4b-instruct-2507, 2026-08-30) measured A's solo compliance per frame
@@ -116,14 +118,15 @@ and gives the eventual conclusion a built-in robustness test.
 
 Its cost is real and is not hidden:
 
-* **Calibration precision per frame is that of 48 topics × 4 draws**, not
-  192 × 4, at the registered allocation. On r3's grid rows the topic-level
-  SE of a mid-range rate per frame is 0.04–0.058 (A at q = 5–8; B at
-  m = 8–11), against ≈ 0.025 pooled. The spectrum's coordinate floor
-  SE(ι) ≤ 0.05 (`rules.SPECTRUM_MAX_SE_IOTA`) and the Wilson/Newcombe
-  intervals of V_head, V_chance and V_diff are therefore harder to meet per
-  frame. The rules are not relaxed for this: a frame that cannot pin its
-  coordinates at the allocation records that.
+* **Calibration precision per frame** was that of 48 topics × 4 draws at
+  the first allocation, not 192 × 4. On r3's grid rows the topic-level SE of
+  a mid-range rate per frame is 0.04–0.058 (A at q = 5–8; B at m = 8–11),
+  against ≈ 0.025 pooled; r5/r6 then measured a median per-frame SE(ι) of
+  **0.0497** against the coordinate floor SE(ι) ≤ 0.05
+  (`rules.SPECTRUM_MAX_SE_IOTA`), and no rung below A survived `V_coord`.
+  **Amended 2026-08-30 (§4a): two calibration passes, 96 topics per frame.**
+  The rules were not relaxed for this and are not relaxed now: a frame that
+  cannot pin its coordinates at the allocation records that.
 * **Potentially different n*(f), m*(f), references and support per frame.**
   A frame can identify LOCAL and not SPECTRUM, SPECTRUM and not LOCAL,
   both, or neither; a frame can have no admissible operating point at all.
@@ -139,6 +142,53 @@ Its cost is real and is not hidden:
 * More downstream estimates and a more complicated report: four of
   everything, then a cross-frame section.
 
+## 4a. The calibration allocation (amended 2026-08-30)
+
+Approach A makes the calibration allocation a *per-frame* question, and
+r5/r6 answered it with a measurement: at one frame per block a frame is
+calibrated on 48 topics, the median SE(ι) is 0.0497 against the unchanged
+0.05 floor, `V_coord` refuses 21 of ~30 rungs below A and `V_stab` 9, and
+no frame reaches a spectrum. The amendment is to measure more, not to
+admit more.
+
+**The rule** (`rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`). Gate 2 lays each
+of its backend runs out over one **calibration pass** per frame offset. A
+pass renders every calibration topic under one frame; pass *p* shifts the
+frame by `offset_p`, so the topic at position *i* is met under frame
+`(i + offset_p) % 4`. Two passes at distinct offsets therefore
+
+* put every one of the 192 topics under **two** frames,
+* give every frame **96 distinct topics**, 48 from each §13.7 split,
+* repeat **no** topic inside a frame — the offsets are distinct modulo
+  `N_WORDINGS`, asserted in `rules` — so a frame's per-topic vector has one
+  entry per topic and the *topic*-level SE falls by √2 (extra draws would
+  not have done this: every estimator averages draws within a topic first),
+* pool **no** frame with another: every frame still has its own curves,
+  n\*(f), m\*(f), ι_A(f), §13.11 table, validity, selection and estimand,
+* cost exactly **2× the Gate-2 generation** and nothing else.
+
+`calibration.calibration_blocks` bases pass *p* at a block index congruent
+to `offset_p` and past every earlier pass's range, so block ids and row
+identities stay disjoint **and** the one invariant every reader uses —
+`frame = block_index % N_WORDINGS` (`execute.frame_of_block`) — keeps
+holding on every row. `calibration.assert_allocation_realised` then checks
+the allocation **on the generated rows** of the grids, the candidate run
+and the extension round: every frame on the designed number of distinct
+topics, balanced across the two splits, refused otherwise. The realised
+counts and the rule are on the Gate-2 record
+(`calibration_allocation`), carried to Gate 3, and bound by the manifest.
+
+**What it is not.** Not a threshold change: `SPECTRUM_MAX_SE_IOTA`,
+§13.7's equivalence bound, §13.8's caliper, the spectrum geometry, the
+chance rules and the selection kernels are byte-identical. Not a pooling:
+the second pass of *frames* is not a pooling *over* frames. Not a claim
+that it will work — whether the extra precision lets the registered rules
+admit references is what the next pilot measures.
+
+**The ceiling.** A frame cannot be measured on more than the 192
+calibration topics, which is `N_WORDINGS` passes (every block under every
+frame, 4× generation). Two passes is half of the reachable range.
+
 ## 5. Where the frame enters, stage by stage
 
 | stage | frame handling | what pooled quantity remains, and its standing |
@@ -146,7 +196,7 @@ Its cost is real and is not hidden:
 | generation (`run/execute`) | unchanged: one frame per block, `block.index % 4`; every row carries `frame` (load 1), `block_index` and `block_frame` (every load) | — |
 | regime screen, second pass, retention (`run/regime`, `run/rescreen`, `prescreen/*`) | **pooled over frames, as a measurement budget only.** At 24 topics × 1 draw a frame holds six topics; no posterior on six topics can steer anything. The screen decides which rungs are *measured* at calibration — every measured rung is then calibrated under all four frames on the same blocks — and no admission, matching or selection reads a screen quantity (§12.2's registered principle). Recorded on both stage records as `frame_conditioning` | screen ι_A, the ACCEPT/REJECT/RESAMPLE statuses and the forwarded set: a budget rule, not an eligibility rule (§10 item 3) |
 | Gate 1 (`run/instrument`) | the per-frame wording diagnostic (`run/wording`) is unchanged and is now the *primary* per-frame reading at screen precision | cross-frame comparison classes: descriptive |
-| Gate 2 (`run/calibration`) | **per frame**: curves, n*(f), m*(f), §12.3 resolution, §12.4 adequacy, ι_A(f) with κ_A(f), per-split values and per-topic vectors, §13.11's table on the frame's own rows (§13.2's chance basis is the unconstrained cell of *the same blocks*, enforced by the producer), κ(R|B) at m*(f) on frame f's B-solo cell, degenerate rows withheld per frame, the extension reach per frame | `descriptive_pooled`: the frame-pooled solo curves and what §12.3 would have said on them — read by nothing; no pooled §13.11 table is written |
+| Gate 2 (`run/calibration`) | **two calibration passes** (§4a), then **per frame**: curves, n*(f), m*(f), §12.3 resolution, §12.4 adequacy, ι_A(f) with κ_A(f), per-split values and per-topic vectors, §13.11's table on the frame's own rows (§13.2's chance basis is the unconstrained cell of *the same blocks*, enforced by the producer), κ(R|B) at m*(f) on frame f's B-solo cell, degenerate rows withheld per frame, the extension reach per frame | `descriptive_pooled`: the frame-pooled solo curves and what §12.3 would have said on them — read by nothing; no pooled §13.11 table is written |
 | Gate 3 (`run/references`) | **per supported frame**: folded §13.7 stability against ι_A(f) by split, ι_A(f)'s own stability, `classify_pool` (LOCAL and SPECTRUM) at ι_A(f), §13.8's core kernel, `select_spectrum`, `selected_coverage` at the frame's block share, `admissible_backups`; the frame's state | `cross_frame`: per family, which rung each frame chose; agreement counts — descriptive |
 | report (`run/report`) | the three decided criteria evaluated per frame; the run-level verdict names the frames meeting them | the run-level `passed` is "at least one supported frame passes" with every frame's verdict beside it (§7) |
 | post-freeze (not built) | Δ_R(f), the difficulty-response fit, per frame; cross-frame comparison afterwards | a cross-frame average only if registered as such |
@@ -161,8 +211,8 @@ Its cost is real and is not hidden:
   expectation; it is nevertheless measured on the frame's own blocks
   because §13.2 says "the same topic set" and `_calibration_rows` refuses a
   chance measured on a different topic set from the solo cell. The cost is
-  precision (48 topics, not 192); the record carries the frame-pooled κ
-  beside it as a check.
+  precision (96 topics at the two-pass allocation of §4a, not 192; 48
+  before it); the record carries the frame-pooled κ beside it as a check.
 * **Operating points.** n*(f) = `select_target` on frame f's A curve;
   m*(f) = `select_focal` on frame f's B curve, with §7.2's extension
   {15, 16} measured (on every block) when any frame needs it; the
@@ -177,8 +227,13 @@ Its cost is real and is not hidden:
   every frame's status. No existing registered rule requires one frame's
   failure to end the others: §12.3 and §12.4 are statements about a curve,
   and under Approach A each frame has its own.
+* **Calibration pass.** One rendering of every calibration topic under one
+  frame each (§4a); `rules.CALIBRATION_FRAME_OFFSETS` names them and
+  `rules.CALIBRATION_TOPICS_PER_FRAME` is what a frame's table is measured
+  on.
 * **The calibration population** is the second pass's forwarded set,
-  measured once on every block (so under every frame). The extension round
+  measured once on every block of every calibration pass (so under every
+  frame, on the frame's whole allocation). The extension round
   measures the union of the frames' plans, each frame's plan bounded by the
   existing rule (≤ 2 reserve rungs per deficient side per family, one
   round); a rung measured for one frame is data for every frame.
@@ -244,12 +299,12 @@ report and cannot freeze.
 
 ## 10. Remaining researcher decisions (genuine ones only)
 
-1. **Calibration allocation per frame.** At the registered 192 × 4 each
-   frame is measured on 48 topics; matching to the 0.10 caliper and the
-   0.05 coordinate floor at that precision is what the pilot now measures.
-   Whether to allocate more topics per frame (every block under every
-   frame, 4× Gate-2 cost) or accept per-frame precision is a design choice
-   this note does not take.
+1. ~~**Calibration allocation per frame.**~~ **Decided 2026-08-30** (§4a):
+   two calibration passes, 96 topics per frame, 2× Gate-2 generation, no
+   threshold moved. What remains open is only whether to go to the ceiling
+   (four passes, 192 topics per frame, 4× generation) if two passes prove
+   insufficient — a decision the next pilot's measured per-frame states,
+   not a projection, should inform.
 2. **Confirmatory allocation per frame.** The registered 384 blocks give 96
    per frame; Δ_R(f) at 96 blocks has twice the pooled SE. The precision
    preconditions (§16) were set for the pooled estimand. Keep the total and
@@ -269,8 +324,11 @@ report and cannot freeze.
 `target_selection`, `focal_selection`, `grid_resolution`, `adequacy`,
 `calibration_rows`, `calibration_rows_withheld`, `kappa_under_b_by_severity`,
 `extension_reach`, `unsupported_reason`), `supported_frames`,
-`unsupported_frames`, `descriptive_pooled`, `frame_conditioning`, the
-extension block, the wording diagnostic, `row_accounting`.
+`unsupported_frames`, `descriptive_pooled`, `frame_conditioning`,
+`calibration_allocation` (the passes, the offsets, the topics per frame and
+per split, and the counts **realised** on the grids, the candidate run and
+the extension), the extension block, the wording diagnostic,
+`row_accounting`.
 `GATE_3_REFERENCES`: `frames`, `by_frame[f]` (`stability`, `local`,
 `spectrum`, `core`, `core_references`, `spectrum_selection`, `coverage`,
 `backups`, `survival`, `wording_sensitive_rungs`, `state`), `frame_states`,

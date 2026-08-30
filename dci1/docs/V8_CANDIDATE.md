@@ -132,13 +132,31 @@ and backups **per frame** against ι_A(f); an unsupported frame is
 recorded and the others continue; each frame ends in an explicit state;
 the eventual estimands are Δ_R(f) and the difficulty-response slope per
 frame, compared across frames afterwards. Everything in §§3, 4, 8 below
-is therefore evaluated per frame on that frame's own rows (48 of the 192
-calibration topics); the thresholds are unchanged. The screen and second
+is therefore evaluated per frame on that frame's own rows (96 of the 192
+calibration topics since the allocation amendment of 2026-08-30, §5b; 48
+before it); the thresholds are unchanged. The screen and second
 pass (§7, §8) remain pooled over frames as a measurement budget. Approach
 B (one canonical wording) is recorded in the design note and rejected for
 this study. The `e2e.py` synthetic pipeline models no frame (it is the
 rule layer's frame-free replay) and the retrospective replays in §9 are
 frame-pooled by construction.
+
+## 5b. The calibration allocation: two passes, 96 topics per frame (2026-08-30)
+
+Approach A makes the calibration allocation a per-frame question, and
+pilots r5/r6 measured what one frame per block costs: median per-frame
+SE(ι) **0.0497** against the unchanged 0.05 coordinate floor, no rung below
+A surviving `V_coord`/`V_stab` on any frame of any of the three
+checkpoints, and no spectrum identified. Researcher decision of 2026-08-30
+(`V8_FRAME_CONDITIONING.md` §4a; `CHANGES_SCIENTIFIC.md`): Gate 2 renders
+each of its runs over **two calibration passes**
+(`rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`), so every calibration topic is
+met under two frames and every frame is calibrated on **96 distinct
+topics, 48 per §13.7 split**, at 2x the Gate-2 generation. The offsets are
+distinct modulo `N_WORDINGS`, so no topic recurs inside a frame and the
+topic-level SE falls by sqrt(2). **No threshold moved** and no frame is
+pooled with another; the ceiling (four passes, 192 topics per frame, 4x)
+stays open.
 
 ## 6. The wording instrument
 
@@ -249,9 +267,13 @@ rungs forwarded; 18.6k–36.4k generations to the freeze.
 
 ## 10. Compute
 
-Per model, to the freeze: pre-screen ≈ 8k (unchanged) + second pass 7–12k +
-calibration 31–49k (+ A's grid 6k, + extension ≤ 25k worst case, typically
-0–6k) ≈ **55–75k generations** (v7: ≈ 100–115k). After the freeze, the
+Per model, to the freeze, at **two calibration passes** (§5b; the figures
+below double every calibration term against the one-pass design):
+pre-screen ≈ 8k (unchanged) + second pass 7–12k + calibration 62–98k
+(+ both grids 28k, + extension ≤ 50k worst case, typically 0–14k) ≈
+**110–150k generations** (v7: ≈ 100–115k). Measured on r5/r6 at one pass:
+73.7k / 93.5k / 83.4k per model, so two passes projects to ≈ 130k / 167k /
+149k. After the freeze, the
 spectrum arm: 6–8 references × (solo:X, B+X, X+B) × 384 × 8 = **55k–74k**.
 At the observed Gate-2 throughput (qwen3-4b 15.5 rows/s, gemma-e4b 4.7)
 that is ≈ 1–1.5 h (qwen) / 3.5–4.5 h (gemma-e4b) to the freeze and about

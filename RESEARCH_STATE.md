@@ -204,7 +204,14 @@ of the coverage criterion pass on every model. No threshold was relaxed;
 the projection `reports/dci1v8dev/allocation_projection*.md` runs the
 production Gate-3 rules at ×1/×2/×4 topics per frame (SPECTRUM identified
 on every supported frame at ×4, LOCAL on the majority) and is the measured
-input to the first open allocation decision. (4) **The v8 frame repair
+input to the allocation decision --- **which the researcher then took**:
+since 2026-08-30 Gate 2 renders each of its runs over **two calibration
+passes** (`rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`), so every calibration
+topic is met under two frames and **every frame is calibrated on 96 of the
+192 topics, 48 per §13.7 split**, at 2x the Gate-2 generation. No threshold
+moved and no frame is pooled with another; the amendment is measurement,
+not admission (`CHANGES_SCIENTIFIC.md`, `V8_FRAME_CONDITIONING.md` §4a).
+(4) **The v8 frame repair
 works and what remains is marker-specific**: on Gemma the four frames are
 at 14--22 % marker-absent against v7's 46--53 %, and the two markers that
 still fail --- *namely*, *instead* --- fail by family, rescued by f3 alone,
