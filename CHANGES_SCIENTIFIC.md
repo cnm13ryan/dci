@@ -13,6 +13,59 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 — the v8 pilot execution layer (prospective; no registered rule changes; no evidence)
+
+**What changed.** `dci1/src/dci1v8dev/run/` executes the v8 candidate's
+pre-composition chain on a real model under the v8 wording instrument, in an
+evidence root of its own: nine stages, a CLI, a signed pilot manifest, the
+seed domain `dci1v8:*`, and a synthetic nine-stage walk
+(`dci1/tests_v8dev/test_pilot_lifecycle.py`). Design and the four
+prospective criteria: `dci1/docs/V8_PILOT.md`. Consequential facts, stated
+before any row exists:
+
+* **Text shown to models.** Every prompt the layer renders comes from
+  `dci1v8dev.wordings` (the four "the word X" frames for A and MK1–8; the
+  grammatical-number templates elsewhere). v7's wordings are untouched and
+  v7 rows keep their meaning; a v8 row is never comparable to a v7 row of
+  the same (family, severity, frame) under frames 1 and 2, and is comparable
+  under frames 0 and 3 only up to the verifier hash (v8's differs by A's
+  numerator).
+* **Chance basis.** Both the screen's difficulty table and Gate 2's §13.11
+  table read κ on the unconstrained cell (§13.2); v7's all-absent denominator
+  is recorded beside each as `chance_all_absent_v7_basis` / `chance_curves_all_absent_v7_basis`
+  and read by nothing. ι_A is on the unconstrained cell; the v7 record's
+  basis is recorded beside it (`iota_a_all_absent_v7_basis`).
+* **Seeds.** v7's root seeds under `dci1v8:gen:v1` / `dci1v8:boot:v1` /
+  `dci1v8:screen:v1`; no v8 draw coincides with a v7 draw.
+* **Selection rules on the path.** The uncertainty-aware screen, the
+  targeted second pass (generated on Calibration-A topics, two per area per
+  batch, disjoint; Calibration-B untouched), the spaced retention, the one
+  bounded calibration-extension round, LOCAL/SPECTRUM validity, the
+  deterministic spectrum selection, the coverage gate and the admissible
+  backups --- all from `dci1v8dev` at the constants of `rules.py`, bound by
+  the manifest. §13.8's core selection is v7's registered kernel with
+  `require_spectrum=False` (the spectrum is selected by the v8 rule).
+  v7's §34 D17 construct floor is not applied (the pilot selects no
+  confirmatory operating point).
+* **No composed cell.** The renderer refuses a two-slot cell; no stage
+  builds one; B+R / R+B / confirmatory rows cannot be produced by this
+  layer.
+
+**Affected results.** None: no v8 row exists. v7's evidence, code and the
+two running rehearsal lanes (`dci1v7-development-r4/r5`) are unmodified;
+the v7 runtime commit `6eac8e3` is merged into `dev/v8-canonical` unchanged
+(one test fixture reconciled with the already-merged chance fix 7f89dae:
+`tests_v7/test_parallel.py` asserts the corrected column).
+
+**Comparability.** A pilot row is v8 evidence about the v8 candidate under
+`study_id: dci1v8` and is admissible to no v7 estimator; the frame
+reliability criterion compares a v8 frame's marker-absent share with the
+best v7 frame's on the same model (`reports/dci1v8dev/frame_reference.json`,
+from the stored-row audit), which is the one designed cross-instrument
+comparison.
+
+---
+
 ## 2026-08-29 (evening) — canonical v8 candidate: one branch, the corrected chance basis in every replay, retention/coverage/wording finalised (no registered rule changes)
 
 **What changed.** Branch `dev/v8-canonical` reconciles the four v8/v7 lines

@@ -129,8 +129,22 @@ are real; the new screen reaches precision 0.73 / recall 0.72 against 0.46 /
 0.70 for the legacy certificate; 105 of 117 local caliper rungs are kept at
 40–64 forwarded rungs (§12.7: 112–140); coverage offsets 0.10/0.10 and span
 0.20 were chosen by simulation. Nothing is registered; no v8 evidence
-exists; the next step is a solo/calibration pilot on one model under the
-v8 frames, after a v8 run layer is built (§12 of the design note).
+exists.
+
+**The pilot execution layer (2026-08-30).** `dci1/src/dci1v8dev/run/` ---
+nine stages (`PILOT_REGISTERED` … `GATE_2_CALIBRATION`,
+`GATE_3_REFERENCES`, `PILOT_REPORT`), a CLI, a signed pilot manifest, the
+`dci1v8:*` seed domain, evidence roots that refuse every other study's tree
+(the v7 rehearsal roots included), the §13.11 producer on the corrected
+chance basis, the wording allocation under the v8 frames, a producer/consumer
+contract and a synthetic nine-stage walk --- validated on this machine with
+no GPU (`dci1/tools/v8_validate.sh`). Design and criteria:
+[`dci1/docs/V8_PILOT.md`](dci1/docs/V8_PILOT.md). It generates no composed
+cell by construction. The next step is the one-model pilot
+(`dci1/tools/run_v8_pilot.sh`, qwen3-4b-instruct-2507) **after** the two
+running v7 rehearsal lanes finish; its four criteria on `PILOT_REPORT` are
+what a v8 freeze may rest on; the spectrum arm's B+X / X+B cells come only
+after the freeze.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 

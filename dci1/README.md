@@ -7,7 +7,9 @@
 > `RESEARCH_STATE.md` §4b, then `reports/dci1v7/READINESS.md`,
 > `reports/dci1v7/CLOSURE.md` and `user-notes/DCI1_preregistration_v7.md`.
 > **The prospective v8 candidate** lives in `src/dci1v8dev` (design:
-> `docs/V8_CANDIDATE.md`; nothing registered, no v8 evidence). Which
+> `docs/V8_CANDIDATE.md`; its pilot execution layer `src/dci1v8dev/run`,
+> `docs/V8_PILOT.md`, validated without a GPU on 2026-08-30; nothing
+> registered, no v8 evidence, no pilot run). Which
 > definition belongs to which revision — A's wording, the marker counter, the
 > word-list order, wording grammar, family counts, report paths — is in
 > `docs/VERSION_DRIFT.md`. Every earlier line (v2, v3, v4r1–v4r4, v5, v6) is

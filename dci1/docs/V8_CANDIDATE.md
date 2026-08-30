@@ -246,9 +246,11 @@ the same again for the spectrum arm, per card.
    ≤ 0.026) is reported, not resolved.
 4. **The core selection in `e2e.py` is a stand-in** for §13.8; the v8 run
    layer must call the registered kernel.
-5. **No v8 run layer exists**: stages, CLI, manifest, seed domain, evidence
-   roots, the §13.11 producer on the corrected basis, the wording allocation
-   under the v8 frames. `dci1v8dev` is the rule layer and its validation.
+5. **The v8 run layer exists but has run on no model** (2026-08-30,
+   `dci1v8dev/run`, `docs/V8_PILOT.md`): nine stages, CLI, pilot manifest,
+   `dci1v8:*` seed domain, isolated evidence roots, the §13.11 producer on
+   the corrected basis, the wording allocation under the v8 frames, and a
+   synthetic nine-stage walk. Its first real result is the pilot's.
 6. The coverage simulation's truth is a modelling choice (SE ≤ 0.05,
    bracketing, ≤ 10 % attenuation); the geometry grid uses three families.
 7. Gemma-3n-e4b (ι_A ≈ 0.73) has little room above A: on the stored
@@ -281,11 +283,16 @@ What runs today (CPU, this worktree, both GPUs untouched):
     .venv/bin/python tools/v8_spectrum_backtest.py --evidence /path/to/dci1/evidence   # ~20 min
     .venv/bin/python tools/v8_pipeline_validation.py
 
-Before the pilot can run (engineering, in a `dci1v8` package): a v8
-preregistration restating §9.2 (lexical rule), §7.5/§7.8 (frames, number),
-§12.2/§12.6/§12.7 (screen, extension, retention), §13.2 (both chance
-bases), §13.7/§13.12/§13.13/§13.15 (the two validities, the gate, backups),
-with `rules.py` as the constant table; the stage runners generating under
-the v8 wording hash into a new evidence root (`evidence/dci1v8-pilot`),
-never r3/r4/r5; the Gate-2 producer from 7f89dae; and the two-lane driver
-(`tools/run_v7_replication.sh`'s shape).
+The pilot's execution layer (2026-08-30; `dci1v8dev/run`,
+`docs/V8_PILOT.md`) generates under the v8 wording hash into a root of its
+own (`evidence/dci1v8-pilot`, never r3/r4/r5 --- refused by rule), uses
+the Gate-2 producer from 7f89dae, binds `rules.py` and both instrument
+hashes in a signed pilot manifest, evaluates the four criteria above on
+signed records (`PILOT_REPORT`), and is driven per card by
+`tools/run_v8_pilot.sh`:
+
+    tools/run_v8_pilot.sh qwen3-4b-instruct-2507 <device> evidence/dci1v8-pilot <log_dir>
+
+A v8 **preregistration** restating §9.2, §7.5/§7.8, §12.2/§12.6/§12.7,
+§13.2, §13.7/§13.12/§13.13/§13.15 with `rules.py` as its constant table is
+the freeze step, after the pilot; the pilot manifest is not it.
