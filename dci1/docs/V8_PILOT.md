@@ -156,6 +156,7 @@ for κ(R|B) (recorded on the Gate-2 record).
     .venv/bin/python tools/v8_frame_reference.py --check                   # descriptive report only
     .venv/bin/python -m dci1v8dev.run.cli audit                            # the producer/consumer contract
     .venv/bin/python -m dci1v8dev.run.cli plan --root /tmp/v8-plan         # what signing would bind
+    .venv/bin/python tools/v8_wording_decision.py --root <root>            # the wording-policy decision report (Gate 2/3 only)
 
 The synthetic walk drives all nine stages through the production runners
 with v7's scripted composer (`tests_v7.synthetic_lifecycle._compose`) as the
@@ -196,3 +197,20 @@ between the two calibration splits); how strongly difficulty depends on
 wording (τ², spreads, class shares); whether enough LOCAL and SPECTRUM
 candidates survive (Gate 3's survival block); and every wording-sensitive
 or unresolved rung with its standing in the reference set.
+
+**The decision report** (`tools/v8_wording_decision.py`, 2026-08-30) reads
+the signed Gate-2 and Gate-3 records and the Gate-2 rows of one root and
+writes `reports/dci1v8dev/wording_decision.{md,json}` answering the five
+questions the wording policy turns on: (1) per (family, q) the four frames'
+ι ± SE, spread and class, pooled and on each split; (2) whether any frame is
+a systematic outlier (leave-one-out over rungs, ties sharing credit);
+(3) whether flagged differences replicate on Calibration-A and
+Calibration-B separately; (4) whether flagged rungs are LOCAL-valid,
+SPECTRUM-valid, core, selected spectrum points or backup rungs; (5) for the
+strongest cases the four exact prompts, the observed-count distribution and
+representative outputs per frame. It ends with the evidence bearing on each
+of the three options and chooses none. It reads no stage beyond Gate 3,
+refuses a composed row, and on a root without a Gate-2 record says so and
+lists the stages that must finish (exit 2). The synthetic walk's copy
+(`wording_decision.synthetic.md`, fixtures, no wording effect by
+construction) shows only the report's shape.

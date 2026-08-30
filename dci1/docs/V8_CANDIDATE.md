@@ -270,6 +270,8 @@ LOCAL-valid families ≥ 5, spectrum-valid points ≥ 2 per side from ≥ 2
 families, selected coverage identified with projected SE(β̂) ≤ 0.05 --- and
 the **wording diagnostic** (2026-08-30: the four frames measured separately
 per (family, q), no pass/fail rule, no v7 reference; `V8_PILOT.md` §1a);
+the researcher's five questions on Gate 2/3 are answered by
+`tools/v8_wording_decision.py` (`V8_PILOT.md` §7);
 (3) take the wording policy decision on solo/pre-screen/calibration evidence
 and freeze v8; (4) only then generate the selected spectrum's B+X / X+B
 cells and fit §11.8.
