@@ -150,3 +150,35 @@ def test_retention_separates_arms_and_the_legacy_rule_keeps_only_nearest_tier3()
     assert len(leg["tier3_measured"]) == 9
     capped = retain(screen, config=RetentionConfig(total_cap=4))
     assert capped["n_forwarded"] == 4 and capped["dropped_for_cap"]
+
+
+def test_batch_indices_are_a_sequence_and_the_cap_bounds_the_sequence():
+    """Pilot r2 (2026-08-30): the index used to be the largest per-family
+    batch count, so a family that re-entered after ι_A moved got index 3
+    (a fourth batch on fresh topics) and then index 3 again (the same
+    topics; refused by the isolation rule). The index is the batch's
+    position in the run and the cap of three bounds that sequence."""
+    table = ladder("MK1", BORDER) + ladder("MK2", BORDER)
+    res = run_rescreen(table, a_grid(), screen_config=CFG,
+                       config=RescreenConfig(max_batches=3),
+                       measure=_truth_measure(dict(zip(LADDERS["MK1"], BORDER))))
+    indices = [h["batch"]["index"] for h in res["history"] if h["batch"]]
+    assert indices == list(range(len(indices)))
+    assert len(indices) <= 3
+    assert res["screen"]["statuses"][SCREEN_RESAMPLE] == []
+
+    screen = screen_families(table, a_grid(), config=CFG)
+    for kind in screen["families"].values():
+        kind["status"] = SCREEN_RESAMPLE
+    cfg = RescreenConfig(max_batches=3)
+    # the r2 shape: MK1 has spent its three batches, MK4-like MK2 only one,
+    # three batches have been measured --- no fourth batch exists
+    assert plan_batch(screen, batches_used={"MK1": 3, "MK2": 1}, config=cfg,
+                      table=table, n_batches=3) is None
+    # the index is the position, never the per-family maximum
+    b = plan_batch(screen, batches_used={"MK1": 1, "MK2": 1}, config=cfg,
+                   table=table, n_batches=2)
+    assert b is not None and b.index == 2
+    b0 = plan_batch(screen, batches_used={"MK1": 2}, config=cfg,
+                    table=table, n_batches=0)
+    assert b0 is not None and b0.index == 0 and "MK1" in b0.families

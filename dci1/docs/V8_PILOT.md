@@ -52,6 +52,17 @@ are frozen.
    per batch (`rescreen.assert_batch_isolated`) and on every generated row
    (`topic_id`, `topic_split`, `run` = batch), recorded on the stage record
    (`topic_isolation`, `batches[].topic_ids`).
+   *Pilot r2 finding (2026-08-30 06:17Z):* the rule's batch index was the
+   largest per-family batch count and the cap was per family, so MK4 ---
+   resolved after batch 0, back to `SCREEN_RESAMPLE` after batch 2 because
+   the A-grid is re-measured every batch and ι_A moved --- got index 3 (a
+   fourth batch, 648 rows on the last 24 Calibration-A topics) and then
+   index 3 again, which the isolation assertion refused. Fixed in the rule
+   (`prescreen.rescreen.plan_batch`): the index is the batch's position in
+   the run and `RESCREEN_MAX_BATCHES` bounds that sequence; a family still
+   undecided when the sequence is spent is resolved by the existing at-max
+   rule. r2's root is kept (regime record and four batches on disk, no
+   second-pass record); the pilot re-ran as r3 at the fixed commit.
 2. **The v7-relative frame threshold is removed.** The former
    `FRAME_RELIABILITY` rule (best v7 frame + 0.05) is deleted from the
    stages, the manifest, the registration record, Gate 1 and the report; no
