@@ -34,7 +34,8 @@ from dci1v8dev.prescreen.schema import ARung, PrescreenRung
 from dci1v8dev.prescreen.screen import ScreenConfig
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import ModelTree
-from dci1v8dev.run.execute import generate_and_score, prompt_cell, resolve_generate
+from dci1v8dev.run.execute import (generate_and_score, prompt_cell,
+                                   resolve_generate, row_accounting)
 from dci1v8dev.run.instrument import frame_reliability
 from dci1v8dev.run.lifecycle import StageOutcome, protocol_identity, run_stage
 from dci1v8dev.run.regime import (jsonable, ladder_cells, prescreen_counts,
@@ -42,14 +43,50 @@ from dci1v8dev.run.regime import (jsonable, ladder_cells, prescreen_counts,
                                   screen_responder)
 from dci1v8dev.run.seeds import screen_seed
 
-__all__ = ["batch_topics", "measure_factory", "second_pass_payload",
-           "run_second_pass"]
+__all__ = ["batch_topics", "assert_batch_isolated", "measure_factory",
+           "second_pass_payload", "run_second_pass"]
+
+
+def assert_batch_isolated(bank: TopicBank, topics: Sequence[Mapping[str, Any]],
+                          *, seen: Sequence[str] = (), index: int = 0
+                          ) -> dict[str, Any]:
+    """The second pass takes no extra draw on a pre-screen topic and never
+    touches Calibration-B; a batch's topics are Calibration-A topics not
+    used by an earlier batch. Refuses on any overlap, and returns the
+    checked facts for the record."""
+    ids = {t["topic_id"] for t in topics}
+    prescreen = {t["topic_id"] for t in bank.topics("prescreen")}
+    cal_b = {t["topic_id"] for t in bank.topics(C.CALIBRATION_B)}
+    cal_a = {t["topic_id"] for t in bank.topics(C.CALIBRATION_A)}
+    reserved = {t["topic_id"] for name in C.RESERVED_TOPIC_SETS
+                for t in bank.sets[name]}
+    for what, other in (("the pre-screen set", prescreen),
+                        ("Calibration-B", cal_b),
+                        ("a reserved set", reserved),
+                        ("an earlier batch", set(seen))):
+        overlap = sorted(ids & other)
+        if overlap:
+            raise ProtocolError(
+                f"batch {index}: {len(overlap)} topic(s) overlap {what} "
+                f"({overlap[:4]}...); the second pass measures fresh "
+                f"{S.RESCREEN_TOPIC_SOURCE} topics only")
+    outside = sorted(ids - cal_a)
+    if outside:
+        raise ProtocolError(f"batch {index}: {outside[:4]} are not "
+                            f"{S.RESCREEN_TOPIC_SOURCE} topics")
+    return {"index": index, "n_topics": len(ids),
+            "split": S.RESCREEN_TOPIC_SOURCE,
+            "overlap_prescreen": 0, "overlap_calibration_b": 0,
+            "overlap_reserved": 0, "overlap_earlier_batches": 0}
 
 
 def batch_topics(bank: TopicBank, index: int) -> list[dict[str, Any]]:
     """Batch ``index``'s topics: per area, the next two of Calibration-A in
     topic-id order. Disjoint across batches; refuses past the source."""
     per = S.RESCREEN_TOPICS_PER_AREA
+    if S.RESCREEN_TOPIC_SOURCE == "prescreen":       # pragma: no cover
+        raise ProtocolError("the second pass never re-draws the pre-screen "
+                            "topics")
     out: list[dict[str, Any]] = []
     source = bank.topics(S.RESCREEN_TOPIC_SOURCE)
     for area in C.SUBJECT_AREAS:
@@ -69,8 +106,13 @@ def measure_factory(tree: ModelTree, *, bank: TopicBank, cap: int,
                     log: list[dict[str, Any]]):
     identity = protocol_identity(tree, S.STAGE_SECOND_PASS)
 
+    used: list[str] = []
+
     def measure(batch: RescreenBatch) -> tuple[list[PrescreenRung], list[ARung]]:
         topics = batch_topics(bank, batch.index)
+        isolation = assert_batch_isolated(bank, topics, seen=used,
+                                          index=batch.index)
+        used.extend(t["topic_id"] for t in topics)
         by_id = {t["topic_id"]: t for t in topics}
         rungs: list[Constraint] = []
         for kind, fam in sorted(batch.families.items()):
@@ -87,24 +129,35 @@ def measure_factory(tree: ModelTree, *, bank: TopicBank, cap: int,
         prompts = [prompt_cell(c, by_id[c.topic_id], slot_map=slot_map,
                                topic_split=S.RESCREEN_TOPIC_SOURCE)
                    for c in cells]
+        run_dir = tree.backend_runs(S.STAGE_SECOND_PASS) / f"batch-{batch.index}"
         rows = generate_and_score(
             tree.model_key, prompts, stage=S.STAGE_SECOND_PASS, cap=cap,
-            device=device,
-            run_dir=tree.backend_runs(S.STAGE_SECOND_PASS)
-            / f"batch-{batch.index}",
+            device=device, run_dir=run_dir,
             instances=tuple(slot_map.values()), slot_map=slot_map,
             study_id=tree.context.study_id, protocol_identity=identity,
             generate=generate)
+        # every row of the batch carries its topic, its split and its
+        # batch (``run``); asserted on the rows themselves
+        for row in rows:
+            if (row["topic_id"] not in by_id
+                    or row["topic_split"] != S.RESCREEN_TOPIC_SOURCE
+                    or row["run"] != f"batch-{batch.index}"):
+                raise ProtocolError(f"batch {batch.index}: row {row['row_id']} "
+                                    "carries a topic, split or batch outside "
+                                    "the batch")
         counts = prescreen_counts(rows, rungs)
         for row in counts:
             row["reserve"] = (row["kind"] not in ("A", "B")
                               and row["severity"] not in LADDERS[row["kind"]])
         new_rungs, new_a = prescreen_input(counts)
-        log.append({"index": batch.index,
+        log.append({"index": batch.index, "run": f"batch-{batch.index}",
+                    "split": S.RESCREEN_TOPIC_SOURCE,
                     "topic_ids": sorted(by_id),
+                    "isolation": isolation,
                     "families": sorted(batch.families),
                     "rungs": [r.label for r in rungs],
                     "n_rows": len(rows),
+                    "row_accounting": row_accounting(run_dir),
                     "frame_reliability": frame_reliability(rows),
                     "counts": counts})
         return new_rungs, new_a
@@ -145,6 +198,18 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
         "selected_cap": cap,
         "topic_source": S.RESCREEN_TOPIC_SOURCE,
         "topics_per_area_per_batch": S.RESCREEN_TOPICS_PER_AREA,
+        "topic_isolation": {
+            "rule": "fresh Calibration-A topics only: no extra draw on a "
+                    "pre-screen topic, Calibration-B untouched, batches "
+                    "disjoint; asserted per batch (assert_batch_isolated) "
+                    "and on every generated row",
+            "batches": [b["isolation"] for b in batches],
+            "topics_used": sorted({t for b in batches for t in b["topic_ids"]}),
+            "n_topics_used": len({t for b in batches for t in b["topic_ids"]}),
+            "budget": {"max_batches": rescreen_config.max_batches,
+                       "batch_topics": rescreen_config.batch_topics,
+                       "source_size": len(bank.topics(S.RESCREEN_TOPIC_SOURCE))}},
+        "row_accounting": {b["run"]: b["row_accounting"] for b in batches},
         "batches": [{k: v for k, v in b.items() if k != "counts"}
                     for b in batches],
         "batch_counts": {str(b["index"]): b["counts"] for b in batches},

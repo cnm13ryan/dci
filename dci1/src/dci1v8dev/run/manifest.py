@@ -13,8 +13,6 @@ the classification on every row names a development candidate.
 """
 from __future__ import annotations
 
-import hashlib
-import json
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -38,7 +36,7 @@ from dci1v8dev.verifiers import source_hashes as verifier_source_hashes
 from dci1v8dev.wordings import V8_FRAMES, assert_v8_instrument
 
 __all__ = ["PROTOCOL_VERSION", "DOCUMENTS", "Blocker", "document_hashes",
-           "package_hashes", "rule_table", "frame_reference",
+           "package_hashes", "rule_table",
            "decoding_policy_form", "build_manifest", "signing_blockers",
            "assert_signable", "sign_registration", "ensure_registration",
            "load_manifest", "manifest_hash"]
@@ -82,34 +80,14 @@ def rule_table() -> dict[str, Any]:
     table = {name: _plain(getattr(R, name)) for name in dir(R)
              if name.isupper() and not name.startswith("_")
              and isinstance(getattr(R, name), (bool, int, float, str, tuple, list))}
-    for name in ("FRAME_RELIABILITY_MARGIN", "FRAME_REFERENCE_SOURCE",
+    for name in ("WORDING_REFERENCE_BOUND", "WORDING_POLICY_OPTIONS",
+                 "WORDING_POLICY_STATUS", "DECIDED_CRITERIA",
                  "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA",
                  "GATE0_TOPICS", "GATE0_DRAWS", "MIN_LOCAL_FAMILIES",
                  "MIN_CORE_REFERENCES", "MIN_BACKUPS", "NO_COMPOSED_CELLS",
                  "PILOT_CRITERIA"):
         table[f"pilot.{name}"] = _plain(getattr(S, name))
     return table
-
-
-def frame_reference(repo_root: Path | str) -> dict[str, Any]:
-    """The v7 frames' marker-absent shares per model, bound by content."""
-    path = Path(repo_root) / S.FRAME_REFERENCE_SOURCE
-    if not path.exists():
-        raise Blocker(f"the FRAME_RELIABILITY criterion is stated against "
-                      f"{S.FRAME_REFERENCE_SOURCE}, which is not at {path}; "
-                      "run tools/v8_frame_reference.py")
-    data = json.loads(path.read_text())
-    return {"path": S.FRAME_REFERENCE_SOURCE,
-            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-            "statistic": data.get("statistic"),
-            "v7_frames": data.get("v7_frames"),
-            "models": {m: {"reference_tree": v.get("reference_tree"),
-                           "best_v7_frame_share": v.get("best_v7_frame_share"),
-                           "best_v7_frames": v.get("best_v7_frames"),
-                           "shares": (v.get("by_tree") or {}).get(
-                               v.get("reference_tree") or "", {}).get(
-                               "marker_absent_share")}
-                       for m, v in (data.get("models") or {}).items()}}
 
 
 def decoding_policy_form() -> dict[str, Any]:
@@ -155,7 +133,21 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
             "frames": list(V8_FRAMES),
             "instrument_assertions": assert_v8_instrument(),
         },
-        "frame_reference": frame_reference(repo_root),
+        "wording_diagnostic": {
+            "primary": "per (frame, family, q): sample, exact compliance, "
+                       "chance on the unconstrained cell, iota, SE, and the "
+                       "comparison with the other frames (run/wording.py)",
+            "reference_bound": S.WORDING_REFERENCE_BOUND,
+            "reference_bound_source": "§13.7 STABILITY_EQUIVALENCE_BOUND, "
+                                      "descriptive only",
+            "classes": ["CONSISTENT", "UNRESOLVED", "WORDING_SENSITIVE"],
+            "selection_rule": None,
+            "v7_frame_statistics_affect_verdicts": False,
+            "wording_policy": {"status": S.WORDING_POLICY_STATUS,
+                               "options": list(S.WORDING_POLICY_OPTIONS),
+                               "evidence_admissible": "solo, pre-screen and "
+                                                      "calibration only"},
+        },
         "models": [{"model_key": m.model_key, "model_id": m.model_id,
                     "revision": m.revision, "family": m.family,
                     "thinking_policy": m.thinking_policy}
@@ -184,8 +176,8 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                       "terminal_statuses": list(S.TERMINAL_STATUSES),
                       "record_files": dict(S.STAGE_RECORD_FILES)},
         "criteria": {"names": list(S.PILOT_CRITERIA),
+                     "decided": list(S.DECIDED_CRITERIA),
                      "evaluated_by": f"{S.STAGE_REPORT} on signed records only",
-                     "frame_reliability_margin": S.FRAME_RELIABILITY_MARGIN,
                      "min_local_families": S.MIN_LOCAL_FAMILIES,
                      "min_core_references": S.MIN_CORE_REFERENCES,
                      "min_backups": S.MIN_BACKUPS,
@@ -198,7 +190,6 @@ def signing_blockers(context: StudyContext, *, repo_root: Path | str,
                      bank: TopicBank | None = None) -> list[str]:
     blockers: list[str] = []
     for fn, what in ((lambda: document_hashes(repo_root), "documents"),
-                     (lambda: frame_reference(repo_root), "frame reference"),
                      (assert_v8_instrument, "instrument assertions")):
         try:
             fn()

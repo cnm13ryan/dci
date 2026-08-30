@@ -84,6 +84,49 @@ def survival_summary(pool: Mapping[str, Any], core: Mapping[str, Any],
     }
 
 
+def wording_sensitive_rungs(gate2_record: Mapping[str, Any], *,
+                            pool: Mapping[str, Any], core: Mapping[str, int],
+                            selection: Mapping[str, Any],
+                            backups: Mapping[str, Any]) -> dict[str, Any]:
+    """Which rungs the frames disagree on (Gate 2's per-frame comparison),
+    and whether each is LOCAL-valid, spectrum-valid, a core reference, a
+    selected spectrum point or a backup family's rung --- so a reader sees
+    where wording sensitivity touches the reference set. Descriptive: no
+    rung is dropped here."""
+    comparison = gate2_record.get("frame_comparison_pooled") or {}
+    selected = {p["candidate"] for p in selection.get("points", ())}
+    core_labels = {f"{f}:{q}" for f, q in core.items()}
+    backup_families = set(backups.get("backups") or ())
+    out: dict[str, list[dict[str, Any]]] = {"WORDING_SENSITIVE": [],
+                                            "UNRESOLVED": []}
+    for label, c in sorted(comparison.items()):
+        klass = c.get("class")
+        if klass not in out:
+            continue
+        kind = label.rpartition(":")[0]
+        out[klass].append({
+            "candidate": label, "spread": c.get("spread"),
+            "max_abs_difference": c.get("max_abs_difference"),
+            "max_abs_z": c.get("max_abs_z"),
+            "local_valid": bool((pool["local"].get(label) or {}).get("passed")),
+            "spectrum_valid": bool((pool["spectrum"].get(label) or {}).get("passed")),
+            "core_reference": label in core_labels,
+            "selected_spectrum_point": label in selected,
+            "backup_family": kind in backup_families})
+    touching = {k: [e["candidate"] for e in v
+                    if e["local_valid"] or e["spectrum_valid"]
+                    or e["core_reference"] or e["selected_spectrum_point"]]
+                for k, v in out.items()}
+    return {"by_class": out,
+            "n_wording_sensitive": len(out["WORDING_SENSITIVE"]),
+            "n_unresolved": len(out["UNRESOLVED"]),
+            "touching_reference_set": touching,
+            "reference_bound": S.WORDING_REFERENCE_BOUND,
+            "selection_rule": None,
+            "note": "descriptive; the wording policy is a later researcher "
+                    "decision and no rung is dropped for wording sensitivity"}
+
+
 def gate3_payload(tree: ModelTree, *, producing_commit: str,
                   gate2_record: Mapping[str, Any], seed: int = 0,
                   resamples: int = C.STABILITY_BOOTSTRAP_RESAMPLES
@@ -140,6 +183,8 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
     backups = admissible_backups(pool["local"], tables["pooled"], iota_a=iota_a,
                                  used_families=list(core_refs))
     summary = survival_summary(pool, core, selection, backups, iota_a=iota_a)
+    sensitive = wording_sensitive_rungs(gate2_record, pool=pool, core=core_refs,
+                                        selection=selection, backups=backups)
     return jsonable({
         "stage": S.STAGE_GATE3,
         "artifact_type": S.STAGE_ARTIFACT_TYPE[S.STAGE_GATE3],
@@ -170,6 +215,7 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
         "coverage": selection["coverage"],
         "backups": backups,
         "survival": summary,
+        "wording_sensitive_rungs": sensitive,
         "identification_statuses": sorted(
             set(core["identification_statuses"]) | {selection["status"]}),
         "written_at_design_time": True,

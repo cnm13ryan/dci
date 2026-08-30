@@ -23,7 +23,8 @@ __all__ = [
     "STAGE_REPORT", "STAGE_SEQUENCE", "STAGE_RECORD_FILES",
     "STAGE_ARTIFACT_TYPE", "ARTIFACT_TYPES", "GENERATION_STAGES",
     "TERMINAL_STATUSES", "TERMINAL_SENTENCE", "NAMESPACES",
-    "PILOT_CRITERIA", "FRAME_RELIABILITY_MARGIN", "FRAME_REFERENCE_SOURCE",
+    "PILOT_CRITERIA", "DECIDED_CRITERIA", "WORDING_REFERENCE_BOUND",
+    "WORDING_POLICY_OPTIONS", "WORDING_POLICY_STATUS",
     "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA", "GATE0_TOPICS",
     "GATE0_DRAWS", "MIN_LOCAL_FAMILIES", "MIN_CORE_REFERENCES",
     "MIN_BACKUPS", "NO_COMPOSED_CELLS",
@@ -103,20 +104,27 @@ NAMESPACES = ("pilot", "synthetic")
 # ---------------------------------------------------------------- criteria
 #: The four questions the pilot exists to answer (V8_CANDIDATE.md §12),
 #: evaluated by ``report.pilot_payload`` on the signed records alone.
-PILOT_CRITERIA = ("FRAME_RELIABILITY", "LADDER_COVERAGE", "CHANCE_BASIS",
+PILOT_CRITERIA = ("WORDING_DIAGNOSTIC", "LADDER_COVERAGE", "CHANCE_BASIS",
                   "REFERENCE_SURVIVAL")
+#: The criteria with a registered pass/fail rule. WORDING_DIAGNOSTIC has
+#: none (researcher decision, 2026-08-30): the report shows the per-frame
+#: measurements and the judgment is left explicit.
+DECIDED_CRITERIA = ("LADDER_COVERAGE", "CHANCE_BASIS", "REFERENCE_SURVIVAL")
 
-#: FRAME_RELIABILITY: every v8 frame's marker-absent share (A and MK rows of
-#: the regime screen, per wording index) is at most the **best v7 frame's
-#: share on the same model** plus this margin. The reference shares are read
-#: from the v7 wording audit at registration and bound in the manifest
-#: (``manifest.frame_reference``); the margin is half the smallest effect of
-#: interest on a rate (§11.9: 0.10), against a per-frame sampling SE of
-#: ≈ 0.015 at 24 topics × 72 A/MK rungs. Without a margin the criterion is
-#: unattainable on qwen3-4b-instruct-2507, whose best v7 frame had 0 absent
-#: rows in 1,536.
-FRAME_RELIABILITY_MARGIN = 0.05
-FRAME_REFERENCE_SOURCE = "dci1/reports/dci1v8dev/frame_reference.json"
+#: WORDING_DIAGNOSTIC: the four v8 frames measured separately per (family,
+#: q) --- sample, exact compliance, chance on the unconstrained cell, ι, SE,
+#: and the comparison across frames (``run/wording.py``). Two frames'
+#: difference in ι is described against the registered §13.7 equivalence
+#: bound (the bound two independent measurements of one instrument must
+#: satisfy); it is a descriptive reference and decides nothing. v7's frame
+#: statistics affect no v8 verdict (they remain in
+#: reports/dci1v8dev/frame_reference.json as a descriptive report only).
+WORDING_REFERENCE_BOUND = C.STABILITY_EQUIVALENCE_BOUND
+#: The wording policy a later researcher decision may take, on solo /
+#: pre-screen / calibration evidence only; open until then.
+WORDING_POLICY_OPTIONS = ("retain_all_frames", "retain_specified_subset",
+                          "model_frame_variation")
+WORDING_POLICY_STATUS = "OPEN"
 
 #: SECOND_PASS_SCREEN measures each batch on fresh topics. §12.5 admits only
 #: the three development sets to iterative work, the pre-screen set is spent

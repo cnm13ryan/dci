@@ -31,16 +31,57 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
                       gate3: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     out: dict[str, dict[str, Any]] = {}
 
-    # 1. FRAME_RELIABILITY --- Gate 1's verdict against the bound reference.
-    frame = gate1["frame_criterion"]
-    out["FRAME_RELIABILITY"] = {
-        "passed": frame.get("passed"),
-        "per_frame": frame.get("per_frame"),
-        "best_v7_frame_share": frame.get("best_v7_frame_share"),
-        "limit": frame.get("limit"),
-        "margin": registration["frame_reliability_margin"],
-        "second_pass": (gate1.get("frame_criterion_second_pass") or {}).get("passed"),
-        "reason": frame.get("reason"),
+    # 1. WORDING_DIAGNOSTIC --- the four frames separately, at every basis
+    # that measured them; no pass/fail rule exists (researcher decision,
+    # 2026-08-30), so `passed` is None and the judgment is explicit.
+    survival = gate3["survival"]
+    sensitive = gate3["wording_sensitive_rungs"]
+
+    def _ladder_classes(ladders: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+        return {frame: {"n_families": len(fams),
+                        "classes": {k: sorted(f for f, d in fams.items()
+                                              if d.get("ladder_class") == k)
+                                    for k in ("STRONG_LADDER",
+                                              "USABLE_NOISY_LADDER",
+                                              "FLAT_LADDER",
+                                              "NON_MONOTONIC_LADDER")}}
+                for frame, fams in sorted(ladders.items())}
+
+    stability_cal = gate2["split_stability_by_frame"]
+    stability_screen = gate1.get("stability_screen_vs_second_pass")
+    out["WORDING_DIAGNOSTIC"] = {
+        "passed": None,
+        "judgment": "RESEARCHER_DECISION_REQUIRED",
+        "wording_policy": registration.get("wording_policy"),
+        "frames_measured_separately": True,
+        "ladders_per_frame": {
+            "calibration": _ladder_classes(gate2["ladders_by_frame_pooled"]),
+            "screen": _ladder_classes(gate1["ladders_by_frame_screen"])},
+        "stability_across_fresh_topics": {
+            "calibration_splits": {k: stability_cal[k] for k in
+                                   ("n_compared", "n_inside_bound",
+                                    "share_inside_bound", "reference_bound")},
+            "screen_vs_second_pass": ({k: stability_screen[k] for k in
+                                       ("n_compared", "n_inside_bound",
+                                        "share_inside_bound")}
+                                      if stability_screen else None)},
+        "wording_dependence": {
+            "calibration": gate2["wording_dependence_pooled"],
+            "screen": gate1["wording_dependence_screen"]},
+        "survival": {"n_local_valid_families": survival["n_local_valid_families"],
+                     "spectrum_pool_ok": survival["spectrum_pool_ok"],
+                     "core_identified": survival["core_identified"],
+                     "coverage_identified": survival["coverage_identified"]},
+        "wording_sensitive_rungs": sensitive["by_class"]["WORDING_SENSITIVE"],
+        "unresolved_rungs": sensitive["by_class"]["UNRESOLVED"],
+        "sensitive_rungs_touching_reference_set":
+            sensitive["touching_reference_set"],
+        "frame_reliability_descriptive": gate1["frame_reliability"],
+        "reference_bound": S.WORDING_REFERENCE_BOUND,
+        "rule": "no pass/fail rule: the per-frame tables are on the Gate-1 "
+                "and Gate-2 records; the wording policy (retain all frames, "
+                "a specified subset, or model frame variation) is a "
+                "researcher decision on solo/pre-screen/calibration evidence",
     }
 
     # 2. LADDER_COVERAGE --- the second pass resolved within the batch bound,
@@ -53,7 +94,6 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
                   if g.get("carries_hard_extreme") and g.get("carries_easy_extreme"))
     reaching = sorted(k for k, g in geometry.items()
                       if g.get("reaches_below_offset") and g.get("reaches_above_offset"))
-    survival = gate3["survival"]
     n_batches = second_pass["n_batches"]
     ambiguous = second_pass.get("resolved_at_max") or {}
     out["LADDER_COVERAGE"] = {
@@ -160,7 +200,9 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
         second_pass=records[S.STAGE_SECOND_PASS],
         gate1=records[S.STAGE_GATE1], gate2=records[S.STAGE_GATE2],
         gate3=gate3_record)
-    failed = sorted(k for k, v in criteria.items() if not v["passed"])
+    failed = sorted(k for k in S.DECIDED_CRITERIA if not criteria[k]["passed"])
+    open_judgments = sorted(k for k, v in criteria.items()
+                            if v["passed"] is None)
     return {
         "stage": S.STAGE_REPORT,
         "artifact_type": S.STAGE_ARTIFACT_TYPE[S.STAGE_REPORT],
@@ -170,10 +212,19 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
         "manifest_hash": records[S.STAGE_REGISTERED]["manifest_hash"],
         "criteria": criteria,
         "criteria_order": list(S.PILOT_CRITERIA),
-        "all_criteria_met": not failed,
+        "decided_criteria": list(S.DECIDED_CRITERIA),
+        "all_decided_criteria_met": not failed,
         "criteria_failed": failed,
-        "pilot_status": ("PILOT_CRITERIA_MET" if not failed
-                         else "PILOT_CRITERIA_NOT_MET"),
+        "open_judgments": open_judgments,
+        "pilot_status": ("PILOT_DECIDED_CRITERIA_MET" if not failed
+                         else "PILOT_DECIDED_CRITERIA_NOT_MET"),
+        "wording_judgment": {
+            "status": S.WORDING_POLICY_STATUS,
+            "options": list(S.WORDING_POLICY_OPTIONS),
+            "evidence_admissible": "solo, pre-screen and calibration records "
+                                   "of this pilot; no composed outcome exists "
+                                   "or may be inspected before the policy "
+                                   "and the v8 design are frozen"},
         "generations": _generations(records[S.STAGE_REGIME],
                                     records[S.STAGE_SECOND_PASS],
                                     records[S.STAGE_GATE2],
@@ -182,11 +233,13 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
             stage: fs.read_json(tree.stage_record(stage))["record_hash"]
             for stage in S.STAGE_SEQUENCE[:-1]},
         "what_this_licenses": (
-            "a decision to freeze the v8 candidate rests on the four criteria "
-            "above, evaluated on this replication's signed records under the "
-            "thresholds the manifest bound before any row existed; it is not "
-            "evidence about the effect, and the spectrum arm's B+X / X+B "
-            "cells are a post-freeze experiment this layer cannot generate"),
+            "a decision to freeze the v8 candidate rests on the three decided "
+            "criteria above, evaluated on this replication's signed records "
+            "under the rules the manifest bound before any row existed, and on "
+            "the researcher's explicit wording judgment over the per-frame "
+            "diagnostic; it is not evidence about the effect, and the spectrum "
+            "arm's B+X / X+B cells are a post-freeze experiment this layer "
+            "cannot generate"),
         "no_composed_cells": S.NO_COMPOSED_CELLS,
     }
 

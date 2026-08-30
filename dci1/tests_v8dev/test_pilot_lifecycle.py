@@ -117,10 +117,92 @@ def test_the_report_evaluates_the_four_criteria(walked):
     assert list(report["criteria"]) == list(S.PILOT_CRITERIA)
     for name, verdict in report["criteria"].items():
         assert "passed" in verdict, name
-    assert report["criteria"]["FRAME_RELIABILITY"]["passed"] is True
     assert report["criteria"]["CHANCE_BASIS"]["passed"] is True
+    wording = report["criteria"]["WORDING_DIAGNOSTIC"]
+    assert wording["passed"] is None
+    assert wording["judgment"] == "RESEARCHER_DECISION_REQUIRED"
+    assert report["wording_judgment"]["status"] == "OPEN"
+    assert "WORDING_DIAGNOSTIC" in report["open_judgments"]
+    assert report["decided_criteria"] == list(S.DECIDED_CRITERIA)
+    assert wording["ladders_per_frame"]["calibration"].keys() >= {"0", "1", "2", "3"}
+    assert wording["stability_across_fresh_topics"]["calibration_splits"]["n_compared"] > 0
+    assert wording["wording_dependence"]["calibration"]["n_rungs_compared"] > 0
     assert report["no_composed_cells"] is True
     assert report["generations"]["total"] > 0
+
+
+@pytest.mark.slow
+def test_every_generated_row_reaches_scoring_and_carries_its_provenance(walked):
+    """Every design row is generated and scored, compliant or not; every
+    scored row names its frame, family/q, topic, split, run and outcome."""
+    import json
+    from dci1v8dev.run.execute import row_accounting
+    tree = walked["tree"]
+    seen_runs = 0
+    for stage in S.GENERATION_STAGES:
+        for run in sorted(tree.backend_runs(stage).iterdir()):
+            acc = row_accounting(run)
+            assert acc["every_row_scored"], (stage, run.name, acc)
+            assert acc["n_present_non_compliant"] > 0 or run.name.startswith("cap"), run
+            seen_runs += 1
+            for line in (run / "scored.jsonl").read_text().splitlines():
+                row = json.loads(line)
+                assert row["run"] == run.name
+                assert row["topic_id"] and row["topic_split"]
+                if row["load"] == 1:
+                    assert row["frame"] in (0, 1, 2, 3)
+                    present = [s for s in row["scores"] if s["present"]]
+                    assert len(present) == 1
+                    assert "statistic" in present[0] and "passed" in present[0]
+                else:
+                    assert row["frame"] is None
+    assert seen_runs >= 6
+    # the records carry the same accounting
+    for stage in (S.STAGE_REGIME, S.STAGE_SECOND_PASS, S.STAGE_GATE2):
+        acc = walked["payloads"][stage]["row_accounting"]
+        assert acc and all(v["every_row_scored"] for v in acc.values())
+
+
+@pytest.mark.slow
+def test_second_pass_rows_carry_batch_split_topic_and_never_a_prescreen_or_b_topic(walked):
+    import json
+    tree = walked["tree"]
+    bank = walked["bank"]
+    second = walked["payloads"][S.STAGE_SECOND_PASS]
+    prescreen = {t["topic_id"] for t in bank.topics("prescreen")}
+    cal_b = {t["topic_id"] for t in bank.topics("calibration_b")}
+    by_batch = {b["run"]: set(b["topic_ids"]) for b in second["batches"]}
+    assert second["topic_isolation"]["n_topics_used"] == 24 * second["n_batches"]
+    for run in sorted(tree.backend_runs(S.STAGE_SECOND_PASS).iterdir()):
+        for line in (run / "scored.jsonl").read_text().splitlines():
+            row = json.loads(line)
+            assert row["run"] == run.name and row["run"] in by_batch
+            assert row["topic_split"] == "calibration_a"
+            assert row["topic_id"] in by_batch[row["run"]]
+            assert row["topic_id"] not in prescreen and row["topic_id"] not in cal_b
+
+
+@pytest.mark.slow
+def test_gate2_measures_every_frame_of_every_candidate_separately(walked):
+    gate2 = walked["payloads"][S.STAGE_GATE2]
+    pooled = gate2["wording_by_frame"]["pooled"]
+    frames = {}
+    for e in pooled:
+        frames.setdefault(e["candidate"], set()).add(e["frame"])
+    candidates = {f"{r['kind']}:{r['severity']}"
+                  for r in gate2["calibration_rows"]["pooled"]}
+    for label in candidates:
+        assert frames[label] == {0, 1, 2, 3}, label
+    for e in pooled:
+        assert e["n_rows"] == e["k_exact_compliant"] + (e["n_rows"] - e["k_exact_compliant"])
+        assert e["chance"] is not None and e["se_iota"] is not None
+    comparison = gate2["frame_comparison_pooled"]
+    assert all(c["n_frames_measured"] == 4 for l, c in comparison.items()
+               if l in candidates)
+    assert set(gate2["rungs_by_wording_class"]) == {"CONSISTENT", "UNRESOLVED",
+                                                     "WORDING_SENSITIVE"}
+    gate3 = walked["payloads"][S.STAGE_GATE3]
+    assert gate3["wording_sensitive_rungs"]["selection_rule"] is None
 
 
 @pytest.mark.slow

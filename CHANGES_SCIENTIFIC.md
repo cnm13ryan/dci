@@ -13,6 +13,36 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 (later) — v8 pilot: fresh-topic second pass asserted, the v7-relative frame threshold removed, the wording diagnostic measured per frame (researcher decisions; prospective; no evidence)
+
+**What changed** (`dci1/docs/V8_PILOT.md` §1a). (1) The second pass takes
+no extra draw on a pre-screen topic and never touches Calibration-B: its
+batches are fresh Calibration-A topics, disjoint across batches, asserted
+per batch and on every generated row and recorded on the stage record;
+the budget (≤ 3 batches × 24 topics) is unchanged. (2) The pilot's
+`FRAME_RELIABILITY` criterion --- each v8 frame's marker-absent share ≤ the
+best v7 frame's + 0.05 --- is **deleted**; no v7 frame statistic enters any
+v8 verdict, and no replacement threshold exists. (3) Every generated row is
+data: nothing downstream conditions on exact compliance or uptake; each row
+carries frame, family/q, topic, split, run, observed count and verdict, and
+`execute.row_accounting` fails a stage whose scored rows do not equal its
+planned rows. (4) `WORDING_DIAGNOSTIC` replaces the criterion: per (frame,
+family, q) sample, exact compliance, chance on the unconstrained cell, ι,
+SE and the cross-frame comparison, at the screen, the second pass and
+calibration (per split and pooled); frames are never averaged as the primary
+diagnostic; a cross-frame difference is described against the registered
+§13.7 equivalence bound (`CONSISTENT` / `UNRESOLVED` / `WORDING_SENSITIVE`)
+and selects nothing. (5) The wording policy (retain all frames / a subset /
+model frame variation) is an open researcher decision on solo, pre-screen
+and calibration evidence only; the composed-cell block is asserted at the
+renderer, the row plan and the generation seam.
+
+**Affected results.** None: no v8 row exists. **Comparability.** The
+pilot's report now has three decided criteria and one open judgment; a
+pilot verdict is never a function of v7's frame statistics.
+
+---
+
 ## 2026-08-30 — the v8 pilot execution layer (prospective; no registered rule changes; no evidence)
 
 **What changed.** `dci1/src/dci1v8dev/run/` executes the v8 candidate's

@@ -15,9 +15,11 @@ from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
 from dci1v8dev.run.context import (DCI1_ROOT, StudyContext, model_tree,
                                    pilot_context, synthetic_context)
-from dci1v8dev.run.execute import (SoloCell, Block, design_rows, prompt_cell,
+from dci1v8dev.run.execute import (SoloCell, Block, PromptCell, design_rows,
+                                   generate_and_score, prompt_cell,
                                    resolve_generate)
-from dci1v8dev.run.instrument import frame_criterion, frame_reliability
+from dci1v8dev.run.instrument import frame_reliability
+from dci1v8dev.run import wording as W
 from dci1v8dev.run.regime import prescreen_counts
 from dci1v8dev.run import cli, contracts
 
@@ -141,12 +143,157 @@ def test_frame_reliability_counts_marker_absent_rows_per_frame():
     assert rel["by_frame"]["1"]["share"] == 0.0
     assert rel["by_frame"]["2"]["n_rows"] == 0        # RF1 is not a marker family
     assert rel["by_frame"]["3"]["share"] == 1.0
-    verdict = frame_criterion(rel, {"best_v7_frame_share": 0.5,
-                                    "shares": {"0": 0.5}}, margin=0.05)
-    assert verdict["per_frame"]["0"]["passed"] is True
-    assert verdict["per_frame"]["3"]["passed"] is False
-    assert verdict["passed"] is False
-    assert frame_criterion(rel, None)["passed"] is None
+    # descriptive only: no threshold, no verdict, no v7 reference
+    assert "passed" not in rel and "limit" not in rel
+
+
+def _row(kind, q, frame, topic, passed, *, stat=None, arm="solo",
+         split="prescreen", present=True):
+    return {"load": 1 if present else 0, "wording_indices": [frame] if present else [],
+            "arm": arm, "topic_id": topic, "topic_split": split,
+            "scores": [{"kind": kind, "severity": q, "present": present,
+                        "passed": passed, "vacuous_pass": False,
+                        "statistic": stat if stat is not None else (q if passed else 0),
+                        "processing_failure": False}]}
+
+
+def test_the_wording_diagnostic_keeps_every_row_and_treats_frames_separately():
+    rows = []
+    # frame 0: 4 topics, 3 compliant; frame 1: 4 topics, 1 compliant
+    for t in range(4):
+        rows.append(_row("MK1", 3, 0, f"t{t}", t < 3))
+        rows.append(_row("MK1", 3, 1, f"u{t}", t < 1))
+        rows.append(_row("MK1", 3, 0, f"t{t}", False, present=False,
+                         arm="unconstrained"))
+        rows.append(_row("MK1", 3, 1, f"u{t}", False, present=False,
+                         arm="unconstrained"))
+    table = W.frame_table(rows)
+    by = {(e["frame"], e["candidate"]): e for e in table}
+    assert by[(0, "MK1:3")]["n_rows"] == 4 and by[(0, "MK1:3")]["k_exact_compliant"] == 3
+    assert by[(1, "MK1:3")]["n_rows"] == 4 and by[(1, "MK1:3")]["k_exact_compliant"] == 1
+    assert by[(0, "MK1:3")]["exact_compliance"] == 0.75
+    assert by[(0, "MK1:3")]["chance"] == 0.0 and by[(0, "MK1:3")]["iota"] == 0.75
+    assert by[(0, "MK1:3")]["se_iota"] is not None
+    assert by[(0, "MK1:3")]["observed_count_zero_share"] == 0.25   # the non-compliant rows are counted
+    comparison = W.frame_comparison(table)
+    c = comparison["MK1:3"]
+    assert set(c["frames"]) == {"0", "1"} and c["spread"] == 0.5
+    assert c["class"] in W.CLASSES and c["reference_bound"] == 0.20
+    dep = W.wording_dependence(comparison)
+    assert dep["n_rungs_compared"] == 1
+    assert sum(len(v) for v in dep["rungs_by_class"].values()) == 1
+
+
+def test_frame_comparison_classes_follow_the_registered_bound_descriptively():
+    def entry(frame, iota, se):
+        return {"frame": frame, "kind": "MK1", "severity": 2, "candidate": "MK1:2",
+                "family": "MK1", "iota": iota, "se_iota": se, "n_rows": 24,
+                "n_topics": 24, "exact_compliance": iota}
+    consistent = W.frame_comparison([entry(0, 0.70, 0.02), entry(1, 0.75, 0.02)])
+    unresolved = W.frame_comparison([entry(0, 0.40, 0.20), entry(1, 0.70, 0.20)])
+    sensitive = W.frame_comparison([entry(0, 0.40, 0.02), entry(1, 0.70, 0.02)])
+    assert consistent["MK1:2"]["class"] == "CONSISTENT"
+    assert unresolved["MK1:2"]["class"] == "UNRESOLVED"
+    assert sensitive["MK1:2"]["class"] == "WORDING_SENSITIVE"
+    assert W.sensitive_rungs(sensitive)["WORDING_SENSITIVE"] == ["MK1:2"]
+
+
+def test_the_v7_frame_threshold_is_gone():
+    from dci1v8dev.run import manifest as M, instrument, report
+    assert not hasattr(S, "FRAME_RELIABILITY_MARGIN")
+    assert not hasattr(S, "FRAME_REFERENCE_SOURCE")
+    assert not hasattr(M, "frame_reference")
+    assert not hasattr(instrument, "frame_criterion")
+    assert "FRAME_RELIABILITY" not in S.PILOT_CRITERIA
+    assert "WORDING_DIAGNOSTIC" in S.PILOT_CRITERIA
+    assert "WORDING_DIAGNOSTIC" not in S.DECIDED_CRITERIA
+    assert S.WORDING_POLICY_STATUS == "OPEN"
+    import inspect
+    src = inspect.getsource(report) + inspect.getsource(instrument) + inspect.getsource(M)
+    assert "best_v7" not in src and "frame_reference" not in src
+
+
+def test_second_pass_topics_are_fresh_calibration_a_and_disjoint():
+    from dci1v7.topics.bank import load_bank
+    from dci1v8dev.run.rescreen import assert_batch_isolated, batch_topics
+    bank = load_bank()
+    prescreen = {t["topic_id"] for t in bank.topics("prescreen")}
+    cal_b = {t["topic_id"] for t in bank.topics(C.CALIBRATION_B)}
+    seen: list[str] = []
+    for index in range(3):
+        topics = batch_topics(bank, index)
+        ids = {t["topic_id"] for t in topics}
+        assert len(ids) == 24 and not ids & prescreen and not ids & cal_b
+        assert not ids & set(seen)
+        assert_batch_isolated(bank, topics, seen=seen, index=index)
+        seen.extend(ids)
+    # an overlap of any kind is refused
+    with pytest.raises(ProtocolError, match="pre-screen"):
+        assert_batch_isolated(bank, list(bank.topics("prescreen"))[:24], index=0)
+    with pytest.raises(ProtocolError, match="Calibration-B"):
+        assert_batch_isolated(bank, list(bank.topics(C.CALIBRATION_B))[:24], index=0)
+    with pytest.raises(ProtocolError, match="earlier batch"):
+        assert_batch_isolated(bank, batch_topics(bank, 0),
+                              seen=[t["topic_id"] for t in batch_topics(bank, 0)],
+                              index=1)
+
+
+def test_composed_cells_are_refused_at_every_seam(tmp_path):
+    from dci1v8dev.run.execute import assert_no_composed_cell
+
+    class Two:
+        cell_id, arm, block_id, block_index, topic_id = "c", "composed", "b", 0, "t"
+        slots = ("A", "B")
+        wording_by_slot = {"A": 0, "B": 0}
+        draws = 1
+
+    with pytest.raises(ProtocolError, match="composed"):
+        assert_no_composed_cell([Two()], where="test")
+    composed = PromptCell(cell_id="c", arm="composed", block_id="b",
+                          topic_id="t", area="a", topic_split="prescreen",
+                          prompt="p", prompt_hash="h" * 64, slots=("A", "B"),
+                          present=(Constraint("A", 4), Constraint("B", 10)),
+                          wording_indices=(0, 0), draws=1)
+    with pytest.raises(ProtocolError, match="composed"):
+        design_rows([composed], stage=S.STAGE_REGIME, model_id="m",
+                    study_id=STUDY_ID)
+    tree = model_tree(synthetic_context(tmp_path / "s"), "qwen3-4b")
+    with pytest.raises(ProtocolError, match="composed"):
+        generate_and_score("qwen3-4b", [composed], stage=S.STAGE_REGIME, cap=512,
+                           device=0, run_dir=tmp_path / "run",
+                           study_id=tree.context.study_id,
+                           generate=lambda *a: {"rows": []})
+    # and no stage of the layer builds one: no composed constructor is imported
+    import inspect
+    from dci1v8dev import run as run_pkg
+    import pkgutil, importlib
+    for info in pkgutil.iter_modules(run_pkg.__path__):
+        src = inspect.getsource(importlib.import_module(f"dci1v8dev.run.{info.name}"))
+        for forbidden in ("design_cells", "cell_types", "cells_for",
+                          "composed_probe", "composed_contrast", "Delta_R",
+                          "delta_diff", "B+R", "R+B"):
+            if forbidden in ("Delta_R", "delta_diff", "B+R", "R+B"):
+                # named in prose only; never as a field read
+                assert f'["{forbidden}"]' not in src and f"['{forbidden}']" not in src
+            else:
+                assert forbidden not in src, (info.name, forbidden)
+
+
+def test_row_accounting_counts_compliant_and_non_compliant_rows(tmp_path):
+    import json
+    from dci1v8dev.run.execute import row_accounting
+    run = tmp_path / "run"; run.mkdir()
+    design = [{"row_id": f"b:c:{i}"} for i in range(4)]
+    (run / "design.jsonl").write_text("".join(json.dumps(r) + "\n" for r in design))
+    (run / "rows.jsonl").write_text("".join(json.dumps(r) + "\n" for r in design))
+    scored = [{"row_id": f"b:c:{i}", "scores": [{"present": True, "passed": i % 2 == 0}]}
+              for i in range(4)]
+    (run / "scored.jsonl").write_text("".join(json.dumps(r) + "\n" for r in scored))
+    acc = row_accounting(run)
+    assert acc["every_row_scored"] and acc["n_scored"] == 4
+    assert acc["n_present_exact_compliant"] == 2 and acc["n_present_non_compliant"] == 2
+    (run / "scored.jsonl").write_text(json.dumps(scored[0]) + "\n")
+    assert not row_accounting(run)["every_row_scored"]
 
 
 def test_prescreen_counts_read_chance_on_the_unconstrained_cell():

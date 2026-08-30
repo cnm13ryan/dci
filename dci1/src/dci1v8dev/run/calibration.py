@@ -43,10 +43,12 @@ from dci1v8dev.prescreen.extension import ExtensionRule, calibration_extension_p
 from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
 from dci1v8dev.run.context import ModelTree
+from dci1v8dev.run import wording as W
 from dci1v8dev.run.execute import (UNCONSTRAINED_ARM, SoloCell, blocks,
                                    cell_rates, generate_and_score,
                                    instance_rates, per_topic_compliance,
-                                   prompt_cell, resolve_generate)
+                                   prompt_cell, resolve_generate,
+                                   row_accounting)
 from dci1v8dev.run.lifecycle import (StageOutcome, TerminalStatus,
                                      protocol_identity, run_stage)
 from dci1v8dev.run.regime import screen_responder
@@ -327,6 +329,16 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             withheld[split].extend(extension_withheld.get(split, []))
     statuses = sorted(set(target.get("identification_statuses", [])
                           + focal.get("identification_statuses", [])))
+    # The wording diagnostic at calibration precision: every load-1 row of
+    # the grids, the candidates and the extension, per (frame, family, q),
+    # per split and pooled; each frame's ladder; each frame's stability
+    # between the two disjoint splits; the dependence of ι on the frame.
+    all_rows = grid_rows + candidate_rows + extension_rows
+    wording_by_frame = {
+        C.CALIBRATION_A: W.frame_table(all_rows, split=C.CALIBRATION_A),
+        C.CALIBRATION_B: W.frame_table(all_rows, split=C.CALIBRATION_B),
+        "pooled": W.frame_table(all_rows)}
+    comparison_pooled = W.frame_comparison(wording_by_frame["pooled"])
     return {
         "stage": S.STAGE_GATE2,
         "artifact_type": S.STAGE_ARTIFACT_TYPE[S.STAGE_GATE2],
@@ -383,6 +395,18 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                                "d_below": extension_rule.d_below,
                                "d_above": extension_rule.d_above,
                                "rounds": 1}},
+        "wording_by_frame": wording_by_frame,
+        "frame_comparison_pooled": comparison_pooled,
+        "ladders_by_frame_pooled": W.ladders_by_frame(wording_by_frame["pooled"]),
+        "wording_dependence_pooled": W.wording_dependence(comparison_pooled),
+        "split_stability_by_frame": W.stability_by_frame(
+            wording_by_frame[C.CALIBRATION_A], wording_by_frame[C.CALIBRATION_B],
+            names=(C.CALIBRATION_A, C.CALIBRATION_B)),
+        "rungs_by_wording_class": W.sensitive_rungs(comparison_pooled),
+        "row_accounting": {
+            run.name: row_accounting(run)
+            for run in sorted(tree.backend_runs(S.STAGE_GATE2).iterdir())
+            if run.is_dir()},
         "kappa_b_under_candidate": _kappa_b_under_candidate(
             candidate_rows + extension_rows, m_star=m_star,
             model_key=tree.model_key),

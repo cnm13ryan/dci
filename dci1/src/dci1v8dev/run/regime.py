@@ -42,7 +42,8 @@ from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import ModelTree
 from dci1v8dev.run.execute import (UNCONSTRAINED_ARM, SoloCell, blocks,
                                    generate_and_score, instance_rates,
-                                   prompt_cell, resolve_generate)
+                                   prompt_cell, resolve_generate,
+                                   row_accounting)
 from dci1v8dev.run.instrument import frame_reliability
 from dci1v8dev.run.lifecycle import (StageOutcome, TerminalStatus,
                                      protocol_identity, run_stage)
@@ -318,6 +319,10 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
             "n_unconstrained_rows": sum(
                 1 for r in screen_rows if r.get("arm") == UNCONSTRAINED_ARM)},
         "frame_reliability": reliability,
+        "row_accounting": {
+            run.name: row_accounting(run)
+            for run in sorted(tree.backend_runs(S.STAGE_REGIME).iterdir())
+            if run.is_dir()},
         "screen": screen_record(screen),
         "screen_statuses": jsonable(screen["statuses"]),
         "screen_labels": jsonable(screen["labels"]),

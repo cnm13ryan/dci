@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Emit `reports/dci1v8dev/frame_reference.json`: the v7 frames' marker-absent
-shares per model, the reference the pilot's FRAME_RELIABILITY criterion is
-stated against.
+shares per model --- a **descriptive report** of the historical instrument.
+
+Researcher decision (2026-08-30): no v8 pilot verdict reads this file. The
+pilot's wording diagnostic is v8-internal (``dci1v8dev/run/wording.py``);
+these numbers stay here as the historical context a reader may want beside
+it, and nothing in ``dci1v8dev.run`` imports or binds them.
 
     python3 tools/v8_frame_reference.py            # write
     python3 tools/v8_frame_reference.py --check    # fail if it would change
@@ -10,8 +14,7 @@ Read from `reports/dci1v8dev/prescreen/wording_audit.json` (the stored-row
 audit of the v7 frames on the signed v6/v7 trees and the rehearsals): per
 model and per tree, over every A and MK solo row, the share of rows whose
 marker statistic is 0 under each of the four frames. The pilot manifest binds
-this file by hash; `stages.FRAME_RELIABILITY_MARGIN` is the allowance. The
-reference tree is the registered v7 replication where one exists.
+the reference tree is the registered v7 replication where one exists.
 """
 from __future__ import annotations
 

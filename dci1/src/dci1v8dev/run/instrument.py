@@ -1,19 +1,20 @@
 """Stage 6, ``GATE_1_INSTRUMENT``, and the instrument measurements it reads.
 
-The pilot's first question is whether the repaired frames are read
-reliably. ``frame_reliability`` measures it on the rows the screen and the
-second pass generated: over every load-1 row whose stated constraint is A
-or a Tier-1 marker family, per wording index, the share of answers in which
-the marker never appears (statistic 0). The criterion
-(``stages.FRAME_RELIABILITY_MARGIN``) compares each v8 frame's share with
-the best v7 frame's share on the same model, bound in the manifest from the
-v7 wording audit. Gate 1 also discharges §7.5's wording-equivalence
-obligation over the v8 population, runs the v8 instrument's structural
-suite, checks the v8 scorer's determinism on the screen's own corpus, and
-freezes both instrument hashes on its record.
+The pilot's first question is how the four v8 frames behave, measured
+separately (researcher decision, 2026-08-30): ``run/wording.py`` gives, per
+(frame, family, q), the sample, the exact-compliance rate, the chance on
+the unconstrained cell, ι with its SE and the comparison with the other
+frames, on the screen's rows and on the second pass's rows, and the
+stability of each frame's ι between those two disjoint topic sets. No v7
+frame statistic enters any verdict; ``frame_reliability`` (the marker-absent
+share per frame) stays as a descriptive measurement. Gate 1 also discharges
+§7.5's wording-equivalence obligation over the v8 population, runs the v8
+instrument's structural suite, checks the v8 scorer's determinism on the
+screen's own corpus, and freezes both instrument hashes on its record.
 
-**A failed frame criterion terminates nothing.** It is recorded here and
-summarised by ``PILOT_REPORT``: the pilot exists to measure it.
+**Nothing here passes or fails a frame.** The diagnostic is recorded and
+summarised by ``PILOT_REPORT``; the wording policy is a later researcher
+decision (``stages.WORDING_POLICY_STATUS``).
 """
 from __future__ import annotations
 
@@ -35,14 +36,14 @@ from dci1v8dev.run.context import ModelTree, current_files
 from dci1v8dev.run.execute import frame_of_row, marker_of
 from dci1v8dev.run.lifecycle import (StageOutcome, instrument_hashes,
                                      run_stage)
+from dci1v8dev.run import wording as W
 from dci1v8dev.verifiers.compliance import (graded, passes,
                                             score_generation, statistic)
 from dci1v8dev.wordings import (N_WORDINGS, assert_v8_instrument,
                                 v8_wordings)
 
 __all__ = ["SUITE_RESPONSES", "v8_wording_suite", "frame_reliability",
-           "frame_criterion", "determinism_report", "gate1_payload",
-           "run_gate1", "screen_rows"]
+           "determinism_report", "gate1_payload", "run_gate1", "screen_rows"]
 
 #: v7's twenty fixed responses, plus two that carry a v8 frame's own phrase,
 #: so the suite covers an answer that echoes the instruction.
@@ -146,38 +147,6 @@ def frame_reliability(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     return out
 
 
-def frame_criterion(reliability: Mapping[str, Any],
-                    reference: Mapping[str, Any] | None, *,
-                    margin: float = S.FRAME_RELIABILITY_MARGIN
-                    ) -> dict[str, Any]:
-    """FRAME_RELIABILITY: every v8 frame's share <= best v7 frame's + margin."""
-    if not reference or reference.get("best_v7_frame_share") is None:
-        return {"criterion": "FRAME_RELIABILITY", "passed": None,
-                "reason": "no v7 frame reference for this model",
-                "margin": margin}
-    best = float(reference["best_v7_frame_share"])
-    limit = best + margin
-    per_frame = {}
-    verdicts = []
-    for w, entry in reliability["by_frame"].items():
-        share = entry.get("share")
-        ok = None if share is None else bool(share <= limit)
-        per_frame[w] = {"share": share, "n_rows": entry["n_rows"],
-                        "limit": limit, "passed": ok,
-                        "v7_share": (reference.get("shares") or {}).get(w)}
-        if ok is not None:
-            verdicts.append(ok)
-    return {"criterion": "FRAME_RELIABILITY",
-            "passed": bool(verdicts) and all(verdicts),
-            "per_frame": per_frame,
-            "best_v7_frame_share": best,
-            "best_v7_frames": reference.get("best_v7_frames"),
-            "reference_tree": reference.get("reference_tree"),
-            "margin": margin, "limit": limit,
-            "rule": "every v8 frame's marker-absent share is at most the "
-                    "best v7 frame's share on this model plus the margin"}
-
-
 def determinism_report(texts: Sequence[str], *, sample: int = 200
                        ) -> dict[str, Any]:
     """The v8 scorer scores the same text to the same verdict, twice, across
@@ -224,7 +193,10 @@ def gate1_payload(tree: ModelTree, *, producing_commit: str,
                   second_pass_record: Mapping[str, Any],
                   regime_record: Mapping[str, Any],
                   registration_record: Mapping[str, Any],
-                  texts: Sequence[str] = ()) -> dict[str, Any]:
+                  texts: Sequence[str] = (),
+                  screen_rows_: Sequence[Mapping[str, Any]] = (),
+                  pass_rows: Sequence[Mapping[str, Any]] = ()
+                  ) -> dict[str, Any]:
     hashes = instrument_hashes()
     bound = registration_record["instrument"]
     if (bound["verifier_hash"], bound["wording_hash"]) != (
@@ -234,12 +206,16 @@ def gate1_payload(tree: ModelTree, *, producing_commit: str,
             "manifest bound; the instrument moved after registration")
     screen_reliability = regime_record["frame_reliability"]
     pass_reliability = second_pass_record.get("frame_reliability")
-    pooled_rows = None
-    reference = registration_record.get("frame_reference")
-    verdict_screen = frame_criterion(screen_reliability, reference)
-    verdict_pass = (frame_criterion(pass_reliability, reference)
-                    if pass_reliability and pass_reliability["pooled"]["n_rows"]
-                    else None)
+    # The per-frame diagnostic on the two row sets that exist at this stage,
+    # and each frame's stability between them (disjoint topic sets: the
+    # pre-screen topics and Calibration-A batches).
+    screen_rows_ = [r for r in screen_rows_ if r.get("run") == "ladder"]
+    diag_screen = W.wording_diagnostic(screen_rows_)
+    diag_pass = W.wording_diagnostic(pass_rows) if pass_rows else None
+    stability = (W.stability_by_frame(diag_screen["frame_table"],
+                                      diag_pass["frame_table"],
+                                      names=("screen", "second_pass"))
+                 if diag_pass else None)
     determinism = determinism_report(texts) if texts else {
         "n_texts": 0, "deterministic": None}
     return {
@@ -256,15 +232,20 @@ def gate1_payload(tree: ModelTree, *, producing_commit: str,
         "instrument_assertions": assert_v8_instrument(),
         "wording_suite": v8_wording_suite(),
         "frame_reliability": {"screen": screen_reliability,
-                              "second_pass": pass_reliability},
-        "frame_criterion": verdict_screen,
-        "frame_criterion_second_pass": verdict_pass,
-        "frame_reference": reference,
+                              "second_pass": pass_reliability,
+                              "descriptive_only": True},
+        "wording_diagnostic_screen": diag_screen,
+        "wording_diagnostic_second_pass": diag_pass,
+        "frame_comparison_screen": diag_screen["frame_comparison"],
+        "ladders_by_frame_screen": diag_screen["ladders_by_frame"],
+        "wording_dependence_screen": diag_screen["wording_dependence"],
+        "stability_screen_vs_second_pass": stability,
+        "wording_policy": registration_record.get("wording_policy"),
+        "no_frame_discarded": True,
         "determinism": determinism,
         "measurement_basis": C.MEASUREMENT_BASIS,
         "scope_sentence": C.SCOPE_SENTENCE,
         "terminates_nothing": True,
-        "_unused": pooled_rows,
     }
 
 
@@ -275,14 +256,14 @@ def run_gate1(tree: ModelTree, *, producing_commit: str | None = None,
     commit = producing_commit or gitinfo.head_commit(Path(tree.context.repo_root))
     regime = transitions.read_stage_record(tree, S.STAGE_REGIME)
     registration = transitions.read_stage_record(tree, S.STAGE_REGISTERED)
+    rows_screen = screen_rows(tree, S.STAGE_REGIME)
+    rows_pass = screen_rows(tree, S.STAGE_SECOND_PASS)
     corpus = (list(texts) if texts is not None else
-              [r["raw_response"] for r in screen_rows(tree, S.STAGE_REGIME)]
-              [:determinism_sample])
+              [r["raw_response"] for r in rows_screen][:determinism_sample])
     return run_stage(
         tree, S.STAGE_GATE1,
-        compute=lambda previous: {
-            k: v for k, v in gate1_payload(
-                tree, producing_commit=commit, second_pass_record=previous,
-                regime_record=regime, registration_record=registration,
-                texts=corpus).items() if k != "_unused"},
+        compute=lambda previous: gate1_payload(
+            tree, producing_commit=commit, second_pass_record=previous,
+            regime_record=regime, registration_record=registration,
+            texts=corpus, screen_rows_=rows_screen, pass_rows=rows_pass),
         producing_commit=commit, environment_digest=environment_digest)
