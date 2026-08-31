@@ -365,6 +365,63 @@ candidate run and the extension, and
 `calibration.assert_allocation_realised` refuses a frame that is short or
 unbalanced.
 
+## 7d. The 2x pilot (r8, 2026-08-30) — what more measurement bought
+
+`dci1v8-pilot-r8`, all three checkpoints, all nine stages signed `PASS`,
+16:02Z--22:03Z, at commit `c8b70d3`, 143.9k / 157.4k / 139.4k generations
+(2.0x / 1.7x / 1.7x of r5/r6), no composed cell, no freeze. The allocation
+is realised on every Gate-2 run --- the grids, the candidate run **and** the
+extension round --- at 96 distinct topics per frame, 48 per split, refused
+otherwise on the path.
+
+| | qwen3-4b | qwen3-4b-instruct-2507 | gemma-3n-e2b-it |
+|---|---|---|---|
+| supported frames | 0,1,2,3 | 0,1,3 (**f2 `GRID_RESOLUTION_INSUFFICIENT`**, as r5) | 0,1,2,3 |
+| n*(f) | 3, 7, 4, 4 | 4, 5, --, 6 | 8, 3, 2, 7 |
+| m*(f) | 12, 12, 12, 13 | 11, 10, --, 12 | 8, 10, 10, 11 |
+| iota_A(f) | .714/.630/.701/.708 | .844/.656/--/.664 | .680/.628/.794/.680 |
+| frame states | NEITHER, NEITHER, **SPECTRUM_ONLY**, LOCAL_ONLY (f0 LOCAL_ONLY) | NEITHER, **LOCAL_AND_SPECTRUM**, --, **LOCAL_AND_SPECTRUM** | **LOCAL_AND_SPECTRUM** x3, SPECTRUM_ONLY |
+| `LADDER_COVERAGE` | **pass** | **pass** | **pass** |
+| `CHANCE_BASIS` | pass | pass | pass |
+| `REFERENCE_SURVIVAL` | fail | **pass** (f1) | **pass** (f1, f3) |
+
+Four things it measured.
+
+1. **The precision the amendment was bought for arrived, exactly.** The
+   median per-frame SE(iota) fell 0.0497 -> 0.0356 (qwen3-4b), 0.0465 ->
+   0.0331 (2507) and 0.0411 -> 0.0296 (Gemma): ratios 1.40, 1.40, 1.39
+   against the sqrt(2) the two-pass design predicts. Coordinates inside the
+   unchanged 0.05 floor went 54% -> 92%, 68% -> 93%, 75% -> 89%.
+2. **The spectrum problem was a precision problem.** `V_coord` fell from the
+   leading SPECTRUM refusal (117--132 of ~230 candidate-frames) to second
+   (54--69), and outright passes rose from 7--15 to 40--91; on Gemma
+   `PASSED` is now the modal outcome. Spectrum coverage is identified on
+   4/4 Gemma frames, 2/3 on 2507 and 1/4 on qwen3-4b, against **0/11**
+   across all three models at one pass. `LADDER_COVERAGE`, which failed on
+   every model at one pass, now passes on every model.
+3. **The LOCAL arm is not the same story.** `V_stab` and `V_head` remain its
+   two leading refusals and barely moved (qwen3-4b V_stab 133 -> 132,
+   V_head 86 -> 91); what changed is that outright passes rose from ~1 to
+   18--34. Two frames of two models now identify a core with two backups,
+   which is what `REFERENCE_SURVIVAL` needs, but §13.15's five LOCAL-valid
+   families is reached on only three of eleven supported frames.
+   `V_head` is a headroom statement about the candidate, so where LOCAL
+   still fails it is not purely a precision story --- see
+   `reports/dci1v8dev/bottleneck.dci1v8-pilot-r8.*.md`.
+4. **The frames stayed separate conditions.** 2507's f2 is out of regime
+   again, on the same status as r5, and the four frames still choose
+   different operating points (Gemma 8, 3, 2, 7) and different reference
+   sets. Approach A is doing the same work at the new allocation.
+
+The projection was **not** a reliable guide to any single number: it was
+right for 2507 (2/3 LOCAL, 2/3 SPECTRUM, exactly), understated Gemma
+(2/4 . 3/4 projected against 3/4 . 4/4 observed) and got qwen3-4b's two arms
+the wrong way round (0/4 . 2/4 projected against 2/4 . 1/4 observed). The
+direction --- more topics per frame identifies more references --- held on
+every model; the per-frame detail did not, because repeating a measured
+per-topic vector makes the two §13.7 splits more alike than fresh topics
+are, which flatters `V_stab`.
+
 ## 7. What the pilot cannot tell you
 
 That the effect exists; that v8 works; anything about B+R or R+B; which

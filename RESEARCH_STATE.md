@@ -211,6 +211,16 @@ topic is met under two frames and **every frame is calibrated on 96 of the
 192 topics, 48 per §13.7 split**, at 2x the Gate-2 generation. No threshold
 moved and no frame is pooled with another; the amendment is measurement,
 not admission (`CHANGES_SCIENTIFIC.md`, `V8_FRAME_CONDITIONING.md` §4a).
+**It was then run** (`dci1v8-pilot-r8`, 2026-08-30, all three checkpoints,
+all nine stages `PASS`, no freeze): SE(iota) fell by the predicted sqrt(2),
+coordinates inside the 0.05 floor went from 54--75 % to 89--93 %, spectrum
+coverage is identified on **7 of 11 supported frames against 0 of 11**
+before, `LADDER_COVERAGE` now passes on every model, and
+**`REFERENCE_SURVIVAL` passes for the first time in v8** --- on
+qwen3-4b-instruct-2507 (f1) and gemma-3n-e2b-it (f1, f3), each with three
+core references and two backups. The LOCAL arm's two leading refusals
+(`V_stab`, `V_head`) did not change rank, so its residual gap is not purely
+an allocation question (`V8_PILOT.md` §7d).
 (4) **The v8 frame repair
 works and what remains is marker-specific**: on Gemma the four frames are
 at 14--22 % marker-absent against v7's 46--53 %, and the two markers that

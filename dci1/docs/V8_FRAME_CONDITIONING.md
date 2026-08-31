@@ -189,6 +189,19 @@ admit references is what the next pilot measures.
 calibration topics, which is `N_WORDINGS` passes (every block under every
 frame, 4× generation). Two passes is half of the reachable range.
 
+**What it bought, measured** (`V8_PILOT.md` §7d, root `dci1v8-pilot-r8`,
+2026-08-30). Median per-frame SE(ι) fell by 1.39–1.40× — the √2 the design
+predicts — and coordinates inside the unchanged 0.05 floor went from
+54/68/75 % to 92/93/89 %. Spectrum coverage is identified on 7 of 11
+supported frames against **0 of 11** at one pass, and `LADDER_COVERAGE`
+passes on every model where it failed on every model before.
+`REFERENCE_SURVIVAL` passes on `qwen3-4b-instruct-2507` (f1) and
+`gemma-3n-e2b-it` (f1, f3) — the first v8 replications to clear it. The
+LOCAL arm improved but its two leading refusals (`V_stab`, `V_head`) did
+not change rank, and `V_head` is a statement about the candidate, so the
+residual LOCAL gap is not purely an allocation question. Whether to spend
+the remaining 2× to reach the ceiling is §10 item 1a.
+
 ## 5. Where the frame enters, stage by stage
 
 | stage | frame handling | what pooled quantity remains, and its standing |
@@ -301,10 +314,16 @@ report and cannot freeze.
 
 1. ~~**Calibration allocation per frame.**~~ **Decided 2026-08-30** (§4a):
    two calibration passes, 96 topics per frame, 2× Gate-2 generation, no
-   threshold moved. What remains open is only whether to go to the ceiling
-   (four passes, 192 topics per frame, 4× generation) if two passes prove
-   insufficient — a decision the next pilot's measured per-frame states,
-   not a projection, should inform.
+   threshold moved. Run, and it did what it was bought for (§4a).
+1a. **Whether to spend the remaining 2× and reach the ceiling** (four
+   passes, 192 topics per frame). Now measurable rather than projected:
+   running the production Gate-3 rules on r8's own rows at ×2 changes
+   **nothing** for `gemma-3n-e2b-it` (3/4 LOCAL, 4/4 SPECTRUM either way)
+   and nothing for `qwen3-4b-instruct-2507` (2/3, 2/3), and moves
+   `qwen3-4b` from 2/4 · 1/4 to 3/4 · 4/4. So the ceiling buys one model
+   and costs another 2× of Gate 2 on all of them. A researcher decision,
+   and the first one where the projection has a measured track record
+   (§7d: right on one model, wrong in each direction on the other two).
 2. **Confirmatory allocation per frame.** The registered 384 blocks give 96
    per frame; Δ_R(f) at 96 blocks has twice the pooled SE. The precision
    preconditions (§16) were set for the pooled estimand. Keep the total and

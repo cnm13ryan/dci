@@ -67,6 +67,19 @@ manifest binds it, so a reader can tell which allocation any record was
 measured at. Records written before the amendment carry no such block and
 are read as one pass (`tools/v8_allocation_projection.py`).
 
+**Measured (2026-08-30, root `dci1v8-pilot-r8`).** The amendment was run on
+all three checkpoints, all nine pre-freeze stages signed `PASS`. Median
+per-frame SE(iota) fell 0.0497 -> 0.0356, 0.0465 -> 0.0331 and 0.0411 ->
+0.0296 (ratios 1.40, 1.40, 1.39 against the sqrt(2) the design predicts);
+coordinates inside the unchanged 0.05 floor went 54 % -> 92 %, 68 % -> 93 %,
+75 % -> 89 %. Spectrum coverage is identified on 7 of 11 supported frames
+against 0 of 11 at one pass; `LADDER_COVERAGE` passes on every model where
+it failed on every model before; `REFERENCE_SURVIVAL` passes on
+`qwen3-4b-instruct-2507` (f1) and `gemma-3n-e2b-it` (f1, f3), the first v8
+replications to clear it. No threshold was changed before or after seeing
+this. Details in `dci1/docs/V8_PILOT.md` §7d and
+`dci1/reports/dci1v8dev/bottleneck.dci1v8-pilot-r8.*.md`.
+
 **Where enforced.** `calibration.assert_allocation_realised` runs on the
 generated rows of the grids, the candidate run and the extension round, and
 refuses a frame that is not on the designed number of distinct topics or
