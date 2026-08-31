@@ -590,9 +590,15 @@ def test_the_block_frame_is_defined_on_every_load_and_agrees_with_the_stated_fra
 def test_the_per_frame_precision_projection_is_the_registered_one_rescaled():
     pts = [("F", 0.5), ("F", 0.7), ("G", 0.5), ("G", 0.7)]
     full = precision.projected_se_beta(pts)
-    quarter = precision.projected_se_beta(pts, n_blocks=S.CONFIRMATORY_BLOCKS_PER_FRAME)
-    assert full["n_blocks"] == C.N_BLOCKS and quarter["n_blocks"] == C.N_BLOCKS // C.N_WORDINGS
-    assert abs(quarter["se_beta"] / full["se_beta"] - 2.0) < 1e-9
+    per_frame = precision.projected_se_beta(
+        pts, n_blocks=S.CONFIRMATORY_BLOCKS_PER_FRAME)
+    assert full["n_blocks"] == C.N_BLOCKS
+    # The frame's share is derived from the confirmatory passes (§4e), not
+    # a quarter by assumption: one pass would give N_BLOCKS / N_WORDINGS.
+    assert per_frame["n_blocks"] == S.CONFIRMATORY_BLOCKS_PER_FRAME == (
+        C.N_BLOCKS * R.CONFIRMATORY_FRAME_PASSES // C.N_WORDINGS)
+    ratio = (C.N_BLOCKS / S.CONFIRMATORY_BLOCKS_PER_FRAME) ** 0.5
+    assert abs(per_frame["se_beta"] / full["se_beta"] - ratio) < 1e-9
     assert precision.se_point_at(C.N_BLOCKS) == precision.MEASURED["se_point"]
 
 
@@ -804,10 +810,12 @@ def test_the_extension_round_runs_end_to_end_and_its_rungs_are_calibrated(tmp_pa
             assert row["chance_compliance"] is not None
             assert row["kappa_under_b"] is not None, (w, label)
             assert row["kappa_under_b_source"]["m_star"] == g2["by_frame"][str(w)]["m_star"]
+            # The run's own allocation, not the module default: the walked
+            # model may carry a per-model override (rules.calibration_passes).
             assert row["n_topics"] == g2["calibration_allocation"][
                 "topics_per_frame"] == (
                 len(g2["calibration_topic_ids"])
-                * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS)
+                * g2["calibration_allocation"]["passes"] // C.N_WORDINGS)
             assert row["per_topic_solo"]
     assert seen, "no extension rung reached a frame's table"
 
@@ -934,9 +942,11 @@ def test_four_passes_is_the_ceiling_and_a_repeated_offset_is_refused():
 
 def test_every_other_model_keeps_the_two_pass_allocation():
     """The override is per model. A model absent from the table runs at the
-    registered default, so r8's meaning --- and any later run of those two
-    models --- is untouched by this amendment."""
-    for other in ("qwen3-4b-instruct-2507", "gemma-3n-e2b-it", "unknown-model"):
+    registered default, so r8's meaning --- and any later run of those
+    models --- is untouched by this amendment. Both Qwens are in the table
+    (`qwen3-4b` since 2026-08-31 §4b, `qwen3-4b-instruct-2507` since the
+    amendment of the same day); the gemmas are not."""
+    for other in ("gemma-3n-e2b-it", "gemma-3n-e4b-it", "unknown-model"):
         assert R.calibration_frame_offsets(other) == R.CALIBRATION_FRAME_OFFSETS
         assert R.calibration_topics_per_frame(other) == 96
         assert R.calibration_topics_per_frame_per_split(other) == 48
@@ -992,7 +1002,11 @@ def test_the_manifest_binds_every_models_allocation():
         "frame_offsets": [0, 1, 2, 3], "passes": 4, "topics_per_frame": 192,
         "topics_per_frame_per_split": 96, "generations_per_rung": 3072,
         "is_default": False}
-    for other in ("qwen3-4b-instruct-2507", "gemma-3n-e2b-it"):
+    # `qwen3-4b-instruct-2507` was raised to the same ceiling on 2026-08-31
+    # (§4b); the gemmas stay at the default, and the manifest says which is
+    # which per model rather than leaving the override implicit.
+    assert by_model["qwen3-4b-instruct-2507"] == by_model[MODEL]
+    for other in ("gemma-3n-e2b-it", "gemma-3n-e4b-it"):
         if other in by_model:
             assert by_model[other]["passes"] == 2
             assert by_model[other]["topics_per_frame"] == 96
@@ -1167,5 +1181,5 @@ def test_the_realised_allocation_refuses_an_unbalanced_frame():
 def test_an_empty_pass_list_is_refused():
     """A zero-pass allocation would measure nothing; `rules` refuses it at
     import for the table and here for any caller."""
-    with pytest.raises(AssertionError, match="at least one calibration pass"):
+    with pytest.raises(AssertionError, match="at least one pass"):
         R._assert_offsets((), "no passes")

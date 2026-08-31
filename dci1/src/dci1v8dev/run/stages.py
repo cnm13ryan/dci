@@ -27,7 +27,10 @@ __all__ = [
     "WORDING_POLICY_OPTIONS", "WORDING_POLICY_STATUS", "WORDING_POLICY",
     "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES", "FRAME_SUPPORTED",
     "FRAME_UNSUPPORTED", "FRAME_FAILURE_STATUSES",
-    "CONFIRMATORY_BLOCKS_PER_FRAME", "REPORT_AGGREGATION",
+    "CONFIRMATORY_BLOCKS_PER_FRAME", "CONFIRMATORY_FRAME_OFFSETS",
+    "CONFIRMATORY_FRAME_PASSES", "CONFIRMATORY_BLOCKS_TOTAL",
+    "CONFIRMATORY_MAX_PASSES", "CONFIRMATORY_MAX_BLOCKS_PER_FRAME",
+    "confirmatory_allocation", "REPORT_AGGREGATION",
     "CALIBRATION_FRAME_OFFSETS", "CALIBRATION_FRAME_PASSES",
     "CALIBRATION_TOPICS_PER_FRAME", "CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT",
     "CALIBRATION_FRAME_OFFSETS_BY_MODEL", "calibration_frame_offsets",
@@ -36,7 +39,7 @@ __all__ = [
     "calibration_generations_per_rung",
     "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA", "GATE0_TOPICS",
     "GATE0_DRAWS", "MIN_LOCAL_FAMILIES", "MIN_CORE_REFERENCES",
-    "MIN_BACKUPS", "NO_COMPOSED_CELLS",
+    "MIN_BACKUPS", "LOCAL_ELIGIBILITY_MIN_FRAMES", "NO_COMPOSED_CELLS",
 ]
 
 # ------------------------------------------------------------------ stages
@@ -164,9 +167,21 @@ assert set(FRAME_FAILURE_STATUSES) <= set(TERMINAL_STATUSES)
 #: identified by §13.8's kernel; SPECTRUM = ``selected_coverage`` identified.
 FRAME_STATES = ("UNSUPPORTED", "NEITHER", "LOCAL_ONLY", "SPECTRUM_ONLY",
                 "LOCAL_AND_SPECTRUM")
-#: The confirmatory blocks a frame-specific estimate would rest on at the
-#: registered allocation (rules.py; derived).
+#: The confirmatory blocks a frame-specific estimate rests on: the
+#: registered blocks times the confirmatory passes, divided by the wordings
+#: (rules.py; derived). Three passes, 288 per frame, since the amendment of
+#: 2026-08-31; one pass and 96 before it. It sets the precision of every
+#: frame-specific estimate and of the design-time projections that quote
+#: one, and it decides no admission.
 CONFIRMATORY_BLOCKS_PER_FRAME = R.CONFIRMATORY_BLOCKS_PER_FRAME
+CONFIRMATORY_FRAME_OFFSETS = R.CONFIRMATORY_FRAME_OFFSETS
+CONFIRMATORY_FRAME_PASSES = R.CONFIRMATORY_FRAME_PASSES
+CONFIRMATORY_BLOCKS_TOTAL = R.CONFIRMATORY_BLOCKS_TOTAL
+CONFIRMATORY_MAX_PASSES = R.CONFIRMATORY_MAX_PASSES
+CONFIRMATORY_MAX_BLOCKS_PER_FRAME = R.CONFIRMATORY_MAX_BLOCKS_PER_FRAME
+confirmatory_allocation = R.confirmatory_allocation
+assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == (
+    C.N_BLOCKS * CONFIRMATORY_FRAME_PASSES)
 #: Gate 2's calibration allocation (rules.py): one pass over the calibration
 #: topics per frame offset, so a frame's own table is measured on
 #: ``calibration_topics_per_frame(model_key)`` distinct topics --- 96 of the
@@ -225,3 +240,11 @@ GATE0_DRAWS = C.PILOT_DRAWS
 MIN_LOCAL_FAMILIES = C.MIN_QUALIFIED_FAMILIES          # 5
 MIN_CORE_REFERENCES = C.N_CORE_REFERENCES               # 3
 MIN_BACKUPS = C.N_BACKUP_FAMILIES                       # 2
+
+#: The LOCAL inclusion rule (rules.py; researcher decision of 2026-08-31).
+#: A frame is LOCAL-supported iff it meets *all three* of the above on its
+#: own table; a model is LOCAL-eligible iff at least this many frames are.
+#: Deliberately separate from ``FRAME_STATES``: ``LOCAL_AND_SPECTRUM`` says
+#: the core was identified and the coverage gate passed, which a frame can
+#: reach on four LOCAL-valid families and one backup --- §13.15 unsatisfied.
+LOCAL_ELIGIBILITY_MIN_FRAMES = R.LOCAL_ELIGIBILITY_MIN_FRAMES

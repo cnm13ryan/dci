@@ -210,6 +210,13 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
             "passed": bool(s["meets_min_local_families"] and s["core_identified"]
                            and s["coverage_identified"] and s["meets_min_backups"]),
             "state": g3_frames[str(w)]["state"],
+            # This criterion's `passed` spans both arms --- it requires the
+            # spectrum coverage gate as well --- while LOCAL inclusion
+            # (V8_FRAME_CONDITIONING.md §4d) is the LOCAL arm's three
+            # requirements alone. Both are recorded so the two readings of
+            # "survival" are never confused for one another.
+            "local_supported": s["local_supported"],
+            "local_unsupported_reason": s["local_unsupported_reason"],
             "n_local_valid_families": s["n_local_valid_families"],
             "local_valid_families": s["local_valid_families"],
             "core_identified": s["core_identified"],
@@ -235,7 +242,10 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
                 "references by §13.8, selected coverage identified with the "
                 f"projected SE(beta) <= {R.SPECTRUM_MAX_SE_BETA} at the frame's "
                 f"{R.CONFIRMATORY_BLOCKS_PER_FRAME} blocks, >= {S.MIN_BACKUPS} "
-                "admissible backups --- per frame",
+                "admissible backups --- per frame. LOCAL *inclusion* "
+                f"({FRAME_DOCUMENT} §4d) is the LOCAL arm's three "
+                "requirements alone, without the coverage gate: see "
+                "`local_supported` here and `local_eligibility` on the record",
     }
     return out
 
@@ -311,6 +321,13 @@ def pilot_payload(tree: ModelTree, *, producing_commit: str,
         "supported_frames": supported,
         "unsupported_frames": gate2.get("unsupported_frames") or {},
         "frame_states": gate3_record["frame_states"],
+        # The LOCAL inclusion verdict, carried from Gate 3 rather than
+        # recomputed: which frames the LOCAL confirmatory arm would run, and
+        # whether the model has the two independently supported frames the
+        # rule requires (V8_FRAME_CONDITIONING.md §4d). Not a criterion --- it
+        # decides inclusion, not whether the pilot passed --- so the
+        # aggregation of §7 is untouched.
+        "local_eligibility": gate3_record["local_eligibility"],
         "criteria": criteria,
         "criteria_order": list(S.PILOT_CRITERIA),
         "decided_criteria": list(S.DECIDED_CRITERIA),

@@ -131,14 +131,16 @@ Its cost is real and is not hidden:
   A frame can identify LOCAL and not SPECTRUM, SPECTRUM and not LOCAL,
   both, or neither; a frame can have no admissible operating point at all.
   These are explicit states on the record, never collapsed into one.
-* **Confirmatory precision per frame is that of 96 blocks**, not 384: the
-  registered allocation (384 blocks × 8 draws, wording by block) puts a
-  quarter of the blocks under each frame, so a frame-specific Δ_R(f) or
-  slope has twice the standard error of the pooled quantity. The
-  design-time coverage projection (`spectrum.coverage`) is computed for the
-  frame's share of blocks (`rules.CONFIRMATORY_BLOCKS_PER_FRAME` = 96) and
-  the full-allocation projection is recorded beside it for the allocation
-  decision (§10).
+* **Confirmatory precision per frame is that of one frame's share of the
+  blocks**, not of all 384: one pass over the registered allocation (384
+  blocks × 8 draws, wording by block) puts a quarter of the blocks under
+  each frame, so a frame-specific Δ_R(f) or slope measured at one pass has
+  twice the standard error of the pooled quantity. That is what the
+  confirmatory allocation decision of §4e answers — three passes,
+  `rules.CONFIRMATORY_BLOCKS_PER_FRAME` = 288. The design-time coverage
+  projection (`spectrum.coverage`) is computed at that same number, and the
+  projection at the registered single-pass total is recorded beside it as a
+  comparator.
 * More downstream estimates and a more complicated report: four of
   everything, then a cross-frame section.
 
@@ -203,7 +205,7 @@ residual LOCAL gap is not purely an allocation question. Whether to spend
 the remaining 2× to reach the ceiling is §10 item 1a.
 
 
-## 4b. The allocation is per model, and `qwen3-4b` runs at the ceiling (amended 2026-08-31)
+## 4b. The allocation is per model, and the Qwens run at the ceiling (amended 2026-08-31)
 
 r8 left `qwen3-4b` short on both arms — f0 `LOCAL_ONLY`, f1 `NEITHER`,
 f2 `SPECTRUM_ONLY`, f3 `LOCAL_ONLY` — with `V_stab` the leading
@@ -272,6 +274,88 @@ from the sole-blocker count. Frames 1 and 2 remain a family short of §13.15
 and are still read `PRECISION_LIMITED` — and **there is now no further
 allocation to spend**. See §10 item 1b.
 
+**`qwen3-4b-instruct-2507` joins the ceiling (amended 2026-08-31).** r8 left
+it with one LOCAL-supported frame, f1, which is one short of §4d's minimum,
+so on r8's evidence the model would leave the LOCAL arm entirely. Its f3 is
+the frame that decides this, and it misses on exactly the margin four passes
+closed for `qwen3-4b`: **4 LOCAL-valid families where §13.15 asks 5, and 1
+admissible backup where it asks 2** — the same shortfall, one family and one
+backup, that `qwen3-4b`'s f0 and f3 carried at two passes and that r9's four
+passes turned into 5-and-2 and 7-and-2. Its f0 is a different case and stays
+retired: §4c's high-ι_A mechanism, which no allocation touches.
+
+The raise is `rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL["qwen3-4b-instruct-2507"]
+= (0, 1, 2, 3)`, identical in kind to `qwen3-4b`'s: 192 topics per frame, 96
+per §13.7 split, 4× Gate-2 generation, **no threshold, validity component,
+grid, pool, wording frame or operating-point rule changed**, and the same
+`assert_allocation_realised` check on the generated rows. It is a decision
+about how much to measure, taken before Gate 3 runs on the raised
+allocation — not a response to a verdict produced by it. Whether f3 then
+meets §13.15 in full is a measurement, and the pre-registered possibility
+that it does not is that the model stays `LOCAL_INELIGIBLE` with its
+shortfall on the record.
+
+## 4d. The LOCAL inclusion rule, and what it leaves out (amended 2026-08-31)
+
+r9 closed the allocation question and left the inclusion question open:
+`qwen3-4b` reached the topic ceiling with two frames meeting §13.15 and two
+not, and §4c had already shown that two frames on the other models fail for a
+reason no allocation touches. §10 items 1b and 3a are now **decided**.
+
+**The rule.** A wording frame is `LOCAL_SUPPORTED` iff it satisfies the
+**full registered LOCAL reference-survival requirements** on its own table at
+its own ι_A(f): §13.8's three core references, §13.15's
+`MIN_LOCAL_FAMILIES` = 5 LOCAL-valid families, and `MIN_BACKUPS` = 2
+admissible backups. Otherwise `LOCAL_UNSUPPORTED`, with every requirement it
+missed named on the record.
+
+**Nothing rescues an unsupported frame.** Not a threshold, not q\*(f) or
+m\*(f), not A's grid or `TARGET_BAND`, not `V_stab`, `V_head` or `V_diff`,
+not the reference pool, not the wording frame, and never a reference borrowed
+from another frame. The frame stays on the record with its reason.
+
+**A model is `LOCAL_ELIGIBLE`** iff at least
+`rules.LOCAL_ELIGIBILITY_MIN_FRAMES` = 2 of its frames are independently
+`LOCAL_SUPPORTED`. Two, because §1's finding is that the four frames are not
+exchangeable on A: a one-frame model would license a claim that is silently a
+claim about one phrasing, and the second frame is what makes the wording
+dependence a measurable question rather than an unexamined one. For an
+eligible model **every** supported frame enters — there is no "best two", no
+ranking, and no truncation to the minimum.
+
+**Support is not the frame state.** `FRAME_STATES`'s `LOCAL_AND_SPECTRUM`
+says only that the core was identified and the coverage gate passed. Three of
+the eleven frames measured so far reach it on **four** LOCAL-valid families
+and **one** backup — §13.15 unsatisfied — so a rule reading `state` would
+admit them. `local_supported` is computed from the survival block and never
+from the state (`run/eligibility.py`, `tests_v8dev/test_local_eligibility.py`
+contract 2).
+
+**What it may not read.** Δ_R(f), δ_diff, any composed cell, any pooled
+statistic over frames, and any quantity belonging to another frame. The
+inputs are one frame's own `survival` block and Gate 2's support status for
+that frame. Selecting frames on an outcome would be selecting on the quantity
+the study exists to estimate; nine contract tests pin it, including a
+structural guard on the module's executable body.
+
+**The verdict on the evidence** (`tools/v8_local_eligibility.py`, latest run
+of each model; `reports/dci1v8dev/local_eligibility.md`):
+
+| model | root | supported | unsupported, and why | eligible |
+|---|---|---|---|---|
+| `qwen3-4b` | r9 (4 passes) | f0, f3 | f1, f2 — 4 families, 1 backup | **yes** |
+| `gemma-3n-e2b-it` | r8 (2 passes) | f1, f3 | f0 — 4 families, 1 backup; f2 — no core, 1 family, 0 backups | **yes** |
+| `qwen3-4b-instruct-2507` | r8 (2 passes) | f1 | f0 — no core, 0 families; f2 — no operating point (`GRID_RESOLUTION_INSUFFICIENT`); f3 — 4 families, 1 backup | **no** |
+
+Two of these differ from what the frame *states* suggest, and both
+differences are the §13.15 gap above: `qwen3-4b-instruct-2507` f3 and
+`gemma-3n-e2b-it` f0 are `LOCAL_AND_SPECTRUM` and are **not** LOCAL-supported.
+`qwen3-4b-instruct-2507` is therefore one supported frame short of
+eligibility on its current two-pass allocation. Whether to spend the ceiling
+allocation on it, as r9 did for `qwen3-4b` — where the same two-pass gap
+(4 families, 1 backup on f0 and f3) closed to 5 and 7 families with 2 backups
+each — is a researcher decision the rule does not make. See §10 item 5.
+
 ## 4c. What the LOCAL failures on a high-ι_A frame are
 
 r8's other two LOCAL gaps — `qwen3-4b-instruct-2507` f0 at ι_A = 0.844 and
@@ -302,6 +386,85 @@ already every integer 1–8. The grid is exhaustive over the construct.
 This is a statement about the model's response to A under that wording, not
 about the reference pool and not about a design choice with alternatives.
 See §10 item 3.
+
+## 4e. The confirmatory allocation: three passes, 288 blocks per frame (amended 2026-08-31)
+
+§4a and §4b bought precision at Gate 2, where it decides what is *admitted*.
+This section buys it in the confirmatory design, where it decides what the
+study can *resolve*. The question is §10 item 2 and it was open until it was
+measured.
+
+**What one pass gives, measured** (`tools/v8_local_precision.py`,
+`reports/dci1v8dev/local_precision.md`). §8.4 renders one frame per block, so
+one pass over the registered 384 blocks leaves each frame 96 of them — and
+the block is the independent unit, because §17.1's bootstrap resamples blocks
+and carries every cell mean of a drawn block, so the eight draws inside a cell
+shrink the draw component and leave the topic component untouched. Through
+§16.1's registered variance form at §16.2's own planning constants, and at
+F1's Šidák value — the constant §16.2's table is quoted at, and an upper bound
+on the bootstrap's studentised maximum-modulus value — the **simultaneous**
+half-width of Δ_R(f) at 96 blocks is **0.078** against Δ_R's registered
+precondition of **0.05**, and the ~80 %-power MDE is **0.103** against
+§11.9's smallest effect of interest of **0.10**. The design would sit on its
+own SESOI with no margin, and `claims.Interval.meets_precondition` reads
+exactly the quantity that misses.
+
+**The rule** (`rules.CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)`). A confirmatory
+**pass** is the exact analogue of §4a's calibration pass: it renders every
+registered confirmatory block under one frame, pass *p* shifting the frame by
+`offset_p`, so the block at position *i* is met under frame
+`(i + offset_p) % 4`. Three passes at distinct offsets therefore
+
+* give every frame **288 distinct blocks**, three quarters of the 384
+  confirmatory topics, at 1152 blocks in all,
+* repeat **no** block inside a frame — the offsets are distinct modulo
+  `N_WORDINGS`, asserted in `rules` — so a frame's 288 is a count of
+  *independent units*, which is what the block bootstrap resamples over and
+  what every standard error is formed at,
+* pool **no** frame with another: Δ_R(f) stays frame-specific, and so does
+  every reference, operating point, slope and report row,
+* cost exactly **3× the confirmatory generation** and nothing else.
+
+**Why three.** Three is the smallest allocation at which the design's own
+planning row meets the registered precondition: the simultaneous half-width
+is 0.0779 at one pass, 0.0551 at two — still outside 0.05 — and **0.0450** at
+three, with the MDE at 0.059 against a SESOI of 0.10. Every scenario in
+`local_precision.md` that is an *estimate* clears the precondition at 288:
+0.0450 registered-planning, 0.0495 registered-alternate, 0.0288 on the v7
+rehearsal's measured composed-cell precision, 0.0319–0.0388 with each frame's
+own calibration-anchored variance decomposition at the registered ρ. The two
+rows that do **not** clear it are the two that are explicitly *bounds*, and
+neither is reachable at any feasible allocation: `WORST_CASE` fixes p(1−p) at
+its 0.25 maximum with ρ = 0 and would need 585 blocks per frame, and
+`CALIBRATION_ANCHORED`'s ρ is measured between two *different constraints'*
+solo cells where the ρ governing Δ_R is between composed cells that all
+measure **B**, and it would need 522 — both above the 384-block ceiling. A
+fourth pass would buy 0.0390 and cannot rescue either bound; it is not bought.
+
+**What it is not.** Not a threshold change: `PRECISION_PRECONDITIONS`,
+`SMALLEST_EFFECT_OF_INTEREST`, the Šidák family, §16.1's variance form,
+§17.1's bootstrap, §17.3's `INSUFFICIENT_PRECISION` consequence and every
+admission rule in the pilot are byte-identical. Not a change to the estimand:
+Δ_R(f) is the same contrast on the same four composed cells. Not a claim
+about a value: no composed cell exists, and the projection is labelled
+`PROJECTION_NOT_REGISTERED_FOR_INFERENCE` for that reason.
+
+**What it does change, stated plainly.** The design-time coverage projection
+(`spectrum.coverage.FRAME_COVERAGE_RULE`) is *defined* as the projection at
+the confirmatory blocks a frame will hold, so it moves from 96 to 288 with
+the design. Its threshold `SPECTRUM_MAX_SE_BETA` = 0.05 does not move, but a
+projected SE(β) falls by √3, so condition 4 of §12.6's replacement — and only
+condition 4 — is met by designs with about a third of the within-family
+leverage it previously required. That is a consequence of measuring more, not
+a relaxation, but it means **r8's and r9's recorded SPECTRUM verdicts were
+evaluated against a one-pass projection and are conservative with respect to
+this design**; they are not overwritten and not recomputed, and any frame
+whose coverage status would differ is listed in
+`reports/dci1v8dev/coverage_at_288.md`. The **LOCAL** arm is untouched in
+both directions: `local_validity`, §13.8's core kernel, §13.15's family count
+and `admissible_backups` read no block count, so every LOCAL support verdict
+on r8 and r9 means exactly what it meant, and `tests_v8dev` pins that
+invariance directly.
 
 ## 5. Where the frame enters, stage by stage
 
@@ -424,29 +587,46 @@ report and cannot freeze.
    the projection lacked: §13.7 condition 1 evaluates `V_coord` on each
    *split*, at half the frame's topics, and 221 of 332 of `qwen3-4b`'s
    split-level `V_coord` refusals were the SE clause alone.
-1b. **What to do about a frame that is still `PRECISION_LIMITED` at the
-   ceiling.** r9 left `qwen3-4b` f1 and f2 with four LOCAL-valid families
-   against §13.15's five and one backup against two, on 192 topics per frame
-   — every calibration topic the bank holds. The bottleneck is still read as
-   precision (with it free, f1 would have six families and f2 five), so the
-   remaining levers are outside the allocation: more draws per topic would
-   not help (every estimator averages draws within a topic first), and the
-   options that would are a larger topic bank, a wider reference pool, or
-   accepting two of the four frames as LOCAL-unsupported while f0 and f3
-   carry the arm. A researcher decision, and the first one the allocation
-   cannot answer.
-3a. **The two high-ι_A frames** (`qwen3-4b-instruct-2507` f0 at 0.844,
-   `gemma-3n-e2b-it` f2 at 0.794). §4c measures why LOCAL fails there:
-   `V_head`'s Wilson band and §13.8's caliper stop overlapping as ι_A
-   approaches the headroom ceiling, and A's grid holds exactly one rung in
-   `TARGET_BAND` under each frame with no integer severity to add. The
-   choice is to accept those two frames as LOCAL-unsupported — the
-   recommendation the evidence supports — or to change what A is, which is
-   a change to the construct and not to a measurement.
-2. **Confirmatory allocation per frame.** The registered 384 blocks give 96
-   per frame; Δ_R(f) at 96 blocks has twice the pooled SE. The precision
-   preconditions (§16) were set for the pooled estimand. Keep the total and
-   accept per-frame precision, or multiply the allocation.
+1b. ~~**What to do about a frame that is still `PRECISION_LIMITED` at the
+   ceiling.**~~ **Decided 2026-08-31** (§4d): accept it as
+   `LOCAL_UNSUPPORTED`, on the record with its reason, and let the model's
+   other supported frames carry the arm — provided at least two remain. No
+   threshold, operating point, grid, validity component, pool or frame is
+   changed to rescue it. r9's `qwen3-4b` f1 and f2 are the first two frames
+   this retires; f0 and f3 carry the model.
+3a. ~~**The two high-ι_A frames**~~ **Decided 2026-08-31** (§4d): the same
+   rule retires them. §4c measured why LOCAL fails there — `V_head`'s Wilson
+   band and §13.8's caliper stop overlapping as ι_A approaches the headroom
+   ceiling, and A's grid holds exactly one rung in `TARGET_BAND` with no
+   integer severity to add — so the alternative was changing what A is, which
+   is a change to the construct. `qwen3-4b-instruct-2507` f0 and
+   `gemma-3n-e2b-it` f2 are `LOCAL_UNSUPPORTED`.
+2. ~~**Confirmatory allocation per frame.**~~ **Decided 2026-08-31** (§4e):
+   three confirmatory passes, **288 blocks per frame**, 3× confirmatory
+   generation, no threshold moved. What forced it was a measurement
+   (`tools/v8_local_precision.py`, `reports/dci1v8dev/local_precision.md`):
+   at one pass the projected **simultaneous** half-width of Δ_R(f) — §16.1's
+   registered variance form at §16.2's own planning constants, at F1's Šidák
+   value — is **0.078** against Δ_R's registered precondition of **0.05**,
+   with an ~80 %-power MDE of **0.103** against a SESOI of 0.10. At three
+   passes it is **0.0450** with an MDE of **0.059**, and every scenario that
+   is an estimate rather than a bound clears the precondition. Three is the
+   smallest allocation that does: two passes give 0.0551. The two rows that
+   still miss are the two explicit bounds, and neither is reachable at any
+   feasible allocation (522 and 585 blocks per frame against a 384 ceiling).
+5. ~~**Whether `qwen3-4b-instruct-2507` runs at the ceiling allocation.**~~
+   **Decided 2026-08-31** (§4b): yes — four calibration passes, 192 topics
+   per frame, the same raise `qwen3-4b` took, and the model is rerun from
+   `PILOT_REGISTERED` in root `dci1v8-pilot-r10`. On r8 it had one
+   LOCAL-supported frame (f1), one short of §4d's minimum, and its f3 missed
+   on exactly the margin four passes closed for `qwen3-4b` — four families
+   where §13.15 asks five, one backup where it asks two. The raise is an
+   allocation decision of the kind §4b already took once, taken before Gate 3
+   runs on it; if f3 still misses, the model is `LOCAL_INELIGIBLE` with its
+   shortfall on the record and no rule is changed to prevent that.
+6. **Whether an ineligible model still runs the SPECTRUM arm.** §4d is a
+   LOCAL inclusion rule and says nothing about the difficulty-response arm,
+   whose support is a separate per-frame verdict. Not decided here.
 3. **A frame-aware screen.** The screen and second pass pool the frames as
    a budget rule (§5). A frame-aware second pass would need many more
    topics per batch; the pilot's per-frame calibration will show whether
@@ -470,5 +650,25 @@ the extension), the extension block, the wording diagnostic,
 `GATE_3_REFERENCES`: `frames`, `by_frame[f]` (`stability`, `local`,
 `spectrum`, `core`, `core_references`, `spectrum_selection`, `coverage`,
 `backups`, `survival`, `wording_sensitive_rungs`, `state`), `frame_states`,
-`cross_frame`, `estimands`. `PILOT_REPORT`: `criteria[name].by_frame`,
-`frames_passing`, `frames_meeting_all_decided_criteria`.
+`cross_frame`, `estimands`, and — since 2026-08-31 (§4d) —
+`local_eligibility` (`by_frame[f]` with `local_supported`,
+`local_support_state`, `local_unsupported_reason`,
+`local_unsupported_reasons`; `local_supported_frames`,
+`local_unsupported_frames`, `n_local_supported_frames`,
+`local_eligibility_min_frames`, `local_eligible`,
+`frames_entering_local_confirmatory`). The same four per-frame fields are on
+`by_frame[f].survival` and on `frame_states[f]`, and
+`by_frame[f].survival.projected_delta_r_precision` states the LOCAL arm's own
+precision projection at the frame's blocks beside the spectrum arm's
+`projected_se_beta`. `PILOT_REPORT`: `criteria[name].by_frame`,
+`frames_passing`, `frames_meeting_all_decided_criteria`,
+`local_eligibility`.
+
+The signed manifest carries the allocations, both of them, before any stage
+runs: `design.calibration_allocation` (the default, the per-model overrides
+and the ceiling) and — since 2026-08-31 (§4e) —
+`design.confirmatory_allocation` (`frame_offsets`, `passes`,
+`blocks_per_frame`, `blocks_total`, `single_pass_blocks_per_frame`,
+`at_block_ceiling`, `max_passes`, `draws`, the rule and the amendment). The
+confirmatory allocation has no per-model override: it is a property of the
+design, and `rule_table()` binds every one of its constants.

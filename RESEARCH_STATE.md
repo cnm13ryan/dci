@@ -179,7 +179,8 @@ per frame, compared across frames only afterwards; the frame-pooled
 curves survive as a descriptive block read by nothing. Costs stated, not
 hidden: per-frame calibration precision is that of 48 topics and the
 per-frame confirmatory precision that of 96 blocks at the registered
-allocation. The screen and second pass stay frame-pooled as a
+allocation --- both later raised, to 96/192 topics (2026-08-31, §4a/§4b) and
+to 288 blocks (2026-08-31, §4e), by amendments that moved no threshold. The screen and second pass stay frame-pooled as a
 measurement budget. Sixteen scientific-contract tests
 (`dci1/tests_v8dev/test_frame_conditioning.py`) and the synthetic
 lifecycle cover the migration; `CHANGES_SCIENTIFIC.md` has the entry.
@@ -249,7 +250,70 @@ quadrupled and the LOCAL arm's did not, exactly as the split-level reading
 predicted. **Frames 1 and 2 hold four LOCAL-valid families against §13.15's
 five and are still read `PRECISION_LIMITED` -- and 192 topics per frame is
 every calibration topic the bank holds, so no further allocation exists.**
-That is the live researcher decision (`V8_FRAME_CONDITIONING.md` §10 item 1b).
+**That decision was then taken** (2026-08-31, `V8_FRAME_CONDITIONING.md` §4d,
+`CHANGES_SCIENTIFIC.md`): a frame is `LOCAL_SUPPORTED` iff it meets the
+**full** registered LOCAL reference survival --- §13.8's three core
+references, §13.15's five LOCAL-valid families, two admissible backups --- on
+its own table, and nothing is changed to rescue one that does not; a model is
+`LOCAL_ELIGIBLE` iff **at least two** frames are independently supported, and
+then **every** supported frame enters, not a best two. The estimand stays
+Δ_R(f) and no cross-frame aggregation rule is chosen.
+`dci1v8dev.run.eligibility` computes it from pre-freeze survival records
+alone --- it cannot read Δ_R(f), a composed cell, a pooled statistic, or
+another frame --- with nine contract tests
+(`dci1/tests_v8dev/test_local_eligibility.py`). Applied to the latest record
+of each model (`tools/v8_local_eligibility.py`,
+[`local_eligibility.md`](dci1/reports/dci1v8dev/local_eligibility.md)):
+**qwen3-4b f0+f3 (eligible), gemma-3n-e2b-it f1+f3 (eligible),
+qwen3-4b-instruct-2507 f1 only --- ineligible.** Two frames that the recorded
+*state* calls `LOCAL_AND_SPECTRUM` (2507 f3, gemma f0) hold four LOCAL-valid
+families and one backup and are **not** supported; support is the survival
+requirement, not the state. **That gap is now being measured**: 2507's f3 misses on exactly the margin
+four passes closed for qwen3-4b's f0 and f3 --- four families where §13.15
+asks five, one backup where it asks two --- so its calibration was raised to
+the same 192-topic ceiling (2026-08-31, §4b) and the model is rerun from
+`PILOT_REGISTERED` in root `dci1v8-pilot-r10`. r8 is untouched and stands as
+run. No threshold, grid, pool, frame or operating-point rule changed; if f3
+still misses, the model stays LOCAL-ineligible with its shortfall recorded.
+
+**The freeze is blocked on precision, not on references** (2026-08-31,
+`tools/v8_local_precision.py`,
+[`local_precision.md`](dci1/reports/dci1v8dev/local_precision.md)). §8.4 puts
+one frame per block, so the registered 384 confirmatory blocks give **96 per
+frame**, and Δ_R(f) there has twice the pooled SE the §16 preconditions were
+set for. Through §16.1's registered variance form verbatim
+(`dci1v4.analysis.variance.variances`, the paired/clustered one) at §16.2's
+own planning constants, the projected **simultaneous** half-width is
+**0.078** against Δ_R's registered precondition of **0.05**; across every
+scenario that is an estimate rather than a bound it is **0.050--0.087**, and
+only the v7 rehearsal's central measured value (0.0500) and the optimistic
+end of its range clear the line. The ~80 %-power MDE is **0.066--0.114**:
+seven to eleven percentage points would usually be detected, five or fewer
+usually not --- with §11.9's smallest effect of interest at 0.10, the
+allocation sits on its own SESOI with no margin. The projection
+is labelled `PROJECTION_NOT_REGISTERED_FOR_INFERENCE` and gates nothing;
+§17.3 evaluates precision on the realised interval.
+
+**So the allocation was raised** (2026-08-31, `V8_FRAME_CONDITIONING.md`
+§4e, `CHANGES_SCIENTIFIC.md`): `rules.CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)`
+--- three confirmatory passes, **288 distinct blocks per frame**, 1152 in
+all, 3x the confirmatory generation, the exact analogue of §4a's calibration
+pass and with the offsets distinct modulo `N_WORDINGS` so no block recurs
+inside a frame. At 288 the simultaneous half-width is **0.0450** and the
+~80 % MDE **0.059**, and every scenario that is an estimate clears the 0.05
+precondition; three is the smallest allocation that does (two passes give
+0.0551). The two rows that still miss are the two explicit *bounds* and
+neither is reachable at any feasible allocation (522 and 585 blocks against
+a 384 ceiling). No threshold, estimator, interval or admission rule moved.
+One consequence is recorded rather than left implicit: `spectrum.coverage`'s
+condition 4 projects at the blocks a frame will hold, so it now projects at
+288 and r8/r9's SPECTRUM verdicts are **conservative** with respect to this
+design --- restated read-only in
+[`coverage_at_288.md`](dci1/reports/dci1v8dev/coverage_at_288.md), where
+exactly one of sixteen recorded frame verdicts would differ. The LOCAL arm
+reads no block count and is invariant, which a test pins.
+
+v8 remains unfrozen and no composed cell exists.
 **And r8's two high-iota_A frames are geometry, not a shortage**
 (`tools/v8_operating_point_diagnosis.py`, `V8_PILOT.md` §7f): §13.4's
 `V_head` admits raw solo compliance only in [0.1605, 0.8395] at 96 topics,

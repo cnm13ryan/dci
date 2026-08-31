@@ -9,6 +9,8 @@ or a budget choice stated here. Retrospective backtests never set a value
 """
 from __future__ import annotations
 
+from typing import Any
+
 from dci1v7.protocol import constants as C
 
 __all__ = [name for name in dir() if name.isupper()]  # refreshed at the end
@@ -52,12 +54,107 @@ SELECTION_MIN_SEPARATION = 0.05
 #: Approach A (docs/V8_FRAME_CONDITIONING.md, researcher decision of
 #: 2026-08-30): the wording frame is part of the experimental condition, so
 #: every difficulty, operating point, validity, selection and eventual
-#: estimand is frame-specific. The registered confirmatory allocation
-#: (N_BLOCKS × 8 draws, wording by block) puts one quarter of the blocks
-#: under each frame; a frame-specific estimate is projected at that share.
-#: Derived, not chosen: N_BLOCKS / N_WORDINGS.
-CONFIRMATORY_BLOCKS_PER_FRAME = C.N_BLOCKS // C.N_WORDINGS
-assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == C.N_BLOCKS
+#: estimand is frame-specific. §8.4 renders one frame per block, so one
+#: pass over the registered ``C.N_BLOCKS`` confirmatory blocks puts one
+#: quarter of them under each frame and a frame-specific estimate is
+#: projected at that share. How many passes the confirmatory design runs is
+#: the allocation decision below.
+
+
+def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
+    """The passes' offsets must be distinct modulo the wordings.
+
+    Two passes at the same offset would measure a topic twice under one
+    frame and the per-topic vector would count the repeat as a second topic,
+    inflating the very denominator every standard error is formed at.
+    """
+    assert offsets, f"{where}: at least one pass"
+    assert len({o % C.N_WORDINGS for o in offsets}) == len(offsets) \
+        <= C.N_WORDINGS, (
+            f"{where}: the passes' frame offsets must be distinct modulo "
+            "N_WORDINGS, or a topic would be measured twice under one frame "
+            "and its two measurements counted as two topics")
+    return tuple(offsets)
+
+
+# ------------------------------------------------ confirmatory allocation
+#: **The confirmatory passes** (researcher decision of 2026-08-31, after the
+#: pre-freeze precision check; docs/V8_FRAME_CONDITIONING.md §4e). One pass
+#: over the registered ``C.N_BLOCKS`` blocks leaves each frame 96 of them,
+#: at which the §16.1 variance model projects a simultaneous half-width for
+#: Δ_R(f) of 0.078 against ``C.PRECISION_PRECONDITIONS["Delta_R"]`` = 0.05
+#: and an 80 % MDE of ~0.10 --- the design sitting exactly on its own
+#: SESOI (reports/dci1v8dev/local_precision.md, 2026-08-31). Three passes
+#: put 288 blocks under each frame, which brings every scenario that is an
+#: estimate rather than a bound inside the precondition.
+#:
+#: A confirmatory *pass* is the exact analogue of a calibration pass: it
+#: renders every confirmatory block under one frame, pass p shifting the
+#: frame by ``CONFIRMATORY_FRAME_OFFSETS[p]``, so the block at position i is
+#: met under frame ``(i + offset_p) % N_WORDINGS``. The offsets are distinct
+#: modulo ``N_WORDINGS``, so no block recurs within a frame and each frame's
+#: block count --- the denominator §17.1's block bootstrap resamples over ---
+#: is the number of *distinct* topics it holds.
+#:
+#: What it is and is not. It buys independent blocks inside each frame, so
+#: the topic component of §16.1's variance falls with the block count;
+#: extra *draws* would not have done this (the estimators average draws
+#: within a topic first). Frames are never pooled: every frame keeps its own
+#: Δ_R(f), its own slope, its own references and its own report row. No
+#: threshold moves --- this changes how much is measured, not what admits.
+#: Four passes is the ceiling: every frame would then hold every
+#: confirmatory block and a fifth would have to repeat an offset.
+CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)
+_assert_offsets(CONFIRMATORY_FRAME_OFFSETS, "CONFIRMATORY_FRAME_OFFSETS")
+CONFIRMATORY_FRAME_PASSES = len(CONFIRMATORY_FRAME_OFFSETS)
+#: Derived, not chosen: N_BLOCKS x passes / N_WORDINGS.
+CONFIRMATORY_BLOCKS_PER_FRAME = (C.N_BLOCKS * CONFIRMATORY_FRAME_PASSES
+                                 // C.N_WORDINGS)
+assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == \
+    C.N_BLOCKS * CONFIRMATORY_FRAME_PASSES
+#: The blocks the whole confirmatory design generates, across all frames.
+CONFIRMATORY_BLOCKS_TOTAL = C.N_BLOCKS * CONFIRMATORY_FRAME_PASSES
+#: The ceiling, stated once.
+CONFIRMATORY_MAX_PASSES = C.N_WORDINGS
+CONFIRMATORY_MAX_BLOCKS_PER_FRAME = C.N_BLOCKS
+assert CONFIRMATORY_BLOCKS_PER_FRAME <= CONFIRMATORY_MAX_BLOCKS_PER_FRAME
+assert CONFIRMATORY_FRAME_PASSES <= CONFIRMATORY_MAX_PASSES
+
+
+def confirmatory_allocation() -> dict[str, Any]:
+    """The confirmatory allocation as a record block, for the manifest.
+
+    A pure function of the constants above: the design has no per-model
+    override and no dependence on a run's data. Nothing about *admission*
+    varies with it; what varies is the precision every frame-specific
+    estimate is eventually formed at.
+    """
+    return {
+        "frame_offsets": list(CONFIRMATORY_FRAME_OFFSETS),
+        "passes": CONFIRMATORY_FRAME_PASSES,
+        "registered_blocks_per_pass": C.N_BLOCKS,
+        "blocks_total": CONFIRMATORY_BLOCKS_TOTAL,
+        "blocks_per_frame": CONFIRMATORY_BLOCKS_PER_FRAME,
+        "single_pass_blocks_per_frame": C.N_BLOCKS // C.N_WORDINGS,
+        "at_block_ceiling":
+            CONFIRMATORY_BLOCKS_PER_FRAME == CONFIRMATORY_MAX_BLOCKS_PER_FRAME,
+        "max_passes": CONFIRMATORY_MAX_PASSES,
+        "max_blocks_per_frame": CONFIRMATORY_MAX_BLOCKS_PER_FRAME,
+        "draws": C.M_DRAWS,
+        "rule": "a confirmatory pass renders every registered confirmatory "
+                "block under one frame; pass p offsets the frame by "
+                "frame_offsets[p]. The offsets are distinct modulo "
+                "N_WORDINGS, so every frame holds passes/N_WORDINGS of the "
+                "blocks, no block recurs within a frame, and each frame's "
+                "independent unit count --- what §17.1's block bootstrap "
+                "resamples over --- is that number. No frame is pooled with "
+                "another",
+        "amendment": "CHANGES_SCIENTIFIC.md 2026-08-31 (three passes, 288 "
+                     "blocks per frame; prompted by the pre-freeze precision "
+                     "check, which put the one-pass simultaneous half-width "
+                     "for Delta_R(f) at 0.078 against the unchanged 0.05 "
+                     "precondition). No threshold moved.",
+    }
 
 # ------------------------------------------------- calibration allocation
 #: **The calibration passes** (researcher decision of 2026-08-30, after
@@ -97,30 +194,24 @@ CALIBRATION_FRAME_OFFSETS = (0, 2)
 #: calibration topics and every other topic set is reserved.
 #:
 #: The override is per model because the researcher approved the further 2x
-#: for `qwen3-4b` alone --- it is the model whose frames r8 left short --- and
+#: for the models whose frames the two-pass allocation left short, and
 #: because an allocation is a property of a replication's measurement, not of
 #: the admission rules, which are identical under either value. A model
 #: absent from this table runs at `CALIBRATION_FRAME_OFFSETS`, so every
 #: earlier run's meaning is untouched.
+#:
+#: `qwen3-4b` was raised on 2026-08-31 after r8 (r9 ran at four passes and
+#: put all four of its frames in LOCAL_AND_SPECTRUM). `qwen3-4b-instruct-2507`
+#: was raised on 2026-08-31 for the same reason and on the same evidence
+#: shape: r8 left it one LOCAL-supported frame (f1), and f3 --- 4 LOCAL-valid
+#: families against the 5 §13.15 asks and 1 admissible backup against 2 ---
+#: missed on exactly the margin four passes closed for `qwen3-4b`'s f0 and
+#: f3. The raise is a measurement decision taken before Gate 3 runs, not a
+#: response to a Gate-3 verdict on the raised allocation.
 CALIBRATION_FRAME_OFFSETS_BY_MODEL: dict[str, tuple[int, ...]] = {
     "qwen3-4b": (0, 1, 2, 3),
+    "qwen3-4b-instruct-2507": (0, 1, 2, 3),
 }
-
-
-def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
-    """The passes' offsets must be distinct modulo the wordings.
-
-    Two passes at the same offset would measure a topic twice under one
-    frame and the per-topic vector would count the repeat as a second topic,
-    inflating the very denominator every standard error is formed at.
-    """
-    assert offsets, f"{where}: at least one calibration pass"
-    assert len({o % C.N_WORDINGS for o in offsets}) == len(offsets) \
-        <= C.N_WORDINGS, (
-            f"{where}: the passes' frame offsets must be distinct modulo "
-            "N_WORDINGS, or a topic would be measured twice under one frame "
-            "and its two measurements counted as two topics")
-    return tuple(offsets)
 
 
 _assert_offsets(CALIBRATION_FRAME_OFFSETS, "CALIBRATION_FRAME_OFFSETS")
@@ -170,9 +261,41 @@ assert CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT * 2 == \
 #: topic, and a fifth would repeat one inside a frame.
 CALIBRATION_MAX_PASSES = C.N_WORDINGS
 CALIBRATION_MAX_TOPICS_PER_FRAME = C.N_CALIBRATION
-assert calibration_topics_per_frame_per_split("qwen3-4b") * 2 == C.N_CALIBRATION
+for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
+    assert calibration_topics_per_frame_per_split(_model) * 2 == \
+        calibration_topics_per_frame(_model)
 for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
     assert calibration_topics_per_frame(_model) <= CALIBRATION_MAX_TOPICS_PER_FRAME
+
+# ------------------------------------------------- LOCAL frame eligibility
+#: **The LOCAL inclusion rule** (researcher decision of 2026-08-31, after
+#: pilot r8/r9; docs/V8_FRAME_CONDITIONING.md §10 items 1b and 3a).
+#:
+#: A wording frame is LOCAL-supported iff it satisfies the **full registered
+#: LOCAL reference-survival requirements** --- §13.8's three core references,
+#: §13.15's `MIN_LOCAL_FAMILIES` LOCAL-valid families and `MIN_BACKUPS`
+#: admissible backups --- on that frame's own table at that frame's ι_A(f).
+#: Nothing rescues a frame that does not: no threshold moves, no q*(f) or
+#: m*(f) moves, A's grid and target band are unchanged, `V_stab`, `V_head`
+#: and `V_diff` are unchanged, the reference pool is unchanged, the wording
+#: frame is unchanged, and a reference of another frame is never borrowed.
+#:
+#: A **model** is LOCAL-eligible iff at least this many of its frames are
+#: independently LOCAL-supported. Two, because one frame cannot show whether
+#: a frame-specific answer is a property of the instruction pair or of the
+#: wording it was stated in --- Approach A's whole reason for conditioning on
+#: the frame is that the four frames are not exchangeable on A
+#: (V8_FRAME_CONDITIONING.md §1), so a one-frame model would license a claim
+#: that is silently a claim about one phrasing. It is not a "best two":
+#: **every** supported frame of an eligible model enters, and an unsupported
+#: frame stays on the record with the exact requirement it missed.
+#:
+#: The rule reads pre-freeze reference-survival records and nothing else. It
+#: cannot read Δ_R(f), δ_diff, or any composed cell --- none exists before a
+#: freeze, and `spectrum/validity`, `selection` and `backups` are the only
+#: inputs. Selecting frames on an outcome would be selection on the thing
+#: being estimated.
+LOCAL_ELIGIBILITY_MIN_FRAMES = 2
 
 # ---------------------------------------------------------------- pre-screen
 #: Status thresholds on P(support both sides) and the posterior-majority

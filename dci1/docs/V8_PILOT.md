@@ -139,7 +139,7 @@ are frozen.
 | 5 | `SECOND_PASS_SCREEN` | ≤ 3 batches × 24 × (rungs + 8 + 1) | `prescreen.rescreen.run_rescreen` with a real `measure`: fresh Calibration-A topics (two per area per batch, disjoint), reserve picks, A's grid; then `retention.retain` → the forwarded set |
 | 6 | `GATE_1_INSTRUMENT` | – | frame criterion vs the bound reference; §7.5 over the v8 population; v8 scorer determinism; hashes frozen |
 | 7 | `GATE_2_CALIBRATION` | 192 × 4 × (8 + 8 + 1) + 192 × 4 × forwarded + extension | **per frame** (§1a item 6): n*(f), m*(f), adequacy (v7's rules on the frame's own curves); the forwarded set at calibration precision on every block, with B at every supported frame's m*(f) absent; §13.11's table per frame by the 7f89dae producer on the frame's own unconstrained cells; one extension round (the union of the frames' plans, each ≤ 2 reserve rungs per deficient side of a spectrum family); unsupported frames recorded, terminal only when none is supported |
-| 8 | `GATE_3_REFERENCES` | – | **per supported frame**: folded §13.7 stability against ι_A(f); `classify_pool` (LOCAL = v7's full V(R); SPECTRUM = V_coord/unfolded V_stab/V_pos); core by `admit_core_references(require_spectrum=False)`; `select_spectrum`; `selected_coverage` at 96 blocks per frame; `admissible_backups`; the frame's state; a descriptive cross-frame block; the estimands stated per frame |
+| 8 | `GATE_3_REFERENCES` | – | **per supported frame**: folded §13.7 stability against ι_A(f); `classify_pool` (LOCAL = v7's full V(R); SPECTRUM = V_coord/unfolded V_stab/V_pos); core by `admit_core_references(require_spectrum=False)`; `select_spectrum`; `selected_coverage` at `rules.CONFIRMATORY_BLOCKS_PER_FRAME` blocks per frame; `admissible_backups`; the frame's state; a descriptive cross-frame block; the estimands stated per frame |
 | 9 | `PILOT_REPORT` | – | the four criteria on the records, the three decided ones per frame; the run-level aggregate (`any_supported_frame`); frames meeting every decided criterion; generation counts; what the freeze decision may rest on |
 
 Second-pass topics: §12.5 admits only the three development sets to
@@ -565,6 +565,108 @@ gemma f2 each had, ι_A lands at 0.61--0.70 against an aim of 0.70, and the
 caliper window sits entirely inside `V_head`'s band — 0.200 of 0.20 on every
 frame, against 48 % and 73 % there. The headroom geometry is a property of a
 model's response to A under a wording, not of the allocation.
+
+## 7h. The LOCAL inclusion rule, and the precision that blocks the freeze (2026-08-31)
+
+Two pre-freeze questions were closed after r9, neither by generating anything.
+
+**Which (model, frame) combinations enter the LOCAL arm** (researcher
+decision; `V8_FRAME_CONDITIONING.md` §4d, `run/eligibility.py`,
+`tools/v8_local_eligibility.py`,
+`reports/dci1v8dev/local_eligibility.md`). A frame is `LOCAL_SUPPORTED` iff it
+meets the **full** registered LOCAL reference survival on its own table:
+§13.8's three core references, §13.15's five LOCAL-valid families, two
+admissible backups. Nothing is changed to rescue one that does not. A model is
+`LOCAL_ELIGIBLE` iff at least two frames are independently supported, and then
+**every** supported frame enters.
+
+| model | root | LOCAL-supported | LOCAL-unsupported, and why | eligible |
+|---|---|---|---|---|
+| `qwen3-4b` | r9 (4 passes) | f0, f3 | f1, f2 — 4 families, 1 backup | yes |
+| `gemma-3n-e2b-it` | r8 (2 passes) | f1, f3 | f0 — 4 families, 1 backup; f2 — no core, 1 family, 0 backups | yes |
+| `qwen3-4b-instruct-2507` | r8 (2 passes) | f1 | f0 — no core, 0 families; f2 — no operating point; f3 — 4 families, 1 backup | **no** |
+
+The two entries that surprise are `qwen3-4b-instruct-2507` f3 and
+`gemma-3n-e2b-it` f0: both are recorded `LOCAL_AND_SPECTRUM` and neither is
+LOCAL-supported, because the state means "core identified and coverage gate
+passed" and both hold four LOCAL-valid families and one backup. **Support is
+the survival requirement, not the state**, and reading the state would have
+admitted them. `qwen3-4b-instruct-2507` is therefore one frame short of
+eligibility at its two-pass allocation — the same margin four passes closed on
+`qwen3-4b`.
+
+**Whether the planned LOCAL confirmatory allocation is precise enough**
+(`tools/v8_local_precision.py`, `reports/dci1v8dev/local_precision.md`).
+§8.4 renders one frame per block, so the registered 384 confirmatory blocks
+give **96 per frame**, 8 draws per cell, four composed cells per configuration
+— 3,072 generations entering Δ_R(f), on **96 independent units**, because
+§17.1's bootstrap resamples blocks and carries every cell mean of a drawn
+block. Through §16.1's registered variance form verbatim
+(`dci1v4.analysis.variance.variances`) at §16.2's own planning constants:
+
+| | at 96 blocks/frame |
+|---|---|
+| SE[Δ_R(f)] | 0.0296 (range across scenarios 0.011–0.047) |
+| simultaneous 95 % half-width | **0.078** (estimates 0.050–0.087) |
+| Δ_R's registered precondition | **0.05** |
+| ~80 %-power MDE | 0.103 (estimates 0.066–0.114) |
+
+The only rows clearing the precondition are the v7 rehearsal's central
+measured value — which lands on 0.0500, the precondition to four decimals —
+and the optimistic end of that rehearsal's recorded range. In percentage
+points: **effects of about seven to eleven points would usually be detected,
+and effects of five points or less would usually remain unresolved**, while
+§11.9's smallest effect of interest is 0.10. The allocation sits on its own
+SESOI with no margin. **Three passes over the confirmatory topics (288 blocks
+per frame) bring every non-bound scenario inside the precondition**, and four
+passes — every confirmatory topic under every frame — is the topic-bank
+ceiling.
+
+The projection is labelled `PROJECTION_NOT_REGISTERED_FOR_INFERENCE` and gates
+nothing: §17.3 evaluates precision on the realised confirmatory interval and
+`INSUFFICIENT_PRECISION` is its registered, non-terminal consequence.
+
+## 7i. Both gaps closed, and what each cost (2026-08-31)
+
+Two decisions followed §7h, and neither moved a threshold.
+
+**The confirmatory allocation is three passes** (`V8_FRAME_CONDITIONING.md`
+§4e, `rules.CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)`). A confirmatory pass is
+§4a's calibration pass applied to the confirmatory blocks: every registered
+block rendered under one frame, pass *p* offset by `offset_p`, offsets
+distinct modulo `N_WORDINGS` so no block recurs inside a frame and the count
+is a count of independent units.
+
+| | 1 pass | 2 passes | **3 passes** | 4 (ceiling) |
+|---|---|---|---|---|
+| blocks per frame | 96 | 192 | **288** | 384 |
+| SE[Δ_R(f)] | 0.0296 | 0.0209 | **0.0171** | 0.0148 |
+| simultaneous 95 % half-width | 0.0779 | 0.0551 | **0.0450** | 0.0390 |
+| ~80 %-power MDE | 0.103 | 0.073 | **0.059** | 0.051 |
+| meets the 0.05 precondition | no | no | **yes** | yes |
+
+(§16.1's registered variance form at §16.2's own planning constants, at F1's
+Šidák value.) Three is the smallest allocation that clears the precondition,
+so three is what was bought. The two scenarios that still miss at 288 are the
+two that are explicit *bounds* — `WORST_CASE`'s p(1−p) = 0.25 with ρ = 0, and
+`CALIBRATION_ANCHORED`'s ρ measured between two different constraints' solo
+cells — and they need 585 and 522 blocks per frame against a 384 ceiling, so
+no feasible allocation reaches them. The cost is 3× the confirmatory
+generation. One consequence is recorded rather than left implicit: the
+spectrum coverage projection is *defined* at the blocks a frame will hold, so
+condition 4 now projects at 288, and r8/r9's SPECTRUM verdicts are
+conservative with respect to this design — `reports/dci1v8dev/coverage_at_288.md`
+restates all sixteen read-only, of which exactly one would differ. The LOCAL
+arm reads no block count and is invariant.
+
+**`qwen3-4b-instruct-2507` runs at the calibration ceiling** (§4b). Four
+passes, 192 topics per frame, 96 per split, rerun from `PILOT_REGISTERED` in
+root `dci1v8-pilot-r10`; r8 untouched. The question it answers is narrow and
+was fixed before the run: does f3 — 4 LOCAL-valid families against §13.15's
+5, and 1 admissible backup against 2 on r8 — reach full survival at the
+allocation that closed the same gap for `qwen3-4b`'s f0 and f3, and does the
+model therefore reach the two supported frames §4d requires. Its f0 is not
+reopened: §7f's high-ι_A geometry, which no allocation touches.
 
 ## 7. What the pilot cannot tell you
 

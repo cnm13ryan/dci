@@ -105,6 +105,7 @@ CONTRACT: tuple[Field, ...] = (
     _f(G3, "supported_frames", (), required=True),
     _f(G3, "by_frame", (RP,)),
     _f(G3, "frame_states", (RP,)),
+    _f(G3, "local_eligibility", (RP,)),
     _f(G3, "cross_frame", (), required=True),
     _f(G3, "estimands", (RP,)),
     _f(G3, "calibration_allocation", (), required=True),

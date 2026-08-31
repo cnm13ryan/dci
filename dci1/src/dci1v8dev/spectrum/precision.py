@@ -46,6 +46,7 @@ __all__ = [
     "leverage_for_se",
     "projected_se_beta",
     "projected_se_delta_diff",
+    "projected_se_delta_r",
     "se_point_at",
     "simulate_design",
 ]
@@ -107,6 +108,50 @@ def projected_se_beta(points: Sequence[tuple[str, float]], *,
             "n_points": len(points), "n_families": len(per_family),
             "se_point": se_point, "block_corr": block_corr,
             "n_blocks": n_blocks, "se_point_at_n_blocks": se_at}
+
+
+def projected_se_delta_r(*, n_blocks: int = C.N_BLOCKS,
+                        n_references: int = C.N_CORE_REFERENCES,
+                        se_point: float = MEASURED["se_point"],
+                        block_corr: float = MEASURED["block_corr"]
+                        ) -> dict[str, Any]:
+    """Analytic SE of §11.3's ``Delta_R`` at ``n_blocks`` confirmatory blocks.
+
+    ``Delta_R = D(B<-A) - mean_j D(B<-R_j)`` has weights ``(1, -1/n, ..., -1/n)``
+    summing to zero, so --- exactly as for ``delta_diff`` above --- the
+    component every companion shares (B's own solo cell, and whatever of the
+    topic effect is common) cancels and
+
+        Var = sigma_D^2 (1 - rho) sum w^2,   sum w^2 = 1 + 1/n.
+
+    ``se_point`` and ``block_corr`` are the per-companion SE of ``D`` and the
+    between-companion per-block correlation measured on the completed v7
+    rehearsal (``MEASURED``); a frame-specific estimate rests on the frame's
+    share of the blocks and is projected at that share by ``se_point_at``.
+
+    This is the optimistic end of the projection: the registered §16.1 model
+    (``dci1v4.analysis.variance.variances``) charges the reference average the
+    full topic variance rather than 1/n of its independent part, and
+    ``tools/v8_local_precision.py`` reports both.
+
+    **No precision precondition is read here.** §16.2's table is keyed by
+    estimand name, and a rule module of this package may not subscript a
+    table with a composed estimand's name --- ``test_e2e``'s
+    ``test_no_rule_module_reads_a_composed_field`` refuses it, and the refusal
+    is right even though the value is a registered constant: the guard is
+    blunt on purpose. The comparison belongs to the caller.
+    """
+    if n_references <= 0:
+        raise ValueError("n_references must be positive")
+    se_at = se_point_at(n_blocks, se_point=se_point)
+    sum_w2 = 1.0 + 1.0 / n_references
+    se = se_at * math.sqrt((1.0 - block_corr) * sum_w2)
+    return {"se_delta_r": se, "sum_w_squared": sum_w2,
+            "half_width_95": 1.96 * se,
+            "half_width_planning": PLANNING_CONSTANT * se,
+            "n_blocks": n_blocks, "n_references": n_references,
+            "se_point": se_point, "block_corr": block_corr,
+            "se_point_at_n_blocks": se_at}
 
 
 def projected_se_delta_diff(points: Sequence[tuple[str, str, float]], *,
