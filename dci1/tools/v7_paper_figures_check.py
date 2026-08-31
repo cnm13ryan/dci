@@ -10,6 +10,14 @@ reached an output, that every figure carries eight canonical configurations,
 that the vector outputs exist and are non-trivial, and that the CSV each figure
 consumes agrees with the signed records.
 
+Two halves, and only one of them runs from a bare checkout. The
+**signed-record** half re-reads `FINAL_REPORT/final_report.json` under
+`dci1/evidence`, which is gitignored and absent from a clone; the
+**committed-extract** half checks the figures against the CSVs and LaTeX that
+ship beside them. When the evidence tree is absent the tool says so, skips the
+first half and runs the second, and exits non-zero only on a real failure ---
+rather than dying on a `FileNotFoundError` that reads like a bug.
+
 Usage:  python dci1/tools/v7_paper_figures_check.py
 """
 from __future__ import annotations
@@ -51,13 +59,27 @@ lanes = {l["model"]: l for l in load_csv(DOSSIER / "lanes.csv")
 repeat_lanes = {l["lane_id"] for l in load_csv(DOSSIER / "lanes.csv")
                 if l["lane_role"] != "canonical"}
 signed = {}
+missing_records = []
 for lane in lanes.values():
     root, model = lane["lane_id"].split("/", 1)
-    with (EVIDENCE / root / "evidence" / "dci1v7" / model / "FINAL_REPORT"
-          / "final_report.json").open() as fh:
+    record = (EVIDENCE / root / "evidence" / "dci1v7" / model / "FINAL_REPORT"
+              / "final_report.json")
+    if not record.exists():
+        missing_records.append(str(record.relative_to(REPO)))
+        continue
+    with record.open() as fh:
         for res in json.load(fh)["results"]:
             signed[(lane["lane_id"], res["member"],
                     res["configuration"] or "cross")] = res
+
+HAVE_SIGNED = not missing_records
+if not HAVE_SIGNED:
+    print("The signed FINAL_REPORT records are not in this checkout, so the "
+          "half of this audit that re-derives every number from them cannot "
+          "run. `dci1/evidence` is gitignored: obtain the evidence trees to "
+          "get the full audit. Checking the committed extracts instead.")
+    print(f"  {len(missing_records)} record(s) absent, first: "
+          f"{missing_records[0]}\n")
 
 check(len(lanes) == 4, f"expected 4 canonical lanes, found {len(lanes)}")
 
@@ -80,6 +102,8 @@ for name, rows, n in (("figure2", f2, 8), ("figure3", f3, 8), ("figure4", f4, 8)
 cfg_of = {"first": "outcome_first", "second": "outcome_second"}
 
 for r in f2:
+    if not HAVE_SIGNED:
+        continue
     s = signed[(r["lane_id"], "Delta_R", cfg_of[r["b_position"]])]
     check(close(float(r["Delta_R"]), s["point"]),
           f"fig2 {r['lane_id']} {r['b_position']} Delta_R point")
@@ -92,6 +116,8 @@ for r in f2:
           f"fig2 {r['lane_id']} {r['b_position']}: upper bound is not below +0.10")
 
 for r in f3:
+    if not HAVE_SIGNED:
+        continue
     cfg = cfg_of[r["b_position"]]
     s_dr = signed[(r["lane_id"], "Delta_R", cfg)]
     s_ba = signed[(r["lane_id"], "D(B<-A)", cfg)]
@@ -106,6 +132,8 @@ for r in f3:
           f"fig3 {r['lane_id']} {r['b_position']} plotted separation == Delta_R")
 
 for r in f4:
+    if not HAVE_SIGNED:
+        continue
     b_cfg = cfg_of[r["b_position"]]
     a_cfg = cfg_of[r["A_measured_position"]]
     check(b_cfg != a_cfg,
@@ -129,6 +157,8 @@ for r in f4:
           "confounded mark per prompt")
 
 for r in f4o:
+    if not HAVE_SIGNED:
+        continue
     s = signed[(r["lane_id"], r["member"], "cross")]
     check(close(float(r["estimate"]), s["point"]), f"fig4B {r['lane_id']} {r['member']}")
     check(close(float(r["sim_lower"]), s["simultaneous_lower"]),
@@ -188,6 +218,11 @@ for stem in ("figure2_delta_r_forest", "figure3_loss_decomposition",
         check(repeat.split("/")[0] not in svg, f"{stem}.svg mentions a repeat lane")
 
 cap = (FIGS / "captions.md").read_text() if (FIGS / "captions.md").exists() else ""
+# Phrase checks below run against whitespace-normalised text. A caption is
+# markdown: where its lines wrap is a formatting accident, and a check that a
+# claim is *present* must not depend on one. `cap` itself is kept for the
+# checks that look for a literal token such as "$+9.9$ pp".
+cap_flat = " ".join(cap.split())
 check(cap, "captions.md missing")
 for token in ("Figure 2", "Figure 3", "Figure 4", "Table 1"):
     check(token in cap, f"captions.md has no entry for {token}")
@@ -196,7 +231,9 @@ check(cap.lower().count("development") >= 4,
 
 # the load-bearing numeric claims inside the captions
 n_below_zero = sum(1 for r in f2 if float(r["Delta_R_sim_upper"]) < 0)
-check(f"in three of the eight" in cap and n_below_zero == 3,
+# Case-insensitive, as the "development" check above already is: the claim
+# under audit is the count, not whether it opens a sentence.
+check("in three of the eight" in cap_flat.lower() and n_below_zero == 3,
       f"captions.md claims a count of intervals wholly below zero; the data say "
       f"{n_below_zero}")
 attainable = sorted({round(float(r["attainable_max"]) * 100, 1) for r in f2

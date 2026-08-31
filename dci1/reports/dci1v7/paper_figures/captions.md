@@ -8,11 +8,14 @@ lanes only — one per model — in both prompt orders, giving eight configurati
 
 ## Figure 2
 
-**Across all eight model × prompt-order configurations, A costs B no more than
-same-form companions matched to it on stand-alone difficulty do: every
-simultaneous interval for $\Delta_R$ stops far short of the $+10$ pp threshold,
-and in three of the eight it lies entirely below zero, meaning the matched
-references cost B *more* than A does.** Each diamond is
+**Across all eight model × prompt-order configurations, A costs B no more
+than 10 pp more than same-form companions matched to it on stand-alone
+difficulty do: every simultaneous interval for $\Delta_R$ stops far short of
+the registered $+10$ pp threshold, the largest reaching $+3.9$ pp. In three of
+the eight the interval lies entirely below zero, meaning the matched
+references cost B *more* than A does; in the remaining five the direction is
+unresolved, so the reading is the registered non-inferiority one and not a
+claim that A costs strictly less.** Each diamond is
 $\Delta_R = \tfrac{1}{3}\sum_j c(B \mid B{+}R_j) - c(B \mid B{+}A)$ in percentage
 points of B-compliance, so positive means A is associated with lower
 B-compliance than the three references; filled diamonds have B stated first
