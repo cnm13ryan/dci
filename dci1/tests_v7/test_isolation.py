@@ -39,6 +39,36 @@ def test_v5_cannot_adopt_a_v4r4_evidence_root():
                      durable_root=DCI1_ROOT / "durable_root")
 
 
+def test_the_foreign_root_refusal_does_not_depend_on_what_is_on_disk(tmp_path):
+    """The guard above used to pass only where the foreign tree existed.
+
+    `foreign_roots()` can list only what is present, and `evidence/` is
+    gitignored -- so in a fresh clone, and in every secondary `git worktree`,
+    the overlap test found no evidence-side `dci1v4r4` and the refusal never
+    fired. The test read as worktree-flaky; it was reporting that a guard
+    against adopting another study's tree was inoperative exactly where a new
+    checkout would first run it.
+
+    A path named for a foreign study is refused on its name, wherever it is.
+    """
+    for prefix in dci1v7.FOREIGN_STUDY_PREFIXES:
+        root = tmp_path / "nowhere" / prefix        # deliberately absent
+        assert not root.exists()
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                         repo_root=tmp_path, evidence_root=root,
+                         durable_root=tmp_path / "durable_root")
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                         repo_root=tmp_path,
+                         evidence_root=tmp_path / "evidence",
+                         durable_root=root)
+    # and a root that names no foreign study is still accepted
+    StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                 repo_root=tmp_path, evidence_root=tmp_path / "evidence",
+                 durable_root=tmp_path / "durable_root")
+
+
 def test_v5_refuses_a_v4r4_path_as_analysis_input():
     context = registered_context()
     with pytest.raises(ProvenanceGuardError):
