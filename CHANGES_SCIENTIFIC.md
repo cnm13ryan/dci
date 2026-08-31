@@ -13,6 +13,86 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-31 (after pilot r8) — the v8 calibration allocation is per model: four passes, 192 topics per frame, for `qwen3-4b`
+
+**What changed.** `dci1v8dev.rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`
+makes Gate 2's calibration allocation a property of the replication.
+`qwen3-4b` runs **four** calibration passes at offsets (0, 1, 2, 3): every
+one of the 192 calibration topics is met under every frame, so each frame's
+§13.11 table, ι_A(f), operating points and per-topic vectors are measured
+on **192 distinct topics — 96 from each §13.7 split**, against 96 and 48 at
+the 2026-08-30 allocation. Gate-2 generation doubles again for that model.
+Every other model keeps `CALIBRATION_FRAME_OFFSETS = (0, 2)` and is
+untouched. This is the **ceiling**: the topic bank holds exactly 192
+calibration topics, every other topic set is reserved
+(`assert_no_reserved_topic_spent`), and a fifth pass would have to repeat an
+offset — which `rules._assert_offsets` refuses, because a topic measured
+twice under one frame would be counted as two topics in the very vector
+every standard error is formed at.
+
+**Why.** r8 left `qwen3-4b` short on both arms (f0 `LOCAL_ONLY`, f1
+`NEITHER`, f2 `SPECTRUM_ONLY`, f3 `LOCAL_ONLY`) with `V_stab` the leading
+first-failing component on every frame, which the bottleneck tool read as
+precision. `tools/v8_vstab_diagnosis.py` decomposed it and found the
+mechanism: §13.7's `V_stab` is three conditions, and **condition 1 is not a
+bootstrap statement at all** — it re-evaluates `V_head`, `V_chance`,
+`V_inter`, `V_diff` (spectrum: `V_coord`, `V_chance`, `V_inter_s`) on *each
+split alone*, at half the frame's topics. The pooled per-frame coordinate
+satisfied `SPECTRUM_MAX_SE_IOTA` after the first amendment (median SE(ι)
+0.0356 against the 0.05 floor); the *split* coordinate, at 48 topics, did
+not. **221 of 332** split-level `V_coord` refusals on `qwen3-4b` carried
+the SE clause and nothing else, and 34 of frame 0's 55 spectrum failures
+were components that pass on the frame's pooled table and fail on a split.
+Two further readings from the same decomposition: only 6–7 candidates per
+frame have `V_stab` as their *sole* blocker (the rest also fail a component
+no allocation touches, and `V_stab` merely precedes `V_diff` in §13.1's
+registered lexicographic order, which decides which reason is recorded and
+not which candidates pass); and **no** equivalence failure on any frame has
+a point estimate outside ±0.20 — every one is an interval that does not
+resolve, never two topic halves that genuinely disagree.
+
+**This is an allocation amendment, not a threshold relaxation.** Byte-identical
+across the change: `SPECTRUM_MAX_SE_IOTA`, `SPECTRUM_MAX_SE_BETA`, the
+spectrum geometry and guard band, `STABILITY_EQUIVALENCE_BOUND` and every
+clause of `V_stab`, §13.8's `REFERENCE_CALIPER` and Newcombe region,
+`V_head`'s `HEADROOM_BAND`, `V_diff`, the chance-compliance rules,
+`MIN_QUALIFIED_FAMILIES` and the family-diversity minima, the
+reference-selection kernel, the operating-point rule and `TARGET_BAND`, the
+wording policy, and the frame-specific estimands. What changes is how much
+is measured inside each frame. Nothing is pooled across frames: the extra
+passes add topics *within* a frame, and every frame keeps its own curves,
+n\*(f), m\*(f), ι_A(f), table, validity, selection and Δ_R(f).
+
+**Which results are affected, and comparability.** Nothing already recorded
+changes: r5/r6 (48 topics per frame) and r8 (96) keep their meaning, and no
+model except `qwen3-4b` sees a different allocation. A `qwen3-4b`
+coordinate measured at 192 topics per frame is the *same estimand* as one
+measured at 96, more precisely estimated, so ι values and difficulty
+positions are comparable across the three allocations. **Admission verdicts
+are not**: `V_coord`, `V_stab` and the interval clauses of `V_head`,
+`V_chance` and `V_diff` are precision-dependent, so a rung admitted at 192
+and refused at 96 is a statement about the allocation, not about the rung.
+Every record carries `calibration_allocation` — the model, the offsets,
+whether they were the default, whether the run sits at the ceiling, the
+realised per-frame and per-split topic counts asserted on the generated
+rows — and the signed manifest binds every model's allocation, so which
+design produced a number is recoverable from the number's own record.
+
+**Where enforced.** `rules._assert_offsets` at import, on the default and
+on every table entry; `calibration.calibration_blocks` bases pass *p* at an
+index congruent to `offset_p` and past every earlier pass, preserving
+`frame = block_index % N_WORDINGS` and keeping block ids disjoint;
+`calibration.assert_allocation_realised` checks the model's allocation on
+the **generated rows** of the grids, the candidate run and the extension
+round, refusing a frame short of it or unbalanced across the splits;
+`report._generations` counts blocks from the record's own pass count;
+`tests_v8dev/test_frame_conditioning.py` pins the 192-per-frame and
+96-per-split contracts, the ceiling, the untouched default for other
+models, the manifest binding, and a full nine-stage synthetic walk at four
+passes.
+
+---
+
 ## 2026-08-30 (after pilot r5/r6) — the v8 calibration allocation: two passes, 96 topics per wording frame
 
 **What changed.** `dci1v8dev.rules.CALIBRATION_FRAME_OFFSETS = (0, 2)`, and

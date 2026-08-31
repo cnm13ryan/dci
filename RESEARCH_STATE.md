@@ -221,6 +221,33 @@ qwen3-4b-instruct-2507 (f1) and gemma-3n-e2b-it (f1, f3), each with three
 core references and two backups. The LOCAL arm's two leading refusals
 (`V_stab`, `V_head`) did not change rank, so its residual gap is not purely
 an allocation question (`V8_PILOT.md` §7d).
+**Then r8's `V_stab` was decomposed** (`tools/v8_vstab_diagnosis.py`,
+2026-08-31, `V8_PILOT.md` §7e) and it turned out to be two different
+findings wearing one name. §13.7's condition 1 is not a bootstrap statement:
+it re-runs `V_head`/`V_chance`/`V_inter`/`V_diff` --- for the spectrum,
+`V_coord`/`V_chance`/`V_inter_s` --- on *each split alone*, at half the
+frame's topics. On qwen3-4b **221 of 332** split-level `V_coord` refusals
+were the SE clause and nothing else, and no equivalence failure anywhere had
+a point estimate outside the +/-0.20 bound: every one is an interval that
+does not resolve, never two topic halves that disagree. `V_stab` is the
+*sole* blocker for only 6--7 LOCAL candidates per frame, because §13.1's
+lexicographic order puts it before `V_diff` and a rung outside the caliper
+therefore surfaces as a `V_stab` failure. **So the allocation was raised
+again, for qwen3-4b only**: four passes, **192 topics per frame, 96 per
+split --- the ceiling the 192-topic bank permits** (2026-08-31,
+`rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`; every other model stays at two
+and r8's meaning is untouched). No threshold moved at this step either.
+**And r8's two high-iota_A frames are geometry, not a shortage**
+(`tools/v8_operating_point_diagnosis.py`, `V8_PILOT.md` §7f): §13.4's
+`V_head` admits raw solo compliance only in [0.1605, 0.8395] at 96 topics,
+so as iota_A approaches that ceiling §13.8's caliper window and the headroom
+band stop overlapping --- 48 % of the window survives on 2507 f0 (whose
+iota_A = 0.844 is *above* the ceiling), 73 % on gemma f2. Even ignoring
+`V_head` and giving precision away neither frame reaches §13.15's five
+families, and the operating point is not a choice: exactly one of A's rungs
+falls inside `TARGET_BAND` under each frame, A's curve cliffs on either side
+of it, and A's severity is an integer count whose grid is already every
+integer 1--8. Moving iota_A would mean changing what A is.
 (4) **The v8 frame repair
 works and what remains is marker-specific**: on Gemma the four frames are
 at 14--22 % marker-absent against v7's 46--53 %, and the two markers that

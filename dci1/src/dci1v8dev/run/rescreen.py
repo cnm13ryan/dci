@@ -27,6 +27,7 @@ from dci1v7.protocol import constants as C
 from dci1v7.topics.bank import TopicBank, load_bank
 from dci1v7.verifiers.constraints import LADDERS, Constraint
 
+from dci1v8dev import rules as R
 from dci1v8dev.prescreen.rescreen import (RescreenBatch, RescreenConfig,
                                           run_rescreen)
 from dci1v8dev.prescreen.retention import RetentionConfig, retain
@@ -180,7 +181,8 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
     config = ScreenConfig(base_seed=screen_seed(
         get_model(tree.model_key).model_id, S.STAGE_SECOND_PASS))
     rescreen_config = rescreen_config or RescreenConfig()
-    retention_config = retention_config or RetentionConfig()
+    retention_config = retention_config or RetentionConfig(
+        generations_per_rung=R.calibration_generations_per_rung(tree.model_key))
     batches: list[dict[str, Any]] = []
     result = run_rescreen(
         table, a_grid, screen_config=config, config=rescreen_config,

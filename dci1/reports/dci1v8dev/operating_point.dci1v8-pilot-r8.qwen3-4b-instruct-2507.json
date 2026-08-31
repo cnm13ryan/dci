@@ -1,0 +1,1417 @@
+{
+  "artifact_type": "v8_operating_point_diagnosis",
+  "calibration_allocation": {
+    "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (calibration allocation); prompted by r5/r6's measured per-frame SE(iota) = 0.0497 against the unchanged 0.05 floor",
+    "blocks_per_run": 384,
+    "calibration_topics": 192,
+    "draws": 4,
+    "frame_offsets": [
+      0,
+      2
+    ],
+    "generations_per_rung": 1536,
+    "passes": 2,
+    "realised": {
+      "candidates": {
+        "0": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "1": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "3": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        }
+      },
+      "extension": {
+        "0": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "1": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "3": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        }
+      },
+      "grids": {
+        "0": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "1": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "2": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        },
+        "3": {
+          "by_split": {
+            "calibration_a": 48,
+            "calibration_b": 48
+          },
+          "n_topics": 96
+        }
+      }
+    },
+    "rule": "a calibration pass renders every calibration topic under one frame; pass p offsets the frame by frame_offsets[p]. Two passes at distinct offsets put every topic under two frames and every frame on half the topics, doubling each frame's own information at 2x the Gate-2 generation. No frame is pooled with another and no topic recurs within a frame (rules.CALIBRATION_FRAME_OFFSETS)",
+    "topics_per_frame": 96,
+    "topics_per_frame_per_split": 48
+  },
+  "changes_no_operating_point": true,
+  "changes_no_threshold": true,
+  "frames": [
+    {
+      "a_grid": {
+        "curve": [
+          {
+            "distance_from_aim": 0.2973958333333334,
+            "in_target_band": false,
+            "iota": 0.9973958333333334,
+            "severity": 1,
+            "solo_compliance": 0.9973958333333334
+          },
+          {
+            "distance_from_aim": 0.2947916666666667,
+            "in_target_band": false,
+            "iota": 0.9947916666666666,
+            "severity": 2,
+            "solo_compliance": 0.9947916666666666
+          },
+          {
+            "distance_from_aim": 0.2817708333333334,
+            "in_target_band": false,
+            "iota": 0.9817708333333334,
+            "severity": 3,
+            "solo_compliance": 0.9817708333333334
+          },
+          {
+            "distance_from_aim": 0.14375000000000004,
+            "in_target_band": true,
+            "iota": 0.84375,
+            "severity": 4,
+            "solo_compliance": 0.84375
+          },
+          {
+            "distance_from_aim": 0.528125,
+            "in_target_band": false,
+            "iota": 0.171875,
+            "severity": 5,
+            "solo_compliance": 0.171875
+          },
+          {
+            "distance_from_aim": 0.4552083333333333,
+            "in_target_band": false,
+            "iota": 0.24479166666666666,
+            "severity": 6,
+            "solo_compliance": 0.24479166666666666
+          },
+          {
+            "distance_from_aim": 0.5046875,
+            "in_target_band": false,
+            "iota": 0.1953125,
+            "severity": 7,
+            "solo_compliance": 0.1953125
+          },
+          {
+            "distance_from_aim": 0.27552083333333327,
+            "in_target_band": false,
+            "iota": 0.4244791666666667,
+            "severity": 8,
+            "solo_compliance": 0.4244791666666667
+          }
+        ],
+        "grid_is_exhaustive_over_the_construct": true,
+        "largest_gap_in_band_neighbourhood": {
+          "from_severity": 4,
+          "from_solo": 0.84375,
+          "gap": 0.671875,
+          "to_severity": 5,
+          "to_solo": 0.171875
+        },
+        "n_rungs_in_band": 1,
+        "rungs_in_band": [
+          4
+        ],
+        "selected_iota_a": 0.84375,
+        "target_aim": 0.7,
+        "target_band": [
+          0.5,
+          0.85
+        ],
+        "target_grid": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "caliper": 0.1,
+      "caliper_window": [
+        0.74375,
+        0.94375
+      ],
+      "caliper_window_width": 0.2,
+      "candidates": [
+        {
+          "candidate": "CL7:40",
+          "distance": 0.08607456140350878,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "CL7",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.9298245614035088,
+          "kappa": 0.2578125,
+          "passed": false,
+          "solo_compliance": 0.9479166666666666
+        },
+        {
+          "candidate": "CL7:45",
+          "distance": -0.02455667593880395,
+          "failing": [
+            "V_struct",
+            "V_stab"
+          ],
+          "family": "CL7",
+          "inside_caliper": true,
+          "inside_headroom": true,
+          "iota": 0.819193324061196,
+          "kappa": 0.06380208333333333,
+          "passed": false,
+          "solo_compliance": 0.8307291666666666
+        },
+        {
+          "candidate": "CL7:60",
+          "distance": -0.6458333333333334,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "CL7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.19791666666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.19791666666666666
+        },
+        {
+          "candidate": "CL8:10",
+          "distance": -0.21445254110612855,
+          "failing": [
+            "V_struct",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "CL8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6292974588938715,
+          "kappa": 0.12890625,
+          "passed": false,
+          "solo_compliance": 0.6770833333333334
+        },
+        {
+          "candidate": "CL8:5",
+          "distance": 0.04929812834224612,
+          "failing": [
+            "V_head",
+            "V_chance",
+            "V_struct",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "CL8",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.8930481283422461,
+          "kappa": 0.7565104166666666,
+          "passed": false,
+          "solo_compliance": 0.9739583333333334
+        },
+        {
+          "candidate": "CL8:6",
+          "distance": 0.007382686084142276,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "CL8",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.8511326860841423,
+          "kappa": 0.59765625,
+          "passed": false,
+          "solo_compliance": 0.9401041666666666
+        },
+        {
+          "candidate": "CL8:7",
+          "distance": -0.027324879227053178,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "CL8",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.8164251207729468,
+          "kappa": 0.4609375,
+          "passed": false,
+          "solo_compliance": 0.9010416666666666
+        },
+        {
+          "candidate": "MK1:10",
+          "distance": -0.3697916666666667,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4739583333333333,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4739583333333333
+        },
+        {
+          "candidate": "MK1:7",
+          "distance": -0.3671875,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4765625,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4765625
+        },
+        {
+          "candidate": "MK1:8",
+          "distance": -0.33333333333333337,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5104166666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5104166666666666
+        },
+        {
+          "candidate": "MK1:9",
+          "distance": -0.40625,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4375
+        },
+        {
+          "candidate": "MK2:10",
+          "distance": -0.28385416666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK2",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5598958333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5598958333333334
+        },
+        {
+          "candidate": "MK2:11",
+          "distance": -0.2734375,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK2",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5703125,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5703125
+        },
+        {
+          "candidate": "MK2:8",
+          "distance": -0.23697916666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK2",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6067708333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.6067708333333334
+        },
+        {
+          "candidate": "MK2:9",
+          "distance": -0.21614583333333337,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK2",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6276041666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.6276041666666666
+        },
+        {
+          "candidate": "MK3:1",
+          "distance": 0.13244047619047616,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK3",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9761904761904762,
+          "kappa": 0.015625,
+          "passed": false,
+          "solo_compliance": 0.9765625
+        },
+        {
+          "candidate": "MK3:2",
+          "distance": 0.07552083333333337,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "MK3",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.9192708333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9192708333333334
+        },
+        {
+          "candidate": "MK3:3",
+          "distance": -0.22135416666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK3",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6223958333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.6223958333333334
+        },
+        {
+          "candidate": "MK3:4",
+          "distance": -0.3984375,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK3",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4453125,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4453125
+        },
+        {
+          "candidate": "MK3:5",
+          "distance": -0.4739583333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK3",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3697916666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3697916666666667
+        },
+        {
+          "candidate": "MK4:1",
+          "distance": 0.12199440052700927,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9657444005270093,
+          "kappa": 0.01171875,
+          "passed": false,
+          "solo_compliance": 0.9661458333333334
+        },
+        {
+          "candidate": "MK4:2",
+          "distance": 0.1171875,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9609375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9609375
+        },
+        {
+          "candidate": "MK4:3",
+          "distance": 0.11197916666666663,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9557291666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9557291666666666
+        },
+        {
+          "candidate": "MK4:4",
+          "distance": -0.09114583333333337,
+          "failing": [
+            "V_stab"
+          ],
+          "family": "MK4",
+          "inside_caliper": true,
+          "inside_headroom": true,
+          "iota": 0.7526041666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.7526041666666666
+        },
+        {
+          "candidate": "MK4:5",
+          "distance": -0.26822916666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5755208333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5755208333333334
+        },
+        {
+          "candidate": "MK4:6",
+          "distance": -0.3958333333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4479166666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4479166666666667
+        },
+        {
+          "candidate": "MK4:8",
+          "distance": -0.5104166666666667,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK4",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3333333333333333,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3333333333333333
+        },
+        {
+          "candidate": "MK5:1",
+          "distance": 0.15625,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 1.0,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 1.0
+        },
+        {
+          "candidate": "MK5:10",
+          "distance": -0.32291666666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5208333333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5208333333333334
+        },
+        {
+          "candidate": "MK5:2",
+          "distance": 0.14322916666666663,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9869791666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9869791666666666
+        },
+        {
+          "candidate": "MK5:3",
+          "distance": 0.140625,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.984375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.984375
+        },
+        {
+          "candidate": "MK5:4",
+          "distance": 0.09895833333333337,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "MK5",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.9427083333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9427083333333334
+        },
+        {
+          "candidate": "MK5:5",
+          "distance": -0.3802083333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4635416666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4635416666666667
+        },
+        {
+          "candidate": "MK5:6",
+          "distance": -0.4088541666666667,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4348958333333333,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4348958333333333
+        },
+        {
+          "candidate": "MK5:7",
+          "distance": -0.5364583333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3072916666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3072916666666667
+        },
+        {
+          "candidate": "MK5:8",
+          "distance": -0.3515625,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4921875,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4921875
+        },
+        {
+          "candidate": "MK5:9",
+          "distance": -0.4088541666666667,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK5",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4348958333333333,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4348958333333333
+        },
+        {
+          "candidate": "MK6:10",
+          "distance": -0.2421875,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK6",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6015625,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.6015625
+        },
+        {
+          "candidate": "MK6:7",
+          "distance": -0.3203125,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK6",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5234375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5234375
+        },
+        {
+          "candidate": "MK6:8",
+          "distance": -0.33072916666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK6",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5130208333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5130208333333334
+        },
+        {
+          "candidate": "MK6:9",
+          "distance": -0.265625,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK6",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.578125,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.578125
+        },
+        {
+          "candidate": "MK7:1",
+          "distance": 0.1353895045632333,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9791395045632333,
+          "kappa": 0.0013020833333333333,
+          "passed": false,
+          "solo_compliance": 0.9791666666666666
+        },
+        {
+          "candidate": "MK7:10",
+          "distance": -0.4505208333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3932291666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3932291666666667
+        },
+        {
+          "candidate": "MK7:2",
+          "distance": 0.09375,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "MK7",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.9375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9375
+        },
+        {
+          "candidate": "MK7:3",
+          "distance": -0.03645833333333337,
+          "failing": [
+            "V_stab"
+          ],
+          "family": "MK7",
+          "inside_caliper": true,
+          "inside_headroom": true,
+          "iota": 0.8072916666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.8072916666666666
+        },
+        {
+          "candidate": "MK7:4",
+          "distance": -0.13020833333333337,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.7135416666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.7135416666666666
+        },
+        {
+          "candidate": "MK7:5",
+          "distance": -0.15885416666666663,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6848958333333334,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.6848958333333334
+        },
+        {
+          "candidate": "MK7:6",
+          "distance": -0.31770833333333337,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5260416666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5260416666666666
+        },
+        {
+          "candidate": "MK7:7",
+          "distance": -0.3203125,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5234375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5234375
+        },
+        {
+          "candidate": "MK7:8",
+          "distance": -0.4010416666666667,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK7",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4427083333333333,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4427083333333333
+        },
+        {
+          "candidate": "MK8:1",
+          "distance": 0.1535509446693658,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9973009446693658,
+          "kappa": 0.03515625,
+          "passed": false,
+          "solo_compliance": 0.9973958333333334
+        },
+        {
+          "candidate": "MK8:10",
+          "distance": -0.3203125,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5234375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.5234375
+        },
+        {
+          "candidate": "MK8:11",
+          "distance": -0.4453125,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3984375,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3984375
+        },
+        {
+          "candidate": "MK8:12",
+          "distance": -0.4036458333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4401041666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4401041666666667
+        },
+        {
+          "candidate": "MK8:4",
+          "distance": 0.08072916666666663,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab"
+          ],
+          "family": "MK8",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.9244791666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.9244791666666666
+        },
+        {
+          "candidate": "MK8:6",
+          "distance": 0.01041666666666663,
+          "failing": [
+            "V_head",
+            "V_stab"
+          ],
+          "family": "MK8",
+          "inside_caliper": true,
+          "inside_headroom": false,
+          "iota": 0.8541666666666666,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.8541666666666666
+        },
+        {
+          "candidate": "MK8:7",
+          "distance": -0.5598958333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.2838541666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.2838541666666667
+        },
+        {
+          "candidate": "MK8:8",
+          "distance": -0.4270833333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "MK8",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.4166666666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.4166666666666667
+        },
+        {
+          "candidate": "RF11:11",
+          "distance": -0.8255208333333334,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.018229166666666668,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.018229166666666668
+        },
+        {
+          "candidate": "RF11:16",
+          "distance": -0.6601304491413474,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.18361955085865259,
+          "kappa": 0.014322916666666666,
+          "passed": false,
+          "solo_compliance": 0.1953125
+        },
+        {
+          "candidate": "RF11:21",
+          "distance": -0.40785256410256404,
+          "failing": [
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.43589743589743596,
+          "kappa": 0.13671875,
+          "passed": false,
+          "solo_compliance": 0.5130208333333334
+        },
+        {
+          "candidate": "RF11:22",
+          "distance": -0.2748118066561014,
+          "failing": [
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5689381933438986,
+          "kappa": 0.17838541666666666,
+          "passed": false,
+          "solo_compliance": 0.6458333333333334
+        },
+        {
+          "candidate": "RF11:23",
+          "distance": -0.2748454063604241,
+          "failing": [
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.5689045936395759,
+          "kappa": 0.2630208333333333,
+          "passed": false,
+          "solo_compliance": 0.6822916666666666
+        },
+        {
+          "candidate": "RF11:26",
+          "distance": -0.2292921686746987,
+          "failing": [
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.6144578313253013,
+          "kappa": 0.5677083333333334,
+          "passed": false,
+          "solo_compliance": 0.8333333333333334
+        },
+        {
+          "candidate": "RF11:27",
+          "distance": -0.2745192307692309,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.5692307692307691,
+          "kappa": 0.6614583333333334,
+          "passed": false,
+          "solo_compliance": 0.8541666666666666
+        },
+        {
+          "candidate": "RF11:28",
+          "distance": -0.13898809523809508,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.7047619047619049,
+          "kappa": 0.7265625,
+          "passed": false,
+          "solo_compliance": 0.9192708333333334
+        },
+        {
+          "candidate": "RF11:29",
+          "distance": -0.1588184931506852,
+          "failing": [
+            "V_head",
+            "V_chance",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF11",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.6849315068493148,
+          "kappa": 0.8098958333333334,
+          "passed": false,
+          "solo_compliance": 0.9401041666666666
+        },
+        {
+          "candidate": "RF3:1",
+          "distance": -0.7008928571428571,
+          "failing": [
+            "V_head",
+            "V_struct",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "RF3",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.14285714285714288,
+          "kappa": 0.4622395833333333,
+          "passed": false,
+          "solo_compliance": 0.5390625
+        },
+        {
+          "candidate": "XC1:1",
+          "distance": 0.13502984084880632,
+          "failing": [
+            "V_head",
+            "V_inter",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "XC1",
+          "inside_caliper": false,
+          "inside_headroom": false,
+          "iota": 0.9787798408488063,
+          "kappa": 0.018229166666666668,
+          "passed": false,
+          "solo_compliance": 0.9791666666666666
+        },
+        {
+          "candidate": "XC1:2",
+          "distance": -0.6662043080939948,
+          "failing": [
+            "V_head",
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "XC1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.17754569190600522,
+          "kappa": 0.0026041666666666665,
+          "passed": false,
+          "solo_compliance": 0.1796875
+        },
+        {
+          "candidate": "XC1:6",
+          "distance": -0.5364583333333333,
+          "failing": [
+            "V_stab",
+            "V_diff"
+          ],
+          "family": "XC1",
+          "inside_caliper": false,
+          "inside_headroom": true,
+          "iota": 0.3072916666666667,
+          "kappa": 0.0,
+          "passed": false,
+          "solo_compliance": 0.3072916666666667
+        }
+      ],
+      "counterfactuals": {
+        "note": "a diagnosis read by nothing; no selection, admission or record consults these and no threshold changed",
+        "precision_free": [
+          "MK4",
+          "MK7"
+        ],
+        "v_diff_and_precision": [
+          "MK1",
+          "MK2",
+          "MK3",
+          "MK4",
+          "MK5",
+          "MK6",
+          "MK7",
+          "MK8",
+          "XC1"
+        ],
+        "v_diff_ignored": [],
+        "v_head_and_precision": [
+          "MK4",
+          "MK7",
+          "MK8"
+        ],
+        "v_head_ignored": []
+      },
+      "failing_component_counts": {
+        "V_chance": 2,
+        "V_diff": 59,
+        "V_head": 27,
+        "V_inter": 28,
+        "V_stab": 71,
+        "V_struct": 17
+      },
+      "families_inside_caliper": [
+        "CL7",
+        "CL8",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK7",
+        "MK8"
+      ],
+      "families_inside_caliper_and_headroom": [
+        "CL7",
+        "MK4",
+        "MK7"
+      ],
+      "frame": 0,
+      "headroom_admits_raw_solo": [
+        0.16050000000000011,
+        0.8394999999999629
+      ],
+      "headroom_band": [
+        0.1,
+        0.9
+      ],
+      "iota_a": 0.84375,
+      "iota_a_above_headroom_ceiling": true,
+      "iota_distribution": {
+        "above_a": 18,
+        "below_a": 53,
+        "max": 1.0,
+        "median": 0.5692307692307691
+      },
+      "m_star": 11,
+      "matchable_window": [
+        0.74375,
+        0.8394999999999629
+      ],
+      "matchable_window_width": 0.09574999999996292,
+      "min_qualified_families": 5,
+      "n_caliper_failing_v_diff": 0,
+      "n_caliper_failing_v_head": 9,
+      "n_candidates": 71,
+      "n_failing_v_diff": 59,
+      "n_failing_v_head": 27,
+      "n_inside_caliper": 12,
+      "n_inside_caliper_and_headroom": 3,
+      "n_realised_local_families": 0,
+      "n_star": 4,
+      "n_topics": 96,
+      "realised_local_families": [],
+      "solo_compliance_a": 0.84375,
+      "state": "NEITHER"
+    }
+  ],
+  "model_key": "qwen3-4b-instruct-2507",
+  "producing_commit": "c8b70d39d6766c360cfec2faea30b7b83b64dab5",
+  "reads_no_composed_quantity": true,
+  "root": "dci1v8-pilot-r8",
+  "stages_read": [
+    "GATE_2_CALIBRATION",
+    "GATE_3_REFERENCES"
+  ]
+}

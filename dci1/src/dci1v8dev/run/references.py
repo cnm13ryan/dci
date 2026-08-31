@@ -399,9 +399,9 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
                      "iota_A(f); a reference may be LOCAL-valid under one "
                      "frame and not another; the coverage projection is at "
                      f"{R.CONFIRMATORY_BLOCKS_PER_FRAME} blocks per frame; "
-                     "the coordinates come from "
-                     f"{R.CALIBRATION_TOPICS_PER_FRAME} calibration topics "
-                     "per frame (calibration_allocation)"},
+                     "the coordinates come from the calibration topics per "
+                     "frame this run's calibration_allocation block records, "
+                     "carried here from Gate 2"},
         "frames": list(S.FRAMES),
         "supported_frames": supported,
         "unsupported_frames": gate2_record.get("unsupported_frames") or {},

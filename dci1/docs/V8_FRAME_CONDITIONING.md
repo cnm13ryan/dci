@@ -202,6 +202,92 @@ not change rank, and `V_head` is a statement about the candidate, so the
 residual LOCAL gap is not purely an allocation question. Whether to spend
 the remaining 2× to reach the ceiling is §10 item 1a.
 
+
+## 4b. The allocation is per model, and `qwen3-4b` runs at the ceiling (amended 2026-08-31)
+
+r8 left `qwen3-4b` short on both arms — f0 `LOCAL_ONLY`, f1 `NEITHER`,
+f2 `SPECTRUM_ONLY`, f3 `LOCAL_ONLY` — with `V_stab` the leading
+first-failing component on every frame. §4a read that as precision and
+stopped there. `tools/v8_vstab_diagnosis.py` finished the reading, and the
+answer changes what the next allocation buys.
+
+**What `V_stab` actually asks** (`stages/stability.stability_verdict`,
+§13.7): three conditions, of which only two are about the bootstrap.
+
+1. R is independently admissible on Calibration-A **and** on
+   Calibration-B, *each split evaluated alone*, under `V_head`, `V_chance`,
+   `V_inter`, `V_diff` (the spectrum arm reads `V_coord`, `V_chance`,
+   `V_inter_s` instead);
+2. the 95 % percentile-bootstrap interval for `iota_A - iota_B`, topics
+   resampled within split, lies wholly inside ±`STABILITY_EQUIVALENCE_BOUND`;
+3. the same interval for `p_solo_A - p_solo_B`.
+
+Condition 1 is **not** a precision statement — it re-runs four candidate
+components at *half* the frame's topics. That is where r8's refusals came
+from: on `qwen3-4b`, **221 of 332** split-level `V_coord` refusals carried
+the SE clause and nothing else, and 34 of f0's 55 spectrum failures were
+components that *pass on the frame's pooled table* and fail on a split.
+The pooled coordinate satisfied `SPECTRUM_MAX_SE_IOTA` (median SE(ι)
+0.0356); the split coordinate, at 48 topics, did not.
+
+Two further readings matter. Of f0's 58 LOCAL failures only **6** have
+`V_stab` as their sole blocker — the rest also fail a component no
+allocation touches, and `V_stab` is merely first in §13.1's registered
+lexicographic order, which "decides which reason is recorded and not which
+candidates pass". And **no** equivalence failure on any frame has a point
+estimate outside the bound: every one is an interval that does not resolve,
+never two halves that genuinely disagree.
+
+**The rule** (`rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`). The allocation
+becomes a property of the replication. `qwen3-4b` runs four passes at
+offsets (0, 1, 2, 3): every topic under every frame, **192 distinct topics
+per frame, 96 per §13.7 split** — the ceiling of §4a, since the bank holds
+exactly 192 calibration topics and every other set is reserved. Every other
+model keeps (0, 2), so r8's meaning and any later run of those models are
+untouched. `calibration_allocation` on the Gate-2 record names the model,
+the offsets, whether they were the default, and whether the run sits at the
+ceiling; the signed manifest binds the allocation of every model in the
+study.
+
+**What it is not.** Not a threshold change — `SPECTRUM_MAX_SE_IOTA`,
+§13.7's bound, §13.8's caliper, `V_head`, `V_diff`, the chance rules, the
+spectrum geometry, the slope-SE floor, the family-diversity minima, the
+wording policy and the operating-point rule are byte-identical. Not a
+relaxation of `V_stab`, which is unchanged in every clause. Not a claim
+that it will work: whether 96 independent topics in each split let the
+registered rules admit what 48 could not is what the next pilot measures.
+
+## 4c. What the LOCAL failures on a high-ι_A frame are
+
+r8's other two LOCAL gaps — `qwen3-4b-instruct-2507` f0 at ι_A = 0.844 and
+`gemma-3n-e2b-it` f2 at ι_A = 0.794 — are a different problem, and
+`tools/v8_operating_point_diagnosis.py` measures it as geometry rather than
+as a shortage.
+
+§13.8 matches a LOCAL reference inside ±0.10 of ι_A. §13.4's `V_head`
+requires the *whole* Wilson interval for the candidate's raw solo
+compliance inside [0.10, 0.90], which at 96 topics admits raw solo
+compliance only in **[0.1605, 0.8395]** (0.8150 at 48 topics, 0.8575 at
+192 — the band widens with the allocation because it is an interval test).
+As ι_A approaches that ceiling the caliper window and the headroom band
+stop overlapping, and no candidate can be a matched reference **however
+many the pool holds**. On 2507 f0, ι_A = 0.8438 is *above* the ceiling and
+only 48 % of the caliper window survives `V_head` by geometry alone; on
+gemma f2, 73 %.
+
+**Why ι_A sits there, and whether anything could move it.** §12.3 picks n\*
+as A's eligible severity nearest 0.70 inside `TARGET_BAND` = (0.50, 0.85).
+Under both frames exactly **one** rung falls in the band, and A's curve has
+a cliff on either side of it: 2507 f0 goes 0.982 (n=3) → 0.844 (n=4) →
+0.172 (n=5), gemma f2 goes 0.958 (n=1) → 0.794 (n=2) → 0.385 (n=3). There
+is no nearby already-measured rung in a healthier region, and there is no
+rung to *add*: A's severity is an integer count and `TARGET_GRID` is
+already every integer 1–8. The grid is exhaustive over the construct.
+
+This is a statement about the model's response to A under that wording, not
+about the reference pool and not about a design choice with alternatives.
+See §10 item 3.
+
 ## 5. Where the frame enters, stage by stage
 
 | stage | frame handling | what pooled quantity remains, and its standing |
@@ -315,15 +401,22 @@ report and cannot freeze.
 1. ~~**Calibration allocation per frame.**~~ **Decided 2026-08-30** (§4a):
    two calibration passes, 96 topics per frame, 2× Gate-2 generation, no
    threshold moved. Run, and it did what it was bought for (§4a).
-1a. **Whether to spend the remaining 2× and reach the ceiling** (four
-   passes, 192 topics per frame). Now measurable rather than projected:
-   running the production Gate-3 rules on r8's own rows at ×2 changes
-   **nothing** for `gemma-3n-e2b-it` (3/4 LOCAL, 4/4 SPECTRUM either way)
-   and nothing for `qwen3-4b-instruct-2507` (2/3, 2/3), and moves
-   `qwen3-4b` from 2/4 · 1/4 to 3/4 · 4/4. So the ceiling buys one model
-   and costs another 2× of Gate 2 on all of them. A researcher decision,
-   and the first one where the projection has a measured track record
-   (§7d: right on one model, wrong in each direction on the other two).
+1a. ~~**Whether to spend the remaining 2× and reach the ceiling.**~~
+   **Decided 2026-08-31** (§4b): for `qwen3-4b` only, four passes at 192
+   topics per frame; every other model stays at two. The projection said
+   the ceiling buys one model and costs 2× on all three, so it was bought
+   for the one — and `tools/v8_vstab_diagnosis.py` then gave the mechanism
+   the projection lacked: §13.7 condition 1 evaluates `V_coord` on each
+   *split*, at half the frame's topics, and 221 of 332 of `qwen3-4b`'s
+   split-level `V_coord` refusals were the SE clause alone.
+3a. **The two high-ι_A frames** (`qwen3-4b-instruct-2507` f0 at 0.844,
+   `gemma-3n-e2b-it` f2 at 0.794). §4c measures why LOCAL fails there:
+   `V_head`'s Wilson band and §13.8's caliper stop overlapping as ι_A
+   approaches the headroom ceiling, and A's grid holds exactly one rung in
+   `TARGET_BAND` under each frame with no integer severity to add. The
+   choice is to accept those two frames as LOCAL-unsupported — the
+   recommendation the evidence supports — or to change what A is, which is
+   a change to the construct and not to a measurement.
 2. **Confirmatory allocation per frame.** The registered 384 blocks give 96
    per frame; Δ_R(f) at 96 blocks has twice the pooled SE. The precision
    preconditions (§16) were set for the pooled estimand. Keep the total and
