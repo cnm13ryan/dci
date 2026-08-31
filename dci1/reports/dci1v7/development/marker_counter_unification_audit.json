@@ -1,0 +1,244 @@
+{
+ "tool": "tools/v7_marker_counter_rescore_audit.py",
+ "started_utc": "2026-08-29T20:03:02.286678+00:00",
+ "finished_utc": "2026-08-29T20:04:19.280852+00:00",
+ "evidence": "/home/cnm13ryan/git/dci/dci1/evidence",
+ "roots": [
+  "dci1v4r3",
+  "dci1v4r4",
+  "dci1v5",
+  "dci1v6",
+  "dci1v7",
+  "dci1v7-development",
+  "dci1v7-development-r2",
+  "dci1v7-development-r3",
+  "dci1v7-development-r4",
+  "dci1v7-development-r5"
+ ],
+ "recompute_every": 1,
+ "rule": {
+  "old_A": "dci1v4.verifiers.target.s0_count: lower-case the whole response, segment, count runs == 'however' (fold-then-segment)",
+  "old_MK": "segment, lower-case each run, count runs == marker (segment-then-fold)",
+  "new_A_and_MK": "marker_count(text, word): segment, lower-case each run, count runs == word (segment-then-fold) for A and MK1-MK8 alike",
+  "only_separating_character": "U+0130"
+ },
+ "totals": {
+  "files": 455,
+  "rows": 3507000,
+  "rows_with_u0130": 0,
+  "entries_checked": 165062472,
+  "entries_recomputed": 165062472,
+  "reproduction_mismatches": 0,
+  "statistics_changed": 0,
+  "verdicts_changed": 0,
+  "graded_changed": 0
+ },
+ "summary": {
+  "A_statistics_changed": 0,
+  "A_verdicts_changed": 0,
+  "MK_statistics_changed": 0,
+  "MK_verdicts_changed": 0
+ },
+ "per_root": {
+  "dci1v4r3": {
+   "files": 50,
+   "rows": 76008,
+   "rows_with_u0130": 0,
+   "entries_checked": 9504,
+   "entries_recomputed": 9504,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 7200,
+    "CX1": 2304
+   }
+  },
+  "dci1v4r4": {
+   "files": 37,
+   "rows": 155712,
+   "rows_with_u0130": 0,
+   "entries_checked": 75648,
+   "entries_recomputed": 75648,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 55296,
+    "CX1": 20352
+   }
+  },
+  "dci1v5": {
+   "files": 69,
+   "rows": 546480,
+   "rows_with_u0130": 0,
+   "entries_checked": 33486432,
+   "entries_recomputed": 33486432,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 680928,
+    "MK1": 4145760,
+    "MK2": 4146048,
+    "MK3": 4147008,
+    "MK4": 4072704,
+    "MK5": 4073184,
+    "MK6": 4071936,
+    "MK7": 4074432,
+    "MK8": 4074432
+   }
+  },
+  "dci1v6": {
+   "files": 46,
+   "rows": 516240,
+   "rows_with_u0130": 0,
+   "entries_checked": 34474848,
+   "entries_recomputed": 34474848,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 522336,
+    "MK1": 4735872,
+    "MK2": 4262304,
+    "MK3": 3791616,
+    "MK4": 4705920,
+    "MK5": 4235232,
+    "MK6": 4227744,
+    "MK7": 4234464,
+    "MK8": 3759360
+   }
+  },
+  "dci1v7": {
+   "files": 46,
+   "rows": 525144,
+   "rows_with_u0130": 0,
+   "entries_checked": 35013792,
+   "entries_recomputed": 35013792,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 534048,
+    "MK1": 4283520,
+    "MK2": 4748640,
+    "MK3": 3785952,
+    "MK4": 4719936,
+    "MK5": 4717152,
+    "MK6": 4249248,
+    "MK7": 4222080,
+    "MK8": 3753216
+   }
+  },
+  "dci1v7-development": {
+   "files": 46,
+   "rows": 400128,
+   "rows_with_u0130": 0,
+   "entries_checked": 14800944,
+   "entries_recomputed": 14800944,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 425136,
+    "MK1": 1910016,
+    "MK7": 1893888,
+    "MK6": 1893888,
+    "MK2": 1745280,
+    "MK3": 1745280,
+    "MK4": 1729152,
+    "MK5": 1729152,
+    "MK8": 1729152
+   }
+  },
+  "dci1v7-development-r2": {
+   "files": 6,
+   "rows": 10896,
+   "rows_with_u0130": 0,
+   "entries_checked": 107664,
+   "entries_recomputed": 107664,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 10896,
+    "MK1": 32256,
+    "MK2": 32256,
+    "MK3": 32256
+   }
+  },
+  "dci1v7-development-r3": {
+   "files": 92,
+   "rows": 830016,
+   "rows_with_u0130": 0,
+   "entries_checked": 29688672,
+   "entries_recomputed": 29688672,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 880032,
+    "MK2": 3674304,
+    "MK1": 3839040,
+    "MK5": 3642048,
+    "MK3": 3490560,
+    "MK4": 3458304,
+    "MK6": 3623040,
+    "MK7": 3623040,
+    "MK8": 3458304
+   }
+  },
+  "dci1v7-development-r4": {
+   "files": 60,
+   "rows": 440928,
+   "rows_with_u0130": 0,
+   "entries_checked": 17351136,
+   "entries_recomputed": 17351136,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 617952,
+    "MK1": 2077824,
+    "MK2": 2077824,
+    "MK3": 2168448,
+    "MK4": 2210304,
+    "MK5": 2045568,
+    "MK6": 2045568,
+    "MK7": 1971456,
+    "MK8": 2136192
+   }
+  },
+  "dci1v7-development-r5": {
+   "files": 3,
+   "rows": 5448,
+   "rows_with_u0130": 0,
+   "entries_checked": 53832,
+   "entries_recomputed": 53832,
+   "reproduction_mismatches": 0,
+   "statistics_changed": 0,
+   "verdicts_changed": 0,
+   "graded_changed": 0,
+   "kinds_seen": {
+    "A": 5448,
+    "MK1": 16128,
+    "MK2": 16128,
+    "MK3": 16128
+   }
+  }
+ },
+ "changed_rows": [],
+ "reproduction_mismatches": [],
+ "read_only": true,
+ "note": "rows under roots still being written at audit time are a snapshot; the tool reads and rewrites nothing"
+}

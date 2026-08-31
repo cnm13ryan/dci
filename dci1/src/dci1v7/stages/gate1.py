@@ -55,7 +55,7 @@ from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError, TerminalStatus
 from dci1v4.protocol.hashing import canonical_json, sha_text
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import s0_count
 
 from dci1v7.protocol import constants as C
 from dci1v7.stages.mutation import mutation_hash, run_mutation_validation

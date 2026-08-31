@@ -48,7 +48,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
 from dci1v4.protocol.hashing import canonical_json, sha_text
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import s0_count
 from dci1v4.verifiers.words import alpha_runs as _v4_alpha_runs
 
 from dci1v7.protocol.wordings import FAMILY_RULE_STATEMENTS, wordings
@@ -200,11 +200,13 @@ _SEGMENTATION_73 = (
     "words."
 )
 _SEGMENTATION_92 = (
-    "§9.2: A's counter lower-cases the whole answer and segments after. The "
-    "two orders differ on exactly one character of Unicode, U+0130 LATIN "
-    "CAPITAL LETTER I WITH DOT ABOVE, whose lower-case form is two "
-    "codepoints; §10.2's segmenter differential measures that over the whole "
-    "range rather than asserting it."
+    "§9.2: A's counter is the marker counter with A's own word: the answer is "
+    "segmented first and each word is lower-cased for the test, the same "
+    "order as every word list (§7.3). Until 2026-08-29 A lower-cased the "
+    "whole answer and segmented after; the two orders differ on exactly one "
+    "character of Unicode, U+0130 LATIN CAPITAL LETTER I WITH DOT ABOVE, "
+    "whose lower-case form is two codepoints; §10.2's segmenter differential "
+    "measures that over the whole range rather than asserting it."
 )
 
 _OPERATOR = {FORM_COUNT: "<=", FORM_RATE: "<=", FORM_LOWER_BOUND: ">=",
@@ -344,9 +346,10 @@ def specification(kind: str) -> dict[str, Any]:
             "are the letters it is written with. Segmentation is over Unicode "
             "general category L, so non-Latin letters are word characters and "
             "digits are not."
-            + (" A folds before segmenting (§9.2), which is why U+0130 is the "
-               "one character on which A and the family word list differ."
-               if kind == "A" else "")),
+            + (" A reads the same word list as every family (§9.2, one "
+               "counting function with nine target strings since "
+               "2026-08-29), so U+0130 cannot separate A's counter from a "
+               "marker family's." if kind == "A" else "")),
         "formal_predicate": {
             "statistic_id": statistic_id,
             "denominator": "word_count" if is_rate else "none",
@@ -631,8 +634,8 @@ def spec_cases(kind: str) -> list[dict[str, Any]]:
          "hyphen, apostrophe and adjacent punctuation: each breaks a word "
          "under §7.3 and each is a place a reader would not"),
         ("unicode_boundary", _UNICODE_TEXT,
-         "U+0130, the one character on which §7.3's segment-then-fold and "
-         "§9.2's fold-then-segment disagree"),
+         "U+0130, the one character on which the registered segment-then-fold "
+         "order (§7.3, §9.2) and v4r2's fold-then-segment disagree"),
         ("case_folding_boundary", "Thus THUS thus Point POINT",
          "the same words in three cases: letter tests fold, and a word's own "
          "letters do not"),
@@ -712,12 +715,14 @@ def _outcome_reading(kind: str, severity: int, text: str,
             # The substring reading: "howevers" and "however" both count.
             statistic = text.lower().count("however")
         elif defect == "segmentation_drift":
-            # A's registered counter already folds and then segments (§9.2).
-            # Its drift is therefore §7.3's order -- segment, then fold --
-            # which is the family word list. The direction matters: reading it
-            # the other way would call A's own registered rule the defect.
-            statistic = sum(1 for w in alpha_runs_of(text)
-                            if w.lower() == "however")
+            # A's registered counter segments and then folds (§9.2; one
+            # function with the marker families since 2026-08-29). Its drift
+            # is therefore v4r2's composition -- fold the whole answer, then
+            # segment -- the same `_drift_words` reading every family and B
+            # are audited against. Before the unification A itself folded
+            # first and this branch read the opposite direction; the card's
+            # provenance says which rule it was computed under.
+            statistic = sum(1 for w in _drift_words(text) if w == "however")
         elif defect == "off_by_one":
             q = q - 1
         elif defect == "vacuity_ignored":

@@ -1,4 +1,7 @@
-"""Frozen boundary suites for every v4r3 instrument (§10.2, §24).
+"""Frozen boundary suites for every v7 instrument (§10.2, §24).
+
+The corpus v4r3 froze, carried through v4r4, v5 and v6 and extended at each
+step; the section headings below name the revision that authored each part.
 
 The suite is one corpus of case texts, and every verifier in the final
 instrument population is evaluated against all of it. That is what makes the
@@ -405,7 +408,12 @@ def evaluate_suites() -> dict[str, Any]:
     Returns the agreement of the primary against the frozen expectations, and
     the realised distribution of verdicts, which §24 reports.
     """
-    from dci1v4.verifiers.target import s0_count, s1_count, s2_count
+    # S1 and S2 are A's declared alternatives (§9.2) and are carried; S0 is
+    # the registered counter and is this package's, one function with the
+    # eight marker counters. The carried v3 expectations for `s0` are
+    # reproduced by it, which is the check below.
+    from dci1v4.verifiers.target import s1_count, s2_count
+    from dci1v7.verifiers.statistics import s0_count
 
     failures: list[str] = []
     checked = 0
