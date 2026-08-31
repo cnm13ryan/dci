@@ -39,8 +39,7 @@ from dci1v7.stages.specification import (
 from dci1v7.verifiers.boundary import ALL_CASES, instrument_population
 from dci1v7.verifiers.compliance import passes
 from dci1v7.verifiers.constraints import declared_range
-from dci1v7.verifiers.statistics import STATISTICS, focal_statistic
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import STATISTICS, focal_statistic, s0_count
 
 __all__ = ["mutation_corpus", "sensitivity", "run_mutation_validation",
            "mutation_hash"]

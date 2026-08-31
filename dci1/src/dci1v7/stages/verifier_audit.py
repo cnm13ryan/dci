@@ -48,7 +48,7 @@ import random
 from typing import Any, Mapping, Sequence
 
 from dci1v4.errors import ProtocolError
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import s0_count
 
 from dci1v7.protocol.seeds import gate1_sample_seed
 from dci1v7.protocol.wordings import wordings

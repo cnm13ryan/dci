@@ -1,12 +1,12 @@
-"""Word segmentation for v5 (§9.2), carried unchanged from v4r4.
+"""Word segmentation for v7 (§9.2), carried unchanged from v4r4 through v5 and v6.
 
-**Nothing here is scientifically reopened.** §9.2's lexical rule is carried
-verbatim, this module is a re-namespaced copy of ``dci1v4r4.verifiers.words``,
-and ``verifiers/carryover.py`` *measures* the identity rather than asserting
-it: the two revisions' functions are run against each other over the frozen
+**The lexical rule is not reopened.** §9.2's rule is carried verbatim, this
+module is a re-namespaced copy of ``dci1v4r4.verifiers.words``, and
+``verifiers/carryover.py`` *measures* the identity rather than asserting it:
+the two revisions' functions are run against each other over the frozen
 boundary corpus and over every stored response the caller supplies.
 
-The rule, restated in full because v5 incorporates nothing by reference:
+The rule, restated in full because v5 incorporated nothing by reference:
 
 * ``alpha_runs`` is carried byte-identically from ``dci1v4.verifiers.words``,
   which carries it from the closed v3 instrument. It is imported rather than
@@ -19,17 +19,26 @@ The rule, restated in full because v5 incorporates nothing by reference:
   and ``stanbul``. §10.2 adjudicates the disagreement against the registered
   prose of §9.2, which defines the word on the response and folds for the
   test.
-* **A's own counter is untouched and folds first**, because §9.2 registers
-  S0 in its own words --- *take the whole response, lower-case it, find every
-  maximal run of alphabetic characters, count the runs equal to `however`* ---
-  which is fold-then-segment. A counts occurrences of a string; B and the
-  families make claims about words as objects.
+* **A's counter uses the same order, since 2026-08-29.** v5's §9.2 --- the
+  registered text of v6 and v7 by incorporation --- states S0 in
+  fold-then-segment words (*take the whole response, lower-case it, find
+  every maximal run of alphabetic characters, count the runs equal to
+  `however`*) and in the same paragraph says every Tier-1 family uses the
+  same function with a different target string. Those two sentences were not
+  both literally true while the markers segmented first. A now calls
+  ``statistics.marker_count`` with its own word, so the second sentence is an
+  identity of code; the first is amended prospectively (the registered v5
+  prose is not rewritten; the amendment is entered in ``CHANGES_SCIENTIFIC.md``
+  for the next registration to carry).
 
-**Every Tier-1 marker family uses §9.2's convention, not S0's**, and that is
-registered rather than incidental: a marker family is A's *predicate form*
-over a different marker word, and its numerator is a word-list test like every
-other family's. The two conventions differ on U+0130 alone, which occurs zero
-times in the 285,936 rows this programme has generated.
+**Every marker family and A use §9.2's convention**, and that is registered
+rather than incidental: a marker family is A's *predicate form* over a
+different marker word, and its numerator is a word-list test like every other
+family's. The two orders differ on U+0130 alone. That character occurs in no
+response any DCI-1 revision has scored, which
+``tools/v7_marker_counter_rescore_audit.py`` measures over every stored row
+(``reports/dci1v7/development/marker_counter_unification_audit.json``)
+rather than asserts, and which is why no stored verdict moved.
 """
 from __future__ import annotations
 

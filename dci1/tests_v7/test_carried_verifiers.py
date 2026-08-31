@@ -21,10 +21,13 @@ def test_exactly_one_character_splits_under_fold_then_segment():
     assert words.assert_single_splitter() == "İ"
 
 
-def test_a_counts_its_own_way_and_the_markers_count_theirs():
+def test_a_and_the_markers_count_the_same_way():
+    """One function, nine target strings (§9.2; unified 2026-08-29)."""
     text = "However however HOWEVER thus Thus."
     assert S.s0_count(text) == 3
     assert S.statistic_of("marker_thus", text) == 2
+    assert S.s0_count(text) == S.marker_count(text, K.TARGET_WORD)
+    assert S.statistic_of("marker_thus", text) == S.marker_count(text, "thus")
 
 
 def test_every_carried_numerator_agrees_with_v4r4():

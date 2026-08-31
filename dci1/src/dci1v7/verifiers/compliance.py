@@ -24,8 +24,9 @@ claims about itself.
 
 **Five predicate forms.** Count budgets pass at ``S <= q``; rate budgets at
 ``100*S/W <= q``, and a wordless answer has no rate and fails; count lower
-bounds at ``S >= q``; rate lower bounds at ``100*S/W >= q``, unused in v5;
-exact counts at ``S == q``, which take A's graded shape over their own
+bounds at ``S >= q``; rate lower bounds at ``100*S/W >= q``, which no
+selectable family carries and only the probe-only stand-in PS3 exercises
+(§34 D24, v6); exact counts at ``S == q``, which take A's graded shape over their own
 numerator and carry no word-count vacuity clause, because a rule demanding q
 occurrences of something cannot be satisfied by writing nothing.
 

@@ -1,4 +1,8 @@
-"""Four frozen wordings per registered constraint (v4r3 §7.5).
+"""Four frozen wordings per registered constraint (§7.5).
+
+The v4r3 module, carried through v4r4, v5 and v6; the Tier-1, Tier-2 and
+probe-only templates below were added by v5 and v6 and every one of them
+renders through the same function to the same caliper.
 
 One verifier decides all four wordings of a constraint; the twenty-response
 suite of ``verifiers.wording_suite`` asserts identical verdicts at every
@@ -19,12 +23,33 @@ never a wording; ``FAMILY_RULE_STATEMENTS`` keeps them, and
 ``assert_rule_vocabulary`` checks that every compact wording still names the
 feature its verifier counts.
 
-The eight ``RF`` wordings are **carried byte-identically** from
-``dci1v4.protocol.wordings``; a test asserts the carry rather than trusting
-it. The twelve wordings new in v4r3 are authored here in the same lexical
-vocabulary and to the same caliper.
+The eight ``RF`` wordings are **carried** from ``dci1v4.protocol.wordings``,
+byte-identically at every severity but ``q = 1``, and
+``assert_rf_wordings_are_carried`` measures both halves of that statement
+rather than trusting either. The twelve wordings new in v4r3 are authored
+here in the same lexical vocabulary and to the same caliper.
+
+**Grammatical number (2026-08-29, prospective).** Every template is a
+``str.format`` string over ``{q}`` and two number placeholders: ``{s}`` is the
+plural ``s`` on a noun the numeral governs (``word{s}``, ``comma{s}``,
+``character{s}``, ``sentence{s}``) and ``{v}`` the singular ``s`` on a verb
+whose subject that noun is (``contain{v}``). At ``q = 1`` they render *word*
+and *contains*; at every other severity, including 0, *words* and *contain*.
+Until this date every non-marker template hard-coded the plural, so
+``q = 1`` rendered *exactly 1 semicolons*, *at most 1 words* and *at least 1
+words*; A's and the Tier-1 templates already carried ``time{s}``. A numeral
+is not an alphabetic run and the placeholders add none, so no wording's word
+count moves and ``assert_severity_invariance`` holds as before, which is what
+keeps §7.5's caliper and §12.6's expansion exactly where they were. The
+change is to text the model is shown and is entered in
+``CHANGES_SCIENTIFIC.md``: rows generated under the plural rendering at
+``q = 1`` carry a different constraint sentence from the one this module now
+renders, and ``carryover.assert_wordings_match_stored`` says so rather than
+admitting them.
 """
 from __future__ import annotations
+
+from typing import Any
 
 from dci1v4.errors import ProtocolError
 from dci1v4.protocol.wordings import (
@@ -39,14 +64,58 @@ from dci1v7.verifiers.constraints import (
 )
 
 __all__ = ["N_WORDINGS", "WORDING_LENGTH_TOLERANCE", "FAMILY_RULE_STATEMENTS",
+           "number_fields", "NUMBER_PLACEHOLDERS",
            "target_wordings", "focal_wordings", "family_wordings", "wordings",
            "wording", "wording_word_count", "length_caliper_ok",
            "caliper_table", "assert_severity_invariance",
            "assert_rule_vocabulary", "assert_caliper_feasible",
-           "assert_rf_wordings_are_carried", "wording_source_hash"]
+           "assert_rf_wordings_are_carried", "wording_source_hash",
+           "grammatical_number_defects", "assert_grammatical_number"]
 
 N_WORDINGS = 4
 WORDING_LENGTH_TOLERANCE = 0.20
+
+#: The two grammatical-number placeholders every template may carry, and the
+#: one rule that fills them. ``s`` is a noun's plural ending, ``v`` a verb's
+#: singular ending; one is empty exactly when the other is not.
+NUMBER_PLACEHOLDERS = ("s", "v")
+
+
+def number_fields(q: int) -> dict[str, str]:
+    """``{s}`` and ``{v}`` for severity ``q``: singular at 1, plural otherwise
+    (0 takes the plural in English: *0 words*)."""
+    return {"s": "" if q == 1 else "s", "v": "s" if q == 1 else ""}
+
+
+#: The carried RF templates are v4r2's, which render a plural noun at every
+#: severity. They are made number-aware by a fixed rewrite rather than by
+#: retyping: each rule maps the plural phrase the numeral governs to its
+#: placeholder form, and ``_number_aware`` refuses a template it cannot make
+#: render byte-identically to v4's at every severity but 1 --- so the
+#: derivation can change nothing except the grammatical number at ``q = 1``.
+#: Ordered: a longer phrase before the phrase it contains.
+_NUMBER_REWRITES: tuple[tuple[str, str], ...] = (
+    ("{q} words contain ", "{q} word{s} contain{v} "),
+    ("{q} words", "{q} word{s}"),
+    ("{q} comma characters", "{q} comma character{s}"),
+    ("{q} commas", "{q} comma{s}"),
+    ("{q} upper-case English letters", "{q} upper-case English letter{s}"),
+)
+
+
+def _number_aware(templates: tuple[str, ...]) -> tuple[str, ...]:
+    out = []
+    for template in templates:
+        aware = template
+        for plural, placeholder in _NUMBER_REWRITES:
+            aware = aware.replace(plural, placeholder)
+        for q in (0, 2, 3, 12):
+            if aware.format(q=q, **number_fields(q)) != template.format(q=q):
+                raise ProtocolError(
+                    f"the number-aware form of {template!r} does not render "
+                    f"v4's text at q={q}; the carry-over is refused")
+        out.append(aware)
+    return tuple(out)
 
 #: §7.3 and §7.4, verbatim. The definition of each family's rule; not a
 #: wording. Sourced from the registered ``Family.rule`` so the two cannot
@@ -126,8 +195,8 @@ _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
         "Limit words with doubled letters to {q} percent.",
     ),
     "CR5": (
-        "Use at most {q} commas per hundred words.",
-        "At most {q} commas per hundred words.",
+        "Use at most {q} comma{s} per hundred words.",
+        "At most {q} comma{s} per hundred words.",
         "Keep commas to {q} per hundred words.",
         "Limit commas to {q} per hundred words.",
     ),
@@ -150,16 +219,16 @@ _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
         "Limit words ending with y to {q} percent.",
     ),
     "CL7": (
-        "At least {q} words must contain letter a.",
-        "Include at least {q} words with letter a.",
+        "At least {q} word{s} must contain letter a.",
+        "Include at least {q} word{s} with letter a.",
         "Use {q} or more words containing letter a.",
-        "Your answer needs {q} words with letter a.",
+        "Your answer needs {q} word{s} with letter a.",
     ),
     "CL8": (
-        "At least {q} words must end with y.",
-        "Include at least {q} words ending with y.",
+        "At least {q} word{s} must end with y.",
+        "Include at least {q} word{s} ending with y.",
         "Use {q} or more words ending with y.",
-        "Your answer needs {q} words ending with y.",
+        "Your answer needs {q} word{s} ending with y.",
     ),
     # CP4 and CP7 stood here in v4r3. Their third and fourth wordings state
     # the severity as a target and name no bound, which does not pin down the
@@ -171,28 +240,28 @@ _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     # cannot explain a difficulty difference when the wording is the same
     # sentence with one letter changed.
     "RF9": (
-        "At most {q} words may begin with t.",
-        "Use at most {q} words beginning with t.",
-        "No more than {q} words may start with t.",
+        "At most {q} word{s} may begin with t.",
+        "Use at most {q} word{s} beginning with t.",
+        "No more than {q} word{s} may start with t.",
         "Limit words beginning with t to {q}.",
     ),
     "RF10": (
-        "At most {q} words may end with s.",
-        "Use at most {q} words ending with s.",
-        "No more than {q} words may end in s.",
+        "At most {q} word{s} may end with s.",
+        "Use at most {q} word{s} ending with s.",
+        "No more than {q} word{s} may end in s.",
         "Limit words ending with s to {q}.",
     ),
     "RF11": (
         "Words beginning with vowels: at most {q}.",
-        "At most {q} words may begin with vowels.",
-        "No more than {q} words may start with vowels.",
+        "At most {q} word{s} may begin with vowels.",
+        "No more than {q} word{s} may start with vowels.",
         "Limit words beginning with vowels to {q}.",
     ),
     "RF12": (
-        "Your answer may use at most {q} sentences.",
-        "Your answer must have at most {q} sentences.",
-        "No more than {q} sentences may appear.",
-        "Do not write more than {q} sentences.",
+        "Your answer may use at most {q} sentence{s}.",
+        "Your answer must have at most {q} sentence{s}.",
+        "No more than {q} sentence{s} may appear.",
+        "Do not write more than {q} sentence{s}.",
     ),
     "CR9": (
         "Words beginning with t: at most {q} percent.",
@@ -213,8 +282,8 @@ _NEW_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
         "Limit words beginning with vowels to {q} percent.",
     ),
     "CR12": (
-        "Use at most {q} sentences per hundred words.",
-        "At most {q} sentences per hundred words.",
+        "Use at most {q} sentence{s} per hundred words.",
+        "At most {q} sentence{s} per hundred words.",
         "Keep sentences to {q} per hundred words.",
         "Limit sentences to {q} per hundred words.",
     ),
@@ -252,27 +321,27 @@ _TIER1_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     for kind in FAMILIES if FAMILIES[kind].structural_tier == 1
 }
 
-#: §7.10's Tier-2 families. XC1 carries v4r4's CX2 templates byte-identically;
-#: XC2 and XC3 are authored in the same lexical vocabulary and to the same
-#: caliper against A.
+#: §7.10's Tier-2 families. XC1 carries v4r4's CX2 templates, byte-identical
+#: at every severity but q = 1; XC2 and XC3 are authored in the same lexical
+#: vocabulary and to the same caliper against A.
 _TIER2_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     "XC1": (
-        "Your answer must use exactly {q} semicolons.",
-        "Use exactly {q} semicolon characters in your answer.",
-        "Exactly {q} semicolons must appear in your answer.",
-        "Include exactly {q} semicolon characters in your answer.",
+        "Your answer must use exactly {q} semicolon{s}.",
+        "Use exactly {q} semicolon character{s} in your answer.",
+        "Exactly {q} semicolon{s} must appear in your answer.",
+        "Include exactly {q} semicolon character{s} in your answer.",
     ),
     "XC2": (
-        "Your answer must use exactly {q} commas.",
-        "Use exactly {q} comma characters in your answer.",
-        "Exactly {q} commas must appear in your answer.",
-        "Include exactly {q} comma characters in your answer.",
+        "Your answer must use exactly {q} comma{s}.",
+        "Use exactly {q} comma character{s} in your answer.",
+        "Exactly {q} comma{s} must appear in your answer.",
+        "Include exactly {q} comma character{s} in your answer.",
     ),
     "XC3": (
-        "Your answer must have exactly {q} sentences.",
-        "Use exactly {q} sentences in your whole answer.",
-        "Exactly {q} sentences must appear in your answer.",
-        "Include exactly {q} sentences in your whole answer.",
+        "Your answer must have exactly {q} sentence{s}.",
+        "Use exactly {q} sentence{s} in your whole answer.",
+        "Exactly {q} sentence{s} must appear in your answer.",
+        "Include exactly {q} sentence{s} in your whole answer.",
     ),
 }
 
@@ -285,16 +354,16 @@ _TIER2_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
 #: the ones §13.14 audits, which is the one thing the stage cannot afford.
 _PROBE_ONLY_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
     "PS1": (
-        "Use exactly {q} capitalised words in your answer.",
-        "Exactly {q} capitalised words must appear in your answer.",
-        "Your answer must use exactly {q} capitalised words.",
-        "Include exactly {q} capitalised words in your whole answer.",
+        "Use exactly {q} capitalised word{s} in your answer.",
+        "Exactly {q} capitalised word{s} must appear in your answer.",
+        "Your answer must use exactly {q} capitalised word{s}.",
+        "Include exactly {q} capitalised word{s} in your whole answer.",
     ),
     "PS2": (
-        "Use at least {q} semicolons in your answer.",
-        "At least {q} semicolons must appear in your answer.",
-        "Your answer must use at least {q} semicolons.",
-        "Include at least {q} semicolon characters in your answer.",
+        "Use at least {q} semicolon{s} in your answer.",
+        "At least {q} semicolon{s} must appear in your answer.",
+        "Your answer must use at least {q} semicolon{s}.",
+        "Include at least {q} semicolon character{s} in your answer.",
     ),
     "PS3": (
         "Words ending with y: {q} percent at least.",
@@ -306,7 +375,8 @@ _PROBE_ONLY_TEMPLATES: dict[str, tuple[str, str, str, str]] = {
 
 
 _TEMPLATES: dict[str, tuple[str, str, str, str]] = {
-    **{k: v for k, v in _V4_FAMILY_TEMPLATES.items() if k in FAMILIES},
+    **{k: _number_aware(v) for k, v in _V4_FAMILY_TEMPLATES.items()
+       if k in FAMILIES},
     **{k: v for k, v in _NEW_TEMPLATES.items() if k in FAMILIES},
     **_TIER1_TEMPLATES,
     **_TIER2_TEMPLATES,
@@ -322,7 +392,7 @@ def family_wordings(family: str, q: int) -> tuple[str, str, str, str]:
     if q not in declared_range(family):
         raise ProtocolError(f"severity q={q} outside the declared range of "
                             f"{family}")
-    return tuple(t.format(q=q, s="" if q == 1 else "s")
+    return tuple(t.format(q=q, **number_fields(q))
                  for t in _TEMPLATES[family])
 
 
@@ -443,11 +513,11 @@ _REQUIRED_TOKENS: dict[str, tuple[tuple[str, ...], ...]] = {
     "RF9": (("t",), ("begin", "beginning", "start")),
     "RF10": (("s",), ("end", "ending")),
     "RF11": (("vowels",), ("begin", "beginning", "start")),
-    "RF12": (("sentences",),),
+    "RF12": (("sentences", "sentence"),),
     "CR9": (("t",), ("begin", "beginning"), ("percent",)),
     "CR10": (("s",), ("end", "ending"), ("percent",)),
     "CR11": (("vowels",), ("begin", "beginning"), ("percent",)),
-    "CR12": (("sentences",), ("hundred",), ("words",)),
+    "CR12": (("sentences", "sentence"), ("hundred",), ("words",)),
     **{kind: ((MARKER_WORDS[FAMILIES[kind].statistic_id],), ("exactly",))
        for kind in FAMILIES if FAMILIES[kind].structural_tier == 1},
     "XC1": (("semicolons", "semicolon"), ("exactly",)),
@@ -507,11 +577,133 @@ def assert_caliper_feasible() -> dict[str, list[int]]:
     return feasible
 
 
-def assert_rf_wordings_are_carried() -> None:
-    """§10.2 carry-over: the eight RF wordings are v4r2's, byte for byte."""
+def _differs_only_in_number(carried: str, rendered: str) -> bool:
+    """Token by token, every difference is a plural ending: the carried
+    token is the rendered one plus ``s`` (words/word, commas/comma,
+    characters/character, letters/letter) or the rendered token is the
+    carried one plus ``s`` (contain/contains). Nothing else may differ."""
+    a = [t.strip(".,:;") for t in carried.split()]
+    b = [t.strip(".,:;") for t in rendered.split()]
+    if len(a) != len(b):
+        return False
+    return all(x == y or x == y + "s" or y == x + "s" for x, y in zip(a, b))
+
+
+#: Tokens that end the noun phrase a numeral governs, for the grammatical-
+#: number check: modals, prepositions and the words that follow a phrase.
+_NUMBER_PHRASE_STOPS = frozenset((
+    "may", "must", "will", "can", "of", "per", "percent", "or", "and", "in",
+    "to", "with", "at", "is", "are", "containing", "beginning", "ending",
+))
+#: Verbs a noun phrase governs without a modal, in their plural (bare) and
+#: singular forms. After ``1 word`` the singular form is required; after
+#: ``2 words`` the bare form. Either ends the noun phrase.
+_NUMBER_BARE_VERBS = frozenset((
+    "contain", "have", "begin", "end", "start", "appear", "use",
+))
+_NUMBER_SINGULAR_VERBS = frozenset((
+    "contains", "has", "begins", "ends", "starts", "appears", "uses",
+))
+
+
+def _number_phrase(tokens: list[str], start: int) -> tuple[list[str], str]:
+    """The noun phrase after a numeral and the token that follows it."""
+    phrase: list[str] = []
+    for token in tokens[start:]:
+        if token in _NUMBER_PHRASE_STOPS or token in _NUMBER_BARE_VERBS \
+                or token in _NUMBER_SINGULAR_VERBS:
+            return phrase, token
+        phrase.append(token)
+    return phrase, ""
+
+
+def grammatical_number_defects(text: str, q: int) -> list[str]:
+    """Every place a rendered wording pairs a numeral with the wrong number.
+
+    Mechanical rather than linguistic: after the numeral ``q`` the noun phrase
+    up to the next modal, preposition or bare verb must end in ``s`` exactly
+    when ``q != 1`` (*1 word*, *0 words*, *2 words*; *percent* is invariant),
+    and a bare verb that follows it must carry ``s`` exactly when ``q == 1``
+    (*1 word contains*, *2 words contain*). *1 or more words* stops at
+    *or* and is plural, as it should be.
+    """
+    defects: list[str] = []
+    tokens = [t.strip(".,:;") for t in text.lower().split()]
+    for index, token in enumerate(tokens):
+        if token != str(q):
+            continue
+        phrase, following = _number_phrase(tokens, index + 1)
+        if not phrase:
+            continue
+        head = phrase[-1]
+        if head in ("percent",):
+            continue
+        if q == 1 and head.endswith("s"):
+            defects.append(f"'1 {' '.join(phrase)}': plural noun after 1")
+        if q != 1 and not head.endswith("s"):
+            defects.append(f"'{q} {' '.join(phrase)}': singular noun after "
+                           f"{q}")
+        if following in _NUMBER_BARE_VERBS and q == 1:
+            defects.append(f"'1 {' '.join(phrase)} {following}': bare verb "
+                           "after a singular noun")
+        if following in _NUMBER_SINGULAR_VERBS and q != 1:
+            defects.append(f"'{q} {' '.join(phrase)} {following}': singular "
+                           "verb after a plural noun")
+    return defects
+
+
+def assert_grammatical_number() -> dict[str, int]:
+    """Every wording of every registered constraint, at every severity of
+    its declared range (B: the grid and its extension), pairs its numeral
+    with the right grammatical number. Returns the count of renderings
+    checked per kind."""
+    checked: dict[str, int] = {}
+    kinds = [("A", TARGET_GRID), ("B", focal_severities(extended=True))] + \
+        [(family, declared_range(family)) for family in FAMILIES]
+    for kind, severities in kinds:
+        for q in severities:
+            for index, text in enumerate(wordings(kind, q)):
+                defects = grammatical_number_defects(text, q)
+                if defects:
+                    raise ProtocolError(
+                        f"{kind} wording {index} at q={q} renders "
+                        f"{text!r}: {defects}")
+                checked[kind] = checked.get(kind, 0) + 1
+    return checked
+
+
+def assert_rf_wordings_are_carried() -> dict[str, list[dict[str, Any]]]:
+    """§10.2 carry-over: the eight RF wordings are v4r2's.
+
+    Byte for byte at every severity but ``q = 1``, where v4r2's template
+    rendered a plural noun after the numeral and this revision renders the
+    singular (2026-08-29, prospective). Both halves are measured: every
+    rendering at ``q != 1`` must equal v4r2's exactly, and at ``q = 1`` the
+    two may differ only in grammatical number, token by token. Returns the
+    ``q = 1`` differences so a record can show them rather than summarise.
+    """
+    differences: dict[str, list[dict[str, Any]]] = {}
     for family, templates in _V4_FAMILY_TEMPLATES.items():
-        if _TEMPLATES[family] != templates:
-            raise ProtocolError(f"{family}'s wordings are not v4r2's")
+        if family not in FAMILIES:
+            continue
+        for q in declared_range(family):
+            carried = tuple(t.format(q=q) for t in templates)
+            rendered = family_wordings(family, q)
+            if q != 1:
+                if rendered != carried:
+                    raise ProtocolError(
+                        f"{family}'s wordings at q={q} are not v4r2's")
+                continue
+            for index, (old, new) in enumerate(zip(carried, rendered)):
+                if old == new:
+                    continue
+                if not _differs_only_in_number(old, new):
+                    raise ProtocolError(
+                        f"{family} wording {index} at q=1 differs from v4r2's "
+                        f"in more than grammatical number: {old!r} vs {new!r}")
+                differences.setdefault(family, []).append(
+                    {"index": index, "v4r2": old, "rendered": new})
+    return differences
 
 
 def wording_source_hash() -> str:
