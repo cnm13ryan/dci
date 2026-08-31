@@ -257,6 +257,21 @@ relaxation of `V_stab`, which is unchanged in every clause. Not a claim
 that it will work: whether 96 independent topics in each split let the
 registered rules admit what 48 could not is what the next pilot measures.
 
+**What it bought, measured** (`V8_PILOT.md` §7g, root `dci1v8-pilot-r9`,
+2026-08-31). Median per-frame SE(ι) fell 0.0356 → 0.0252, again the √2 the
+design predicts, and coordinates inside the unchanged 0.05 floor went from
+92 % to 98 %. **All four frames moved to `LOCAL_AND_SPECTRUM`** from
+LOCAL_ONLY, NEITHER, SPECTRUM_ONLY and LOCAL_ONLY: spectrum coverage is
+identified on 4 of 4 against 1 of 4, spectrum-valid points below A rose from
+1–5 to 19–24, the projected SE(β) fell to 0.025–0.027 against the 0.05
+floor on every frame, and `REFERENCE_SURVIVAL` passes on frames 0 and 3.
+The spectrum arm's `V_stab` pass count roughly quadrupled (10–13 → 39–44),
+which is what this section predicted from the split-level `V_coord` reading;
+the LOCAL arm's rose far less (3–7 → 6–11), which is what it predicted
+from the sole-blocker count. Frames 1 and 2 remain a family short of §13.15
+and are still read `PRECISION_LIMITED` — and **there is now no further
+allocation to spend**. See §10 item 1b.
+
 ## 4c. What the LOCAL failures on a high-ι_A frame are
 
 r8's other two LOCAL gaps — `qwen3-4b-instruct-2507` f0 at ι_A = 0.844 and
@@ -409,6 +424,17 @@ report and cannot freeze.
    the projection lacked: §13.7 condition 1 evaluates `V_coord` on each
    *split*, at half the frame's topics, and 221 of 332 of `qwen3-4b`'s
    split-level `V_coord` refusals were the SE clause alone.
+1b. **What to do about a frame that is still `PRECISION_LIMITED` at the
+   ceiling.** r9 left `qwen3-4b` f1 and f2 with four LOCAL-valid families
+   against §13.15's five and one backup against two, on 192 topics per frame
+   — every calibration topic the bank holds. The bottleneck is still read as
+   precision (with it free, f1 would have six families and f2 five), so the
+   remaining levers are outside the allocation: more draws per topic would
+   not help (every estimator averages draws within a topic first), and the
+   options that would are a larger topic bank, a wider reference pool, or
+   accepting two of the four frames as LOCAL-unsupported while f0 and f3
+   carry the arm. A researcher decision, and the first one the allocation
+   cannot answer.
 3a. **The two high-ι_A frames** (`qwen3-4b-instruct-2507` f0 at 0.844,
    `gemma-3n-e2b-it` f2 at 0.794). §4c measures why LOCAL fails there:
    `V_head`'s Wilson band and §13.8's caliper stop overlapping as ι_A

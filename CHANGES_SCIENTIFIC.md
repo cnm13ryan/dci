@@ -78,6 +78,19 @@ realised per-frame and per-split topic counts asserted on the generated
 rows — and the signed manifest binds every model's allocation, so which
 design produced a number is recoverable from the number's own record.
 
+**Measured** (`dci1v8-pilot-r9`, 2026-08-31, all nine pre-freeze stages
+`PASS`, no freeze, no composed cell, 266,424 generations, Gate-2 rows equal
+to the design exactly). Median per-frame SE(ι) 0.0356 → 0.0252 (the √2), and
+all four `qwen3-4b` frames moved to `LOCAL_AND_SPECTRUM` from LOCAL_ONLY,
+NEITHER, SPECTRUM_ONLY and LOCAL_ONLY. Spectrum coverage identified on 4/4
+against 1/4; spectrum-valid points below A 1--5 → 19--24; projected SE(β)
+0.032--0.074 → 0.025--0.027 against an unchanged 0.05 floor;
+`REFERENCE_SURVIVAL` passes on frames 0 and 3. The spectrum arm's `V_stab`
+pass count roughly quadrupled and the LOCAL arm's did not, exactly as the
+split-level reading predicted. Frames 1 and 2 hold four LOCAL-valid families
+against §13.15's five; they are still read `PRECISION_LIMITED`, and no
+further allocation exists.
+
 **Where enforced.** `rules._assert_offsets` at import, on the default and
 on every table entry; `calibration.calibration_blocks` bases pass *p* at an
 index congruent to `offset_p` and past every earlier pass, preserving
