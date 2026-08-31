@@ -18,9 +18,12 @@ The specification, transcribed:
   tests use the lower-cased word; comma counts and upper-case-letter counts read
   raw characters of the response, not words. W is the number of words.
 
-  A ("use the word *however* exactly n times"): lower-case the whole response,
-  take maximal alphabetic runs, count the runs equal to "however"; pass iff that
-  count is exactly n. B ("every word must have at most m letters"): the statistic
+  A ("use the word *however* exactly n times"): take the maximal alphabetic
+  runs of the response, lower-case each, count the runs equal to "however";
+  pass iff that count is exactly n. This is the same word rule as every
+  marker family's --- one counting function, nine target strings --- and it
+  is the order in force since 2026-08-29; before that A lower-cased the whole
+  response and segmented after, which differs on U+0130 alone. B ("every word must have at most m letters"): the statistic
   is the letter count of the longest word, 0 for a response with no words; pass
   iff it is at most m.
 
@@ -122,8 +125,8 @@ def words(text: str) -> list[str]:
 
 
 def lower_words(text: str) -> list[str]:
-    """Words folded for the suffix and letter tests. The fold happens *after*
-    segmentation here, because the prose folds "the word"; s0 folds first."""
+    """Words folded for the suffix, letter and marker tests. The fold happens
+    *after* segmentation, because the prose folds "the word"."""
     return [word.lower() for word in _runs(text)]
 
 
@@ -135,12 +138,14 @@ def word_count(text: str) -> int:
 
 
 def s0(text: str) -> int:
-    """Primary rule: fold the whole response, then segment and match.
+    """Primary rule: segment, fold each word, count the words equal to the
+    target -- the same word rule the marker families use.
 
-    Folding before segmenting is what the prose says and is not quite the same as
-    folding each word -- 'İ'.lower() introduces a combining mark (category Mn)
-    that splits a run -- so the prose is followed literally."""
-    return _runs(text.lower()).count(TARGET)
+    Folding each word is not quite the same as folding the whole response
+    first: 'İ'.lower() introduces a combining mark (category Mn) that splits a
+    run under the other order. The prose registers the per-word fold, so it is
+    followed literally."""
+    return lower_words(text).count(TARGET)
 
 
 def s1(text: str) -> int:

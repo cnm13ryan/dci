@@ -1,4 +1,5 @@
-"""§10.2 and §30's carry-over record: what v5 inherits, and how it is measured.
+"""§10.2 and §30's carry-over record: what v7 inherits from v4r4 through v5
+and v6, and how it is measured.
 
 The carry-over rule is strict on purpose. A carried instrument may supply
 carried evidence **only** when its construct string, segmentation function
@@ -27,7 +28,8 @@ code, and ``carry_over_record`` records a finding for each.
 | Source | Standing |
 |---|---|
 | ``alpha_runs`` | carried, byte-identical through ``dci1v4`` to v3 |
-| ``s0_count`` and A's alternatives | carried, byte-identical |
+| ``s0_count`` | **not carried since 2026-08-29**: A's counter is ``statistics.marker_count`` with A's word (§9.2's segment-then-fold order), one function with the eight marker counters; ``dci1v4``'s fold-first ``s0_count`` scored every earlier revision and stays untouched there |
+| A's alternatives ``s1_count``, ``s2_count`` | carried, byte-identical (robustness readings, never X_A) |
 | the construct string ``however`` | carried |
 | ``words_lower``, ``sentence_units`` | carried from v4r4, which corrected the composition order |
 | the fourteen non-marker numerators | carried from v4r4 |
@@ -87,6 +89,12 @@ NOT_CARRIED["XC2:form"] = ("the `comma` numerator is carried; the exact-count "
                            "predicate over it is new")
 NOT_CARRIED["XC3:form"] = ("the `sentence` numerator is carried; the "
                            "exact-count predicate over it is new")
+NOT_CARRIED["A:counter"] = (
+    "A's counter is not v4's `s0_count` since 2026-08-29: it is "
+    "`statistics.marker_count(text, 'however')`, §9.2's segment-then-fold "
+    "order shared with MK1-MK8. The two orders differ on U+0130 alone and "
+    "agree on every frozen case and every stored row "
+    "(tools/v7_marker_counter_rescore_audit.py)")
 
 
 def symbol_source(path: Path, name: str) -> str:

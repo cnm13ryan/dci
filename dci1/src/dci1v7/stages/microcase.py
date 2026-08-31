@@ -54,7 +54,7 @@ from typing import Any, Callable, Sequence
 
 from dci1v4.errors import ProtocolError
 from dci1v4.protocol.hashing import canonical_json, sha_text
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import s0_count
 from dci1v4.verifiers.words import alpha_runs as _v4_alpha_runs
 
 from dci1v7.protocol.wordings import N_WORDINGS, wording

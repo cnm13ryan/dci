@@ -36,7 +36,7 @@ from __future__ import annotations
 from typing import Any, Iterable
 
 from dci1v4.errors import InstrumentError
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import s0_count
 
 from dci1v7.verifiers.compliance import passes
 from dci1v7.verifiers.constraints import (
