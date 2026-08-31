@@ -95,6 +95,19 @@ class StudyContext:
             raise ProtocolError(
                 f"namespace {self.namespace!r} requires study_id "
                 f"{expected!r}, got {self.study_id!r}")
+        for root in (Path(self.evidence_root), Path(self.durable_root)):
+            # A path that *names* another study is refused whether or not that
+            # tree happens to be on this disk. `foreign_roots()` can only list
+            # what exists, and `evidence/` is gitignored -- so in a fresh clone,
+            # or any secondary worktree, the overlap test below saw no
+            # evidence-side foreign root and this guard silently did nothing.
+            # The danger is the path's identity, not its current presence.
+            name = root.name
+            if any(name.startswith(p) for p in FOREIGN_STUDY_PREFIXES):
+                raise ProtocolError(
+                    f"the v5 study root {root} is named for the historical "
+                    f"study {name!r}; v5 never writes into another study's "
+                    "tree and never adopts one as its own")
         for root in (Path(self.evidence_root) / EVIDENCE_DIRNAME,
                      Path(self.durable_root) / EVIDENCE_DIRNAME):
             resolved = root.resolve()
