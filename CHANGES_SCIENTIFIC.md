@@ -13,6 +13,53 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-30 — consequence of the zero chance column, measured: the broad-class control was not difficulty-matched, and on one model would have failed V_head
+
+**Not a change; a measurement of what an already-recorded defect did.** The
+2026-08-29 entry below records that `run/gates_run._calibration_rows` wrote
+`chance_compliance = 0.0` for every candidate on every v5/v6/v7 replication, so
+admission used raw solo compliance as ι(R) while ι_A stayed chance-corrected.
+That entry stated the consequences in principle. `dci1/tools/v7_dossier.py`
+now measures them on the six completed v7 development-rehearsal lanes, by
+recomputing κ_c and ι_c on the **confirmatory unconstrained cells** — the cells
+§13.2 defines κ_c on — from the signed masked rows plus the mask key
+(`dci1/reports/dci1v7/dossier/posthoc_confirmatory_difficulty.csv`).
+
+**The three core references are unaffected.** Every Tier-1 marker family has
+κ_c = 0.000 on the confirmatory blocks on every lane, so ι(R) = raw solo
+compliance *is* the correct value there, and the realised |ι_{R_j} − ι_A| runs
+0.004–0.090 — inside §13.8's 0.15 realised-gap qualifier for every reference of
+every lane. Δ_R's matching is sound and no Δ_R number is qualified by this.
+
+**The broad-class control is affected on all three lanes that ran the class
+arm.** `CL` is `RF12`, a sentence budget, whose chance compliance is large:
+
+| lane | CL | κ recorded | κ confirmatory | ι used for admission | ι confirmatory | \|ι−ι_A\| conf. | lift conf. |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `-r3` / `gemma-3n-e2b-it` | `RF12:6` | 0.000 | 0.349 | 0.583 | 0.400 | 0.217 | +0.260 |
+| `-r5` / `gemma-3n-e2b-it` | `RF12:6` | 0.000 | 0.350 | 0.592 | 0.406 | 0.213 | +0.264 |
+| `-r4` / `gemma-3n-e4b-it` | `RF12:7` | 0.000 | 0.807 | 0.781 | −0.093 | 0.816 | −0.018 |
+
+§13.10's matching caliper is 0.15, so all three lanes would have recorded
+`CLASS_ARM_NOT_MATCHED`; none did. On `gemma-3n-e4b-it` the companion's solo
+compliance (0.789) is *below* its own chance rate (0.807) — instruction lift
+−0.018 against §13.4's `V_head` floor of +0.20, so under a correct chance
+column that severity would have been rejected before selection and the class
+arm would have been dropped or filled differently.
+
+**What is affected.** `Δ_broad`, `D(B←CL)` and `Ord_CL` on the three class-arm
+development lanes may be read only as what §13.10 registers them as — a bound
+from one companion, carrying `COMPANION_CLASS_NOT_MATCHED` — **and** with the
+difficulty mismatch stated. They may not be presented as a difficulty-matched
+same-form-versus-broad-class contrast. `Δ_R`, `Δ_j`, `D(B←A)`, `D(A←B)`, `Λ`,
+`Ξ` and the F11 order contrasts are unaffected.
+
+**Comparability.** Nothing here changes a threshold, an estimand, a verifier or
+an admission rule, and no record is rewritten: the fix for the chance column
+remains on `wip/v7-cpu-pools` and out of force, and the four registered v7
+terminal reports are untouched. The development lanes stay development evidence
+and are never pooled with registered rows.
+
 ## 2026-08-29 — the final report's status trace compares with what Gate 5 binds (Gate 2 ∪ Gate 3C)
 
 **What changed.** `run/final_report_checks` required the reported
