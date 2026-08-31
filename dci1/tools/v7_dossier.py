@@ -361,8 +361,15 @@ def build() -> dict:
                     "solo_compliance": val,
                     "chance_compliance": g2["chance_curves"][kind].get(sev),
                     "load_zero_chance_compliance": g2["load_zero_chance_curves"][kind].get(sev),
-                    "kappa_under_b": (g2["kappa_under_b_by_severity"].get(sev) is not None
-                                      if kind == "B" else None),
+                    # Availability, not a value, and named for what it is.
+                    # kappa(R|B) is per *candidate* --- the record nests it
+                    # severity -> split -> candidate --- so this row, which is
+                    # one (constraint, severity) of a curve, has no single
+                    # kappa to carry. The numbers are in
+                    # reference_candidates.csv, one per candidate.
+                    "kappa_under_b_measured":
+                        (g2["kappa_under_b_by_severity"].get(sev) is not None
+                         if kind == "B" else None),
                     "band_lower": band[0], "band_upper": band[1], "aim": aim,
                     "eligible": q in s["eligible"],
                     "selected": q == s["selected"],
@@ -893,7 +900,13 @@ def main() -> None:
         print(f"  block_contrasts.csv.gz                {len(contrast_rows):6d} rows")
 
     figure_views(out, t)
-    print(f"\nwrote {out.relative_to(REPO)}")
+    # `--out` is a user-supplied path and need not sit under the repository
+    # (nor be absolute), so report it relatively only when it actually is.
+    try:
+        shown = out.resolve().relative_to(REPO)
+    except ValueError:
+        shown = out
+    print(f"\nwrote {shown}")
 
 
 if __name__ == "__main__":
