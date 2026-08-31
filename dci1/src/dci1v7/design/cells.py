@@ -92,7 +92,7 @@ def normalise_arms(arms: Iterable[str]) -> tuple[str, ...]:
 #: The near-form arm is **scientifically essential** under §34 D18's closure:
 #: without it no replication can emit the strong L3c conclusion, so the option
 #: that drops it is the option that gives up the study's refutation verdict.
-#: `reports/dci1v7/d1_arm_compute_decision.md` derives the cost of each.
+#: `reports/dci1v5/d1_arm_compute_decision.md` derives the cost of each.
 D1_ARM_SETS: dict[str, tuple[str, ...]] = {
     "four_models_56_cells": C.ARMS,
     # 47 = 56 - the 9 near-form cells. This is the option R1 names.
