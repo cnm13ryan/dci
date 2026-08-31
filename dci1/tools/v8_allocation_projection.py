@@ -31,7 +31,7 @@ measurement. Every number it prints is a projection and is labelled one.
     python3 tools/v8_allocation_projection.py --root <pilot root> --model <key>
 
 Reads the signed Gate-2 and Gate-3 records only, writes
-`reports/dci1v8dev/allocation_projection.<model>.{md,json}`. No composed outcome is
+`reports/dci1v8dev/allocation_projection.<root>.<model>.{md,json}`. No composed outcome is
 read, no frame is chosen, nothing is frozen.
 """
 from __future__ import annotations
@@ -284,15 +284,19 @@ def main(argv: Sequence[str] | None = None) -> int:
     ap.add_argument("--resamples", type=int, default=2000)
     ap.add_argument("--out", default=None)
     args = ap.parse_args(argv)
-    context = (pilot_context if args.namespace == "pilot" else synthetic_context)(
-        pathlib.Path(args.root).resolve())
+    root = pathlib.Path(args.root).resolve()
+    context = (pilot_context if args.namespace == "pilot"
+               else synthetic_context)(root)
     tree = model_tree(context, args.model)
     gate2 = transitions.read_stage_record(tree, S.STAGE_GATE2)
     gate3 = transitions.read_stage_record(tree, S.STAGE_GATE3)
     rep = project(tree, gate2, gate3, factors=args.factors,
                   resamples=args.resamples)
+    # named by root as well as model: a later allocation's projection must
+    # not overwrite an earlier one's, and the file name should say which run
+    # it was computed from.
     out = (pathlib.Path(args.out) if args.out else
-           REPORTS / f"allocation_projection.{args.model}.md")
+           REPORTS / f"allocation_projection.{root.name}.{args.model}.md")
     machine = out.with_suffix(".json")
     out.write_text(render(rep))
     machine.write_text(json.dumps(rep, indent=1, sort_keys=True, default=str) + "\n")
