@@ -337,10 +337,21 @@ rungs, and RESEARCH_STATE §4an already records that tension for v8.
   secondary fit on raw solo compliance; where a family contributes only one side,
   the same form with the fourth-family point and a stated intercept convention
   (reported, not licensed).
-- **Precision**: D(B←X) has SE ≈ 0.013 per configuration at 384 blocks; with
-  nine points whose ι spread has sd ≈ 0.12–0.16, SE(β) ≈ 0.03 per unit ι. A
-  slope of 0.25 (one SESOI of loss across a 0.40 difficulty span) would be ≈ 8
-  SE; β = 0.10 would be ≈ 3 SE.
+- **Precision** (corrected 2026-08-31; the first version of this bullet
+  overstated it). D(B←X) has SE ≈ 0.013 per configuration at 384 blocks. The
+  fit above carries **family intercepts**, so β is identified by the
+  *within-family* deviations alone --- Σ_f Σ_s (d_fs − d̄_f)² --- and not by
+  the overall ι spread. Reading the precision off the overall spread
+  (sd ≈ 0.12–0.16 over the nine points) gave SE(β) ≈ 0.03; the within-family
+  denominator gives roughly **0.042–0.047** on the two lanes checked
+  (dev qwen3-4b, r3 gemma-e2b). A slope of 0.25 is therefore ≈ 5–6 SE rather
+  than ≈ 8, and β = 0.10 ≈ 2 SE rather than 3.
+
+  Both figures are closed-form idealisations that hold every point's
+  difficulty fixed. **The binding number is neither**: §17.2's block
+  bootstrap refits the model on each replicate and re-estimates ι as well as
+  β, so the realised SE(β) is wider again. Any decision to run this follow-up
+  should be powered on that bootstrap, not on either arithmetic above.
 - **What it would newly allow**: an estimate of β (does difficulty predict
   delivery loss at all, within same-form marker constraints?) and of δ_diff =
   D(B←A) − Ŷ_A with §13.13's support satisfied — i.e. statement 6, "A has an
