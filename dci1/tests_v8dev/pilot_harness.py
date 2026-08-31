@@ -162,10 +162,15 @@ def walk(root: Path, *, topic_limit: int = 96, resamples: int = 200,
          families: Sequence[str] = SCREEN_FAMILIES,
          stop_after: str | None = None,
          repo_root: Path | None = None,
+         model_key: str = MODEL_KEY,
          generate=None) -> dict[str, Any]:
     """Every stage in order through the production runners. ``generate``
     defaults to the frame-blind scripted composer; ``frame_effect_generate``
-    gives one with a frame effect."""
+    gives one with a frame effect. ``model_key`` selects the replication,
+    and therefore its calibration allocation
+    (``rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL``): the default model runs
+    the two-pass design and ``qwen3-4b`` the four-pass one, so both reach
+    the whole nine-stage lifecycle."""
     generate = generate if generate is not None else scripted_generate
     from dci1v4.engine.signing import create_signing_key
     from dci1v8dev.run import (calibration, instrument, qualification,
@@ -178,7 +183,7 @@ def walk(root: Path, *, topic_limit: int = 96, resamples: int = 200,
         from dci1v4.engine import gitinfo
         commit = gitinfo.head_commit(Path(repo_root))
     context = synthetic_context(root, repo_root=repo_root)
-    tree = model_tree(context, MODEL_KEY)
+    tree = model_tree(context, model_key)
     tree.root.mkdir(parents=True, exist_ok=True)
     if not context.signing_key_path.exists():
         create_signing_key(context.signing_key_path)

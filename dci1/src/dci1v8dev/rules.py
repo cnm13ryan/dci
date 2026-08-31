@@ -83,24 +83,96 @@ assert CONFIRMATORY_BLOCKS_PER_FRAME * C.N_WORDINGS == C.N_BLOCKS
 #: still has its own curve, operating point, table, validity and selection.
 #: No threshold moves: this changes how much is measured, not what admits.
 CALIBRATION_FRAME_OFFSETS = (0, 2)
-CALIBRATION_FRAME_PASSES = len(CALIBRATION_FRAME_OFFSETS)
-assert len({o % C.N_WORDINGS for o in CALIBRATION_FRAME_OFFSETS}) == \
-    CALIBRATION_FRAME_PASSES <= C.N_WORDINGS, (
-        "the passes' frame offsets must be distinct modulo N_WORDINGS, or a "
-        "topic would be measured twice under one frame and its two "
-        "measurements counted as two topics")
-#: Derived, not chosen: what one frame's table is measured on, and what one
-#: calibrated rung costs in generations across all frames.
-CALIBRATION_TOPICS_PER_FRAME = (C.N_CALIBRATION * CALIBRATION_FRAME_PASSES
-                                // C.N_WORDINGS)
-CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = (
-    C.N_CALIBRATION_A * CALIBRATION_FRAME_PASSES // C.N_WORDINGS)
-CALIBRATION_GENERATIONS_PER_RUNG = (C.N_CALIBRATION * C.M_CAL
-                                    * CALIBRATION_FRAME_PASSES)
+
+#: **The per-model allocation** (researcher decision of 2026-08-31, after
+#: pilot r8; docs/V8_FRAME_CONDITIONING.md §4a). r8 measured what two passes
+#: bought and what they did not: `SPECTRUM_MAX_SE_IOTA` is satisfied on the
+#: *pooled* per-frame table (median SE(iota) 0.0356 against the 0.05 floor)
+#: but §13.7 evaluates its condition 1 on **each split alone**, at half the
+#: frame's topics, where the same coordinate carries SE(iota) ~ 0.05 --- so
+#: 221 of 332 split-level `V_coord` refusals on `qwen3-4b` were the SE clause
+#: and nothing else (reports/dci1v8dev/vstab.dci1v8-pilot-r8.qwen3-4b.md).
+#: Four passes put every frame on all `N_CALIBRATION` topics, 96 per split,
+#: which is the **ceiling**: the topic bank holds exactly N_CALIBRATION
+#: calibration topics and every other topic set is reserved.
+#:
+#: The override is per model because the researcher approved the further 2x
+#: for `qwen3-4b` alone --- it is the model whose frames r8 left short --- and
+#: because an allocation is a property of a replication's measurement, not of
+#: the admission rules, which are identical under either value. A model
+#: absent from this table runs at `CALIBRATION_FRAME_OFFSETS`, so every
+#: earlier run's meaning is untouched.
+CALIBRATION_FRAME_OFFSETS_BY_MODEL: dict[str, tuple[int, ...]] = {
+    "qwen3-4b": (0, 1, 2, 3),
+}
+
+
+def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
+    """The passes' offsets must be distinct modulo the wordings.
+
+    Two passes at the same offset would measure a topic twice under one
+    frame and the per-topic vector would count the repeat as a second topic,
+    inflating the very denominator every standard error is formed at.
+    """
+    assert offsets, f"{where}: at least one calibration pass"
+    assert len({o % C.N_WORDINGS for o in offsets}) == len(offsets) \
+        <= C.N_WORDINGS, (
+            f"{where}: the passes' frame offsets must be distinct modulo "
+            "N_WORDINGS, or a topic would be measured twice under one frame "
+            "and its two measurements counted as two topics")
+    return tuple(offsets)
+
+
+_assert_offsets(CALIBRATION_FRAME_OFFSETS, "CALIBRATION_FRAME_OFFSETS")
+for _model, _offsets in CALIBRATION_FRAME_OFFSETS_BY_MODEL.items():
+    _assert_offsets(_offsets, f"CALIBRATION_FRAME_OFFSETS_BY_MODEL[{_model!r}]")
+
+
+def calibration_frame_offsets(model_key: str | None = None) -> tuple[int, ...]:
+    """The calibration passes this model runs. The default unless overridden."""
+    if model_key is None:
+        return CALIBRATION_FRAME_OFFSETS
+    return CALIBRATION_FRAME_OFFSETS_BY_MODEL.get(model_key,
+                                                  CALIBRATION_FRAME_OFFSETS)
+
+
+def calibration_passes(model_key: str | None = None) -> int:
+    return len(calibration_frame_offsets(model_key))
+
+
+def calibration_topics_per_frame(model_key: str | None = None) -> int:
+    """Distinct topics one frame's §13.11 table is measured on. Derived."""
+    return C.N_CALIBRATION * calibration_passes(model_key) // C.N_WORDINGS
+
+
+def calibration_topics_per_frame_per_split(model_key: str | None = None) -> int:
+    """Distinct topics one frame carries in each §13.7 split. Derived."""
+    return C.N_CALIBRATION_A * calibration_passes(model_key) // C.N_WORDINGS
+
+
+def calibration_generations_per_rung(model_key: str | None = None) -> int:
+    """What one calibrated rung costs across all frames. Derived."""
+    return C.N_CALIBRATION * C.M_CAL * calibration_passes(model_key)
+
+
+#: The default allocation's derived constants, for the paths that carry no
+#: model in scope (the synthetic walk, the module-level design statements).
+#: A model-scoped path calls the resolver above and never these.
+CALIBRATION_FRAME_PASSES = calibration_passes()
+CALIBRATION_TOPICS_PER_FRAME = calibration_topics_per_frame()
+CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = calibration_topics_per_frame_per_split()
+CALIBRATION_GENERATIONS_PER_RUNG = calibration_generations_per_rung()
 assert CALIBRATION_TOPICS_PER_FRAME * C.N_WORDINGS == \
     C.N_CALIBRATION * CALIBRATION_FRAME_PASSES
 assert CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT * 2 == \
     CALIBRATION_TOPICS_PER_FRAME
+#: The ceiling, stated once: four passes put every frame on every calibration
+#: topic, and a fifth would repeat one inside a frame.
+CALIBRATION_MAX_PASSES = C.N_WORDINGS
+CALIBRATION_MAX_TOPICS_PER_FRAME = C.N_CALIBRATION
+assert calibration_topics_per_frame_per_split("qwen3-4b") * 2 == C.N_CALIBRATION
+for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
+    assert calibration_topics_per_frame(_model) <= CALIBRATION_MAX_TOPICS_PER_FRAME
 
 # ---------------------------------------------------------------- pre-screen
 #: Status thresholds on P(support both sides) and the posterior-majority

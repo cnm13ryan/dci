@@ -205,18 +205,43 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                                     "calibration_topics_per_frame":
                                         R.CALIBRATION_TOPICS_PER_FRAME},
                    "calibration_allocation": {
-                       "frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
+                       "default_frame_offsets":
+                           list(R.CALIBRATION_FRAME_OFFSETS),
                        "topics_per_frame": R.CALIBRATION_TOPICS_PER_FRAME,
                        "topics_per_frame_per_split":
                            R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT,
                        "generations_per_rung":
                            R.CALIBRATION_GENERATIONS_PER_RUNG,
+                       # The allocation is per model: the default above, and
+                       # the overrides the researcher has raised. Bound here
+                       # so the signed manifest states what each model in
+                       # this study will actually be measured at.
+                       "by_model": {
+                           m.model_key: {
+                               "frame_offsets":
+                                   list(R.calibration_frame_offsets(m.model_key)),
+                               "passes": R.calibration_passes(m.model_key),
+                               "topics_per_frame":
+                                   R.calibration_topics_per_frame(m.model_key),
+                               "topics_per_frame_per_split":
+                                   R.calibration_topics_per_frame_per_split(
+                                       m.model_key),
+                               "generations_per_rung":
+                                   R.calibration_generations_per_rung(m.model_key),
+                               "is_default": R.calibration_frame_offsets(
+                                   m.model_key) == R.CALIBRATION_FRAME_OFFSETS,
+                           } for m in MODELS},
+                       "max_passes": R.CALIBRATION_MAX_PASSES,
+                       "max_topics_per_frame": R.CALIBRATION_MAX_TOPICS_PER_FRAME,
                        "rule": "Approach A measures every difficulty inside "
                                "a frame; a calibration pass renders every "
                                "calibration topic under one frame and the "
-                               "passes' offsets are distinct, so each frame "
-                               "is measured on its own half of the topics "
-                               "and no topic recurs within a frame"},
+                               "passes' offsets are distinct modulo the "
+                               "wordings, so each frame is measured on "
+                               "passes/N_WORDINGS of the topics and no topic "
+                               "recurs within a frame. Four passes is the "
+                               "ceiling: every frame then holds every "
+                               "calibration topic"},
                    "completion_caps": list(C.COMPLETION_CAPS),
                    "target_grid": list(C.TARGET_GRID),
                    "focal_grid": list(C.FOCAL_GRID),

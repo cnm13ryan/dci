@@ -27,6 +27,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import pathlib
 
 import pytest
 
@@ -84,7 +85,8 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
              draws: int = C.M_CAL,
              chance: dict[str, float] | None = None,
              outcome_key=None, extra_instances: tuple[str, ...] = (),
-             extension: tuple[str, ...] = ()) -> tuple[list[dict], ...]:
+             extension: tuple[str, ...] = (),
+             offsets: tuple[int, ...] | None = None) -> tuple[list[dict], ...]:
     """Scored rows in the run layer's schema for a two-split calibration,
     laid out over ``rules.CALIBRATION_FRAME_OFFSETS`` calibration passes
     exactly as ``calibration.calibration_blocks`` lays the real ones out:
@@ -110,7 +112,7 @@ def rows_for(rates_by_frame, *, topics_per_split: int = C.N_CALIBRATION_A,
     outcome_key = outcome_key or (lambda f, label, t, d, present: (f, label, t, d, present))
     n_topics_total = 2 * topics_per_split
     cursor = 0
-    for offset in R.CALIBRATION_FRAME_OFFSETS:
+    for offset in (R.CALIBRATION_FRAME_OFFSETS if offsets is None else offsets):
         cursor += (offset - cursor) % C.N_WORDINGS
         base, cursor = cursor, cursor + n_topics_total
         n = 0
@@ -844,3 +846,244 @@ def test_a_world_with_genuine_frame_effects_gives_frame_specific_selections(tmp_
     assert len({json.dumps(v, sort_keys=True) for v in sel.values()}) >= 2, sel
     assert set(rp["criteria"]["REFERENCE_SURVIVAL"]["by_frame"]) == \
         {str(w) for w in g2["supported_frames"]}
+
+
+# ------------------------------------------------------------------------
+# The per-model allocation (rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL,
+# CHANGES_SCIENTIFIC.md 2026-08-31): four passes for qwen3-4b, 192 topics
+# per frame at the topic ceiling, every other model unchanged at two. The
+# tests above pin the default; these pin the override and the ceiling.
+# ------------------------------------------------------------------------
+def _laid_out(model_key):
+    """The blocks Gate 2 would build for this model, by frame."""
+    topics = _real_calibration_topics()
+    built = CAL.calibration_blocks(topics, "g2grid-A", model_key=model_key)
+    by_frame: dict[int, list[str]] = {}
+    for block in built:
+        by_frame.setdefault(block.index % C.N_WORDINGS, []).append(block.topic_id)
+    return built, by_frame
+
+
+def test_qwen3_4b_is_calibrated_on_every_calibration_topic_in_every_frame():
+    """Contract 1 and 4: the model the researcher raised gets all
+    ``N_CALIBRATION`` distinct topics under each of the four frames, and all
+    four frame identities survive."""
+    assert R.calibration_frame_offsets(MODEL) == (0, 1, 2, 3)
+    assert R.calibration_passes(MODEL) == 4
+    built, by_frame = _laid_out(MODEL)
+    assert len(built) == C.N_CALIBRATION * 4
+    assert sorted(by_frame) == list(S.FRAMES)
+    for frame, seen in by_frame.items():
+        assert len(set(seen)) == R.calibration_topics_per_frame(MODEL) \
+            == C.N_CALIBRATION == 192, frame
+    # every topic under every frame: that is what the ceiling means
+    frames_of_topic: dict[str, set[int]] = {}
+    for block in built:
+        frames_of_topic.setdefault(block.topic_id, set()).add(
+            block.index % C.N_WORDINGS)
+    assert len(frames_of_topic) == C.N_CALIBRATION
+    assert all(v == set(S.FRAMES) for v in frames_of_topic.values())
+
+
+def test_qwen3_4b_has_ninety_six_topics_in_each_registered_split_per_frame():
+    """Contract 2 and 3: §13.7's two splits stay balanced at the raised
+    allocation and no topic recurs inside a frame --- if one did, the frame's
+    per-topic vector would count it twice and every standard error formed
+    from it would be wrong."""
+    _built, by_frame = _laid_out(MODEL)
+    for frame, seen in by_frame.items():
+        assert len(seen) == len(set(seen)), f"frame {frame} repeats a topic"
+        a = sum(1 for t in seen if t.startswith("a-"))
+        b = sum(1 for t in seen if t.startswith("b-"))
+        assert a == b == R.calibration_topics_per_frame_per_split(MODEL) \
+            == C.N_CALIBRATION_A == 96, frame
+
+
+def test_the_frame_invariant_holds_across_all_four_passes():
+    """Contract 5's precondition: ``frame == block_index % N_WORDINGS`` still
+    holds on every row of every pass, so ``execute.frame_of_block`` and
+    ``prompt_cell``'s frame assertion keep agreeing at four passes as they do
+    at two, and the block ids stay disjoint."""
+    topics = _real_calibration_topics()
+    built = CAL.calibration_blocks(topics, "g2cand", model_key=MODEL)
+    assert len({b.block_id for b in built}) == len({b.index for b in built}) \
+        == len(built)
+    n = len(topics)
+    for pass_index, offset in enumerate(R.calibration_frame_offsets(MODEL)):
+        chunk = built[pass_index * n:(pass_index + 1) * n]
+        assert len(chunk) == n
+        for position, block in enumerate(chunk):
+            expected = (position + offset) % C.N_WORDINGS
+            assert block.index % C.N_WORDINGS == expected
+            assert frame_of_block({"block_index": block.index}) == expected
+            assert frame_of_block({"block_id": block.block_id}) == expected
+
+
+def test_four_passes_is_the_ceiling_and_a_repeated_offset_is_refused():
+    """192 topics per frame is the bank's whole calibration allocation: a
+    fifth pass would have to repeat an offset, and ``rules`` refuses that
+    because the repeat would be counted as a second topic."""
+    assert R.CALIBRATION_MAX_PASSES == C.N_WORDINGS == 4
+    assert R.CALIBRATION_MAX_TOPICS_PER_FRAME == C.N_CALIBRATION
+    assert R.calibration_topics_per_frame(MODEL) == R.CALIBRATION_MAX_TOPICS_PER_FRAME
+    with pytest.raises(AssertionError, match="distinct modulo"):
+        R._assert_offsets((0, 1, 2, 3, 0), "a fifth pass")
+    with pytest.raises(AssertionError, match="distinct modulo"):
+        R._assert_offsets((0, 4), "the same frame twice")
+
+
+def test_every_other_model_keeps_the_two_pass_allocation():
+    """The override is per model. A model absent from the table runs at the
+    registered default, so r8's meaning --- and any later run of those two
+    models --- is untouched by this amendment."""
+    for other in ("qwen3-4b-instruct-2507", "gemma-3n-e2b-it", "unknown-model"):
+        assert R.calibration_frame_offsets(other) == R.CALIBRATION_FRAME_OFFSETS
+        assert R.calibration_topics_per_frame(other) == 96
+        assert R.calibration_topics_per_frame_per_split(other) == 48
+    assert R.calibration_frame_offsets(None) == R.CALIBRATION_FRAME_OFFSETS
+    # and the module constants are still the default, for the model-free paths
+    assert R.CALIBRATION_TOPICS_PER_FRAME == 96
+    assert S.CALIBRATION_TOPICS_PER_FRAME == 96
+
+
+def test_the_allocation_record_states_the_model_and_the_ceiling():
+    """Contract 8 and 9: the Gate-2 block a run writes says which allocation
+    it used, whether that was the default, and what it costs --- so a reader
+    of the record never has to guess which design produced the numbers."""
+    topics = _real_calibration_topics()
+    default = CAL.calibration_allocation(topics)
+    raised = CAL.calibration_allocation(topics, model_key=MODEL)
+    assert default["passes"] == 2 and default["topics_per_frame"] == 96
+    assert default["is_default_allocation"] and not default["at_topic_ceiling"]
+    assert raised["model_key"] == MODEL
+    assert raised["passes"] == 4
+    assert raised["frame_offsets"] == [0, 1, 2, 3]
+    assert raised["topics_per_frame"] == 192
+    assert raised["topics_per_frame_per_split"] == 96
+    assert raised["blocks_per_run"] == 768
+    assert raised["at_topic_ceiling"] is True
+    assert raised["is_default_allocation"] is False
+    assert raised["default_frame_offsets"] == list(R.CALIBRATION_FRAME_OFFSETS)
+    assert raised["generations_per_rung"] == C.N_CALIBRATION * C.M_CAL * 4 \
+        == R.calibration_generations_per_rung(MODEL) == 3072
+    assert raised["generations_per_rung"] == 2 * default["generations_per_rung"]
+
+
+def test_the_manifest_binds_every_models_allocation():
+    """Contract 8: the signed manifest states, per model, the allocation that
+    model will be measured at — the override is registered, not implicit."""
+    from dci1v8dev.run import manifest as MF
+    ctx = synthetic_context("alloc-manifest")
+    built = MF.build_manifest(ctx, producing_commit="0" * 40,
+                              repo_root=pathlib.Path(__file__).resolve().parents[2])
+    alloc = built["design"]["calibration_allocation"]
+    assert alloc["max_passes"] == 4 and alloc["max_topics_per_frame"] == 192
+    assert alloc["default_frame_offsets"] == list(R.CALIBRATION_FRAME_OFFSETS)
+    by_model = alloc["by_model"]
+    assert by_model[MODEL] == {
+        "frame_offsets": [0, 1, 2, 3], "passes": 4, "topics_per_frame": 192,
+        "topics_per_frame_per_split": 96, "generations_per_rung": 3072,
+        "is_default": False}
+    for other in ("qwen3-4b-instruct-2507", "gemma-3n-e2b-it"):
+        if other in by_model:
+            assert by_model[other]["passes"] == 2
+            assert by_model[other]["topics_per_frame"] == 96
+            assert by_model[other]["is_default"] is True
+
+
+def test_the_realised_allocation_assertion_moves_with_the_model():
+    """Contract 9: ``assert_allocation_realised`` is run against the
+    *model's* allocation, so a qwen3-4b run that produced only 96 topics per
+    frame would be refused rather than recorded as if it were the design."""
+    grid, _cand = rows_for({w: _default_rates() for w in S.FRAMES},
+                           topics_per_split=24, draws=1)
+    by_frame = {w: rows_of_frame(grid, w) for w in S.FRAMES}
+    two_pass = 48 * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS
+    CAL.assert_allocation_realised(by_frame,
+                                   expected_topics_per_frame=two_pass,
+                                   where="test")
+    # the same rows read against a four-pass expectation are refused
+    with pytest.raises(ProtocolError, match="distinct topics"):
+        CAL.assert_allocation_realised(by_frame,
+                                       expected_topics_per_frame=two_pass * 2,
+                                       where="test")
+
+
+def test_the_raised_allocation_reaches_the_estimator_that_forms_the_coordinate(
+        monkeypatch):
+    """The point of the amendment: four passes must put twice as many
+    per-topic values into each frame's vector as two do, because that vector
+    is what SE(ι) --- and therefore `V_coord` and §13.7's bootstrap --- is
+    formed at. Measured, not assumed."""
+    from dci1v8dev.spectrum.validity import _se_iota
+    from dci1v7.stages.calibration_table import load_calibration_table
+    rates = {w: _default_rates() for w in S.FRAMES}
+
+    def vectors(offsets):
+        grid, cand = rows_for(rates, topics_per_split=24, draws=2,
+                              offsets=offsets)
+        result = _frames(grid, cand)
+        block = result["by_frame"][result["supported"][0]]
+        return {f"{r['kind']}:{r['severity']}": r
+                for r in block["calibration_rows"]["pooled"]}
+
+    two, four = vectors((0, 2)), vectors((0, 1, 2, 3))
+    shared = sorted(set(two) & set(four))
+    assert shared
+    for label in shared:
+        assert len(two[label]["per_topic_solo"]) == two[label]["n_topics"] == 24
+        assert len(four[label]["per_topic_solo"]) == four[label]["n_topics"] == 48
+    # and the standard error `V_coord` and §13.7's bootstrap are formed at
+    # falls by about the sqrt(2) the design predicts
+    def _ses(rows):
+        table = load_calibration_table(
+            list(rows.values()), model_key=MODEL,
+            m_star=int(rows[next(iter(rows))]["kappa_under_b_source"]["m_star"]),
+            split="pooled")
+        return {r.label: _se_iota(r) for r in table}
+
+    se_two, se_four = _ses(two), _ses(four)
+    ratios = [se_two[l] / se_four[l] for l in shared
+              if se_two.get(l) and se_four.get(l)]
+    assert ratios
+    assert 1.2 < sum(ratios) / len(ratios) < 1.7, ratios
+
+
+@pytest.mark.slow
+def test_the_four_pass_allocation_walks_the_whole_lifecycle(tmp_path):
+    """Contracts 6, 7, 9 and 10 end to end: the nine-stage lifecycle run for
+    ``qwen3-4b`` measures every frame on all 192 calibration topics, asserts
+    that on the rows it actually generated, keeps the frame dimension through
+    Gate 3 and the report, agrees with its own generation accounting, and
+    still offers no composed cell."""
+    from tests_v8dev import pilot_harness as H
+    walked = H.walk(tmp_path / "four", model_key=MODEL)
+    g2 = walked["payloads"][S.STAGE_GATE2]
+    g3 = walked["payloads"][S.STAGE_GATE3]
+    rp = walked["payloads"][S.STAGE_REPORT]
+
+    alloc = g2["calibration_allocation"]
+    assert alloc["model_key"] == MODEL
+    assert alloc["passes"] == 4 and alloc["frame_offsets"] == [0, 1, 2, 3]
+    assert alloc["at_topic_ceiling"] is True
+    assert alloc["is_default_allocation"] is False
+    # the *realised* allocation, asserted on the generated rows, per run
+    n_expected = alloc["topics_per_frame"]
+    per_split = alloc["topics_per_frame_per_split"]
+    assert n_expected == 2 * per_split
+    for where, realised in alloc["realised"].items():
+        for frame, seen in realised.items():
+            assert seen["n_topics"] == n_expected, (where, frame)
+            assert set(seen["by_split"].values()) == {per_split}, (where, frame)
+    # the frame dimension survives, and Gate 3 carries the allocation forward
+    assert g3["calibration_allocation"]["passes"] == 4
+    assert set(g3["frame_states"]) == {str(w) for w in S.FRAMES}
+    # every generated row scored, and the accounting matches the four passes
+    assert rp["generations"]["calibration_passes"] == 4
+    n_blocks = len(g2["calibration_topic_ids"]) * 4
+    assert rp["generations"]["calibration_blocks_per_run"] == n_blocks
+    for block in g2["row_accounting"].values():
+        assert block["n_scored"] == block.get("n_rows", block["n_scored"])
+    # and no composed cell exists anywhere before the freeze
+    for payload in (g2, g3, rp):
+        assert payload["no_composed_cells"] is True

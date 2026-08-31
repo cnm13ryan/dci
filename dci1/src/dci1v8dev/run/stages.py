@@ -30,6 +30,10 @@ __all__ = [
     "CONFIRMATORY_BLOCKS_PER_FRAME", "REPORT_AGGREGATION",
     "CALIBRATION_FRAME_OFFSETS", "CALIBRATION_FRAME_PASSES",
     "CALIBRATION_TOPICS_PER_FRAME", "CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT",
+    "CALIBRATION_FRAME_OFFSETS_BY_MODEL", "calibration_frame_offsets",
+    "calibration_passes", "calibration_topics_per_frame",
+    "calibration_topics_per_frame_per_split",
+    "calibration_generations_per_rung",
     "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA", "GATE0_TOPICS",
     "GATE0_DRAWS", "MIN_LOCAL_FAMILIES", "MIN_CORE_REFERENCES",
     "MIN_BACKUPS", "NO_COMPOSED_CELLS",
@@ -165,16 +169,35 @@ FRAME_STATES = ("UNSUPPORTED", "NEITHER", "LOCAL_ONLY", "SPECTRUM_ONLY",
 CONFIRMATORY_BLOCKS_PER_FRAME = R.CONFIRMATORY_BLOCKS_PER_FRAME
 #: Gate 2's calibration allocation (rules.py): one pass over the calibration
 #: topics per frame offset, so a frame's own table is measured on
-#: CALIBRATION_TOPICS_PER_FRAME distinct topics --- 96 of the 192 at the two
-#: registered offsets, 48 from each §13.7 split. The amendment of 2026-08-30
-#: after r5/r6 measured SE(iota) on the precision floor; it changes how much
-#: is measured within a frame and no threshold.
+#: ``calibration_topics_per_frame(model_key)`` distinct topics --- 96 of the
+#: 192 at the two default offsets, 48 from each §13.7 split; 192 and 96 at
+#: ``qwen3-4b``'s four, which is the ceiling. The amendment of 2026-08-30
+#: after r5/r6 measured SE(iota) on the precision floor, and that of
+#: 2026-08-31 after r8 measured §13.7 condition 1 refusing rungs on the
+#: *split* coordinate; both change how much is measured within a frame and
+#: no threshold.
+#:
+#: **The constants below are the default allocation.** A stage that measures
+#: or asserts anything about a particular replication must call the resolver
+#: with that run's ``model_key``; these are for the paths with no model in
+#: scope.
 CALIBRATION_FRAME_OFFSETS = R.CALIBRATION_FRAME_OFFSETS
 CALIBRATION_FRAME_PASSES = R.CALIBRATION_FRAME_PASSES
 CALIBRATION_TOPICS_PER_FRAME = R.CALIBRATION_TOPICS_PER_FRAME
 CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT
+CALIBRATION_FRAME_OFFSETS_BY_MODEL = R.CALIBRATION_FRAME_OFFSETS_BY_MODEL
+calibration_frame_offsets = R.calibration_frame_offsets
+calibration_passes = R.calibration_passes
+calibration_topics_per_frame = R.calibration_topics_per_frame
+calibration_topics_per_frame_per_split = R.calibration_topics_per_frame_per_split
+calibration_generations_per_rung = R.calibration_generations_per_rung
 assert CALIBRATION_TOPICS_PER_FRAME * C.N_WORDINGS == (
     C.N_CALIBRATION * CALIBRATION_FRAME_PASSES)
+for _m, _o in CALIBRATION_FRAME_OFFSETS_BY_MODEL.items():
+    assert calibration_topics_per_frame(_m) * C.N_WORDINGS == (
+        C.N_CALIBRATION * len(_o))
+    assert calibration_topics_per_frame_per_split(_m) * 2 == \
+        calibration_topics_per_frame(_m)
 #: The report's run-level aggregate over frames (V8_FRAME_CONDITIONING.md
 #: §7): a decided criterion ``passed`` when at least one supported frame
 #: passes it, every frame's verdict recorded beside it. Not a freeze rule.

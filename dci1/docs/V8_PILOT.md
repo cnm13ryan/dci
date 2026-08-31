@@ -422,6 +422,87 @@ every model; the per-frame detail did not, because repeating a measured
 per-topic vector makes the two §13.7 splits more alike than fresh topics
 are, which flatters `V_stab`.
 
+## 7e. The allocation raised to the ceiling for `qwen3-4b` (2026-08-31)
+
+r8 read `V_stab` as the leading LOCAL and SPECTRUM refusal on every
+`qwen3-4b` frame and the bottleneck tool called it precision.
+`tools/v8_vstab_diagnosis.py` decomposed §13.7 into its three registered
+conditions and found the mechanism the summary had hidden.
+
+| frame | arm | cands | pass `V_stab` | `V_stab` sole blocker | condition-1 failures | of those, split-noise only | equivalence points outside ±0.20 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| f0 | LOCAL | 65 | 7 | 6 | 56 | 4 | 0 |
+| f0 | SPECTRUM | 65 | 10 | 29 | 55 | 34 | 0 |
+| f1 | LOCAL | 65 | 5 | 7 | 60 | 7 | 1 |
+| f1 | SPECTRUM | 65 | 10 | 31 | 54 | 33 | 0 |
+| f2 | LOCAL | 65 | 3 | 7 | 59 | 4 | 0 |
+| f2 | SPECTRUM | 65 | 13 | 29 | 50 | 33 | 0 |
+| f3 | LOCAL | 65 | 4 | 7 | 59 | 5 | 0 |
+| f3 | SPECTRUM | 65 | 12 | 27 | 52 | 31 | 0 |
+
+Three readings, and they point in different directions.
+
+1. **`V_stab`'s dominance is largely an ordering artefact.** §13.7's
+   condition 1 embeds `V_diff`, and §13.1's registered lexicographic order
+   puts `V_stab` before `V_diff`. A rung outside §13.8's caliper therefore
+   surfaces as a `V_stab` failure and would have failed `V_diff` regardless.
+   `V_stab` is the *sole* blocker for only 6--7 LOCAL candidates per frame
+   (6, 7, 7, 7 on f0--f3),
+   which is the same population the bottleneck tool counted as
+   precision-only, and those are the ones an allocation can move.
+2. **The spectrum arm is different, and it is genuinely precision.** All 50
+   to 55 SPECTRUM failures per frame are condition-1 failures, and 31--34 of
+   them are components that **pass on the frame's pooled table and fail on a
+   split**. Across all four frames, **221 of 332** split-level `V_coord`
+   refusals carry the SE clause and nothing else. The pooled coordinate met
+   `SPECTRUM_MAX_SE_IOTA` after the 2026-08-30 amendment; the split
+   coordinate, at 48 topics, did not.
+3. **Nothing here is two halves that disagree.** Not one equivalence failure
+   on any frame or arm has a point estimate outside ±0.20; median |Δι|
+   across splits is 0.023--0.050 against a bound of 0.20, and the median
+   interval half-width is 0.11--0.14. Every equivalence failure is an
+   interval that does not resolve. ι_A's own equivalence passes on every
+   frame, though f0's interval [-0.172, 0.089] is not far from the bound.
+
+Hence the amendment of 2026-08-31 (`CHANGES_SCIENTIFIC.md`,
+`V8_FRAME_CONDITIONING.md` §4b): `qwen3-4b` alone moves to four calibration
+passes — 192 distinct topics per frame, 96 per §13.7 split, the ceiling the
+bank permits — and every other model stays at two. No threshold moved.
+
+## 7f. The high-ι_A frames: geometry, not a shortage (2026-08-31)
+
+r8's other two LOCAL gaps sit on frames whose ι_A is high, and
+`tools/v8_operating_point_diagnosis.py` measures them from the same signed
+records.
+
+| | 2507 f0 | gemma f2 |
+|---|---|---|
+| ι_A | 0.8438 | 0.7937 |
+| `V_head` admits raw solo (96 topics) | [0.1605, 0.8395] | [0.1605, 0.8395] |
+| A itself inside that ceiling? | **no** (0.8438 > 0.8395) | yes |
+| caliper window | [0.744, 0.944] | [0.694, 0.894] |
+| overlap with the headroom band | 0.096 of 0.20 (**48%**) | 0.146 of 0.20 (**73%**) |
+| candidates inside the caliper | 12, from 7 families | 12, from 9 families |
+| ...also inside the headroom band | 3, from 3 families | 5, from 5 families |
+| realised LOCAL-valid families | 0 | 1 |
+| counterfactual: precision free | 2 | 3 |
+| counterfactual: `V_head` ignored + precision free | 3 | 4 |
+| A's rungs inside `TARGET_BAND` (0.50, 0.85) | **1** (n=4) | **1** (n=2) |
+| widest adjacent step on A's curve | n=4→5: 0.844 → 0.172 | n=2→3: 0.794 → 0.385 |
+
+Read together: §13.8's caliper and §13.4's `V_head` band stop overlapping as
+ι_A approaches the headroom ceiling, so half the matching region is gone
+before any candidate is considered; and even ignoring `V_head` *and* giving
+precision away, neither frame reaches §13.15's five families. The pool is
+not the constraint and more of it would not help.
+
+Nor is the operating point a choice. §12.3 picks n\* nearest 0.70 inside
+`TARGET_BAND`, exactly one of A's rungs falls in the band under each frame,
+and A's curve has a cliff on either side. There is no nearby rung to prefer
+and no rung to add: A's severity is an integer count and `TARGET_GRID` is
+already every integer 1--8, so the grid is exhaustive over the construct.
+Moving ι_A would mean changing what A is.
+
 ## 7. What the pilot cannot tell you
 
 That the effect exists; that v8 works; anything about B+R or R+B; which

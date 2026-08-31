@@ -56,6 +56,11 @@ class RetentionConfig:
     #: the budget that keeps every plausible one on the twelve stored
     #: replications (the backtest's local-recovery table) at 30 rungs.
     max_local_families: int = R.RETENTION_MAX_LOCAL_FAMILIES
+    #: What one calibrated rung costs in Gate-2 generations, for the cost
+    #: statement below. Per model (`rules.calibration_generations_per_rung`):
+    #: a run at four passes spends twice a run at two, and a plan that said
+    #: otherwise would be a stale generation count on a signed record.
+    generations_per_rung: int = R.CALIBRATION_GENERATIONS_PER_RUNG
     class_arm_rungs: int = R.RETENTION_CLASS_ARM_RUNGS
     near_form_rungs: int = R.RETENTION_NEAR_FORM_RUNGS
     #: Cap on the total forwarded set; None means no cap. 112 is what §12.7
@@ -248,7 +253,7 @@ def retain(screen: Mapping[str, Any], *, config: RetentionConfig
     if config.total_cap is not None and len(ordered) > config.total_cap:
         dropped_for_cap = [e["candidate"] for e in ordered[config.total_cap:]]
         ordered = ordered[:config.total_cap]
-    per_rung = R.CALIBRATION_GENERATIONS_PER_RUNG
+    per_rung = config.generations_per_rung
     return {
         "forwarded": ordered,
         "n_forwarded": len(ordered),
@@ -260,7 +265,8 @@ def retain(screen: Mapping[str, Any], *, config: RetentionConfig
         "dropped_for_cap": dropped_for_cap,
         "calibration_cost_generations": len(ordered) * per_rung,
         "per_rung_calibration_generations": per_rung,
-        "config": {"spectrum_rungs": config.spectrum_rungs,
+        "config": {"generations_per_rung": config.generations_per_rung,
+                   "spectrum_rungs": config.spectrum_rungs,
                    "local_rungs": config.local_rungs,
                    "admissible_min": config.admissible_min,
                    "max_spectrum_families": config.max_spectrum_families,

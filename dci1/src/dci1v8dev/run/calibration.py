@@ -3,18 +3,27 @@ forwarded set at calibration precision on §13.2's chance basis, and one
 extension round. Approach A (``dci1/docs/V8_FRAME_CONDITIONING.md``).
 
 Two backend rounds on the 192 calibration topics at M_cal = 4, as v7's
-Gate 2, each laid out over **two calibration passes**
-(``rules.CALIBRATION_FRAME_OFFSETS`` = (0, 2), the allocation amendment of
-2026-08-30): a pass renders every calibration topic under one frame and the
-second pass shifts the frame by two, so every topic is met under two frames
-and every frame is measured on 96 of the 192 topics --- 48 from each §13.7
-split --- instead of 48. Nothing is pooled and no topic recurs inside a
-frame; what doubles is one frame's own information.
+Gate 2, each laid out over **one calibration pass per frame offset**
+(``rules.calibration_frame_offsets(model_key)``): a pass renders every
+calibration topic under one frame and pass p shifts the frame by
+``offsets[p]``, so a topic is met under one frame per pass and every frame
+is measured on ``passes / N_WORDINGS`` of the topics, half from each §13.7
+split. Nothing is pooled and no topic recurs inside a frame; what grows
+with the pass count is one frame's own information.
+
+The default is two passes at (0, 2) --- 96 topics per frame, 48 per split
+(the amendment of 2026-08-30, after r5/r6 measured SE(iota) on the precision
+floor). ``qwen3-4b`` runs four at (0, 1, 2, 3) --- all 192 topics per frame,
+96 per split, the ceiling the topic bank permits (the amendment of
+2026-08-31, after r8 measured §13.7 condition 1 refusing rungs on the
+*split* coordinate rather than the pooled one). Both are measurement; no
+admission threshold differs between them, and this stage's record states
+which one produced its numbers.
 
 1. A's grid, B's grid and the unconstrained cell (``grid-A``, ``grid-B``),
-   on every block of both passes; every block is rendered under one frame
-   (``block.index % N_WORDINGS``), so each frame holds half the topics of
-   every cell. **Per frame**, §12.3 fixes n*(f) and m*(f) on that
+   on every block of every pass; every block is rendered under one frame
+   (``block.index % N_WORDINGS``), so each frame holds its share of the
+   topics of every cell. **Per frame**, §12.3 fixes n*(f) and m*(f) on that
    frame's own raw solo curves, §12.4 checks adequacy on that frame's own
    rates, and the frame's candidates take their chance compliance from the
    unconstrained cells of *that frame's blocks* --- the §13.2 basis ("the
@@ -86,12 +95,14 @@ FRAME_CONDITIONING_STATEMENT = {
     "frames": list(S.FRAMES),
     "frame_of_block": "block_index % N_WORDINGS; every constraint a block "
                       "states is rendered under the block's frame",
-    "calibration_allocation": "rules.CALIBRATION_FRAME_OFFSETS: Gate 2 lays "
-                              "each of its runs out over one pass per frame "
-                              "offset, so a frame's table is measured on "
-                              f"{R.CALIBRATION_TOPICS_PER_FRAME} distinct "
-                              "topics; the passes add information inside a "
-                              "frame and pool no frame with another",
+    "calibration_allocation": "rules.calibration_frame_offsets(model_key): "
+                              "Gate 2 lays each of its runs out over one pass "
+                              "per frame offset, so a frame's table is "
+                              "measured on one distinct topic per pass; the "
+                              "passes add information inside a frame and pool "
+                              "no frame with another. This run's realised "
+                              "numbers are the calibration_allocation block "
+                              "on this record, not a constant repeated here",
     "primary": "per frame: n*(f), m*(f), iota_A(f) with kappa_A(f) on the "
                "frame's own unconstrained cells, §13.11's table on the "
                "frame's own rows, kappa(R|B) at m*(f) on the frame's own "
@@ -160,11 +171,12 @@ def extension_instances(candidates: Sequence[Constraint],
     return out
 
 
-def calibration_blocks(topics: Sequence[Mapping[str, Any]], prefix: str
-                       ) -> list[Block]:
+def calibration_blocks(topics: Sequence[Mapping[str, Any]], prefix: str, *,
+                       model_key: str | None = None) -> list[Block]:
     """Gate 2's blocks: one pass over ``topics`` per frame offset.
 
-    ``rules.CALIBRATION_FRAME_OFFSETS`` names the passes. Pass p is laid out
+    ``rules.calibration_frame_offsets(model_key)`` names the passes. Pass p
+    is laid out
     at a block index base that is (a) past every earlier pass's indices, so
     the block ids and the row identities are disjoint, and (b) congruent to
     the pass's offset modulo ``N_WORDINGS``, so the topic at position i is
@@ -172,46 +184,67 @@ def calibration_blocks(topics: Sequence[Mapping[str, Any]], prefix: str
     reader relies on --- ``frame = block_index % N_WORDINGS``
     (``execute.frame_of_block``) --- keeps holding on every row.
 
-    At the two registered offsets (0, 2) each of the 192 calibration topics
-    is met under two frames and each frame is measured on 96 distinct
-    topics, 48 from each §13.7 split. No topic recurs within a frame: the
-    offsets are distinct modulo ``N_WORDINGS`` (asserted in ``rules``), so a
-    frame's per-topic vector has one entry per topic and its length is the
-    number the standard error is formed at.
+    At the default offsets (0, 2) each of the 192 calibration topics is met
+    under two frames and each frame is measured on 96 distinct topics, 48
+    from each §13.7 split. At ``qwen3-4b``'s four offsets (0, 1, 2, 3) every
+    topic is met under every frame and each frame is measured on all 192, 96
+    per split --- the ceiling, since a fifth pass would have to repeat an
+    offset. No topic recurs within a frame at either value: the offsets are
+    distinct modulo ``N_WORDINGS`` (asserted in ``rules``), so a frame's
+    per-topic vector has one entry per topic and its length is the number
+    the standard error is formed at.
     """
     out: list[Block] = []
     cursor = 0
-    for offset in R.CALIBRATION_FRAME_OFFSETS:
+    for offset in R.calibration_frame_offsets(model_key):
         cursor += (offset - cursor) % C.N_WORDINGS
         out.extend(blocks(topics, prefix, index_base=cursor))
         cursor += len(topics)
     return out
 
 
-def calibration_allocation(topics: Sequence[Mapping[str, Any]]
-                           ) -> dict[str, Any]:
-    """What Gate 2 measures each frame on, as a record block."""
+def calibration_allocation(topics: Sequence[Mapping[str, Any]], *,
+                           model_key: str | None = None) -> dict[str, Any]:
+    """What Gate 2 measures each frame on, as a record block.
+
+    Model-scoped: ``rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`` overrides the
+    default for the models whose allocation the researcher has raised, and
+    the record says which value this run used and whether it was the
+    default. Nothing about *admission* varies with it.
+    """
     n = len(topics)
+    offsets = R.calibration_frame_offsets(model_key)
+    passes = len(offsets)
+    per_frame = n * passes // C.N_WORDINGS
     return {
-        "frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
-        "passes": R.CALIBRATION_FRAME_PASSES,
+        "model_key": model_key,
+        "frame_offsets": list(offsets),
+        "passes": passes,
+        "is_default_allocation": offsets == R.CALIBRATION_FRAME_OFFSETS,
+        "default_frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
         "calibration_topics": n,
-        "blocks_per_run": n * R.CALIBRATION_FRAME_PASSES,
-        "topics_per_frame": n * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS,
-        "topics_per_frame_per_split":
-            n * R.CALIBRATION_FRAME_PASSES // C.N_WORDINGS // 2,
+        "blocks_per_run": n * passes,
+        "topics_per_frame": per_frame,
+        "topics_per_frame_per_split": per_frame // 2,
+        "at_topic_ceiling": per_frame == n,
+        "max_passes": C.N_WORDINGS,
         "draws": C.M_CAL,
-        "generations_per_rung": n * C.M_CAL * R.CALIBRATION_FRAME_PASSES,
+        "generations_per_rung": n * C.M_CAL * passes,
         "rule": "a calibration pass renders every calibration topic under "
                 "one frame; pass p offsets the frame by frame_offsets[p]. "
-                "Two passes at distinct offsets put every topic under two "
-                "frames and every frame on half the topics, doubling each "
-                "frame's own information at 2x the Gate-2 generation. No "
-                "frame is pooled with another and no topic recurs within a "
-                "frame (rules.CALIBRATION_FRAME_OFFSETS)",
-        "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (calibration "
-                     "allocation); prompted by r5/r6's measured per-frame "
-                     "SE(iota) = 0.0497 against the unchanged 0.05 floor",
+                "The offsets are distinct modulo N_WORDINGS, so every frame "
+                "is measured on passes/N_WORDINGS of the calibration topics, "
+                "no topic recurs within a frame, and each frame's own "
+                "information grows with the pass count at proportional "
+                "Gate-2 generation. No frame is pooled with another "
+                "(rules.calibration_frame_offsets)",
+        "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (two passes, 96 "
+                     "topics per frame; prompted by r5/r6's measured "
+                     "per-frame SE(iota) = 0.0497 against the unchanged 0.05 "
+                     "floor) and 2026-08-31 (four passes for qwen3-4b, 192 "
+                     "topics per frame at the topic ceiling; prompted by "
+                     "r8's split-level V_coord refusals under §13.7 "
+                     "condition 1). No threshold moved at either step.",
     }
 
 
@@ -637,7 +670,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         slot_map = {f"{kind}{q}": Constraint(kind, q, extended=extended)
                     for q in grid}
         cells: list[Any] = []
-        for block in calibration_blocks(topics, f"g2{run_name}"):
+        for block in calibration_blocks(topics, f"g2{run_name}",
+                                        model_key=tree.model_key):
             cells.append(SoloCell(cell_id="unconstrained",
                                   arm=UNCONSTRAINED_ARM, block=block,
                                   slot=None, draws=C.M_CAL))
@@ -665,7 +699,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
 
     # ---------------------------------------- §12.3 / §12.4, per frame
     frame_grid_rows = {w: rows_of_frame(grid_rows, w) for w in S.FRAMES}
-    allocation = calibration_allocation(topics)
+    allocation = calibration_allocation(topics, model_key=tree.model_key)
     allocation["realised"] = {"grids": assert_allocation_realised(
         frame_grid_rows, expected_topics_per_frame=allocation["topics_per_frame"],
         where=f"{S.STAGE_GATE2}: the grids")}
@@ -732,7 +766,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             return []
         slot_map = {f"S{i}": c for i, c in enumerate(cands)}
         cells = []
-        for block in calibration_blocks(topics, f"g2{run_name}"):
+        for block in calibration_blocks(topics, f"g2{run_name}",
+                                        model_key=tree.model_key):
             for slot, rung in slot_map.items():
                 cells.append(SoloCell(cell_id=f"solo:{rung.label}", arm="solo",
                                       block=block, slot=slot, draws=C.M_CAL))
