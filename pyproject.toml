@@ -21,7 +21,14 @@ dependencies = [
     # rather than permitting the solver step to be skipped. A core dependency, not
     # an extra: a checkout that cannot decide a conjunction cannot certify Stage 2.
     # CPU-only, so it does not disturb the no-GPU-stack rule above.
-    "z3-solver>=4.13",
+    # Pinned to the build the frozen Stage-2 record names. §8.6 needs "the
+    # solver that produced the evidence, not a remembered one", and
+    # `stage2_frozen.json` freezes satisfiability.solver_identity at z3 5.0.0.
+    # An open bound let CI resolve 5.1.0, and the domain correctly refused --
+    # so every check run on every branch, including `main`, was red for an
+    # environment reason. `tests/unit/test_frozen_solver_pin.py` keeps this
+    # line and that record from drifting apart again.
+    "z3-solver==5.0.0.0",
 ]
 
 [project.scripts]
