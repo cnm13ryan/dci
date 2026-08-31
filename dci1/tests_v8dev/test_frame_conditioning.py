@@ -979,6 +979,14 @@ def test_the_manifest_binds_every_models_allocation():
     alloc = built["design"]["calibration_allocation"]
     assert alloc["max_passes"] == 4 and alloc["max_topics_per_frame"] == 192
     assert alloc["default_frame_offsets"] == list(R.CALIBRATION_FRAME_OFFSETS)
+    # every field naming a single number says it is the *default*, so no
+    # reader can take the study-level value for the model's own
+    assert alloc["default_topics_per_frame"] == 96
+    sizes = built["design"]["sample_sizes"]
+    assert sizes["calibration_topics_per_frame_default"] == 96
+    assert sizes["calibration_frame_passes_default"] == 2
+    assert not any(k in sizes for k in ("calibration_topics_per_frame",
+                                        "calibration_frame_passes"))
     by_model = alloc["by_model"]
     assert by_model[MODEL] == {
         "frame_offsets": [0, 1, 2, 3], "passes": 4, "topics_per_frame": 192,

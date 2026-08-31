@@ -200,17 +200,24 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                                         R.RESCREEN_MAX_BATCHES,
                                     "calibration_topics": C.N_CALIBRATION,
                                     "calibration_draws": C.M_CAL,
-                                    "calibration_frame_passes":
+                                    # The allocation is per model since
+                                    # 2026-08-31; these two are the *default*
+                                    # and `calibration_allocation.by_model`
+                                    # below says what each model runs. Named
+                                    # for what they are, so a reader cannot
+                                    # take them for the study's one value.
+                                    "calibration_frame_passes_default":
                                         R.CALIBRATION_FRAME_PASSES,
-                                    "calibration_topics_per_frame":
+                                    "calibration_topics_per_frame_default":
                                         R.CALIBRATION_TOPICS_PER_FRAME},
                    "calibration_allocation": {
                        "default_frame_offsets":
                            list(R.CALIBRATION_FRAME_OFFSETS),
-                       "topics_per_frame": R.CALIBRATION_TOPICS_PER_FRAME,
-                       "topics_per_frame_per_split":
+                       "default_topics_per_frame":
+                           R.CALIBRATION_TOPICS_PER_FRAME,
+                       "default_topics_per_frame_per_split":
                            R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT,
-                       "generations_per_rung":
+                       "default_generations_per_rung":
                            R.CALIBRATION_GENERATIONS_PER_RUNG,
                        # The allocation is per model: the default above, and
                        # the overrides the researcher has raised. Bound here
