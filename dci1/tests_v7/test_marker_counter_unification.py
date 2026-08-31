@@ -10,6 +10,8 @@ evidence (nothing).
 """
 from __future__ import annotations
 
+import tempfile
+
 import inspect
 import json
 import random
@@ -221,3 +223,43 @@ def test_the_stored_evidence_audit_found_no_row_the_unification_moves():
     assert report["totals"]["entries_checked"] >= 165_000_000
     assert report["changed_rows"] == []
     assert report["read_only"] is True
+
+
+def test_the_rescore_audit_finds_the_splitter_under_both_json_writers():
+    """The audit's detection must not depend on which writer stored the row.
+
+    Two writers in this repository disagree about escaping: `dci1v4.engine.fs`
+    and `.store` dump with ``ensure_ascii=False``, so U+0130 is stored as its
+    UTF-8 bytes; `dci1v7.run.execute` takes ``json.dumps``' default
+    ``ensure_ascii=True`` and stores it as the ASCII escape ``\\u0130``. The
+    audit originally searched the raw bytes, which finds the first and can
+    never find the second -- so every v7-written file reported zero rows
+    containing the splitter whether or not it held any, and the same flag
+    gated the recompute skip.
+    """
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    tool = Path(__file__).resolve().parents[1] / "tools" / \
+        "v7_marker_counter_rescore_audit.py"
+    row = {"raw_response": "İhowever", "scores": [
+        {"kind": "A", "severity": 1, "statistic": 1, "passed": True,
+         "graded": 1.0}]}
+    with tempfile.TemporaryDirectory() as tmp:
+        evidence = Path(tmp) / "evidence"
+        lane = evidence / "dci1v7" / "model" / "STAGE" / "backend_runs" / "lane"
+        lane.mkdir(parents=True)
+        # the same row under each writer's escaping convention
+        (lane / "scored.jsonl").write_text(
+            json.dumps(row, sort_keys=True) + "\n"                    # v7
+            + json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
+        out = Path(tmp) / "audit.json"
+        subprocess.run(
+            [sys.executable, str(tool), "--evidence", str(evidence),
+             "--roots", "dci1v7", "--out", str(out), "--workers", "1"],
+            check=True, capture_output=True)
+        report = json.loads(out.read_text())
+    # both rows carry the splitter; a byte search would have found only one
+    assert report["totals"]["rows"] == 2
+    assert report["totals"]["rows_with_u0130"] == 2, report["totals"]

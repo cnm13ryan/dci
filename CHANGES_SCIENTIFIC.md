@@ -75,11 +75,22 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 * *Verifier.* `tools/v7_marker_counter_rescore_audit.py` recomputed every A
   and marker verdict on every stored `scored.jsonl` row of every evidence
   root — `dci1v4r3`, `dci1v4r4`, `dci1v5`, `dci1v6`, `dci1v7` and the five
-  `dci1v7-development*` rehearsal roots: **455 files, 3,507,000 rows,
-  165,062,472 verdict entries** — under both orders, read-only. **0 rows
+  `dci1v7-development*` rehearsal roots: **532 files, 4,346,736 rows,
+  199,912,752 verdict entries** — under both orders, read-only. **0 rows
   contain U+0130; 0 statistics, 0 pass verdicts and 0 graded scores
   differ; 0 stored statistics fail to reproduce**
-  (`dci1/reports/dci1v7/development/marker_counter_unification_audit.json`).
+  (`dci1/reports/dci1v7/development/marker_counter_unification_audit.json`). The
+  audit was re-run on 2026-08-31 after review found its splitter detection
+  unsound: it searched the raw bytes for U+0130, but `dci1v4.engine.fs` and
+  `.store` dump with `ensure_ascii=False` while `dci1v7.run.execute` takes
+  `json.dumps`' default `ensure_ascii=True`, so on every v7-written file the
+  character is stored as the escape `\u0130` and a byte search can never
+  match it. The tool now decodes each row and inspects `raw_response`. The
+  verdict counts were never at risk --- the run used `--recompute-every 1`,
+  under which no row is skipped and all 199,912,752 entries are recomputed
+  --- but `rows_with_u0130` was not evidence for the v7 trees until this
+  fix, and the skip path would have dropped exactly the rows the audit
+  exists to examine at any other setting.
   The frozen boundary corpus (177 cases; the 48 carried v3 A expectations)
   reproduces and the microcase phenomenon texts agree. Every existing A
   verdict is therefore what the unified counter would have recorded. The
