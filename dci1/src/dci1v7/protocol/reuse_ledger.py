@@ -106,13 +106,14 @@ class LedgerEntry:
                 "notes": self.notes}
 
 
-#: The entries v6 registers before any run. Paths are repository-relative and
+#: The entries v7 registers before any run. Paths are repository-relative and
 #: are hashed by ``build_ledger`` where they exist.
 #:
-#: **v5's own reuse of v4r4 is not repeated here.** v6 supersedes v5 and v5
-#: supersedes v4r4; what v6 carries from v4r4 it carries *through* v5's
-#: implementation, and v5's ledger records that chain. What is registered
-#: below is what enters v6 directly.
+#: **v6's own reuse of v5, and v5's of v4r4, are not repeated here.** v7
+#: supersedes v6, v6 supersedes v5 and v5 supersedes v4r4; what v7 carries
+#: from an earlier revision it carries *through* v6's implementation, and each
+#: revision's ledger records its own link of the chain. What is registered
+#: below is what enters v7 directly.
 REGISTERED_ENTRIES: tuple[LedgerEntry, ...] = (
     LedgerEntry(
         "dci1/evidence/dci1v6/*/terminal_report.json",

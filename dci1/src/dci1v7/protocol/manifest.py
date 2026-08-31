@@ -825,7 +825,7 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                           "reporting path",
                 },
                 "decision_packet":
-                    "dci1/reports/dci1v7/u2_tier_model_decision.md",
+                    "dci1/reports/dci1v5/u2_tier_model_decision.md",
             },
         },
         "order_estimands": {

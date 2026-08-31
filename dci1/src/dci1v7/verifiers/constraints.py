@@ -406,7 +406,7 @@ def _metadata(statistic_id: str, form: str, *, length_direction: str,
 #: §7.10's Tier-1 table: marker, letters, discourse role, and the measured
 #: maximum P(at least one occurrence | unconstrained) over the four v4r4
 #: replications. The measurement is
-#: ``dci1/reports/dci1v7/development/d6_marker_frequency.json``; it is
+#: ``dci1/reports/dci1v5/development/d6_marker_frequency.json``; it is
 #: **development evidence**, it justified the vocabulary, and it is not a v5
 #: measurement of anything.
 _TIER1: tuple[tuple[str, str, str, float], ...] = (
@@ -1124,7 +1124,7 @@ def marker_population() -> dict[str, Any]:
             "§7.10's three reserves are admissible only by a registered §32 "
             "amendment and only when a registered marker fails Gate 1. No "
             "post-adoption substitution occurs without one"),
-        "audit": "dci1/reports/dci1v7/d4_marker_audit.md",
+        "audit": "dci1/reports/dci1v5/d4_marker_audit.md",
         "population_hash": marker_population_hash(),
     }
 
