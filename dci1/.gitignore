@@ -4,9 +4,15 @@
 evidence/
 durable_root/
 
-# Environments (rebuilt from the committed uv locks).
-.venv/
-environments/backend/.venv/
+# Environments (rebuilt from the committed uv locks). No trailing slash: a
+# secondary `git worktree` links its environment rather than copying it, and
+# a slash-terminated pattern matches directories only, so `.venv/` left the
+# symlink untracked. An untracked path is not cosmetic here --- every v5, v6,
+# v7 and v8 registration has a `clean_worktree` precondition that reads
+# `git status --porcelain`, so a linked environment made the worktree fail
+# qualification.
+.venv
+environments/backend/.venv
 
 # The vendored ROCm wheels are pinned by environments/backend/vendor/
 # MANIFEST.sha256; the binaries themselves stay out of git.
