@@ -237,6 +237,19 @@ again, for qwen3-4b only**: four passes, **192 topics per frame, 96 per
 split --- the ceiling the 192-topic bank permits** (2026-08-31,
 `rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL`; every other model stays at two
 and r8's meaning is untouched). No threshold moved at this step either.
+**And it worked** (`dci1v8-pilot-r9`, 2026-08-31, all nine pre-freeze stages
+`PASS`, no freeze, no composed cell, 266,424 generations, Gate-2 rows equal
+to the design exactly): median per-frame SE(iota) 0.0356 -> 0.0252, and **all
+four qwen3-4b frames moved to `LOCAL_AND_SPECTRUM`** from LOCAL_ONLY, NEITHER,
+SPECTRUM_ONLY and LOCAL_ONLY. Spectrum coverage is identified on 4/4 against
+1/4, spectrum-valid points below A rose 1-5 -> 19-24, the projected SE(beta)
+fell to 0.025-0.027 against an unchanged 0.05 floor, and `REFERENCE_SURVIVAL`
+passes on frames 0 and 3. The spectrum arm's `V_stab` pass count roughly
+quadrupled and the LOCAL arm's did not, exactly as the split-level reading
+predicted. **Frames 1 and 2 hold four LOCAL-valid families against §13.15's
+five and are still read `PRECISION_LIMITED` -- and 192 topics per frame is
+every calibration topic the bank holds, so no further allocation exists.**
+That is the live researcher decision (`V8_FRAME_CONDITIONING.md` §10 item 1b).
 **And r8's two high-iota_A frames are geometry, not a shortage**
 (`tools/v8_operating_point_diagnosis.py`, `V8_PILOT.md` §7f): §13.4's
 `V_head` admits raw solo compliance only in [0.1605, 0.8395] at 96 topics,

@@ -503,6 +503,69 @@ and no rung to add: A's severity is an integer count and `TARGET_GRID` is
 already every integer 1--8, so the grid is exhaustive over the construct.
 Moving ι_A would mean changing what A is.
 
+## 7g. The 4x pilot (r9, 2026-08-31) — qwen3-4b at the topic ceiling
+
+`dci1v8-pilot-r9`, `qwen3-4b` alone, all nine stages signed `PASS`,
+06:41Z--11:21Z at commit `41a0758`, 266,424 generations (1.85x r8), no
+composed cell, no freeze. The allocation is realised on the grids, the
+candidate run **and** the extension round at 192 distinct topics per frame,
+96 per §13.7 split, refused otherwise on the path. Gate-2 rows match the
+design exactly: 55,296 grid and 181,248 candidate.
+
+**Every frame now identifies both arms.**
+
+| quantity | f0 | f1 | f2 | f3 |
+|---|---|---|---|---|
+| n\* (96 → 192) | 3 → 6 | 7 → 7 | 4 → 3 | 4 → 5 |
+| m\* | 12 → 12 | 12 → 12 | 12 → 12 | 13 → 13 |
+| ι_A | .714 → .671 | .630 → .608 | .701 → .672 | .708 → .697 |
+| SE(ι_A) | .0335 → .0258 | .0353 → .0247 | .0364 → .0250 | .0328 → .0236 |
+| median SE(ι) | .0362 → .0258 | .0366 → .0252 | .0343 → .0248 | .0355 → .0249 |
+| within the 0.05 floor | 56/65 → 62/63 | 62/65 → 62/63 | 62/65 → 62/63 | 58/65 → 62/63 |
+| `V_stab` pass, LOCAL | 7 → 8 | 5 → 6 | 3 → 11 | 4 → 10 |
+| `V_stab` pass, SPECTRUM | 10 → **40** | 10 → **39** | 13 → **40** | 12 → **44** |
+| LOCAL-valid families | 4 → 5 | 3 → 4 | 1 → 4 | 4 → **7** |
+| core / backups | T/1 → T/2 | F/2 → T/1 | F/0 → T/1 | T/1 → T/2 |
+| spectrum below/above | 1/6 → **21/9** | 2/8 → **19/15** | 5/7 → **22/13** | 4/7 → **24/13** |
+| coverage identified | F → **T** | F → **T** | T → **T** | F → **T** |
+| projected SE(β) | .0744 → .0254 | .0516 → .0245 | .0315 → .0264 | .0639 → .0273 |
+| frame state | LOCAL_ONLY | NEITHER | SPECTRUM_ONLY | LOCAL_ONLY |
+| | → **L_AND_S** | → **L_AND_S** | → **L_AND_S** | → **L_AND_S** |
+| `REFERENCE_SURVIVAL` | F → **T** | F → F | F → F | F → **T** |
+
+`REFERENCE_SURVIVAL` passes on the run for the first time on this model, on
+frames 0 and 3; f1 and f2 reach a core and coverage but hold 4 LOCAL-valid
+families against §13.15's 5, and one backup against two.
+
+**What it says about `V_stab`.** The residual is still finite-sample, and
+the evidence for that is unusually clean:
+
+* the median equivalence half-width fell 0.133--0.143 → 0.096--0.099 on the
+  LOCAL arm and 0.108--0.122 → 0.098--0.100 on the spectrum arm, the √2 the
+  design predicts;
+* **not one** equivalence failure, on any frame or arm, at either
+  allocation, has a point estimate outside ±0.20. The median |Δι| across the
+  two 96-topic halves is 0.029--0.039 against a bound of 0.20. The two topic
+  halves do not disagree; the interval simply did not resolve;
+* `V_stab` is now the *sole* blocker for 2--4 LOCAL candidates per frame
+  (was 6--7) and 3--10 spectrum candidates (was 27--31);
+* what remains of §13.7 condition 1 is almost entirely
+  allocation-**invariant**: `V_diff` 96--100 refusals per frame, against 4--6
+  components that pass on the pooled table and fail on a split. At 48 topics
+  per split that ratio was 34 split-noise refusals of 55 on the spectrum arm.
+
+So the two frames still short of §13.15 are `PRECISION_LIMITED` by the
+bottleneck tool's reading — with precision free, f1 would have 6 LOCAL
+families and f2 five — and **there is no further allocation to spend**: 192
+topics per frame is every calibration topic the bank holds.
+
+**And qwen3-4b never had the high-ι_A problem** (§7f). Its A curve carries
+five rungs inside `TARGET_BAND` on f0 against the single rung 2507 f0 and
+gemma f2 each had, ι_A lands at 0.61--0.70 against an aim of 0.70, and the
+caliper window sits entirely inside `V_head`'s band — 0.200 of 0.20 on every
+frame, against 48 % and 73 % there. The headroom geometry is a property of a
+model's response to A under a wording, not of the allocation.
+
 ## 7. What the pilot cannot tell you
 
 That the effect exists; that v8 works; anything about B+R or R+B; which
