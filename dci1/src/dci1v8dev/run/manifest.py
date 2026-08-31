@@ -13,6 +13,7 @@ the classification on every row names a development candidate.
 """
 from __future__ import annotations
 
+import types
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -77,11 +78,20 @@ def rule_table() -> dict[str, Any]:
             return value
         if isinstance(value, (tuple, list)):
             return [_plain(v) for v in value]
+        if isinstance(value, Mapping):
+            # A per-model rule table (rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL)
+            # is a constant like any other and the most consequential kind to
+            # leave unbound: it decides what a named replication measures.
+            return {str(k): _plain(v) for k, v in sorted(value.items())}
         raise ProtocolError(f"a rule constant of type {type(value).__name__} "
                             "cannot be bound")
+    # Every uppercase name, and `_plain` refuses what it cannot bind. The
+    # filter used to be an isinstance allow-list, which silently *dropped* a
+    # constant of an unlisted type instead of raising --- so a dict-valued
+    # rule was absent from the signed table with nothing to say so.
     table = {name: _plain(getattr(R, name)) for name in dir(R)
              if name.isupper() and not name.startswith("_")
-             and isinstance(getattr(R, name), (bool, int, float, str, tuple, list))}
+             and not isinstance(getattr(R, name), types.ModuleType)}
     for name in ("WORDING_REFERENCE_BOUND", "WORDING_POLICY_OPTIONS",
                  "WORDING_POLICY_STATUS", "WORDING_POLICY",
                  "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES",
