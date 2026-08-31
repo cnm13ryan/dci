@@ -39,7 +39,7 @@ superseded by the v8 verifier layer. Code: `dci1/src/dci1v8dev/`; tests:
 | full calibration (+ one extension round) | v7's Gate 2 at 192 × 4, corrected chance column; `extension.calibration_extension_plan` | a spectrum family whose admissible rungs do not reach a side, with reserve left, gets ≤ 2 reserve rungs on that side, once |
 | separate LOCAL / SPECTRUM validity | `spectrum/validity.py` | §3 below; **per wording frame** since 2026-08-30 (`docs/V8_FRAME_CONDITIONING.md`) |
 | deterministic spectrum selection | `spectrum/selection.py` | §8 below; per frame |
-| coverage + projected-precision gate | `spectrum/coverage.py` | §4 below; admissible backups `spectrum/backups.py`; per frame, projected at the frame's 96 blocks |
+| coverage + projected-precision gate | `spectrum/coverage.py` | §4 below; admissible backups `spectrum/backups.py`; per frame, projected at the frame's confirmatory blocks (`rules.CONFIRMATORY_BLOCKS_PER_FRAME`) |
 | end to end | `e2e.py`, `tools/v8_pipeline_validation.py` | the whole chain on a synthetic world with seeded draws at the registered sample sizes |
 
 ## 2. The chance basis (both tables)

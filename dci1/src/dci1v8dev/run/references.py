@@ -48,10 +48,13 @@ from dci1v8dev.run import FRAME_DOCUMENT
 from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
 from dci1v8dev.run.context import ModelTree
+from dci1v8dev.run import eligibility as EL
+from dci1v8dev.run.eligibility import local_eligibility, local_support
 from dci1v8dev.run.lifecycle import StageOutcome, run_stage
 from dci1v8dev.run.regime import jsonable
 from dci1v8dev.spectrum.backups import admissible_backups
 from dci1v8dev.spectrum.coverage import FRAME_COVERAGE_RULE
+from dci1v8dev.spectrum.precision import projected_se_delta_r
 from dci1v8dev.spectrum.selection import SelectionRule, select_spectrum
 from dci1v8dev.spectrum.validity import DEFAULT_SPECTRUM_RULE, classify_pool
 
@@ -106,7 +109,7 @@ def survival_summary(pool: Mapping[str, Any], core: Mapping[str, Any],
     fam_below = sorted({label.split(":")[0] for label in below})
     fam_above = sorted({label.split(":")[0] for label in above})
     coverage = selection["coverage"]
-    return {
+    out: dict[str, Any] = {
         "frame": frame,
         "local_valid_families": local_families,
         "n_local_valid_families": len(local_families),
@@ -129,6 +132,15 @@ def survival_summary(pool: Mapping[str, Any], core: Mapping[str, Any],
         "projected_se_beta": coverage["projection"].get("se_beta"),
         "projected_se_beta_at_full_allocation":
             coverage.get("projection_at_full_allocation", {}).get("se_beta"),
+        # The LOCAL arm's own precision projection at the frame's blocks,
+        # beside the spectrum arm's. A variance statement from the v7
+        # rehearsal's measured per-companion SE and between-companion block
+        # correlation (spectrum.precision.MEASURED, the constant the coverage
+        # projection above already runs on) --- it says nothing about
+        # Delta_R(f)'s value, which does not exist. The registered §16.1 model
+        # is less optimistic; tools/v8_local_precision.py reports the range.
+        "projected_delta_r_precision": projected_se_delta_r(
+            n_blocks=R.CONFIRMATORY_BLOCKS_PER_FRAME),
         "n_blocks_projected": coverage["projection"].get("n_blocks"),
         "selected_families": list(selection["families"]),
         "n_spectrum_references": selection["n_spectrum_references"],
@@ -137,6 +149,17 @@ def survival_summary(pool: Mapping[str, Any], core: Mapping[str, Any],
         "meets_min_backups": len(backups["backups"]) >= S.MIN_BACKUPS,
         "iota_a": iota_a,
     }
+    # The LOCAL inclusion verdict is a function of the three survival
+    # requirements above and nothing else --- not of ``state``, not of the
+    # spectrum arm, not of another frame, and (there being none) not of any
+    # composed outcome. Computed here so the requirement and the verdict
+    # cannot drift apart. (run/eligibility.py)
+    out.update({k: v for k, v in
+                local_support(out, frame=frame).items()
+                if k in ("local_supported", "local_support_state",
+                         "local_unsupported_reason",
+                         "local_unsupported_reasons")})
+    return out
 
 
 def wording_sensitive_rungs(gate2_record: Mapping[str, Any], *,
@@ -384,7 +407,17 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
                           if w in supported else None),
             "meets_min_backups": (by_frame[str(w)]["survival"]["meets_min_backups"]
                                   if w in supported else None),
+            # The inclusion verdict, beside the state and never derived from
+            # it: `LOCAL_AND_SPECTRUM` is reachable on four LOCAL-valid
+            # families and one backup, which is §13.15 unsatisfied.
+            "local_supported": bool(
+                by_frame[str(w)]["survival"]["local_supported"]
+                if w in supported else False),
+            "local_unsupported_reason": (
+                by_frame[str(w)]["survival"]["local_unsupported_reason"]
+                if w in supported else EL.NO_OPERATING_POINT),
         } for w in S.FRAMES}
+    eligibility = local_eligibility(by_frame, frames=S.FRAMES)
     return jsonable({
         "stage": S.STAGE_GATE3,
         "artifact_type": S.STAGE_ARTIFACT_TYPE[S.STAGE_GATE3],
@@ -412,6 +445,11 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
         "by_frame": by_frame,
         "frame_states": states,
         "frame_state_vocabulary": list(S.FRAME_STATES),
+        # The LOCAL inclusion rule (researcher decision of 2026-08-31,
+        # V8_FRAME_CONDITIONING.md §4d). Every field is a function of this
+        # stage's own per-frame survival blocks and Gate 2's support status;
+        # no composed cell exists to read and no frame reads another's.
+        "local_eligibility": eligibility,
         "cross_frame": cross_frame_summary(by_frame, supported),
         "estimands": ESTIMANDS,
         "coverage_rule": {"n_blocks": FRAME_COVERAGE_RULE.n_blocks,

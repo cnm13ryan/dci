@@ -96,6 +96,8 @@ def rule_table() -> dict[str, Any]:
                  "WORDING_POLICY_STATUS", "WORDING_POLICY",
                  "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES",
                  "FRAME_FAILURE_STATUSES", "CONFIRMATORY_BLOCKS_PER_FRAME",
+                 "CONFIRMATORY_FRAME_OFFSETS", "CONFIRMATORY_FRAME_PASSES",
+                 "CONFIRMATORY_BLOCKS_TOTAL",
                  "REPORT_AGGREGATION", "DECIDED_CRITERIA",
                  "RESCREEN_TOPIC_SOURCE", "RESCREEN_TOPICS_PER_AREA",
                  "GATE0_TOPICS", "GATE0_DRAWS", "MIN_LOCAL_FAMILIES",
@@ -186,6 +188,12 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                                  "no frame is supported",
             "frame_states": list(S.FRAME_STATES),
             "confirmatory_blocks_per_frame": S.CONFIRMATORY_BLOCKS_PER_FRAME,
+            "confirmatory_passes": S.CONFIRMATORY_FRAME_PASSES,
+            "frame_of_confirmatory_block": "(position + frame_offsets[pass]) "
+                                           "% N_WORDINGS; the offsets are "
+                                           "distinct modulo N_WORDINGS, so a "
+                                           "frame's blocks are distinct "
+                                           "topics",
             "estimands": "Delta_R(f) and the difficulty-response slope per "
                          "frame; cross-frame comparison afterwards; never a "
                          "silent average",
@@ -259,6 +267,12 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                                "recurs within a frame. Four passes is the "
                                "ceiling: every frame then holds every "
                                "calibration topic"},
+                   # The confirmatory allocation is a property of the design,
+                   # not of a model: no override, no run-time input. Bound
+                   # here so the signed manifest states the block count every
+                   # frame-specific estimate will eventually be formed at,
+                   # before any confirmatory row exists.
+                   "confirmatory_allocation": R.confirmatory_allocation(),
                    "completion_caps": list(C.COMPLETION_CAPS),
                    "target_grid": list(C.TARGET_GRID),
                    "focal_grid": list(C.FOCAL_GRID),
