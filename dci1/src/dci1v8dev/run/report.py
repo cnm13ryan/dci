@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from dci1v4.engine import fs, gitinfo
+from dci1v4.errors import ProtocolError
 from dci1v7.protocol import constants as C
 
 from dci1v8dev import rules as R
@@ -251,7 +252,18 @@ def _generations(regime: Mapping[str, Any], second_pass: Mapping[str, Any],
     # block count is the topic count times the passes (calibration.
     # calibration_blocks). Reading the record's own allocation rather than
     # a constant keeps this arithmetic true of the run it describes.
-    passes = int((gate2.get("calibration_allocation") or {}).get("passes", 1))
+    allocation = gate2.get("calibration_allocation") or {}
+    if not allocation.get("passes"):
+        # `calibration_allocation` is a required Gate-2 contract field, so a
+        # record without it is malformed rather than old. Defaulting to one
+        # pass here would silently under-count the run's generations by the
+        # pass factor, which is exactly the kind of stale number this
+        # accounting exists to catch.
+        raise ProtocolError(
+            f"{S.STAGE_GATE2} did not record a calibration_allocation with a "
+            "pass count; the report cannot state a generation total it "
+            "cannot derive")
+    passes = int(allocation["passes"])
     n_blocks = n_topics * passes
     cells = (len(grids_spec["A"]) + 1) + (len(grids_spec["B"]) + 1) + (
         (len(grids_spec["B_extension"]) + 1)

@@ -1092,6 +1092,80 @@ def test_the_four_pass_allocation_walks_the_whole_lifecycle(tmp_path):
     assert rp["generations"]["calibration_blocks_per_run"] == n_blocks
     for block in g2["row_accounting"].values():
         assert block["n_scored"] == block.get("n_rows", block["n_scored"])
+    # the second pass's own budget statement is scoped to *this* model's
+    # allocation, so the plan and the realised Gate-2 candidate count agree
+    sp = walked["payloads"][S.STAGE_SECOND_PASS]
+    per_rung = sp["retention"]["per_rung_calibration_generations"]
+    assert per_rung == R.calibration_generations_per_rung(MODEL)
+    assert per_rung == 2 * R.CALIBRATION_GENERATIONS_PER_RUNG
+    assert sp["retention"]["config"]["generations_per_rung"] == per_rung
+    assert sp["retention"]["calibration_cost_generations"] == \
+        sp["retention"]["n_forwarded"] * per_rung
     # and no composed cell exists anywhere before the freeze
     for payload in (g2, g3, rp):
         assert payload["no_composed_cells"] is True
+
+
+def test_the_report_refuses_a_gate2_record_with_no_pass_count():
+    """The generation total is derived from the record's own pass count, and
+    `calibration_allocation` is a required Gate-2 contract field. A record
+    without it is malformed, not old: silently reading one pass would
+    under-count the run's generations by the pass factor, which is the exact
+    class of stale number this accounting exists to catch."""
+    gate2 = {"grids": {"A": [1], "B": [1], "B_extension": [],
+                       "focal_extension_measured": False},
+             "calibration_topic_ids": ["t0", "t1"],
+             "calibration_population": {"n_measured": 1},
+             "extension": {"n_rows": 0}}
+    regime = {"n_rungs_measured": 1,
+              "cap_selection": {"truncation_by_cap": {}}}
+    args = dict(regime=regime, second_pass={"cost_generations": 0},
+                gate0={"rows": 0})
+    with pytest.raises(ProtocolError, match="calibration_allocation"):
+        RPT._generations(gate2=gate2, **args)
+    # with the block present it derives the count from the pass factor
+    for passes in (2, 4):
+        ok = {**gate2, "calibration_allocation": {"passes": passes}}
+        out = RPT._generations(gate2=ok, **args)
+        assert out["calibration_passes"] == passes
+        assert out["calibration_blocks_per_run"] == 2 * passes
+
+
+def test_the_realised_allocation_refuses_an_unbalanced_frame():
+    """The other half of `assert_allocation_realised`, on the mandatory path
+    and previously only exercised through the happy case: §13.7 compares two
+    halves, so a frame whose topics do not split evenly is refused even when
+    the total is right. A frame short of the count is refused too."""
+    grid, _cand = rows_for({w: _default_rates() for w in S.FRAMES},
+                           topics_per_split=24, draws=1)
+    by_frame = {w: rows_of_frame(grid, w) for w in S.FRAMES}
+    expected = _topics_per_frame(topics_per_split=24)
+    CAL.assert_allocation_realised(by_frame,
+                                   expected_topics_per_frame=expected,
+                                   where="test")
+    # move one topic across the split boundary: the count is unchanged and
+    # the balance is not
+    skewed = {w: [dict(r) for r in rows] for w, rows in by_frame.items()}
+    victim = sorted({r["topic_id"] for r in skewed[0]
+                     if r["topic_split"] == C.CALIBRATION_A})[0]
+    for r in skewed[0]:
+        if r["topic_id"] == victim:
+            r["topic_split"] = C.CALIBRATION_B
+    with pytest.raises(ProtocolError, match="two halves"):
+        CAL.assert_allocation_realised(skewed,
+                                       expected_topics_per_frame=expected,
+                                       where="test")
+    # and a frame carrying only one split at all
+    one_sided = {w: [r for r in rows if r["topic_split"] == C.CALIBRATION_A]
+                 for w, rows in by_frame.items()}
+    with pytest.raises(ProtocolError):
+        CAL.assert_allocation_realised(one_sided,
+                                       expected_topics_per_frame=expected,
+                                       where="test")
+
+
+def test_an_empty_pass_list_is_refused():
+    """A zero-pass allocation would measure nothing; `rules` refuses it at
+    import for the table and here for any caller."""
+    with pytest.raises(AssertionError, match="at least one calibration pass"):
+        R._assert_offsets((), "no passes")
