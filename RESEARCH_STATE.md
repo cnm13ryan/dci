@@ -111,6 +111,16 @@ evidence, durable and source trees, and `assert_own_study` refuses a stage
 record whose `study_id` is another revision's. No v4r2 and no v4r3 record was
 edited by any of it.
 
+Definitions drift across the revisions — A's counter, the word-list order,
+wording grammar, family counts, where v5's decision packets live — and
+[`dci1/docs/VERSION_DRIFT.md`](dci1/docs/VERSION_DRIFT.md) says which belongs
+to which. On 2026-08-29 A's counter was unified with the eight marker
+counters (one function, nine target strings; §9.2's segment-then-fold order)
+and the non-marker wordings were made to render grammatical number at q = 1
+— both **prospective**, on branch `maint/v7-docs-marker-unification`, with a
+read-only audit of every stored row (3,507,000 rows, 165,062,472 A/MK
+verdicts) finding no verdict that moves; `CHANGES_SCIENTIFIC.md` 2026-08-29.
+
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
 A read-only diagnostic established that the §13.2 reference criterion fails for

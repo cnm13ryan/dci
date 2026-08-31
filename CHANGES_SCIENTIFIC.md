@@ -13,6 +13,125 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-08-29 — A and MK1–MK8 share one marker counter, and non-marker wordings render grammatical number (both prospective; no stored verdict and no registered v7 record moves)
+
+**What changed.** Two things, in `dci1/src/dci1v7`, on branch
+`maint/v7-docs-marker-unification`, both prospective.
+
+1. **One marker counter.** `verifiers.statistics.s0_count` is now
+   `marker_count(text, TARGET_WORD)`: A is scored by the same function as the
+   eight Tier-1 marker families, in §9.2's *segment, then lower-case each
+   word* order. Until now A's counter was `dci1v4.verifiers.target.s0_count`,
+   carried byte-identically from the closed v3 instrument, which lower-cases
+   the **whole response and then segments**; the markers segmented first. The
+   two orders differ on exactly one character of Unicode, U+0130 LATIN
+   CAPITAL LETTER I WITH DOT ABOVE, whose lower-case form is `i` plus a
+   combining mark that ends an alphabetic run (`words.assert_single_splitter`;
+   re-derived over the whole range in
+   `tests_v7/test_marker_counter_unification.py`): `İhowever` read 1 under A's
+   old rule and 0 under the markers'. v5 §9.2 — the registered text of v6 and
+   v7 by incorporation — states S0 in fold-first words and, in the same
+   paragraph, that *every Tier-1 family uses the same function with a
+   different target string*; both sentences could not be literally true. The
+   code now makes the second true and amends the first prospectively; the
+   registered v5/v6/v7 documents are not rewritten. Every v7 module that
+   scores, audits or mutates A (`compliance`, `boundary`, `specification`,
+   `microcase`, `mutation`, `verifier_audit`, `gate1`, `witnesses`,
+   `wording_suite`, `realistic_witness`) reads the package's `s0_count`; the
+   prose-only reimplementation `independent.s0` transcribes the same order;
+   A's `segmentation_drift` reading in `specification._outcome_reading` is
+   now v4r2's fold-first composition, the same reading every family and B are
+   audited against (before, it was the reverse, because A's registered rule
+   *was* the fold-first one). `dci1v4.verifiers.target` is untouched: S1 and
+   S2 stay there and its fold-first S0 still scores every earlier revision's
+   evidence. `verifiers.__init__` still hashes it by path.
+   `constraints.marker_population()` now records `counting_function`,
+   `same_by_construction` (prompt grammar, operator, statistic, case handling,
+   segmentation, pass, graded and non-vacuity rules) and
+   `deliberately_different` (marker identity, length, discourse role, natural
+   frequency, reserve), so the same-form claim is stated at its true scope.
+
+2. **Grammatical number in every wording.** `protocol/wordings.py` carries
+   two placeholders, `{s}` (a noun's plural ending) and `{v}` (a verb's
+   singular ending), filled by `number_fields(q)`; A's and the Tier-1
+   templates already carried `time{s}`. At q = 1 the non-marker templates
+   rendered *exactly 1 semicolons*, *at most 1 words*, *at least 1 words*,
+   *at most 1 sentences*, *1 comma characters*, *1 upper-case English
+   letters* and *1 word contain*; they render *1 semicolon*, *1 word*,
+   *1 sentence*, *1 comma character*, *1 upper-case English letter* and
+   *1 word contains*. Affected: RF1–RF12, CR5, CR12, CL7, CL8, XC1–XC3, PS1,
+   PS2, at q = 1 only (CL7's declared range starts at 5, so nothing it
+   renders moves). The eight carried RF templates are derived from v4r2's by
+   a checked rewrite (`_number_aware`) that must reproduce v4r2's text byte
+   for byte at every severity but 1, and `assert_rf_wordings_are_carried`
+   now measures both halves: byte-identity at q ≠ 1, number-only differences
+   at q = 1. `assert_grammatical_number` sweeps every wording of A, B and
+   all 40 families at every declared severity (2,696 renderings). No word
+   count moves, so §7.5's caliper and `assert_severity_invariance` are
+   untouched.
+
+**Which results are affected.** None retroactively.
+
+* *Verifier.* `tools/v7_marker_counter_rescore_audit.py` recomputed every A
+  and marker verdict on every stored `scored.jsonl` row of every evidence
+  root — `dci1v4r3`, `dci1v4r4`, `dci1v5`, `dci1v6`, `dci1v7` and the five
+  `dci1v7-development*` rehearsal roots: **455 files, 3,507,000 rows,
+  165,062,472 verdict entries** — under both orders, read-only. **0 rows
+  contain U+0130; 0 statistics, 0 pass verdicts and 0 graded scores
+  differ; 0 stored statistics fail to reproduce**
+  (`dci1/reports/dci1v7/development/marker_counter_unification_audit.json`).
+  The frozen boundary corpus (177 cases; the 48 carried v3 A expectations)
+  reproduces and the microcase phenomenon texts agree. Every existing A
+  verdict is therefore what the unified counter would have recorded. The
+  registered v7 artifacts stand as they are: the `canonical_verifier_hash`
+  they carry is the fold-first layer's, and a replication run under this
+  code records a different one — which is what §10.6 requires of a verifier
+  change however invisible its behaviour, and what stops the two from being
+  confused.
+* *Wording.* This is text the model is shown. The q = 1 instances of the
+  families listed above are a different treatment under the new rendering;
+  rows generated under the old one carry the old `constraint_sentence`, and
+  `carryover.assert_wordings_match_stored` refuses them against the new
+  text rather than admitting them. `wording_source_hash` moves. No row is
+  reinterpreted.
+
+**Prospective, and what was running.** Both changes govern the next
+registration — v8, or a v7 re-run the researcher decides to make — and
+nothing that has run. The researcher's standing preference is recorded: a
+change to text shown to the model is a prospective change and is never
+patched into an executing experiment. At the time of the change three GPU
+processes were executing `dci1v7` from the main worktree at `2a5ae8d`
+(`dci1v7-development-r4` GATE_2_FOCAL_CALIBRATION on gemma-3n-e4b-it with
+its vLLM backend; `dci1v7-development-r5` REGIME_SCREEN on gemma-3n-e2b-it);
+they were not touched, the evidence roots they write were read and not
+written, and this branch was not merged under them.
+
+**Comparability.** A-side numbers from any revision remain comparable with a
+future run under the unified counter unless a response containing U+0130
+appears, which the audit tool detects and reports by row. The q = 1
+instances of the listed families are not prompt-identical across the
+wording change and must not be pooled with rows generated after it; every
+other instance renders byte-identically (proved for RF1–RF8 by
+`assert_rf_wordings_are_carried`; the v5/v6-authored templates change only
+where `{s}`/`{v}` render at q = 1).
+
+**What did not change.** No threshold, estimand, reference-selection rule,
+ladder, reserve, seed, decoding parameter or admission rule. Library sizes
+(40/350/656/674/42; selectable 37/326/632). A's, B's and the Tier-1
+wordings, byte for byte. The estimand layer.
+
+**Also in the same change, not scientific.** Stale pointers corrected: v5's
+D4 packet and marker-frequency measurement are cited at v5's path
+(`dci1/reports/dci1v5/…`) instead of a `dci1v7` path that never existed;
+module docstrings that still called the library *v5's*, said *37 families*,
+*no probe-only family is registered* or *the v4r3 instrument layer* now
+state this revision's facts with the provenance kept;
+`tests_v7/test_documentation_paths.py` checks every repository path v7
+names; `dci1/docs/VERSION_DRIFT.md` says which definition belongs to which
+revision.
+
+---
+
 ## 2026-08-29 — the final report's status trace compares with what Gate 5 binds (Gate 2 ∪ Gate 3C)
 
 **What changed.** `run/final_report_checks` required the reported

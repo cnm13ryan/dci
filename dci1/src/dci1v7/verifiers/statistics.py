@@ -1,4 +1,7 @@
-"""Counted statistics for every v5 family (§7.6, §9.2).
+"""Counted statistics for every v7 family (§7.6, §9.2).
+
+The library is v5's, carried through v6 into this namespace; "new in v5" and
+"carried from v4r4" below are provenance, not descriptions of this revision.
 
 Every statistic is a deterministic pure function of the response text alone:
 it receives no companion identity, cell label, order, severity, or other
@@ -10,13 +13,23 @@ form changes the *predicate*, not the counting: `XC2` counts what `RF5`
 counts and `XC3` counts what `RF12` counts, which is why §10.2's carry-over
 evidence covers their numerators and only their form is new.
 
-**The eight marker counters are one function with eight target strings**, and
-that is what makes v5's same-form claim an identity of implementation rather
-than a resemblance of prose. They use §9.2's convention --- segment the
-answer, then fold each word --- and **not** S0's, which folds first. The two
-differ on exactly one character of Unicode (``verifiers/words.py``) and
+**A's counter and the eight marker counters are one function with nine
+target strings**, ``marker_count``, and that is what makes the same-form claim
+an identity of implementation rather than a resemblance of prose. All nine use
+§9.2's convention --- segment the answer, then fold each word.
 `marker_thus` is carried from v4r4's `CX1`, which made the same choice for the
 same reason.
+
+*History of A's counter.* Until 2026-08-29 A was scored by
+``dci1v4.verifiers.target.s0_count``, carried byte-identically from the closed
+v3 instrument, which lower-cases the whole response **before** segmenting;
+the markers segmented first. The two orders differ on exactly one character
+of Unicode, U+0130 (``verifiers/words.py``), which occurs in no response any
+DCI-1 revision has scored, so no stored A or marker verdict moves under the
+shared implementation --- measured over every stored row by
+``tools/v7_marker_counter_rescore_audit.py`` rather than asserted. The change
+is prospective and is entered in ``CHANGES_SCIENTIFIC.md``; ``dci1v4``'s
+``s0_count`` is untouched and still scores every earlier revision's evidence.
 
 **Two statistics read the word as written, not as folded**, because they count
 *letters* rather than testing them: ``one_letter`` and ``focal_statistic``,
@@ -28,7 +41,7 @@ from __future__ import annotations
 from typing import Callable
 
 from dci1v7.verifiers.constraints import (
-    FAMILIES, FAMILY_IDS, MARKER_WORDS, STATISTIC_IDS,
+    FAMILIES, FAMILY_IDS, MARKER_WORDS, STATISTIC_IDS, TARGET_WORD,
 )
 from dci1v7.verifiers.words import alpha_runs, sentence_units, words_lower
 
@@ -37,13 +50,6 @@ __all__ = ["focal_statistic", "word_count", "STATISTICS", "FAMILY_STATISTICS",
            "marker_count", "MARKER_STATISTICS", "CARRIED_STATISTICS",
            "NEW_STATISTICS", "alpha_runs", "words_lower", "sentence_units",
            "VOWELS", "s0_count"]
-
-#: A's own counter, carried byte-identically from the closed v3 instrument
-#: through ``dci1v4``. §9.2 registers it in its own words --- lower-case the
-#: whole response, then find the alphabetic runs --- and it is re-exported
-#: here rather than reimplemented so the identity is structural.
-from dci1v4.verifiers.target import s0_count  # noqa: E402
-
 
 def word_count(text: str) -> int:
     """The rate denominator: alphabetic runs, §9.2's *word*."""
@@ -58,11 +64,25 @@ def focal_statistic(text: str) -> int:
 def marker_count(text: str, marker: str) -> int:
     """§9.2's convention: segment the answer, then fold each word.
 
-    One function, eight target strings. A Tier-1 family is A's *predicate
-    form* over a different marker word, and this is where that is an identity
-    of implementation rather than a claim about prose.
+    One function, nine target strings: A's own word and the eight registered
+    markers. A Tier-1 family is A's *predicate form* over a different marker
+    word, and this is where that is an identity of implementation rather than
+    a claim about prose --- ``s0_count`` below is this function with
+    ``TARGET_WORD`` and nothing else.
     """
     return sum(1 for w in words_lower(text) if w == marker)
+
+
+def s0_count(text: str) -> int:
+    """A's counter, S0: the marker counter with A's own word.
+
+    Not a separate implementation. ``s0_count(text) == marker_count(text,
+    TARGET_WORD)`` by definition, which is the literal form of §9.2's claim
+    that every Tier-1 family uses the same function with a different target
+    string. A's declared alternatives S1 and S2 (§9.2, robustness readings
+    that never redefine X_A) stay in ``dci1v4.verifiers.target``.
+    """
+    return marker_count(text, TARGET_WORD)
 
 
 def _marker(marker: str) -> Callable[[str], int]:

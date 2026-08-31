@@ -26,8 +26,7 @@ from dci1v7.protocol.wordings import (
 from dci1v7.verifiers.boundary import instrument_population
 from dci1v7.verifiers.compliance import graded, passes
 from dci1v7.verifiers.constraints import Constraint, FAMILIES
-from dci1v7.verifiers.statistics import STATISTICS, focal_statistic
-from dci1v4.verifiers.target import s0_count
+from dci1v7.verifiers.statistics import STATISTICS, focal_statistic, s0_count
 
 __all__ = ["SUITE_RESPONSES", "run_wording_suite"]
 
