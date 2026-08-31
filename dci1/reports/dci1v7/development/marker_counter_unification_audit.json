@@ -1,7 +1,7 @@
 {
  "tool": "tools/v7_marker_counter_rescore_audit.py",
- "started_utc": "2026-08-29T20:03:02.286678+00:00",
- "finished_utc": "2026-08-29T20:04:19.280852+00:00",
+ "started_utc": "2026-08-31T15:04:19.203382+00:00",
+ "finished_utc": "2026-08-31T15:07:05.337007+00:00",
  "evidence": "/home/cnm13ryan/git/dci/dci1/evidence",
  "roots": [
   "dci1v4r3",
@@ -23,11 +23,11 @@
   "only_separating_character": "U+0130"
  },
  "totals": {
-  "files": 455,
-  "rows": 3507000,
+  "files": 532,
+  "rows": 4346736,
   "rows_with_u0130": 0,
-  "entries_checked": 165062472,
-  "entries_recomputed": 165062472,
+  "entries_checked": 199912752,
+  "entries_recomputed": 199912752,
   "reproduction_mismatches": 0,
   "statistics_changed": 0,
   "verdicts_changed": 0,
@@ -198,42 +198,47 @@
    }
   },
   "dci1v7-development-r4": {
-   "files": 60,
-   "rows": 440928,
+   "files": 94,
+   "rows": 866976,
    "rows_with_u0130": 0,
-   "entries_checked": 17351136,
-   "entries_recomputed": 17351136,
+   "entries_checked": 37378272,
+   "entries_recomputed": 37378272,
    "reproduction_mismatches": 0,
    "statistics_changed": 0,
    "verdicts_changed": 0,
    "graded_changed": 0,
    "kinds_seen": {
-    "A": 617952,
-    "MK1": 2077824,
-    "MK2": 2077824,
-    "MK3": 2168448,
-    "MK4": 2210304,
-    "MK5": 2045568,
-    "MK6": 2045568,
-    "MK7": 1971456,
-    "MK8": 2136192
+    "A": 869280,
+    "MK5": 4975680,
+    "MK4": 5140416,
+    "MK6": 4975680,
+    "MK1": 4824192,
+    "MK2": 4824192,
+    "MK3": 3999360,
+    "MK7": 3802368,
+    "MK8": 3967104
    }
   },
   "dci1v7-development-r5": {
-   "files": 3,
-   "rows": 5448,
+   "files": 46,
+   "rows": 419136,
    "rows_with_u0130": 0,
-   "entries_checked": 53832,
-   "entries_recomputed": 53832,
+   "entries_checked": 14876976,
+   "entries_recomputed": 14876976,
    "reproduction_mismatches": 0,
    "statistics_changed": 0,
    "verdicts_changed": 0,
    "graded_changed": 0,
    "kinds_seen": {
-    "A": 5448,
-    "MK1": 16128,
-    "MK2": 16128,
-    "MK3": 16128
+    "A": 444144,
+    "MK2": 1929024,
+    "MK1": 1929024,
+    "MK5": 1912896,
+    "MK3": 1745280,
+    "MK4": 1729152,
+    "MK6": 1729152,
+    "MK7": 1729152,
+    "MK8": 1729152
    }
   }
  },

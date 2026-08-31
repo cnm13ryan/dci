@@ -139,14 +139,24 @@ def audit_file(args: tuple[str, int]) -> dict[str, Any]:
             if not raw.strip():
                 continue
             out["rows"] += 1
-            has_splitter = SPLITTER.encode("utf-8") in raw
+            # Decode before looking for the splitter. The two writers in this
+            # repository disagree about escaping: `dci1v4.engine.fs` and
+            # `.store` dump with ensure_ascii=False, so U+0130 is stored as
+            # its UTF-8 bytes, while `dci1v7.run.execute` takes json.dumps'
+            # default ensure_ascii=True and stores it as the ASCII escape
+            # \u0130. A byte search finds the first and can never find the
+            # second, which would silently under-count `rows_with_u0130` on
+            # every v7-written file --- and, worse, let the skip below drop
+            # exactly the rows the audit exists to examine. Parsing every row
+            # costs the parse and keeps the promise.
+            row = json.loads(raw)
+            text = row.get("raw_response") or ""
+            has_splitter = SPLITTER in text
             if has_splitter:
                 out["rows_with_u0130"] += 1
             if not has_splitter and (recompute_every <= 0
                                      or index % recompute_every):
                 continue
-            row = json.loads(raw)
-            text = row.get("raw_response") or ""
             counts = _RowCounts(text)
             for score in row.get("scores", ()):
                 kind = score.get("kind")
