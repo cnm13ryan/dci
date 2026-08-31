@@ -24,10 +24,27 @@ authoritative orientation is the repository's `RESEARCH_STATE.md` §4b.
 ## A's wording
 
 Four templates, `Use the word however exactly {n} time(s).` and three
-alternates, authored for v3 (`85fe950`), restated in
-`dci1v4/protocol/wordings.py` (`09c3896`) and carried **byte-identically**
-by every later revision through `target_wordings`. Singular at n = 1 from
-the start. Never changed.
+alternates, authored for v3 (`85fe950`) and restated in
+`dci1v4/protocol/wordings.py` (`09c3896`).
+
+**The restatement was not byte-identical, and this is a model-facing
+difference.** Only the canonical template carried unchanged. v4 drops the
+noun phrase *the word* from alternates 1 and 2, and the locative *in your
+answer* from alternate 3:
+
+| | v3 (`dci1v3.protocol.wordings`) | v4 (`dci1v4.protocol.wordings`) |
+|---|---|---|
+| canonical | `Use the word however exactly 1 time.` | *identical* |
+| alt 1 | `Your answer must contain **the word** however exactly 1 time.` | `Your answer must contain however exactly 1 time.` |
+| alt 2 | `Include **the word** however exactly 1 time in your answer.` | `Include however exactly 1 time in your answer.` |
+| alt 3 | `The word however must appear exactly 1 time **in your answer**.` | `The word however must appear exactly 1 time.` |
+
+From v4 onward the four are carried byte-identically by every later
+revision through `target_wordings`. Singular at n = 1 from the start.
+
+A v3 A-rate is therefore **not** prompt-identical to a v4-or-later one on
+three of the four alternates, and must not be pooled across that boundary
+--- which is exactly the mixing this document exists to prevent.
 
 ## The marker families
 
