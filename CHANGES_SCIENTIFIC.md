@@ -13,6 +13,58 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-01 — v7's foreign-tree admission list was discovered from a gitignored directory, so it was empty in every fresh checkout; both halves of the guard now hold on the path's identity (no stored record moves)
+
+**What changed.** Two things in `dci1/src/dci1v7/engine/context.py`.
+
+1. **`foreign_roots()` names the historical trees instead of discovering
+   them.** Its evidence and durable halves were built by `iterdir()` over
+   `dci1/evidence` and `dci1/durable_root`. `dci1/.gitignore` ignores
+   `evidence/`, so a list enumerated from it is an **empty** list in a fresh
+   clone and in every secondary `git worktree` — which is where a new reader
+   starts. The roots are now constructed from `FOREIGN_STUDY_PREFIXES`,
+   present or not; the `iterdir()` sweep is kept, because a prefix is not
+   always the whole directory name (`br-pilot` names `br-pilot-v4`) and a
+   suffixed variant nobody anticipated is still foreign.
+2. **`StudyContext` refuses a root on any component of its path, not on its
+   leaf.** `run/cli._tree` hands `--root` to `synthetic_context` or
+   `development_context`, and both append `evidence` and `durable` — so the
+   leaf a context receives is always one of those two names and the foreign
+   name, when there is one, is an ancestor.
+
+**Why this is an admission rule and not tooling.** `foreign_roots()` also
+feeds `engine/guards.classify` and through it `assert_registered_v5_input`,
+§14.2's rule for what may enter a v7 analysis. In a fresh checkout that
+rule's deny-by-name half saw nothing but the hardcoded `src/` and `tests_*`
+entries for every tree absent from `guards.FOREIGN_TREES`; it now refuses
+them whether or not they have been fetched. §14.2's **positive** half — an
+input must prove it lies inside this context's own roots — was never
+affected, and it is the half the rule rests on.
+
+**What did not change: any number.** The guard is latent and always was. No
+v7 tree has ever been written inside a historical one: every `dci1v7*` root
+under `dci1/evidence` and `dci1/durable_root` is a direct child, and the
+nested ones are the development namespace's own
+`dci1v7-development*/{evidence,durable}/dci1v7`. All fourteen roots v7
+actually uses — the two registered roots and the five development
+namespaces' ten — are still accepted, checked against the new rule. The
+change refuses strictly more and admits nothing new, so no stored record,
+estimate or report moves. Comparability: none affected.
+
+**History.** The refusal had read as a worktree-flaky test; it was reporting
+that the guard was inoperative exactly where a new checkout first runs it
+(PR #31). That PR's first fix tested `root.name`, which cannot fire on the
+one path an operator types, `--root`; an automated review on the PR reported
+the ancestor case and it reproduced by toggling only disk presence —
+`--root dci1/evidence/dci1v4r4` refused in a populated worktree, accepted in
+a fresh one. `tests_v7/test_isolation.py` gains three tests: the deny list
+names each historical tree without listing the disk, a foreign name is
+refused as an ancestor through both rooted constructors, and a `--root` into
+this repository's own historical trees is refused. All three fail against
+the previous implementation. Neither the original defect nor the incomplete
+fix was visible to CI: `.github/workflows/cpu-tests.yml` runs `tests/` and
+`exploratory/tests`, and `dci1/tests_v7` is in neither.
+
 ## 2026-08-29 — A and MK1–MK8 share one marker counter, and non-marker wordings render grammatical number (both prospective; no stored verdict and no registered v7 record moves)
 
 **What changed.** Two things, in `dci1/src/dci1v7`, on branch
