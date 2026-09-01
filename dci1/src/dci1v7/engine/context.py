@@ -61,9 +61,24 @@ REPO_ROOT = DCI1_ROOT.parent
 
 
 def foreign_roots() -> tuple[Path, ...]:
-    """Every earlier study's evidence, durable and source tree."""
+    """Every earlier study's evidence, durable and source tree.
+
+    The evidence and durable halves are **named, not discovered**. Listing a
+    directory can only report what is present, and ``dci1/evidence`` is
+    gitignored -- so in a fresh clone, and in every secondary ``git
+    worktree``, a deny list enumerated from that tree is an *empty* deny list,
+    and the overlap test in ``StudyContext`` passed exactly the roots it
+    exists to refuse. The prefixes are known without the filesystem, so the
+    roots are constructed from them whether or not the trees were ever
+    fetched. The ``iterdir()`` sweep stays on top of that, because a prefix
+    is not always the whole directory name (``br-pilot`` names
+    ``br-pilot-v4``) and a suffixed variant nobody anticipated is still
+    foreign; where that sweep cannot see the tree, ``StudyContext`` refuses
+    the path on the prefix its components carry.
+    """
     roots: list[Path] = []
     for parent in (DCI1_ROOT / "evidence", DCI1_ROOT / "durable_root"):
+        roots += [parent / prefix for prefix in FOREIGN_STUDY_PREFIXES]
         if not parent.exists():
             continue
         for child in parent.iterdir():
@@ -76,7 +91,7 @@ def foreign_roots() -> tuple[Path, ...]:
               DCI1_ROOT / "tests_v3", DCI1_ROOT / "tests_v4",
               DCI1_ROOT / "tests_v4r3", DCI1_ROOT / "tests_v4r4",
               DCI1_ROOT / "tests_v5", DCI1_ROOT / "tests_v6"]
-    return tuple(roots)
+    return tuple(dict.fromkeys(roots))
 
 
 @dataclass(frozen=True)
@@ -97,17 +112,22 @@ class StudyContext:
                 f"{expected!r}, got {self.study_id!r}")
         for root in (Path(self.evidence_root), Path(self.durable_root)):
             # A path that *names* another study is refused whether or not that
-            # tree happens to be on this disk. `foreign_roots()` can only list
-            # what exists, and `evidence/` is gitignored -- so in a fresh clone,
-            # or any secondary worktree, the overlap test below saw no
-            # evidence-side foreign root and this guard silently did nothing.
-            # The danger is the path's identity, not its current presence.
-            name = root.name
-            if any(name.startswith(p) for p in FOREIGN_STUDY_PREFIXES):
+            # tree happens to be on this disk, and the name is carried by the
+            # whole path rather than by its last component: `--root` reaches
+            # `synthetic_context` and `development_context`, which append
+            # `evidence` and `durable`, so the root a study is handed is never
+            # itself the foreign name -- an ancestor of it is. Testing the leaf
+            # alone would leave `--root dci1/evidence/dci1v4r4` accepted in
+            # every checkout where that tree has not been written.
+            named = next((part for part in root.parts
+                          for p in FOREIGN_STUDY_PREFIXES
+                          if part.startswith(p)), None)
+            if named is not None:
                 raise ProtocolError(
-                    f"the v5 study root {root} is named for the historical "
-                    f"study {name!r}; v5 never writes into another study's "
-                    "tree and never adopts one as its own")
+                    f"the v7 study root {root} passes through {named!r}, a "
+                    "directory named for the historical study of that name; "
+                    "v7 never writes into another study's tree and never "
+                    "adopts one as its own")
         for root in (Path(self.evidence_root) / EVIDENCE_DIRNAME,
                      Path(self.durable_root) / EVIDENCE_DIRNAME):
             resolved = root.resolve()
@@ -116,8 +136,8 @@ class StudyContext:
                 if resolved.is_relative_to(other) or \
                         other.is_relative_to(resolved):
                     raise ProtocolError(
-                        f"the v5 study root {resolved} overlaps the "
-                        f"historical tree {foreign}; v5 never writes into "
+                        f"the v7 study root {resolved} overlaps the "
+                        f"historical tree {foreign}; v7 never writes into "
                         "another study's tree and never adopts one as its own")
         # A non-registered namespace never touches the registered roots:
         # not inside them, not containing them. The synthetic harness roots
