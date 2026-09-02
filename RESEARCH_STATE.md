@@ -373,7 +373,13 @@ declared on the freeze. Validated on synthetic evidence only before any
 real stage ran: 29 fast tests, the seven-stage synthetic walk, the
 augmented §13.11 producer reproducing a stored row byte-for-byte, the
 pilot kernel re-verdicting r11 identically, and a companion-dependent
-effect read with the registered sign. The real run's membership, freeze
+effect read with the registered sign. The real run (2026-09-02): the top-up measured seven rungs on four
+frames and moved no verdict (every in-caliper-at-screen rung failed the
+full V(R) at calibration; untouched frames reproduced the pilot); the
+membership was locked and all four models frozen at 5870ddf --- LOCAL
+`qwen3-4b` f0+f3 and `gemma-3n-e2b-it` f1+f3, SPECTRUM on fourteen
+frames of four models, 384 blocks per frame, 1,671,168 protected
+generations --- and generation began on both cards. The membership, freeze
 and results are recorded in
 `dci1/reports/dci1v8dev/confirmatory_membership.md` and
 `dci1/reports/dci1v8dev/confirmatory/FINAL_REPORT.md` as they exist.
