@@ -11,14 +11,12 @@ is measured on ``passes / N_WORDINGS`` of the topics, half from each §13.7
 split. Nothing is pooled and no topic recurs inside a frame; what grows
 with the pass count is one frame's own information.
 
-The default is two passes at (0, 2) --- 96 topics per frame, 48 per split
-(the amendment of 2026-08-30, after r5/r6 measured SE(iota) on the precision
-floor). ``qwen3-4b`` runs four at (0, 1, 2, 3) --- all 192 topics per frame,
-96 per split, the ceiling the topic bank permits (the amendment of
-2026-08-31, after r8 measured §13.7 condition 1 refusing rungs on the
-*split* coordinate rather than the pooled one). Both are measurement; no
-admission threshold differs between them, and this stage's record states
-which one produced its numbers.
+Every model runs four passes at (0, 1, 2, 3) --- all 192 topics per frame,
+96 per split, the ceiling the topic bank permits (universal since the
+pre-freeze audit of 2026-09-02; two passes were the default from 2026-08-30
+and a per-model raise to four existed from 2026-08-31, both recorded in
+``rules``). The allocation is measurement; no admission threshold depends
+on it, and this stage's record states which one produced its numbers.
 
 1. A's grid, B's grid and the unconstrained cell (``grid-A``, ``grid-B``),
    on every block of every pass; every block is rendered under one frame
@@ -238,13 +236,11 @@ def calibration_allocation(topics: Sequence[Mapping[str, Any]], *,
                 "information grows with the pass count at proportional "
                 "Gate-2 generation. No frame is pooled with another "
                 "(rules.calibration_frame_offsets)",
-        "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (two passes, 96 "
-                     "topics per frame; prompted by r5/r6's measured "
-                     "per-frame SE(iota) = 0.0497 against the unchanged 0.05 "
-                     "floor) and 2026-08-31 (four passes for qwen3-4b, 192 "
-                     "topics per frame at the topic ceiling; prompted by "
-                     "r8's split-level V_coord refusals under §13.7 "
-                     "condition 1). No threshold moved at either step.",
+        "amendment": "CHANGES_SCIENTIFIC.md 2026-09-02 (pre-freeze audit): "
+                     "four passes, 192 topics per frame, universal for every "
+                     "model (rules.CALIBRATION_POLICY); supersedes the two "
+                     "passes of 2026-08-30 and the per-model raise of "
+                     "2026-08-31. No threshold moved at any step.",
     }
 
 
