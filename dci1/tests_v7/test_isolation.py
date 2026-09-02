@@ -24,11 +24,7 @@ def test_study_id_is_hyphen_free_and_not_a_prefix_extension():
 
 def test_v4r4_is_foreign_to_v5():
     assert "dci1v4r4" in dci1v7.FOREIGN_STUDY_PREFIXES
-    names = {root.name for root in foreign_roots()}
-    assert "dci1v4r4" in names or not (DCI1_ROOT / "evidence"
-                                       / "dci1v4r4").exists()
-    assert "dci1v4r4" in {root.name for root in foreign_roots()
-                          if root.name.startswith("dci1v4r4")} or True
+    assert "dci1v4r4" in {root.name for root in foreign_roots()}
 
 
 def test_v5_cannot_adopt_a_v4r4_evidence_root():
@@ -37,6 +33,97 @@ def test_v5_cannot_adopt_a_v4r4_evidence_root():
                      repo_root=DCI1_ROOT.parent,
                      evidence_root=DCI1_ROOT / "evidence" / "dci1v4r4",
                      durable_root=DCI1_ROOT / "durable_root")
+
+
+def test_foreign_roots_names_the_historical_trees_without_listing_the_disk():
+    """The deny list is constructed from the prefixes, not discovered.
+
+    `dci1/evidence` is gitignored. A deny list enumerated from it is an
+    *empty* deny list in a fresh clone and in every secondary `git worktree`,
+    which is where a new reader starts -- so every historical tree must be
+    named whether or not it has been fetched.
+    """
+    named = {str(root) for root in foreign_roots()}
+    for parent in (DCI1_ROOT / "evidence", DCI1_ROOT / "durable_root"):
+        for prefix in dci1v7.FOREIGN_STUDY_PREFIXES:
+            root = parent / prefix
+            assert str(root) in named, f"{root} is listed only when it exists"
+
+
+def test_the_foreign_root_refusal_does_not_depend_on_what_is_on_disk(tmp_path):
+    """The guard above used to pass only where the foreign tree existed.
+
+    `foreign_roots()` could list only what is present, and `evidence/` is
+    gitignored -- so in a fresh clone, and in every secondary `git worktree`,
+    the overlap test found no evidence-side `dci1v4r4` and the refusal never
+    fired. The test read as worktree-flaky; it was reporting that a guard
+    against adopting another study's tree was inoperative exactly where a new
+    checkout would first run it.
+
+    A path that passes through a foreign study's name is refused wherever it
+    is, and whether or not that tree has ever been written.
+    """
+    for prefix in dci1v7.FOREIGN_STUDY_PREFIXES:
+        root = tmp_path / "nowhere" / prefix        # deliberately absent
+        assert not root.exists()
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                         repo_root=tmp_path, evidence_root=root,
+                         durable_root=tmp_path / "durable_root")
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                         repo_root=tmp_path,
+                         evidence_root=tmp_path / "evidence",
+                         durable_root=root)
+    # and a root that names no foreign study is still accepted
+    StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                 repo_root=tmp_path, evidence_root=tmp_path / "evidence",
+                 durable_root=tmp_path / "durable_root")
+
+
+def test_a_foreign_study_name_is_refused_as_an_ancestor_not_only_a_leaf(
+        tmp_path):
+    """`--root` never hands a study a root whose *own name* is foreign.
+
+    `cli._tree` passes `--root` to `synthetic_context` or
+    `development_context`, and both append `evidence` and `durable`. So the
+    leaf a `StudyContext` receives is always one of those two names, and a
+    guard that tested the leaf alone could not fire on the one path an
+    operator actually types. The foreign name is an ancestor.
+    """
+    for prefix in dci1v7.FOREIGN_STUDY_PREFIXES:
+        root = tmp_path / prefix                    # deliberately absent
+        assert not root.exists()
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            synthetic_context(root)
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            development_context(root)
+        with pytest.raises(ProtocolError, match="named for the historical"):
+            StudyContext(namespace="registered", study_id=dci1v7.STUDY_ID,
+                         repo_root=tmp_path,
+                         evidence_root=root / "nested" / "deeper",
+                         durable_root=tmp_path / "durable_root")
+    # and a root that passes through no foreign study is still accepted,
+    # through the same two constructors an operator reaches with --root
+    synthetic_context(tmp_path / "clean")
+    development_context(tmp_path / "clean")
+
+
+def test_root_into_this_repo_s_own_historical_tree_is_refused():
+    """The case the disk-dependent guard let through, in the shape it takes.
+
+    `dci1v7 ... --root dci1/evidence/dci1v4r4` was accepted in any checkout
+    that had not fetched v4r4's evidence -- which is every fresh clone, since
+    `evidence/` is gitignored -- and would have written a v7 study tree inside
+    v4r4's. It is refused now on the path's identity, so the refusal holds in
+    both conditions rather than only in a populated worktree.
+    """
+    for parent in (DCI1_ROOT / "evidence", DCI1_ROOT / "durable_root"):
+        for prefix in ("dci1v4r4", "dci1v5", "dci1v6"):
+            with pytest.raises(ProtocolError):
+                synthetic_context(parent / prefix)
+            with pytest.raises(ProtocolError):
+                development_context(parent / prefix)
 
 
 def test_v5_refuses_a_v4r4_path_as_analysis_input():
