@@ -1,0 +1,406 @@
+{
+ "device": 1,
+ "engine": {
+  "1": {
+   "blocked": false,
+   "capability": {
+    "architectures": [
+     "Gemma3nForConditionalGeneration"
+    ],
+    "is_multimodal": null,
+    "model_id": "google/gemma-3n-E2B-it",
+    "needs_remote_code": false,
+    "probe_error": "",
+    "reasoning_parser_available": null,
+    "supported_architectures": [
+     "Gemma3nForConditionalGeneration"
+    ],
+    "vllm_supported": true
+   },
+   "engine_kwargs": {
+    "disable_custom_all_reduce": "True",
+    "dtype": "bfloat16",
+    "enforce_eager": "True",
+    "gpu_memory_utilization": "0.85",
+    "max_model_len": "4096",
+    "model": "google/gemma-3n-E2B-it",
+    "revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+    "seed": "20260819",
+    "tensor_parallel_size": "1",
+    "trust_remote_code": "False"
+   },
+   "expected_rows": 96,
+   "generation_seconds": 13.6,
+   "host": {
+    "device_count": 1,
+    "device_names": [
+     "Radeon RX 7900 XTX"
+    ],
+    "env": {
+     "HIP_VISIBLE_DEVICES": "1",
+     "NCCL_P2P_DISABLE": "1",
+     "PYTORCH_HIP_ALLOC_CONF": "expandable_segments:True",
+     "PYTORCH_ROCM_ARCH": "gfx1100",
+     "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+     "VLLM_TARGET_DEVICE": "rocm",
+     "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "gcn_archs": [
+     "gfx1100"
+    ],
+    "is_navi": true,
+    "platform_class": "RocmPlatform",
+    "supports_fp8": false,
+    "supports_mx": false,
+    "torch_hip": "7.2.26015-fc0010cf6a",
+    "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+    "total_vram_gib": [
+     23.98
+    ],
+    "use_custom_allreduce": false,
+    "vllm_version": "0.15.1"
+   },
+   "load_seconds": 26.4,
+   "model_card": {
+    "family": "gemma3n",
+    "model_id": "google/gemma-3n-E2B-it",
+    "reasoning_parser": null,
+    "supported_modes": [],
+    "think_close": "</think>",
+    "think_open": "<think>"
+   },
+   "plan_source": "/tmp/claude-1000/-home-cnm13ryan-git-dci/5219ebe4-a57e-4ef8-83af-caac80ed76d8/scratchpad/determinism/run1/plan.json",
+   "preflight_detail": "",
+   "reasoning_parser_used": "none (NO_THINKING: no channel)",
+   "rendered_prompt_example": "<bos><start_of_turn>user\nHow does a garden designer plan for change over years?\n\nAnswer in 60 to 120 words.\n\nAnswer:<end_of_turn>\n<start_of_turn>model\n",
+   "rocm_smi_after_load": {
+    "card0": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "85",
+     "GPU Memory Read/Write Activity (%)": "25",
+     "Memory Activity": "N/A"
+    },
+    "card1": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "72",
+     "GPU Memory Read/Write Activity (%)": "4",
+     "Memory Activity": "N/A"
+    },
+    "card2": {
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   },
+   "rocm_smi_before_load": {
+    "card0": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "85",
+     "GPU Memory Read/Write Activity (%)": "24",
+     "Memory Activity": "N/A"
+    },
+    "card1": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "GPU Memory Read/Write Activity (%)": "29",
+     "Memory Activity": "N/A"
+    },
+    "card2": {
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   },
+   "run": {
+    "chat_template_kwargs": {},
+    "chunk_size": 64,
+    "deadline_seconds": null,
+    "reasoning_mode": "NO_THINKING",
+    "strategy": "single_phase"
+   },
+   "sampling": {
+    "answer_tokens": 512,
+    "include_stop_str_in_output": false,
+    "max_tokens": 512,
+    "skip_special_tokens": true,
+    "stop": [],
+    "temperature": 0.7,
+    "top_k": 50,
+    "top_p": 0.9
+   },
+   "summary": {
+    "answers_truncated": 0,
+    "behavioural_rows": 96,
+    "by_outcome": {
+     "OK": 96
+    },
+    "empty_answers": 0,
+    "reasoning_cap_hits": 0,
+    "reasoning_emitted": 0,
+    "rows": 96
+   },
+   "template_switch_evidence": {
+    "card": {
+     "model_id": "google/gemma-3n-E2B-it",
+     "modes": {},
+     "modes_render_distinctly": true,
+     "modes_sharing_a_prompt": [],
+     "pre_opens_reasoning": {},
+     "supported_modes": [],
+     "tokenizer_acquisition": "vllm.LLM.get_tokenizer",
+     "tokenizer_revision": "5e092ebca197cdcd8d8b195040accf22693501bc"
+    },
+    "checked": [],
+    "kwargs": {},
+    "no_reasoning_argument": true,
+    "reasoning_mode": "NO_THINKING"
+   },
+   "torch_memory_this_process": {
+    "cuda:0": 0.0
+   }
+  },
+  "2": {
+   "blocked": false,
+   "capability": {
+    "architectures": [
+     "Gemma3nForConditionalGeneration"
+    ],
+    "is_multimodal": null,
+    "model_id": "google/gemma-3n-E2B-it",
+    "needs_remote_code": false,
+    "probe_error": "",
+    "reasoning_parser_available": null,
+    "supported_architectures": [
+     "Gemma3nForConditionalGeneration"
+    ],
+    "vllm_supported": true
+   },
+   "engine_kwargs": {
+    "disable_custom_all_reduce": "True",
+    "dtype": "bfloat16",
+    "enforce_eager": "True",
+    "gpu_memory_utilization": "0.85",
+    "max_model_len": "4096",
+    "model": "google/gemma-3n-E2B-it",
+    "revision": "5e092ebca197cdcd8d8b195040accf22693501bc",
+    "seed": "20260819",
+    "tensor_parallel_size": "1",
+    "trust_remote_code": "False"
+   },
+   "expected_rows": 96,
+   "generation_seconds": 13.3,
+   "host": {
+    "device_count": 1,
+    "device_names": [
+     "Radeon RX 7900 XTX"
+    ],
+    "env": {
+     "HIP_VISIBLE_DEVICES": "1",
+     "NCCL_P2P_DISABLE": "1",
+     "PYTORCH_HIP_ALLOC_CONF": "expandable_segments:True",
+     "PYTORCH_ROCM_ARCH": "gfx1100",
+     "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+     "VLLM_TARGET_DEVICE": "rocm",
+     "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "gcn_archs": [
+     "gfx1100"
+    ],
+    "is_navi": true,
+    "platform_class": "RocmPlatform",
+    "supports_fp8": false,
+    "supports_mx": false,
+    "torch_hip": "7.2.26015-fc0010cf6a",
+    "torch_version": "2.9.1+rocm7.2.0.git7e1940d4",
+    "total_vram_gib": [
+     23.98
+    ],
+    "use_custom_allreduce": false,
+    "vllm_version": "0.15.1"
+   },
+   "load_seconds": 26.2,
+   "model_card": {
+    "family": "gemma3n",
+    "model_id": "google/gemma-3n-E2B-it",
+    "reasoning_parser": null,
+    "supported_modes": [],
+    "think_close": "</think>",
+    "think_open": "<think>"
+   },
+   "plan_source": "/tmp/claude-1000/-home-cnm13ryan-git-dci/5219ebe4-a57e-4ef8-83af-caac80ed76d8/scratchpad/determinism/run2/plan.json",
+   "preflight_detail": "",
+   "reasoning_parser_used": "none (NO_THINKING: no channel)",
+   "rendered_prompt_example": "<bos><start_of_turn>user\nHow does a garden designer plan for change over years?\n\nAnswer in 60 to 120 words.\n\nAnswer:<end_of_turn>\n<start_of_turn>model\n",
+   "rocm_smi_after_load": {
+    "card0": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "85",
+     "GPU Memory Read/Write Activity (%)": "24",
+     "Memory Activity": "N/A"
+    },
+    "card1": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "72",
+     "GPU Memory Read/Write Activity (%)": "4",
+     "Memory Activity": "N/A"
+    },
+    "card2": {
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   },
+   "rocm_smi_before_load": {
+    "card0": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "85",
+     "GPU Memory Read/Write Activity (%)": "24",
+     "Memory Activity": "N/A"
+    },
+    "card1": {
+     "Avg. Memory Bandwidth": "0",
+     "GPU Memory Allocated (VRAM%)": "0",
+     "GPU Memory Read/Write Activity (%)": "21",
+     "Memory Activity": "N/A"
+    },
+    "card2": {
+     "GPU Memory Allocated (VRAM%)": "0",
+     "Memory Activity": "N/A"
+    }
+   },
+   "run": {
+    "chat_template_kwargs": {},
+    "chunk_size": 64,
+    "deadline_seconds": null,
+    "reasoning_mode": "NO_THINKING",
+    "strategy": "single_phase"
+   },
+   "sampling": {
+    "answer_tokens": 512,
+    "include_stop_str_in_output": false,
+    "max_tokens": 512,
+    "skip_special_tokens": true,
+    "stop": [],
+    "temperature": 0.7,
+    "top_k": 50,
+    "top_p": 0.9
+   },
+   "summary": {
+    "answers_truncated": 0,
+    "behavioural_rows": 96,
+    "by_outcome": {
+     "OK": 96
+    },
+    "empty_answers": 0,
+    "reasoning_cap_hits": 0,
+    "reasoning_emitted": 0,
+    "rows": 96
+   },
+   "template_switch_evidence": {
+    "card": {
+     "model_id": "google/gemma-3n-E2B-it",
+     "modes": {},
+     "modes_render_distinctly": true,
+     "modes_sharing_a_prompt": [],
+     "pre_opens_reasoning": {},
+     "supported_modes": [],
+     "tokenizer_acquisition": "vllm.LLM.get_tokenizer",
+     "tokenizer_revision": "5e092ebca197cdcd8d8b195040accf22693501bc"
+    },
+    "checked": [],
+    "kwargs": {},
+    "no_reasoning_argument": true,
+    "reasoning_mode": "NO_THINKING"
+   },
+   "torch_memory_this_process": {
+    "cuda:0": 0.0
+   }
+  }
+ },
+ "fresh1_vs_stored": {
+  "identical_row_ids": [
+   "screen-000:solo:MK1:1:0",
+   "screen-000:solo:MK1:2:0",
+   "screen-000:solo:MK1:3:0",
+   "screen-000:solo:MK1:4:0",
+   "screen-000:solo:MK1:5:0",
+   "screen-000:solo:MK1:6:0",
+   "screen-000:solo:MK1:7:0",
+   "screen-000:solo:MK1:8:0",
+   "screen-000:solo:MK2:1:0",
+   "screen-000:solo:MK2:2:0",
+   "screen-000:solo:MK2:3:0",
+   "screen-000:solo:MK2:4:0",
+   "screen-000:solo:MK2:5:0",
+   "screen-000:solo:MK2:6:0",
+   "screen-000:solo:MK2:7:0",
+   "screen-000:solo:MK2:8:0",
+   "screen-000:solo:MK3:1:0",
+   "screen-000:solo:MK3:2:0",
+   "screen-000:solo:MK3:3:0",
+   "screen-000:solo:MK3:4:0"
+  ],
+  "mean_common_prefix_share": 0.767029476934721,
+  "n_identical": 66,
+  "n_shared": 96,
+  "share_identical": 0.6875
+ },
+ "fresh2_vs_stored": {
+  "identical_row_ids": [
+   "screen-000:solo:MK1:1:0",
+   "screen-000:solo:MK1:2:0",
+   "screen-000:solo:MK1:3:0",
+   "screen-000:solo:MK1:4:0",
+   "screen-000:solo:MK1:5:0",
+   "screen-000:solo:MK1:6:0",
+   "screen-000:solo:MK1:7:0",
+   "screen-000:solo:MK1:8:0",
+   "screen-000:solo:MK2:1:0",
+   "screen-000:solo:MK2:2:0",
+   "screen-000:solo:MK2:3:0",
+   "screen-000:solo:MK2:4:0",
+   "screen-000:solo:MK2:5:0",
+   "screen-000:solo:MK2:6:0",
+   "screen-000:solo:MK2:7:0",
+   "screen-000:solo:MK2:8:0",
+   "screen-000:solo:MK3:1:0",
+   "screen-000:solo:MK3:2:0",
+   "screen-000:solo:MK3:3:0",
+   "screen-000:solo:MK3:4:0"
+  ],
+  "mean_common_prefix_share": 0.7660493037928017,
+  "n_identical": 66,
+  "n_shared": 96,
+  "share_identical": 0.6875
+ },
+ "fresh_vs_fresh": {
+  "identical_row_ids": [
+   "screen-000:solo:MK1:1:0",
+   "screen-000:solo:MK1:2:0",
+   "screen-000:solo:MK1:3:0",
+   "screen-000:solo:MK1:4:0",
+   "screen-000:solo:MK1:5:0",
+   "screen-000:solo:MK1:6:0",
+   "screen-000:solo:MK1:7:0",
+   "screen-000:solo:MK1:8:0",
+   "screen-000:solo:MK2:1:0",
+   "screen-000:solo:MK2:2:0",
+   "screen-000:solo:MK2:3:0",
+   "screen-000:solo:MK2:4:0",
+   "screen-000:solo:MK2:5:0",
+   "screen-000:solo:MK2:6:0",
+   "screen-000:solo:MK2:7:0",
+   "screen-000:solo:MK2:8:0",
+   "screen-000:solo:MK3:1:0",
+   "screen-000:solo:MK3:2:0",
+   "screen-000:solo:MK3:3:0",
+   "screen-000:solo:MK3:4:0"
+  ],
+  "mean_common_prefix_share": 0.9830942014999628,
+  "n_identical": 94,
+  "n_shared": 96,
+  "share_identical": 0.9791666666666666
+ },
+ "measured_at": "2026-09-02T21:53:25+00:00",
+ "n_rows": 96,
+ "plan_digest": "71699a2eed9ff390",
+ "reading": "NOT bit-for-bit deterministic: 0.979 of rows identical across two fresh runs under identical plan and seeds; the design, seeds and verdicts are reproducible as data, the sampled text is not promised",
+ "run_dir": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r12/evidence/dci1v8/gemma-3n-e2b-it/REGIME_SCREEN/backend_runs/ladder"
+}

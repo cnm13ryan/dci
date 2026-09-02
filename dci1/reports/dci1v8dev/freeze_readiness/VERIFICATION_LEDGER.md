@@ -22,7 +22,7 @@ protected-outcome check is §14 below.
 | 11 | adaptive design history | **CONFIRMED** (no composed outcome involved) |
 | 12.1 | `hash()` in the stability bootstrap | **CONFIRMED** |
 | 12.2 | no clean-worktree gate | **CONFIRMED** |
-| 12.3 | fixed-seed generation not bit-for-bit deterministic | **CANNOT ESTABLISH from the record; measured** — see `backend_determinism.md` |
+| 12.3 | fixed-seed generation not bit-for-bit deterministic | **CONFIRMED by measurement** — 94/96 rows identical between two fresh runs, 66/96 against the stored pilot batch (`backend_determinism.md`) |
 
 ## 1. v8 is a redesign — CONFIRMED
 
@@ -248,11 +248,17 @@ earlier). Discrepancies found and corrected: six topped-up rungs, not seven
   synthetic namespaces record only); the environment record names the
   backend packages; the manifest binds the rule-table hash and the
   preregistration hash.
-- 12.3 The stack (vLLM 0.15.1 ROCm, TP = 1, temperature 0.7) is not
-  documented as bit-deterministic anywhere in the repository; the
-  preregistration §8 promises reproducibility of the design and the
-  analysis of stored rows, not of the sampled text. The measurement is
-  `backend_determinism.md`.
+- 12.3 Measured on card 1 at 21:53Z (`tools/v8_backend_determinism.py`,
+  `backend_determinism.md`): 96 rows of the r12 gemma-3n-e2b-it screen
+  re-generated twice under the stored plan and scientific seeds — 94/96
+  identical between the two fresh runs (mean common-prefix share 0.983),
+  but only 66/96 identical against the rows the pilot itself stored
+  (0.767), which were generated inside a larger batch. Fixed seeds do not
+  make the sampled text reproducible on this stack (vLLM 0.15.1 ROCm,
+  TP = 1, temperature 0.7; batch composition changes the kernels' order of
+  operations). The preregistration §8 promises reproducibility of the
+  design, seeds, verdicts and analysis of the stored rows, not of the
+  text; every planned row is accounted for by identity.
 
 ## 13. Discrepancies between this prompt and the repository
 
