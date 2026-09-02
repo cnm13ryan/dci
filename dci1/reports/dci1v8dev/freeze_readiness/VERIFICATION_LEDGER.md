@@ -128,12 +128,19 @@ deterministic recomputation on the final pilot roots is in
 
 ## 5. Reference-triple instability — CONFIRMED
 
-The superseded membership records carried 9–10 admissible triples per LOCAL
-frame over the five frozen families; the enumeration over all LOCAL-valid
-families, the distances |ι_R − ι_A(f)| with their SEs, and the topic-bootstrap
-probability that the primary triple is re-selected are in
-`reports/dci1v8dev/reference_sensitivity/REPORT.md`
-(`tools/v8_reference_sensitivity.py`). **Resolved:** R1/R2/R3 stay the frozen
+`tools/v8_reference_sensitivity.py` →
+`reports/dci1v8dev/reference_sensitivity/REPORT.md` (pilot roots r8–r11,
+signed Gate-2/Gate-3 records, per-topic vectors; 2000 paired topic
+resamples, deterministic seed). On every frame with a core triple and more
+than one admissible alternative the primary triple is re-selected by the
+registered ranking on **0.09–0.64** of resamples and at least one
+alternative's total distance lies within one SE of the primary's
+(qwen3-4b f0 0.23, f3 0.09; gemma-3n-e2b-it f1 0.13, f3 0.25;
+qwen3-4b-instruct-2507 f1 0.24; gemma-3n-e4b-it f3 0.12); the per-family
+distances (0.003–0.05) are everywhere smaller than their SEs (0.03–0.04).
+Over the five frozen families each LOCAL frame admits 9–10 triples; over
+all LOCAL-valid families up to 35. Frames with exactly three valid
+families have one forced triple (FORCED); one frame has no core (NO_CORE). **Resolved:** R1/R2/R3 stay the frozen
 primary; R4/R5 are frozen backups generated beside B; the analysis re-forms
 Δ_R(f) over every admissible triple of the five (F_REFSENS) and reports
 whether the reading changes; membership records carry the distances.

@@ -1,0 +1,6612 @@
+{
+ "a_pooling_evidence": {
+  "forwarded_set": [
+   "CL7:60",
+   "CL7:65",
+   "CL7:70",
+   "CL7:80",
+   "CL8:25",
+   "CL8:26",
+   "CL8:27",
+   "CL8:28",
+   "CR5:1",
+   "CR5:2",
+   "CR5:3",
+   "CR5:6",
+   "MK1:2",
+   "MK1:3",
+   "MK1:4",
+   "MK1:5",
+   "MK1:7",
+   "MK2:1",
+   "MK2:2",
+   "MK2:3",
+   "MK2:4",
+   "MK4:1",
+   "MK4:12",
+   "MK4:3",
+   "MK4:4",
+   "MK4:5",
+   "MK4:6",
+   "MK4:8",
+   "MK5:10",
+   "MK5:12",
+   "MK5:3",
+   "MK5:5",
+   "MK5:6",
+   "MK5:7",
+   "MK5:8",
+   "MK5:9",
+   "MK8:1",
+   "MK8:2",
+   "MK8:3",
+   "MK8:4",
+   "MK8:6",
+   "MK8:8",
+   "RF10:15",
+   "RF10:19",
+   "RF10:20",
+   "RF11:26",
+   "RF11:32",
+   "RF11:33",
+   "RF11:34",
+   "RF9:12",
+   "RF9:13",
+   "RF9:14",
+   "RF9:15",
+   "XC1:1",
+   "XC3:10",
+   "XC3:5",
+   "XC3:8",
+   "XC3:9"
+  ],
+  "forwarded_set_identical_on_both_records": true,
+  "n_forwarded_families": 13,
+  "n_forwarded_rungs": 58,
+  "proof": {
+   "GATE_2_CALIBRATION.calibration_population.rule": "the second pass's retention (spaced by role for spectrum families, caliper-likely for local families, class and near-form arms), not \u00a712.7's tier budget; pooled over frames as a measurement budget (V8_FRAME_CONDITIONING.md \u00a75); every forwarded rung is calibrated on every block of every calibration pass, hence under every frame on the whole allocation",
+   "GATE_2_CALIBRATION.iota_a_by_frame": {
+    "0": 0.6796875,
+    "1": 0.6276041666666666,
+    "2": 0.7937336814621411,
+    "3": 0.6796875
+   },
+   "GATE_2_CALIBRATION.supported_frames": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "REGIME_SCREEN.difficulty_table.fields": [
+    "candidate",
+    "chance",
+    "chance_all_absent_v7_basis",
+    "family",
+    "graded_mean",
+    "iota",
+    "is_outcome",
+    "kind",
+    "median_words",
+    "n_topics",
+    "n_topics_unconstrained",
+    "reserve",
+    "severity",
+    "solo",
+    "tier",
+    "truncation",
+    "vacuity"
+   ],
+   "REGIME_SCREEN.frame_conditioning": {
+    "at_this_stage": "pooled over the four frames as a measurement budget: at 24 topics x 1 draw a frame holds six topics; the screen decides which rungs are measured at calibration and every measured rung is calibrated under every frame; no admission, matching or selection reads a screen quantity (\u00a712.2; docs/V8_FRAME_CONDITIONING.md \u00a75)",
+    "per_frame_reading": "GATE_1_INSTRUMENT.wording_diagnostic_screen",
+    "policy": "frame_is_experimental_condition"
+   },
+   "REGIME_SCREEN.iota_a_prescreen": 0.625,
+   "REGIME_SCREEN.iota_a_prescreen_severity": 7,
+   "REGIME_SCREEN.prescreen_table.fields": [
+    "chance_k",
+    "chance_n",
+    "draws_per_topic",
+    "kind",
+    "n_topics",
+    "reserve",
+    "severity",
+    "solo_k",
+    "solo_n",
+    "vacuous_k"
+   ],
+   "SECOND_PASS_SCREEN.frame_conditioning": {
+    "at_this_stage": "pooled over the four frames as a measurement budget (six topics per frame per batch): the forwarded set is what calibration measures, on every block and hence under every frame; eligibility, matching and selection are decided per frame at Gates 2 and 3 on calibration rows only (docs/V8_FRAME_CONDITIONING.md \u00a75)",
+    "per_frame_reading": "GATE_1_INSTRUMENT.wording_diagnostic_second_pass",
+    "policy": "frame_is_experimental_condition"
+   },
+   "SECOND_PASS_SCREEN.n_forwarded": 58,
+   "SECOND_PASS_SCREEN.retention.config": {
+    "admissible_min": 0.5,
+    "class_arm_rungs": 2,
+    "local_rungs": 4,
+    "max_local_families": 12,
+    "max_spectrum_families": 8,
+    "near_form_rungs": 3,
+    "spectrum_rungs": 5,
+    "total_cap": null
+   }
+  },
+  "ranking_and_retention_frame_pooled": true,
+  "reading": [
+   "the screen's difficulty table carries no frame column and a single scalar iota_a_prescreen, so the ranking coordinate and the retention target are one number for all four frames",
+   "the retention config carries only budget sizes (spectrum_rungs, local_rungs, family caps): no frame appears in the rule",
+   "Gate 2 then holds a different iota_A for each frame, which is the coordinate every later caliper is measured against"
+  ]
+ },
+ "b_cross_frame_spread": {
+  "calibration": {
+   "caliper": 0.1,
+   "frames_measured": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "max_across_rungs": 0.9843614189482833,
+   "median_across_families": 0.26041666666666663,
+   "median_across_rungs": 0.26822916666666663,
+   "n_families": 13,
+   "n_families_above_caliper": 13,
+   "n_rungs": 61,
+   "note": "supported frames only; a frame Gate 2 did not support has no iota_A(f) and no table",
+   "per_family_median_over_its_rungs": {
+    "CL7": 0.6268673122494148,
+    "CL8": 0.33333333333333337,
+    "CR5": 0.8716417386504385,
+    "MK1": 0.20572916666666666,
+    "MK2": 0.26041666666666663,
+    "MK4": 0.2421875,
+    "MK5": 0.10546875,
+    "MK8": 0.15625000000000003,
+    "RF10": 0.31580334783181774,
+    "RF11": 0.4186940827179086,
+    "RF9": 0.8170145203322864,
+    "XC1": 0.1014018863753593,
+    "XC3": 0.14573591724857826
+   },
+   "per_rung": {
+    "CL7:60": 0.6105054578321629,
+    "CL7:65": 0.5240926792272755,
+    "CL7:70": 0.6432291666666667,
+    "CL7:80": 0.7916666666666666,
+    "CL8:25": 0.46093750000000006,
+    "CL8:26": 0.13802083333333326,
+    "CL8:27": 0.28906250000000006,
+    "CL8:28": 0.37760416666666663,
+    "CR5:1": 0.71875,
+    "CR5:2": 0.9843614189482833,
+    "CR5:3": 0.8239895697522817,
+    "CR5:6": 0.9192939075485954,
+    "MK1:1": 0.16187989556135762,
+    "MK1:2": 0.06510416666666674,
+    "MK1:3": 0.18489583333333337,
+    "MK1:4": 0.2786458333333333,
+    "MK1:5": 0.30989583333333337,
+    "MK1:7": 0.22656249999999994,
+    "MK2:1": 0.23697916666666663,
+    "MK2:2": 0.25,
+    "MK2:3": 0.3072916666666667,
+    "MK2:4": 0.2708333333333333,
+    "MK4:1": 0.5822454308093995,
+    "MK4:12": 0.07291666666666669,
+    "MK4:3": 0.13020833333333337,
+    "MK4:4": 0.2421875,
+    "MK4:5": 0.22916666666666674,
+    "MK4:6": 0.26822916666666663,
+    "MK4:8": 0.2786458333333333,
+    "MK5:1": 0.27604166666666674,
+    "MK5:10": 0.07552083333333331,
+    "MK5:12": 0.08333333333333337,
+    "MK5:2": 0.02864583333333337,
+    "MK5:3": 0.0234375,
+    "MK5:5": 0.23958333333333326,
+    "MK5:6": 0.19270833333333337,
+    "MK5:7": 0.16927083333333326,
+    "MK5:8": 0.12760416666666663,
+    "MK5:9": 0.06510416666666674,
+    "MK8:1": 0.6813757271237416,
+    "MK8:2": 0.14449823639255832,
+    "MK8:3": 0.14583333333333337,
+    "MK8:4": 0.16666666666666669,
+    "MK8:6": 0.21875000000000003,
+    "MK8:8": 0.06510416666666669,
+    "RF10:15": 0.27586206896551724,
+    "RF10:19": 0.32948443810881434,
+    "RF10:20": 0.31580334783181774,
+    "RF11:26": 0.632183908045977,
+    "RF11:32": 0.41446441604290796,
+    "RF11:33": 0.4229237493929092,
+    "RF11:34": 0.37410111396743795,
+    "RF9:12": 0.4972577880834764,
+    "RF9:13": 0.8149523809523811,
+    "RF9:14": 0.8950378590313126,
+    "RF9:15": 0.8190766597121917,
+    "XC1:1": 0.1014018863753593,
+    "XC3:10": 0.15142359494369428,
+    "XC3:5": 0.1786641458321576,
+    "XC3:8": 0.14004823955346224,
+    "XC3:9": 0.11468748573254806
+   },
+   "q90_across_rungs": 0.7916666666666666
+  },
+  "screen": {
+   "caliper": 0.1,
+   "max_across_rungs": 9.999999999999996,
+   "median_across_families": 0.4,
+   "median_across_rungs": 0.33333333333333337,
+   "n_families": 39,
+   "n_families_above_caliper": 30,
+   "n_rungs": 332,
+   "noise": {
+    "draws_per_topic": 1,
+    "iota_quantisation": 0.16666666666666666,
+    "max_se_iota": 4.000000000000004,
+    "median_se_iota": 0.16666666666666669,
+    "statement": "at 24 pre-screen topics x 1 draw a frame holds six topics, so a frame's screen iota moves in steps of about 1/6 before the chance correction; the median SE below is on the same scale as (or larger than) the 0.10 caliper, and that imprecision is the reason the screen was pooled in the first place",
+    "topics_per_frame": [
+     6
+    ]
+   },
+   "per_family_median_over_its_rungs": {
+    "A": 0.41666666666666663,
+    "B": 0.41666666666666663,
+    "CL7": 0.6666666666666666,
+    "CL8": 0.18859649122807015,
+    "CR1": 1.6,
+    "CR10": 0.0,
+    "CR11": 0.0,
+    "CR12": 0.0,
+    "CR2": 0.23529411764705885,
+    "CR3": 0.7666666666666667,
+    "CR4": 0.5686274509803921,
+    "CR5": 0.9761904761904763,
+    "CR6": 0.6666666666666666,
+    "CR7": 1.3571428571428572,
+    "CR8": 0.3739130434782608,
+    "CR9": 0.16666666666666666,
+    "MK1": 0.25,
+    "MK2": 0.5,
+    "MK3": 0.25,
+    "MK4": 0.5,
+    "MK5": 0.25,
+    "MK6": 0.5,
+    "MK7": 0.16666666666666666,
+    "MK8": 0.4166666666666667,
+    "RF1": 0.7773279352226721,
+    "RF10": 0.0,
+    "RF11": 0.08333333333333333,
+    "RF12": 0.427536231884058,
+    "RF2": 0.7058823529411766,
+    "RF3": 0.8000000000000002,
+    "RF4": 0.0,
+    "RF5": 0.0,
+    "RF6": 0.0,
+    "RF7": 0.3333333333333333,
+    "RF8": 0.4,
+    "RF9": 0.5942028985507246,
+    "XC1": 0.16666666666666666,
+    "XC2": 0.0,
+    "XC3": 0.5166666666666666
+   },
+   "per_rung": {
+    "A:1": 0.7272727272727273,
+    "A:2": 0.16666666666666663,
+    "A:3": 0.6666666666666667,
+    "A:4": 0.3333333333333333,
+    "A:5": 0.5,
+    "A:6": 0.3333333333333333,
+    "A:7": 0.6666666666666667,
+    "A:8": 0.16666666666666674,
+    "B:10": 0.5,
+    "B:11": 0.18181818181818177,
+    "B:12": 0.2222222222222222,
+    "B:13": 0.5714285714285714,
+    "B:14": 0.0,
+    "B:7": 0.6666666666666666,
+    "B:8": 0.6666666666666667,
+    "B:9": 0.3333333333333333,
+    "CL7:100": 0.6666666666666666,
+    "CL7:130": 0.0,
+    "CL7:45": 0.0,
+    "CL7:60": 0.8333333333333334,
+    "CL7:80": 0.8333333333333334,
+    "CL8:10": 0.21052631578947367,
+    "CL8:14": 0.0,
+    "CL8:19": 0.16666666666666663,
+    "CL8:25": 0.5,
+    "CL8:5": 0.0,
+    "CL8:7": 0.3999999999999999,
+    "CR10:11": 0.0,
+    "CR10:14": 0.34782608695652173,
+    "CR10:17": 0.47058823529411775,
+    "CR10:2": 0.0,
+    "CR10:21": 1.3333333333333335,
+    "CR10:4": 0.0,
+    "CR10:6": 0.0,
+    "CR10:8": 0.0,
+    "CR11:12": 0.0,
+    "CR11:16": 0.0,
+    "CR11:20": 0.0,
+    "CR11:24": 0.16666666666666666,
+    "CR11:28": 0.47058823529411775,
+    "CR11:33": 1.0,
+    "CR11:4": 0.0,
+    "CR11:8": 0.0,
+    "CR12:1": 0.0,
+    "CR12:2": 0.0,
+    "CR12:3": 0.0,
+    "CR12:4": 0.0,
+    "CR12:5": 0.0,
+    "CR12:6": 0.4705882352941177,
+    "CR12:8": 4.000000000000003,
+    "CR1:1": 0.19999999999999998,
+    "CR1:2": 0.5333333333333333,
+    "CR1:3": 1.2000000000000002,
+    "CR1:4": 2.0,
+    "CR1:5": 2.666666666666667,
+    "CR1:6": 4.000000000000001,
+    "CR2:1": 0.16666666666666666,
+    "CR2:10": 3.9999999999999987,
+    "CR2:2": 0.18181818181818182,
+    "CR2:3": 0.19047619047619047,
+    "CR2:4": 0.23529411764705885,
+    "CR2:5": 0.23529411764705885,
+    "CR2:6": 0.9230769230769229,
+    "CR2:8": 2.4,
+    "CR3:1": 0.17391304347826086,
+    "CR3:10": 3.9999999999999987,
+    "CR3:2": 0.42105263157894735,
+    "CR3:3": 0.5333333333333334,
+    "CR3:4": 0.33333333333333337,
+    "CR3:5": 1.0,
+    "CR3:6": 1.5999999999999999,
+    "CR3:8": 2.666666666666667,
+    "CR4:11": 0.6666666666666666,
+    "CR4:13": 2.666666666666667,
+    "CR4:15": 1.0,
+    "CR4:18": 4.000000000000003,
+    "CR4:3": 0.0,
+    "CR4:5": 0.0,
+    "CR4:7": 0.42105263157894735,
+    "CR4:9": 0.47058823529411775,
+    "CR5:1": 0.8333333333333334,
+    "CR5:10": 5.999999999999997,
+    "CR5:2": 1.0,
+    "CR5:3": 1.0434782608695652,
+    "CR5:4": 0.8695652173913043,
+    "CR5:5": 0.7272727272727273,
+    "CR5:6": 0.9523809523809524,
+    "CR5:8": 1.142857142857143,
+    "CR6:10": 0.0,
+    "CR6:12": 0.0,
+    "CR6:3": 0.8333333333333334,
+    "CR6:4": 0.6666666666666666,
+    "CR6:5": 0.6666666666666666,
+    "CR6:6": 0.6666666666666666,
+    "CR6:7": 1.3333333333333335,
+    "CR6:8": 2.666666666666667,
+    "CR7:24": 0.0,
+    "CR7:28": 0.16666666666666666,
+    "CR7:32": 0.5,
+    "CR7:36": 1.0,
+    "CR7:40": 1.7142857142857144,
+    "CR7:44": 3.0,
+    "CR7:48": 6.000000000000002,
+    "CR7:52": 9.999999999999996,
+    "CR8:1": 0.16666666666666666,
+    "CR8:10": 0.0,
+    "CR8:2": 0.0,
+    "CR8:3": 0.34782608695652173,
+    "CR8:4": 0.39999999999999997,
+    "CR8:5": 0.9411764705882354,
+    "CR8:6": 0.8571428571428572,
+    "CR8:8": 1.3333333333333335,
+    "CR9:1": 0.0,
+    "CR9:10": 0.6666666666666666,
+    "CR9:12": 2.0,
+    "CR9:15": 3.1999999999999997,
+    "CR9:2": 0.0,
+    "CR9:4": 0.0,
+    "CR9:6": 0.0,
+    "CR9:8": 0.3333333333333333,
+    "MK1:1": 0.16666666666666663,
+    "MK1:2": 0.16666666666666663,
+    "MK1:3": 0.33333333333333337,
+    "MK1:4": 0.16666666666666663,
+    "MK1:5": 0.6666666666666667,
+    "MK1:6": 0.16666666666666666,
+    "MK1:7": 0.6666666666666666,
+    "MK1:8": 0.6666666666666666,
+    "MK2:1": 0.3478260869565218,
+    "MK2:2": 0.33333333333333337,
+    "MK2:3": 0.33333333333333337,
+    "MK2:4": 0.5,
+    "MK2:5": 0.5,
+    "MK2:6": 1.0,
+    "MK2:7": 0.6666666666666667,
+    "MK2:8": 0.5,
+    "MK3:1": 0.5454545454545454,
+    "MK3:2": 0.16666666666666666,
+    "MK3:3": 0.33333333333333337,
+    "MK3:4": 0.5,
+    "MK3:5": 0.16666666666666666,
+    "MK3:6": 0.16666666666666666,
+    "MK3:7": 0.16666666666666669,
+    "MK3:8": 0.33333333333333337,
+    "MK4:1": 0.3478260869565218,
+    "MK4:2": 0.5,
+    "MK4:3": 0.5,
+    "MK4:4": 0.6666666666666667,
+    "MK4:5": 0.6666666666666667,
+    "MK4:6": 0.5,
+    "MK4:7": 0.5,
+    "MK4:8": 0.5,
+    "MK5:1": 0.16666666666666663,
+    "MK5:2": 0.0,
+    "MK5:3": 0.0,
+    "MK5:4": 0.6666666666666667,
+    "MK5:5": 0.5,
+    "MK5:6": 0.3333333333333333,
+    "MK5:7": 0.33333333333333337,
+    "MK5:8": 0.16666666666666669,
+    "MK6:1": 0.16666666666666666,
+    "MK6:2": 0.5,
+    "MK6:3": 0.8333333333333334,
+    "MK6:4": 0.0,
+    "MK6:5": 0.6666666666666666,
+    "MK6:6": 0.5,
+    "MK6:7": 0.5,
+    "MK6:8": 0.8333333333333334,
+    "MK7:1": 0.0,
+    "MK7:2": 0.0,
+    "MK7:3": 0.16666666666666666,
+    "MK7:4": 0.16666666666666666,
+    "MK7:5": 0.16666666666666666,
+    "MK7:6": 0.0,
+    "MK7:7": 0.3333333333333333,
+    "MK7:8": 0.16666666666666666,
+    "MK8:1": 0.5217391304347827,
+    "MK8:2": 0.16666666666666663,
+    "MK8:3": 0.33333333333333337,
+    "MK8:4": 0.6666666666666667,
+    "MK8:5": 0.5,
+    "MK8:6": 0.5,
+    "MK8:7": 0.33333333333333337,
+    "MK8:8": 0.16666666666666666,
+    "RF10:0": 0.0,
+    "RF10:12": 0.34782608695652173,
+    "RF10:15": 0.17391304347826084,
+    "RF10:19": 0.8571428571428572,
+    "RF10:2": 0.0,
+    "RF10:4": 0.0,
+    "RF10:6": 0.0,
+    "RF10:9": 0.0,
+    "RF11:0": 0.0,
+    "RF11:12": 0.0,
+    "RF11:16": 0.16666666666666666,
+    "RF11:21": 0.5,
+    "RF11:26": 0.8,
+    "RF11:32": 0.3076923076923077,
+    "RF11:4": 0.0,
+    "RF11:8": 0.0,
+    "RF12:1": 0.0,
+    "RF12:2": 0.3333333333333333,
+    "RF12:3": 0.3333333333333333,
+    "RF12:4": 0.3333333333333333,
+    "RF12:5": 0.5217391304347826,
+    "RF12:6": 0.8571428571428572,
+    "RF12:7": 2.000000000000001,
+    "RF12:8": 4.000000000000003,
+    "RF1:0": 0.17391304347826086,
+    "RF1:1": 0.631578947368421,
+    "RF1:2": 0.923076923076923,
+    "RF1:3": 1.2000000000000002,
+    "RF1:4": 1.4999999999999998,
+    "RF1:5": 1.5999999999999999,
+    "RF1:6": 0.0,
+    "RF1:7": 0.0,
+    "RF2:0": 0.0,
+    "RF2:1": 0.0,
+    "RF2:2": 0.18181818181818182,
+    "RF2:3": 0.6,
+    "RF2:4": 0.7058823529411766,
+    "RF2:5": 0.9411764705882354,
+    "RF2:6": 1.6666666666666667,
+    "RF2:7": 2.2222222222222223,
+    "RF2:8": 1.5999999999999999,
+    "RF3:0": 0.16666666666666666,
+    "RF3:1": 0.36363636363636365,
+    "RF3:2": 0.47058823529411775,
+    "RF3:3": 0.8571428571428573,
+    "RF3:4": 1.0,
+    "RF3:5": 0.5000000000000001,
+    "RF3:6": 0.8000000000000002,
+    "RF3:7": 1.5999999999999999,
+    "RF3:8": 1.0,
+    "RF4:0": 0.0,
+    "RF4:1": 0.0,
+    "RF4:2": 0.0,
+    "RF4:3": 0.0,
+    "RF4:4": 0.0,
+    "RF4:5": 0.0,
+    "RF4:6": 0.0,
+    "RF5:0": 0.0,
+    "RF5:1": 0.0,
+    "RF5:10": 0.0,
+    "RF5:11": 0.0,
+    "RF5:2": 0.0,
+    "RF5:3": 0.0,
+    "RF5:4": 0.0,
+    "RF5:5": 0.0,
+    "RF5:6": 0.0,
+    "RF5:7": 0.0,
+    "RF5:8": 0.0,
+    "RF5:9": 1.3333333333333335,
+    "RF6:0": 0.0,
+    "RF6:1": 1.0,
+    "RF6:10": 0.0,
+    "RF6:11": 0.0,
+    "RF6:12": 4.000000000000003,
+    "RF6:2": 0.3333333333333333,
+    "RF6:3": 0.0,
+    "RF6:4": 0.0,
+    "RF6:5": 0.0,
+    "RF6:6": 0.8,
+    "RF6:7": 2.3999999999999995,
+    "RF6:8": 0.0,
+    "RF6:9": 1.9999999999999987,
+    "RF7:0": 0.0,
+    "RF7:1": 0.0,
+    "RF7:10": 0.16666666666666666,
+    "RF7:11": 0.5,
+    "RF7:12": 0.3333333333333333,
+    "RF7:13": 0.16666666666666666,
+    "RF7:14": 0.3333333333333333,
+    "RF7:15": 0.5,
+    "RF7:16": 0.6666666666666666,
+    "RF7:17": 0.5,
+    "RF7:18": 0.6666666666666666,
+    "RF7:19": 0.6666666666666666,
+    "RF7:2": 0.0,
+    "RF7:20": 0.8333333333333334,
+    "RF7:21": 0.5,
+    "RF7:22": 0.8333333333333334,
+    "RF7:23": 1.0,
+    "RF7:24": 1.0,
+    "RF7:3": 0.0,
+    "RF7:4": 0.0,
+    "RF7:5": 0.0,
+    "RF7:6": 0.0,
+    "RF7:7": 0.0,
+    "RF7:8": 0.0,
+    "RF7:9": 0.0,
+    "RF8:0": 0.0,
+    "RF8:1": 0.0,
+    "RF8:2": 0.3333333333333333,
+    "RF8:3": 0.36363636363636365,
+    "RF8:4": 0.4,
+    "RF8:5": 0.49999999999999994,
+    "RF8:6": 0.5714285714285716,
+    "RF8:7": 1.0,
+    "RF8:8": 0.7999999999999997,
+    "RF9:0": 0.0,
+    "RF9:10": 0.8421052631578948,
+    "RF9:13": 0.888888888888889,
+    "RF9:16": 1.0,
+    "RF9:2": 0.3333333333333333,
+    "RF9:4": 0.5,
+    "RF9:6": 0.6666666666666666,
+    "RF9:8": 0.5217391304347827,
+    "XC1:1": 0.5454545454545454,
+    "XC1:2": 0.33333333333333337,
+    "XC1:3": 0.16666666666666666,
+    "XC1:4": 0.33333333333333337,
+    "XC1:5": 0.16666666666666666,
+    "XC1:6": 0.0,
+    "XC1:7": 0.0,
+    "XC1:8": 0.0,
+    "XC2:10": 0.18181818181818182,
+    "XC2:12": 0.0,
+    "XC2:14": 0.0,
+    "XC2:16": 0.3333333333333333,
+    "XC2:2": 0.0,
+    "XC2:4": 0.0,
+    "XC2:6": 0.0,
+    "XC2:8": 0.19999999999999998,
+    "XC3:10": 0.5,
+    "XC3:3": 0.5,
+    "XC3:4": 0.3333333333333333,
+    "XC3:5": 0.34782608695652173,
+    "XC3:6": 0.5333333333333333,
+    "XC3:7": 1.142857142857143,
+    "XC3:8": 0.5714285714285714,
+    "XC3:9": 0.6956521739130435
+   },
+   "q90_across_rungs": 1.3333333333333335
+  }
+ },
+ "by_frame": {
+  "0": {
+   "frame": 0,
+   "gate2_status": "SUPPORTED",
+   "gate2_unsupported_reason": null,
+   "iota_a": 0.6796875,
+   "iota_a_screen_pooled": 0.625,
+   "local_supported": false,
+   "local_survival_requirement": {
+    "min_backups": 2,
+    "min_local_valid_families": 5,
+    "n_backups": 1,
+    "n_local_valid_families": 4,
+    "shortfall_families": 1
+   },
+   "local_unsupported_reasons": [
+    "LOCAL_FAMILIES_BELOW_MINIMUM",
+    "BACKUPS_BELOW_MINIMUM"
+   ],
+   "matched_controls": {
+    "available": true,
+    "calibrated_inside_caliper": [
+     "CL7:80",
+     "CL8:25",
+     "CL8:26",
+     "MK1:4",
+     "MK1:5",
+     "MK2:3",
+     "MK4:1",
+     "MK4:8",
+     "MK5:6",
+     "MK5:7",
+     "MK5:8",
+     "MK5:9",
+     "MK8:3",
+     "RF10:19",
+     "RF10:20",
+     "RF11:34",
+     "RF9:12",
+     "RF9:13",
+     "RF9:14",
+     "RF9:15",
+     "XC3:10",
+     "XC3:8",
+     "XC3:9"
+    ],
+    "n_calibrated_candidates": 61,
+    "n_calibrated_inside_caliper": 23,
+    "n_calibrated_inside_caliper_families": 11,
+    "n_screen_near_unforwarded_all_families": 8,
+    "n_screen_near_unforwarded_families_tier_1_2": 3,
+    "n_screen_near_unforwarded_tier_1_2": 3,
+    "n_screen_near_unforwarded_topup_subset": 1,
+    "reading": "the first count is the matched controls the frozen pipeline actually put in hand on this frame; the screen-near counts are candidates that were never calibrated, so their validity is NOT_IDENTIFIABLE and none of them is credited with an outcome here"
+   },
+   "n_star": 8,
+   "n_topics_a": 96,
+   "ranking": {
+    "all_families": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.124131944444,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5555555555555557,
+       "label": "RF9:13",
+       "pooled_outside_caliper": false,
+       "rank": 18,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.138494318182,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.8181818181818182,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 19,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.146399456522,
+       "distance_pooled": 0.190217391304,
+       "forwarded": true,
+       "iota_screen": 0.8260869565217391,
+       "label": "CR5:3",
+       "pooled_outside_caliper": true,
+       "rank": 20,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "CL7:80",
+       "pooled_outside_caliper": false,
+       "rank": 23,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 25,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 26,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 27,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 29,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 30,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 31,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "CL8:25",
+       "pooled_outside_caliper": true,
+       "rank": 34,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 35,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 40,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 41,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 42,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 43,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 49,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CL7:60",
+       "pooled_outside_caliper": true,
+       "rank": 62,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CR5:1",
+       "pooled_outside_caliper": false,
+       "rank": 68,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CR5:2",
+       "pooled_outside_caliper": false,
+       "rank": 69,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 74,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 75,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 78,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 79,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 82,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:5",
+       "pooled_outside_caliper": false,
+       "rank": 84,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.017857142857,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF10:19",
+       "pooled_outside_caliper": false,
+       "rank": 85,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 108,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.375339673913,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.3043478260869565,
+       "label": "RF10:15",
+       "pooled_outside_caliper": true,
+       "rank": 124,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.375339673913,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.3043478260869565,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 126,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.441592261905,
+       "distance_pooled": 0.244047619048,
+       "forwarded": true,
+       "iota_screen": 0.23809523809523808,
+       "label": "CR5:6",
+       "pooled_outside_caliper": true,
+       "rank": 129,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.4796875,
+       "distance_pooled": 0.075,
+       "forwarded": true,
+       "iota_screen": 0.19999999999999998,
+       "label": "RF11:26",
+       "pooled_outside_caliper": false,
+       "rank": 132,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 145,
+       "tier": 1
+      }
+     ],
+     "n_families_would_forward": 7,
+     "n_forwarded_but_outside": 34,
+     "n_would_forward_but_pooled_did_not": 8,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "A:6",
+       "pooled_outside_caliper": true,
+       "rank": 2,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.333333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "B:7",
+       "pooled_outside_caliper": true,
+       "rank": 3,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "B:9",
+       "pooled_outside_caliper": false,
+       "rank": 4,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.333333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:8",
+       "pooled_outside_caliper": true,
+       "rank": 6,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK4:7",
+       "pooled_outside_caliper": true,
+       "rank": 9,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.034598214286,
+       "distance_pooled": 0.339285714286,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "RF3:3",
+       "pooled_outside_caliper": true,
+       "rank": 15,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.034598214286,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "RF8:6",
+       "pooled_outside_caliper": true,
+       "rank": 16,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.034598214286,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "XC3:7",
+       "pooled_outside_caliper": true,
+       "rank": 17,
+       "tier": 2
+      }
+     ]
+    },
+    "n_rungs_measured_by_screen_under_this_frame": 332,
+    "n_tier_1_2": 88,
+    "tier_1_2_only": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.138494318182,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.8181818181818182,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 19,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 25,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 26,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 27,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 29,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 30,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 31,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 35,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 40,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 41,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 42,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 43,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 49,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 74,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 75,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 78,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 79,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 82,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:5",
+       "pooled_outside_caliper": false,
+       "rank": 84,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 108,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.375339673913,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.3043478260869565,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 126,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 145,
+       "tier": 1
+      }
+     ],
+     "n_families_would_forward": 3,
+     "n_forwarded_but_outside": 23,
+     "n_would_forward_but_pooled_did_not": 3,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.333333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:8",
+       "pooled_outside_caliper": true,
+       "rank": 6,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK4:7",
+       "pooled_outside_caliper": true,
+       "rank": 9,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.034598214286,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "XC3:7",
+       "pooled_outside_caliper": true,
+       "rank": 17,
+       "tier": 2
+      }
+     ]
+    },
+    "top_20_by_frame_distance": [
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK1:7",
+      "rank": 5
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK1:8",
+      "rank": 6
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK2:2",
+      "rank": 7
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK4:6",
+      "rank": 8
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK4:7",
+      "rank": 9
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK5:6",
+      "rank": 10
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK8:3",
+      "rank": 11
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK8:4",
+      "rank": 12
+     },
+     {
+      "distance": 0.027513586957,
+      "iota": 0.6521739130434783,
+      "label": "MK2:1",
+      "rank": 13
+     },
+     {
+      "distance": 0.027513586957,
+      "iota": 0.6521739130434783,
+      "label": "MK4:1",
+      "rank": 14
+     },
+     {
+      "distance": 0.034598214286,
+      "iota": 0.7142857142857144,
+      "label": "XC3:7",
+      "rank": 17
+     },
+     {
+      "distance": 0.138494318182,
+      "iota": 0.8181818181818182,
+      "label": "XC1:1",
+      "rank": 19
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK1:5",
+      "rank": 25
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK2:3",
+      "rank": 26
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK2:4",
+      "rank": 27
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK2:7",
+      "rank": 28
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK4:8",
+      "rank": 29
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK8:2",
+      "rank": 30
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "XC3:10",
+      "rank": 31
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK1:4",
+      "rank": 35
+     }
+    ],
+    "topup_rule_subset": {
+     "families": [
+      "MK1"
+     ],
+     "n_rungs": 1,
+     "rule": "Tier-1/2, inside this frame's caliper on the frame's own screen iota, family not already LOCAL-valid on this frame, not forwarded --- the LOCAL_TOPUP candidate set, recomputed here for comparison only",
+     "rungs": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.333333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:8",
+       "pooled_outside_caliper": true,
+       "rank": 6,
+       "tier": 1
+      }
+     ]
+    }
+   }
+  },
+  "1": {
+   "frame": 1,
+   "gate2_status": "SUPPORTED",
+   "gate2_unsupported_reason": null,
+   "iota_a": 0.6276041666666666,
+   "iota_a_screen_pooled": 0.625,
+   "local_supported": true,
+   "local_survival_requirement": {
+    "min_backups": 2,
+    "min_local_valid_families": 5,
+    "n_backups": 2,
+    "n_local_valid_families": 6,
+    "shortfall_families": 0
+   },
+   "local_unsupported_reasons": [],
+   "matched_controls": {
+    "available": true,
+    "calibrated_inside_caliper": [
+     "CL8:25",
+     "CL8:26",
+     "CL8:27",
+     "CL8:28",
+     "CR5:2",
+     "MK1:4",
+     "MK1:5",
+     "MK2:2",
+     "MK2:3",
+     "MK2:4",
+     "MK4:4",
+     "MK4:5",
+     "MK4:6",
+     "MK5:6",
+     "MK5:8",
+     "MK5:9",
+     "MK8:4",
+     "RF11:26",
+     "XC3:10",
+     "XC3:8",
+     "XC3:9"
+    ],
+    "n_calibrated_candidates": 61,
+    "n_calibrated_inside_caliper": 21,
+    "n_calibrated_inside_caliper_families": 9,
+    "n_screen_near_unforwarded_all_families": 11,
+    "n_screen_near_unforwarded_families_tier_1_2": 1,
+    "n_screen_near_unforwarded_tier_1_2": 2,
+    "n_screen_near_unforwarded_topup_subset": 0,
+    "reading": "the first count is the matched controls the frozen pipeline actually put in hand on this frame; the screen-near counts are candidates that were never calibrated, so their validity is NOT_IDENTIFIABLE and none of them is credited with an outcome here"
+   },
+   "n_star": 3,
+   "n_topics_a": 96,
+   "ranking": {
+    "all_families": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 18,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 19,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 20,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 21,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 26,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 29,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.149343297101,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 32,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.172395833333,
+       "distance_pooled": 0.075,
+       "forwarded": true,
+       "iota_screen": 0.8,
+       "label": "RF11:26",
+       "pooled_outside_caliper": false,
+       "rank": 33,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.198482789855,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.8260869565217391,
+       "label": "MK2:1",
+       "pooled_outside_caliper": false,
+       "rank": 36,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.198482789855,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.8260869565217391,
+       "label": "MK4:1",
+       "pooled_outside_caliper": false,
+       "rank": 37,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.199032738095,
+       "distance_pooled": 0.017857142857,
+       "forwarded": true,
+       "iota_screen": 0.42857142857142855,
+       "label": "RF10:19",
+       "pooled_outside_caliper": false,
+       "rank": 38,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 44,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 46,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 47,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:3",
+       "pooled_outside_caliper": false,
+       "rank": 49,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 50,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "CR5:1",
+       "pooled_outside_caliper": false,
+       "rank": 57,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 60,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 64,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 65,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 66,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.354876893939,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.27272727272727276,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 73,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CL7:60",
+       "pooled_outside_caliper": true,
+       "rank": 79,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CL7:80",
+       "pooled_outside_caliper": false,
+       "rank": 80,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 97,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 98,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 101,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 103,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 104,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 130,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "CR5:2",
+       "pooled_outside_caliper": false,
+       "rank": 140,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 142,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 147,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 152,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.497169384058,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "RF10:15",
+       "pooled_outside_caliper": true,
+       "rank": 163,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.497169384058,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 165,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.516493055556,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.11111111111111101,
+       "label": "RF9:13",
+       "pooled_outside_caliper": false,
+       "rank": 167,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.579985119048,
+       "distance_pooled": 0.244047619048,
+       "forwarded": true,
+       "iota_screen": 0.04761904761904761,
+       "label": "CR5:6",
+       "pooled_outside_caliper": true,
+       "rank": 175,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.671082427536,
+       "distance_pooled": 0.190217391304,
+       "forwarded": true,
+       "iota_screen": -0.043478260869565216,
+       "label": "CR5:3",
+       "pooled_outside_caliper": true,
+       "rank": 290,
+       "tier": 3
+      }
+     ],
+     "n_families_would_forward": 7,
+     "n_forwarded_but_outside": 40,
+     "n_would_forward_but_pooled_did_not": 11,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.0,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "A:7",
+       "pooled_outside_caliper": false,
+       "rank": 1,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "B:10",
+       "pooled_outside_caliper": true,
+       "rank": 2,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "B:9",
+       "pooled_outside_caliper": false,
+       "rank": 3,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.375,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "CL7:100",
+       "pooled_outside_caliper": true,
+       "rank": 4,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.416666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "CR6:4",
+       "pooled_outside_caliper": true,
+       "rank": 6,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.416666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "CR6:5",
+       "pooled_outside_caliper": true,
+       "rank": 7,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:5",
+       "pooled_outside_caliper": false,
+       "rank": 8,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.25,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:8",
+       "pooled_outside_caliper": true,
+       "rank": 9,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.064703525641,
+       "distance_pooled": 0.317307692308,
+       "forwarded": false,
+       "iota_screen": 0.6923076923076923,
+       "label": "RF1:2",
+       "pooled_outside_caliper": true,
+       "rank": 12,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.072048611111,
+       "distance_pooled": 0.402777777778,
+       "forwarded": false,
+       "iota_screen": 0.5555555555555555,
+       "label": "CR6:6",
+       "pooled_outside_caliper": true,
+       "rank": 13,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.086681547619,
+       "distance_pooled": 0.053571428571,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "RF12:6",
+       "pooled_outside_caliper": false,
+       "rank": 14,
+       "tier": 3
+      }
+     ]
+    },
+    "n_rungs_measured_by_screen_under_this_frame": 332,
+    "n_tier_1_2": 88,
+    "tier_1_2_only": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 18,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 19,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 20,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 21,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 26,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127604166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 29,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.149343297101,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 32,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.198482789855,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.8260869565217391,
+       "label": "MK2:1",
+       "pooled_outside_caliper": false,
+       "rank": 36,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.198482789855,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.8260869565217391,
+       "label": "MK4:1",
+       "pooled_outside_caliper": false,
+       "rank": 37,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 44,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 46,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 47,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:3",
+       "pooled_outside_caliper": false,
+       "rank": 49,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.205729166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 50,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 60,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 64,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 65,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.294270833333,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 66,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.354876893939,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.27272727272727276,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 73,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 97,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 98,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 101,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 103,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 104,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.372395833333,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 130,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 142,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 147,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.4609375,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 152,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.497169384058,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 165,
+       "tier": 2
+      }
+     ],
+     "n_families_would_forward": 1,
+     "n_forwarded_but_outside": 30,
+     "n_would_forward_but_pooled_did_not": 2,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:5",
+       "pooled_outside_caliper": false,
+       "rank": 8,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.0390625,
+       "distance_pooled": 0.25,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:8",
+       "pooled_outside_caliper": true,
+       "rank": 9,
+       "tier": 1
+      }
+     ]
+    },
+    "top_20_by_frame_distance": [
+     {
+      "distance": 0.0390625,
+      "iota": 0.6666666666666666,
+      "label": "MK2:5",
+      "rank": 8
+     },
+     {
+      "distance": 0.0390625,
+      "iota": 0.6666666666666666,
+      "label": "MK2:8",
+      "rank": 9
+     },
+     {
+      "distance": 0.0390625,
+      "iota": 0.6666666666666666,
+      "label": "MK5:5",
+      "rank": 10
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK1:4",
+      "rank": 18
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK1:5",
+      "rank": 19
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK2:2",
+      "rank": 20
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK2:3",
+      "rank": 21
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK2:6",
+      "rank": 22
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK3:4",
+      "rank": 23
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK3:7",
+      "rank": 24
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK4:7",
+      "rank": 25
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "MK5:8",
+      "rank": 26
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "XC1:2",
+      "rank": 28
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "XC3:10",
+      "rank": 29
+     },
+     {
+      "distance": 0.127604166667,
+      "iota": 0.5,
+      "label": "XC3:3",
+      "rank": 30
+     },
+     {
+      "distance": 0.149343297101,
+      "iota": 0.47826086956521735,
+      "label": "XC3:9",
+      "rank": 32
+     },
+     {
+      "distance": 0.173058712121,
+      "iota": 0.4545454545454546,
+      "label": "MK3:1",
+      "rank": 34
+     },
+     {
+      "distance": 0.198482789855,
+      "iota": 0.8260869565217391,
+      "label": "MK2:1",
+      "rank": 36
+     },
+     {
+      "distance": 0.198482789855,
+      "iota": 0.8260869565217391,
+      "label": "MK4:1",
+      "rank": 37
+     },
+     {
+      "distance": 0.199032738095,
+      "iota": 0.42857142857142855,
+      "label": "XC3:7",
+      "rank": 39
+     }
+    ],
+    "topup_rule_subset": {
+     "families": [],
+     "n_rungs": 0,
+     "rule": "Tier-1/2, inside this frame's caliper on the frame's own screen iota, family not already LOCAL-valid on this frame, not forwarded --- the LOCAL_TOPUP candidate set, recomputed here for comparison only",
+     "rungs": []
+    }
+   }
+  },
+  "2": {
+   "frame": 2,
+   "gate2_status": "SUPPORTED",
+   "gate2_unsupported_reason": null,
+   "iota_a": 0.7937336814621411,
+   "iota_a_screen_pooled": 0.625,
+   "local_supported": false,
+   "local_survival_requirement": {
+    "min_backups": 2,
+    "min_local_valid_families": 5,
+    "n_backups": 0,
+    "n_local_valid_families": 1,
+    "shortfall_families": 4
+   },
+   "local_unsupported_reasons": [
+    "CORE_NOT_IDENTIFIED",
+    "LOCAL_FAMILIES_BELOW_MINIMUM",
+    "BACKUPS_BELOW_MINIMUM"
+   ],
+   "matched_controls": {
+    "available": true,
+    "calibrated_inside_caliper": [
+     "CL7:70",
+     "CL8:25",
+     "MK1:2",
+     "MK2:1",
+     "MK4:1",
+     "MK5:7",
+     "RF10:20",
+     "RF11:26",
+     "RF9:12",
+     "RF9:13",
+     "RF9:14",
+     "RF9:15"
+    ],
+    "n_calibrated_candidates": 61,
+    "n_calibrated_inside_caliper": 12,
+    "n_calibrated_inside_caliper_families": 9,
+    "n_screen_near_unforwarded_all_families": 6,
+    "n_screen_near_unforwarded_families_tier_1_2": 1,
+    "n_screen_near_unforwarded_tier_1_2": 1,
+    "n_screen_near_unforwarded_topup_subset": 0,
+    "reading": "the first count is the matched controls the frozen pipeline actually put in hand on this frame; the screen-near counts are candidates that were never calibrated, so their validity is NOT_IDENTIFIABLE and none of them is credited with an outcome here"
+   },
+   "n_star": 2,
+   "n_topics_a": 96,
+   "ranking": {
+    "all_families": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "CL8:25",
+       "pooled_outside_caliper": true,
+       "rank": 13,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 14,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 15,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 16,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 17,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 21,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.141559768419,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.6521739130434783,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 22,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.157370045099,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.6363636363636364,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 24,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CL7:60",
+       "pooled_outside_caliper": true,
+       "rank": 30,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 44,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 47,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.075,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF11:26",
+       "pooled_outside_caliper": false,
+       "rank": 48,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.221153846154,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF11:32",
+       "pooled_outside_caliper": true,
+       "rank": 49,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF9:13",
+       "pooled_outside_caliper": false,
+       "rank": 81,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 86,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 87,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 91,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 92,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 93,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 95,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:5",
+       "pooled_outside_caliper": false,
+       "rank": 96,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 97,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 98,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 99,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK8:3",
+       "pooled_outside_caliper": false,
+       "rank": 100,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.315472811897,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 107,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.365162252891,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 0.42857142857142855,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 113,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.460400348129,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "CL7:80",
+       "pooled_outside_caliper": false,
+       "rank": 124,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.489385855375,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.3043478260869565,
+       "label": "RF10:15",
+       "pooled_outside_caliper": true,
+       "rank": 136,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.555638443367,
+       "distance_pooled": 0.244047619048,
+       "forwarded": true,
+       "iota_screen": 0.23809523809523808,
+       "label": "CR5:6",
+       "pooled_outside_caliper": true,
+       "rank": 142,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.627067014795,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "CR5:1",
+       "pooled_outside_caliper": false,
+       "rank": 147,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.627067014795,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 154,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.627067014795,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 156,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.650876538605,
+       "distance_pooled": 0.017857142857,
+       "forwarded": true,
+       "iota_screen": 0.14285714285714285,
+       "label": "RF10:19",
+       "pooled_outside_caliper": false,
+       "rank": 167,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.663298898853,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 171,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.793733681462,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "CR5:2",
+       "pooled_outside_caliper": false,
+       "rank": 201,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.793733681462,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 216,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.793733681462,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 234,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.837211942332,
+       "distance_pooled": 0.190217391304,
+       "forwarded": true,
+       "iota_screen": -0.043478260869565216,
+       "label": "CR5:3",
+       "pooled_outside_caliper": true,
+       "rank": 291,
+       "tier": 3
+      }
+     ],
+     "n_families_would_forward": 5,
+     "n_forwarded_but_outside": 39,
+     "n_would_forward_but_pooled_did_not": 6,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.02444813672,
+       "distance_pooled": 0.284090909091,
+       "forwarded": false,
+       "iota_screen": 0.8181818181818182,
+       "label": "B:11",
+       "pooled_outside_caliper": true,
+       "rank": 1,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.039599651871,
+       "distance_pooled": 0.25,
+       "forwarded": false,
+       "iota_screen": 0.8333333333333334,
+       "label": "A:2",
+       "pooled_outside_caliper": true,
+       "rank": 4,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.039599651871,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.8333333333333334,
+       "label": "B:10",
+       "pooled_outside_caliper": true,
+       "rank": 5,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.039599651871,
+       "distance_pooled": 0.25,
+       "forwarded": false,
+       "iota_screen": 0.8333333333333334,
+       "label": "CL8:19",
+       "pooled_outside_caliper": true,
+       "rank": 6,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.039599651871,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:5",
+       "pooled_outside_caliper": false,
+       "rank": 8,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.079447967176,
+       "distance_pooled": 0.125,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "RF8:6",
+       "pooled_outside_caliper": true,
+       "rank": 10,
+       "tier": 3
+      }
+     ]
+    },
+    "n_rungs_measured_by_screen_under_this_frame": 332,
+    "n_tier_1_2": 88,
+    "tier_1_2_only": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.208333333333,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:3",
+       "pooled_outside_caliper": true,
+       "rank": 14,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK1:4",
+       "pooled_outside_caliper": false,
+       "rank": 15,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 16,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 17,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.127067014795,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.6666666666666666,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 21,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.141559768419,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.6521739130434783,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 22,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.157370045099,
+       "distance_pooled": 0.034090909091,
+       "forwarded": true,
+       "iota_screen": 0.6363636363636364,
+       "label": "XC1:1",
+       "pooled_outside_caliper": false,
+       "rank": 24,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 44,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.206266318538,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 47,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 86,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 87,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 91,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 92,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 93,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 95,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:5",
+       "pooled_outside_caliper": false,
+       "rank": 96,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 97,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 98,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 99,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.293733681462,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK8:3",
+       "pooled_outside_caliper": false,
+       "rank": 100,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.315472811897,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 107,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.365162252891,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 0.42857142857142855,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 113,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.627067014795,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 154,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.627067014795,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 156,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.663298898853,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 171,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.793733681462,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 216,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.793733681462,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 234,
+       "tier": 1
+      }
+     ],
+     "n_families_would_forward": 1,
+     "n_forwarded_but_outside": 27,
+     "n_would_forward_but_pooled_did_not": 1,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.039599651871,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:5",
+       "pooled_outside_caliper": false,
+       "rank": 8,
+       "tier": 1
+      }
+     ]
+    },
+    "top_20_by_frame_distance": [
+     {
+      "distance": 0.03235327506,
+      "iota": 0.8260869565217391,
+      "label": "MK2:1",
+      "rank": 2
+     },
+     {
+      "distance": 0.03235327506,
+      "iota": 0.8260869565217391,
+      "label": "MK4:1",
+      "rank": 3
+     },
+     {
+      "distance": 0.039599651871,
+      "iota": 0.8333333333333334,
+      "label": "MK1:5",
+      "rank": 7
+     },
+     {
+      "distance": 0.039599651871,
+      "iota": 0.8333333333333334,
+      "label": "MK2:5",
+      "rank": 8
+     },
+     {
+      "distance": 0.039599651871,
+      "iota": 0.8333333333333334,
+      "label": "MK8:2",
+      "rank": 9
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "MK1:3",
+      "rank": 14
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "MK1:4",
+      "rank": 15
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "MK2:3",
+      "rank": 16
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "MK4:4",
+      "rank": 17
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "MK5:4",
+      "rank": 18
+     },
+     {
+      "distance": 0.127067014795,
+      "iota": 0.6666666666666666,
+      "label": "XC3:10",
+      "rank": 21
+     },
+     {
+      "distance": 0.141559768419,
+      "iota": 0.6521739130434783,
+      "label": "XC3:9",
+      "rank": 22
+     },
+     {
+      "distance": 0.157370045099,
+      "iota": 0.6363636363636364,
+      "label": "MK3:1",
+      "rank": 23
+     },
+     {
+      "distance": 0.157370045099,
+      "iota": 0.6363636363636364,
+      "label": "XC1:1",
+      "rank": 24
+     },
+     {
+      "distance": 0.206266318538,
+      "iota": 1.0,
+      "label": "MK1:1",
+      "rank": 43
+     },
+     {
+      "distance": 0.206266318538,
+      "iota": 1.0,
+      "label": "MK1:2",
+      "rank": 44
+     },
+     {
+      "distance": 0.206266318538,
+      "iota": 1.0,
+      "label": "MK5:1",
+      "rank": 45
+     },
+     {
+      "distance": 0.206266318538,
+      "iota": 1.0,
+      "label": "MK5:2",
+      "rank": 46
+     },
+     {
+      "distance": 0.206266318538,
+      "iota": 1.0,
+      "label": "MK5:3",
+      "rank": 47
+     },
+     {
+      "distance": 0.293733681462,
+      "iota": 0.5,
+      "label": "MK2:2",
+      "rank": 86
+     }
+    ],
+    "topup_rule_subset": {
+     "families": [],
+     "n_rungs": 0,
+     "rule": "Tier-1/2, inside this frame's caliper on the frame's own screen iota, family not already LOCAL-valid on this frame, not forwarded --- the LOCAL_TOPUP candidate set, recomputed here for comparison only",
+     "rungs": []
+    }
+   }
+  },
+  "3": {
+   "frame": 3,
+   "gate2_status": "SUPPORTED",
+   "gate2_unsupported_reason": null,
+   "iota_a": 0.6796875,
+   "iota_a_screen_pooled": 0.625,
+   "local_supported": true,
+   "local_survival_requirement": {
+    "min_backups": 2,
+    "min_local_valid_families": 5,
+    "n_backups": 2,
+    "n_local_valid_families": 6,
+    "shortfall_families": 0
+   },
+   "local_unsupported_reasons": [],
+   "matched_controls": {
+    "available": true,
+    "calibrated_inside_caliper": [
+     "MK1:4",
+     "MK2:1",
+     "MK2:3",
+     "MK2:4",
+     "MK4:3",
+     "MK4:4",
+     "MK4:5",
+     "MK4:6",
+     "MK4:8",
+     "MK5:1",
+     "MK5:5",
+     "MK5:6",
+     "MK5:7",
+     "MK8:3",
+     "RF11:26",
+     "RF9:12",
+     "RF9:13",
+     "XC1:1",
+     "XC3:8",
+     "XC3:9"
+    ],
+    "n_calibrated_candidates": 61,
+    "n_calibrated_inside_caliper": 20,
+    "n_calibrated_inside_caliper_families": 9,
+    "n_screen_near_unforwarded_all_families": 15,
+    "n_screen_near_unforwarded_families_tier_1_2": 4,
+    "n_screen_near_unforwarded_tier_1_2": 4,
+    "n_screen_near_unforwarded_topup_subset": 2,
+    "reading": "the first count is the matched controls the frozen pipeline actually put in hand on this frame; the screen-near counts are candidates that were never calibrated, so their validity is NOT_IDENTIFIABLE and none of them is credited with an outcome here"
+   },
+   "n_star": 7,
+   "n_topics_a": 96,
+   "ranking": {
+    "all_families": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.1203125,
+       "distance_pooled": 0.075,
+       "forwarded": true,
+       "iota_screen": 0.8,
+       "label": "RF11:26",
+       "pooled_outside_caliper": false,
+       "rank": 24,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "CR5:1",
+       "pooled_outside_caliper": false,
+       "rank": 31,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 32,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 34,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 45,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 49,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 50,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK2:1",
+       "pooled_outside_caliper": false,
+       "rank": 60,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK4:1",
+       "pooled_outside_caliper": false,
+       "rank": 61,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 62,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CR5:2",
+       "pooled_outside_caliper": false,
+       "rank": 80,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.190217391304,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CR5:3",
+       "pooled_outside_caliper": true,
+       "rank": 81,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.244047619048,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "CR5:6",
+       "pooled_outside_caliper": true,
+       "rank": 82,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 92,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 94,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 95,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.017857142857,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF10:19",
+       "pooled_outside_caliper": false,
+       "rank": 96,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.221153846154,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF11:32",
+       "pooled_outside_caliper": true,
+       "rank": 97,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "RF9:13",
+       "pooled_outside_caliper": false,
+       "rank": 126,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 127,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 129,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 130,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 139,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 143,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 144,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 146,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "CL7:60",
+       "pooled_outside_caliper": true,
+       "rank": 168,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "CL7:80",
+       "pooled_outside_caliper": false,
+       "rank": 169,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "CL8:25",
+       "pooled_outside_caliper": true,
+       "rank": 170,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 177,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 179,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 183,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 189,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.549252717391,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "RF10:15",
+       "pooled_outside_caliper": true,
+       "rank": 206,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.549252717391,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 207,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.6796875,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 253,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.6796875,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 254,
+       "tier": 1
+      }
+     ],
+     "n_families_would_forward": 11,
+     "n_forwarded_but_outside": 38,
+     "n_would_forward_but_pooled_did_not": 15,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "B:9",
+       "pooled_outside_caliper": false,
+       "rank": 1,
+       "tier": null
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:6",
+       "pooled_outside_caliper": false,
+       "rank": 4,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK3:4",
+       "pooled_outside_caliper": true,
+       "rank": 5,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.416666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK6:5",
+       "pooled_outside_caliper": true,
+       "rank": 7,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK8:5",
+       "pooled_outside_caliper": false,
+       "rank": 9,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.208333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666667,
+       "label": "RF3:4",
+       "pooled_outside_caliper": true,
+       "rank": 10,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.458333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "RF7:16",
+       "pooled_outside_caliper": true,
+       "rank": 11,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.375,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "RF7:18",
+       "pooled_outside_caliper": true,
+       "rank": 12,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.458333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "RF7:19",
+       "pooled_outside_caliper": true,
+       "rank": 13,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.034598214286,
+       "distance_pooled": 0.696428571429,
+       "forwarded": false,
+       "iota_screen": 0.7142857142857144,
+       "label": "CR5:8",
+       "pooled_outside_caliper": true,
+       "rank": 14,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.043323863636,
+       "distance_pooled": 0.443181818182,
+       "forwarded": false,
+       "iota_screen": 0.6363636363636364,
+       "label": "CR5:5",
+       "pooled_outside_caliper": true,
+       "rank": 15,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0796875,
+       "distance_pooled": 0.275,
+       "forwarded": false,
+       "iota_screen": 0.6000000000000001,
+       "label": "CL8:7",
+       "pooled_outside_caliper": true,
+       "rank": 17,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0796875,
+       "distance_pooled": 1.025,
+       "forwarded": false,
+       "iota_screen": 0.6000000000000001,
+       "label": "CR9:12",
+       "pooled_outside_caliper": true,
+       "rank": 18,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.0796875,
+       "distance_pooled": 0.425,
+       "forwarded": false,
+       "iota_screen": 0.6000000000000001,
+       "label": "RF1:3",
+       "pooled_outside_caliper": true,
+       "rank": 19,
+       "tier": 3
+      },
+      {
+       "distance_frame": 0.098090277778,
+       "distance_pooled": 0.319444444444,
+       "forwarded": false,
+       "iota_screen": 0.7777777777777778,
+       "label": "B:12",
+       "pooled_outside_caliper": true,
+       "rank": 20,
+       "tier": null
+      }
+     ]
+    },
+    "n_rungs_measured_by_screen_under_this_frame": 332,
+    "n_tier_1_2": 88,
+    "tier_1_2_only": {
+     "caliper": 0.1,
+     "forwarded_but_outside_this_frame_caliper": [
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK2:2",
+       "pooled_outside_caliper": false,
+       "rank": 32,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.153645833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.8333333333333334,
+       "label": "MK4:3",
+       "pooled_outside_caliper": true,
+       "rank": 34,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.0,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK2:3",
+       "pooled_outside_caliper": false,
+       "rank": 45,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK4:6",
+       "pooled_outside_caliper": true,
+       "rank": 48,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:6",
+       "pooled_outside_caliper": true,
+       "rank": 49,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.1796875,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.5,
+       "label": "MK5:7",
+       "pooled_outside_caliper": false,
+       "rank": 50,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK2:1",
+       "pooled_outside_caliper": false,
+       "rank": 60,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.070652173913,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK4:1",
+       "pooled_outside_caliper": false,
+       "rank": 61,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.201426630435,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 0.47826086956521735,
+       "label": "MK8:1",
+       "pooled_outside_caliper": false,
+       "rank": 62,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.333333333333,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK1:2",
+       "pooled_outside_caliper": true,
+       "rank": 92,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK5:3",
+       "pooled_outside_caliper": true,
+       "rank": 94,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.291666666667,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "MK8:2",
+       "pooled_outside_caliper": true,
+       "rank": 95,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:10",
+       "pooled_outside_caliper": true,
+       "rank": 127,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.232142857143,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:8",
+       "pooled_outside_caliper": true,
+       "rank": 129,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.3203125,
+       "distance_pooled": 0.016304347826,
+       "forwarded": true,
+       "iota_screen": 1.0,
+       "label": "XC3:9",
+       "pooled_outside_caliper": false,
+       "rank": 130,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK2:4",
+       "pooled_outside_caliper": true,
+       "rank": 139,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:5",
+       "pooled_outside_caliper": false,
+       "rank": 143,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.125,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK4:8",
+       "pooled_outside_caliper": true,
+       "rank": 144,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.346354166667,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.3333333333333333,
+       "label": "MK5:8",
+       "pooled_outside_caliper": true,
+       "rank": 146,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.041666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:5",
+       "pooled_outside_caliper": false,
+       "rank": 177,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.375,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK1:7",
+       "pooled_outside_caliper": true,
+       "rank": 179,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK4:4",
+       "pooled_outside_caliper": false,
+       "rank": 183,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.513020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": true,
+       "iota_screen": 0.16666666666666666,
+       "label": "MK8:4",
+       "pooled_outside_caliper": true,
+       "rank": 189,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.549252717391,
+       "distance_pooled": 0.407608695652,
+       "forwarded": true,
+       "iota_screen": 0.13043478260869565,
+       "label": "XC3:5",
+       "pooled_outside_caliper": true,
+       "rank": 207,
+       "tier": 2
+      },
+      {
+       "distance_frame": 0.6796875,
+       "distance_pooled": 0.416666666667,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:6",
+       "pooled_outside_caliper": true,
+       "rank": 253,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.6796875,
+       "distance_pooled": 0.5,
+       "forwarded": true,
+       "iota_screen": 0.0,
+       "label": "MK8:8",
+       "pooled_outside_caliper": true,
+       "rank": 254,
+       "tier": 1
+      }
+     ],
+     "n_families_would_forward": 4,
+     "n_forwarded_but_outside": 26,
+     "n_would_forward_but_pooled_did_not": 4,
+     "would_forward_but_pooled_did_not": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK2:6",
+       "pooled_outside_caliper": false,
+       "rank": 4,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK3:4",
+       "pooled_outside_caliper": true,
+       "rank": 5,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.416666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK6:5",
+       "pooled_outside_caliper": true,
+       "rank": 7,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.083333333333,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK8:5",
+       "pooled_outside_caliper": false,
+       "rank": 9,
+       "tier": 1
+      }
+     ]
+    },
+    "top_20_by_frame_distance": [
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK1:3",
+      "rank": 2
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK1:4",
+      "rank": 3
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK2:6",
+      "rank": 4
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK3:4",
+      "rank": 5
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK5:5",
+      "rank": 6
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK6:5",
+      "rank": 7
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK8:3",
+      "rank": 8
+     },
+     {
+      "distance": 0.013020833333,
+      "iota": 0.6666666666666666,
+      "label": "MK8:5",
+      "rank": 9
+     },
+     {
+      "distance": 0.043323863636,
+      "iota": 0.6363636363636364,
+      "label": "XC1:1",
+      "rank": 16
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK2:2",
+      "rank": 32
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK4:2",
+      "rank": 33
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK4:3",
+      "rank": 34
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK5:1",
+      "rank": 35
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK6:3",
+      "rank": 36
+     },
+     {
+      "distance": 0.153645833333,
+      "iota": 0.8333333333333334,
+      "label": "MK6:8",
+      "rank": 37
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK2:3",
+      "rank": 45
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK3:3",
+      "rank": 46
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK3:8",
+      "rank": 47
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK4:6",
+      "rank": 48
+     },
+     {
+      "distance": 0.1796875,
+      "iota": 0.5,
+      "label": "MK5:6",
+      "rank": 49
+     }
+    ],
+    "topup_rule_subset": {
+     "families": [
+      "MK3",
+      "MK6"
+     ],
+     "n_rungs": 2,
+     "rule": "Tier-1/2, inside this frame's caliper on the frame's own screen iota, family not already LOCAL-valid on this frame, not forwarded --- the LOCAL_TOPUP candidate set, recomputed here for comparison only",
+     "rungs": [
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.166666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK3:4",
+       "pooled_outside_caliper": true,
+       "rank": 5,
+       "tier": 1
+      },
+      {
+       "distance_frame": 0.013020833333,
+       "distance_pooled": 0.416666666667,
+       "forwarded": false,
+       "iota_screen": 0.6666666666666666,
+       "label": "MK6:5",
+       "pooled_outside_caliper": true,
+       "rank": 7,
+       "tier": 1
+      }
+     ]
+    }
+   }
+  }
+ },
+ "c_screen_vs_calibration_drift": {
+  "by_frame": {
+   "0": {
+    "max_abs": 0.43986986098787345,
+    "mean_abs": 0.14977497158680295,
+    "median_signed": 0.046875,
+    "n": 43,
+    "n_beyond_caliper": 29
+   },
+   "1": {
+    "max_abs": 0.4296875,
+    "mean_abs": 0.13901565489719137,
+    "median_signed": -0.04947916666666663,
+    "n": 43,
+    "n_beyond_caliper": 23
+   },
+   "2": {
+    "max_abs": 0.5489461358313816,
+    "mean_abs": 0.13045107417462862,
+    "median_signed": -0.04728405028255106,
+    "n": 43,
+    "n_beyond_caliper": 22
+   },
+   "3": {
+    "max_abs": 0.6376811594202899,
+    "mean_abs": 0.20122822291912532,
+    "median_signed": -0.0234375,
+    "n": 43,
+    "n_beyond_caliper": 30
+   }
+  },
+  "n_forwarded_rungs_paired": 43,
+  "overall_max_abs": 0.6376811594202899,
+  "overall_mean_abs": 0.15511748089443705,
+  "per_rung": {
+   "CL7:60": {
+    "by_frame": {
+     "0": {
+      "drift": 0.043596730245231585,
+      "iota_cal": 0.9564032697547684,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.013786496611088305,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.00528401585204763,
+      "iota_cal": 0.9947159841479524,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.003716646345777791,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": 0.048714479025710467,
+      "iota_cal": 0.9512855209742895,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.018970954320285408,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "3": {
+      "drift": -0.2175438596491228,
+      "iota_cal": 0.38421052631578945,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.03342263394082231,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.2175438596491228,
+    "mean_abs_drift": 0.07878477119302812,
+    "pooled": {
+     "drift_pooled": -0.02998715863153334,
+     "iota_cal_frame_mean": 0.8216538252982,
+     "iota_screen_pooled": 0.7916666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CL7:80": {
+    "by_frame": {
+     "0": {
+      "drift": 0.11458333333333337,
+      "iota_cal": 0.71875,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.0331650081133398,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": 0.13802083333333337,
+      "iota_cal": 0.8619791666666666,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.02090004396015831,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": -0.18229166666666669,
+      "iota_cal": 0.515625,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.038971934486647944,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": 0.09635416666666666,
+      "iota_cal": 0.0703125,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.01643331362205679,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.18229166666666669,
+    "mean_abs_drift": 0.13281250000000003,
+    "pooled": {
+     "drift_pooled": 0.04166666666666674,
+     "iota_cal_frame_mean": 0.5416666666666666,
+     "iota_screen_pooled": 0.5833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CL8:25": {
+    "by_frame": {
+     "0": {
+      "drift": -0.11197916666666663,
+      "iota_cal": 0.6119791666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.036811998601615235,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": -0.03125,
+      "iota_cal": 0.6979166666666666,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.034515098611531486,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.08072916666666674,
+      "iota_cal": 0.7473958333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.03280031450148305,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": -0.11979166666666666,
+      "iota_cal": 0.2864583333333333,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.029612622948085792,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.11979166666666666,
+    "mean_abs_drift": 0.0859375,
+    "pooled": {
+     "drift_pooled": -0.0859375,
+     "iota_cal_frame_mean": 0.5859375,
+     "iota_screen_pooled": 0.5,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CR5:1": {
+    "by_frame": {
+     "0": {
+      "drift": 0.046875,
+      "iota_cal": 0.953125,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.014487072655398918,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.046875,
+      "iota_cal": 0.2864583333333333,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.03205737016233781,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.06770833333333334,
+      "iota_cal": 0.234375,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.03680133140826637,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "3": {
+      "drift": -0.03385416666666663,
+      "iota_cal": 0.8671875,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.03183727234918163,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.06770833333333334,
+    "mean_abs_drift": 0.04882812499999999,
+    "pooled": {
+     "drift_pooled": -0.001953125,
+     "iota_cal_frame_mean": 0.5852864583333334,
+     "iota_screen_pooled": 0.5833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CR5:2": {
+    "by_frame": {
+     "0": {
+      "drift": 0.010430247718383301,
+      "iota_cal": 0.9895697522816167,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.010430247718383313,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": -0.3613646240764885,
+      "iota_cal": 0.5280312907431551,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.0424075466940119,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.005208333333333333,
+      "iota_cal": 0.005208333333333333,
+      "iota_screen": 0.0,
+      "se_iota_cal": 0.0036634131298877446,
+      "se_iota_screen": 0.1264911064067352
+     },
+     "3": {
+      "drift": 0.15384615384615385,
+      "iota_cal": 0.8461538461538461,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.03364398473048027,
+      "se_iota_screen": 0.12649110640673517
+     }
+    },
+    "max_abs_drift": 0.3613646240764885,
+    "mean_abs_drift": 0.13271233974358976,
+    "pooled": {
+     "drift_pooled": -0.050574138961321236,
+     "iota_cal_frame_mean": 0.5922408056279879,
+     "iota_screen_pooled": 0.5416666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CR5:3": {
+    "by_frame": {
+     "0": {
+      "drift": 0.2664539289988034,
+      "iota_cal": 0.5596330275229358,
+      "iota_screen": 0.8260869565217391,
+      "se_iota_cal": 0.037635211005994366,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "1": {
+      "drift": -0.05524296675191816,
+      "iota_cal": 0.011764705882352941,
+      "iota_screen": -0.043478260869565216,
+      "se_iota_cal": 0.011033338367661912,
+      "se_iota_screen": 0.13199071972876716
+     },
+     "2": {
+      "drift": -0.049997165693554786,
+      "iota_cal": 0.00651890482398957,
+      "iota_screen": -0.043478260869565216,
+      "se_iota_cal": 0.0058060835708900254,
+      "se_iota_screen": 0.13199071972876716
+     },
+     "3": {
+      "drift": 0.1694915254237288,
+      "iota_cal": 0.8305084745762712,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.0348724370528642,
+      "se_iota_screen": 0.13199071972876714
+     }
+    },
+    "max_abs_drift": 0.2664539289988034,
+    "mean_abs_drift": 0.13529639671700128,
+    "pooled": {
+     "drift_pooled": 0.08267633049426476,
+     "iota_cal_frame_mean": 0.35210627820138735,
+     "iota_screen_pooled": 0.4347826086956521,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "CR5:6": {
+    "by_frame": {
+     "0": {
+      "drift": 0.11209842788790159,
+      "iota_cal": 0.1259968102073365,
+      "iota_screen": 0.23809523809523808,
+      "se_iota_cal": 0.03766259483376864,
+      "se_iota_screen": 0.24093544077473372
+     },
+     "1": {
+      "drift": 0.14082599864590387,
+      "iota_cal": -0.09320695102685625,
+      "iota_screen": 0.04761904761904761,
+      "se_iota_cal": 0.022672933131904396,
+      "se_iota_screen": 0.1904761904761905
+     },
+     "2": {
+      "drift": 0.329004329004329,
+      "iota_cal": -0.09090909090909093,
+      "iota_screen": 0.23809523809523808,
+      "se_iota_cal": 0.022832989793111626,
+      "se_iota_screen": 0.24093544077473372
+     },
+     "3": {
+      "drift": 0.17391304347826086,
+      "iota_cal": 0.8260869565217391,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.04012759737672447,
+      "se_iota_screen": 0.1445612644648402
+     }
+    },
+    "max_abs_drift": 0.329004329004329,
+    "mean_abs_drift": 0.18896044975409884,
+    "pooled": {
+     "drift_pooled": 0.1889604497540988,
+     "iota_cal_frame_mean": 0.19199193119828212,
+     "iota_screen_pooled": 0.38095238095238093,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK1:2": {
+    "by_frame": {
+     "0": {
+      "drift": 0.04947916666666663,
+      "iota_cal": 0.9505208333333334,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.012619924541426015,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": -0.10416666666666663,
+      "iota_cal": 0.9375,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.011707322644771177,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": 0.11458333333333337,
+      "iota_cal": 0.8854166666666666,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.018480025173396187,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "3": {
+      "drift": 0.08854166666666663,
+      "iota_cal": 0.9114583333333334,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.019582808410284726,
+      "se_iota_screen": 0.12649110640673517
+     }
+    },
+    "max_abs_drift": 0.11458333333333337,
+    "mean_abs_drift": 0.08919270833333331,
+    "pooled": {
+     "drift_pooled": 0.037109375,
+     "iota_cal_frame_mean": 0.9212239583333334,
+     "iota_screen_pooled": 0.9583333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK1:3": {
+    "by_frame": {
+     "0": {
+      "drift": 0.1875,
+      "iota_cal": 0.8125,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.022821773229381923,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.1953125,
+      "iota_cal": 0.8046875,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.023474021253161115,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": -0.015625,
+      "iota_cal": 0.6822916666666666,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.028552229445116015,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": -0.20052083333333337,
+      "iota_cal": 0.8671875,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.022505215343415597,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.20052083333333337,
+    "mean_abs_drift": 0.14973958333333334,
+    "pooled": {
+     "drift_pooled": 0.04166666666666674,
+     "iota_cal_frame_mean": 0.7916666666666666,
+     "iota_screen_pooled": 0.8333333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK1:4": {
+    "by_frame": {
+     "0": {
+      "drift": -0.25260416666666663,
+      "iota_cal": 0.7526041666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.0252440911931511,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": -0.15625,
+      "iota_cal": 0.65625,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.02990527809425515,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": 0.19270833333333331,
+      "iota_cal": 0.4739583333333333,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.02926342815425393,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": 0.04947916666666663,
+      "iota_cal": 0.6171875,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.03096429151833538,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.25260416666666663,
+    "mean_abs_drift": 0.16276041666666663,
+    "pooled": {
+     "drift_pooled": -0.04166666666666663,
+     "iota_cal_frame_mean": 0.625,
+     "iota_screen_pooled": 0.5833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK1:5": {
+    "by_frame": {
+     "0": {
+      "drift": 0.1484375,
+      "iota_cal": 0.6848958333333334,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.02849591952616748,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.0546875,
+      "iota_cal": 0.5546875,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.02824429500110862,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": 0.45833333333333337,
+      "iota_cal": 0.375,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.025915263401960296,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "3": {
+      "drift": -0.36197916666666674,
+      "iota_cal": 0.5286458333333334,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.035484930020914254,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.45833333333333337,
+    "mean_abs_drift": 0.255859375,
+    "pooled": {
+     "drift_pooled": 0.04752604166666663,
+     "iota_cal_frame_mean": 0.5358072916666667,
+     "iota_screen_pooled": 0.5833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK1:7": {
+    "by_frame": {
+     "0": {
+      "drift": 0.1640625,
+      "iota_cal": 0.5026041666666666,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.02996132184725493,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": -0.18750000000000003,
+      "iota_cal": 0.3541666666666667,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.02859719754805249,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.2760416666666667,
+      "iota_cal": 0.2760416666666667,
+      "iota_screen": 0.0,
+      "se_iota_cal": 0.027325795588274533,
+      "se_iota_screen": 0.1264911064067352
+     },
+     "3": {
+      "drift": -0.22395833333333334,
+      "iota_cal": 0.390625,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.03115390928272873,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.2760416666666667,
+    "mean_abs_drift": 0.212890625,
+    "pooled": {
+     "drift_pooled": -0.130859375,
+     "iota_cal_frame_mean": 0.380859375,
+     "iota_screen_pooled": 0.25,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK2:1": {
+    "by_frame": {
+     "0": {
+      "drift": -0.1655344202898551,
+      "iota_cal": 0.8177083333333334,
+      "iota_screen": 0.6521739130434783,
+      "se_iota_cal": 0.02236042437469321,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "1": {
+      "drift": -0.08797554347826086,
+      "iota_cal": 0.9140625,
+      "iota_screen": 0.8260869565217391,
+      "se_iota_cal": 0.01768856933721234,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "2": {
+      "drift": 0.037024456521739135,
+      "iota_cal": 0.7890625,
+      "iota_screen": 0.8260869565217391,
+      "se_iota_cal": 0.02875527340080882,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "3": {
+      "drift": -0.19882246376811602,
+      "iota_cal": 0.6770833333333334,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.03267930184391717,
+      "se_iota_screen": 0.23332883243476066
+     }
+    },
+    "max_abs_drift": 0.19882246376811602,
+    "mean_abs_drift": 0.12233922101449278,
+    "pooled": {
+     "drift_pooled": -0.10382699275362317,
+     "iota_cal_frame_mean": 0.7994791666666667,
+     "iota_screen_pooled": 0.6956521739130436,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK2:2": {
+    "by_frame": {
+     "0": {
+      "drift": -0.18229166666666674,
+      "iota_cal": 0.8489583333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.02236042437469321,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": -0.203125,
+      "iota_cal": 0.703125,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.027031622360785903,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": -0.15885416666666663,
+      "iota_cal": 0.6588541666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.029413070623473876,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.07552083333333326,
+      "iota_cal": 0.9088541666666666,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.01741197774853555,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.203125,
+    "mean_abs_drift": 0.15494791666666666,
+    "pooled": {
+     "drift_pooled": -0.15494791666666663,
+     "iota_cal_frame_mean": 0.7799479166666666,
+     "iota_screen_pooled": 0.625,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK2:3": {
+    "by_frame": {
+     "0": {
+      "drift": 0.20572916666666674,
+      "iota_cal": 0.6276041666666666,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.029616238726558098,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.04947916666666663,
+      "iota_cal": 0.5494791666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.03154896284879735,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": 0.24999999999999994,
+      "iota_cal": 0.4166666666666667,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.03112181311334525,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": -0.22395833333333337,
+      "iota_cal": 0.7239583333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.027325795588274533,
+      "se_iota_screen": 0.22360679774997896
+     }
+    },
+    "max_abs_drift": 0.24999999999999994,
+    "mean_abs_drift": 0.18229166666666669,
+    "pooled": {
+     "drift_pooled": 0.04557291666666663,
+     "iota_cal_frame_mean": 0.5794270833333334,
+     "iota_screen_pooled": 0.625,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK2:4": {
+    "by_frame": {
+     "0": {
+      "drift": 0.29166666666666674,
+      "iota_cal": 0.5416666666666666,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.032204005235628295,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.23437500000000006,
+      "iota_cal": 0.5677083333333334,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.03382568808919639,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": 0.13541666666666669,
+      "iota_cal": 0.3645833333333333,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.02718435948454176,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.3020833333333333,
+      "iota_cal": 0.6354166666666666,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.03330248023884227,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.3020833333333333,
+    "mean_abs_drift": 0.24088541666666669,
+    "pooled": {
+     "drift_pooled": -0.02734375,
+     "iota_cal_frame_mean": 0.52734375,
+     "iota_screen_pooled": 0.5,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:1": {
+    "by_frame": {
+     "0": {
+      "drift": -0.06620939856017227,
+      "iota_cal": 0.7183833116036505,
+      "iota_screen": 0.6521739130434783,
+      "se_iota_cal": 0.028774114605890144,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "1": {
+      "drift": -0.14519241684640705,
+      "iota_cal": 0.9712793733681462,
+      "iota_screen": 0.8260869565217391,
+      "se_iota_cal": 0.00819115659795313,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "2": {
+      "drift": 0.07380533983334281,
+      "iota_cal": 0.7522816166883963,
+      "iota_screen": 0.8260869565217391,
+      "se_iota_cal": 0.025814932416088253,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "3": {
+      "drift": 0.08922692700647067,
+      "iota_cal": 0.3890339425587467,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.032319188445757055,
+      "se_iota_screen": 0.23332883243476066
+     }
+    },
+    "max_abs_drift": 0.14519241684640705,
+    "mean_abs_drift": 0.0936085205615982,
+    "pooled": {
+     "drift_pooled": -0.012092387141691363,
+     "iota_cal_frame_mean": 0.7077445610547349,
+     "iota_screen_pooled": 0.6956521739130436,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:3": {
+    "by_frame": {
+     "0": {
+      "drift": 0.1796875,
+      "iota_cal": 0.8203125,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.021171528550444362,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.015625,
+      "iota_cal": 0.8177083333333334,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.02173882005801189,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.19010416666666663,
+      "iota_cal": 0.6901041666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.027641380906418964,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": 0.09895833333333337,
+      "iota_cal": 0.734375,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.029804852314534766,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.19010416666666663,
+    "mean_abs_drift": 0.12109375,
+    "pooled": {
+     "drift_pooled": 0.02604166666666663,
+     "iota_cal_frame_mean": 0.765625,
+     "iota_screen_pooled": 0.7916666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:4": {
+    "by_frame": {
+     "0": {
+      "drift": -0.39583333333333337,
+      "iota_cal": 0.8958333333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.017232712330593983,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": 0.171875,
+      "iota_cal": 0.6614583333333334,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.026172914873074733,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": 0.01302083333333326,
+      "iota_cal": 0.6536458333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.031926835146140475,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": -0.53125,
+      "iota_cal": 0.6979166666666666,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.028657045254004445,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.53125,
+    "mean_abs_drift": 0.27799479166666663,
+    "pooled": {
+     "drift_pooled": -0.1855468750000001,
+     "iota_cal_frame_mean": 0.7272135416666667,
+     "iota_screen_pooled": 0.5416666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:5": {
+    "by_frame": {
+     "0": {
+      "drift": 0.08854166666666663,
+      "iota_cal": 0.9114583333333334,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.018869925928104853,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.2890625,
+      "iota_cal": 0.7109375,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.028031184907217743,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": -0.19010416666666663,
+      "iota_cal": 0.6901041666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.029090939835608717,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.3489583333333333,
+      "iota_cal": 0.6822916666666666,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.029728109728688366,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.3489583333333333,
+    "mean_abs_drift": 0.22916666666666663,
+    "pooled": {
+     "drift_pooled": -0.04036458333333326,
+     "iota_cal_frame_mean": 0.7486979166666666,
+     "iota_screen_pooled": 0.7083333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:6": {
+    "by_frame": {
+     "0": {
+      "drift": -0.1875,
+      "iota_cal": 0.8541666666666666,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.02115972396154201,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": -0.4296875,
+      "iota_cal": 0.5963541666666666,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.029702885363884407,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.0859375,
+      "iota_cal": 0.5859375,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.030264759385066405,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.1640625,
+      "iota_cal": 0.6640625,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.029808444775502978,
+      "se_iota_screen": 0.22360679774997896
+     }
+    },
+    "max_abs_drift": 0.4296875,
+    "mean_abs_drift": 0.216796875,
+    "pooled": {
+     "drift_pooled": -0.21679687499999994,
+     "iota_cal_frame_mean": 0.6751302083333333,
+     "iota_screen_pooled": 0.4583333333333333,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK4:8": {
+    "by_frame": {
+     "0": {
+      "drift": 0.13541666666666674,
+      "iota_cal": 0.6979166666666666,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.026931083532489335,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.0859375,
+      "iota_cal": 0.4192708333333333,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.030415342962665237,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.02604166666666663,
+      "iota_cal": 0.5260416666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.032376445021828175,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.31250000000000006,
+      "iota_cal": 0.6458333333333334,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.029072529788515027,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.31250000000000006,
+    "mean_abs_drift": 0.13997395833333337,
+    "pooled": {
+     "drift_pooled": -0.072265625,
+     "iota_cal_frame_mean": 0.572265625,
+     "iota_screen_pooled": 0.5,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK5:3": {
+    "by_frame": {
+     "0": {
+      "drift": 0.00520833333333337,
+      "iota_cal": 0.9947916666666666,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.005208333333333334,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": 0.01041666666666663,
+      "iota_cal": 0.9895833333333334,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.00512543679496502,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": 0.02864583333333337,
+      "iota_cal": 0.9713541666666666,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.008969514391188784,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "3": {
+      "drift": 0.015625,
+      "iota_cal": 0.984375,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.010990239389663233,
+      "se_iota_screen": 0.12649110640673517
+     }
+    },
+    "max_abs_drift": 0.02864583333333337,
+    "mean_abs_drift": 0.014973958333333343,
+    "pooled": {
+     "drift_pooled": 0.01497395833333337,
+     "iota_cal_frame_mean": 0.9850260416666666,
+     "iota_screen_pooled": 1.0,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK5:5": {
+    "by_frame": {
+     "0": {
+      "drift": 0.09895833333333337,
+      "iota_cal": 0.9010416666666666,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.01591471180702261,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "1": {
+      "drift": -0.06510416666666674,
+      "iota_cal": 0.7317708333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.028010804146615616,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.16145833333333337,
+      "iota_cal": 0.6614583333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.031190550176642243,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.0026041666666667407,
+      "iota_cal": 0.6692708333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.02926708707374487,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.16145833333333337,
+    "mean_abs_drift": 0.08203125000000006,
+    "pooled": {
+     "drift_pooled": -0.03255208333333337,
+     "iota_cal_frame_mean": 0.7408854166666667,
+     "iota_screen_pooled": 0.7083333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK5:6": {
+    "by_frame": {
+     "0": {
+      "drift": -0.08072916666666674,
+      "iota_cal": 0.7473958333333334,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.026823515471939768,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": -0.3567708333333333,
+      "iota_cal": 0.6901041666666666,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.026631210581012536,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.0546875,
+      "iota_cal": 0.5546875,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.030574525402995566,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.16927083333333337,
+      "iota_cal": 0.6692708333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.02926708707374487,
+      "se_iota_screen": 0.22360679774997896
+     }
+    },
+    "max_abs_drift": 0.3567708333333333,
+    "mean_abs_drift": 0.16536458333333337,
+    "pooled": {
+     "drift_pooled": -0.16536458333333337,
+     "iota_cal_frame_mean": 0.6653645833333334,
+     "iota_screen_pooled": 0.5,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK5:7": {
+    "by_frame": {
+     "0": {
+      "drift": -0.0859375,
+      "iota_cal": 0.5859375,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.030264759385066405,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": 0.08072916666666674,
+      "iota_cal": 0.7526041666666666,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.024971143342211056,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.21875,
+      "iota_cal": 0.71875,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.026503578871210135,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.08333333333333337,
+      "iota_cal": 0.5833333333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.029540214437370767,
+      "se_iota_screen": 0.22360679774997896
+     }
+    },
+    "max_abs_drift": 0.21875,
+    "mean_abs_drift": 0.11718750000000003,
+    "pooled": {
+     "drift_pooled": -0.07682291666666663,
+     "iota_cal_frame_mean": 0.66015625,
+     "iota_screen_pooled": 0.5833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK5:8": {
+    "by_frame": {
+     "0": {
+      "drift": -0.14583333333333337,
+      "iota_cal": 0.6458333333333334,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.0273727785554911,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": -0.16666666666666663,
+      "iota_cal": 0.6666666666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.027869002252497447,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": -0.10416666666666663,
+      "iota_cal": 0.6041666666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.029072529788515027,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.20572916666666669,
+      "iota_cal": 0.5390625,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.0323444584738916,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.20572916666666669,
+    "mean_abs_drift": 0.15559895833333331,
+    "pooled": {
+     "drift_pooled": -0.15559895833333331,
+     "iota_cal_frame_mean": 0.6139322916666666,
+     "iota_screen_pooled": 0.4583333333333333,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:1": {
+    "by_frame": {
+     "0": {
+      "drift": -0.0259644825474587,
+      "iota_cal": 0.504225352112676,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.03957615893632463,
+      "se_iota_screen": 0.23332883243476066
+     },
+     "1": {
+      "drift": 0.0866965620328849,
+      "iota_cal": 0.9133034379671151,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.020435470807681908,
+      "se_iota_screen": 0.13199071972876714
+     },
+     "2": {
+      "drift": -0.045682792406613715,
+      "iota_cal": 0.5239436619718311,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.03686523161742132,
+      "se_iota_screen": 0.23332883243476066
+     },
+     "3": {
+      "drift": 0.24633315872184386,
+      "iota_cal": 0.2319277108433735,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.03967030509300768,
+      "se_iota_screen": 0.23332883243476066
+     }
+    },
+    "max_abs_drift": 0.24633315872184386,
+    "mean_abs_drift": 0.10116924892720029,
+    "pooled": {
+     "drift_pooled": 0.06534561145016415,
+     "iota_cal_frame_mean": 0.5433500407237489,
+     "iota_screen_pooled": 0.6086956521739131,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:2": {
+    "by_frame": {
+     "0": {
+      "drift": -0.10930030421555847,
+      "iota_cal": 0.9426336375488918,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.013609900967488965,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": 0.0368421052631579,
+      "iota_cal": 0.9631578947368421,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.009883414279729238,
+      "se_iota_screen": 0.12649110640673517
+     },
+     "2": {
+      "drift": -0.06744995648389895,
+      "iota_cal": 0.9007832898172323,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.01759868189993191,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "3": {
+      "drift": 0.18134034165571622,
+      "iota_cal": 0.8186596583442838,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.025533310181701463,
+      "se_iota_screen": 0.12649110640673517
+     }
+    },
+    "max_abs_drift": 0.18134034165571622,
+    "mean_abs_drift": 0.09873317690458289,
+    "pooled": {
+     "drift_pooled": 0.010358046554854172,
+     "iota_cal_frame_mean": 0.9063086201118125,
+     "iota_screen_pooled": 0.9166666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:3": {
+    "by_frame": {
+     "0": {
+      "drift": -0.09114583333333337,
+      "iota_cal": 0.7578125,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.024959705740171798,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": 0.05208333333333337,
+      "iota_cal": 0.78125,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.023487702082639058,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.13541666666666663,
+      "iota_cal": 0.6354166666666666,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.03051025017100116,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "3": {
+      "drift": -0.0234375,
+      "iota_cal": 0.6901041666666666,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.027392331008201286,
+      "se_iota_screen": 0.210818510677892
+     }
+    },
+    "max_abs_drift": 0.13541666666666663,
+    "mean_abs_drift": 0.07552083333333334,
+    "pooled": {
+     "drift_pooled": -0.04947916666666663,
+     "iota_cal_frame_mean": 0.7161458333333333,
+     "iota_screen_pooled": 0.6666666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:4": {
+    "by_frame": {
+     "0": {
+      "drift": 0.14322916666666663,
+      "iota_cal": 0.5234375,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.031212285355724807,
+      "se_iota_screen": 0.210818510677892
+     },
+     "1": {
+      "drift": 0.29427083333333337,
+      "iota_cal": 0.5390625,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.03459669836601388,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.20572916666666666,
+      "iota_cal": 0.3723958333333333,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.02843573270647503,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "3": {
+      "drift": -0.30729166666666663,
+      "iota_cal": 0.4739583333333333,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.0332123283383591,
+      "se_iota_screen": 0.16666666666666669
+     }
+    },
+    "max_abs_drift": 0.30729166666666663,
+    "mean_abs_drift": 0.23763020833333331,
+    "pooled": {
+     "drift_pooled": -0.018880208333333315,
+     "iota_cal_frame_mean": 0.47721354166666663,
+     "iota_screen_pooled": 0.4583333333333333,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:6": {
+    "by_frame": {
+     "0": {
+      "drift": 0.1328125,
+      "iota_cal": 0.3671875,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.02983716889180457,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "1": {
+      "drift": 0.036458333333333315,
+      "iota_cal": 0.296875,
+      "iota_screen": 0.3333333333333333,
+      "se_iota_cal": 0.026260049246022155,
+      "se_iota_screen": 0.210818510677892
+     },
+     "2": {
+      "drift": -0.19010416666666666,
+      "iota_cal": 0.19010416666666666,
+      "iota_screen": 0.0,
+      "se_iota_cal": 0.023919865666459376,
+      "se_iota_screen": 0.1264911064067352
+     },
+     "3": {
+      "drift": -0.4088541666666667,
+      "iota_cal": 0.4088541666666667,
+      "iota_screen": 0.0,
+      "se_iota_cal": 0.030103939020568283,
+      "se_iota_screen": 0.1264911064067352
+     }
+    },
+    "max_abs_drift": 0.4088541666666667,
+    "mean_abs_drift": 0.19205729166666666,
+    "pooled": {
+     "drift_pooled": -0.10742187499999997,
+     "iota_cal_frame_mean": 0.3157552083333333,
+     "iota_screen_pooled": 0.20833333333333334,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "MK8:8": {
+    "by_frame": {
+     "0": {
+      "drift": -0.12500000000000003,
+      "iota_cal": 0.2916666666666667,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.027869002252497447,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.10937500000000003,
+      "iota_cal": 0.2760416666666667,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.02604166666666667,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "2": {
+      "drift": -0.05989583333333334,
+      "iota_cal": 0.2265625,
+      "iota_screen": 0.16666666666666666,
+      "se_iota_cal": 0.02372809614362006,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "3": {
+      "drift": -0.23177083333333334,
+      "iota_cal": 0.23177083333333334,
+      "iota_screen": 0.0,
+      "se_iota_cal": 0.023486182384013506,
+      "se_iota_screen": 0.1264911064067352
+     }
+    },
+    "max_abs_drift": 0.23177083333333334,
+    "mean_abs_drift": 0.13151041666666669,
+    "pooled": {
+     "drift_pooled": -0.13151041666666669,
+     "iota_cal_frame_mean": 0.2565104166666667,
+     "iota_screen_pooled": 0.125,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "RF10:15": {
+    "by_frame": {
+     "0": {
+      "drift": -0.03481301307388268,
+      "iota_cal": 0.33916083916083917,
+      "iota_screen": 0.3043478260869565,
+      "se_iota_cal": 0.05341037471191914,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "1": {
+      "drift": 0.0013470029185063404,
+      "iota_cal": 0.1290877796901893,
+      "iota_screen": 0.13043478260869565,
+      "se_iota_cal": 0.04847535337646975,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "2": {
+      "drift": -0.09565217391304354,
+      "iota_cal": 0.4,
+      "iota_screen": 0.3043478260869565,
+      "se_iota_cal": 0.05212685041127916,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "3": {
+      "drift": 0.006296851574212864,
+      "iota_cal": 0.12413793103448278,
+      "iota_screen": 0.13043478260869565,
+      "se_iota_cal": 0.049504712558424264,
+      "se_iota_screen": 0.1739130434782609
+     }
+    },
+    "max_abs_drift": 0.09565217391304354,
+    "mean_abs_drift": 0.034527260369911356,
+    "pooled": {
+     "drift_pooled": -0.030705333123551753,
+     "iota_cal_frame_mean": 0.24809663747137783,
+     "iota_screen_pooled": 0.21739130434782608,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "RF10:19": {
+    "by_frame": {
+     "0": {
+      "drift": 0.34700315457413244,
+      "iota_cal": 0.6529968454258676,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.0657548417692298,
+      "se_iota_screen": 0.2168418966972603
+     },
+     "1": {
+      "drift": 0.029761904761904823,
+      "iota_cal": 0.3988095238095237,
+      "iota_screen": 0.42857142857142855,
+      "se_iota_cal": 0.07248333594514153,
+      "se_iota_screen": 0.36140316116210064
+     },
+     "2": {
+      "drift": -0.5489461358313816,
+      "iota_cal": 0.6918032786885244,
+      "iota_screen": 0.14285714285714285,
+      "se_iota_cal": 0.059687489134767624,
+      "se_iota_screen": 0.383325938999964
+     },
+     "3": {
+      "drift": 0.6376811594202899,
+      "iota_cal": 0.3623188405797101,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.07552408853628538,
+      "se_iota_screen": 0.2168418966972603
+     }
+    },
+    "max_abs_drift": 0.6376811594202899,
+    "mean_abs_drift": 0.3908480886469272,
+    "pooled": {
+     "drift_pooled": 0.1163750207312364,
+     "iota_cal_frame_mean": 0.5264821221259064,
+     "iota_screen_pooled": 0.6428571428571428,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "RF11:26": {
+    "by_frame": {
+     "0": {
+      "drift": -0.012643678160919547,
+      "iota_cal": 0.21264367816091953,
+      "iota_screen": 0.19999999999999998,
+      "se_iota_cal": 0.0383177050199946,
+      "se_iota_screen": 0.2529822128134704
+     },
+     "1": {
+      "drift": 0.18961038961038967,
+      "iota_cal": 0.6103896103896104,
+      "iota_screen": 0.8,
+      "se_iota_cal": 0.04011112344570423,
+      "se_iota_screen": 0.2
+     },
+     "2": {
+      "drift": 0.15517241379310343,
+      "iota_cal": 0.8448275862068966,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.02765040925832052,
+      "se_iota_screen": 0.1517893276880822
+     },
+     "3": {
+      "drift": 0.16574746008708274,
+      "iota_cal": 0.6342525399129173,
+      "iota_screen": 0.8,
+      "se_iota_cal": 0.03789182902079703,
+      "se_iota_screen": 0.2
+     }
+    },
+    "max_abs_drift": 0.18961038961038967,
+    "mean_abs_drift": 0.13079348541287383,
+    "pooled": {
+     "drift_pooled": 0.12447164633241414,
+     "iota_cal_frame_mean": 0.5755283536675859,
+     "iota_screen_pooled": 0.7000000000000001,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "RF11:32": {
+    "by_frame": {
+     "0": {
+      "drift": 0.14742251485466518,
+      "iota_cal": 0.5448851774530271,
+      "iota_screen": 0.6923076923076923,
+      "se_iota_cal": 0.05127554794394158,
+      "se_iota_screen": 0.3076923076923077
+     },
+     "1": {
+      "drift": -0.17019230769230775,
+      "iota_cal": 0.8625,
+      "iota_screen": 0.6923076923076923,
+      "se_iota_cal": 0.02891495394088514,
+      "se_iota_screen": 0.3076923076923077
+     },
+     "2": {
+      "drift": 0.04065040650406493,
+      "iota_cal": 0.9593495934959351,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.016827914258234437,
+      "se_iota_screen": 0.2335220425970495
+     },
+     "3": {
+      "drift": 0.10191082802547768,
+      "iota_cal": 0.8980891719745223,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.031943089323592515,
+      "se_iota_screen": 0.2335220425970495
+     }
+    },
+    "max_abs_drift": 0.17019230769230775,
+    "mean_abs_drift": 0.11504401426912889,
+    "pooled": {
+     "drift_pooled": 0.029947860422974926,
+     "iota_cal_frame_mean": 0.8162059857308711,
+     "iota_screen_pooled": 0.846153846153846,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "RF9:13": {
+    "by_frame": {
+     "0": {
+      "drift": -0.13030831878999405,
+      "iota_cal": 0.6858638743455497,
+      "iota_screen": 0.5555555555555557,
+      "se_iota_cal": 0.060123700461748565,
+      "se_iota_screen": 0.4444444444444445
+     },
+     "1": {
+      "drift": 0.07539682539682527,
+      "iota_cal": 0.03571428571428575,
+      "iota_screen": 0.11111111111111101,
+      "se_iota_cal": 0.07860768898396356,
+      "se_iota_screen": 0.5621826951410454
+     },
+     "2": {
+      "drift": 0.1493333333333332,
+      "iota_cal": 0.8506666666666668,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.04480267327028314,
+      "se_iota_screen": 0.3373096170846271
+     },
+     "3": {
+      "drift": 0.22622107969151684,
+      "iota_cal": 0.7737789203084832,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.052155388905696855,
+      "se_iota_screen": 0.3373096170846271
+     }
+    },
+    "max_abs_drift": 0.22622107969151684,
+    "mean_abs_drift": 0.14531488930291733,
+    "pooled": {
+     "drift_pooled": 0.08016072990792023,
+     "iota_cal_frame_mean": 0.5865059367587464,
+     "iota_screen_pooled": 0.6666666666666666,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "XC1:1": {
+    "by_frame": {
+     "0": {
+      "drift": 0.29907353792704106,
+      "iota_cal": 0.5191082802547772,
+      "iota_screen": 0.8181818181818182,
+      "se_iota_cal": 0.0358631146382936,
+      "se_iota_screen": 0.18181818181818185
+     },
+     "1": {
+      "drift": -0.20593126385809307,
+      "iota_cal": 0.47865853658536583,
+      "iota_screen": 0.27272727272727276,
+      "se_iota_cal": 0.03682925766605021,
+      "se_iota_screen": 0.22998382983042764
+     },
+     "2": {
+      "drift": 0.10271731398491968,
+      "iota_cal": 0.5336463223787167,
+      "iota_screen": 0.6363636363636364,
+      "se_iota_cal": 0.03355511780379576,
+      "se_iota_screen": 0.22998382983042764
+     },
+     "3": {
+      "drift": 0.05630321340291122,
+      "iota_cal": 0.5800604229607251,
+      "iota_screen": 0.6363636363636364,
+      "se_iota_cal": 0.029404061978108707,
+      "se_iota_screen": 0.22998382983042764
+     }
+    },
+    "max_abs_drift": 0.29907353792704106,
+    "mean_abs_drift": 0.16600633229324124,
+    "pooled": {
+     "drift_pooled": 0.06304070036419473,
+     "iota_cal_frame_mean": 0.5278683905448962,
+     "iota_screen_pooled": 0.5909090909090909,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "XC3:10": {
+    "by_frame": {
+     "0": {
+      "drift": 0.14204045734388748,
+      "iota_cal": 0.6912928759894459,
+      "iota_screen": 0.8333333333333334,
+      "se_iota_cal": 0.029345154509347403,
+      "se_iota_screen": 0.16666666666666669
+     },
+     "1": {
+      "drift": -0.09738562091503267,
+      "iota_cal": 0.5973856209150327,
+      "iota_screen": 0.5,
+      "se_iota_cal": 0.032715219816620206,
+      "se_iota_screen": 0.22360679774997896
+     },
+     "2": {
+      "drift": 0.08201058201058198,
+      "iota_cal": 0.5846560846560847,
+      "iota_screen": 0.6666666666666666,
+      "se_iota_cal": 0.03081217187646323,
+      "se_iota_screen": 0.210818510677892
+     },
+     "3": {
+      "drift": 0.4601307189542484,
+      "iota_cal": 0.5398692810457516,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.03338139085473518,
+      "se_iota_screen": 0.12649110640673517
+     }
+    },
+    "max_abs_drift": 0.4601307189542484,
+    "mean_abs_drift": 0.19539184480593763,
+    "pooled": {
+     "drift_pooled": 0.14669903434842135,
+     "iota_cal_frame_mean": 0.6033009656515786,
+     "iota_screen_pooled": 0.75,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "XC3:5": {
+    "by_frame": {
+     "0": {
+      "drift": 0.12187789084181305,
+      "iota_cal": 0.3563829787234043,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.03761602178522486,
+      "se_iota_screen": 0.23332883243476066
+     },
+     "1": {
+      "drift": -0.2250028831737977,
+      "iota_cal": 0.35543766578249336,
+      "iota_screen": 0.13043478260869565,
+      "se_iota_cal": 0.03751130890549119,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "2": {
+      "drift": -0.04728405028255106,
+      "iota_cal": 0.1777188328912467,
+      "iota_screen": 0.13043478260869565,
+      "se_iota_cal": 0.030513992371549004,
+      "se_iota_screen": 0.1739130434782609
+     },
+     "3": {
+      "drift": -0.1834725021595163,
+      "iota_cal": 0.31390728476821195,
+      "iota_screen": 0.13043478260869565,
+      "se_iota_cal": 0.03594828819977815,
+      "se_iota_screen": 0.1739130434782609
+     }
+    },
+    "max_abs_drift": 0.2250028831737977,
+    "mean_abs_drift": 0.14440933161441954,
+    "pooled": {
+     "drift_pooled": -0.08347038619351302,
+     "iota_cal_frame_mean": 0.3008616905413391,
+     "iota_screen_pooled": 0.21739130434782608,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "XC3:8": {
+    "by_frame": {
+     "0": {
+      "drift": 0.31464174454828664,
+      "iota_cal": 0.6853582554517134,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.03497606327854134,
+      "se_iota_screen": 0.1445612644648402
+     },
+     "1": {
+      "drift": 0.32845528455284556,
+      "iota_cal": 0.6715447154471544,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.035321388146564145,
+      "se_iota_screen": 0.1445612644648402
+     },
+     "2": {
+      "drift": -0.11673858732682257,
+      "iota_cal": 0.5453100158982511,
+      "iota_screen": 0.42857142857142855,
+      "se_iota_cal": 0.03781821482787228,
+      "se_iota_screen": 0.25555062599997597
+     },
+     "3": {
+      "drift": 0.334375,
+      "iota_cal": 0.665625,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.02840141941875441,
+      "se_iota_screen": 0.1445612644648402
+     }
+    },
+    "max_abs_drift": 0.334375,
+    "mean_abs_drift": 0.2735526541069887,
+    "pooled": {
+     "drift_pooled": 0.21518336044357733,
+     "iota_cal_frame_mean": 0.6419594966992798,
+     "iota_screen_pooled": 0.8571428571428571,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   },
+   "XC3:9": {
+    "by_frame": {
+     "0": {
+      "drift": -0.43986986098787345,
+      "iota_cal": 0.7442176870748299,
+      "iota_screen": 0.3043478260869565,
+      "se_iota_cal": 0.026230828994898876,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "1": {
+      "drift": -0.17006127808578936,
+      "iota_cal": 0.6483221476510067,
+      "iota_screen": 0.47826086956521735,
+      "se_iota_cal": 0.02859042160594404,
+      "se_iota_screen": 0.23332883243476066
+     },
+     "2": {
+      "drift": -0.01765017356003995,
+      "iota_cal": 0.6698240866035182,
+      "iota_screen": 0.6521739130434783,
+      "se_iota_cal": 0.031133356222121714,
+      "se_iota_screen": 0.21998453288127862
+     },
+     "3": {
+      "drift": 0.3704697986577181,
+      "iota_cal": 0.6295302013422819,
+      "iota_screen": 1.0,
+      "se_iota_cal": 0.033448641571739456,
+      "se_iota_screen": 0.13199071972876714
+     }
+    },
+    "max_abs_drift": 0.43986986098787345,
+    "mean_abs_drift": 0.24951277782285522,
+    "pooled": {
+     "drift_pooled": -0.06427787849399613,
+     "iota_cal_frame_mean": 0.6729735306679092,
+     "iota_screen_pooled": 0.6086956521739131,
+     "note": "no pooled calibration iota exists on the record (descriptive_pooled is read_by []); the comparator here is the mean of the frame-specific calibration iotas, computed by this tool and used descriptively only"
+    }
+   }
+  },
+  "pooled": {
+   "iota_a_screen_pooled": 0.625,
+   "max_abs": 0.21679687499999994,
+   "mean_abs": 0.08018657808767483,
+   "median_signed": -0.02734375,
+   "n": 43
+  }
+ },
+ "calibration_allocation": {
+  "amendment": "CHANGES_SCIENTIFIC.md 2026-08-30 (calibration allocation); prompted by r5/r6's measured per-frame SE(iota) = 0.0497 against the unchanged 0.05 floor",
+  "blocks_per_run": 384,
+  "calibration_topics": 192,
+  "draws": 4,
+  "frame_offsets": [
+   0,
+   2
+  ],
+  "generations_per_rung": 1536,
+  "passes": 2,
+  "realised": {
+   "candidates": {
+    "0": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    }
+   },
+   "extension": {
+    "0": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    }
+   },
+   "grids": {
+    "0": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "1": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "2": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    },
+    "3": {
+     "by_split": {
+      "calibration_a": 48,
+      "calibration_b": 48
+     },
+     "n_topics": 96
+    }
+   }
+  },
+  "rule": "a calibration pass renders every calibration topic under one frame; pass p offsets the frame by frame_offsets[p]. Two passes at distinct offsets put every topic under two frames and every frame on half the topics, doubling each frame's own information at 2x the Gate-2 generation. No frame is pooled with another and no topic recurs within a frame (rules.CALIBRATION_FRAME_OFFSETS)",
+  "topics_per_frame": 96,
+  "topics_per_frame_per_split": 48
+ },
+ "caliper": 0.1,
+ "changes_membership": false,
+ "f_summary": {
+  "calibration_spread_median_across_families": 0.26041666666666663,
+  "local_eligible": true,
+  "model_key": "gemma-3n-e2b-it",
+  "root": "dci1v8-pilot-r8",
+  "screen_median_se_iota": 0.16666666666666669,
+  "support_source": "reports/dci1v8dev/local_eligibility.md",
+  "supported_frames": [
+   1,
+   3
+  ],
+  "unforwarded_screen_near_on_unsupported_frames": {
+   "0": 3,
+   "2": 1
+  },
+  "unforwarded_screen_near_topup_subset_on_unsupported_frames": {
+   "0": 1,
+   "2": 0
+  },
+  "unsupported_frames": [
+   0,
+   2
+  ]
+ },
+ "generations": 0,
+ "manifest_hash": "8019583b9ea4e24c80b4bf0e3a41b65e6ba60695192b082668ae6cb915572b30",
+ "model_key": "gemma-3n-e2b-it",
+ "opens_no_confirmatory_stage": true,
+ "prior_audit_comparison": {
+  "exists": true,
+  "path": "reports/dci1v8dev/screen_frame_audit.dci1v8-pilot-r8.gemma-3n-e2b-it.json",
+  "per_frame": {
+   "0": {
+    "both": [],
+    "prior_lost_families": [],
+    "prior_only": [],
+    "this_tool_near_families": [
+     "MK1",
+     "MK4",
+     "XC3"
+    ],
+    "this_tool_only": [
+     "MK1",
+     "MK4",
+     "XC3"
+    ]
+   },
+   "1": {
+    "both": [],
+    "prior_lost_families": [
+     "CR6",
+     "RF12"
+    ],
+    "prior_only": [
+     "CR6",
+     "RF12"
+    ],
+    "this_tool_near_families": [
+     "MK2"
+    ],
+    "this_tool_only": [
+     "MK2"
+    ]
+   },
+   "2": {
+    "both": [],
+    "prior_lost_families": [
+     "RF2",
+     "RF8"
+    ],
+    "prior_only": [
+     "RF2",
+     "RF8"
+    ],
+    "this_tool_near_families": [
+     "MK2"
+    ],
+    "this_tool_only": [
+     "MK2"
+    ]
+   },
+   "3": {
+    "both": [
+     "MK6"
+    ],
+    "prior_lost_families": [
+     "MK6",
+     "RF7",
+     "RF8"
+    ],
+    "prior_only": [
+     "RF7",
+     "RF8"
+    ],
+    "this_tool_near_families": [
+     "MK2",
+     "MK3",
+     "MK6",
+     "MK8"
+    ],
+    "this_tool_only": [
+     "MK2",
+     "MK3",
+     "MK8"
+    ]
+   }
+  },
+  "prior_frame_label_beats_pooled": 2,
+  "prior_n_comparisons": 8,
+  "prior_n_lost_cells": 7,
+  "prior_n_lost_families": 6,
+  "prior_verdict": "MATERIAL_LOSS",
+  "why_the_sets_differ": "the earlier audit re-runs the production screen on each frame's own rows and calls a FAMILY promising when its frame status is ACCEPT or it carries a label; this tool applies the caliper directly to a RUNG's frame-f screen iota against Gate 2's iota_A(f). Different question, different unit: the two sets overlap but neither contains the other, and the earlier audit's predictive test (does the frame label beat the pooled label where the truth is known) is the one that bears on whether a frame-aware screen is warranted"
+ },
+ "reads": [
+  "REGIME_SCREEN",
+  "SECOND_PASS_SCREEN",
+  "GATE_1_INSTRUMENT",
+  "GATE_2_CALIBRATION",
+  "GATE_3_REFERENCES",
+  "reports/dci1v8dev/local_eligibility.json"
+ ],
+ "record_hashes": {
+  "GATE_1_INSTRUMENT": "cee174141f094f15f970289dffb2e1510a423cb79a8af359298aee2821c9ebf5",
+  "GATE_2_CALIBRATION": "ea4c69fe78dbd2b96446900e1d67a653a783e5641eeb83ec6a261c4ff3464dab",
+  "GATE_3_REFERENCES": "213b9e77649b2b8b33577627187b6c104251680ff14f025c035a691c91ad8d17",
+  "REGIME_SCREEN": "3191927cb07f85eda3fdac1d6733cdb813cedfc704a05a6009cfc12c029302ec",
+  "pilot_manifest": "8019583b9ea4e24c80b4bf0e3a41b65e6ba60695192b082668ae6cb915572b30"
+ },
+ "root": "dci1v8-pilot-r8",
+ "root_path": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r8",
+ "scope_statement": "LOCAL Delta_R(f) is identified only for model x frame combinations where the frozen screening/calibration/reference pipeline yields adequate matched controls.",
+ "study_id": "dci1v8",
+ "topup_plan_crosscheck": {
+  "frames_where_the_rule_fires": [
+   "0"
+  ],
+  "identical_on_every_frame": true,
+  "note": "an identity check only: topup_plan reads records and plans nothing here",
+  "per_frame": {
+   "0": {
+    "identical": true,
+    "need": 1,
+    "rule_fires": true,
+    "this_tool": [
+     "MK1:8"
+    ],
+    "topup_plan": [
+     "MK1:8"
+    ]
+   },
+   "1": {
+    "identical": true,
+    "need": 0,
+    "rule_fires": false,
+    "this_tool": [],
+    "topup_plan": []
+   },
+   "2": {
+    "identical": true,
+    "need": 4,
+    "rule_fires": false,
+    "this_tool": [],
+    "topup_plan": []
+   },
+   "3": {
+    "identical": true,
+    "need": 0,
+    "rule_fires": false,
+    "this_tool": [
+     "MK3:4",
+     "MK6:5"
+    ],
+    "topup_plan": [
+     "MK3:4",
+     "MK6:5"
+    ]
+   }
+  },
+  "rungs_where_the_rule_fires": 1
+ }
+}
