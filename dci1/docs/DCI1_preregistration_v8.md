@@ -194,10 +194,13 @@ freeze refuses a record whose hash differs from the pilot's (§19).
   nothing (tested).
 - **Reproducibility of text.** Fixed seeds make every prompt, seed, verdict
   and analysis reproducible **as data**. Bit-for-bit reproduction of the
-  generated text on this vLLM/ROCm stack is **not** promised: §19.4 records
-  the measured re-generation agreement, and every planned row is accounted
-  for by identity (`row_accounting`), so a re-run reproduces the design and
-  the analysis of the stored rows, not the sampling.
+  generated text on this vLLM/ROCm stack is **not** promised: measured on
+  2026-09-02 (`reports/dci1v8dev/freeze_readiness/backend_determinism.md`),
+  two fresh runs of 96 rows under identical plan and seeds agreed on 94
+  rows, and each agreed with the pilot's own stored rows (generated inside
+  a larger batch) on 66. Every planned row is accounted for by identity
+  (`row_accounting`), so a re-run reproduces the design and the analysis of
+  the stored rows, not the sampling.
 
 ## 9. Topic splits and the calibration allocation (universal)
 
