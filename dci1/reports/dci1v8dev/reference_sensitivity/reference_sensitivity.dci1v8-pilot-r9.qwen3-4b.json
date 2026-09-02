@@ -1,0 +1,2735 @@
+{
+ "bootstrap_holds_fixed": "family admission (the full V(R)) is not re-evaluated; the resample re-forms iota_R and iota_A and re-runs the ranking and structural selection over the families the pilot found LOCAL-valid, so the probability is a lower bound on the frozen triple's total variability",
+ "by_frame": {
+  "0": {
+   "alternatives_selected_more_often_than_the_primary": [
+    [
+     "MK1",
+     "MK2",
+     "MK8"
+    ]
+   ],
+   "closest_alternative": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.00390625,
+    "distances": {
+     "MK1": 0.00911458333333326,
+     "MK2": 0.03125,
+     "MK8": 0.03219171562228018
+    },
+    "families": [
+     "MK1",
+     "MK2",
+     "MK8"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK1",
+     "MK2",
+     "MK8"
+    ],
+    "max_distance": 0.03219171562228018,
+    "p_selected": 0.227,
+    "se_delta_sum": 0.03291928283325836,
+    "slots": [
+     "R1",
+     "R4",
+     "R3"
+    ],
+    "sum_distance": 0.07255629895561344,
+    "within_1se_of_primary": true
+   },
+   "closest_alternative_over_frozen_five": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.00390625,
+    "distances": {
+     "MK1": 0.00911458333333326,
+     "MK2": 0.03125,
+     "MK8": 0.03219171562228018
+    },
+    "families": [
+     "MK1",
+     "MK2",
+     "MK8"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK1",
+     "MK2",
+     "MK8"
+    ],
+    "max_distance": 0.03219171562228018,
+    "p_selected": 0.227,
+    "se_delta_sum": 0.03291928283325836,
+    "slots": [
+     "R1",
+     "R4",
+     "R3"
+    ],
+    "sum_distance": 0.07255629895561344,
+    "within_1se_of_primary": true
+   },
+   "core_identified": true,
+   "families": {
+    "MK1": {
+     "discourse_role": "consecutive",
+     "distance": 0.00911458333333326,
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "iota": 0.6614583333333334,
+     "label": "MK1:4",
+     "se_distance_paired": 0.032682711287833406,
+     "se_iota_a": 0.025834795414330508,
+     "se_iota_r": 0.025976139198586455,
+     "severity": 4,
+     "slot": "R1",
+     "structural_tier": 1
+    },
+    "MK2": {
+     "discourse_role": "consecutive",
+     "distance": 0.03125,
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "iota": 0.6393229166666666,
+     "label": "MK2:3",
+     "se_distance_paired": 0.03356397898031868,
+     "se_iota_a": 0.025834795414330508,
+     "se_iota_r": 0.025694228719388656,
+     "severity": 3,
+     "slot": "R4",
+     "structural_tier": 1
+    },
+    "MK6": {
+     "discourse_role": "exemplifying",
+     "distance": 0.04166666666666674,
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "iota": 0.7122395833333334,
+     "label": "MK6:6",
+     "se_distance_paired": 0.03519170675811499,
+     "se_iota_a": 0.025834795414330508,
+     "se_iota_r": 0.026774265316627535,
+     "severity": 6,
+     "slot": "R5",
+     "structural_tier": 1
+    },
+    "MK8": {
+     "discourse_role": "summative",
+     "distance": 0.03219171562228018,
+     "family": "MK8",
+     "feature_group": "marker_overall",
+     "iota": 0.6383812010443864,
+     "label": "MK8:2",
+     "se_distance_paired": 0.036670494859980744,
+     "se_iota_a": 0.025834795414330508,
+     "se_iota_r": 0.02542662553637479,
+     "severity": 2,
+     "slot": "R3",
+     "structural_tier": 1
+    },
+    "XC3": {
+     "discourse_role": "none",
+     "distance": 0.02734375,
+     "family": "XC3",
+     "feature_group": "sentence",
+     "iota": 0.6432291666666666,
+     "label": "XC3:10",
+     "se_distance_paired": 0.03628933793838975,
+     "se_iota_a": 0.025834795414330508,
+     "se_iota_r": 0.028808981306583294,
+     "severity": 10,
+     "slot": "R2",
+     "structural_tier": 2
+    }
+   },
+   "flag": "MATERIAL",
+   "frame": 0,
+   "frozen_families": [
+    "MK1",
+    "XC3",
+    "MK8",
+    "MK2",
+    "MK6"
+   ],
+   "frozen_slots": {
+    "MK1": "R1",
+    "MK2": "R4",
+    "MK6": "R5",
+    "MK8": "R3",
+    "XC3": "R2"
+   },
+   "iota_a": 0.6705729166666666,
+   "kappa_a": 0.0,
+   "local_valid_families": [
+    "MK1",
+    "MK2",
+    "MK6",
+    "MK8",
+    "XC3"
+   ],
+   "m_star": 12,
+   "material": true,
+   "n_admissible_triples_all_valid": 9,
+   "n_admissible_triples_frozen_five": 9,
+   "n_frozen_families": 5,
+   "n_local_valid_families": 5,
+   "n_local_valid_rungs": 8,
+   "n_star": 6,
+   "n_topics": 192,
+   "p_primary_reselected": 0.226,
+   "primary": {
+    "families": [
+     "MK1",
+     "XC3",
+     "MK8"
+    ],
+    "members": [
+     {
+      "discourse_role": "consecutive",
+      "distance": 0.00911458333333326,
+      "family": "MK1",
+      "feature_group": "marker_thus",
+      "iota": 0.6614583333333334,
+      "label": "MK1:4",
+      "se_distance_paired": 0.032682711287833406,
+      "se_iota_a": 0.025834795414330508,
+      "se_iota_r": 0.025976139198586455,
+      "severity": 4,
+      "slot": "R1",
+      "structural_tier": 1
+     },
+     {
+      "discourse_role": "none",
+      "distance": 0.02734375,
+      "family": "XC3",
+      "feature_group": "sentence",
+      "iota": 0.6432291666666666,
+      "label": "XC3:10",
+      "se_distance_paired": 0.03628933793838975,
+      "se_iota_a": 0.025834795414330508,
+      "se_iota_r": 0.028808981306583294,
+      "severity": 10,
+      "slot": "R2",
+      "structural_tier": 2
+     },
+     {
+      "discourse_role": "summative",
+      "distance": 0.03219171562228018,
+      "family": "MK8",
+      "feature_group": "marker_overall",
+      "iota": 0.6383812010443864,
+      "label": "MK8:2",
+      "se_distance_paired": 0.036670494859980744,
+      "se_iota_a": 0.025834795414330508,
+      "se_iota_r": 0.02542662553637479,
+      "severity": 2,
+      "slot": "R3",
+      "structural_tier": 1
+     }
+    ],
+    "recorded_core": [
+     "MK1",
+     "XC3",
+     "MK8"
+    ],
+    "reproduces_record": true,
+    "sum_distance": 0.06865004895561344
+   },
+   "resamples": 2000,
+   "se_iota_a": 0.025834795414330508,
+   "seed_rule": "seeds.bootstrap_seed('reference_sensitivity:frame<f>', model_key)",
+   "state": "LOCAL_AND_SPECTRUM",
+   "supported": true,
+   "tied_alternatives": [
+    [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    [
+     "MK1",
+     "MK2",
+     "MK8"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "MK8"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "XC3"
+    ],
+    [
+     "MK2",
+     "MK6",
+     "MK8"
+    ],
+    [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    [
+     "MK2",
+     "MK8",
+     "XC3"
+    ]
+   ],
+   "triples": [
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.01338120104438656,
+     "distances": {
+      "MK1": 0.00911458333333326,
+      "MK2": 0.03125,
+      "MK6": 0.04166666666666674
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.155,
+     "se_delta_sum": 0.05466995327939521,
+     "slots": [
+      "R1",
+      "R4",
+      "R5"
+     ],
+     "sum_distance": 0.08203125,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.00390625,
+     "distances": {
+      "MK1": 0.00911458333333326,
+      "MK2": 0.03125,
+      "MK8": 0.03219171562228018
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK8"
+     ],
+     "max_distance": 0.03219171562228018,
+     "p_selected": 0.227,
+     "se_delta_sum": 0.03291928283325836,
+     "slots": [
+      "R1",
+      "R4",
+      "R3"
+     ],
+     "sum_distance": 0.07255629895561344,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.01432291666666674,
+     "distances": {
+      "MK1": 0.00911458333333326,
+      "MK6": 0.04166666666666674,
+      "MK8": 0.03219171562228018
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "MK8"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.098,
+     "se_delta_sum": 0.04441476121631794,
+     "slots": [
+      "R1",
+      "R5",
+      "R3"
+     ],
+     "sum_distance": 0.08297296562228018,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.00947495104438656,
+     "distances": {
+      "MK1": 0.00911458333333326,
+      "MK6": 0.04166666666666674,
+      "XC3": 0.02734375
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "XC3"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.218,
+     "se_delta_sum": 0.04652748718671132,
+     "slots": [
+      "R1",
+      "R5",
+      "R2"
+     ],
+     "sum_distance": 0.078125,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.0,
+     "distances": {
+      "MK1": 0.00911458333333326,
+      "MK8": 0.03219171562228018,
+      "XC3": 0.02734375
+     },
+     "families": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": true,
+     "key": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.03219171562228018,
+     "p_selected": 0.226,
+     "se_delta_sum": 0.0,
+     "slots": [
+      "R1",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.06865004895561344,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.03645833333333348,
+     "distances": {
+      "MK2": 0.03125,
+      "MK6": 0.04166666666666674,
+      "MK8": 0.03219171562228018
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "MK8"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.0045,
+     "se_delta_sum": 0.04360669478627474,
+     "slots": [
+      "R4",
+      "R5",
+      "R3"
+     ],
+     "sum_distance": 0.10510838228894692,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.0316103677110533,
+     "distances": {
+      "MK2": 0.03125,
+      "MK6": 0.04166666666666674,
+      "XC3": 0.02734375
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "XC3"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.007,
+     "se_delta_sum": 0.04232080372551396,
+     "slots": [
+      "R4",
+      "R5",
+      "R2"
+     ],
+     "sum_distance": 0.10026041666666674,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.02213541666666674,
+     "distances": {
+      "MK2": 0.03125,
+      "MK8": 0.03219171562228018,
+      "XC3": 0.02734375
+     },
+     "families": [
+      "MK2",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.03219171562228018,
+     "p_selected": 0.0615,
+     "se_delta_sum": 0.02857286850029018,
+     "slots": [
+      "R4",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.09078546562228018,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.03255208333333348,
+     "distances": {
+      "MK6": 0.04166666666666674,
+      "MK8": 0.03219171562228018,
+      "XC3": 0.02734375
+     },
+     "families": [
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.04166666666666674,
+     "p_selected": 0.003,
+     "se_delta_sum": 0.029684800702405093,
+     "slots": [
+      "R5",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.10120213228894692,
+     "within_1se_of_primary": false
+    }
+   ]
+  },
+  "1": {
+   "alternatives_selected_more_often_than_the_primary": [],
+   "closest_alternative": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.021720075016307905,
+    "distances": {
+     "MK7": 0.01692708333333337,
+     "MK8": 0.062084658349641164,
+     "XC3": 0.00390625
+    },
+    "families": [
+     "MK7",
+     "MK8",
+     "XC3"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK7",
+     "MK8",
+     "XC3"
+    ],
+    "max_distance": 0.062084658349641164,
+    "p_selected": 0.139,
+    "se_delta_sum": 0.032686218072194385,
+    "slots": [
+     "R2",
+     "R4",
+     "R1"
+    ],
+    "sum_distance": 0.08291799168297453,
+    "within_1se_of_primary": true
+   },
+   "closest_alternative_over_frozen_five": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.021720075016307905,
+    "distances": {
+     "MK7": 0.01692708333333337,
+     "MK8": 0.062084658349641164,
+     "XC3": 0.00390625
+    },
+    "families": [
+     "MK7",
+     "MK8",
+     "XC3"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK7",
+     "MK8",
+     "XC3"
+    ],
+    "max_distance": 0.062084658349641164,
+    "p_selected": 0.139,
+    "se_delta_sum": 0.032686218072194385,
+    "slots": [
+     "R2",
+     "R4",
+     "R1"
+    ],
+    "sum_distance": 0.08291799168297453,
+    "within_1se_of_primary": true
+   },
+   "core_identified": true,
+   "families": {
+    "MK1": {
+     "discourse_role": "consecutive",
+     "distance": 0.04036458333333326,
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "iota": 0.5677083333333334,
+     "label": "MK1:8",
+     "se_distance_paired": 0.03203089528244687,
+     "se_iota_a": 0.024739583333333336,
+     "se_iota_r": 0.025176510208984152,
+     "severity": 8,
+     "slot": "R3",
+     "structural_tier": 1
+    },
+    "MK7": {
+     "discourse_role": "substitutive",
+     "distance": 0.01692708333333337,
+     "family": "MK7",
+     "feature_group": "marker_instead",
+     "iota": 0.625,
+     "label": "MK7:2",
+     "se_distance_paired": 0.03404594688378854,
+     "se_iota_a": 0.024739583333333336,
+     "se_iota_r": 0.02524692627257652,
+     "severity": 2,
+     "slot": "R2",
+     "structural_tier": 1
+    },
+    "MK8": {
+     "discourse_role": "summative",
+     "distance": 0.062084658349641164,
+     "family": "MK8",
+     "feature_group": "marker_overall",
+     "iota": 0.5459882583170255,
+     "label": "MK8:2",
+     "se_distance_paired": 0.037045073595654156,
+     "se_iota_a": 0.024739583333333336,
+     "se_iota_r": 0.027351848395756707,
+     "severity": 2,
+     "slot": "R4",
+     "structural_tier": 1
+    },
+    "XC3": {
+     "discourse_role": "none",
+     "distance": 0.00390625,
+     "family": "XC3",
+     "feature_group": "sentence",
+     "iota": 0.6119791666666666,
+     "label": "XC3:9",
+     "se_distance_paired": 0.03563175256435895,
+     "se_iota_a": 0.024739583333333336,
+     "se_iota_r": 0.02816584822890315,
+     "severity": 9,
+     "slot": "R1",
+     "structural_tier": 2
+    }
+   },
+   "flag": "MATERIAL",
+   "frame": 1,
+   "frozen_families": [
+    "XC3",
+    "MK7",
+    "MK1",
+    "MK8"
+   ],
+   "frozen_slots": {
+    "MK1": "R3",
+    "MK7": "R2",
+    "MK8": "R4",
+    "XC3": "R1"
+   },
+   "iota_a": 0.6080729166666666,
+   "kappa_a": 0.0,
+   "local_valid_families": [
+    "MK1",
+    "MK7",
+    "MK8",
+    "XC3"
+   ],
+   "m_star": 12,
+   "material": true,
+   "n_admissible_triples_all_valid": 4,
+   "n_admissible_triples_frozen_five": 4,
+   "n_frozen_families": 4,
+   "n_local_valid_families": 4,
+   "n_local_valid_rungs": 6,
+   "n_star": 7,
+   "n_topics": 192,
+   "p_primary_reselected": 0.6365,
+   "primary": {
+    "families": [
+     "XC3",
+     "MK7",
+     "MK1"
+    ],
+    "members": [
+     {
+      "discourse_role": "none",
+      "distance": 0.00390625,
+      "family": "XC3",
+      "feature_group": "sentence",
+      "iota": 0.6119791666666666,
+      "label": "XC3:9",
+      "se_distance_paired": 0.03563175256435895,
+      "se_iota_a": 0.024739583333333336,
+      "se_iota_r": 0.02816584822890315,
+      "severity": 9,
+      "slot": "R1",
+      "structural_tier": 2
+     },
+     {
+      "discourse_role": "substitutive",
+      "distance": 0.01692708333333337,
+      "family": "MK7",
+      "feature_group": "marker_instead",
+      "iota": 0.625,
+      "label": "MK7:2",
+      "se_distance_paired": 0.03404594688378854,
+      "se_iota_a": 0.024739583333333336,
+      "se_iota_r": 0.02524692627257652,
+      "severity": 2,
+      "slot": "R2",
+      "structural_tier": 1
+     },
+     {
+      "discourse_role": "consecutive",
+      "distance": 0.04036458333333326,
+      "family": "MK1",
+      "feature_group": "marker_thus",
+      "iota": 0.5677083333333334,
+      "label": "MK1:8",
+      "se_distance_paired": 0.03203089528244687,
+      "se_iota_a": 0.024739583333333336,
+      "se_iota_r": 0.025176510208984152,
+      "severity": 8,
+      "slot": "R3",
+      "structural_tier": 1
+     }
+    ],
+    "recorded_core": [
+     "XC3",
+     "MK7",
+     "MK1"
+    ],
+    "reproduces_record": true,
+    "sum_distance": 0.06119791666666663
+   },
+   "resamples": 2000,
+   "se_iota_a": 0.024739583333333336,
+   "seed_rule": "seeds.bootstrap_seed('reference_sensitivity:frame<f>', model_key)",
+   "state": "LOCAL_AND_SPECTRUM",
+   "supported": true,
+   "tied_alternatives": [
+    [
+     "MK1",
+     "MK8",
+     "XC3"
+    ],
+    [
+     "MK7",
+     "MK8",
+     "XC3"
+    ]
+   ],
+   "triples": [
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.058178408349641164,
+     "distances": {
+      "MK1": 0.04036458333333326,
+      "MK7": 0.01692708333333337,
+      "MK8": 0.062084658349641164
+     },
+     "families": [
+      "MK1",
+      "MK7",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK7",
+      "MK8"
+     ],
+     "max_distance": 0.062084658349641164,
+     "p_selected": 0.0335,
+     "se_delta_sum": 0.03534927292389421,
+     "slots": [
+      "R3",
+      "R2",
+      "R4"
+     ],
+     "sum_distance": 0.1193763250163078,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.0,
+     "distances": {
+      "MK1": 0.04036458333333326,
+      "MK7": 0.01692708333333337,
+      "XC3": 0.00390625
+     },
+     "families": [
+      "MK1",
+      "MK7",
+      "XC3"
+     ],
+     "is_primary": true,
+     "key": [
+      "MK1",
+      "MK7",
+      "XC3"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.6365,
+     "se_delta_sum": 0.0,
+     "slots": [
+      "R3",
+      "R2",
+      "R1"
+     ],
+     "sum_distance": 0.06119791666666663,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.045157575016307794,
+     "distances": {
+      "MK1": 0.04036458333333326,
+      "MK8": 0.062084658349641164,
+      "XC3": 0.00390625
+     },
+     "families": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.062084658349641164,
+     "p_selected": 0.191,
+     "se_delta_sum": 0.045696096470931376,
+     "slots": [
+      "R3",
+      "R4",
+      "R1"
+     ],
+     "sum_distance": 0.10635549168297442,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.021720075016307905,
+     "distances": {
+      "MK7": 0.01692708333333337,
+      "MK8": 0.062084658349641164,
+      "XC3": 0.00390625
+     },
+     "families": [
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.062084658349641164,
+     "p_selected": 0.139,
+     "se_delta_sum": 0.032686218072194385,
+     "slots": [
+      "R2",
+      "R4",
+      "R1"
+     ],
+     "sum_distance": 0.08291799168297453,
+     "within_1se_of_primary": true
+    }
+   ]
+  },
+  "2": {
+   "alternatives_selected_more_often_than_the_primary": [
+    [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "MK7"
+    ]
+   ],
+   "closest_alternative": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.00651041666666663,
+    "distances": {
+     "MK1": 0.00651041666666663,
+     "MK2": 0.02473958333333337,
+     "MK6": 0.03515625
+    },
+    "families": [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    "max_distance": 0.03515625,
+    "p_selected": 0.3805,
+    "se_delta_sum": 0.026515473640718823,
+    "slots": [
+     "R1",
+     "R2",
+     "R4"
+    ],
+    "sum_distance": 0.06640625,
+    "within_1se_of_primary": true
+   },
+   "closest_alternative_over_frozen_five": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.00651041666666663,
+    "distances": {
+     "MK1": 0.00651041666666663,
+     "MK2": 0.02473958333333337,
+     "MK6": 0.03515625
+    },
+    "families": [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    "max_distance": 0.03515625,
+    "p_selected": 0.3805,
+    "se_delta_sum": 0.026515473640718823,
+    "slots": [
+     "R1",
+     "R2",
+     "R4"
+    ],
+    "sum_distance": 0.06640625,
+    "within_1se_of_primary": true
+   },
+   "core_identified": true,
+   "families": {
+    "MK1": {
+     "discourse_role": "consecutive",
+     "distance": 0.00651041666666663,
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "iota": 0.6783854166666666,
+     "label": "MK1:6",
+     "se_distance_paired": 0.03371267649693842,
+     "se_iota_a": 0.025018059031528823,
+     "se_iota_r": 0.025017881628053292,
+     "severity": 6,
+     "slot": "R1",
+     "structural_tier": 1
+    },
+    "MK2": {
+     "discourse_role": "consecutive",
+     "distance": 0.02473958333333337,
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "iota": 0.6471354166666666,
+     "label": "MK2:3",
+     "se_distance_paired": 0.030813923796513015,
+     "se_iota_a": 0.025018059031528823,
+     "se_iota_r": 0.02546519867940978,
+     "severity": 3,
+     "slot": "R2",
+     "structural_tier": 1
+    },
+    "MK6": {
+     "discourse_role": "exemplifying",
+     "distance": 0.03515625,
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "iota": 0.70703125,
+     "label": "MK6:5",
+     "se_distance_paired": 0.036347995706757355,
+     "se_iota_a": 0.025018059031528823,
+     "se_iota_r": 0.026605313542113967,
+     "severity": 5,
+     "slot": "R4",
+     "structural_tier": 1
+    },
+    "MK7": {
+     "discourse_role": "substitutive",
+     "distance": 0.02864583333333337,
+     "family": "MK7",
+     "feature_group": "marker_instead",
+     "iota": 0.7005208333333334,
+     "label": "MK7:2",
+     "se_distance_paired": 0.029524781016337476,
+     "se_iota_a": 0.025018059031528823,
+     "se_iota_r": 0.022704944499126307,
+     "severity": 2,
+     "slot": "R3",
+     "structural_tier": 1
+    }
+   },
+   "flag": "MATERIAL",
+   "frame": 2,
+   "frozen_families": [
+    "MK1",
+    "MK2",
+    "MK7",
+    "MK6"
+   ],
+   "frozen_slots": {
+    "MK1": "R1",
+    "MK2": "R2",
+    "MK6": "R4",
+    "MK7": "R3"
+   },
+   "iota_a": 0.671875,
+   "kappa_a": 0.0,
+   "local_valid_families": [
+    "MK1",
+    "MK2",
+    "MK6",
+    "MK7"
+   ],
+   "m_star": 12,
+   "material": true,
+   "n_admissible_triples_all_valid": 4,
+   "n_admissible_triples_frozen_five": 4,
+   "n_frozen_families": 4,
+   "n_local_valid_families": 4,
+   "n_local_valid_rungs": 11,
+   "n_star": 3,
+   "n_topics": 192,
+   "p_primary_reselected": 0.225,
+   "primary": {
+    "families": [
+     "MK1",
+     "MK2",
+     "MK7"
+    ],
+    "members": [
+     {
+      "discourse_role": "consecutive",
+      "distance": 0.00651041666666663,
+      "family": "MK1",
+      "feature_group": "marker_thus",
+      "iota": 0.6783854166666666,
+      "label": "MK1:6",
+      "se_distance_paired": 0.03371267649693842,
+      "se_iota_a": 0.025018059031528823,
+      "se_iota_r": 0.025017881628053292,
+      "severity": 6,
+      "slot": "R1",
+      "structural_tier": 1
+     },
+     {
+      "discourse_role": "consecutive",
+      "distance": 0.02473958333333337,
+      "family": "MK2",
+      "feature_group": "marker_hence",
+      "iota": 0.6471354166666666,
+      "label": "MK2:3",
+      "se_distance_paired": 0.030813923796513015,
+      "se_iota_a": 0.025018059031528823,
+      "se_iota_r": 0.02546519867940978,
+      "severity": 3,
+      "slot": "R2",
+      "structural_tier": 1
+     },
+     {
+      "discourse_role": "substitutive",
+      "distance": 0.02864583333333337,
+      "family": "MK7",
+      "feature_group": "marker_instead",
+      "iota": 0.7005208333333334,
+      "label": "MK7:2",
+      "se_distance_paired": 0.029524781016337476,
+      "se_iota_a": 0.025018059031528823,
+      "se_iota_r": 0.022704944499126307,
+      "severity": 2,
+      "slot": "R3",
+      "structural_tier": 1
+     }
+    ],
+    "recorded_core": [
+     "MK1",
+     "MK2",
+     "MK7"
+    ],
+    "reproduces_record": true,
+    "sum_distance": 0.05989583333333337
+   },
+   "resamples": 2000,
+   "se_iota_a": 0.025018059031528823,
+   "seed_rule": "seeds.bootstrap_seed('reference_sensitivity:frame<f>', model_key)",
+   "state": "LOCAL_AND_SPECTRUM",
+   "supported": true,
+   "tied_alternatives": [
+    [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "MK7"
+    ]
+   ],
+   "triples": [
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.00651041666666663,
+     "distances": {
+      "MK1": 0.00651041666666663,
+      "MK2": 0.02473958333333337,
+      "MK6": 0.03515625
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "max_distance": 0.03515625,
+     "p_selected": 0.3805,
+     "se_delta_sum": 0.026515473640718823,
+     "slots": [
+      "R1",
+      "R2",
+      "R4"
+     ],
+     "sum_distance": 0.06640625,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.0,
+     "distances": {
+      "MK1": 0.00651041666666663,
+      "MK2": 0.02473958333333337,
+      "MK7": 0.02864583333333337
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK7"
+     ],
+     "is_primary": true,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK7"
+     ],
+     "max_distance": 0.02864583333333337,
+     "p_selected": 0.225,
+     "se_delta_sum": 0.0,
+     "slots": [
+      "R1",
+      "R2",
+      "R3"
+     ],
+     "sum_distance": 0.05989583333333337,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.01041666666666663,
+     "distances": {
+      "MK1": 0.00651041666666663,
+      "MK6": 0.03515625,
+      "MK7": 0.02864583333333337
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "MK7"
+     ],
+     "max_distance": 0.03515625,
+     "p_selected": 0.3645,
+     "se_delta_sum": 0.029670505525481474,
+     "slots": [
+      "R1",
+      "R4",
+      "R3"
+     ],
+     "sum_distance": 0.0703125,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.02864583333333337,
+     "distances": {
+      "MK2": 0.02473958333333337,
+      "MK6": 0.03515625,
+      "MK7": 0.02864583333333337
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "max_distance": 0.03515625,
+     "p_selected": 0.03,
+     "se_delta_sum": 0.01868174590029146,
+     "slots": [
+      "R2",
+      "R4",
+      "R3"
+     ],
+     "sum_distance": 0.08854166666666674,
+     "within_1se_of_primary": false
+    }
+   ]
+  },
+  "3": {
+   "alternatives_selected_more_often_than_the_primary": [
+    [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    [
+     "MK1",
+     "MK2",
+     "MK7"
+    ],
+    [
+     "MK2",
+     "MK5",
+     "XC3"
+    ]
+   ],
+   "closest_alternative": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.005208333333333259,
+    "distances": {
+     "MK2": 0.00911458333333337,
+     "MK6": 0.02734375,
+     "XC3": 0.010926400273224002
+    },
+    "families": [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    "max_distance": 0.02734375,
+    "p_selected": 0.0835,
+    "se_delta_sum": 0.025264303754800283,
+    "slots": [
+     "R1",
+     "R5",
+     "R2"
+    ],
+    "sum_distance": 0.04738473360655737,
+    "within_1se_of_primary": true
+   },
+   "closest_alternative_over_frozen_five": {
+    "all_frozen": true,
+    "contains_contrastive": false,
+    "delta_sum": 0.005208333333333259,
+    "distances": {
+     "MK2": 0.00911458333333337,
+     "MK6": 0.02734375,
+     "XC3": 0.010926400273224002
+    },
+    "families": [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    "is_primary": false,
+    "key": [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    "max_distance": 0.02734375,
+    "p_selected": 0.0835,
+    "se_delta_sum": 0.025264303754800283,
+    "slots": [
+     "R1",
+     "R5",
+     "R2"
+    ],
+    "sum_distance": 0.04738473360655737,
+    "within_1se_of_primary": true
+   },
+   "core_identified": true,
+   "families": {
+    "MK1": {
+     "discourse_role": "consecutive",
+     "distance": 0.02604166666666674,
+     "family": "MK1",
+     "feature_group": "marker_thus",
+     "iota": 0.6705729166666666,
+     "label": "MK1:3",
+     "se_distance_paired": 0.030334446687419223,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.026292524030499222,
+     "severity": 3,
+     "slot": "R4",
+     "structural_tier": 1
+    },
+    "MK2": {
+     "discourse_role": "consecutive",
+     "distance": 0.00911458333333337,
+     "family": "MK2",
+     "feature_group": "marker_hence",
+     "iota": 0.6875,
+     "label": "MK2:6",
+     "se_distance_paired": 0.029154922909584893,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.02578131197438212,
+     "severity": 6,
+     "slot": "R1",
+     "structural_tier": 1
+    },
+    "MK5": {
+     "discourse_role": "emphatic",
+     "distance": 0.04036458333333326,
+     "family": "MK5",
+     "feature_group": "marker_indeed",
+     "iota": 0.7369791666666666,
+     "label": "MK5:1",
+     "se_distance_paired": 0.03733773593626676,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.025229340681743085,
+     "severity": 1,
+     "slot": null,
+     "structural_tier": 1
+    },
+    "MK6": {
+     "discourse_role": "exemplifying",
+     "distance": 0.02734375,
+     "family": "MK6",
+     "feature_group": "marker_namely",
+     "iota": 0.6692708333333334,
+     "label": "MK6:8",
+     "se_distance_paired": 0.03183631704375787,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.025246223084133122,
+     "severity": 8,
+     "slot": "R5",
+     "structural_tier": 1
+    },
+    "MK7": {
+     "discourse_role": "substitutive",
+     "distance": 0.02213541666666674,
+     "family": "MK7",
+     "feature_group": "marker_instead",
+     "iota": 0.6744791666666666,
+     "label": "MK7:2",
+     "se_distance_paired": 0.030434796623716977,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.022929027237297273,
+     "severity": 2,
+     "slot": "R3",
+     "structural_tier": 1
+    },
+    "MK8": {
+     "discourse_role": "summative",
+     "distance": 0.08122996794871806,
+     "family": "MK8",
+     "feature_group": "marker_overall",
+     "iota": 0.6153846153846153,
+     "label": "MK8:1",
+     "se_distance_paired": 0.0398609521650839,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.030774241295715214,
+     "severity": 1,
+     "slot": null,
+     "structural_tier": 1
+    },
+    "XC3": {
+     "discourse_role": "none",
+     "distance": 0.010926400273224002,
+     "family": "XC3",
+     "feature_group": "sentence",
+     "iota": 0.7075409836065574,
+     "label": "XC3:8",
+     "se_distance_paired": 0.03284298144147648,
+     "se_iota_a": 0.02358003819610576,
+     "se_iota_r": 0.027831112394428564,
+     "severity": 8,
+     "slot": "R2",
+     "structural_tier": 2
+    }
+   },
+   "flag": "MATERIAL",
+   "frame": 3,
+   "frozen_families": [
+    "MK2",
+    "XC3",
+    "MK7",
+    "MK1",
+    "MK6"
+   ],
+   "frozen_slots": {
+    "MK1": "R4",
+    "MK2": "R1",
+    "MK6": "R5",
+    "MK7": "R3",
+    "XC3": "R2"
+   },
+   "iota_a": 0.6966145833333334,
+   "kappa_a": 0.0,
+   "local_valid_families": [
+    "MK1",
+    "MK2",
+    "MK5",
+    "MK6",
+    "MK7",
+    "MK8",
+    "XC3"
+   ],
+   "m_star": 13,
+   "material": true,
+   "n_admissible_triples_all_valid": 34,
+   "n_admissible_triples_frozen_five": 9,
+   "n_frozen_families": 5,
+   "n_local_valid_families": 7,
+   "n_local_valid_rungs": 10,
+   "n_star": 5,
+   "n_topics": 192,
+   "p_primary_reselected": 0.0915,
+   "primary": {
+    "families": [
+     "MK2",
+     "XC3",
+     "MK7"
+    ],
+    "members": [
+     {
+      "discourse_role": "consecutive",
+      "distance": 0.00911458333333337,
+      "family": "MK2",
+      "feature_group": "marker_hence",
+      "iota": 0.6875,
+      "label": "MK2:6",
+      "se_distance_paired": 0.029154922909584893,
+      "se_iota_a": 0.02358003819610576,
+      "se_iota_r": 0.02578131197438212,
+      "severity": 6,
+      "slot": "R1",
+      "structural_tier": 1
+     },
+     {
+      "discourse_role": "none",
+      "distance": 0.010926400273224002,
+      "family": "XC3",
+      "feature_group": "sentence",
+      "iota": 0.7075409836065574,
+      "label": "XC3:8",
+      "se_distance_paired": 0.03284298144147648,
+      "se_iota_a": 0.02358003819610576,
+      "se_iota_r": 0.027831112394428564,
+      "severity": 8,
+      "slot": "R2",
+      "structural_tier": 2
+     },
+     {
+      "discourse_role": "substitutive",
+      "distance": 0.02213541666666674,
+      "family": "MK7",
+      "feature_group": "marker_instead",
+      "iota": 0.6744791666666666,
+      "label": "MK7:2",
+      "se_distance_paired": 0.030434796623716977,
+      "se_iota_a": 0.02358003819610576,
+      "se_iota_r": 0.022929027237297273,
+      "severity": 2,
+      "slot": "R3",
+      "structural_tier": 1
+     }
+    ],
+    "recorded_core": [
+     "MK2",
+     "XC3",
+     "MK7"
+    ],
+    "reproduces_record": true,
+    "sum_distance": 0.04217640027322411
+   },
+   "resamples": 2000,
+   "se_iota_a": 0.02358003819610576,
+   "seed_rule": "seeds.bootstrap_seed('reference_sensitivity:frame<f>', model_key)",
+   "state": "LOCAL_AND_SPECTRUM",
+   "supported": true,
+   "tied_alternatives": [
+    [
+     "MK1",
+     "MK2",
+     "MK5"
+    ],
+    [
+     "MK1",
+     "MK2",
+     "MK6"
+    ],
+    [
+     "MK1",
+     "MK2",
+     "MK7"
+    ],
+    [
+     "MK1",
+     "MK5",
+     "XC3"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "MK7"
+    ],
+    [
+     "MK1",
+     "MK6",
+     "XC3"
+    ],
+    [
+     "MK1",
+     "MK7",
+     "XC3"
+    ],
+    [
+     "MK2",
+     "MK5",
+     "MK6"
+    ],
+    [
+     "MK2",
+     "MK5",
+     "MK7"
+    ],
+    [
+     "MK2",
+     "MK5",
+     "XC3"
+    ],
+    [
+     "MK2",
+     "MK6",
+     "MK7"
+    ],
+    [
+     "MK2",
+     "MK6",
+     "XC3"
+    ],
+    [
+     "MK5",
+     "MK6",
+     "XC3"
+    ],
+    [
+     "MK5",
+     "MK7",
+     "XC3"
+    ],
+    [
+     "MK6",
+     "MK7",
+     "XC3"
+    ]
+   ],
+   "triples": [
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.03334443306010926,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK2": 0.00911458333333337,
+      "MK5": 0.04036458333333326
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK5"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK5"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0355,
+     "se_delta_sum": 0.039397523362180976,
+     "slots": [
+      "R4",
+      "R1",
+      "(MK5)"
+     ],
+     "sum_distance": 0.07552083333333337,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.020323599726775998,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK2": 0.00911458333333337,
+      "MK6": 0.02734375
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK6"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.105,
+     "se_delta_sum": 0.04069626607249721,
+     "slots": [
+      "R4",
+      "R1",
+      "R5"
+     ],
+     "sum_distance": 0.06250000000000011,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.015115266393442739,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK2": 0.00911458333333337,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK7"
+     ],
+     "max_distance": 0.02604166666666674,
+     "p_selected": 0.107,
+     "se_delta_sum": 0.03163765099885257,
+     "slots": [
+      "R4",
+      "R1",
+      "R3"
+     ],
+     "sum_distance": 0.05729166666666685,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07420981767549406,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK2": 0.00911458333333337,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK1",
+      "MK2",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK2",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.013,
+     "se_delta_sum": 0.05315791963237544,
+     "slots": [
+      "R4",
+      "R1",
+      "(MK8)"
+     ],
+     "sum_distance": 0.11638621794871817,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.05157359972677589,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK5": 0.04036458333333326,
+      "MK6": 0.02734375
+     },
+     "families": [
+      "MK1",
+      "MK5",
+      "MK6"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK5",
+      "MK6"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0065,
+     "se_delta_sum": 0.0430473802534691,
+     "slots": [
+      "R4",
+      "(MK5)",
+      "R5"
+     ],
+     "sum_distance": 0.09375,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.04636526639344263,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK5": 0.04036458333333326,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK1",
+      "MK5",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK5",
+      "MK7"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.012,
+     "se_delta_sum": 0.0375765279009848,
+     "slots": [
+      "R4",
+      "(MK5)",
+      "R3"
+     ],
+     "sum_distance": 0.08854166666666674,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.10545981767549395,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK5": 0.04036458333333326,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK1",
+      "MK5",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK5",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0,
+     "se_delta_sum": 0.048331297847070485,
+     "slots": [
+      "R4",
+      "(MK5)",
+      "(MK8)"
+     ],
+     "sum_distance": 0.14763621794871806,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.03515624999999989,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK5": 0.04036458333333326,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK1",
+      "MK5",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK5",
+      "XC3"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.027,
+     "se_delta_sum": 0.040356471812874134,
+     "slots": [
+      "R4",
+      "(MK5)",
+      "R2"
+     ],
+     "sum_distance": 0.077332650273224,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.03334443306010937,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK6": 0.02734375,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "MK7"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.037,
+     "se_delta_sum": 0.04409669216531104,
+     "slots": [
+      "R4",
+      "R5",
+      "R3"
+     ],
+     "sum_distance": 0.07552083333333348,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.09243898434216069,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK6": 0.02734375,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.003,
+     "se_delta_sum": 0.06355649444169012,
+     "slots": [
+      "R4",
+      "R5",
+      "(MK8)"
+     ],
+     "sum_distance": 0.1346153846153848,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.02213541666666663,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK6": 0.02734375,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK1",
+      "MK6",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK6",
+      "XC3"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.0305,
+     "se_delta_sum": 0.033662545850102754,
+     "slots": [
+      "R4",
+      "R5",
+      "R2"
+     ],
+     "sum_distance": 0.06431181693989074,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.08723065100882743,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK7": 0.02213541666666674,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK1",
+      "MK7",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK7",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0065,
+     "se_delta_sum": 0.056349335352540234,
+     "slots": [
+      "R4",
+      "R3",
+      "(MK8)"
+     ],
+     "sum_distance": 0.12940705128205154,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.01692708333333337,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK7": 0.02213541666666674,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK1",
+      "MK7",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK7",
+      "XC3"
+     ],
+     "max_distance": 0.02604166666666674,
+     "p_selected": 0.043,
+     "se_delta_sum": 0.023412073617425606,
+     "slots": [
+      "R4",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.05910348360655748,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07602163461538469,
+     "distances": {
+      "MK1": 0.02604166666666674,
+      "MK8": 0.08122996794871806,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK1",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.001,
+     "se_delta_sum": 0.045190852119380245,
+     "slots": [
+      "R4",
+      "(MK8)",
+      "R2"
+     ],
+     "sum_distance": 0.1181980348886088,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.03464651639344252,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK5": 0.04036458333333326,
+      "MK6": 0.02734375
+     },
+     "families": [
+      "MK2",
+      "MK5",
+      "MK6"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK5",
+      "MK6"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0235,
+     "se_delta_sum": 0.03982287965822675,
+     "slots": [
+      "R1",
+      "(MK5)",
+      "R5"
+     ],
+     "sum_distance": 0.07682291666666663,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.029438183060109258,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK5": 0.04036458333333326,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK2",
+      "MK5",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK5",
+      "MK7"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0345,
+     "se_delta_sum": 0.03303841710052157,
+     "slots": [
+      "R1",
+      "(MK5)",
+      "R3"
+     ],
+     "sum_distance": 0.07161458333333337,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.08853273434216058,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK5": 0.04036458333333326,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK2",
+      "MK5",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK5",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0,
+     "se_delta_sum": 0.044231628342513235,
+     "slots": [
+      "R1",
+      "(MK5)",
+      "(MK8)"
+     ],
+     "sum_distance": 0.1307091346153847,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.01822916666666652,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK5": 0.04036458333333326,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK2",
+      "MK5",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK5",
+      "XC3"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.164,
+     "se_delta_sum": 0.04161200995632807,
+     "slots": [
+      "R1",
+      "(MK5)",
+      "R2"
+     ],
+     "sum_distance": 0.06040556693989063,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.016417349726775998,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK6": 0.02734375,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "MK7"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.0715,
+     "se_delta_sum": 0.03203534471515882,
+     "slots": [
+      "R1",
+      "R5",
+      "R3"
+     ],
+     "sum_distance": 0.05859375000000011,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07551190100882732,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK6": 0.02734375,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0095,
+     "se_delta_sum": 0.05533673351081423,
+     "slots": [
+      "R1",
+      "R5",
+      "(MK8)"
+     ],
+     "sum_distance": 0.11768830128205143,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.005208333333333259,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK6": 0.02734375,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK2",
+      "MK6",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK6",
+      "XC3"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.0835,
+     "se_delta_sum": 0.025264303754800283,
+     "slots": [
+      "R1",
+      "R5",
+      "R2"
+     ],
+     "sum_distance": 0.04738473360655737,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07030356767549406,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK7": 0.02213541666666674,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK2",
+      "MK7",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK7",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0085,
+     "se_delta_sum": 0.046311234516378655,
+     "slots": [
+      "R1",
+      "R3",
+      "(MK8)"
+     ],
+     "sum_distance": 0.11247996794871817,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.0,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK7": 0.02213541666666674,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK2",
+      "MK7",
+      "XC3"
+     ],
+     "is_primary": true,
+     "key": [
+      "MK2",
+      "MK7",
+      "XC3"
+     ],
+     "max_distance": 0.02213541666666674,
+     "p_selected": 0.0915,
+     "se_delta_sum": 0.0,
+     "slots": [
+      "R1",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.04217640027322411,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.05909455128205132,
+     "distances": {
+      "MK2": 0.00911458333333337,
+      "MK8": 0.08122996794871806,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK2",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK2",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.005,
+     "se_delta_sum": 0.03788230408833881,
+     "slots": [
+      "R1",
+      "(MK8)",
+      "R2"
+     ],
+     "sum_distance": 0.10127095155527543,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.04766734972677589,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK6": 0.02734375,
+      "MK7": 0.02213541666666674
+     },
+     "families": [
+      "MK5",
+      "MK6",
+      "MK7"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK6",
+      "MK7"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0105,
+     "se_delta_sum": 0.03747436555202362,
+     "slots": [
+      "(MK5)",
+      "R5",
+      "R3"
+     ],
+     "sum_distance": 0.08984375,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.10676190100882721,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK6": 0.02734375,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK5",
+      "MK6",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK6",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0,
+     "se_delta_sum": 0.05039160923930067,
+     "slots": [
+      "(MK5)",
+      "R5",
+      "(MK8)"
+     ],
+     "sum_distance": 0.14893830128205132,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.03645833333333315,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK6": 0.02734375,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK5",
+      "MK6",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK6",
+      "XC3"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0165,
+     "se_delta_sum": 0.04105040742774501,
+     "slots": [
+      "(MK5)",
+      "R5",
+      "R2"
+     ],
+     "sum_distance": 0.07863473360655726,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.10155356767549395,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK7": 0.02213541666666674,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK5",
+      "MK7",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK7",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0,
+     "se_delta_sum": 0.042849203754977076,
+     "slots": [
+      "(MK5)",
+      "R3",
+      "(MK8)"
+     ],
+     "sum_distance": 0.14372996794871806,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.03124999999999989,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK7": 0.02213541666666674,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK5",
+      "MK7",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK7",
+      "XC3"
+     ],
+     "max_distance": 0.04036458333333326,
+     "p_selected": 0.0315,
+     "se_delta_sum": 0.03551076625044952,
+     "slots": [
+      "(MK5)",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.073426400273224,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.09034455128205121,
+     "distances": {
+      "MK5": 0.04036458333333326,
+      "MK8": 0.08122996794871806,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK5",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK5",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0,
+     "se_delta_sum": 0.042369551877584184,
+     "slots": [
+      "(MK5)",
+      "(MK8)",
+      "R2"
+     ],
+     "sum_distance": 0.13252095155527532,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.08853273434216069,
+     "distances": {
+      "MK6": 0.02734375,
+      "MK7": 0.02213541666666674,
+      "MK8": 0.08122996794871806
+     },
+     "families": [
+      "MK6",
+      "MK7",
+      "MK8"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK6",
+      "MK7",
+      "MK8"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0045,
+     "se_delta_sum": 0.058054052209221496,
+     "slots": [
+      "R5",
+      "R3",
+      "(MK8)"
+     ],
+     "sum_distance": 0.1307091346153848,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": true,
+     "contains_contrastive": false,
+     "delta_sum": 0.01822916666666663,
+     "distances": {
+      "MK6": 0.02734375,
+      "MK7": 0.02213541666666674,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK6",
+      "MK7",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK6",
+      "MK7",
+      "XC3"
+     ],
+     "max_distance": 0.02734375,
+     "p_selected": 0.016,
+     "se_delta_sum": 0.024418062514502605,
+     "slots": [
+      "R5",
+      "R3",
+      "R2"
+     ],
+     "sum_distance": 0.06040556693989074,
+     "within_1se_of_primary": true
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07732371794871795,
+     "distances": {
+      "MK6": 0.02734375,
+      "MK8": 0.08122996794871806,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK6",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.002,
+     "se_delta_sum": 0.047972877825715465,
+     "slots": [
+      "R5",
+      "(MK8)",
+      "R2"
+     ],
+     "sum_distance": 0.11950011822194206,
+     "within_1se_of_primary": false
+    },
+    {
+     "all_frozen": false,
+     "contains_contrastive": false,
+     "delta_sum": 0.07211538461538469,
+     "distances": {
+      "MK7": 0.02213541666666674,
+      "MK8": 0.08122996794871806,
+      "XC3": 0.010926400273224002
+     },
+     "families": [
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "is_primary": false,
+     "key": [
+      "MK7",
+      "MK8",
+      "XC3"
+     ],
+     "max_distance": 0.08122996794871806,
+     "p_selected": 0.0005,
+     "se_delta_sum": 0.03813366862945329,
+     "slots": [
+      "R3",
+      "(MK8)",
+      "R2"
+     ],
+     "sum_distance": 0.1142917848886088,
+     "within_1se_of_primary": false
+    }
+   ]
+  }
+ },
+ "finding": "5 --- the reference triple's selection margin",
+ "material_frames": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "model_key": "qwen3-4b",
+ "n_material_frames": 4,
+ "record_hashes": {
+  "GATE_1_INSTRUMENT": "08d23484258e6289ef224e6a19e0738f14844b6e12e1a31c3fe618e42ba9b4a0",
+  "GATE_2_CALIBRATION": "e794f9472cbb444401bdab305a1838e8dc54cdde826b3f372908cc8cb49b9f30",
+  "GATE_3_REFERENCES": "0f4a8501b0984a310571215a0418ab4a5b7cb328edffbd0885a63f6126c46b1a",
+  "REGIME_SCREEN": "fd6caa7a8132689ae22fc0eaed9aa94d2050cd55c13f7109a7d6d37e7b551f6f",
+  "pilot_manifest": "adae489fda28b6bf816318a1696d14feaa8d493302109857d5566e0bc0d90443"
+ },
+ "resamples": 2000,
+ "root": "/home/cnm13ryan/git/dci-v8-canonical/dci1/evidence/dci1v8-pilot-r9",
+ "root_name": "dci1v8-pilot-r9",
+ "rule": "MATERIAL when some admissible alternative triple's total distance is within 1 bootstrap SE of the primary triple's, or the registered ranking re-selects the frozen triple on fewer than 0.6667 of 2000 topic resamples",
+ "selection_unchanged": "R1/R2/R3 remain the frozen primary triple and R4/R5 the frozen backups. Delta_R(f) is re-formed over every admissible triple of the five frozen families from the same generated cells in the confirmatory analysis (confirm/analysis.py, member family F_REFSENS, planned on the MEMBERSHIP record's reference_sensitivity block). This tool selects nothing.",
+ "study_id": "dci1v8",
+ "supported_frames": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "tool": "tools/v8_reference_sensitivity.py",
+ "topic_pairing_verified": true
+}
