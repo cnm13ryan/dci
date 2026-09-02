@@ -104,6 +104,16 @@ def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
 #: threshold moves --- this changes how much is measured, not what admits.
 #: Four passes is the ceiling: every frame would then hold every
 #: confirmatory block and a fifth would have to repeat an offset.
+#: **Superseded for generation on 2026-09-02** (docs/V8_CONFIRMATORY.md
+#: §4): the confirmatory layer takes its allocation from the prospective
+#: precision rule in ``dci1v8dev.confirm.precision`` --- 384 blocks per
+#: frame, the ceiling, chosen at the joint cross-frame family --- and
+#: records it in the membership lock and every freeze. The three-pass value
+#: below is kept as the **pilot's projection basis**: Gate 3's coverage
+#: condition 4 projected at it on r10/r11, and the confirmatory layer's
+#: top-up re-verdicts the pilot's frames with the pilot's own kernel, which
+#: must reproduce those verdicts exactly. Moving it would move a pilot
+#: verdict; nothing that generates reads it.
 CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)
 _assert_offsets(CONFIRMATORY_FRAME_OFFSETS, "CONFIRMATORY_FRAME_OFFSETS")
 CONFIRMATORY_FRAME_PASSES = len(CONFIRMATORY_FRAME_OFFSETS)

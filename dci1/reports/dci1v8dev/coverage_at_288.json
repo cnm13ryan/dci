@@ -2,6 +2,122 @@
  "amended_blocks_per_frame": 288,
  "amended_passes": 3,
  "by_root": {
+  "dci1v8-pilot-r10": {
+   "qwen3-4b-instruct-2507": [
+    {
+     "frame": 0,
+     "note": "no operating point",
+     "recorded_status": null,
+     "state": "UNSUPPORTED"
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.017561855732974144,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.017561855732974144,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "frame": 2,
+     "note": "no operating point",
+     "recorded_status": null,
+     "state": "UNSUPPORTED"
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.016620739925632337,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.016620739925632337,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  },
+  "dci1v8-pilot-r11": {
+   "gemma-3n-e4b-it": [
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.014314470985757447,
+     "condition_4_at_amended": true,
+     "frame": 0,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.014314470985757447,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.013989588618537047,
+     "condition_4_at_amended": true,
+     "frame": 1,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.013989588618537047,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.019960865265773342,
+     "condition_4_at_amended": true,
+     "frame": 2,
+     "local_supported": false,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.019960865265773342,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    },
+    {
+     "amended_identified": true,
+     "amended_n_blocks": 288,
+     "amended_se_beta": 0.017248418561764345,
+     "condition_4_at_amended": true,
+     "frame": 3,
+     "local_supported": true,
+     "reasons_not_about_the_allocation": [],
+     "recorded_identified": true,
+     "recorded_n_blocks": 288,
+     "recorded_reasons": [],
+     "recorded_se_beta": 0.017248418561764345,
+     "recorded_status": "DIFFICULTY_SUPPORT_IDENTIFIED",
+     "state": "LOCAL_AND_SPECTRUM",
+     "status_changes": false
+    }
+   ]
+  },
   "dci1v8-pilot-r8": {
    "gemma-3n-e2b-it": [
     {

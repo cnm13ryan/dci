@@ -668,6 +668,54 @@ allocation that closed the same gap for `qwen3-4b`'s f0 and f3, and does the
 model therefore reach the two supported frames §4d requires. Its f0 is not
 reopened: §7f's high-ι_A geometry, which no allocation touches.
 
+## 7j. Both runs, and the four-model picture (2026-08-31 / 2026-09-01)
+
+**r10 — `qwen3-4b-instruct-2507` at the calibration ceiling.** Nine stages
+`PASS`, 196,608 calibration generations (64 forwarded rungs x 192 topics x 4
+draws x 4 passes, exact), Gate 2 in 5 h 13 m on one card.
+
+| | r8 (2 passes) | r10 (4 passes) |
+|---|---|---|
+| f0 | operating point at ι_A 0.844, no core | **no operating point** |
+| f1 | 6 families, 2 backups — supported | **7 families, 2 backups** — supported |
+| f2 | no operating point | no operating point |
+| f3 | 4 families, 1 backup | **3 families, 0 backups** |
+| eligible | no | **no** |
+
+The finding is not "the allocation failed" but "the shortfall was an
+artefact": §13.7 requires each rung to be independently admissible on **each
+split**, and at 48 topics per split that test could not resolve a `V_diff`
+failure on split B for MK1 and MK8. At 96 it does. `V_stab` refusals are "not
+independently admissible on one split" in 64 of 64 cases at four passes and
+64 of 65 at two, and the equivalence interval narrowed exactly as more data
+should make it ([−0.167, +0.104] → [−0.122, +0.073], point −0.031 → −0.026).
+f0 tells the same story: A's compliance falls 0.855 → 0.204 between
+severities 4 and 5, so §12.3 refuses an operating point where two passes had
+produced ι_A = 0.844.
+
+**r11 — `gemma-3n-e4b-it`, the fourth model, never previously piloted in
+v8.** Nine stages `PASS` at the **default** two passes (93,696 calibration
+generations from 61 rungs), Gate 2 in 7 h 06 m — e4b runs about half the
+throughput of the Qwens. All four frames reach a supported operating point
+and **all four identify the spectrum**, which no other model has managed at
+the default allocation; the LOCAL arm yields one supported frame (f3: 6
+families, 2 backups) with f1 at 4-and-1.
+
+**The four-model picture, which is the first complete one:**
+
+| model | root | passes | LOCAL-supported | eligible | spectrum identified |
+|---|---|---|---|---|---|
+| `qwen3-4b` | r9 | 4 | f0, f3 | **yes** | 4/4 |
+| `gemma-3n-e2b-it` | r8 | 2 | f1, f3 | **yes** | — |
+| `qwen3-4b-instruct-2507` | r10 | 4 | f1 | no | — |
+| `gemma-3n-e4b-it` | r11 | 2 | f3 | no | 4/4 |
+
+Two of four models carry the LOCAL arm, with two supported frames each, so
+**four (model, frame) Δ_R(f) estimates would be generated**. The two
+ineligible models both have live spectrum arms, which makes §10 item 6 —
+whether an ineligible model still runs the difficulty-response arm — the
+consequential open question rather than a formality.
+
 ## 7. What the pilot cannot tell you
 
 That the effect exists; that v8 works; anything about B+R or R+B; which

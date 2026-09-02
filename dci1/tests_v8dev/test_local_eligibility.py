@@ -325,14 +325,23 @@ def test_the_rule_reads_no_composed_symbol():
         "survival", "frame", "operating_point", "unsupported_reason"}
 
 
-def test_the_stored_r8_and_r9_records_give_the_recorded_verdict():
+def test_the_stored_pilot_records_give_the_recorded_verdict():
     """The rule, run on the signed pre-freeze records it was written for.
 
-    Pinned because the numbers are the researcher decision's own evidence:
-    `qwen3-4b` (r9, four calibration passes) f0 and f3; `gemma-3n-e2b-it`
-    (r8) f1 and f3; `qwen3-4b-instruct-2507` (r8) f1 alone --- which leaves
-    2507 **ineligible**, since one supported frame cannot separate a property
-    of the instruction pair from a property of the phrasing it was stated in.
+    Pinned because the numbers are the researcher decision's own evidence,
+    and now over all four registered models:
+
+    * `qwen3-4b` (r9, four passes) f0 and f3 --- eligible;
+    * `gemma-3n-e2b-it` (r8, two passes) f1 and f3 --- eligible;
+    * `qwen3-4b-instruct-2507` (r10, four passes, the ceiling) f1 alone;
+    * `gemma-3n-e4b-it` (r11, two passes) f3 alone.
+
+    The last two are **ineligible**: one supported frame cannot separate a
+    property of the instruction pair from a property of the phrasing it was
+    stated in. r8's 2507 lane is kept in the table beside r10's because the
+    pair is the evidence for §4b's finding --- the ceiling moved f3 from
+    4-and-1 to 3-and-0, so the shortfall was an artefact of the two-pass
+    split size rather than a gap the allocation could close.
     """
     import json
     import pathlib as _p
@@ -341,6 +350,8 @@ def test_the_stored_r8_and_r9_records_give_the_recorded_verdict():
         ("dci1v8-pilot-r9", "qwen3-4b"): ([0, 3], True),
         ("dci1v8-pilot-r8", "gemma-3n-e2b-it"): ([1, 3], True),
         ("dci1v8-pilot-r8", "qwen3-4b-instruct-2507"): ([1], False),
+        ("dci1v8-pilot-r10", "qwen3-4b-instruct-2507"): ([1], False),
+        ("dci1v8-pilot-r11", "gemma-3n-e4b-it"): ([3], False),
     }
     seen = 0
     for (root, model), (frames, eligible) in expected.items():

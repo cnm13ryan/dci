@@ -295,6 +295,77 @@ meets §13.15 in full is a measurement, and the pre-registered possibility
 that it does not is that the model stays `LOCAL_INELIGIBLE` with its
 shortfall on the record.
 
+**What it bought, measured** (`V8_PILOT.md` §7j, root `dci1v8-pilot-r10`,
+2026-08-31, all nine stages `PASS`). **It did not close the gap; it showed
+there was no gap to close.** f3 went from 4 LOCAL-valid families and 1 backup
+to **3 and 0**, and the model stays `LOCAL_INELIGIBLE` on one supported
+frame. Three things moved and each is worth reading separately.
+
+* **f1 improved as the allocation predicts**: 6 families → **7**, backups 2 →
+  2, ι_A 0.656 → 0.642. This is the `qwen3-4b` pattern.
+* **f3's family set churned rather than grew**: MK1 and MK8 out, XC1 in, at an
+  unchanged operating point (n\* = 6, m\* = 12, ι_A 0.664 → 0.681). The
+  mechanism is §13.7's **per-split admissibility**, not its equivalence
+  clause. `V_stab` refusals are "not independently admissible on one split"
+  in 64 of 64 cases at four passes and 64 of 65 at two; the equivalence
+  interval itself behaved exactly as more data should make it, narrowing from
+  [−0.167, +0.104] to [−0.122, +0.073] about a steady point estimate of
+  −0.026. What 96 topics per split resolved is a **`V_diff` failure on split
+  B** that 48 could not: MK1 and MK8 were admitted at two passes because the
+  split-level test lacked the power to refuse them.
+* **f0 lost its operating point entirely** — `GRID_RESOLUTION_INSUFFICIENT`,
+  A's compliance falling 0.855 → 0.204 between severities 4 and 5, straddling
+  a whole band. At two passes the same frame produced ι_A = 0.844, the
+  implausible value §4c read as geometry. The finer grid replaces a bad
+  operating point with a clean refusal, which is the better record.
+
+So the raise was worth making and the result is the opposite of
+`qwen3-4b`'s: four passes turned 4-and-1 into 5-and-2 and 7-and-2 there, and
+into 3-and-0 here. **192 topics per frame is the bank's ceiling, so no
+further allocation exists**, and §4d forbids moving anything else. The
+conclusion is that `qwen3-4b-instruct-2507` f3 was never a near-miss — it
+looked like one at 48 topics per split — and the model carries one solid
+LOCAL frame and leaves the LOCAL arm.
+
+## 4f. The fourth model, measured for the first time (2026-09-01)
+
+`gemma-3n-e4b-it` is one of the four registered v8 models and had **never
+been run through a v8 pilot**: r1–r10 covered the other three, and no
+decision to drop it is recorded anywhere. Its only v8 appearances were
+retrospective replays over stored v7 evidence. That made every eligibility
+statement before this one a statement about three quarters of the study.
+
+It was run at the **default** two-pass allocation (`dci1v8-pilot-r11`,
+2026-09-01, all nine stages `PASS`), which needed no rule change: the model
+is absent from `CALIBRATION_FRAME_OFFSETS_BY_MODEL` and resolves to
+`CALIBRATION_FRAME_OFFSETS`, exactly as `gemma-3n-e2b-it` did in r8. Every
+other model was first measured at the default and raised only on its own
+evidence; this follows that order rather than pre-empting it.
+
+**Gate 2 supports all four frames** — operating points n\* 4–8, m\* 9–10,
+ι_A 0.659–0.724 — and **Gate 3 identifies the spectrum on all four**, which
+no other model has done at the default allocation. The LOCAL arm is where it
+stops:
+
+| frame | ι_A | LOCAL-valid families | backups | LOCAL |
+|---|---|---|---|---|
+| f0 | 0.724 | 3 (MK1, MK2, MK4) | 0 | unsupported |
+| f1 | 0.703 | 4 (MK1, MK4, MK5, XC3) | 1 | unsupported |
+| f2 | 0.659 | 3 (MK2, MK4, MK5) | 0 | unsupported |
+| **f3** | 0.682 | **6** (MK1–MK5, XC3) | **2** | **supported** |
+
+One supported frame against §4d's minimum of two, so the model is
+`LOCAL_INELIGIBLE`. Its f1 sits on the **4-and-1 margin** — the same margin
+`qwen3-4b`'s f0 and f3 held at two passes, which four passes closed, and the
+same margin `2507`'s f3 held, which four passes widened. The prior is
+therefore genuinely two-sided, and whether to spend the ceiling on e4b is a
+researcher decision (§10 item 7), not one this section takes.
+
+The ι_A ≈ 0.724 that `V8_CANDIDATE.md` §11 predicted from stored v7 evidence
+is confirmed on f0, and its "smallest margin above A of the four models"
+reading survives: e4b's LOCAL arm is the thinnest of the four and its
+spectrum arm the strongest.
+
 ## 4d. The LOCAL inclusion rule, and what it leaves out (amended 2026-08-31)
 
 r9 closed the allocation question and left the inclusion question open:
@@ -615,18 +686,29 @@ report and cannot freeze.
    still miss are the two explicit bounds, and neither is reachable at any
    feasible allocation (522 and 585 blocks per frame against a 384 ceiling).
 5. ~~**Whether `qwen3-4b-instruct-2507` runs at the ceiling allocation.**~~
-   **Decided 2026-08-31** (§4b): yes — four calibration passes, 192 topics
-   per frame, the same raise `qwen3-4b` took, and the model is rerun from
-   `PILOT_REGISTERED` in root `dci1v8-pilot-r10`. On r8 it had one
-   LOCAL-supported frame (f1), one short of §4d's minimum, and its f3 missed
-   on exactly the margin four passes closed for `qwen3-4b` — four families
-   where §13.15 asks five, one backup where it asks two. The raise is an
-   allocation decision of the kind §4b already took once, taken before Gate 3
-   runs on it; if f3 still misses, the model is `LOCAL_INELIGIBLE` with its
-   shortfall on the record and no rule is changed to prevent that.
+   **Decided and answered 2026-08-31** (§4b): it ran, and f3 did **not**
+   reach §13.15 — 3 LOCAL-valid families and 0 backups, against 4 and 1 at
+   two passes. The model keeps one supported frame (f1, improved to 7
+   families) and is `LOCAL_INELIGIBLE`. 192 topics per frame is the bank's
+   ceiling, so this is final unless a rule changes, and §4d forbids that.
 6. **Whether an ineligible model still runs the SPECTRUM arm.** §4d is a
    LOCAL inclusion rule and says nothing about the difficulty-response arm,
-   whose support is a separate per-frame verdict. Not decided here.
+   whose support is a separate per-frame verdict. **This is now the larger
+   question it was not before**: two of the four models are LOCAL-ineligible,
+   and both have strong spectrum arms — `gemma-3n-e4b-it` identifies coverage
+   on **4 of 4** frames and `qwen3-4b-instruct-2507` on its supported frames.
+   Discarding them because their LOCAL arm is thin would throw away the
+   difficulty-response evidence they do carry. Not decided here.
+7. **Whether `gemma-3n-e4b-it` runs at the ceiling allocation.** It has one
+   LOCAL-supported frame (f3, 6 families, 2 backups) and its f1 holds the
+   4-and-1 margin at the default two passes (§4f). The evidence on what four
+   passes does to that margin is now **two-sided**: it closed it for
+   `qwen3-4b` (4-and-1 → 5-and-2 and 7-and-2) and widened it for
+   `qwen3-4b-instruct-2507` (4-and-1 → 3-and-0), because more topics per
+   split resolve §13.7 per-split admissibility in whichever direction the
+   truth lies. So this is a real coin-toss on ~13 h of generation, not a
+   near-certain gain, and it is the researcher's call. Declining it leaves
+   the LOCAL arm at two models.
 3. **A frame-aware screen.** The screen and second pass pool the frames as
    a budget rule (§5). A frame-aware second pass would need many more
    topics per batch; the pilot's per-frame calibration will show whether
