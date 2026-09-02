@@ -161,6 +161,26 @@ already superseded by r9) would differ. The **LOCAL** arm is invariant:
 `admissible_backups` read no block count, so every LOCAL support verdict on
 r8 and r9 means exactly what it meant. A test pins that invariance.
 
+**Executed (2026-09-02, root `dci1/evidence/dci1v8-confirm`, commits
+cd61e72 / fbf00c8 / 5870ddf).** The top-up ran on all four models: seven
+rungs on four frames, 2,688 generations; every rung inside a frame's caliper
+at the screen was measured on that frame's calibration topics and none
+passed the full V(R) --- `gemma-3n-e4b-it` f1's MK3:3 sits inside the caliper
+(iota 0.768, distance 0.065) and fails §13.7's per-split admissibility at the
+two-pass allocation; `qwen3-4b` f2's XC3 rungs land outside the caliper at
+calibration precision (screen-to-calibration drift); `gemma-3n-e2b-it` f0's
+MK1 rung likewise; f0 of e4b gained XC1 and stays short. Untouched frames
+reproduced the pilot's verdicts exactly on every model. **Membership moved
+on no model.** Locked and frozen (`reports/dci1v8dev/confirmatory_membership.json`,
+four signed `FROZEN` records at 5870ddf): LOCAL = `qwen3-4b` f0+f3 and
+`gemma-3n-e2b-it` f1+f3; SPECTRUM = all four frames of `qwen3-4b`,
+`gemma-3n-e2b-it` and `gemma-3n-e4b-it`, f1+f3 of `qwen3-4b-instruct-2507`;
+384 blocks per frame, M = 8, cap 512; 1,671,168 protected generations.
+n\*(f) reproduction under the calibration-topic bootstrap is on every freeze
+(LOCAL frames: qwen3-4b f0 0.56, f3 0.40 --- modal severity 4, not the frozen
+5; gemma-3n-e2b-it f1 0.88, f3 0.47) and every Delta_R(f) is stated as
+conditional on the frozen severity.
+
 **Where it is recorded.** `docs/V8_FRAME_CONDITIONING.md` §4e and §10 item 2;
 `design.confirmatory_allocation` in the signed pilot manifest, with the
 constants bound by `rule_table()`; `reports/dci1v8dev/local_precision.md`.
