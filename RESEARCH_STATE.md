@@ -373,7 +373,7 @@ declared on the freeze. Validated on synthetic evidence only before any
 real stage ran: 29 fast tests, the seven-stage synthetic walk, the
 augmented §13.11 producer reproducing a stored row byte-for-byte, the
 pilot kernel re-verdicting r11 identically, and a companion-dependent
-effect read with the registered sign. The real run (2026-09-02): the top-up measured seven rungs on four
+effect read with the registered sign. The real run (2026-09-02): the top-up measured six rungs on four
 frames and moved no verdict (every in-caliper-at-screen rung failed the
 full V(R) at calibration; untouched frames reproduced the pilot); the
 membership was locked and all four models frozen at 5870ddf --- LOCAL
@@ -383,6 +383,33 @@ generations --- and generation began on both cards. The membership, freeze
 and results are recorded in
 `dci1/reports/dci1v8dev/confirmatory_membership.md` and
 `dci1/reports/dci1v8dev/confirmatory/FINAL_REPORT.md` as they exist.
+
+**Superseded the same afternoon (2026-09-02, pre-freeze audit).** A
+twelve-finding audit against the repository stopped that generation at
+13:09Z (qwen3-4b 13 batches, gemma-3n-e2b-it 12; uninspected, never
+analysed; `dci1/reports/dci1v8dev/confirmatory/SUPERSEDED_dci1v8-confirm.md`)
+because the freezes bound two allocations (288 in the signed rule table, 384
+in the design), a model-specific calibration table (Qwens at four passes,
+Gemmas at two, adopted after pilot r8), a stability bootstrap seeded with the
+process-salted builtin `hash()`, no clean-worktree requirement, and an
+analysis that omitted, undeclared, most of v7's registered safeguards. The
+verification ledger, with every finding's evidence and verdict, is
+[`dci1/reports/dci1v8dev/freeze_readiness/VERIFICATION_LEDGER.md`](dci1/reports/dci1v8dev/freeze_readiness/VERIFICATION_LEDGER.md).
+**v8 is a frame-conditioned redesign of DCI-1, not a replication of v7.**
+The prospective fixes (`957e5d7`, `CHANGES_SCIENTIFIC.md` 2026-09-02 audit
+entry): one allocation (384, the ceiling, stated once and tested across
+every source); one universal four-pass calibration for every model, with
+the two Gemma models re-measured on fresh pilot roots (`dci1v8-pilot-r12`,
+`-r13`) from a clean worktree before any eligibility is recomputed; an
+`OPERATING_POINT_UNSTABLE` status below 2/3 recovery with a runner-up
+sensitivity arm and the frozen point kept; a provenance gate on every stage
+of both lifecycles; the registered v7 safeguards restored per frame; a
+ten-item freeze-readiness audit; and a standalone preregistration,
+[`dci1/docs/DCI1_preregistration_v8.md`](dci1/docs/DCI1_preregistration_v8.md),
+bound by hash. The successor confirmatory root is `dci1v8-confirm-r2`; it
+adopts no row from the superseded one. Where the study stands after the
+audit is in
+[`dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md`](dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md).
 
 **And r8's two high-iota_A frames are geometry, not a shortage**
 (`tools/v8_operating_point_diagnosis.py`, `V8_PILOT.md` §7f): §13.4's

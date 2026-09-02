@@ -31,6 +31,8 @@ from dci1v8dev.confirm import (CONFIRM_DOCUMENT, MEMBERSHIP_DOCUMENT,
                                PROTOCOL_VERSION)
 from dci1v8dev import rules as R
 from dci1v8dev.confirm import lifecycle as L
+from dci1v8dev.confirm.pilot_import import open_pilot
+from dci1v8dev.confirm.readiness import assert_freeze_ready, freeze_readiness
 from dci1v8dev.confirm import precision as P
 from dci1v8dev.confirm.manifest import analysis_code_hashes
 
@@ -107,6 +109,11 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
             f"the membership lock's entry for {tree.model_key} {got} differs "
             f"from this model's MEMBERSHIP record {expected}; re-run the "
             "lock tool before freezing")
+    pilot_gate2 = open_pilot(Path(registration["pilot_source"]["root"]),
+                             tree.model_key, synthetic=tree.synthetic).gate2
+    readiness = freeze_readiness(tree, membership, repo_root=repo_root,
+                                 lock=lock, registration=registration,
+                                 pilot_gate2=pilot_gate2)
     if not membership["enters_study"]:
         raise L.TerminalStatus(
             "NOT_ELIGIBLE", gate=L.STAGE_FROZEN,
@@ -116,6 +123,7 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
             strongest_permissible_statement=(
                 "no frame of this model is LOCAL-supported on an eligible "
                 "model or SPECTRUM-identified; nothing is generated"))
+    assert_freeze_ready(readiness, tree=tree)
     blocks = int(lock["allocation"]["chosen_blocks_per_frame"]
                  if blocks_per_frame is None else blocks_per_frame)
     if blocks_per_frame is not None and not tree.synthetic:
@@ -174,6 +182,9 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
         "documents": {**registration["documents"],
                       "confirm_document": CONFIRM_DOCUMENT},
         "backups_never_substituted": True,
+        "readiness": readiness,
+        "preregistration": registration.get("preregistration"),
+        "rules_hash": registration.get("rules_hash"),
         "operating_point_rule": {
             "min_recovery": R.OPERATING_POINT_MIN_RECOVERY,
             "resamples": R.OPERATING_POINT_BOOTSTRAP_RESAMPLES,
