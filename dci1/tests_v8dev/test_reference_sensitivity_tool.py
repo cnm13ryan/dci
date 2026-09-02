@@ -195,17 +195,30 @@ sys.stdout.write(json.dumps(T._jsonable(out), indent=1, sort_keys=True))
 
 
 def _run_driver(tmp_path: Path, hashseed: str, seed: int) -> bytes:
+    """Run the bootstrap in a fresh interpreter under a given
+    ``PYTHONHASHSEED``.
+
+    The environment is built explicitly rather than inherited: the point of
+    the test is that the draw depends on the seed and on nothing else, and
+    a variable another test happened to leave behind would be exactly the
+    kind of hidden input it is meant to rule out.
+    """
     tmp_path.mkdir(parents=True, exist_ok=True)
     driver = tmp_path / "driver.py"
     driver.write_text(_DRIVER)
-    env = dict(os.environ)
-    env["PYTHONHASHSEED"] = hashseed
-    env["PYTHONPATH"] = os.pathsep.join(
-        [str(TOOL_PATH.parents[1] / "src"), env.get("PYTHONPATH", "")])
+    env = {"PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+           "HOME": os.environ.get("HOME", str(tmp_path)),
+           "PYTHONHASHSEED": hashseed,
+           "PYTHONPATH": str(TOOL_PATH.parents[1] / "src")}
     proc = subprocess.run([sys.executable, str(driver), str(TOOL_PATH),
                            str(seed)], capture_output=True, env=env,
-                          cwd=str(tmp_path))
-    assert proc.returncode == 0, proc.stderr.decode()
+                          cwd=str(tmp_path), stdin=subprocess.DEVNULL)
+    assert proc.returncode == 0, (
+        f"driver exited {proc.returncode}\n--- stderr ---\n"
+        f"{proc.stderr.decode(errors='replace')}\n--- stdout ---\n"
+        f"{proc.stdout.decode(errors='replace')[:2000]}")
+    assert proc.stdout, ("the driver produced no output; stderr:\n"
+                         + proc.stderr.decode(errors="replace"))
     return proc.stdout
 
 
