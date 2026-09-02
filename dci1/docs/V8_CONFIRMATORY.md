@@ -45,7 +45,7 @@ A that would put one row in two conditions), and two linear arms are new.
 | base | 5 | unconstrained; A solo; B solo; A+B; B+A |
 | core | 21 | R1..R3 solo; every remaining unordered pair over {A,B,R1,R2,R3}, both orders (Δ_R, Ξ, Δ_j, Δ^A, R̄ quantities, Ord_R̄) |
 | backup | 6 | R4, R5 solo; B+R4, R4+B, B+R5, R5+B — the two frozen §13.15 backups, for the reference-sensitivity contrast only |
-| spectrum | 3k | S_j solo; B+S_j, S_j+B for the frame's k ≤ 8 selected spectrum points (a point that is a core/backup rung is aliased, not generated twice) |
+| spectrum | 3k | S_j solo; B+S_j, S_j+B for the frame's k ≤ 12 selected spectrum points (`design.MAX_SPECTRUM_POINTS`) (a point that is a core/backup rung is aliased, not generated twice) |
 
 A LOCAL frame runs base+core+backup (32 cells); a SPECTRUM frame runs
 base+spectrum; a frame in both runs all four (≤ 56). A block is one
@@ -79,7 +79,7 @@ pilot's own kernel under its recorded seed — a frame without a top-up must
 reproduce the pilot's verdict exactly, and that equality is asserted on the
 record. Dry-run on the four pilot roots the rule fires on `qwen3-4b` f2
 (XC3), `gemma-3n-e2b-it` f0 (MK1), `gemma-3n-e4b-it` f0 (XC1, XC3) and f1
-(MK3): seven rungs, ≈ 3,000 generations. It adds no family; §13's full V(R)
+(MK3): six rungs (2,688 generations on the signed records; an earlier note said seven). It adds no family; §13's full V(R)
 admits a measured rung or does not.
 
 **3b. Operating-point stability (`MEMBERSHIP`).** §12.3's n\*(f) is chosen

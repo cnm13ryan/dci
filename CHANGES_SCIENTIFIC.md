@@ -13,6 +13,105 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-02 (pre-freeze audit) — the morning's four freezes superseded; one allocation, one universal calibration, operating-point status, provenance gate, the registered analysis restored per frame, a standalone v8 preregistration
+
+**What happened first.** Protected composed generation under the four
+`FROZEN` records of `5870ddf` (root `dci1/evidence/dci1v8-confirm`) ran from
+10:11Z and was **stopped by the operator at 13:09Z** when this audit began;
+qwen3-4b had 13 and gemma-3n-e2b-it 12 scored batches, none complete, none
+analysed, none read. The root is superseded, not resumed
+(`dci1/reports/dci1v8dev/confirmatory/SUPERSEDED_dci1v8-confirm.md`); its
+composed rows are never adopted by the successor and never cited.
+
+**What the audit verified** (ledger with paths and numbers:
+[`dci1/reports/dci1v8dev/freeze_readiness/VERIFICATION_LEDGER.md`](dci1/reports/dci1v8dev/freeze_readiness/VERIFICATION_LEDGER.md)):
+v8 is a frame-conditioned redesign, not a replication of v7 (v7 pooled the
+frames, chose one operating point and one triple per model, and rendered the
+two lines of a composed prompt under different frames in three blocks of
+four; two of the four exact-count templates changed); v7's κ_R = 0 defect had
+two causes and v8's one-cell basis holds; v7's spectrum inherited the LOCAL
+caliper through V_stab and the family pool; the frozen n\*(f) was re-selected
+on only 0.40–0.56 of topic resamples on three of the four LOCAL frames; 9–10
+admissible triples per LOCAL frame over the five frozen families with
+distances inside one calibration SE; the pre-screen is frame-blind (median
+cross-frame ι spread 0.23, 2.3× the caliper) but its own coordinate is too
+noisy to have steered around it; the eligibility rule is as documented; the
+two Qwens calibrated at four passes and the two Gemmas at two by a
+model-specific table adopted after pilot r8; the signed rule table said 288
+blocks per frame while the freezes bound 384; the confirmatory analysis
+omitted, undeclared, L1/L2 licensing, the Ξ gate, F5/F6 and the §17.4
+vacuity gate, F7, the projection audit, the within-frame heterogeneity
+qualifier, the identification ledger, L4a, the L3c guard, the spectrum form
+check and degenerate-replicate ceiling, the prefreeze audit and §26; the
+stability bootstrap was seeded with the process-salted builtin `hash()`; no
+lifecycle required a clean worktree. None of these decisions used a
+composed outcome (first composed file 10:11:44Z; last design commit
+earlier).
+
+**What changed, prospectively, before any new calibration** (`957e5d7`):
+
+1. **One confirmatory allocation.** `rules.CONFIRMATORY_FRAME_OFFSETS =
+   (0, 1, 2, 3)`: `CONFIRMATORY_BLOCKS_PER_FRAME = 384` (the ceiling) is the
+   only active value; `confirm/precision.py` projects §16.1 at it and no
+   longer chooses from {288, 384}; the coverage gate's condition 4 projects
+   at it; the lock, the manifest, every freeze and the preregistration read
+   it; `test_every_active_source_of_the_allocation_agrees` fails otherwise.
+   The 288 of 2026-08-31 and the menu rule of this morning are history.
+2. **One universal calibration allocation.** `CALIBRATION_FRAME_OFFSETS =
+   (0, 1, 2, 3)` for every model (192 topics per frame, the ceiling); the
+   per-model table is removed. The two Gemma models are re-measured on
+   fresh pilot roots (`dci1v8-pilot-r12` gemma-3n-e2b-it, `-r13`
+   gemma-3n-e4b-it) run from a clean worktree at `957e5d7`; every model's
+   membership is recomputed by the confirmatory layer on that basis; the
+   readiness audit refuses a model measured at any other allocation.
+3. **Operating-point stability status and runner-up arm.** `confirm/
+   stability.py` re-runs §12.3 on 2000 topic-level resamples per frame
+   (deterministic seed `seeds.bootstrap_seed`), records the distribution,
+   the recovery share and the runner-up, and sets
+   `OPERATING_POINT_UNSTABLE` below `OPERATING_POINT_MIN_RECOVERY` = 2/3.
+   The frozen point is never replaced; an unstable LOCAL frame adds the
+   `runner_up` arm (A2 and/or B2 cells) and the analysis reports Δ_R(f) at
+   the runner-up as a sensitivity contrast (F_RUNNER_UP; no claim).
+4. **Provenance gate.** `run/lifecycle.py::stage_provenance` on both
+   lifecycles: clean worktree, HEAD, an operator commit must equal HEAD,
+   fail closed, no bypass; synthetic namespaces record only. Every record
+   carries a provenance and an environment block (backend packages by
+   version); the confirmatory manifest binds the rule-table hash and the
+   preregistration hash. Backend text reproducibility is measured
+   (`tools/v8_backend_determinism.py`), not promised.
+5. **The registered analysis, per frame** (`confirm/analysis.py`,
+   `report.py`): L1 headroom gate and L1/L2 licensing, the Ξ direction
+   gate, within-frame Δ_j heterogeneity (`REFERENCE_HETEROGENEOUS`), the
+   projection audit, the identification ledger (a silently absent member
+   is an error), L4a, the L3c `NEAR_FORM_UNAVAILABLE` guard, F5/F6 and the
+   §17.4 vacuity gate, F7, the spectrum algebraic-form check and
+   degenerate-replicate ceiling, §26 restated, final-report traceability
+   checks. Omissions that remain are declared with reasons (preregistration
+   §18.7, §20).
+6. **Freeze-readiness audit** (`confirm/readiness.py`) on the mandatory
+   path of `FROZEN`: ten items, any failure `FREEZE_REFUSED`.
+7. **Top-up reproduction check** split into the allocation-free LOCAL view
+   (must reproduce) and the spectrum view (recorded with both allocations).
+8. **Standalone preregistration**
+   [`dci1/docs/DCI1_preregistration_v8.md`](dci1/docs/DCI1_preregistration_v8.md),
+   bound by hash; it states the universal rules (§9, §11, §15, §17), the
+   scope restriction (§16), the executed and omitted analyses (§18), the
+   provenance and freeze requirements (§19) and every deviation from v7
+   (§20), and discloses the adaptive history (Appendix A).
+
+**Diagnostics written (zero generation):** frame-screen
+(`dci1/reports/dci1v8dev/frame_screen_diagnostic/`), reference-sensitivity
+(`dci1/reports/dci1v8dev/reference_sensitivity/`), operating-point
+stability and freeze readiness (`dci1/reports/dci1v8dev/freeze_readiness/`).
+
+**What is affected.** No registered result: the superseded root produced
+no analysis. Every earlier v8 pilot record keeps its meaning on the
+allocation it states; the two Gemma pilots at two passes (r8, r11) are
+superseded as membership inputs by r12/r13. The morning's note that the
+top-up measured "seven rungs" is corrected to six (the signed records).
+Old and new membership are not comparable: the calibration basis differs
+for the Gemma models and the coverage projection differs for every model.
+
 ## 2026-09-02 (pre-freeze) — the v8 confirmatory layer: freeze, protected generation, frame-aware analysis; allocation 384 blocks per frame; joint cross-frame multiplicity; frame-aware LOCAL top-up; backups generated for a reference-sensitivity contrast
 
 **What changed.** A confirmatory layer, `dci1/src/dci1v8dev/confirm/`

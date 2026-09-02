@@ -22,7 +22,8 @@ from dci1v7.protocol import constants as C
 from dci1v7.topics.bank import TopicBank, load_bank
 
 from dci1v8dev.confirm import (CLASSIFICATION, CONFIRM_DOCUMENT,
-                               MEMBERSHIP_DOCUMENT, PROTOCOL_VERSION)
+                               MEMBERSHIP_DOCUMENT, PREREGISTRATION_DOCUMENT,
+                               PROTOCOL_VERSION)
 from dci1v8dev.confirm import lifecycle as L
 from dci1v8dev.confirm import precision as P
 from dci1v8dev.run import (BASE_PREREGISTRATION, DESIGN_DOCUMENT,
@@ -37,8 +38,8 @@ __all__ = ["DOCUMENTS", "analysis_code_hashes", "document_hashes",
            "build_manifest", "sign_registration", "ensure_registration",
            "load_manifest", "manifest_hash", "Blocker"]
 
-DOCUMENTS = (CONFIRM_DOCUMENT, FRAME_DOCUMENT, DESIGN_DOCUMENT,
-             PILOT_DOCUMENT, BASE_PREREGISTRATION)
+DOCUMENTS = (PREREGISTRATION_DOCUMENT, CONFIRM_DOCUMENT, FRAME_DOCUMENT,
+             DESIGN_DOCUMENT, PILOT_DOCUMENT, BASE_PREREGISTRATION)
 #: The registered analysis code the confirmatory analysis calls, hashed.
 V7_ANALYSIS_MODULES = ("analysis/observations.py", "analysis/estimators.py",
                        "analysis/bootstrap.py", "analysis/intervals.py",
@@ -87,6 +88,9 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                    "before CONFIRMATORY_GENERATION"),
         "producing_commit": producing_commit,
         "documents": document_hashes(repo_root),
+        "preregistration": {"path": PREREGISTRATION_DOCUMENT,
+                            "hash": document_hashes(repo_root)[PREREGISTRATION_DOCUMENT]},
+        "rules_hash": sha_obj(rule_table()),
         "package": package_hashes(),
         "analysis_code": analysis_code_hashes(),
         "rules": rule_table(),
