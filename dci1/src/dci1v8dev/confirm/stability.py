@@ -24,6 +24,8 @@ from dci1v7.stages.regime import select_operating_point
 
 from dci1v8dev.run.execute import frame_of_block
 
+from dci1v8dev import rules as R
+
 __all__ = ["per_topic_curves", "operating_point_stability",
            "frame_stability"]
 
@@ -95,8 +97,18 @@ def operating_point_stability(solo: Mapping[int, Mapping[str, float]],
                                   if selected is not None else None),
         "modal": max(counts, key=counts.get) if counts else None,
         "rule": "§12.3 re-run on each topic resample (clustered on the "
-                "frame's calibration topics); no threshold attached",
+                "frame's calibration topics); the frozen point stays "
+                "authoritative whatever the distribution says",
     }
+    p_rep = out["p_selected_reproduced"]
+    others = {k: v for k, v in counts.items() if k != selected and k is not None}
+    runner_up = max(others, key=others.get) if others else None
+    out["runner_up"] = runner_up
+    out["p_runner_up"] = (others[runner_up] / resamples) if runner_up is not None else 0.0
+    out["min_recovery"] = R.OPERATING_POINT_MIN_RECOVERY
+    out["status"] = (None if p_rep is None else
+                     R.OPERATING_POINT_STABLE if p_rep >= R.OPERATING_POINT_MIN_RECOVERY
+                     else R.OPERATING_POINT_UNSTABLE)
     if iotas:
         iotas.sort()
         m = sum(iotas) / len(iotas)
@@ -115,7 +127,7 @@ def frame_stability(grid_a_rows: Sequence[Mapping[str, Any]],
     solo_a, chance_a = per_topic_curves(grid_a_rows, kind="A", frame=frame)
     solo_b, _ = per_topic_curves(grid_b_rows, kind="B", frame=frame)
     b_grid = list(C.FOCAL_GRID) + [q for q in C.FOCAL_EXTENSION if q in solo_b]
-    return {
+    out = {
         "frame": frame,
         "n_star": operating_point_stability(
             solo_a, chance_a, grid=list(C.TARGET_GRID), band=C.TARGET_BAND,
@@ -128,3 +140,16 @@ def frame_stability(grid_a_rows: Sequence[Mapping[str, Any]],
                    "p_selected_reproduced is the share of topic resamples "
                    "on which §12.3 selects the frozen severity",
     }
+    unstable = [c for c in ("n_star", "m_star")
+                if out[c].get("status") == R.OPERATING_POINT_UNSTABLE]
+    out["status"] = (R.OPERATING_POINT_UNSTABLE if unstable
+                     else R.OPERATING_POINT_STABLE)
+    out["unstable_coordinates"] = unstable
+    out["runner_up_slots"] = [
+        {"n_star": "A2", "m_star": "B2"}[c] for c in unstable
+        if out[c].get("runner_up") is not None]
+    out["runner_up_values"] = {
+        {"n_star": "A2", "m_star": "B2"}[c]: out[c]["runner_up"] for c in unstable
+        if out[c].get("runner_up") is not None}
+    return out
+

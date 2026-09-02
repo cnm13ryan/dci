@@ -245,15 +245,44 @@ def reverdict_gate3(source: PilotSource, gate2: Mapping[str, Any]
                                                "frame_references (pilot)"}
 
 
+def _spectrum_view(pilot_frame: Mapping[str, Any],
+                   new_frame: Mapping[str, Any]) -> dict[str, Any]:
+    """The coverage verdict and the allocation it was projected at, on both
+    sides; ``agree`` compares the verdicts, ``same_allocation`` says whether
+    disagreement would be a defect (same kernel, same inputs) or the
+    expected effect of the frozen allocation differing from the pilot's."""
+    def _n_blocks(frame: Mapping[str, Any]):
+        s = frame.get("survival") or {}
+        if s.get("n_blocks_projected") is not None:
+            return s["n_blocks_projected"]
+        cov = frame.get("coverage") or {}
+        rule = cov.get("rule") or {}
+        proj = cov.get("projection") or {}
+        return rule.get("n_blocks", proj.get("n_blocks"))
+    def _identified(frame: Mapping[str, Any]):
+        s = frame.get("survival") or {}
+        return bool(s.get("coverage_identified", False))
+    before, after = _n_blocks(pilot_frame), _n_blocks(new_frame)
+    return {"pilot_state": pilot_frame.get("state"),
+            "state": new_frame.get("state"),
+            "pilot_coverage_identified": _identified(pilot_frame),
+            "coverage_identified": _identified(new_frame),
+            "pilot_n_blocks": before, "n_blocks": after,
+            "same_allocation": before == after,
+            "agree": (pilot_frame.get("state") == new_frame.get("state")
+                      and _identified(pilot_frame) == _identified(new_frame))}
+
+
 def _survival_view(g3_frame: Mapping[str, Any]) -> dict[str, Any]:
-    """The verdict-bearing fields of a frame's survival block. LOCAL support
-    is derived by the rule from the fields, never read from a key: a pilot
-    record written before the rule existed (r8, r9) carries none, and the
-    re-verdict writes one --- a difference of bookkeeping, not of verdict."""
+    """The LOCAL verdict-bearing fields of a frame's survival block --- the
+    ones that read no block count. LOCAL support is derived by the rule from
+    the fields, never read from a key: a pilot record written before the
+    rule existed (r8, r9) carries none, and the re-verdict writes one --- a
+    difference of bookkeeping, not of verdict."""
     s = g3_frame.get("survival")
     if not s:
-        return {"state": g3_frame.get("state")}
-    return {"state": g3_frame.get("state"),
+        return {"has_survival": False}
+    return {"has_survival": True,
             "local_valid_families": list(s["local_valid_families"]),
             "n_backups": s["n_backups"],
             "core": [f"{c['family']}:{c['severity']}" for c in s["core_references"]],
@@ -318,17 +347,32 @@ def topup_payload(tree: L.ConfirmTree, registration: Mapping[str, Any], *,
         generated[str(w)]["n_blocks"] = len(blocks)
     reverdict = reverdict_gate3(source, gate2)
     # Frames the top-up did not touch must reproduce the pilot's verdicts.
+    # The LOCAL view (families, backups, core, LOCAL support) reads no block
+    # count and must reproduce exactly. The SPECTRUM view (coverage, hence
+    # the frame state) projects condition 4 at the confirmatory allocation:
+    # it must reproduce when the pilot was formed at the frozen allocation,
+    # and is recorded --- with the two allocations --- when it was not,
+    # because the frozen rules' re-verdict is the authoritative one.
     untouched_agree: dict[str, bool] = {}
+    spectrum_view: dict[str, Any] = {}
     for w in reverdict["supported_frames"]:
         if w in plan["frames_running"]:
             continue
-        before = _survival_view(source.gate3["by_frame"][str(w)])
-        after = _survival_view(reverdict["by_frame"][str(w)])
+        pilot_frame = source.gate3["by_frame"][str(w)]
+        new_frame = reverdict["by_frame"][str(w)]
+        before = _survival_view(pilot_frame)
+        after = _survival_view(new_frame)
         untouched_agree[str(w)] = before == after
         if before != after:
             raise ProtocolError(
-                f"frame {w} was not topped up and its Gate-3 verdict moved "
-                f"under the same kernel and seed: {before} -> {after}")
+                f"frame {w} was not topped up and its LOCAL Gate-3 verdict "
+                f"moved under the same kernel and seed: {before} -> {after}")
+        sv = _spectrum_view(pilot_frame, new_frame)
+        spectrum_view[str(w)] = sv
+        if sv["same_allocation"] and not sv["agree"]:
+            raise ProtocolError(
+                f"frame {w} was not topped up and its SPECTRUM verdict moved "
+                f"at the same allocation: {sv}")
     changes = {str(w): {"before": _survival_view(source.gate3["by_frame"][str(w)]),
                         "after": _survival_view(reverdict["by_frame"][str(w)])}
                for w in plan["frames_running"]}
@@ -344,6 +388,10 @@ def topup_payload(tree: L.ConfirmTree, registration: Mapping[str, Any], *,
         "augmented_gate2": gate2,
         "reverdicted_gate3": reverdict,
         "untouched_frames_reproduce_pilot": untouched_agree,
+        "untouched_frames_spectrum_view": spectrum_view,
+        "reverdict_authoritative": "the Gate-3 re-verdict under the frozen "
+                                   "rules (this record) decides membership; "
+                                   "the pilot's verdicts are its inputs",
         "changes_on_topped_up_frames": changes,
         "local_eligibility_before": {
             "supported": pilot_elig["local_supported_frames"],

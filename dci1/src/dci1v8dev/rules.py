@@ -78,15 +78,25 @@ def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
 
 
 # ------------------------------------------------ confirmatory allocation
-#: **The confirmatory passes** (researcher decision of 2026-08-31, after the
-#: pre-freeze precision check; docs/V8_FRAME_CONDITIONING.md §4e). One pass
-#: over the registered ``C.N_BLOCKS`` blocks leaves each frame 96 of them,
-#: at which the §16.1 variance model projects a simultaneous half-width for
-#: Δ_R(f) of 0.078 against ``C.PRECISION_PRECONDITIONS["Delta_R"]`` = 0.05
-#: and an 80 % MDE of ~0.10 --- the design sitting exactly on its own
-#: SESOI (reports/dci1v8dev/local_precision.md, 2026-08-31). Three passes
-#: put 288 blocks under each frame, which brings every scenario that is an
-#: estimate rather than a bound inside the precondition.
+#: **The confirmatory allocation: one value, stated once.** Every entering
+#: frame of every study model runs every registered confirmatory block ---
+#: four passes, ``C.N_BLOCKS`` = 384 blocks per frame, the ceiling (a fifth
+#: pass would repeat an offset and measure a topic twice under one frame).
+#:
+#: History, kept so the record is honest. 2026-08-31 (after the pre-freeze
+#: precision check, reports/dci1v8dev/local_precision.md): one pass leaves
+#: each frame 96 blocks and a simultaneous half-width of 0.078 for Δ_R(f)
+#: against the unchanged 0.05 precondition, so the design was raised to
+#: three passes (288). 2026-09-02 (confirmatory layer): the prospective
+#: precision rule in ``dci1v8dev.confirm.precision`` --- the joint
+#: cross-frame family at Šidák k = 6 x LOCAL frames under the registered-
+#: alternate and composed-at-half scenarios --- is not met at 288 for a
+#: two-frame model and is met at 384, and the four freezes of that day
+#: bound 384 while this constant still read 288. The pre-freeze audit of
+#: 2026-09-02 (docs/DCI1_preregistration_v8.md §17) removed the ambiguity:
+#: this constant is the allocation, ``confirm.precision`` projects the
+#: precision *at* it and no longer chooses, the coverage gate's condition
+#: 4 projects at it, and a test fails if any of them disagree.
 #:
 #: A confirmatory *pass* is the exact analogue of a calibration pass: it
 #: renders every confirmatory block under one frame, pass p shifting the
@@ -94,27 +104,10 @@ def _assert_offsets(offsets: tuple[int, ...], where: str) -> tuple[int, ...]:
 #: met under frame ``(i + offset_p) % N_WORDINGS``. The offsets are distinct
 #: modulo ``N_WORDINGS``, so no block recurs within a frame and each frame's
 #: block count --- the denominator §17.1's block bootstrap resamples over ---
-#: is the number of *distinct* topics it holds.
-#:
-#: What it is and is not. It buys independent blocks inside each frame, so
-#: the topic component of §16.1's variance falls with the block count;
-#: extra *draws* would not have done this (the estimators average draws
-#: within a topic first). Frames are never pooled: every frame keeps its own
-#: Δ_R(f), its own slope, its own references and its own report row. No
-#: threshold moves --- this changes how much is measured, not what admits.
-#: Four passes is the ceiling: every frame would then hold every
-#: confirmatory block and a fifth would have to repeat an offset.
-#: **Superseded for generation on 2026-09-02** (docs/V8_CONFIRMATORY.md
-#: §4): the confirmatory layer takes its allocation from the prospective
-#: precision rule in ``dci1v8dev.confirm.precision`` --- 384 blocks per
-#: frame, the ceiling, chosen at the joint cross-frame family --- and
-#: records it in the membership lock and every freeze. The three-pass value
-#: below is kept as the **pilot's projection basis**: Gate 3's coverage
-#: condition 4 projected at it on r10/r11, and the confirmatory layer's
-#: top-up re-verdicts the pilot's frames with the pilot's own kernel, which
-#: must reproduce those verdicts exactly. Moving it would move a pilot
-#: verdict; nothing that generates reads it.
-CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)
+#: is the number of *distinct* topics it holds. Frames are never pooled:
+#: every frame keeps its own Δ_R(f), its own slope, its own references and
+#: its own report row. No threshold moves with the allocation.
+CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2, 3)
 _assert_offsets(CONFIRMATORY_FRAME_OFFSETS, "CONFIRMATORY_FRAME_OFFSETS")
 CONFIRMATORY_FRAME_PASSES = len(CONFIRMATORY_FRAME_OFFSETS)
 #: Derived, not chosen: N_BLOCKS x passes / N_WORDINGS.
@@ -159,11 +152,12 @@ def confirmatory_allocation() -> dict[str, Any]:
                 "independent unit count --- what §17.1's block bootstrap "
                 "resamples over --- is that number. No frame is pooled with "
                 "another",
-        "amendment": "CHANGES_SCIENTIFIC.md 2026-08-31 (three passes, 288 "
-                     "blocks per frame; prompted by the pre-freeze precision "
-                     "check, which put the one-pass simultaneous half-width "
-                     "for Delta_R(f) at 0.078 against the unchanged 0.05 "
-                     "precondition). No threshold moved.",
+        "amendment": "CHANGES_SCIENTIFIC.md 2026-09-02 (pre-freeze audit): "
+                     "four passes, 384 blocks per frame, the ceiling, one "
+                     "allocation across rules, precision, coverage, manifest "
+                     "and preregistration; supersedes the three-pass value "
+                     "of 2026-08-31 and the 2026-09-02 menu rule. No "
+                     "threshold moved.",
     }
 
 # ------------------------------------------------- calibration allocation
@@ -189,52 +183,42 @@ def confirmatory_allocation() -> dict[str, Any]:
 #: draws would not have done this). Frames are never pooled; every frame
 #: still has its own curve, operating point, table, validity and selection.
 #: No threshold moves: this changes how much is measured, not what admits.
-CALIBRATION_FRAME_OFFSETS = (0, 2)
-
-#: **The per-model allocation** (researcher decision of 2026-08-31, after
-#: pilot r8; docs/V8_FRAME_CONDITIONING.md §4a). r8 measured what two passes
-#: bought and what they did not: `SPECTRUM_MAX_SE_IOTA` is satisfied on the
-#: *pooled* per-frame table (median SE(iota) 0.0356 against the 0.05 floor)
-#: but §13.7 evaluates its condition 1 on **each split alone**, at half the
-#: frame's topics, where the same coordinate carries SE(iota) ~ 0.05 --- so
-#: 221 of 332 split-level `V_coord` refusals on `qwen3-4b` were the SE clause
-#: and nothing else (reports/dci1v8dev/vstab.dci1v8-pilot-r8.qwen3-4b.md).
-#: Four passes put every frame on all `N_CALIBRATION` topics, 96 per split,
-#: which is the **ceiling**: the topic bank holds exactly N_CALIBRATION
-#: calibration topics and every other topic set is reserved.
+CALIBRATION_FRAME_OFFSETS = (0, 1, 2, 3)
+#: **The calibration allocation is universal** (pre-freeze audit of
+#: 2026-09-02; docs/DCI1_preregistration_v8.md §9). Every study model
+#: calibrates at four passes --- every calibration topic under every frame,
+#: ``C.N_CALIBRATION`` = 192 topics per frame, 96 per §13.7 split --- which
+#: is the ceiling: the topic bank holds exactly N_CALIBRATION calibration
+#: topics and every other topic set is reserved.
 #:
-#: The override is per model because the researcher approved the further 2x
-#: for the models whose frames the two-pass allocation left short, and
-#: because an allocation is a property of a replication's measurement, not of
-#: the admission rules, which are identical under either value. A model
-#: absent from this table runs at `CALIBRATION_FRAME_OFFSETS`, so every
-#: earlier run's meaning is untouched.
-#:
-#: `qwen3-4b` was raised on 2026-08-31 after r8 (r9 ran at four passes and
-#: put all four of its frames in LOCAL_AND_SPECTRUM). `qwen3-4b-instruct-2507`
-#: was raised on 2026-08-31 for the same reason and on the same evidence
-#: shape: r8 left it one LOCAL-supported frame (f1), and f3 --- 4 LOCAL-valid
-#: families against the 5 §13.15 asks and 1 admissible backup against 2 ---
-#: missed on exactly the margin four passes closed for `qwen3-4b`'s f0 and
-#: f3. The raise is a measurement decision taken before Gate 3 runs, not a
-#: response to a Gate-3 verdict on the raised allocation.
-CALIBRATION_FRAME_OFFSETS_BY_MODEL: dict[str, tuple[int, ...]] = {
-    "qwen3-4b": (0, 1, 2, 3),
-    "qwen3-4b-instruct-2507": (0, 1, 2, 3),
-}
-
-
+#: History, kept so the record is honest. Two passes (offsets (0, 2), 96
+#: topics per frame) were adopted on 2026-08-30 after pilots r5/r6. On
+#: 2026-08-31, after pilot r8, ``qwen3-4b`` and then
+#: ``qwen3-4b-instruct-2507`` were raised to four passes through a
+#: per-model table while the two Gemma models stayed at two --- a
+#: model-specific measurement decision taken after seeing reference
+#: survival on the study checkpoints, and one that made ``qwen3-4b``
+#: LOCAL-eligible (r8: no supported frame; r9: two). The audit replaced
+#: the table with this one value *before* any further calibration was
+#: generated; the Gemma models are re-measured at the same four passes and
+#: every model's eligibility is recomputed on that basis. An allocation is
+#: a property of a replication's measurement, not of the admission rules,
+#: which are identical under every value; a model that ran at an earlier
+#: default did so on a record that says so.
+CALIBRATION_POLICY = ("universal: every study model calibrates at "
+                      "CALIBRATION_FRAME_OFFSETS; no per-model override "
+                      "exists")
 _assert_offsets(CALIBRATION_FRAME_OFFSETS, "CALIBRATION_FRAME_OFFSETS")
-for _model, _offsets in CALIBRATION_FRAME_OFFSETS_BY_MODEL.items():
-    _assert_offsets(_offsets, f"CALIBRATION_FRAME_OFFSETS_BY_MODEL[{_model!r}]")
 
 
 def calibration_frame_offsets(model_key: str | None = None) -> tuple[int, ...]:
-    """The calibration passes this model runs. The default unless overridden."""
-    if model_key is None:
-        return CALIBRATION_FRAME_OFFSETS
-    return CALIBRATION_FRAME_OFFSETS_BY_MODEL.get(model_key,
-                                                  CALIBRATION_FRAME_OFFSETS)
+    """The calibration passes this model runs: the universal allocation.
+
+    The model argument is kept so every model-scoped path states which
+    model it measures; no value of it changes the answer.
+    """
+    del model_key
+    return CALIBRATION_FRAME_OFFSETS
 
 
 def calibration_passes(model_key: str | None = None) -> int:
@@ -271,11 +255,8 @@ assert CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT * 2 == \
 #: topic, and a fifth would repeat one inside a frame.
 CALIBRATION_MAX_PASSES = C.N_WORDINGS
 CALIBRATION_MAX_TOPICS_PER_FRAME = C.N_CALIBRATION
-for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
-    assert calibration_topics_per_frame_per_split(_model) * 2 == \
-        calibration_topics_per_frame(_model)
-for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
-    assert calibration_topics_per_frame(_model) <= CALIBRATION_MAX_TOPICS_PER_FRAME
+assert CALIBRATION_TOPICS_PER_FRAME == CALIBRATION_MAX_TOPICS_PER_FRAME, \
+    "the universal calibration allocation is the ceiling"
 
 # ------------------------------------------------- LOCAL frame eligibility
 #: **The LOCAL inclusion rule** (researcher decision of 2026-08-31, after
@@ -306,6 +287,28 @@ for _model in CALIBRATION_FRAME_OFFSETS_BY_MODEL:
 #: inputs. Selecting frames on an outcome would be selection on the thing
 #: being estimated.
 LOCAL_ELIGIBILITY_MIN_FRAMES = 2
+
+# ----------------------------------------------- operating-point stability
+#: **Operating-point stability** (pre-freeze audit of 2026-09-02;
+#: docs/DCI1_preregistration_v8.md §11). For every supported model x frame
+#: the confirmatory layer re-runs the complete §12.3 selection of n*(f) and
+#: of m*(f) on ``OPERATING_POINT_BOOTSTRAP_RESAMPLES`` topic-level
+#: resamples of that frame's calibration topics (clustered on the topic:
+#: every rung's per-topic rate moves together) and records the empirical
+#: selection distribution, the share of resamples on which the frozen
+#: point is re-selected, and the runner-up. A coordinate whose frozen
+#: value is re-selected on fewer than ``OPERATING_POINT_MIN_RECOVERY`` of
+#: the resamples carries the status ``OPERATING_POINT_UNSTABLE``. The
+#: status is descriptive: the prospectively specified §12.3 rule remains
+#: authoritative, the frozen n*(f), m*(f) are never replaced by the modal
+#: value, and Δ_R(f) is conditional on them. An unstable coordinate adds
+#: the runner-up sensitivity arm (``confirm.design.ARM_RUNNER_UP``) to that
+#: frame's design so that the same blocks also measure the contrast at the
+#: runner-up value; that arm licenses no claim.
+OPERATING_POINT_BOOTSTRAP_RESAMPLES = 2000
+OPERATING_POINT_MIN_RECOVERY = 2.0 / 3.0
+OPERATING_POINT_STABLE = "OPERATING_POINT_STABLE"
+OPERATING_POINT_UNSTABLE = "OPERATING_POINT_UNSTABLE"
 
 # ---------------------------------------------------------------- pre-screen
 #: Status thresholds on P(support both sides) and the posterior-majority

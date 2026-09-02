@@ -72,6 +72,7 @@ def licensed_design(tree: L.ConfirmTree, *, bank: TopicBank | None = None,
                              area=t["area"]) for i, t in enumerate(held)]
         frames[int(w)] = {"arms": list(e["arms"]),
                           "n_spectrum": int(e["n_spectrum_slots"]),
+                          "runner_up": tuple(e.get("runner_up_slots") or ()),
                           "cells_per_block": int(e["cells_per_block"]),
                           "slot_map": slot_map, "blocks": blocks}
     return {"freeze": freeze, "freeze_hash": freeze_hash, "frames": frames,
@@ -86,7 +87,7 @@ def run_batch(tree: L.ConfirmTree, design: Mapping[str, Any], *, frame: int,
               ) -> list[dict[str, Any]]:
     fr = design["frames"][frame]
     blocks = fr["blocks"][start:stop]
-    cells = design_cells(blocks, fr["arms"], n_spectrum=fr["n_spectrum"],
+    cells = design_cells(blocks, fr["arms"], n_spectrum=fr["n_spectrum"], runner_up=fr["runner_up"],
                          draws=design["draws"])
     prompts = [prompt_cell(c, design["topics"][c.topic_id],
                            slot_map=fr["slot_map"]) for c in cells]
@@ -117,8 +118,7 @@ def completeness(design: Mapping[str, Any], rows: Sequence[Mapping[str, Any]]
                  ) -> dict[str, Any]:
     expected: set[str] = set()
     for frame, fr in design["frames"].items():
-        for cell in design_cells(fr["blocks"], fr["arms"],
-                                 n_spectrum=fr["n_spectrum"],
+        for cell in design_cells(fr["blocks"], fr["arms"], n_spectrum=fr["n_spectrum"], runner_up=fr["runner_up"],
                                  draws=design["draws"]):
             for draw in range(design["draws"]):
                 expected.add(f"{cell.block_id}:{cell.cell_id}:{draw}")
@@ -150,11 +150,10 @@ def generation_payload(tree: L.ConfirmTree, *, producing_commit: str,
     for frame, fr in sorted(design["frames"].items()):
         if frames_only is not None and frame not in frames_only:
             continue
-        cells = design_cells(fr["blocks"], fr["arms"],
-                             n_spectrum=fr["n_spectrum"], draws=design["draws"])
+        cells = design_cells(fr["blocks"], fr["arms"], n_spectrum=fr["n_spectrum"], runner_up=fr["runner_up"], draws=design["draws"])
         allocation[str(frame)] = assert_frame_allocation(
             cells, fr["arms"], n_spectrum=fr["n_spectrum"], frame=frame,
-            blocks_expected=len(fr["blocks"]))
+            blocks_expected=len(fr["blocks"]), runner_up=fr["runner_up"])
         if fr["cells_per_block"] != allocation[str(frame)]["cells_per_block"]:
             raise ProtocolError(f"frame {frame}: the plan derives "
                                 f"{allocation[str(frame)]['cells_per_block']} "

@@ -52,6 +52,10 @@ def collect(root: pathlib.Path, *, synthetic: bool) -> dict[str, Any]:
             "stability": {w: (e.get("stability") or {}).get("n_star", {})
                           .get("p_selected_reproduced")
                           for w, e in payload["by_frame"].items()},
+            "stability_status": {w: (e.get("stability") or {}).get("status")
+                                 for w, e in payload["by_frame"].items()},
+            "runner_up_slots": {w: e.get("runner_up_slots") or []
+                                for w, e in payload["by_frame"].items()},
         }
     n_local = {m: len(e["frames_entering_local"]) for m, e in models.items()}
     return {"document": MEMBERSHIP_DOCUMENT, "root": str(root),
@@ -77,8 +81,9 @@ def render(lock: dict[str, Any]) -> str:
                      f"{'yes' if e['topped_up'] else 'no'} | {st} |")
     a = lock["allocation"]
     lines += ["", f"**Allocation:** {a['chosen_blocks_per_frame']} blocks per frame "
-              f"(decided at {a['decided_at_n_frames']} LOCAL frames, joint family size "
-              f"{a['joint_family_size']}; rule met: {a['rule_met_at_chosen']}).",
+              f"({a['source']}; projected at {a['decided_at_n_frames']} LOCAL frames, "
+              f"joint family size {a['joint_family_size']}; adverse-scenario "
+              f"precondition met: {a['precondition_met_adverse_at_max']}).",
               "", f"**Precision rule.** {a['precision_rule']}", "",
               f"**Multiplicity rule.** {a['multiplicity_rule']}", ""]
     return "\n".join(lines)

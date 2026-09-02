@@ -19,8 +19,11 @@ def test_cell_counts_by_arm():
     assert D.n_cells_for(["base", "core"], n_spectrum=0) == 26
     assert D.n_cells_for(["base", "core", "backup"], n_spectrum=0) == 32
     assert D.n_cells_for(["base", "spectrum"], n_spectrum=8) == 29
-    assert D.n_cells_for(D.ARMS, n_spectrum=8) == 56
-    assert len(D.cell_types(D.ARMS, n_spectrum=8)) == 56
+    full = [a for a in D.ARMS if a != D.ARM_RUNNER_UP]
+    assert D.n_cells_for(full, n_spectrum=8) == 56
+    assert len(D.cell_types(full, n_spectrum=8)) == 56
+    assert D.n_cells_for(D.ARMS, n_spectrum=8, runner_up=("A2",)) == 59
+    assert len(D.cell_types(D.ARMS, n_spectrum=8, runner_up=("A2", "B2"))) == 68
 
 
 def test_backup_arm_needs_core():
@@ -32,11 +35,11 @@ def test_every_slot_of_a_block_is_under_the_blocks_frame():
     topics = [{"topic_id": f"t{i}", "area": "a"} for i in range(8)]
     for frame in range(C.N_WORDINGS):
         blocks = D.frame_blocks(topics, frame)
-        cells = D.design_cells(blocks, D.ARMS, n_spectrum=3)
+        cells = D.design_cells(blocks, D.ARMS, n_spectrum=3, runner_up=("A2",))
         for cell in cells:
             assert cell.block_index % C.N_WORDINGS == frame
             assert all(w == frame for w in cell.wording_by_slot.values())
-        D.assert_frame_allocation(cells, D.ARMS, n_spectrum=3, frame=frame,
+        D.assert_frame_allocation(cells, D.ARMS, n_spectrum=3, frame=frame, runner_up=("A2",),
                                   blocks_expected=8)
 
 
@@ -49,17 +52,41 @@ def test_both_orders_of_every_pair_in_every_block():
     assert ("R1", "R4") not in composed          # backups are linear with B
 
 
-def test_allocation_rule_prefers_the_smallest_passing_entry():
-    one = P.choose_allocation(1)
-    two = P.choose_allocation(2)
-    assert one["chosen_blocks_per_frame"] == 288 and one["rule_met_at_chosen"]
-    assert two["chosen_blocks_per_frame"] == 384 and two["rule_met_at_chosen"]
-    four = P.choose_allocation(4)
-    assert four["chosen_blocks_per_frame"] == 384 and not four["rule_met_at_chosen"]
+def test_precision_is_projected_at_the_one_allocation_and_never_chosen():
+    two = P.precision_at(2)
+    assert two["blocks_per_frame"] == 384 == P.ALLOCATION
+    assert two["precondition_met_adverse"] and two["precondition_met_planning"]
+    four = P.precision_at(4)
+    assert four["blocks_per_frame"] == 384 and not four["precondition_met_adverse"]
+    rec = P.allocation_record({"a": 2, "b": 4, "c": 0})
+    assert rec["chosen_blocks_per_frame"] == 384
+    assert rec["decided_at_n_frames"] == 4
+    assert not rec["precondition_met_adverse_at_max"]
+    assert rec["per_model"]["a"]["precondition_met_adverse"]
     # the projection arithmetic is §16.1's, at the registered constants
-    row = two["table"]["384"]["REGISTERED_PLANNING"]
+    row = two["table"]["REGISTERED_PLANNING"]
     assert abs(row["half_width_frame"] - 0.0390) < 5e-4
     assert row["critical_joint"] == pytest.approx(sidak_critical(12))
+
+
+def test_runner_up_arm_adds_the_sensitivity_cells_and_needs_the_core():
+    arms = ["base", "core", "backup", "runner_up"]
+    assert D.n_cells_for(arms, n_spectrum=0, runner_up=("A2",)) == 35
+    assert D.n_cells_for(arms, n_spectrum=0, runner_up=("B2",)) == 41
+    assert D.n_cells_for(arms, n_spectrum=0, runner_up=("A2", "B2")) == 44
+    types = D.cell_types(arms, n_spectrum=0, runner_up=("A2", "B2"))
+    composed = {t.slots for t in types if t.arm == "composed"}
+    assert ("B", "A2") in composed and ("A2", "B") in composed
+    assert ("A", "B2") in composed and ("B2", "A") in composed
+    for r in C.CORE_SLOTS:
+        assert (r, "B2") in composed and ("B2", r) in composed
+    assert not any("A2" in s and "B2" in s for s in composed)
+    with pytest.raises(ProtocolError):
+        D.cell_types(["base", "runner_up"], n_spectrum=0, runner_up=("A2",))
+    with pytest.raises(ProtocolError):
+        D.cell_types(arms, n_spectrum=0)          # the arm names no slot
+    with pytest.raises(ProtocolError):
+        D.cell_types(["base", "core"], n_spectrum=0, runner_up=("A2",))
 
 
 def test_joint_family_shares_one_topic_draw_across_frames():

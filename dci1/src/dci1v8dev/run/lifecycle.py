@@ -18,8 +18,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
-from dci1v4.engine import store
-from dci1v4.errors import ProtocolError
+from dci1v4.engine import gitinfo, store
+from dci1v4.errors import IntegrityError, ProtocolError
 
 from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
@@ -34,6 +34,74 @@ __all__ = ["TerminalStatus", "StageOutcome", "run_stage", "mirror_records",
 
 def now() -> str:
     return _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")
+
+
+SYNTHETIC_NAMESPACES = ("synthetic", "confirm-synthetic")
+
+
+def stage_provenance(repo_root: Path | str, *, namespace: str,
+                     producing_commit: str | None) -> dict[str, Any]:
+    """The commit a record is addressed to, established from the worktree
+    and not from the operator.
+
+    Outside a synthetic namespace the worktree must be clean (``git status
+    --porcelain`` empty, untracked files included) and ``producing_commit``,
+    if the operator passed one, must be HEAD --- otherwise the stage fails
+    closed with ``IntegrityError`` (pre-freeze audit of 2026-09-02, finding
+    12: a signed record from a dirty or misattributed worktree names code
+    that cannot be recovered). A synthetic namespace records the state and
+    enforces nothing: its records are never admissible evidence.
+    """
+    repo_root = Path(repo_root)
+    head = gitinfo.head_commit(repo_root)
+    enforced = namespace not in SYNTHETIC_NAMESPACES
+    try:
+        gitinfo.assert_clean_worktree(repo_root)
+        clean = True
+    except IntegrityError:
+        if enforced:
+            raise
+        clean = False
+    if producing_commit and producing_commit != head:
+        if enforced:
+            raise IntegrityError(
+                f"producing_commit {producing_commit} is not HEAD {head}; a "
+                "record is addressed to the commit that produced it")
+    return {"producing_commit": head, "worktree_clean": clean,
+            "enforced": enforced, "repo_root": str(repo_root),
+            "operator_commit": producing_commit}
+
+
+def environment_record(operator_digest: str = "") -> dict[str, Any]:
+    """What ran: interpreter, platform and the pinned backend packages, read
+    from the backend environment on disk; the operator's own digest string
+    is kept beside it, never in place of it."""
+    import platform
+    import re
+    import sys
+    from dci1v8dev.run.context import DCI1_ROOT
+    backend = DCI1_ROOT / "environments" / "backend" / ".venv"
+    packages: dict[str, str] = {}
+    for meta in sorted(backend.glob("lib/python*/site-packages/*.dist-info/METADATA")):
+        name = version = None
+        try:
+            for line in meta.read_text(errors="replace").splitlines()[:40]:
+                if line.startswith("Name: "):
+                    name = line[6:].strip()
+                elif line.startswith("Version: "):
+                    version = line[9:].strip()
+                if name and version:
+                    break
+        except OSError:
+            continue
+        if name and version and re.match(r"^(vllm|torch|transformers|tokenizers|"
+                                         r"triton|numpy|safetensors)", name, re.I):
+            packages[name] = version
+    return {"operator_digest": operator_digest or "",
+            "python": sys.version.split()[0],
+            "platform": platform.platform(),
+            "backend_venv": str(backend.resolve()) if backend.exists() else None,
+            "backend_packages": packages}
 
 
 def instrument_hashes() -> dict[str, str]:
@@ -123,6 +191,11 @@ def run_stage(tree: ModelTree, stage: str, *,
     """The five steps. ``compute`` receives the predecessor payload."""
     if stage not in S.STAGE_SEQUENCE:
         raise ProtocolError(f"{stage!r} is not a v8 pilot stage")
+    provenance = stage_provenance(tree.context.repo_root,
+                                  namespace=tree.context.namespace,
+                                  producing_commit=producing_commit)
+    producing_commit = provenance["producing_commit"]
+    environment = environment_record(environment_digest)
     entry = instrument_hashes()
     try:
         transitions.assert_transition_legal(tree, stage)
@@ -157,8 +230,10 @@ def run_stage(tree: ModelTree, stage: str, *,
     payload.setdefault("study_id", tree.context.study_id)
     payload.setdefault("namespace", tree.context.namespace)
     payload.setdefault("model_key", tree.model_key)
-    payload.setdefault("producing_commit", producing_commit)
+    payload["producing_commit"] = producing_commit
     payload.setdefault("environment_digest", environment_digest)
+    payload["provenance"] = provenance
+    payload["environment"] = environment
     payload.setdefault("verifier_hash", entry["verifier_hash"])
     payload.setdefault("wording_hash", entry["wording_hash"])
     payload.setdefault("recorded_at", now())

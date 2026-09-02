@@ -40,10 +40,12 @@ from dci1v8dev import rules as R
 from dci1v8dev.confirm import lifecycle as L
 from dci1v8dev.confirm import precision as P
 from dci1v8dev.confirm.design import (ARM_BACKUP, ARM_BASE, ARM_CORE,
-                                      ARM_SPECTRUM, MAX_SPECTRUM_POINTS,
-                                      n_cells_for, spectrum_slot_names)
+                                      ARM_RUNNER_UP, ARM_SPECTRUM,
+                                      MAX_SPECTRUM_POINTS, n_cells_for,
+                                      spectrum_slot_names)
 from dci1v8dev.confirm.pilot_import import frame_inputs, open_pilot
 from dci1v8dev.confirm.stability import frame_stability
+from dci1v8dev.run import seeds
 from dci1v8dev.run import stages as PS
 
 __all__ = ["admissible_triples", "frame_membership", "membership_payload",
@@ -75,9 +77,14 @@ def admissible_triples(references: Sequence[Mapping[str, Any]]
     return out
 
 
-def slot_map_of(fi: Mapping[str, Any], *, local: bool, spectrum: bool
+def slot_map_of(fi: Mapping[str, Any], *, local: bool, spectrum: bool,
+                runner_up: Mapping[str, int] | None = None
                 ) -> tuple[dict[str, list], dict[str, str], list[dict[str, Any]]]:
-    """(slot -> [kind, severity, flags], spectrum aliases, spectrum slots)."""
+    """(slot -> [kind, severity, flags], spectrum aliases, spectrum slots).
+
+    ``runner_up`` maps "A2" and/or "B2" to the runner-up severity of an
+    OPERATING_POINT_UNSTABLE coordinate; the slots exist only on a LOCAL
+    frame (the arm re-forms Delta_R(f) against the frozen core)."""
     slots: dict[str, list] = {
         "A": ["A", int(fi["n_star"]), {}],
         "B": ["B", int(fi["m_star"]),
@@ -88,6 +95,14 @@ def slot_map_of(fi: Mapping[str, Any], *, local: bool, spectrum: bool
             slots[ref["slot"]] = [ref["family"], int(ref["severity"]),
                                   {"reserve": True}]
             label_to_slot[ref["label"]] = ref["slot"]
+        for slot, q in sorted((runner_up or {}).items()):
+            if slot == "A2":
+                slots["A2"] = ["A", int(q), {"runner_up": True}]
+            elif slot == "B2":
+                slots["B2"] = ["B", int(q), {"runner_up": True,
+                                            "extended": int(q) in C.FOCAL_EXTENSION}]
+            else:
+                raise ProtocolError(f"{slot!r} is not a runner-up slot")
     aliases: dict[str, str] = {}
     spectrum_slots: list[dict[str, Any]] = []
     if spectrum:
@@ -133,14 +148,22 @@ def frame_membership(fi: Mapping[str, Any], *, model_eligible: bool,
                 "reason": "no operating point at Gate 2"}
     local = bool(fi["local_supported"]) and model_eligible
     spectrum = bool(fi["coverage_identified"])
+    runner_up: dict[str, int] = {}
+    if local and stability is not None:
+        runner_up = {k: int(v) for k, v in
+                     (stability.get("runner_up_values") or {}).items()}
     arms = [ARM_BASE]
     if local:
         arms += [ARM_CORE, ARM_BACKUP]
     if spectrum:
         arms.append(ARM_SPECTRUM)
+    if runner_up:
+        arms.append(ARM_RUNNER_UP)
     slots, aliases, spectrum_slots = slot_map_of(fi, local=local,
-                                                 spectrum=spectrum)
+                                                 spectrum=spectrum,
+                                                 runner_up=runner_up)
     n_spec = len([s for s in spectrum_slots if not s["aliased"]])
+    ru_slots = tuple(sorted(runner_up))
     out = {
         "frame": fi["frame"], "supported": True, "state": fi["state"],
         "enters_local": local, "enters_spectrum": spectrum,
@@ -157,13 +180,28 @@ def frame_membership(fi: Mapping[str, Any], *, model_eligible: bool,
         "spectrum_aliases": aliases,
         "n_spectrum_slots": n_spec if spectrum else 0,
         "arms": arms if (local or spectrum) else [],
-        "cells_per_block": (n_cells_for(arms, n_spectrum=n_spec)
+        "runner_up_slots": list(ru_slots),
+        "runner_up": ({"slots": list(ru_slots), "values": dict(runner_up),
+                       "status": stability.get("status"),
+                       "rule": "an OPERATING_POINT_UNSTABLE coordinate (frozen "
+                               "value re-selected on < OPERATING_POINT_MIN_"
+                               "RECOVERY of the topic resamples) adds its "
+                               "runner-up as a sensitivity slot; Delta_R(f) at "
+                               "the runner-up is descriptive and licenses no "
+                               "claim; the frozen n*(f), m*(f) stand"}
+                      if runner_up else None),
+        "cells_per_block": (n_cells_for(arms, n_spectrum=n_spec,
+                                        runner_up=ru_slots)
                             if (local or spectrum) else 0),
         "slot_map": slots if (local or spectrum) else {},
         "identification_statuses": fi["identification_statuses"],
         "stability": stability,
         "reference_sensitivity": ({
             "families": [r["family"] for r in fi["core"] + fi["backups"]],
+            "distances": {r["slot"]: {"family": r["family"], "label": r["label"],
+                                      "iota": r["iota"],
+                                      "distance": abs(float(r["iota"]) - float(fi["iota_a"]))}
+                          for r in fi["core"] + fi["backups"]},
             "admissible_triples": admissible_triples(fi["core"] + fi["backups"]),
             "rule": "Delta_R(f) is re-formed over every admissible triple "
                     "of the five frozen families from the same cells; a "
@@ -192,17 +230,22 @@ def membership_payload(tree: L.ConfirmTree, topup: Mapping[str, Any], *,
         fi = frame_inputs(source, w, gate3_override=gate3)
         stab = None
         if fi.get("supported"):
+            # Deterministic and domain-separated: the builtin hash() this
+            # once used is salted per process (PYTHONHASHSEED), so the
+            # distribution was not reproducible across runs.
             stab = frame_stability(grid_a, grid_b, frame=w,
                                    n_star=fi["n_star"], m_star=fi["m_star"],
                                    resamples=resamples,
-                                   seed=hash(tree.model_key) & 0xFFFF)
+                                   seed=seeds.bootstrap_seed(
+                                       f"operating_point_stability:frame{w}",
+                                       tree.model_key))
         by_frame[str(w)] = frame_membership(fi, model_eligible=model_eligible,
                                             stability=stab)
     local_frames = [int(w) for w, e in by_frame.items() if e["enters_local"]]
     spectrum_frames = [int(w) for w, e in by_frame.items()
                        if e["enters_spectrum"]]
     entering = sorted(set(local_frames) | set(spectrum_frames))
-    projection = P.choose_allocation(max(1, len(local_frames)))
+    projection = P.precision_at(max(1, len(local_frames)))
     return {
         "stage": L.STAGE_MEMBERSHIP,
         "artifact_type": L.STAGE_ARTIFACT_TYPE[L.STAGE_MEMBERSHIP],
@@ -223,12 +266,25 @@ def membership_payload(tree: L.ConfirmTree, topup: Mapping[str, Any], *,
         "allocation_projection": {
             "n_local_frames": len(local_frames),
             "joint_family_size": projection["joint_family_size"],
-            "chosen_blocks_per_frame": projection["chosen_blocks_per_frame"],
-            "rule_met": projection["rule_met_at_chosen"],
-            "table": {b: {s: {k: t[s][k] for k in
-                              ("half_width_joint", "half_width_frame",
-                               "meets_precondition_joint", "mde_80_joint")}
-                          for s in t} for b, t in projection["table"].items()}},
+            "blocks_per_frame": projection["blocks_per_frame"],
+            "source": "rules.CONFIRMATORY_BLOCKS_PER_FRAME",
+            "precondition_met_adverse": projection["precondition_met_adverse"],
+            "precondition_met_planning": projection["precondition_met_planning"],
+            "table": {s: {k: t[k] for k in
+                          ("half_width_joint", "half_width_frame",
+                           "meets_precondition_joint", "mde_80_joint")}
+                      for s, t in projection["table"].items()}},
+        "operating_point_stability": {
+            "rule": "confirm.stability: §12.3 re-run on "
+                    f"{R.OPERATING_POINT_BOOTSTRAP_RESAMPLES} topic-level "
+                    "resamples per supported frame; status OPERATING_POINT_"
+                    "UNSTABLE below OPERATING_POINT_MIN_RECOVERY; the frozen "
+                    "point is never replaced",
+            "min_recovery": R.OPERATING_POINT_MIN_RECOVERY,
+            "by_frame": {w: ((e.get("stability") or {}).get("status"))
+                         for w, e in by_frame.items()},
+            "seed_rule": "seeds.bootstrap_seed('operating_point_stability:"
+                         "frame<f>', model_key)"},
         "multiplicity_rule": P.MULTIPLICITY_RULE,
         "precision_rule": P.PRECISION_RULE,
         "estimands": {
@@ -246,7 +302,8 @@ def membership_payload(tree: L.ConfirmTree, topup: Mapping[str, Any], *,
 
 
 def run_membership(tree: L.ConfirmTree, *, producing_commit: str | None = None,
-                   environment_digest: str = "", resamples: int = 2000
+                   environment_digest: str = "",
+                   resamples: int = R.OPERATING_POINT_BOOTSTRAP_RESAMPLES
                    ) -> L.StageOutcome:
     commit = producing_commit or gitinfo.head_commit(Path(tree.context.repo_root))
     return L.run_stage(
