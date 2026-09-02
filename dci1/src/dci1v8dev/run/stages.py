@@ -111,7 +111,12 @@ TERMINAL_SENTENCE = ("a terminal pilot status is a statement about the "
                      "apparatus or the operating regime and carries no "
                      "evidence about the effect or about the v8 candidate")
 
-NAMESPACES = ("pilot", "synthetic")
+NAMESPACES = ("pilot", "synthetic", "confirm", "confirm-synthetic")
+#: The two confirmatory namespaces (``dci1v8dev.confirm``): the pinned
+#: backend under a signed freeze, and the stand-in generator for the
+#: synthetic walk. A confirm root carries the same study id as a pilot
+#: root and is refused by every pilot stage (``confirm.lifecycle``).
+CONFIRM_NAMESPACES = ("confirm", "confirm-synthetic")
 
 # ---------------------------------------------------------------- criteria
 #: The four questions the pilot exists to answer (V8_CANDIDATE.md §12),

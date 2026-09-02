@@ -22,13 +22,18 @@ Var(Delta_R) = ( 2 (1 - rho) sigma2_topic
 
 ## A. Per LOCAL-supported (model, frame)
 
-| model | frame | confirmatory allocation | expected SE | 95 % half-width (simultaneous) | ~80 % MDE |
-|---|---|---|---|---|---|
-| `gemma-3n-e2b-it` | f1 | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
-| `gemma-3n-e2b-it` | f3 | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
-| `qwen3-4b` | f0 | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
-| `qwen3-4b` | f3 | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
-| `qwen3-4b-instruct-2507` | f1 | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+A frame is listed here because it is `LOCAL_SUPPORTED`. Whether it is actually *generated* is a separate question the inclusion rule answers: a supported frame enters the LOCAL confirmatory design only if its model is `LOCAL_ELIGIBLE`, i.e. has at least 2 supported frames. The last column says which, so this table is not mistaken for the design.
+
+| model | frame | enters LOCAL? | confirmatory allocation | expected SE | 95 % half-width (simultaneous) | ~80 % MDE |
+|---|---|---|---|---|---|---|
+| `gemma-3n-e2b-it` | f1 | yes | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+| `gemma-3n-e2b-it` | f3 | yes | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+| `gemma-3n-e4b-it` | f3 | **no** — model has 1 supported frame(s) | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+| `qwen3-4b` | f0 | yes | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+| `qwen3-4b` | f3 | yes | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+| `qwen3-4b-instruct-2507` | f1 | **no** — model has 1 supported frame(s) | 288 blocks × 8 draws × 4 cells = 9216 generations | 0.0061 – 0.0271 | 0.0161 – 0.0713 | 0.021 – 0.094 |
+
+**4 (model, frame) estimates would be generated**, from 2 of 4 models measured.
 
 The interval is the span across every scenario in section B, worst case included. The frames differ only through the `CALIBRATION_ANCHORED` row — every other scenario is a property of the allocation, which is the same for all of them.
 
@@ -54,6 +59,14 @@ The variance depends on composed-cell compliance, which does not exist before a 
 | `gemma-3n-e2b-it` | f3 | REHEARSAL_ANCHORED_OPTIMISTIC | — | 0.740 | — | 0.0061 | 0.0161 | 0.021 | yes |
 | `gemma-3n-e2b-it` | f3 | REHEARSAL_ANCHORED_PESSIMISTIC | — | 0.450 | — | 0.0158 | 0.0416 | 0.055 | yes |
 | `gemma-3n-e2b-it` | f3 | WORST_CASE | 0.370 | 0.000 | 0.2500 | 0.0271 | 0.0713 | 0.094 | **NO** |
+| `gemma-3n-e4b-it` | f3 | CALIBRATION_ANCHORED | 0.125 | 0.468 | 0.1572 | 0.0123 | 0.0325 | 0.043 | yes |
+| `gemma-3n-e4b-it` | f3 | CALIBRATION_ANCHORED_REGISTERED_RHO | 0.125 | 0.500 | 0.1572 | 0.0122 | 0.0320 | 0.042 | yes |
+| `gemma-3n-e4b-it` | f3 | REGISTERED_ALTERNATE | 0.370 | 0.500 | 0.2150 | 0.0188 | 0.0495 | 0.065 | yes |
+| `gemma-3n-e4b-it` | f3 | REGISTERED_PLANNING | 0.270 | 0.500 | 0.2150 | 0.0171 | 0.0450 | 0.059 | yes |
+| `gemma-3n-e4b-it` | f3 | REHEARSAL_ANCHORED | — | 0.600 | — | 0.0110 | 0.0288 | 0.038 | yes |
+| `gemma-3n-e4b-it` | f3 | REHEARSAL_ANCHORED_OPTIMISTIC | — | 0.740 | — | 0.0061 | 0.0161 | 0.021 | yes |
+| `gemma-3n-e4b-it` | f3 | REHEARSAL_ANCHORED_PESSIMISTIC | — | 0.450 | — | 0.0158 | 0.0416 | 0.055 | yes |
+| `gemma-3n-e4b-it` | f3 | WORST_CASE | 0.370 | 0.000 | 0.2500 | 0.0271 | 0.0713 | 0.094 | **NO** |
 | `qwen3-4b` | f0 | CALIBRATION_ANCHORED | 0.461 | 0.016 | 0.1888 | 0.0256 | 0.0673 | 0.089 | **NO** |
 | `qwen3-4b` | f0 | CALIBRATION_ANCHORED_REGISTERED_RHO | 0.461 | 0.500 | 0.1888 | 0.0190 | 0.0500 | 0.066 | yes |
 | `qwen3-4b` | f0 | REGISTERED_ALTERNATE | 0.370 | 0.500 | 0.2150 | 0.0188 | 0.0495 | 0.065 | yes |
@@ -70,8 +83,8 @@ The variance depends on composed-cell compliance, which does not exist before a 
 | `qwen3-4b` | f3 | REHEARSAL_ANCHORED_OPTIMISTIC | — | 0.740 | — | 0.0061 | 0.0161 | 0.021 | yes |
 | `qwen3-4b` | f3 | REHEARSAL_ANCHORED_PESSIMISTIC | — | 0.450 | — | 0.0158 | 0.0416 | 0.055 | yes |
 | `qwen3-4b` | f3 | WORST_CASE | 0.370 | 0.000 | 0.2500 | 0.0271 | 0.0713 | 0.094 | **NO** |
-| `qwen3-4b-instruct-2507` | f1 | CALIBRATION_ANCHORED | 0.334 | 0.008 | 0.1406 | 0.0194 | 0.0511 | 0.067 | **NO** |
-| `qwen3-4b-instruct-2507` | f1 | CALIBRATION_ANCHORED_REGISTERED_RHO | 0.334 | 0.500 | 0.1406 | 0.0147 | 0.0388 | 0.051 | yes |
+| `qwen3-4b-instruct-2507` | f1 | CALIBRATION_ANCHORED | 0.312 | 0.086 | 0.1415 | 0.0183 | 0.0483 | 0.064 | yes |
+| `qwen3-4b-instruct-2507` | f1 | CALIBRATION_ANCHORED_REGISTERED_RHO | 0.312 | 0.500 | 0.1415 | 0.0145 | 0.0381 | 0.050 | yes |
 | `qwen3-4b-instruct-2507` | f1 | REGISTERED_ALTERNATE | 0.370 | 0.500 | 0.2150 | 0.0188 | 0.0495 | 0.065 | yes |
 | `qwen3-4b-instruct-2507` | f1 | REGISTERED_PLANNING | 0.270 | 0.500 | 0.2150 | 0.0171 | 0.0450 | 0.059 | yes |
 | `qwen3-4b-instruct-2507` | f1 | REHEARSAL_ANCHORED | — | 0.600 | — | 0.0110 | 0.0288 | 0.038 | yes |

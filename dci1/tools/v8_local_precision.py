@@ -476,21 +476,40 @@ def render(latest: dict[str, Any]) -> str:
         "",
         "## A. Per LOCAL-supported (model, frame)",
         "",
-        "| model | frame | confirmatory allocation | expected SE | 95 % half-width (simultaneous) | ~80 % MDE |",
-        "|---|---|---|---|---|---|",
+        "A frame is listed here because it is `LOCAL_SUPPORTED`. Whether it is "
+        "actually *generated* is a separate question the inclusion rule "
+        "answers: a supported frame enters the LOCAL confirmatory design only "
+        "if its model is `LOCAL_ELIGIBLE`, i.e. has at least "
+        f"{S.LOCAL_ELIGIBILITY_MIN_FRAMES} supported frames. The last column "
+        "says which, so this table is not mistaken for the design.",
+        "",
+        "| model | frame | enters LOCAL? | confirmatory allocation | expected SE | 95 % half-width (simultaneous) | ~80 % MDE |",
+        "|---|---|---|---|---|---|---|",
     ]
     for model, entry in sorted(latest.items()):
+        eligible = entry["eligibility"]["local_eligible"]
         for w, fr in sorted(entry["by_frame"].items(), key=lambda kv: int(kv[0])):
             se_lo, se_hi = fr["se_range"]
             hw_lo, hw_hi = fr["half_width_simultaneous_range"]
             m_lo, m_hi = fr["mde_range"]
+            enters = ("yes" if eligible else
+                      f"**no** — model has "
+                      f"{entry['eligibility']['n_local_supported_frames']} "
+                      f"supported frame(s)")
             lines.append(
-                f"| `{model}` | f{w} | {fr['n_blocks_per_frame']} blocks × "
+                f"| `{model}` | f{w} | {enters} | "
+                f"{fr['n_blocks_per_frame']} blocks × "
                 f"{fr['m_draws']} draws × {fr['cells_read_by_delta_r']} cells "
                 f"= {fr['observations_entering_delta_r_per_configuration']} "
                 f"generations | {se_lo:.4f} – {se_hi:.4f} | "
                 f"{hw_lo:.4f} – {hw_hi:.4f} | {m_lo:.3f} – {m_hi:.3f} |")
+    n_entering = sum(len(e["by_frame"]) for e in latest.values()
+                     if e["eligibility"]["local_eligible"])
     lines += [
+        "",
+        f"**{n_entering} (model, frame) estimates would be generated**, from "
+        f"{sum(1 for e in latest.values() if e['eligibility']['local_eligible'])} "
+        f"of {len(latest)} models measured.",
         "",
         "The interval is the span across every scenario in section B, worst "
         "case included. The frames differ only through the "

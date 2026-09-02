@@ -98,17 +98,35 @@ def test_the_spectrum_selection_accepts_only_calibration_rows_with_no_composed_f
 
 
 def test_the_package_imports_no_composed_observation_module():
-    """The screen and the spectrum rules never import the modules that hold
-    composed outcomes (observations, estimators, claims, masking)."""
+    """The pre-freeze package never imports the modules that hold composed
+    outcomes (observations, estimators, claims, masking). The one place in
+    v8 that may is the post-freeze half of ``dci1v8dev.confirm`` ---
+    ``analysis.py`` (the registered estimators, called per frame after a
+    verified freeze) --- and nothing before the freeze, the confirm
+    layer's own pre-freeze stages included."""
     root = pathlib.Path(__file__).resolve().parents[1] / "src" / "dci1v8dev"
     banned = {"dci1v7.analysis.observations", "dci1v7.analysis.estimators",
               "dci1v7.analysis.claims", "dci1v7.analysis.masking",
               "dci1v7.run.analysis_run", "dci1v7.run.confirmatory_run"}
+    allowed = {root / "confirm" / "analysis.py"}
+    imported_by_allowed = set()
     for path in root.rglob("*.py"):
         tree = ast.parse(path.read_text())
         for node in ast.walk(tree):
-            if isinstance(node, ast.ImportFrom) and node.module in banned:
-                raise AssertionError(f"{path.name} imports {node.module}")
-            if isinstance(node, ast.Import):
-                for alias in node.names:
-                    assert alias.name not in banned, (path.name, alias.name)
+            # `from dci1v7.analysis import estimators` names the banned
+            # module through the alias, not through `node.module`; both
+            # spellings are resolved (the earlier form of this test read
+            # `node.module` alone and would have let that spelling through).
+            names = ([node.module] + [f"{node.module}.{a.name}" for a in node.names]
+                     if isinstance(node, ast.ImportFrom) else
+                     [a.name for a in node.names] if isinstance(node, ast.Import)
+                     else [])
+            for name in names:
+                if name in banned:
+                    if path in allowed:
+                        imported_by_allowed.add(name)
+                        continue
+                    raise AssertionError(f"{path.relative_to(root)} imports {name}")
+    # the post-freeze analysis does read them --- that is what it is for
+    assert {"dci1v7.analysis.observations",
+            "dci1v7.analysis.estimators"} <= imported_by_allowed

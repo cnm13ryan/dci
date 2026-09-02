@@ -8,7 +8,7 @@
 
 Stages walked: 9 / 9 (PILOT_REGISTERED, QUALIFIED, GATE_0_APPARATUS, REGIME_SCREEN, SECOND_PASS_SCREEN, GATE_1_INSTRUMENT, GATE_2_CALIBRATION, GATE_3_REFERENCES, PILOT_REPORT).
 
-Contract: 64 fields, 0 defects, 64 checked against payloads.
+Contract: 65 fields, 0 defects, 65 checked against payloads.
 
 ## Criteria on the synthetic walk
 
@@ -25,7 +25,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 
 | basis | rungs compared | τ median | spread median | sensitive | unresolved | consistent |
 |---|---:|---:|---:|---:|---:|---:|
-| calibration | 89 | 0.0 | 0.02604166666666663 | 0.0 | 0.0 | 1.0 |
+| calibration | 89 | 0.0 | 0.02083333333333337 | 0.0 | 0.0 | 1.0 |
 | screen | 129 | 0.0 | 0.33333333333333337 | 0.046511627906976744 | 0.6666666666666666 | 0.2868217054263566 |
 
 ## Generations
@@ -36,12 +36,12 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | cap_selection | 216 |
 | screen | 3960 |
 | second_pass | 3648 |
-| calibration_passes | 2 |
-| calibration_blocks_per_run | 192 |
-| calibration_grids | 13824 |
-| calibration_candidates | 56064 |
+| calibration_passes | 4 |
+| calibration_blocks_per_run | 384 |
+| calibration_grids | 27648 |
+| calibration_candidates | 112128 |
 | calibration_extension | 0 |
-| total | 77952 |
+| total | 147840 |
 
 ## Producer / consumer matrix
 
@@ -105,6 +105,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | GATE_3_REFERENCES | `supported_frames` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `by_frame` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `frame_states` | PILOT_REPORT | yes | PRESENT |
+| GATE_3_REFERENCES | `local_eligibility` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `cross_frame` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `estimands` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `calibration_allocation` | — | yes | PRESENT |

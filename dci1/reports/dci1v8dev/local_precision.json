@@ -1,5 +1,619 @@
 {
  "by_root": {
+  "dci1v8-pilot-r10": {
+   "qwen3-4b-instruct-2507": {
+    "by_frame": {
+     "1": {
+      "cells_read_by_delta_r": 4,
+      "core_references": [
+       {
+        "family": "MK5",
+        "iota": 0.64453125,
+        "severity": 10
+       },
+       {
+        "family": "MK2",
+        "iota": 0.6354166666666666,
+        "severity": 8
+       },
+       {
+        "family": "MK8",
+        "iota": 0.6158854166666666,
+        "severity": 8
+       }
+      ],
+      "effective_independent_units": 288,
+      "frame": 1,
+      "half_width_simultaneous_range": [
+       0.01609885866463526,
+       0.07125728687287107
+      ],
+      "iota_a": 0.6419270833333334,
+      "label": "PROJECTION_NOT_REGISTERED_FOR_INFERENCE",
+      "m_draws": 8,
+      "m_star": 10,
+      "mde_range": [
+       0.021248590376286045,
+       0.0940511952821375
+      ],
+      "meets_precondition_in_any_scenario": true,
+      "meets_precondition_in_every_scenario": false,
+      "n_blocks_per_frame": 288,
+      "n_blocks_registered_total": 384,
+      "n_references": 3,
+      "n_star": 6,
+      "observations_entering_delta_r_per_configuration": 9216,
+      "observations_per_cell_per_frame": 2304,
+      "required_allocation": {
+       "blocks_per_frame_at_ceiling": 384,
+       "blocks_per_frame_at_one_pass": 96,
+       "blocks_per_frame_now": 288,
+       "by_scenario": {
+        "CALIBRATION_ANCHORED": {
+         "blocks_for_precondition": 269,
+         "blocks_for_sesoi_mde": 117,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 2
+        },
+        "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+         "blocks_for_precondition": 168,
+         "blocks_for_sesoi_mde": 73,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 2,
+         "passes_for_sesoi_mde": 1
+        },
+        "REGISTERED_ALTERNATE": {
+         "blocks_for_precondition": 283,
+         "blocks_for_sesoi_mde": 124,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 2
+        },
+        "REGISTERED_PLANNING": {
+         "blocks_for_precondition": 234,
+         "blocks_for_sesoi_mde": 102,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 2
+        },
+        "REHEARSAL_ANCHORED": {
+         "blocks_for_precondition": 96,
+         "blocks_for_sesoi_mde": 42,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 1,
+         "passes_for_sesoi_mde": 1
+        },
+        "REHEARSAL_ANCHORED_OPTIMISTIC": {
+         "blocks_for_precondition": 30,
+         "blocks_for_sesoi_mde": 14,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 1,
+         "passes_for_sesoi_mde": 1
+        },
+        "REHEARSAL_ANCHORED_PESSIMISTIC": {
+         "blocks_for_precondition": 200,
+         "blocks_for_sesoi_mde": 87,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 1
+        },
+        "WORST_CASE": {
+         "blocks_for_precondition": 585,
+         "blocks_for_sesoi_mde": 255,
+         "feasible_within_topic_bank": false,
+         "passes_for_precondition": 7,
+         "passes_for_sesoi_mde": 3
+        }
+       },
+       "confirmatory_topics_available": 384,
+       "max_passes": 4,
+       "passes_needed_excluding_worst_case": 3,
+       "passes_needed_worst_case": 7,
+       "reachable_within_topic_bank": true,
+       "reachable_worst_case": false,
+       "rule": "blocks scale as (realised half-width / target)^2; a pass renders the confirmatory topics under one frame offset, so 4 passes is the ceiling and gives every frame all 384 confirmatory topics",
+       "targets": {
+        "precondition": 0.05,
+        "sesoi": 0.1
+       }
+      },
+      "scenarios": {
+       "CALIBRATION_ANCHORED": {
+        "anchor": {
+         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+         "cells": [
+          "A",
+          "MK2:8",
+          "MK5:10",
+          "MK8:8"
+         ],
+         "n_topics": 192,
+         "p_one_minus_p": 0.14147779676649302,
+         "phi": 0.3122190197502072,
+         "rho": 0.0861638322528109,
+         "rho_raw": 0.0861638322528109,
+         "sigma2_draw_solo": 0.15983072916666666,
+         "sigma2_topic_solo": 0.07255535558464224,
+         "solo_compliance_b": 0.8294270833333334
+        },
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.03596044206894449,
+        "half_width_simultaneous": 0.04827297876826185,
+        "m_draws": 8,
+        "mde_80": 0.06371462558045811,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.14147779676649302,
+        "phi": 0.3122190197502072,
+        "precondition": 0.05,
+        "rho": 0.0861638322528109,
+        "se_delta_r": 0.01834750146053493,
+        "sigma2_draw": 0.09730573774363953,
+        "sigma2_topic": 0.04417205902285349,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+        "anchor": {
+         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+         "cells": [
+          "A",
+          "MK2:8",
+          "MK5:10",
+          "MK8:8"
+         ],
+         "n_topics": 192,
+         "p_one_minus_p": 0.14147779676649302,
+         "phi": 0.3122190197502072,
+         "rho": 0.5,
+         "rho_note": "the frame's own phi and p(1-p) with \u00a716.1's registered rho; the anchored rho measures cross-constraint solo cells and is a floor for the same-outcome composed cells Delta_R actually reads",
+         "rho_raw": 0.0861638322528109,
+         "sigma2_draw_solo": 0.15983072916666666,
+         "sigma2_topic_solo": 0.07255535558464224,
+         "solo_compliance_b": 0.8294270833333334
+        },
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.02838136104186056,
+        "half_width_simultaneous": 0.03809888755987484,
+        "m_draws": 8,
+        "mde_80": 0.05028602787415687,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.14147779676649302,
+        "phi": 0.3122190197502072,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.014480552329394379,
+        "sigma2_draw": 0.09730573774363953,
+        "sigma2_topic": 0.04417205902285349,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REGISTERED_ALTERNATE": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.03690777649084096,
+        "half_width_simultaneous": 0.04954467210136871,
+        "m_draws": 8,
+        "mde_80": 0.06539311045210933,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.215,
+        "phi": 0.37,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.018830844230794445,
+        "sigma2_draw": 0.13545,
+        "sigma2_topic": 0.07955,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REGISTERED_PLANNING": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.03351424059154661,
+        "half_width_simultaneous": 0.044989219582128336,
+        "m_draws": 8,
+        "mde_80": 0.059380451630984626,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.215,
+        "phi": 0.27,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.01709941654841756,
+        "sigma2_draw": 0.15695,
+        "sigma2_topic": 0.058050000000000004,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REHEARSAL_ANCHORED": {
+        "block_corr": 0.6,
+        "half_width_95_marginal": 0.021486227786558124,
+        "half_width_simultaneous": 0.028842921779493078,
+        "mde_80": 0.03806924720036314,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.015011106998930268,
+        "se_delta_r": 0.010962562555250379,
+        "se_point_at_384": 0.013,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "REHEARSAL_ANCHORED_OPTIMISTIC": {
+        "block_corr": 0.74,
+        "half_width_95_marginal": 0.01199267352373056,
+        "half_width_simultaneous": 0.01609885866463526,
+        "mde_80": 0.021248590376286045,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.010392304845413262,
+        "se_delta_r": 0.006118823416311341,
+        "se_point_at_384": 0.009,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "REHEARSAL_ANCHORED_PESSIMISTIC": {
+        "block_corr": 0.45,
+        "half_width_95_marginal": 0.031009028132070262,
+        "half_width_simultaneous": 0.04162624457658118,
+        "mde_80": 0.054941722164060715,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.018475208614068026,
+        "se_delta_r": 0.015821223439137416,
+        "se_point_at_384": 0.016,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "WORST_CASE": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.05308235791462645,
+        "half_width_simultaneous": 0.07125728687287107,
+        "m_draws": 8,
+        "mde_80": 0.0940511952821375,
+        "meets_precondition": false,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.25,
+        "phi": 0.37,
+        "precondition": 0.05,
+        "rho": 0.0,
+        "se_delta_r": 0.02708333333333333,
+        "sigma2_draw": 0.1575,
+        "sigma2_topic": 0.0925,
+        "simultaneous_critical_value": 2.6310382845367783
+       }
+      },
+      "se_range": [
+       0.006118823416311341,
+       0.02708333333333333
+      ],
+      "units_note": "the block (one topic) is the independent unit: the bootstrap resamples blocks and carries every cell mean of a drawn block, so 8 draws inside a cell reduce the draw component and never the topic component"
+     }
+    },
+    "eligibility": {
+     "local_eligibility_min_frames": 2,
+     "local_eligible": false,
+     "local_supported_frames": [
+      1
+     ],
+     "n_local_supported_frames": 1
+    },
+    "model": "qwen3-4b-instruct-2507",
+    "recorded_at": "2026-08-31T21:19:48+00:00",
+    "root": "dci1v8-pilot-r10"
+   }
+  },
+  "dci1v8-pilot-r11": {
+   "gemma-3n-e4b-it": {
+    "by_frame": {
+     "3": {
+      "cells_read_by_delta_r": 4,
+      "core_references": [
+       {
+        "family": "MK2",
+        "iota": 0.6901041666666666,
+        "severity": 8
+       },
+       {
+        "family": "MK4",
+        "iota": 0.6901041666666666,
+        "severity": 8
+       },
+       {
+        "family": "MK5",
+        "iota": 0.6588541666666666,
+        "severity": 7
+       }
+      ],
+      "effective_independent_units": 288,
+      "frame": 3,
+      "half_width_simultaneous_range": [
+       0.01609885866463526,
+       0.07125728687287107
+      ],
+      "iota_a": 0.6822916666666666,
+      "label": "PROJECTION_NOT_REGISTERED_FOR_INFERENCE",
+      "m_draws": 8,
+      "m_star": 10,
+      "mde_range": [
+       0.021248590376286045,
+       0.0940511952821375
+      ],
+      "meets_precondition_in_any_scenario": true,
+      "meets_precondition_in_every_scenario": false,
+      "n_blocks_per_frame": 288,
+      "n_blocks_registered_total": 384,
+      "n_references": 3,
+      "n_star": 8,
+      "observations_entering_delta_r_per_configuration": 9216,
+      "observations_per_cell_per_frame": 2304,
+      "required_allocation": {
+       "blocks_per_frame_at_ceiling": 384,
+       "blocks_per_frame_at_one_pass": 96,
+       "blocks_per_frame_now": 288,
+       "by_scenario": {
+        "CALIBRATION_ANCHORED": {
+         "blocks_for_precondition": 122,
+         "blocks_for_sesoi_mde": 53,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 2,
+         "passes_for_sesoi_mde": 1
+        },
+        "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+         "blocks_for_precondition": 118,
+         "blocks_for_sesoi_mde": 52,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 2,
+         "passes_for_sesoi_mde": 1
+        },
+        "REGISTERED_ALTERNATE": {
+         "blocks_for_precondition": 283,
+         "blocks_for_sesoi_mde": 124,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 2
+        },
+        "REGISTERED_PLANNING": {
+         "blocks_for_precondition": 234,
+         "blocks_for_sesoi_mde": 102,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 2
+        },
+        "REHEARSAL_ANCHORED": {
+         "blocks_for_precondition": 96,
+         "blocks_for_sesoi_mde": 42,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 1,
+         "passes_for_sesoi_mde": 1
+        },
+        "REHEARSAL_ANCHORED_OPTIMISTIC": {
+         "blocks_for_precondition": 30,
+         "blocks_for_sesoi_mde": 14,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 1,
+         "passes_for_sesoi_mde": 1
+        },
+        "REHEARSAL_ANCHORED_PESSIMISTIC": {
+         "blocks_for_precondition": 200,
+         "blocks_for_sesoi_mde": 87,
+         "feasible_within_topic_bank": true,
+         "passes_for_precondition": 3,
+         "passes_for_sesoi_mde": 1
+        },
+        "WORST_CASE": {
+         "blocks_for_precondition": 585,
+         "blocks_for_sesoi_mde": 255,
+         "feasible_within_topic_bank": false,
+         "passes_for_precondition": 7,
+         "passes_for_sesoi_mde": 3
+        }
+       },
+       "confirmatory_topics_available": 384,
+       "max_passes": 4,
+       "passes_needed_excluding_worst_case": 3,
+       "passes_needed_worst_case": 7,
+       "reachable_within_topic_bank": true,
+       "reachable_worst_case": false,
+       "rule": "blocks scale as (realised half-width / target)^2; a pass renders the confirmatory topics under one frame offset, so 4 passes is the ceiling and gives every frame all 384 confirmatory topics",
+       "targets": {
+        "precondition": 0.05,
+        "sesoi": 0.1
+       }
+      },
+      "scenarios": {
+       "CALIBRATION_ANCHORED": {
+        "anchor": {
+         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+         "cells": [
+          "A",
+          "MK2:8",
+          "MK4:8",
+          "MK5:7"
+         ],
+         "n_topics": 96,
+         "p_one_minus_p": 0.15716552734375,
+         "phi": 0.12535939292054865,
+         "rho": 0.46835443037974683,
+         "rho_raw": 0.46835443037974683,
+         "sigma2_draw_solo": 0.19075520833333334,
+         "sigma2_topic_solo": 0.027340323464912282,
+         "solo_compliance_b": 0.8046875
+        },
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.024187150656891313,
+        "half_width_simultaneous": 0.03246861670627777,
+        "m_draws": 8,
+        "mde_80": 0.042854735906954745,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.15716552734375,
+        "phi": 0.12535939292054865,
+        "precondition": 0.05,
+        "rho": 0.46835443037974683,
+        "se_delta_r": 0.012340609749809935,
+        "sigma2_draw": 0.1374633522478996,
+        "sigma2_topic": 0.01970217509585039,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+        "anchor": {
+         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+         "cells": [
+          "A",
+          "MK2:8",
+          "MK4:8",
+          "MK5:7"
+         ],
+         "n_topics": 96,
+         "p_one_minus_p": 0.15716552734375,
+         "phi": 0.12535939292054865,
+         "rho": 0.5,
+         "rho_note": "the frame's own phi and p(1-p) with \u00a716.1's registered rho; the anchored rho measures cross-constraint solo cells and is a floor for the same-outcome composed cells Delta_R actually reads",
+         "rho_raw": 0.46835443037974683,
+         "sigma2_draw_solo": 0.19075520833333334,
+         "sigma2_topic_solo": 0.027340323464912282,
+         "solo_compliance_b": 0.8046875
+        },
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.023840839591898248,
+        "half_width_simultaneous": 0.0320037318014823,
+        "m_draws": 8,
+        "mde_80": 0.04224114278710101,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.15716552734375,
+        "phi": 0.12535939292054865,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.012163917184168564,
+        "sigma2_draw": 0.1374633522478996,
+        "sigma2_topic": 0.01970217509585039,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REGISTERED_ALTERNATE": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.03690777649084096,
+        "half_width_simultaneous": 0.04954467210136871,
+        "m_draws": 8,
+        "mde_80": 0.06539311045210933,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.215,
+        "phi": 0.37,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.018830844230794445,
+        "sigma2_draw": 0.13545,
+        "sigma2_topic": 0.07955,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REGISTERED_PLANNING": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.03351424059154661,
+        "half_width_simultaneous": 0.044989219582128336,
+        "m_draws": 8,
+        "mde_80": 0.059380451630984626,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.215,
+        "phi": 0.27,
+        "precondition": 0.05,
+        "rho": 0.5,
+        "se_delta_r": 0.01709941654841756,
+        "sigma2_draw": 0.15695,
+        "sigma2_topic": 0.058050000000000004,
+        "simultaneous_critical_value": 2.6310382845367783
+       },
+       "REHEARSAL_ANCHORED": {
+        "block_corr": 0.6,
+        "half_width_95_marginal": 0.021486227786558124,
+        "half_width_simultaneous": 0.028842921779493078,
+        "mde_80": 0.03806924720036314,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.015011106998930268,
+        "se_delta_r": 0.010962562555250379,
+        "se_point_at_384": 0.013,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "REHEARSAL_ANCHORED_OPTIMISTIC": {
+        "block_corr": 0.74,
+        "half_width_95_marginal": 0.01199267352373056,
+        "half_width_simultaneous": 0.01609885866463526,
+        "mde_80": 0.021248590376286045,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.010392304845413262,
+        "se_delta_r": 0.006118823416311341,
+        "se_point_at_384": 0.009,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "REHEARSAL_ANCHORED_PESSIMISTIC": {
+        "block_corr": 0.45,
+        "half_width_95_marginal": 0.031009028132070262,
+        "half_width_simultaneous": 0.04162624457658118,
+        "mde_80": 0.054941722164060715,
+        "meets_precondition": true,
+        "n_blocks": 288,
+        "precondition": 0.05,
+        "se_d_at_n_blocks": 0.018475208614068026,
+        "se_delta_r": 0.015821223439137416,
+        "se_point_at_384": 0.016,
+        "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+        "sum_w_squared": 1.3333333333333333
+       },
+       "WORST_CASE": {
+        "family": "F1",
+        "family_size": 6,
+        "half_width_95_marginal": 0.05308235791462645,
+        "half_width_simultaneous": 0.07125728687287107,
+        "m_draws": 8,
+        "mde_80": 0.0940511952821375,
+        "meets_precondition": false,
+        "n_blocks": 288,
+        "p_one_minus_p": 0.25,
+        "phi": 0.37,
+        "precondition": 0.05,
+        "rho": 0.0,
+        "se_delta_r": 0.02708333333333333,
+        "sigma2_draw": 0.1575,
+        "sigma2_topic": 0.0925,
+        "simultaneous_critical_value": 2.6310382845367783
+       }
+      },
+      "se_range": [
+       0.006118823416311341,
+       0.02708333333333333
+      ],
+      "units_note": "the block (one topic) is the independent unit: the bootstrap resamples blocks and carries every cell mean of a drawn block, so 8 draws inside a cell reduce the draw component and never the topic component"
+     }
+    },
+    "eligibility": {
+     "local_eligibility_min_frames": 2,
+     "local_eligible": false,
+     "local_supported_frames": [
+      3
+     ],
+     "n_local_supported_frames": 1
+    },
+    "model": "gemma-3n-e4b-it",
+    "recorded_at": "2026-09-01T00:50:24+00:00",
+    "root": "dci1v8-pilot-r11"
+   }
+  },
   "dci1v8-pilot-r8": {
    "gemma-3n-e2b-it": {
     "by_frame": {
@@ -2114,6 +2728,311 @@
    "recorded_at": "2026-08-30T20:02:03+00:00",
    "root": "dci1v8-pilot-r8"
   },
+  "gemma-3n-e4b-it": {
+   "by_frame": {
+    "3": {
+     "cells_read_by_delta_r": 4,
+     "core_references": [
+      {
+       "family": "MK2",
+       "iota": 0.6901041666666666,
+       "severity": 8
+      },
+      {
+       "family": "MK4",
+       "iota": 0.6901041666666666,
+       "severity": 8
+      },
+      {
+       "family": "MK5",
+       "iota": 0.6588541666666666,
+       "severity": 7
+      }
+     ],
+     "effective_independent_units": 288,
+     "frame": 3,
+     "half_width_simultaneous_range": [
+      0.01609885866463526,
+      0.07125728687287107
+     ],
+     "iota_a": 0.6822916666666666,
+     "label": "PROJECTION_NOT_REGISTERED_FOR_INFERENCE",
+     "m_draws": 8,
+     "m_star": 10,
+     "mde_range": [
+      0.021248590376286045,
+      0.0940511952821375
+     ],
+     "meets_precondition_in_any_scenario": true,
+     "meets_precondition_in_every_scenario": false,
+     "n_blocks_per_frame": 288,
+     "n_blocks_registered_total": 384,
+     "n_references": 3,
+     "n_star": 8,
+     "observations_entering_delta_r_per_configuration": 9216,
+     "observations_per_cell_per_frame": 2304,
+     "required_allocation": {
+      "blocks_per_frame_at_ceiling": 384,
+      "blocks_per_frame_at_one_pass": 96,
+      "blocks_per_frame_now": 288,
+      "by_scenario": {
+       "CALIBRATION_ANCHORED": {
+        "blocks_for_precondition": 122,
+        "blocks_for_sesoi_mde": 53,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 2,
+        "passes_for_sesoi_mde": 1
+       },
+       "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+        "blocks_for_precondition": 118,
+        "blocks_for_sesoi_mde": 52,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 2,
+        "passes_for_sesoi_mde": 1
+       },
+       "REGISTERED_ALTERNATE": {
+        "blocks_for_precondition": 283,
+        "blocks_for_sesoi_mde": 124,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 3,
+        "passes_for_sesoi_mde": 2
+       },
+       "REGISTERED_PLANNING": {
+        "blocks_for_precondition": 234,
+        "blocks_for_sesoi_mde": 102,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 3,
+        "passes_for_sesoi_mde": 2
+       },
+       "REHEARSAL_ANCHORED": {
+        "blocks_for_precondition": 96,
+        "blocks_for_sesoi_mde": 42,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 1,
+        "passes_for_sesoi_mde": 1
+       },
+       "REHEARSAL_ANCHORED_OPTIMISTIC": {
+        "blocks_for_precondition": 30,
+        "blocks_for_sesoi_mde": 14,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 1,
+        "passes_for_sesoi_mde": 1
+       },
+       "REHEARSAL_ANCHORED_PESSIMISTIC": {
+        "blocks_for_precondition": 200,
+        "blocks_for_sesoi_mde": 87,
+        "feasible_within_topic_bank": true,
+        "passes_for_precondition": 3,
+        "passes_for_sesoi_mde": 1
+       },
+       "WORST_CASE": {
+        "blocks_for_precondition": 585,
+        "blocks_for_sesoi_mde": 255,
+        "feasible_within_topic_bank": false,
+        "passes_for_precondition": 7,
+        "passes_for_sesoi_mde": 3
+       }
+      },
+      "confirmatory_topics_available": 384,
+      "max_passes": 4,
+      "passes_needed_excluding_worst_case": 3,
+      "passes_needed_worst_case": 7,
+      "reachable_within_topic_bank": true,
+      "reachable_worst_case": false,
+      "rule": "blocks scale as (realised half-width / target)^2; a pass renders the confirmatory topics under one frame offset, so 4 passes is the ceiling and gives every frame all 384 confirmatory topics",
+      "targets": {
+       "precondition": 0.05,
+       "sesoi": 0.1
+      }
+     },
+     "scenarios": {
+      "CALIBRATION_ANCHORED": {
+       "anchor": {
+        "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+        "cells": [
+         "A",
+         "MK2:8",
+         "MK4:8",
+         "MK5:7"
+        ],
+        "n_topics": 96,
+        "p_one_minus_p": 0.15716552734375,
+        "phi": 0.12535939292054865,
+        "rho": 0.46835443037974683,
+        "rho_raw": 0.46835443037974683,
+        "sigma2_draw_solo": 0.19075520833333334,
+        "sigma2_topic_solo": 0.027340323464912282,
+        "solo_compliance_b": 0.8046875
+       },
+       "family": "F1",
+       "family_size": 6,
+       "half_width_95_marginal": 0.024187150656891313,
+       "half_width_simultaneous": 0.03246861670627777,
+       "m_draws": 8,
+       "mde_80": 0.042854735906954745,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "p_one_minus_p": 0.15716552734375,
+       "phi": 0.12535939292054865,
+       "precondition": 0.05,
+       "rho": 0.46835443037974683,
+       "se_delta_r": 0.012340609749809935,
+       "sigma2_draw": 0.1374633522478996,
+       "sigma2_topic": 0.01970217509585039,
+       "simultaneous_critical_value": 2.6310382845367783
+      },
+      "CALIBRATION_ANCHORED_REGISTERED_RHO": {
+       "anchor": {
+        "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
+        "cells": [
+         "A",
+         "MK2:8",
+         "MK4:8",
+         "MK5:7"
+        ],
+        "n_topics": 96,
+        "p_one_minus_p": 0.15716552734375,
+        "phi": 0.12535939292054865,
+        "rho": 0.5,
+        "rho_note": "the frame's own phi and p(1-p) with \u00a716.1's registered rho; the anchored rho measures cross-constraint solo cells and is a floor for the same-outcome composed cells Delta_R actually reads",
+        "rho_raw": 0.46835443037974683,
+        "sigma2_draw_solo": 0.19075520833333334,
+        "sigma2_topic_solo": 0.027340323464912282,
+        "solo_compliance_b": 0.8046875
+       },
+       "family": "F1",
+       "family_size": 6,
+       "half_width_95_marginal": 0.023840839591898248,
+       "half_width_simultaneous": 0.0320037318014823,
+       "m_draws": 8,
+       "mde_80": 0.04224114278710101,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "p_one_minus_p": 0.15716552734375,
+       "phi": 0.12535939292054865,
+       "precondition": 0.05,
+       "rho": 0.5,
+       "se_delta_r": 0.012163917184168564,
+       "sigma2_draw": 0.1374633522478996,
+       "sigma2_topic": 0.01970217509585039,
+       "simultaneous_critical_value": 2.6310382845367783
+      },
+      "REGISTERED_ALTERNATE": {
+       "family": "F1",
+       "family_size": 6,
+       "half_width_95_marginal": 0.03690777649084096,
+       "half_width_simultaneous": 0.04954467210136871,
+       "m_draws": 8,
+       "mde_80": 0.06539311045210933,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "p_one_minus_p": 0.215,
+       "phi": 0.37,
+       "precondition": 0.05,
+       "rho": 0.5,
+       "se_delta_r": 0.018830844230794445,
+       "sigma2_draw": 0.13545,
+       "sigma2_topic": 0.07955,
+       "simultaneous_critical_value": 2.6310382845367783
+      },
+      "REGISTERED_PLANNING": {
+       "family": "F1",
+       "family_size": 6,
+       "half_width_95_marginal": 0.03351424059154661,
+       "half_width_simultaneous": 0.044989219582128336,
+       "m_draws": 8,
+       "mde_80": 0.059380451630984626,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "p_one_minus_p": 0.215,
+       "phi": 0.27,
+       "precondition": 0.05,
+       "rho": 0.5,
+       "se_delta_r": 0.01709941654841756,
+       "sigma2_draw": 0.15695,
+       "sigma2_topic": 0.058050000000000004,
+       "simultaneous_critical_value": 2.6310382845367783
+      },
+      "REHEARSAL_ANCHORED": {
+       "block_corr": 0.6,
+       "half_width_95_marginal": 0.021486227786558124,
+       "half_width_simultaneous": 0.028842921779493078,
+       "mde_80": 0.03806924720036314,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "precondition": 0.05,
+       "se_d_at_n_blocks": 0.015011106998930268,
+       "se_delta_r": 0.010962562555250379,
+       "se_point_at_384": 0.013,
+       "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+       "sum_w_squared": 1.3333333333333333
+      },
+      "REHEARSAL_ANCHORED_OPTIMISTIC": {
+       "block_corr": 0.74,
+       "half_width_95_marginal": 0.01199267352373056,
+       "half_width_simultaneous": 0.01609885866463526,
+       "mde_80": 0.021248590376286045,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "precondition": 0.05,
+       "se_d_at_n_blocks": 0.010392304845413262,
+       "se_delta_r": 0.006118823416311341,
+       "se_point_at_384": 0.009,
+       "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+       "sum_w_squared": 1.3333333333333333
+      },
+      "REHEARSAL_ANCHORED_PESSIMISTIC": {
+       "block_corr": 0.45,
+       "half_width_95_marginal": 0.031009028132070262,
+       "half_width_simultaneous": 0.04162624457658118,
+       "mde_80": 0.054941722164060715,
+       "meets_precondition": true,
+       "n_blocks": 288,
+       "precondition": 0.05,
+       "se_d_at_n_blocks": 0.018475208614068026,
+       "se_delta_r": 0.015821223439137416,
+       "se_point_at_384": 0.016,
+       "source": "dci1v7-development/qwen3-4b CONFIRMATORY_GENERATION (384 blocks x 8 draws), read-only, 2026-08-29; SE range across the four completed rehearsals",
+       "sum_w_squared": 1.3333333333333333
+      },
+      "WORST_CASE": {
+       "family": "F1",
+       "family_size": 6,
+       "half_width_95_marginal": 0.05308235791462645,
+       "half_width_simultaneous": 0.07125728687287107,
+       "m_draws": 8,
+       "mde_80": 0.0940511952821375,
+       "meets_precondition": false,
+       "n_blocks": 288,
+       "p_one_minus_p": 0.25,
+       "phi": 0.37,
+       "precondition": 0.05,
+       "rho": 0.0,
+       "se_delta_r": 0.02708333333333333,
+       "sigma2_draw": 0.1575,
+       "sigma2_topic": 0.0925,
+       "simultaneous_critical_value": 2.6310382845367783
+      }
+     },
+     "se_range": [
+      0.006118823416311341,
+      0.02708333333333333
+     ],
+     "units_note": "the block (one topic) is the independent unit: the bootstrap resamples blocks and carries every cell mean of a drawn block, so 8 draws inside a cell reduce the draw component and never the topic component"
+    }
+   },
+   "eligibility": {
+    "local_eligibility_min_frames": 2,
+    "local_eligible": false,
+    "local_supported_frames": [
+     3
+    ],
+    "n_local_supported_frames": 1
+   },
+   "model": "gemma-3n-e4b-it",
+   "recorded_at": "2026-09-01T00:50:24+00:00",
+   "root": "dci1v8-pilot-r11"
+  },
   "qwen3-4b": {
    "by_frame": {
     "0": {
@@ -2717,18 +3636,18 @@
      "core_references": [
       {
        "family": "MK5",
-       "iota": 0.6588541666666666,
-       "severity": 10
-      },
-      {
-       "family": "MK8",
-       "iota": 0.6328125,
+       "iota": 0.64453125,
        "severity": 10
       },
       {
        "family": "MK2",
-       "iota": 0.6276041666666666,
-       "severity": 9
+       "iota": 0.6354166666666666,
+       "severity": 8
+      },
+      {
+       "family": "MK8",
+       "iota": 0.6158854166666666,
+       "severity": 8
       }
      ],
      "effective_independent_units": 288,
@@ -2737,7 +3656,7 @@
       0.01609885866463526,
       0.07125728687287107
      ],
-     "iota_a": 0.65625,
+     "iota_a": 0.6419270833333334,
      "label": "PROJECTION_NOT_REGISTERED_FOR_INFERENCE",
      "m_draws": 8,
      "m_star": 10,
@@ -2750,7 +3669,7 @@
      "n_blocks_per_frame": 288,
      "n_blocks_registered_total": 384,
      "n_references": 3,
-     "n_star": 5,
+     "n_star": 6,
      "observations_entering_delta_r_per_configuration": 9216,
      "observations_per_cell_per_frame": 2304,
      "required_allocation": {
@@ -2759,15 +3678,15 @@
       "blocks_per_frame_now": 288,
       "by_scenario": {
        "CALIBRATION_ANCHORED": {
-        "blocks_for_precondition": 302,
-        "blocks_for_sesoi_mde": 132,
+        "blocks_for_precondition": 269,
+        "blocks_for_sesoi_mde": 117,
         "feasible_within_topic_bank": true,
-        "passes_for_precondition": 4,
+        "passes_for_precondition": 3,
         "passes_for_sesoi_mde": 2
        },
        "CALIBRATION_ANCHORED_REGISTERED_RHO": {
-        "blocks_for_precondition": 174,
-        "blocks_for_sesoi_mde": 76,
+        "blocks_for_precondition": 168,
+        "blocks_for_sesoi_mde": 73,
         "feasible_within_topic_bank": true,
         "passes_for_precondition": 2,
         "passes_for_sesoi_mde": 1
@@ -2817,7 +3736,7 @@
       },
       "confirmatory_topics_available": 384,
       "max_passes": 4,
-      "passes_needed_excluding_worst_case": 4,
+      "passes_needed_excluding_worst_case": 3,
       "passes_needed_worst_case": 7,
       "reachable_within_topic_bank": true,
       "reachable_worst_case": false,
@@ -2833,34 +3752,34 @@
         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
         "cells": [
          "A",
-         "MK2:9",
+         "MK2:8",
          "MK5:10",
-         "MK8:10"
+         "MK8:8"
         ],
-        "n_topics": 96,
-        "p_one_minus_p": 0.14061821831597224,
-        "phi": 0.3338094317071598,
-        "rho": 0.00827526779479711,
-        "rho_raw": 0.00827526779479711,
-        "sigma2_draw_solo": 0.15342881944444445,
-        "sigma2_topic_solo": 0.07687888340643276,
-        "solo_compliance_b": 0.8307291666666666
+        "n_topics": 192,
+        "p_one_minus_p": 0.14147779676649302,
+        "phi": 0.3122190197502072,
+        "rho": 0.0861638322528109,
+        "rho_raw": 0.0861638322528109,
+        "sigma2_draw_solo": 0.15983072916666666,
+        "sigma2_topic_solo": 0.07255535558464224,
+        "solo_compliance_b": 0.8294270833333334
        },
        "family": "F1",
        "family_size": 6,
-       "half_width_95_marginal": 0.038080071387271784,
-       "half_width_simultaneous": 0.05111835038199302,
+       "half_width_95_marginal": 0.03596044206894449,
+       "half_width_simultaneous": 0.04827297876826185,
        "m_draws": 8,
-       "mde_80": 0.06747017975656251,
-       "meets_precondition": false,
+       "mde_80": 0.06371462558045811,
+       "meets_precondition": true,
        "n_blocks": 288,
-       "p_one_minus_p": 0.14061821831597224,
-       "phi": 0.3338094317071598,
+       "p_one_minus_p": 0.14147779676649302,
+       "phi": 0.3122190197502072,
        "precondition": 0.05,
-       "rho": 0.00827526779479711,
-       "se_delta_r": 0.019428964862437545,
-       "sigma2_draw": 0.09367853077224421,
-       "sigma2_topic": 0.04693968754372802,
+       "rho": 0.0861638322528109,
+       "se_delta_r": 0.01834750146053493,
+       "sigma2_draw": 0.09730573774363953,
+       "sigma2_topic": 0.04417205902285349,
        "simultaneous_critical_value": 2.6310382845367783
       },
       "CALIBRATION_ANCHORED_REGISTERED_RHO": {
@@ -2868,35 +3787,35 @@
         "basis": "solo cells of this frame (A at n*(f) and the three core references at their selected severities); p(1-p) at B's solo compliance at m*(f). An analogue of the composed cells, not a measurement of them.",
         "cells": [
          "A",
-         "MK2:9",
+         "MK2:8",
          "MK5:10",
-         "MK8:10"
+         "MK8:8"
         ],
-        "n_topics": 96,
-        "p_one_minus_p": 0.14061821831597224,
-        "phi": 0.3338094317071598,
+        "n_topics": 192,
+        "p_one_minus_p": 0.14147779676649302,
+        "phi": 0.3122190197502072,
         "rho": 0.5,
         "rho_note": "the frame's own phi and p(1-p) with \u00a716.1's registered rho; the anchored rho measures cross-constraint solo cells and is a floor for the same-outcome composed cells Delta_R actually reads",
-        "rho_raw": 0.00827526779479711,
-        "sigma2_draw_solo": 0.15342881944444445,
-        "sigma2_topic_solo": 0.07687888340643276,
-        "solo_compliance_b": 0.8307291666666666
+        "rho_raw": 0.0861638322528109,
+        "sigma2_draw_solo": 0.15983072916666666,
+        "sigma2_topic_solo": 0.07255535558464224,
+        "solo_compliance_b": 0.8294270833333334
        },
        "family": "F1",
        "family_size": 6,
-       "half_width_95_marginal": 0.028885184179630815,
-       "half_width_simultaneous": 0.03877521527536603,
+       "half_width_95_marginal": 0.02838136104186056,
+       "half_width_simultaneous": 0.03809888755987484,
        "m_draws": 8,
-       "mde_80": 0.05117870050927794,
+       "mde_80": 0.05028602787415687,
        "meets_precondition": true,
        "n_blocks": 288,
-       "p_one_minus_p": 0.14061821831597224,
-       "phi": 0.3338094317071598,
+       "p_one_minus_p": 0.14147779676649302,
+       "phi": 0.3122190197502072,
        "precondition": 0.05,
        "rho": 0.5,
-       "se_delta_r": 0.014737609674194766,
-       "sigma2_draw": 0.09367853077224421,
-       "sigma2_topic": 0.04693968754372802,
+       "se_delta_r": 0.014480552329394379,
+       "sigma2_draw": 0.09730573774363953,
+       "sigma2_topic": 0.04417205902285349,
        "simultaneous_critical_value": 2.6310382845367783
       },
       "REGISTERED_ALTERNATE": {
@@ -3012,8 +3931,8 @@
     "n_local_supported_frames": 1
    },
    "model": "qwen3-4b-instruct-2507",
-   "recorded_at": "2026-08-30T22:03:29+00:00",
-   "root": "dci1v8-pilot-r8"
+   "recorded_at": "2026-08-31T21:19:48+00:00",
+   "root": "dci1v8-pilot-r10"
   }
  },
  "precondition": 0.05

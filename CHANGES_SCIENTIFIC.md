@@ -13,6 +13,102 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-02 (pre-freeze) — the v8 confirmatory layer: freeze, protected generation, frame-aware analysis; allocation 384 blocks per frame; joint cross-frame multiplicity; frame-aware LOCAL top-up; backups generated for a reference-sensitivity contrast
+
+**What changed.** A confirmatory layer, `dci1/src/dci1v8dev/confirm/`
+(design note `dci1/docs/V8_CONFIRMATORY.md`), continues the v8 pilot past
+`PILOT_REPORT`: `CONFIRM_REGISTERED` → `LOCAL_TOPUP` → `MEMBERSHIP` →
+`FROZEN` → `CONFIRMATORY_GENERATION` → `CONFIRMATORY_ANALYSIS` →
+`FINAL_REPORT`, in its own `dci1v8-confirm-*` roots, reading each model's
+pilot Gate-2/Gate-3 records by verified signature. It is the first v8 code
+that can render a composed cell, and it can do so only after a signed,
+write-once freeze. Every estimator, interval construction and reading is
+v7's registered analysis code, called **per frame**; the audit of
+2026-09-01 had found that no frame-aware analysis existed.
+
+Five design decisions, each prospective and recorded on the freeze:
+
+1. **Every stated line of a block is rendered under the block's frame**
+   (Approach A applied to composed cells; v7 §8.4 gave the two constituents
+   different wording indices). Wording and order stay orthogonal.
+2. **Allocation: 384 blocks per frame** --- every confirmatory topic under
+   every entering frame, the ceiling --- chosen by a stated rule
+   (`confirm/precision.py`): the smallest of {288, 384} whose projected
+   simultaneous half-width for Δ_R at the *joint* Šidák constant
+   (k = 6 × LOCAL frames entering) meets the unchanged 0.05 precondition
+   under both REGISTERED_ALTERNATE and COMPOSED_AT_HALF (the composed cell at
+   0.5, which the pre-freeze anchor at B's solo rate understates). At two
+   frames 288 gives 0.0538/0.0527 and 384 gives 0.0466/0.0456. The
+   2026-08-31 amendment's 288 is superseded before any confirmatory row.
+3. **Multiplicity under frame conditioning.** F1 stays the registered
+   per-frame family; a joint family per (model, configuration) of every
+   entering frame's F1 members takes its critical value from a topic-level
+   bootstrap with one draw shared across frames; the decision interval of
+   every primary claim is the joint one; a model-level LOCAL claim is the
+   conjunction over entering frames; `FRAME_HETEROGENEOUS` is a verdict.
+4. **The frame-aware LOCAL top-up** (`LOCAL_TOPUP`): a symmetric rule that
+   measures, on a frame's own calibration topics, the Tier-1/2 rungs the
+   frame-pooled screen left unmeasured although their frame-specific screen
+   iota lies inside that frame's caliper --- iff the frame is short of
+   §13.15's five families and the candidates could close the gap. Gate 3 is
+   re-verdicted by the pilot's kernel on the augmented table; untouched
+   frames must reproduce the pilot's verdicts (asserted). No threshold,
+   caliper or operating point moves. Dry-run: seven rungs on four frames of
+   three models.
+5. **The two frozen backups are generated beside B** and Δ_R(f) is
+   re-formed over every admissible triple of the five frozen families as a
+   pre-registered sensitivity family (no claim). n\*(f)/m\*(f) stability under
+   a topic bootstrap is recorded on the freeze and Δ_R(f) is stated as
+   conditional on the frozen operating point.
+
+**Deviations from v7's post-freeze sequence, declared on the freeze:** no
+masking stages (no analyst decision point exists in an unattended frozen
+analysis); the near-form and class arms are not run (the pilot selected
+none; L3c's near-form requirement is reported unavailable, not emitted).
+
+**Which results are affected.** No existing number: no composed v8 row
+existed before this layer and none exists before a freeze. The
+`local_precision.md` projection of 2026-08-31 (288 blocks) is superseded by
+`confirmatory_membership.json`'s allocation block. Pilot roots r8--r11 are
+read, never written. `tests_v8dev/test_schema_leakage.py` now resolves
+`from pkg import module` aliases (the earlier form read `node.module` alone
+and would have let that spelling of a banned import through) and pins that
+only `confirm/analysis.py` imports the composed-observation modules.
+
+---
+
+## 2026-09-01 (pre-freeze) — the fourth registered model is measured under Approach A for the first time
+
+**What changed.** `gemma-3n-e4b-it` ran the nine-stage v8 pilot
+(`dci1v8-pilot-r11`, all stages `PASS`) at the **default** two-pass
+calibration allocation. No rule, threshold or constant changed: the model is
+absent from `CALIBRATION_FRAME_OFFSETS_BY_MODEL` and resolves to
+`CALIBRATION_FRAME_OFFSETS`, so this needed no code change at all. The entry
+is here because it changes **which data an analysis reads**: every v8
+eligibility statement before it covered three of the four registered models.
+
+**Why it was missing.** r1–r10 ran the other three. e4b appeared in v8 only
+in retrospective replays over stored v7 evidence, and no decision to drop it
+from the pilots is recorded anywhere — it was an omission, not a choice.
+
+**What it found.** Gate 2 supports **all four frames** (n\* 4–8, m\* 9–10,
+ι_A 0.659–0.724) and Gate 3 identifies the spectrum on **all four**, which no
+other model has done at the default allocation. The LOCAL arm gives one
+supported frame — f3, with 6 LOCAL-valid families and 2 backups — against f0
+and f2 at 3-and-0 and f1 at 4-and-1. One supported frame is short of the
+inclusion rule's two, so the model is `LOCAL_INELIGIBLE`. The ι_A ≈ 0.724 that
+`V8_CANDIDATE.md` §11 projected from stored v7 evidence is confirmed on f0.
+
+**Which results are affected.** The LOCAL eligibility verdict now covers all
+four models: `qwen3-4b` (f0, f3) and `gemma-3n-e2b-it` (f1, f3) eligible;
+`qwen3-4b-instruct-2507` (f1) and `gemma-3n-e4b-it` (f3) ineligible. Reports
+`local_eligibility.md`, `local_precision.md` and `coverage_at_288.md` are
+regenerated over all four roots. Nothing earlier is invalidated; the earlier
+three-model reports were correct about the three they read and silent about
+the fourth, which is the defect this closes.
+
+---
+
 ## 2026-08-31 (pre-freeze) — the v8 confirmatory allocation is three passes: 288 blocks per wording frame
 
 **What changed.** `dci1v8dev.rules.CONFIRMATORY_FRAME_OFFSETS = (0, 1, 2)`,
@@ -101,6 +197,22 @@ verdicts are statements about the two-pass allocation and remain true of it.
 Verdicts across the two roots are **not** comparable as measurements of the
 same precision, exactly as r8 and r9 are not for `qwen3-4b`. The other
 models' allocations are untouched.
+
+**Outcome (`dci1v8-pilot-r10`, 2026-08-31, all nine stages `PASS`).** f3 did
+**not** reach §13.15: 3 LOCAL-valid families and 0 backups, against 4 and 1
+at two passes. f1 improved (6 → 7 families, 2 backups). f0 lost its operating
+point entirely (`GRID_RESOLUTION_INSUFFICIENT`; A's compliance falls
+0.855 → 0.204 between severities 4 and 5), replacing r8's implausible
+ι_A = 0.844 with a clean refusal. The model keeps one supported frame and
+stays `LOCAL_INELIGIBLE`; the ceiling is reached, so no further allocation
+exists. The mechanism is §13.7's **per-split admissibility**, not its
+equivalence clause — `V_stab` refusals are "not independently admissible on
+one split" in 64/64 cases at four passes and 64/65 at two, while the
+equivalence interval narrowed from [−0.167, +0.104] to [−0.122, +0.073] about
+a steady point estimate. 96 topics per split resolved a `V_diff` failure on
+split B that 48 could not, so MK1 and MK8 had been admitted by imprecision.
+**More measurement corrected the earlier picture rather than improving it**,
+and no threshold was moved in response.
 
 ---
 

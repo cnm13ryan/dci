@@ -2,8 +2,8 @@
  "contract": {
   "clean": true,
   "defects": [],
-  "n_checked_against_payloads": 64,
-  "n_fields": 64
+  "n_checked_against_payloads": 65,
+  "n_fields": 65
  },
  "criteria": {
   "CHANCE_BASIS": {
@@ -14,23 +14,23 @@
      "gate2_per_split": {
       "calibration_a": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "calibration_b": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "pooled": {
        "draws_per_topic": 8.0,
-       "n_rows": 384,
-       "n_topics": 48
+       "n_rows": 768,
+       "n_topics": 96
       }
      },
-     "iota_a": 0.6770833333333334,
-     "iota_a_all_absent_v7_basis": 0.6657681940700809,
-     "iota_a_basis_discrepancy": 0.01131513926325245,
+     "iota_a": 0.6744791666666666,
+     "iota_a_all_absent_v7_basis": 0.6631862579993263,
+     "iota_a_basis_discrepancy": 0.01129290866734034,
      "kappa_a": 0.0,
      "kappa_a_all_frames_blocks": 0.0,
      "n_candidates": 73,
@@ -47,23 +47,23 @@
      "gate2_per_split": {
       "calibration_a": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "calibration_b": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "pooled": {
        "draws_per_topic": 8.0,
-       "n_rows": 384,
-       "n_topics": 48
+       "n_rows": 768,
+       "n_topics": 96
       }
      },
-     "iota_a": 0.71875,
-     "iota_a_all_absent_v7_basis": 0.7121918720852765,
-     "iota_a_basis_discrepancy": 0.006558127914723544,
+     "iota_a": 0.7239583333333334,
+     "iota_a_all_absent_v7_basis": 0.7170503837170504,
+     "iota_a_basis_discrepancy": 0.006907949616282938,
      "kappa_a": 0.0,
      "kappa_a_all_frames_blocks": 0.0,
      "n_candidates": 73,
@@ -80,23 +80,23 @@
      "gate2_per_split": {
       "calibration_a": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "calibration_b": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "pooled": {
        "draws_per_topic": 8.0,
-       "n_rows": 384,
-       "n_topics": 48
+       "n_rows": 768,
+       "n_topics": 96
       }
      },
-     "iota_a": 0.7291666666666666,
-     "iota_a_all_absent_v7_basis": 0.7217391304347825,
-     "iota_a_basis_discrepancy": 0.00742753623188408,
+     "iota_a": 0.671875,
+     "iota_a_all_absent_v7_basis": 0.6606060606060606,
+     "iota_a_basis_discrepancy": 0.011268939393939359,
      "kappa_a": 0.0,
      "kappa_a_all_frames_blocks": 0.0,
      "n_candidates": 73,
@@ -113,23 +113,23 @@
      "gate2_per_split": {
       "calibration_a": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "calibration_b": {
        "draws_per_topic": 8.0,
-       "n_rows": 192,
-       "n_topics": 24
+       "n_rows": 384,
+       "n_topics": 48
       },
       "pooled": {
        "draws_per_topic": 8.0,
-       "n_rows": 384,
-       "n_topics": 48
+       "n_rows": 768,
+       "n_topics": 96
       }
      },
-     "iota_a": 0.6770833333333334,
-     "iota_a_all_absent_v7_basis": 0.6655428186109238,
-     "iota_a_basis_discrepancy": 0.011540514722409578,
+     "iota_a": 0.7239583333333334,
+     "iota_a_all_absent_v7_basis": 0.7157224270868254,
+     "iota_a_basis_discrepancy": 0.00823590624650794,
      "kappa_a": 0.0,
      "kappa_a_all_frames_blocks": 0.0,
      "n_candidates": 73,
@@ -163,7 +163,7 @@
    ],
    "by_frame": {
     "0": {
-     "n_spectrum_valid_above": 30,
+     "n_spectrum_valid_above": 31,
      "n_spectrum_valid_below": 28,
      "passed": true,
      "spectrum_pool_ok": true,
@@ -197,41 +197,7 @@
     },
     "1": {
      "n_spectrum_valid_above": 21,
-     "n_spectrum_valid_below": 36,
-     "passed": true,
-     "spectrum_pool_ok": true,
-     "spectrum_valid_families_above": [
-      "MK1",
-      "MK2",
-      "MK3",
-      "MK4",
-      "MK5",
-      "MK6",
-      "MK7",
-      "MK8",
-      "RF8",
-      "XC1",
-      "XC2",
-      "XC3"
-     ],
-     "spectrum_valid_families_below": [
-      "MK1",
-      "MK2",
-      "MK3",
-      "MK4",
-      "MK5",
-      "MK6",
-      "MK7",
-      "MK8",
-      "RF8",
-      "XC1",
-      "XC2",
-      "XC3"
-     ]
-    },
-    "2": {
-     "n_spectrum_valid_above": 20,
-     "n_spectrum_valid_below": 41,
+     "n_spectrum_valid_below": 39,
      "passed": true,
      "spectrum_pool_ok": true,
      "spectrum_valid_families_above": [
@@ -264,8 +230,8 @@
       "XC3"
      ]
     },
-    "3": {
-     "n_spectrum_valid_above": 26,
+    "2": {
+     "n_spectrum_valid_above": 29,
      "n_spectrum_valid_below": 28,
      "passed": true,
      "spectrum_pool_ok": true,
@@ -285,6 +251,40 @@
      ],
      "spectrum_valid_families_below": [
       "MK1",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ]
+    },
+    "3": {
+     "n_spectrum_valid_above": 21,
+     "n_spectrum_valid_below": 39,
+     "passed": true,
+     "spectrum_pool_ok": true,
+     "spectrum_valid_families_above": [
+      "MK1",
+      "MK2",
+      "MK3",
+      "MK4",
+      "MK5",
+      "MK6",
+      "MK7",
+      "MK8",
+      "RF8",
+      "XC1",
+      "XC2",
+      "XC3"
+     ],
+     "spectrum_valid_families_below": [
+      "MK1",
+      "MK2",
       "MK3",
       "MK4",
       "MK5",
@@ -348,29 +348,31 @@
    "by_frame": {
     "0": {
      "backups": [
-      "XC1",
-      "XC3"
+      "XC3",
+      "MK2"
      ],
      "core_identified": true,
      "core_references": [
       {
        "family": "XC2",
-       "iota": 0.6880733944954128,
+       "iota": 0.6819571865443425,
        "severity": 6
       },
       {
-       "family": "MK2",
-       "iota": 0.65625,
+       "family": "MK1",
+       "iota": 0.6536458333333334,
        "severity": 4
       },
       {
        "family": "MK6",
-       "iota": 0.65625,
+       "iota": 0.6510416666666666,
        "severity": 4
       }
      ],
      "coverage_identified": true,
      "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "local_valid_families": [
       "MK1",
       "MK2",
@@ -385,45 +387,47 @@
       "XC3"
      ],
      "n_backups": 2,
-     "n_blocks_projected": 96,
+     "n_blocks_projected": 288,
      "n_local_valid_families": 11,
      "n_spectrum_references": 8,
      "passed": true,
-     "projected_se_beta": 0.03609958770831266,
-     "projected_se_beta_at_full_allocation": 0.01804979385415633,
+     "projected_se_beta": 0.020772244978448005,
+     "projected_se_beta_at_full_allocation": 0.017989291844969713,
      "selected_families": [
-      "MK3",
+      "XC2",
       "MK7",
-      "MK6",
-      "MK1"
+      "MK1",
+      "MK4"
      ],
      "state": "LOCAL_AND_SPECTRUM"
     },
     "1": {
      "backups": [
       "MK8",
-      "MK4"
+      "MK7"
      ],
      "core_identified": true,
      "core_references": [
       {
+       "family": "XC1",
+       "iota": 0.7239583333333334,
+       "severity": 3
+      },
+      {
        "family": "MK2",
-       "iota": 0.71875,
+       "iota": 0.7265625,
        "severity": 3
       },
       {
-       "family": "MK5",
-       "iota": 0.71875,
-       "severity": 3
-      },
-      {
-       "family": "MK7",
-       "iota": 0.71875,
+       "family": "MK6",
+       "iota": 0.7291666666666666,
        "severity": 3
       }
      ],
      "coverage_identified": true,
      "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "local_valid_families": [
       "MK1",
       "MK2",
@@ -438,45 +442,47 @@
       "XC3"
      ],
      "n_backups": 2,
-     "n_blocks_projected": 96,
+     "n_blocks_projected": 288,
      "n_local_valid_families": 11,
      "n_spectrum_references": 8,
      "passed": true,
-     "projected_se_beta": 0.030148975783869675,
-     "projected_se_beta_at_full_allocation": 0.015074487891934838,
+     "projected_se_beta": 0.017578092504143532,
+     "projected_se_beta_at_full_allocation": 0.01522307465866112,
      "selected_families": [
       "MK7",
-      "MK3",
       "XC2",
+      "MK3",
       "MK6"
      ],
      "state": "LOCAL_AND_SPECTRUM"
     },
     "2": {
      "backups": [
-      "XC1",
-      "MK5"
+      "XC2",
+      "XC3"
      ],
      "core_identified": true,
      "core_references": [
       {
-       "family": "MK8",
-       "iota": 0.7291666666666666,
-       "severity": 3
+       "family": "MK4",
+       "iota": 0.671875,
+       "severity": 4
       },
       {
-       "family": "MK6",
-       "iota": 0.7239583333333334,
-       "severity": 3
+       "family": "MK3",
+       "iota": 0.6692708333333334,
+       "severity": 4
       },
       {
-       "family": "MK1",
-       "iota": 0.7239583333333334,
-       "severity": 3
+       "family": "MK7",
+       "iota": 0.6640625,
+       "severity": 4
       }
      ],
      "coverage_identified": true,
      "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "local_valid_families": [
       "MK1",
       "MK2",
@@ -491,45 +497,47 @@
       "XC3"
      ],
      "n_backups": 2,
-     "n_blocks_projected": 96,
+     "n_blocks_projected": 288,
      "n_local_valid_families": 11,
      "n_spectrum_references": 8,
      "passed": true,
-     "projected_se_beta": 0.030167410191024438,
-     "projected_se_beta_at_full_allocation": 0.015083705095512219,
+     "projected_se_beta": 0.02182275532869673,
+     "projected_se_beta_at_full_allocation": 0.018899060495223597,
      "selected_families": [
-      "MK7",
+      "MK1",
       "MK4",
-      "RF8",
-      "MK3"
+      "MK3",
+      "RF8"
      ],
      "state": "LOCAL_AND_SPECTRUM"
     },
     "3": {
      "backups": [
-      "MK3",
-      "XC3"
+      "MK7",
+      "MK6"
      ],
      "core_identified": true,
      "core_references": [
       {
-       "family": "MK1",
-       "iota": 0.6822916666666666,
-       "severity": 4
+       "family": "XC3",
+       "iota": 0.7239583333333334,
+       "severity": 5
       },
       {
-       "family": "XC2",
-       "iota": 0.6848484848484848,
-       "severity": 6
+       "family": "MK2",
+       "iota": 0.7265625,
+       "severity": 3
       },
       {
-       "family": "MK7",
-       "iota": 0.6666666666666666,
-       "severity": 4
+       "family": "MK5",
+       "iota": 0.7291666666666666,
+       "severity": 3
       }
      ],
      "coverage_identified": true,
      "coverage_reasons": [],
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "local_valid_families": [
       "MK1",
       "MK2",
@@ -544,17 +552,17 @@
       "XC3"
      ],
      "n_backups": 2,
-     "n_blocks_projected": 96,
+     "n_blocks_projected": 288,
      "n_local_valid_families": 11,
      "n_spectrum_references": 8,
      "passed": true,
-     "projected_se_beta": 0.035891089034953735,
-     "projected_se_beta_at_full_allocation": 0.017945544517476868,
+     "projected_se_beta": 0.01700322014927197,
+     "projected_se_beta_at_full_allocation": 0.014725220595408962,
      "selected_families": [
-      "MK3",
-      "XC2",
-      "MK4",
-      "MK6"
+      "MK7",
+      "XC3",
+      "RF8",
+      "MK1"
      ],
      "state": "LOCAL_AND_SPECTRUM"
     }
@@ -569,10 +577,10 @@
    "max_se_beta": 0.05,
    "min_backups": 2,
    "min_local_families": 5,
-   "n_blocks_per_frame": 96,
+   "n_blocks_per_frame": 288,
    "passed": true,
    "passed_on_every_supported_frame": true,
-   "rule": ">= 5 LOCAL-valid families, three core references by \u00a713.8, selected coverage identified with the projected SE(beta) <= 0.05 at the frame's 96 blocks, >= 2 admissible backups --- per frame"
+   "rule": ">= 5 LOCAL-valid families, three core references by \u00a713.8, selected coverage identified with the projected SE(beta) <= 0.05 at the frame's 288 blocks, >= 2 admissible backups --- per frame. LOCAL *inclusion* (dci1/docs/V8_FRAME_CONDITIONING.md \u00a74d) is the LOCAL arm's three requirements alone, without the coverage gate: see `local_supported` here and `local_eligibility` on the record"
   },
   "WORDING_DIAGNOSTIC": {
    "frame_conditioning": "frame_is_experimental_condition",
@@ -935,6 +943,8 @@
    "frame_states": {
     "0": {
      "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "meets_min_backups": true,
      "meets_min_local_families": true,
      "n_backups": 2,
@@ -945,6 +955,8 @@
     },
     "1": {
      "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "meets_min_backups": true,
      "meets_min_local_families": true,
      "n_backups": 2,
@@ -955,6 +967,8 @@
     },
     "2": {
      "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "meets_min_backups": true,
      "meets_min_local_families": true,
      "n_backups": 2,
@@ -965,6 +979,8 @@
     },
     "3": {
      "local_identified": true,
+     "local_supported": true,
+     "local_unsupported_reason": null,
      "meets_min_backups": true,
      "meets_min_local_families": true,
      "n_backups": 2,
@@ -1200,30 +1216,30 @@
    },
    "operating_points_by_frame": {
     "0": {
-     "iota_a": 0.6770833333333334,
-     "m_star": 9,
+     "iota_a": 0.6744791666666666,
+     "m_star": 8,
      "n_star": 3,
      "status": "SUPPORTED",
      "unsupported_reason": null
     },
     "1": {
-     "iota_a": 0.71875,
+     "iota_a": 0.7239583333333334,
      "m_star": 8,
      "n_star": 2,
      "status": "SUPPORTED",
      "unsupported_reason": null
     },
     "2": {
-     "iota_a": 0.7291666666666666,
+     "iota_a": 0.671875,
      "m_star": 10,
-     "n_star": 2,
+     "n_star": 3,
      "status": "SUPPORTED",
      "unsupported_reason": null
     },
     "3": {
-     "iota_a": 0.6770833333333334,
-     "m_star": 9,
-     "n_star": 3,
+     "iota_a": 0.7239583333333334,
+     "m_star": 10,
+     "n_star": 2,
      "status": "SUPPORTED",
      "unsupported_reason": null
     }
@@ -1393,8 +1409,8 @@
       "UNRESOLVED": 0.0,
       "WORDING_SENSITIVE": 0.0
      },
-     "spread_median": 0.02604166666666663,
-     "spread_q90": 0.05729166666666663,
+     "spread_median": 0.02083333333333337,
+     "spread_q90": 0.03385416666666663,
      "tau2_mean": 0.0,
      "tau2_median": 0.0,
      "tau_median": 0.0
@@ -1584,16 +1600,16 @@
   }
  },
  "generations": {
-  "calibration_blocks_per_run": 192,
-  "calibration_candidates": 56064,
+  "calibration_blocks_per_run": 384,
+  "calibration_candidates": 112128,
   "calibration_extension": 0,
-  "calibration_grids": 13824,
-  "calibration_passes": 2,
+  "calibration_grids": 27648,
+  "calibration_passes": 4,
   "cap_selection": 216,
   "gate0": 240,
   "screen": 3960,
   "second_pass": 3648,
-  "total": 77952
+  "total": 147840
  },
  "stages": [
   "PILOT_REGISTERED",

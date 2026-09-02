@@ -268,13 +268,37 @@ of each model (`tools/v8_local_eligibility.py`,
 qwen3-4b-instruct-2507 f1 only --- ineligible.** Two frames that the recorded
 *state* calls `LOCAL_AND_SPECTRUM` (2507 f3, gemma f0) hold four LOCAL-valid
 families and one backup and are **not** supported; support is the survival
-requirement, not the state. **That gap is now being measured**: 2507's f3 misses on exactly the margin
-four passes closed for qwen3-4b's f0 and f3 --- four families where §13.15
-asks five, one backup where it asks two --- so its calibration was raised to
-the same 192-topic ceiling (2026-08-31, §4b) and the model is rerun from
-`PILOT_REGISTERED` in root `dci1v8-pilot-r10`. r8 is untouched and stands as
-run. No threshold, grid, pool, frame or operating-point rule changed; if f3
-still misses, the model stays LOCAL-ineligible with its shortfall recorded.
+requirement, not the state. **That gap was then measured, and it was not a gap** (`dci1v8-pilot-r10`,
+2026-08-31, nine stages `PASS`; §4b). 2507's calibration was raised to the
+same 192-topic ceiling and f3 went from 4 LOCAL-valid families and 1 backup
+to **3 and 0**, while f1 improved 6 → 7 and f0 lost its operating point
+outright (`GRID_RESOLUTION_INSUFFICIENT`, A's compliance falling
+0.855 → 0.204 between severities 4 and 5, replacing r8's implausible
+iota_A = 0.844 with a clean refusal). The mechanism is §13.7's **per-split
+admissibility**, not its equivalence clause: `V_stab` refusals are "not
+independently admissible on one split" in 64 of 64 cases, while the
+equivalence interval narrowed as designed ([-0.167, +0.104] to
+[-0.122, +0.073] about a steady point estimate). 96 topics per split resolved
+a `V_diff` failure on split B that 48 could not, so MK1 and MK8 had been
+admitted by imprecision. **More measurement corrected the picture rather than
+improving it**; the ceiling is reached, no further allocation exists, and no
+threshold was moved. 2507 keeps one supported frame and is LOCAL-ineligible.
+
+**And the fourth model was measured for the first time** (`dci1v8-pilot-r11`,
+2026-09-01, nine stages `PASS`; §4f). `gemma-3n-e4b-it` is one of the four
+registered v8 models and had never been run through a v8 pilot --- r1-r10
+covered the other three and no decision to drop it is recorded, so every
+earlier v8 eligibility statement covered three quarters of the study. Run at
+the **default** two passes (no rule change: it is absent from the by-model
+table), Gate 2 supports **all four frames** (n* 4-8, m* 9-10, iota_A
+0.659-0.724) and Gate 3 identifies the spectrum on **all four** --- the only
+model to do so at the default allocation. Its LOCAL arm gives one supported
+frame (f3: 6 families, 2 backups), with f1 on the 4-and-1 margin and f0/f2 at
+3-and-0, so it is LOCAL-ineligible. **The LOCAL verdict now covers all four
+models: qwen3-4b (f0, f3) and gemma-3n-e2b-it (f1, f3) eligible; both the
+2507 and the e4b ineligible on one frame each.** Whether e4b runs at the
+ceiling is §10 item 7, and the evidence on what that buys is now two-sided ---
+it closed the 4-and-1 margin for qwen3-4b and widened it for 2507.
 
 **The freeze is blocked on precision, not on references** (2026-08-31,
 `tools/v8_local_precision.py`,

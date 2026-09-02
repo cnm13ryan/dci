@@ -8,6 +8,14 @@ The **LOCAL** arm reads no block count (`local_validity`, §13.8's core kernel, 
 
 | root | model | frame | recorded status | SE(β) recorded | SE(β) at 288 | condition 4 at 288 | other refusals | verdict changes? | LOCAL |
 |---|---|---|---|---:|---:|---|---|---|---|
+| `dci1v8-pilot-r10` | `qwen3-4b-instruct-2507` | f0 | no operating point | — | — | — | — | no | — |
+| `dci1v8-pilot-r10` | `qwen3-4b-instruct-2507` | f1 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0176 | 0.0176 | meets | 0 | no | supported |
+| `dci1v8-pilot-r10` | `qwen3-4b-instruct-2507` | f2 | no operating point | — | — | — | — | no | — |
+| `dci1v8-pilot-r10` | `qwen3-4b-instruct-2507` | f3 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0166 | 0.0166 | meets | 0 | no | unsupported |
+| `dci1v8-pilot-r11` | `gemma-3n-e4b-it` | f0 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0143 | 0.0143 | meets | 0 | no | unsupported |
+| `dci1v8-pilot-r11` | `gemma-3n-e4b-it` | f1 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0140 | 0.0140 | meets | 0 | no | unsupported |
+| `dci1v8-pilot-r11` | `gemma-3n-e4b-it` | f2 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0200 | 0.0200 | meets | 0 | no | unsupported |
+| `dci1v8-pilot-r11` | `gemma-3n-e4b-it` | f3 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0172 | 0.0172 | meets | 0 | no | supported |
 | `dci1v8-pilot-r8` | `gemma-3n-e2b-it` | f0 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0327 | 0.0189 | meets | 0 | no | unsupported |
 | `dci1v8-pilot-r8` | `gemma-3n-e2b-it` | f1 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0308 | 0.0178 | meets | 0 | no | supported |
 | `dci1v8-pilot-r8` | `gemma-3n-e2b-it` | f2 | `DIFFICULTY_SUPPORT_IDENTIFIED` | 0.0397 | 0.0229 | meets | 0 | no | unsupported |

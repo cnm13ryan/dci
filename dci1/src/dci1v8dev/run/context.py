@@ -45,7 +45,9 @@ __all__ = ["DCI1_ROOT", "REPO_ROOT", "SYNTHETIC_STUDY_ID",
            "current_files", "MANIFEST_FILENAME"]
 
 SYNTHETIC_STUDY_ID = f"{STUDY_ID}-synthetic"
-STUDY_ID_OF_NAMESPACE = {"pilot": STUDY_ID, "synthetic": SYNTHETIC_STUDY_ID}
+STUDY_ID_OF_NAMESPACE = {"pilot": STUDY_ID, "synthetic": SYNTHETIC_STUDY_ID,
+                         "confirm": STUDY_ID,
+                         "confirm-synthetic": SYNTHETIC_STUDY_ID}
 MANIFEST_FILENAME = "pilot_manifest.json"
 
 DCI1_ROOT = Path(__file__).resolve().parents[3]
