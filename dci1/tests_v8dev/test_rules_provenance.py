@@ -84,9 +84,9 @@ def test_the_signed_rule_table_binds_every_rules_constant():
                      and not isinstance(getattr(R, n), types.ModuleType)
                      and n not in table)
     assert not missing, f"rules constants absent from the signed table: {missing}"
-    assert table["CALIBRATION_FRAME_OFFSETS_BY_MODEL"] == {
-        m: list(o) for m, o in R.CALIBRATION_FRAME_OFFSETS_BY_MODEL.items()}
+    assert table["CALIBRATION_POLICY"] == R.CALIBRATION_POLICY
     assert table["CALIBRATION_FRAME_OFFSETS"] == list(R.CALIBRATION_FRAME_OFFSETS)
+    assert table["OPERATING_POINT_MIN_RECOVERY"] == R.OPERATING_POINT_MIN_RECOVERY
 
 
 def test_the_rule_table_refuses_a_constant_it_cannot_bind():

@@ -616,8 +616,8 @@ def _real_calibration_topics():
 
 def test_each_frame_is_measured_on_the_designed_number_of_topics():
     """Contract: the allocation gives every frame exactly
-    ``rules.CALIBRATION_TOPICS_PER_FRAME`` distinct topics --- 96 of the 192
-    at the two registered passes, against 48 under one."""
+    ``rules.CALIBRATION_TOPICS_PER_FRAME`` distinct topics --- all 192 at
+    the four universal passes, against 48 under one."""
     topics = _real_calibration_topics()
     built = CAL.calibration_blocks(topics, "g2grid-A")
     assert len(built) == C.N_CALIBRATION * R.CALIBRATION_FRAME_PASSES
@@ -626,7 +626,7 @@ def test_each_frame_is_measured_on_the_designed_number_of_topics():
         by_frame.setdefault(block.index % C.N_WORDINGS, set()).add(block.topic_id)
     assert sorted(by_frame) == list(S.FRAMES)
     for frame, seen in by_frame.items():
-        assert len(seen) == R.CALIBRATION_TOPICS_PER_FRAME == 96, frame
+        assert len(seen) == R.CALIBRATION_TOPICS_PER_FRAME == 192, frame
     # every topic is met, and met under exactly `passes` distinct frames
     frames_of_topic: dict[str, set[int]] = {}
     for block in built:
@@ -652,7 +652,7 @@ def test_no_topic_is_measured_twice_inside_one_frame_and_the_splits_balance():
         assert len(seen) == len(set(seen)), f"frame {frame} repeats a topic"
         a = sum(1 for t in seen if t.startswith("a-"))
         b = sum(1 for t in seen if t.startswith("b-"))
-        assert a == b == R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT == 48, frame
+        assert a == b == R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT == 96, frame
     # the offsets are what makes this true; a repeated offset would not
     assert len({o % C.N_WORDINGS for o in R.CALIBRATION_FRAME_OFFSETS}) == \
         R.CALIBRATION_FRAME_PASSES
@@ -718,7 +718,7 @@ def test_the_passes_reach_the_estimator_that_forms_the_coordinate(monkeypatch):
         n_one = len(one[label]["per_topic_solo"])
         n_two = len(two[label]["per_topic_solo"])
         assert n_one == one[label]["n_topics"] == 12, label
-        assert n_two == two[label]["n_topics"] == 24, label
+        assert n_two == two[label]["n_topics"] == 48, label
     # and the standard error the rule reads falls with it
     from dci1v7.stages.calibration_table import load_calibration_table
     from dci1v8dev.spectrum.validity import _se_iota
@@ -857,10 +857,10 @@ def test_a_world_with_genuine_frame_effects_gives_frame_specific_selections(tmp_
 
 
 # ------------------------------------------------------------------------
-# The per-model allocation (rules.CALIBRATION_FRAME_OFFSETS_BY_MODEL,
-# CHANGES_SCIENTIFIC.md 2026-08-31): four passes for qwen3-4b, 192 topics
-# per frame at the topic ceiling, every other model unchanged at two. The
-# tests above pin the default; these pin the override and the ceiling.
+# The universal allocation (rules.CALIBRATION_FRAME_OFFSETS, pre-freeze audit
+# of 2026-09-02): four passes for every model, 192 topics per frame at the
+# topic ceiling. The tests above pin the layout; these pin the ceiling and
+# that no model differs.
 # ------------------------------------------------------------------------
 def _laid_out(model_key):
     """The blocks Gate 2 would build for this model, by frame."""
@@ -940,20 +940,16 @@ def test_four_passes_is_the_ceiling_and_a_repeated_offset_is_refused():
         R._assert_offsets((0, 4), "the same frame twice")
 
 
-def test_every_other_model_keeps_the_two_pass_allocation():
-    """The override is per model. A model absent from the table runs at the
-    registered default, so r8's meaning --- and any later run of those
-    models --- is untouched by this amendment. Both Qwens are in the table
-    (`qwen3-4b` since 2026-08-31 §4b, `qwen3-4b-instruct-2507` since the
-    amendment of the same day); the gemmas are not."""
-    for other in ("gemma-3n-e2b-it", "gemma-3n-e4b-it", "unknown-model"):
-        assert R.calibration_frame_offsets(other) == R.CALIBRATION_FRAME_OFFSETS
-        assert R.calibration_topics_per_frame(other) == 96
-        assert R.calibration_topics_per_frame_per_split(other) == 48
-    assert R.calibration_frame_offsets(None) == R.CALIBRATION_FRAME_OFFSETS
-    # and the module constants are still the default, for the model-free paths
-    assert R.CALIBRATION_TOPICS_PER_FRAME == 96
-    assert S.CALIBRATION_TOPICS_PER_FRAME == 96
+def test_every_model_runs_the_same_four_pass_allocation():
+    """Universal: there is no per-model table, so a run of any model ---
+    including one not yet named --- measures the same thing."""
+    for other in ("gemma-3n-e2b-it", "gemma-3n-e4b-it", "unknown-model", None):
+        assert R.calibration_frame_offsets(other) == R.CALIBRATION_FRAME_OFFSETS \
+            == (0, 1, 2, 3)
+        assert R.calibration_topics_per_frame(other) == 192
+        assert R.calibration_topics_per_frame_per_split(other) == 96
+    assert R.CALIBRATION_TOPICS_PER_FRAME == 192
+    assert S.CALIBRATION_TOPICS_PER_FRAME == 192
 
 
 def test_the_allocation_record_states_the_model_and_the_ceiling():
@@ -963,8 +959,8 @@ def test_the_allocation_record_states_the_model_and_the_ceiling():
     topics = _real_calibration_topics()
     default = CAL.calibration_allocation(topics)
     raised = CAL.calibration_allocation(topics, model_key=MODEL)
-    assert default["passes"] == 2 and default["topics_per_frame"] == 96
-    assert default["is_default_allocation"] and not default["at_topic_ceiling"]
+    assert default["passes"] == 4 and default["topics_per_frame"] == 192
+    assert default["is_default_allocation"] and default["at_topic_ceiling"]
     assert raised["model_key"] == MODEL
     assert raised["passes"] == 4
     assert raised["frame_offsets"] == [0, 1, 2, 3]
@@ -972,11 +968,11 @@ def test_the_allocation_record_states_the_model_and_the_ceiling():
     assert raised["topics_per_frame_per_split"] == 96
     assert raised["blocks_per_run"] == 768
     assert raised["at_topic_ceiling"] is True
-    assert raised["is_default_allocation"] is False
+    assert raised["is_default_allocation"] is True
     assert raised["default_frame_offsets"] == list(R.CALIBRATION_FRAME_OFFSETS)
     assert raised["generations_per_rung"] == C.N_CALIBRATION * C.M_CAL * 4 \
         == R.calibration_generations_per_rung(MODEL) == 3072
-    assert raised["generations_per_rung"] == 2 * default["generations_per_rung"]
+    assert raised["generations_per_rung"] == default["generations_per_rung"]
 
 
 def test_the_manifest_binds_every_models_allocation():
@@ -991,25 +987,24 @@ def test_the_manifest_binds_every_models_allocation():
     assert alloc["default_frame_offsets"] == list(R.CALIBRATION_FRAME_OFFSETS)
     # every field naming a single number says it is the *default*, so no
     # reader can take the study-level value for the model's own
-    assert alloc["default_topics_per_frame"] == 96
+    assert alloc["default_topics_per_frame"] == 192
     sizes = built["design"]["sample_sizes"]
-    assert sizes["calibration_topics_per_frame_default"] == 96
-    assert sizes["calibration_frame_passes_default"] == 2
+    assert sizes["calibration_topics_per_frame_default"] == 192
+    assert sizes["calibration_frame_passes_default"] == 4
     assert not any(k in sizes for k in ("calibration_topics_per_frame",
                                         "calibration_frame_passes"))
     by_model = alloc["by_model"]
     assert by_model[MODEL] == {
         "frame_offsets": [0, 1, 2, 3], "passes": 4, "topics_per_frame": 192,
         "topics_per_frame_per_split": 96, "generations_per_rung": 3072,
-        "is_default": False}
-    # `qwen3-4b-instruct-2507` was raised to the same ceiling on 2026-08-31
-    # (§4b); the gemmas stay at the default, and the manifest says which is
-    # which per model rather than leaving the override implicit.
+        "is_default": True}
+    # the allocation is universal (pre-freeze audit of 2026-09-02): every
+    # model's entry is the same four passes and says so
     assert by_model["qwen3-4b-instruct-2507"] == by_model[MODEL]
     for other in ("gemma-3n-e2b-it", "gemma-3n-e4b-it"):
         if other in by_model:
-            assert by_model[other]["passes"] == 2
-            assert by_model[other]["topics_per_frame"] == 96
+            assert by_model[other]["passes"] == 4
+            assert by_model[other]["topics_per_frame"] == 192
             assert by_model[other]["is_default"] is True
 
 
@@ -1088,7 +1083,7 @@ def test_the_four_pass_allocation_walks_the_whole_lifecycle(tmp_path):
     assert alloc["model_key"] == MODEL
     assert alloc["passes"] == 4 and alloc["frame_offsets"] == [0, 1, 2, 3]
     assert alloc["at_topic_ceiling"] is True
-    assert alloc["is_default_allocation"] is False
+    assert alloc["is_default_allocation"] is True
     # the *realised* allocation, asserted on the generated rows, per run
     n_expected = alloc["topics_per_frame"]
     per_split = alloc["topics_per_frame_per_split"]
@@ -1111,7 +1106,7 @@ def test_the_four_pass_allocation_walks_the_whole_lifecycle(tmp_path):
     sp = walked["payloads"][S.STAGE_SECOND_PASS]
     per_rung = sp["retention"]["per_rung_calibration_generations"]
     assert per_rung == R.calibration_generations_per_rung(MODEL)
-    assert per_rung == 2 * R.CALIBRATION_GENERATIONS_PER_RUNG
+    assert per_rung == R.CALIBRATION_GENERATIONS_PER_RUNG == C.N_CALIBRATION * C.M_CAL * 4
     assert sp["retention"]["config"]["generations_per_rung"] == per_rung
     assert sp["retention"]["calibration_cost_generations"] == \
         sp["retention"]["n_forwarded"] * per_rung

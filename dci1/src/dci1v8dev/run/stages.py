@@ -33,7 +33,7 @@ __all__ = [
     "confirmatory_allocation", "REPORT_AGGREGATION",
     "CALIBRATION_FRAME_OFFSETS", "CALIBRATION_FRAME_PASSES",
     "CALIBRATION_TOPICS_PER_FRAME", "CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT",
-    "CALIBRATION_FRAME_OFFSETS_BY_MODEL", "calibration_frame_offsets",
+    "CALIBRATION_POLICY", "calibration_frame_offsets",
     "calibration_passes", "calibration_topics_per_frame",
     "calibration_topics_per_frame_per_split",
     "calibration_generations_per_rung",
@@ -205,7 +205,7 @@ CALIBRATION_FRAME_OFFSETS = R.CALIBRATION_FRAME_OFFSETS
 CALIBRATION_FRAME_PASSES = R.CALIBRATION_FRAME_PASSES
 CALIBRATION_TOPICS_PER_FRAME = R.CALIBRATION_TOPICS_PER_FRAME
 CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT = R.CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT
-CALIBRATION_FRAME_OFFSETS_BY_MODEL = R.CALIBRATION_FRAME_OFFSETS_BY_MODEL
+CALIBRATION_POLICY = R.CALIBRATION_POLICY
 calibration_frame_offsets = R.calibration_frame_offsets
 calibration_passes = R.calibration_passes
 calibration_topics_per_frame = R.calibration_topics_per_frame
@@ -213,11 +213,8 @@ calibration_topics_per_frame_per_split = R.calibration_topics_per_frame_per_spli
 calibration_generations_per_rung = R.calibration_generations_per_rung
 assert CALIBRATION_TOPICS_PER_FRAME * C.N_WORDINGS == (
     C.N_CALIBRATION * CALIBRATION_FRAME_PASSES)
-for _m, _o in CALIBRATION_FRAME_OFFSETS_BY_MODEL.items():
-    assert calibration_topics_per_frame(_m) * C.N_WORDINGS == (
-        C.N_CALIBRATION * len(_o))
-    assert calibration_topics_per_frame_per_split(_m) * 2 == \
-        calibration_topics_per_frame(_m)
+assert calibration_topics_per_frame_per_split() * 2 == \
+    calibration_topics_per_frame()
 #: The report's run-level aggregate over frames (V8_FRAME_CONDITIONING.md
 #: §7): a decided criterion ``passed`` when at least one supported frame
 #: passes it, every frame's verdict recorded beside it. Not a freeze rule.

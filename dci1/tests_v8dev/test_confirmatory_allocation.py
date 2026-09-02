@@ -1,12 +1,12 @@
-"""The confirmatory allocation (§4e) and the raised calibration (§4b).
+"""The confirmatory allocation and the universal calibration.
 
-Three passes put 288 distinct blocks under each wording frame. The tests
-below pin what that is (a measurement decision, derived from the offsets and
-asserted, never a literal), what it buys (the registered §16.1 variance form
-at §16.2's own planning constants reaches Δ_R's registered precondition, and
-one pass does not), and — the load-bearing one — what it must **not** touch:
-no LOCAL support verdict may move with a block count, or the allocation
-amendment would silently re-verdict r8 and r9's LOCAL arm.
+Four passes put every registered block (384) under each wording frame: one
+allocation, stated once in ``rules`` and read everywhere else. The tests
+below pin what that is (derived from the offsets and asserted, never a
+literal), that every active source of the number agrees, what it buys (the
+registered §16.1 variance form reaches Δ_R's precondition at the joint
+constant for a two-frame model), and — the load-bearing one — what it must
+**not** touch: no LOCAL support verdict may move with a block count.
 """
 from __future__ import annotations
 
@@ -42,10 +42,10 @@ def _manifest(name: str = "confirmatory-allocation"):
 
 # --------------------------------------------------------------- the rule
 def test_the_allocation_is_derived_from_the_passes_and_not_a_literal():
-    assert R.CONFIRMATORY_FRAME_PASSES == len(R.CONFIRMATORY_FRAME_OFFSETS) == 3
+    assert R.CONFIRMATORY_FRAME_PASSES == len(R.CONFIRMATORY_FRAME_OFFSETS) == 4
     assert R.CONFIRMATORY_BLOCKS_PER_FRAME == (
-        C.N_BLOCKS * R.CONFIRMATORY_FRAME_PASSES // C.N_WORDINGS) == 288
-    assert R.CONFIRMATORY_BLOCKS_TOTAL == C.N_BLOCKS * 3 == 1152
+        C.N_BLOCKS * R.CONFIRMATORY_FRAME_PASSES // C.N_WORDINGS) == 384
+    assert R.CONFIRMATORY_BLOCKS_TOTAL == C.N_BLOCKS * 4 == 1536
     assert S.CONFIRMATORY_BLOCKS_PER_FRAME == R.CONFIRMATORY_BLOCKS_PER_FRAME
 
 
@@ -70,7 +70,7 @@ def test_the_ceiling_is_stated_and_not_exceeded():
     assert R.CONFIRMATORY_MAX_BLOCKS_PER_FRAME == C.N_BLOCKS
     assert R.CONFIRMATORY_FRAME_PASSES <= R.CONFIRMATORY_MAX_PASSES
     assert R.CONFIRMATORY_BLOCKS_PER_FRAME <= R.CONFIRMATORY_MAX_BLOCKS_PER_FRAME
-    assert R.confirmatory_allocation()["at_block_ceiling"] is False
+    assert R.confirmatory_allocation()["at_block_ceiling"] is True
 
 
 def test_the_allocation_record_states_what_the_constants_say():
@@ -92,13 +92,40 @@ def test_the_signed_manifest_carries_the_confirmatory_allocation():
                  "CONFIRMATORY_BLOCKS_PER_FRAME", "CONFIRMATORY_BLOCKS_TOTAL",
                  "CONFIRMATORY_MAX_PASSES"):
         assert name in table, name
-    assert table["CONFIRMATORY_BLOCKS_PER_FRAME"] == 288
+    assert table["CONFIRMATORY_BLOCKS_PER_FRAME"] == 384
     manifest = _manifest()
     alloc = manifest["design"]["confirmatory_allocation"]
     assert alloc == R.confirmatory_allocation()
     fc = manifest["frame_conditioning"]
-    assert fc["confirmatory_blocks_per_frame"] == 288
-    assert fc["confirmatory_passes"] == 3
+    assert fc["confirmatory_blocks_per_frame"] == 384
+    assert fc["confirmatory_passes"] == 4
+
+
+def test_every_active_source_of_the_allocation_agrees():
+    """One allocation. rules states it; the confirm precision module, the
+    coverage gate's projection, the pilot stage constants, the confirm
+    manifest and the v8 preregistration all read the same number. A
+    disagreement anywhere fails here."""
+    from dci1v8dev.confirm import precision as CP
+    from dci1v8dev.confirm import manifest as CM
+    n = R.CONFIRMATORY_BLOCKS_PER_FRAME
+    assert n == 384 == C.N_BLOCKS == R.CONFIRMATORY_MAX_BLOCKS_PER_FRAME
+    assert CP.ALLOCATION == n
+    assert CP.precision_at(2)["blocks_per_frame"] == n
+    assert CP.allocation_record({"m": 2})["chosen_blocks_per_frame"] == n
+    assert FRAME_COVERAGE_RULE.n_blocks == n
+    assert S.CONFIRMATORY_BLOCKS_PER_FRAME == n
+    assert not hasattr(CP, "ALLOCATION_MENU")
+    assert not hasattr(CP, "choose_allocation")
+    prereg = REPO_ROOT / "dci1" / "docs" / "DCI1_preregistration_v8.md"
+    assert prereg.exists(), "the v8 preregistration is missing"
+    text = prereg.read_text()
+    assert f"CONFIRMATORY_BLOCKS_PER_FRAME = {n}" in text
+    m = CM.build_manifest(synthetic_context("allocation-agreement"),
+                          producing_commit="0" * 40, repo_root=REPO_ROOT,
+                          pilot_roots={})
+    assert m["allocation"]["blocks_per_frame"] == n
+    assert m["rules"]["CONFIRMATORY_BLOCKS_PER_FRAME"] == n
 
 
 # ------------------------------------------------------- what it buys
@@ -114,10 +141,16 @@ def test_the_allocation_reaches_the_registered_precision_precondition():
                        phi=C.PHI_ALTERNATE) <= PRECONDITION
 
 
-def test_three_passes_is_the_smallest_allocation_that_does():
+def test_fewer_passes_would_not_have_met_the_per_frame_precondition():
     one, two = C.N_BLOCKS // C.N_WORDINGS, 2 * C.N_BLOCKS // C.N_WORDINGS
     assert _half_width(one) > PRECONDITION
     assert _half_width(two) > PRECONDITION
+    # three passes met it per frame but not at the joint constant of a
+    # two-frame model under the adverse scenarios (confirm.precision), which
+    # is why 2026-09-02 bound 384; the ceiling is now the one allocation
+    from dci1v8dev.confirm import precision as CP
+    assert not CP.precision_at(2, blocks=288)["precondition_met_adverse"]
+    assert CP.precision_at(2)["precondition_met_adverse"]
     # and the MDE at one pass sat on §11.9's smallest effect of interest
     z = NormalDist().inv_cdf(0.80)
     mde = (SIMULTANEOUS + z) * math.sqrt(variances(one, C.M_DRAWS)["Delta_R"])
@@ -134,10 +167,10 @@ def test_the_spectrum_projection_follows_the_allocation():
     assert FRAME_COVERAGE_RULE.max_se_beta == R.SPECTRUM_MAX_SE_BETA == 0.05
     points = [("MK1", 0.5), ("MK1", 0.7), ("MK2", 0.55), ("MK2", 0.75)]
     at_one = precision.projected_se_beta(points, n_blocks=96)
-    at_three = precision.projected_se_beta(
+    at_four = precision.projected_se_beta(
         points, n_blocks=R.CONFIRMATORY_BLOCKS_PER_FRAME)
-    assert at_three["leverage"] == at_one["leverage"]     # a property of the design
-    assert at_three["se_beta"] == pytest.approx(at_one["se_beta"] / math.sqrt(3))
+    assert at_four["leverage"] == at_one["leverage"]     # a property of the design
+    assert at_four["se_beta"] == pytest.approx(at_one["se_beta"] / math.sqrt(4))
 
 
 # ------------------------------------ what it must not touch: the LOCAL arm
@@ -194,23 +227,24 @@ def test_no_local_rule_module_reads_a_block_count():
 
 
 # --------------------------------------------- the raised calibration (§4b)
-def test_both_qwens_run_the_calibration_at_the_topic_ceiling():
-    for model in ("qwen3-4b", "qwen3-4b-instruct-2507"):
+def test_every_model_runs_the_calibration_at_the_topic_ceiling():
+    """Universal: no per-model table exists and every model key --- known,
+    unknown or None --- resolves to the same four passes."""
+    for model in ("qwen3-4b", "qwen3-4b-instruct-2507", "gemma-3n-e2b-it",
+                  "gemma-3n-e4b-it", "unknown-model", None):
         assert R.calibration_frame_offsets(model) == (0, 1, 2, 3)
         assert R.calibration_passes(model) == R.CALIBRATION_MAX_PASSES
         assert R.calibration_topics_per_frame(model) == C.N_CALIBRATION == 192
         assert R.calibration_topics_per_frame_per_split(model) == 96
-    # and no other model moved
-    assert R.calibration_frame_offsets("gemma-3n-e2b-it") == \
-        R.CALIBRATION_FRAME_OFFSETS == (0, 2)
-    assert R.calibration_topics_per_frame("gemma-3n-e4b-it") == 96
+    assert not hasattr(R, "CALIBRATION_FRAME_OFFSETS_BY_MODEL")
+    assert "universal" in R.CALIBRATION_POLICY
 
 
-def test_the_manifest_states_the_raised_allocation_per_model():
+def test_the_manifest_states_the_universal_allocation_for_every_model():
     by_model = _manifest()["design"]["calibration_allocation"]["by_model"]
-    raised = {m for m, e in by_model.items() if not e["is_default"]}
-    assert raised == {"qwen3-4b", "qwen3-4b-instruct-2507"}
-    for m in raised:
-        assert by_model[m]["passes"] == 4
-        assert by_model[m]["topics_per_frame"] == 192
+    assert by_model, "no model in the manifest"
+    for m, e in by_model.items():
+        assert e["is_default"], m
+        assert e["passes"] == 4
+        assert e["topics_per_frame"] == 192
         assert by_model[m]["generations_per_rung"] == 192 * C.M_CAL * 4

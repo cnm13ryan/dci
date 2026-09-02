@@ -1,40 +1,31 @@
-"""The prospective allocation and multiplicity rule (decided 2026-09-02).
+"""Precision of Delta_R(f) at the one confirmatory allocation.
 
-**The family.** Under Approach A a model's primary claims are Delta_R(f)
-and its F1 companions on every frame that enters the LOCAL arm, and
-delta_difficulty(f) on every frame that enters the SPECTRUM arm; each in
-both registered configurations. §15's F1 is the registered per-frame
-family and keeps its six members. What frame conditioning adds is a
-**joint family per (model, configuration)**: every F1 member of every
-entering frame, whose simultaneous critical value is the studentised
-maximum-modulus over a *topic*-level bootstrap (one draw of the 384
-confirmatory topics shared by every frame's members --- the same topic
-underlies each frame's block, so the joint variation is the real one).
-The decision interval of every primary claim is the **joint** one; the
-per-frame F1 interval is reported beside it. A model-level LOCAL claim is
-the conjunction over its entering frames (an intersection-union test,
-which needs no further adjustment); "supported on at least one frame" is
-never emitted.
+The allocation is ``rules.CONFIRMATORY_BLOCKS_PER_FRAME`` (384 blocks per
+frame, the ceiling; rules.py states its history). This module no longer
+*chooses* an allocation --- the 2026-09-02 menu rule ({288, 384} at the joint
+Šidák constant) is superseded, because two active sources of one number are
+one too many --- it **projects** §16.1's variance form at that allocation,
+under the registered planning constants and under the adverse scenarios,
+and states whether the registered precision precondition
+(``C.PRECISION_PRECONDITIONS["Delta_R"]``, 0.05 on the simultaneous
+half-width) is projected to hold at the joint constant for a model with
+``n_frames`` LOCAL frames. When it is not, nothing moves: §17.3's realised
+interval decides (the non-terminal ``INSUFFICIENT_PRECISION``).
 
-**The precision rule.** The confirmatory allocation --- blocks per frame,
-from {288, 384} --- is the smallest that meets Delta_R's registered
-precondition (simultaneous half-width <= 0.05) at the joint family's
-Šidák planning constant, k = |F1| x (frames entering LOCAL), under the
-registered variance model (§16.1, ``dci1v4.analysis.variance``) at **both**
-of: (i) ``REGISTERED_ALTERNATE`` (phi 0.37, rho 0.5, p(1-p) 0.215), the
-sensitivity value §16.3 carries; (ii) ``COMPOSED_AT_HALF`` (phi 0.27, rho
-0.5, p(1-p) 0.25): the composed cell at 0.5, which is what the hypothesis
-predicts and what the pre-freeze anchor at B's *solo* rate understates.
-The two explicit bounds (``WORST_CASE``: rho 0; ``ALTERNATE_AT_HALF``:
-phi 0.37 and p(1-p) 0.25 together) are reported and gate nothing. The
-Šidák value is an upper bound on the bootstrap's maximum-modulus value,
-so it is the conservative planning constant, exactly as §16.2 uses it.
+Scenarios. ``REGISTERED_PLANNING`` (phi 0.27, rho 0.5, p(1-p) 0.215) is
+§16.2's own planning point; ``REGISTERED_ALTERNATE`` (phi 0.37) the
+sensitivity value §16.3 carries; ``COMPOSED_AT_HALF`` and
+``ALTERNATE_AT_HALF`` put every composed rate at 0.5 (p(1-p) = 0.25);
+``WORST_CASE`` also drops the topic correlation to 0. The two the previous
+rule read (``RULE_SCENARIOS``) are still the ones the record calls
+"adverse"; the bounds are reported beside them.
 
-384 blocks per frame is every confirmatory topic under every entering
-frame --- the ceiling --- and it is what the rule selects for two entering
-frames (k = 12) and three (k = 18); at four (k = 24) the alternate row sits
-on the line and the realised interval decides (§17.3's non-terminal
-``INSUFFICIENT_PRECISION``). No threshold moves.
+Multiplicity (``MULTIPLICITY_RULE``) is unchanged from the confirmatory
+layer of 2026-09-02: F1 per (model, frame, configuration) by the bootstrap
+studentised maximum-modulus; the joint cross-frame family of every F1
+member of every entering frame per (model, configuration) from a
+topic-level bootstrap; a model-level LOCAL claim is the conjunction over
+entering frames.
 """
 from __future__ import annotations
 
@@ -45,14 +36,16 @@ from typing import Any
 from dci1v4.analysis.variance import variances
 from dci1v7.analysis.bootstrap import sidak_critical
 from dci1v7.protocol import constants as C
+from dci1v8dev import rules as R
 
-__all__ = ["FAMILY_SIZE_PER_FRAME", "ALLOCATION_MENU", "SCENARIOS",
+__all__ = ["FAMILY_SIZE_PER_FRAME", "ALLOCATION", "SCENARIOS",
            "RULE_SCENARIOS", "PRECONDITION", "joint_family_size",
-           "project", "choose_allocation", "allocation_record",
+           "project", "precision_at", "allocation_record",
            "MULTIPLICITY_RULE", "PRECISION_RULE"]
 
 FAMILY_SIZE_PER_FRAME = len(C.FAMILY_MEMBERS[C.PRIMARY_FAMILY])   # 6
-ALLOCATION_MENU = (288, 384)
+#: The one allocation. Stated in ``rules`` and read here; never chosen here.
+ALLOCATION = R.CONFIRMATORY_BLOCKS_PER_FRAME
 PRECONDITION = C.PRECISION_PRECONDITIONS["Delta_R"]
 SCENARIOS: dict[str, dict[str, float]] = {
     "REGISTERED_PLANNING": {"phi": C.PHI_PRIMARY, "rho": C.RHO,
@@ -78,11 +71,13 @@ MULTIPLICITY_RULE = (
     "(intersection-union; no further adjustment); no at-least-one-frame "
     "claim exists")
 PRECISION_RULE = (
-    "the smallest allocation in {288, 384} blocks per frame whose projected "
-    "simultaneous half-width for Delta_R at the joint Šidák constant "
-    "(k = 6 x LOCAL frames entering) is <= 0.05 under BOTH "
-    "REGISTERED_ALTERNATE and COMPOSED_AT_HALF; §16.1's variance form, "
-    "§16.2's precondition and §17.3's realised evaluation unchanged")
+    "one allocation, rules.CONFIRMATORY_BLOCKS_PER_FRAME = 384 blocks per "
+    "entering frame (the ceiling), for every model; §16.1's variance form "
+    "is projected at it under the registered planning constants and the "
+    "adverse scenarios at the joint Šidák constant (k = 6 x LOCAL frames "
+    "entering) and the projection is recorded; §16.2's precondition and "
+    "§17.3's realised evaluation decide, and no allocation is chosen from "
+    "a menu")
 
 
 def joint_family_size(n_frames: int) -> int:
@@ -111,39 +106,38 @@ def project(*, blocks: int, n_frames: int, scenario: str,
             "precondition": PRECONDITION}
 
 
-def choose_allocation(n_frames: int) -> dict[str, Any]:
-    """The rule, applied: the smallest menu entry passing both rule
-    scenarios at the joint constant; the ceiling if none does, with the
-    fact recorded."""
-    table = {b: {sc: project(blocks=b, n_frames=n_frames, scenario=sc)
-                 for sc in SCENARIOS} for b in ALLOCATION_MENU}
-    chosen = None
-    for b in ALLOCATION_MENU:
-        if all(table[b][sc]["meets_precondition_joint"] for sc in RULE_SCENARIOS):
-            chosen = b
-            break
-    at_ceiling_by_default = chosen is None
-    if chosen is None:
-        chosen = ALLOCATION_MENU[-1]
+def precision_at(n_frames: int, *, blocks: int = ALLOCATION) -> dict[str, Any]:
+    """§16.1 projected at the allocation for a model with ``n_frames`` LOCAL
+    frames: every scenario, and whether the adverse pair meets the
+    precondition at the joint constant. Descriptive; nothing is chosen."""
+    table = {sc: project(blocks=blocks, n_frames=n_frames, scenario=sc)
+             for sc in SCENARIOS}
     return {"n_frames": n_frames, "joint_family_size": joint_family_size(n_frames),
-            "menu": list(ALLOCATION_MENU), "rule_scenarios": list(RULE_SCENARIOS),
-            "chosen_blocks_per_frame": chosen,
-            "rule_met_at_chosen": not at_ceiling_by_default,
-            "note": ("no menu entry meets the rule; the ceiling is taken and "
-                     "§17.3 evaluates the realised interval"
-                     if at_ceiling_by_default else "rule met"),
-            "table": {str(b): table[b] for b in ALLOCATION_MENU},
-            "precondition": PRECONDITION,
+            "blocks_per_frame": blocks,
+            "rule_scenarios": list(RULE_SCENARIOS),
+            "precondition_met_adverse": all(
+                table[sc]["meets_precondition_joint"] for sc in RULE_SCENARIOS),
+            "precondition_met_planning": table["REGISTERED_PLANNING"][
+                "meets_precondition_joint"],
+            "table": table, "precondition": PRECONDITION,
             "multiplicity_rule": MULTIPLICITY_RULE,
             "precision_rule": PRECISION_RULE}
 
 
 def allocation_record(n_frames_by_model: dict[str, int]) -> dict[str, Any]:
-    """The study-level decision: one allocation for every model, chosen at
-    the largest entering frame count, so the design is one design."""
+    """The study-level statement: the one allocation, with the precision
+    projected for every model at its LOCAL frame count and at the largest
+    count in the study."""
     n_max = max([1] + list(n_frames_by_model.values()))
-    decision = choose_allocation(n_max)
+    at_max = precision_at(n_max)
     return {"frames_entering_local_by_model": dict(n_frames_by_model),
-            "decided_at_n_frames": n_max, **decision,
-            "per_model": {m: choose_allocation(n)["chosen_blocks_per_frame"]
-                          for m, n in n_frames_by_model.items()}}
+            "chosen_blocks_per_frame": ALLOCATION,
+            "source": "rules.CONFIRMATORY_BLOCKS_PER_FRAME",
+            "decided_at_n_frames": n_max,
+            "joint_family_size": at_max["joint_family_size"],
+            "precondition_met_adverse_at_max": at_max["precondition_met_adverse"],
+            "table": at_max["table"], "precondition": PRECONDITION,
+            "per_model": {m: precision_at(max(1, n))
+                          for m, n in sorted(n_frames_by_model.items())},
+            "multiplicity_rule": MULTIPLICITY_RULE,
+            "precision_rule": PRECISION_RULE}

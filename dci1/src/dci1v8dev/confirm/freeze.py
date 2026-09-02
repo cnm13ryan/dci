@@ -29,6 +29,7 @@ from dci1v7.protocol import constants as C
 
 from dci1v8dev.confirm import (CONFIRM_DOCUMENT, MEMBERSHIP_DOCUMENT,
                                PROTOCOL_VERSION)
+from dci1v8dev import rules as R
 from dci1v8dev.confirm import lifecycle as L
 from dci1v8dev.confirm import precision as P
 from dci1v8dev.confirm.manifest import analysis_code_hashes
@@ -76,6 +77,8 @@ def frozen_frames(membership: Mapping[str, Any]) -> dict[str, Any]:
             "iota_a", "solo_compliance_b", "core", "backups",
             "local_valid_families", "identification_statuses", "stability",
             "reference_sensitivity")}
+        out[w]["runner_up_slots"] = list(e.get("runner_up_slots") or [])
+        out[w]["runner_up"] = e.get("runner_up")
     return out
 
 
@@ -117,6 +120,12 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
                  if blocks_per_frame is None else blocks_per_frame)
     if blocks_per_frame is not None and not tree.synthetic:
         raise ProtocolError("blocks_per_frame is a synthetic-namespace knob")
+    if blocks_per_frame is None and blocks != R.CONFIRMATORY_BLOCKS_PER_FRAME:
+        raise ProtocolError(
+            f"the membership lock says {blocks} blocks per frame and "
+            f"rules.CONFIRMATORY_BLOCKS_PER_FRAME says "
+            f"{R.CONFIRMATORY_BLOCKS_PER_FRAME}; one allocation exists and "
+            "the lock must be regenerated")
     return {
         "stage": L.STAGE_FROZEN,
         "artifact_type": L.STAGE_ARTIFACT_TYPE[L.STAGE_FROZEN],
@@ -165,6 +174,16 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
         "documents": {**registration["documents"],
                       "confirm_document": CONFIRM_DOCUMENT},
         "backups_never_substituted": True,
+        "operating_point_rule": {
+            "min_recovery": R.OPERATING_POINT_MIN_RECOVERY,
+            "resamples": R.OPERATING_POINT_BOOTSTRAP_RESAMPLES,
+            "statuses_by_frame": {w: ((e.get("stability") or {}).get("status"))
+                                  for w, e in frozen_frames(membership).items()},
+            "frozen_point_authoritative": True,
+            "runner_up_arm": "sensitivity only; licenses no claim"},
+        "calibration_policy": {"rule": R.CALIBRATION_POLICY,
+                               "frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
+                               "topics_per_frame": R.CALIBRATION_TOPICS_PER_FRAME},
         "no_composed_cells_before_this_record": True,
         "immutable_after": "this record; lifecycle.assert_no_post_freeze_"
                            "mutation refuses any earlier stage",

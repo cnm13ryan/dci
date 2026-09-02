@@ -30,7 +30,8 @@ from dci1v4.protocol.hashing import canonical_json
 from dci1v8dev.run import stages as PS
 from dci1v8dev.run.context import (REPO_ROOT, STUDY_ID, SYNTHETIC_STUDY_ID,
                                    StudyContext, EVIDENCE_DIRNAME)
-from dci1v8dev.run.lifecycle import instrument_hashes, now
+from dci1v8dev.run.lifecycle import (environment_record, instrument_hashes,
+                                     now, stage_provenance)
 from dci1v8dev.confirm import CLASSIFICATION
 
 __all__ = [
@@ -339,6 +340,11 @@ def run_stage(tree: ConfirmTree, stage: str, *,
               compute: Callable[[dict[str, Any]], dict[str, Any]],
               producing_commit: str, environment_digest: str) -> StageOutcome:
     """Guard, compute, sign, mirror, log --- the one way a stage runs."""
+    provenance = stage_provenance(tree.context.repo_root,
+                                  namespace=tree.context.namespace,
+                                  producing_commit=producing_commit)
+    producing_commit = provenance["producing_commit"]
+    environment = environment_record(environment_digest)
     entry = instrument_hashes()
     try:
         assert_transition_legal(tree, stage)
@@ -371,8 +377,10 @@ def run_stage(tree: ConfirmTree, stage: str, *,
     payload.setdefault("namespace", tree.context.namespace)
     payload.setdefault("model_key", tree.model_key)
     payload.setdefault("classification", CLASSIFICATION)
-    payload.setdefault("producing_commit", producing_commit)
+    payload["producing_commit"] = producing_commit
     payload.setdefault("environment_digest", environment_digest)
+    payload["provenance"] = provenance
+    payload["environment"] = environment
     payload.setdefault("verifier_hash", entry["verifier_hash"])
     payload.setdefault("wording_hash", entry["wording_hash"])
     payload.setdefault("recorded_at", now())

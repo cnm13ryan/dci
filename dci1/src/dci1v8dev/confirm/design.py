@@ -31,9 +31,17 @@ v7's block is an admitted set of arms with derived cells (``dci1v7.design
 | core | 21 | R1..R3 solo; every remaining unordered pair over {A,B,R1,R2,R3}, both orders |
 | backup | 6 | R4, R5 solo; B+R4, R4+B, B+R5, R5+B |
 | spectrum | 3k | S_j solo; B+S_j, S_j+B for each non-aliased selected point |
+| runner_up | 3 and/or 9 | A2 solo, B+A2, A2+B when n*(f) is unstable; B2 solo, A+B2, B2+A, R_j+B2, B2+R_j (j = 1..3) when m*(f) is |
 
 A LOCAL frame runs base + core + backup (32 cells); a SPECTRUM frame runs
-base + spectrum; a frame in both runs all four. A block is one confirmatory
+base + spectrum; a frame in both runs all four. A LOCAL frame whose frozen
+operating point is ``OPERATING_POINT_UNSTABLE`` on a coordinate (rules
+``OPERATING_POINT_MIN_RECOVERY``) also runs the **runner_up** arm for that
+coordinate: A2 is A at the runner-up n, B2 is B at the runner-up m, and the
+arm's cells let Δ_R(f) be re-formed at the runner-up value from the same
+blocks (A2 against the frozen core; B2 against A and the frozen core). The
+arm is a sensitivity path and licenses no claim; the frozen n*(f), m*(f)
+are never replaced. A block is one confirmatory
 topic under one frame; ``FrameBlock.index`` is ``4 * position + frame`` so
 that the pilot's invariant ``frame == block_index % N_WORDINGS`` holds on
 every row (``execute.frame_of_block``), and the allocation is every
@@ -50,15 +58,19 @@ from dci1v4.errors import ProtocolError
 from dci1v7.design.cells import CellType
 from dci1v7.protocol import constants as C
 
-__all__ = ["ARM_BASE", "ARM_CORE", "ARM_BACKUP", "ARM_SPECTRUM", "ARMS",
-           "BACKUP_SLOTS", "MAX_SPECTRUM_POINTS", "spectrum_slot_names",
+__all__ = ["ARM_BASE", "ARM_CORE", "ARM_BACKUP", "ARM_SPECTRUM", "ARM_RUNNER_UP",
+           "ARMS", "BACKUP_SLOTS", "RUNNER_UP_SLOTS", "MAX_SPECTRUM_POINTS",
+           "spectrum_slot_names", "normalise_runner_up",
            "normalise_arms", "slot_order_key", "slots_for", "cell_types",
            "n_cells_for", "FrameBlock", "Cell", "block_cells", "design_cells",
            "assert_frame_allocation", "frame_blocks", "block_index_of"]
 
 ARM_BASE, ARM_CORE, ARM_BACKUP, ARM_SPECTRUM = "base", "core", "backup", "spectrum"
-ARMS = (ARM_BASE, ARM_CORE, ARM_BACKUP, ARM_SPECTRUM)
+ARM_RUNNER_UP = "runner_up"
+ARMS = (ARM_BASE, ARM_CORE, ARM_BACKUP, ARM_SPECTRUM, ARM_RUNNER_UP)
 BACKUP_SLOTS = ("R4", "R5")
+#: A2 = A at the runner-up n; B2 = B at the runner-up m.
+RUNNER_UP_SLOTS = ("A2", "B2")
 #: ``rules.SELECTION_MAX_FAMILIES`` families x (low, centre, high); a centre
 #: that is a core or backup rung is aliased and not counted here.
 MAX_SPECTRUM_POINTS = 12
@@ -71,7 +83,16 @@ def spectrum_slot_names(n: int) -> tuple[str, ...]:
 
 
 SLOT_ORDER = C.BASE_SLOTS + C.CORE_SLOTS + BACKUP_SLOTS + \
-    spectrum_slot_names(MAX_SPECTRUM_POINTS)
+    spectrum_slot_names(MAX_SPECTRUM_POINTS) + RUNNER_UP_SLOTS
+
+
+def normalise_runner_up(runner_up: Iterable[str]) -> tuple[str, ...]:
+    requested = set(runner_up)
+    unknown = sorted(requested - set(RUNNER_UP_SLOTS))
+    if unknown:
+        raise ProtocolError(f"{unknown} are not runner-up slots; registered: "
+                            f"{RUNNER_UP_SLOTS}")
+    return tuple(s for s in RUNNER_UP_SLOTS if s in requested)
 
 
 def slot_order_key(slot: str) -> int:
@@ -91,11 +112,21 @@ def normalise_arms(arms: Iterable[str]) -> tuple[str, ...]:
         raise ProtocolError("the backup arm exists for the reference-"
                             "sensitivity contrast over {R1..R5} and needs "
                             "the core arm")
+    if ARM_RUNNER_UP in requested and ARM_CORE not in requested:
+        raise ProtocolError("the runner-up arm re-forms Delta_R(f) at the "
+                            "runner-up operating point and needs the core arm")
     return tuple(a for a in ARMS if a in requested)
 
 
-def slots_for(arms: Sequence[str], *, n_spectrum: int) -> tuple[str, ...]:
+def slots_for(arms: Sequence[str], *, n_spectrum: int,
+              runner_up: Iterable[str] = ()) -> tuple[str, ...]:
     admitted = normalise_arms(arms)
+    extra = normalise_runner_up(runner_up)
+    if extra and ARM_RUNNER_UP not in admitted:
+        raise ProtocolError(f"runner-up slots {list(extra)} without the "
+                            "runner_up arm")
+    if ARM_RUNNER_UP in admitted and not extra:
+        raise ProtocolError("the runner_up arm names no slot")
     slots: list[str] = list(C.BASE_SLOTS)
     if ARM_CORE in admitted:
         slots += list(C.CORE_SLOTS)
@@ -103,13 +134,17 @@ def slots_for(arms: Sequence[str], *, n_spectrum: int) -> tuple[str, ...]:
         slots += list(BACKUP_SLOTS)
     if ARM_SPECTRUM in admitted:
         slots += list(spectrum_slot_names(n_spectrum))
+    if ARM_RUNNER_UP in admitted:
+        slots += list(extra)
     return tuple(slots)
 
 
-def cell_types(arms: Sequence[str], *, n_spectrum: int) -> list[CellType]:
+def cell_types(arms: Sequence[str], *, n_spectrum: int,
+               runner_up: Iterable[str] = ()) -> list[CellType]:
     """Every logical cell of one block, in a stable order."""
     admitted = normalise_arms(arms)
-    slots = slots_for(admitted, n_spectrum=n_spectrum)
+    extra = normalise_runner_up(runner_up)
+    slots = slots_for(admitted, n_spectrum=n_spectrum, runner_up=extra)
     types = [CellType("unconstrained", ())]
     types += [CellType("solo", (s,)) for s in slots]
     core = [s for s in slots if s in C.BASE_SLOTS + C.CORE_SLOTS]
@@ -117,10 +152,15 @@ def cell_types(arms: Sequence[str], *, n_spectrum: int) -> list[CellType]:
     linear = [s for s in slots if s in BACKUP_SLOTS
               or s in spectrum_slot_names(MAX_SPECTRUM_POINTS)]
     pairs += [("B", s) for s in linear]
+    if "A2" in slots:
+        pairs.append(("B", "A2"))
+    if "B2" in slots:
+        pairs.append(("A", "B2"))
+        pairs += [(r, "B2") for r in C.CORE_SLOTS if r in slots]
     for first, second in pairs:
         types.append(CellType("composed", (first, second)))
         types.append(CellType("composed", (second, first)))
-    expected = n_cells_for(admitted, n_spectrum=n_spectrum)
+    expected = n_cells_for(admitted, n_spectrum=n_spectrum, runner_up=extra)
     if len(types) != expected:
         raise ProtocolError(f"derived {len(types)} cells; the arms "
                             f"{list(admitted)} imply {expected}")
@@ -129,8 +169,10 @@ def cell_types(arms: Sequence[str], *, n_spectrum: int) -> list[CellType]:
     return types
 
 
-def n_cells_for(arms: Sequence[str], *, n_spectrum: int) -> int:
+def n_cells_for(arms: Sequence[str], *, n_spectrum: int,
+                runner_up: Iterable[str] = ()) -> int:
     admitted = normalise_arms(arms)
+    extra = normalise_runner_up(runner_up)
     n = 5
     if ARM_CORE in admitted:
         n += 21
@@ -138,6 +180,11 @@ def n_cells_for(arms: Sequence[str], *, n_spectrum: int) -> int:
         n += 6
     if ARM_SPECTRUM in admitted:
         n += 3 * n_spectrum
+    if ARM_RUNNER_UP in admitted:
+        if "A2" in extra:
+            n += 3                       # A2; B+A2; A2+B
+        if "B2" in extra:
+            n += 1 + 2 + 2 * len(C.CORE_SLOTS)   # B2; A+B2, B2+A; R_j+B2, B2+R_j
     return n
 
 
@@ -189,9 +236,10 @@ class Cell:
 
 
 def block_cells(block: FrameBlock, arms: Sequence[str], *, n_spectrum: int,
-                draws: int = C.M_DRAWS) -> list[Cell]:
+                draws: int = C.M_DRAWS, runner_up: Iterable[str] = ()
+                ) -> list[Cell]:
     out: list[Cell] = []
-    for t in cell_types(arms, n_spectrum=n_spectrum):
+    for t in cell_types(arms, n_spectrum=n_spectrum, runner_up=runner_up):
         out.append(Cell(
             cell_id=t.cell_id, arm=t.arm, block_id=block.block_id,
             block_index=block.index, frame=block.frame,
@@ -201,11 +249,12 @@ def block_cells(block: FrameBlock, arms: Sequence[str], *, n_spectrum: int,
 
 
 def design_cells(blocks: Sequence[FrameBlock], arms: Sequence[str], *,
-                 n_spectrum: int, draws: int = C.M_DRAWS) -> list[Cell]:
+                 n_spectrum: int, draws: int = C.M_DRAWS,
+                 runner_up: Iterable[str] = ()) -> list[Cell]:
     cells: list[Cell] = []
     for block in blocks:
         cells.extend(block_cells(block, arms, n_spectrum=n_spectrum,
-                                 draws=draws))
+                                 draws=draws, runner_up=runner_up))
     keys = {(c.block_id, c.cell_id) for c in cells}
     if len(keys) != len(cells):
         raise ProtocolError("a (block, cell) pair appears twice in the plan")
@@ -214,13 +263,14 @@ def design_cells(blocks: Sequence[FrameBlock], arms: Sequence[str], *,
 
 def assert_frame_allocation(cells: Sequence[Cell], arms: Sequence[str], *,
                             n_spectrum: int, frame: int,
-                            blocks_expected: int) -> dict[str, Any]:
+                            blocks_expected: int,
+                            runner_up: Iterable[str] = ()) -> dict[str, Any]:
     """Approach A's coverage assertion for one frame's plan: every block
     carries exactly the derived cell set, every stated slot is rendered
     under the block's frame (which is ``frame``), and both order variants
     of every composed cell are present in every block."""
     admitted = normalise_arms(arms)
-    types = cell_types(admitted, n_spectrum=n_spectrum)
+    types = cell_types(admitted, n_spectrum=n_spectrum, runner_up=runner_up)
     by_block: dict[str, set[tuple[str, tuple[str, ...]]]] = {}
     for cell in cells:
         if cell.frame != frame or cell.block_index % C.N_WORDINGS != frame:
