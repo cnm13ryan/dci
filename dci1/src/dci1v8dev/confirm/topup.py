@@ -246,6 +246,10 @@ def reverdict_gate3(source: PilotSource, gate2: Mapping[str, Any]
 
 
 def _survival_view(g3_frame: Mapping[str, Any]) -> dict[str, Any]:
+    """The verdict-bearing fields of a frame's survival block. LOCAL support
+    is derived by the rule from the fields, never read from a key: a pilot
+    record written before the rule existed (r8, r9) carries none, and the
+    re-verdict writes one --- a difference of bookkeeping, not of verdict."""
     s = g3_frame.get("survival")
     if not s:
         return {"state": g3_frame.get("state")}
@@ -254,7 +258,8 @@ def _survival_view(g3_frame: Mapping[str, Any]) -> dict[str, Any]:
             "n_backups": s["n_backups"],
             "core": [f"{c['family']}:{c['severity']}" for c in s["core_references"]],
             "backups": list(s["backups"]),
-            "local_supported": bool(s.get("local_supported")),
+            "local_supported": bool(EL.local_support(
+                s, frame=g3_frame.get("frame", 0))["local_supported"]),
             "coverage_identified": bool(s["coverage_identified"])}
 
 

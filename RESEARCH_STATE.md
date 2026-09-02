@@ -338,6 +338,46 @@ exactly one of sixteen recorded frame verdicts would differ. The LOCAL arm
 reads no block count and is invariant, which a test pins.
 
 v8 remains unfrozen and no composed cell exists.
+
+**The confirmatory layer (2026-09-02, `dci1/src/dci1v8dev/confirm/`,
+design note [`dci1/docs/V8_CONFIRMATORY.md`](dci1/docs/V8_CONFIRMATORY.md),
+commit cd61e72).** The audit of 2026-09-01 found that no frame-aware
+analysis existed --- Δ_R(f) was a declared estimand with no code --- and
+named five threats: a noise-driven n*(f), reference-triple dependence, a
+frame-blind screen, a precision claim resting on ρ = 0.5 with no frame
+multiplicity, and a per-model allocation asymmetry. The layer answers them
+prospectively, before any composed row: seven stages
+(`CONFIRM_REGISTERED` → `LOCAL_TOPUP` → `MEMBERSHIP` → `FROZEN` →
+`CONFIRMATORY_GENERATION` → `CONFIRMATORY_ANALYSIS` → `FINAL_REPORT`) in
+their own `dci1v8-confirm-*` roots, reading each model's pilot Gate-2/3
+records by verified signature; every estimator, bootstrap, boundary
+allowance and reading is v7's registered analysis code called per frame; a
+**joint cross-frame family** (topic-level resampling, one draw shared
+across frames) supplies the decision interval of every primary claim and a
+model-level LOCAL verdict is the conjunction over entering frames; the
+allocation is **384 blocks per frame** (every confirmatory topic under every
+entering frame) by a stated rule at the joint Šidák constant under
+REGISTERED_ALTERNATE and COMPOSED_AT_HALF (288 fails both at two frames);
+the two frozen backups are generated beside B and Δ_R(f) is re-formed over
+every admissible triple of {R1..R5} as a pre-registered sensitivity family;
+n*(f)/m*(f) stability under a topic bootstrap is on every freeze and Δ_R(f)
+is stated as conditional on the frozen operating point; and a symmetric
+**frame-aware LOCAL top-up** measures, on a frame's own calibration topics,
+the Tier-1/2 rungs the pooled screen left unmeasured inside that frame's
+caliper, iff the frame is short of §13.15's five families and the
+candidates could close the gap (dry-run: seven rungs on four frames of
+three models, ≈ 3k generations), with Gate 3 re-verdicted by the pilot's own
+kernel and untouched frames asserted to reproduce. Deviations from v7's
+post-freeze sequence (no masking stages; no near-form or class arm) are
+declared on the freeze. Validated on synthetic evidence only before any
+real stage ran: 29 fast tests, the seven-stage synthetic walk, the
+augmented §13.11 producer reproducing a stored row byte-for-byte, the
+pilot kernel re-verdicting r11 identically, and a companion-dependent
+effect read with the registered sign. The real run's membership, freeze
+and results are recorded in
+`dci1/reports/dci1v8dev/confirmatory_membership.md` and
+`dci1/reports/dci1v8dev/confirmatory/FINAL_REPORT.md` as they exist.
+
 **And r8's two high-iota_A frames are geometry, not a shortage**
 (`tools/v8_operating_point_diagnosis.py`, `V8_PILOT.md` §7f): §13.4's
 `V_head` admits raw solo compliance only in [0.1605, 0.8395] at 96 topics,
