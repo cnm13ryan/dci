@@ -115,7 +115,7 @@ def test_local_model_verdict_is_a_conjunction():
     assert local_model_verdict({0: b, 3: b})["verdict"] == "LOCAL_SUPPORTED_L3b"
     assert local_model_verdict({0: a, 3: b})["verdict"] == "LOCAL_SUPPORTED_L3a"
     assert local_model_verdict({0: a, 3: c})["verdict"] == "FRAME_HETEROGENEOUS"
-    assert local_model_verdict({0: c, 3: c})["verdict"] == "LOCAL_EQUIVALENT_L3c"
+    assert local_model_verdict({0: c, 3: c})["verdict"] == "LOCAL_EQUIVALENT_SAME_FORM_ONLY"
     assert local_model_verdict({0: a, 3: ip})["verdict"] == "INSUFFICIENT_PRECISION"
     assert local_model_verdict({})["verdict"] == "UNIDENTIFIED"
 

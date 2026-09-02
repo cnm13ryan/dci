@@ -94,9 +94,13 @@ def freeze_readiness(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
     # 3. universal calibration
     alloc = pilot_gate2.get("calibration_allocation") or {}
     offsets = tuple(alloc.get("frame_offsets") or ())
+    # A synthetic pilot walks a topic-limited bank; the passes are what the
+    # policy states and the topic count is the bank's, so the count is
+    # enforced only where the bank is the registered one.
+    topics_ok = (int(alloc.get("topics_per_frame") or 0) == R.CALIBRATION_TOPICS_PER_FRAME
+                 or tree.synthetic)
     items["calibration_policy"] = _item(
-        offsets == tuple(R.CALIBRATION_FRAME_OFFSETS)
-        and int(alloc.get("topics_per_frame") or 0) == R.CALIBRATION_TOPICS_PER_FRAME,
+        offsets == tuple(R.CALIBRATION_FRAME_OFFSETS) and topics_ok,
         "this model's pilot Gate 2 was measured at the universal calibration "
         "allocation (every pass, every frame)",
         pilot_frame_offsets=list(offsets),
@@ -197,7 +201,7 @@ def assert_freeze_ready(readiness: Mapping[str, Any], *, tree: L.ConfirmTree
     raise L.TerminalStatus(
         FREEZE_REFUSED, gate=L.STAGE_FROZEN,
         criterion="the freeze-readiness checklist (confirm.readiness) passes "
-                  "on every item",
+                  f"on every item; failed: {readiness['failed']}",
         observed={"failed": readiness["failed"],
                   "items": {k: {kk: vv for kk, vv in v.items()
                                 if kk in ("pass", "what")}

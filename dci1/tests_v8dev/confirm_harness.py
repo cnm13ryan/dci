@@ -132,3 +132,92 @@ def effect_generate(slot_maps: Mapping[int, Mapping[str, Constraint]], *,
                 produced["raw_generation"] = produced["final_answer"]
         return out
     return generate
+
+
+def with_iota(frame: Mapping[str, Any], *, core: float = 0.6,
+              backups: float = 0.55, iota_a: float | None = None
+              ) -> dict[str, Any]:
+    """The same frozen frame with difficulty coordinates on its references.
+
+    ``membership.frame_membership`` carries ``iota`` on every core and
+    backup entry; ``fabricated_frame`` does not, because most tests do not
+    read it. §23's projection audit does, so it is added here rather than
+    invented inside the audit.
+    """
+    out = {k: (list(v) if isinstance(v, list) else v)
+           for k, v in frame.items()}
+    out["core"] = [{**r, "iota": core} for r in frame["core"]]
+    out["backups"] = [{**r, "iota": backups} for r in frame["backups"]]
+    if iota_a is not None:
+        out["iota_a"] = iota_a
+    return out
+
+
+def with_runner_up(frame: Mapping[str, Any], *, slots: Sequence[str]
+                   ) -> dict[str, Any]:
+    """The same frozen frame with the runner-up arm for ``slots``.
+
+    The shape ``membership.frame_membership`` writes when a coordinate is
+    ``OPERATING_POINT_UNSTABLE``: A2 is A at the runner-up n, B2 is B at the
+    runner-up m, and the arm licenses no claim.
+    """
+    from dci1v8dev.confirm.design import n_cells_for
+    out = dict(frame)
+    slot_map = dict(frame["slot_map"])
+    values: dict[str, int] = {}
+    for slot in slots:
+        if slot == "A2":
+            q = int(frame["n_star"]) + 1
+            slot_map["A2"] = ["A", q, {"runner_up": True}]
+        elif slot == "B2":
+            q = int(frame["m_star"]) + 1
+            slot_map["B2"] = ["B", q, {"runner_up": True,
+                                       "extended": q in C.FOCAL_EXTENSION}]
+        else:
+            raise AssertionError(f"{slot!r} is not a runner-up slot")
+        values[slot] = q
+    arms = list(frame["arms"]) + ["runner_up"]
+    out.update({
+        "arms": arms, "slot_map": slot_map,
+        "runner_up_slots": list(slots),
+        "runner_up": {"slots": list(slots), "values": values,
+                      "status": "OPERATING_POINT_UNSTABLE",
+                      "rule": "sensitivity only; the frozen n*(f), m*(f) stand"},
+        "cells_per_block": n_cells_for(
+            arms, n_spectrum=int(frame["n_spectrum_slots"]),
+            runner_up=tuple(slots))})
+    return out
+
+
+def confirmatory_rows(frames: Mapping[int, Mapping[str, Any]], *,
+                      root: Path, blocks: int, generate=None,
+                      model_key: str = "qwen3-4b") -> list[dict[str, Any]]:
+    """One scored confirmatory row set for every frame of a fabricated
+    freeze: the frame's cells on the first ``blocks`` confirmatory topics,
+    through the production planner, prompt renderer and scorer."""
+    from dci1v7.topics.bank import load_bank
+    from dci1v8dev.confirm.design import FrameBlock, design_cells
+    from dci1v8dev.confirm.execute import generate_and_score, prompt_cell
+
+    slot_maps = {int(w): {s: constraint_of(v) for s, v in e["slot_map"].items()}
+                 for w, e in frames.items()}
+    if generate is None:
+        generate = composed_generate(slot_maps)
+    topics = list(load_bank().topics("confirmatory"))[:blocks]
+    by_id = {t["topic_id"]: t for t in topics}
+    rows: list[dict[str, Any]] = []
+    for w, e in frames.items():
+        fb = [FrameBlock(position=i, frame=int(w), topic_id=t["topic_id"],
+                         area=t["area"]) for i, t in enumerate(topics)]
+        cells = design_cells(fb, e["arms"], n_spectrum=e["n_spectrum_slots"],
+                             runner_up=tuple(e.get("runner_up_slots") or ()))
+        prompts = [prompt_cell(c, by_id[c.topic_id], slot_map=slot_maps[int(w)])
+                   for c in cells]
+        rows += generate_and_score(
+            model_key, prompts, stage=L.STAGE_GENERATION, cap=512, device=0,
+            run_dir=Path(root) / f"frame-{w}",
+            instances=tuple(dict.fromkeys(slot_maps[int(w)].values())),
+            slot_map=slot_maps[int(w)], study_id="dci1v8-synthetic",
+            protocol_identity={"test": True}, generate=generate,
+            composed_licensed=True)
+    return rows

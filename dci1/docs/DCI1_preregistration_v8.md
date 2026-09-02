@@ -555,10 +555,15 @@ calls are hashed into the manifest and the freeze.
    configurations agree on every reading; L4b is F11. L5 is withheld.
 5. **Cross-frame and model-level rule.** A model-level LOCAL statement is
    the **conjunction** of its entering frames' readings on the joint
-   intervals (intersection–union; no further adjustment): supported when
-   every entering frame supports it; `FRAME_HETEROGENEOUS` when the frames'
-   readings differ; `INSUFFICIENT_PRECISION` when any entering frame's
-   primary interval misses its precondition. Frames are reported side by
+   intervals (intersection–union; no further adjustment). The verdict set
+   (`confirm/analysis.py::MODEL_VERDICTS`) is `LOCAL_SUPPORTED_L3a`,
+   `LOCAL_SUPPORTED_L3b` (every entering frame at that level or above),
+   `LOCAL_EQUIVALENT_SAME_FORM_ONLY` (every entering frame at L3c; the
+   strong refutation `LOCAL_EQUIVALENT_L3c` is unreachable without the
+   near-form arm, disposition `NEAR_FORM_UNAVAILABLE`), `FRAME_HETEROGENEOUS`
+   (the frames' readings differ), `INSUFFICIENT_PRECISION` (any entering
+   frame's primary interval misses its precondition), `INDETERMINATE`, and
+   `UNIDENTIFIED` (no entering LOCAL frame). Frames are reported side by
    side; a frame-specific statement is a statement about that frame.
 6. **Robustness, executed.** F5: the six F1 members under the
    vacuity-forced recoding and D(B←A), Δ_R, δ_difficulty under the graded

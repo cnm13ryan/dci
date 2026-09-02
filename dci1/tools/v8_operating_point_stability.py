@@ -8,7 +8,7 @@ status rule (``rules.OPERATING_POINT_MIN_RECOVERY``) and the runner-up
 sensitivity arm are the confirmatory layer's; this tool renders them.
 
     tools/v8_operating_point_stability.py --root <confirm root>
-        [--out reports/dci1v8dev/freeze_readiness/operating_point_stability]
+        [--out reports/dci1v8dev/freeze_readiness/<operating_point_stability>]
 """
 from __future__ import annotations
 

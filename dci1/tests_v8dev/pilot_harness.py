@@ -36,8 +36,10 @@ _REAL_REPO_ROOT = Path(__file__).resolve().parents[2]
 
 REPO_TREES = ("dci1/src/dci1v4", "dci1/src/dci1v7", "dci1/src/dci1v8dev")
 REPO_FILES = ("dci1/uv.lock",)
+from dci1v8dev.confirm import CONFIRM_DOCUMENT, PREREGISTRATION_DOCUMENT  # noqa: E402
+
 DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, FRAME_DOCUMENT,
-             BASE_PREREGISTRATION)
+             BASE_PREREGISTRATION, CONFIRM_DOCUMENT, PREREGISTRATION_DOCUMENT)
 
 PLACEHOLDER = ("SYNTHETIC PLACEHOLDER --- NOT A DCI-1 ARTIFACT. Written by "
                "tests_v8dev/pilot_harness.py into a temporary repository so "
