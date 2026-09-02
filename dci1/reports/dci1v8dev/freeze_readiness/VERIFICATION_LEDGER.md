@@ -140,7 +140,13 @@ qwen3-4b-instruct-2507 f1 0.24; gemma-3n-e4b-it f3 0.12); the per-family
 distances (0.003–0.05) are everywhere smaller than their SEs (0.03–0.04).
 Over the five frozen families each LOCAL frame admits 9–10 triples; over
 all LOCAL-valid families up to 35. Frames with exactly three valid
-families have one forced triple (FORCED); one frame has no core (NO_CORE). **Resolved:** R1/R2/R3 stay the frozen
+families have one forced triple (FORCED); one frame has no core (NO_CORE).
+On seven of the ten cells with a choice the bootstrap re-selects some
+alternative triple *more often* than the frozen one (e.g. gemma-3n-e2b-it
+f0: MK4+MK5+XC3 on 0.43 against the frozen triple's 0.27): the ranking
+statistic is smaller than its own error, and the frozen primary is one
+draw from a set of practically tied controls. That is why the sensitivity
+family is registered, and it is a stated limitation of every Δ_R(f). **Resolved:** R1/R2/R3 stay the frozen
 primary; R4/R5 are frozen backups generated beside B; the analysis re-forms
 Δ_R(f) over every admissible triple of the five (F_REFSENS) and reports
 whether the reading changes; membership records carry the distances.

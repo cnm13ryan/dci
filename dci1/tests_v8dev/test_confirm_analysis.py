@@ -86,6 +86,36 @@ def test_analysis_forms_every_registered_member_per_frame(rows_and_freeze):
     assert sens["Delta_R[R1+R2+R3]"]["estimate"] == pytest.approx(dr["estimate"])
 
 
+def test_the_vacuity_families_are_formed_on_a_spectrum_only_frame(rows_and_freeze):
+    """§17.4's two families do not need the LOCAL arm: F5 recomputes the
+    members the frame WAS asked for, and F6 covers every companion the frame
+    puts beside B --- here A and the six spectrum points."""
+    rows, freeze = rows_and_freeze
+    out = A.analyse_model(rows, freeze, model_id=get_model(MODEL).model_id,
+                          resamples=150)
+    f1 = out["frames"]["1"]["configurations"][C.OUTCOME_FIRST]
+    assert set(f1) >= {"F1", "F5", "F6", "F_SPECTRUM"}
+    assert "F2" not in f1 and "F7" not in f1 and "F_RUNNER_UP" not in f1
+    # no reference set, so no Delta_R or Xi recoding either
+    assert set(f1["F5"]["members"]) == {
+        "D(B<-A)|vacuity_forced", "D(A<-B)|vacuity_forced",
+        "Lambda|vacuity_forced", "delta_difficulty|vacuity_forced",
+        "D(B<-A)|graded_0.99", "delta_difficulty|graded_0.99"}
+    assert set(f1["F6"]["members"]) == {"vac(B|A+B)-vac(B solo)"} | {
+        f"vac(B|B+S{i})-vac(B solo)" for i in range(1, 7)}
+    ledger = (out["frames"]["1"]["identification_ledger"]["configurations"]
+              [C.OUTCOME_FIRST])
+    assert ledger["F1"]["Delta_R"]["status"] == "NOT_ASKED"
+    assert ledger["F2"]["Delta_1"]["status"] == "NOT_ASKED"
+    assert ledger["F5"]["Delta_R|vacuity_forced"]["status"] == "NOT_ASKED"
+    assert ledger["F_SPECTRUM"]["slope"]["status"] == "ESTIMATED"
+    # the L1/L2 gates are read on a frame with no reference set too
+    gates = out["frames"]["1"]["gates"][C.OUTCOME_FIRST]
+    assert set(gates["l1"]) == {"D(B<-A)", "D(A<-B)"}
+    assert gates["xi"] is None
+    assert gates["reference_heterogeneity"]["asked"] is False
+
+
 def test_joint_family_covers_every_entering_frames_f1(rows_and_freeze):
     rows, freeze = rows_and_freeze
     out = A.analyse_model(rows, freeze, model_id=get_model(MODEL).model_id,

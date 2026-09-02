@@ -10,7 +10,7 @@ scored, nothing is written under an evidence root, and no protected
 directory is read (the run directory must belong to a pilot stage).
 
     tools/v8_backend_determinism.py --run-dir <backend run dir> --device N
-        [--n 64] --out reports/dci1v8dev/freeze_readiness/backend_determinism
+        [--n 64] --out reports/dci1v8dev/freeze_readiness/<backend_determinism>
 """
 from __future__ import annotations
 
