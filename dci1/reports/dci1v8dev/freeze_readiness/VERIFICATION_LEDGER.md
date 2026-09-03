@@ -196,6 +196,14 @@ models are re-measured on fresh roots (`dci1v8-pilot-r12`, `-r13`) from a
 clean worktree at that commit; eligibility is recomputed for every model on
 the same basis by the confirmatory layer; the readiness audit refuses a
 model whose pilot Gate 2 was not at the universal allocation.
+**Outcome of the re-measurement (pilot Gate 3, before top-up and
+re-verdict):** `gemma-3n-e2b-it` r12 (2026-09-02 21:55Z) — frames 0, 1, 3
+LOCAL-supported (6/2, 6/2, 7/2 families/backups; f2 3/0), all of f0, f1, f3
+spectrum-identified; at two passes (r8) only f1 and f3 were supported.
+`gemma-3n-e4b-it` r13 (2026-09-03 05:35Z) — frames 0, 1, 3 LOCAL-supported
+(5/2, 6/2, 7/2; f2 4/1), all four frames spectrum-identified; at two passes
+(r11) only f3 was supported and the model was LOCAL-ineligible. The
+model-specific budget had decided eligibility.
 
 ## 9. Allocation conflict — CONFIRMED
 
