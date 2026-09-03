@@ -1,7 +1,9 @@
 # DCI-1 protocol v8 — preregistration (standalone)
 
-Status: DRAFT (pre-freeze audit of 2026-09-02; becomes `Status: FROZEN-READY`
-only when §19's readiness audit passes on every item for the study roots).
+Status: FROZEN-READY (text final on 2026-09-03 after the pre-freeze audit of
+2026-09-02; every `FROZEN` record of the study roots carries §19's readiness
+audit on this document's hash, and no sentence here changes after the first
+such record exists).
 
 This document describes the experiment the code executes. It is standalone:
 nothing here is defined by reference to the v7 preregistration, although §20
@@ -679,6 +681,14 @@ basis. From this document onward no rule changes in response to a
 pre-freeze near-miss unless the change is itself preregistered here.
 
 ## Appendix B — identities bound at freeze
+
+Pilot roots bound by the confirmatory manifest (all four at the universal
+calibration allocation of §9): `qwen3-4b` → `dci1/evidence/dci1v8-pilot-r9`
+(2026-08-31), `qwen3-4b-instruct-2507` → `dci1v8-pilot-r10` (2026-08-31),
+`gemma-3n-e2b-it` → `dci1v8-pilot-r12` (2026-09-02, from a clean worktree at
+`957e5d7`), `gemma-3n-e4b-it` → `dci1v8-pilot-r13` (2026-09-02/03, same).
+Confirmatory root: `dci1/evidence/dci1v8-confirm-r2`.
+
 
 Recorded in every `FROZEN` record and checked by §19.1: the commit, the
 rule-table hash, this document's hash, the wording hash
