@@ -7,7 +7,7 @@ Synthetic worlds run the whole chain with seeded draws at the registered sample 
 | world | identified | truth | family accept TP/FP/FN | selected families | points | offset below/above | span | SE(β̂) | local found/true | forwarded rungs | reserve picks (2nd pass) | extension | gens to freeze |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | wide | True | True | 5/0/0 | MK2, MK1, XC1, MK3 | 8 | 0.22/0.20 | 0.42 | 0.018 | 6/6 | 37 | {0: {'MK3': [9, 10]}} | {} | 36384 |
-| narrow | False | True | 1/0/3 | MK4 | 2 | 0.18/0.15 | 0.34 | 0.034 | 4/4 | 19 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10], 'MK4': [9, 10]}, 1: {'MK2': [11, 12]}, 2: {}, 3: {}} | {} | 24912 |
+| narrow | False | True | 1/0/3 | MK4 | 2 | 0.18/0.15 | 0.34 | 0.034 | 4/4 | 19 | {0: {'MK1': [9, 10], 'MK2': [9, 10], 'MK3': [9, 10], 'MK4': [9, 10]}, 1: {'MK2': [11, 12]}, 2: {}} | {} | 23904 |
 | flat | False | False | 0/0/0 |  | 0 | —/— | 0.00 | — | 4/4 | 16 | {} | {} | 19416 |
 | one_sided | False | False | 0/0/0 | MK2, MK1, MK4, MK3 | 8 | 0.31/— | 0.00 | 0.025 | 3/4 | 16 | {} | {} | 19416 |
 | outlier | True | True | 3/0/0 | MK2, MK1, MK3 | 6 | 0.30/0.16 | 0.46 | 0.019 | 4/4 | 23 | {} | {} | 24792 |
@@ -17,7 +17,7 @@ Synthetic worlds run the whole chain with seeded draws at the registered sample 
 | wording_confusion_v8 | True | True | 4/0/0 | MK3, MK1, MK2, MK6 | 8 | 0.15/0.16 | 0.31 | 0.023 | 4/4 | 25 | {} | {} | 26328 |
 - wide: first failing spectrum component — MK1:5:V_pos, MK2:5:V_pos, MK3:10:V_stab, MK3:5:V_pos, MK3:6:V_pos, MK5:5:V_pos, MK5:6:V_pos, MK5:8:V_pos, MK6:1:V_coord, MK6:4:V_stab, MK6:5:V_pos, XC1:4:V_pos
 - narrow: coverage reasons — 1 points below A; 2 required; 1 families below A; 2 required; 1 families above A; 2 required
-- narrow: first failing spectrum component — MK1:4:V_pos, MK1:5:V_pos, MK1:6:V_pos, MK1:7:V_pos, MK2:5:V_pos, MK2:6:V_pos, MK3:5:V_pos, MK3:6:V_pos, MK3:7:V_pos, MK4:4:V_pos, MK4:5:V_pos, MK4:6:V_pos
+- narrow: first failing spectrum component — MK1:5:V_pos, MK1:6:V_pos, MK1:7:V_pos, MK1:8:V_stab, MK2:5:V_pos, MK2:6:V_pos, MK3:5:V_pos, MK3:6:V_pos, MK3:7:V_pos, MK4:4:V_pos, MK4:5:V_pos, MK4:6:V_pos
 - flat: coverage reasons — 0 points below A; 2 required; 0 points above A; 2 required; 0 families below A; 2 required; 0 families above A; 2 required; no point at or beyond 0.1 below A; no point at or beyond 0.1 above A; total span 0.000 below 0.2; projected SE(beta) None above 0.05 (within-family leverage 0.0000)
 - flat: first failing spectrum component — MK1:3:V_pos, MK1:4:V_pos, MK1:5:V_pos, MK1:6:V_stab, MK2:1:V_pos, MK2:3:V_pos, MK2:5:V_pos, MK2:8:V_pos, MK3:2:V_pos, MK3:6:V_pos, MK3:7:V_pos, XC1:2:V_pos
 - one_sided: coverage reasons — 0 points above A; 2 required; 0 families above A; 2 required; no point at or beyond 0.1 above A; total span 0.000 below 0.2
@@ -98,6 +98,47 @@ Coverage-gate simulation choice: {'d_below': 0.1, 'd_above': 0.1, 'min_total_spa
 "SELECTION_TARGET_ABOVE": 0.15,
 "SELECTION_MAX_FAMILIES": 4,
 "SELECTION_MIN_SEPARATION": 0.05,
+"CONFIRMATORY_FRAME_OFFSETS": [
+0,
+1,
+2,
+3
+],
+"CONFIRMATORY_FRAME_PASSES": 4,
+"CONFIRMATORY_BLOCKS_PER_FRAME": 384,
+"CONFIRMATORY_BLOCKS_TOTAL": 1536,
+"CONFIRMATORY_MAX_PASSES": 4,
+"CONFIRMATORY_MAX_BLOCKS_PER_FRAME": 384,
+"CALIBRATION_FRAME_OFFSETS": [
+0,
+1,
+2,
+3
+],
+"CALIBRATION_POLICY": "universal: every study model calibrates at CALIBRATION_FRAME_OFFSETS; no per-model override exists",
+"CALIBRATION_FRAME_PASSES": 4,
+"CALIBRATION_TOPICS_PER_FRAME": 192,
+"CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT": 96,
+"CALIBRATION_GENERATIONS_PER_RUNG": 3072,
+"CALIBRATION_MAX_PASSES": 4,
+"CALIBRATION_MAX_TOPICS_PER_FRAME": 192,
+"LOCAL_ELIGIBILITY_MIN_FRAMES": 2,
+"OPERATING_POINT_BOOTSTRAP_RESAMPLES": 2000,
+"OPERATING_POINT_MIN_RECOVERY": 0.6666666666666666,
+"OPERATING_POINT_STABLE": "OPERATING_POINT_STABLE",
+"OPERATING_POINT_UNSTABLE": "OPERATING_POINT_UNSTABLE",
+"SCREEN_FRAME_OFFSETS": [
+0,
+1,
+2,
+3
+],
+"SCREEN_FRAME_PASSES": 4,
+"SCREEN_TOPICS_PER_FRAME": 24,
+"RETENTION_POLICY": "frame_aware",
+"RETENTION_TARGET_BASIS": "calibration_iota_a",
+"RETENTION_COMPARATOR": "legacy_pooled",
+"RESCREEN_BATCH_LAYOUT": "topics",
 "SCREEN_ACCEPT": 0.8,
 "SCREEN_REJECT": 0.2,
 "RESCREEN_FINAL_ACCEPT_AT": 0.5,
