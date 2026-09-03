@@ -123,8 +123,11 @@ Three of the four LOCAL frames fall below 2/3 on n*. **Resolved:**
 membership seeds it deterministically; the frozen point stays authoritative;
 the runner-up sensitivity arm (`design.ARM_RUNNER_UP`) is added to an
 unstable LOCAL frame's design and analysed as F_RUNNER_UP. The
-deterministic recomputation on the final pilot roots is in
-`operating_point_stability.md` beside this file.
+deterministic recomputation on the final pilot roots
+(`operating_point_stability.md`, root r2): n*(f) recovered on 0.50 / 0.51
+(e2b f0, f3), 0.43 / 0.42 (e4b f0, f1), 0.53 / 0.40 (qwen3-4b f0, f3) —
+six of the eight LOCAL frames `OPERATING_POINT_UNSTABLE` and carrying the
+runner-up arm; m*(f) unstable on e2b f0 (0.46) and e4b f0 (0.58).
 
 ## 5. Reference-triple instability — CONFIRMED
 

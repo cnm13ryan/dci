@@ -112,6 +112,18 @@ top-up measured "seven rungs" is corrected to six (the signed records).
 Old and new membership are not comparable: the calibration basis differs
 for the Gemma models and the coverage projection differs for every model.
 
+**Outcome (2026-09-03).** The Gemma pilots at four passes completed (r12
+21:55Z; r13 05:35Z): `gemma-3n-e2b-it` LOCAL-supported on f0, f1, f3 (r8: f1,
+f3), `gemma-3n-e4b-it` on f0, f1, f3 (r11: f3 only, ineligible). The successor
+root `dci1/evidence/dci1v8-confirm-r2` was registered at `3bfcb12`, topped
+up (qwen3-4b f2 only, 768 rows, no verdict moved; every untouched frame
+reproduced its pilot), locked (`f7af7f2`) and **frozen for all four models
+at 05:45Z on `f7af7f2`** with the readiness audit passing on every item:
+LOCAL e2b f0+f1+f3, e4b f0+f1+f3, qwen3-4b f0+f3, 2507 none; SPECTRUM on
+13 frames; 384 blocks per frame; 1,996,800 planned generations including
+the runner-up arm on six LOCAL frames. **No composed row has been generated
+for this design.** Report: `dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md`.
+
 ## 2026-09-02 (pre-freeze) — the v8 confirmatory layer: freeze, protected generation, frame-aware analysis; allocation 384 blocks per frame; joint cross-frame multiplicity; frame-aware LOCAL top-up; backups generated for a reference-sensitivity contrast
 
 **What changed.** A confirmatory layer, `dci1/src/dci1v8dev/confirm/`

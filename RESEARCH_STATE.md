@@ -407,8 +407,14 @@ of both lifecycles; the registered v7 safeguards restored per frame; a
 ten-item freeze-readiness audit; and a standalone preregistration,
 [`dci1/docs/DCI1_preregistration_v8.md`](dci1/docs/DCI1_preregistration_v8.md),
 bound by hash. The successor confirmatory root is `dci1v8-confirm-r2`; it
-adopts no row from the superseded one. Where the study stands after the
-audit is in
+adopts no row from the superseded one. **Frozen 2026-09-03 05:45Z at
+`f7af7f2`** for all four models after the Gemma re-measurement (r12, r13):
+LOCAL `gemma-3n-e2b-it` f0+f1+f3, `gemma-3n-e4b-it` f0+f1+f3, `qwen3-4b`
+f0+f3, `qwen3-4b-instruct-2507` none; SPECTRUM on thirteen frames; 384
+blocks per frame; 1,996,800 planned generations; six LOCAL frames carry
+the runner-up arm. **No protected composed row exists for this design;
+generation is the next step and was deliberately not started.** Where the
+study stands after the audit is in
 [`dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md`](dci1/reports/dci1v8dev/freeze_readiness/FREEZE_READINESS.md).
 
 **And r8's two high-iota_A frames are geometry, not a shortage**
