@@ -80,8 +80,7 @@ def topup_plan(source: PilotSource) -> dict[str, Any]:
     quantities only."""
     g1, g2, g3 = source.gate1, source.gate2, source.gate3
     fc = g1.get("frame_comparison_screen") or {}
-    forwarded = set((g2.get("calibration_population") or {})
-                    .get("forwarded") or [])
+    population = g2.get("calibration_population") or {}
     caliper = C.REFERENCE_CALIPER
     plan: dict[str, Any] = {}
     for w in PS.FRAMES:
@@ -90,6 +89,11 @@ def topup_plan(source: PilotSource) -> dict[str, Any]:
             plan[str(w)] = {"frame": w, "supported": False, "runs": False,
                             "reason": "no operating point"}
             continue
+        # The frame's own forwarded set (per-frame forwarding, 2026-09-03);
+        # a record from the pooled design carries one set for every frame.
+        by_frame_pop = (population.get("by_frame") or {}).get(str(w))
+        forwarded = set((by_frame_pop or {}).get("forwarded")
+                        or population.get("forwarded") or [])
         f3 = g3["by_frame"][str(w)]
         valid = set(f3["survival"]["local_valid_families"])
         need = max(0, PS.MIN_LOCAL_FAMILIES - len(valid))

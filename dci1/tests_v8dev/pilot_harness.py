@@ -23,7 +23,7 @@ from dci1v7.protocol import constants as C
 from dci1v7.topics.bank import load_bank
 from dci1v7.verifiers.constraints import FAMILIES, Constraint
 from dci1v8dev.run import (BASE_PREREGISTRATION, DESIGN_DOCUMENT,
-                           FRAME_DOCUMENT, PILOT_DOCUMENT)
+                           FRAME_DOCUMENT, PILOT_DOCUMENT, PRESCREEN_DOCUMENT)
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import model_tree, synthetic_context
 from dci1v8dev.run.execute import fake_backend
@@ -39,7 +39,8 @@ REPO_FILES = ("dci1/uv.lock",)
 from dci1v8dev.confirm import CONFIRM_DOCUMENT, PREREGISTRATION_DOCUMENT  # noqa: E402
 
 DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, FRAME_DOCUMENT,
-             BASE_PREREGISTRATION, CONFIRM_DOCUMENT, PREREGISTRATION_DOCUMENT)
+             PRESCREEN_DOCUMENT, BASE_PREREGISTRATION, CONFIRM_DOCUMENT,
+             PREREGISTRATION_DOCUMENT)
 
 PLACEHOLDER = ("SYNTHETIC PLACEHOLDER --- NOT A DCI-1 ARTIFACT. Written by "
                "tests_v8dev/pilot_harness.py into a temporary repository so "

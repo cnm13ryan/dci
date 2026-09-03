@@ -436,6 +436,27 @@ a frame × family interaction one canonical wording would have hidden. One
 defect was found by the run and fixed (the calibration extension's rungs
 had no chance column; `CHANGES_SCIENTIFIC.md`).
 
+**Successor design (2026-09-03, branch `dev/v8-frame-aware-prescreen`): the
+pre-screen becomes frame-specific.** After the freeze and before any
+composed row existed, the frame-pooled pre-screen was characterised
+against the signed r9/r12 records (byte-for-byte golden masters;
+`dci1/reports/dci1v8dev/frame_aware_prescreen/legacy_prescreen_characterization.md`)
+and a frame-aware policy was replayed beside it on the four study roots
+(`prescreen_feasibility.md`). The replay's finding is that at six pre-screen
+topics per frame a frame-aware screen is no better than the pooled one
+*because the sample size, not the frame, sets the noise* (the pooled rule
+subsampled to six topics is equally unstable), so the successor gives every
+frame the pooled screen's budget --- one pass per frame offset, every
+topic under every frame, as the calibration already does --- screens and
+re-screens per frame, and forwards each frame's set at Gate 2 against the
+frame's own ι_A(f) once the grids have fixed it, with the pooled rule and
+the screen-proxy rule generated as comparator arms so that the policies are
+compared on the same calibration rows
+(`dci1/docs/V8_FRAME_AWARE_PRESCREEN.md`; `DCI1_preregistration_v8.1.md`,
+DRAFT). The frozen v8 root is superseded **for the successor design only**
+and is untouched. Successor pilots, old-versus-new frame status and the
+freeze-readiness verdict: `prescreen_revalidation.md`.
+
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
 A read-only diagnostic established that the §13.2 reference criterion fails for

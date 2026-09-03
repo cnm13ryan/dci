@@ -155,23 +155,46 @@ class PrescreenRung:
     def vacuity_rate(self) -> float:
         return self.vacuous_k / self.solo_n
 
-    def merged(self, other: PrescreenRung) -> PrescreenRung:
+    def merged(self, other: PrescreenRung, *,
+               layout: str | None = None) -> PrescreenRung:
         """Pool a re-screen batch into this rung's counts.
 
         Topic layout: when the batch adds *draws* on the same topics the
         topic count stays and the draws-per-topic grows; when it adds
         *topics* the topic count grows. Mixed layouts are refused --- the
         effective sample size would not be computable.
+
+        ``layout`` (``"topics"`` / ``"draws"``) states which the batch is.
+        Without it the layout is *inferred* from the counts: a batch whose
+        topic count equals the table's is taken for repeated draws. That
+        inference is the legacy behaviour and is kept as it was; note that
+        the legacy second pass measures 24 fresh Calibration-A topics into
+        a 24-topic table and is therefore read as a second *draw* on the
+        pre-screen topics (``draws_per_topic`` grows, ``n_topics`` stays;
+        the ICC design effect then discounts the fresh topics ---
+        ``reports/dci1v8dev/frame_aware_prescreen/legacy_prescreen_characterization.md``).
+        The frame-aware loop passes the batch's declared layout.
         """
         if (other.kind, other.severity) != (self.kind, self.severity):
             raise ProtocolError("cannot merge counts of different rungs")
-        if other.n_topics == self.n_topics:
-            n_topics, dpt = self.n_topics, self.draws_per_topic + \
-                other.draws_per_topic
-        elif other.draws_per_topic == self.draws_per_topic:
+        if layout not in (None, "topics", "draws"):
+            raise ProtocolError(f"unknown batch layout {layout!r}")
+        if layout == "topics" or (layout is None
+                                  and other.n_topics != self.n_topics):
+            if other.draws_per_topic != self.draws_per_topic:
+                raise ProtocolError(
+                    f"{self.label}: a batch must add draws on the same topics "
+                    "or topics at the same draw count, not both")
             n_topics, dpt = self.n_topics + other.n_topics, \
                 self.draws_per_topic
-        else:
+        elif layout == "draws" or other.n_topics == self.n_topics:
+            if other.n_topics != self.n_topics:
+                raise ProtocolError(
+                    f"{self.label}: a draws batch must cover the table's "
+                    "topics")
+            n_topics, dpt = self.n_topics, self.draws_per_topic + \
+                other.draws_per_topic
+        else:                                               # pragma: no cover
             raise ProtocolError(
                 f"{self.label}: a batch must add draws on the same topics "
                 "or topics at the same draw count, not both")

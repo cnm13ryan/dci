@@ -13,6 +13,86 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-03 (successor design, v8.1) — the pre-screen, the second pass and the forwarding become frame-specific; the pooled screen stays as a comparator arm; the frozen v8 root is superseded for the successor only
+
+**What changed.** Under Approach A every quantity from Gate 2 onward is
+frame-specific, but the pilots r5–r13 screened, ranked and forwarded
+candidates on counts pooled over the four wording frames against one
+pooled ι_A (`V8_FRAME_CONDITIONING.md` §5: a measurement-budget rule, six
+pre-screen topics per frame), and forwarded one set to four frames whose
+Gate-2 ι_A(f) differ by up to 0.21 (r12). The successor
+(`dci1/docs/V8_FRAME_AWARE_PRESCREEN.md`;
+`dci1/docs/DCI1_preregistration_v8.1.md`, DRAFT):
+
+1. the first-pass screen and every second-pass batch are laid out one pass
+   per frame offset (`rules.SCREEN_FRAME_OFFSETS = (0, 1, 2, 3)`; the
+   construction of the calibration passes), so each frame's own table
+   holds all 24 pre-screen topics instead of six and every batch's 24
+   fresh topics; the screen runs per frame on the frame's own blocks
+   (`REGIME_SCREEN.prescreen_table_by_frame`, `screen_by_frame`);
+2. the second pass is per frame (`prescreen.rescreen.run_rescreen_by_frame`):
+   each frame plans its batch on its own statuses, the batch is the union
+   with `requested_by_frames` on the record, every frame absorbs it on its
+   own blocks with a **declared** layout (`RESCREEN_BATCH_LAYOUT = topics`);
+3. the forwarding is decided at `GATE_2_CALIBRATION` after the grids fix
+   n\*(f), m\*(f), ι_A(f) and before any candidate is generated
+   (`calibration.FORWARDING_RULE`; `RETENTION_POLICY = frame_aware`,
+   `RETENTION_TARGET_BASIS = calibration_iota_a`): each supported frame's
+   final screen evidence is screened against `coordinate_target(ι_A(f), SE)`
+   and retained with the unchanged budgets; each rung is calibrated on the
+   blocks of the frames whose evidence selected it (`selected_by_frames`),
+   each frame's §13.11 table holds its own set only, the extension round
+   runs per frame, an unsupported frame generates nothing;
+4. the legacy pooled rule (`prescreen.policy.LegacyPooledPolicy`) and the
+   provisional screen-proxy plan are measured beside the frame's set as
+   comparator arms (`comparator_rows`, never in a frame's table;
+   `GATE_3_REFERENCES.retention_comparison`), so the successor pilots report
+   every policy's identification on the same calibration rows;
+5. `confirm/readiness.py` item 11 refuses a pilot of the pooled design
+   under the successor preregistration; the pilot and confirmatory
+   protocol versions are `8.1-pilot` / `8.1-confirmatory`; the manifests
+   bind the new design note and the v8.1 preregistration.
+
+No threshold, caliper, band, operating-point rule, validity component,
+reference library, prompt, verifier, calibration allocation or
+confirmatory allocation changed. Two legacy behaviours are pinned by
+golden-master tests and left as they were on the legacy path
+(`reports/dci1v8dev/frame_aware_prescreen/legacy_prescreen_characterization.md`):
+the pooled second pass credited 24 fresh topics per batch as repeated
+draws on the pre-screen topics (`PrescreenRung.merged` infers the layout;
+the ICC design effect discounted 96 distinct topics to an effective 44 on
+r12), and the class-arm and near-form-arm rungs are forwarded to a design
+that has no such arm.
+
+**What the evidence says.** The counterfactual replay on the four v8
+study roots (`prescreen_feasibility.md`, `prescreen_counterfactual.csv`;
+zero generation; no protected artifact read; the restricted re-verdict
+reproduces every signed Gate-3 record): at six topics per frame a
+frame-aware screen keeps 79–85 % of the calibrated LOCAL-valid rungs and
+60 % of the SPECTRUM-valid ones, forwards 13–15 never-calibrated rungs per
+frame, and is as unstable under topic resampling (Jaccard 0.48–0.58) as
+the pooled rule subsampled to six of its own topics (0.49–0.54) — against
+0.63–0.72 for the pooled rule at 24. The instability is the sample size,
+not the frame; the pooled screen's advantage on the stored evidence is its
+budget. Whether frame conditioning at equal budget buys anything is what
+the successor pilots measure.
+
+**Which results are affected, and comparability.** No number of the
+frozen v8 root `dci1v8-confirm-r2` changes; that root, its four `FROZEN`
+records, the pilot roots r9/r10/r12/r13 and `DCI1_preregistration_v8.md`
+are immutable historical evidence of the pooled-screen design and no
+composed row was ever generated under them. They are **superseded for the
+successor design only**: a v8.1 pilot is a fresh root from `REGIME_SCREEN`
+(the screen layout, the second pass and Gate 2's candidate population all
+differ, and every later stage reads Gate 2), and no v8 pilot record enters
+a v8.1 verdict. Per-frame LOCAL/SPECTRUM support, references, eligibility
+and membership under v8.1 are therefore not comparable to v8's except as
+the comparator arm makes them so on the same rows. The successor pilots,
+their roots and the old-versus-new status are in
+`reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md`.
+
+---
+
 ## 2026-09-02 (pre-freeze audit) — the morning's four freezes superseded; one allocation, one universal calibration, operating-point status, provenance gate, the registered analysis restored per frame, a standalone v8 preregistration
 
 **What happened first.** Protected composed generation under the four

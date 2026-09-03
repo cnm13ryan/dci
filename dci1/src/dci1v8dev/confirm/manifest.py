@@ -27,7 +27,7 @@ from dci1v8dev.confirm import (CLASSIFICATION, CONFIRM_DOCUMENT,
 from dci1v8dev.confirm import lifecycle as L
 from dci1v8dev.confirm import precision as P
 from dci1v8dev.run import (BASE_PREREGISTRATION, DESIGN_DOCUMENT,
-                           FRAME_DOCUMENT, PILOT_DOCUMENT)
+                           FRAME_DOCUMENT, PILOT_DOCUMENT, PRESCREEN_DOCUMENT)
 from dci1v8dev.run import seeds
 from dci1v8dev.run.context import StudyContext, EVIDENCE_DIRNAME
 from dci1v8dev.run.lifecycle import instrument_hashes
@@ -39,7 +39,8 @@ __all__ = ["DOCUMENTS", "analysis_code_hashes", "document_hashes",
            "load_manifest", "manifest_hash", "Blocker"]
 
 DOCUMENTS = (PREREGISTRATION_DOCUMENT, CONFIRM_DOCUMENT, FRAME_DOCUMENT,
-             DESIGN_DOCUMENT, PILOT_DOCUMENT, BASE_PREREGISTRATION)
+             PRESCREEN_DOCUMENT, DESIGN_DOCUMENT, PILOT_DOCUMENT,
+             BASE_PREREGISTRATION)
 #: The registered analysis code the confirmatory analysis calls, hashed.
 V7_ANALYSIS_MODULES = ("analysis/observations.py", "analysis/estimators.py",
                        "analysis/bootstrap.py", "analysis/intervals.py",

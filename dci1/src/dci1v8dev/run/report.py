@@ -121,23 +121,37 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
     # families (frame-free: a measurement budget), and, per frame,
     # calibration found a spectrum-valid pool with two points per side from
     # two families.
-    retention = second_pass["retention"]
-    geometry = retention.get("spectrum_geometry") or {}
-    both = sorted(k for k, g in geometry.items()
-                  if g.get("carries_hard_extreme") and g.get("carries_easy_extreme"))
-    reaching = sorted(k for k, g in geometry.items()
-                      if g.get("reaches_below_offset") and g.get("reaches_above_offset"))
+    plan_frames = (gate2["calibration_population"].get("forwarding_plan") or {}
+                   ).get("by_frame") or {}
     n_batches = second_pass["n_batches"]
     ambiguous = second_pass.get("resolved_at_max") or {}
-    screen_ok = bool(n_batches <= R.RESCREEN_MAX_BATCHES
-                     and len(reaching) >= C.SUPPORT_MIN_FAMILIES_PER_SIDE)
+    both_by_frame, reaching_by_frame, screen_ok_by_frame = {}, {}, {}
+    for w in supported:
+        geometry = (plan_frames.get(str(w)) or {}).get("retention", {}).get(
+            "spectrum_geometry") or {}
+        both_by_frame[str(w)] = sorted(
+            k for k, g in geometry.items()
+            if g.get("carries_hard_extreme") and g.get("carries_easy_extreme"))
+        reaching_by_frame[str(w)] = sorted(
+            k for k, g in geometry.items()
+            if g.get("reaches_below_offset") and g.get("reaches_above_offset"))
+        screen_ok_by_frame[str(w)] = bool(
+            n_batches <= R.RESCREEN_MAX_BATCHES
+            and len(reaching_by_frame[str(w)]) >= C.SUPPORT_MIN_FAMILIES_PER_SIDE)
     ladder_by_frame = {
-        str(w): bool(screen_ok and g3_frames[str(w)]["survival"]["spectrum_pool_ok"])
+        str(w): bool(screen_ok_by_frame[str(w)]
+                     and g3_frames[str(w)]["survival"]["spectrum_pool_ok"])
         for w in supported}
     out["LADDER_COVERAGE"] = {
         **aggregate(ladder_by_frame),
         "by_frame": {
             str(w): {"passed": ladder_by_frame[str(w)],
+                     "screen_and_second_pass_ok": screen_ok_by_frame[str(w)],
+                     "spectrum_families_forwarded":
+                         (plan_frames.get(str(w)) or {}).get("spectrum_families"),
+                     "families_carrying_both_extremes": both_by_frame[str(w)],
+                     "families_reaching_both_offsets_at_screen":
+                         reaching_by_frame[str(w)],
                      "spectrum_pool_ok": g3_frames[str(w)]["survival"]["spectrum_pool_ok"],
                      "spectrum_valid_families_below":
                          g3_frames[str(w)]["survival"]["spectrum_valid_families_below"],
@@ -148,17 +162,16 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
                      "n_spectrum_valid_above":
                          len(g3_frames[str(w)]["survival"]["spectrum_valid_above"])}
             for w in supported},
-        "screen_and_second_pass_ok": screen_ok,
-        "spectrum_families_forwarded": retention.get("spectrum_families"),
-        "families_carrying_both_extremes": both,
-        "families_reaching_both_offsets_at_screen": reaching,
+        "screen_and_second_pass_ok_by_frame": screen_ok_by_frame,
         "second_pass_batches": n_batches,
         "max_batches": R.RESCREEN_MAX_BATCHES,
-        "ambiguous_at_max": sorted(ambiguous),
+        "ambiguous_at_max": {str(w): sorted(v) for w, v in ambiguous.items()},
         "extension_measured": gate2["extension"]["measured"],
-        "rule": f"batches <= {R.RESCREEN_MAX_BATCHES}; >= "
+        "retention_policy": gate2["calibration_population"].get("policy"),
+        "rule": f"batches <= {R.RESCREEN_MAX_BATCHES}; per frame, >= "
                 f"{C.SUPPORT_MIN_FAMILIES_PER_SIDE} forwarded spectrum "
-                "families reaching both offsets at the screen; per frame, a "
+                "families reaching both offsets at the screen against the "
+                "frame's own iota_A(f); per frame, a "
                 f"spectrum-valid pool >= {C.SUPPORT_MIN_BELOW}/{C.SUPPORT_MIN_ABOVE} "
                 f"points from >= {C.SUPPORT_MIN_FAMILIES_PER_SIDE} families per side",
     }
@@ -253,8 +266,9 @@ def evaluate_criteria(*, registration: Mapping[str, Any],
 def _generations(regime: Mapping[str, Any], second_pass: Mapping[str, Any],
                  gate2: Mapping[str, Any], gate0: Mapping[str, Any]
                  ) -> dict[str, int]:
+    screen_passes = int((regime.get("screen_allocation") or {}).get("passes") or 1)
     screen = C.N_PRESCREEN * C.LADDER_SCREEN_DRAWS * (
-        regime["n_rungs_measured"] + 1)
+        regime["n_rungs_measured"] + 1) * screen_passes
     caps = len(regime["cap_selection"]["truncation_by_cap"]) * C.N_PRESCREEN * 3
     grids_spec = gate2["grids"]
     n_topics = len(gate2["calibration_topic_ids"])
@@ -279,16 +293,23 @@ def _generations(regime: Mapping[str, Any], second_pass: Mapping[str, Any],
         (len(grids_spec["B_extension"]) + 1)
         if grids_spec["focal_extension_measured"] else 0)
     grids = n_blocks * C.M_CAL * cells
-    candidates = n_blocks * C.M_CAL * gate2["calibration_population"]["n_measured"]
+    population = gate2["calibration_population"]
+    # Per-frame forwarding: each frame's rungs on that frame's blocks, so
+    # the candidate rows are what the record counted, not union x blocks.
+    candidates = int(population.get("n_candidate_rows",
+                                    n_blocks * C.M_CAL * population["n_measured"]))
+    comparator = int(population.get("n_comparator_rows", 0))
     extension = gate2["extension"]["n_rows"]
     return {"gate0": gate0["rows"], "cap_selection": caps, "screen": screen,
+            "screen_passes": screen_passes,
             "second_pass": second_pass["cost_generations"],
             "calibration_passes": passes,
             "calibration_blocks_per_run": n_blocks,
             "calibration_grids": grids, "calibration_candidates": candidates,
+            "calibration_comparator": comparator,
             "calibration_extension": extension,
             "total": gate0["rows"] + caps + screen + second_pass["cost_generations"]
-            + grids + candidates + extension}
+            + grids + candidates + comparator + extension}
 
 
 def pilot_payload(tree: ModelTree, *, producing_commit: str,

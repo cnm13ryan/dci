@@ -86,6 +86,7 @@ __all__ = [
     "SPECTRUM_LABEL",
     "ScreenConfig",
     "a_grid_draws",
+    "coordinate_target",
     "family_posterior",
     "screen_families",
     "screen_family",
@@ -429,16 +430,63 @@ def screen_family(kind: str, rungs: Sequence[PrescreenRung],
     }
 
 
+def coordinate_target(iota_a: float, se_iota: float, *, n_star: int | None,
+                      draws: int, seed: int, basis: str) -> dict[str, Any]:
+    """An ι_A posterior supplied from outside the screen --- a calibration
+    coordinate with its topic-level standard error --- in the shape
+    ``a_grid_draws`` returns, so a screen can be ranked against it with the
+    same code that ranks against the screen's own A-grid.
+
+    Normal draws around the coordinate at its SE (``se_iota`` is the
+    topic-level SE of ι on the frame's own calibration topics, so the draws
+    are the sampling distribution of the target the frame's caliper is
+    measured against). No severity re-selection happens inside the draws:
+    n*(f) is already fixed by §12.3 on the calibration curve, which is what
+    makes this target the definitive one and not a proxy.
+
+    The draw stream depends on ``seed`` alone, never on ``basis`` (a label
+    for the record): two frames with identical evidence and an identical
+    coordinate then reach identical decisions, and a frame's decision is a
+    function of its data and the study seed only.
+    """
+    if se_iota < 0.0 or draws < 100:
+        raise ProtocolError("a coordinate target needs se_iota >= 0 and >= "
+                            "100 draws")
+    rng = np.random.default_rng(family_seed("A:coordinate_target", base_seed=seed))
+    values = np.clip(iota_a + rng.normal(size=draws) * se_iota, -1.0, 1.0)
+    n_star_arr = np.full(draws, -1 if n_star is None else int(n_star), dtype=int)
+    return {"iota_a": values, "n_star": n_star_arr,
+            "iota_a_mean": float(iota_a), "iota_a_sd": float(se_iota),
+            "iota_a_q05": float(np.percentile(values, 5)),
+            "iota_a_q95": float(np.percentile(values, 95)),
+            "n_star_distribution": ({int(n_star): 1.0} if n_star is not None
+                                    else {}),
+            "severities": [], "basis": basis, "external_target": True}
+
+
 def screen_families(table: Sequence[PrescreenRung], a_grid: Sequence[ARung],
-                    *, config: ScreenConfig = DEFAULT_SCREEN_CONFIG
+                    *, config: ScreenConfig = DEFAULT_SCREEN_CONFIG,
+                    target: Mapping[str, Any] | None = None
                     ) -> dict[str, Any]:
-    """Screen every family on the table. Output order is by family id."""
+    """Screen every family on the table. Output order is by family id.
+
+    ``target`` replaces the ι_A posterior the screen would otherwise draw
+    from ``a_grid`` (``coordinate_target``): every family is then ranked
+    against the supplied coordinate. With ``target`` unset the behaviour is
+    the legacy one, unchanged.
+    """
     by_family: dict[str, list[PrescreenRung]] = {}
     for r in table:
         by_family.setdefault(r.kind, []).append(r)
-    a_draws = a_grid_draws(a_grid, config=config)
-    from dci1v8dev.prescreen.legacy import prescreen_iota_a
-    iota_a_point, _ = prescreen_iota_a(a_grid)
+    if target is None:
+        a_draws = a_grid_draws(a_grid, config=config)
+        from dci1v8dev.prescreen.legacy import prescreen_iota_a
+        iota_a_point, _ = prescreen_iota_a(a_grid)
+    else:
+        if int(target["iota_a"].shape[0]) != config.draws:
+            raise ProtocolError("the target's draws must match config.draws")
+        a_draws = dict(target)
+        iota_a_point = float(target["iota_a_mean"])
     verdicts = {kind: screen_family(kind, rungs, a_draws, config=config,
                                     iota_a_point=iota_a_point)
                 for kind, rungs in sorted(by_family.items())}

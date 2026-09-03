@@ -8,7 +8,7 @@
 
 Stages walked: 9 / 9 (PILOT_REGISTERED, QUALIFIED, GATE_0_APPARATUS, REGIME_SCREEN, SECOND_PASS_SCREEN, GATE_1_INSTRUMENT, GATE_2_CALIBRATION, GATE_3_REFERENCES, PILOT_REPORT).
 
-Contract: 65 fields, 0 defects, 65 checked against payloads.
+Contract: 74 fields, 0 defects, 74 checked against payloads.
 
 ## Criteria on the synthetic walk
 
@@ -25,8 +25,8 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 
 | basis | rungs compared | τ median | spread median | sensitive | unresolved | consistent |
 |---|---:|---:|---:|---:|---:|---:|
-| calibration | 89 | 0.0 | 0.02083333333333337 | 0.0 | 0.0 | 1.0 |
-| screen | 129 | 0.0 | 0.33333333333333337 | 0.046511627906976744 | 0.6666666666666666 | 0.2868217054263566 |
+| calibration | 104 | 0.0 | 0.02083333333333337 | 0.0 | 0.0 | 1.0 |
+| screen | 129 | 0.0 | 0.16666666666666674 | 0.15503875968992248 | 0.3333333333333333 | 0.5116279069767442 |
 
 ## Generations
 
@@ -34,14 +34,16 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 |---|---:|
 | gate0 | 240 |
 | cap_selection | 216 |
-| screen | 3960 |
-| second_pass | 3648 |
+| screen | 15840 |
+| screen_passes | 4 |
+| second_pass | 22944 |
 | calibration_passes | 4 |
 | calibration_blocks_per_run | 384 |
 | calibration_grids | 27648 |
-| calibration_candidates | 112128 |
+| calibration_candidates | 110208 |
+| calibration_comparator | 18816 |
 | calibration_extension | 0 |
-| total | 147840 |
+| total | 195912 |
 
 ## Producer / consumer matrix
 
@@ -58,16 +60,24 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | GATE_0_APPARATUS | `rows` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `selected_cap` | SECOND_PASS_SCREEN, GATE_2_CALIBRATION | yes | PRESENT |
 | REGIME_SCREEN | `prescreen_table` | SECOND_PASS_SCREEN | yes | PRESENT |
+| REGIME_SCREEN | `prescreen_table_by_frame` | SECOND_PASS_SCREEN | yes | PRESENT |
+| REGIME_SCREEN | `screen_allocation` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `difficulty_table` | GATE_2_CALIBRATION | yes | PRESENT |
 | REGIME_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
 | REGIME_SCREEN | `frame_conditioning` | — | yes | PRESENT |
+| REGIME_SCREEN | `retention_policy` | — | yes | PRESENT |
 | REGIME_SCREEN | `row_accounting` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `chance_basis` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `n_rungs_measured` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `cap_selection` | PILOT_REPORT | yes | PRESENT |
 | REGIME_SCREEN | `screen` | — | yes | PRESENT |
-| SECOND_PASS_SCREEN | `forwarded_set` | GATE_2_CALIBRATION | yes | PRESENT |
-| SECOND_PASS_SCREEN | `retention` | GATE_2_CALIBRATION, PILOT_REPORT | yes | PRESENT |
+| REGIME_SCREEN | `screen_by_frame` | — | yes | PRESENT |
+| SECOND_PASS_SCREEN | `final_table_by_frame` | GATE_2_CALIBRATION | yes | PRESENT |
+| SECOND_PASS_SCREEN | `final_a_grid_by_frame` | — | yes | PRESENT |
+| SECOND_PASS_SCREEN | `provisional_plan` | GATE_2_CALIBRATION | yes | PRESENT |
+| SECOND_PASS_SCREEN | `comparator_plan` | GATE_2_CALIBRATION | yes | PRESENT |
+| SECOND_PASS_SCREEN | `screen_by_frame` | — | yes | PRESENT |
+| SECOND_PASS_SCREEN | `screen_allocation` | — | yes | PRESENT |
 | SECOND_PASS_SCREEN | `frame_reliability` | GATE_1_INSTRUMENT | yes | PRESENT |
 | SECOND_PASS_SCREEN | `frame_conditioning` | — | yes | PRESENT |
 | SECOND_PASS_SCREEN | `topic_isolation` | PILOT_REPORT | yes | PRESENT |
@@ -92,7 +102,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | GATE_2_CALIBRATION | `calibration_allocation` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `grids` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `calibration_topic_ids` | PILOT_REPORT | yes | PRESENT |
-| GATE_2_CALIBRATION | `calibration_population` | PILOT_REPORT | yes | PRESENT |
+| GATE_2_CALIBRATION | `calibration_population` | GATE_3_REFERENCES, PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `chance_basis` | — | yes | PRESENT |
 | GATE_2_CALIBRATION | `extension` | PILOT_REPORT | yes | PRESENT |
 | GATE_2_CALIBRATION | `frame_comparison_pooled` | GATE_3_REFERENCES | yes | PRESENT |
@@ -106,6 +116,7 @@ Pilot status: `PILOT_DECIDED_CRITERIA_MET` (aggregation `any_supported_frame`; f
 | GATE_3_REFERENCES | `by_frame` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `frame_states` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `local_eligibility` | PILOT_REPORT | yes | PRESENT |
+| GATE_3_REFERENCES | `retention_comparison` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `cross_frame` | — | yes | PRESENT |
 | GATE_3_REFERENCES | `estimands` | PILOT_REPORT | yes | PRESENT |
 | GATE_3_REFERENCES | `calibration_allocation` | — | yes | PRESENT |

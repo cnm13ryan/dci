@@ -606,6 +606,13 @@ def exemplars(rungs: Sequence[Mapping[str, Any]], rows: Sequence[Mapping[str, An
         s = present[0]
         by_rung_frame.setdefault((f"{s['kind']}:{s['severity']}", int(r["frame"])),
                                  []).append(r)
+    # An exemplar needs an answer under every frame. Under the frame-aware
+    # forwarding (2026-09-03) a candidate is calibrated only on the frames
+    # whose evidence selected it, so the pool is restricted to rungs that
+    # carry rows under all the frames (the grids always do).
+    pool = [r for r in pool
+            if all((f"{r['family']}:{r['severity']}", f) in by_rung_frame
+                   for f in range(C.N_WORDINGS))]
     for r in pool[:n_cases]:
         kind, q = r["family"], r["severity"]
         try:

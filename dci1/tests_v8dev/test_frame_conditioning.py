@@ -796,12 +796,19 @@ def test_the_extension_round_runs_end_to_end_and_its_rungs_are_calibrated(tmp_pa
     declared = set(g2["reserve_instances_declared_on_the_grids"]["labels"])
     assert set(measured) <= declared, sorted(set(measured) - declared)
     seen = 0
+    # The extension is per frame (2026-09-03): a frame's picks are measured
+    # on that frame's blocks and land in that frame's table; ``measured`` is
+    # the union over frames and ``measured_by_frame`` names each frame's.
+    assert set(measured) == {l for ls in g2["extension"]["measured_by_frame"].values()
+                             for l in ls}
     for w in g2["supported_frames"]:
         table = {f"{r['kind']}:{r['severity']}": r
                  for r in g2["by_frame"][str(w)]["calibration_rows"]["pooled"]}
         withheld = {f"{r['kind']}:{r['severity']}"
                     for r in g2["by_frame"][str(w)]["calibration_rows_withheld"]["pooled"]}
-        for label in measured:
+        assert g2["by_frame"][str(w)]["extension_measured"] == \
+            g2["extension"]["measured_by_frame"][str(w)]
+        for label in g2["extension"]["measured_by_frame"][str(w)]:
             assert label in table or label in withheld, (w, label)
             if label not in table:
                 continue
@@ -1104,12 +1111,23 @@ def test_the_four_pass_allocation_walks_the_whole_lifecycle(tmp_path):
     # the second pass's own budget statement is scoped to *this* model's
     # allocation, so the plan and the realised Gate-2 candidate count agree
     sp = walked["payloads"][S.STAGE_SECOND_PASS]
-    per_rung = sp["retention"]["per_rung_calibration_generations"]
-    assert per_rung == R.calibration_generations_per_rung(MODEL)
-    assert per_rung == R.CALIBRATION_GENERATIONS_PER_RUNG == C.N_CALIBRATION * C.M_CAL * 4
-    assert sp["retention"]["config"]["generations_per_rung"] == per_rung
-    assert sp["retention"]["calibration_cost_generations"] == \
-        sp["retention"]["n_forwarded"] * per_rung
+    plan = sp["provisional_plan"]
+    per_rung_all = R.calibration_generations_per_rung(MODEL)
+    assert per_rung_all == R.CALIBRATION_GENERATIONS_PER_RUNG == C.N_CALIBRATION * C.M_CAL * 4
+    # per-frame forwarding prices a rung on one frame's blocks: a quarter
+    # of the all-frames figure, and the plan's cost is the per-frame sum
+    assert plan["cost"]["generations_per_rung_per_frame"] == per_rung_all // C.N_WORDINGS
+    assert plan["cost"]["total"] == sum(
+        e["n_forwarded"] * plan["cost"]["generations_per_rung_per_frame"]
+        for e in plan["by_frame"].values())
+    for e in plan["by_frame"].values():
+        assert e["retention"]["config"]["generations_per_rung"] == per_rung_all
+    # Gate 2's own forwarding is decided against iota_A(f) and measured on
+    # the frame's blocks: the candidate rows are what the record counted
+    pop = g2["calibration_population"]
+    assert pop["policy"] == R.RETENTION_POLICY
+    assert pop["target_basis"] == R.RETENTION_TARGET_BASIS
+    assert rp["generations"]["calibration_candidates"] == pop["n_candidate_rows"]
     # and no composed cell exists anywhere before the freeze
     for payload in (g2, g3, rp):
         assert payload["no_composed_cells"] is True

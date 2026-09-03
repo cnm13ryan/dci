@@ -311,6 +311,48 @@ OPERATING_POINT_STABLE = "OPERATING_POINT_STABLE"
 OPERATING_POINT_UNSTABLE = "OPERATING_POINT_UNSTABLE"
 
 # ---------------------------------------------------------------- pre-screen
+#: **The screen allocation and the retention policy** (frame-aware
+#: pre-screen redesign of 2026-09-03; docs/V8_FRAME_AWARE_PRESCREEN.md).
+#: Under Approach A every quantity from Gate 2 onward is frame-specific,
+#: while the pilots r5--r13 screened, ranked and forwarded candidates on
+#: counts pooled over the four frames (a measurement-budget rule: six
+#: pre-screen topics per frame). The successor screens **per frame** on
+#: the frame's own blocks, and to give each frame the precision the pooled
+#: screen had it lays the first pass and every second-pass batch out one
+#: pass per frame offset --- every screen topic under every frame, exactly
+#: as the calibration allocation does --- so a frame's own table holds
+#: ``N_PRESCREEN`` = 24 topics at one draw instead of six. The offsets are
+#: distinct modulo the wordings (no topic recurs inside a frame).
+#:
+#: Retention is ``RETENTION_POLICY`` (``prescreen.policy``): one screen and
+#: one ``retain`` per frame with the same budgets, a rung forwarded *for the
+#: frames whose own evidence selected it* (``selected_by_frames``), and
+#: calibration measures each frame's set on that frame's blocks only. The
+#: ranking target of the final retention is ``RETENTION_TARGET_BASIS``:
+#: Gate 2's own ι_A(f) --- fixed on the grid rows before any candidate is
+#: generated, so no cycle exists --- at its topic-level SE; the second pass
+#: steers its batches on the frame's screen-proxy ι_A(f), which is a
+#: measurement decision and admits nothing. The legacy pooled rule stays
+#: available by name (``policy.LegacyPooledPolicy``) and, in a pilot, is
+#: measured beside the frame-aware set as a **comparator arm**
+#: (``RETENTION_COMPARATOR``): its extra rungs are generated on every
+#: frame's blocks and kept in ``comparator_rows``, never in a frame's
+#: production table. Counterfactual replay on the stored roots:
+#: reports/dci1v8dev/frame_aware_prescreen/prescreen_feasibility.md.
+SCREEN_FRAME_OFFSETS = (0, 1, 2, 3)
+_assert_offsets(SCREEN_FRAME_OFFSETS, "SCREEN_FRAME_OFFSETS")
+SCREEN_FRAME_PASSES = len(SCREEN_FRAME_OFFSETS)
+#: Derived: distinct topics one frame's screen table holds at round 0 and
+#: per second-pass batch.
+SCREEN_TOPICS_PER_FRAME = C.N_PRESCREEN * SCREEN_FRAME_PASSES // C.N_WORDINGS
+assert SCREEN_TOPICS_PER_FRAME * C.N_WORDINGS == C.N_PRESCREEN * SCREEN_FRAME_PASSES
+RETENTION_POLICY = "frame_aware"
+RETENTION_TARGET_BASIS = "calibration_iota_a"
+RETENTION_COMPARATOR = "legacy_pooled"
+#: The second pass declares its batch layout (fresh topics) instead of
+#: inferring it from the counts (the legacy inference read 24 fresh topics
+#: into a 24-topic table as repeated draws; legacy_prescreen_characterization.md §2.3).
+RESCREEN_BATCH_LAYOUT = "topics"
 #: Status thresholds on P(support both sides) and the posterior-majority
 #: rule at the batch maximum — chosen by the synthetic operating
 #: characteristics (tools/v8_prescreen_simulation.py → simulation.md).

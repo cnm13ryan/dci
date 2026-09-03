@@ -55,9 +55,14 @@ def _inputs(tmp_path, *, synthetic=False):
                     "analysis_code": analysis_code_hashes()}
     gate2 = {"calibration_allocation": {"frame_offsets": list(R.CALIBRATION_FRAME_OFFSETS),
                                         "topics_per_frame": R.CALIBRATION_TOPICS_PER_FRAME},
+             "calibration_population": {"policy": R.RETENTION_POLICY,
+                                        "target_basis": R.RETENTION_TARGET_BASIS},
              **instrument_hashes()}
+    regime = {"screen_allocation": {"frame_offsets": list(R.SCREEN_FRAME_OFFSETS),
+                                    "passes": R.SCREEN_FRAME_PASSES}}
     return dict(tree=tree, membership=membership, repo_root=repo, lock=lock,
-                registration=registration, pilot_gate2=gate2)
+                registration=registration, pilot_gate2=gate2,
+                pilot_regime=regime)
 
 
 def test_a_consistent_design_is_ready(tmp_path):
@@ -67,7 +72,7 @@ def test_a_consistent_design_is_ready(tmp_path):
         "preregistration", "allocation", "calibration_policy",
         "operating_point_stability", "reference_sensitivity",
         "no_protected_artifacts", "instrument", "analysis_code", "worktree",
-        "identification_statuses"}
+        "identification_statuses", "prescreen_policy"}
     RD.assert_freeze_ready(out, tree=_inputs(tmp_path)["tree"])
 
 
@@ -151,3 +156,18 @@ def test_a_moved_instrument_or_analysis_module_refuses(tmp_path):
     kw = _inputs(tmp_path / "b")
     kw["registration"]["analysis_code"] = {"dci1v7/analysis/claims.py": "0" * 64}
     assert RD.freeze_readiness(**kw)["failed"] == ["analysis_code"]
+
+
+def test_a_pilot_of_the_pooled_design_refuses_under_the_successor_rule(tmp_path):
+    """Readiness item 11: a pilot whose forwarding was the frame-pooled rule
+    (no policy field, or the legacy one) or whose screen ran one pass per
+    topic cannot be frozen under the frame-aware preregistration."""
+    kw = _inputs(tmp_path)
+    kw["pilot_gate2"]["calibration_population"] = {"forwarded": ["MK1:1"]}
+    out = RD.freeze_readiness(**kw)
+    assert out["failed"] == ["prescreen_policy"]
+    kw = _inputs(tmp_path / "b")
+    kw["pilot_regime"]["screen_allocation"] = {"frame_offsets": [0], "passes": 1}
+    out = RD.freeze_readiness(**kw)
+    assert out["failed"] == ["prescreen_policy"]
+    assert out["items"]["prescreen_policy"]["pilot_screen_frame_offsets"] == [0]

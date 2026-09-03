@@ -50,13 +50,16 @@ CLASSIFICATION = ("DCI-1 PROTOCOL v8 CONFIRMATORY (frozen design; "
                   "protected composed outcome)")
 #: The design note of record for this layer.
 CONFIRM_DOCUMENT = "dci1/docs/V8_CONFIRMATORY.md"
-#: The standalone v8 preregistration: the document every freeze binds and
+#: The standalone preregistration: the document every freeze binds and
 #: the readiness audit requires to be final (``Status: FROZEN-READY``).
-PREREGISTRATION_DOCUMENT = "dci1/docs/DCI1_preregistration_v8.md"
+#: v8.1 (the frame-aware pre-screen, 2026-09-03) supersedes v8's for the
+#: successor design; the v8 document stays as the frozen r2 root's record.
+PREREGISTRATION_DOCUMENT = "dci1/docs/DCI1_preregistration_v8.1.md"
+SUPERSEDED_PREREGISTRATION_DOCUMENT = "dci1/docs/DCI1_preregistration_v8.md"
 #: The study-level membership lock, written before any composed row exists
 #: and bound by hash into every model's freeze.
 MEMBERSHIP_DOCUMENT = "dci1/reports/dci1v8dev/confirmatory_membership.json"
-PROTOCOL_VERSION = "8.0-confirmatory"
+PROTOCOL_VERSION = "8.1-confirmatory"
 
 __all__ = ["STUDY_ID", "EVIDENCE_DIRNAME", "CLASSIFICATION",
            "CONFIRM_DOCUMENT", "MEMBERSHIP_DOCUMENT", "PROTOCOL_VERSION"]
