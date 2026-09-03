@@ -169,7 +169,11 @@ def pooling_evidence(regime: Mapping[str, Any], second: Mapping[str, Any],
                      gate2: Mapping[str, Any]) -> dict[str, Any]:
     prescreen_fields = sorted({k for row in regime["prescreen_table"] for k in row})
     difficulty_fields = sorted({k for row in regime["difficulty_table"] for k in row})
-    forwarded = [str(x) for x in second["forwarded_set"]]
+    # A record of the pooled design carries one forwarded set; a record of
+    # the frame-aware design (2026-09-03) carries one per frame and the
+    # union under the same key, and this diagnostic then reads the union.
+    forwarded = [str(x) for x in (second.get("forwarded_set")
+                                  or second.get("forwarded_set_provisional") or [])]
     gate2_forwarded = [str(x) for x in gate2["calibration_population"]["forwarded"]]
     return {
         "ranking_and_retention_frame_pooled": True,

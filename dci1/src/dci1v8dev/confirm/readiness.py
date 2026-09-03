@@ -29,7 +29,11 @@ Items (pre-freeze audit of 2026-09-02, docs/DCI1_preregistration_v8.md §19):
  9. the worktree is clean and the record is addressed to HEAD (the
     lifecycle gate; restated here so the checklist is complete on the
     record);
-10. every entering frame's identification statuses are on the record.
+10. every entering frame's identification statuses are on the record;
+11. (successor design, 2026-09-03) the pilot's screen ran at
+    ``rules.SCREEN_FRAME_OFFSETS`` and its forwarding was decided by
+    ``rules.RETENTION_POLICY`` against ``rules.RETENTION_TARGET_BASIS`` ---
+    a pilot of the pooled design cannot be frozen under the successor rule.
 """
 from __future__ import annotations
 
@@ -59,7 +63,9 @@ def _item(ok: bool, what: str, **detail: Any) -> dict[str, Any]:
 def freeze_readiness(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
                      repo_root: Path | str, lock: Mapping[str, Any],
                      registration: Mapping[str, Any],
-                     pilot_gate2: Mapping[str, Any]) -> dict[str, Any]:
+                     pilot_gate2: Mapping[str, Any],
+                     pilot_regime: Mapping[str, Any] | None = None
+                     ) -> dict[str, Any]:
     """The checklist, every item evaluated; nothing raised here."""
     repo_root = Path(repo_root)
     items: dict[str, dict[str, Any]] = {}
@@ -187,6 +193,25 @@ def freeze_readiness(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
     items["identification_statuses"] = _item(
         ident_ok, "every entering frame's identification statuses are on the "
                   "record")
+
+    # 11. the successor's screen and forwarding rule
+    population = pilot_gate2.get("calibration_population") or {}
+    screen_alloc = (pilot_regime or {}).get("screen_allocation") or {}
+    screen_offsets = tuple(screen_alloc.get("frame_offsets") or ())
+    items["prescreen_policy"] = _item(
+        population.get("policy") == R.RETENTION_POLICY
+        and population.get("target_basis") == R.RETENTION_TARGET_BASIS
+        and (pilot_regime is None or screen_offsets == tuple(R.SCREEN_FRAME_OFFSETS)),
+        "the pilot's screen ran at the successor's screen allocation and its "
+        "forwarding was decided by the frame-aware policy against the "
+        "registered target",
+        pilot_policy=population.get("policy"),
+        pilot_target_basis=population.get("target_basis"),
+        pilot_screen_frame_offsets=list(screen_offsets),
+        required_policy=R.RETENTION_POLICY,
+        required_target_basis=R.RETENTION_TARGET_BASIS,
+        required_screen_frame_offsets=list(R.SCREEN_FRAME_OFFSETS),
+        regime_record_checked=pilot_regime is not None)
 
     failed = sorted(k for k, v in items.items() if not v["pass"])
     return {"items": items, "failed": failed, "ready": not failed,

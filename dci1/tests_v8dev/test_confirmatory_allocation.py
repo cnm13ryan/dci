@@ -117,8 +117,9 @@ def test_every_active_source_of_the_allocation_agrees():
     assert S.CONFIRMATORY_BLOCKS_PER_FRAME == n
     assert not hasattr(CP, "ALLOCATION_MENU")
     assert not hasattr(CP, "choose_allocation")
-    prereg = REPO_ROOT / "dci1" / "docs" / "DCI1_preregistration_v8.md"
-    assert prereg.exists(), "the v8 preregistration is missing"
+    from dci1v8dev.confirm import PREREGISTRATION_DOCUMENT
+    prereg = REPO_ROOT / PREREGISTRATION_DOCUMENT
+    assert prereg.exists(), "the preregistration is missing"
     text = prereg.read_text()
     assert f"CONFIRMATORY_BLOCKS_PER_FRAME = {n}" in text
     m = CM.build_manifest(synthetic_context("allocation-agreement"),

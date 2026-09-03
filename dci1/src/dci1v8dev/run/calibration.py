@@ -62,9 +62,17 @@ from dci1v7.stages.calibration_table import instructed_compliance
 from dci1v7.topics.bank import TopicBank, calibration_binding, load_bank
 from dci1v7.verifiers.constraints import RESERVES, Constraint
 
+from dci1v4.models.registry import get_model
 from dci1v8dev import rules as R
+from dci1v8dev.prescreen.evidence import counts_to_input
 from dci1v8dev.prescreen.extension import ExtensionRule, calibration_extension_plan
+from dci1v8dev.prescreen.policy import (TARGET_CALIBRATION, ForwardingPlan,
+                                        FrameAwarePolicy)
+from dci1v8dev.prescreen.retention import RetentionConfig
+from dci1v8dev.prescreen.screen import (ScreenConfig, coordinate_target,
+                                        screen_families)
 from dci1v8dev.run import FRAME_DOCUMENT
+from dci1v8dev.run.seeds import screen_seed
 from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
 from dci1v8dev.run.context import ModelTree
@@ -80,6 +88,7 @@ from dci1v8dev.run.regime import screen_responder
 
 __all__ = ["gate2_payload", "run_gate2", "constraints_from_labels",
            "assert_synthetic_only", "reach_input", "frame_curves",
+           "frame_target", "frame_forwarding", "FORWARDING_RULE",
            "extension_instances", "calibration_blocks",
            "calibration_allocation", "assert_allocation_realised",
            "frame_operating_points", "frame_tables", "frame_a_coordinate",
@@ -102,9 +111,12 @@ FRAME_CONDITIONING_STATEMENT = {
                               "numbers are the calibration_allocation block "
                               "on this record, not a constant repeated here",
     "primary": "per frame: n*(f), m*(f), iota_A(f) with kappa_A(f) on the "
-               "frame's own unconstrained cells, §13.11's table on the "
-               "frame's own rows, kappa(R|B) at m*(f) on the frame's own "
-               "B-solo cell, the extension reach at iota_A(f)",
+               "frame's own unconstrained cells; the forwarded set decided "
+               "against iota_A(f) from the frame's own screen evidence "
+               "(FORWARDING_RULE) and measured on the frame's own blocks; "
+               "§13.11's table on the frame's own rows, kappa(R|B) at m*(f) "
+               "on the frame's own B-solo cell, the extension reach at "
+               "iota_A(f)",
     "pooled": "descriptive_pooled only (the frame-pooled solo curves and "
               "§12.3's reading of them); read by no stage; no pooled iota_A "
               "and no pooled §13.11 table exist on this record",
@@ -625,6 +637,83 @@ def gate2_frames_from_rows(grid_rows: Sequence[Mapping[str, Any]],
             "by_frame": by_frame}
 
 
+# ---------------------------------------------------------- the forwarding
+FORWARDING_RULE = (
+    "per supported frame f, after the grids and before any candidate is "
+    "generated: the frame's own second-pass screen evidence (its table and "
+    "A-grid, every batch absorbed on its own blocks) is screened by "
+    "prescreen.screen.screen_families against Gate 2's own iota_A(f) at its "
+    "topic-level SE (coordinate_target), and prescreen.retention.retain "
+    "forwards the frame's set with the registered budgets; the union of "
+    "the frames' sets is generated once, each rung on the blocks of the "
+    "frames whose evidence selected it (selected_by_frames), and each "
+    "frame's §13.11 table holds its own set only. The legacy pooled "
+    "comparator's extra rungs are generated on every supported frame's "
+    "blocks and kept in comparator_rows, never in a frame's table "
+    "(rules.RETENTION_POLICY, RETENTION_TARGET_BASIS, RETENTION_COMPARATOR)")
+
+
+def frame_target(coordinate: Mapping[str, Any], *, frame: int, n_star: int,
+                 draws: int, seed: int) -> dict[str, Any]:
+    """Gate 2's ι_A(f) as a screen target: the coordinate at the topic-level
+    SE of A's per-topic solo vector at n*(f) over both splits, divided by
+    (1 - kappa_A(f)) --- the sampling distribution of the number every
+    later caliper on this frame is measured against."""
+    import math
+    import statistics
+    per_topic: list[float] = []
+    for vec in (coordinate.get("a_per_topic_by_split") or {}).get("per_topic", {}).values():
+        per_topic += [float(v) for v in vec]
+    kappa = float(coordinate["kappa_a"])
+    if len(per_topic) > 1 and kappa < C.CHANCE_DEGENERACY_MAX:
+        se = statistics.stdev(per_topic) / math.sqrt(len(per_topic)) / (1.0 - kappa)
+    else:
+        se = 0.0
+    target = coordinate_target(float(coordinate["iota_a"]), se, n_star=int(n_star),
+                               draws=draws, seed=seed, basis=f"gate2:frame{frame}")
+    target["se_iota_a"] = se
+    target["n_topics_a"] = len(per_topic)
+    return target
+
+
+def frame_forwarding(second_pass_record: Mapping[str, Any],
+                     coordinates: Mapping[int, Mapping[str, Any]], *,
+                     n_stars: Mapping[int, int], model_key: str,
+                     screen_config: ScreenConfig | None = None,
+                     retention_config: RetentionConfig | None = None
+                     ) -> tuple[ForwardingPlan, dict[int, dict[str, Any]],
+                                dict[int, dict[str, Any]]]:
+    """The forwarding plan of the supported frames (FORWARDING_RULE): one
+    screen per frame on the frame's second-pass evidence against the
+    frame's own ι_A(f), one retention per frame. Returns the plan, the
+    per-frame screens and the per-frame targets."""
+    config = screen_config or ScreenConfig(base_seed=screen_seed(
+        get_model(model_key).model_id, S.STAGE_GATE2))
+    retention = retention_config or RetentionConfig(
+        generations_per_rung=R.calibration_generations_per_rung(model_key))
+    tables = {int(f): counts_to_input(rows) for f, rows in
+              second_pass_record["final_table_by_frame"].items()}
+    screens: dict[int, dict[str, Any]] = {}
+    targets: dict[int, dict[str, Any]] = {}
+    n_topics: dict[int, int] = {}
+    for w in sorted(coordinates):
+        table, _grid = tables[w]
+        targets[w] = frame_target(coordinates[w], frame=w, n_star=n_stars[w],
+                                  draws=config.draws, seed=config.base_seed)
+        screens[w] = screen_families(table, (), config=config, target=targets[w])
+        n_topics[w] = max((r.n_topics for r in table), default=0)
+    plan = FrameAwarePolicy(screen_config=config, retention_config=retention
+                            ).plan_from_screens(
+        screens, n_topics=n_topics, target_basis=TARGET_CALIBRATION,
+        provenance={"stage": S.STAGE_GATE2, "rule": FORWARDING_RULE,
+                    "targets": {str(w): {"iota_a": t["iota_a_mean"],
+                                         "se_iota_a": t["se_iota_a"],
+                                         "n_topics_a": t["n_topics_a"],
+                                         "n_star": n_stars[w]}
+                                for w, t in targets.items()}})
+    return plan, screens, targets
+
+
 # ------------------------------------------------------------------ the stage
 def gate2_payload(tree: ModelTree, *, producing_commit: str,
                   second_pass_record: Mapping[str, Any],
@@ -648,17 +737,19 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                                 where=S.STAGE_GATE2)
     identity = protocol_identity(tree, S.STAGE_GATE2)
     cap = int(regime_record["selected_cap"])
-    forwarded = list(second_pass_record["forwarded_set"])
-    non_outcome = [c for c in constraints_from_labels(forwarded)
-                   if c.kind not in ("A", "B")]
     extension_rule = extension_rule or ExtensionRule()
-    retention = second_pass_record.get("retention") or {}
-    spectrum_families = list(retention.get("spectrum_families") or ())
-    # Declared before any calibration value exists (see ``extension_instances``):
-    # the reserve rungs the extension round may pick, so that their chance
-    # column and kappa(R|B) are read on the same cells as every other
-    # candidate's. No generation of their own.
-    reserve_instances = extension_instances(non_outcome, spectrum_families)
+    # The candidate population is decided below, per frame, once the
+    # frames' operating points exist (FORWARDING_RULE). The comparator's
+    # union and the provisional plan are read now so the reserve instances
+    # can be declared on the grids before any calibration value exists.
+    comparator_plan = second_pass_record.get("comparator_plan") or {}
+    comparator_union = [str(x) for x in comparator_plan.get("union") or ()]
+    provisional_plan = second_pass_record.get("provisional_plan") or {}
+    candidate_families_possible = sorted({
+        lab.rpartition(":")[0] for lab in comparator_union}
+        | {lab.rpartition(":")[0] for lab in provisional_plan.get("union") or ()}
+        | {k for f in (second_pass_record.get("final_table_by_frame") or {}).values()
+           for k in {row["kind"] for row in f} if k not in ("A", "B")})
     grid_rows: list[dict[str, Any]] = []
 
     def measure_grid(kind: str, grid: Sequence[int], run_name: str) -> None:
@@ -679,8 +770,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                                topic_split=_split_of(bank, c.topic_id))
                    for c in cells]
         instances = (tuple(slot_map.values())
-                     + tuple(c for c in non_outcome if c.kind != kind)
-                     + tuple(c for c in reserve_instances if c.kind != kind))
+                     + tuple(c for c in grid_instances if c.kind != kind))
         rows = generate_and_score(
             tree.model_key, prompts, stage=S.STAGE_GATE2, cap=cap,
             device=device, run_dir=tree.backend_runs(S.STAGE_GATE2) / run_name,
@@ -689,6 +779,21 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             generate=generate)
         grid_rows.extend(rows)
 
+    # Every rung any policy could forward, plus every reserve rung the
+    # extension could pick from any candidate family, declared as scored
+    # instances on the grids: the chance column (§13.2) and kappa(R|B)
+    # (§13.6) are then read on the same cells for every rung that can
+    # reach a table. A scoring obligation, no generation.
+    possible_labels = sorted(
+        {lab for lab in comparator_union}
+        | {lab for lab in provisional_plan.get("union") or ()}
+        | {f"{row['kind']}:{row['severity']}"
+           for f in (second_pass_record.get("final_table_by_frame") or {}).values()
+           for row in f if row["kind"] not in ("A", "B")})
+    possible = [c for c in constraints_from_labels(possible_labels)
+                if c.kind not in ("A", "B")]
+    reserve_instances = extension_instances(possible, candidate_families_possible)
+    grid_instances = list(possible) + list(reserve_instances)
     grids = {"A": list(C.TARGET_GRID), "B": list(C.FOCAL_GRID)}
     for kind, grid in grids.items():
         measure_grid(kind, grid, f"grid-{kind}")
@@ -748,42 +853,89 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                       "descriptive_pooled_curves": descriptive_pooled["solo_curves"]},
             strongest_permissible_statement=S.TERMINAL_SENTENCE)
 
-    # ------------------------------------- the candidates, on every block
+    # ------------------------- the forwarding, per frame, against iota_A(f)
     m_stars = sorted({int(points[w]["m_star"]) for w in supported})
     b_stars = tuple(focal_constraint(m) for m in m_stars)
     prescreen_by_candidate = {
         row["candidate"]: row
         for row in (regime_record.get("difficulty_table") or ())
         if not row.get("is_outcome")}
+    coordinates = {w: frame_a_coordinate(frame_grid_rows[w],
+                                         n_star=int(points[w]["n_star"]),
+                                         curves=points[w]["curves"],
+                                         pooled_grid_rows=grid_rows)
+                   for w in supported}
+    forwarding, forwarding_screens, forwarding_targets = frame_forwarding(
+        second_pass_record, coordinates,
+        n_stars={w: int(points[w]["n_star"]) for w in supported},
+        model_key=tree.model_key)
+    cands_by_frame = {w: [c for c in constraints_from_labels(forwarding.forwarded(w))
+                          if c.kind not in ("A", "B")] for w in supported}
+    # The comparator arms: the legacy pooled set (one set for every frame)
+    # and the provisional frame-aware set against the screen-proxy target
+    # (per frame). Their rungs beyond the frame's own set are generated on
+    # the frame's blocks and kept in comparator_rows, so Gate 3 can state
+    # every policy's identification on the same calibration rows.
+    comparator_sets = {w: {
+        R.RETENTION_COMPARATOR: sorted(comparator_union),
+        "frame_aware_screen_proxy": sorted(
+            ((provisional_plan.get("by_frame") or {}).get(str(w)) or {}
+             ).get("forwarded") or ())} for w in supported}
+    comparator_extra = {w: [c for c in constraints_from_labels(sorted(
+        set().union(*comparator_sets[w].values()) - set(forwarding.forwarded(w))))
+        if c.kind not in ("A", "B")] for w in supported}
 
-    def measure_candidates(cands: Sequence[Constraint], run_name: str
-                           ) -> list[dict[str, Any]]:
-        if not cands:
+    def measure_candidates(by_frame_cands: Mapping[int, Sequence[Constraint]],
+                           run_name: str) -> list[dict[str, Any]]:
+        """One backend run: on every block of every pass, the solo cells of
+        the rungs the block's frame carries in ``by_frame_cands``; every
+        rung of the run scored absent on every cell (§9.1), B at every
+        supported frame's m*(f) likewise."""
+        union = {c.label: c for cs in by_frame_cands.values() for c in cs}
+        if not union:
             return []
-        slot_map = {f"S{i}": c for i, c in enumerate(cands)}
+        ordered = [union[k] for k in sorted(union)]
+        slot_map = {f"S{i}": c for i, c in enumerate(ordered)}
+        slot_of = {c.label: slot for slot, c in slot_map.items()}
         cells = []
         for block in calibration_blocks(topics, f"g2{run_name}",
                                         model_key=tree.model_key):
-            for slot, rung in slot_map.items():
+            for rung in by_frame_cands.get(block.index % C.N_WORDINGS, ()):
                 cells.append(SoloCell(cell_id=f"solo:{rung.label}", arm="solo",
-                                      block=block, slot=slot, draws=C.M_CAL))
+                                      block=block, slot=slot_of[rung.label],
+                                      draws=C.M_CAL))
         prompts = [prompt_cell(c, by_id[c.topic_id], slot_map=slot_map,
                                topic_split=_split_of(bank, c.topic_id))
                    for c in cells]
         return generate_and_score(
             tree.model_key, prompts, stage=S.STAGE_GATE2, cap=cap,
             device=device, run_dir=tree.backend_runs(S.STAGE_GATE2) / run_name,
-            instances=tuple(cands) + b_stars, slot_map=slot_map,
+            instances=tuple(ordered) + b_stars, slot_map=slot_map,
             study_id=tree.context.study_id, protocol_identity=identity,
             generate=generate)
 
-    candidate_rows = measure_candidates(non_outcome, "candidates")
-    frame_candidate_rows = {w: rows_of_frame(candidate_rows, w) for w in supported}
-    if non_outcome:
+    def _rows_of(rows: Sequence[Mapping[str, Any]], cands: Sequence[Constraint]
+                 ) -> list[dict[str, Any]]:
+        labels = {f"solo:{c.label}" for c in cands}
+        return [dict(r) for r in rows if r.get("cell_id") in labels]
+
+    generated_by_frame = {w: list(cands_by_frame[w]) + list(comparator_extra[w])
+                          for w in supported}
+    candidate_rows = measure_candidates(generated_by_frame, "candidates")
+    frame_candidate_rows = {w: _rows_of(rows_of_frame(candidate_rows, w),
+                                        cands_by_frame[w]) for w in supported}
+    frame_comparator_rows = {w: _rows_of(rows_of_frame(candidate_rows, w),
+                                         comparator_extra[w]) for w in supported}
+    if any(cands_by_frame[w] for w in supported):
         allocation["realised"]["candidates"] = assert_allocation_realised(
-            frame_candidate_rows,
+            {w: r for w, r in frame_candidate_rows.items() if cands_by_frame[w]},
             expected_topics_per_frame=allocation["topics_per_frame"],
             where=f"{S.STAGE_GATE2}: the candidate run")
+    if any(comparator_extra[w] for w in supported):
+        allocation["realised"]["comparator"] = assert_allocation_realised(
+            {w: r for w, r in frame_comparator_rows.items() if comparator_extra[w]},
+            expected_topics_per_frame=allocation["topics_per_frame"],
+            where=f"{S.STAGE_GATE2}: the comparator arm")
 
     # ------------------------------------------ §13.11 per frame, round 0
     by_frame: dict[int, dict[str, Any]] = {}
@@ -791,16 +943,52 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         by_frame[w] = supported_frame_block(
             w, points[w], frame_grid_rows=frame_grid_rows[w],
             frame_candidate_rows=frame_candidate_rows[w],
-            candidates=non_outcome, model_key=tree.model_key,
+            candidates=cands_by_frame[w], model_key=tree.model_key,
             prescreen=prescreen_by_candidate, pooled_grid_rows=grid_rows)
+        # The comparator arm: the legacy pooled set's extra rungs, tabled on
+        # the same basis and kept beside the frame's table, never in it.
+        if comparator_extra[w]:
+            kappa_cmp = _kappa_columns(frame_grid_rows[w], list(comparator_extra[w]),
+                                       severities=[int(points[w]["m_star"])],
+                                       model_key=tree.model_key)
+            kept_c, withheld_c, _m = frame_tables(
+                frame_grid_rows[w], candidate_rows=frame_comparator_rows[w],
+                candidates=comparator_extra[w], m_star=int(points[w]["m_star"]),
+                model_key=tree.model_key, prescreen=prescreen_by_candidate,
+                kappa_column=kappa_cmp[str(int(points[w]["m_star"]))])
+        else:
+            kept_c, withheld_c = ({s: [] for s in (C.CALIBRATION_A, C.CALIBRATION_B, "pooled")},
+                                  {})
+        by_frame[w]["comparator_rows"] = kept_c
+        by_frame[w]["comparator_rows_withheld"] = withheld_c
+        by_frame[w]["comparator"] = {
+            "policies": comparator_sets[w],
+            "extra_labels": [c.label for c in comparator_extra[w]],
+            "n_extra": len(comparator_extra[w]),
+            "standing": "measured beside the frame's table for the "
+                        "retention comparison (Gate 3 comparator block); "
+                        "enters no admission, selection or membership"}
+        by_frame[w]["forwarding"] = {
+            "forwarded": forwarding.forwarded(w),
+            "n_forwarded": len(forwarding.forwarded(w)),
+            "spectrum_families": forwarding.spectrum_families(w),
+            "local_families": list(forwarding.by_frame[str(w)]["retention"]["local_families"]),
+            "target": {"iota_a": forwarding_targets[w]["iota_a_mean"],
+                       "se_iota_a": forwarding_targets[w]["se_iota_a"],
+                       "n_topics_a": forwarding_targets[w]["n_topics_a"],
+                       "basis": TARGET_CALIBRATION},
+            "screen_statuses": forwarding.by_frame[str(w)]["screen_statuses"],
+            "screen_labels": forwarding.by_frame[str(w)]["screen_labels"],
+            "n_rows": {"candidates": _n_rows(frame_candidate_rows[w]),
+                       "comparator": _n_rows(frame_comparator_rows[w])}}
 
     # ---------------------------------------------- the extension round
     reach_by_frame: dict[int, dict[str, Any]] = {}
     plan_by_frame: dict[int, dict[str, Any]] = {}
-    union_picks: dict[str, set[int]] = {}
+    picks_by_frame: dict[int, list[Constraint]] = {}
     for w in supported:
         reach = reach_input(by_frame[w]["calibration_rows"]["pooled"],
-                            spectrum_families=spectrum_families,
+                            spectrum_families=forwarding.spectrum_families(w),
                             iota_a=by_frame[w]["iota_a"], rule=extension_rule)
         for split_rows in by_frame[w]["calibration_rows_withheld"].values():
             for row in split_rows:
@@ -809,20 +997,23 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                         set(reach[row["kind"]]["measured"]) | {int(row["severity"])})
         plan = calibration_extension_plan(reach, rule=extension_rule)
         reach_by_frame[w], plan_by_frame[w] = reach, plan
-        for kind, qs in plan["picks"].items():
-            union_picks.setdefault(kind, set()).update(int(q) for q in qs)
-    extension_labels = [f"{k}:{q}" for k, qs in sorted(union_picks.items())
-                        for q in sorted(qs)]
+        picks_by_frame[w] = constraints_from_labels(
+            [f"{k}:{q}" for k, qs in sorted(plan["picks"].items()) for q in sorted(qs)])
+    extension_labels = sorted({c.label for cs in picks_by_frame.values() for c in cs})
     extension_rows: list[dict[str, Any]] = []
     extension_withheld_by_frame: dict[int, dict[str, list[str]]] = {}
     if extension_labels:
-        new = constraints_from_labels(extension_labels)
-        extension_rows = measure_candidates(new, "extension-1")
+        # each frame's picks on that frame's blocks (a rung measured for
+        # one frame is that frame's data)
+        extension_rows = measure_candidates(picks_by_frame, "extension-1")
         allocation["realised"]["extension"] = assert_allocation_realised(
-            {w: rows_of_frame(extension_rows, w) for w in supported},
+            {w: rows_of_frame(extension_rows, w) for w in supported
+             if picks_by_frame[w]},
             expected_topics_per_frame=allocation["topics_per_frame"],
             where=f"{S.STAGE_GATE2}: the extension round")
         for w in supported:
+            if not picks_by_frame[w]:
+                continue
             ext_rows_w = rows_of_frame(extension_rows, w)
             # kappa(R|B) for the new rungs: not scored absent on the grid's
             # B-solo cells (they did not exist then), so the column is
@@ -831,7 +1022,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             kept, withheld, _measured = frame_tables(
                 frame_grid_rows[w],
                 candidate_rows=frame_candidate_rows[w] + ext_rows_w,
-                candidates=new, m_star=by_frame[w]["m_star"],
+                candidates=picks_by_frame[w], m_star=by_frame[w]["m_star"],
                 model_key=tree.model_key, prescreen=prescreen_by_candidate,
                 kappa_column=None)
             for split in by_frame[w]["calibration_rows"]:
@@ -847,6 +1038,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
     for w in supported:
         by_frame[w]["extension_reach"] = reach_by_frame[w]
         by_frame[w]["extension_plan"] = plan_by_frame[w]
+        by_frame[w]["extension_measured"] = [c.label for c in picks_by_frame[w]]
         by_frame[w]["extension_withheld"] = extension_withheld_by_frame.get(w, {})
         by_frame[w]["kappa_b_under_candidate"] = _kappa_b_under_candidate(
             frame_candidate_rows[w] + rows_of_frame(extension_rows, w),
@@ -855,6 +1047,16 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         by_frame[w] = unsupported_frame_block(
             w, points[w], frame_grid_rows=frame_grid_rows[w],
             frame_candidate_rows=rows_of_frame(candidate_rows, w))
+    union_forwarded = list(forwarding.union)
+    provisional_agreement = {}
+    for w in supported:
+        prov = set((provisional_plan.get("by_frame") or {}).get(str(w), {}).get("forwarded") or ())
+        final = set(forwarding.forwarded(w))
+        provisional_agreement[str(w)] = {
+            "jaccard": (len(prov & final) / len(prov | final)) if (prov | final) else None,
+            "n_provisional": len(prov), "n_final": len(final),
+            "only_provisional": sorted(prov - final),
+            "only_final": sorted(final - prov)}
 
     # The wording diagnostic at calibration precision: every load-1 row of
     # the grids, the candidates and the extension, per (frame, family, q),
@@ -874,7 +1076,8 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "artifact_type": S.STAGE_ARTIFACT_TYPE[S.STAGE_GATE2],
         "outcome": "PASS",
         "inputs": {"second_pass": {"stage": S.STAGE_SECOND_PASS,
-                                   "n_forwarded": len(forwarded)},
+                                   "n_forwarded_provisional":
+                                       len(provisional_plan.get("union") or ())},
                    "regime": {"stage": S.STAGE_REGIME, "cap": cap}},
         "producing_commit": producing_commit,
         "frame_conditioning": FRAME_CONDITIONING_STATEMENT,
@@ -902,27 +1105,43 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                                    "operating point; the pilot selects none "
                                    "and reads m*(f) only for kappa(R|B)"},
         "calibration_population": {
-            "forwarded": forwarded, "n_measured": len(non_outcome),
-            "measured_under_every_frame": True,
-            "rule": "the second pass's retention (spaced by role for "
-                    "spectrum families, caliper-likely for local families, "
-                    "class and near-form arms), not §12.7's tier budget; "
-                    "pooled over frames as a measurement budget "
-                    "(V8_FRAME_CONDITIONING.md §5); every forwarded rung is "
-                    "calibrated on every block of every calibration pass, "
-                    "hence under every frame on the whole allocation"},
+            "policy": R.RETENTION_POLICY,
+            "target_basis": TARGET_CALIBRATION,
+            "comparator": R.RETENTION_COMPARATOR,
+            "forwarded": union_forwarded,
+            "n_measured": len(union_forwarded),
+            "by_frame": {str(w): {"forwarded": forwarding.forwarded(w),
+                                  "n_forwarded": len(forwarding.forwarded(w)),
+                                  "spectrum_families": forwarding.spectrum_families(w),
+                                  "comparator_extra": [c.label for c in comparator_extra[w]]}
+                         for w in supported},
+            "selected_by_frames": {k: list(v) for k, v in
+                                   sorted(forwarding.selected_by_frames.items())},
+            "forwarding_plan": forwarding.as_record(),
+            "provisional_agreement": provisional_agreement,
+            "comparator_union": comparator_union,
+            "n_comparator_union": len(comparator_union),
+            "comparator_policies": [R.RETENTION_COMPARATOR, "frame_aware_screen_proxy"],
+            "n_candidate_rows": sum(len(r) for r in frame_candidate_rows.values()),
+            "n_comparator_rows": sum(len(r) for r in frame_comparator_rows.values()),
+            "unsupported_frames_generate_nothing": True,
+            "measured_under_every_frame": False,
+            "rule": FORWARDING_RULE},
         "b_instances_scored_absent_on_candidate_cells": [b.label for b in b_stars],
         "reserve_instances_declared_on_the_grids": {
             "labels": [c.label for c in reserve_instances],
             "n": len(reserve_instances),
             "families": sorted({c.kind for c in reserve_instances}),
-            "rule": "§7.10's frozen reserve of every spectrum-candidate "
-                    "family, minus the carried severities: the rungs the "
-                    "calibration extension may pick, scored as absent "
-                    "instances on the grids' unconstrained and B-solo cells "
-                    "so that their chance column (§13.2) and kappa(R|B) "
-                    "(§13.6) are read on the same cells as every other "
-                    "candidate's; costs no generation",
+            "candidate_instances": [c.label for c in possible],
+            "rule": "every rung any policy could forward (the provisional "
+                    "and comparator unions and every rung on the frames' "
+                    "second-pass tables) and §7.10's frozen reserve of every "
+                    "candidate family, minus the carried severities: scored "
+                    "as absent instances on the grids' unconstrained and "
+                    "B-solo cells so that the chance column (§13.2) and "
+                    "kappa(R|B) (§13.6) of whatever the per-frame forwarding "
+                    "and the extension then measure are read on the same "
+                    "cells as every other candidate's; costs no generation",
         },
         "calibration_binding": binding,
         "calibration_topic_ids": sorted(by_id),
@@ -934,10 +1153,11 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
         "extension": {"reach_by_frame": {str(w): r for w, r in reach_by_frame.items()},
                       "plan_by_frame": {str(w): p for w, p in plan_by_frame.items()},
                       "measured": extension_labels,
-                      "measured_rule": "the union of the supported frames' "
-                                       "plans, each bounded by the rule; a "
-                                       "rung measured for one frame is data "
-                                       "for every frame",
+                      "measured_by_frame": {str(w): [c.label for c in cs]
+                                            for w, cs in picks_by_frame.items()},
+                      "measured_rule": "each supported frame's own plan, "
+                                       "bounded by the rule, measured on that "
+                                       "frame's blocks only",
                       "n_rows": len(extension_rows),
                       "withheld_by_frame": {str(w): v for w, v in
                                             extension_withheld_by_frame.items()},
@@ -957,7 +1177,9 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
             run.name: row_accounting(run)
             for run in sorted(tree.backend_runs(S.STAGE_GATE2).iterdir())
             if run.is_dir()},
-        "n_candidates_measured": len(non_outcome) + len(extension_labels),
+        "n_candidates_measured": len(union_forwarded) + len(extension_labels),
+        "n_candidates_measured_by_frame": {
+            str(w): len(cands_by_frame[w]) + len(picks_by_frame[w]) for w in supported},
         "identification_statuses": statuses,
         "selected_on": C.SECONDARY_DIFFICULTY_COORDINATE,
         "no_composed_cells": S.NO_COMPOSED_CELLS,

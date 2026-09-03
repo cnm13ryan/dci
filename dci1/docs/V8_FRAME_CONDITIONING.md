@@ -542,7 +542,7 @@ invariance directly.
 | stage | frame handling | what pooled quantity remains, and its standing |
 |---|---|---|
 | generation (`run/execute`) | unchanged: one frame per block, `block.index % 4`; every row carries `frame` (load 1), `block_index` and `block_frame` (every load) | — |
-| regime screen, second pass, retention (`run/regime`, `run/rescreen`, `prescreen/*`) | **pooled over frames, as a measurement budget only.** At 24 topics × 1 draw a frame holds six topics; no posterior on six topics can steer anything. The screen decides which rungs are *measured* at calibration — every measured rung is then calibrated under all four frames on the same blocks — and no admission, matching or selection reads a screen quantity (§12.2's registered principle). Recorded on both stage records as `frame_conditioning` | screen ι_A, the ACCEPT/REJECT/RESAMPLE statuses and the forwarded set: a budget rule, not an eligibility rule (§10 item 3) |
+| regime screen, second pass, retention (`run/regime`, `run/rescreen`, `prescreen/*`) | **Superseded for the successor design (2026-09-03; `V8_FRAME_AWARE_PRESCREEN.md`).** Pilots r5–r13 pooled the screen and the second pass over frames as a measurement budget (six topics per frame) and forwarded one set to every frame. The successor lays the screen and every batch out one pass per frame offset (24 topics per frame), screens each frame on its own blocks, and Gate 2 forwards each frame's set against the frame's own ι_A(f); a rung is calibrated on the blocks of the frames whose evidence selected it. The pooled screen is recorded as a comparator and decides nothing | the pooled screen and the pooled forwarding plan: a comparator arm in the successor pilots, never an eligibility rule |
 | Gate 1 (`run/instrument`) | the per-frame wording diagnostic (`run/wording`) is unchanged and is now the *primary* per-frame reading at screen precision | cross-frame comparison classes: descriptive |
 | Gate 2 (`run/calibration`) | **two calibration passes** (§4a), then **per frame**: curves, n*(f), m*(f), §12.3 resolution, §12.4 adequacy, ι_A(f) with κ_A(f), per-split values and per-topic vectors, §13.11's table on the frame's own rows (§13.2's chance basis is the unconstrained cell of *the same blocks*, enforced by the producer), κ(R|B) at m*(f) on frame f's B-solo cell, degenerate rows withheld per frame, the extension reach per frame | `descriptive_pooled`: the frame-pooled solo curves and what §12.3 would have said on them — read by nothing; no pooled §13.11 table is written |
 | Gate 3 (`run/references`) | **per supported frame**: folded §13.7 stability against ι_A(f) by split, ι_A(f)'s own stability, `classify_pool` (LOCAL and SPECTRUM) at ι_A(f), §13.8's core kernel, `select_spectrum`, `selected_coverage` at the frame's block share, `admissible_backups`; the frame's state | `cross_frame`: per family, which rung each frame chose; agreement counts — descriptive |
@@ -709,10 +709,15 @@ report and cannot freeze.
    truth lies. So this is a real coin-toss on ~13 h of generation, not a
    near-certain gain, and it is the researcher's call. Declining it leaves
    the LOCAL arm at two models.
-3. **A frame-aware screen.** The screen and second pass pool the frames as
-   a budget rule (§5). A frame-aware second pass would need many more
-   topics per batch; the pilot's per-frame calibration will show whether
-   the pooled budget rule loses frame-specific caliper rungs.
+3. ~~**A frame-aware screen.**~~ **Redesigned 2026-09-03**
+   (`V8_FRAME_AWARE_PRESCREEN.md`): the replay on the stored roots
+   (`reports/dci1v8dev/frame_aware_prescreen/prescreen_feasibility.md`)
+   measured that at six topics per frame a frame-aware screen is no better
+   than the pooled one because the sample size, not the frame, sets the
+   noise; the successor gives every frame the pooled screen's budget (one
+   pass per frame offset over the same topics) and forwards per frame
+   against ι_A(f). Whether that buys anything at equal budget is what the
+   successor pilots measure, with the pooled rule as a comparator arm.
 4. **The cross-frame summary's form** (comparison only, a registered
    average, or a modelled frame term) — a post-freeze registration item.
 

@@ -29,7 +29,7 @@ import dci1v8dev
 from dci1v8dev import rules as R
 from dci1v8dev.run import (BASE_PREREGISTRATION, CLASSIFICATION,
                            DESIGN_DOCUMENT, FRAME_DOCUMENT, PILOT_DOCUMENT,
-                           SUPERSEDES)
+                           PRESCREEN_DOCUMENT, SUPERSEDES)
 from dci1v8dev.run import seeds
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import EVIDENCE_DIRNAME, StudyContext
@@ -43,9 +43,9 @@ __all__ = ["PROTOCOL_VERSION", "DOCUMENTS", "Blocker", "document_hashes",
            "assert_signable", "sign_registration", "ensure_registration",
            "load_manifest", "manifest_hash"]
 
-PROTOCOL_VERSION = "8.0-pilot"
+PROTOCOL_VERSION = "8.1-pilot"
 DOCUMENTS = (DESIGN_DOCUMENT, PILOT_DOCUMENT, FRAME_DOCUMENT,
-             BASE_PREREGISTRATION)
+             PRESCREEN_DOCUMENT, BASE_PREREGISTRATION)
 
 
 class Blocker(ProtocolError):
@@ -179,10 +179,15 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                           "SPECTRUM(R, f), core, spectrum points, coverage "
                           "and backups per frame",
             "pooled_over_frames": "descriptive only; decides nothing",
-            "screen_and_second_pass": "pooled over frames as a measurement "
-                                      "budget (which rungs are calibrated); "
-                                      "every calibrated rung is measured under "
-                                      "every frame",
+            "screen_and_second_pass": "per frame (2026-09-03): the screen "
+                                      "and every batch are laid out one pass "
+                                      "per frame offset, each frame is "
+                                      "screened on its own blocks, and Gate 2 "
+                                      "forwards each frame's set against the "
+                                      "frame's own iota_A(f); a rung is "
+                                      "calibrated on the blocks of the frames "
+                                      "whose evidence selected it "
+                                      "(rules.RETENTION_POLICY)",
             "unsupported_frame": "recorded with its §12.3/§12.4 status; the "
                                  "other frames continue; terminal only when "
                                  "no frame is supported",
@@ -212,6 +217,9 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                   "screen_base_seed_rule": "seeds.screen_seed(model_id, stage)"},
         "design": {"sample_sizes": {"prescreen_topics": C.N_PRESCREEN,
                                     "screen_draws": C.LADDER_SCREEN_DRAWS,
+                                    "screen_frame_passes": R.SCREEN_FRAME_PASSES,
+                                    "screen_topics_per_frame":
+                                        R.SCREEN_TOPICS_PER_FRAME,
                                     "second_pass_batch_topics":
                                         R.RESCREEN_BATCH_TOPICS,
                                     "second_pass_max_batches":
@@ -273,6 +281,15 @@ def build_manifest(context: StudyContext, *, producing_commit: str,
                    # frame-specific estimate will eventually be formed at,
                    # before any confirmatory row exists.
                    "confirmatory_allocation": R.confirmatory_allocation(),
+                   "screen_allocation": {
+                       "frame_offsets": list(R.SCREEN_FRAME_OFFSETS),
+                       "passes": R.SCREEN_FRAME_PASSES,
+                       "topics_per_frame": R.SCREEN_TOPICS_PER_FRAME,
+                       "batch_layout": R.RESCREEN_BATCH_LAYOUT},
+                   "retention": {"policy": R.RETENTION_POLICY,
+                                 "target_basis": R.RETENTION_TARGET_BASIS,
+                                 "comparator": R.RETENTION_COMPARATOR,
+                                 "decided_at": S.STAGE_GATE2},
                    "completion_caps": list(C.COMPLETION_CAPS),
                    "target_grid": list(C.TARGET_GRID),
                    "focal_grid": list(C.FOCAL_GRID),

@@ -123,10 +123,15 @@ are frozen.
    frames continue; the replication is terminal only when no frame is
    supported. The report evaluates the decided criteria per frame and
    aggregates by "at least one supported frame passes" with every frame's
-   verdict beside it. The screen and second pass stay pooled over frames
-   as a measurement budget. No pooled ι_A, table, core set or spectrum
-   exists on any record; the frame-pooled curves are `descriptive_pooled`,
-   read by nothing. Executable: `tests_v8dev/test_frame_conditioning.py`.
+   verdict beside it. The screen and second pass pooled the frames as a
+   measurement budget in pilots r5–r13; **since 2026-09-03 (successor
+   design, `V8_FRAME_AWARE_PRESCREEN.md`) they are per frame** at the pooled
+   screen's budget per frame, and Gate 2 forwards each frame's set against
+   the frame's own ι_A(f). No pooled ι_A, table, core set or spectrum
+   exists on any record; the frame-pooled curves are `descriptive_pooled`
+   and the frame-pooled screen is a comparator, read by nothing that
+   decides. Executable: `tests_v8dev/test_frame_conditioning.py`,
+   `tests_v8dev/test_frame_aware_prescreen.py`.
 
 ## 2. The nine stages
 
@@ -135,10 +140,10 @@ are frozen.
 | 1 | `PILOT_REGISTERED` | – | signs the pilot manifest once per root (documents, package, rules, both instrument hashes, models, topics, seeds, criteria, frame reference); a later replication is verified against it and refused on any difference |
 | 2 | `QUALIFIED` | – | fifteen apparatus checks; fails closed with the whole list |
 | 3 | `GATE_0_APPARATUS` | 12 topics × 5 cells × 4 | §19-shaped plumbing proof under the v8 frames: every cell/draw once, byte mutation refused, durable restore, v8 identity on every row |
-| 4 | `REGIME_SCREEN` | cap selection 3 × 96; ladder 24 × (326 + 8 + 8 + 1) | §12.1, §12.2 under the v8 frames; κ on the unconstrained cell; frame reliability; the uncertainty-aware first pass (`prescreen.screen`) |
-| 5 | `SECOND_PASS_SCREEN` | ≤ 3 batches × 24 × (rungs + 8 + 1) | `prescreen.rescreen.run_rescreen` with a real `measure`: fresh Calibration-A topics (two per area per batch, disjoint), reserve picks, A's grid; then `retention.retain` → the forwarded set |
+| 4 | `REGIME_SCREEN` | cap selection 3 × 96; ladder 24 × 4 passes × (326 + 8 + 8 + 1) | §12.1, §12.2 under the v8 frames, one pass per frame offset (`screen_blocks`; 24 topics per frame); κ on the frame's own unconstrained cells; frame reliability; the uncertainty-aware first pass **per frame** (`prescreen.screen`; the pooled screen recorded as comparator) |
+| 5 | `SECOND_PASS_SCREEN` | ≤ 3 batches × 24 × 4 passes × (rungs + 8 + 1) | `prescreen.rescreen.run_rescreen_by_frame` with a real `measure`: fresh Calibration-A topics (two per area per batch, disjoint) under every frame, the union of the frames' plans, reserve picks, A's grid; the record carries each frame's final table, the provisional frame-aware plan and the legacy pooled comparator plan; nothing forwarded here |
 | 6 | `GATE_1_INSTRUMENT` | – | frame criterion vs the bound reference; §7.5 over the v8 population; v8 scorer determinism; hashes frozen |
-| 7 | `GATE_2_CALIBRATION` | 192 × 4 × (8 + 8 + 1) + 192 × 4 × forwarded + extension | **per frame** (§1a item 6): n*(f), m*(f), adequacy (v7's rules on the frame's own curves); the forwarded set at calibration precision on every block, with B at every supported frame's m*(f) absent; §13.11's table per frame by the 7f89dae producer on the frame's own unconstrained cells; one extension round (the union of the frames' plans, each ≤ 2 reserve rungs per deficient side of a spectrum family); unsupported frames recorded, terminal only when none is supported |
+| 7 | `GATE_2_CALIBRATION` | 192 × 4 × (8 + 8 + 1) + Σ_f 192 × 4 × (forwarded(f) + comparator extra(f)) + extension | **per frame** (§1a item 6): n*(f), m*(f), adequacy (v7's rules on the frame's own curves); **then the forwarding** (`FORWARDING_RULE`: each supported frame's second-pass evidence screened against ι_A(f) and retained), each rung generated on the blocks of the frames that selected it with B at every supported frame's m*(f) absent, the comparator arms' extra rungs beside it in `comparator_rows`; §13.11's table per frame by the 7f89dae producer on the frame's own unconstrained cells; one extension round per frame (≤ 2 reserve rungs per deficient side of a spectrum family, on the frame's blocks); unsupported frames generate no candidate and are recorded, terminal only when none is supported |
 | 8 | `GATE_3_REFERENCES` | – | **per supported frame**: folded §13.7 stability against ι_A(f); `classify_pool` (LOCAL = v7's full V(R); SPECTRUM = V_coord/unfolded V_stab/V_pos); core by `admit_core_references(require_spectrum=False)`; `select_spectrum`; `selected_coverage` at `rules.CONFIRMATORY_BLOCKS_PER_FRAME` blocks per frame; `admissible_backups`; the frame's state; a descriptive cross-frame block; the estimands stated per frame |
 | 9 | `PILOT_REPORT` | – | the four criteria on the records, the three decided ones per frame; the run-level aggregate (`any_supported_frame`); frames meeting every decided criterion; generation counts; what the freeze decision may rest on |
 

@@ -60,7 +60,7 @@ from dci1v8dev.spectrum.validity import DEFAULT_SPECTRUM_RULE, classify_pool
 
 __all__ = ["gate3_payload", "run_gate3", "survival_summary",
            "frame_references", "frame_state", "cross_frame_summary",
-           "ESTIMANDS", "FRAME_SELECTION_RULE"]
+           "comparator_references", "ESTIMANDS", "FRAME_SELECTION_RULE"]
 
 #: The v8 selection rule with the coverage projection at the frame's share
 #: of the registered confirmatory blocks; every threshold unchanged.
@@ -323,6 +323,61 @@ def frame_references(gate2_record: Mapping[str, Any], frame: int, *,
     }
 
 
+def comparator_references(gate2_record: Mapping[str, Any], frame: int, *,
+                          model_key: str, seed: int, resamples: int
+                          ) -> dict[str, Any] | None:
+    """The retention comparison on one frame: Gate 3 by the same kernel on
+    the frame's calibration rows as each comparator policy would have had
+    them --- the policy's set on this frame, from the frame's table where a
+    rung is in it and from ``comparator_rows`` where it is not --- beside
+    the frame's own verdict. Descriptive: admits nothing, selects nothing.
+    ``None`` when the record carries no comparator arm."""
+    import copy
+    g2 = gate2_record["by_frame"][str(frame)]
+    if g2.get("comparator_rows") is None:
+        return None
+    own = set((g2.get("forwarding") or {}).get("forwarded") or ())
+    out: dict[str, Any] = {"frame": frame, "available": True, "by_policy": {}}
+    for policy, labels in ((g2.get("comparator") or {}).get("policies") or {}).items():
+        wanted = set(labels)
+        record = copy.deepcopy(dict(gate2_record))
+        block = record["by_frame"][str(frame)]
+        for split, rows in block["calibration_rows"].items():
+            kept = [r for r in rows if f"{r['kind']}:{r['severity']}" in wanted]
+            kept += [r for r in (g2["comparator_rows"].get(split) or ())
+                     if f"{r['kind']}:{r['severity']}" in wanted]
+            block["calibration_rows"][split] = kept
+        if not block["calibration_rows"]["pooled"]:
+            out["by_policy"][policy] = {"available": False,
+                                       "why": "no row on this frame"}
+            continue
+        verdict = frame_references(record, frame, model_key=model_key,
+                                   seed=seed, resamples=resamples)
+        s = verdict["survival"]
+        out["by_policy"][policy] = {
+            "available": True,
+            "n_rungs": len(block["calibration_rows"]["pooled"]),
+            "n_shared_with_frame_set": len(wanted & own),
+            "n_only_comparator": len(wanted - own),
+            "n_only_frame_set": len(own - wanted),
+            "state": verdict["state"],
+            "core_identified": s["core_identified"],
+            "core_references": s["core_references"],
+            "n_local_valid_families": s["n_local_valid_families"],
+            "local_valid_families": s["local_valid_families"],
+            "meets_min_local_families": s["meets_min_local_families"],
+            "n_backups": s["n_backups"], "backups": s["backups"],
+            "meets_min_backups": s["meets_min_backups"],
+            "coverage_identified": s["coverage_identified"],
+            "local_supported": s["local_supported"],
+            "n_local_valid": verdict["n_local_valid"],
+            "n_spectrum_valid": verdict["n_spectrum_valid"]}
+    out["standing"] = ("descriptive comparison of the frame's own forwarding "
+                       "with each comparator policy on the same calibration "
+                       "rows; enters no verdict")
+    return out
+
+
 def cross_frame_summary(by_frame: Mapping[str, Mapping[str, Any]],
                         supported: list[int]) -> dict[str, Any]:
     """Descriptive: what each frame chose, side by side, and where the
@@ -388,6 +443,9 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
                 "survival": None, "local": {}, "spectrum": {},
                 "core_references": {}, "backups": None,
                 "wording_sensitive_rungs": None}
+    comparator = {str(w): comparator_references(
+        gate2_record, w, model_key=tree.model_key, seed=seed, resamples=resamples)
+        for w in supported}
     states = {
         str(w): {
             "state": by_frame[str(w)]["state"],
@@ -450,6 +508,29 @@ def gate3_payload(tree: ModelTree, *, producing_commit: str,
         # stage's own per-frame survival blocks and Gate 2's support status;
         # no composed cell exists to read and no frame reads another's.
         "local_eligibility": eligibility,
+        "retention_comparison": {
+            "comparator": (gate2_record.get("calibration_population") or {}).get("comparator"),
+            "policy": (gate2_record.get("calibration_population") or {}).get("policy"),
+            "by_frame": comparator,
+            "frame_set": {str(w): {
+                "state": by_frame[str(w)]["state"],
+                "n_local_valid_families": by_frame[str(w)]["survival"]["n_local_valid_families"],
+                "n_backups": by_frame[str(w)]["survival"]["n_backups"],
+                "coverage_identified": by_frame[str(w)]["survival"]["coverage_identified"],
+                "local_supported": by_frame[str(w)]["survival"]["local_supported"]}
+                for w in supported},
+            "comparator_eligibility": {
+                policy: EL.local_eligibility(
+                    {str(w): {"survival": ((comparator.get(str(w)) or {}).get("by_policy") or {}
+                                           ).get(policy) if ((comparator.get(str(w)) or {})
+                                                             .get("by_policy") or {}
+                                                             ).get(policy, {}).get("available")
+                              else None,
+                              "status": ("SUPPORTED" if w in supported else "UNSUPPORTED")}
+                     for w in S.FRAMES}, frames=S.FRAMES)
+                for policy in sorted({p for c in comparator.values() if c
+                                      for p in (c.get("by_policy") or {})})},
+            "standing": "descriptive; the frame's own forwarding decides"},
         "cross_frame": cross_frame_summary(by_frame, supported),
         "estimands": ESTIMANDS,
         "coverage_rule": {"n_blocks": FRAME_COVERAGE_RULE.n_blocks,

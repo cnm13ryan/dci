@@ -109,11 +109,12 @@ def freeze_payload(tree: L.ConfirmTree, membership: Mapping[str, Any], *,
             f"the membership lock's entry for {tree.model_key} {got} differs "
             f"from this model's MEMBERSHIP record {expected}; re-run the "
             "lock tool before freezing")
-    pilot_gate2 = open_pilot(Path(registration["pilot_source"]["root"]),
-                             tree.model_key, synthetic=tree.synthetic).gate2
+    pilot = open_pilot(Path(registration["pilot_source"]["root"]),
+                       tree.model_key, synthetic=tree.synthetic)
     readiness = freeze_readiness(tree, membership, repo_root=repo_root,
                                  lock=lock, registration=registration,
-                                 pilot_gate2=pilot_gate2)
+                                 pilot_gate2=pilot.gate2,
+                                 pilot_regime=pilot.regime)
     if not membership["enters_study"]:
         raise L.TerminalStatus(
             "NOT_ELIGIBLE", gate=L.STAGE_FROZEN,

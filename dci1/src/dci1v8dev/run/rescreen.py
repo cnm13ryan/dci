@@ -1,16 +1,26 @@
-"""Stage 5, ``SECOND_PASS_SCREEN``: the targeted second pass, generated.
+"""Stage 5, ``SECOND_PASS_SCREEN``: the targeted second pass, generated ---
+per frame, on batches laid out one pass per frame offset.
 
-``dci1v8dev.prescreen.rescreen.run_rescreen`` decides *what* a batch
-measures --- every family the first pass left in the middle band, its
-measured rungs plus at most two reserve severities in the deficient
-direction, A's grid --- and this stage supplies ``measure``: it renders the
-batch's cells under the v8 frames on a fresh set of twenty-four topics,
-generates them at the selected cap, scores them, and returns the counts in
-the screen's schema with the chance count read on the batch's own
-unconstrained cell. The loop stops by the registered rule (a family leaves
-the middle band or spends three batches; the posterior majority resolves
-what is left, recorded ``AMBIGUOUS_AT_MAX``), then ``retain`` forwards the
-spaced set by role.
+``dci1v8dev.prescreen.rescreen.run_rescreen_by_frame`` decides *what* a
+batch measures --- the union over the frames of the families each frame's
+own screen left in the middle band, their measured rungs plus at most two
+reserve severities in the deficient direction, A's grid --- and this stage
+supplies ``measure``: it renders the batch's cells on a fresh set of
+twenty-four Calibration-A topics under every frame
+(``regime.screen_blocks``: one pass per frame offset, so every frame holds
+every batch topic), generates them at the selected cap, scores them, and
+returns each frame's counts from its own blocks, with the chance count read
+on the frame's own unconstrained cells. Every frame absorbs every batch as
+data (declared layout: fresh topics); each frame's statuses move on its own
+evidence; the loop stops by the registered rule per frame.
+
+The record carries each frame's final table and screen and two forwarding
+plans that decide nothing here: the **provisional** frame-aware plan
+(``prescreen.policy.FrameAwarePolicy`` against each frame's own
+screen-proxy ι_A) and the **legacy pooled comparator**
+(``LegacyPooledPolicy`` on the frame-pooled counts). The forwarding that
+Gate 2 measures is decided at Gate 2 against each frame's own ι_A(f)
+(``rules.RETENTION_TARGET_BASIS``), once the operating point exists.
 
 The topics come from Calibration-A, two per area per batch, disjoint across
 batches (``stages.RESCREEN_TOPIC_SOURCE``); the ids are on the record.
@@ -28,24 +38,29 @@ from dci1v7.topics.bank import TopicBank, load_bank
 from dci1v7.verifiers.constraints import LADDERS, Constraint
 
 from dci1v8dev import rules as R
+from dci1v8dev.prescreen.evidence import counts_to_input, evidence_from_rows
+from dci1v8dev.prescreen.policy import (TARGET_SCREEN_PROXY, FrameAwarePolicy,
+                                        LegacyPooledPolicy)
 from dci1v8dev.prescreen.rescreen import (RescreenBatch, RescreenConfig,
-                                          run_rescreen)
+                                          apply_batch, resolve_at_max,
+                                          run_rescreen, run_rescreen_by_frame)
 from dci1v8dev.prescreen.retention import RetentionConfig, retain
 from dci1v8dev.prescreen.schema import ARung, PrescreenRung
-from dci1v8dev.prescreen.screen import ScreenConfig
+from dci1v8dev.prescreen.screen import ScreenConfig, screen_families
 from dci1v8dev.run import stages as S
 from dci1v8dev.run.context import ModelTree
 from dci1v8dev.run.execute import (generate_and_score, prompt_cell,
                                    resolve_generate, row_accounting)
 from dci1v8dev.run.instrument import frame_reliability
 from dci1v8dev.run.lifecycle import StageOutcome, protocol_identity, run_stage
-from dci1v8dev.run.regime import (jsonable, ladder_cells, prescreen_counts,
+from dci1v8dev.run.regime import (assert_screen_allocation, evidence_record,
+                                  jsonable, ladder_cells, prescreen_counts,
                                   prescreen_input, screen_record,
                                   screen_responder)
 from dci1v8dev.run.seeds import screen_seed
 
 __all__ = ["batch_topics", "assert_batch_isolated", "measure_factory",
-           "second_pass_payload", "run_second_pass"]
+           "measure_factory_frames", "second_pass_payload", "run_second_pass"]
 
 
 def assert_batch_isolated(bank: TopicBank, topics: Sequence[Mapping[str, Any]],
@@ -166,6 +181,85 @@ def measure_factory(tree: ModelTree, *, bank: TopicBank, cap: int,
     return measure
 
 
+def measure_factory_frames(tree: ModelTree, *, bank: TopicBank, cap: int,
+                           device: int, generate: Callable[..., Any] | None,
+                           log: list[dict[str, Any]]):
+    """The frame-aware ``measure``: the batch under every frame, and each
+    frame's counts from its own blocks."""
+    identity = protocol_identity(tree, S.STAGE_SECOND_PASS)
+    used: list[str] = []
+
+    def measure(batch: RescreenBatch) -> dict[int, tuple[list[PrescreenRung],
+                                                          list[ARung]]]:
+        topics = batch_topics(bank, batch.index)
+        isolation = assert_batch_isolated(bank, topics, seen=used,
+                                          index=batch.index)
+        used.extend(t["topic_id"] for t in topics)
+        by_id = {t["topic_id"]: t for t in topics}
+        rungs: list[Constraint] = []
+        for kind, fam in sorted(batch.families.items()):
+            for q in sorted(set(fam["severities"]) | set(fam["reserve_picks"])):
+                rungs.append(Constraint(kind, q, reserve=True))
+        if batch.a_grid:
+            rungs.extend(Constraint("A", q) for q in C.TARGET_GRID)
+        if batch.layout != "topics":
+            raise ProtocolError("the pilot's second pass measures fresh "
+                                "topics; the draws layout is not wired")
+        cells, slot_map = ladder_cells(topics, rungs,
+                                       prefix=f"batch{batch.index}",
+                                       draws=batch.draws_per_topic,
+                                       frame_passes=batch.frame_passes)
+        prompts = [prompt_cell(c, by_id[c.topic_id], slot_map=slot_map,
+                               topic_split=S.RESCREEN_TOPIC_SOURCE)
+                   for c in cells]
+        run_dir = tree.backend_runs(S.STAGE_SECOND_PASS) / f"batch-{batch.index}"
+        rows = generate_and_score(
+            tree.model_key, prompts, stage=S.STAGE_SECOND_PASS, cap=cap,
+            device=device, run_dir=run_dir,
+            instances=tuple(slot_map.values()), slot_map=slot_map,
+            study_id=tree.context.study_id, protocol_identity=identity,
+            generate=generate)
+        for row in rows:
+            if (row["topic_id"] not in by_id
+                    or row["topic_split"] != S.RESCREEN_TOPIC_SOURCE
+                    or row["run"] != f"batch-{batch.index}"):
+                raise ProtocolError(f"batch {batch.index}: row {row['row_id']} "
+                                    "carries a topic, split or batch outside "
+                                    "the batch")
+        realised = assert_screen_allocation(
+            rows, expected_topics_per_frame=len(topics) * batch.frame_passes
+            // C.N_WORDINGS, where=f"{S.STAGE_SECOND_PASS}: batch {batch.index}")
+        # the counts' reserve flag is the severity's, not the rendering's
+        counted = [Constraint(c.kind, c.severity,
+                              reserve=(c.kind not in ("A", "B")
+                                       and c.severity not in LADDERS[c.kind]))
+                   for c in rungs]
+        evidence = evidence_from_rows(rows, counted, provenance={
+            "batch": batch.index, "frame_passes": batch.frame_passes})
+        pooled_counts = prescreen_counts(rows, counted)
+        for row in pooled_counts:
+            row["reserve"] = (row["kind"] not in ("A", "B")
+                              and row["severity"] not in LADDERS[row["kind"]])
+        log.append({"index": batch.index, "run": f"batch-{batch.index}",
+                    "split": S.RESCREEN_TOPIC_SOURCE,
+                    "topic_ids": sorted(by_id),
+                    "isolation": isolation,
+                    "allocation_realised": realised,
+                    "families": sorted(batch.families),
+                    "requested_by_frames": {k: v["requested_by_frames"]
+                                            for k, v in batch.families.items()},
+                    "rungs": [r.label for r in rungs],
+                    "n_rows": len(rows),
+                    "row_accounting": row_accounting(run_dir),
+                    "frame_reliability": frame_reliability(rows),
+                    "counts": pooled_counts,
+                    "counts_by_frame": evidence_record(evidence)})
+        return {f: (list(e.table), list(e.a_grid))
+                for f, e in evidence.by_frame.items()}
+
+    return measure
+
+
 def second_pass_payload(tree: ModelTree, *, producing_commit: str,
                         regime_record: Mapping[str, Any],
                         bank: TopicBank | None = None, device: int = 0,
@@ -177,19 +271,45 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
     generate = resolve_generate(tree, generate, screen_responder,
                                 where=S.STAGE_SECOND_PASS)
     cap = int(regime_record["selected_cap"])
-    table, a_grid = prescreen_input(regime_record["prescreen_table"])
+    tables = {int(f): counts_to_input(rows)
+              for f, rows in regime_record["prescreen_table_by_frame"].items()}
     config = ScreenConfig(base_seed=screen_seed(
         get_model(tree.model_key).model_id, S.STAGE_SECOND_PASS))
-    rescreen_config = rescreen_config or RescreenConfig()
+    rescreen_config = rescreen_config or RescreenConfig(
+        layout=R.RESCREEN_BATCH_LAYOUT, frame_passes=R.SCREEN_FRAME_PASSES)
     retention_config = retention_config or RetentionConfig(
         generations_per_rung=R.calibration_generations_per_rung(tree.model_key))
     batches: list[dict[str, Any]] = []
-    result = run_rescreen(
-        table, a_grid, screen_config=config, config=rescreen_config,
-        measure=measure_factory(tree, bank=bank, cap=cap, device=device,
-                                generate=generate, log=batches))
-    retention = retain(result["screen"], config=retention_config)
-    forwarded = [e["candidate"] for e in retention["forwarded"]]
+    result = run_rescreen_by_frame(
+        tables, screen_config=config, config=rescreen_config,
+        measure=measure_factory_frames(tree, bank=bank, cap=cap, device=device,
+                                       generate=generate, log=batches))
+    n_topics = {f: max((r.n_topics for r in t), default=0)
+                for f, (t, _a) in result["tables"].items()}
+    # The provisional plan: what each frame's own screen would forward
+    # against its own screen-proxy iota_A. Recorded; decides nothing. The
+    # forwarding Gate 2 measures is decided there against iota_A(f).
+    aware = FrameAwarePolicy(screen_config=config,
+                             retention_config=retention_config)
+    provisional = aware.plan_from_screens(
+        result["screens"], n_topics=n_topics, target_basis=TARGET_SCREEN_PROXY,
+        provenance={"stage": S.STAGE_SECOND_PASS,
+                    "standing": "provisional: the frame's own screen against "
+                                "its own screen-proxy iota_A; Gate 2 decides "
+                                "the forwarding against iota_A(f)"})
+    # The legacy comparator: the frame-pooled counts with every batch
+    # absorbed by the legacy inference, screened and retained by the pooled
+    # rule, the at-max rule applied. Measured beside the frame-aware set at
+    # Gate 2 (rules.RETENTION_COMPARATOR); admits nothing.
+    p_table, p_grid = prescreen_input(regime_record["prescreen_table"])
+    for b in batches:
+        new_r, new_a = prescreen_input(b["counts"])
+        p_table, p_grid = apply_batch(p_table, p_grid, new_r, new_a)
+    pooled_screen = screen_families(p_table, p_grid, config=config)
+    pooled_resolved = resolve_at_max(pooled_screen, config=rescreen_config)
+    comparator = LegacyPooledPolicy(
+        screen_config=config, retention_config=retention_config).plan_from_screen(
+            pooled_screen, n_topics=max((r.n_topics for r in p_table), default=0))
     pooled_rows_reliability = _pooled_reliability(batches)
     return {
         "stage": S.STAGE_SECOND_PASS,
@@ -200,6 +320,14 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
         "selected_cap": cap,
         "topic_source": S.RESCREEN_TOPIC_SOURCE,
         "topics_per_area_per_batch": S.RESCREEN_TOPICS_PER_AREA,
+        "screen_allocation": {"frame_offsets": list(R.SCREEN_FRAME_OFFSETS),
+                              "passes": R.SCREEN_FRAME_PASSES,
+                              "topics_per_frame_per_batch":
+                                  R.RESCREEN_BATCH_TOPICS * R.SCREEN_FRAME_PASSES
+                                  // C.N_WORDINGS,
+                              "layout": rescreen_config.layout,
+                              "realised": {str(b["index"]): b["allocation_realised"]
+                                           for b in batches}},
         "topic_isolation": {
             "rule": "fresh Calibration-A topics only: no extra draw on a "
                     "pre-screen topic, Calibration-B untouched, batches "
@@ -212,35 +340,56 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
                        "batch_topics": rescreen_config.batch_topics,
                        "source_size": len(bank.topics(S.RESCREEN_TOPIC_SOURCE))}},
         "row_accounting": {b["run"]: b["row_accounting"] for b in batches},
-        "batches": [{k: v for k, v in b.items() if k != "counts"}
+        "batches": [{k: v for k, v in b.items()
+                     if k not in ("counts", "counts_by_frame")}
                     for b in batches],
         "batch_counts": {str(b["index"]): b["counts"] for b in batches},
+        "batch_counts_by_frame": {str(b["index"]): b["counts_by_frame"]
+                                  for b in batches},
         "n_batches": len(batches),
         "batches_used": result["batches_used"],
         "resolved_at_max": result["resolved_at_max"],
         "history": jsonable(result["history"]),
         "cost_generations": result["cost_generations"],
         "rescreen_config": result["config"],
-        "final_table": [_rung_dict(r) for r in result["table"]],
-        "final_a_grid": [_a_dict(a) for a in result["a_grid"]],
-        "screen": screen_record(result["screen"]),
-        "screen_statuses": jsonable(result["screen"]["statuses"]),
-        "screen_labels": jsonable(result["screen"]["labels"]),
-        "retention": jsonable(retention),
-        "forwarded_set": forwarded,
-        "n_forwarded": len(forwarded),
+        "final_table_by_frame": {
+            str(f): [_rung_dict(r) for r in t] for f, (t, _a) in
+            sorted(result["tables"].items())},
+        "final_a_grid_by_frame": {
+            str(f): [_a_dict(a) for a in g] for f, (_t, g) in
+            sorted(result["tables"].items())},
+        "screen_by_frame": {str(f): screen_record(sc)
+                            for f, sc in sorted(result["screens"].items())},
+        "screen_statuses_by_frame": {str(f): jsonable(sc["statuses"])
+                                     for f, sc in sorted(result["screens"].items())},
+        "screen_labels_by_frame": {str(f): jsonable(sc["labels"])
+                                   for f, sc in sorted(result["screens"].items())},
+        "provisional_plan": jsonable(provisional.as_record()),
+        "forwarded_set_provisional": list(provisional.union),
+        "comparator_plan": jsonable(comparator.as_record()),
+        "comparator_screen": screen_record(pooled_screen),
+        "comparator_resolved_at_max": pooled_resolved,
+        "retention_policy": {"policy": R.RETENTION_POLICY,
+                             "target_basis": R.RETENTION_TARGET_BASIS,
+                             "comparator": R.RETENTION_COMPARATOR,
+                             "decided_at": S.STAGE_GATE2,
+                             "standing_here": "provisional (screen proxy) and "
+                                              "comparator (legacy pooled); "
+                                              "neither decides"},
         "frame_reliability": pooled_rows_reliability,
         "frame_conditioning": {
             "policy": S.FRAME_CONDITIONING,
-            "at_this_stage": "pooled over the four frames as a measurement "
-                             "budget (six topics per frame per batch): the "
-                             "forwarded set is what calibration measures, on "
-                             "every block and hence under every frame; "
-                             "eligibility, matching and selection are decided "
-                             "per frame at Gates 2 and 3 on calibration rows "
-                             "only (docs/V8_FRAME_CONDITIONING.md §5)",
-            "per_frame_reading": "GATE_1_INSTRUMENT.wording_diagnostic_second_pass"},
-        "calibration_cost_generations": retention["calibration_cost_generations"],
+            "at_this_stage": "per frame: every batch is rendered under every "
+                             "frame (one pass per frame offset), each frame's "
+                             "counts come from its own blocks, each frame's "
+                             "screen and status move on its own evidence; the "
+                             "batch is the union of the frames' own plans "
+                             "(requested_by_frames on the record); forwarding "
+                             "is decided at Gate 2 against each frame's own "
+                             "iota_A(f) (docs/V8_FRAME_AWARE_PRESCREEN.md)",
+            "per_frame_reading": "screen_by_frame; GATE_1_INSTRUMENT.wording_diagnostic_second_pass"},
+        "calibration_cost_generations_provisional":
+            provisional.cost["total"],
         "vocabulary_frozen": True,
     }
 

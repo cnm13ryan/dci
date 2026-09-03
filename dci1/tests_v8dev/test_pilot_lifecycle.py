@@ -112,7 +112,9 @@ def test_the_second_pass_used_calibration_a_topics_disjointly(walked):
         assert not ids & seen
         seen |= ids
     assert second["n_batches"] <= 3
-    assert second["forwarded_set"]
+    assert second["forwarded_set_provisional"]
+    assert second["provisional_plan"]["policy"] == "frame_aware"
+    assert second["comparator_plan"]["policy"] == "legacy_pooled"
 
 
 @pytest.mark.slow
@@ -199,17 +201,27 @@ def test_gate2_measures_every_frame_of_every_candidate_separately(walked):
     frames = {}
     for e in pooled:
         frames.setdefault(e["candidate"], set()).add(e["frame"])
-    candidates = {f"{r['kind']}:{r['severity']}"
-                  for w in gate2["supported_frames"]
-                  for r in gate2["by_frame"][str(w)]["calibration_rows"]["pooled"]}
-    for label in candidates:
+    # Per-frame forwarding (2026-09-03): a candidate is measured on the
+    # frames whose evidence selected it (and on the frames where a
+    # comparator arm carries it), never silently on every frame; the
+    # grids are measured on every frame.
+    pop = gate2["calibration_population"]
+    for w in gate2["supported_frames"]:
+        for r in gate2["by_frame"][str(w)]["calibration_rows"]["pooled"]:
+            label = f"{r['kind']}:{r['severity']}"
+            assert w in frames[label], (w, label)
+            assert (w in pop["selected_by_frames"].get(label, ())
+                    or label in gate2["by_frame"][str(w)]["extension_measured"]), label
+    for label in ("A:1", "B:9"):
         assert frames[label] == {0, 1, 2, 3}, label
     for e in pooled:
         assert e["n_rows"] == e["k_exact_compliant"] + (e["n_rows"] - e["k_exact_compliant"])
         assert e["chance"] is not None and e["se_iota"] is not None
     comparison = gate2["frame_comparison_pooled"]
-    assert all(c["n_frames_measured"] == 4 for l, c in comparison.items()
-               if l in candidates)
+    for label, c in comparison.items():
+        kind = label.rpartition(":")[0]
+        if kind in ("A", "B"):
+            assert c["n_frames_measured"] == 4, label
     assert set(gate2["rungs_by_wording_class"]) == {"CONSISTENT", "UNRESOLVED",
                                                      "WORDING_SENSITIVE"}
     gate3 = walked["payloads"][S.STAGE_GATE3]
