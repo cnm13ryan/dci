@@ -18,6 +18,47 @@
   "SELECTION_TARGET_ABOVE": 0.15,
   "SELECTION_MAX_FAMILIES": 4,
   "SELECTION_MIN_SEPARATION": 0.05,
+  "CONFIRMATORY_FRAME_OFFSETS": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CONFIRMATORY_FRAME_PASSES": 4,
+  "CONFIRMATORY_BLOCKS_PER_FRAME": 384,
+  "CONFIRMATORY_BLOCKS_TOTAL": 1536,
+  "CONFIRMATORY_MAX_PASSES": 4,
+  "CONFIRMATORY_MAX_BLOCKS_PER_FRAME": 384,
+  "CALIBRATION_FRAME_OFFSETS": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "CALIBRATION_POLICY": "universal: every study model calibrates at CALIBRATION_FRAME_OFFSETS; no per-model override exists",
+  "CALIBRATION_FRAME_PASSES": 4,
+  "CALIBRATION_TOPICS_PER_FRAME": 192,
+  "CALIBRATION_TOPICS_PER_FRAME_PER_SPLIT": 96,
+  "CALIBRATION_GENERATIONS_PER_RUNG": 3072,
+  "CALIBRATION_MAX_PASSES": 4,
+  "CALIBRATION_MAX_TOPICS_PER_FRAME": 192,
+  "LOCAL_ELIGIBILITY_MIN_FRAMES": 2,
+  "OPERATING_POINT_BOOTSTRAP_RESAMPLES": 2000,
+  "OPERATING_POINT_MIN_RECOVERY": 0.6666666666666666,
+  "OPERATING_POINT_STABLE": "OPERATING_POINT_STABLE",
+  "OPERATING_POINT_UNSTABLE": "OPERATING_POINT_UNSTABLE",
+  "SCREEN_FRAME_OFFSETS": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "SCREEN_FRAME_PASSES": 4,
+  "SCREEN_TOPICS_PER_FRAME": 24,
+  "RETENTION_POLICY": "frame_aware",
+  "RETENTION_TARGET_BASIS": "calibration_iota_a",
+  "RETENTION_COMPARATOR": "legacy_pooled",
+  "RESCREEN_BATCH_LAYOUT": "topics",
   "SCREEN_ACCEPT": 0.8,
   "SCREEN_REJECT": 0.2,
   "RESCREEN_FINAL_ACCEPT_AT": 0.5,
@@ -347,22 +388,21 @@
        12
       ]
      },
-     "2": {},
-     "3": {}
+     "2": {}
     },
     "costs": {
      "screen": 984,
-     "rescreen": 3192,
+     "rescreen": 2184,
      "calibration_rungs": 19,
      "calibration": 14592,
      "extension_rungs": 0,
      "extension": 0,
      "a_grid_calibration": 6144,
      "spectrum_confirmatory": 18432,
-     "total_to_freeze": 24912
+     "total_to_freeze": 23904
     }
    },
-   "seconds": 0.9,
+   "seconds": 0.8,
    "final_statuses": {
     "SCREEN_ACCEPT": [
      "MK4"
@@ -386,14 +426,13 @@
     "MK3:4",
     "MK4:1",
     "MK4:10",
-    "MK4:3",
-    "MK4:7"
+    "MK4:3"
    ],
    "first_failing_spectrum": {
-    "MK1:4": "V_pos",
     "MK1:5": "V_pos",
     "MK1:6": "V_pos",
     "MK1:7": "V_pos",
+    "MK1:8": "V_stab",
     "MK2:5": "V_pos",
     "MK2:6": "V_pos",
     "MK3:5": "V_pos",
@@ -401,7 +440,8 @@
     "MK3:7": "V_pos",
     "MK4:4": "V_pos",
     "MK4:5": "V_pos",
-    "MK4:6": "V_pos"
+    "MK4:6": "V_pos",
+    "MK4:8": "V_stab"
    },
    "selected_points": [
     {
@@ -594,7 +634,7 @@
      "total_to_freeze": 19416
     }
    },
-   "seconds": 0.6,
+   "seconds": 0.5,
    "final_statuses": {
     "SCREEN_ACCEPT": [],
     "SCREEN_REJECT": [
@@ -809,7 +849,7 @@
      "total_to_freeze": 24792
     }
    },
-   "seconds": 0.8,
+   "seconds": 0.7,
    "final_statuses": {
     "SCREEN_ACCEPT": [
      "MK1",
@@ -1025,7 +1065,7 @@
      "total_to_freeze": 29136
     }
    },
-   "seconds": 1.0,
+   "seconds": 0.9,
    "final_statuses": {
     "SCREEN_ACCEPT": [
      "MK1",
@@ -1234,7 +1274,7 @@
      "total_to_freeze": 20328
     }
    },
-   "seconds": 0.7,
+   "seconds": 0.6,
    "final_statuses": {
     "SCREEN_ACCEPT": [
      "MK1",
@@ -2463,5 +2503,5 @@
    "solo:B"
   ]
  },
- "seconds": 13.5
+ "seconds": 12.7
 }
