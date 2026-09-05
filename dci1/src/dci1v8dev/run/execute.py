@@ -87,6 +87,15 @@ class SoloCell:
         self.draws = draws
 
 
+
+# Wall-clock cap on one backend run. The successor (v8.1) Gate-2 candidate
+# run of gemma-3n-e4b-it is ~276k rows and generates at ~17.5k rows/h on one
+# RX 7900 XTX (about 16 h); the 12 h cap inherited from v7 killed it at 77 %
+# and the backend restarts a partial run from zero, so a retry could never
+# finish (root dci1v8-pilot-r18, 2026-09-05). Operational only: no prompt,
+# verifier, design, decoding or allocation depends on it.
+BACKEND_WALL_CLOCK_SECONDS = 60 * 60 * 36
+
 def blocks(topics: Sequence[Mapping[str, Any]], prefix: str, *,
            index_base: int = 0) -> list[Block]:
     """The blocks of one pass over ``topics``, numbered from ``index_base``.
@@ -325,7 +334,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
                                                   "reuse": dict(reuse)}}
     elif generate is None:
         outcome = run_backend(run_dir, plan, rows, device=device,
-                              timeout_seconds=60 * 60 * 12)
+                              timeout_seconds=BACKEND_WALL_CLOCK_SECONDS)
     else:
         outcome = generate(run_dir, plan, rows)
     synthetic_run = bool(outcome.get("provenance", {}).get("synthetic"))
