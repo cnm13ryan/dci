@@ -759,12 +759,24 @@ pre-freeze near-miss unless the change is itself preregistered here.
 
 ## Appendix B — identities bound at freeze
 
-Pilot roots to be bound by the v8.1 confirmatory manifest (every model at
+Pilot roots that a v8.1 confirmatory manifest would bind (every model at
 the universal calibration allocation of §9 and the screen allocation of
-§10.2; every stage from a clean worktree at the successor commit): named
-in `reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md`
-when the successor pilots have run (`dci1v8-pilot-r14` … `-r17`).
-Confirmatory root: not yet created. The frozen v8 root
+§10.2; every stage from a clean worktree at the named commit), as of
+2026-09-05 22:00Z — the record of each is
+`reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md` §2:
+
+| model | successor root | commit | status | replicate (test-retest, not bound) |
+|---|---|---|---|---|
+| qwen3-4b | `dci1v8-pilot-r14` | `025e138` | `PILOT_REPORT`, LOCAL on f0–f3 | `dci1v8-pilot-r21` at `025e138`, agrees |
+| qwen3-4b-instruct-2507 | `dci1v8-pilot-r15` | `025e138` | `PILOT_REPORT`, LOCAL on f1, f3 | `dci1v8-pilot-r20` at `025e138`, agrees |
+| gemma-3n-e2b-it | `dci1v8-pilot-r16` | `025e138` | `PILOT_REPORT`, LOCAL on f0, f1, f3 | `dci1v8-pilot-r19` at `025e138`, agrees |
+| gemma-3n-e4b-it | `dci1v8-pilot-r23` | `7d8e1d9` | in progress (r17 invalidated, r18 abandoned; §2 of the record) | `dci1v8-pilot-r24` at `7d8e1d9`, in progress |
+
+`7d8e1d9` differs from `025e138` only in the backend wall-clock cap
+(operational; no prompt, verifier, design, decoding or allocation changes).
+Whether a freeze may bind pilots at these two commits, or every model is
+rerun at one commit, is the researcher's decision (record §5).
+Confirmatory root: not yet created. Nothing is frozen. The frozen v8 root
 `dci1/evidence/dci1v8-confirm-r2` is historical evidence of the pooled
 design and is not reused.
 
