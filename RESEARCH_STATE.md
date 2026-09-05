@@ -456,6 +456,18 @@ compared on the same calibration rows
 DRAFT). The frozen v8 root is superseded **for the successor design only**
 and is untouched. Successor pilots, old-versus-new frame status and the
 freeze-readiness verdict: `prescreen_revalidation.md`.
+**Outcome (2026-09-05).** Six successor roots are complete (a first run and
+a replicate for qwen3-4b, qwen3-4b-instruct-2507 and gemma-3n-e2b-it;
+gemma-3n-e4b-it in progress at `7d8e1d9` after two lost roots). The
+frame-aware rule makes qwen3-4b LOCAL on 4/4 frames (v8: 2/4) and makes
+2507 eligible (f1 + f3; v8: f1) — on 2507's frame 3 the frame's set is
+supported and the legacy set is not *on the same rows*, in both successor
+runs. e2b is unchanged (f0, f1, f3). Every replicate agrees with its first
+run on every LOCAL verdict; the A- and C-basis targets agree on every
+verdict. What does not replicate is one stage earlier: the operating-point
+rule flips at band edges on fresh grids (e2b f0 n\* 1 → 8; 2507 f0
+unsupported → supported). Verdict RESEARCHER_DECISION_REQUIRED (target
+basis; operating-point rule; one or two commits). Not frozen.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 
