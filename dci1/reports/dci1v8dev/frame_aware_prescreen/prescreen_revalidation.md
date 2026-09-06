@@ -55,6 +55,7 @@ the v8 pilots the frozen root was built from.
 | qwen3-4b, replicate | `dci1v8-pilot-r14` (first successor run) | `dci1v8-pilot-r21` | 0 | `025e138` | **pending** (chained after r18, 2026-09-05) |
 | gemma-3n-e4b-it, replicate | — | `dci1v8-pilot-r22` | 1 | `025e138` | **cancelled** before registration (it would have hit the same cap) |
 | gemma-3n-e4b-it, replicate | `dci1v8-pilot-r23` | `dci1v8-pilot-r24` | 0 | `7d8e1d9` | **pending** (registered 2026-09-05 22:00Z on the card r21 freed) |
+| qwen3-4b-instruct-2507, third run | `dci1v8-pilot-r15` | `dci1v8-pilot-r25` | 1 | `025e138` | **pending** (registered 2026-09-06 22:26Z on the idle card during the e4b tails) |
 
 Incident on `dci1v8-pilot-r17`: the first `GATE_2_CALIBRATION` attempt
 (started 06:33Z) was killed by the kernel's out-of-memory handler at
@@ -108,6 +109,11 @@ A fourth replicate (`dci1v8-pilot-r22`, gemma-3n-e4b-it) was chained and
 then cancelled before registration once the 12 h cap was understood; its
 place is taken by `dci1v8-pilot-r24` at `7d8e1d9`, launched on card 0 when
 r21 finished, so that e4b too has a test-retest pair (r23 → r24).
+A third run of qwen3-4b-instruct-2507 (`dci1v8-pilot-r25`, at `025e138`
+like r15 and r20) was started on card 1 while the e4b tails, which are
+CPU-bound and cannot share the host, left it idle: it takes the frame-3
+result that the causal claim rests on from two runs to three and adds a
+third grid sample for that model's knife-edge frame 0.
 
 Second incident (both lanes): at 22:08Z on 2026-09-04 the host's desktop
 session crashed (the journal shows a crash report and the display
@@ -142,6 +148,33 @@ successor root ran at `025e138`; whether a freeze may bind pilots at two
 commits whose only difference is this cap, or every pilot should be rerun
 at `7d8e1d9`, is listed in §5.
 
+Fourth incident (r23 and r24, 2026-09-06 02:51Z): the root filesystem
+filled up (the test suites of §4 had left about 190 GB of pytest temporary
+fixture directories under `/tmp`, one module fixture set per worker per
+run) and both lanes' backends failed with `OSError` while writing rows —
+r23 in its Gate-2 grid-B run, r24 in second-pass batch 2. The temporary
+directories were deleted (189 GB free again), every rows file the crash
+touched was checked to end on a complete JSON line (the backend writes
+whole lines), and the drivers' automatic retries resumed both stages:
+complete backend runs (r23's grid-A, r24's batches 0 and 1) are reused by
+identity, the interrupted ones regenerate. No evidence was edited; the
+roots' driver logs show the retry.
+
+Fifth incident (r23, 2026-09-06 20:08Z): with both e4b Gate-2 stages on
+the host, r23's post-generation tail (every candidate row scored and held
+in memory, 63.9 GB resident) was killed by the kernel's out-of-memory
+handler while r24's stage was paused by the guard at 24 GB and r24's
+backend kept generating; r23's tail had been made the preferred victim on
+purpose, because its candidate rows were complete and scored and are
+reused by identity on a retry, whereas r24's loss would have orphaned a
+15-hour generation. The driver counted the disk-full failure as the first
+attempt and stalled after this second one, so r23's driver was relaunched
+chained behind r24's (on card 0, which r24 frees; placement is a runtime
+argument, not bound by the root), and its Gate 2 resumes alone on the host
+once r24 reports: two e4b tails do not fit in 91 GB, which is the same Gate-2
+memory follow-up as before (score grid rows in two passes; do not hold
+every scored candidate row at once).
+
 What each successor root ran that the old one did not: a four-pass screen
 (24 topics per frame instead of 6, `SCREEN_FRAME_OFFSETS=(0,1,2,3)`), a
 second pass planned per frame and rendered under every frame (24 topics per
@@ -161,9 +194,10 @@ protected stage); the machine-readable extract is
 ### 3.1 Operating points (Gate 2, before any forwarding)
 
 The grids precede the forwarding and the operating-point rule is unchanged,
-so n\*(f), m\*(f) and ι_A(f) should agree with the old roots up to fresh
-sampling. They do on 9 of the 10 supported frames measured so far: identical
-n\*/m\* and ι_A(f) within 0.03 (about one topic-level SE):
+and the calibration topics and seeds are the same in every root of a model
+(§3.5), so n\*(f), m\*(f) and ι_A(f) should agree with the old roots up to
+decoding nondeterminism. They do on 9 of the 10 supported frames measured
+so far: identical n\*/m\* and ι_A(f) within 0.03 (about one topic-level SE):
 
 | model | f | old n\*/m\*, ι_A(f) | new n\*/m\*, ι_A(f) |
 |---|---:|---|---|
@@ -179,7 +213,8 @@ same in both roots and non-monotone (old 0.77 0.80 0.60 0.38 0.48 0.57 0.59
 0.62 over severities 1–8; new 0.77 0.77 0.60 0.36 0.46 0.58 0.61 0.64), the
 eligible severities are the same set {1, 2, 3, 6, 7, 8}, and the rule
 selected the floor (1) in r12 and the top (8) in r16. That is the
-operating-point rule on fresh grid rows, not the pre-screen (no forwarding
+operating-point rule on re-decoded grid rows (same topics and seeds; about
+half the rows decode differently), not the pre-screen (no forwarding
 input reaches it); it belongs to the operating-point stability record and
 is flagged in §5 because a successor confirm root's `MEMBERSHIP` would carry
 the new value.
@@ -256,11 +291,22 @@ is the choice the pilots ran.
 ### 3.5 Test-retest under the successor design (replicate roots)
 
 A replicate is a second successor run of the same model at the same
-commit with a fresh screen, second pass and grids. It answers two
-questions the old-versus-new comparison cannot: whether a frame's status
-under the frame-aware rule is stable under resampling, and how much of a
-frame's forwarded set is sampling noise (the counterfactual replay
-predicted a Jaccard of about 0.63–0.72 between two 24-topic screens).
+commit. **It is a re-execution, not a resample**: the pilot's seeds are
+derived from the study seed, the model and the stage, so a replicate root
+screens, re-screens and calibrates the *same topics with the same seeds*
+(the 192 calibration topic ids are identical between every pair of roots
+of a model, v8 roots included). What differs between two runs is the
+decoding: on the same prompts and seeds the vLLM stack on this hardware
+does not reproduce the text row for row (first 3,000 grid-A rows, identical
+answers: gemma-3n-e4b-it 3,000/3,000 and 2,999/3,000; qwen3-4b-instruct-2507
+2,320 and 2,068; qwen3-4b 1,960 and 2,356; gemma-3n-e2b-it 2,032 and 1,533,
+each pair being replicate-vs-first and first-vs-v8). So the replicates
+answer a narrower question than topic resampling would: whether a frame's
+status and forwarded set survive run-to-run decoding nondeterminism on
+fixed topics. A topic-resampled replicate needs a distinct replicate seed
+under the seed regime, which is a scientific choice and is left to the
+researcher (§5). The counterfactual replay's 0.63–0.72 prediction was for
+topic resampling and is not the quantity measured here.
 
 | model | pair | n\*(f) first → replicate | LOCAL-supported frames | fam/bk first → replicate | forwarded-set Jaccard by frame |
 |---|---|---|---|---|---|
@@ -271,12 +317,14 @@ predicted a Jaccard of about 0.63–0.72 between two 24-topic screens).
 
 gemma-3n-e2b-it replicates exactly at the status level: the same
 operating point on every frame (frame 0 chose n\* = 8 in both successor
-runs, against n\* = 1 in the v8 root, on the same eligible set), the same
-three LOCAL-supported frames, coverage identified on all four in both,
-ι_A(f) within 0.02, and the legacy comparator unsupported on frame 2 in
-both (2/0 and 1/0). The forwarded sets overlap at 0.61–0.76, inside the
-replay's prediction, so roughly a third of a frame's set turns over
-between runs while the families that survive to references do not.
+runs, against n\* = 1 in the v8 root, on the same topics and seeds — the
+flip is decoding nondeterminism on a knife-edge curve, half of the grid
+rows being re-decoded differently), the same three LOCAL-supported
+frames, coverage identified on all four in both, ι_A(f) within 0.02, and
+the legacy comparator unsupported on frame 2 in both (2/0 and 1/0). The
+forwarded sets overlap at only 0.61–0.76 although the topics are the same:
+roughly a third of a frame's set turns over from decoding noise alone,
+while the families that survive to references do not.
 
 qwen3-4b-instruct-2507 replicates on the load-bearing frame: frame 3 is
 LOCAL-supported with 5 families and 2 backups in both successor runs, and
@@ -288,9 +336,9 @@ forwarding: frame 0, unsupported for grid resolution in r10 and r15 (A's
 curve 0.855 at severity 4 against a band edge), is supported in r20 at
 n\* = 4 with ι_A(f) = 0.85, the hardest operating point of any frame, and
 gives 3/0 (legacy 2/0), so the model's LOCAL frames are {1, 3} in both
-runs. That frame-0 verdict is the operating-point rule on fresh grid
-rows, the same knife-edge as e2b frame 0 (§3.1), and belongs with
-decision 2 of §5.
+runs. That frame-0 verdict is the operating-point rule on re-decoded grid
+rows (same topics, same seeds, 23 % of the text different), the same
+knife-edge as e2b frame 0 (§3.1), and belongs with decision 2 of §5.
 
 qwen3-4b replicates in full: LOCAL-supported on all four frames in both
 successor runs (5/2, 5/2, 6/2, 6/2 → 6/2, 5/2, 6/2, 5/2; coverage
@@ -299,13 +347,18 @@ rows also supported on all four in both, the same n\* on frames 0–2 and
 n\* 5 → 4 on frame 3 with ι_A(f) unchanged (0.702 → 0.701), and
 forwarded-set overlap 0.59–0.78. So the v8-to-successor gain on frames 1
 and 2 (§3.2), which the comparator could not attribute to the rule, is at
-least stable under resampling of the successor design.
+least stable under re-execution of the successor design.
 
 Across the three replicated models, every LOCAL verdict on every measured
 frame agrees between the two successor runs (10 supported frames, 0
-disagreements), and the sets overlap at 0.59–0.78. The instability lives
-one stage earlier, in the operating-point rule on the grids (§3.1 and the
-2507 frame-0 flip above), which the pre-screen does not touch.
+disagreements), and the sets overlap at 0.59–0.78 on identical topics. The
+instability lives one stage earlier, in the operating-point rule on the
+grids (§3.1 and the 2507 frame-0 flip above), which the pre-screen does
+not touch and which decoding noise alone can move. gemma-3n-e4b-it's
+decoding is effectively deterministic on this stack (3,000 of 3,000 grid
+rows identical between its v8 root and r24), so its successor operating
+points equal v8's exactly and its replicate pair (r23 → r24) will test the
+pipeline's determinism rather than its noise.
 
 ## 4. Validation
 
@@ -332,6 +385,9 @@ suites below therefore validate the code the roots were produced by.
 - Commit `7d8e1d9` (the 36 h backend cap, §2) changes one constant in
   `dci1v8dev.run.execute`; `tests_v8dev -m "not slow"` at that commit: 417
   passed, 2 skipped. The e4b roots r23/r24 run at it.
+- The suites write large per-worker fixture trees under `/tmp` and do not
+  clean them; two full runs filled the root filesystem (§2, fourth
+  incident). Delete `/tmp/pytest-of-*` after a run on this host.
 - Pre-existing failure found by the r17 incident (§2), reproduced without
   the redesign by inspection: `dci1v7.run.execute._reusable_rows` (no diff
   against `ab1b6be`) accepts a stored backend run whose rows are unanswered
@@ -375,10 +431,17 @@ and the evidence does not force them:
    same eligible set (§3.1), and qwen3-4b-instruct-2507 frame 0 flipped
    from unsupported (grid resolution, v8 and first successor run) to
    supported at n\* = 4, ι_A = 0.85 in the replicate (§3.5), under the
-   unchanged rule. A successor confirm root carries whichever the pilot it
-   binds read; whether that is acceptable, or the rule's behaviour at band
-   edges and on non-monotone curves should be resolved first, is a
-   question about the operating-point rule, not this redesign.
+   unchanged rule and on the *same* topics and seeds: decoding
+   nondeterminism alone moves these frames. A successor confirm root
+   carries whichever the pilot it binds read; whether that is acceptable,
+   or the rule's behaviour at band edges and on non-monotone curves should
+   be resolved first, is a question about the operating-point rule, not
+   this redesign.
+4. **What a replicate should vary.** Every root of a model shares its
+   topics and seeds, so the replicates of §3.5 measure decoding noise, not
+   topic sampling. If topic-resampled stability is wanted before a freeze,
+   a replicate needs a distinct replicate seed under the seed regime, which
+   is a governed choice and is not made here.
 3. **The e4b pilot's commit.** `dci1v8-pilot-r23` runs at `7d8e1d9` (the
    backend cap raised to 36 h) while r14, r15, r16 and the replicates ran
    at `025e138`. The confirm layer records each pilot's producing commit
