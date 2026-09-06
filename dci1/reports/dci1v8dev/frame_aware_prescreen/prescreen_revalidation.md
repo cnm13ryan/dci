@@ -2,12 +2,12 @@
 
 **Status.** Deliverable 5 of the redesign (2026-09-03). Section 1 (the
 invalidation boundary) is proved from code and contracts and is final.
-Sections 2–5 are filled from the successor pilot roots (2026-09-05 22:00Z).
-Three of the four models have a first successor run and a replicate at
-`PILOT_REPORT`; gemma-3n-e4b-it's first two roots were lost to incidents
-(§2) and its valid runs `r23`/`r24` are in progress at commit `7d8e1d9`,
-so every e4b row says *pending*. The verdict in §5 is given now with e4b
-pending and is re-read when r23 lands.
+Sections 2–5 are filled from the successor pilot roots (2026-09-07
+00:00Z). Every model has a first successor run and a replicate at
+`PILOT_REPORT` (gemma-3n-e4b-it's first two roots were lost to incidents,
+§2; its valid runs are `r23`/`r24` at commit `7d8e1d9`). A third run of
+qwen3-4b-instruct-2507 (`r25`) is in progress and its row in §3.5 is
+appended when it lands.
 
 ## 1. The invalidation boundary, from the code
 
@@ -49,12 +49,12 @@ the v8 pilots the frozen root was built from.
 | gemma-3n-e2b-it | `dci1v8-pilot-r12` | `dci1v8-pilot-r16` | 1 | `025e138` | `PILOT_REPORT` |
 | gemma-3n-e4b-it | `dci1v8-pilot-r13` | `dci1v8-pilot-r17` | 0 | `025e138` | **INVALIDATED** (reached `PILOT_REPORT` 16:39Z on unanswered candidate rows, below) |
 | gemma-3n-e4b-it | `dci1v8-pilot-r13` | `dci1v8-pilot-r18` | 0 | `025e138` | **ABANDONED** at `GATE_2_CALIBRATION` (12 h backend cap, below) |
-| gemma-3n-e4b-it | `dci1v8-pilot-r13` | `dci1v8-pilot-r23` | 1 | `7d8e1d9` | **pending** (chained after r20, 2026-09-05 14:15Z; the only difference from `025e138` is the backend wall-clock cap) |
+| gemma-3n-e4b-it | `dci1v8-pilot-r13` | `dci1v8-pilot-r23` | 1, then 0 | `7d8e1d9` | `PILOT_REPORT` 2026-09-06 23:55Z (the only difference from `025e138` is the backend wall-clock cap) |
 | gemma-3n-e2b-it, replicate | `dci1v8-pilot-r16` (first successor run) | `dci1v8-pilot-r19` | 1 | `025e138` | **pending** (registered 2026-09-04 21:27Z) |
 | qwen3-4b-instruct-2507, replicate | `dci1v8-pilot-r15` (first successor run) | `dci1v8-pilot-r20` | 1 | `025e138` | **pending** (launched after r19 reported, 2026-09-05) |
 | qwen3-4b, replicate | `dci1v8-pilot-r14` (first successor run) | `dci1v8-pilot-r21` | 0 | `025e138` | **pending** (chained after r18, 2026-09-05) |
 | gemma-3n-e4b-it, replicate | — | `dci1v8-pilot-r22` | 1 | `025e138` | **cancelled** before registration (it would have hit the same cap) |
-| gemma-3n-e4b-it, replicate | `dci1v8-pilot-r23` | `dci1v8-pilot-r24` | 0 | `7d8e1d9` | **pending** (registered 2026-09-05 22:00Z on the card r21 freed) |
+| gemma-3n-e4b-it, replicate | `dci1v8-pilot-r23` | `dci1v8-pilot-r24` | 0 | `7d8e1d9` | `PILOT_REPORT` 2026-09-06 23:04Z |
 | qwen3-4b-instruct-2507, third run | `dci1v8-pilot-r15` | `dci1v8-pilot-r25` | 1 | `025e138` | **pending** (registered 2026-09-06 22:26Z on the idle card during the e4b tails) |
 
 Incident on `dci1v8-pilot-r17`: the first `GATE_2_CALIBRATION` attempt
@@ -196,8 +196,8 @@ protected stage); the machine-readable extract is
 The grids precede the forwarding and the operating-point rule is unchanged,
 and the calibration topics and seeds are the same in every root of a model
 (§3.5), so n\*(f), m\*(f) and ι_A(f) should agree with the old roots up to
-decoding nondeterminism. They do on 9 of the 10 supported frames measured
-so far: identical n\*/m\* and ι_A(f) within 0.03 (about one topic-level SE):
+decoding nondeterminism. They do on 13 of the 14 supported frames:
+identical n\*/m\* and ι_A(f) within 0.03 (about one topic-level SE):
 
 | model | f | old n\*/m\*, ι_A(f) | new n\*/m\*, ι_A(f) |
 |---|---:|---|---|
@@ -206,7 +206,7 @@ so far: identical n\*/m\* and ι_A(f) within 0.03 (about one topic-level SE):
 | qwen3-4b-instruct-2507 | 0, 2 | UNSUPPORTED (`GRID_RESOLUTION_INSUFFICIENT`: A's curve falls from 0.86 at severity 4 to 0.20 at 5, no whole band bracketed) | same, both frames |
 | gemma-3n-e2b-it | 1 / 2 / 3 | 3/10 0.612 · 2/10 0.819 · 7/11 0.663 | 3/10 0.635 · 2/10 0.797 · 7/11 0.686 |
 | gemma-3n-e2b-it | 0 | **1/8 0.754** | **8/8 0.642** |
-| gemma-3n-e4b-it | 0–3 | 6/9 0.745 · 6/9 0.711 · 7/9 0.676 · 8/10 0.686 | r18 (abandoned at the candidate run) read 6/9 0.745 · 6/9 0.710 · 7/9 0.676 · 8/10 0.688 on its grids; r23 pending |
+| gemma-3n-e4b-it | 0–3 | 6/9 0.745 · 6/9 0.711 · 7/9 0.676 · 8/10 0.686 | 6/9 0.745 · 6/9 0.711 · 7/9 0.676 · 8/10 0.688 (identical in r23, r24 and the abandoned r18: e4b decodes deterministically here) |
 
 The one exception is gemma-3n-e2b-it frame 0. Its A curve is nearly the
 same in both roots and non-monotone (old 0.77 0.80 0.60 0.38 0.48 0.57 0.59
@@ -242,7 +242,10 @@ SPECTRUM-valid rungs in the frame's table.
 | gemma-3n-e2b-it | 1 | 6/2 **L** | 5/2 **L** | 5/2 **L** | 5/2 **L** | 11/31 → 12/37 | unchanged |
 | gemma-3n-e2b-it | 2 | 3/0 l, coverage not identified | 3/0 l, coverage identified | 2/0 l | 3/0 l | 3/38 → 4/28 | unsupported under every policy (ι_A(f) ≈ 0.80 is the hardest frame); the spectrum arm is newly identified, which the comparator arms cannot attribute (coverage is not re-verdicted for them) |
 | gemma-3n-e2b-it | 3 | 7/2 **L** | 7/2 **L** | 6/2 **L** | 7/2 **L** | 13/35 → 14/39 | unchanged; the frame's set carries one family more than the legacy set |
-| gemma-3n-e4b-it | 0–3 | 5/2 L · 6/2 L · 4/1 l · 7/2 L | pending (r23) | pending | pending | 8/40 · 8/38 · 8/36 · 13/37 → pending | pending |
+| gemma-3n-e4b-it | 0 | 5/2 **L** | 7/2 **L** | 4/1 l | 7/2 **L** | 8/40 → 9/39 | **kept by the forwarding rule**: on identical rows the legacy set is unsupported and both frame-specific sets are supported (replicated in r24) |
+| gemma-3n-e4b-it | 1 | 6/2 **L** | 6/2 **L** | 5/2 **L** | 6/2 **L** | 8/38 → 9/41 | unchanged; the frame's set carries one family more than the legacy set |
+| gemma-3n-e4b-it | 2 | 4/1 l | 4/1 l | 4/1 l | 4/1 l | 8/36 → 6/35 | unsupported under every policy in both designs |
+| gemma-3n-e4b-it | 3 | 7/2 **L** | 8/2 **L** | 7/2 **L** | 8/2 **L** | 13/37 → 17/38 | unchanged; the frame's set carries one family more than the legacy set |
 
 On every measured frame the frame's own set finds at least as many
 LOCAL-valid rungs as the legacy set on the same rows except qwen3-4b frame
@@ -255,10 +258,13 @@ LOCAL-valid rungs as the legacy set on the same rows except qwen3-4b frame
 | qwen3-4b | {0, 3} → {0, 1, 2, 3} | yes → yes | {0, 1, 2, 3}, yes | {0, 1, 2, 3}, yes | {0, 1, 2, 3} → {0, 1, 2, 3} | 266,424 → 401,640 (+51 %) |
 | qwen3-4b-instruct-2507 | {1} → {1, 3} | **no → yes** | {1}, **no** | {1, 3}, yes | {1, 3} → {1, 3} | 282,000 → 290,184 (+3 %) |
 | gemma-3n-e2b-it | {0, 1, 3} → {0, 1, 3} | yes → yes | {0, 1, 3}, yes | {0, 1, 3}, yes | {0, 1, 3} → {0, 1, 2, 3} | 269,352 → 403,848 (+50 %) |
-| gemma-3n-e4b-it | {0, 1, 3} → pending (r23) | yes → pending | pending | pending | {0, 1, 2, 3} → pending | 291,672 → pending (r18 reached 212,288 candidate rows of 276,480 before the cap) |
+| gemma-3n-e4b-it | {0, 1, 3} → {0, 1, 3} | yes → yes | {1, 3}, yes | {0, 1, 3}, yes | {0, 1, 2, 3} → {0, 1, 2, 3} | 291,672 → 442,536 (+52 %) |
 
-The eligibility change for qwen3-4b-instruct-2507 is the one outcome that
-the comparator arm attributes to the forwarding rule alone. The generation
+The eligibility change for qwen3-4b-instruct-2507 and the retention of
+gemma-3n-e4b-it's frame 0 are the two outcomes that the comparator arm
+attributes to the forwarding rule alone (2 of 14 supported frames; on the
+other 12 the pooled set would have reached the same verdict on the same
+rows). The generation
 increase on the fully supported models decomposes (qwen3-4b) into the
 four-pass screen (32,928 rows, four times the old screen), the per-frame
 second pass (64,896) and the comparator arms (62,976), the last being a
@@ -279,11 +285,11 @@ forwarded sets (Jaccard) and on the outcome:
 | qwen3-4b | 0.97 · 0.83 · 0.80 · 0.96 | identical on 4/4 | identical on 4/4 |
 | qwen3-4b-instruct-2507 | — · 0.85 · — · 0.88 | identical on 2/2 | identical on 2/2 |
 | gemma-3n-e2b-it | 0.95 · 0.96 · 0.63 · 0.96 | identical on 4/4 | identical on 4/4 |
-| gemma-3n-e4b-it | r18's grids gave 0.86 · 0.94 · 0.87 · 0.80 before the run was abandoned; r23 pending | pending | pending |
+| gemma-3n-e4b-it | 0.86 · 0.94 · 0.94 · 0.76 | identical on 4/4 | identical on 4/4 |
 
 So the two bases measure different rungs (up to 37 % of a frame's set) and
 reach the same §13.15 verdict with the same family and backup counts on
-every measured frame. The evidence does not discriminate between them; the
+all 14 measured frames. The evidence does not discriminate between them; the
 registered choice rests on the precision argument in the design note (the
 grid ι_A(f) has SE ≈ 0.02, the screen proxy drifts by up to 0.17), and it
 is the choice the pilots ran.
@@ -313,7 +319,7 @@ topic resampling and is not the quantity measured here.
 | gemma-3n-e2b-it | r16 → r19 | 8, 3, 2, 7 → 8, 3, 2, 7 | {0, 1, 3} → {0, 1, 3} | 5/2, 5/2, 3/0, 7/2 → 6/2, 5/2, 3/0, 8/2 | 0.76 · 0.72 · 0.61 · 0.66 |
 | qwen3-4b-instruct-2507 | r15 → r20 | f1 6, f3 6 → f1 6, f3 6 (f0: unsupported → supported at n\* = 4, ι_A = 0.85) | {1, 3} → {1, 3} | f1 6/2, f3 5/2 → f1 7/2, f3 5/2 (f0 3/0) | f1 0.69 · f3 0.76 |
 | qwen3-4b | r14 → r21 | 6, 7, 3, 5 → 6, 7, 3, 4 | {0, 1, 2, 3} → {0, 1, 2, 3} | 5/2, 5/2, 6/2, 6/2 → 6/2, 5/2, 6/2, 5/2 | 0.78 · 0.67 · 0.59 · 0.65 |
-| gemma-3n-e4b-it | r23 → r24 | pending | pending | pending | pending |
+| gemma-3n-e4b-it | r23 → r24 | 6, 6, 7, 8 → 6, 6, 7, 8 | {0, 1, 3} → {0, 1, 3} | 7/2, 6/2, 4/1, 8/2 → 7/2, 6/2, 4/1, 8/2 | 0.88 · 1.00 · 0.97 · 0.97 |
 
 gemma-3n-e2b-it replicates exactly at the status level: the same
 operating point on every frame (frame 0 chose n\* = 8 in both successor
@@ -357,8 +363,12 @@ grids (§3.1 and the 2507 frame-0 flip above), which the pre-screen does
 not touch and which decoding noise alone can move. gemma-3n-e4b-it's
 decoding is effectively deterministic on this stack (3,000 of 3,000 grid
 rows identical between its v8 root and r24), so its successor operating
-points equal v8's exactly and its replicate pair (r23 → r24) will test the
-pipeline's determinism rather than its noise.
+points equal v8's exactly and its replicate pair (r23 → r24) tests the
+pipeline's determinism rather than its noise: identical operating points,
+identical family and backup counts on every frame, forwarded sets at
+0.88–1.00, and on frame 0 the legacy set is 4/1 and unsupported in both
+runs while the frame's set is 7/2 — the second rule-attributed retention
+(§3.2), reproduced.
 
 ## 4. Validation
 
@@ -408,17 +418,18 @@ suites below therefore validate the code the roots were produced by.
 
 ## 5. Freeze-readiness verdict
 
-*Given with gemma-3n-e4b-it pending (r23/r24 at `7d8e1d9`); re-read when r23 lands.*
+*All four models have a first successor run and a replicate; a third 2507 run (r25) is in progress and is appended when it lands.*
 
 **RESEARCHER_DECISION_REQUIRED.** Nothing technical blocks a freeze under
 the registered rule: every stage from `REGIME_SCREEN` regenerates in fresh
 roots, the contracts and readiness item 11 refuse a v8 pilot, the frozen
 root `dci1v8-confirm-r2` is superseded for this successor design and not
 altered, and the pilots give the intended effect (frame-specific sets that
-are at least as supported as the pooled set on the same rows, and one
-model whose eligibility follows from the rule alone) and the effect
-replicates (§3.5: 10 of 10 LOCAL verdicts agree between two successor
-runs of each of three models). Three decisions remain the researcher's
+are at least as supported as the pooled set on the same rows, and two
+frames — 2507 f3 and e4b f0 — where the frame's set is supported and the
+pooled set is not on identical rows) and the effect replicates (§3.5: 14
+of 14 LOCAL verdicts agree between two successor runs of every model,
+under decoding noise on fixed topics). Three decisions remain the researcher's
 and the evidence does not force them:
 
 1. **The target basis.** C (registered, run) and A (comparator) are

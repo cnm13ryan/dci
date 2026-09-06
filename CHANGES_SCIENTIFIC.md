@@ -91,22 +91,25 @@ the comparator arm makes them so on the same rows. The successor pilots,
 their roots and the old-versus-new status are in
 `reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md`.
 
-**Outcome (2026-09-05, successor pilots r14–r16 and r19–r21 complete;
-gemma-3n-e4b-it pending).** Under the frame-aware rule qwen3-4b is LOCAL
-on all four frames (v8: f0, f3), gemma-3n-e2b-it on f0, f1, f3 (as v8),
-and qwen3-4b-instruct-2507 on f1 and f3 (v8: f1 only) — the last is the
-one change the comparator arm attributes to the forwarding rule alone: on
-identical calibration rows frame 3 is 5 families / 2 backups under the
-frame's set and 4 / 1 (unsupported) under the legacy pooled set. Operating
-points n\*(f), m\*(f), ι_A(f) reproduced the v8 roots on 9 of 10
+**Outcome (2026-09-07, every model with a first successor run and a
+replicate).** Under the frame-aware rule qwen3-4b is LOCAL on all four
+frames (v8: f0, f3), gemma-3n-e2b-it on f0, f1, f3 (as v8), gemma-3n-e4b-it
+on f0, f1, f3 (as v8) and qwen3-4b-instruct-2507 on f1 and f3 (v8: f1
+only). Two frames are what the comparator arm attributes to the forwarding
+rule alone, both reproduced in the replicate: on identical calibration rows
+2507's frame 3 is 5 families / 2 backups under the frame's set and 4 / 1
+(unsupported) under the legacy pooled set, and e4b's frame 0 is 7 / 2
+under the frame's set and 4 / 1 under the pooled set; on the other 12
+supported frames the pooled set would have reached the same verdict. Operating
+points n\*(f), m\*(f), ι_A(f) reproduced the v8 roots on 13 of 14
 supported frames; the exception (e2b f0, n\* 1 → 8 on the same eligible
 set) is the operating-point rule on fresh grids, not the pre-screen, and
 the 2507 replicate flipped f0 from unsupported to supported the same way.
 The screen-proxy (A-basis) target gave the same family/backup counts and
 the same verdict as the registered calibration-basis target on every
 measured frame while forwarding a different set (Jaccard 0.63–0.97). A
-replicate of each of the three models agreed with its first run on all 10
-LOCAL verdicts (forwarded-set Jaccard 0.59–0.78). The replicates are
+replicate of each model agreed with its first run on all 14 LOCAL verdicts
+(forwarded-set Jaccard 0.59–0.78 on the Qwens and e2b, 0.88–1.00 on e4b). The replicates are
 re-executions, not resamples: pilot seeds derive from the study seed, the
 model and the stage, so every root of a model (v8 roots included) screens
 and calibrates the same topics with the same seeds, and what varies
@@ -118,8 +121,8 @@ about 50 % for a fully supported model (four-pass screen, per-frame second
 pass, pilot-only comparator arms) and 3 % for 2507. gemma-3n-e4b-it's
 first two successor roots were lost to a pre-existing reuse defect and to
 the pilot layer's 12 h backend cap (record §2; the cap is raised to 36 h
-on `7d8e1d9`, an operational change with no entry of its own) and its
-valid runs are in progress. Verdict: RESEARCHER_DECISION_REQUIRED — the
+on `7d8e1d9`, an operational change with no entry of its own), and its
+valid runs r23/r24 are at that commit. Verdict: RESEARCHER_DECISION_REQUIRED — the
 target basis (C registered, A comparator), the knife-edge operating points
 on fresh grids, and whether a freeze may bind pilots at two commits that
 differ only in the cap. Nothing is frozen; no composed row exists.
