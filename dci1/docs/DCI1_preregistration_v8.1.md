@@ -770,7 +770,7 @@ the universal calibration allocation of §9 and the screen allocation of
 | qwen3-4b | `dci1v8-pilot-r14` | `025e138` | `PILOT_REPORT`, LOCAL on f0–f3 | `dci1v8-pilot-r21` at `025e138`, agrees |
 | qwen3-4b-instruct-2507 | `dci1v8-pilot-r15` | `025e138` | `PILOT_REPORT`, LOCAL on f1, f3 | `dci1v8-pilot-r20` at `025e138`, agrees |
 | gemma-3n-e2b-it | `dci1v8-pilot-r16` | `025e138` | `PILOT_REPORT`, LOCAL on f0, f1, f3 | `dci1v8-pilot-r19` at `025e138`, agrees |
-| gemma-3n-e4b-it | `dci1v8-pilot-r23` | `7d8e1d9` | in progress (r17 invalidated, r18 abandoned; §2 of the record) | `dci1v8-pilot-r24` at `7d8e1d9`, in progress |
+| gemma-3n-e4b-it | `dci1v8-pilot-r23` | `7d8e1d9` | `PILOT_REPORT`, LOCAL on f0, f1, f3 (r17 invalidated, r18 abandoned; §2 of the record) | `dci1v8-pilot-r24` at `7d8e1d9`, agrees |
 
 `7d8e1d9` differs from `025e138` only in the backend wall-clock cap
 (operational; no prompt, verifier, design, decoding or allocation changes).
