@@ -464,9 +464,11 @@ frame-aware rule makes qwen3-4b LOCAL on 4/4 frames (v8: 2/4) and makes
 supported and the legacy set is not *on the same rows*, in both successor
 runs. e2b is unchanged (f0, f1, f3). Every replicate agrees with its first
 run on every LOCAL verdict; the A- and C-basis targets agree on every
-verdict. What does not replicate is one stage earlier: the operating-point
-rule flips at band edges on fresh grids (e2b f0 n\* 1 → 8; 2507 f0
-unsupported → supported). Verdict RESEARCHER_DECISION_REQUIRED (target
+verdict. The replicates re-execute the same topics and seeds (pilot seeds
+are deterministic per model and stage), so they measure decoding
+nondeterminism, not topic sampling. What does not replicate is one stage
+earlier: the operating-point rule flips at band edges under that noise
+alone (e2b f0 n\* 1 → 8; 2507 f0 unsupported → supported). Verdict RESEARCHER_DECISION_REQUIRED (target
 basis; operating-point rule; one or two commits). Not frozen.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)

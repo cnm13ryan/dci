@@ -106,7 +106,14 @@ The screen-proxy (A-basis) target gave the same family/backup counts and
 the same verdict as the registered calibration-basis target on every
 measured frame while forwarding a different set (Jaccard 0.63–0.97). A
 replicate of each of the three models agreed with its first run on all 10
-LOCAL verdicts (forwarded-set Jaccard 0.59–0.78). Generation cost rose
+LOCAL verdicts (forwarded-set Jaccard 0.59–0.78). The replicates are
+re-executions, not resamples: pilot seeds derive from the study seed, the
+model and the stage, so every root of a model (v8 roots included) screens
+and calibrates the same topics with the same seeds, and what varies
+between runs is decoding nondeterminism (23–49 % of grid rows re-decode
+differently on the Qwens and e2b; e4b is deterministic on this stack).
+The operating-point flips are therefore decoding noise on knife-edge
+curves, and topic-resampled stability has not been measured. Generation cost rose
 about 50 % for a fully supported model (four-pass screen, per-frame second
 pass, pilot-only comparator arms) and 3 % for 2507. gemma-3n-e4b-it's
 first two successor roots were lost to a pre-existing reuse defect and to

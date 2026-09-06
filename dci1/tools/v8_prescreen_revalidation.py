@@ -65,11 +65,11 @@ NEW_ROOTS: dict[str, str] = {
 # A second successor run of the same model on the same commit: a test-retest of
 # the frame-aware forwarding and a third grid sample for the operating point.
 # Rendered as an extra block whose "old" column is the FIRST successor run.
-REPLICATE_ROOTS: dict[str, str] = {
-    "gemma-3n-e2b-it": "dci1v8-pilot-r19",
-    "qwen3-4b-instruct-2507": "dci1v8-pilot-r20",
-    "qwen3-4b": "dci1v8-pilot-r21",
-    "gemma-3n-e4b-it": "dci1v8-pilot-r24",  # at 7d8e1d9, paired with r23
+REPLICATE_ROOTS: dict[str, tuple[str, ...]] = {
+    "gemma-3n-e2b-it": ("dci1v8-pilot-r19",),
+    "qwen3-4b-instruct-2507": ("dci1v8-pilot-r20", "dci1v8-pilot-r25"),
+    "qwen3-4b": ("dci1v8-pilot-r21",),
+    "gemma-3n-e4b-it": ("dci1v8-pilot-r24",),  # at 7d8e1d9, paired with r23
 }
 STAGES = (PS.STAGE_REGIME, PS.STAGE_SECOND_PASS, PS.STAGE_GATE2, PS.STAGE_GATE3,
           PS.STAGE_REPORT)
@@ -332,16 +332,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         models.append(model_block(key, old, new))
         print(f"{key}: old reached {old.get('reached')}; new reached "
               f"{new.get('reached') or 'pending'}{' TERMINAL ' + new['terminal'] if new.get('terminal') else ''}")
-    for key, rep in REPLICATE_ROOTS.items():
+    for key, reps in REPLICATE_ROOTS.items():
         if key not in keys:
             continue
         first = records(DCI1 / "evidence" / NEW_ROOTS[key], key)
-        again = records(DCI1 / "evidence" / rep, key)
-        models.append(model_block(
-            f"{key} · replicate ({NEW_ROOTS[key]} → {rep}; 'old' = first successor run)",
-            first, again))
-        print(f"{key} replicate: first reached {first.get('reached')}; again reached "
-              f"{again.get('reached') or 'pending'}")
+        for rep in reps:
+            again = records(DCI1 / "evidence" / rep, key)
+            models.append(model_block(
+                f"{key} · replicate ({NEW_ROOTS[key]} → {rep}; 'old' = first successor run)",
+                first, again))
+            print(f"{key} replicate {rep}: first reached {first.get('reached')}; again reached "
+                  f"{again.get('reached') or 'pending'}")
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "revalidation.json").write_text(
         json.dumps({"models": models, "old_roots": OLD_ROOTS, "new_roots": NEW_ROOTS,
