@@ -99,7 +99,11 @@ only). Two frames are what the comparator arm attributes to the forwarding
 rule: on identical calibration rows 2507's frame 3 is 5 families / 2
 backups under the frame's set in three of three runs and 4 / 1
 (unsupported) under the legacy pooled set in two of them (5 / 2 in the
-third — the pooled rule is marginal there, the frame-aware rule is not),
+third; and a re-execution of the v8 pooled design itself, root
+`dci1v8-pilot-r26`, reaches 5 / 2 there where the original v8 root gave
+3 / 0 — so on this frame the pooled rule is *marginal* under decoding
+nondeterminism rather than reliably failing, and the claim rests on the
+paired same-rows comparison, not on the v8-to-v8.1 difference),
 and e4b's frame 0 is 7 / 2 under the frame's set and 4 / 1 under the
 pooled set in both runs; on the other 12 supported frames the pooled set
 would have reached the same verdict. Operating
