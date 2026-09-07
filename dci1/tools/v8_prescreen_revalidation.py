@@ -71,6 +71,13 @@ REPLICATE_ROOTS: dict[str, tuple[str, ...]] = {
     "qwen3-4b": ("dci1v8-pilot-r21",),
     "gemma-3n-e4b-it": ("dci1v8-pilot-r24",),  # at 7d8e1d9, paired with r23
 }
+# A re-execution of the v8 (pooled) design itself at the frozen commit: the
+# control for the rule-attributed frames — does the pooled design's own
+# verdict survive decoding noise? Rendered as a block whose "old" column is
+# the v8 root and whose "new" column is the v8 re-execution.
+OLD_REPLICATE_ROOTS: dict[str, tuple[str, ...]] = {
+    "qwen3-4b-instruct-2507": ("dci1v8-pilot-r26",),  # at f7af7f2
+}
 STAGES = (PS.STAGE_REGIME, PS.STAGE_SECOND_PASS, PS.STAGE_GATE2, PS.STAGE_GATE3,
           PS.STAGE_REPORT)
 
@@ -343,10 +350,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 first, again))
             print(f"{key} replicate {rep}: first reached {first.get('reached')}; again reached "
                   f"{again.get('reached') or 'pending'}")
+    for key, reps in OLD_REPLICATE_ROOTS.items():
+        if key not in keys:
+            continue
+        old_first = records(DCI1 / "evidence" / OLD_ROOTS[key], key)
+        for rep in reps:
+            again = records(DCI1 / "evidence" / rep, key)
+            models.append(model_block(
+                f"{key} · v8-design re-execution ({OLD_ROOTS[key]} → {rep}; both pooled)",
+                old_first, again))
+            print(f"{key} v8 re-execution {rep}: v8 reached {old_first.get('reached')}; again reached "
+                  f"{again.get('reached') or 'pending'}")
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "revalidation.json").write_text(
         json.dumps({"models": models, "old_roots": OLD_ROOTS, "new_roots": NEW_ROOTS,
                     "replicate_roots": REPLICATE_ROOTS,
+                    "old_replicate_roots": OLD_REPLICATE_ROOTS,
                     "rules": {"screen_frame_offsets": list(R.SCREEN_FRAME_OFFSETS),
                               "retention_policy": R.RETENTION_POLICY,
                               "retention_target_basis": R.RETENTION_TARGET_BASIS,

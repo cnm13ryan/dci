@@ -96,11 +96,13 @@ replicate).** Under the frame-aware rule qwen3-4b is LOCAL on all four
 frames (v8: f0, f3), gemma-3n-e2b-it on f0, f1, f3 (as v8), gemma-3n-e4b-it
 on f0, f1, f3 (as v8) and qwen3-4b-instruct-2507 on f1 and f3 (v8: f1
 only). Two frames are what the comparator arm attributes to the forwarding
-rule alone, both reproduced in the replicate: on identical calibration rows
-2507's frame 3 is 5 families / 2 backups under the frame's set and 4 / 1
-(unsupported) under the legacy pooled set, and e4b's frame 0 is 7 / 2
-under the frame's set and 4 / 1 under the pooled set; on the other 12
-supported frames the pooled set would have reached the same verdict. Operating
+rule: on identical calibration rows 2507's frame 3 is 5 families / 2
+backups under the frame's set in three of three runs and 4 / 1
+(unsupported) under the legacy pooled set in two of them (5 / 2 in the
+third — the pooled rule is marginal there, the frame-aware rule is not),
+and e4b's frame 0 is 7 / 2 under the frame's set and 4 / 1 under the
+pooled set in both runs; on the other 12 supported frames the pooled set
+would have reached the same verdict. Operating
 points n\*(f), m\*(f), ι_A(f) reproduced the v8 roots on 13 of 14
 supported frames; the exception (e2b f0, n\* 1 → 8 on the same eligible
 set) is the operating-point rule on fresh grids, not the pre-screen, and
