@@ -6,8 +6,9 @@ Sections 2–5 are filled from the successor pilot roots (2026-09-07
 00:00Z). Every model has a first successor run and a replicate at
 `PILOT_REPORT` (gemma-3n-e4b-it's first two roots were lost to incidents,
 §2; its valid runs are `r23`/`r24` at commit `7d8e1d9`). A third run of
-qwen3-4b-instruct-2507 (`r25`) is in progress and its row in §3.5 is
-appended when it lands.
+qwen3-4b-instruct-2507 (`r25`) is complete; a re-execution of the v8
+pooled design (`r26`, the control of §2) is in progress and is appended
+when it lands.
 
 ## 1. The invalidation boundary, from the code
 
@@ -55,7 +56,8 @@ the v8 pilots the frozen root was built from.
 | qwen3-4b, replicate | `dci1v8-pilot-r14` (first successor run) | `dci1v8-pilot-r21` | 0 | `025e138` | **pending** (chained after r18, 2026-09-05) |
 | gemma-3n-e4b-it, replicate | — | `dci1v8-pilot-r22` | 1 | `025e138` | **cancelled** before registration (it would have hit the same cap) |
 | gemma-3n-e4b-it, replicate | `dci1v8-pilot-r23` | `dci1v8-pilot-r24` | 0 | `7d8e1d9` | `PILOT_REPORT` 2026-09-06 23:04Z |
-| qwen3-4b-instruct-2507, third run | `dci1v8-pilot-r15` | `dci1v8-pilot-r25` | 1 | `025e138` | **pending** (registered 2026-09-06 22:26Z on the idle card during the e4b tails) |
+| qwen3-4b-instruct-2507, third run | `dci1v8-pilot-r15` | `dci1v8-pilot-r25` | 1 | `025e138` | `PILOT_REPORT` 2026-09-07 05:33Z |
+| qwen3-4b-instruct-2507, **v8-design re-execution** | `dci1v8-pilot-r10` (v8) | `dci1v8-pilot-r26` | 0 | `f7af7f2` (the frozen v8 commit) | **pending** (chained after r25, 2026-09-06 23:59Z) |
 
 Incident on `dci1v8-pilot-r17`: the first `GATE_2_CALIBRATION` attempt
 (started 06:33Z) was killed by the kernel's out-of-memory handler at
@@ -112,8 +114,14 @@ r21 finished, so that e4b too has a test-retest pair (r23 → r24).
 A third run of qwen3-4b-instruct-2507 (`dci1v8-pilot-r25`, at `025e138`
 like r15 and r20) was started on card 1 while the e4b tails, which are
 CPU-bound and cannot share the host, left it idle: it takes the frame-3
-result that the causal claim rests on from two runs to three and adds a
-third grid sample for that model's knife-edge frame 0.
+result that the causal claim rests on from two runs to three.
+`dci1v8-pilot-r26` is the control from the other side: a re-execution of
+the *v8 pooled design itself* at the frozen commit `f7af7f2` (a new pilot
+root; the frozen confirm root is not touched), chained on card 0 after r25.
+It asks whether the pooled design's own verdict on 2507 frame 3 (3/0 in
+r10) survives decoding noise: if a pooled re-run reached 5/2 there, the
+"rule alone" attribution would rest on r10's decoding luck rather than on
+the design. Its block compares r26 with r10.
 
 Second incident (both lanes): at 22:08Z on 2026-09-04 the host's desktop
 session crashed (the journal shows a crash report and the display
@@ -237,7 +245,7 @@ SPECTRUM-valid rungs in the frame's table.
 | qwen3-4b | 3 | 7/2 **L** | 6/2 **L** | 7/2 **L** | 6/2 **L** | 10/37 → 9/31 | unchanged status; the frame's set (53 rungs) carries one family fewer than the legacy set on the same rows |
 | qwen3-4b-instruct-2507 | 0, 2 | UNSUPPORTED | UNSUPPORTED | — | — | — | unchanged (grid resolution) |
 | qwen3-4b-instruct-2507 | 1 | 7/2 **L** | 6/2 **L** | 6/2 **L** | 6/2 **L** | 17/32 → 15/38 | unchanged |
-| qwen3-4b-instruct-2507 | 3 | 3/0 l | 5/2 **L** | 4/1 l | 5/2 **L** | 3/36 → 6/35 | **gained by the forwarding rule**: on identical rows the legacy set is unsupported and both frame-specific sets are supported |
+| qwen3-4b-instruct-2507 | 3 | 3/0 l | 5/2 **L** | 4/1 l | 5/2 **L** | 3/36 → 6/35 | **gained by the forwarding rule**: on identical rows the legacy set is unsupported and both frame-specific sets are supported (r20 the same; in the third run r25 the legacy set also reaches 5/2, §3.5) |
 | gemma-3n-e2b-it | 0 | 6/2 **L** | 5/2 **L** | 5/2 **L** | 5/2 **L** | 9/34 → 11/34 | unchanged status (operating point moved, §3.1) |
 | gemma-3n-e2b-it | 1 | 6/2 **L** | 5/2 **L** | 5/2 **L** | 5/2 **L** | 11/31 → 12/37 | unchanged |
 | gemma-3n-e2b-it | 2 | 3/0 l, coverage not identified | 3/0 l, coverage identified | 2/0 l | 3/0 l | 3/38 → 4/28 | unsupported under every policy (ι_A(f) ≈ 0.80 is the hardest frame); the spectrum arm is newly identified, which the comparator arms cannot attribute (coverage is not re-verdicted for them) |
@@ -318,6 +326,7 @@ topic resampling and is not the quantity measured here.
 |---|---|---|---|---|---|
 | gemma-3n-e2b-it | r16 → r19 | 8, 3, 2, 7 → 8, 3, 2, 7 | {0, 1, 3} → {0, 1, 3} | 5/2, 5/2, 3/0, 7/2 → 6/2, 5/2, 3/0, 8/2 | 0.76 · 0.72 · 0.61 · 0.66 |
 | qwen3-4b-instruct-2507 | r15 → r20 | f1 6, f3 6 → f1 6, f3 6 (f0: unsupported → supported at n\* = 4, ι_A = 0.85) | {1, 3} → {1, 3} | f1 6/2, f3 5/2 → f1 7/2, f3 5/2 (f0 3/0) | f1 0.69 · f3 0.76 |
+| qwen3-4b-instruct-2507 | r15 → r25 (third run) | f1 6, f3 6 → f1 6, f3 6 (f0 unsupported again) | {1, 3} → {1, 3} | f1 6/2, f3 5/2 → f1 7/2, f3 5/2; **legacy set on r25's rows: f3 5/2** | f1 0.65 · f3 0.72 |
 | qwen3-4b | r14 → r21 | 6, 7, 3, 5 → 6, 7, 3, 4 | {0, 1, 2, 3} → {0, 1, 2, 3} | 5/2, 5/2, 6/2, 6/2 → 6/2, 5/2, 6/2, 5/2 | 0.78 · 0.67 · 0.59 · 0.65 |
 | gemma-3n-e4b-it | r23 → r24 | 6, 6, 7, 8 → 6, 6, 7, 8 | {0, 1, 3} → {0, 1, 3} | 7/2, 6/2, 4/1, 8/2 → 7/2, 6/2, 4/1, 8/2 | 0.88 · 1.00 · 0.97 · 0.97 |
 
@@ -332,17 +341,22 @@ forwarded sets overlap at only 0.61–0.76 although the topics are the same:
 roughly a third of a frame's set turns over from decoding noise alone,
 while the families that survive to references do not.
 
-qwen3-4b-instruct-2507 replicates on the load-bearing frame: frame 3 is
-LOCAL-supported with 5 families and 2 backups in both successor runs, and
-in both the legacy pooled set re-verdicted on the same rows is 4/1 and
-unsupported, so the eligibility that follows from the forwarding rule
-alone (§3.2) is not a one-sample event. Frame 1 stays supported (6/2 →
-7/2, legacy 6/2 → 7/2). The one difference is at Gate 2, before any
-forwarding: frame 0, unsupported for grid resolution in r10 and r15 (A's
-curve 0.855 at severity 4 against a band edge), is supported in r20 at
-n\* = 4 with ι_A(f) = 0.85, the hardest operating point of any frame, and
-gives 3/0 (legacy 2/0), so the model's LOCAL frames are {1, 3} in both
-runs. That frame-0 verdict is the operating-point rule on re-decoded grid
+qwen3-4b-instruct-2507 was run three times. Frame 3, the load-bearing
+frame, is LOCAL-supported with 5 families and 2 backups under the frame's
+set in all three runs. The legacy pooled set re-verdicted on the same rows
+is 4/1 and unsupported in r15 and r20 but 5/2 in r25: under decoding
+noise the pooled rule sits at the §13.15 margin on this frame (one family
+or one backup either side of the threshold) while the frame-aware rule is
+stably above it. So the honest statement of §3.2's attribution is not
+"the pooled set fails here" but "the pooled set is marginal here and the
+frame's set is not" — the eligibility that v8 denied this model follows
+from the frame-aware rule in two of three re-executions and from either
+rule in the third. Frame 1 stays supported (6/2 → 7/2 → 7/2, legacy the
+same). At Gate 2, before any forwarding, frame 0 is unsupported for grid
+resolution in r10, r15 and r25 (A's curve 0.855 at severity 4 against a
+band edge) and supported in r20 at n\* = 4 with ι_A(f) = 0.85, the
+hardest operating point of any frame, where it gives 3/0 (legacy 2/0); the
+model's LOCAL frames are {1, 3} in every run. That frame-0 verdict is the operating-point rule on re-decoded grid
 rows (same topics, same seeds, 23 % of the text different), the same
 knife-edge as e2b frame 0 (§3.1), and belongs with decision 2 of §5.
 
@@ -355,9 +369,11 @@ forwarded-set overlap 0.59–0.78. So the v8-to-successor gain on frames 1
 and 2 (§3.2), which the comparator could not attribute to the rule, is at
 least stable under re-execution of the successor design.
 
-Across the three replicated models, every LOCAL verdict on every measured
-frame agrees between the two successor runs (10 supported frames, 0
-disagreements), and the sets overlap at 0.59–0.78 on identical topics. The
+Across the four models, every LOCAL verdict on every measured frame
+agrees between the successor runs (14 supported frames, 0 disagreements,
+2507 three times), and the sets overlap at 0.59–0.78 on identical topics.
+The comparator verdicts are less stable than the frame's own: on 2507
+frame 3 the pooled set crosses the threshold in one run of three. The
 instability lives one stage earlier, in the operating-point rule on the
 grids (§3.1 and the 2507 frame-0 flip above), which the pre-screen does
 not touch and which decoding noise alone can move. gemma-3n-e4b-it's
@@ -418,7 +434,7 @@ suites below therefore validate the code the roots were produced by.
 
 ## 5. Freeze-readiness verdict
 
-*All four models have a first successor run and a replicate; a third 2507 run (r25) is in progress and is appended when it lands.*
+*All four models have a first successor run and a replicate, 2507 a third run; the v8-design control r26 (§2) is appended when it lands.*
 
 **RESEARCHER_DECISION_REQUIRED.** Nothing technical blocks a freeze under
 the registered rule: every stage from `REGIME_SCREEN` regenerates in fresh
@@ -427,9 +443,10 @@ root `dci1v8-confirm-r2` is superseded for this successor design and not
 altered, and the pilots give the intended effect (frame-specific sets that
 are at least as supported as the pooled set on the same rows, and two
 frames — 2507 f3 and e4b f0 — where the frame's set is supported and the
-pooled set is not on identical rows) and the effect replicates (§3.5: 14
-of 14 LOCAL verdicts agree between two successor runs of every model,
-under decoding noise on fixed topics). Three decisions remain the researcher's
+pooled set is not on identical rows, the pooled set being marginal there:
+on 2507 f3 it crosses the threshold in one of three re-executions) and
+the effect replicates (§3.5: 14 of 14 LOCAL verdicts agree between the
+successor runs of every model, under decoding noise on fixed topics). Three decisions remain the researcher's
 and the evidence does not force them:
 
 1. **The target basis.** C (registered, run) and A (comparator) are

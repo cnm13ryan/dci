@@ -12,9 +12,10 @@
 | `gemma-3n-e4b-it` | `dci1v8-pilot-r13` | PILOT_REPORT | `dci1v8-pilot-r23` | PILOT_REPORT | — | 1 → 4 | 6 → 24 |
 | `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | `dci1v8-pilot-r16` | PILOT_REPORT | `dci1v8-pilot-r19` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-r20` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-r25` | REGIME_SCREEN | — | 4 → 4 | 24 → 24 |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-r25` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | `dci1v8-pilot-r14` | PILOT_REPORT | `dci1v8-pilot-r21` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | `dci1v8-pilot-r23` | PILOT_REPORT | `dci1v8-pilot-r24` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | `dci1v8-pilot-r10` | PILOT_REPORT | `dci1v8-pilot-r26` | pending | — | 1 → — | 6 → — |
 
 ## Operating points and forwarding, per frame
 
@@ -44,10 +45,10 @@
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 1 | SUPPORTED | 6/10 | 0.652 ± 0.023 | SUPPORTED | 6/10 | 0.637 ± 0.024 | 68 | 69 | 24 | 0.79 |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 3 | SUPPORTED | 6/12 | 0.673 ± 0.023 | SUPPORTED | 6/12 | 0.671 ± 0.024 | 65 | 67 | 20 | 0.90 |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | SUPPORTED | 6/10 | 0.652 ± 0.023 | pending | —/— | — ± — | 68 | — | — | — |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | SUPPORTED | 6/12 | 0.673 ± 0.023 | pending | —/— | — ± — | 65 | — | — | — |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | SUPPORTED | 6/10 | 0.652 ± 0.023 | SUPPORTED | 6/10 | 0.646 ± 0.024 | 68 | 67 | 29 | 0.80 |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | SUPPORTED | 6/12 | 0.673 ± 0.023 | SUPPORTED | 6/12 | 0.672 ± 0.023 | 65 | 59 | 26 | 0.85 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 0 | SUPPORTED | 6/12 | 0.674 ± 0.025 | SUPPORTED | 6/12 | 0.685 ± 0.025 | 61 | 62 | 10 | 1.00 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 1 | SUPPORTED | 7/12 | 0.608 ± 0.025 | SUPPORTED | 7/12 | 0.622 ± 0.024 | 65 | 72 | 13 | 0.75 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 2 | SUPPORTED | 3/12 | 0.673 ± 0.025 | SUPPORTED | 3/12 | 0.667 ± 0.026 | 62 | 62 | 26 | 0.64 |
@@ -56,6 +57,10 @@
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | SUPPORTED | 6/9 | 0.711 ± 0.019 | SUPPORTED | 6/9 | 0.711 ± 0.019 | 58 | 58 | 25 | 0.94 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | SUPPORTED | 7/9 | 0.676 ± 0.021 | SUPPORTED | 7/9 | 0.676 ± 0.021 | 61 | 61 | 26 | 0.87 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | SUPPORTED | 8/10 | 0.688 ± 0.019 | SUPPORTED | 8/10 | 0.688 ± 0.019 | 71 | 71 | 28 | 0.80 |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | SUPPORTED | 6/10 | 0.642 ± 0.024 | pending | —/— | — ± — | 64 | — | — | — |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 3 | SUPPORTED | 6/12 | 0.681 ± 0.023 | pending | —/— | — ± — | 64 | — | — | — |
 
 ## Identification, per frame: the frame's own set beside every policy on the same rows
 
@@ -87,10 +92,10 @@ fam/bk/C|c/L|l = LOCAL-valid families / admissible backups / coverage identified
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 1 | 6/2/C/L | 15/38 | 7/2/C/L | 14/41 | 7/2/C/L | 7/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 2 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 3 | 5/2/C/L | 6/35 | 5/2/C/L | 7/37 | 4/1/C/l | 5/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 0 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | 6/2/C/L | 15/38 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 2 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | 5/2/C/L | 6/35 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 0 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | 6/2/C/L | 15/38 | 7/2/C/L | 16/39 | 7/2/C/L | 7/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 2 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | 5/2/C/L | 6/35 | 5/2/C/L | 7/35 | 5/2/C/L | 5/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 0 | 5/2/C/L | 11/26 | 6/2/C/L | 10/31 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 1 | 5/2/C/L | 7/37 | 5/2/C/L | 8/38 | 5/2/C/L | 4/1/C/l | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 2 | 6/2/C/L | 13/33 | 6/2/C/L | 10/31 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
@@ -99,6 +104,10 @@ fam/bk/C|c/L|l = LOCAL-valid families / admissible backups / coverage identified
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | 6/2/C/L | 9/41 | 6/2/C/L | 9/41 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | 4/1/C/l | 6/35 | 4/1/C/l | 6/34 | 4/1/C/l | 4/1/C/l | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | 8/2/C/L | 17/38 | 8/2/C/L | 18/38 | 6/2/C/L | 8/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 0 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | 7/2/C/L | 17/32 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 2 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 3 | 3/0/C/l | 3/36 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
 
 ## Model eligibility and generation
 
@@ -110,6 +119,7 @@ fam/bk/C|c/L|l = LOCAL-valid families / admissible backups / coverage identified
 | `gemma-3n-e4b-it` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 2, 3] | [1, 3] / yes | [0, 1, 3] / yes | 291672 | 442536 |
 | `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] / yes | [0, 1, 3] / yes | 403848 | 410184 |
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | [1, 3] | yes | [1, 3] | [1] / no | [1, 3] / yes | 290184 | 346344 |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | pending | — | — | — / — | — / — | 290184 | — |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | [1, 3] | yes | [1, 3] | [1, 3] / yes | [1, 3] / yes | 290184 | 293160 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] / yes | [0, 2, 3] / yes | 401640 | 396072 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 2, 3] | [1, 3] / yes | [0, 1, 3] / yes | 442536 | 443688 |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | [1] | no | [1, 3] | pending | — | — | — / — | — / — | 282000 | — |
