@@ -36,6 +36,7 @@ from dci1v8dev.run.context import EVIDENCE_DIRNAME, StudyContext
 from dci1v8dev.run.lifecycle import instrument_hashes
 from dci1v8dev.verifiers import source_hashes as verifier_source_hashes
 from dci1v8dev.wordings import V8_FRAMES, assert_v8_instrument
+from dci1v8dev.run.topic_replicate import bank_for
 
 __all__ = ["PROTOCOL_VERSION", "DOCUMENTS", "Blocker", "document_hashes",
            "package_hashes", "rule_table",
@@ -122,7 +123,7 @@ def decoding_policy_form() -> dict[str, Any]:
 def build_manifest(context: StudyContext, *, producing_commit: str,
                    bank: TopicBank | None = None,
                    repo_root: Path | str = ".") -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(context, bank=bank)
     hashes = instrument_hashes()
     from dci1v7.verifiers import verifier_source_hash as v7_verifier_hash
     from dci1v7.protocol.wordings import wording_source_hash as v7_wording_hash
@@ -319,7 +320,7 @@ def signing_blockers(context: StudyContext, *, repo_root: Path | str,
         except Exception as error:                           # noqa: BLE001
             blockers.append(f"{what}: {error}")
     try:
-        bank = bank if bank is not None else load_bank()
+        bank = bank_for(context, bank=bank)
         if not bank.complete:
             blockers.append("topics: Calibration-B is not authored; the "
                             "pilot's calibration needs both splits")
@@ -343,7 +344,7 @@ def manifest_hash(manifest: Mapping[str, Any]) -> str:
 def sign_registration(context: StudyContext, *, producing_commit: str,
                       bank: TopicBank | None = None,
                       repo_root: Path | str = ".") -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(context, bank=bank)
     assert_signable(context, repo_root=repo_root, bank=bank)
     manifest = build_manifest(context, producing_commit=producing_commit,
                               bank=bank, repo_root=repo_root)

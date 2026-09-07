@@ -58,6 +58,7 @@ from dci1v8dev.run.regime import (assert_screen_allocation, evidence_record,
                                   prescreen_input, screen_record,
                                   screen_responder)
 from dci1v8dev.run.seeds import screen_seed
+from dci1v8dev.run.topic_replicate import bank_for
 
 __all__ = ["batch_topics", "assert_batch_isolated", "measure_factory",
            "measure_factory_frames", "second_pass_payload", "run_second_pass"]
@@ -267,7 +268,7 @@ def second_pass_payload(tree: ModelTree, *, producing_commit: str,
                         rescreen_config: RescreenConfig | None = None,
                         retention_config: RetentionConfig | None = None
                         ) -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(tree.context, bank=bank)
     generate = resolve_generate(tree, generate, screen_responder,
                                 where=S.STAGE_SECOND_PASS)
     cap = int(regime_record["selected_cap"])

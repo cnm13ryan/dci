@@ -96,6 +96,57 @@ class SoloCell:
 # verifier, design, decoding or allocation depends on it.
 BACKEND_WALL_CLOCK_SECONDS = 60 * 60 * 36
 
+#: The backend's outcome of a row it generated. A row carrying any other
+#: outcome (``TECHNICAL_FAILURE`` is what a blocked engine writes) has no
+#: generation behind it and is never data.
+GENERATED_OUTCOME = "OK"
+
+
+def reusable_rows_checked(run_dir: Path, wanted: Sequence[Mapping[str, Any]]
+                          ) -> tuple[list[dict[str, Any]] | None, dict[str, Any]]:
+    """``dci1v7.run.execute._reusable_rows`` with the check that v7's rule
+    lacks: a stored run is reused only when the backend actually generated
+    it. v7's rule matches the design's generation identity and the row-id
+    set; on 2026-09-05 (root dci1v8-pilot-r17) a retry reused a rows file
+    that a blocked engine had written with every row unanswered and marked
+    ``TECHNICAL_FAILURE``, and the stage scored 274,176 empty answers. The
+    guard refuses a run whose provenance sidecar (``rows_engine.json``) says
+    ``blocked``, whose sidecar cannot be read, or in which any row's
+    ``outcome`` is not the backend's generated outcome; the caller then
+    regenerates, which is what the retry should have done. Operational
+    only: a run that was generated is reused exactly as before."""
+    reused, reuse = _reusable_rows(run_dir, wanted)
+    if reused is None:
+        return reused, reuse
+    sidecar = Path(run_dir) / "rows_engine.json"
+    if sidecar.exists():
+        try:
+            blocked = bool(json.loads(sidecar.read_text()).get("blocked"))
+        except (OSError, ValueError):
+            blocked = True
+        if blocked:
+            return None, {"reused": False, "reason": "PREVIOUS_RUN_BLOCKED",
+                          "n_reused": 0, "n_wanted": len(wanted),
+                          "detail": "the stored run's provenance sidecar "
+                                    "says the backend was blocked (or the "
+                                    "sidecar is unreadable); its rows were "
+                                    "not generated and are regenerated"}
+    outcomes: dict[str, int] = {}
+    for row in reused:
+        o = str(row.get("outcome"))
+        if o != GENERATED_OUTCOME:
+            outcomes[o] = outcomes.get(o, 0) + 1
+    if outcomes:
+        return None, {"reused": False,
+                      "reason": "PREVIOUS_RUN_HAS_UNGENERATED_ROWS",
+                      "n_reused": 0, "n_wanted": len(wanted),
+                      "ungenerated_outcomes": outcomes,
+                      "detail": "rows whose outcome is not the backend's "
+                                "generated outcome carry no generation and "
+                                "are regenerated"}
+    return reused, reuse
+
+
 def blocks(topics: Sequence[Mapping[str, Any]], prefix: str, *,
            index_base: int = 0) -> list[Block]:
     """The blocks of one pass over ``topics``, numbered from ``index_base``.
@@ -327,7 +378,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
                        decoding=decoding)
     if limit:
         rows = rows[:limit]
-    reused, reuse = _reusable_rows(run_dir, rows)
+    reused, reuse = reusable_rows_checked(run_dir, rows)
     if reused is not None:
         outcome: dict[str, Any] = {"rows": reused,
                                    "provenance": {"resumed": True,

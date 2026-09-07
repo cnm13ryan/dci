@@ -41,16 +41,21 @@ for pid in ${AFTER//,/ }; do
   log "predecessor process $pid has exited"
 done
 
+# The namespace every stage runs in: "pilot" (default) or "topic-replicate"
+# (the methodology-validation replicate, DCI1_V8_NAMESPACE=topic-replicate).
+NAMESPACE="${DCI1_V8_NAMESPACE:-pilot}"
+log "namespace $NAMESPACE"
+
 attempts=0
 while true; do
-  STATUS=$($PY -m dci1v8dev.run.cli status --model "$MODEL" --root "$ROOT" 2>&1)
+  STATUS=$($PY -m dci1v8dev.run.cli status --model "$MODEL" --root "$ROOT" --namespace "$NAMESPACE" 2>&1)
   NEXT=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["next_stage"] or "")' 2>/dev/null)
   TERM=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["terminal_status"] or "")' 2>/dev/null)
   REACHED=$(printf '%s' "$STATUS" | $PY -c 'import json,sys; d=json.load(sys.stdin); print(d["stage_reached"] or "")' 2>/dev/null)
   if [ -z "$NEXT" ] && [ -z "$REACHED" ] && [ -z "$TERM" ]; then log "status failed: $STATUS"; exit 1; fi
   if [ -n "$TERM" ]; then log "TERMINAL $TERM at $REACHED; stopping"; exit 0; fi
   if [ -z "$NEXT" ]; then log "COMPLETE: reached $REACHED, no next stage"; exit 0; fi
-  ARGS=(run --stage "$NEXT" --model "$MODEL" --root "$ROOT")
+  ARGS=(run --stage "$NEXT" --model "$MODEL" --root "$ROOT" --namespace "$NAMESPACE")
   OUT="$LOGDIR/${MODEL}.${NEXT}.$(date -u +%Y%m%dT%H%M%SZ).out"
   if [[ "$GPU_STAGES" == *" $NEXT "* ]]; then
     ARGS+=(--device "$DEVICE" --environment "$ENV_GPU")

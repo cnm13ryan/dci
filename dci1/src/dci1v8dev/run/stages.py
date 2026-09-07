@@ -23,6 +23,7 @@ __all__ = [
     "STAGE_REPORT", "STAGE_SEQUENCE", "STAGE_RECORD_FILES",
     "STAGE_ARTIFACT_TYPE", "ARTIFACT_TYPES", "GENERATION_STAGES",
     "TERMINAL_STATUSES", "TERMINAL_SENTENCE", "NAMESPACES",
+    "TOPIC_REPLICATE_NAMESPACE",
     "PILOT_CRITERIA", "DECIDED_CRITERIA", "WORDING_REFERENCE_BOUND",
     "WORDING_POLICY_OPTIONS", "WORDING_POLICY_STATUS", "WORDING_POLICY",
     "FRAME_CONDITIONING", "FRAMES", "FRAME_STATES", "FRAME_SUPPORTED",
@@ -111,7 +112,13 @@ TERMINAL_SENTENCE = ("a terminal pilot status is a statement about the "
                      "apparatus or the operating regime and carries no "
                      "evidence about the effect or about the v8 candidate")
 
-NAMESPACES = ("pilot", "synthetic", "confirm", "confirm-synthetic")
+NAMESPACES = ("pilot", "synthetic", "confirm", "confirm-synthetic",
+              "topic-replicate")
+#: The methodology-validation namespace (2026-09-07): a pilot lifecycle run
+#: on a freshly partitioned pre-freeze topic pool (``run.topic_replicate``).
+#: It carries its own study id, so ``confirm.pilot_import`` refuses its
+#: roots and nothing it produces can enter a freeze.
+TOPIC_REPLICATE_NAMESPACE = "topic-replicate"
 #: The two confirmatory namespaces (``dci1v8dev.confirm``): the pinned
 #: backend under a signed freeze, and the stand-in generator for the
 #: synthetic walk. A confirm root carries the same study id as a pilot

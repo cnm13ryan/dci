@@ -85,6 +85,7 @@ from dci1v8dev.run.execute import (UNCONSTRAINED_ARM, Block, SoloCell, blocks,
 from dci1v8dev.run.lifecycle import (StageOutcome, TerminalStatus,
                                      protocol_identity, run_stage)
 from dci1v8dev.run.regime import screen_responder
+from dci1v8dev.run.topic_replicate import bank_for
 
 __all__ = ["gate2_payload", "run_gate2", "constraints_from_labels",
            "assert_synthetic_only", "reach_input", "frame_curves",
@@ -723,7 +724,7 @@ def gate2_payload(tree: ModelTree, *, producing_commit: str,
                   topic_limit: int | None = None,
                   extension_rule: ExtensionRule | None = None
                   ) -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(tree.context, bank=bank)
     binding = calibration_binding(bank, split="pooled", draws=C.M_CAL)
     topics = list(bank.topics(C.CALIBRATION_A)) + \
         list(bank.topics(C.CALIBRATION_B))

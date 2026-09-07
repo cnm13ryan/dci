@@ -58,6 +58,7 @@ from dci1v8dev.run.instrument import frame_reliability
 from dci1v8dev.run.lifecycle import (StageOutcome, TerminalStatus,
                                      protocol_identity, run_stage)
 from dci1v8dev.run.seeds import screen_seed
+from dci1v8dev.run.topic_replicate import bank_for
 
 __all__ = ["cap_cells", "select_cap", "screen_rungs", "ladder_cells",
            "screen_blocks", "screen_allocation", "assert_screen_allocation",
@@ -340,7 +341,7 @@ def regime_payload(tree: ModelTree, *, producing_commit: str,
                    rungs: Sequence[Constraint] | None = None,
                    screen_config: ScreenConfig | None = None
                    ) -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(tree.context, bank=bank)
     prescreen = list(bank.topics("prescreen"))
     assert_no_reserved_topic_spent([t["topic_id"] for t in prescreen],
                                    bank.sets, stage=S.STAGE_REGIME)

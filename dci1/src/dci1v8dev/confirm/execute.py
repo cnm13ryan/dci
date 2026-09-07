@@ -27,6 +27,7 @@ from dci1v8dev.confirm import CLASSIFICATION
 from dci1v8dev.confirm import lifecycle as L
 from dci1v8dev.confirm.design import Cell
 from dci1v8dev.run.execute import (PromptCell, assert_v8_prompt,
+                                   reusable_rows_checked,
                                    row_accounting)
 from dci1v8dev.run.seeds import generation_seed
 from dci1v8dev.verifiers import verifier_source_hash
@@ -148,7 +149,7 @@ def generate_and_score(model_key: str, cells: Sequence[PromptCell], *,
     rows = design_rows(cells, stage=stage, model_id=spec.model_id,
                        study_id=study_id, protocol_identity=protocol_identity,
                        decoding=decoding)
-    reused, reuse = _reusable_rows(run_dir, rows)
+    reused, reuse = reusable_rows_checked(run_dir, rows)
     if reused is not None:
         outcome: dict[str, Any] = {"rows": reused,
                                    "provenance": {"resumed": True,
