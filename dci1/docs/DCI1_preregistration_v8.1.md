@@ -344,13 +344,21 @@ wording equivalence, presence rule, composed-cell refusal at the renderer),
    declared as scored instances on the grids (a scoring obligation, no
    generation), so the chance column and κ(R|B) of whatever is then
    measured are read on the same cells.
-9. **Remaining researcher decision.** The target of the final retention
-   is Gate 2's ι_A(f) by default. The successor pilots measure, on the
-   same calibration rows, the identification reached by the frame's own
-   set and by the provisional screen-proxy set (item 5). If that
-   comparison favours the proxy, `RETENTION_TARGET_BASIS` is changed before
-   any freeze and the pilots are re-run; the choice is recorded in
-   `reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md`.
+9. **The retention target, decided (2026-09-07).** The target of the final
+   retention is Gate 2's ι_A(f) — `RETENTION_TARGET_BASIS =
+   "calibration_iota_a"`, basis C — and it is **registered**. The successor
+   pilots measured, on the same calibration rows, the identification
+   reached by the frame's own set and by the provisional screen-proxy set
+   (basis A, item 5): on all 14 supported frames of the four models the two
+   bases give the same LOCAL-valid family count, the same admissible backup
+   count and the same §13.15 verdict, while forwarding measurably different
+   sets (Jaccard 0.63–0.97). The comparison therefore does not favour the
+   proxy, and the registered basis stands on the precision argument of
+   `V8_FRAME_AWARE_PRESCREEN.md` (the grid ι_A(f) carries SE ≈ 0.02 against
+   the screen proxy's drift of ±0.05–0.17). Basis A remains a **comparator
+   arm only**: it is generated and re-verdicted on every frame and reported,
+   and it decides nothing. The evidence is in
+   `reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md` §3.4.
 
 ## 11. Operating points, chance correction and their stability
 
@@ -772,11 +780,28 @@ the universal calibration allocation of §9 and the screen allocation of
 | gemma-3n-e2b-it | `dci1v8-pilot-r16` | `025e138` | `PILOT_REPORT`, LOCAL on f0, f1, f3 | `dci1v8-pilot-r19` at `025e138`, agrees |
 | gemma-3n-e4b-it | `dci1v8-pilot-r23` | `7d8e1d9` | `PILOT_REPORT`, LOCAL on f0, f1, f3 (r17 invalidated, r18 abandoned; §2 of the record) | `dci1v8-pilot-r24` at `7d8e1d9`, agrees |
 
-`7d8e1d9` differs from `025e138` only in the backend wall-clock cap
-(operational; no prompt, verifier, design, decoding or allocation changes).
-Whether a freeze may bind pilots at these two commits, or every model is
-rerun at one commit, is the researcher's decision (record §5).
-Confirmatory root: not yet created. Nothing is frozen. The frozen v8 root
+**The mixed commits are accepted (2026-09-07), on an audited
+operational-only difference.** `git diff 025e138 7d8e1d9` touches one
+source file, `dci1v8dev/run/execute.py`, and within it one constant: the
+backend wall-clock cap, raised from 12 h to 36 h because
+gemma-3n-e4b-it's Gate-2 candidate run needs about 16 h and a partial
+backend run restarts from zero. The pilot manifests confirm it
+independently of the diff: of the 72 hashed package files, 71 are
+byte-identical between an `025e138` root and a `7d8e1d9` root, the sole
+difference being that file, and the `rules`, `protocol`,
+`protocol_version`, `documents` and `wording_diagnostic` bindings are
+identical across all four roots. No protocol constant, prompt, wording
+frame, verifier, pre-screen rule, second-pass rule, target basis,
+forwarding rule, calibration allocation, operating-point selection,
+LOCAL/SPECTRUM validity rule, reference selection, eligibility rule,
+confirmatory allocation, estimand or analysis definition differs. The
+other three models are therefore **not** re-run for commit uniformity, and
+every `CONFIRM_REGISTERED` record carries each pilot's own producing
+commit (`confirm/pilot_import`), so the mixture is on the record rather
+than hidden.
+
+Confirmatory root: named at registration. Nothing is frozen until §19.1's
+readiness passes. The frozen v8 root
 `dci1/evidence/dci1v8-confirm-r2` is historical evidence of the pooled
 design and is not reused.
 

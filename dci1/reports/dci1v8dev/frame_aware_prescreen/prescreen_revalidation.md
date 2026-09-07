@@ -426,6 +426,34 @@ the interpretation of a methodology-validation finding, not as a
 design-selection experiment, and the design it re-executes is the
 superseded one.
 
+### 3.7 Topic-resampled methodology validation
+
+Prespecified in `docs/V8_TOPIC_RESAMPLED_VALIDATION.md` and committed
+(`8032673`) before any replicate row was generated. §3.5's replicates
+re-execute the *same* topics; these re-partition the 216 pre-freeze topics
+(prescreen, calibration A, calibration B) into the same roles,
+area-stratified, under a domain-separated seed
+(`dci1v8:topicrep:v1`, index 1, seed `2969019755343878771`), leaving the
+composed, confirmatory and sequestered sets untouched. They run in the
+`topic-replicate` namespace under study id `dci1v8-topicrep`, which
+`confirm/pilot_import` refuses, so no replicate root can be bound by a
+freeze. Every scientific rule is unchanged.
+
+The resampling was verified at row level, not only in the manifest: the
+qwen3-4b replicate's screen spends 24 topics of which **2** are shared with
+r14's screen, the number a uniform re-deal predicts (24 × 24 / 216 ≈ 2.7).
+The manifest binds the re-partitioned split hash (`a1e99d384d72…`) beside
+the carried one (`c10f17bc5846…`).
+
+| model | replicate root | card | status |
+|---|---|---|---|
+| qwen3-4b | `dci1v8-pilot-t1-qwen3-4b` | 0 | pending |
+| qwen3-4b-instruct-2507 | `dci1v8-pilot-t1-qwen3-4b-instruct-2507` | 0 | pending |
+| gemma-3n-e2b-it | `dci1v8-pilot-t1-gemma-3n-e2b-it` | 0 | pending |
+| gemma-3n-e4b-it | `dci1v8-pilot-t1-gemma-3n-e4b-it` | 1 | pending |
+
+*Results pending; filled from the signed records when the roots complete.*
+
 ## 4. Validation
 
 Code at `HEAD` (`e0bbcdf`) is the pilot commit `025e138` plus the read-only
@@ -454,15 +482,28 @@ suites below therefore validate the code the roots were produced by.
 - The suites write large per-worker fixture trees under `/tmp` and do not
   clean them; two full runs filled the root filesystem (§2, fourth
   incident). Delete `/tmp/pytest-of-*` after a run on this host.
-- Pre-existing failure found by the r17 incident (§2), reproduced without
-  the redesign by inspection: `dci1v7.run.execute._reusable_rows` (no diff
-  against `ab1b6be`) accepts a stored backend run whose rows are unanswered
-  and whose sidecar is `blocked`, and the stage's row accounting
-  (`every_row_scored`) counts identities, not answers, so a retry after a
-  failed backend run signs a record on empty generations. Not fixed here;
-  the guard belongs on the reuse path (refuse a `blocked` sidecar and any
-  row without a final answer) with a test, and the driver should kill the
-  backend's process group and check the card before retrying.
+- **The r17 reuse defect, resolved (2026-09-07, commit `8032673`).** Cause:
+  `dci1v7.run.execute._reusable_rows` reuses a stored backend run when the
+  design's generation identity and the row-id set match, and asks nothing
+  about whether the backend answered; the stage's row accounting
+  (`every_row_scored`) then counts identities, not answers. Path: both
+  `run.execute.generate_and_score` (every pilot stage) and
+  `confirm.execute.generate_and_score` (confirmatory generation) called it,
+  so the confirmatory path could have met the same defect after a killed
+  backend. Effect on current evidence: none — all nine valid pilot roots
+  were scanned (108 backend runs) and carry no `blocked` sidecar and no row
+  whose outcome is not `OK`. Fix: `run.execute.reusable_rows_checked` wraps
+  the v7 rule and refuses a run whose sidecar says `blocked` or cannot be
+  read (`PREVIOUS_RUN_BLOCKED`) or in which any row's outcome is not the
+  backend's generated outcome (`PREVIOUS_RUN_HAS_UNGENERATED_ROWS`); the
+  caller then regenerates. Both paths use it. It rejects invalid data only
+  and changes no scientific behaviour: a generated run is reused exactly as
+  before. Seven regression tests in `tests_v8dev/test_reuse_guard.py`,
+  including one asserting the confirmatory path uses the guard; the slow
+  confirmatory lifecycle walk passes with it in place. Still open as an
+  operational follow-up: an out-of-memory kill leaves the backend's engine
+  core alive on the card, so the driver should kill the backend's process
+  group and check the card before retrying.
 - `reports/dci1v8dev/pipeline_validation.{md,json}` regenerated at the
   successor rule table (world results unchanged).
 - Producer/consumer contract: every successor record was written under
