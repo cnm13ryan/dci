@@ -387,6 +387,40 @@
        "n_spectrum_valid": 30,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK2",
+         "MK8"
+        ],
+        "core": [
+         "XC3:10",
+         "MK1:4",
+         "MK6:6"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK2",
+         "MK6"
+        ],
+        "core": [
+         "MK1:4",
+         "XC3:10",
+         "MK8:2"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -789,6 +823,39 @@
        "n_local_valid_families": 4,
        "n_spectrum_valid": 34,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK1",
+         "MK8"
+        ],
+        "core": [
+         "MK7:2",
+         "XC3:9",
+         "MK2:7"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8"
+        ],
+        "core": [
+         "XC3:9",
+         "MK7:2",
+         "MK1:8"
+        ]
+       }
       }
      }
     },
@@ -1203,6 +1270,39 @@
        "n_spectrum_valid": 35,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK2",
+         "MK3"
+        ],
+        "core": [
+         "MK7:2",
+         "MK1:6",
+         "MK6:5"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK6"
+        ],
+        "core": [
+         "MK1:6",
+         "MK2:3",
+         "MK7:2"
+        ]
+       }
+      }
      }
     },
     "3": {
@@ -1587,6 +1687,40 @@
        "n_spectrum_valid": 37,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK1",
+         "MK5"
+        ],
+        "core": [
+         "XC3:8",
+         "MK2:5",
+         "MK7:2"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1",
+         "MK6"
+        ],
+        "core": [
+         "MK2:6",
+         "XC3:8",
+         "MK7:2"
+        ]
+       }
+      }
      }
     }
    },
@@ -1779,6 +1913,20 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
       }
      }
     },
@@ -2209,6 +2357,40 @@
        "n_spectrum_valid": 32,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK8",
+         "MK6"
+        ],
+        "core": [
+         "MK2:8",
+         "MK5:6",
+         "MK3:2"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK3",
+         "MK6"
+        ],
+        "core": [
+         "MK5:10",
+         "MK2:8",
+         "MK8:8"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -2272,6 +2454,20 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
       }
      }
     },
@@ -2687,6 +2883,37 @@
        "n_local_valid_families": 3,
        "n_spectrum_valid": 36,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK6:10",
+         "MK8:3",
+         "MK7:6"
+        ]
+       },
+       "old": {
+        "backups": [],
+        "core": [
+         "MK6:10",
+         "MK2:7",
+         "XC1:2"
+        ]
+       }
       }
      }
     }
@@ -3185,6 +3412,40 @@
        "n_spectrum_valid": 34,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 0,
+       "new": {
+        "backups": [
+         "MK8",
+         "MK5"
+        ],
+        "core": [
+         "MK4:1",
+         "MK2:6",
+         "XC3:8"
+        ]
+       },
+       "old": {
+        "backups": [
+         "XC3",
+         "MK4"
+        ],
+        "core": [
+         "MK1:4",
+         "MK8:3",
+         "MK5:6"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -3557,6 +3818,40 @@
        "n_spectrum_valid": 31,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK1",
+         "MK4"
+        ],
+        "core": [
+         "MK2:5",
+         "XC3:9",
+         "MK5:8"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK5",
+         "MK2"
+        ],
+        "core": [
+         "XC3:9",
+         "MK4:4",
+         "MK1:4"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -3917,6 +4212,34 @@
        "n_local_valid_families": 3,
        "n_spectrum_valid": 38,
        "state": "LOCAL_ONLY"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 0,
+       "core_identical": true,
+       "core_shared": 3,
+       "new": {
+        "backups": [],
+        "core": [
+         "MK2:1",
+         "MK5:4",
+         "MK4:2"
+        ]
+       },
+       "old": {
+        "backups": [],
+        "core": [
+         "MK2:1",
+         "MK5:4",
+         "MK4:2"
+        ]
+       }
       }
      }
     },
@@ -4328,6 +4651,40 @@
        "n_local_valid_families": 7,
        "n_spectrum_valid": 35,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 0,
+       "new": {
+        "backups": [
+         "MK4",
+         "XC3"
+        ],
+        "core": [
+         "MK6:8",
+         "MK8:3",
+         "MK2:3"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK5",
+         "MK8"
+        ],
+        "core": [
+         "MK4:5",
+         "XC3:8",
+         "MK2:1"
+        ]
+       }
       }
      }
     }
@@ -4881,6 +5238,40 @@
        "n_spectrum_valid": 40,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": true,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK8",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK4:8"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8",
+         "MK5"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK4:8"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -5291,6 +5682,40 @@
        "n_spectrum_valid": 38,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK2",
+         "MK4"
+        ],
+        "core": [
+         "MK3:3",
+         "XC3:9",
+         "MK5:6"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK2",
+         "MK4"
+        ],
+        "core": [
+         "XC3:9",
+         "MK3:3",
+         "MK5:6"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -5694,6 +6119,38 @@
        "n_local_valid_families": 4,
        "n_spectrum_valid": 36,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 1,
+       "core_identical": true,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK1"
+        ],
+        "core": [
+         "MK2:6",
+         "MK5:8",
+         "MK4:7"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1"
+        ],
+        "core": [
+         "MK2:6",
+         "MK5:8",
+         "MK4:7"
+        ]
+       }
       }
      }
     },
@@ -6152,6 +6609,40 @@
        "n_local_valid_families": 7,
        "n_spectrum_valid": 37,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK6",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK3:1"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1",
+         "MK4"
+        ],
+        "core": [
+         "MK2:8",
+         "MK3:1",
+         "XC3:10"
+        ]
+       }
       }
      }
     }
@@ -6847,6 +7338,40 @@
        "n_spectrum_valid": 34,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.7580645161290323,
+      "n_new": 53,
+      "n_old": 56,
+      "n_shared": 47,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK8",
+         "MK1"
+        ],
+        "core": [
+         "MK4:1",
+         "XC3:10",
+         "MK2:6"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8",
+         "MK5"
+        ],
+        "core": [
+         "MK4:1",
+         "MK2:6",
+         "XC3:8"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -7398,6 +7923,40 @@
        "n_spectrum_valid": 37,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.71875,
+      "n_new": 55,
+      "n_old": 55,
+      "n_shared": 46,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "XC3",
+         "MK5"
+        ],
+        "core": [
+         "MK2:5",
+         "MK4:4",
+         "MK1:4"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1",
+         "MK4"
+        ],
+        "core": [
+         "MK2:5",
+         "XC3:9",
+         "MK5:8"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -7921,6 +8480,34 @@
        "n_local_valid_families": 3,
        "n_spectrum_valid": 28,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": 0.6111111111111112,
+      "n_new": 42,
+      "n_old": 45,
+      "n_shared": 33,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 3,
+       "new": {
+        "backups": [],
+        "core": [
+         "MK5:4",
+         "MK2:1",
+         "MK4:2"
+        ]
+       },
+       "old": {
+        "backups": [],
+        "core": [
+         "MK2:1",
+         "MK5:4",
+         "MK4:2"
+        ]
+       }
       }
      }
     },
@@ -8560,6 +9147,40 @@
        "n_spectrum_valid": 39,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.6551724137931034,
+      "n_new": 73,
+      "n_old": 71,
+      "n_shared": 57,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK2",
+         "XC3"
+        ],
+        "core": [
+         "MK5:6",
+         "MK4:5",
+         "MK8:3"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK4",
+         "XC3"
+        ],
+        "core": [
+         "MK6:8",
+         "MK8:3",
+         "MK2:3"
+        ]
+       }
+      }
      }
     }
    },
@@ -9014,6 +9635,27 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": {
+        "backups": [],
+        "core": [
+         "MK8:6",
+         "MK7:3",
+         "MK4:4"
+        ]
+       },
+       "old": null
       }
      }
     },
@@ -9659,6 +10301,40 @@
        "n_spectrum_valid": 38,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.691358024691358,
+      "n_new": 69,
+      "n_old": 68,
+      "n_shared": 56,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK1",
+         "MK6"
+        ],
+        "core": [
+         "MK5:10",
+         "MK2:8",
+         "MK8:8"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8",
+         "MK6"
+        ],
+        "core": [
+         "MK2:8",
+         "MK5:6",
+         "MK3:2"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -9722,6 +10398,20 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
       }
      }
     },
@@ -10345,6 +11035,40 @@
        "n_spectrum_valid": 35,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.76,
+      "n_new": 67,
+      "n_old": 65,
+      "n_shared": 57,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK8:3",
+         "MK6:10",
+         "MK2:9"
+        ]
+       },
+       "old": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK6:10",
+         "MK8:3",
+         "MK7:6"
+        ]
+       }
+      }
      }
     }
    },
@@ -10556,6 +11280,20 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
       }
      }
     },
@@ -11209,6 +11947,40 @@
        "n_spectrum_valid": 38,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.6463414634146342,
+      "n_new": 67,
+      "n_old": 68,
+      "n_shared": 53,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK8",
+         "MK6"
+        ],
+        "core": [
+         "MK2:8",
+         "MK5:11",
+         "MK7:4"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8",
+         "MK6"
+        ],
+        "core": [
+         "MK2:8",
+         "MK5:6",
+         "MK3:2"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -11272,6 +12044,20 @@
        "n_local_valid_families": null,
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
       }
      }
     },
@@ -11892,6 +12678,40 @@
        "n_local_valid_families": 5,
        "n_spectrum_valid": 35,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": 0.7222222222222222,
+      "n_new": 59,
+      "n_old": 65,
+      "n_shared": 52,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK8:4",
+         "MK7:6",
+         "MK6:10"
+        ]
+       },
+       "old": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK6:10",
+         "MK8:3",
+         "MK7:6"
+        ]
+       }
       }
      }
     }
@@ -12599,6 +13419,40 @@
        "n_spectrum_valid": 26,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.782608695652174,
+      "n_new": 62,
+      "n_old": 61,
+      "n_shared": 54,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "XC3",
+         "MK8"
+        ],
+        "core": [
+         "MK1:5",
+         "XC1:2",
+         "MK6:6"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK2",
+         "MK8"
+        ],
+        "core": [
+         "XC3:10",
+         "MK1:4",
+         "MK6:6"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -13210,6 +14064,40 @@
        "n_local_valid_families": 5,
        "n_spectrum_valid": 37,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": 0.6707317073170732,
+      "n_new": 72,
+      "n_old": 65,
+      "n_shared": 55,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK1",
+         "MK8"
+        ],
+        "core": [
+         "XC3:9",
+         "MK7:2",
+         "MK2:7"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1",
+         "MK8"
+        ],
+        "core": [
+         "MK7:2",
+         "XC3:9",
+         "MK2:7"
+        ]
+       }
       }
      }
     },
@@ -13845,6 +14733,40 @@
        "n_spectrum_valid": 33,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.5897435897435898,
+      "n_new": 62,
+      "n_old": 62,
+      "n_shared": 46,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK3",
+         "MK6"
+        ],
+        "core": [
+         "MK1:6",
+         "MK2:3",
+         "MK7:2"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK2",
+         "MK3"
+        ],
+        "core": [
+         "MK7:2",
+         "MK1:6",
+         "MK6:5"
+        ]
+       }
+      }
      }
     },
     "3": {
@@ -14405,6 +15327,40 @@
        "n_local_valid_families": 6,
        "n_spectrum_valid": 31,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": 0.6461538461538462,
+      "n_new": 54,
+      "n_old": 53,
+      "n_shared": 42,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK2",
+         "MK5"
+        ],
+        "core": [
+         "XC3:8",
+         "MK6:8",
+         "MK1:3"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1",
+         "MK5"
+        ],
+        "core": [
+         "XC3:8",
+         "MK2:5",
+         "MK7:2"
+        ]
+       }
       }
      }
     }
@@ -15213,6 +16169,40 @@
        "n_spectrum_valid": 39,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.875,
+      "n_new": 60,
+      "n_old": 60,
+      "n_shared": 56,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 2,
+       "new": {
+        "backups": [
+         "MK8",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK4:7",
+         "MK1:5"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK8",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK4:8"
+        ]
+       }
+      }
      }
     },
     "1": {
@@ -15818,6 +16808,40 @@
        "n_spectrum_valid": 41,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 1.0,
+      "n_new": 58,
+      "n_old": 58,
+      "n_shared": 58,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK4",
+         "MK2"
+        ],
+        "core": [
+         "XC3:9",
+         "MK3:3",
+         "MK5:6"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK2",
+         "MK4"
+        ],
+        "core": [
+         "MK3:3",
+         "XC3:9",
+         "MK5:6"
+        ]
+       }
+      }
      }
     },
     "2": {
@@ -16422,6 +17446,38 @@
        "n_local_valid_families": 4,
        "n_spectrum_valid": 35,
        "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": 0.967741935483871,
+      "n_new": 61,
+      "n_old": 61,
+      "n_shared": 60,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 1,
+       "core_identical": true,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK1"
+        ],
+        "core": [
+         "MK2:6",
+         "MK5:8",
+         "MK4:7"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK1"
+        ],
+        "core": [
+         "MK2:6",
+         "MK5:8",
+         "MK4:7"
+        ]
+       }
       }
      }
     },
@@ -17116,6 +18172,40 @@
        "n_spectrum_valid": 38,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": 0.9722222222222222,
+      "n_new": 71,
+      "n_old": 71,
+      "n_shared": 70,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 1,
+       "core_identical": false,
+       "core_shared": 3,
+       "new": {
+        "backups": [
+         "MK6",
+         "MK4"
+        ],
+        "core": [
+         "MK1:5",
+         "MK2:6",
+         "MK3:1"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK6",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK3:1"
+        ]
+       }
+      }
      }
     }
    },
@@ -17287,6 +18377,5071 @@
      "old": {
       "frame": 0,
       "gate2": {
+       "comparator_extra": [
+        "CR5:5",
+        "MK1:3",
+        "MK2:10",
+        "MK2:2",
+        "MK2:4",
+        "MK2:5",
+        "MK3:1",
+        "MK3:2",
+        "MK8:1",
+        "RF11:16",
+        "RF11:8",
+        "XC1:4",
+        "XC1:6",
+        "XC3:1",
+        "XC3:2"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CR5:1",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:10",
+         "MK2:3",
+         "MK2:6",
+         "MK2:7",
+         "MK2:9",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:5",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "RF6:1",
+         "RF6:2",
+         "XC1:2",
+         "XC1:3",
+         "XC1:5",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:13",
+         "XC3:7",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CR5:5",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK2:10",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "RF11:16",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:8",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC1:5",
+         "XC1:6",
+         "XC3:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:2",
+         "XC3:7",
+         "XC3:8"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK1:2",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:9",
+        "MK1:12",
+        "MK6:2",
+        "MK6:4",
+        "MK6:5",
+        "MK6:6",
+        "MK6:7",
+        "MK6:8",
+        "MK6:10",
+        "MK5:1",
+        "MK5:2",
+        "MK5:3",
+        "MK5:4",
+        "MK5:5",
+        "MK5:7",
+        "XC3:7",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "XC3:12",
+        "XC3:13",
+        "MK2:3",
+        "MK2:6",
+        "MK2:7",
+        "MK2:9",
+        "RF11:21",
+        "RF11:26",
+        "RF11:27",
+        "RF11:28",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "XC1:2",
+        "XC1:3",
+        "XC1:5",
+        "RF6:1",
+        "RF6:2",
+        "CR5:1",
+        "CR5:6",
+        "CR5:8",
+        "CR5:9",
+        "MK7:1",
+        "MK7:2",
+        "MK7:3",
+        "MK7:4",
+        "RF3:0",
+        "RF3:1",
+        "RF3:2"
+       ],
+       "iota_a": 0.6744791666666666,
+       "m_star": 12,
+       "n_star": 6,
+       "n_tabled": 61,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.967741935483871,
+        "n_final": 61,
+        "n_provisional": 61,
+        "only_final": [
+         "MK1:8"
+        ],
+        "only_provisional": [
+         "MK2:10"
+        ]
+       },
+       "se_iota_a": 0.02546467581047302,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 1,
+         "n_only_frame_set": 1,
+         "n_rungs": 61,
+         "n_shared_with_frame_set": 60,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 15,
+         "n_only_frame_set": 11,
+         "n_rungs": 65,
+         "n_shared_with_frame_set": 50,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "XC3:10",
+        "MK1:4",
+        "MK6:6"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK6",
+        "MK8",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 11,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 26,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK2",
+         "MK8"
+        ],
+        "core": [
+         "XC3:10",
+         "MK1:4",
+         "MK6:6"
+        ]
+       }
+      }
+     }
+    },
+    "1": {
+     "new": {
+      "frame": 1,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 1,
+      "gate2": {
+       "comparator_extra": [
+        "CR5:5",
+        "CR5:6",
+        "CR5:8",
+        "CR5:9",
+        "MK1:5",
+        "MK5:7",
+        "MK6:10",
+        "MK6:8",
+        "MK7:7",
+        "MK8:4",
+        "RF11:26",
+        "RF11:27",
+        "RF11:28",
+        "RF5:6",
+        "XC1:4",
+        "XC3:1",
+        "XC3:2",
+        "XC3:7"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:45",
+         "CL7:60",
+         "MK1:12",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK2:10",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:5",
+         "MK6:2",
+         "MK6:3",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:9",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK7:7",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "RF11:12",
+         "RF11:16",
+         "RF11:21",
+         "RF11:8",
+         "RF5:2",
+         "RF5:3",
+         "RF5:4",
+         "RF5:5",
+         "RF5:6",
+         "RF5:7",
+         "XC1:2",
+         "XC1:3",
+         "XC1:5",
+         "XC1:6",
+         "XC3:10",
+         "XC3:12",
+         "XC3:14",
+         "XC3:5",
+         "XC3:7",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CR5:5",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK2:10",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "RF11:16",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:8",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC1:5",
+         "XC1:6",
+         "XC3:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:2",
+         "XC3:7",
+         "XC3:8"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK2:2",
+        "MK2:3",
+        "MK2:4",
+        "MK2:5",
+        "MK2:6",
+        "MK2:7",
+        "MK2:8",
+        "MK2:10",
+        "XC3:5",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "XC3:12",
+        "XC3:14",
+        "MK1:2",
+        "MK1:3",
+        "MK1:4",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:9",
+        "MK1:12",
+        "RF5:2",
+        "RF5:3",
+        "RF5:4",
+        "RF5:5",
+        "RF5:7",
+        "MK6:2",
+        "MK6:3",
+        "MK6:4",
+        "MK6:5",
+        "MK6:6",
+        "MK6:7",
+        "MK6:9",
+        "MK7:1",
+        "MK7:2",
+        "MK7:3",
+        "MK7:4",
+        "RF11:8",
+        "RF11:12",
+        "RF11:16",
+        "RF11:21",
+        "MK8:1",
+        "MK8:2",
+        "MK8:3",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK5:1",
+        "MK5:2",
+        "MK5:3",
+        "MK5:4",
+        "MK5:5",
+        "XC1:2",
+        "XC1:3",
+        "XC1:5",
+        "XC1:6",
+        "MK3:1",
+        "MK3:2",
+        "CL7:45",
+        "CL7:60",
+        "RF3:0",
+        "RF3:1",
+        "RF3:2"
+       ],
+       "iota_a": 0.6080729166666666,
+       "m_star": 12,
+       "n_star": 7,
+       "n_tabled": 65,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.8260869565217391,
+        "n_final": 65,
+        "n_provisional": 61,
+        "only_final": [
+         "MK1:8",
+         "MK1:9",
+         "MK2:8",
+         "MK6:7",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "XC3:11"
+        ],
+        "only_provisional": [
+         "MK1:5",
+         "MK7:7",
+         "RF5:6",
+         "XC3:7"
+        ]
+       },
+       "se_iota_a": 0.025217199473791908,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 4,
+         "n_only_frame_set": 8,
+         "n_rungs": 61,
+         "n_shared_with_frame_set": 57,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 16,
+         "n_only_frame_set": 16,
+         "n_rungs": 65,
+         "n_shared_with_frame_set": 49,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK7:2",
+        "XC3:9",
+        "MK2:7"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK7",
+        "MK8",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 7,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 37,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK1",
+         "MK8"
+        ],
+        "core": [
+         "MK7:2",
+         "XC3:9",
+         "MK2:7"
+        ]
+       }
+      }
+     }
+    },
+    "2": {
+     "new": {
+      "frame": 2,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 2,
+      "gate2": {
+       "comparator_extra": [
+        "CR5:5",
+        "MK1:2",
+        "MK1:3",
+        "MK1:9",
+        "MK2:10",
+        "MK2:5",
+        "MK2:6",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK4:6",
+        "MK4:7",
+        "MK7:1",
+        "MK8:6",
+        "RF11:26",
+        "RF11:27",
+        "RF11:28",
+        "RF3:0",
+        "RF3:1",
+        "RF3:2",
+        "XC1:6",
+        "XC3:1",
+        "XC3:10",
+        "XC3:12",
+        "XC3:7"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CR5:10",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:1",
+         "MK1:12",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:7",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:6",
+         "MK4:7",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:5",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK7:5",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:6",
+         "RF11:12",
+         "RF11:16",
+         "RF11:21",
+         "RF11:8",
+         "RF6:1",
+         "RF6:2",
+         "RF6:3",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC1:5",
+         "XC1:7",
+         "XC3:10",
+         "XC3:14",
+         "XC3:2",
+         "XC3:3",
+         "XC3:5",
+         "XC3:7",
+         "XC3:8"
+        ],
+        "legacy_pooled": [
+         "CR5:5",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK2:10",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "RF11:16",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:8",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC1:5",
+         "XC1:6",
+         "XC3:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:2",
+         "XC3:7",
+         "XC3:8"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK6:2",
+        "MK6:4",
+        "MK6:5",
+        "MK6:6",
+        "MK6:7",
+        "MK6:8",
+        "MK6:10",
+        "MK1:1",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:10",
+        "MK1:12",
+        "MK2:2",
+        "MK2:3",
+        "MK2:4",
+        "MK2:7",
+        "MK2:9",
+        "MK5:1",
+        "MK5:2",
+        "MK5:3",
+        "MK5:4",
+        "MK5:5",
+        "MK5:7",
+        "RF11:8",
+        "RF11:12",
+        "RF11:16",
+        "RF11:21",
+        "MK7:2",
+        "MK7:3",
+        "MK7:4",
+        "MK7:5",
+        "XC3:2",
+        "XC3:3",
+        "XC3:5",
+        "XC3:6",
+        "XC3:8",
+        "XC3:11",
+        "XC3:14",
+        "MK8:1",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "RF6:1",
+        "RF6:2",
+        "RF6:3",
+        "XC1:2",
+        "XC1:3",
+        "XC1:4",
+        "XC1:5",
+        "XC1:7",
+        "MK3:1",
+        "MK3:2",
+        "CR5:6",
+        "CR5:8",
+        "CR5:9",
+        "CR5:10",
+        "RF2:1",
+        "RF2:2",
+        "RF2:3"
+       ],
+       "iota_a": 0.6731770833333334,
+       "m_star": 12,
+       "n_star": 3,
+       "n_tabled": 62,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.8,
+        "n_final": 62,
+        "n_provisional": 64,
+        "only_final": [
+         "MK1:10",
+         "RF2:1",
+         "RF2:2",
+         "RF2:3",
+         "XC3:11",
+         "XC3:6"
+        ],
+        "only_provisional": [
+         "MK1:9",
+         "MK4:2",
+         "MK4:3",
+         "MK4:6",
+         "MK4:7",
+         "MK8:6",
+         "XC3:10",
+         "XC3:7"
+        ]
+       },
+       "se_iota_a": 0.02547774431470697,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 8,
+         "n_only_frame_set": 6,
+         "n_rungs": 64,
+         "n_shared_with_frame_set": 56,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 21,
+         "n_only_frame_set": 18,
+         "n_rungs": 65,
+         "n_shared_with_frame_set": 44,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK7:2",
+        "MK1:6",
+        "MK6:5"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK5",
+        "MK6",
+        "MK7"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 13,
+       "n_local_valid_families": 6,
+       "n_spectrum_valid": 33,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK2",
+         "MK3"
+        ],
+        "core": [
+         "MK7:2",
+         "MK1:6",
+         "MK6:5"
+        ]
+       }
+      }
+     }
+    },
+    "3": {
+     "new": {
+      "frame": 3,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 3,
+      "gate2": {
+       "comparator_extra": [
+        "CR5:8",
+        "CR5:9",
+        "MK1:12",
+        "MK1:7",
+        "MK2:2",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK5:7",
+        "MK6:2",
+        "MK7:4",
+        "MK8:1",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "RF11:28",
+        "RF11:8",
+        "RF3:0",
+        "RF3:1",
+        "RF3:2",
+        "XC1:4",
+        "XC3:1",
+        "XC3:11",
+        "XC3:2"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CR5:3",
+         "CR5:4",
+         "CR5:5",
+         "CR5:6",
+         "MK1:11",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:8",
+         "MK2:1",
+         "MK2:10",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK6:1",
+         "MK6:10",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:5",
+         "MK7:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:8",
+         "XC1:2",
+         "XC1:3",
+         "XC1:5",
+         "XC1:6",
+         "XC1:7",
+         "XC3:10",
+         "XC3:12",
+         "XC3:13",
+         "XC3:4",
+         "XC3:5",
+         "XC3:7",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CR5:5",
+         "CR5:6",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK2:10",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK3:1",
+         "MK3:2",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:1",
+         "MK5:2",
+         "MK5:3",
+         "MK5:4",
+         "MK5:7",
+         "MK6:10",
+         "MK6:2",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK7:1",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "RF11:16",
+         "RF11:21",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:8",
+         "RF3:0",
+         "RF3:1",
+         "RF3:2",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC1:5",
+         "XC1:6",
+         "XC3:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:2",
+         "XC3:7",
+         "XC3:8"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK6:1",
+        "MK6:4",
+        "MK6:5",
+        "MK6:6",
+        "MK6:7",
+        "MK6:8",
+        "MK6:10",
+        "XC3:4",
+        "XC3:5",
+        "XC3:7",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:12",
+        "XC3:13",
+        "MK2:1",
+        "MK2:3",
+        "MK2:4",
+        "MK2:5",
+        "MK2:6",
+        "MK2:7",
+        "MK2:10",
+        "MK1:2",
+        "MK1:3",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:8",
+        "MK1:11",
+        "MK7:1",
+        "MK7:2",
+        "MK7:3",
+        "MK7:5",
+        "MK7:7",
+        "RF11:16",
+        "RF11:21",
+        "RF11:26",
+        "RF11:27",
+        "CR5:3",
+        "CR5:4",
+        "CR5:5",
+        "CR5:6",
+        "XC1:2",
+        "XC1:3",
+        "XC1:5",
+        "XC1:6",
+        "XC1:7",
+        "MK3:1",
+        "MK3:2",
+        "MK5:1",
+        "MK5:2",
+        "MK5:3",
+        "MK5:4"
+       ],
+       "iota_a": 0.7018229166666666,
+       "m_star": 13,
+       "n_star": 5,
+       "n_tabled": 53,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.9636363636363636,
+        "n_final": 53,
+        "n_provisional": 55,
+        "only_final": [],
+        "only_provisional": [
+         "RF11:28",
+         "RF11:8"
+        ]
+       },
+       "se_iota_a": 0.02392534357774674,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 2,
+         "n_only_frame_set": 0,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 53,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 7,
+         "n_only_comparator": 24,
+         "n_only_frame_set": 12,
+         "n_rungs": 65,
+         "n_shared_with_frame_set": 41,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "XC3:8",
+        "MK2:5",
+        "MK7:2"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK5",
+        "MK6",
+        "MK7",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 9,
+       "n_local_valid_families": 6,
+       "n_spectrum_valid": 31,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK1",
+         "MK5"
+        ],
+        "core": [
+         "XC3:8",
+         "MK2:5",
+         "MK7:2"
+        ]
+       }
+      }
+     }
+    }
+   },
+   "model_key": "qwen3-4b \u00b7 topic-resampled replicate (dci1v8-pilot-r14 \u2192 dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)",
+   "new": {
+    "exists": true,
+    "reached": null,
+    "root": "dci1v8-pilot-t1-qwen3-4b",
+    "terminal": null
+   },
+   "old": {
+    "comparator_eligibility": {
+     "frame_aware_screen_proxy": {
+      "eligible": true,
+      "supported": [
+       0,
+       1,
+       2,
+       3
+      ]
+     },
+     "legacy_pooled": {
+      "eligible": true,
+      "supported": [
+       0,
+       1,
+       2,
+       3
+      ]
+     }
+    },
+    "frames_meeting_all_decided_criteria": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "generations": {
+     "calibration_blocks_per_run": 768,
+     "calibration_candidates": 185088,
+     "calibration_comparator": 62976,
+     "calibration_extension": 0,
+     "calibration_grids": 55296,
+     "calibration_passes": 4,
+     "cap_selection": 216,
+     "gate0": 240,
+     "screen": 32928,
+     "screen_passes": 4,
+     "second_pass": 64896,
+     "total": 401640
+    },
+    "local_eligible": true,
+    "local_supported_frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "n_batches": 3,
+    "pilot_status": "PILOT_DECIDED_CRITERIA_MET",
+    "provisional_union": 103,
+    "reached": "PILOT_REPORT",
+    "root": "dci1v8-pilot-r14",
+    "screen_allocation": {
+     "blocks": 96,
+     "draws": 1,
+     "frame_offsets": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "passes": 4,
+     "realised": {
+      "0": 24,
+      "1": 24,
+      "2": 24,
+      "3": 24
+     },
+     "rule": "a screen pass renders every screen topic under one frame; pass p offsets the frame by frame_offsets[p]. The offsets are distinct modulo N_WORDINGS, so each frame's own table holds passes/N_WORDINGS of the topics at one draw and no topic recurs within a frame; the same construction as the calibration allocation (rules.SCREEN_FRAME_OFFSETS, 2026-09-03)",
+     "topics": 24,
+     "topics_per_frame": 24
+    },
+    "selected_cap": 512,
+    "spectrum_frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "terminal": null
+   }
+  },
+  {
+   "by_frame": {
+    "0": {
+     "new": {
+      "frame": 0,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 0,
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": null,
+       "iota_a": null,
+       "m_star": null,
+       "n_star": null,
+       "n_tabled": 0,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": null,
+       "se_iota_a": null,
+       "supported": false,
+       "unsupported_reason": "GRID_RESOLUTION_INSUFFICIENT"
+      },
+      "gate3": {
+       "core_identified": null,
+       "core_references": null,
+       "coverage_identified": null,
+       "local_supported": false,
+       "local_valid_families": null,
+       "n_backups": null,
+       "n_local_valid": null,
+       "n_local_valid_families": null,
+       "n_spectrum_valid": null,
+       "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
+      }
+     }
+    },
+    "1": {
+     "new": {
+      "frame": 1,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 1,
+      "gate2": {
+       "comparator_extra": [
+        "CL8:6",
+        "CL8:7",
+        "CR3:2",
+        "MK1:1",
+        "MK2:6",
+        "MK3:5",
+        "MK4:7",
+        "MK4:8",
+        "MK5:12",
+        "MK5:4",
+        "MK5:5",
+        "MK5:8",
+        "MK6:11",
+        "MK6:5",
+        "MK7:10",
+        "MK7:8",
+        "MK8:1",
+        "RF11:12",
+        "RF11:17",
+        "RF11:18",
+        "RF11:27",
+        "XC1:1",
+        "XC1:5",
+        "XC1:6"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:40",
+         "CL7:45",
+         "CL7:50",
+         "CL7:55",
+         "CL7:60",
+         "CL7:65",
+         "CL8:10",
+         "CL8:11",
+         "CL8:6",
+         "CL8:7",
+         "MK1:11",
+         "MK1:12",
+         "MK1:2",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:10",
+         "MK2:11",
+         "MK2:12",
+         "MK2:4",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK4:1",
+         "MK4:2",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK5:10",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK6:10",
+         "MK6:12",
+         "MK6:4",
+         "MK6:5",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK6:9",
+         "MK7:2",
+         "MK7:3",
+         "MK7:4",
+         "MK7:5",
+         "MK7:6",
+         "MK7:7",
+         "MK7:9",
+         "MK8:10",
+         "MK8:3",
+         "MK8:6",
+         "MK8:7",
+         "MK8:8",
+         "MK8:9",
+         "RF11:16",
+         "RF11:19",
+         "RF11:20",
+         "RF11:21",
+         "RF11:22",
+         "RF11:23",
+         "RF11:27",
+         "RF3:0",
+         "XC1:2"
+        ],
+        "legacy_pooled": [
+         "CL7:40",
+         "CL7:45",
+         "CL7:50",
+         "CL7:55",
+         "CL8:10",
+         "CL8:11",
+         "CL8:12",
+         "CL8:7",
+         "CR3:2",
+         "MK1:1",
+         "MK1:10",
+         "MK1:11",
+         "MK1:12",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:10",
+         "MK2:11",
+         "MK2:12",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:5",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:5",
+         "MK5:6",
+         "MK5:8",
+         "MK6:10",
+         "MK6:11",
+         "MK6:8",
+         "MK6:9",
+         "MK7:10",
+         "MK7:2",
+         "MK7:4",
+         "MK7:5",
+         "MK7:6",
+         "MK7:7",
+         "MK7:8",
+         "MK8:1",
+         "MK8:10",
+         "MK8:6",
+         "MK8:7",
+         "MK8:8",
+         "MK8:9",
+         "RF11:12",
+         "RF11:16",
+         "RF11:17",
+         "RF11:18",
+         "RF11:19",
+         "RF11:22",
+         "RF11:27",
+         "XC1:1",
+         "XC1:2",
+         "XC1:5",
+         "XC1:6"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK6:4",
+        "MK6:6",
+        "MK6:7",
+        "MK6:8",
+        "MK6:9",
+        "MK6:10",
+        "MK6:12",
+        "MK7:2",
+        "MK7:3",
+        "MK7:4",
+        "MK7:5",
+        "MK7:6",
+        "MK7:7",
+        "MK7:9",
+        "MK1:2",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:9",
+        "MK1:10",
+        "MK1:11",
+        "MK1:12",
+        "MK2:4",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:10",
+        "MK2:11",
+        "MK2:12",
+        "MK4:1",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "CL7:40",
+        "CL7:45",
+        "CL7:50",
+        "CL7:55",
+        "CL7:60",
+        "CL7:65",
+        "RF11:16",
+        "RF11:19",
+        "RF11:20",
+        "RF11:21",
+        "RF11:22",
+        "RF11:23",
+        "RF11:26",
+        "MK8:3",
+        "MK8:6",
+        "MK8:7",
+        "MK8:8",
+        "MK8:9",
+        "MK8:10",
+        "MK5:6",
+        "MK5:7",
+        "MK5:9",
+        "MK5:10",
+        "CL8:10",
+        "CL8:11",
+        "CL8:12",
+        "CL8:13",
+        "MK3:1",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "XC1:2",
+        "RF3:0"
+       ],
+       "iota_a": 0.65234375,
+       "m_star": 10,
+       "n_star": 6,
+       "n_tabled": 68,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.8513513513513513,
+        "n_final": 68,
+        "n_provisional": 69,
+        "only_final": [
+         "CL8:12",
+         "CL8:13",
+         "MK1:10",
+         "MK5:9",
+         "RF11:26"
+        ],
+        "only_provisional": [
+         "CL8:6",
+         "CL8:7",
+         "MK2:6",
+         "MK5:8",
+         "MK6:5",
+         "RF11:27"
+        ]
+       },
+       "se_iota_a": 0.023269307245801243,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 6,
+         "n_only_frame_set": 5,
+         "n_rungs": 69,
+         "n_shared_with_frame_set": 63,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 21,
+         "n_only_frame_set": 23,
+         "n_rungs": 66,
+         "n_shared_with_frame_set": 45,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:8",
+        "MK5:6",
+        "MK3:2"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK5",
+        "MK6",
+        "MK8"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 15,
+       "n_local_valid_families": 6,
+       "n_spectrum_valid": 38,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK8",
+         "MK6"
+        ],
+        "core": [
+         "MK2:8",
+         "MK5:6",
+         "MK3:2"
+        ]
+       }
+      }
+     }
+    },
+    "2": {
+     "new": {
+      "frame": 2,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 2,
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": null,
+       "iota_a": null,
+       "m_star": null,
+       "n_star": null,
+       "n_tabled": 0,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": null,
+       "se_iota_a": null,
+       "supported": false,
+       "unsupported_reason": "GRID_RESOLUTION_INSUFFICIENT"
+      },
+      "gate3": {
+       "core_identified": null,
+       "core_references": null,
+       "coverage_identified": null,
+       "local_supported": false,
+       "local_valid_families": null,
+       "n_backups": null,
+       "n_local_valid": null,
+       "n_local_valid_families": null,
+       "n_spectrum_valid": null,
+       "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
+      }
+     }
+    },
+    "3": {
+     "new": {
+      "frame": 3,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 3,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:40",
+        "CL7:45",
+        "CL7:50",
+        "CL7:55",
+        "CL8:10",
+        "CL8:11",
+        "CL8:12",
+        "CL8:7",
+        "CR3:2",
+        "MK1:1",
+        "MK1:9",
+        "MK3:1",
+        "MK4:7",
+        "MK5:10",
+        "MK5:12",
+        "MK5:4",
+        "MK5:7",
+        "MK8:8",
+        "MK8:9",
+        "RF11:17",
+        "RF11:22",
+        "RF11:27",
+        "XC1:5"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CR7:40",
+         "CR7:42",
+         "CR7:44",
+         "CR7:46",
+         "MK1:10",
+         "MK1:11",
+         "MK1:12",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:10",
+         "MK2:11",
+         "MK2:12",
+         "MK2:9",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:5",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:8",
+         "MK5:2",
+         "MK5:3",
+         "MK5:5",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK6:10",
+         "MK6:11",
+         "MK6:4",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK6:9",
+         "MK7:10",
+         "MK7:2",
+         "MK7:4",
+         "MK7:5",
+         "MK7:6",
+         "MK7:7",
+         "MK7:8",
+         "MK8:1",
+         "MK8:10",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:6",
+         "MK8:7",
+         "MK8:8",
+         "RF11:18",
+         "RF11:19",
+         "RF11:20",
+         "RF11:21",
+         "RF3:0",
+         "RF3:1",
+         "XC1:1",
+         "XC1:2",
+         "XC1:4",
+         "XC1:5",
+         "XC1:6"
+        ],
+        "legacy_pooled": [
+         "CL7:40",
+         "CL7:45",
+         "CL7:50",
+         "CL7:55",
+         "CL8:10",
+         "CL8:11",
+         "CL8:12",
+         "CL8:7",
+         "CR3:2",
+         "MK1:1",
+         "MK1:10",
+         "MK1:11",
+         "MK1:12",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:10",
+         "MK2:11",
+         "MK2:12",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:5",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:5",
+         "MK5:6",
+         "MK5:8",
+         "MK6:10",
+         "MK6:11",
+         "MK6:8",
+         "MK6:9",
+         "MK7:10",
+         "MK7:2",
+         "MK7:4",
+         "MK7:5",
+         "MK7:6",
+         "MK7:7",
+         "MK7:8",
+         "MK8:1",
+         "MK8:10",
+         "MK8:6",
+         "MK8:7",
+         "MK8:8",
+         "MK8:9",
+         "RF11:12",
+         "RF11:16",
+         "RF11:17",
+         "RF11:18",
+         "RF11:19",
+         "RF11:22",
+         "RF11:27",
+         "XC1:1",
+         "XC1:2",
+         "XC1:5",
+         "XC1:6"
+        ]
+       },
+       "extension_measured": [
+        "MK3:1"
+       ],
+       "forwarded": [
+        "MK7:2",
+        "MK7:4",
+        "MK7:5",
+        "MK7:6",
+        "MK7:7",
+        "MK7:8",
+        "MK7:10",
+        "MK8:1",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK8:6",
+        "MK8:7",
+        "MK8:10",
+        "MK4:3",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "MK4:8",
+        "MK5:2",
+        "MK5:3",
+        "MK5:5",
+        "MK5:6",
+        "MK5:8",
+        "MK5:9",
+        "RF11:12",
+        "RF11:16",
+        "RF11:18",
+        "RF11:19",
+        "RF11:20",
+        "RF11:21",
+        "RF11:23",
+        "RF11:26",
+        "MK6:4",
+        "MK6:6",
+        "MK6:7",
+        "MK6:8",
+        "MK6:9",
+        "MK6:10",
+        "MK6:11",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "MK3:5",
+        "XC1:1",
+        "XC1:2",
+        "XC1:4",
+        "XC1:6",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:10",
+        "MK1:11",
+        "MK1:12",
+        "MK2:9",
+        "MK2:10",
+        "MK2:11",
+        "MK2:12",
+        "CR7:40",
+        "CR7:42",
+        "CR7:44",
+        "CR7:46",
+        "RF3:0",
+        "RF3:1"
+       ],
+       "iota_a": 0.6731770833333334,
+       "m_star": 12,
+       "n_star": 6,
+       "n_tabled": 66,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.8840579710144928,
+        "n_final": 65,
+        "n_provisional": 65,
+        "only_final": [
+         "RF11:12",
+         "RF11:16",
+         "RF11:23",
+         "RF11:26"
+        ],
+        "only_provisional": [
+         "MK1:9",
+         "MK5:7",
+         "MK8:8",
+         "XC1:5"
+        ]
+       },
+       "se_iota_a": 0.023311992768723224,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 4,
+         "n_only_frame_set": 4,
+         "n_rungs": 65,
+         "n_shared_with_frame_set": 61,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 1,
+         "n_local_valid_families": 4,
+         "n_only_comparator": 22,
+         "n_only_frame_set": 21,
+         "n_rungs": 67,
+         "n_shared_with_frame_set": 44,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK6:10",
+        "MK8:3",
+        "MK7:6"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK6",
+        "MK7",
+        "MK8",
+        "XC1"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 6,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 35,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "XC1",
+         "MK1"
+        ],
+        "core": [
+         "MK6:10",
+         "MK8:3",
+         "MK7:6"
+        ]
+       }
+      }
+     }
+    }
+   },
+   "model_key": "qwen3-4b-instruct-2507 \u00b7 topic-resampled replicate (dci1v8-pilot-r15 \u2192 dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)",
+   "new": {
+    "exists": true,
+    "reached": null,
+    "root": "dci1v8-pilot-t1-qwen3-4b-instruct-2507",
+    "terminal": null
+   },
+   "old": {
+    "comparator_eligibility": {
+     "frame_aware_screen_proxy": {
+      "eligible": true,
+      "supported": [
+       1,
+       3
+      ]
+     },
+     "legacy_pooled": {
+      "eligible": false,
+      "supported": [
+       1
+      ]
+     }
+    },
+    "frames_meeting_all_decided_criteria": [
+     1,
+     3
+    ],
+    "generations": {
+     "calibration_blocks_per_run": 768,
+     "calibration_candidates": 102144,
+     "calibration_comparator": 36096,
+     "calibration_extension": 768,
+     "calibration_grids": 55296,
+     "calibration_passes": 4,
+     "cap_selection": 216,
+     "gate0": 240,
+     "screen": 32928,
+     "screen_passes": 4,
+     "second_pass": 62496,
+     "total": 290184
+    },
+    "local_eligible": true,
+    "local_supported_frames": [
+     1,
+     3
+    ],
+    "n_batches": 3,
+    "pilot_status": "PILOT_DECIDED_CRITERIA_MET",
+    "provisional_union": 118,
+    "reached": "PILOT_REPORT",
+    "root": "dci1v8-pilot-r15",
+    "screen_allocation": {
+     "blocks": 96,
+     "draws": 1,
+     "frame_offsets": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "passes": 4,
+     "realised": {
+      "0": 24,
+      "1": 24,
+      "2": 24,
+      "3": 24
+     },
+     "rule": "a screen pass renders every screen topic under one frame; pass p offsets the frame by frame_offsets[p]. The offsets are distinct modulo N_WORDINGS, so each frame's own table holds passes/N_WORDINGS of the topics at one draw and no topic recurs within a frame; the same construction as the calibration allocation (rules.SCREEN_FRAME_OFFSETS, 2026-09-03)",
+     "topics": 24,
+     "topics_per_frame": 24
+    },
+    "selected_cap": 512,
+    "spectrum_frames": [
+     1,
+     3
+    ],
+    "terminal": null
+   }
+  },
+  {
+   "by_frame": {
+    "0": {
+     "new": {
+      "frame": 0,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 0,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:65",
+        "CL8:25",
+        "CL8:26",
+        "CL8:27",
+        "CL8:28",
+        "CR5:1",
+        "CR5:2",
+        "MK1:1",
+        "MK1:3",
+        "MK2:2",
+        "MK4:12",
+        "MK4:3",
+        "MK4:4",
+        "MK4:6",
+        "MK5:12",
+        "MK5:4",
+        "MK5:6",
+        "MK5:7",
+        "MK8:2",
+        "RF11:20",
+        "RF11:24",
+        "RF11:26",
+        "RF11:27",
+        "RF11:28",
+        "RF11:32",
+        "RF11:34",
+        "XC3:11",
+        "XC3:5"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CR5:3",
+         "CR5:4",
+         "MK1:10",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK2:1",
+         "MK2:12",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:9",
+         "MK4:1",
+         "MK4:10",
+         "MK4:11",
+         "MK4:5",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:11",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:6",
+         "MK8:7",
+         "MK8:8",
+         "RF10:16",
+         "RF10:17",
+         "RF10:18",
+         "RF10:19",
+         "RF11:35",
+         "RF6:1",
+         "RF6:2",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:12",
+         "XC3:5",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:90",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "CR5:1",
+         "CR5:2",
+         "CR5:3",
+         "CR5:4",
+         "MK1:1",
+         "MK1:10",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK4:1",
+         "MK4:12",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:8",
+         "RF11:20",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:32",
+         "RF11:34",
+         "XC1:1",
+         "XC3:10",
+         "XC3:12",
+         "XC3:8",
+         "XC3:9"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK1:2",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:10",
+        "MK2:1",
+        "MK2:3",
+        "MK2:4",
+        "MK2:5",
+        "MK2:6",
+        "MK2:7",
+        "MK2:9",
+        "MK2:12",
+        "MK4:1",
+        "MK4:5",
+        "MK4:7",
+        "MK4:8",
+        "MK4:9",
+        "MK4:10",
+        "MK4:11",
+        "MK8:1",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK8:6",
+        "MK8:7",
+        "MK8:8",
+        "MK5:8",
+        "MK5:9",
+        "MK5:10",
+        "MK5:11",
+        "CL7:60",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:12",
+        "RF10:16",
+        "RF10:17",
+        "RF10:18",
+        "RF10:19",
+        "CR5:3",
+        "CR5:4",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "RF9:14",
+        "RF6:1",
+        "RF6:2",
+        "RF11:35",
+        "XC1:1"
+       ],
+       "iota_a": 0.6419270833333334,
+       "m_star": 8,
+       "n_star": 8,
+       "n_tabled": 56,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.9491525423728814,
+        "n_final": 56,
+        "n_provisional": 59,
+        "only_final": [],
+        "only_provisional": [
+         "CL7:65",
+         "XC3:11",
+         "XC3:5"
+        ]
+       },
+       "se_iota_a": 0.01887862150685508,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 3,
+         "n_only_frame_set": 0,
+         "n_rungs": 59,
+         "n_shared_with_frame_set": 56,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 26,
+         "n_only_frame_set": 27,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 29,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK4:1",
+        "MK2:6",
+        "XC3:8"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK2",
+        "MK4",
+        "MK5",
+        "MK8",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 11,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 34,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK8",
+         "MK5"
+        ],
+        "core": [
+         "MK4:1",
+         "MK2:6",
+         "XC3:8"
+        ]
+       }
+      }
+     }
+    },
+    "1": {
+     "new": {
+      "frame": 1,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 1,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:60",
+        "CL7:65",
+        "CL8:25",
+        "CL8:26",
+        "CL8:27",
+        "CL8:28",
+        "CR5:1",
+        "CR5:2",
+        "CR5:3",
+        "CR5:4",
+        "CR6:3",
+        "MK1:1",
+        "MK1:10",
+        "MK4:1",
+        "MK4:12",
+        "MK4:3",
+        "MK4:9",
+        "MK5:7",
+        "MK8:1",
+        "MK8:8",
+        "RF11:32",
+        "XC3:12"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:100",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CR6:3",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:9",
+         "MK2:1",
+         "MK2:10",
+         "MK2:11",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK3:1",
+         "MK3:3",
+         "MK3:6",
+         "MK3:7",
+         "MK4:11",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK5:10",
+         "MK5:11",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:8",
+         "MK5:9",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:6",
+         "MK8:7",
+         "RF11:20",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:33",
+         "RF11:34",
+         "XC1:1",
+         "XC3:10",
+         "XC3:11",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:90",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "CR5:1",
+         "CR5:2",
+         "CR5:3",
+         "CR5:4",
+         "MK1:1",
+         "MK1:10",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK4:1",
+         "MK4:12",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:8",
+         "RF11:20",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:32",
+         "RF11:34",
+         "XC1:1",
+         "XC3:10",
+         "XC3:12",
+         "XC3:8",
+         "XC3:9"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK4:2",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "MK4:7",
+        "MK4:8",
+        "MK4:11",
+        "MK5:4",
+        "MK5:6",
+        "MK5:8",
+        "MK5:9",
+        "MK5:10",
+        "MK5:11",
+        "MK5:12",
+        "MK1:2",
+        "MK1:3",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:9",
+        "MK2:1",
+        "MK2:2",
+        "MK2:3",
+        "MK2:4",
+        "MK2:5",
+        "MK2:10",
+        "MK2:11",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK8:6",
+        "MK8:7",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "CL7:100",
+        "RF11:20",
+        "RF11:24",
+        "RF11:26",
+        "RF11:27",
+        "RF11:28",
+        "RF11:33",
+        "RF11:34",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "MK3:1",
+        "MK3:3",
+        "MK3:6",
+        "MK3:7",
+        "RF12:6",
+        "XC1:1"
+       ],
+       "iota_a": 0.6354166666666666,
+       "m_star": 10,
+       "n_star": 3,
+       "n_tabled": 55,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.9642857142857143,
+        "n_final": 55,
+        "n_provisional": 55,
+        "only_final": [
+         "RF12:6"
+        ],
+        "only_provisional": [
+         "CR6:3"
+        ]
+       },
+       "se_iota_a": 0.020125971263855926,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 1,
+         "n_only_frame_set": 1,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 54,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 21,
+         "n_only_frame_set": 21,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 34,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:5",
+        "XC3:9",
+        "MK5:8"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK5",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 12,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 37,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK1",
+         "MK4"
+        ],
+        "core": [
+         "MK2:5",
+         "XC3:9",
+         "MK5:8"
+        ]
+       }
+      }
+     }
+    },
+    "2": {
+     "new": {
+      "frame": 2,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 2,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:90",
+        "CR5:1",
+        "CR5:2",
+        "CR5:3",
+        "CR5:4",
+        "MK1:10",
+        "MK1:5",
+        "MK1:6",
+        "MK2:5",
+        "MK4:12",
+        "MK4:5",
+        "MK4:6",
+        "MK4:7",
+        "MK4:8",
+        "MK4:9",
+        "MK5:10",
+        "MK5:12",
+        "MK5:8",
+        "MK5:9",
+        "MK8:4",
+        "MK8:8",
+        "RF11:20",
+        "RF11:28",
+        "RF11:32",
+        "RF11:34",
+        "XC3:8"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK2:1",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK4:1",
+         "MK4:2",
+         "MK4:7",
+         "MK4:8",
+         "MK5:4",
+         "MK5:5",
+         "MK5:6",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:5",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:11"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:90",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "CR5:1",
+         "CR5:2",
+         "CR5:3",
+         "CR5:4",
+         "MK1:1",
+         "MK1:10",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK4:1",
+         "MK4:12",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:8",
+         "RF11:20",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:32",
+         "RF11:34",
+         "XC1:1",
+         "XC3:10",
+         "XC3:12",
+         "XC3:8",
+         "XC3:9"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "CL7:60",
+        "CL7:65",
+        "CL7:70",
+        "CL7:80",
+        "MK1:1",
+        "MK1:2",
+        "MK1:3",
+        "MK1:4",
+        "RF11:24",
+        "RF11:25",
+        "RF11:26",
+        "RF11:27",
+        "MK5:4",
+        "MK5:5",
+        "MK5:6",
+        "MK5:7",
+        "CL8:25",
+        "CL8:26",
+        "CL8:27",
+        "CL8:28",
+        "MK2:1",
+        "MK2:2",
+        "MK2:3",
+        "MK2:4",
+        "MK4:1",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK8:1",
+        "MK8:2",
+        "MK8:3",
+        "MK8:5",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "RF9:14",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "XC3:12",
+        "RF8:4",
+        "RF8:5",
+        "RF8:6",
+        "RF8:7",
+        "XC1:1"
+       ],
+       "iota_a": 0.7966101694915254,
+       "m_star": 10,
+       "n_star": 2,
+       "n_tabled": 45,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.6274509803921569,
+        "n_final": 45,
+        "n_provisional": 38,
+        "only_final": [
+         "MK1:1",
+         "MK2:2",
+         "MK4:3",
+         "MK4:4",
+         "MK5:7",
+         "RF11:25",
+         "RF8:4",
+         "RF8:5",
+         "RF8:6",
+         "RF8:7",
+         "XC3:10",
+         "XC3:12",
+         "XC3:9"
+        ],
+        "only_provisional": [
+         "MK1:5",
+         "MK2:5",
+         "MK4:7",
+         "MK4:8",
+         "MK5:9",
+         "RF11:28"
+        ]
+       },
+       "se_iota_a": 0.01996408420557097,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 0,
+         "n_local_valid_families": 3,
+         "n_only_comparator": 6,
+         "n_only_frame_set": 13,
+         "n_rungs": 38,
+         "n_shared_with_frame_set": 32,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 0,
+         "n_local_valid_families": 2,
+         "n_only_comparator": 24,
+         "n_only_frame_set": 14,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 31,
+         "state": "SPECTRUM_ONLY"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:1",
+        "MK5:4",
+        "MK4:2"
+       ],
+       "coverage_identified": true,
+       "local_supported": false,
+       "local_valid_families": [
+        "MK2",
+        "MK4",
+        "MK5"
+       ],
+       "n_backups": 0,
+       "n_local_valid": 4,
+       "n_local_valid_families": 3,
+       "n_spectrum_valid": 28,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [],
+        "core": [
+         "MK2:1",
+         "MK5:4",
+         "MK4:2"
+        ]
+       }
+      }
+     }
+    },
+    "3": {
+     "new": {
+      "frame": 3,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 3,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:60",
+        "CL7:65",
+        "CL7:70",
+        "CL7:80",
+        "CL7:90",
+        "CR5:1",
+        "CR5:2",
+        "CR5:3",
+        "CR5:4",
+        "MK1:10",
+        "MK1:3",
+        "MK1:6",
+        "MK2:5",
+        "MK4:1",
+        "MK4:12",
+        "MK4:4",
+        "MK4:6",
+        "MK4:9",
+        "MK5:10",
+        "MK5:9",
+        "MK8:1",
+        "RF11:27",
+        "RF11:32",
+        "RF11:34"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL8:14",
+         "CL8:19",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "CR6:3",
+         "CR6:4",
+         "CR6:5",
+         "CR6:6",
+         "CR7:28",
+         "CR7:32",
+         "CR7:36",
+         "CR7:40",
+         "CR7:44",
+         "MK1:1",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:8",
+         "MK1:9",
+         "MK2:1",
+         "MK2:11",
+         "MK2:2",
+         "MK2:3",
+         "MK2:5",
+         "MK2:8",
+         "MK2:9",
+         "MK4:2",
+         "MK4:3",
+         "MK4:5",
+         "MK4:8",
+         "MK5:1",
+         "MK5:12",
+         "MK5:4",
+         "MK5:5",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK6:12",
+         "MK6:2",
+         "MK6:3",
+         "MK6:4",
+         "MK6:5",
+         "MK6:8",
+         "MK6:9",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:8",
+         "RF11:20",
+         "RF11:21",
+         "RF11:24",
+         "RF11:25",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:33",
+         "RF7:21",
+         "RF7:22",
+         "RF7:23",
+         "RF7:24",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:10",
+         "XC3:12",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:90",
+         "CL8:25",
+         "CL8:26",
+         "CL8:27",
+         "CL8:28",
+         "CR5:1",
+         "CR5:2",
+         "CR5:3",
+         "CR5:4",
+         "MK1:1",
+         "MK1:10",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK2:2",
+         "MK2:3",
+         "MK2:4",
+         "MK2:5",
+         "MK4:1",
+         "MK4:12",
+         "MK4:3",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:8",
+         "RF11:20",
+         "RF11:24",
+         "RF11:26",
+         "RF11:27",
+         "RF11:28",
+         "RF11:32",
+         "RF11:34",
+         "XC1:1",
+         "XC3:10",
+         "XC3:12",
+         "XC3:8",
+         "XC3:9"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK5:1",
+        "MK5:4",
+        "MK5:5",
+        "MK5:6",
+        "MK5:7",
+        "MK5:8",
+        "MK5:12",
+        "RF11:20",
+        "RF11:21",
+        "RF11:24",
+        "RF11:25",
+        "RF11:26",
+        "RF11:28",
+        "RF11:33",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK8:8",
+        "MK2:1",
+        "MK2:2",
+        "MK2:3",
+        "MK2:4",
+        "MK2:8",
+        "MK2:9",
+        "MK2:11",
+        "MK6:2",
+        "MK6:3",
+        "MK6:4",
+        "MK6:5",
+        "MK6:8",
+        "MK6:9",
+        "MK6:12",
+        "CL8:14",
+        "CL8:19",
+        "CL8:25",
+        "CL8:26",
+        "CL8:27",
+        "CL8:28",
+        "CR7:28",
+        "CR7:32",
+        "CR7:36",
+        "CR7:40",
+        "CR7:44",
+        "MK1:1",
+        "MK1:2",
+        "MK1:4",
+        "MK1:5",
+        "MK1:8",
+        "MK1:9",
+        "MK4:2",
+        "MK4:3",
+        "MK4:5",
+        "MK4:8",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "RF9:14",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:12",
+        "RF7:21",
+        "RF7:22",
+        "RF7:23",
+        "RF7:24",
+        "CR6:3",
+        "CR6:4",
+        "CR6:5",
+        "CR6:6",
+        "XC1:1"
+       ],
+       "iota_a": 0.6861979166666666,
+       "m_star": 11,
+       "n_star": 7,
+       "n_tabled": 71,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.958904109589041,
+        "n_final": 71,
+        "n_provisional": 72,
+        "only_final": [
+         "MK2:4"
+        ],
+        "only_provisional": [
+         "MK2:5",
+         "RF11:27"
+        ]
+       },
+       "se_iota_a": 0.019472989750426304,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 7,
+         "n_only_comparator": 2,
+         "n_only_frame_set": 1,
+         "n_rungs": 72,
+         "n_shared_with_frame_set": 70,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 24,
+         "n_only_frame_set": 40,
+         "n_rungs": 55,
+         "n_shared_with_frame_set": 31,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK6:8",
+        "MK8:3",
+        "MK2:3"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK8",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 14,
+       "n_local_valid_families": 7,
+       "n_spectrum_valid": 39,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK4",
+         "XC3"
+        ],
+        "core": [
+         "MK6:8",
+         "MK8:3",
+         "MK2:3"
+        ]
+       }
+      }
+     }
+    }
+   },
+   "model_key": "gemma-3n-e2b-it \u00b7 topic-resampled replicate (dci1v8-pilot-r16 \u2192 dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)",
+   "new": {
+    "exists": true,
+    "reached": null,
+    "root": "dci1v8-pilot-t1-gemma-3n-e2b-it",
+    "terminal": null
+   },
+   "old": {
+    "comparator_eligibility": {
+     "frame_aware_screen_proxy": {
+      "eligible": true,
+      "supported": [
+       0,
+       1,
+       3
+      ]
+     },
+     "legacy_pooled": {
+      "eligible": true,
+      "supported": [
+       0,
+       1,
+       3
+      ]
+     }
+    },
+    "frames_meeting_all_decided_criteria": [
+     0,
+     1,
+     3
+    ],
+    "generations": {
+     "calibration_blocks_per_run": 768,
+     "calibration_candidates": 174336,
+     "calibration_comparator": 76800,
+     "calibration_extension": 0,
+     "calibration_grids": 55296,
+     "calibration_passes": 4,
+     "cap_selection": 216,
+     "gate0": 240,
+     "screen": 32928,
+     "screen_passes": 4,
+     "second_pass": 64032,
+     "total": 403848
+    },
+    "local_eligible": true,
+    "local_supported_frames": [
+     0,
+     1,
+     3
+    ],
+    "n_batches": 3,
+    "pilot_status": "PILOT_DECIDED_CRITERIA_MET",
+    "provisional_union": 117,
+    "reached": "PILOT_REPORT",
+    "root": "dci1v8-pilot-r16",
+    "screen_allocation": {
+     "blocks": 96,
+     "draws": 1,
+     "frame_offsets": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "passes": 4,
+     "realised": {
+      "0": 24,
+      "1": 24,
+      "2": 24,
+      "3": 24
+     },
+     "rule": "a screen pass renders every screen topic under one frame; pass p offsets the frame by frame_offsets[p]. The offsets are distinct modulo N_WORDINGS, so each frame's own table holds passes/N_WORDINGS of the topics at one draw and no topic recurs within a frame; the same construction as the calibration allocation (rules.SCREEN_FRAME_OFFSETS, 2026-09-03)",
+     "topics": 24,
+     "topics_per_frame": 24
+    },
+    "selected_cap": 512,
+    "spectrum_frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "terminal": null
+   }
+  },
+  {
+   "by_frame": {
+    "0": {
+     "new": {
+      "frame": 0,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 0,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:60",
+        "CL7:65",
+        "CR5:9",
+        "MK1:8",
+        "MK2:4",
+        "MK3:4",
+        "MK3:8",
+        "MK4:2",
+        "MK4:4",
+        "MK4:5",
+        "MK5:10",
+        "MK5:7",
+        "MK5:9",
+        "MK8:10",
+        "MK8:2",
+        "MK8:6",
+        "MK8:7",
+        "RF11:16",
+        "RF11:21",
+        "RF11:23",
+        "RF11:26",
+        "RF11:32",
+        "RF11:33",
+        "RF11:34",
+        "RF11:35",
+        "RF6:1",
+        "RF6:2",
+        "RF9:11"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:100",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:4",
+         "CR5:5",
+         "CR5:6",
+         "CR5:7",
+         "CR5:8",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:12",
+         "MK2:2",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:7",
+         "MK4:12",
+         "MK4:3",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:5",
+         "MK5:6",
+         "MK5:8",
+         "MK8:1",
+         "MK8:10",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:6",
+         "RF11:32",
+         "RF11:33",
+         "RF11:34",
+         "RF11:35",
+         "RF8:5",
+         "RF8:6",
+         "RF8:7",
+         "RF8:8",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "RF9:15",
+         "XC1:1",
+         "XC1:2",
+         "XC1:3",
+         "XC1:4",
+         "XC3:1",
+         "XC3:11",
+         "XC3:3",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:6",
+         "CR5:7",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:12",
+         "MK2:2",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:8",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:23",
+         "RF11:26",
+         "RF11:32",
+         "RF11:33",
+         "RF11:35",
+         "RF6:1",
+         "RF6:2",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:11"
+        ]
+       },
+       "extension_measured": [
+        "MK1:1"
+       ],
+       "forwarded": [
+        "MK1:2",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:9",
+        "MK1:12",
+        "MK2:2",
+        "MK2:5",
+        "MK2:6",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:12",
+        "MK4:3",
+        "MK4:6",
+        "MK4:7",
+        "MK4:8",
+        "MK4:9",
+        "MK4:12",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "CL7:95",
+        "CL7:100",
+        "MK5:4",
+        "MK5:5",
+        "MK5:6",
+        "MK5:8",
+        "MK5:12",
+        "MK8:1",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "CR5:4",
+        "CR5:5",
+        "CR5:6",
+        "CR5:7",
+        "CR5:8",
+        "MK3:1",
+        "MK3:2",
+        "MK3:3",
+        "MK3:7",
+        "XC3:1",
+        "XC3:3",
+        "XC3:9",
+        "XC3:11",
+        "XC1:1",
+        "XC1:2",
+        "XC1:3",
+        "XC1:4",
+        "RF9:12",
+        "RF9:13",
+        "RF9:14",
+        "RF9:15",
+        "RF8:5",
+        "RF8:6",
+        "RF8:7",
+        "RF8:8"
+       ],
+       "iota_a": 0.7447916666666666,
+       "m_star": 9,
+       "n_star": 6,
+       "n_tabled": 61,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.8571428571428571,
+        "n_final": 60,
+        "n_provisional": 70,
+        "only_final": [],
+        "only_provisional": [
+         "MK1:8",
+         "MK3:4",
+         "MK5:10",
+         "MK8:10",
+         "MK8:2",
+         "MK8:6",
+         "RF11:32",
+         "RF11:33",
+         "RF11:34",
+         "RF11:35"
+        ]
+       },
+       "se_iota_a": 0.017895974850976493,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 7,
+         "n_only_comparator": 10,
+         "n_only_frame_set": 0,
+         "n_rungs": 70,
+         "n_shared_with_frame_set": 60,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 1,
+         "n_local_valid_families": 4,
+         "n_only_comparator": 24,
+         "n_only_frame_set": 17,
+         "n_rungs": 67,
+         "n_shared_with_frame_set": 43,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:6",
+        "MK1:5",
+        "MK4:8"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK5",
+        "MK8",
+        "XC1",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 9,
+       "n_local_valid_families": 7,
+       "n_spectrum_valid": 39,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK8",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK4:8"
+        ]
+       }
+      }
+     }
+    },
+    "1": {
+     "new": {
+      "frame": 1,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 1,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:60",
+        "CL7:65",
+        "CR5:8",
+        "CR5:9",
+        "MK1:12",
+        "MK1:7",
+        "MK1:9",
+        "MK2:8",
+        "MK3:1",
+        "MK3:8",
+        "MK4:8",
+        "MK8:1",
+        "RF11:16",
+        "RF11:35",
+        "RF12:3",
+        "RF12:4",
+        "RF12:5",
+        "RF12:6",
+        "RF6:1",
+        "RF6:2",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "RF9:14",
+        "XC1:1"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:100",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:3",
+         "CR5:4",
+         "CR5:5",
+         "CR5:6",
+         "CR5:7",
+         "MK1:11",
+         "MK1:2",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:8",
+         "MK2:12",
+         "MK2:2",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:9",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:5",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:21",
+         "RF11:23",
+         "RF11:26",
+         "RF11:32",
+         "RF11:33",
+         "RF12:3",
+         "RF12:4",
+         "RF12:5",
+         "RF12:6",
+         "XC1:3",
+         "XC3:10",
+         "XC3:11",
+         "XC3:3",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:6",
+         "CR5:7",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:12",
+         "MK2:2",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:8",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:23",
+         "RF11:26",
+         "RF11:32",
+         "RF11:33",
+         "RF11:35",
+         "RF6:1",
+         "RF6:2",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:11"
+        ]
+       },
+       "extension_measured": [
+        "MK5:2",
+        "MK5:3",
+        "RF11:34",
+        "RF11:35"
+       ],
+       "forwarded": [
+        "MK1:2",
+        "MK1:3",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:8",
+        "MK1:11",
+        "MK2:2",
+        "MK2:4",
+        "MK2:5",
+        "MK2:6",
+        "MK2:7",
+        "MK2:9",
+        "MK2:12",
+        "MK4:2",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "MK4:7",
+        "MK4:9",
+        "MK4:12",
+        "MK5:4",
+        "MK5:6",
+        "MK5:7",
+        "MK5:8",
+        "MK5:9",
+        "MK5:10",
+        "MK5:12",
+        "CR5:3",
+        "CR5:4",
+        "CR5:5",
+        "CR5:6",
+        "CR5:7",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "CL7:95",
+        "CL7:100",
+        "RF11:21",
+        "RF11:23",
+        "RF11:26",
+        "RF11:32",
+        "RF11:33",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "MK3:5",
+        "MK8:2",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK8:7",
+        "XC3:3",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "XC1:3"
+       ],
+       "iota_a": 0.7109375,
+       "m_star": 9,
+       "n_star": 6,
+       "n_tabled": 62,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.9354838709677419,
+        "n_final": 58,
+        "n_provisional": 62,
+        "only_final": [],
+        "only_provisional": [
+         "RF12:3",
+         "RF12:4",
+         "RF12:5",
+         "RF12:6"
+        ]
+       },
+       "se_iota_a": 0.01870597744342365,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 6,
+         "n_only_comparator": 4,
+         "n_only_frame_set": 0,
+         "n_rungs": 62,
+         "n_shared_with_frame_set": 58,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 5,
+         "n_only_comparator": 21,
+         "n_only_frame_set": 12,
+         "n_rungs": 68,
+         "n_shared_with_frame_set": 46,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK3:3",
+        "XC3:9",
+        "MK5:6"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 9,
+       "n_local_valid_families": 6,
+       "n_spectrum_valid": 41,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK2",
+         "MK4"
+        ],
+        "core": [
+         "MK3:3",
+         "XC3:9",
+         "MK5:6"
+        ]
+       }
+      }
+     }
+    },
+    "2": {
+     "new": {
+      "frame": 2,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 2,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:60",
+        "CL7:95",
+        "CR5:6",
+        "CR5:7",
+        "CR5:8",
+        "CR5:9",
+        "MK2:2",
+        "MK2:5",
+        "MK3:1",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "MK3:8",
+        "MK4:4",
+        "MK5:12",
+        "MK5:4",
+        "MK5:6",
+        "MK5:7",
+        "MK8:2",
+        "MK8:7",
+        "RF11:32",
+        "RF11:33",
+        "RF11:35",
+        "RF9:14",
+        "XC3:11"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:1",
+         "MK2:12",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:11",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "RF10:19",
+         "RF11:16",
+         "RF11:21",
+         "RF11:22",
+         "RF11:23",
+         "RF11:26",
+         "RF1:0",
+         "RF1:1",
+         "RF1:2",
+         "RF1:3",
+         "RF6:1",
+         "RF6:2",
+         "RF8:5",
+         "RF8:6",
+         "RF8:7",
+         "RF8:8",
+         "RF9:10",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:4",
+         "RF9:6",
+         "RF9:8",
+         "XC1:1",
+         "XC3:8"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:6",
+         "CR5:7",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:12",
+         "MK2:2",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:8",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:23",
+         "RF11:26",
+         "RF11:32",
+         "RF11:33",
+         "RF11:35",
+         "RF6:1",
+         "RF6:2",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:11"
+        ]
+       },
+       "extension_measured": [],
+       "forwarded": [
+        "MK1:2",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:9",
+        "MK1:12",
+        "MK2:1",
+        "MK2:4",
+        "MK2:6",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:10",
+        "MK2:12",
+        "MK4:2",
+        "MK4:5",
+        "MK4:6",
+        "MK4:7",
+        "MK4:8",
+        "MK4:9",
+        "MK4:10",
+        "MK4:12",
+        "CL7:65",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "RF9:4",
+        "RF9:6",
+        "RF9:8",
+        "RF9:10",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "RF11:16",
+        "RF11:21",
+        "RF11:22",
+        "RF11:23",
+        "RF11:26",
+        "RF8:5",
+        "RF8:6",
+        "RF8:7",
+        "RF8:8",
+        "MK8:1",
+        "MK8:3",
+        "MK8:4",
+        "MK8:5",
+        "MK5:8",
+        "MK5:9",
+        "MK5:10",
+        "MK5:11",
+        "RF1:0",
+        "RF1:1",
+        "RF1:2",
+        "RF1:3",
+        "RF10:19",
+        "RF6:1",
+        "RF6:2",
+        "XC1:1",
+        "XC3:8"
+       ],
+       "iota_a": 0.67578125,
+       "m_star": 9,
+       "n_star": 7,
+       "n_tabled": 61,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.9365079365079365,
+        "n_final": 61,
+        "n_provisional": 61,
+        "only_final": [
+         "MK2:10",
+         "MK4:10"
+        ],
+        "only_provisional": [
+         "MK2:5",
+         "MK4:4"
+        ]
+       },
+       "se_iota_a": 0.02105351545451649,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 1,
+         "n_local_valid_families": 4,
+         "n_only_comparator": 2,
+         "n_only_frame_set": 2,
+         "n_rungs": 61,
+         "n_shared_with_frame_set": 59,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": false,
+         "n_backups": 1,
+         "n_local_valid_families": 4,
+         "n_only_comparator": 25,
+         "n_only_frame_set": 19,
+         "n_rungs": 67,
+         "n_shared_with_frame_set": 42,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:6",
+        "MK5:8",
+        "MK4:7"
+       ],
+       "coverage_identified": true,
+       "local_supported": false,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK4",
+        "MK5"
+       ],
+       "n_backups": 1,
+       "n_local_valid": 6,
+       "n_local_valid_families": 4,
+       "n_spectrum_valid": 35,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK1"
+        ],
+        "core": [
+         "MK2:6",
+         "MK5:8",
+         "MK4:7"
+        ]
+       }
+      }
+     }
+    },
+    "3": {
+     "new": {
+      "frame": 3,
+      "gate2": null,
+      "gate3": null
+     },
+     "old": {
+      "frame": 3,
+      "gate2": {
+       "comparator_extra": [
+        "CL7:55",
+        "CL7:60",
+        "CL7:65",
+        "CL7:70",
+        "CL7:80",
+        "CL7:85",
+        "CL7:90",
+        "CL7:95",
+        "CR5:6",
+        "CR5:7",
+        "CR5:8",
+        "CR5:9",
+        "MK1:2",
+        "MK1:9",
+        "MK2:2",
+        "MK2:4",
+        "MK2:5",
+        "MK3:4",
+        "MK3:8",
+        "MK4:4",
+        "MK4:5",
+        "MK6:6",
+        "MK8:4",
+        "RF11:32",
+        "RF11:33",
+        "RF11:35",
+        "RF6:1",
+        "RF9:14",
+        "XC1:2"
+       ],
+       "comparator_sets": {
+        "frame_aware_screen_proxy": [
+         "CL7:55",
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "MK1:12",
+         "MK1:3",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:8",
+         "MK1:9",
+         "MK2:10",
+         "MK2:12",
+         "MK2:3",
+         "MK2:5",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:5",
+         "MK4:12",
+         "MK4:2",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK6:10",
+         "MK6:12",
+         "MK6:4",
+         "MK6:6",
+         "MK6:7",
+         "MK6:8",
+         "MK6:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:22",
+         "RF11:23",
+         "RF11:26",
+         "RF7:18",
+         "RF7:19",
+         "RF7:20",
+         "RF7:21",
+         "RF8:5",
+         "RF8:6",
+         "RF8:7",
+         "RF8:8",
+         "RF9:10",
+         "RF9:11",
+         "RF9:12",
+         "RF9:8",
+         "XC1:2",
+         "XC3:10",
+         "XC3:11",
+         "XC3:8",
+         "XC3:9"
+        ],
+        "legacy_pooled": [
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "CL7:85",
+         "CL7:90",
+         "CL7:95",
+         "CR5:6",
+         "CR5:7",
+         "CR5:8",
+         "CR5:9",
+         "MK1:12",
+         "MK1:2",
+         "MK1:4",
+         "MK1:5",
+         "MK1:6",
+         "MK1:7",
+         "MK1:9",
+         "MK2:12",
+         "MK2:2",
+         "MK2:4",
+         "MK2:5",
+         "MK2:6",
+         "MK2:7",
+         "MK2:8",
+         "MK2:9",
+         "MK3:1",
+         "MK3:2",
+         "MK3:3",
+         "MK3:4",
+         "MK3:8",
+         "MK4:12",
+         "MK4:2",
+         "MK4:4",
+         "MK4:5",
+         "MK4:6",
+         "MK4:7",
+         "MK4:8",
+         "MK4:9",
+         "MK5:10",
+         "MK5:12",
+         "MK5:4",
+         "MK5:6",
+         "MK5:7",
+         "MK5:8",
+         "MK5:9",
+         "MK8:1",
+         "MK8:2",
+         "MK8:3",
+         "MK8:4",
+         "MK8:5",
+         "MK8:7",
+         "RF11:16",
+         "RF11:21",
+         "RF11:23",
+         "RF11:26",
+         "RF11:32",
+         "RF11:33",
+         "RF11:35",
+         "RF6:1",
+         "RF6:2",
+         "RF9:11",
+         "RF9:12",
+         "RF9:13",
+         "RF9:14",
+         "XC1:1",
+         "XC3:11"
+        ]
+       },
+       "extension_measured": [
+        "MK2:1",
+        "MK2:2",
+        "MK6:2",
+        "MK6:3"
+       ],
+       "forwarded": [
+        "MK5:4",
+        "MK5:6",
+        "MK5:7",
+        "MK5:8",
+        "MK5:9",
+        "MK5:10",
+        "MK5:12",
+        "MK4:2",
+        "MK4:6",
+        "MK4:7",
+        "MK4:8",
+        "MK4:9",
+        "MK4:10",
+        "MK4:12",
+        "MK1:3",
+        "MK1:4",
+        "MK1:5",
+        "MK1:6",
+        "MK1:7",
+        "MK1:8",
+        "MK1:10",
+        "MK1:12",
+        "MK6:4",
+        "MK6:7",
+        "MK6:8",
+        "MK6:9",
+        "MK6:10",
+        "MK6:11",
+        "MK6:12",
+        "MK2:3",
+        "MK2:6",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:10",
+        "MK2:12",
+        "RF7:18",
+        "RF7:19",
+        "RF7:20",
+        "RF7:21",
+        "RF11:16",
+        "RF11:21",
+        "RF11:22",
+        "RF11:23",
+        "RF11:26",
+        "RF9:4",
+        "RF9:6",
+        "RF9:8",
+        "RF9:10",
+        "RF9:11",
+        "RF9:12",
+        "RF9:13",
+        "MK8:1",
+        "MK8:2",
+        "MK8:3",
+        "MK8:5",
+        "MK8:7",
+        "XC3:8",
+        "XC3:9",
+        "XC3:10",
+        "XC3:11",
+        "MK3:1",
+        "MK3:2",
+        "MK3:3",
+        "MK3:5",
+        "RF8:5",
+        "RF8:6",
+        "RF8:7",
+        "RF8:8",
+        "RF6:2",
+        "XC1:1"
+       ],
+       "iota_a": 0.6875,
+       "m_star": 10,
+       "n_star": 8,
+       "n_tabled": 75,
+       "n_withheld": 0,
+       "policy": "frame_aware",
+       "provisional_agreement": {
+        "jaccard": 0.7560975609756098,
+        "n_final": 71,
+        "n_provisional": 73,
+        "only_final": [
+         "MK1:10",
+         "MK2:6",
+         "MK4:10",
+         "MK6:11",
+         "RF6:2",
+         "RF9:13",
+         "RF9:4",
+         "RF9:6",
+         "XC1:1"
+        ],
+        "only_provisional": [
+         "CL7:55",
+         "CL7:60",
+         "CL7:65",
+         "CL7:70",
+         "CL7:80",
+         "MK1:9",
+         "MK2:5",
+         "MK4:5",
+         "MK6:6",
+         "MK8:4",
+         "XC1:2"
+        ]
+       },
+       "se_iota_a": 0.01945132534280436,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "comparators": {
+        "frame_aware_screen_proxy": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 8,
+         "n_only_comparator": 11,
+         "n_only_frame_set": 9,
+         "n_rungs": 73,
+         "n_shared_with_frame_set": 62,
+         "state": "LOCAL_AND_SPECTRUM"
+        },
+        "legacy_pooled": {
+         "coverage_identified": true,
+         "local_supported": true,
+         "n_backups": 2,
+         "n_local_valid_families": 7,
+         "n_only_comparator": 26,
+         "n_only_frame_set": 30,
+         "n_rungs": 68,
+         "n_shared_with_frame_set": 41,
+         "state": "LOCAL_AND_SPECTRUM"
+        }
+       },
+       "core_identified": true,
+       "core_references": [
+        "MK2:6",
+        "MK1:5",
+        "MK3:1"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK4",
+        "MK5",
+        "MK6",
+        "MK8",
+        "XC3"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 17,
+       "n_local_valid_families": 8,
+       "n_spectrum_valid": 38,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": {
+        "backups": [
+         "MK6",
+         "XC3"
+        ],
+        "core": [
+         "MK2:6",
+         "MK1:5",
+         "MK3:1"
+        ]
+       }
+      }
+     }
+    }
+   },
+   "model_key": "gemma-3n-e4b-it \u00b7 topic-resampled replicate (dci1v8-pilot-r23 \u2192 dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)",
+   "new": {
+    "exists": true,
+    "reached": null,
+    "root": "dci1v8-pilot-t1-gemma-3n-e4b-it",
+    "terminal": null
+   },
+   "old": {
+    "comparator_eligibility": {
+     "frame_aware_screen_proxy": {
+      "eligible": true,
+      "supported": [
+       0,
+       1,
+       3
+      ]
+     },
+     "legacy_pooled": {
+      "eligible": true,
+      "supported": [
+       1,
+       3
+      ]
+     }
+    },
+    "frames_meeting_all_decided_criteria": [
+     0,
+     1,
+     3
+    ],
+    "generations": {
+     "calibration_blocks_per_run": 768,
+     "calibration_candidates": 192000,
+     "calibration_comparator": 82176,
+     "calibration_extension": 6912,
+     "calibration_grids": 55296,
+     "calibration_passes": 4,
+     "cap_selection": 216,
+     "gate0": 240,
+     "screen": 32928,
+     "screen_passes": 4,
+     "second_pass": 72768,
+     "total": 442536
+    },
+    "local_eligible": true,
+    "local_supported_frames": [
+     0,
+     1,
+     3
+    ],
+    "n_batches": 3,
+    "pilot_status": "PILOT_DECIDED_CRITERIA_MET",
+    "provisional_union": 122,
+    "reached": "PILOT_REPORT",
+    "root": "dci1v8-pilot-r23",
+    "screen_allocation": {
+     "blocks": 96,
+     "draws": 1,
+     "frame_offsets": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "passes": 4,
+     "realised": {
+      "0": 24,
+      "1": 24,
+      "2": 24,
+      "3": 24
+     },
+     "rule": "a screen pass renders every screen topic under one frame; pass p offsets the frame by frame_offsets[p]. The offsets are distinct modulo N_WORDINGS, so each frame's own table holds passes/N_WORDINGS of the topics at one draw and no topic recurs within a frame; the same construction as the calibration allocation (rules.SCREEN_FRAME_OFFSETS, 2026-09-03)",
+     "topics": 24,
+     "topics_per_frame": 24
+    },
+    "selected_cap": 512,
+    "spectrum_frames": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "terminal": null
+   }
+  },
+  {
+   "by_frame": {
+    "0": {
+     "new": {
+      "frame": 0,
+      "gate2": {
        "comparator_extra": null,
        "comparator_sets": null,
        "extension_measured": null,
@@ -17314,13 +23469,161 @@
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
       }
+     },
+     "old": {
+      "frame": 0,
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": null,
+       "iota_a": null,
+       "m_star": null,
+       "n_star": null,
+       "n_tabled": 0,
+       "n_withheld": 0,
+       "policy": "legacy_pooled_design",
+       "provisional_agreement": null,
+       "se_iota_a": null,
+       "supported": false,
+       "unsupported_reason": "GRID_RESOLUTION_INSUFFICIENT"
+      },
+      "gate3": {
+       "core_identified": null,
+       "core_references": null,
+       "coverage_identified": null,
+       "local_supported": false,
+       "local_valid_families": null,
+       "n_backups": null,
+       "n_local_valid": null,
+       "n_local_valid_families": null,
+       "n_spectrum_valid": null,
+       "state": "UNSUPPORTED"
+      }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
+      }
      }
     },
     "1": {
      "new": {
       "frame": 1,
-      "gate2": null,
-      "gate3": null
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": [
+        "MK7:2",
+        "MK7:4",
+        "MK7:5",
+        "MK7:6",
+        "MK7:7",
+        "MK7:8",
+        "MK7:10",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "MK4:8",
+        "MK5:3",
+        "MK5:5",
+        "MK5:6",
+        "MK5:7",
+        "MK5:8",
+        "MK5:9",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "MK3:5",
+        "MK6:8",
+        "MK6:9",
+        "MK6:10",
+        "MK6:11",
+        "MK2:5",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:10",
+        "MK2:11",
+        "MK2:12",
+        "MK8:1",
+        "MK8:5",
+        "MK8:6",
+        "MK8:7",
+        "MK8:8",
+        "MK8:9",
+        "MK8:10",
+        "RF11:12",
+        "RF11:16",
+        "RF11:21",
+        "RF11:22",
+        "RF11:23",
+        "RF11:26",
+        "RF11:27",
+        "CL8:6",
+        "CL8:7",
+        "CL8:10",
+        "CL8:11",
+        "MK1:7",
+        "MK1:8",
+        "MK1:9",
+        "MK1:10",
+        "XC1:1",
+        "XC1:2",
+        "XC1:5",
+        "XC1:6",
+        "CL7:40",
+        "CL7:45",
+        "CL7:60",
+        "RF3:0",
+        "RF3:1"
+       ],
+       "iota_a": 0.6497395833333334,
+       "m_star": 10,
+       "n_star": 6,
+       "n_tabled": 70,
+       "n_withheld": 0,
+       "policy": "legacy_pooled_design",
+       "provisional_agreement": null,
+       "se_iota_a": 0.023719661767447126,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "core_identified": true,
+       "core_references": [
+        "MK5:6",
+        "MK2:8",
+        "MK8:10"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK3",
+        "MK5",
+        "MK6",
+        "MK8"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 17,
+       "n_local_valid_families": 6,
+       "n_spectrum_valid": 28,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
      },
      "old": {
       "frame": 1,
@@ -17429,13 +23732,73 @@
        "n_spectrum_valid": 32,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": true,
+       "backups_shared": 2,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK3",
+         "MK6"
+        ],
+        "core": [
+         "MK5:6",
+         "MK2:8",
+         "MK8:10"
+        ]
+       },
+       "old": {
+        "backups": [
+         "MK3",
+         "MK6"
+        ],
+        "core": [
+         "MK5:10",
+         "MK2:8",
+         "MK8:8"
+        ]
+       }
+      }
      }
     },
     "2": {
      "new": {
       "frame": 2,
-      "gate2": null,
-      "gate3": null
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": null,
+       "iota_a": null,
+       "m_star": null,
+       "n_star": null,
+       "n_tabled": 0,
+       "n_withheld": 0,
+       "policy": "legacy_pooled_design",
+       "provisional_agreement": null,
+       "se_iota_a": null,
+       "supported": false,
+       "unsupported_reason": "GRID_RESOLUTION_INSUFFICIENT"
+      },
+      "gate3": {
+       "core_identified": null,
+       "core_references": null,
+       "coverage_identified": null,
+       "local_supported": false,
+       "local_valid_families": null,
+       "n_backups": null,
+       "n_local_valid": null,
+       "n_local_valid_families": null,
+       "n_spectrum_valid": null,
+       "state": "UNSUPPORTED"
+      }
      },
      "old": {
       "frame": 2,
@@ -17467,13 +23830,129 @@
        "n_spectrum_valid": null,
        "state": "UNSUPPORTED"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": null,
+       "backups_shared": null,
+       "core_identical": null,
+       "core_shared": null,
+       "new": null,
+       "old": null
+      }
      }
     },
     "3": {
      "new": {
       "frame": 3,
-      "gate2": null,
-      "gate3": null
+      "gate2": {
+       "comparator_extra": null,
+       "comparator_sets": null,
+       "extension_measured": null,
+       "forwarded": [
+        "MK7:2",
+        "MK7:4",
+        "MK7:5",
+        "MK7:6",
+        "MK7:7",
+        "MK7:8",
+        "MK7:10",
+        "MK4:2",
+        "MK4:3",
+        "MK4:4",
+        "MK4:5",
+        "MK4:6",
+        "MK4:8",
+        "MK5:3",
+        "MK5:5",
+        "MK5:6",
+        "MK5:7",
+        "MK5:8",
+        "MK5:9",
+        "MK3:2",
+        "MK3:3",
+        "MK3:4",
+        "MK3:5",
+        "MK6:8",
+        "MK6:9",
+        "MK6:10",
+        "MK6:11",
+        "MK2:5",
+        "MK2:7",
+        "MK2:8",
+        "MK2:9",
+        "MK2:10",
+        "MK2:11",
+        "MK2:12",
+        "MK8:1",
+        "MK8:5",
+        "MK8:6",
+        "MK8:7",
+        "MK8:8",
+        "MK8:9",
+        "MK8:10",
+        "RF11:12",
+        "RF11:16",
+        "RF11:21",
+        "RF11:22",
+        "RF11:23",
+        "RF11:26",
+        "RF11:27",
+        "CL8:6",
+        "CL8:7",
+        "CL8:10",
+        "CL8:11",
+        "MK1:7",
+        "MK1:8",
+        "MK1:9",
+        "MK1:10",
+        "XC1:1",
+        "XC1:2",
+        "XC1:5",
+        "XC1:6",
+        "CL7:40",
+        "CL7:45",
+        "CL7:60",
+        "RF3:0",
+        "RF3:1"
+       ],
+       "iota_a": 0.67578125,
+       "m_star": 12,
+       "n_star": 6,
+       "n_tabled": 70,
+       "n_withheld": 0,
+       "policy": "legacy_pooled_design",
+       "provisional_agreement": null,
+       "se_iota_a": 0.023356120533956533,
+       "supported": true,
+       "unsupported_reason": null
+      },
+      "gate3": {
+       "core_identified": true,
+       "core_references": [
+        "MK7:6",
+        "MK6:10",
+        "MK2:9"
+       ],
+       "coverage_identified": true,
+       "local_supported": true,
+       "local_valid_families": [
+        "MK1",
+        "MK2",
+        "MK6",
+        "MK7",
+        "XC1"
+       ],
+       "n_backups": 2,
+       "n_local_valid": 7,
+       "n_local_valid_families": 5,
+       "n_spectrum_valid": 37,
+       "state": "LOCAL_AND_SPECTRUM"
+      }
      },
      "old": {
       "frame": 3,
@@ -17578,14 +24057,79 @@
        "n_spectrum_valid": 36,
        "state": "LOCAL_AND_SPECTRUM"
       }
+     },
+     "overlap": {
+      "jaccard": null,
+      "n_new": null,
+      "n_old": null,
+      "n_shared": null,
+      "references": {
+       "backups_identical": false,
+       "backups_shared": 0,
+       "core_identical": false,
+       "core_shared": 1,
+       "new": {
+        "backups": [
+         "MK1",
+         "XC1"
+        ],
+        "core": [
+         "MK7:6",
+         "MK6:10",
+         "MK2:9"
+        ]
+       },
+       "old": {
+        "backups": [],
+        "core": [
+         "MK6:10",
+         "MK2:7",
+         "XC1:2"
+        ]
+       }
+      }
      }
     }
    },
    "model_key": "qwen3-4b-instruct-2507 \u00b7 v8-design re-execution (dci1v8-pilot-r10 \u2192 dci1v8-pilot-r26; both pooled)",
    "new": {
+    "comparator_eligibility": {},
     "exists": true,
-    "reached": null,
+    "frames_meeting_all_decided_criteria": [
+     1,
+     3
+    ],
+    "generations": {
+     "calibration_blocks_per_run": 768,
+     "calibration_candidates": 199680,
+     "calibration_extension": 15360,
+     "calibration_grids": 55296,
+     "calibration_passes": 4,
+     "cap_selection": 216,
+     "gate0": 240,
+     "screen": 8232,
+     "second_pass": 11520,
+     "total": 290544
+    },
+    "local_eligible": true,
+    "local_supported_frames": [
+     1,
+     3
+    ],
+    "n_batches": 3,
+    "pilot_status": "PILOT_DECIDED_CRITERIA_MET",
+    "provisional_union": 65,
+    "reached": "PILOT_REPORT",
     "root": "dci1v8-pilot-r26",
+    "screen_allocation": {
+     "passes": 1,
+     "topics_per_frame": 6
+    },
+    "selected_cap": 512,
+    "spectrum_frames": [
+     1,
+     3
+    ],
     "terminal": null
    },
    "old": {
@@ -17669,5 +24213,11 @@
    2,
    3
   ]
+ },
+ "topic_replicate_roots": {
+  "gemma-3n-e2b-it": "dci1v8-pilot-t1-gemma-3n-e2b-it",
+  "gemma-3n-e4b-it": "dci1v8-pilot-t1-gemma-3n-e4b-it",
+  "qwen3-4b": "dci1v8-pilot-t1-qwen3-4b",
+  "qwen3-4b-instruct-2507": "dci1v8-pilot-t1-qwen3-4b-instruct-2507"
  }
 }

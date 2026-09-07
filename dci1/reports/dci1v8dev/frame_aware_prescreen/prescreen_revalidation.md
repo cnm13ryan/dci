@@ -57,7 +57,7 @@ the v8 pilots the frozen root was built from.
 | gemma-3n-e4b-it, replicate | — | `dci1v8-pilot-r22` | 1 | `025e138` | **cancelled** before registration (it would have hit the same cap) |
 | gemma-3n-e4b-it, replicate | `dci1v8-pilot-r23` | `dci1v8-pilot-r24` | 0 | `7d8e1d9` | `PILOT_REPORT` 2026-09-06 23:04Z |
 | qwen3-4b-instruct-2507, third run | `dci1v8-pilot-r15` | `dci1v8-pilot-r25` | 1 | `025e138` | `PILOT_REPORT` 2026-09-07 05:33Z |
-| qwen3-4b-instruct-2507, **v8-design re-execution** | `dci1v8-pilot-r10` (v8) | `dci1v8-pilot-r26` | 0 | `f7af7f2` (the frozen v8 commit) | **pending** (chained after r25, 2026-09-06 23:59Z) |
+| qwen3-4b-instruct-2507, **v8-design re-execution** | `dci1v8-pilot-r10` (v8) | `dci1v8-pilot-r26` | 0 | `f7af7f2` (the frozen v8 commit) | `PILOT_REPORT` 2026-09-07 11:40Z |
 
 Incident on `dci1v8-pilot-r17`: the first `GATE_2_CALIBRATION` attempt
 (started 06:33Z) was killed by the kernel's out-of-memory handler at
@@ -119,9 +119,9 @@ result that the causal claim rests on from two runs to three.
 the *v8 pooled design itself* at the frozen commit `f7af7f2` (a new pilot
 root; the frozen confirm root is not touched), chained on card 0 after r25.
 It asks whether the pooled design's own verdict on 2507 frame 3 (3/0 in
-r10) survives decoding noise: if a pooled re-run reached 5/2 there, the
-"rule alone" attribution would rest on r10's decoding luck rather than on
-the design. Its block compares r26 with r10.
+r10) survives decoding noise. **It does not**: r26 reaches 5 families and
+2 backups on frame 3 and makes the model LOCAL-eligible on {1, 3}, where
+r10 gave 3/0 and no eligibility. §3.6 reads the consequence.
 
 Second incident (both lanes): at 22:08Z on 2026-09-04 the host's desktop
 session crashed (the journal shows a crash report and the display
@@ -386,6 +386,46 @@ identical family and backup counts on every frame, forwarded sets at
 runs while the frame's set is 7/2 — the second rule-attributed retention
 (§3.2), reproduced.
 
+### 3.6 The v8-design control (r26) and what it does to the 2507 claim
+
+`dci1v8-pilot-r26` re-executes the **v8 pooled design itself** at the
+frozen v8 commit `f7af7f2`, same model, same topics, same seeds, only the
+decoding free. Frame 3 of qwen3-4b-instruct-2507, gathered across every
+root that has measured it:
+
+| root | design | commit | frame 3, the run's own set | legacy pooled set re-verdicted on those rows | model LOCAL frames |
+|---|---|---|---|---|---|
+| `r10` | v8 pooled | `5e4791e` | **3/0**, not supported | — (v8 has no comparator arm) | {1} — not eligible |
+| `r26` | v8 pooled | `f7af7f2` | **5/2**, supported | — | {1, 3} — eligible |
+| `r15` | v8.1 frame-aware | `025e138` | 5/2, supported | 4/1, not supported | {1, 3} — eligible |
+| `r20` | v8.1 frame-aware | `025e138` | 5/2, supported | 4/1, not supported | {1, 3} — eligible |
+| `r25` | v8.1 frame-aware | `025e138` | 5/2, supported | **5/2, supported** | {1, 3} — eligible |
+
+So the pooled rule on this frame is **marginal under decoding
+nondeterminism, not reliably failing**: across five observations of a
+pooled forwarded set it clears §13.15 twice (r26's own run, r25's
+comparator) and misses it three times (r10's own run, r15's and r20's
+comparators). The frame-aware set clears it in three of three. Frame 3 of
+this model sits at the threshold — 5 families and 2 backups is exactly the
+§13.15 minimum — and the two rules differ in how often they land above it,
+not in whether one can reach it at all.
+
+What this changes in the record, and only this: §3.2's attribution of
+2507's eligibility to the forwarding rule is **weakened from "the pooled
+rule fails here" to "the pooled rule is marginal here and the frame-aware
+rule was not, in every run measured"**. It does not change the paired
+comparison itself, which remains the strongest evidence available: on
+*identical rows* in r15 and r20 the frame's set is supported and the
+pooled set is not, and that pairing removes the sampling and decoding
+variation that separates r10 from r26. It also does not touch
+gemma-3n-e4b-it frame 0, where the paired comparison is 7/2 against 4/1 in
+both successor runs.
+
+Nothing in v8.1 changes because of r26. It was prespecified as a control on
+the interpretation of a methodology-validation finding, not as a
+design-selection experiment, and the design it re-executes is the
+superseded one.
+
 ## 4. Validation
 
 Code at `HEAD` (`e0bbcdf`) is the pilot commit `025e138` plus the read-only
@@ -443,8 +483,8 @@ root `dci1v8-confirm-r2` is superseded for this successor design and not
 altered, and the pilots give the intended effect (frame-specific sets that
 are at least as supported as the pooled set on the same rows, and two
 frames — 2507 f3 and e4b f0 — where the frame's set is supported and the
-pooled set is not on identical rows, the pooled set being marginal there:
-on 2507 f3 it crosses the threshold in one of three re-executions) and
+pooled set is not on identical rows, the pooled set being marginal on 2507
+f3 rather than reliably failing there, §3.6) and
 the effect replicates (§3.5: 14 of 14 LOCAL verdicts agree between the
 successor runs of every model, under decoding noise on fixed topics). Three decisions remain the researcher's
 and the evidence does not force them:

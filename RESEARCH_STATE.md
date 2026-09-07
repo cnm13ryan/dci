@@ -461,8 +461,11 @@ and a replicate for every model (gemma-3n-e4b-it's at `7d8e1d9`, after two
 lost roots). The frame-aware rule makes qwen3-4b LOCAL on 4/4 frames (v8:
 2/4) and makes 2507 eligible (f1 + f3; v8: f1); e2b and e4b keep f0, f1,
 f3. On two frames the frame's set is supported and the legacy set is not
-*on the same rows*: 2507 f3 (in two of three re-executions; the pooled
-set is marginal there, the frame's set stably 5/2) and e4b f0 (both runs). Every replicate agrees with its first
+*on the same rows*: 2507 f3 (in two of three re-executions) and e4b f0
+(both runs). A re-execution of the v8 pooled design itself (r26) reaches
+5/2 on 2507 f3 where the v8 root gave 3/0, so that frame sits at the
+§13.15 threshold: the pooled rule is marginal there, not reliably failing,
+and the claim rests on the paired same-rows comparison. Every replicate agrees with its first
 run on every LOCAL verdict; the A- and C-basis targets agree on every
 verdict. The replicates re-execute the same topics and seeds (pilot seeds
 are deterministic per model and stage), so they measure decoding
