@@ -78,6 +78,16 @@ REPLICATE_ROOTS: dict[str, tuple[str, ...]] = {
 OLD_REPLICATE_ROOTS: dict[str, tuple[str, ...]] = {
     "qwen3-4b-instruct-2507": ("dci1v8-pilot-r26",),  # at f7af7f2
 }
+# The topic-resampled methodology-validation replicates (2026-09-07,
+# docs/V8_TOPIC_RESAMPLED_VALIDATION.md): the pilot lifecycle in the
+# ``topic-replicate`` namespace on a re-partitioned pre-freeze topic pool.
+# Rendered as a block whose "old" column is the first successor run.
+TOPIC_REPLICATE_ROOTS: dict[str, str] = {
+    "qwen3-4b": "dci1v8-pilot-t1-qwen3-4b",
+    "qwen3-4b-instruct-2507": "dci1v8-pilot-t1-qwen3-4b-instruct-2507",
+    "gemma-3n-e2b-it": "dci1v8-pilot-t1-gemma-3n-e2b-it",
+    "gemma-3n-e4b-it": "dci1v8-pilot-t1-gemma-3n-e4b-it",
+}
 STAGES = (PS.STAGE_REGIME, PS.STAGE_SECOND_PASS, PS.STAGE_GATE2, PS.STAGE_GATE3,
           PS.STAGE_REPORT)
 
@@ -182,6 +192,43 @@ def frame_row(recs: Mapping[str, Any], frame: int) -> dict[str, Any]:
     return row
 
 
+def _forwarded(recs: Mapping[str, Any], frame: int) -> set[str] | None:
+    g2 = recs["stages"].get(PS.STAGE_GATE2) or {}
+    cp = (g2.get("calibration_population") or {}).get("by_frame") or {}
+    b = cp.get(str(frame))
+    return set(b.get("forwarded") or []) if b else None
+
+
+def _references(recs: Mapping[str, Any], frame: int) -> dict[str, Any] | None:
+    g3 = recs["stages"].get(PS.STAGE_GATE3) or {}
+    b = (g3.get("by_frame") or {}).get(str(frame))
+    if not b or b.get("status") != PS.FRAME_SUPPORTED:
+        return None
+    sv = b.get("survival") or {}
+    core = [f"{e['family']}:{e['severity']}" for e in (sv.get("core_references") or [])]
+    backups = [str(x) if not isinstance(x, dict) else f"{x.get('family')}:{x.get('severity')}"
+               for x in (sv.get("backups") or [])]
+    return {"core": core, "backups": backups}
+
+
+def frame_overlap(old: Mapping[str, Any], new: Mapping[str, Any], frame: int
+                  ) -> dict[str, Any]:
+    """Forwarded-set Jaccard and reference identity between two roots on one
+    frame: what a re-execution or a topic replicate keeps and what moves."""
+    a, b = _forwarded(old, frame), _forwarded(new, frame)
+    out: dict[str, Any] = {"jaccard": None, "n_shared": None, "n_old": None, "n_new": None}
+    if a is not None and b is not None:
+        out.update({"jaccard": (len(a & b) / len(a | b)) if (a | b) else None,
+                    "n_shared": len(a & b), "n_old": len(a), "n_new": len(b)})
+    ra, rb = _references(old, frame), _references(new, frame)
+    out["references"] = {"old": ra, "new": rb,
+                         "core_identical": (ra["core"] == rb["core"]) if ra and rb else None,
+                         "core_shared": (len(set(ra["core"]) & set(rb["core"]))) if ra and rb else None,
+                         "backups_identical": (ra["backups"] == rb["backups"]) if ra and rb else None,
+                         "backups_shared": (len(set(ra["backups"]) & set(rb["backups"]))) if ra and rb else None}
+    return out
+
+
 def model_block(model_key: str, old: Mapping[str, Any], new: Mapping[str, Any]
                 ) -> dict[str, Any]:
     out: dict[str, Any] = {"model_key": model_key,
@@ -193,6 +240,7 @@ def model_block(model_key: str, old: Mapping[str, Any], new: Mapping[str, Any]
                            "by_frame": {}}
     for f in PS.FRAMES:
         out["by_frame"][str(f)] = {"old": frame_row(old, f), "new": frame_row(new, f)}
+        out["by_frame"][str(f)]["overlap"] = frame_overlap(old, new, f)
     for which, recs in (("old", old), ("new", new)):
         g3 = recs["stages"].get(PS.STAGE_GATE3)
         if g3:
@@ -242,6 +290,27 @@ def _lsc(g3: Mapping[str, Any] | None) -> str:
     return (f"{_f(g3['n_local_valid_families'])}/{_f(g3['n_backups'])}/"
             f"{'C' if g3['coverage_identified'] else 'c'}/"
             f"{'L' if g3['local_supported'] else 'l'}")
+
+
+def render_overlap(models: Sequence[Mapping[str, Any]]) -> str:
+    lines = ["", "## Forwarded-set overlap and reference identity, per frame (old → new of each block)", "",
+             "| block | f | forwarded Jaccard (shared/old/new) | core references old → new | core identical | backups old → new | backups identical |",
+             "|---|---:|---|---|---|---|---|"]
+    for m in models:
+        for f, b in sorted(m["by_frame"].items()):
+            o = b.get("overlap") or {}
+            r = o.get("references") or {}
+            ra, rb = r.get("old"), r.get("new")
+            if o.get("jaccard") is None and not (ra and rb):
+                continue
+            jac = (f"{o['jaccard']:.2f} ({o['n_shared']}/{o['n_old']}/{o['n_new']})"
+                   if o.get("jaccard") is not None else "—")
+            core = (f"{', '.join(ra['core'])} → {', '.join(rb['core'])}" if ra and rb else "—")
+            bk = (f"{', '.join(ra['backups'])} → {', '.join(rb['backups'])}" if ra and rb else "—")
+            lines.append(f"| `{m['model_key']}` | {f} | {jac} | {core} | "
+                         f"{'yes' if r.get('core_identical') else ('no' if r.get('core_identical') is False else '—')} | {bk} | "
+                         f"{'yes' if r.get('backups_identical') else ('no' if r.get('backups_identical') is False else '—')} |")
+    return "\n".join(lines) + "\n"
 
 
 def render(models: Sequence[Mapping[str, Any]]) -> str:
@@ -322,7 +391,7 @@ def render(models: Sequence[Mapping[str, Any]]) -> str:
           f"{(ce.get('frame_aware_screen_proxy') or {}).get('supported', '—')} / {_f((ce.get('frame_aware_screen_proxy') or {}).get('eligible'))} | "
           f"{(o.get('generations') or {}).get('total', '—')} | {(n.get('generations') or {}).get('total', '—')} |")
     A("")
-    return "\n".join(L)
+    return "\n".join(L) + render_overlap(models)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -350,6 +419,16 @@ def main(argv: Sequence[str] | None = None) -> int:
                 first, again))
             print(f"{key} replicate {rep}: first reached {first.get('reached')}; again reached "
                   f"{again.get('reached') or 'pending'}")
+    for key, rep in TOPIC_REPLICATE_ROOTS.items():
+        if key not in keys:
+            continue
+        first = records(DCI1 / "evidence" / NEW_ROOTS[key], key)
+        again = records(DCI1 / "evidence" / rep, key)
+        models.append(model_block(
+            f"{key} · topic-resampled replicate ({NEW_ROOTS[key]} → {rep}; 'old' = first successor run)",
+            first, again))
+        print(f"{key} topic replicate {rep}: first reached {first.get('reached')}; again reached "
+              f"{again.get('reached') or 'pending'}")
     for key, reps in OLD_REPLICATE_ROOTS.items():
         if key not in keys:
             continue
@@ -366,6 +445,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         json.dumps({"models": models, "old_roots": OLD_ROOTS, "new_roots": NEW_ROOTS,
                     "replicate_roots": REPLICATE_ROOTS,
                     "old_replicate_roots": OLD_REPLICATE_ROOTS,
+                    "topic_replicate_roots": TOPIC_REPLICATE_ROOTS,
                     "rules": {"screen_frame_offsets": list(R.SCREEN_FRAME_OFFSETS),
                               "retention_policy": R.RETENTION_POLICY,
                               "retention_target_basis": R.RETENTION_TARGET_BASIS,

@@ -44,6 +44,7 @@ from dci1v8dev.run.lifecycle import (StageOutcome, TerminalStatus,
 from dci1v8dev.verifiers import verifier_source_hash
 from dci1v8dev.verifiers.compliance import assert_presence_rule, score_generation
 from dci1v8dev.wordings import assert_v8_instrument, v8_wording
+from dci1v8dev.run.topic_replicate import bank_for
 
 __all__ = ["CHECKS", "run_checks", "qualification_payload",
            "run_qualification", "GATE0_FIXTURES", "gate0_payload",
@@ -64,7 +65,7 @@ def _check(name: str, ok: bool, detail: Any = None) -> dict[str, Any]:
 def run_checks(context: Any, *, bank: TopicBank | None = None
                ) -> list[dict[str, Any]]:
     repo = Path(context.repo_root)
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(context, bank=bank)
     results: list[dict[str, Any]] = []
 
     dirty = subprocess.run(["git", "status", "--porcelain"], cwd=repo,
@@ -173,7 +174,7 @@ def _composed_cell_refused() -> bool:
 
 def qualification_payload(context: Any, *, producing_commit: str,
                           bank: TopicBank | None = None) -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(context, bank=bank)
     results = run_checks(context, bank=bank)
     failed = [r for r in results if not r["passed"]]
     payload = {
@@ -224,7 +225,7 @@ def gate0_payload(tree: ModelTree, *, producing_commit: str,
                   cap: int = C.COMPLETION_CAPS[-1], device: int = 0,
                   generate: Callable[..., dict[str, Any]] | None = None
                   ) -> dict[str, Any]:
-    bank = bank if bank is not None else load_bank()
+    bank = bank_for(tree.context, bank=bank)
     prescreen = list(bank.topics("prescreen"))
     chosen: list[dict[str, Any]] = []
     for area in C.SUBJECT_AREAS:

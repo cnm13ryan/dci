@@ -39,15 +39,18 @@ from dci1v8dev.run import EVIDENCE_DIRNAME, STUDY_ID
 from dci1v8dev.run import stages as S
 
 __all__ = ["DCI1_ROOT", "REPO_ROOT", "SYNTHETIC_STUDY_ID",
+           "TOPIC_REPLICATE_STUDY_ID", "topic_replicate_context",
            "STUDY_ID_OF_NAMESPACE", "StudyContext", "ModelTree",
            "pilot_context", "synthetic_context", "model_tree",
            "foreign_roots", "assert_isolated_root", "is_superseded",
            "current_files", "MANIFEST_FILENAME"]
 
 SYNTHETIC_STUDY_ID = f"{STUDY_ID}-synthetic"
+TOPIC_REPLICATE_STUDY_ID = f"{STUDY_ID}-topicrep"
 STUDY_ID_OF_NAMESPACE = {"pilot": STUDY_ID, "synthetic": SYNTHETIC_STUDY_ID,
                          "confirm": STUDY_ID,
-                         "confirm-synthetic": SYNTHETIC_STUDY_ID}
+                         "confirm-synthetic": SYNTHETIC_STUDY_ID,
+                         S.TOPIC_REPLICATE_NAMESPACE: TOPIC_REPLICATE_STUDY_ID}
 MANIFEST_FILENAME = "pilot_manifest.json"
 
 DCI1_ROOT = Path(__file__).resolve().parents[3]
@@ -157,6 +160,20 @@ def pilot_context(root: Path, *, repo_root: Path | str | None = None
                   ) -> StudyContext:
     root = Path(root)
     return StudyContext(namespace="pilot", study_id=STUDY_ID,
+                        repo_root=Path(repo_root) if repo_root is not None
+                        else REPO_ROOT,
+                        evidence_root=root / "evidence",
+                        durable_root=root / "durable")
+
+
+def topic_replicate_context(root: Path, *, repo_root: Path | str | None = None
+                            ) -> StudyContext:
+    """The methodology-validation namespace: the pilot lifecycle on a
+    re-partitioned pre-freeze topic pool, under a study id the confirm
+    layer refuses (``run.topic_replicate``)."""
+    root = Path(root)
+    return StudyContext(namespace=S.TOPIC_REPLICATE_NAMESPACE,
+                        study_id=TOPIC_REPLICATE_STUDY_ID,
                         repo_root=Path(repo_root) if repo_root is not None
                         else REPO_ROOT,
                         evidence_root=root / "evidence",

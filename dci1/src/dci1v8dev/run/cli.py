@@ -28,7 +28,8 @@ from dci1v4.errors import IntegrityError
 from dci1v8dev.run import stages as S
 from dci1v8dev.run import transitions
 from dci1v8dev.run.context import (REPO_ROOT, ModelTree, model_tree,
-                                   pilot_context, synthetic_context)
+                                   pilot_context, synthetic_context,
+    topic_replicate_context)
 from dci1v8dev.run import (calibration, instrument, qualification, references,
                            regime, registration, report, rescreen)
 from dci1v8dev.run.contracts import audit_contracts, matrix_markdown
@@ -59,7 +60,8 @@ def assert_every_stage_has_a_runner() -> None:
 
 assert_every_stage_has_a_runner()
 
-ROOTED_NAMESPACES = {"pilot": pilot_context, "synthetic": synthetic_context}
+ROOTED_NAMESPACES = {"pilot": pilot_context, "synthetic": synthetic_context,
+                     S.TOPIC_REPLICATE_NAMESPACE: topic_replicate_context}
 
 
 def _context(root: str | None, namespace: str | None):
