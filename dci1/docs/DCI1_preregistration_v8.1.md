@@ -1,9 +1,10 @@
 # DCI-1 protocol v8.1 — preregistration (standalone; frame-aware pre-screen)
 
-Status: DRAFT (successor design of 2026-09-03; the successor pilot roots and
-the confirmatory root of Appendix B are named when the pilots have run, and
-the status becomes FROZEN-READY only when every number here and in the code
-agree and the researcher's remaining decision of §10.9 is taken). This
+Status: FROZEN-READY (successor design of 2026-09-03, registered
+2026-09-08; the successor pilot roots are named in Appendix B, the
+researcher's decisions of §10 item 9 and Appendix B are taken, the
+pre-freeze methodology-validation evidence is complete and summarised in
+Appendix D, and Appendix C records what changed from the DRAFT). This
 document supersedes `DCI1_preregistration_v8.md` **for the successor design
 only**: the frozen v8 root `dci1v8-confirm-r2` (2026-09-03, `f7af7f2`), its
 records and its preregistration are immutable historical evidence of the
@@ -843,3 +844,57 @@ plan are **unchanged from the DRAFT**. In particular the operating-point
 rule was not redesigned in response to the instability the validation
 evidence documents (Appendix D); the registered response to an unstable
 operating point remains the runner-up arm that §11.4 already specified.
+
+## Appendix D — pre-freeze methodology-validation evidence
+
+Three kinds of evidence stand behind the pre-freeze pipeline. They answer
+different questions and license different claims; the record is
+`reports/dci1v8dev/frame_aware_prescreen/prescreen_revalidation.md`.
+
+1. **Historical v8 bootstrap evidence** (roots `dci1v8-pilot-r9`, `-r10`,
+   `-r12`, `-r13`, and the frozen root `dci1v8-confirm-r2`). Produced under
+   the superseded pooled-screen design. It is what the successor design was
+   developed against and what §10's counterfactual replay was run on. It is
+   immutable historical evidence, is **not** bound by this freeze, and no
+   number in it enters a v8.1 verdict except through the comparator arms
+   that re-measure a policy on v8.1's own rows.
+2. **Decoding re-executions** (`-r19` … `-r21`, `-r24`, `-r25`, and the
+   v8-design control `-r26`). A second run of the same design on the *same*
+   topics and seeds; what varies is the backend's decoding, which on this
+   stack reproduces 51–100 % of rows verbatim depending on the model. These
+   answer: does a verdict survive run-to-run decoding nondeterminism? Over
+   16 frame-comparisons every LOCAL verdict and every model's eligibility
+   agreed; forwarded sets overlapped at 0.59–1.00.
+3. **Topic-resampled replicates** (`-t1-<model>`, one per model,
+   prespecified in `V8_TOPIC_RESAMPLED_VALIDATION.md` and run before this
+   document was registered). A fresh area-stratified partition of the 216
+   pre-freeze topics into the pilot's three roles under a domain-separated
+   seed, every rule unchanged, in a namespace whose study id
+   `confirm/pilot_import` refuses. These answer: does a verdict survive
+   which pre-freeze topics landed in which role? Over 14 supported frames
+   the LOCAL verdicts agreed on 13, SPECTRUM identification on 13 and the
+   operating points on 11; model eligibility agreed on three of four
+   models; forwarded sets overlapped at 0.51–0.77.
+
+**What this licenses, and what it does not.** It supports the claim that
+the pipeline's *verdicts* are substantially more stable than the rungs and
+references it selects, and it bounds that stability honestly: one model's
+eligibility (qwen3-4b-instruct-2507) and three frames' operating points do
+move under a different pre-freeze topic sample. It does **not** license any
+change to this preregistration. In particular:
+
+- The eligibility of qwen3-4b-instruct-2507 is decided by §13.15 and
+  `LOCAL_ELIGIBILITY_MIN_FRAMES` on the pilot root this freeze binds
+  (`dci1v8-pilot-r15`, LOCAL on frames 1 and 3). The replicate's contrary
+  result is reported as a limitation beside that model's confirmatory
+  result; it is not an adaptive criterion and does not remove the model,
+  add an arm, or move a threshold.
+- The knife-edge operating points (gemma-3n-e2b-it frame 0;
+  qwen3-4b-instruct-2507 frame 0) are handled by the rule already
+  registered: §11's selection on the bound pilot's grids, plus §11.4's
+  runner-up arm wherever §12.3's re-selection bootstrap marks a LOCAL
+  frame's coordinate `OPERATING_POINT_UNSTABLE`, checked by §19.1 item 4.
+  No band, aim or tie-break was changed in response to this evidence.
+- No replicate root is bound by the confirmatory manifest, and none can be:
+  `confirm/pilot_import` admits study id `dci1v8` only, while a replicate
+  root carries `dci1v8-topicrep`.
