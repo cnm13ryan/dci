@@ -445,14 +445,90 @@ r14's screen, the number a uniform re-deal predicts (24 × 24 / 216 ≈ 2.7).
 The manifest binds the re-partitioned split hash (`a1e99d384d72…`) beside
 the carried one (`c10f17bc5846…`).
 
-| model | replicate root | card | status |
-|---|---|---|---|
-| qwen3-4b | `dci1v8-pilot-t1-qwen3-4b` | 0 | pending |
-| qwen3-4b-instruct-2507 | `dci1v8-pilot-t1-qwen3-4b-instruct-2507` | 0 | pending |
-| gemma-3n-e2b-it | `dci1v8-pilot-t1-gemma-3n-e2b-it` | 0 | pending |
-| gemma-3n-e4b-it | `dci1v8-pilot-t1-gemma-3n-e4b-it` | 1 | pending |
+All four reached `PILOT_REPORT` (2026-09-07 19:33Z to 2026-09-08 15:18Z).
+gemma-3n-e4b-it's Gate 2 was killed once by the host's out-of-memory
+handler while two Gate-2 tails overlapped; its candidate rows were complete
+and generated, the new reuse guard (§4) admitted them, and the retry
+redid only the scoring tail — the guard's first use on a real 265,728-row
+run.
 
-*Results pending; filled from the signed records when the roots complete.*
+| model | replicate root | supported frames | n\*(f) pilot → replicate | LOCAL frames | eligible | forwarded Jaccard |
+|---|---|---|---|---|---|---|
+| qwen3-4b | `…t1-qwen3-4b` | {0,1,2,3} = {0,1,2,3} | 6, 7, 3, **5→4** | {0,1,2,3} = {0,1,2,3} | yes = yes | 0.65 · 0.58 · 0.62 · 0.67 |
+| qwen3-4b-instruct-2507 | `…t1-qwen3-4b-instruct-2507` | {1,3} = {1,3} | **6→5**, 6 | {1,3} → **{3}** | yes → **no** | 0.65 · 0.64 |
+| gemma-3n-e2b-it | `…t1-gemma-3n-e2b-it` | {0,1,2,3} = {0,1,2,3} | **8→3**, 3, 2, 7 | {0,1,3} = {0,1,3} | yes = yes | 0.51 · 0.61 · 0.57 · 0.56 |
+| gemma-3n-e4b-it | `…t1-gemma-3n-e4b-it` | {0,1,2,3} = {0,1,2,3} | 6, 6, 7, 8 (all equal) | {0,1,3} = {0,1,3} | yes = yes | 0.64 · 0.77 · 0.60 · 0.60 |
+
+Family and backup counts, pilot → replicate, and the legacy comparator
+re-verdicted on the replicate's own rows:
+
+| model | f | pilot own | replicate own | replicate legacy | LOCAL verdict | SPECTRUM |
+|---|---:|---|---|---|---|---|
+| qwen3-4b | 0 / 1 / 2 / 3 | 5/2 · 5/2 · 6/2 · 6/2 | 7/2 · 6/2 · 5/2 · 6/2 | 7/2 · 6/2 · 5/2 · 6/2 | agrees on 4/4 | agrees on 4/4 |
+| qwen3-4b-instruct-2507 | 1 | 6/2 **L** | **4/1 l** | 3/0 | **disagrees** | agrees |
+| qwen3-4b-instruct-2507 | 3 | 5/2 **L** | 6/2 **L** | **6/2** | agrees | agrees |
+| gemma-3n-e2b-it | 0 / 1 / 2 / 3 | 5/2 · 5/2 · 3/0 · 7/2 | 5/2 · 6/2 · 3/0 · 6/2 | 5/2 · 6/2 · 2/0 · 5/2 | agrees on 4/4 | **f2 identified → not** |
+| gemma-3n-e4b-it | 0 / 1 / 2 / 3 | 7/2 · 6/2 · 4/1 · 8/2 | 7/2 · 6/2 · 3/0 · 7/2 | 6/2 · 6/2 · 4/1 · 7/2 | agrees on 4/4 | agrees on 4/4 |
+
+**Summary over the 14 supported frames.** LOCAL verdicts agree on 13;
+SPECTRUM identification agrees on 13; operating points agree on 11; model
+eligibility agrees on 3 of the 4 models. Forwarded sets overlap at
+0.51–0.77. Core reference triples (family and severity together) are
+identical on 3 of 14 frames and the core *families* on 7; admissible
+backups are identical on 3.
+
+**The one eligibility disagreement.** qwen3-4b-instruct-2507 frame 1 carries
+6 LOCAL-valid families and 2 backups in the pilot and 4 and 1 in the
+replicate, below §13.15's minimum, so the replicate's LOCAL set is {3}
+alone and the model is **not eligible** under
+`LOCAL_ELIGIBILITY_MIN_FRAMES` = 2. The measurement is sound on both
+sides: the frame is `SUPPORTED` at Gate 2 in both, on the same chance basis
+(κ = 0), with ι_A(f) 0.652 against 0.641, and both runs' row accounting is
+complete (`every_row_scored`, 138,240 and 137,472 candidate rows). This is
+a genuine sensitivity of that model's eligibility to which pre-freeze
+topics land in which role, not an artefact and not a defect.
+
+**Two knife-edge frames confirmed as such.** gemma-3n-e2b-it frame 0 has
+now selected n\* = 1 (v8), 8 (both successor re-executions) and 3 (this
+replicate) under the unchanged rule on an unchanged eligible set — three
+values across three samples of the same 216-topic pool. qwen3-4b-instruct-2507
+frame 3, already shown marginal for the pooled rule under decoding noise
+(§3.6), is 6/2 here under *both* policies, so the frame-aware advantage
+seen in r15 and r20 is not reproduced on this topic sample either.
+
+**Decoding stability versus topic-sampling stability.** The two experiments
+are directly comparable because both re-run the same design against the
+same pilot:
+
+| | decoding re-executions (16 frame-comparisons) | topic-resampled (14 frame-comparisons) |
+|---|---|---|
+| LOCAL verdicts agreeing | 16 of 16 | 13 of 14 |
+| model eligibility agreeing | 4 of 4 | 3 of 4 |
+| forwarded-set Jaccard | 0.59–1.00 | 0.51–0.77 |
+| core reference triples identical | 5 of 16 | 3 of 14 |
+| core reference families identical | 8 of 16 | 7 of 14 |
+| admissible backups identical | 8 of 16 | 3 of 14 |
+
+Topic sampling is the larger source of variation on every measure, but not
+by a wide margin, and the pipeline's *verdicts* are far more stable than
+the objects it selects: which rungs are forwarded and which references are
+chosen move substantially under both perturbations, while the LOCAL and
+SPECTRUM decisions mostly do not. gemma-3n-e4b-it is the clean contrast —
+its decoding is deterministic on this stack (forwarded-set Jaccard
+0.88–1.00, every verdict and operating point identical), so its
+topic-resampled figures (0.60–0.77, one family-count change) isolate topic
+sampling with no decoding noise at all.
+
+**What this changes.** The robustness claim is narrowed, and the
+limitations of §5 are extended: three of four models reproduce their
+pre-freeze verdict under a different pre-freeze topic sample, and one does
+not. It changes nothing in v8.1 — not basis C, not the pre-screen
+thresholds, not the forwarding policy, not the operating-point rule or its
+bands, not the LOCAL/SPECTRUM thresholds, not eligibility, not the
+reference-ranking rule, not the estimands or the multiplicity plan. The
+confirmatory freeze binds the pilot roots (`r14`, `r15`, `r16`, `r23`), as
+prespecified in `V8_TOPIC_RESAMPLED_VALIDATION.md` §8; no replicate root
+can be bound, and `confirm/pilot_import` refuses one by study id.
 
 ## 4. Validation
 
@@ -515,56 +591,72 @@ suites below therefore validate the code the roots were produced by.
 
 ## 5. Freeze-readiness verdict
 
-*All four models have a first successor run and a replicate, 2507 a third run; the v8-design control r26 (§2) is appended when it lands.*
+*Complete: every model has a first successor run, a decoding re-execution
+and a topic-resampled replicate; qwen3-4b-instruct-2507 also has a third
+run and a v8-design control.*
 
-**RESEARCHER_DECISION_REQUIRED.** Nothing technical blocks a freeze under
-the registered rule: every stage from `REGIME_SCREEN` regenerates in fresh
-roots, the contracts and readiness item 11 refuse a v8 pilot, the frozen
-root `dci1v8-confirm-r2` is superseded for this successor design and not
-altered, and the pilots give the intended effect (frame-specific sets that
-are at least as supported as the pooled set on the same rows, and two
-frames — 2507 f3 and e4b f0 — where the frame's set is supported and the
-pooled set is not on identical rows, the pooled set being marginal on 2507
-f3 rather than reliably failing there, §3.6) and
-the effect replicates (§3.5: 14 of 14 LOCAL verdicts agree between the
-successor runs of every model, under decoding noise on fixed topics). Three decisions remain the researcher's
-and the evidence does not force them:
+**READY_TO_FREEZE.** The four decisions of 2026-09-07 are taken and
+registered, and nothing technical blocks the freeze: every stage from
+`REGIME_SCREEN` regenerates in fresh roots, the contracts and readiness
+item 11 refuse a v8 pilot, the frozen root `dci1v8-confirm-r2` is
+superseded for this successor design and not altered, and the pilots give
+the intended effect — frame-specific sets at least as supported as the
+pooled set on the same rows, and two frames (2507 f3 and e4b f0) where the
+frame's set is supported and the pooled set is not on identical rows.
 
-1. **The target basis.** C (registered, run) and A (comparator) are
-   scientifically non-equivalent — they forward different rungs — and
-   empirically indistinguishable on outcome (§3.4). Ratifying C freezes
-   what was run; choosing A requires re-running Gate 2 onward, because the
-   forwarded sets differ.
-2. **Knife-edge operating points on fresh grids.** gemma-3n-e2b-it frame
-   0 flipped from n\* = 1 (v8) to n\* = 8 (both successor runs) on the
-   same eligible set (§3.1), and qwen3-4b-instruct-2507 frame 0 flipped
-   from unsupported (grid resolution, v8 and first successor run) to
-   supported at n\* = 4, ι_A = 0.85 in the replicate (§3.5), under the
-   unchanged rule and on the *same* topics and seeds: decoding
-   nondeterminism alone moves these frames. A successor confirm root
-   carries whichever the pilot it binds read; whether that is acceptable,
-   or the rule's behaviour at band edges and on non-monotone curves should
-   be resolved first, is a question about the operating-point rule, not
-   this redesign.
-4. **What a replicate should vary.** Every root of a model shares its
-   topics and seeds, so the replicates of §3.5 measure decoding noise, not
-   topic sampling. If topic-resampled stability is wanted before a freeze,
-   a replicate needs a distinct replicate seed under the seed regime, which
-   is a governed choice and is not made here.
-3. **The e4b pilot's commit.** `dci1v8-pilot-r23` runs at `7d8e1d9` (the
-   backend cap raised to 36 h) while r14, r15, r16 and the replicates ran
-   at `025e138`. The confirm layer records each pilot's producing commit
-   (`confirm/pilot_import`) and does not itself refuse a mixture, but a
-   freeze that binds two commits needs the researcher's sanction or a
-   rerun of the other three models at `7d8e1d9` (about 20 card-hours).
+### The decisions, as registered
 
-Recorded follow-ups, not blocking: an out-of-memory kill of a stage leaves
-its engine core alive on the card and the driver's retry then fails on
-GPU memory (§2), so the driver should kill the backend's process group
-and check the card before retrying; rungs of the class and near-form arms
-are forwarded to a design with no such arm (`legacy_prescreen_characterization.md`, the second-pass section); the successor
-Gate 2 scores every grid row on every rung any policy could forward
-(≈ 24 GB per lane at the grids, ≈ 52 GB at the candidate run), so two
-lanes need a memory guard — scoring in two passes would cut it about four
-times; and the `V8_CONFIRMATORY` §3a seven-versus-six discrepancy noted
-during the characterization.
+1. **Target basis: C.** `RETENTION_TARGET_BASIS = "calibration_iota_a"`,
+   decided on the precision argument, with basis A generated and
+   re-verdicted as a comparator that decides nothing. The two bases forward
+   measurably different sets (Jaccard 0.63–0.97) and reach the same family
+   count, backup count and §13.15 verdict on all 14 supported frames
+   (§3.4).
+2. **The operating-point rule is unchanged**, including its bands and
+   aims. Where a frozen operating point is unstable the registered response
+   is the runner-up arm of §11.4 and §17.3, which the confirmatory design
+   already carries; the primary result stays conditional on the frozen
+   point.
+3. **Mixed pilot commits accepted.** `git diff 025e138 7d8e1d9` touches one
+   source file and within it one constant, the backend wall-clock cap; 71
+   of 72 hashed package files are identical between roots and the `rules`,
+   `protocol`, `documents` and `wording_diagnostic` bindings are identical
+   across all four. No scientific rule differs, so the other three models
+   are not re-run for commit uniformity (§2).
+4. **One topic-resampled replicate per model, run and reported** (§3.7),
+   after which scientific design iteration stopped.
+
+### Limitations recorded with the freeze, not resolved by it
+
+1. **Eligibility at the margin (2507).** The model the freeze binds is
+   LOCAL-eligible on {1, 3}; under a different partition of the same 216
+   pre-freeze topics the same pipeline gives {3} alone and no eligibility
+   (§3.7). The registered rule decides on the bound pilot, so the model
+   enters. Whether that closeness should be reported alongside its
+   confirmatory result is a reporting decision, not a rule change.
+2. **Knife-edge operating points.** gemma-3n-e2b-it frame 0 has selected
+   n\* = 1, 8 and 3 across three samples under the unchanged rule on an
+   unchanged eligible set, and qwen3-4b-instruct-2507 frame 0 has moved
+   between unsupported and supported under decoding noise alone. The
+   confirmatory root carries whichever value its bound pilot read, and the
+   runner-up arm is the registered instrument for exactly this (decision 2).
+3. **What the pre-freeze estimator selects is less stable than what it
+   decides.** Forwarded sets overlap at 0.51–0.77 under topic resampling
+   and 0.59–1.00 under decoding noise; core reference triples are identical
+   on 3 of 14 and 5 of 16 frames respectively. The LOCAL and SPECTRUM
+   verdicts are far more stable than the rungs and references behind them
+   (§3.7).
+4. **2507 frame 3's attribution is weaker than a paired reading suggests.**
+   The pooled rule is marginal there rather than reliably failing: it
+   clears §13.15 in two of five observations (§3.6).
+
+### Follow-ups, none blocking
+
+The reuse defect is fixed and guarded (§4). Still open operationally: an
+out-of-memory kill leaves the backend's engine core alive on the card, so
+the driver should kill the backend's process group and check the card
+before retrying; Gate 2 holds every scored candidate row in memory, so two
+lanes' tails do not fit in 91 GB and are serialised by hand; rungs of the
+class and near-form arms are forwarded to a design with no such arm; and
+the `V8_CONFIRMATORY` §3a seven-versus-six discrepancy noted during the
+characterization.

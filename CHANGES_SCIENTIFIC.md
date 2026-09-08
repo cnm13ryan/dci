@@ -128,10 +128,40 @@ pass, pilot-only comparator arms) and 3 % for 2507. gemma-3n-e4b-it's
 first two successor roots were lost to a pre-existing reuse defect and to
 the pilot layer's 12 h backend cap (record §2; the cap is raised to 36 h
 on `7d8e1d9`, an operational change with no entry of its own), and its
-valid runs r23/r24 are at that commit. Verdict: RESEARCHER_DECISION_REQUIRED — the
-target basis (C registered, A comparator), the knife-edge operating points
-on fresh grids, and whether a freeze may bind pilots at two commits that
-differ only in the cap. Nothing is frozen; no composed row exists.
+valid runs r23/r24 are at that commit. Verdict: **READY_TO_FREEZE** (2026-09-08), the four researcher decisions
+having been taken and registered: basis C (A a comparator only); the
+operating-point rule unchanged, with §11.4's runner-up arm as the
+registered response to an unstable point; mixed pilot commits accepted on
+an audited operational-only difference; and one topic-resampled
+methodology-validation replicate per model run before the freeze.
+
+**Topic-resampled validation (2026-09-07/08, prespecified in
+`dci1/docs/V8_TOPIC_RESAMPLED_VALIDATION.md`, roots
+`dci1v8-pilot-t1-<model>`).** The earlier re-executions shared their
+topics and seeds and therefore measured decoding nondeterminism only. A
+replicate re-partitions the 216 pre-freeze topics (prescreen,
+calibration A, calibration B) into the same roles, area-stratified, under
+a domain-separated seed, reserved sets untouched, every scientific rule
+unchanged, in a namespace whose study id the confirmatory layer refuses.
+Over the 14 supported frames the LOCAL verdicts agree on 13, SPECTRUM
+identification on 13 and the operating points on 11; model eligibility
+agrees on three of four models. The exception is
+**qwen3-4b-instruct-2507**, whose frame 1 falls from 6 LOCAL-valid
+families and 2 backups to 4 and 1 — below §13.15 — leaving one LOCAL frame
+and no eligibility, on a sound measurement (same frame status, same chance
+basis, ι_A 0.652 against 0.641, complete row accounting on both sides).
+Forwarded sets overlap at 0.51–0.77 against 0.59–1.00 under decoding noise,
+and core reference triples are identical on 3 of 14 frames against 5 of 16.
+So topic sampling is the larger perturbation on every measure, and the
+pipeline's verdicts are markedly more stable than the rungs and references
+it selects. gemma-3n-e2b-it frame 0 has now chosen n\* = 1, 8 and 3 across
+three samples under the unchanged rule.
+
+This is methodology-validation evidence and changes no rule: the freeze
+binds the pilot roots (r14, r15, r16, r23) and no replicate root can be
+bound. The affected claims are the robustness claim, which is narrowed to
+"three of four models reproduce their pre-freeze verdict under a different
+pre-freeze topic sample", and the limitations carried with the freeze.
 
 ---
 

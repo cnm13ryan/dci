@@ -811,3 +811,35 @@ rule-table hash, this document's hash, the wording hash
 (`fe3b5be1…`) and verifier hash (`ea885b0d…`) current at writing (the
 record's values are authoritative), the analysis code hashes, the pilot
 record hashes, the membership lock hash, the environment record.
+
+## Appendix C — what changed between DRAFT and this registered text
+
+This document was drafted on 2026-09-03 with the successor design, and
+registered on 2026-09-08 after the pre-freeze evidence was complete. The
+changes are these, and nothing else; every one of them records a decision
+already taken or a fact already on the evidence record, and none introduces
+a scientific rule that the code does not execute.
+
+1. **Status.** `DRAFT` → `FROZEN-READY`.
+2. **§10 item 9, the retention target.** Was an open researcher decision
+   between the calibrated basis (C) and the screen proxy (A), to be settled
+   by the successor pilots. Now a registered decision: basis C, with basis A
+   kept as a comparator arm that decides nothing. The pilots' evidence — the
+   same family count, backup count and verdict on all 14 supported frames,
+   with measurably different forwarded sets — is cited.
+3. **Appendix B, pilot provenance.** The successor roots, their models,
+   their commits and their outcomes are named, and the mixed pilot commits
+   (`025e138` and `7d8e1d9`) are accepted on an audited operational-only
+   difference, stated with the audit's evidence.
+4. **Appendix D (new), methodology-validation evidence.** Records the three
+   kinds of pre-freeze robustness evidence and what each does and does not
+   license.
+
+The operating-point rule of §11, its bands and aims, the runner-up
+sensitivity arm of §11.4 and §17.3, the reference-ranking rule, the
+LOCAL/SPECTRUM validity thresholds, the eligibility rule, the confirmatory
+allocation, the estimands, the inference thresholds and the multiplicity
+plan are **unchanged from the DRAFT**. In particular the operating-point
+rule was not redesigned in response to the instability the validation
+evidence documents (Appendix D); the registered response to an unstable
+operating point remains the runner-up arm that §11.4 already specified.

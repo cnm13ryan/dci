@@ -471,8 +471,17 @@ verdict. The replicates re-execute the same topics and seeds (pilot seeds
 are deterministic per model and stage), so they measure decoding
 nondeterminism, not topic sampling. What does not replicate is one stage
 earlier: the operating-point rule flips at band edges under that noise
-alone (e2b f0 n\* 1 → 8; 2507 f0 unsupported → supported). Verdict RESEARCHER_DECISION_REQUIRED (target
-basis; operating-point rule; one or two commits). Not frozen.
+alone (e2b f0 n\* 1 → 8; 2507 f0 unsupported → supported). **Topic-resampled validation (2026-09-08).** One replicate per model on a
+fresh area-stratified partition of the 216 pre-freeze topics (prespecified,
+`dci1/docs/V8_TOPIC_RESAMPLED_VALIDATION.md`): LOCAL verdicts agree on 13
+of 14 frames, eligibility on 3 of 4 models. qwen3-4b-instruct-2507 is the
+exception — its frame 1 falls below §13.15 under the resampled topics and
+the model would be ineligible. Forwarded sets overlap 0.51–0.77 (decoding
+noise: 0.59–1.00), so what the estimator *selects* moves much more than
+what it *decides*. Verdict **READY_TO_FREEZE**: basis C registered, the
+operating-point rule unchanged with its runner-up arm, mixed pilot commits
+accepted on an audited operational-only difference. The freeze binds the
+pilot roots; no replicate root can be bound.
 
 ### 4c. The reference-pool tension, and what was screened against it (2026-08-20)
 

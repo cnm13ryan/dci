@@ -15,10 +15,10 @@
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-r25` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | `dci1v8-pilot-r14` | PILOT_REPORT | `dci1v8-pilot-r21` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | `dci1v8-pilot-r23` | PILOT_REPORT | `dci1v8-pilot-r24` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | `dci1v8-pilot-r14` | PILOT_REPORT | `dci1v8-pilot-t1-qwen3-4b` | pending | — | 4 → — | 24 → — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-t1-qwen3-4b-instruct-2507` | pending | — | 4 → — | 24 → — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | `dci1v8-pilot-r16` | PILOT_REPORT | `dci1v8-pilot-t1-gemma-3n-e2b-it` | pending | — | 4 → — | 24 → — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | `dci1v8-pilot-r23` | PILOT_REPORT | `dci1v8-pilot-t1-gemma-3n-e4b-it` | pending | — | 4 → — | 24 → — |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | `dci1v8-pilot-r14` | PILOT_REPORT | `dci1v8-pilot-t1-qwen3-4b` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | `dci1v8-pilot-r15` | PILOT_REPORT | `dci1v8-pilot-t1-qwen3-4b-instruct-2507` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | `dci1v8-pilot-r16` | PILOT_REPORT | `dci1v8-pilot-t1-gemma-3n-e2b-it` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | `dci1v8-pilot-r23` | PILOT_REPORT | `dci1v8-pilot-t1-gemma-3n-e4b-it` | PILOT_REPORT | — | 4 → 4 | 24 → 24 |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | `dci1v8-pilot-r10` | PILOT_REPORT | `dci1v8-pilot-r26` | PILOT_REPORT | — | 1 → 1 | 6 → 6 |
 
 ## Operating points and forwarding, per frame
@@ -61,22 +61,22 @@
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | SUPPORTED | 6/9 | 0.711 ± 0.019 | SUPPORTED | 6/9 | 0.711 ± 0.019 | 58 | 58 | 25 | 0.94 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | SUPPORTED | 7/9 | 0.676 ± 0.021 | SUPPORTED | 7/9 | 0.676 ± 0.021 | 61 | 61 | 26 | 0.87 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | SUPPORTED | 8/10 | 0.688 ± 0.019 | SUPPORTED | 8/10 | 0.688 ± 0.019 | 71 | 71 | 28 | 0.80 |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 0 | SUPPORTED | 6/12 | 0.674 ± 0.025 | pending | —/— | — ± — | 61 | — | — | — |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 1 | SUPPORTED | 7/12 | 0.608 ± 0.025 | pending | —/— | — ± — | 65 | — | — | — |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 2 | SUPPORTED | 3/12 | 0.673 ± 0.025 | pending | —/— | — ± — | 62 | — | — | — |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 3 | SUPPORTED | 5/13 | 0.702 ± 0.024 | pending | —/— | — ± — | 53 | — | — | — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 1 | SUPPORTED | 6/10 | 0.652 ± 0.023 | pending | —/— | — ± — | 68 | — | — | — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | pending | —/— | — ± — | — | — | — | — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 3 | SUPPORTED | 6/12 | 0.673 ± 0.023 | pending | —/— | — ± — | 65 | — | — | — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 0 | SUPPORTED | 8/8 | 0.642 ± 0.019 | pending | —/— | — ± — | 56 | — | — | — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 1 | SUPPORTED | 3/10 | 0.635 ± 0.020 | pending | —/— | — ± — | 55 | — | — | — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 2 | SUPPORTED | 2/10 | 0.797 ± 0.020 | pending | —/— | — ± — | 45 | — | — | — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 3 | SUPPORTED | 7/11 | 0.686 ± 0.019 | pending | —/— | — ± — | 71 | — | — | — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 0 | SUPPORTED | 6/9 | 0.745 ± 0.018 | pending | —/— | — ± — | 60 | — | — | — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 1 | SUPPORTED | 6/9 | 0.711 ± 0.019 | pending | —/— | — ± — | 58 | — | — | — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 2 | SUPPORTED | 7/9 | 0.676 ± 0.021 | pending | —/— | — ± — | 61 | — | — | — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 3 | SUPPORTED | 8/10 | 0.688 ± 0.019 | pending | —/— | — ± — | 71 | — | — | — |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 0 | SUPPORTED | 6/12 | 0.674 ± 0.025 | SUPPORTED | 6/12 | 0.671 ± 0.026 | 61 | 63 | 15 | 0.94 |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 1 | SUPPORTED | 7/12 | 0.608 ± 0.025 | SUPPORTED | 7/12 | 0.618 ± 0.025 | 65 | 68 | 22 | 0.71 |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 2 | SUPPORTED | 3/12 | 0.673 ± 0.025 | SUPPORTED | 3/12 | 0.684 ± 0.024 | 62 | 64 | 18 | 0.87 |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 3 | SUPPORTED | 5/13 | 0.702 ± 0.024 | SUPPORTED | 4/13 | 0.702 ± 0.022 | 53 | 57 | 16 | 0.95 |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 1 | SUPPORTED | 6/10 | 0.652 ± 0.023 | SUPPORTED | 5/10 | 0.641 ± 0.023 | 68 | 64 | 27 | 0.80 |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 3 | SUPPORTED | 6/12 | 0.673 ± 0.023 | SUPPORTED | 6/12 | 0.652 ± 0.023 | 65 | 68 | 20 | 0.96 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 0 | SUPPORTED | 8/8 | 0.642 ± 0.019 | SUPPORTED | 3/8 | 0.624 ± 0.021 | 56 | 59 | 24 | 0.77 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 1 | SUPPORTED | 3/10 | 0.635 ± 0.020 | SUPPORTED | 3/10 | 0.622 ± 0.021 | 55 | 56 | 21 | 0.83 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 2 | SUPPORTED | 2/10 | 0.797 ± 0.020 | SUPPORTED | 2/10 | 0.812 ± 0.019 | 45 | 38 | 26 | 0.88 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 3 | SUPPORTED | 7/11 | 0.686 ± 0.019 | SUPPORTED | 7/11 | 0.672 ± 0.019 | 71 | 63 | 32 | 0.71 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 0 | SUPPORTED | 6/9 | 0.745 ± 0.018 | SUPPORTED | 6/9 | 0.728 ± 0.019 | 60 | 63 | 14 | 0.97 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 1 | SUPPORTED | 6/9 | 0.711 ± 0.019 | SUPPORTED | 6/9 | 0.706 ± 0.020 | 58 | 57 | 23 | 0.97 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 2 | SUPPORTED | 7/9 | 0.676 ± 0.021 | SUPPORTED | 7/9 | 0.678 ± 0.021 | 61 | 64 | 25 | 0.86 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 3 | SUPPORTED | 8/10 | 0.688 ± 0.019 | SUPPORTED | 8/10 | 0.678 ± 0.020 | 71 | 68 | 32 | 0.90 |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 0 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | SUPPORTED | 6/10 | 0.642 ± 0.024 | SUPPORTED | 6/10 | 0.650 ± 0.024 | 64 | 65 | 0 | — |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 2 | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | UNSUPPORTED (GRID_RESOLUTION_INSUFFICIENT) | —/— | — ± — | — | — | — | — |
@@ -124,22 +124,22 @@ fam/bk/C|c/L|l = LOCAL-valid families / admissible backups / coverage identified
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | 6/2/C/L | 9/41 | 6/2/C/L | 9/41 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | 4/1/C/l | 6/35 | 4/1/C/l | 6/34 | 4/1/C/l | 4/1/C/l | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | 8/2/C/L | 17/38 | 8/2/C/L | 18/38 | 6/2/C/L | 8/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 0 | 5/2/C/L | 11/26 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 1 | 5/2/C/L | 7/37 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 2 | 6/2/C/L | 13/33 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 3 | 6/2/C/L | 9/31 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 0 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 1 | 6/2/C/L | 15/38 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 2 | —/—/c/l | —/— | pending | —/— | — | — | UNSUPPORTED → pending |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 3 | 5/2/C/L | 6/35 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 0 | 5/2/C/L | 11/34 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 1 | 5/2/C/L | 12/37 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 2 | 3/0/C/l | 4/28 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 3 | 7/2/C/L | 14/39 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 0 | 7/2/C/L | 9/39 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 1 | 6/2/C/L | 9/41 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 2 | 4/1/C/l | 6/35 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 3 | 8/2/C/L | 17/38 | pending | —/— | — | — | LOCAL_AND_SPECTRUM → pending |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 0 | 5/2/C/L | 11/26 | 7/2/C/L | 13/36 | 7/2/C/L | 7/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 1 | 5/2/C/L | 7/37 | 6/2/C/L | 11/37 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 2 | 6/2/C/L | 13/33 | 5/2/C/L | 11/39 | 5/2/C/L | 5/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 3 | 6/2/C/L | 9/31 | 6/2/C/L | 10/34 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 0 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 1 | 6/2/C/L | 15/38 | 4/1/C/l | 7/40 | 3/0/C/l | 4/1/C/l | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 2 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 3 | 5/2/C/L | 6/35 | 6/2/C/L | 10/37 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 0 | 5/2/C/L | 11/34 | 5/2/C/L | 8/38 | 5/2/C/L | 5/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 1 | 5/2/C/L | 12/37 | 6/2/C/L | 12/42 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 2 | 3/0/C/l | 4/28 | 3/0/c/l | 4/26 | 2/0/c/l | 3/0/c/l | LOCAL_AND_SPECTRUM → LOCAL_ONLY |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 3 | 7/2/C/L | 14/39 | 6/2/C/L | 19/35 | 5/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 0 | 7/2/C/L | 9/39 | 7/2/C/L | 8/39 | 6/2/C/L | 7/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 1 | 6/2/C/L | 9/41 | 6/2/C/L | 9/41 | 6/2/C/L | 6/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 2 | 4/1/C/l | 6/35 | 3/0/C/l | 6/36 | 4/1/C/l | 3/0/C/l | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 3 | 8/2/C/L | 17/38 | 7/2/C/L | 16/40 | 7/2/C/L | 7/2/C/L | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 0 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | 7/2/C/L | 17/32 | 6/2/C/L | 17/28 | — | — | LOCAL_AND_SPECTRUM → LOCAL_AND_SPECTRUM |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 2 | —/—/c/l | —/— | —/—/c/l | —/— | — | — | UNSUPPORTED → UNSUPPORTED |
@@ -158,45 +158,59 @@ fam/bk/C|c/L|l = LOCAL-valid families / admissible backups / coverage identified
 | `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | [1, 3] | yes | [1, 3] | [1, 3] / yes | [1, 3] / yes | 290184 | 293160 |
 | `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] / yes | [0, 2, 3] / yes | 401640 | 396072 |
 | `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 2, 3] | [1, 3] / yes | [0, 1, 3] / yes | 442536 | 443688 |
-| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | pending | — | — | — / — | — / — | 401640 | — |
-| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | pending | — | — | — / — | — / — | 290184 | — |
-| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | pending | — | — | — / — | — / — | 403848 | — |
-| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | pending | — | — | — / — | — / — | 442536 | — |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] | yes | [0, 1, 2, 3] | [0, 1, 2, 3] / yes | [0, 1, 2, 3] / yes | 401640 | 404808 |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | [1, 3] | yes | [1, 3] | [3] | no | [1, 3] | [3] / no | [3] / no | 290184 | 289992 |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 3] | [0, 1, 3] / yes | [0, 1, 3] / yes | 403848 | 401736 |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] | yes | [0, 1, 2, 3] | [0, 1, 3] / yes | [0, 1, 3] / yes | 442536 | 414888 |
 | `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | [1] | no | [1, 3] | [1, 3] | yes | [1, 3] | — / — | — / — | 282000 | 290544 |
 
 ## Forwarded-set overlap and reference identity, per frame (old → new of each block)
 
-| block | f | forwarded Jaccard (shared/old/new) | core references old → new | core identical | backups old → new | backups identical |
-|---|---:|---|---|---|---|---|
-| `qwen3-4b` | 0 | — | MK1:4, XC3:10, MK8:2 → XC3:10, MK1:4, MK6:6 | no | MK2, MK6 → MK2, MK8 | no |
-| `qwen3-4b` | 1 | — | XC3:9, MK7:2, MK1:8 → MK7:2, XC3:9, MK2:7 | no | MK8 → MK1, MK8 | no |
-| `qwen3-4b` | 2 | — | MK1:6, MK2:3, MK7:2 → MK7:2, MK1:6, MK6:5 | no | MK6 → MK2, MK3 | no |
-| `qwen3-4b` | 3 | — | MK2:6, XC3:8, MK7:2 → XC3:8, MK2:5, MK7:2 | no | MK1, MK6 → MK1, MK5 | no |
-| `qwen3-4b-instruct-2507` | 1 | — | MK5:10, MK2:8, MK8:8 → MK2:8, MK5:6, MK3:2 | no | MK3, MK6 → MK8, MK6 | no |
-| `qwen3-4b-instruct-2507` | 3 | — | MK6:10, MK2:7, XC1:2 → MK6:10, MK8:3, MK7:6 | no |  → XC1, MK1 | no |
-| `gemma-3n-e2b-it` | 0 | — | MK1:4, MK8:3, MK5:6 → MK4:1, MK2:6, XC3:8 | no | XC3, MK4 → MK8, MK5 | no |
-| `gemma-3n-e2b-it` | 1 | — | XC3:9, MK4:4, MK1:4 → MK2:5, XC3:9, MK5:8 | no | MK5, MK2 → MK1, MK4 | no |
-| `gemma-3n-e2b-it` | 2 | — | MK2:1, MK5:4, MK4:2 → MK2:1, MK5:4, MK4:2 | yes |  →  | yes |
-| `gemma-3n-e2b-it` | 3 | — | MK4:5, XC3:8, MK2:1 → MK6:8, MK8:3, MK2:3 | no | MK5, MK8 → MK4, XC3 | no |
-| `gemma-3n-e4b-it` | 0 | — | MK2:6, MK1:5, MK4:8 → MK2:6, MK1:5, MK4:8 | yes | MK8, MK5 → MK8, XC3 | no |
-| `gemma-3n-e4b-it` | 1 | — | XC3:9, MK3:3, MK5:6 → MK3:3, XC3:9, MK5:6 | no | MK2, MK4 → MK2, MK4 | yes |
-| `gemma-3n-e4b-it` | 2 | — | MK2:6, MK5:8, MK4:7 → MK2:6, MK5:8, MK4:7 | yes | MK1 → MK1 | yes |
-| `gemma-3n-e4b-it` | 3 | — | MK2:8, MK3:1, XC3:10 → MK2:6, MK1:5, MK3:1 | no | MK1, MK4 → MK6, XC3 | no |
-| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 0 | 0.76 (47/56/53) | MK4:1, MK2:6, XC3:8 → MK4:1, XC3:10, MK2:6 | no | MK8, MK5 → MK8, MK1 | no |
-| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 1 | 0.72 (46/55/55) | MK2:5, XC3:9, MK5:8 → MK2:5, MK4:4, MK1:4 | no | MK1, MK4 → XC3, MK5 | no |
-| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 2 | 0.61 (33/45/42) | MK2:1, MK5:4, MK4:2 → MK5:4, MK2:1, MK4:2 | no |  →  | yes |
-| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 3 | 0.66 (57/71/73) | MK6:8, MK8:3, MK2:3 → MK5:6, MK4:5, MK8:3 | no | MK4, XC3 → MK2, XC3 | no |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 1 | 0.69 (56/68/69) | MK2:8, MK5:6, MK3:2 → MK5:10, MK2:8, MK8:8 | no | MK8, MK6 → MK1, MK6 | no |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 3 | 0.76 (57/65/67) | MK6:10, MK8:3, MK7:6 → MK8:3, MK6:10, MK2:9 | no | XC1, MK1 → XC1, MK1 | yes |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | 0.65 (53/68/67) | MK2:8, MK5:6, MK3:2 → MK2:8, MK5:11, MK7:4 | no | MK8, MK6 → MK8, MK6 | yes |
-| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | 0.72 (52/65/59) | MK6:10, MK8:3, MK7:6 → MK8:4, MK7:6, MK6:10 | no | XC1, MK1 → XC1, MK1 | yes |
-| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 0 | 0.78 (54/61/62) | XC3:10, MK1:4, MK6:6 → MK1:5, XC1:2, MK6:6 | no | MK2, MK8 → XC3, MK8 | no |
-| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 1 | 0.67 (55/65/72) | MK7:2, XC3:9, MK2:7 → XC3:9, MK7:2, MK2:7 | no | MK1, MK8 → MK1, MK8 | yes |
-| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 2 | 0.59 (46/62/62) | MK7:2, MK1:6, MK6:5 → MK1:6, MK2:3, MK7:2 | no | MK2, MK3 → MK3, MK6 | no |
-| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 3 | 0.65 (42/53/54) | XC3:8, MK2:5, MK7:2 → XC3:8, MK6:8, MK1:3 | no | MK1, MK5 → MK2, MK5 | no |
-| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 0 | 0.88 (56/60/60) | MK2:6, MK1:5, MK4:8 → MK2:6, MK4:7, MK1:5 | no | MK8, XC3 → MK8, XC3 | yes |
-| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | 1.00 (58/58/58) | MK3:3, XC3:9, MK5:6 → XC3:9, MK3:3, MK5:6 | no | MK2, MK4 → MK4, MK2 | no |
-| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | 0.97 (60/61/61) | MK2:6, MK5:8, MK4:7 → MK2:6, MK5:8, MK4:7 | yes | MK1 → MK1 | yes |
-| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | 0.97 (70/71/71) | MK2:6, MK1:5, MK3:1 → MK1:5, MK2:6, MK3:1 | no | MK6, XC3 → MK6, MK4 | no |
-| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | — | MK5:10, MK2:8, MK8:8 → MK5:6, MK2:8, MK8:10 | no | MK3, MK6 → MK3, MK6 | yes |
-| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 3 | — | MK6:10, MK2:7, XC1:2 → MK7:6, MK6:10, MK2:9 | no |  → MK1, XC1 | no |
+| block | f | forwarded Jaccard (shared/old/new) | core references old → new | core triples identical | core families identical | backups old → new | backups identical |
+|---|---:|---|---|---|---|---|---|
+| `qwen3-4b` | 0 | — | MK1:4, XC3:10, MK8:2 → XC3:10, MK1:4, MK6:6 | no (2/3) | no (2/3) | MK2, MK6 → MK2, MK8 | no (1) |
+| `qwen3-4b` | 1 | — | XC3:9, MK7:2, MK1:8 → MK7:2, XC3:9, MK2:7 | no (2/3) | no (2/3) | MK8 → MK1, MK8 | no (1) |
+| `qwen3-4b` | 2 | — | MK1:6, MK2:3, MK7:2 → MK7:2, MK1:6, MK6:5 | no (2/3) | no (2/3) | MK6 → MK2, MK3 | no (0) |
+| `qwen3-4b` | 3 | — | MK2:6, XC3:8, MK7:2 → XC3:8, MK2:5, MK7:2 | no (2/3) | yes | MK1, MK6 → MK1, MK5 | no (1) |
+| `qwen3-4b-instruct-2507` | 1 | — | MK5:10, MK2:8, MK8:8 → MK2:8, MK5:6, MK3:2 | no (1/3) | no (2/3) | MK3, MK6 → MK8, MK6 | no (1) |
+| `qwen3-4b-instruct-2507` | 3 | — | MK6:10, MK2:7, XC1:2 → MK6:10, MK8:3, MK7:6 | no (1/3) | no (1/3) |  → XC1, MK1 | no (0) |
+| `gemma-3n-e2b-it` | 0 | — | MK1:4, MK8:3, MK5:6 → MK4:1, MK2:6, XC3:8 | no (0/3) | no (0/3) | XC3, MK4 → MK8, MK5 | no (0) |
+| `gemma-3n-e2b-it` | 1 | — | XC3:9, MK4:4, MK1:4 → MK2:5, XC3:9, MK5:8 | no (1/3) | no (1/3) | MK5, MK2 → MK1, MK4 | no (0) |
+| `gemma-3n-e2b-it` | 2 | — | MK2:1, MK5:4, MK4:2 → MK2:1, MK5:4, MK4:2 | yes | yes |  →  | yes |
+| `gemma-3n-e2b-it` | 3 | — | MK4:5, XC3:8, MK2:1 → MK6:8, MK8:3, MK2:3 | no (0/3) | no (1/3) | MK5, MK8 → MK4, XC3 | no (0) |
+| `gemma-3n-e4b-it` | 0 | — | MK2:6, MK1:5, MK4:8 → MK2:6, MK1:5, MK4:8 | yes | yes | MK8, MK5 → MK8, XC3 | no (1) |
+| `gemma-3n-e4b-it` | 1 | — | XC3:9, MK3:3, MK5:6 → MK3:3, XC3:9, MK5:6 | yes | yes | MK2, MK4 → MK2, MK4 | yes |
+| `gemma-3n-e4b-it` | 2 | — | MK2:6, MK5:8, MK4:7 → MK2:6, MK5:8, MK4:7 | yes | yes | MK1 → MK1 | yes |
+| `gemma-3n-e4b-it` | 3 | — | MK2:8, MK3:1, XC3:10 → MK2:6, MK1:5, MK3:1 | no (1/3) | no (2/3) | MK1, MK4 → MK6, XC3 | no (0) |
+| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 0 | 0.76 (47/56/53) | MK4:1, MK2:6, XC3:8 → MK4:1, XC3:10, MK2:6 | no (2/3) | yes | MK8, MK5 → MK8, MK1 | no (1) |
+| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 1 | 0.72 (46/55/55) | MK2:5, XC3:9, MK5:8 → MK2:5, MK4:4, MK1:4 | no (1/3) | no (1/3) | MK1, MK4 → XC3, MK5 | no (0) |
+| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 2 | 0.61 (33/45/42) | MK2:1, MK5:4, MK4:2 → MK5:4, MK2:1, MK4:2 | yes | yes |  →  | yes |
+| `gemma-3n-e2b-it · replicate (dci1v8-pilot-r16 → dci1v8-pilot-r19; 'old' = first successor run)` | 3 | 0.66 (57/71/73) | MK6:8, MK8:3, MK2:3 → MK5:6, MK4:5, MK8:3 | no (1/3) | no (1/3) | MK4, XC3 → MK2, XC3 | no (1) |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 1 | 0.69 (56/68/69) | MK2:8, MK5:6, MK3:2 → MK5:10, MK2:8, MK8:8 | no (1/3) | no (2/3) | MK8, MK6 → MK1, MK6 | no (1) |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r20; 'old' = first successor run)` | 3 | 0.76 (57/65/67) | MK6:10, MK8:3, MK7:6 → MK8:3, MK6:10, MK2:9 | no (2/3) | no (2/3) | XC1, MK1 → XC1, MK1 | yes |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 1 | 0.65 (53/68/67) | MK2:8, MK5:6, MK3:2 → MK2:8, MK5:11, MK7:4 | no (1/3) | no (2/3) | MK8, MK6 → MK8, MK6 | yes |
+| `qwen3-4b-instruct-2507 · replicate (dci1v8-pilot-r15 → dci1v8-pilot-r25; 'old' = first successor run)` | 3 | 0.72 (52/65/59) | MK6:10, MK8:3, MK7:6 → MK8:4, MK7:6, MK6:10 | no (2/3) | yes | XC1, MK1 → XC1, MK1 | yes |
+| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 0 | 0.78 (54/61/62) | XC3:10, MK1:4, MK6:6 → MK1:5, XC1:2, MK6:6 | no (1/3) | no (2/3) | MK2, MK8 → XC3, MK8 | no (1) |
+| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 1 | 0.67 (55/65/72) | MK7:2, XC3:9, MK2:7 → XC3:9, MK7:2, MK2:7 | yes | yes | MK1, MK8 → MK1, MK8 | yes |
+| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 2 | 0.59 (46/62/62) | MK7:2, MK1:6, MK6:5 → MK1:6, MK2:3, MK7:2 | no (2/3) | no (2/3) | MK2, MK3 → MK3, MK6 | no (1) |
+| `qwen3-4b · replicate (dci1v8-pilot-r14 → dci1v8-pilot-r21; 'old' = first successor run)` | 3 | 0.65 (42/53/54) | XC3:8, MK2:5, MK7:2 → XC3:8, MK6:8, MK1:3 | no (1/3) | no (1/3) | MK1, MK5 → MK2, MK5 | no (1) |
+| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 0 | 0.88 (56/60/60) | MK2:6, MK1:5, MK4:8 → MK2:6, MK4:7, MK1:5 | no (2/3) | yes | MK8, XC3 → MK8, XC3 | yes |
+| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 1 | 1.00 (58/58/58) | MK3:3, XC3:9, MK5:6 → XC3:9, MK3:3, MK5:6 | yes | yes | MK2, MK4 → MK4, MK2 | yes |
+| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 2 | 0.97 (60/61/61) | MK2:6, MK5:8, MK4:7 → MK2:6, MK5:8, MK4:7 | yes | yes | MK1 → MK1 | yes |
+| `gemma-3n-e4b-it · replicate (dci1v8-pilot-r23 → dci1v8-pilot-r24; 'old' = first successor run)` | 3 | 0.97 (70/71/71) | MK2:6, MK1:5, MK3:1 → MK1:5, MK2:6, MK3:1 | yes | yes | MK6, XC3 → MK6, MK4 | no (1) |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 0 | 0.65 (49/61/63) | XC3:10, MK1:4, MK6:6 → MK1:6, MK6:6, XC3:10 | no (2/3) | yes | MK2, MK8 → MK2, XC1 | no (1) |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 1 | 0.58 (49/65/68) | MK7:2, XC3:9, MK2:7 → XC3:9, MK7:2, MK2:7 | yes | yes | MK1, MK8 → MK1, MK6 | no (1) |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 2 | 0.62 (48/62/64) | MK7:2, MK1:6, MK6:5 → MK1:5, MK6:5, MK7:2 | no (2/3) | yes | MK2, MK3 → MK2, MK3 | yes |
+| `qwen3-4b · topic-resampled replicate (dci1v8-pilot-r14 → dci1v8-pilot-t1-qwen3-4b; 'old' = first successor run)` | 3 | 0.67 (44/53/57) | XC3:8, MK2:5, MK7:2 → XC3:8, MK2:6, MK7:2 | no (2/3) | yes | MK1, MK5 → MK6, MK5 | no (1) |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 1 | 0.65 (52/68/64) | MK2:8, MK5:6, MK3:2 → MK5:9, MK2:8, MK7:4 | no (1/3) | no (2/3) | MK8, MK6 → MK6 | no (1) |
+| `qwen3-4b-instruct-2507 · topic-resampled replicate (dci1v8-pilot-r15 → dci1v8-pilot-t1-qwen3-4b-instruct-2507; 'old' = first successor run)` | 3 | 0.64 (52/65/68) | MK6:10, MK8:3, MK7:6 → MK6:10, MK8:4, XC1:2 | no (1/3) | no (2/3) | XC1, MK1 → MK2, MK7 | no (0) |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 0 | 0.51 (39/56/59) | MK4:1, MK2:6, XC3:8 → MK2:6, MK5:8, MK8:5 | no (1/3) | no (1/3) | MK8, MK5 → MK4, XC3 | no (0) |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 1 | 0.61 (42/55/56) | MK2:5, XC3:9, MK5:8 → XC3:9, MK2:5, MK5:9 | no (2/3) | yes | MK1, MK4 → MK1, MK4 | yes |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 2 | 0.57 (30/45/38) | MK2:1, MK5:4, MK4:2 → MK2:1, MK5:4, MK4:2 | yes | yes |  →  | yes |
+| `gemma-3n-e2b-it · topic-resampled replicate (dci1v8-pilot-r16 → dci1v8-pilot-t1-gemma-3n-e2b-it; 'old' = first successor run)` | 3 | 0.56 (48/71/63) | MK6:8, MK8:3, MK2:3 → MK4:5, MK6:7, XC3:8 | no (0/3) | no (1/3) | MK4, XC3 → MK2, MK5 | no (0) |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 0 | 0.64 (48/60/63) | MK2:6, MK1:5, MK4:8 → MK4:8, MK2:6, MK1:5 | yes | yes | MK8, XC3 → XC3, XC1 | no (1) |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 1 | 0.77 (50/58/57) | MK3:3, XC3:9, MK5:6 → XC3:9, MK4:6, MK5:6 | no (2/3) | no (2/3) | MK2, MK4 → MK2, MK3 | no (1) |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 2 | 0.60 (47/61/64) | MK2:6, MK5:8, MK4:7 → MK2:6, MK4:7, MK1:5 | no (2/3) | no (2/3) | MK1 →  | no (0) |
+| `gemma-3n-e4b-it · topic-resampled replicate (dci1v8-pilot-r23 → dci1v8-pilot-t1-gemma-3n-e4b-it; 'old' = first successor run)` | 3 | 0.60 (52/71/68) | MK2:6, MK1:5, MK3:1 → XC3:11, MK2:8, MK4:8 | no (0/3) | no (1/3) | MK6, XC3 → MK1, MK5 | no (0) |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 1 | — | MK5:10, MK2:8, MK8:8 → MK5:6, MK2:8, MK8:10 | no (1/3) | yes | MK3, MK6 → MK3, MK6 | yes |
+| `qwen3-4b-instruct-2507 · v8-design re-execution (dci1v8-pilot-r10 → dci1v8-pilot-r26; both pooled)` | 3 | — | MK6:10, MK2:7, XC1:2 → MK7:6, MK6:10, MK2:9 | no (1/3) | no (2/3) |  → MK1, XC1 | no (0) |

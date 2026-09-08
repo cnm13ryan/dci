@@ -221,11 +221,28 @@ def frame_overlap(old: Mapping[str, Any], new: Mapping[str, Any], frame: int
         out.update({"jaccard": (len(a & b) / len(a | b)) if (a | b) else None,
                     "n_shared": len(a & b), "n_old": len(a), "n_new": len(b)})
     ra, rb = _references(old, frame), _references(new, frame)
-    out["references"] = {"old": ra, "new": rb,
-                         "core_identical": (ra["core"] == rb["core"]) if ra and rb else None,
-                         "core_shared": (len(set(ra["core"]) & set(rb["core"]))) if ra and rb else None,
-                         "backups_identical": (ra["backups"] == rb["backups"]) if ra and rb else None,
-                         "backups_shared": (len(set(ra["backups"]) & set(rb["backups"]))) if ra and rb else None}
+    # Core entries carry no slot at pilot Gate 3 (family, severity, iota only);
+    # slots are assigned at MEMBERSHIP. So the comparison is by set, and the
+    # families are reported separately from the (family, severity) triples,
+    # because a severity moving one step is a different fact from a family
+    # being replaced.
+    if ra and rb:
+        ca, cb = set(ra["core"]), set(rb["core"])
+        fa = {x.split(":")[0] for x in ca}
+        fb = {x.split(":")[0] for x in cb}
+        ba, bb = set(ra["backups"]), set(rb["backups"])
+        refs = {"old": ra, "new": rb,
+                "core_identical": ca == cb,
+                "core_shared": len(ca & cb),
+                "core_families_identical": fa == fb,
+                "core_families_shared": len(fa & fb),
+                "backups_identical": ba == bb,
+                "backups_shared": len(ba & bb)}
+    else:
+        refs = {"old": ra, "new": rb, "core_identical": None, "core_shared": None,
+                "core_families_identical": None, "core_families_shared": None,
+                "backups_identical": None, "backups_shared": None}
+    out["references"] = refs
     return out
 
 
@@ -294,8 +311,8 @@ def _lsc(g3: Mapping[str, Any] | None) -> str:
 
 def render_overlap(models: Sequence[Mapping[str, Any]]) -> str:
     lines = ["", "## Forwarded-set overlap and reference identity, per frame (old → new of each block)", "",
-             "| block | f | forwarded Jaccard (shared/old/new) | core references old → new | core identical | backups old → new | backups identical |",
-             "|---|---:|---|---|---|---|---|"]
+             "| block | f | forwarded Jaccard (shared/old/new) | core references old → new | core triples identical | core families identical | backups old → new | backups identical |",
+             "|---|---:|---|---|---|---|---|---|"]
     for m in models:
         for f, b in sorted(m["by_frame"].items()):
             o = b.get("overlap") or {}
@@ -307,9 +324,12 @@ def render_overlap(models: Sequence[Mapping[str, Any]]) -> str:
                    if o.get("jaccard") is not None else "—")
             core = (f"{', '.join(ra['core'])} → {', '.join(rb['core'])}" if ra and rb else "—")
             bk = (f"{', '.join(ra['backups'])} → {', '.join(rb['backups'])}" if ra and rb else "—")
+            def _yn(v, extra=""):
+                return "yes" if v else ("no" + extra if v is False else "—")
             lines.append(f"| `{m['model_key']}` | {f} | {jac} | {core} | "
-                         f"{'yes' if r.get('core_identical') else ('no' if r.get('core_identical') is False else '—')} | {bk} | "
-                         f"{'yes' if r.get('backups_identical') else ('no' if r.get('backups_identical') is False else '—')} |")
+                         f"{_yn(r.get('core_identical'), f" ({r.get('core_shared')}/3)")} | "
+                         f"{_yn(r.get('core_families_identical'), f" ({r.get('core_families_shared')}/3)")} | {bk} | "
+                         f"{_yn(r.get('backups_identical'), f" ({r.get('backups_shared')})")} |")
     return "\n".join(lines) + "\n"
 
 
