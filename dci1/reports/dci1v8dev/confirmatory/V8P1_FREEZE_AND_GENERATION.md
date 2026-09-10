@@ -63,8 +63,14 @@ Started 2026-09-08 15:48:13Z, two models at a time, one per card.
 | qwen3-4b | 715,776 | PASS 2026-09-09 03:15Z | `287e507ed9b1dc86` |
 | qwen3-4b-instruct-2507 | 344,064 | PASS 2026-09-09 12:42Z | `a98dc7aa45f75ed0` |
 | gemma-3n-e4b-it | 669,696 | PASS 2026-09-10 05:28Z | `e4dd54ff8575dcee` |
-| gemma-3n-e2b-it | 623,616 | running | — |
-| **total** | **2,353,152** | | |
+| gemma-3n-e2b-it | 623,616 | PASS 2026-09-10 06:33Z | `117e95aa9a8b2ae1` |
+| **total** | **2,353,152** | **all four PASS** | |
+
+Confirmatory generation is **complete** for every entering model, all four
+records signed at the frozen commit `034fc72`. The next registered stage is
+`CONFIRMATORY_ANALYSIS`, which is the first stage permitted to read a
+composed outcome; nothing before it has read, summarised or computed from
+one.
 
 ## Where the pre-freeze evidence lives
 
