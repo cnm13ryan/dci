@@ -106,8 +106,16 @@ def certify_verifiers(slots: SlotTable) -> Certification:
     ]
 
     policy_slot = slots["verifiers.p1.list_policy"]
+    bundle_hash = ""
     if policy_slot.resolved:
-        findings.append(_bundle_finding(policy_slot.get()))
+        bundle = _bundle_finding(policy_slot.get())
+        findings.append(bundle)
+        if bundle.satisfied:
+            # The identity that was certified travels on the report, not only in a
+            # detail string: without it `describe()` said "certified" about no
+            # bundle in particular. Found in review; the value is the same
+            # `bundle_hash` the finding already computed.
+            bundle_hash = verifiers.bundle_hash(parsing.CANONICAL_LIST_POLICY)
     else:
         findings.append(Finding(
             "every declared target and focal constraint has a v19 verifier whose "
@@ -125,7 +133,7 @@ def certify_verifiers(slots: SlotTable) -> Certification:
         "5% Tier-1 conditional error ceiling on 72 human-adjudicated labels per "
         "truth class, with zero observed errors",
         "section 10.4 + amendment A3"))
-    return Certification(findings=tuple(findings))
+    return Certification(findings=tuple(findings), bundle_hash=bundle_hash)
 
 
 def _bundle_finding(policy_state: Any) -> Finding:
@@ -338,7 +346,8 @@ def certify_stage2(slots: SlotTable) -> Certification:
     verifier_half = certify_verifiers(slots)
     satisfiability_half = certify_satisfiability(slots)
     return Certification(
-        findings=verifier_half.findings + satisfiability_half.findings)
+        findings=verifier_half.findings + satisfiability_half.findings,
+        bundle_hash=verifier_half.bundle_hash)
 
 
 def assert_stage2_certified(slots: SlotTable) -> Certification:
