@@ -13,6 +13,71 @@ reports under `exploratory/`, and `docs/migration_ledger.csv`.
 
 ---
 
+## 2026-09-13 (post-confirmatory audit) — two gaps in the frozen v8.1 analysis found in review; the executed run was not affected by either; the result extractor now reads signed records only
+
+**What changed.** No rule, estimand, threshold or frozen module. Code review of PR #33
+found two gaps in the frozen analysis (`dci1v8dev/confirm/analysis.py`, whose module
+hashes are bound at registration) and one in the post-confirmatory extractor.
+
+1. **The degenerate-replicate ceiling covers only the slope.**
+   - `apply_degenerate_ceiling` enforces §13.13's `DEGENERATE_REPLICATE_MAX` on the
+     `F_SPECTRUM` slope family only.
+   - `delta_difficulty` is also refitted in every replicate of the per-frame F1 family
+     and of JOINT_F1. Its refits that were not the registered relation are never
+     counted.
+   - `bootstrap_family` drops non-finite replicates from the standard error and the
+     maximum deviation, so a degenerate `delta_difficulty` bootstrap could still have
+     produced a decision interval and an L3d/L3e reading.
+2. **Scored rows are counted, not authenticated.** `analysis_payload` checks the number
+   of rows in `scored.jsonl` against the signed generation record. It does not check
+   their content, which that record does not bind.
+3. **The extractor read unsigned copies.** `tools/v8_postconfirm_extract.py` read the
+   reader copies under `durable/` instead of the signed records.
+
+**Resolution.**
+- **Gaps 1 and 2:** measured on the stored evidence, not amended, because amending the
+  frozen module would break its registration binding and the analysis ran once.
+- **Gap 3:** fixed. The extractor now verifies each signed record (hash, signature,
+  study, layer) and checks that the analysis names the signed generation record.
+  Regenerated, the result tables are byte-identical; only `provenance.json` gains the
+  verification block.
+
+**Evidence.**
+- `tools/v8p1_delta_difficulty_degeneracy_replay.py` →
+  `reports/dci1v8dev/postconfirm/audits/delta_difficulty_degeneracy_replay.json`.
+  - It replays the exact index draws of all 56 `delta_difficulty` bootstraps: 28
+    per-frame F1 and 28 JOINT_F1, over 4 models, 14 spectrum frames and 2
+    configurations.
+  - It refits every replicate with the frozen `spectrum.estimate`: 560,000 refits,
+    **0** unavailable fits and **0** dropped points.
+  - Every replayed point estimate **and standard error** equals the signed record's
+    exactly, so the replay is the executed bootstrap.
+- `tools/v8p1_scored_row_authentication_audit.py` →
+  `reports/dci1v8dev/postconfirm/audits/scored_row_authentication.json`. It covers all
+  2,353,152 rows in 168 backend runs, with **0** failures on each check:
+  - SHA-256 of `scored.jsonl`, `rows.jsonl` and `design.jsonl` equals the copy made
+    under `durable/` when generation completed;
+  - modification and inode-change times precede the signed generation record's
+    `recorded_at`;
+  - row identity, generation identity, answer text, truncation, finish reason and token
+    count agree with the backend output and the design;
+  - verifier and wording hashes match, and the observation identity recomputes;
+  - the frozen verifier rescores every stored score field;
+  - the per-block means of 1,400 per-frame members re-formed from the rows on disk
+    equal the signed estimates.
+- **Negative control:** on a scratch copy of one run, one flipped verdict, one edited
+  answer and the copied files' timestamps were flagged by the mirror, text, rescore and
+  time checks.
+
+**Affected results.** None. Every signed reading stands.
+
+**Comparability.** Unchanged.
+
+**For a successor version:** apply the ceiling to every refit member, and bind the
+scored-row content (for example a per-file SHA-256) into the signed generation record.
+
+---
+
 ## 2026-09-10 (v8.1 confirmatory) — the frozen registered analysis executed once; the confirmatory estimand now has values, and every earlier v8/v8.1 number becomes pre-freeze identification evidence
 
 **What changed.** Nothing in any rule. The frozen `CONFIRMATORY_ANALYSIS`
