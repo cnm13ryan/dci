@@ -243,10 +243,17 @@ def gamma(frame: pd.DataFrame, *, order: str, low: int, high: int,
 
 
 def arbitration(frame: pd.DataFrame, **where) -> dict[str, pd.Series]:
-    """Per-task probability of each of the four focal-arm outcomes."""
+    """Per-task probability of each of the four focal-arm outcomes.
+
+    The four states partition the behavioural rows only. A technical failure has
+    `arbitration_state == TECHNICAL_FAILURE`, so leaving it in the denominator
+    would count it as a miss for all four states and deflate every probability.
+    """
     subset = frame[frame["arm"] == FOCAL_ARM]
     for name, value in where.items():
         subset = subset[subset[name] == value]
+    if "generation_state" in subset:
+        subset = subset[subset["generation_state"] != TECHNICAL_FAILURE]
     return {state: subset.assign(hit=(subset["arbitration_state"] == state)
                                  .astype(float)).groupby("task_id")["hit"].mean()
             for state in STATES}
