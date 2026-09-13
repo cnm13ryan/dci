@@ -86,6 +86,7 @@ for background in (A.CONTROL, A.AMPLIFIER):
 print(A.show(A.table(clusters, rows)))
 
 print("\n\n## Crosstab\n")
-print(pd.crosstab([frame["background_name"], frame["reasoning_budget"],
-                   frame["priority"]], frame["arbitration_state"],
+states = A.behavioural(frame)
+print(pd.crosstab([states["background_name"], states["reasoning_budget"],
+                   states["priority"]], states["arbitration_state"],
                   normalize="index").to_string(float_format=lambda v: f"{v:.3f}"))

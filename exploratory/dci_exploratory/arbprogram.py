@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import warnings
 from typing import Callable, Sequence
 
 import numpy as np
@@ -160,12 +161,23 @@ class Clusters:
         self.index = rng.integers(0, len(self.tasks), size=(draws, len(self.tasks)))
 
     def interval(self, series: pd.Series) -> tuple[float, float, float]:
-        """Point estimate and a 95% percentile interval, or NaN if empty."""
+        """Point estimate and a 95% percentile interval, or NaN if empty.
+
+        A task with no estimate (every row of it a technical failure, say) is
+        NaN after the reindex, and a draw that resampled only such tasks has no
+        mean. The percentiles are taken over the draws that do. Before, one empty
+        draw made both bounds NaN, so a run with failures concentrated in many
+        tasks printed unusable intervals beside valid point estimates. Where no
+        draw is empty, the draws and percentiles are exactly what they were.
+        """
         values = series.reindex(self.tasks).to_numpy(float)
         if np.all(np.isnan(values)):
             return (np.nan, np.nan, np.nan)
         drawn = values[self.index]
-        means = np.nanmean(drawn, axis=1)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)   # empty draws
+            means = np.nanmean(drawn, axis=1)
+        means = means[~np.isnan(means)]
         return (float(np.nanmean(values)),
                 float(np.percentile(means, 2.5)),
                 float(np.percentile(means, 97.5)))
@@ -242,6 +254,18 @@ def gamma(frame: pd.DataFrame, *, order: str, low: int, high: int,
             - delta(frame, reasoning_budget=low, **common)).dropna()
 
 
+def behavioural(frame: pd.DataFrame) -> pd.DataFrame:
+    """The rows the four arbitration states partition: all but technical failures.
+
+    Every view of the arbitration states reads its rows from here, the bootstrap
+    table and the printed crosstabs alike, so the two cannot disagree about the
+    denominator for the same run.
+    """
+    if "generation_state" not in frame:
+        return frame
+    return frame[frame["generation_state"] != TECHNICAL_FAILURE]
+
+
 def arbitration(frame: pd.DataFrame, **where) -> dict[str, pd.Series]:
     """Per-task probability of each of the four focal-arm outcomes.
 
@@ -249,11 +273,10 @@ def arbitration(frame: pd.DataFrame, **where) -> dict[str, pd.Series]:
     `arbitration_state == TECHNICAL_FAILURE`, so leaving it in the denominator
     would count it as a miss for all four states and deflate every probability.
     """
-    subset = frame[frame["arm"] == FOCAL_ARM]
+    subset = behavioural(frame)
+    subset = subset[subset["arm"] == FOCAL_ARM]
     for name, value in where.items():
         subset = subset[subset[name] == value]
-    if "generation_state" in subset:
-        subset = subset[subset["generation_state"] != TECHNICAL_FAILURE]
     return {state: subset.assign(hit=(subset["arbitration_state"] == state)
                                  .astype(float)).groupby("task_id")["hit"].mean()
             for state in STATES}
