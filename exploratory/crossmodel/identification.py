@@ -30,12 +30,21 @@ Failing closed is right for pooling and wrong for reading, so the two questions
 are answered separately:
 
     identification  may this contrast be read causally?
-    behavioural     what was observed?
+    behavioural     what would this cell read as if every prerequisite that was
+                    never established had passed?
 
 `read()` returns both. The behavioural layer is not a weaker gate: it is the same
 `classify()` on the same measured constituents, with only the ABSENT prerequisite
 axes filled in. Nothing it reports may be pooled — `poolable` continues to follow
 the identification layer alone.
+
+It is a conditional, not an observation. The measured constituents are rates
+read through the very verifier and execution those prerequisites vouch for, so an
+uncertified verifier or an unvalidated execution could make a `TARGET_CEILING`
+as wrong as an `IDENTIFIED`. A `Reading` therefore names the axes it assumed
+(`conditional_on`), says so in its reason, and never prints `IDENTIFIED` for a
+cell whose identification was not established: that reading is
+`NO_BEHAVIOURAL_BLOCK`.
 """
 from __future__ import annotations
 
@@ -81,6 +90,12 @@ EVIDENCE_INCOMPLETE = "EVIDENCE_INCOMPLETE"
 
 #: Only cells carrying this verdict may enter a pooled benchmark mean.
 POOLABLE = frozenset({IDENTIFIED})
+
+#: A behavioural reading only, never returned by `classify()`: with the absent
+#: prerequisites assumed to pass, no behavioural verdict applies. This is what
+#: `IDENTIFIED` would have been, renamed because identification is exactly the
+#: claim the missing evidence withholds. Not poolable.
+NO_BEHAVIOURAL_BLOCK = "NO_BEHAVIOURAL_BLOCK"
 
 ALL_VERDICTS = (
     IDENTIFIED, TARGET_CEILING, TARGET_FLOOR, FOCAL_NONUPTAKE,
@@ -322,7 +337,8 @@ PREREQUISITE_AXES: tuple[str, ...] = (
 
 #: What each prerequisite axis looks like when it IS established. Used only to
 #: answer the counterfactual "what would this cell read as, once the missing
-#: feeds arrive" — never to pool, and never written back onto the cell.
+#: feeds arrive" — never to pool, never written back onto the cell, and never
+#: into the evidence a `Reading` publishes.
 _ESTABLISHED: dict[str, Any] = {
     "execution_validated": True, "channel_valid_rate": 1.0,
     "verifier_certified": True, "satisfiable": True,
@@ -334,17 +350,20 @@ class Reading:
     """Both answers for one cell, kept apart because they are different questions.
 
     `identification` decides whether the contrast may be read causally, and is
-    the ONLY layer that governs pooling. `behavioural` says what the data look
-    like, and is meaningful even where identification blocks — a cell can be
-    unpoolable because a feed is missing while still plainly showing a target
-    ceiling or an undelivered focal instruction.
+    the ONLY layer that governs pooling. `behavioural` says what the measured
+    constituents would read as if the prerequisites in `conditional_on` had
+    passed — useful where identification blocks, because a cell can be
+    unpoolable for a missing feed while its rates still show a target ceiling
+    or an undelivered focal instruction, but only ever as that conditional.
 
-    Where nothing was missing the two layers coincide, and the pair reads as the
-    same verdict twice. That is deliberate: a reader should never have to know
-    which case they are in to read the row.
+    Where nothing was missing the two layers coincide, `conditional_on` is
+    empty, and the pair reads as the same verdict twice.
     """
     identification: Verdict
     behavioural: Verdict
+    #: The prerequisite axes that were never established and were assumed to
+    #: pass for the behavioural reading. Empty when nothing was assumed.
+    conditional_on: tuple[str, ...] = ()
 
     @property
     def poolable(self) -> bool:
@@ -361,6 +380,7 @@ class Reading:
                 "identification_reason": self.identification.reason,
                 "behavioural": self.behavioural.status,
                 "behavioural_reason": self.behavioural.reason,
+                "behavioural_conditional_on": list(self.conditional_on),
                 **self.identification.evidence}
 
 
@@ -374,18 +394,28 @@ def read(evidence: CellEvidence, thresholds: Thresholds | None = None
     ceiling and an undelivered instruction stays undelivered. What it removes is
     exactly the block that has nothing to do with the model.
 
-    It is also honest about its own limits. If the missing feed later arrives as
-    a FAILURE rather than a pass — an admission refused, a verifier that does not
-    certify — the behavioural reading was never the identification verdict, and
-    `identification` is the one that stands.
+    It does not remove the dependence on those prerequisites. The constituents
+    were scored by the verifier and produced by the execution the missing feeds
+    would vouch for, so every behavioural status, the ceiling included, holds
+    only if they pass. The reading says so three ways: `conditional_on` names
+    the assumed axes, the reason opens with them, and a reading that would have
+    been `IDENTIFIED` is `NO_BEHAVIOURAL_BLOCK`. Its evidence is the cell's own,
+    with the absent axes still `None`. If a missing feed later arrives as a
+    FAILURE — an admission refused, a verifier that does not certify — the
+    reading was never true, and `identification` is the one that stands.
     """
     ident = classify(evidence, thresholds)
     if ident.status != EVIDENCE_INCOMPLETE:
         return Reading(ident, ident)
-    supplied = replace(evidence, **{
-        axis: _ESTABLISHED[axis] for axis in PREREQUISITE_AXES
-        if getattr(evidence, axis) is None})
-    return Reading(ident, classify(supplied, thresholds))
+    assumed = tuple(axis for axis in PREREQUISITE_AXES
+                    if getattr(evidence, axis) is None)
+    reading = classify(replace(evidence, **{
+        axis: _ESTABLISHED[axis] for axis in assumed}), thresholds)
+    status = (NO_BEHAVIOURAL_BLOCK if reading.status == IDENTIFIED
+              else reading.status)
+    reason = (f"conditional on {', '.join(assumed)} passing (never "
+              f"established): {reading.reason}")
+    return Reading(ident, Verdict(status, reason, ident.evidence), assumed)
 
 
 def poolable(verdicts) -> list:
