@@ -10,12 +10,22 @@ block.
 `read()` answers both:
 
     identification  may this contrast be read causally?   (governs pooling)
-    behavioural     what was observed?                    (governs reading)
+    behavioural     what would it read as if the missing  (governs reading)
+                    prerequisites had passed?
 
 The property these tests exist to pin is that the second layer is not a weaker
 gate. It re-runs the same classifier on the same MEASURED constituents, filling
 in only the absent prerequisite axes, so it can never excuse anything the model
 actually did.
+
+The second property is that it says it is a conditional. The first version of
+this file asserted that a blocked cell's behavioural reading was `IDENTIFIED`,
+and the cross-model report printed that under a column described as *what was
+observed*. Codex review on PR #24 was right that this turned two unestablished
+checks — execution admission and verifier certification — into passed ones on
+the page: the rates behind every behavioural status were scored by that
+verifier. The reading now names the assumed axes, opens its reason with them,
+and prints `NO_BEHAVIOURAL_BLOCK` where it used to print `IDENTIFIED`.
 """
 from __future__ import annotations
 
@@ -56,8 +66,9 @@ class TestTheBlockedCase:
         assert read(measured()).identification.status == ident.EVIDENCE_INCOMPLETE
 
     def test_behaviour_is_still_reported_behind_the_block(self) -> None:
-        """The whole point. A blocked cell still says what was observed."""
-        assert read(measured()).behavioural.status == ident.IDENTIFIED
+        """The whole point. A blocked cell still says what its constituents read
+        as, and a cell with no behavioural block does not claim identification."""
+        assert read(measured()).behavioural.status == ident.NO_BEHAVIOURAL_BLOCK
 
     def test_a_ceiling_is_visible_even_when_identification_blocks(self) -> None:
         cell = measured(target_failure_focal=0.0, target_failure_reference=0.0)
@@ -110,8 +121,9 @@ class TestTheBehaviouralLayerIsNotAWeakerGate:
 class TestPoolingFollowsIdentificationAlone:
     def test_a_blocked_cell_is_not_poolable_however_it_behaves(self) -> None:
         reading = read(measured())
-        assert reading.behavioural.status == ident.IDENTIFIED
+        assert reading.behavioural.status == ident.NO_BEHAVIOURAL_BLOCK
         assert reading.poolable is False
+        assert reading.behavioural.poolable is False
 
     def test_poolable_helper_accepts_readings(self) -> None:
         assert ident.poolable([read(measured())]) == []
@@ -119,6 +131,47 @@ class TestPoolingFollowsIdentificationAlone:
 
     def test_evidence_incomplete_is_never_poolable(self) -> None:
         assert ident.EVIDENCE_INCOMPLETE not in ident.POOLABLE
+
+
+class TestTheReadingIsNamedAsAConditional:
+    """Unknown evidence must not reach the page as passed evidence."""
+
+    def test_a_blocked_cell_never_reads_identified(self) -> None:
+        for cell in (measured(), measured(channel_valid_rate=1.0, satisfiable=True)):
+            assert read(cell).behavioural.status != ident.IDENTIFIED
+
+    def test_the_label_is_a_reading_not_a_classifier_verdict(self) -> None:
+        assert ident.NO_BEHAVIOURAL_BLOCK not in ident.ALL_VERDICTS
+        assert ident.NO_BEHAVIOURAL_BLOCK not in ident.POOLABLE
+
+    def test_the_assumed_axes_are_named(self) -> None:
+        assert read(measured()).conditional_on == ident.PREREQUISITE_AXES
+        # The shape every cross-model cell has: satisfiability witnessed and the
+        # channel measured, admission and certification never recorded.
+        cell = measured(channel_valid_rate=1.0, satisfiable=True)
+        assert read(cell).conditional_on == ("execution_validated",
+                                             "verifier_certified")
+
+    def test_every_behavioural_status_carries_the_condition(self) -> None:
+        """A ceiling is read through the same uncertified verifier as a pass."""
+        for cell in (measured(),
+                     measured(target_failure_focal=0.0, target_failure_reference=0.0),
+                     measured(focal_uptake=0.088, target_failure_focal=0.559,
+                              target_failure_reference=0.286)):
+            reason = read(cell).behavioural.reason
+            assert reason.startswith("conditional on execution_validated, "
+                                     "channel_valid_rate, verifier_certified, "
+                                     "satisfiable passing"), reason
+
+    def test_the_published_evidence_keeps_absent_axes_absent(self) -> None:
+        reading = read(measured(channel_valid_rate=1.0, satisfiable=True))
+        assert reading.behavioural.evidence["execution_validated"] is None
+        assert reading.behavioural.evidence["verifier_certified"] is None
+        assert reading.behavioural.evidence == reading.identification.evidence
+
+    def test_nothing_is_assumed_when_nothing_was_missing(self) -> None:
+        assert read(established()).conditional_on == ()
+        assert not read(established()).behavioural.reason.startswith("conditional")
 
 
 class TestTheUnblockedCase:
@@ -151,7 +204,8 @@ class TestSerialisation:
     def test_both_layers_and_their_reasons_reach_the_row(self) -> None:
         row = read(measured()).to_dict()
         assert row["identification"] == ident.EVIDENCE_INCOMPLETE
-        assert row["behavioural"] == ident.IDENTIFIED
+        assert row["behavioural"] == ident.NO_BEHAVIOURAL_BLOCK
+        assert row["behavioural_conditional_on"] == list(ident.PREREQUISITE_AXES)
         assert row["identification_reason"] and row["behavioural_reason"]
 
     def test_the_row_still_carries_the_constituents(self) -> None:

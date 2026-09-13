@@ -131,7 +131,7 @@ def ladder_figure() -> None:
     rows = []
     for rung in rungs:
         subset = primary[primary["arm"] == rung]
-        states = subset["arbitration_state"].value_counts(normalize=True)
+        states = A.behavioural(subset)["arbitration_state"].value_counts(normalize=True)
         for state in A.STATES:
             rows.append({"rung": rung, "state": state,
                          "share": float(states.get(state, 0.0))})

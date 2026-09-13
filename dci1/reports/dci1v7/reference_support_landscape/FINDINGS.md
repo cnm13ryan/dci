@@ -350,8 +350,11 @@ rungs, and RESEARCH_STATE §4an already records that tension for v8.
   Both figures are closed-form idealisations that hold every point's
   difficulty fixed. **The binding number is neither**: §17.2's block
   bootstrap refits the model on each replicate and re-estimates ι as well as
-  β, so the realised SE(β) is wider again. Any decision to run this follow-up
-  should be powered on that bootstrap, not on either arithmetic above.
+  β. Re-estimating ι adds variation, but the resampled ι and loss share blocks,
+  and their covariance can raise or lower SE(β), so its direction relative to
+  the figures above is not known until that bootstrap is run. Any decision to
+  run this follow-up should be powered on that bootstrap, not on either
+  arithmetic above.
 - **What it would newly allow**: an estimate of β (does difficulty predict
   delivery loss at all, within same-form marker constraints?) and of δ_diff =
   D(B←A) − Ŷ_A with §13.13's support satisfied — i.e. statement 6, "A has an

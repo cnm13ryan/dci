@@ -15,9 +15,10 @@ frames, at 384 topic blocks per frame. The registered analysis and the
 registered final report both returned `PASS` for every model.
 
 **The one-sentence result.** Against the three same-form companions matched
-to it on frame-conditioned stand-alone difficulty, the focal instruction A
-costs compliance with B no more than those companions do in 23 of the 24
-entering model × frame × prompt-order cells — and in the twenty-fourth,
+to it on frame-conditioned stand-alone difficulty, the simultaneous upper
+bound on how much more the focal instruction A costs compliance with B stops
+below the registered +10 pp margin in 23 of the 24 entering
+model × frame × prompt-order cells — and in the twenty-fourth,
 Gemma-3n-E4B-it under frame 1 with B stated second, A costs B **+12.6 pp**
 more, an excess the registered rule declines to certify and that the
 registered sensitivity analyses substantially undercut.
@@ -160,8 +161,12 @@ Two, both carried from the freeze record and both consequential for wording:
    construction**. An L3c-level reading is therefore reported with the
    disposition `NEAR_FORM_UNAVAILABLE` and the model verdict is the narrower
    `LOCAL_EQUIVALENT_SAME_FORM_ONLY`. **The paper may not write "A is not
-   unusually harmful"; it may write "A costs B no more than same-form,
-   exact-count companions matched on frame-conditioned difficulty."**
+   unusually harmful"; it may write "A costs B less than 10 pp more than
+   same-form, exact-count companions matched on frame-conditioned
+   difficulty."** L3c bounds the excess below the +10 pp margin; it does not
+   show the excess is zero, so "no more than" without the margin is too strong.
+   (Wording corrected 2026-09-13; earlier versions of this bundle licensed the
+   unqualified "no more than".)
 
 ---
 
@@ -1285,7 +1290,7 @@ sensitivity · **RD** registered descriptive · **MV** methodology validation
 
 | # | candidate claim | class | evidence | scope | strongest licensed wording | wording that would be too strong | paper section |
 |---:|---|:-:|---|---|---|---|---|
-| 1 | A costs B no more than same-form companions matched on frame-conditioned difficulty | **PC** | `L3c` on the joint interval, 23 of 24 cells; `data/primary_delta_by_frame_order.csv` | per model × frame × order | "In 23 of the 24 entering conditions the simultaneous interval for Δ_R(f) stops below +10 pp." | "A is not unusually harmful"; "no pair-specific interference"; "equivalent to zero" | Results |
+| 1 | A costs B no more than same-form companions matched on frame-conditioned difficulty | **PC** | `L3c` on the joint interval, 23 of 24 cells; `data/primary_delta_by_frame_order.csv` | per model × frame × order | "In 23 of the 24 entering conditions the simultaneous interval for Δ_R(f) stops below +10 pp." | "A is not unusually harmful"; "no pair-specific interference"; "equivalent to zero"; "no more than" without the +10 pp margin | Results |
 | 2 | Model-level equivalence to same-form companions | **PC** | `LOCAL_EQUIVALENT_SAME_FORM_ONLY`, 7 of 8 model × order | per model × order | "Seven of the eight model × order configurations return the registered same-form-only equivalence verdict." | dropping "same-form-only"; generalising to companions at large | Results |
 | 3 | One condition shows A costing B more than its references | **PC** | Gemma-3n-E4B-it f1 B second, Δ_R = +12.64, joint CI [+9.62, +15.66], `INDETERMINATE@0.10` | one cell | "On Gemma-3n-E4B-it under frame 1 with B second, Δ_R = +12.6 pp with a joint interval excluding zero; the registered rule certifies neither an excess above +10 pp nor a bound below it." | "A specifically interferes with B on this model"; omitting the four qualifications | Results |
 | 4 | Frames disagree within a model | **PC** | `FRAME_HETEROGENEOUS`, Gemma-3n-E4B-it B second | one model × order | "On one model and prompt order the entering frames do not reach the same reading, and the registered verdict is heterogeneity." | treating heterogeneity as a null or as noise | Results |
@@ -1516,9 +1521,9 @@ Results *narrative shape* — and none of its numbers.
 
 > Against three same-form companions matched to it on wording-conditioned
 > stand-alone difficulty, the focal instruction costs compliance with the
-> measured instruction no more than they do in 23 of 24 preregistered
-> model × wording-frame × prompt-order conditions — while composition itself
-> moves compliance by up to 49 percentage points.
+> measured instruction less than 10 percentage points more than they do in
+> 23 of 24 preregistered model × wording-frame × prompt-order conditions —
+> while composition itself moves compliance by up to 49 percentage points.
 
 ## 18.3 The strongest three-sentence abstract-level result
 

@@ -30,6 +30,12 @@ CONTROL = sys.argv[3] if len(sys.argv) > 3 else "X_PAREN_FREE"
 
 rows = [json.loads(line) for line in SOURCE.open()]
 print(f"independent recomputation of {len(rows)} scored rows from {SOURCE}\n")
+# A technical failure carries no verdict and leaves every behavioural estimand,
+# including the four state probabilities. The rule is restated here rather than
+# imported, like everything else this script recomputes.
+technical = sum(1 for row in rows if row.get("generation_state") == "TECHNICAL_FAILURE")
+rows = [row for row in rows if row.get("generation_state") != "TECHNICAL_FAILURE"]
+print(f"  {technical} technical-failure rows set aside\n")
 problems = []
 
 
